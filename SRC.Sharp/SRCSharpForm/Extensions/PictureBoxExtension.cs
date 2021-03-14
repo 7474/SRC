@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace SRCTestForm.Extensions
+namespace SRCSharpForm.Extensions
 {
     public static class PictureBoxExtension
     {

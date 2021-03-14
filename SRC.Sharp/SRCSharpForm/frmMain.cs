@@ -1,15 +1,15 @@
 ﻿using Microsoft.Extensions.Logging;
 using SRCCore;
 using SRCCore.Filesystem;
-using SRCTestForm.FormLib;
-using SRCTestForm.Resoruces;
+using SRCSharpForm.FormLib;
+using SRCSharpForm.Resoruces;
 using System;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace SRCTestForm
+namespace SRCSharpForm
 {
     public partial class frmTeatMain : Form
     {

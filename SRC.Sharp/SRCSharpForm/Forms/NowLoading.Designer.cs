@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.CompilerServices;
 
-namespace SRCTestForm
+namespace SRCSharpForm
 {
     [DesignerGenerated()]
     internal partial class frmNowLoading

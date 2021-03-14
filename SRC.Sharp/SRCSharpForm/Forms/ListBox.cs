@@ -11,7 +11,7 @@ using Microsoft.VisualBasic;
 using SRCCore;
 using SRCCore.Lib;
 
-namespace SRCTestForm
+namespace SRCSharpForm
 {
     // リストボックスのフォーム
     internal partial class frmListBox : Form

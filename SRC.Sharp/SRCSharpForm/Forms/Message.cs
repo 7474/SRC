@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using SRCCore;
 
-namespace SRCTestForm
+namespace SRCSharpForm
 {
     // メッセージウィンドウのフォーム
     internal partial class frmMessage : Form

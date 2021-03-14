@@ -1,13 +1,13 @@
 ﻿using SRCCore;
 using SRCCore.Lib;
 using SRCCore.VB;
-using SRCTestForm.Extensions;
+using SRCSharpForm.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace SRCTestForm
+namespace SRCSharpForm
 {
     public partial class frmTeatMain
     {

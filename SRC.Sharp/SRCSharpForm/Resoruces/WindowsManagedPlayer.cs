@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SRCTestForm.Resoruces
+namespace SRCSharpForm.Resoruces
 {
     class WaveChannel : IDisposable
     {

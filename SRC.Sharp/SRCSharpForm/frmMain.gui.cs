@@ -4,7 +4,7 @@ using SRCCore;
 using SRCCore.Commands;
 using SRCCore.Lib;
 using SRCCore.Units;
-using SRCTestForm.Resoruces;
+using SRCSharpForm.Resoruces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -15,7 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SRCTestForm
+namespace SRCSharpForm
 {
     public partial class frmTeatMain : IGUI
     {

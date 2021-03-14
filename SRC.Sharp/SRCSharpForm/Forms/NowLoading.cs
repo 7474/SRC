@@ -5,7 +5,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace SRCTestForm
+namespace SRCSharpForm
 {
     // データロードの進行状況を示すフォーム
     internal partial class frmNowLoading : Form
