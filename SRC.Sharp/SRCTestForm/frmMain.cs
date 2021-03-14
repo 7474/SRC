@@ -27,10 +27,6 @@ namespace SRCTestForm
             LoadData();
             UpdateDataTree();
         }
-        private void menuLoadEve_Click(object sender, EventArgs e)
-        {
-            LoadEve();
-        }
 
         private void treeViewData_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -56,28 +52,6 @@ namespace SRCTestForm
                     SRC.LoadDataDirectory(fbd.SelectedPath);
                     sw.Stop();
                     SetStatusText($"Loaded. {sw.ElapsedMilliseconds}ms");
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    SetStatusText(ex.Message);
-                    //    SetMainText(ex.ToString());
-                    //}
-                }
-            }
-        }
-
-        private void LoadEve()
-        {
-            using (var fbd = new OpenFileDialog())
-            {
-                var res = fbd.ShowDialog();
-                if (res == DialogResult.OK)
-                {
-                    //try
-                    //{
-                    SetStatusText($"Load file [{fbd.FileName}].");
-                    Hide();
-                    SRC.Execute(fbd.FileName);
                     //}
                     //catch (Exception ex)
                     //{

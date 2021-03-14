@@ -33,7 +33,6 @@ namespace SRCTestForm
             this.menu = new System.Windows.Forms.MenuStrip();
             this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.menuLoadData = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLoadEve = new System.Windows.Forms.ToolStripMenuItem();
             this.status = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -60,8 +59,7 @@ namespace SRCTestForm
             // menuFile
             // 
             this.menuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuLoadData,
-            this.menuLoadEve});
+            this.menuLoadData});
             this.menuFile.Name = "menuFile";
             this.menuFile.Size = new System.Drawing.Size(37, 20);
             this.menuFile.Text = "File";
@@ -72,13 +70,6 @@ namespace SRCTestForm
             this.menuLoadData.Size = new System.Drawing.Size(127, 22);
             this.menuLoadData.Text = "Load Data";
             this.menuLoadData.Click += new System.EventHandler(this.menuLoadData_Click);
-            // 
-            // menuLoadEve
-            // 
-            this.menuLoadEve.Name = "menuLoadEve";
-            this.menuLoadEve.Size = new System.Drawing.Size(127, 22);
-            this.menuLoadEve.Text = "Load Eve";
-            this.menuLoadEve.Click += new System.EventHandler(this.menuLoadEve_Click);
             // 
             // status
             // 
@@ -177,7 +168,6 @@ namespace SRCTestForm
         private System.Windows.Forms.TreeView treeViewData;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TextBox textMain;
-        private System.Windows.Forms.ToolStripMenuItem menuLoadEve;
     }
 }
 
