@@ -2,6 +2,7 @@
 using SRCCore;
 using SRCCore.Filesystem;
 using SRCTestForm.FormLib;
+using SRCTestForm.Resoruces;
 using System;
 using System.Data;
 using System.Diagnostics;
@@ -13,13 +14,18 @@ namespace SRCTestForm
     public partial class frmTeatMain : Form
     {
         public SRCCore.SRC SRC;
+        public SRCCore.Expressions.Expression Expression => SRC.Expression;
+        public SRCCore.Maps.Map Map => SRC.Map;
+        public SRCCore.Commands.Command Commands => SRC.Commands;
 
         public frmTeatMain()
         {
             InitializeComponent();
 
             SRC = new SRCCore.SRC();
+            SRC.GUI = this;
             SRC.FileSystem = new LocalFileSystem();
+            SRC.Sound.Player = new WindowsManagedPlayer();
         }
 
         private void menuLoadData_Click(object sender, EventArgs e)

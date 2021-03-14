@@ -35,7 +35,7 @@ namespace SRCTestForm.Resoruces
         private MidiFile midiFile;
         private Playback midiPlayback;
 
-        private float volume = 0.25f;
+        private float volume = 0.10f;
 
         private const int CH_BGM = IPlaySound.CH_BGM;
 
