@@ -944,7 +944,6 @@ namespace SRCCore
             };
             foreach (var bcFile in bcFiles)
             {
-
                 if (GeneralLib.FileExists(bcFile))
                 {
                     BCList.Load(bcFile);

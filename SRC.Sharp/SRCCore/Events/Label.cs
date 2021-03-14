@@ -187,7 +187,7 @@ namespace SRCCore.Events
             }
 
             // 各ラベルについて一致しているかチェック
-            foreach (LabelData lab in colEventLabelList)
+            foreach (LabelData lab in colEventLabelList.List)
             {
                 // ラベルの種類が一致している？
                 if (ltype != lab.Name)

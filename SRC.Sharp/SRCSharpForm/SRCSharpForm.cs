@@ -1,5 +1,7 @@
-﻿using SRCCore.Filesystem;
+﻿using Microsoft.Extensions.Logging;
+using SRCCore.Filesystem;
 using SRCSharpForm.Resoruces;
+using System;
 using System.Windows.Forms;
 
 namespace SRCSharpForm
@@ -23,6 +25,8 @@ namespace SRCSharpForm
         {
             using (var fbd = new OpenFileDialog())
             {
+                fbd.Filter = "event files (*.eve)|*.eve|save files (*.src)|*.src";
+
                 var res = fbd.ShowDialog();
                 if (res == DialogResult.OK)
                 {
@@ -30,6 +34,11 @@ namespace SRCSharpForm
                     SRC.Execute(fbd.FileName);
                 }
             }
+        }
+
+        private void SRCSharpForm_Shown(object sender, EventArgs e)
+        {
+            LoadEve();
         }
     }
 }

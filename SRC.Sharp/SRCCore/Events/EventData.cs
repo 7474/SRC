@@ -364,11 +364,16 @@ namespace SRCCore.Events
             var cmdStack = new Stack<CmdType>();
             var cmdPosStack = new Stack<int>();
             EventCmd.Clear();
-            foreach (var eventDataLine in EventData.Where(x => !x.IsSystemData))
+            // XXX 無駄解析しないようにする
+            //foreach (var eventDataLine in EventData.Where(x => !x.IsSystemData))
+            foreach (var eventDataLine in EventData)
             {
                 // コマンドの構文解析
                 var command = parser.Parse(SRC, eventDataLine);
                 EventCmd.Add(command);
+
+                // システムデータなら無視しておく
+                if (eventDataLine.IsSystemData) { continue; }
 
                 // TODO Impl
                 // リスト長がマイナスのときは括弧の対応が取れていない
