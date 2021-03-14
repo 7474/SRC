@@ -1,7 +1,9 @@
 ﻿using SRCCore.Events;
+using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.Units;
+using SRCCore.VB;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -1292,11 +1294,10 @@ namespace SRCCore.Commands
                         unitCommands.Add(new UiCommand(AttackCmdID, "攻撃"));
                     }
 
-                    //if (currentUnit.Area == "地中")
-                    //{
-                    //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //    GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Visible = false;
-                    //}
+                    if (currentUnit.Area == "地中")
+                    {
+                        unitCommands.RemoveItem(x => x.Id == AttackCmdID);
+                    }
 
                     //object argIndex48 = "攻撃不能";
                     //if (currentUnit.IsConditionSatisfied(argIndex48))
@@ -1538,11 +1539,10 @@ namespace SRCCore.Commands
                     //    }
                     //}
 
-                    //if (currentUnit.Area == "地中")
-                    //{
-                    //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //    GUI.MainForm.mnuUnitCommandItem(AbilityCmdID).Visible = false;
-                    //}
+                    if (currentUnit.Area == "地中")
+                    {
+                        unitCommands.RemoveItem(x => x.Id == AbilityCmdID);
+                    }
                     //// UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //string argtname2 = "アビリティ";
                     //GUI.MainForm.mnuUnitCommandItem(AbilityCmdID).Caption = Expression.Term(argtname2, SelectedUnit);
@@ -1906,92 +1906,68 @@ namespace SRCCore.Commands
                     //    }
                     //}
 
-                    //// 地上コマンド
-                    //if (Map.TerrainClass(currentUnit.x, currentUnit.y) == "陸" | Map.TerrainClass(currentUnit.x, currentUnit.y) == "屋内" | Map.TerrainClass(currentUnit.x, currentUnit.y) == "月面")
-                    //{
-                    //    string argarea_name = "陸";
-                    //    if (currentUnit.Area != "地上" & currentUnit.IsTransAvailable(argarea_name))
-                    //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //        GUI.MainForm.mnuUnitCommandItem(GroundCmdID).Caption = "地上";
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //        GUI.MainForm.mnuUnitCommandItem(GroundCmdID).Visible = true;
-                    //    }
-                    //}
-                    //else if (Map.TerrainClass(currentUnit.x, currentUnit.y) == "水" | Map.TerrainClass(currentUnit.x, currentUnit.y) == "深水")
-                    //{
-                    //    string argarea_name1 = "水上";
-                    //    if (currentUnit.Area != "水上" & currentUnit.IsTransAvailable(argarea_name1))
-                    //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //        GUI.MainForm.mnuUnitCommandItem(GroundCmdID).Caption = "水上";
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //        GUI.MainForm.mnuUnitCommandItem(GroundCmdID).Visible = true;
-                    //    }
-                    //}
+                    // 地上コマンド
+                    if (Map.Terrain(currentUnit.x, currentUnit.y).Class == "陸"
+                        || Map.Terrain(currentUnit.x, currentUnit.y).Class == "屋内"
+                        || Map.Terrain(currentUnit.x, currentUnit.y).Class == "月面")
+                    {
+                        if (currentUnit.Area != "地上" && currentUnit.IsTransAvailable("陸"))
+                        {
+                            unitCommands.Add(new UiCommand(GroundCmdID, "地上"));
+                        }
+                    }
+                    else if (Map.Terrain(currentUnit.x, currentUnit.y).Class == "水"
+                        || Map.Terrain(currentUnit.x, currentUnit.y).Class == "深水")
+                    {
+                        if (currentUnit.Area != "水上" && currentUnit.IsTransAvailable("水上"))
+                        {
+                            unitCommands.Add(new UiCommand(GroundCmdID, "水上"));
+                        }
+                    }
 
-                    //// 空中コマンド
-                    //switch (Map.TerrainClass(currentUnit.x, currentUnit.y) ?? "")
-                    //{
-                    //    case "宇宙":
-                    //        {
-                    //            break;
-                    //        }
+                    // 空中コマンド
+                    switch (Map.Terrain(currentUnit.x, currentUnit.y).Class ?? "")
+                    {
+                        case "宇宙":
+                            break;
 
-                    //    case "月面":
-                    //        {
-                    //            string argarea_name2 = "空";
-                    //            string argarea_name3 = "宇宙";
-                    //            if ((currentUnit.IsTransAvailable(argarea_name2) | currentUnit.IsTransAvailable(argarea_name3)) & !(currentUnit.Area == "宇宙"))
-                    //            {
-                    //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //                GUI.MainForm.mnuUnitCommandItem(SkyCmdID).Caption = "宇宙";
-                    //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //                GUI.MainForm.mnuUnitCommandItem(SkyCmdID).Visible = true;
-                    //            }
+                        case "月面":
+                            if ((currentUnit.IsTransAvailable("空") || currentUnit.IsTransAvailable("宇宙")) & !(currentUnit.Area == "宇宙"))
+                            {
+                                unitCommands.Add(new UiCommand(SkyCmdID, "宇宙"));
+                            }
+                            break;
 
-                    //            break;
-                    //        }
+                        default:
+                            if (currentUnit.IsTransAvailable("空") && !(currentUnit.Area == "空中"))
+                            {
+                                unitCommands.Add(new UiCommand(SkyCmdID, "空中"));
+                            }
+                            break;
+                    }
 
-                    //    default:
-                    //        {
-                    //            string argarea_name4 = "空";
-                    //            if (currentUnit.IsTransAvailable(argarea_name4) & !(currentUnit.Area == "空中"))
-                    //            {
-                    //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //                GUI.MainForm.mnuUnitCommandItem(SkyCmdID).Caption = "空中";
-                    //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //                GUI.MainForm.mnuUnitCommandItem(SkyCmdID).Visible = true;
-                    //            }
+                    // 地中コマンド
+                    if (currentUnit.IsTransAvailable("地中")
+                        && !(currentUnit.Area == "地中")
+                        && (Map.Terrain(currentUnit.x, currentUnit.y).Class == "陸" || Map.Terrain(currentUnit.x, currentUnit.y).Class == "月面"))
+                    {
+                        unitCommands.Add(new UiCommand(UndergroundCmdID, "地中"));
+                    }
 
-                    //            break;
-                    //        }
-                    //}
-
-                    //// 地中コマンド
-                    //string argarea_name5 = "地中";
-                    //if (currentUnit.IsTransAvailable(argarea_name5) & !(currentUnit.Area == "地中") & (Map.TerrainClass(currentUnit.x, currentUnit.y) == "陸" | Map.TerrainClass(currentUnit.x, currentUnit.y) == "月面"))
-                    //{
-                    //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //    GUI.MainForm.mnuUnitCommandItem(UndergroundCmdID).Visible = true;
-                    //}
-
-                    //// 水中コマンド
-                    //if (currentUnit.Area != "水中")
-                    //{
-                    //    string argarea_name6 = "水";
-                    //    string argfname28 = "水泳";
-                    //    if (Map.TerrainClass(currentUnit.x, currentUnit.y) == "深水" & (currentUnit.IsTransAvailable(argarea_name6) | currentUnit.IsFeatureAvailable(argfname28)) & Strings.Mid(currentUnit.Data.Adaption, 3, 1) != "-")
-                    //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //        GUI.MainForm.mnuUnitCommandItem(WaterCmdID).Visible = true;
-                    //    }
-                    //    else if (Map.TerrainClass(currentUnit.x, currentUnit.y) == "水" & Strings.Mid(currentUnit.Data.Adaption, 3, 1) != "-")
-                    //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //        GUI.MainForm.mnuUnitCommandItem(WaterCmdID).Visible = true;
-                    //    }
-                    //}
+                    // 水中コマンド
+                    if (currentUnit.Area != "水中")
+                    {
+                        if (Map.Terrain(currentUnit.x, currentUnit.y).Class == "深水"
+                            && (currentUnit.IsTransAvailable("水") || currentUnit.IsFeatureAvailable("水泳"))
+                            && Strings.Mid(currentUnit.Data.Adaption, 3, 1) != "-")
+                        {
+                            unitCommands.Add(new UiCommand(WaterCmdID, "水中"));
+                        }
+                        else if (Map.Terrain(currentUnit.x, currentUnit.y).Class == "水" && Strings.Mid(currentUnit.Data.Adaption, 3, 1) != "-")
+                        {
+                            unitCommands.Add(new UiCommand(WaterCmdID, "水中"));
+                        }
+                    }
 
                     //// 発進コマンド
                     //string argfname29 = "母艦";

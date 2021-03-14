@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SRCCore.VB;
+using System;
 
 namespace SRCCore.Units
 {
@@ -283,7 +284,7 @@ namespace SRCCore.Units
         {
             get
             {
-                int MaxHPRet =lngMaxHP;
+                int MaxHPRet = lngMaxHP;
 
                 // TODO Impl
                 //// パイロットによる修正
@@ -490,218 +491,211 @@ namespace SRCCore.Units
         }
 
 
-        //// 移動形態
-        //public string Transportation
-        //{
-        //    get
-        //    {
-        //        string TransportationRet = default;
-        //        TransportationRet = Data.Transportation;
+        // 移動形態
+        public string Transportation
+        {
+            get
+            {
+                string TransportationRet = Data.Transportation;
 
-        //        // 特殊能力による移動可能地形追加
-        //        string argfname = "空中移動";
-        //        if (IsFeatureAvailable(argfname))
-        //        {
-        //            if (Strings.InStr(TransportationRet, "空") == 0)
-        //            {
-        //                TransportationRet = "空" + TransportationRet;
-        //            }
-        //        }
+                // 特殊能力による移動可能地形追加
+                if (IsFeatureAvailable("空中移動"))
+                {
+                    if (Strings.InStr(TransportationRet, "空") == 0)
+                    {
+                        TransportationRet = "空" + TransportationRet;
+                    }
+                }
 
-        //        string argfname1 = "陸上移動";
-        //        if (IsFeatureAvailable(argfname1))
-        //        {
-        //            if (Strings.InStr(TransportationRet, "陸") == 0)
-        //            {
-        //                TransportationRet = "陸" + TransportationRet;
-        //            }
-        //        }
+                if (IsFeatureAvailable("陸上移動"))
+                {
+                    if (Strings.InStr(TransportationRet, "陸") == 0)
+                    {
+                        TransportationRet = "陸" + TransportationRet;
+                    }
+                }
 
-        //        string argfname2 = "水中移動";
-        //        if (IsFeatureAvailable(argfname2))
-        //        {
-        //            if (Strings.InStr(TransportationRet, "水") == 0)
-        //            {
-        //                TransportationRet = "水" + TransportationRet;
-        //            }
-        //        }
+                if (IsFeatureAvailable("水中移動"))
+                {
+                    if (Strings.InStr(TransportationRet, "水") == 0)
+                    {
+                        TransportationRet = "水" + TransportationRet;
+                    }
+                }
 
-        //        string argfname3 = "地中移動";
-        //        if (IsFeatureAvailable(argfname3))
-        //        {
-        //            if (Strings.InStr(TransportationRet, "地中") == 0)
-        //            {
-        //                TransportationRet = TransportationRet + "地中";
-        //            }
-        //        }
+                if (IsFeatureAvailable("地中移動"))
+                {
+                    if (Strings.InStr(TransportationRet, "地中") == 0)
+                    {
+                        TransportationRet = TransportationRet + "地中";
+                    }
+                }
 
-        //        string argfname4 = "宇宙移動";
-        //        if (IsFeatureAvailable(argfname4))
-        //        {
-        //            if (string.IsNullOrEmpty(TransportationRet))
-        //            {
-        //                TransportationRet = "宇宙";
-        //            }
-        //        }
+                if (IsFeatureAvailable("宇宙移動"))
+                {
+                    if (string.IsNullOrEmpty(TransportationRet))
+                    {
+                        TransportationRet = "宇宙";
+                    }
+                }
 
-        //        return TransportationRet;
-        //    }
-        //}
+                return TransportationRet;
+            }
+        }
 
 
-        //// 地形適応
-        //public int get_Adaption(int idx)
-        //{
-        //    int AdaptionRet = default;
-        //    int uad = default, pad = default;
+        // 地形適応
+        public int get_Adaption(int idx)
+        {
+            int AdaptionRet = default;
+            int uad = default, pad = default;
 
-        //    // ユニット側の地形適応を算出
-        //    switch (Strings.Mid(strAdaption, idx, 1) ?? "")
-        //    {
-        //        case "S":
-        //            {
-        //                uad = 5;
-        //                break;
-        //            }
+            // ユニット側の地形適応を算出
+            switch (Strings.Mid(strAdaption, idx, 1) ?? "")
+            {
+                case "S":
+                    {
+                        uad = 5;
+                        break;
+                    }
 
-        //        case "A":
-        //            {
-        //                uad = 4;
-        //                break;
-        //            }
+                case "A":
+                    {
+                        uad = 4;
+                        break;
+                    }
 
-        //        case "B":
-        //            {
-        //                uad = 3;
-        //                break;
-        //            }
+                case "B":
+                    {
+                        uad = 3;
+                        break;
+                    }
 
-        //        case "C":
-        //            {
-        //                uad = 2;
-        //                break;
-        //            }
+                case "C":
+                    {
+                        uad = 2;
+                        break;
+                    }
 
-        //        case "D":
-        //            {
-        //                uad = 1;
-        //                break;
-        //            }
+                case "D":
+                    {
+                        uad = 1;
+                        break;
+                    }
 
-        //        case "-":
-        //            {
-        //                AdaptionRet = 0;
-        //                return default;
-        //            }
-        //    }
+                case "-":
+                    {
+                        AdaptionRet = 0;
+                        return default;
+                    }
+            }
 
-        //    // パイロット側の地形適応を算出
-        //    if (CountPilot() > 0)
-        //    {
-        //        switch (Strings.Mid(MainPilot().Adaption, idx, 1) ?? "")
-        //        {
-        //            case "S":
-        //                {
-        //                    pad = 5;
-        //                    break;
-        //                }
+            // パイロット側の地形適応を算出
+            if (CountPilot() > 0)
+            {
+                switch (Strings.Mid(MainPilot().Adaption, idx, 1) ?? "")
+                {
+                    case "S":
+                        {
+                            pad = 5;
+                            break;
+                        }
 
-        //            case "A":
-        //                {
-        //                    pad = 4;
-        //                    break;
-        //                }
+                    case "A":
+                        {
+                            pad = 4;
+                            break;
+                        }
 
-        //            case "B":
-        //                {
-        //                    pad = 3;
-        //                    break;
-        //                }
+                    case "B":
+                        {
+                            pad = 3;
+                            break;
+                        }
 
-        //            case "C":
-        //                {
-        //                    pad = 2;
-        //                    break;
-        //                }
+                    case "C":
+                        {
+                            pad = 2;
+                            break;
+                        }
 
-        //            case "D":
-        //                {
-        //                    pad = 1;
-        //                    break;
-        //                }
+                    case "D":
+                        {
+                            pad = 1;
+                            break;
+                        }
 
-        //            case "-":
-        //                {
-        //                    AdaptionRet = 0;
-        //                    return default;
-        //                }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        pad = 4;
-        //    }
+                    case "-":
+                        {
+                            AdaptionRet = 0;
+                            return default;
+                        }
+                }
+            }
+            else
+            {
+                pad = 4;
+            }
 
-        //    string argoname = "地形適応総和計算";
-        //    if (Expression.IsOptionDefined(argoname))
-        //    {
-        //        // ユニットとパイロットの地形適応の総和から地形適応を決定
-        //        switch ((int)(uad + pad))
-        //        {
-        //            case 9:
-        //            case 10:
-        //                {
-        //                    AdaptionRet = 5;
-        //                    break;
-        //                }
+            if (Expression.IsOptionDefined("地形適応総和計算"))
+            {
+                // ユニットとパイロットの地形適応の総和から地形適応を決定
+                switch ((int)(uad + pad))
+                {
+                    case 9:
+                    case 10:
+                        {
+                            AdaptionRet = 5;
+                            break;
+                        }
 
-        //            case 7:
-        //            case 8:
-        //                {
-        //                    AdaptionRet = 4;
-        //                    break;
-        //                }
+                    case 7:
+                    case 8:
+                        {
+                            AdaptionRet = 4;
+                            break;
+                        }
 
-        //            case 5:
-        //            case 6:
-        //                {
-        //                    AdaptionRet = 3;
-        //                    break;
-        //                }
+                    case 5:
+                    case 6:
+                        {
+                            AdaptionRet = 3;
+                            break;
+                        }
 
-        //            case 3:
-        //            case 4:
-        //                {
-        //                    AdaptionRet = 2;
-        //                    break;
-        //                }
+                    case 3:
+                    case 4:
+                        {
+                            AdaptionRet = 2;
+                            break;
+                        }
 
-        //            case 1:
-        //            case 2:
-        //                {
-        //                    AdaptionRet = 1;
-        //                    break;
-        //                }
+                    case 1:
+                    case 2:
+                        {
+                            AdaptionRet = 1;
+                            break;
+                        }
 
-        //            default:
-        //                {
-        //                    AdaptionRet = 0;
-        //                    break;
-        //                }
-        //        }
-        //    }
-        //    // ユニットとパイロットの地形適応の低い方を使用
-        //    else if (uad > pad)
-        //    {
-        //        AdaptionRet = pad;
-        //    }
-        //    else
-        //    {
-        //        AdaptionRet = uad;
-        //    }
+                    default:
+                        {
+                            AdaptionRet = 0;
+                            break;
+                        }
+                }
+            }
+            // ユニットとパイロットの地形適応の低い方を使用
+            else if (uad > pad)
+            {
+                AdaptionRet = pad;
+            }
+            else
+            {
+                AdaptionRet = uad;
+            }
 
-        //    return AdaptionRet;
-        //}
+            return AdaptionRet;
+        }
 
         //// 地形適応による修正値
         //public double get_AdaptionMod(int idx, int ad_mod)
