@@ -1,7 +1,7 @@
 ﻿
 namespace SRCSharpForm
 {
-    partial class Form1
+    partial class SRCSharpForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -29,10 +29,17 @@ namespace SRCSharpForm
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // SRCSharpForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(304, 201);
+            this.Name = "SRCSharpForm";
+            this.Text = "SRCSharpForm";
+            this.ResumeLayout(false);
+
         }
 
         #endregion

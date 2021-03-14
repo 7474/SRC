@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic;
 using SRCCore;
 using SRCCore.Commands;
 using SRCCore.Lib;
@@ -10,14 +9,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SRCSharpForm
 {
-    public partial class frmTeatMain : IGUI
+    public partial class SRCSharpFormGUI : IGUI
     {
         public bool IsGUILocked { get; set; }
         public short TopItem { get; set; }
@@ -85,6 +82,17 @@ namespace SRCSharpForm
         private frmListBox frmListBox;
 
         private ImageBuffer imageBuffer;
+
+
+        private SRCCore.SRC SRC;
+        private SRCCore.Expressions.Expression Expression => SRC.Expression;
+        private SRCCore.Maps.Map Map => SRC.Map;
+        private SRCCore.Commands.Command Commands => SRC.Commands;
+
+        public SRCSharpFormGUI(SRC src)
+        {
+            SRC = src;
+        }
 
         public void LoadMainFormAndRegisterFlash()
         {
@@ -1490,7 +1498,7 @@ namespace SRCSharpForm
             }
 
             // TODO Impl ネイティブAPIでシビアに取る？
-            if (MouseButtons.HasFlag(MouseButtons.Right))
+            if (Control.MouseButtons.HasFlag(MouseButtons.Right))
             {
                 return true;
             }
@@ -1537,8 +1545,7 @@ namespace SRCSharpForm
 
         public void SetTitle(string title)
         {
-            // XXX 別のフォームに設定
-            Name = title;
+            MainForm.Name = title;
         }
 
         public void LogDebug(string message)
@@ -1597,7 +1604,7 @@ namespace SRCSharpForm
 
         public GuiDialogResult Confirm(string message, string title, GuiConfirmOption option)
         {
-            IWin32Window owner = this;
+            IWin32Window owner = null;
 
             if (MainForm.Visible)
             {

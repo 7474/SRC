@@ -5,11 +5,10 @@ using SRCSharpForm.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace SRCSharpForm
 {
-    public partial class frmTeatMain
+    public partial class SRCSharpFormGUI
     {
         // XXX ファイルシステム周りはインタフェースを切って環境毎に実装してやるのがよさそう。
         // SRCクラスにある XXDataPath もそちらに切り出すとよいはず。
@@ -1269,6 +1268,5 @@ namespace SRCSharpForm
                 g.Dispose();
             }
         }
-
     }
 }
