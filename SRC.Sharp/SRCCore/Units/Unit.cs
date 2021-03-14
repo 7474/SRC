@@ -16,6 +16,7 @@ namespace SRCCore.Units
         private Map Map => SRC.Map;
         private IGUI GUI => SRC.GUI;
         private Commands.Command Commands => SRC.Commands;
+        private Expressions.Expression Expression => SRC.Expression;
 
         public Unit(SRC src)
         {

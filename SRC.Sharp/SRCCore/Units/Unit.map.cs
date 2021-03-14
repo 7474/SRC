@@ -1,4 +1,5 @@
 ﻿using SRCCore.Lib;
+using SRCCore.VB;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,424 +8,384 @@ namespace SRCCore.Units
 {
     public partial class Unit
     {
-        // TODO Impl
         // ユニットを(new_x,new_y)に配置
         public void StandBy(int new_x, int new_y, string smode = "")
         {
-            // XXX
-            x = new_x;
-            y = new_y;
+            // とりあえず地形を考慮せずにデフォルトのポジションを決めておく
+            // (Createコマンドの後で空中移動用アイテムを付けるときのため)
+            var defaultPositionSet = false;
+            for (var i = 0; i <= 20; i++)
+            {
+                var loopTo = GeneralLib.MinLng(new_x + i, Map.MapWidth);
+                for (var j = GeneralLib.MaxLng(new_x - i, 1); j <= loopTo; j++)
+                {
+                    var loopTo1 = GeneralLib.MinLng(new_y + i, Map.MapHeight);
+                    for (var k = GeneralLib.MaxLng(new_y - i, 1); k <= loopTo1; k++)
+                    {
+                        if ((Math.Abs((new_x - j)) + Math.Abs((new_y - k))) == i)
+                        {
+                            if (Map.MapDataForUnit[j, k] is null)
+                            {
+                                x = j;
+                                y = k;
+                                defaultPositionSet = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (defaultPositionSet) { break; }
+                }
+                if (defaultPositionSet) { break; }
+            }
+
+            // 空いた場所を検索
+            // XXX Goto 潰しておきたい
+            for (var i = 0; i <= 20; i++)
+            {
+                // ユニット同士を隣接させずに配置する？
+                if (Strings.InStr(smode, "部隊配置") > 0)
+                {
+                    if (i % 2 != 0)
+                    {
+                        goto NextDistance;
+                    }
+                }
+                // 指定した場所の周りを調べる
+                var loopTo2 = GeneralLib.MinLng(new_x + i, Map.MapWidth);
+                for (var j = GeneralLib.MaxLng(new_x - i, 1); j <= loopTo2; j++)
+                {
+                    var loopTo3 = GeneralLib.MinLng(new_y + i, Map.MapHeight);
+                    for (var k = GeneralLib.MaxLng(new_y - i, 1); k <= loopTo3; k++)
+                    {
+                        if ((Math.Abs((new_x - j)) + Math.Abs((new_y - k))) != i)
+                        {
+                            goto NextLoop;
+                        }
+
+                        // 既に他のユニットがいる？
+                        if (Map.MapDataForUnit[j, k] is object)
+                        {
+                            goto NextLoop;
+                        }
+
+                        // 進入不能の地形？
+                        if (Map.Terrain(j, k).MoveCost > 100)
+                        {
+                            goto NextLoop;
+                        }
+
+                        switch (Map.Terrain(j, k).Class ?? "")
+                        {
+                            case "空":
+                                {
+                                    string argarea_name = "空";
+                                    if (!IsTransAvailable(argarea_name))
+                                    {
+                                        goto NextLoop;
+                                    }
+
+                                    break;
+                                }
+
+                            case "水":
+                                {
+                                    string argarea_name1 = "水上";
+                                    string argarea_name2 = "空";
+                                    if (!IsTransAvailable(argarea_name1) && !IsTransAvailable(argarea_name2) & get_Adaption(3) == 0)
+                                    {
+                                        goto NextLoop;
+                                    }
+
+                                    break;
+                                }
+
+                            case "深水":
+                                {
+                                    string argarea_name3 = "水上";
+                                    string argarea_name4 = "空";
+                                    string argarea_name5 = "水";
+                                    if (!IsTransAvailable(argarea_name3) & !IsTransAvailable(argarea_name4) & !IsTransAvailable(argarea_name5))
+                                    {
+                                        goto NextLoop;
+                                    }
+
+                                    break;
+                                }
+                        }
+
+                        // 空き位置が見つかった
+                        x = j;
+                        y = k;
+                        goto ExitFor;
+                    NextLoop:
+                        ;
+                    }
+                }
+
+            NextDistance:
+                ;
+            }
+
+        ExitFor:
+            ;
+
+
+            // 空いた場所がなかった？
+            if (x == 0 & y == 0)
+            {
+                Status = "待機";
+                return;
+            }
+
+            // 他の形態と格納したユニットの座標も合わせておく
+            foreach (var of in OtherForms)
+            {
+                of.x = x;
+                of.y = y;
+            }
+
+            // TODO Impl
+            //var loopTo5 = CountUnitOnBoard();
+            //for (i = 1; i <= loopTo5; i++)
+            //{
+            //    object argIndex2 = i;
+            //    {
+            //        var withBlock1 = UnitOnBoard(argIndex2);
+            //        withBlock1.x = x;
+            //        withBlock1.y = y;
+            //    }
+            //}
+
+            //// 格納されていた場合はあらかじめ降ろしておく
+            //if (Status_Renamed == "格納")
+            //{
+            //    foreach (Unit u in SRC.UList)
+            //    {
+            //        var loopTo6 = u.CountUnitOnBoard();
+            //        for (i = 1; i <= loopTo6; i++)
+            //        {
+            //            Unit localUnitOnBoard() { object argIndex1 = i; var ret = u.UnitOnBoard(argIndex1); return ret; }
+
+            //            if ((ID ?? "") == (localUnitOnBoard().ID ?? ""))
+            //            {
+            //                object argIndex3 = ID;
+            //                u.UnloadUnit(argIndex3);
+            //                goto EndLoop;
+            //            }
+            //        }
+            //    }
+
+            //EndLoop:
+            //    ;
+            //}
+
+            // Statusを更新
             Status = "出撃";
-            //    int j, i, k;
-
-            //    // とりあえず地形を考慮せずにデフォルトのポジションを決めておく
-            //    // (Createコマンドの後で空中移動用アイテムを付けるときのため)
-            //    for (i = 0; i <= 20; i++)
-            //    {
-            //        var loopTo = GeneralLib.MinLng(new_x + i, Map.MapWidth);
-            //        for (j = GeneralLib.MaxLng(new_x - i, 1); j <= loopTo; j++)
-            //        {
-            //            var loopTo1 = GeneralLib.MinLng(new_y + i, Map.MapHeight);
-            //            for (k = GeneralLib.MaxLng(new_y - i, 1); k <= loopTo1; k++)
-            //            {
-            //                if ((Math.Abs((new_x - j)) + Math.Abs((new_y - k))) == i)
-            //                {
-            //                    if (Map.MapDataForUnit[j, k] is null)
-            //                    {
-            //                        x = j;
-            //                        y = k;
-            //                        goto DefaultPositionDefined;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //DefaultPositionDefined:
-            //    ;
+            foreach (var of in OtherForms)
+            {
+                of.Status = "他形態";
+            }
 
 
-            //    // 空いた場所を検索
-            //    for (i = 0; i <= 20; i++)
-            //    {
-            //        // ユニット同士を隣接させずに配置する？
-            //        // MOD START MARGE
-            //        // If smode = "部隊配置" Then
-            //        if (Strings.InStr(smode, "部隊配置") > 0)
-            //        {
-            //            // MOD END MARGE
-            //            if (i % 2 != 0)
-            //            {
-            //                goto NextDistance;
-            //            }
-            //        }
-            //        // 指定した場所の周りを調べる
-            //        var loopTo2 = GeneralLib.MinLng(new_x + i, Map.MapWidth);
-            //        for (j = GeneralLib.MaxLng(new_x - i, 1); j <= loopTo2; j++)
-            //        {
-            //            var loopTo3 = GeneralLib.MinLng(new_y + i, Map.MapHeight);
-            //            for (k = GeneralLib.MaxLng(new_y - i, 1); k <= loopTo3; k++)
-            //            {
-            //                if ((Math.Abs((new_x - j)) + Math.Abs((new_y - k))) != i)
-            //                {
-            //                    goto NextLoop;
-            //                }
+            // ユニットのいる地形は？
+            switch (Map.Terrain(x, y).Class ?? "")
+            {
+                case "空":
+                        Area = "空中";
+                        break;
 
-            //                // 既に他のユニットがいる？
-            //                if (Map.MapDataForUnit[j, k] is object)
-            //                {
-            //                    goto NextLoop;
-            //                }
+                case "陸":
+                        if (IsTransAvailable("地中") & Area == "地中")
+                        {
+                            Area = "地中";
+                        }
+                        else if (IsTransAvailable("空") && get_Adaption(1) >= get_Adaption(2))
+                        {
+                            Area = "空中";
+                        }
+                        else if (IsTransAvailable("陸"))
+                        {
+                            Area = "地上";
+                        }
+                        else
+                        {
+                            Area = "空中";
+                        }
 
-            //                // 進入不能の地形？
-            //                if (Map.TerrainMoveCost(j, k) > 100)
-            //                {
-            //                    goto NextLoop;
-            //                }
+                        break;
 
-            //                switch (Map.TerrainClass(j, k) ?? "")
-            //                {
-            //                    case "空":
-            //                        {
-            //                            string argarea_name = "空";
-            //                            if (!IsTransAvailable(argarea_name))
-            //                            {
-            //                                goto NextLoop;
-            //                            }
+                case "屋内":
+                        if (IsTransAvailable("空") && get_Adaption(1) >= get_Adaption(2))
+                        {
+                            Area = "空中";
+                        }
+                        else if (IsTransAvailable("陸"))
+                        {
+                            Area = "地上";
+                        }
+                        else
+                        {
+                            Area = "空中";
+                        }
 
-            //                            break;
-            //                        }
+                        break;
 
-            //                    case "水":
-            //                        {
-            //                            string argarea_name1 = "水上";
-            //                            string argarea_name2 = "空";
-            //                            if (!IsTransAvailable(argarea_name1) & !IsTransAvailable(argarea_name2) & get_Adaption(3) == 0)
-            //                            {
-            //                                goto NextLoop;
-            //                            }
+                case "月面":
+                        if (IsTransAvailable("空") || IsTransAvailable("宇宙"))
+                        {
+                            Area = "宇宙";
+                        }
+                        else if (IsTransAvailable("陸"))
+                        {
+                            Area = "地上";
+                        }
+                        else
+                        {
+                            Area = "宇宙";
+                        }
 
-            //                            break;
-            //                        }
+                        break;
 
-            //                    case "深水":
-            //                        {
-            //                            string argarea_name3 = "水上";
-            //                            string argarea_name4 = "空";
-            //                            string argarea_name5 = "水";
-            //                            if (!IsTransAvailable(argarea_name3) & !IsTransAvailable(argarea_name4) & !IsTransAvailable(argarea_name5))
-            //                            {
-            //                                goto NextLoop;
-            //                            }
+                case "水":
+                case "深水":
+                        if (IsTransAvailable("空") && get_Adaption(1) >= get_Adaption(2))
+                        {
+                            Area = "空中";
+                        }
+                        else if (IsTransAvailable("水上"))
+                        {
+                            Area = "水上";
+                        }
+                        else
+                        {
+                            Area = "水中";
+                        }
 
-            //                            break;
-            //                        }
-            //                }
+                        break;
 
-            //                // 空き位置が見つかった
-            //                x = j;
-            //                y = k;
-            //                goto ExitFor;
-            //            NextLoop:
-            //                ;
-            //            }
-            //        }
+                case "宇宙":
+                        Area = "宇宙";
+                        break;
 
-            //    NextDistance:
-            //        ;
-            //    }
-
-            //ExitFor:
-            //    ;
-
-
-            //    // 空いた場所がなかった？
-            //    if (x == 0 & y == 0)
-            //    {
-            //        Status_Renamed = "待機";
-            //        return;
-            //    }
-
-            //    // 他の形態と格納したユニットの座標も合わせておく
-            //    var loopTo4 = CountOtherForm();
-            //    for (i = 1; i <= loopTo4; i++)
-            //    {
-            //        object argIndex1 = i;
-            //        {
-            //            var withBlock = OtherForm(argIndex1);
-            //            withBlock.x = x;
-            //            withBlock.y = y;
-            //        }
-            //    }
-
-            //    var loopTo5 = CountUnitOnBoard();
-            //    for (i = 1; i <= loopTo5; i++)
-            //    {
-            //        object argIndex2 = i;
-            //        {
-            //            var withBlock1 = UnitOnBoard(argIndex2);
-            //            withBlock1.x = x;
-            //            withBlock1.y = y;
-            //        }
-            //    }
-
-            //    // 格納されていた場合はあらかじめ降ろしておく
-            //    if (Status_Renamed == "格納")
-            //    {
-            //        foreach (Unit u in SRC.UList)
-            //        {
-            //            var loopTo6 = u.CountUnitOnBoard();
-            //            for (i = 1; i <= loopTo6; i++)
-            //            {
-            //                Unit localUnitOnBoard() { object argIndex1 = i; var ret = u.UnitOnBoard(argIndex1); return ret; }
-
-            //                if ((ID ?? "") == (localUnitOnBoard().ID ?? ""))
-            //                {
-            //                    object argIndex3 = ID;
-            //                    u.UnloadUnit(argIndex3);
-            //                    goto EndLoop;
-            //                }
-            //            }
-            //        }
-
-            //    EndLoop:
-            //        ;
-            //    }
-
-            //    // Statusを更新
-            //    Status_Renamed = "出撃";
-            //    var loopTo7 = CountOtherForm();
-            //    for (i = 1; i <= loopTo7; i++)
-            //    {
-            //        Unit localOtherForm() { object argIndex1 = i; var ret = OtherForm(argIndex1); return ret; }
-
-            //        localOtherForm().Status_Renamed = "他形態";
-            //    }
-
-            //    // ユニットのいる地形は？
-            //    switch (Map.TerrainClass(x, y) ?? "")
-            //    {
-            //        case "空":
-            //            {
-            //                Area = "空中";
-            //                break;
-            //            }
-
-            //        case "陸":
-            //            {
-            //                string argarea_name6 = "地中";
-            //                string argarea_name7 = "空";
-            //                string argarea_name8 = "陸";
-            //                if (IsTransAvailable(argarea_name6) & Area == "地中")
-            //                {
-            //                    Area = "地中";
-            //                }
-            //                else if (IsTransAvailable(argarea_name7) & get_Adaption(1) >= get_Adaption(2))
-            //                {
-            //                    Area = "空中";
-            //                }
-            //                else if (IsTransAvailable(argarea_name8))
-            //                {
-            //                    Area = "地上";
-            //                }
-            //                else
-            //                {
-            //                    Area = "空中";
-            //                }
-
-            //                break;
-            //            }
-
-            //        case "屋内":
-            //            {
-            //                string argarea_name9 = "空";
-            //                string argarea_name10 = "陸";
-            //                if (IsTransAvailable(argarea_name9) & get_Adaption(1) >= get_Adaption(2))
-            //                {
-            //                    Area = "空中";
-            //                }
-            //                else if (IsTransAvailable(argarea_name10))
-            //                {
-            //                    Area = "地上";
-            //                }
-            //                else
-            //                {
-            //                    Area = "空中";
-            //                }
-
-            //                break;
-            //            }
-
-            //        case "月面":
-            //            {
-            //                string argarea_name11 = "空";
-            //                string argarea_name12 = "宇宙";
-            //                string argarea_name13 = "陸";
-            //                if (IsTransAvailable(argarea_name11) | IsTransAvailable(argarea_name12))
-            //                {
-            //                    Area = "宇宙";
-            //                }
-            //                else if (IsTransAvailable(argarea_name13))
-            //                {
-            //                    Area = "地上";
-            //                }
-            //                else
-            //                {
-            //                    Area = "宇宙";
-            //                }
-
-            //                break;
-            //            }
-
-            //        case "水":
-            //        case "深水":
-            //            {
-            //                string argarea_name14 = "空";
-            //                string argarea_name15 = "水上";
-            //                if (IsTransAvailable(argarea_name14) & get_Adaption(1) >= get_Adaption(2))
-            //                {
-            //                    Area = "空中";
-            //                }
-            //                else if (IsTransAvailable(argarea_name15))
-            //                {
-            //                    Area = "水上";
-            //                }
-            //                else
-            //                {
-            //                    Area = "水中";
-            //                }
-
-            //                break;
-            //            }
-
-            //        case "宇宙":
-            //            {
-            //                Area = "宇宙";
-            //                break;
-            //            }
-
-            //        default:
-            //            {
-            //                Area = "地上";
-            //                break;
-            //            }
-            //    }
+                default:
+                        Area = "地上";
+                        break;
+            }
 
             // マップに登録
             Map.MapDataForUnit[x, y] = this;
 
-            //    // ビットマップを作成
-            //    if (BitmapID == 0)
+            // TODO Impl
+            //// ビットマップを作成
+            //if (BitmapID == 0)
+            //{
+            //    var argu = this;
+            //    BitmapID = GUI.MakeUnitBitmap(argu);
+            //}
+
+            //// 登場時アニメを表示
+            //// MOD START MARGE
+            //// If (smode = "出撃" Or smode = "部隊配置") _
+            //// '        And MainForm.Visible _
+            //// '        And Not IsPictureVisible _
+            //// '        And Not IsRButtonPressed() _
+            //// '        And BitmapID > 0 _
+            //// '    Then
+            //var fname = default(string);
+            //int start_time, current_time;
+            //if ((Strings.InStr(smode, "出撃") > 0 || Strings.InStr(smode, "部隊配置") > 0) 
+            //    && GUI.MainFormVisible && !GUI.IsPictureVisible && !GUI.IsRButtonPressed() && BitmapID > 0)
+            //{
+            //    // MOD END MARGE
+
+            //    // ユニット出現音
+            //    string argwave_name = "UnitOn.wav";
+            //    Sound.PlayWave(argwave_name);
+
+            //    // 表示させる画像
+            //    switch (Party0 ?? "")
             //    {
-            //        var argu = this;
-            //        BitmapID = GUI.MakeUnitBitmap(argu);
-            //    }
-
-            //    // 登場時アニメを表示
-            //    // MOD START MARGE
-            //    // If (smode = "出撃" Or smode = "部隊配置") _
-            //    // '        And MainForm.Visible _
-            //    // '        And Not IsPictureVisible _
-            //    // '        And Not IsRButtonPressed() _
-            //    // '        And BitmapID > 0 _
-            //    // '    Then
-            //    var fname = default(string);
-            //    int start_time, current_time;
-            //    if ((Strings.InStr(smode, "出撃") > 0 | Strings.InStr(smode, "部隊配置") > 0) & GUI.MainForm.Visible & !GUI.IsPictureVisible & !GUI.IsRButtonPressed() & BitmapID > 0)
-            //    {
-            //        // MOD END MARGE
-
-            //        // ユニット出現音
-            //        string argwave_name = "UnitOn.wav";
-            //        Sound.PlayWave(argwave_name);
-
-            //        // 表示させる画像
-            //        switch (Party0 ?? "")
-            //        {
-            //            case "味方":
-            //            case "ＮＰＣ":
-            //                {
-            //                    fname = @"Bitmap\Event\AUnitOn0";
-            //                    break;
-            //                }
-
-            //            case "敵":
-            //                {
-            //                    fname = @"Bitmap\Event\EUnitOn0";
-            //                    break;
-            //                }
-
-            //            case "中立":
-            //                {
-            //                    fname = @"Bitmap\Event\NUnitOn0";
-            //                    break;
-            //                }
-            //        }
-
-            //        string argfname1 = SRC.AppPath + fname + "1.bmp";
-            //        if (GeneralLib.FileExists(argfname1))
-            //        {
-            //            // アニメ表示開始時刻を記録
-            //            start_time = GeneralLib.timeGetTime();
-            //            for (i = 1; i <= 4; i++)
+            //        case "味方":
+            //        case "ＮＰＣ":
             //            {
-            //                // 画像を透過表示
-            //                string argfname = fname + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i) + ".bmp";
-            //                string argdraw_option = "透過";
-            //                if (GUI.DrawPicture(argfname, GUI.MapToPixelX(x), GUI.MapToPixelY(y), 32, 32, 0, 0, 0, 0, argdraw_option) == false)
-            //                {
-            //                    break;
-            //                }
-            //                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //                GUI.MainForm.picMain(0).Refresh();
-
-            //                // ウェイト
-            //                do
-            //                {
-            //                    Application.DoEvents();
-            //                    current_time = GeneralLib.timeGetTime();
-            //                }
-            //                while (current_time < start_time + 15);
-            //                start_time = current_time;
-
-            //                // 画像を消去
-            //                GUI.ClearPicture();
+            //                fname = @"Bitmap\Event\AUnitOn0";
+            //                break;
             //            }
 
-            //            // アニメ画像は上書きして消してしまうので……
-            //            GUI.IsPictureVisible = false;
-            //        }
+            //        case "敵":
+            //            {
+            //                fname = @"Bitmap\Event\EUnitOn0";
+            //                break;
+            //            }
+
+            //        case "中立":
+            //            {
+            //                fname = @"Bitmap\Event\NUnitOn0";
+            //                break;
+            //            }
             //    }
 
-            //    // ユニット画像をマップに描画
-            //    if (!GUI.IsPictureVisible & !string.IsNullOrEmpty(Map.MapFileName))
+            //    string argfname1 = SRC.AppPath + fname + "1.bmp";
+            //    if (GeneralLib.FileExists(argfname1))
             //    {
-            //        // MOD START MARGE
-            //        // If smode = "非同期" Then
-            //        if (Strings.InStr(smode, "非同期") > 0)
+            //        // アニメ表示開始時刻を記録
+            //        start_time = GeneralLib.timeGetTime();
+            //        for (i = 1; i <= 4; i++)
             //        {
-            //            // MOD END MARGE
-            //            var argu1 = this;
-            //            GUI.PaintUnitBitmap(argu1, "リフレッシュ無し");
-            //        }
-            //        else
-            //        {
-            //            var argu2 = this;
-            //            GUI.PaintUnitBitmap(argu2);
-            //        }
-            //    }
+            //            // 画像を透過表示
+            //            string argfname = fname + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i) + ".bmp";
+            //            string argdraw_option = "透過";
+            //            if (GUI.DrawPicture(argfname, GUI.MapToPixelX(x), GUI.MapToPixelY(y), 32, 32, 0, 0, 0, 0, argdraw_option) == false)
+            //            {
+            //                break;
+            //            }
+            //            // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //            GUI.MainForm.picMain(0).Refresh();
 
-            //    // 制御不能？
-            //    string argfname2 = "制御不可";
-            //    if (IsFeatureAvailable(argfname2))
+            //            // ウェイト
+            //            do
+            //            {
+            //                Application.DoEvents();
+            //                current_time = GeneralLib.timeGetTime();
+            //            }
+            //            while (current_time < start_time + 15);
+            //            start_time = current_time;
+
+            //            // 画像を消去
+            //            GUI.ClearPicture();
+            //        }
+
+            //        // アニメ画像は上書きして消してしまうので……
+            //        GUI.IsPictureVisible = false;
+            //    }
+            //}
+
+            //// ユニット画像をマップに描画
+            //if (!GUI.IsPictureVisible & !string.IsNullOrEmpty(Map.MapFileName))
+            //{
+            //    // MOD START MARGE
+            //    // If smode = "非同期" Then
+            //    if (Strings.InStr(smode, "非同期") > 0)
             //    {
-            //        string argcname = "暴走";
-            //        string argcdata = "";
-            //        AddCondition(argcname, -1, cdata: argcdata);
+            //        // MOD END MARGE
+            //        var argu1 = this;
+            //        GUI.PaintUnitBitmap(argu1, "リフレッシュ無し");
             //    }
+            //    else
+            //    {
+            //        var argu2 = this;
+            //        GUI.PaintUnitBitmap(argu2);
+            //    }
+            //}
 
-            //    Update();
-            //    SRC.PList.UpdateSupportMod(this);
+            //// 制御不能？
+            //if (IsFeatureAvailable("制御不可"))
+            //{
+            //    AddCondition("暴走", -1, cdata: "");
+            //}
+
+            Update();
+            SRC.PList.UpdateSupportMod(this);
         }
 
         // ユニットを(new_x,new_y)に移動
