@@ -1434,7 +1434,8 @@ namespace SRCSharpForm
         public void OpenTitleForm()
         {
             frmTitle = new frmTitle();
-            frmTitle.Show(MainForm);
+            frmTitle.Show();
+            Application.DoEvents();
         }
 
         public void CloseTitleForm()
