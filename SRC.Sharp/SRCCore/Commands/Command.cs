@@ -17,6 +17,7 @@ namespace SRCCore.Commands
         private IGUIStatus Status => SRC.GUIStatus;
         private Maps.Map Map => SRC.Map;
         private Expressions.Expression Expression => SRC.Expression;
+        private Sound Sound => SRC.Sound;
 
         public Command(SRC src)
         {

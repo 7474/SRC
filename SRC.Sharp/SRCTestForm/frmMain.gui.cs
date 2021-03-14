@@ -1064,10 +1064,10 @@ namespace SRCTestForm
             //        }
             //    }
 
-            //    if (!string.IsNullOrEmpty(BGM))
-            //    {
-            //        Sound.ChangeBGM(BGM);
-            //    }
+            if (!string.IsNullOrEmpty(BGM))
+            {
+                SRC.Sound.ChangeBGM(BGM);
+            }
 
             //    while (true)
             //    {
