@@ -30,33 +30,34 @@
     [Inject]
     private SrcDataContainer DataContainer { get; set; }
 
-    private string IndexBase { get; set; }
-    private string DataIndexUri { get; set; }
-    private string BitmapIndexUri { get; set; }
-    private string FilterValue { get; set; }
+private string IndexBase { get; set; }
+private string DataIndexUri { get; set; }
+private string BitmapIndexUri { get; set; }
+private string FilterValue { get; set; }
 
-    // コレクションのインスタンスが変わった時だけ再レンダリングする。
-    private ICollection<TitleData> Titles { get; set; }
-    private int lastTitles;
-    protected override bool ShouldRender() => lastTitles != Titles.GetHashCode();
-    protected override void OnAfterRender(bool firstRender)
+// コレクションのインスタンスが変わった時だけ再レンダリングする。
+private ICollection<TitleData> Titles { get; set; }
+private int lastTitles;
+protected override bool ShouldRender() => lastTitles != Titles.GetHashCode();
+protected override void OnAfterRender(bool firstRender)
+{
+    lastTitles = Titles.GetHashCode();
+}
+
+// OnInputにすると結構入力に対する応答時間が厳しい。
+// 全件表示以外ならさほど遅くもないので『全件だけ構築済を表示する』のような形で回避できるかもしれない。
+private async Task OnChangeFilterAsync(ChangeEventArgs e)
+{
+    DataContainer.IndexBusy = true;
+    FilterValue = e.Value?.ToString() ?? "";
+    var filterWords = FilterValue.Split(new char[] { ' ', '\t', '　', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+
+    await Task.Run(() =>
     {
-        lastTitles = Titles.GetHashCode();
-    }
-
-    // OnInputにすると結構入力に対する応答時間が厳しい。
-    // 全件表示以外ならさほど遅くもないので『全件だけ構築済を表示する』のような形で回避できるかもしれない。
-    private async Task OnChangeFilterAsync(ChangeEventArgs e)
-    {
-        DataContainer.IndexBusy = true;
-        FilterValue = e.Value?.ToString() ?? "";
-
-        await Task.Run(() =>
-        {
-            Titles = DataContainer.DataIndex.Titles.Where(x => x.Path.Contains(FilterValue)).ToList();
-            DataContainer.IndexBusy = false;
-        });
-    }
+        Titles = DataContainer.DataIndex.Titles.Where(x => filterWords.All(w => (string.Join(' ', x.Tags.Append(x.Path)).Contains(w)))).ToList();
+        DataContainer.IndexBusy = false;
+    });
+}
 
     protected override async Task OnInitializedAsync()
     {
@@ -69,20 +70,21 @@
 
     private async Task UpdateIndex()
     {
-        Titles = new List<TitleData>();
-        DataContainer.IndexBusy = true;
-        await DataContainer.LoadBitmapIndex(Http, BitmapIndexUri, IndexBase);
-        await DataContainer.LoadDataIndex(Http, DataIndexUri);
+        Titles = new List<TitleData>
+    ();
+    DataContainer.IndexBusy = true;
+    await DataContainer.LoadBitmapIndex(Http, BitmapIndexUri, IndexBase);
+    await DataContainer.LoadDataIndex(Http, DataIndexUri);
 
-        Titles = DataContainer.DataIndex.Titles;
-        DataContainer.IndexBusy = false;
+    Titles = DataContainer.DataIndex.Titles;
+    DataContainer.IndexBusy = false;
     }
 
     private string ToTitlePathParam(TitleData title)
     {
-        return "titles/" + HttpUtility.UrlEncode(IndexBase + title.Path)
-            + "/"
-            + string.Join("&", title.Files.Select(x => HttpUtility.UrlEncode(x)));
+    return "titles/" + HttpUtility.UrlEncode(IndexBase + title.Path)
+    + "/"
+    + string.Join("&", title.Files.Select(x => HttpUtility.UrlEncode(x)));
     }
 
     private bool collapseNavMenu = true;
@@ -91,6 +93,6 @@
 
     private void ToggleNavMenu()
     {
-        collapseNavMenu = !collapseNavMenu;
+    collapseNavMenu = !collapseNavMenu;
     }
-}
+    }
