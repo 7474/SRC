@@ -12,7 +12,13 @@
     <div class="src-titles-container">
         <Virtualize Items="@Titles" Context="title" ItemSize="37">
             <NavLink @key="title.Path" class="navbar-item" href="@ToTitlePathParam(title)">
-                @title.Title
+                <span class="has-text-weight-semibold">@title.Title</span>
+                <div class="tags ml-2">
+                    @foreach (var tag in title.Tags)
+                    {
+                        <span class="tag is-white">@tag</span>
+                    }
+                </div>
             </NavLink>
         </Virtualize>
     </div>
@@ -44,10 +50,11 @@
     {
         DataContainer.IndexBusy = true;
         FilterValue = e.Value?.ToString() ?? "";
+        var filterWords = FilterValue.Split(new char[] { ' ', '\t', '　', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
 
         await Task.Run(() =>
         {
-            Titles = DataContainer.DataIndex.Titles.Where(x => x.Path.Contains(FilterValue)).ToList();
+            Titles = DataContainer.DataIndex.Titles.Where(x => filterWords.All(w => (string.Join(' ', x.Tags.Append(x.Path)).Contains(w)))).ToList();
             DataContainer.IndexBusy = false;
         });
     }
@@ -75,8 +82,8 @@
     private string ToTitlePathParam(TitleData title)
     {
         return "titles/" + HttpUtility.UrlEncode(IndexBase + title.Path)
-            + "/"
-            + string.Join("&", title.Files.Select(x => HttpUtility.UrlEncode(x)));
+        + "/"
+        + string.Join("&", title.Files.Select(x => HttpUtility.UrlEncode(x)));
     }
 
     private bool collapseNavMenu = true;
