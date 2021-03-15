@@ -55,6 +55,17 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
         - .NET 5
         - 動作URL: https://7474.github.io/SRC/
 
+### SRC#Form 簡易実行手順
+
+1. Windows 10 64bit版に[.NET 5 ランタイムをインストール](https://docs.microsoft.com/ja-jp/dotnet/core/install/windows?tabs=net50)する
+1. 構築済のSRCフォルダ内のファイルの文字コードをShift_JISからUTF-8に変換する
+1. 同様に実行するシナリオのフォルダ内のファイルの文字コードをShift_JISからUTF-8に変換する
+1. [Release](./releases) から SRCSharpForm.zip をダウンロード、ないし SRCSharpForm をビルドして実行ファイル（ SRCSharpForm.exe （ビルドした場合は加えて付随するDLL））を得る
+1. 文字コードを変換したSRCフォルダ内に実行ファイルをコピーする
+1. SRCSharpForm.exe を実行する
+
+koudenpa はSRCに付属のサンプルシナリオで動作確認を試しています。
+
 ## Convert log
 
 - VB6 -> VB.NET
@@ -71,5 +82,7 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
 
 - 基本的に愚直に変換する
     - static な空間は一応インスタンスにする
+- 実行環境依存な処理はSRCCoreには含めない
+    - GUIプロジェクトに実装する
 - short（VB6のint）は int にする
 - 15Twip = 1Pixel
