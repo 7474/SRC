@@ -12,7 +12,13 @@
     <div class="src-titles-container">
         <Virtualize Items="@Titles" Context="title" ItemSize="37">
             <NavLink @key="title.Path" class="navbar-item" href="@ToTitlePathParam(title)">
-                @title.Title
+                <span class="has-text-weight-semibold">@title.Title</span>
+                <div class="tags ml-3">
+                    @foreach (var tag in title.Tags)
+                    {
+                        <span class="tag is-white">@tag</span>
+                    }
+                </div>
             </NavLink>
         </Virtualize>
     </div>
