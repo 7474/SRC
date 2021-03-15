@@ -25,8 +25,7 @@ namespace SRCCore
 
             // SRC.exeのある場所を調べる
             // XXX 取れない環境あるかも
-            var asm = Assembly.GetEntryAssembly();
-            AppPath = Path.GetDirectoryName(asm.Location);
+            AppPath = AppContext.BaseDirectory;
 
             // SRCが正しくインストールされているかをチェック
             ValidateEnvironment();
