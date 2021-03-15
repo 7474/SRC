@@ -31,7 +31,7 @@ jobs:
 
     - run: dotnet publish SRC.Sharp/SRCSharpForm/SRCSharpForm.csproj -c Release -r win-x64 -p:PublishSingleFile=true --self-contained false
     - run: rm SRC.Sharp/SRCSharpForm/bin/Release/net5.0-windows/win-x64/publish/*.pdb
-    - run: zip -j -r SRCSharpForm SRC.Sharp/SRCSharpForm/bin/Release/net5.0-windows/win-x64/publish/
+    - run: powershell Compress-Archive -Path SRC.Sharp/SRCSharpForm/bin/Release/net5.0-windows/win-x64/publish/ -DestinationPath SRCSharpForm.zip
     
     - name: Release
       uses: softprops/action-gh-release@v1
