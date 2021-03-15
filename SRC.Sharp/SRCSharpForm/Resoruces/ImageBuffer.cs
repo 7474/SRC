@@ -5,7 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 
-namespace SRCTestForm.Resoruces
+namespace SRCSharpForm.Resoruces
 {
     // TODO LRUキャッシュ
     public class ImageBuffer

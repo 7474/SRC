@@ -4,35 +4,22 @@
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net5.0-windows</TargetFramework>
 		<UseWindowsForms>true</UseWindowsForms>
-		<ApplicationIcon>SRCTestForm.ico</ApplicationIcon>
+		<ApplicationIcon>SRCSharpForm.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Melanchall.DryWetMidi" Version="5.1.2" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
+		<PackageReference Include="NAudio" Version="2.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\SRCCore\SRCCore.csproj" />
+	  <ProjectReference Include="..\SRCCore\SRCCore.csproj" />
 	</ItemGroup>
-
+	
 	<ItemGroup>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
 	</ItemGroup>
-
-	<!--
-	<ItemGroup>
-    <None Update="Assets\**"
-        CopyToOutputDirectory="PreserveNewest"
-        LinkBase="\" />
-	</ItemGroup>
-	-->
-	<ItemGroup>
-		<Content Include=".\Assets\Data\**">
-			<Link>Data\%(RecursiveDir)\%(Filename)%(Extension)</Link>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-
 </Project>

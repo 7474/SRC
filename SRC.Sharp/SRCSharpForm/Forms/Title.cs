@@ -6,7 +6,7 @@ using System;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace SRCTestForm
+namespace SRCSharpForm
 {
     // タイトル画面用フォーム
     internal partial class frmTitle : Form

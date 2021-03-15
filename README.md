@@ -41,9 +41,13 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
         - .NET 5
         - GitHub Action: https://github.com/7474/SRC-DataLinter
         - Docker Image: https://hub.docker.com/r/koudenpa/srcdatalinter
+    - [SRCSharpForm](./SRC.Sharp/SRCSharpForm)
+        - Windows Forms実装のSRC#Sharp
+        - SRC#Sharpの仮実行を行える
+        - .NET 5
     - [SRCTestForm](./SRC.Sharp/SRCTestForm)
         - 動作の確認用フォーム
-        - データの閲覧とWindows Forms実装のSRC#Sharp仮実行を行える
+        - データの閲覧を行える
         - .NET 5
     - [SRCTestBlazor](./SRC.Sharp/SRCTestBlazor)
         - 動作確認用Blazor WebAssemblyアプリケーション

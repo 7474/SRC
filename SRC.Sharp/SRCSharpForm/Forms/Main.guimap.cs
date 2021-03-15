@@ -1,10 +1,10 @@
 ﻿using SRCCore;
 using SRCCore.Maps;
-using SRCTestForm.Resoruces;
+using SRCSharpForm.Resoruces;
 using System.Drawing;
 using System.IO;
 
-namespace SRCTestForm
+namespace SRCSharpForm
 {
     // TODO インタフェースの切り方見直す
     internal partial class frmMain : IGUIMap

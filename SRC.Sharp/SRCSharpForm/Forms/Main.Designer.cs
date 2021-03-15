@@ -4,9 +4,9 @@ using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.CompilerServices;
-using SRCTestForm.FormLib;
+using SRCSharpForm.FormLib;
 
-namespace SRCTestForm
+namespace SRCSharpForm
 {
     [DesignerGenerated()]
     internal partial class frmMain
@@ -86,8 +86,8 @@ namespace SRCTestForm
             this.picPilotStatus = new System.Windows.Forms.PictureBox();
             this.picUnitStatus = new System.Windows.Forms.PictureBox();
             this.picUnitBitmap = new System.Windows.Forms.PictureBox();
-            this.HScrollBar = new SRCTestForm.FormLib.SrcHScrollBar();
-            this.VScrollBar = new SRCTestForm.FormLib.SrcVScrollBar();
+            this.HScrollBar = new global::SRCSharpForm.FormLib.SrcHScrollBar();
+            this.VScrollBar = new global::SRCSharpForm.FormLib.SrcVScrollBar();
             this.picMask = new System.Windows.Forms.PictureBox();
             this.picTmp = new System.Windows.Forms.PictureBox();
             this.picBack = new System.Windows.Forms.PictureBox();

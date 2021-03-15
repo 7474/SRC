@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SRCTestForm.FormLib
+namespace SRCSharpForm.FormLib
 {
     class SrcHScrollBar : HScrollBar
     {

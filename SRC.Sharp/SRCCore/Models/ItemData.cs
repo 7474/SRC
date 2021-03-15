@@ -389,8 +389,8 @@ namespace SRCCore.Models
         {
             try
             {
-                FeatureData fd = colFeature[Index];
-                return fd.Level == Constants.DEFAULT_LEVEL ? 1d : fd.Level;
+                var level = colFeature[Index]?.Level ?? 0d;
+                return level == Constants.DEFAULT_LEVEL ? 1d : level;
             }
             catch
             {
@@ -403,7 +403,7 @@ namespace SRCCore.Models
         {
             try
             {
-                return colFeature[Index].StrData ?? "";
+                return colFeature[Index]?.StrData ?? "";
             }
             catch
             {
