@@ -20,6 +20,28 @@ jobs:
       env:
         NUGET_OLG_API_KEY: ${{ secrets.NUGET_OLG_API_KEY }}
 
+  release-github-artifacts:
+    name: Release artifacts to GitHub
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
+
+    - run: dotnet publish SRC.Sharp/SRCSharpForm/SRCSharpForm.csproj -c Release -r win-x64 -p:PublishSingleFile=true --self-contained false
+    - run: rm SRC.Sharp/SRCSharpForm/bin/Release/net5.0-windows/win-x64/publish/*.pdb
+    - run: zip -j -r SRCSharpForm SRC.Sharp/SRCSharpForm/bin/Release/net5.0-windows/win-x64/publish/
+    
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          SRCSharpForm.zip
+          LICENSE
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 # Docker Hub 向けは Docker Hub でビルドする
 # https://hub.docker.com/repository/docker/koudenpa/srcdatalinter/builds
 #   push-to-dockerhub:
