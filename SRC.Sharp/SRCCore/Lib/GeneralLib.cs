@@ -17,12 +17,10 @@ namespace SRCCore.Lib
     public static class GeneralLib
     {
         //        // iniファイルの読み出し
-        //        // UPGRADE_ISSUE: パラメータ 'As Any' の宣言はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="FAE78A8D-8978-4FD4-8208-5B7324A8F795"' をクリックしてください。
         //        [DllImport("kernel32", EntryPoint = "GetPrivateProfileStringA")]
         //        static extern int GetPrivateProfileString(string lpApplicationName, Any lpKeyName, string lpDefault, string lpReturnedString, int nSize, string lpFileName);
 
         //        // iniファイルへの書き込み
-        //        // UPGRADE_ISSUE: パラメータ 'As Any' の宣言はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="FAE78A8D-8978-4FD4-8208-5B7324A8F795"' をクリックしてください。
         //        [DllImport("kernel32", EntryPoint = "WritePrivateProfileStringA")]
         //        static extern int WritePrivateProfileString(string lpApplicationName, Any lpKeyName, string lpString, string lpFileName);
 
@@ -657,8 +655,6 @@ namespace SRCCore.Lib
         //        public static string LeftPaddedString(string buf, int length)
         //        {
         //            string LeftPaddedStringRet = default;
-        //            // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-        //            // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
         //            LeftPaddedStringRet = Strings.Space(MaxLng(length - LenB(Strings.StrConv(buf, vbFromUnicode)), 0)) + buf;
         //            return LeftPaddedStringRet;
         //        }
@@ -667,8 +663,6 @@ namespace SRCCore.Lib
         //        public static string RightPaddedString(string buf, int length)
         //        {
         //            string RightPaddedStringRet = default;
-        //            // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-        //            // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
         //            RightPaddedStringRet = buf + Strings.Space(MaxLng(length - LenB(Strings.StrConv(buf, vbFromUnicode)), 0));
         //            return RightPaddedStringRet;
         //        }

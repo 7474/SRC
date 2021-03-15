@@ -37,7 +37,6 @@ namespace Project1
             GUI.IsFormClicked = true;
             if (!GUI.IsMordal & Visible)
             {
-                // UPGRADE_ISSUE: Event パラメータ Cancel はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="FB723E3C-1C06-4D2B-B083-E6CD0D334DA8"' をクリックしてください。
                 Cancel = 1;
             }
 
@@ -127,14 +126,12 @@ namespace Project1
                 var withBlock = lstItems;
                 // リストボックスの行数
                 lines = 25;
-                // UPGRADE_ISSUE: ListBox プロパティ lstItems.Columns はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 if (withBlock.Items.Count > lines * withBlock.Columns)
                 {
                     lines = (short)(lines - 1);
                 }
 
                 // マウスカーソルがあるアイテムを算出
-                // UPGRADE_ISSUE: ListBox プロパティ lstItems.Columns はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 itm = (long)(X * ClientRectangle.Width) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Width) / (withBlock.Width / withBlock.Columns) * lines;
                 itm = (short)(itm + ((long)(Y * ClientRectangle.Width) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Width) + 1L) / 16L);
                 itm = (short)(itm + withBlock.TopIndex);

@@ -321,7 +321,6 @@ namespace SRCSharpForm
 
                 //                        // 以前表示した画像をそのまま利用
                 //                        UsePicBuf(i);
-                //                        // UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                        orig_pic = MainForm.picBuf(i);
                 //                        {
                 //                            var withBlock = orig_pic;
@@ -348,7 +347,6 @@ namespace SRCSharpForm
 
                 //                        // 以前表示した画像をそのまま利用
                 //                        UsePicBuf(i);
-                //                        // UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                        orig_pic = MainForm.picBuf(i);
                 //                        {
                 //                            var withBlock1 = orig_pic;
@@ -375,7 +373,6 @@ namespace SRCSharpForm
                 //                        {
                 //                            // 以前使用した部分画像をそのまま利用
                 //                            UsePicBuf(i);
-                //                            // UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                            orig_pic = MainForm.picBuf(i);
                 //                            {
                 //                                var withBlock2 = orig_pic;
@@ -400,7 +397,6 @@ namespace SRCSharpForm
                 //                    {
                 //                        // 以前使用した原画像をそのまま利用
                 //                        UsePicBuf(i);
-                //                        // UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                        orig_pic = MainForm.picBuf(i);
                 //                        {
                 //                            var withBlock3 = orig_pic;
@@ -429,7 +425,6 @@ namespace SRCSharpForm
                 //                        {
                 //                            dy = (int)((long)(SrcFormatter.PixelsToTwipsY(pic.Height) - dh) / 2L);
                 //                        }
-                //                        // UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 //                        ret = PatBlt(pic.hDC, dx, dy, dw, dh, BLACKNESS);
                 //                        goto DrewPicture;
                 //                        break;
@@ -448,7 +443,6 @@ namespace SRCSharpForm
                 //                        {
                 //                            dy = (int)((long)(SrcFormatter.PixelsToTwipsY(pic.Height) - dh) / 2L);
                 //                        }
-                //                        // UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 //                        ret = PatBlt(pic.hDC, dx, dy, dw, dh, WHITENESS);
                 //                        goto DrewPicture;
                 //                        break;
@@ -458,7 +452,6 @@ namespace SRCSharpForm
                 //                case @"anime\common\effect_tile(ally).bmp":
                 //                    {
                 //                        // 味方ユニットタイル
-                //                        // UPGRADE_ISSUE: Control picUnit は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                        orig_pic = MainForm.picUnit;
                 //                        orig_width = 32;
                 //                        orig_height = 32;
@@ -470,7 +463,6 @@ namespace SRCSharpForm
                 //                case @"anime\common\effect_tile(enemy).bmp":
                 //                    {
                 //                        // 敵ユニットタイル
-                //                        // UPGRADE_ISSUE: Control picEnemy は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                        orig_pic = MainForm.picEnemy;
                 //                        orig_width = 32;
                 //                        orig_height = 32;
@@ -482,7 +474,6 @@ namespace SRCSharpForm
                 //                case @"anime\common\effect_tile(neutral).bmp":
                 //                    {
                 //                        // 中立ユニットタイル
-                //                        // UPGRADE_ISSUE: Control picNeautral は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                        orig_pic = MainForm.picNeautral;
                 //                        orig_width = 32;
                 //                        orig_height = 32;
@@ -762,7 +753,6 @@ namespace SRCSharpForm
                     if (sw != orig_width || sh != orig_height)
                     {
                         // 原画像から描画部分をコピー
-                        // UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                         {
                             if (sx == Constants.DEFAULT_LEVEL)
                             {
@@ -812,20 +802,13 @@ namespace SRCSharpForm
                     //        // Debug.Print "Use " & Format$(i) & " As Edited"
 
                     //        // 画像をコピー
-                    //        // UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        {
                     //            var withBlock8 = MainForm.picBuf(i);
-                    //            // UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            withBlock8.Picture = Image.FromFile("");
-                    //            // UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            withBlock8.width = orig_width;
-                    //            // UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            withBlock8.Height = orig_height;
-                    //            // UPGRADE_ISSUE: PictureBox プロパティ orig_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                    //            // UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            ret = BitBlt(withBlock8.hDC, 0, 0, orig_width, orig_height, orig_pic.hDC, 0, 0, SRCCOPY);
                     //        }
-                    //        // UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        orig_pic = MainForm.picBuf(i);
                     //    }
 
@@ -833,28 +816,24 @@ namespace SRCSharpForm
                     //    if (top_part)
                     //    {
                     //        // 上半分
-                    //        // UPGRADE_ISSUE: PictureBox メソッド orig_pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     //        orig_pic.Line(0, orig_height / 2); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
                     //    }
 
                     //    if (bottom_part)
                     //    {
                     //        // 下半分
-                    //        // UPGRADE_ISSUE: PictureBox メソッド orig_pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     //        orig_pic.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
                     //    }
 
                     //    if (left_part)
                     //    {
                     //        // 左半分
-                    //        // UPGRADE_ISSUE: PictureBox メソッド orig_pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     //        orig_pic.Line(orig_width / 2, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
                     //    }
 
                     //    if (right_part)
                     //    {
                     //        // 右半分
-                    //        // UPGRADE_ISSUE: PictureBox メソッド orig_pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     //        orig_pic.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
                     //    }
 
@@ -863,7 +842,6 @@ namespace SRCSharpForm
                     //        // 左上
                     //        var loopTo5 = (orig_width - 1);
                     //        for (i = 0; i <= loopTo5; i++)
-                    //            // UPGRADE_ISSUE: PictureBox メソッド orig_pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     //            orig_pic.Line(i, orig_height - 1 - i); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
                     //    }
 
@@ -872,7 +850,6 @@ namespace SRCSharpForm
                     //        // 右上
                     //        var loopTo6 = (orig_width - 1);
                     //        for (i = 0; i <= loopTo6; i++)
-                    //            // UPGRADE_ISSUE: PictureBox メソッド orig_pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     //            orig_pic.Line(i, i); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
                     //    }
 
@@ -881,7 +858,6 @@ namespace SRCSharpForm
                     //        // 左下
                     //        var loopTo7 = (orig_width - 1);
                     //        for (i = 0; i <= loopTo7; i++)
-                    //            // UPGRADE_ISSUE: PictureBox メソッド orig_pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     //            orig_pic.Line(i, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
                     //    }
 
@@ -890,7 +866,6 @@ namespace SRCSharpForm
                     //        // 右下
                     //        var loopTo8 = (orig_width - 1);
                     //        for (i = 0; i <= loopTo8; i++)
-                    //            // UPGRADE_ISSUE: PictureBox メソッド orig_pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     //            orig_pic.Line(i, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
                     //    }
 
@@ -1091,11 +1066,7 @@ namespace SRCSharpForm
                     //    var loopTo16 = ((dy + dh - 1) / 32);
                     //    for (j = (dy / 32); j <= loopTo16; j++)
                     //    {
-                    //        // UPGRADE_ISSUE: Control picMask は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //        // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        ret = BitBlt(withBlock17.picMaskedBack.hDC, 32 * (int)i, 32 * (int)j, 32, 32, withBlock17.picMask.hDC, 0, 0, SRCAND);
-                    //        // UPGRADE_ISSUE: Control picMask2 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //        // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        ret = BitBlt(withBlock17.picMaskedBack.hDC, 32 * (int)i, 32 * (int)j, 32, 32, withBlock17.picMask2.hDC, 0, 0, SRCINVERT);
                     //    }
                     //}

@@ -86,8 +86,8 @@ namespace SRCSharpForm
             this.picPilotStatus = new System.Windows.Forms.PictureBox();
             this.picUnitStatus = new System.Windows.Forms.PictureBox();
             this.picUnitBitmap = new System.Windows.Forms.PictureBox();
-            this.HScrollBar = new global::SRCSharpForm.FormLib.SrcHScrollBar();
-            this.VScrollBar = new global::SRCSharpForm.FormLib.SrcVScrollBar();
+            this.HScrollBar = new SRCSharpForm.FormLib.SrcHScrollBar();
+            this.VScrollBar = new SRCSharpForm.FormLib.SrcVScrollBar();
             this.picMask = new System.Windows.Forms.PictureBox();
             this.picTmp = new System.Windows.Forms.PictureBox();
             this.picBack = new System.Windows.Forms.PictureBox();

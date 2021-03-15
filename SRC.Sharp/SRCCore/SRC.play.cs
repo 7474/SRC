@@ -140,24 +140,17 @@ namespace SRCCore
             //Commands.SelectedPartners = new Unit[1];
 
             //// フォント設定をデフォルトに戻す
-            //// UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //{
             //    var withBlock1 = GUI.MainForm.picMain(0);
-            //    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //    withBlock1.ForeColor = Information.RGB(255, 255, 255);
-            //    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //    if (withBlock1.Font.Name != "ＭＳ Ｐ明朝")
             //    {
             //        sf = (Font)Control.DefaultFont.Clone();
             //        sf = SrcFormatter.FontChangeName(sf, "ＭＳ Ｐ明朝");
-            //        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //        withBlock1.Font = sf;
             //    }
-            //    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //    withBlock1.Font.Size = 16;
-            //    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //    withBlock1.Font.Bold = true;
-            //    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //    withBlock1.Font.Italic = false;
             //    GUI.PermanentStringMode = false;
             //    GUI.KeepStringMode = false;
@@ -1008,19 +1001,16 @@ namespace SRCCore
             //{
             //    GUI.MainForm.Hide();
             //}
-            //// UPGRADE_ISSUE: Load ステートメント はサポートされていません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B530EFF2-3132-48F8-B8BC-D88AF543D321"' をクリックしてください。
             //Load(My.MyProject.Forms.frmMessage);
             //if (My.MyProject.Forms.frmMessage.Visible)
             //{
             //    GUI.CloseMessageForm();
             //}
-            //// UPGRADE_ISSUE: Load ステートメント はサポートされていません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B530EFF2-3132-48F8-B8BC-D88AF543D321"' をクリックしてください。
             //Load(My.MyProject.Forms.frmListBox);
             //if (My.MyProject.Forms.frmListBox.Visible)
             //{
             //    My.MyProject.Forms.frmListBox.Hide();
             //}
-            //// UPGRADE_ISSUE: Load ステートメント はサポートされていません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B530EFF2-3132-48F8-B8BC-D88AF543D321"' をクリックしてください。
             //Load(My.MyProject.Forms.frmNowLoading);
             //if (My.MyProject.Forms.frmNowLoading.Visible)
             //{

@@ -1280,10 +1280,8 @@ namespace SRCCore.Units
         //        public void ClearUnitBitmap()
         //        {
 
-        //            // UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
         //            {
         //                var withBlock = GUI.MainForm.picUnitBitmap;
-        //                // UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
         //                if (withBlock.Width == 32)
         //                {
         //                    // 既にクリアされていればそのまま終了
@@ -1291,9 +1289,7 @@ namespace SRCCore.Units
         //                }
 
         //                // 画像をクリア
-        //                // UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
         //                withBlock.Picture = Image.FromFile("");
-        //                // UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
         //                withBlock.Move(0, 0, 32, 96);
         //            }
 

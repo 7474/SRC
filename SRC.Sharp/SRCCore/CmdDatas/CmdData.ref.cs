@@ -29,7 +29,6 @@
 //            end_angle = 3.1415926535d * GetArgAsDouble(6) / 180d;
 
 //            // 塗りつぶしの際は角度を負の値にする必要がある
-//            // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
 //            if (Event_Renamed.ObjFillStyle != vbFSTransparent)
 //            {
 //                start_angle = -start_angle;
@@ -52,9 +51,7 @@
 //            {
 //                case "背景":
 //                    {
-//                        // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic = GUI.MainForm.picBack;
-//                        // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic2 = GUI.MainForm.picMaskedBack;
 //                        Map.IsMapDirty = true;
 //                        break;
@@ -62,16 +59,13 @@
 
 //                case "保持":
 //                    {
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic = GUI.MainForm.picMain(0);
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic2 = GUI.MainForm.picMain(1);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic = GUI.MainForm.picMain(0);
 //                        break;
 //                    }
@@ -148,39 +142,23 @@
 //                     */
 //                }
 //            }
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.DrawWidth = Event_Renamed.ObjDrawWidth;
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillColor = Event_Renamed.ObjFillColor;
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillStyle = Event_Renamed.ObjFillStyle;
 
-//            // UPGRADE_ISSUE: PictureBox メソッド pic.Circle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.Circle(x1, y1);/* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.DrawWidth = 1;
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillColor = ColorTranslator.ToOle(Color.White);
-//            // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillStyle = vbFSTransparent;
 //            if (pic2 is object)
 //            {
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.DrawWidth = Event_Renamed.ObjDrawWidth;
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.FillColor = Event_Renamed.ObjFillColor;
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.FillStyle = Event_Renamed.ObjFillStyle;
 
-//                // UPGRADE_ISSUE: PictureBox メソッド pic2.Circle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.Circle(x1, y1);/* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.DrawWidth = 1;
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.FillColor = ColorTranslator.ToOle(Color.White);
-//                // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.FillStyle = vbFSTransparent;
 //            }
 
@@ -1457,7 +1435,6 @@
 //                GUI.IsCursorVisible = true;
 //            }
 
-//            // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //            GUI.MainForm.picMain(0).Refresh();
 //        }
 
@@ -2348,17 +2325,14 @@
 //                {
 //                    var withBlock1 = GUI.MainForm;
 //                    // マップ画像を背景へ書き込み
-//                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock1.picTmp32(0) = Image.FromFile(basefname);
 //                    switch (Map.MapDrawMode ?? "")
 //                    {
 //                        case "夜":
 //                            {
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic = GUI.MainForm.picTmp32(0);
 //                                Graphics.GetImage(ref argpic);
 //                                Graphics.Dark();
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic1 = GUI.MainForm.picTmp32(0);
 //                                Graphics.SetImage(ref argpic1);
 //                                break;
@@ -2366,11 +2340,9 @@
 
 //                        case "セピア":
 //                            {
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic2 = GUI.MainForm.picTmp32(0);
 //                                Graphics.GetImage(ref argpic2);
 //                                Graphics.Sepia();
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic3 = GUI.MainForm.picTmp32(0);
 //                                Graphics.SetImage(ref argpic3);
 //                                break;
@@ -2378,11 +2350,9 @@
 
 //                        case "白黒":
 //                            {
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic4 = GUI.MainForm.picTmp32(0);
 //                                Graphics.GetImage(ref argpic4);
 //                                Graphics.Monotone();
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic5 = GUI.MainForm.picTmp32(0);
 //                                Graphics.SetImage(ref argpic5);
 //                                break;
@@ -2390,11 +2360,9 @@
 
 //                        case "夕焼け":
 //                            {
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic6 = GUI.MainForm.picTmp32(0);
 //                                Graphics.GetImage(ref argpic6);
 //                                Graphics.Sunset();
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic7 = GUI.MainForm.picTmp32(0);
 //                                Graphics.SetImage(ref argpic7);
 //                                break;
@@ -2402,11 +2370,9 @@
 
 //                        case "水中":
 //                            {
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic8 = GUI.MainForm.picTmp32(0);
 //                                Graphics.GetImage(ref argpic8);
 //                                Graphics.Water();
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic9 = GUI.MainForm.picTmp32(0);
 //                                Graphics.SetImage(ref argpic9);
 //                                break;
@@ -2414,33 +2380,26 @@
 
 //                        case "フィルタ":
 //                            {
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic10 = withBlock1.picTmp32(0);
 //                                Graphics.GetImage(ref argpic10);
 //                                Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent);
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic11 = withBlock1.picTmp32(0);
 //                                Graphics.SetImage(ref argpic11);
 //                                break;
 //                            }
 //                    }
-//                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                    // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    ret = GUI.BitBlt(withBlock1.picBack.hDC, 32 * ((int)X - 1), 32 * ((int)Y - 1), 32, 32, withBlock1.picTmp32(0).hDC, 0, 0, GUI.SRCCOPY);
 
 //                    // レイヤー画像を背景へ書き込み
-//                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock1.picTmp32(0) = Image.FromFile(fname);
 //                    GUI.BGColor = ColorTranslator.ToOle(Color.White);
 //                    switch (Map.MapDrawMode ?? "")
 //                    {
 //                        case "夜":
 //                            {
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic12 = GUI.MainForm.picTmp32(0);
 //                                Graphics.GetImage(ref argpic12);
 //                                Graphics.Dark(true);
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic13 = GUI.MainForm.picTmp32(0);
 //                                Graphics.SetImage(ref argpic13);
 //                                break;
@@ -2448,11 +2407,9 @@
 
 //                        case "セピア":
 //                            {
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic14 = GUI.MainForm.picTmp32(0);
 //                                Graphics.GetImage(ref argpic14);
 //                                Graphics.Sepia(true);
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic15 = GUI.MainForm.picTmp32(0);
 //                                Graphics.SetImage(ref argpic15);
 //                                break;
@@ -2460,11 +2417,9 @@
 
 //                        case "白黒":
 //                            {
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic16 = GUI.MainForm.picTmp32(0);
 //                                Graphics.GetImage(ref argpic16);
 //                                Graphics.Monotone(true);
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic17 = GUI.MainForm.picTmp32(0);
 //                                Graphics.SetImage(ref argpic17);
 //                                break;
@@ -2472,11 +2427,9 @@
 
 //                        case "夕焼け":
 //                            {
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic18 = GUI.MainForm.picTmp32(0);
 //                                Graphics.GetImage(ref argpic18);
 //                                Graphics.Sunset(true);
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic19 = GUI.MainForm.picTmp32(0);
 //                                Graphics.SetImage(ref argpic19);
 //                                break;
@@ -2484,11 +2437,9 @@
 
 //                        case "水中":
 //                            {
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic20 = GUI.MainForm.picTmp32(0);
 //                                Graphics.GetImage(ref argpic20);
 //                                Graphics.Water(true);
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic21 = GUI.MainForm.picTmp32(0);
 //                                Graphics.SetImage(ref argpic21);
 //                                break;
@@ -2496,39 +2447,27 @@
 
 //                        case "フィルタ":
 //                            {
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic22 = withBlock1.picTmp32(0);
 //                                Graphics.GetImage(ref argpic22);
 //                                Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent, true);
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                var argpic23 = withBlock1.picTmp32(0);
 //                                Graphics.SetImage(ref argpic23);
 //                                break;
 //                            }
 //                    }
 //                    // レイヤーは透過処理をする
-//                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                    // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    ret = GUI.TransparentBlt(withBlock1.picBack.hDC, 32 * ((int)X - 1), 32 * ((int)Y - 1), 32, 32, withBlock1.picTmp32(0).hDC, 0, 0, 32, 32, GUI.BGColor);
 
 //                    // マス目の表示
 //                    if (SRC.ShowSquareLine)
 //                    {
-//                        // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        withBlock1.picBack.Line((32 * ((int)X - 1), 32 * ((int)Y - 1)) - (32 * (int)X, 32 * ((int)Y - 1)), Information.RGB(100, 100, 100), B);
-//                        // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        withBlock1.picBack.Line((32 * ((int)X - 1), 32 * ((int)Y - 1)) - (32 * ((int)X - 1), 32 * (int)Y), Information.RGB(100, 100, 100), B);
 //                    }
 
 //                    // マスク入り背景画面を作成しておく
-//                    // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                    // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    ret = GUI.BitBlt(withBlock1.picMaskedBack.hDC, 32 * ((int)X - 1), 32 * ((int)Y - 1), 32, 32, withBlock1.picBack.hDC, 32 * ((int)X - 1), 32 * ((int)Y - 1), GUI.SRCCOPY);
-//                    // UPGRADE_ISSUE: Control picMask は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                    // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    ret = GUI.BitBlt(withBlock1.picMaskedBack.hDC, 32 * ((int)X - 1), 32 * ((int)Y - 1), 32, 32, withBlock1.picMask.hDC, 0, 0, GUI.SRCAND);
-//                    // UPGRADE_ISSUE: Control picMask2 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                    // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    ret = GUI.BitBlt(withBlock1.picMaskedBack.hDC, 32 * ((int)X - 1), 32 * ((int)Y - 1), 32, 32, withBlock1.picMask2.hDC, 0, 0, GUI.SRCINVERT);
 //                }
 
@@ -2547,8 +2486,6 @@
 //                {
 //                    {
 //                        var withBlock3 = GUI.MainForm;
-//                        // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        ret = GUI.TransparentBlt(withBlock3.picMain(0).hDC, GUI.MapToPixelX(X), GUI.MapToPixelY(Y), 32, 32, withBlock3.picTmp32(0).hDC, 0, 0, 32, 32, ColorTranslator.ToOle(Color.White));
 //                    }
 //                }
@@ -3167,17 +3104,14 @@
 
 //            {
 //                var withBlock2 = GUI.MainForm;
-//                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                withBlock2.picTmp32(0) = Image.FromFile(fname);
 //                switch (Map.MapDrawMode ?? "")
 //                {
 //                    case "夜":
 //                        {
-//                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            var argpic = GUI.MainForm.picTmp32(0);
 //                            Graphics.GetImage(ref argpic);
 //                            Graphics.Dark();
-//                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            var argpic1 = GUI.MainForm.picTmp32(0);
 //                            Graphics.SetImage(ref argpic1);
 //                            break;
@@ -3185,11 +3119,9 @@
 
 //                    case "セピア":
 //                        {
-//                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            var argpic2 = GUI.MainForm.picTmp32(0);
 //                            Graphics.GetImage(ref argpic2);
 //                            Graphics.Sepia();
-//                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            var argpic3 = GUI.MainForm.picTmp32(0);
 //                            Graphics.SetImage(ref argpic3);
 //                            break;
@@ -3197,11 +3129,9 @@
 
 //                    case "白黒":
 //                        {
-//                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            var argpic4 = GUI.MainForm.picTmp32(0);
 //                            Graphics.GetImage(ref argpic4);
 //                            Graphics.Monotone();
-//                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            var argpic5 = GUI.MainForm.picTmp32(0);
 //                            Graphics.SetImage(ref argpic5);
 //                            break;
@@ -3209,11 +3139,9 @@
 
 //                    case "夕焼け":
 //                        {
-//                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            var argpic6 = GUI.MainForm.picTmp32(0);
 //                            Graphics.GetImage(ref argpic6);
 //                            Graphics.Sunset();
-//                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            var argpic7 = GUI.MainForm.picTmp32(0);
 //                            Graphics.SetImage(ref argpic7);
 //                            break;
@@ -3221,11 +3149,9 @@
 
 //                    case "水中":
 //                        {
-//                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            var argpic8 = GUI.MainForm.picTmp32(0);
 //                            Graphics.GetImage(ref argpic8);
 //                            Graphics.Water();
-//                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            var argpic9 = GUI.MainForm.picTmp32(0);
 //                            Graphics.SetImage(ref argpic9);
 //                            break;
@@ -3233,11 +3159,9 @@
 
 //                    case "フィルタ":
 //                        {
-//                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            var argpic10 = withBlock2.picTmp32(0);
 //                            Graphics.GetImage(ref argpic10);
 //                            Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent);
-//                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            var argpic11 = withBlock2.picTmp32(0);
 //                            Graphics.SetImage(ref argpic11);
 //                            break;
@@ -3245,28 +3169,18 @@
 //                }
 
 //                // 背景への書き込み
-//                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                ret = GUI.BitBlt(withBlock2.picBack.hDC, 32 * (tx - 1), 32 * (ty - 1), 32, 32, withBlock2.picTmp32(0).hDC, 0, 0, GUI.SRCCOPY);
 
 //                // マス目の表示
 //                if (SRC.ShowSquareLine)
 //                {
-//                    // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock2.picBack.Line((32 * (tx - 1), 32 * (ty - 1)) - (32 * tx, 32 * (ty - 1)), Information.RGB(100, 100, 100), B);
-//                    // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock2.picBack.Line((32 * (tx - 1), 32 * (ty - 1)) - (32 * (tx - 1), 32 * ty), Information.RGB(100, 100, 100), B);
 //                }
 
 //                // マスク入り背景画面を作成
-//                // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                ret = GUI.BitBlt(withBlock2.picMaskedBack.hDC, 32 * (tx - 1), 32 * (ty - 1), 32, 32, withBlock2.picBack.hDC, 32 * (tx - 1), 32 * (ty - 1), GUI.SRCCOPY);
-//                // UPGRADE_ISSUE: Control picMask は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                ret = GUI.BitBlt(withBlock2.picMaskedBack.hDC, 32 * (tx - 1), 32 * (ty - 1), 32, 32, withBlock2.picMask.hDC, 0, 0, GUI.SRCAND);
-//                // UPGRADE_ISSUE: Control picMask2 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                ret = GUI.BitBlt(withBlock2.picMaskedBack.hDC, 32 * (tx - 1), 32 * (ty - 1), 32, 32, withBlock2.picMask2.hDC, 0, 0, GUI.SRCINVERT);
 //            }
 
@@ -3285,8 +3199,6 @@
 //            {
 //                {
 //                    var withBlock4 = GUI.MainForm;
-//                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    ret = GUI.BitBlt(withBlock4.picMain(0).hDC, GUI.MapToPixelX(tx), GUI.MapToPixelY(ty), 32, 32, withBlock4.picTmp32(0).hDC, 0, 0, GUI.SRCCOPY);
 //                }
 //            }
@@ -3469,9 +3381,7 @@
 //            {
 //                case "背景":
 //                    {
-//                        // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic = GUI.MainForm.picBack;
-//                        // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic2 = GUI.MainForm.picMaskedBack;
 //                        Map.IsMapDirty = true;
 //                        break;
@@ -3479,16 +3389,13 @@
 
 //                case "保持":
 //                    {
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic = GUI.MainForm.picMain(0);
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic2 = GUI.MainForm.picMain(1);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic = GUI.MainForm.picMain(0);
 //                        break;
 //                    }
@@ -3565,39 +3472,23 @@
 //                     */
 //                }
 //            }
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.DrawWidth = Event_Renamed.ObjDrawWidth;
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillColor = Event_Renamed.ObjFillColor;
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillStyle = Event_Renamed.ObjFillStyle;
 
-//            // UPGRADE_ISSUE: PictureBox メソッド pic.Circle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.Circle(x1, y1);/* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.DrawWidth = 1;
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillColor = ColorTranslator.ToOle(Color.White);
-//            // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillStyle = vbFSTransparent;
 //            if (pic2 is object)
 //            {
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.DrawWidth = Event_Renamed.ObjDrawWidth;
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.FillColor = Event_Renamed.ObjFillColor;
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.FillStyle = Event_Renamed.ObjFillStyle;
 
-//                // UPGRADE_ISSUE: PictureBox メソッド pic2.Circle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.Circle(x1, y1);/* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.DrawWidth = 1;
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.FillColor = ColorTranslator.ToOle(Color.White);
-//                // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.FillStyle = vbFSTransparent;
 //            }
 
@@ -3658,7 +3549,6 @@
 //        {
 //            int ExecClearImageCmdRet = default;
 //            GUI.ClearPicture();
-//            // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //            GUI.MainForm.picMain(0).Refresh();
 //            ExecClearImageCmdRet = LineNum + 1;
 //            return ExecClearImageCmdRet;
@@ -3807,17 +3697,14 @@
 //                            {
 //                                var withBlock = GUI.MainForm;
 //                                // マップ画像を背景へ書き込み
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                withBlock.picTmp32(0) = Image.FromFile(fname);
 //                                switch (Map.MapDrawMode ?? "")
 //                                {
 //                                    case "夜":
 //                                        {
-//                                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                            var argpic = GUI.MainForm.picTmp32(0);
 //                                            Graphics.GetImage(ref argpic);
 //                                            Graphics.Dark();
-//                                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                            var argpic1 = GUI.MainForm.picTmp32(0);
 //                                            Graphics.SetImage(ref argpic1);
 //                                            break;
@@ -3825,11 +3712,9 @@
 
 //                                    case "セピア":
 //                                        {
-//                                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                            var argpic2 = GUI.MainForm.picTmp32(0);
 //                                            Graphics.GetImage(ref argpic2);
 //                                            Graphics.Sepia();
-//                                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                            var argpic3 = GUI.MainForm.picTmp32(0);
 //                                            Graphics.SetImage(ref argpic3);
 //                                            break;
@@ -3837,11 +3722,9 @@
 
 //                                    case "白黒":
 //                                        {
-//                                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                            var argpic4 = GUI.MainForm.picTmp32(0);
 //                                            Graphics.GetImage(ref argpic4);
 //                                            Graphics.Monotone();
-//                                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                            var argpic5 = GUI.MainForm.picTmp32(0);
 //                                            Graphics.SetImage(ref argpic5);
 //                                            break;
@@ -3849,11 +3732,9 @@
 
 //                                    case "夕焼け":
 //                                        {
-//                                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                            var argpic6 = GUI.MainForm.picTmp32(0);
 //                                            Graphics.GetImage(ref argpic6);
 //                                            Graphics.Sunset();
-//                                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                            var argpic7 = GUI.MainForm.picTmp32(0);
 //                                            Graphics.SetImage(ref argpic7);
 //                                            break;
@@ -3861,11 +3742,9 @@
 
 //                                    case "水中":
 //                                        {
-//                                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                            var argpic8 = GUI.MainForm.picTmp32(0);
 //                                            Graphics.GetImage(ref argpic8);
 //                                            Graphics.Water();
-//                                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                            var argpic9 = GUI.MainForm.picTmp32(0);
 //                                            Graphics.SetImage(ref argpic9);
 //                                            break;
@@ -3873,36 +3752,24 @@
 
 //                                    case "フィルタ":
 //                                        {
-//                                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                            var argpic10 = withBlock.picTmp32(0);
 //                                            Graphics.GetImage(ref argpic10);
 //                                            Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent);
-//                                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                            var argpic11 = withBlock.picTmp32(0);
 //                                            Graphics.SetImage(ref argpic11);
 //                                            break;
 //                                        }
 //                                }
-//                                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                                // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                ret = GUI.BitBlt(withBlock.picBack.hDC, 32 * (i - 1), 32 * (j - 1), 32, 32, withBlock.picTmp32(0).hDC, 0, 0, GUI.SRCCOPY);
 //                                // マス目の表示
 //                                if (SRC.ShowSquareLine)
 //                                {
-//                                    // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    withBlock.picBack.Line((32 * (i - 1), 32 * (j - 1)) - (32 * i, 32 * (j - 1)), Information.RGB(100, 100, 100), B);
-//                                    // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    withBlock.picBack.Line((32 * (i - 1), 32 * (j - 1)) - (32 * (i - 1), 32 * j), Information.RGB(100, 100, 100), B);
 //                                }
 //                                // マスク入り背景画面を作成
-//                                // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                                // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                ret = GUI.BitBlt(withBlock.picMaskedBack.hDC, 32 * (i - 1), 32 * (j - 1), 32, 32, withBlock.picBack.hDC, 32 * (i - 1), 32 * (j - 1), GUI.SRCCOPY);
-//                                // UPGRADE_ISSUE: Control picMask は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                                // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                ret = GUI.BitBlt(withBlock.picMaskedBack.hDC, 32 * (i - 1), 32 * (j - 1), 32, 32, withBlock.picMask.hDC, 0, 0, GUI.SRCAND);
-//                                // UPGRADE_ISSUE: Control picMask2 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                                // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                ret = GUI.BitBlt(withBlock.picMaskedBack.hDC, 32 * (i - 1), 32 * (j - 1), 32, 32, withBlock.picMask2.hDC, 0, 0, GUI.SRCINVERT);
 //                            }
 //                            // 変更された地形にいたユニットを再表示
@@ -3918,8 +3785,6 @@
 //                            {
 //                                {
 //                                    var withBlock1 = GUI.MainForm;
-//                                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    ret = GUI.TransparentBlt(withBlock1.picMain(0).hDC, GUI.MapToPixelX(i), GUI.MapToPixelY(j), 32, 32, withBlock1.picTmp32(0).hDC, 0, 0, 32, 32, ColorTranslator.ToOle(Color.White));
 //                                }
 //                            }
@@ -3953,17 +3818,14 @@
 //                    {
 //                        var withBlock2 = GUI.MainForm;
 //                        // マップ画像を背景へ書き込み
-//                        // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        withBlock2.picTmp32(0) = Image.FromFile(fname);
 //                        switch (Map.MapDrawMode ?? "")
 //                        {
 //                            case "夜":
 //                                {
-//                                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    var argpic12 = GUI.MainForm.picTmp32(0);
 //                                    Graphics.GetImage(ref argpic12);
 //                                    Graphics.Dark();
-//                                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    var argpic13 = GUI.MainForm.picTmp32(0);
 //                                    Graphics.SetImage(ref argpic13);
 //                                    break;
@@ -3971,11 +3833,9 @@
 
 //                            case "セピア":
 //                                {
-//                                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    var argpic14 = GUI.MainForm.picTmp32(0);
 //                                    Graphics.GetImage(ref argpic14);
 //                                    Graphics.Sepia();
-//                                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    var argpic15 = GUI.MainForm.picTmp32(0);
 //                                    Graphics.SetImage(ref argpic15);
 //                                    break;
@@ -3983,11 +3843,9 @@
 
 //                            case "白黒":
 //                                {
-//                                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    var argpic16 = GUI.MainForm.picTmp32(0);
 //                                    Graphics.GetImage(ref argpic16);
 //                                    Graphics.Monotone();
-//                                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    var argpic17 = GUI.MainForm.picTmp32(0);
 //                                    Graphics.SetImage(ref argpic17);
 //                                    break;
@@ -3995,11 +3853,9 @@
 
 //                            case "夕焼け":
 //                                {
-//                                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    var argpic18 = GUI.MainForm.picTmp32(0);
 //                                    Graphics.GetImage(ref argpic18);
 //                                    Graphics.Sunset();
-//                                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    var argpic19 = GUI.MainForm.picTmp32(0);
 //                                    Graphics.SetImage(ref argpic19);
 //                                    break;
@@ -4007,11 +3863,9 @@
 
 //                            case "水中":
 //                                {
-//                                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    var argpic20 = GUI.MainForm.picTmp32(0);
 //                                    Graphics.GetImage(ref argpic20);
 //                                    Graphics.Water();
-//                                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    var argpic21 = GUI.MainForm.picTmp32(0);
 //                                    Graphics.SetImage(ref argpic21);
 //                                    break;
@@ -4019,36 +3873,24 @@
 
 //                            case "フィルタ":
 //                                {
-//                                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    var argpic22 = withBlock2.picTmp32(0);
 //                                    Graphics.GetImage(ref argpic22);
 //                                    Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent);
-//                                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    var argpic23 = withBlock2.picTmp32(0);
 //                                    Graphics.SetImage(ref argpic23);
 //                                    break;
 //                                }
 //                        }
-//                        // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                        // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        ret = GUI.BitBlt(withBlock2.picBack.hDC, 32 * (X - 1), 32 * (Y - 1), 32, 32, withBlock2.picTmp32(0).hDC, 0, 0, GUI.SRCCOPY);
 //                        // マス目の表示
 //                        if (SRC.ShowSquareLine)
 //                        {
-//                            // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            withBlock2.picBack.Line((32 * (X - 1), 32 * (Y - 1)) - (32 * X, 32 * (Y - 1)), Information.RGB(100, 100, 100), B);
-//                            // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            withBlock2.picBack.Line((32 * (X - 1), 32 * (Y - 1)) - (32 * (X - 1), 32 * Y), Information.RGB(100, 100, 100), B);
 //                        }
 //                        // マスク入り背景画面を作成
-//                        // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                        // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        ret = GUI.BitBlt(withBlock2.picMaskedBack.hDC, 32 * (X - 1), 32 * (Y - 1), 32, 32, withBlock2.picBack.hDC, 32 * (X - 1), 32 * (Y - 1), GUI.SRCCOPY);
-//                        // UPGRADE_ISSUE: Control picMask は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                        // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        ret = GUI.BitBlt(withBlock2.picMaskedBack.hDC, 32 * (X - 1), 32 * (Y - 1), 32, 32, withBlock2.picMask.hDC, 0, 0, GUI.SRCAND);
-//                        // UPGRADE_ISSUE: Control picMask2 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                        // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        ret = GUI.BitBlt(withBlock2.picMaskedBack.hDC, 32 * (X - 1), 32 * (Y - 1), 32, 32, withBlock2.picMask2.hDC, 0, 0, GUI.SRCINVERT);
 //                    }
 //                    // 変更された地形にいたユニットを再表示
@@ -4063,8 +3905,6 @@
 //                    {
 //                        {
 //                            var withBlock3 = GUI.MainForm;
-//                            // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                            // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            ret = GUI.TransparentBlt(withBlock3.picMain(0).hDC, GUI.MapToPixelX(X), GUI.MapToPixelY(Y), 32, 32, withBlock3.picTmp32(0).hDC, 0, 0, 32, 32, ColorTranslator.ToOle(Color.White));
 //                        }
 //                    }
@@ -4115,7 +3955,6 @@
 //                                    // ツールチップを消す
 //                                    My.MyProject.Forms.frmToolTip.Hide();
 //                                    // マウスカーソルを元に戻す
-//                                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    GUI.MainForm.picMain(0).MousePointer = 0;
 //                                }
 //                            }
@@ -4171,12 +4010,10 @@
 //            My.MyProject.Forms.frmToolTip.Hide();
 //            if (!without_refresh)
 //            {
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                GUI.MainForm.picMain(0).Refresh();
 //            }
 
 //            // マウスカーソルを元に戻す
-//            // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //            GUI.MainForm.picMain(0).MousePointer = 0;
 //            return ExecClearObjCmdRet;
 //        }
@@ -4517,9 +4354,7 @@
 
 //                             */
 //                        }
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        GUI.MainForm.picMain(0).Line((0, 0) - ((int)GUI.MainPWidth - 1, (int)GUI.MainPHeight - 1), Conversions.ToInteger(cname), BF);
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        GUI.MainForm.picMain(1).Line((0, 0) - ((int)GUI.MainPWidth - 1, (int)GUI.MainPHeight - 1), Conversions.ToInteger(cname), BF);
 //                        GUI.ScreenIsSaved = true;
 //                        break;
@@ -4529,9 +4364,7 @@
 //                    {
 //                        {
 //                            var withBlock = GUI.MainForm;
-//                            // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            ret = GUI.PatBlt(withBlock.picMain(0).hDC, 0, 0, GUI.MainPWidth, GUI.MainPHeight, GUI.BLACKNESS);
-//                            // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            ret = GUI.PatBlt(withBlock.picMain(1).hDC, 0, 0, GUI.MainPWidth, GUI.MainPHeight, GUI.BLACKNESS);
 //                        }
 
@@ -7169,7 +7002,6 @@
 //            short num;
 //            if (GUI.IsRButtonPressed())
 //            {
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                GUI.MainForm.picMain(0).Refresh();
 //                ExecFadeInCmdRet = LineNum + 1;
 //                return ExecFadeInCmdRet;
@@ -7208,14 +7040,10 @@
 //            GUI.SaveScreen();
 //            {
 //                var withBlock = GUI.MainForm;
-//                // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                {
 //                    var withBlock1 = withBlock.picTmp;
-//                    // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock1.Picture = Image.FromFile("");
-//                    // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock1.width = GUI.MainPWidth;
-//                    // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock1.Height = GUI.MainPHeight;
 //                }
 
@@ -7223,12 +7051,9 @@
 //                // ret = BitBlt(.picTmp.hDC, _
 //                // '            0, 0, MapPWidth, MapPHeight, _
 //                // '            .picMain(0).hDC, 0, 0, SRCCOPY)
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                ret = GUI.BitBlt(withBlock.picTmp.hDC, 0, 0, GUI.MainPWidth, GUI.MainPHeight, withBlock.picMain(0).hDC, 0, 0, GUI.SRCCOPY);
 //                // MOD END マージ
 
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                var argpic = withBlock.picMain(0);
 //                Graphics.InitFade(ref argpic, num);
 //                start_time = GeneralLib.timeGetTime();
@@ -7244,10 +7069,8 @@
 //                        }
 //                    }
 
-//                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    var argpic1 = withBlock.picMain(0);
 //                    Graphics.DoFade(ref argpic1, i);
-//                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock.picMain(0).Refresh();
 //                    cur_time = GeneralLib.timeGetTime();
 //                    while (cur_time < start_time + wait_time * (i + 1))
@@ -7259,20 +7082,13 @@
 
 //                Graphics.FinishFade();
 
-//                // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                ret = GUI.BitBlt(withBlock.picMain(0).hDC, 0, 0, GUI.MapPWidth, GUI.MapPHeight, withBlock.picTmp.hDC, 0, 0, GUI.SRCCOPY);
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                withBlock.picMain(0).Refresh();
 
-//                // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                {
 //                    var withBlock2 = withBlock.picTmp;
-//                    // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock2.Picture = Image.FromFile("");
-//                    // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock2.width = 32;
-//                    // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock2.Height = 32;
 //                }
 //            }
@@ -7320,7 +7136,6 @@
 //            GUI.SaveScreen();
 //            {
 //                var withBlock = GUI.MainForm;
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                var argpic = withBlock.picMain(0);
 //                Graphics.InitFade(ref argpic, num);
 //                start_time = GeneralLib.timeGetTime();
@@ -7332,12 +7147,9 @@
 //                    {
 //                        if (GUI.IsRButtonPressed())
 //                        {
-//                            // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            {
 //                                var withBlock1 = withBlock.picMain(0);
-//                                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                ret = GUI.PatBlt(withBlock1.hDC, 0, 0, withBlock1.width, withBlock1.Height, GUI.BLACKNESS);
-//                                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                withBlock1.Refresh();
 //                            }
 
@@ -7345,10 +7157,8 @@
 //                        }
 //                    }
 
-//                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    var argpic1 = withBlock.picMain(0);
 //                    Graphics.DoFade(ref argpic1, (int)num - i);
-//                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock.picMain(0).Refresh();
 //                    cur_time = GeneralLib.timeGetTime();
 //                    while (cur_time < start_time + wait_time * (i + 1))
@@ -7451,56 +7261,48 @@
 //            {
 //                case "塗りつぶし":
 //                    {
-//                        // UPGRADE_ISSUE: 定数 vbFSSolid はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
 //                        Event_Renamed.ObjFillStyle = vbFSSolid;
 //                        break;
 //                    }
 
 //                case "透明":
 //                    {
-//                        // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
 //                        Event_Renamed.ObjFillStyle = vbFSTransparent;
 //                        break;
 //                    }
 
 //                case "横線":
 //                    {
-//                        // UPGRADE_ISSUE: 定数 vbHorizontalLine はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
 //                        Event_Renamed.ObjFillStyle = vbHorizontalLine;
 //                        break;
 //                    }
 
 //                case "縦線":
 //                    {
-//                        // UPGRADE_ISSUE: 定数 vbVerticalLine はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
 //                        Event_Renamed.ObjFillStyle = vbVerticalLine;
 //                        break;
 //                    }
 
 //                case "斜線":
 //                    {
-//                        // UPGRADE_ISSUE: 定数 vbUpwardDiagonal はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
 //                        Event_Renamed.ObjFillStyle = vbUpwardDiagonal;
 //                        break;
 //                    }
 
 //                case "斜線２":
 //                    {
-//                        // UPGRADE_ISSUE: 定数 vbDownwardDiagonal はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
 //                        Event_Renamed.ObjFillStyle = vbDownwardDiagonal;
 //                        break;
 //                    }
 
 //                case "クロス":
 //                    {
-//                        // UPGRADE_ISSUE: 定数 vbCross はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
 //                        Event_Renamed.ObjFillStyle = vbCross;
 //                        break;
 //                    }
 
 //                case "網かけ":
 //                    {
-//                        // UPGRADE_ISSUE: 定数 vbDiagonalCross はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
 //                        Event_Renamed.ObjFillStyle = vbDiagonalCross;
 //                        break;
 //                    }
@@ -7680,26 +7482,19 @@
 //            Font sf;
 //            ExecFontCmdRet = LineNum + 1;
 
-//            // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //            {
 //                var withBlock = GUI.MainForm.picMain(0);
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                fname = withBlock.Font.Name;
 
 //                // デフォルトの設定
 //                if (ArgNum == 1)
 //                {
-//                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock.ForeColor = ColorTranslator.ToOle(Color.White);
-//                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    {
 //                        var withBlock1 = withBlock.Font;
 //                        fname = "ＭＳ Ｐ明朝";
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        withBlock1.Size = 16;
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        withBlock1.Bold = true;
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        withBlock1.Italic = false;
 //                    }
 
@@ -7740,23 +7535,19 @@
 
 //                            case "Bold":
 //                                {
-//                                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    withBlock.Font.Bold = true;
 //                                    break;
 //                                }
 
 //                            case "Italic":
 //                                {
-//                                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    withBlock.Font.Italic = true;
 //                                    break;
 //                                }
 
 //                            case "Regular":
 //                                {
-//                                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    withBlock.Font.Bold = false;
-//                                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                    withBlock.Font.Italic = false;
 //                                    break;
 //                                }
@@ -7792,7 +7583,6 @@
 //                                    {
 //                                        // 文字サイズ
 //                                        opt = Strings.Left(opt, Strings.Len(opt) - 2);
-//                                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                        withBlock.Font.Size = Conversions.ToShort(opt);
 //                                    }
 //                                    else if (Strings.Asc(opt) == 35 & Strings.Len(opt) == 7)
@@ -7808,7 +7598,6 @@
 //                                        StringType.MidStmtStr(ref cname, 7, 2, midTmp2);
 //                                        if (Information.IsNumeric(cname))
 //                                        {
-//                                            // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                            withBlock.ForeColor = Conversions.ToInteger(cname);
 //                                        }
 //                                    }
@@ -7825,22 +7614,16 @@
 //                }
 
 //                // フォント名が変更されている？
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                if (fname != withBlock.Font.Name)
 //                {
 //                    sf = (Font)Control.DefaultFont.Clone();
-//                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    {
 //                        var withBlock2 = withBlock.Font;
 //                        sf = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeName(sf, fname);
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        sf = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(sf, withBlock2.Size);
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        sf = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeBold(sf, withBlock2.Bold);
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        sf = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeItalic(sf, withBlock2.Italic);
 //                    }
-//                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock.Font = sf;
 //                }
 //            }
@@ -10454,9 +10237,7 @@
 //            {
 //                case "背景":
 //                    {
-//                        // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic = GUI.MainForm.picBack;
-//                        // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic2 = GUI.MainForm.picMaskedBack;
 //                        Map.IsMapDirty = true;
 //                        break;
@@ -10464,9 +10245,7 @@
 
 //                case "保持":
 //                    {
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic = GUI.MainForm.picMain(0);
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic2 = GUI.MainForm.picMain(1);
 //                        GUI.IsPictureVisible = true;
 //                        break;
@@ -10474,7 +10253,6 @@
 
 //                default:
 //                    {
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic = GUI.MainForm.picMain(0);
 //                        break;
 //                    }
@@ -10556,79 +10334,59 @@
 //                    dtype = opt;
 //                }
 //            }
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.DrawWidth = Event_Renamed.ObjDrawWidth;
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillColor = Event_Renamed.ObjFillColor;
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillStyle = Event_Renamed.ObjFillStyle;
 //            switch (dtype ?? "")
 //            {
 //                case "B":
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        pic.Line(x1, y1); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 //                        break;
 //                    }
 
 //                case "BF":
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        pic.Line(x1, y1); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        pic.Line(x1, y1); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 //                        break;
 //                    }
 //            }
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.DrawWidth = 1;
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillColor = ColorTranslator.ToOle(Color.White);
-//            // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillStyle = vbFSTransparent;
 //            if (pic2 is object)
 //            {
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.DrawWidth = Event_Renamed.ObjDrawWidth;
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.FillColor = Event_Renamed.ObjFillColor;
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.FillStyle = Event_Renamed.ObjFillStyle;
 //                switch (dtype ?? "")
 //                {
 //                    case "B":
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド pic2.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            pic2.Line(x1, y1); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 //                            break;
 //                        }
 
 //                    case "BF":
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド pic2.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            pic2.Line(x1, y1); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 //                            break;
 //                        }
 
 //                    default:
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド pic2.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            pic2.Line(x1, y1); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 //                            break;
 //                        }
 //                }
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.DrawWidth = 1;
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.FillColor = ColorTranslator.ToOle(Color.White);
-//                // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.FillStyle = vbFSTransparent;
 //            }
 
@@ -11265,14 +11023,10 @@
 //            }
 
 //            // Font Regular 9pt 背景
-//            // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //            {
 //                var withBlock3 = GUI.MainForm.picMain(0).Font;
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                withBlock3.Size = 9;
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                withBlock3.Bold = false;
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                withBlock3.Italic = false;
 //            }
 
@@ -11436,14 +11190,10 @@
 //            }
 
 //            // フォントの設定を戻しておく
-//            // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //            {
 //                var withBlock4 = GUI.MainForm.picMain(0).Font;
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                withBlock4.Size = 16;
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                withBlock4.Bold = true;
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                withBlock4.Italic = false;
 //            }
 
@@ -12670,16 +12420,12 @@
 //                string argoname = "等身大基準";
 //                if (Expression.IsOptionDefined(ref argoname))
 //                {
-//                    // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-//                    // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
 //                    string localLeftPaddedString() { string argbuf = u.MainPilot().Level.ToString(); var ret = GeneralLib.LeftPaddedString(ref argbuf, 2); return ret; }
 
 //                    list[Information.UBound(list)] = u.Nickname0 + Strings.Space(GeneralLib.MaxLng(52 - LenB(Strings.StrConv(u.Nickname0, vbFromUnicode)), 1)) + localLeftPaddedString();
 //                }
 //                else
 //                {
-//                    // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-//                    // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
 //                    string localLeftPaddedString1() { string argbuf = u.MainPilot().Level.ToString(); var ret = GeneralLib.LeftPaddedString(ref argbuf, 2); return ret; }
 
 //                    list[Information.UBound(list)] = u.Nickname0 + Strings.Space(GeneralLib.MaxLng(36 - LenB(Strings.StrConv(u.Nickname0, vbFromUnicode)), 1)) + u.MainPilot().get_Nickname(false) + Strings.Space(GeneralLib.MaxLng(17 - LenB(Strings.StrConv(u.MainPilot().get_Nickname(false), vbFromUnicode)), 1)) + localLeftPaddedString1();
@@ -12845,9 +12591,7 @@
 //            {
 //                case "背景":
 //                    {
-//                        // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic = GUI.MainForm.picBack;
-//                        // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic2 = GUI.MainForm.picMaskedBack;
 //                        Map.IsMapDirty = true;
 //                        break;
@@ -12855,9 +12599,7 @@
 
 //                case "保持":
 //                    {
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic = GUI.MainForm.picMain(0);
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic2 = GUI.MainForm.picMain(1);
 //                        GUI.IsPictureVisible = true;
 //                        break;
@@ -12865,7 +12607,6 @@
 
 //                default:
 //                    {
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic = GUI.MainForm.picMain(0);
 //                        break;
 //                    }
@@ -12942,39 +12683,23 @@
 //                     */
 //                }
 //            }
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.DrawWidth = Event_Renamed.ObjDrawWidth;
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillColor = Event_Renamed.ObjFillColor;
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillStyle = Event_Renamed.ObjFillStyle;
 
-//            // UPGRADE_ISSUE: PictureBox メソッド pic.Circle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.Circle(x1, y1);/* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.DrawWidth = 1;
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillColor = ColorTranslator.ToOle(Color.White);
-//            // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillStyle = vbFSTransparent;
 //            if (pic2 is object)
 //            {
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.DrawWidth = Event_Renamed.ObjDrawWidth;
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.FillColor = Event_Renamed.ObjFillColor;
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.FillStyle = Event_Renamed.ObjFillStyle;
 
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Circle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.Circle(x1, y1);/* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.DrawWidth = 1;
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.FillColor = ColorTranslator.ToOle(Color.White);
-//                // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.FillStyle = vbFSTransparent;
 //            }
 
@@ -13644,9 +13369,7 @@
 //            {
 //                case "背景":
 //                    {
-//                        // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic = GUI.MainForm.picBack;
-//                        // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic2 = GUI.MainForm.picMaskedBack;
 //                        Map.IsMapDirty = true;
 //                        break;
@@ -13654,16 +13377,13 @@
 
 //                case "保持":
 //                    {
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic = GUI.MainForm.picMain(0);
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic2 = GUI.MainForm.picMain(1);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic = GUI.MainForm.picMain(0);
 //                        break;
 //                    }
@@ -13683,43 +13403,27 @@
 
 //            prev_clr = ColorTranslator.ToOle(pic.ForeColor);
 //            pic.ForeColor = ColorTranslator.FromOle(Event_Renamed.ObjColor);
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.DrawWidth = Event_Renamed.ObjDrawWidth;
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillColor = Event_Renamed.ObjFillColor;
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillStyle = Event_Renamed.ObjFillStyle;
 
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            GUI.Polygon(pic.hDC, ref points[0], (int)pnum - 1);
 //            pic.ForeColor = ColorTranslator.FromOle(prev_clr);
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.DrawWidth = 1;
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillColor = ColorTranslator.ToOle(Color.White);
-//            // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.FillStyle = vbFSTransparent;
 //            if (pic2 is object)
 //            {
 //                prev_clr = ColorTranslator.ToOle(pic2.ForeColor);
 //                pic2.ForeColor = ColorTranslator.FromOle(Event_Renamed.ObjColor);
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.DrawWidth = Event_Renamed.ObjDrawWidth;
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.FillColor = Event_Renamed.ObjFillColor;
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.FillStyle = Event_Renamed.ObjFillStyle;
 
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                GUI.Polygon(pic2.hDC, ref points[0], (int)pnum - 1);
 //                pic2.ForeColor = ColorTranslator.FromOle(prev_clr);
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.DrawWidth = 1;
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.FillColor はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.FillColor = ColorTranslator.ToOle(Color.White);
-//                // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.FillStyle = vbFSTransparent;
 //            }
 
@@ -13846,9 +13550,7 @@
 //            {
 //                case "背景":
 //                    {
-//                        // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic = GUI.MainForm.picBack;
-//                        // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic2 = GUI.MainForm.picMaskedBack;
 //                        Map.IsMapDirty = true;
 //                        break;
@@ -13856,16 +13558,13 @@
 
 //                case "保持":
 //                    {
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic = GUI.MainForm.picMain(0);
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic2 = GUI.MainForm.picMain(1);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        pic = GUI.MainForm.picMain(0);
 //                        break;
 //                    }
@@ -13943,25 +13642,19 @@
 //                clr = Event_Renamed.ObjColor;
 //            }
 
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.DrawWidth = Event_Renamed.ObjDrawWidth;
 
 //            // 点を描画
-//            // UPGRADE_ISSUE: PictureBox メソッド pic.PSet はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.PSet(xx, yy);/* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.DrawWidth = 1;
 //            if (pic2 is object)
 //            {
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.DrawWidth = Event_Renamed.ObjDrawWidth;
 
 //                // 点を描画
-//                // UPGRADE_ISSUE: PictureBox メソッド pic2.PSet はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.PSet(xx, yy);/* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic2.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic2.DrawWidth = 1;
 //            }
 
@@ -14619,7 +14312,6 @@
 //        private int ExecRefreshCmd()
 //        {
 //            int ExecRefreshCmdRet = default;
-//            // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //            GUI.MainForm.picMain(0).Refresh();
 //            ExecRefreshCmdRet = LineNum + 1;
 //            return ExecRefreshCmdRet;
@@ -17978,7 +17670,6 @@
 
 //            string argdraw_option = "";
 //            ret = Conversions.ToShort(GUI.DrawPicture(ref fname, SRC.DEFAULT_LEVEL, SRC.DEFAULT_LEVEL, dw, dh, 0, 0, 0, 0, ref argdraw_option));
-//            // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //            GUI.MainForm.picMain(0).Refresh();
 //            ExecShowImageCmdRet = LineNum + 1;
 //            return ExecShowImageCmdRet;
@@ -20710,14 +20401,10 @@
 //            GUI.SaveScreen();
 //            {
 //                var withBlock = GUI.MainForm;
-//                // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                {
 //                    var withBlock1 = withBlock.picTmp;
-//                    // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock1.Picture = Image.FromFile("");
-//                    // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock1.width = GUI.MainPWidth;
-//                    // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock1.Height = GUI.MainPHeight;
 //                }
 
@@ -20725,12 +20412,9 @@
 //                // ret = BitBlt(.picTmp.hDC, _
 //                // '            0, 0, MapPWidth, MapPHeight, _
 //                // '            .picMain(0).hDC, 0, 0, SRCCOPY)
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                ret = GUI.BitBlt(withBlock.picTmp.hDC, 0, 0, GUI.MainPWidth, GUI.MainPHeight, withBlock.picMain(0).hDC, 0, 0, GUI.SRCCOPY);
 //                // MOD END マージ
 
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                var argpic = withBlock.picMain(0);
 //                Graphics.InitFade(ref argpic, num, true);
 //                start_time = GeneralLib.timeGetTime();
@@ -20746,10 +20430,8 @@
 //                        }
 //                    }
 
-//                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    var argpic1 = withBlock.picMain(0);
 //                    Graphics.DoFade(ref argpic1, i);
-//                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock.picMain(0).Refresh();
 //                    cur_time = GeneralLib.timeGetTime();
 //                    while (cur_time < start_time + wait_time * (i + 1))
@@ -20761,20 +20443,13 @@
 
 //                Graphics.FinishFade();
 
-//                // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                ret = GUI.BitBlt(withBlock.picMain(0).hDC, 0, 0, GUI.MapPWidth, GUI.MapPHeight, withBlock.picTmp.hDC, 0, 0, GUI.SRCCOPY);
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                withBlock.picMain(0).Refresh();
 
-//                // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                {
 //                    var withBlock2 = withBlock.picTmp;
-//                    // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock2.Picture = Image.FromFile("");
-//                    // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock2.width = 32;
-//                    // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock2.Height = 32;
 //                }
 //            }
@@ -20822,7 +20497,6 @@
 //            GUI.SaveScreen();
 //            {
 //                var withBlock = GUI.MainForm;
-//                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                var argpic = withBlock.picMain(0);
 //                Graphics.InitFade(ref argpic, num, true);
 //                start_time = GeneralLib.timeGetTime();
@@ -20834,12 +20508,9 @@
 //                    {
 //                        if (GUI.IsRButtonPressed())
 //                        {
-//                            // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                            {
 //                                var withBlock1 = withBlock.picMain(0);
-//                                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                ret = GUI.PatBlt(withBlock1.hDC, 0, 0, withBlock1.width, withBlock1.Height, GUI.WHITENESS);
-//                                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                                withBlock1.Refresh();
 //                            }
 
@@ -20847,10 +20518,8 @@
 //                        }
 //                    }
 
-//                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    var argpic1 = withBlock.picMain(0);
 //                    Graphics.DoFade(ref argpic1, (int)num - i);
-//                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                    withBlock.picMain(0).Refresh();
 //                    cur_time = GeneralLib.timeGetTime();
 //                    while (cur_time < start_time + wait_time * (i + 1))

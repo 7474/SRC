@@ -238,7 +238,6 @@ namespace SRCCore.Commands
                 //    {
                 //        if (p.CountSpecialPower > 0)
                 //        {
-                //            // UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            GUI.MainForm.mnuMapCommandItem(SearchSpecialPowerCmdID).Visible = true;
                 //            break;
                 //        }
@@ -273,7 +272,6 @@ namespace SRCCore.Commands
                         // 実行用にインデックス作っとく
                         MapCommandLabelList[i] = lab;
                         // TODO 上限儲けるなら適当に打ち切る
-                        //// UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                         //GUI.MainForm.mnuMapCommandItem(i).Caption = lab.Para(2);
                         //MapCommandLabelList[i - MapCommand1CmdID + 1] = lab.LineNum.ToString();
                         //i = (i + 1);
@@ -295,22 +293,17 @@ namespace SRCCore.Commands
                 //    {
                 //        if (GUI.MouseX < GUI.MainPWidth / 2)
                 //        {
-                //            // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            GUI.MainForm.picUnitStatus.Move(GUI.MainPWidth - 240, 10);
                 //        }
                 //        else
                 //        {
-                //            // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            GUI.MainForm.picUnitStatus.Move(5, 10);
                 //        }
-                //        // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        GUI.MainForm.picUnitStatus.Visible = true;
                 //    }
                 //}
                 //// ADD  END  240a
                 ///
-                // UPGRADE_ISSUE: Control mnuMapCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                // UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 GUI.ShowMapCommandMenu(mapCommands);
                 return;
             }
@@ -417,7 +410,6 @@ namespace SRCCore.Commands
                 //                    object argIndex3 = localLIndex();
                 //                    if (SRC.UList.IsDefined(argIndex3))
                 //                    {
-                //                        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                        GUI.MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = true;
                 //                        break;
                 //                    }
@@ -427,7 +419,6 @@ namespace SRCCore.Commands
 
                 //            default:
                 //                {
-                //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                    GUI.MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = true;
                 //                    break;
                 //                }
@@ -439,7 +430,6 @@ namespace SRCCore.Commands
 
                 //        if (Strings.InStr(localAllFeatureData1(), "非表示") == 0)
                 //        {
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            GUI.MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = true;
                 //            break;
                 //        }
@@ -449,7 +439,6 @@ namespace SRCCore.Commands
                 //        string argoname5 = "アイテム交換";
                 //        if (Expression.IsOptionDefined(argoname5))
                 //        {
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            GUI.MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = true;
                 //            break;
                 //        }
@@ -476,7 +465,6 @@ namespace SRCCore.Commands
                 //                        string argoname7 = "防御力レベルアップ";
                 //                        if (!Expression.IsOptionDefined(argoname6) & !Expression.IsOptionDefined(argoname7))
                 //                        {
-                //                            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                            GUI.MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = true;
                 //                            break;
                 //                        }
@@ -507,7 +495,6 @@ namespace SRCCore.Commands
 
                 //                default:
                 //                    {
-                //                        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                        GUI.MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = true;
                 //                        break;
                 //                    }
@@ -523,10 +510,8 @@ namespace SRCCore.Commands
                 //    string argattr = "合";
                 //    if (currentUnit.IsAbilityMastered(i) & !currentUnit.IsDisabled(currentUnit.Ability(i).Name) & (!currentUnit.IsAbilityClassifiedAs(i, argattr) | currentUnit.IsCombinationAbilityAvailable(i, true)) & !currentUnit.Ability(i).IsItem())
                 //    {
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        string argtname1 = "アビリティ";
                 //        GUI.MainForm.mnuUnitCommandItem(AbilityListCmdID).Caption = Expression.Term(argtname1, SelectedUnit) + "一覧";
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        GUI.MainForm.mnuUnitCommandItem(AbilityListCmdID).Visible = true;
                 //        break;
                 //    }
@@ -549,9 +534,7 @@ namespace SRCCore.Commands
                 //        {
                 //            if (currentUnit.Summoner.Party == "味方")
                 //            {
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                GUI.MainForm.mnuUnitCommandItem(OrderCmdID).Caption = "命令";
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                GUI.MainForm.mnuUnitCommandItem(OrderCmdID).Visible = true;
                 //            }
                 //        }
@@ -569,9 +552,7 @@ namespace SRCCore.Commands
                 //        {
                 //            if (currentUnit.Master.Party == "味方")
                 //            {
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                GUI.MainForm.mnuUnitCommandItem(OrderCmdID).Caption = "命令";
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                GUI.MainForm.mnuUnitCommandItem(OrderCmdID).Visible = true;
                 //            }
                 //        }
@@ -582,7 +563,6 @@ namespace SRCCore.Commands
                 //    if (currentUnit.IsFeatureAvailable(argfname2))
                 //    {
                 //        // 特殊能力一覧
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        if (GUI.MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible)
                 //        {
                 //            UnitCommand(FeatureListCmdID);
@@ -598,9 +578,7 @@ namespace SRCCore.Commands
 
                 //    if (!string.IsNullOrEmpty(Map.MapFileName))
                 //    {
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        GUI.MainForm.mnuUnitCommandItem(MoveCmdID).Caption = "移動範囲";
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        GUI.MainForm.mnuUnitCommandItem(MoveCmdID).Visible = true;
                 //        var loopTo3 = currentUnit.CountWeapon();
                 //        for (i = 1; i <= loopTo3; i++)
@@ -609,9 +587,7 @@ namespace SRCCore.Commands
                 //            string argattr1 = "Ｍ";
                 //            if (currentUnit.IsWeaponAvailable(i, argref_mode) & !currentUnit.IsWeaponClassifiedAs(i, argattr1))
                 //            {
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Caption = "射程範囲";
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Visible = true;
                 //            }
                 //        }
@@ -624,13 +600,10 @@ namespace SRCCore.Commands
                 //        string argfname3 = "変形";
                 //        if (currentUnit.IsFeatureAvailable(argfname3))
                 //        {
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            object argIndex17 = "変形";
                 //            GUI.MainForm.mnuUnitCommandItem(TransformCmdID).Caption = currentUnit.FeatureName(argIndex17);
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            if (GUI.MainForm.mnuUnitCommandItem(TransformCmdID).Caption == "")
                 //            {
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                GUI.MainForm.mnuUnitCommandItem(TransformCmdID).Caption = "変形";
                 //            }
 
@@ -646,7 +619,6 @@ namespace SRCCore.Commands
 
                 //                if (localOtherForm().IsAvailable())
                 //                {
-                //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                    GUI.MainForm.mnuUnitCommandItem(TransformCmdID).Visible = true;
                 //                    break;
                 //                }
@@ -657,15 +629,11 @@ namespace SRCCore.Commands
                 //        string argfname5 = "分離";
                 //        if (currentUnit.IsFeatureAvailable(argfname5))
                 //        {
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible = true;
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            object argIndex20 = "分離";
                 //            GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Caption = currentUnit.FeatureName(argIndex20);
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            if (GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Caption == "")
                 //            {
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Caption = "分離";
                 //            }
 
@@ -680,14 +648,12 @@ namespace SRCCore.Commands
 
                 //                if (!localIsDefined())
                 //                {
-                //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                    GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible = false;
                 //                    break;
                 //                }
                 //            }
 
                 //            // パイロットが足らない場合も分離を行わない
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            if (GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible)
                 //            {
                 //                n = 0;
@@ -708,7 +674,6 @@ namespace SRCCore.Commands
 
                 //                if (currentUnit.CountPilot() < n)
                 //                {
-                //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                    GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible = false;
                 //                }
                 //            }
@@ -717,16 +682,12 @@ namespace SRCCore.Commands
                 //        string argfname6 = "パーツ分離";
                 //        if (currentUnit.IsFeatureAvailable(argfname6))
                 //        {
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            object argIndex22 = "パーツ分離";
                 //            GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Caption = currentUnit.FeatureName(argIndex22);
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            if (GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Caption == "")
                 //            {
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Caption = "パーツ分離";
                 //            }
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible = true;
                 //        }
 
@@ -788,17 +749,13 @@ namespace SRCCore.Commands
 
                 //                    if (n == localLLength() - 2)
                 //                    {
-                //                        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                        GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Visible = true;
-                //                        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                        string localFeatureData3() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
 
                 //                        string arglist3 = localFeatureData3();
                 //                        GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Caption = GeneralLib.LIndex(arglist3, 1);
-                //                        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                        if (GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Caption == "非表示")
                 //                        {
-                //                            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                            GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Caption = "合体";
                 //                        }
 
@@ -809,9 +766,7 @@ namespace SRCCore.Commands
                 //        }
                 //        else if (currentUnit.IsFeatureAvailable(argfname9))
                 //        {
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Caption = "パーツ合体";
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Visible = true;
                 //        }
 
@@ -830,16 +785,12 @@ namespace SRCCore.Commands
 
                 //                if (localOtherForm1().IsAvailable())
                 //                {
-                //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                    GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Visible = true;
-                //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                    object argIndex26 = "ハイパーモード";
                 //                    string arglist5 = currentUnit.FeatureData(argIndex26);
                 //                    GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = GeneralLib.LIndex(arglist5, 1);
-                //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                    if (GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption == "非表示")
                 //                    {
-                //                        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                        GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = "ハイパーモード";
                 //                    }
                 //                }
@@ -853,15 +804,12 @@ namespace SRCCore.Commands
 
                 //                if (localOtherForm2().IsAvailable())
                 //                {
-                //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                    GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Visible = true;
-                //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                    GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = "ノーマルモード";
                 //                    string localLIndex3() { object argIndex1 = "変形"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
 
                 //                    if ((uname ?? "") == (localLIndex3() ?? ""))
                 //                    {
-                //                        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                        GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Visible = false;
                 //                    }
                 //                }
@@ -873,23 +821,19 @@ namespace SRCCore.Commands
                 //            object argIndex29 = "ノーマルモード";
                 //            if (Strings.InStr(currentUnit.FeatureData(argIndex29), "手動解除") > 0)
                 //            {
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Visible = true;
                 //                string argfname12 = "変身解除コマンド名";
                 //                if (currentUnit.IsFeatureAvailable(argfname12))
                 //                {
-                //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                    object argIndex28 = "変身解除コマンド名";
                 //                    GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = currentUnit.FeatureData(argIndex28);
                 //                }
                 //                else if (currentUnit.IsHero())
                 //                {
-                //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                    GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = "変身解除";
                 //                }
                 //                else
                 //                {
-                //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                    GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = "特殊モード解除";
                 //                }
                 //            }
@@ -899,7 +843,6 @@ namespace SRCCore.Commands
                 //        string argfname13 = "換装";
                 //        if (currentUnit.IsFeatureAvailable(argfname13))
                 //        {
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            GUI.MainForm.mnuUnitCommandItem(OrderCmdID).Caption = "換装";
                 //            object argIndex32 = "換装";
                 //            string arglist8 = currentUnit.FeatureData(argIndex32);
@@ -913,7 +856,6 @@ namespace SRCCore.Commands
 
                 //                if (localOtherForm3().IsAvailable())
                 //                {
-                //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                    GUI.MainForm.mnuUnitCommandItem(OrderCmdID).Visible = true;
                 //                    break;
                 //                }
@@ -930,7 +872,6 @@ namespace SRCCore.Commands
                 //                        var withBlock8 = withBlock7.Item(argIndex33);
                 //                        if (withBlock8.get_AliasType(1) == "換装")
                 //                        {
-                //                            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                            GUI.MainForm.mnuUnitCommandItem(OrderCmdID).Caption = withBlock8.Name;
                 //                            break;
                 //                        }
@@ -957,20 +898,16 @@ namespace SRCCore.Commands
 
                 //                    if (lab.CountPara() <= 3)
                 //                    {
-                //                        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                        GUI.MainForm.mnuUnitCommandItem(i).Visible = true;
                 //                    }
                 //                    else if (localGetValueAsLong() != 0)
                 //                    {
-                //                        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                        GUI.MainForm.mnuUnitCommandItem(i).Visible = true;
                 //                    }
                 //                }
 
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                if (GUI.MainForm.mnuUnitCommandItem(i).Visible)
                 //                {
-                //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                    GUI.MainForm.mnuUnitCommandItem(i).Caption = lab.Para(2);
                 //                    UnitCommandLabelList[i - UnitCommand1CmdID + 1] = lab.LineNum.ToString();
                 //                    i = (i + 1);
@@ -989,19 +926,13 @@ namespace SRCCore.Commands
                 //    object argIndex35 = "ユニット情報隠蔽";
                 //    if (Expression.IsOptionDefined(argoname8) & !currentUnit.IsConditionSatisfied(argIndex34) & (currentUnit.Party0 == "敵" | currentUnit.Party0 == "中立") | currentUnit.IsConditionSatisfied(argIndex35))
                 //    {
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        GUI.MainForm.mnuUnitCommandItem(MoveCmdID).Visible = true;
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Visible = false;
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        GUI.MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = false;
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        GUI.MainForm.mnuUnitCommandItem(WeaponListCmdID).Visible = false;
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        GUI.MainForm.mnuUnitCommandItem(AbilityListCmdID).Visible = false;
                 //        for (i = 1; i <= WaitCmdID; i++)
                 //        {
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            if (GUI.MainForm.mnuUnitCommandItem(i).Visible)
                 //            {
                 //                break;
@@ -1016,21 +947,16 @@ namespace SRCCore.Commands
                 //            return;
                 //        }
                 //        // メニューコマンドを全て殺してしまうとエラーになるのでここで非表示
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        GUI.MainForm.mnuUnitCommandItem(MoveCmdID).Visible = false;
                 //    }
 
                 //    GUI.IsGUILocked = false;
                 //    if (by_cancel)
                 //    {
-                //        // UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                //        // UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 //        GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY + 5f);
                 //    }
                 //    else
                 //    {
-                //        // UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                //        // UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 //        GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY - 6f);
                 //    }
 
@@ -1048,7 +974,6 @@ namespace SRCCore.Commands
                 //        {
                 //            if (currentUnit.CountUnitOnBoard() > 0)
                 //            {
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                GUI.MainForm.mnuUnitCommandItem(LaunchCmdID).Visible = true;
                 //            }
                 //        }
@@ -1070,21 +995,17 @@ namespace SRCCore.Commands
 
                 //                    if (lab.CountPara() <= 3)
                 //                    {
-                //                        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                        GUI.MainForm.mnuUnitCommandItem(i).Visible = true;
                 //                    }
                 //                    else if (localStrToLng1() != 0)
                 //                    {
-                //                        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                        GUI.MainForm.mnuUnitCommandItem(i).Visible = true;
                 //                    }
                 //                }
                 //            }
 
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            if (GUI.MainForm.mnuUnitCommandItem(i).Visible)
                 //            {
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                GUI.MainForm.mnuUnitCommandItem(i).Caption = lab.Para(2);
                 //                UnitCommandLabelList[i - UnitCommand1CmdID + 1] = lab.LineNum.ToString();
                 //                i = (i + 1);
@@ -1097,8 +1018,6 @@ namespace SRCCore.Commands
                 //    }
 
                 //    GUI.IsGUILocked = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                //    // UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY - 5f);
                 //    return;
                 //}
@@ -1126,7 +1045,6 @@ namespace SRCCore.Commands
                     //    }
                     //    else
                     //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        GUI.MainForm.mnuUnitCommandItem(TeleportCmdID).Caption = "テレポート";
                     //    }
 
@@ -1140,7 +1058,6 @@ namespace SRCCore.Commands
 
                     //        if (currentUnit.EN >= Conversions.Toint(localLIndex5()))
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            GUI.MainForm.mnuUnitCommandItem(TeleportCmdID).Visible = true;
                     //        }
                     //        // 通常移動がテレポートの場合
@@ -1149,20 +1066,17 @@ namespace SRCCore.Commands
                     //        object argIndex39 = "テレポート";
                     //        if (currentUnit.Speed0 == 0 | currentUnit.FeatureLevel(argIndex39) >= 0d & localLIndex6() == "0")
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            GUI.MainForm.mnuUnitCommandItem(MoveCmdID).Visible = false;
                     //        }
                     //    }
                     //    else if (currentUnit.EN >= 40)
                     //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        GUI.MainForm.mnuUnitCommandItem(TeleportCmdID).Visible = true;
                     //    }
 
                     //    object argIndex41 = "移動不能";
                     //    if (currentUnit.IsConditionSatisfied(argIndex41))
                     //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        GUI.MainForm.mnuUnitCommandItem(TeleportCmdID).Visible = false;
                     //    }
                     //}
@@ -1174,14 +1088,12 @@ namespace SRCCore.Commands
                     //    object argIndex43 = "ジャンプ";
                     //    if (Strings.Len(currentUnit.FeatureData(argIndex43)) > 0)
                     //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        object argIndex42 = "ジャンプ";
                     //        string arglist11 = currentUnit.FeatureData(argIndex42);
                     //        GUI.MainForm.mnuUnitCommandItem(JumpCmdID).Caption = GeneralLib.LIndex(arglist11, 1);
                     //    }
                     //    else
                     //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        GUI.MainForm.mnuUnitCommandItem(JumpCmdID).Caption = "ジャンプ";
                     //    }
 
@@ -1195,7 +1107,6 @@ namespace SRCCore.Commands
 
                     //        if (currentUnit.EN >= Conversions.Toint(localLIndex8()))
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            GUI.MainForm.mnuUnitCommandItem(JumpCmdID).Visible = true;
                     //        }
                     //        // 通常移動がジャンプの場合
@@ -1204,18 +1115,15 @@ namespace SRCCore.Commands
                     //        object argIndex44 = "ジャンプ";
                     //        if (currentUnit.Speed0 == 0 | currentUnit.FeatureLevel(argIndex44) >= 0d & localLIndex9() == "0")
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            GUI.MainForm.mnuUnitCommandItem(MoveCmdID).Visible = false;
                     //        }
                     //    }
                     //    else
                     //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        GUI.MainForm.mnuUnitCommandItem(JumpCmdID).Visible = true;
                     //        object argIndex45 = "ジャンプ";
                     //        if (currentUnit.FeatureLevel(argIndex45) >= 0d)
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            GUI.MainForm.mnuUnitCommandItem(MoveCmdID).Visible = false;
                     //        }
                     //    }
@@ -1223,7 +1131,6 @@ namespace SRCCore.Commands
                     //    object argIndex47 = "移動不能";
                     //    if (currentUnit.IsConditionSatisfied(argIndex47))
                     //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        GUI.MainForm.mnuUnitCommandItem(JumpCmdID).Visible = false;
                     //    }
                     //}
@@ -1281,7 +1188,6 @@ namespace SRCCore.Commands
                     //        string arglname1 = "会話 " + currentUnit.MainPilot().ID + " " + u.MainPilot().ID;
                     //        if (Event.IsEventDefined(arglname1))
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            GUI.MainForm.mnuUnitCommandItem(TalkCmdID).Visible = true;
                     //            break;
                     //        }
@@ -1302,7 +1208,6 @@ namespace SRCCore.Commands
                     //object argIndex48 = "攻撃不能";
                     //if (currentUnit.IsConditionSatisfied(argIndex48))
                     //{
-                    //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //    GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Visible = false;
                     //}
 
@@ -1364,7 +1269,6 @@ namespace SRCCore.Commands
                     //                object argIndex49 = "ゾンビ";
                     //                if ((withBlock9.Party == "味方" | withBlock9.Party == "ＮＰＣ") & withBlock9.HP < withBlock9.MaxHP & !withBlock9.IsConditionSatisfied(argIndex49))
                     //                {
-                    //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //                    GUI.MainForm.mnuUnitCommandItem(FixCmdID).Visible = true;
                     //                    break;
                     //                }
@@ -1375,7 +1279,6 @@ namespace SRCCore.Commands
                     //    object argIndex51 = "修理装置";
                     //    if (Strings.Len(currentUnit.FeatureData(argIndex51)) > 0)
                     //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        object argIndex50 = "修理装置";
                     //        string arglist13 = currentUnit.FeatureData(argIndex50);
                     //        GUI.MainForm.mnuUnitCommandItem(FixCmdID).Caption = GeneralLib.LIndex(arglist13, 1);
@@ -1389,14 +1292,12 @@ namespace SRCCore.Commands
 
                     //            if (currentUnit.EN < Conversions.Toint(localLIndex11()))
                     //            {
-                    //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //                GUI.MainForm.mnuUnitCommandItem(FixCmdID).Visible = false;
                     //            }
                     //        }
                     //    }
                     //    else
                     //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        GUI.MainForm.mnuUnitCommandItem(FixCmdID).Caption = "修理装置";
                     //    }
                     //}
@@ -1461,7 +1362,6 @@ namespace SRCCore.Commands
                     //                    object argIndex52 = "ゾンビ";
                     //                    if (withBlock10.EN < withBlock10.MaxEN & !withBlock10.IsConditionSatisfied(argIndex52))
                     //                    {
-                    //                        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //                        GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = true;
                     //                    }
                     //                    else
@@ -1471,7 +1371,6 @@ namespace SRCCore.Commands
                     //                        {
                     //                            if (withBlock10.Bullet(j) < withBlock10.MaxBullet(j))
                     //                            {
-                    //                                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //                                GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = true;
                     //                                break;
                     //                            }
@@ -1482,7 +1381,6 @@ namespace SRCCore.Commands
                     //                        {
                     //                            if (withBlock10.Stock(j) < withBlock10.MaxStock(j))
                     //                            {
-                    //                                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //                                GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = true;
                     //                                break;
                     //                            }
@@ -1496,7 +1394,6 @@ namespace SRCCore.Commands
                     //    object argIndex54 = "補給装置";
                     //    if (Strings.Len(currentUnit.FeatureData(argIndex54)) > 0)
                     //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        object argIndex53 = "補給装置";
                     //        string arglist14 = currentUnit.FeatureData(argIndex53);
                     //        GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Caption = GeneralLib.LIndex(arglist14, 1);
@@ -1510,14 +1407,12 @@ namespace SRCCore.Commands
 
                     //            if (currentUnit.EN < Conversions.Toint(localLIndex14()) | currentUnit.MainPilot().Morale < 100)
                     //            {
-                    //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //                GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = false;
                     //            }
                     //        }
                     //    }
                     //    else
                     //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Caption = "補給装置";
                     //    }
                     //}
@@ -1533,7 +1428,6 @@ namespace SRCCore.Commands
                     //        string argref_mode2 = "移動前";
                     //        if (currentUnit.IsAbilityUseful(i, argref_mode2))
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            GUI.MainForm.mnuUnitCommandItem(AbilityCmdID).Visible = true;
                     //        }
                     //    }
@@ -1543,7 +1437,6 @@ namespace SRCCore.Commands
                     {
                         unitCommands.RemoveItem(x => x.Id == AbilityCmdID);
                     }
-                    //// UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //string argtname2 = "アビリティ";
                     //GUI.MainForm.mnuUnitCommandItem(AbilityCmdID).Caption = Expression.Term(argtname2, SelectedUnit);
                     //if (n == 1)
@@ -1553,7 +1446,6 @@ namespace SRCCore.Commands
                     //    {
                     //        if (!currentUnit.Ability(i).IsItem() & currentUnit.IsAbilityMastered(i))
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            GUI.MainForm.mnuUnitCommandItem(AbilityCmdID).Caption = currentUnit.AbilityNickname(i);
                     //            break;
                     //        }
@@ -1573,7 +1465,6 @@ namespace SRCCore.Commands
                     //            string argref_mode3 = "チャージ";
                     //            if (currentUnit.IsWeaponAvailable(i, argref_mode3))
                     //            {
-                    //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //                GUI.MainForm.mnuUnitCommandItem(ChargeCmdID).Visible = true;
                     //                break;
                     //            }
@@ -1589,7 +1480,6 @@ namespace SRCCore.Commands
                     //            string argref_mode4 = "チャージ";
                     //            if (currentUnit.IsAbilityAvailable(i, argref_mode4))
                     //            {
-                    //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //                GUI.MainForm.mnuUnitCommandItem(ChargeCmdID).Visible = true;
                     //                break;
                     //            }
@@ -1598,12 +1488,10 @@ namespace SRCCore.Commands
                     //}
 
                     //// スペシャルパワーコマンド
-                    //// UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //string argtname3 = "スペシャルパワー";
                     //GUI.MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Caption = Expression.Term(argtname3, SelectedUnit);
                     //if (currentUnit.MainPilot().CountSpecialPower > 0)
                     //{
-                    //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //    GUI.MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Visible = true;
                     //}
                     //else
@@ -1615,7 +1503,6 @@ namespace SRCCore.Commands
 
                     //        if (localPilot().CountSpecialPower > 0)
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            GUI.MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Visible = true;
                     //            break;
                     //        }
@@ -1628,7 +1515,6 @@ namespace SRCCore.Commands
 
                     //        if (localSupport().CountSpecialPower > 0)
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            GUI.MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Visible = true;
                     //            break;
                     //        }
@@ -1639,7 +1525,6 @@ namespace SRCCore.Commands
                     //    {
                     //        if (currentUnit.AdditionalSupport().CountSpecialPower > 0)
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            GUI.MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Visible = true;
                     //        }
                     //    }
@@ -1649,7 +1534,6 @@ namespace SRCCore.Commands
                     //object argIndex57 = "スペシャルパワー使用不能";
                     //if (currentUnit.IsConditionSatisfied(argIndex56) | currentUnit.IsConditionSatisfied(argIndex57))
                     //{
-                    //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //    GUI.MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Visible = false;
                     //}
 
@@ -1660,7 +1544,6 @@ namespace SRCCore.Commands
                     //object argIndex63 = "機体固定";
                     //if (currentUnit.IsFeatureAvailable(argfname20) & !string.IsNullOrEmpty(currentUnit.FeatureName(argIndex61)) & !currentUnit.IsConditionSatisfied(argIndex62) & !currentUnit.IsConditionSatisfied(argIndex63))
                     //{
-                    //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //    object argIndex58 = "変形";
                     //    GUI.MainForm.mnuUnitCommandItem(TransformCmdID).Caption = currentUnit.FeatureName(argIndex58);
                     //    object argIndex60 = "変形";
@@ -1675,7 +1558,6 @@ namespace SRCCore.Commands
 
                     //        if (localOtherForm4().IsAvailable())
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            GUI.MainForm.mnuUnitCommandItem(TransformCmdID).Visible = true;
                     //            break;
                     //        }
@@ -1689,9 +1571,7 @@ namespace SRCCore.Commands
                     //object argIndex68 = "機体固定";
                     //if (currentUnit.IsFeatureAvailable(argfname22) & !string.IsNullOrEmpty(currentUnit.FeatureName(argIndex66)) & !currentUnit.IsConditionSatisfied(argIndex67) & !currentUnit.IsConditionSatisfied(argIndex68))
                     //{
-                    //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //    GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible = true;
-                    //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //    object argIndex64 = "分離";
                     //    GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Caption = currentUnit.FeatureName(argIndex64);
                     //    object argIndex65 = "分離";
@@ -1705,14 +1585,12 @@ namespace SRCCore.Commands
 
                     //        if (!localIsDefined2())
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible = false;
                     //            break;
                     //        }
                     //    }
 
                     //    // パイロットが足らない場合も分離を行わない
-                    //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //    if (GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible)
                     //    {
                     //        n = 0;
@@ -1733,7 +1611,6 @@ namespace SRCCore.Commands
 
                     //        if (currentUnit.CountPilot() < n)
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible = false;
                     //        }
                     //    }
@@ -1743,10 +1620,8 @@ namespace SRCCore.Commands
                     //object argIndex70 = "パーツ分離";
                     //if (currentUnit.IsFeatureAvailable(argfname23) & !string.IsNullOrEmpty(currentUnit.FeatureName(argIndex70)))
                     //{
-                    //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //    object argIndex69 = "パーツ分離";
                     //    GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Caption = currentUnit.FeatureName(argIndex69);
-                    //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //    GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible = true;
                     //}
 
@@ -1832,9 +1707,7 @@ namespace SRCCore.Commands
 
                     //            if (n == localLLength1() - 2)
                     //            {
-                    //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //                GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Visible = true;
-                    //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //                string localFeatureData8() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
 
                     //                string arglist19 = localFeatureData8();
@@ -1869,9 +1742,7 @@ namespace SRCCore.Commands
                     //        object argIndex78 = "行動不能";
                     //        if (!localOtherForm5().IsConditionSatisfied(argIndex78) & localOtherForm6().IsAbleToEnter(currentUnit.x, currentUnit.y))
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Visible = true;
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            object argIndex77 = "ハイパーモード";
                     //            string arglist21 = currentUnit.FeatureData(argIndex77);
                     //            GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = GeneralLib.LIndex(arglist21, 1);
@@ -1884,23 +1755,19 @@ namespace SRCCore.Commands
                     //    object argIndex87 = "ノーマルモード";
                     //    if (Strings.InStr(currentUnit.FeatureData(argIndex87), "手動解除") > 0)
                     //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Visible = true;
                     //        string argfname27 = "変身解除コマンド名";
                     //        if (currentUnit.IsFeatureAvailable(argfname27))
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            object argIndex86 = "変身解除コマンド名";
                     //            GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = currentUnit.FeatureData(argIndex86);
                     //        }
                     //        else if (currentUnit.IsHero())
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = "変身解除";
                     //        }
                     //        else
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = "特殊モード解除";
                     //        }
                     //    }
@@ -1975,7 +1842,6 @@ namespace SRCCore.Commands
                     //{
                     //    if (currentUnit.CountUnitOnBoard() > 0)
                     //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        GUI.MainForm.mnuUnitCommandItem(LaunchCmdID).Visible = true;
                     //    }
                     //}
@@ -1987,7 +1853,6 @@ namespace SRCCore.Commands
                     //    string argref_mode5 = "移動前";
                     //    if (currentUnit.IsAbilityUseful(i, argref_mode5) & currentUnit.Ability(i).IsItem())
                     //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        GUI.MainForm.mnuUnitCommandItem(ItemCmdID).Visible = true;
                     //        break;
                     //    }
@@ -1995,7 +1860,6 @@ namespace SRCCore.Commands
 
                     //if (currentUnit.Area == "地中")
                     //{
-                    //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //    GUI.MainForm.mnuUnitCommandItem(ItemCmdID).Visible = false;
                     //}
 
@@ -2012,7 +1876,6 @@ namespace SRCCore.Commands
                     //            case "出撃":
                     //            case "格納":
                     //                {
-                    //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //                    GUI.MainForm.mnuUnitCommandItem(DismissCmdID).Visible = true;
                     //                    break;
                     //                }
@@ -2021,7 +1884,6 @@ namespace SRCCore.Commands
                     //            case "旧形態":
                     //                {
                     //                    // 合体後の形態が出撃中なら使用不可
-                    //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //                    GUI.MainForm.mnuUnitCommandItem(DismissCmdID).Visible = true;
                     //                    var loopTo27 = withBlock12.CountFeature();
                     //                    for (j = 1; j <= loopTo27; j++)
@@ -2042,7 +1904,6 @@ namespace SRCCore.Commands
                     //                                    var withBlock13 = localItem2().CurrentForm();
                     //                                    if (withBlock13.Status_Renamed == "出撃" | withBlock13.Status_Renamed == "格納")
                     //                                    {
-                    //                                        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //                                        GUI.MainForm.mnuUnitCommandItem(DismissCmdID).Visible = false;
                     //                                    }
                     //                                }
@@ -2059,13 +1920,11 @@ namespace SRCCore.Commands
                     //string argfname30 = "召喚解除コマンド名";
                     //if (currentUnit.IsFeatureAvailable(argfname30))
                     //{
-                    //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //    object argIndex91 = "召喚解除コマンド名";
                     //    GUI.MainForm.mnuUnitCommandItem(DismissCmdID).Caption = currentUnit.FeatureData(argIndex91);
                     //}
                     //else
                     //{
-                    //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //    GUI.MainForm.mnuUnitCommandItem(DismissCmdID).Caption = "召喚解除";
                     //}
 
@@ -2085,21 +1944,17 @@ namespace SRCCore.Commands
 
                     //                if (lab.CountPara() <= 3)
                     //                {
-                    //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //                    GUI.MainForm.mnuUnitCommandItem(i).Visible = true;
                     //                }
                     //                else if (localStrToLng2() != 0)
                     //                {
-                    //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //                    GUI.MainForm.mnuUnitCommandItem(i).Visible = true;
                     //                }
                     //            }
                     //        }
 
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //        if (GUI.MainForm.mnuUnitCommandItem(i).Visible)
                     //        {
-                    //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     //            GUI.MainForm.mnuUnitCommandItem(i).Caption = lab.Para(2);
                     //            UnitCommandLabelList[i - UnitCommand1CmdID + 1] = lab.LineNum.ToString();
                     //            i = (i + 1);
@@ -2129,14 +1984,10 @@ namespace SRCCore.Commands
             GUI.ShowUnitCommandMenu(unitCommands.OrderBy(x => x.Id).ToList());
             //if (by_cancel)
             //{
-            //    // UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    // UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
             //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY + 5f);
             //}
             //else
             //{
-            //    // UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    // UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
             //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY - 6f);
             //}
         }
@@ -2169,7 +2020,6 @@ namespace SRCCore.Commands
                 unitCommands.Add(new UiCommand(WaitCmdID, "待機"));
 
                 //// 会話コマンド
-                //// UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //GUI.MainForm.mnuUnitCommandItem(TalkCmdID).Visible = false;
                 //for (i = 1; i <= 4; i++)
                 //{
@@ -2223,7 +2073,6 @@ namespace SRCCore.Commands
                 //        string arglname2 = "会話 " + currentUnit.MainPilot().ID + " " + u.MainPilot().ID;
                 //        if (Event.IsEventDefined(arglname2))
                 //        {
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            GUI.MainForm.mnuUnitCommandItem(TalkCmdID).Visible = true;
                 //            break;
                 //        }
@@ -2238,19 +2087,16 @@ namespace SRCCore.Commands
 
                 //if (currentUnit.Area == "地中")
                 //{
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Visible = false;
                 //}
 
                 //object argIndex92 = "攻撃不能";
                 //if (currentUnit.IsConditionSatisfied(argIndex92))
                 //{
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Visible = false;
                 //}
 
                 //// 修理コマンド
-                //// UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //GUI.MainForm.mnuUnitCommandItem(FixCmdID).Visible = false;
                 //string argfname31 = "修理装置";
                 //if (currentUnit.IsFeatureAvailable(argfname31) & currentUnit.Area != "地中")
@@ -2308,7 +2154,6 @@ namespace SRCCore.Commands
                 //                var withBlock16 = u;
                 //                if ((withBlock16.Party == "味方" | withBlock16.Party == "ＮＰＣ") & withBlock16.HP < withBlock16.MaxHP)
                 //                {
-                //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                    GUI.MainForm.mnuUnitCommandItem(FixCmdID).Visible = true;
                 //                    break;
                 //                }
@@ -2319,7 +2164,6 @@ namespace SRCCore.Commands
                 //    object argIndex94 = "修理装置";
                 //    if (Strings.Len(currentUnit.FeatureData(argIndex94)) > 0)
                 //    {
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        object argIndex93 = "修理装置";
                 //        string arglist23 = currentUnit.FeatureData(argIndex93);
                 //        GUI.MainForm.mnuUnitCommandItem(FixCmdID).Caption = GeneralLib.LIndex(arglist23, 1);
@@ -2333,20 +2177,17 @@ namespace SRCCore.Commands
 
                 //            if (currentUnit.EN < Conversions.Toint(localLIndex18()))
                 //            {
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                GUI.MainForm.mnuUnitCommandItem(FixCmdID).Visible = false;
                 //            }
                 //        }
                 //    }
                 //    else
                 //    {
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        GUI.MainForm.mnuUnitCommandItem(FixCmdID).Caption = "修理装置";
                 //    }
                 //}
 
                 //// 補給コマンド
-                //// UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = false;
                 //string argfname32 = "補給装置";
                 //if (currentUnit.IsFeatureAvailable(argfname32) & currentUnit.Area != "地中")
@@ -2406,7 +2247,6 @@ namespace SRCCore.Commands
                 //                {
                 //                    if (withBlock17.EN < withBlock17.MaxEN)
                 //                    {
-                //                        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                        GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = true;
                 //                    }
                 //                    else
@@ -2416,7 +2256,6 @@ namespace SRCCore.Commands
                 //                        {
                 //                            if (withBlock17.Bullet(j) < withBlock17.MaxBullet(j))
                 //                            {
-                //                                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                                GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = true;
                 //                                break;
                 //                            }
@@ -2427,7 +2266,6 @@ namespace SRCCore.Commands
                 //                        {
                 //                            if (withBlock17.Stock(j) < withBlock17.MaxStock(j))
                 //                            {
-                //                                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                                GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = true;
                 //                                break;
                 //                            }
@@ -2441,7 +2279,6 @@ namespace SRCCore.Commands
                 //    object argIndex96 = "補給装置";
                 //    if (Strings.Len(currentUnit.FeatureData(argIndex96)) > 0)
                 //    {
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        object argIndex95 = "補給装置";
                 //        string arglist24 = currentUnit.FeatureData(argIndex95);
                 //        GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Caption = GeneralLib.LIndex(arglist24, 1);
@@ -2455,14 +2292,12 @@ namespace SRCCore.Commands
 
                 //            if (currentUnit.EN < Conversions.Toint(localLIndex21()) | currentUnit.MainPilot().Morale < 100)
                 //            {
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = false;
                 //            }
                 //        }
                 //    }
                 //    else
                 //    {
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Caption = "補給装置";
                 //    }
 
@@ -2470,13 +2305,11 @@ namespace SRCCore.Commands
                 //    string argsname = "補給";
                 //    if (Expression.IsOptionDefined(argoname9) & !SelectedUnit.MainPilot().IsSkillAvailable(argsname))
                 //    {
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = false;
                 //    }
                 //}
 
                 //// アビリティコマンド
-                //// UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //GUI.MainForm.mnuUnitCommandItem(AbilityCmdID).Visible = false;
                 //n = 0;
                 //var loopTo31 = currentUnit.CountAbility();
@@ -2488,7 +2321,6 @@ namespace SRCCore.Commands
                 //        string argref_mode7 = "移動後";
                 //        if (currentUnit.IsAbilityUseful(i, argref_mode7))
                 //        {
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            GUI.MainForm.mnuUnitCommandItem(AbilityCmdID).Visible = true;
                 //        }
                 //    }
@@ -2496,10 +2328,8 @@ namespace SRCCore.Commands
 
                 //if (currentUnit.Area == "地中")
                 //{
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    GUI.MainForm.mnuUnitCommandItem(AbilityCmdID).Visible = false;
                 //}
-                //// UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //string argtname4 = "アビリティ";
                 //GUI.MainForm.mnuUnitCommandItem(AbilityCmdID).Caption = Expression.Term(argtname4, SelectedUnit);
                 //if (n == 1)
@@ -2509,7 +2339,6 @@ namespace SRCCore.Commands
                 //    {
                 //        if (!currentUnit.Ability(i).IsItem())
                 //        {
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            GUI.MainForm.mnuUnitCommandItem(AbilityCmdID).Caption = currentUnit.AbilityNickname(i);
                 //            break;
                 //        }
@@ -2518,18 +2347,13 @@ namespace SRCCore.Commands
 
                 //{
                 //    var withBlock18 = GUI.MainForm;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock18.mnuUnitCommandItem(ChargeCmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock18.mnuUnitCommandItem(SpecialPowerCmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock18.mnuUnitCommandItem(TransformCmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock18.mnuUnitCommandItem(SplitCmdID).Visible = false;
                 //}
 
                 //// 合体コマンド
-                //// UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Visible = false;
                 //string argfname34 = "合体";
                 //object argIndex100 = "形態固定";
@@ -2609,9 +2433,7 @@ namespace SRCCore.Commands
 
                 //            if (n == localLLength3() - 2)
                 //            {
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Visible = true;
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                string localFeatureData15() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
 
                 //                string arglist27 = localFeatureData15();
@@ -2624,22 +2446,15 @@ namespace SRCCore.Commands
 
                 //{
                 //    var withBlock19 = GUI.MainForm;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock19.mnuUnitCommandItem(HyperModeCmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock19.mnuUnitCommandItem(GroundCmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock19.mnuUnitCommandItem(SkyCmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock19.mnuUnitCommandItem(UndergroundCmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock19.mnuUnitCommandItem(WaterCmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock19.mnuUnitCommandItem(LaunchCmdID).Visible = false;
                 //}
 
                 //// アイテムコマンド
-                //// UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //GUI.MainForm.mnuUnitCommandItem(ItemCmdID).Visible = false;
                 //var loopTo35 = currentUnit.CountAbility();
                 //for (i = 1; i <= loopTo35; i++)
@@ -2647,7 +2462,6 @@ namespace SRCCore.Commands
                 //    string argref_mode8 = "移動後";
                 //    if (currentUnit.IsAbilityUseful(i, argref_mode8) & currentUnit.Ability(i).IsItem())
                 //    {
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        GUI.MainForm.mnuUnitCommandItem(ItemCmdID).Visible = true;
                 //        break;
                 //    }
@@ -2655,41 +2469,25 @@ namespace SRCCore.Commands
 
                 //if (currentUnit.Area == "地中")
                 //{
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    GUI.MainForm.mnuUnitCommandItem(ItemCmdID).Visible = false;
                 //}
 
                 //{
                 //    var withBlock20 = GUI.MainForm;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock20.mnuUnitCommandItem(DismissCmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock20.mnuUnitCommandItem(OrderCmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock20.mnuUnitCommandItem(FeatureListCmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock20.mnuUnitCommandItem(WeaponListCmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock20.mnuUnitCommandItem(AbilityListCmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock20.mnuUnitCommandItem(UnitCommand1CmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock20.mnuUnitCommandItem(UnitCommand2CmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock20.mnuUnitCommandItem(UnitCommand3CmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock20.mnuUnitCommandItem(UnitCommand4CmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock20.mnuUnitCommandItem(UnitCommand5CmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock20.mnuUnitCommandItem(UnitCommand6CmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock20.mnuUnitCommandItem(UnitCommand7CmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock20.mnuUnitCommandItem(UnitCommand8CmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock20.mnuUnitCommandItem(UnitCommand9CmdID).Visible = false;
-                //    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock20.mnuUnitCommandItem(UnitCommand10CmdID).Visible = false;
                 //}
 
@@ -2709,21 +2507,17 @@ namespace SRCCore.Commands
 
                 //                if (lab.CountPara() <= 3)
                 //                {
-                //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                    GUI.MainForm.mnuUnitCommandItem(i).Visible = true;
                 //                }
                 //                else if (localStrToLng3() != 0)
                 //                {
-                //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                    GUI.MainForm.mnuUnitCommandItem(i).Visible = true;
                 //                }
                 //            }
                 //        }
 
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //        if (GUI.MainForm.mnuUnitCommandItem(i).Visible)
                 //        {
-                //            // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //            GUI.MainForm.mnuUnitCommandItem(i).Caption = lab.Para(2);
                 //            UnitCommandLabelList[i - UnitCommand1CmdID + 1] = lab.LineNum.ToString();
                 //            i = (i + 1);
@@ -2740,22 +2534,16 @@ namespace SRCCore.Commands
             GUI.ShowUnitCommandMenu(unitCommands.OrderBy(x => x.Id).ToList());
             //if (by_cancel)
             //{
-            //    // UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    // UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
             //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY + 5f);
             //}
             //else
             //{
-            //    // UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    // UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
             //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY - 6f);
             //    Application.DoEvents();
             //    // ＰＣに負荷がかかったような状態だとポップアップメニューの選択が
             //    // うまく行えない場合があるのでやり直す
             //    while (CommandState == "移動後コマンド選択" & SelectedCommand == "移動")
             //    {
-            //        // UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        // UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
             //        GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY - 6f);
             //        Application.DoEvents();
             //    }

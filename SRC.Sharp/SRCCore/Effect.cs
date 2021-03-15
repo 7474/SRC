@@ -78,7 +78,6 @@ namespace Project1
             if (GUI.IsPictureDrawn & Strings.LCase(buf) != "keep")
             {
                 GUI.ClearPicture();
-                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 GUI.MainForm.picMain(0).Refresh();
             }
 
@@ -5486,13 +5485,11 @@ namespace Project1
                 string argfname3 = fname + "0" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i) + ".bmp";
                 string argdraw_option1 = "透過 " + draw_mode;
                 GUI.DrawPicture(ref argfname3, GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, ref argdraw_option1);
-                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 GUI.MainForm.picMain(0).Refresh();
                 GUI.Sleep(50);
             }
 
             GUI.ClearPicture();
-            // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             GUI.MainForm.picMain(0).Refresh();
         }
 
@@ -5658,7 +5655,6 @@ namespace Project1
                                 string argfname2 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
                                 string argdraw_option = "透過";
                                 GUI.DrawPicture(ref argfname2, GUI.MapToPixelX(tx) - 64, GUI.MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, ref argdraw_option);
-                                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                 GUI.MainForm.picMain(0).Refresh();
                                 GUI.Sleep(130);
                             }
@@ -5675,7 +5671,6 @@ namespace Project1
                                 string argfname3 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
                                 string argdraw_option1 = "透過";
                                 GUI.DrawPicture(ref argfname3, GUI.MapToPixelX(tx) - 56, GUI.MapToPixelY(ty) - 56, 144, 144, 0, 0, 0, 0, ref argdraw_option1);
-                                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                 GUI.MainForm.picMain(0).Refresh();
                                 GUI.Sleep(100);
                             }
@@ -5692,7 +5687,6 @@ namespace Project1
                                 string argfname4 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
                                 string argdraw_option2 = "透過";
                                 GUI.DrawPicture(ref argfname4, GUI.MapToPixelX(tx) - 48, GUI.MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, ref argdraw_option2);
-                                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                 GUI.MainForm.picMain(0).Refresh();
                                 GUI.Sleep(70);
                             }
@@ -5709,7 +5703,6 @@ namespace Project1
                                 string argfname5 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
                                 string argdraw_option3 = "透過";
                                 GUI.DrawPicture(ref argfname5, GUI.MapToPixelX(tx) - 40, GUI.MapToPixelY(ty) - 40, 112, 112, 0, 0, 0, 0, ref argdraw_option3);
-                                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                 GUI.MainForm.picMain(0).Refresh();
                                 GUI.Sleep(50);
                             }
@@ -5726,7 +5719,6 @@ namespace Project1
                                 string argfname6 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
                                 string argdraw_option4 = "透過";
                                 GUI.DrawPicture(ref argfname6, GUI.MapToPixelX(tx) - 24, GUI.MapToPixelY(ty) - 24, 80, 80, 0, 0, 0, 0, ref argdraw_option4);
-                                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                 GUI.MainForm.picMain(0).Refresh();
                                 GUI.Sleep(40);
                             }
@@ -5743,7 +5735,6 @@ namespace Project1
                                 string argfname7 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
                                 string argdraw_option5 = "透過";
                                 GUI.DrawPicture(ref argfname7, GUI.MapToPixelX(tx) - 8, GUI.MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, ref argdraw_option5);
-                                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                 GUI.MainForm.picMain(0).Refresh();
                                 GUI.Sleep(40);
                             }
@@ -5753,7 +5744,6 @@ namespace Project1
                 }
 
                 GUI.ClearPicture();
-                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 GUI.MainForm.picMain(0).Refresh();
             }
             else
@@ -5769,7 +5759,6 @@ namespace Project1
                                 string argfname8 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
                                 string argdraw_option6 = "透過";
                                 GUI.DrawPicture(ref argfname8, GUI.MapToPixelX(tx) - 64, GUI.MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, ref argdraw_option6);
-                                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                 GUI.MainForm.picMain(0).Refresh();
                                 GUI.Sleep(130);
                             }
@@ -5785,7 +5774,6 @@ namespace Project1
                                 string argfname9 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
                                 string argdraw_option7 = "透過";
                                 GUI.DrawPicture(ref argfname9, GUI.MapToPixelX(tx) - 48, GUI.MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, ref argdraw_option7);
-                                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                 GUI.MainForm.picMain(0).Refresh();
                                 GUI.Sleep(100);
                             }
@@ -5801,7 +5789,6 @@ namespace Project1
                                 string argfname10 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
                                 string argdraw_option8 = "透過";
                                 GUI.DrawPicture(ref argfname10, GUI.MapToPixelX(tx) - 32, GUI.MapToPixelY(ty) - 32, 96, 96, 0, 0, 0, 0, ref argdraw_option8);
-                                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                 GUI.MainForm.picMain(0).Refresh();
                                 GUI.Sleep(70);
                             }
@@ -5817,7 +5804,6 @@ namespace Project1
                                 string argfname11 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
                                 string argdraw_option9 = "透過";
                                 GUI.DrawPicture(ref argfname11, GUI.MapToPixelX(tx) - 16, GUI.MapToPixelY(ty) - 16, 64, 64, 0, 0, 0, 0, ref argdraw_option9);
-                                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                 GUI.MainForm.picMain(0).Refresh();
                                 GUI.Sleep(50);
                             }
@@ -5833,7 +5819,6 @@ namespace Project1
                                 string argfname12 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
                                 string argdraw_option10 = "透過";
                                 GUI.DrawPicture(ref argfname12, GUI.MapToPixelX(tx) - 8, GUI.MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, ref argdraw_option10);
-                                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                 GUI.MainForm.picMain(0).Refresh();
                                 GUI.Sleep(40);
                             }
@@ -5849,7 +5834,6 @@ namespace Project1
                                 string argfname13 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
                                 string argdraw_option11 = "透過";
                                 GUI.DrawPicture(ref argfname13, GUI.MapToPixelX(tx), GUI.MapToPixelY(ty), 32, 32, 0, 0, 0, 0, ref argdraw_option11);
-                                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                 GUI.MainForm.picMain(0).Refresh();
                                 GUI.Sleep(40);
                             }
@@ -5859,7 +5843,6 @@ namespace Project1
                 }
 
                 GUI.ClearPicture();
-                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 GUI.MainForm.picMain(0).Refresh();
             }
         }

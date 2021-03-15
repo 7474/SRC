@@ -484,8 +484,6 @@ namespace SRCCore.Expressions
             //                    {
             //                        if (pcount == 2)
             //                        {
-            //                            // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-            //                            // UPGRADE_ISSUE: InStrB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
             //                            i = InStrB(Strings.StrConv(GetValueAsString(@params[1], is_term[1]), vbFromUnicode), Strings.StrConv(GetValueAsString(@params[2], is_term[2]), vbFromUnicode));
             //                        }
             //                        else
@@ -493,8 +491,6 @@ namespace SRCCore.Expressions
             //                            // params(3)が指定されている場合は、それを検索開始位置似設定
             //                            // VBのInStrは引数1が開始位置になりますが、現仕様との兼ね合いを考え、
             //                            // eve上では引数3に設定するようにしています
-            //                            // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-            //                            // UPGRADE_ISSUE: InStrB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
             //                            i = InStrB(GetValueAsLong(@params[3], is_term[3]), Strings.StrConv(GetValueAsString(@params[1], is_term[1]), vbFromUnicode), Strings.StrConv(GetValueAsString(@params[2], is_term[2]), vbFromUnicode));
             //                        }
 
@@ -1133,7 +1129,6 @@ namespace SRCCore.Expressions
             //                                    {
             //                                        case "ファイル":
             //                                            {
-            //                                                // UPGRADE_ISSUE: vbNormal をアップグレードする定数を決定できません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B3B44E51-B5F1-4FD7-AA29-CAD31B71F487"' をクリックしてください。
             //                                                num = Constants.vbNormal;
             //                                                break;
             //                                            }
@@ -1407,7 +1402,6 @@ namespace SRCCore.Expressions
             //                        {
             //                            case "フォント名":
             //                                {
-            //                                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //                                    str_result = GUI.MainForm.picMain(0).Font.Name;
             //                                    CallFunctionRet = ValueType.StringType;
             //                                    break;
@@ -1415,7 +1409,6 @@ namespace SRCCore.Expressions
 
             //                            case "サイズ":
             //                                {
-            //                                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //                                    num_result = GUI.MainForm.picMain(0).Font.Size;
             //                                    if (etype == ValueType.StringType)
             //                                    {
@@ -1432,7 +1425,6 @@ namespace SRCCore.Expressions
 
             //                            case "太字":
             //                                {
-            //                                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //                                    if (GUI.MainForm.picMain(0).Font.Bold)
             //                                    {
             //                                        num_result = 1d;
@@ -1457,7 +1449,6 @@ namespace SRCCore.Expressions
 
             //                            case "斜体":
             //                                {
-            //                                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //                                    if (GUI.MainForm.picMain(0).Font.Italic)
             //                                    {
             //                                        num_result = 1d;
@@ -1482,7 +1473,6 @@ namespace SRCCore.Expressions
 
             //                            case "色":
             //                                {
-            //                                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //                                    str_result = Hex(GUI.MainForm.picMain(0).ForeColor);
             //                                    var loopTo6 = (6 - Strings.Len(str_result));
             //                                    for (i = 1; i <= loopTo6; i++)
@@ -1567,13 +1557,9 @@ namespace SRCCore.Expressions
             //                            {
             //                                {
             //                                    var withBlock15 = GUI.MainForm;
-            //                                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //                                    x1 = (long)SrcFormatter.PixelsToTwipsX((double)withBlock15.Left) / (long)SrcFormatter.TwipsPerPixelX() + withBlock15.picMain(0).Left + 3;
-            //                                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //                                    y1 = (long)SrcFormatter.PixelsToTwipsY((double)withBlock15.Top) / (long)SrcFormatter.TwipsPerPixelY() + withBlock15.picMain(0).Top + 28;
-            //                                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //                                    x2 = x1 + withBlock15.picMain(0).Width;
-            //                                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //                                    y2 = y1 + withBlock15.picMain(0).Height;
             //                                }
 
@@ -1875,12 +1861,10 @@ namespace SRCCore.Expressions
             //                        buf = GetValueAsString(@params[1], is_term[1]);
             //                        buf2 = GetValueAsString(@params[2], is_term[2]);
 
-            //                        // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
             //                        if (LenB(buf2) > 0 & LenB(buf) >= LenB(buf2))
             //                        {
             //                            if (pcount == 2)
             //                            {
-            //                                // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
             //                                num = LenB(buf);
             //                            }
             //                            else
@@ -1888,11 +1872,9 @@ namespace SRCCore.Expressions
             //                                num = GetValueAsLong(@params[3], is_term[3]);
             //                            }
 
-            //                            // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
             //                            i = num - LenB(buf2) + 1;
             //                            do
             //                            {
-            //                                // UPGRADE_ISSUE: InStrB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
             //                                j = InStrB(i, buf, buf2);
             //                                if (i == j)
             //                                {
@@ -2514,10 +2496,7 @@ namespace SRCCore.Expressions
             //                case "leftb":
             //                    {
             //                        buf = GetValueAsString(@params[1], is_term[1]);
-            //                        // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-            //                        // UPGRADE_ISSUE: LeftB$ 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
             //                        str_result = LeftB(Strings.StrConv(buf, vbFromUnicode), GetValueAsLong(@params[2], is_term[2]));
-            //                        // UPGRADE_ISSUE: 定数 vbUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
             //                        str_result = Strings.StrConv(str_result, vbUnicode);
             //                        if (etype == ValueType.NumericType)
             //                        {
@@ -2551,8 +2530,6 @@ namespace SRCCore.Expressions
             //                case "lenb":
             //                    {
             //                        buf = GetValueAsString(@params[1], is_term[1]);
-            //                        // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-            //                        // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
             //                        num_result = LenB(Strings.StrConv(buf, vbFromUnicode));
             //                        if (etype == ValueType.StringType)
             //                        {
@@ -2638,12 +2615,8 @@ namespace SRCCore.Expressions
             //                    {
             //                        buf = GetValueAsString(@params[1], is_term[1]);
             //                        i = GetValueAsLong(@params[2], is_term[2]);
-            //                        // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-            //                        // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
             //                        if (LenB(Strings.StrConv(buf, vbFromUnicode)) < i)
             //                        {
-            //                            // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-            //                            // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
             //                            str_result = buf + Strings.Space(i - LenB(Strings.StrConv(buf, vbFromUnicode)));
             //                        }
             //                        else
@@ -2724,8 +2697,6 @@ namespace SRCCore.Expressions
             //                                {
             //                                    i = GetValueAsLong(@params[2], is_term[2]);
             //                                    j = GetValueAsLong(@params[3], is_term[3]);
-            //                                    // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-            //                                    // UPGRADE_ISSUE: MidB$ 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
             //                                    str_result = MidB(Strings.StrConv(buf, vbFromUnicode), i, j);
             //                                    break;
             //                                }
@@ -2733,13 +2704,10 @@ namespace SRCCore.Expressions
             //                            case 2:
             //                                {
             //                                    i = GetValueAsLong(@params[2], is_term[2]);
-            //                                    // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-            //                                    // UPGRADE_ISSUE: MidB$ 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
             //                                    str_result = MidB(Strings.StrConv(buf, vbFromUnicode), i);
             //                                    break;
             //                                }
             //                        }
-            //                        // UPGRADE_ISSUE: 定数 vbUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
             //                        str_result = Strings.StrConv(str_result, vbUnicode);
             //                        if (etype == ValueType.NumericType)
             //                        {
@@ -3550,10 +3518,7 @@ namespace SRCCore.Expressions
             //                case "rightb":
             //                    {
             //                        buf = GetValueAsString(@params[1], is_term[1]);
-            //                        // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-            //                        // UPGRADE_ISSUE: RightB$ 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
             //                        str_result = RightB(Strings.StrConv(buf, vbFromUnicode), GetValueAsLong(@params[2], is_term[2]));
-            //                        // UPGRADE_ISSUE: 定数 vbUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
             //                        str_result = Strings.StrConv(str_result, vbUnicode);
             //                        if (etype == ValueType.NumericType)
             //                        {
@@ -3624,12 +3589,8 @@ namespace SRCCore.Expressions
             //                    {
             //                        buf = GetValueAsString(@params[1], is_term[1]);
             //                        i = GetValueAsLong(@params[2], is_term[2]);
-            //                        // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-            //                        // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
             //                        if (LenB(Strings.StrConv(buf, vbFromUnicode)) < i)
             //                        {
-            //                            // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-            //                            // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
             //                            str_result = Strings.Space(i - LenB(Strings.StrConv(buf, vbFromUnicode))) + buf;
             //                        }
             //                        else
@@ -4017,7 +3978,6 @@ namespace SRCCore.Expressions
 
             //                case "textheight":
             //                    {
-            //                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //                        num_result = GUI.MainForm.picMain(0).TextHeight(GetValueAsString(@params[1], is_term[1]));
             //                        if (etype == ValueType.StringType)
             //                        {
@@ -4034,7 +3994,6 @@ namespace SRCCore.Expressions
 
             //                case "textwidth":
             //                    {
-            //                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //                        num_result = GUI.MainForm.picMain(0).TextWidth(GetValueAsString(@params[1], is_term[1]));
             //                        if (etype == ValueType.StringType)
             //                        {

@@ -145,7 +145,6 @@ namespace SRCSharpForm
             //float Y = eventArgs.Y;
             //// ツールチップを消す
             //My.MyProject.Forms.frmToolTip.Hide();
-            //// UPGRADE_ISSUE: 定数 vbCustom はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
             //if (object.ReferenceEquals(picMain[0].Cursor, vbCustom))
             //{
             //    picMain[0].Cursor = Cursors.Default;
@@ -442,11 +441,9 @@ namespace SRCSharpForm
                 //            My.MyProject.Forms.frmToolTip.ShowToolTip(ref withBlock.Caption);
                 //            {
                 //                var withBlock1 = picMain[0];
-                //                // UPGRADE_ISSUE:  プロパティ . はカスタム マウスポインタをサポートしません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="45116EAB-7060-405E-8ABE-9DBB40DC2E86"' をクリックしてください。
                 //                if (!withBlock1.Cursor.Equals(99))
                 //                {
                 //                    withBlock1.Refresh();
-                //                    // UPGRADE_ISSUE: PictureBox プロパティ picMain.MousePointer はカスタム マウスポインタをサポートしません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="45116EAB-7060-405E-8ABE-9DBB40DC2E86"' をクリックしてください。
                 //                    withBlock1.Cursor = vbCustom;
                 //                }
                 //            }

@@ -1050,7 +1050,6 @@ namespace Project1
                     }
                 }
 
-                // UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 else if (Commands.SelectedTarget.Party == "味方" & !GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked)
                 {
                     // 味方ユニットによる手動反撃を行う場合
@@ -6341,7 +6340,6 @@ namespace Project1
                     }
 
                     // 手動反撃時のサポートアタック以外は残弾数が少ない武器を使用しない
-                    // UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                     if (amode != "サポートアタック" | GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked)
                     {
                         string argattr6 = "永";
@@ -7796,7 +7794,6 @@ namespace Project1
                     if (u.Party == "味方")
                     {
                         // 自動反撃モードかどうか
-                        // UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                         if (GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked)
                         {
                             goto NextWeapon;
