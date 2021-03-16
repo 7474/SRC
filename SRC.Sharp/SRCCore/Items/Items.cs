@@ -79,12 +79,12 @@
 //        private string CreateID(ref string iname)
 //        {
 //            string CreateIDRet = default;
-//            bool localIsDefined2() { object argIndex1 = (object)(iname + "_" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(IDCount)); var ret = IsDefined2(ref argIndex1); return ret; }
+//            bool localIsDefined2() { object argIndex1 = (object)(iname + "_" + SrcFormatter.Format(IDCount)); var ret = IsDefined2(ref argIndex1); return ret; }
 
 //            do
 //                IDCount = IDCount + 1;
 //            while (localIsDefined2());
-//            CreateIDRet = iname + "_" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(IDCount);
+//            CreateIDRet = iname + "_" + SrcFormatter.Format(IDCount);
 //            return CreateIDRet;
 //        }
 

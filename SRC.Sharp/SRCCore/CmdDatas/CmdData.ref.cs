@@ -251,7 +251,7 @@
 //                string arglist = GetArgAsString((short)3);
 //                num = GeneralLib.ListSplit(ref arglist, ref array_buf2);
 //                // UPGRADE_WARNING: オブジェクト array_buf の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-//                array_buf = Microsoft.VisualBasic.Compatibility.VB6.Support.CopyArray(array_buf2);
+//                array_buf = SrcFormatter.CopyArray(array_buf2);
 //            }
 //            // 文字列を分割して配列に代入
 //            else
@@ -427,7 +427,7 @@
 //                                Array.Resize(ref GUI.ListItemID, Information.UBound(list) + 1);
 //                                Array.Resize(ref GUI.ListItemFlag, Information.UBound(list) + 1);
 //                                list[Information.UBound(list)] = buf;
-//                                GUI.ListItemID[Information.UBound(list)] = Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)(i - LineNum));
+//                                GUI.ListItemID[Information.UBound(list)] = SrcFormatter.Format((object)(i - LineNum));
 //                                GUI.ListItemFlag[Information.UBound(list)] = false;
 //                            }
 //                        }
@@ -482,7 +482,7 @@
 //                                        }
 //                                        else
 //                                        {
-//                                            buf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)withBlock.NumericValue);
+//                                            buf = SrcFormatter.Format((object)withBlock.NumericValue);
 //                                        }
 
 //                                        if (Strings.Len(buf) > 0)
@@ -521,7 +521,7 @@
 //                                    }
 //                                    else
 //                                    {
-//                                        buf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)var.NumericValue);
+//                                        buf = SrcFormatter.Format((object)var.NumericValue);
 //                                    }
 
 //                                    if (Strings.Len(buf) > 0)
@@ -559,7 +559,7 @@
 //                                    }
 //                                    else
 //                                    {
-//                                        buf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)var.NumericValue);
+//                                        buf = SrcFormatter.Format((object)var.NumericValue);
 //                                    }
 
 //                                    if (Strings.Len(buf) > 0)
@@ -1076,7 +1076,7 @@
 //                                                    tcolor = Conversions.ToInteger(cname);
 //                                                    j = (short)((int)j + 1);
 //                                                    // 空白のオプションをスキップ
-//                                                    options = options + "フィルタ " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)tcolor) + " " + withBlock.GetArgAsString(j) + " ";
+//                                                    options = options + "フィルタ " + SrcFormatter.Format((object)tcolor) + " " + withBlock.GetArgAsString(j) + " ";
 //                                                    break;
 //                                                }
 
@@ -1608,7 +1608,7 @@
 //            if (Event_Renamed.CallDepth > Event_Renamed.MaxCallDepth)
 //            {
 //                Event_Renamed.CallDepth = Event_Renamed.MaxCallDepth;
-//                Event_Renamed.EventErrorMessage = Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)Event_Renamed.MaxCallDepth) + "階層を越えるサブルーチンの呼び出しは出来ません";
+//                Event_Renamed.EventErrorMessage = SrcFormatter.Format((object)Event_Renamed.MaxCallDepth) + "階層を越えるサブルーチンの呼び出しは出来ません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 104515
@@ -1623,7 +1623,7 @@
 //            // 引数用スタックが溢れないかチェック
 //            if (Event_Renamed.ArgIndex + ArgNum - 2 > (int)Event_Renamed.MaxArgIndex)
 //            {
-//                Event_Renamed.EventErrorMessage = "サブルーチンの引数の総数が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)Event_Renamed.MaxArgIndex) + "個を超えています";
+//                Event_Renamed.EventErrorMessage = "サブルーチンの引数の総数が" + SrcFormatter.Format((object)Event_Renamed.MaxArgIndex) + "個を超えています";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 104856
@@ -2310,7 +2310,7 @@
 //                fname = Map.SearchTerrainImageFile(lid, lbitmap, X, Y);
 //                if (string.IsNullOrEmpty(fname))
 //                {
-//                    Event_Renamed.EventErrorMessage = "マップビットマップ「" + SRC.TDList.Bitmap(lid) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)lbitmap) + ".bmp" + "」が見つかりません";
+//                    Event_Renamed.EventErrorMessage = "マップビットマップ「" + SRC.TDList.Bitmap(lid) + SrcFormatter.Format((object)lbitmap) + ".bmp" + "」が見つかりません";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 118934
@@ -2645,7 +2645,7 @@
 //                                 */
 //                            }
 
-//                            new_mode = Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)dst_x) + " " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)dst_y);
+//                            new_mode = SrcFormatter.Format((object)dst_x) + " " + SrcFormatter.Format((object)dst_y);
 //                        }
 //                        else
 //                        {
@@ -2699,11 +2699,11 @@
 
 //                                                uarray[1] = localItem().Unit_Renamed;
 //                                                i = (short)2;
-//                                                object argIndex2 = (object)(pname + ":" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)i));
+//                                                object argIndex2 = (object)(pname + ":" + SrcFormatter.Format((object)i));
 //                                                while (withBlock.IsDefined(ref argIndex2))
 //                                                {
 //                                                    Array.Resize(ref uarray, Information.UBound(uarray) + 1 + 1);
-//                                                    Pilot localItem1() { object argIndex1 = (object)(pname + ":" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)i)); var ret = withBlock.Item(ref argIndex1); return ret; }
+//                                                    Pilot localItem1() { object argIndex1 = (object)(pname + ":" + SrcFormatter.Format((object)i)); var ret = withBlock.Item(ref argIndex1); return ret; }
 
 //                                                    uarray[Information.UBound(uarray)] = localItem1().Unit_Renamed;
 //                                                    i = (short)((int)i + 1);
@@ -2773,11 +2773,11 @@
 
 //                                            uarray[1] = localItem2().Unit_Renamed;
 //                                            i = (short)2;
-//                                            object argIndex4 = (object)(pname + ":" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)i));
+//                                            object argIndex4 = (object)(pname + ":" + SrcFormatter.Format((object)i));
 //                                            while (withBlock1.IsDefined(ref argIndex4))
 //                                            {
 //                                                Array.Resize(ref uarray, Information.UBound(uarray) + 1 + 1);
-//                                                Pilot localItem3() { object argIndex1 = (object)(pname + ":" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)i)); var ret = withBlock1.Item(ref argIndex1); return ret; }
+//                                                Pilot localItem3() { object argIndex1 = (object)(pname + ":" + SrcFormatter.Format((object)i)); var ret = withBlock1.Item(ref argIndex1); return ret; }
 
 //                                                uarray[Information.UBound(uarray)] = localItem3().Unit_Renamed;
 //                                                i = (short)((int)i + 1);
@@ -2805,7 +2805,7 @@
 //                             */
 //                        }
 
-//                        new_mode = Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)dst_x) + " " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)dst_y);
+//                        new_mode = SrcFormatter.Format((object)dst_x) + " " + SrcFormatter.Format((object)dst_y);
 //                        break;
 //                    }
 
@@ -3090,7 +3090,7 @@
 //            fname = Map.SearchTerrainImageFile(tid, tbitmap, tx, ty);
 //            if (string.IsNullOrEmpty(fname))
 //            {
-//                Event_Renamed.EventErrorMessage = "マップビットマップ「" + SRC.TDList.Bitmap(tid) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)tbitmap) + ".bmp" + "」が見つかりません";
+//                Event_Renamed.EventErrorMessage = "マップビットマップ「" + SRC.TDList.Bitmap(tid) + SrcFormatter.Format((object)tbitmap) + ".bmp" + "」が見つかりません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 142219
@@ -4875,11 +4875,11 @@
 
 //                    if (plevel == p.Level)
 //                    {
-//                        msg = msg + ";" + p.get_Nickname(false) + " 経験値 +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(2 * p.SP);
+//                        msg = msg + ";" + p.get_Nickname(false) + " 経験値 +" + SrcFormatter.Format(2 * p.SP);
 //                    }
 //                    else
 //                    {
-//                        msg = msg + ";" + p.get_Nickname(false) + " 経験値 +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(2 * p.SP) + " レベルアップ！（Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Level) + "）";
+//                        msg = msg + ";" + p.get_Nickname(false) + " 経験値 +" + SrcFormatter.Format(2 * p.SP) + " レベルアップ！（Lv" + SrcFormatter.Format(p.Level) + "）";
 //                    }
 
 //                    n = (short)(n + 1);
@@ -6703,11 +6703,11 @@
 
 //                    if (plevel == p.Level)
 //                    {
-//                        msg = msg + ";" + p.get_Nickname(false) + " 経験値 +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(2 * p.SP);
+//                        msg = msg + ";" + p.get_Nickname(false) + " 経験値 +" + SrcFormatter.Format(2 * p.SP);
 //                    }
 //                    else
 //                    {
-//                        msg = msg + ";" + p.get_Nickname(false) + " 経験値 +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(2 * p.SP) + " レベルアップ！（Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Level) + "）";
+//                        msg = msg + ";" + p.get_Nickname(false) + " 経験値 +" + SrcFormatter.Format(2 * p.SP) + " レベルアップ！（Lv" + SrcFormatter.Format(p.Level) + "）";
 //                    }
 
 //                    n = (short)(n + 1);
@@ -7619,10 +7619,10 @@
 //                    sf = (Font)Control.DefaultFont.Clone();
 //                    {
 //                        var withBlock2 = withBlock.Font;
-//                        sf = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeName(sf, fname);
-//                        sf = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(sf, withBlock2.Size);
-//                        sf = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeBold(sf, withBlock2.Bold);
-//                        sf = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeItalic(sf, withBlock2.Italic);
+//                        sf = SrcFormatter.FontChangeName(sf, fname);
+//                        sf = SrcFormatter.FontChangeSize(sf, withBlock2.Size);
+//                        sf = SrcFormatter.FontChangeBold(sf, withBlock2.Bold);
+//                        sf = SrcFormatter.FontChangeItalic(sf, withBlock2.Italic);
 //                    }
 //                    withBlock.Font = sf;
 //                }
@@ -10621,7 +10621,7 @@
 //                    if (Event_Renamed.VarIndex >= Event_Renamed.MaxVarIndex)
 //                    {
 //                        Event_Renamed.VarIndex = Event_Renamed.MaxVarIndex;
-//                        Event_Renamed.EventErrorMessage = Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)Event_Renamed.MaxVarIndex) + "個を超えるサブルーチンローカル変数は作成できません";
+//                        Event_Renamed.EventErrorMessage = SrcFormatter.Format((object)Event_Renamed.MaxVarIndex) + "個を超えるサブルーチンローカル変数は作成できません";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 324715
@@ -10723,7 +10723,7 @@
 //            if (Event_Renamed.VarIndex > Event_Renamed.MaxVarIndex)
 //            {
 //                Event_Renamed.VarIndex = Event_Renamed.MaxVarIndex;
-//                Event_Renamed.EventErrorMessage = Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)Event_Renamed.MaxVarIndex) + "個を超えるサブルーチンローカル変数は作成できません";
+//                Event_Renamed.EventErrorMessage = SrcFormatter.Format((object)Event_Renamed.MaxVarIndex) + "個を超えるサブルーチンローカル変数は作成できません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 327659
@@ -11113,7 +11113,7 @@
 //                    case "レベル":
 //                    case "名称":
 //                        {
-//                            string argmsg1 = "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Level);
+//                            string argmsg1 = "Lv" + SrcFormatter.Format(p.Level);
 //                            GUI.DrawString(ref argmsg1, 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
@@ -11121,7 +11121,7 @@
 //                    case "ＳＰ":
 //                        {
 //                            string argtname = "SP";
-//                            string argmsg2 = Expression.Term(ref argtname, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
+//                            string argmsg2 = Expression.Term(ref argtname, ref u) + SrcFormatter.Format(key_list[i]);
 //                            GUI.DrawString(ref argmsg2, 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
@@ -11129,7 +11129,7 @@
 //                    case "格闘":
 //                        {
 //                            string argtname1 = "格闘";
-//                            string argmsg3 = Strings.Left(Expression.Term(ref argtname1, ref u), 1) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
+//                            string argmsg3 = Strings.Left(Expression.Term(ref argtname1, ref u), 1) + SrcFormatter.Format(key_list[i]);
 //                            GUI.DrawString(ref argmsg3, 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
@@ -11139,13 +11139,13 @@
 //                            if (p.HasMana())
 //                            {
 //                                string argtname2 = "魔力";
-//                                string argmsg4 = Strings.Left(Expression.Term(ref argtname2, ref u), 1) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
+//                                string argmsg4 = Strings.Left(Expression.Term(ref argtname2, ref u), 1) + SrcFormatter.Format(key_list[i]);
 //                                GUI.DrawString(ref argmsg4, 32 * xx + 2, 32 * yy - 15);
 //                            }
 //                            else
 //                            {
 //                                string argtname3 = "射撃";
-//                                string argmsg5 = Strings.Left(Expression.Term(ref argtname3, ref u), 1) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
+//                                string argmsg5 = Strings.Left(Expression.Term(ref argtname3, ref u), 1) + SrcFormatter.Format(key_list[i]);
 //                                GUI.DrawString(ref argmsg5, 32 * xx + 2, 32 * yy - 15);
 //                            }
 
@@ -11155,7 +11155,7 @@
 //                    case "命中":
 //                        {
 //                            string argtname4 = "命中";
-//                            string argmsg6 = Strings.Left(Expression.Term(ref argtname4, ref u), 1) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
+//                            string argmsg6 = Strings.Left(Expression.Term(ref argtname4, ref u), 1) + SrcFormatter.Format(key_list[i]);
 //                            GUI.DrawString(ref argmsg6, 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
@@ -11163,7 +11163,7 @@
 //                    case "回避":
 //                        {
 //                            string argtname5 = "回避";
-//                            string argmsg7 = Strings.Left(Expression.Term(ref argtname5, ref u), 1) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
+//                            string argmsg7 = Strings.Left(Expression.Term(ref argtname5, ref u), 1) + SrcFormatter.Format(key_list[i]);
 //                            GUI.DrawString(ref argmsg7, 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
@@ -11171,7 +11171,7 @@
 //                    case "技量":
 //                        {
 //                            string argtname6 = "技量";
-//                            string argmsg8 = Strings.Left(Expression.Term(ref argtname6, ref u), 1) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
+//                            string argmsg8 = Strings.Left(Expression.Term(ref argtname6, ref u), 1) + SrcFormatter.Format(key_list[i]);
 //                            GUI.DrawString(ref argmsg8, 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
@@ -11179,7 +11179,7 @@
 //                    case "反応":
 //                        {
 //                            string argtname7 = "反応";
-//                            string argmsg9 = Strings.Left(Expression.Term(ref argtname7, ref u), 1) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
+//                            string argmsg9 = Strings.Left(Expression.Term(ref argtname7, ref u), 1) + SrcFormatter.Format(key_list[i]);
 //                            GUI.DrawString(ref argmsg9, 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
@@ -12813,7 +12813,7 @@
 //                                    tcolor = Conversions.ToInteger(cname);
 //                                    if (tcolor != ColorTranslator.ToOle(Color.White) | GetArgAsString((short)((int)i - 1)) == "フィルタ")
 //                                    {
-//                                        options = options + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)tcolor) + " ";
+//                                        options = options + SrcFormatter.Format((object)tcolor) + " ";
 //                                    }
 //                                }
 //                            }
@@ -12832,7 +12832,7 @@
 //                            }
 //                            else
 //                            {
-//                                Event_Renamed.EventErrorMessage = "PaintPictureコマンドの" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)i) + "番目のパラメータ「" + buf + "」が不正です";
+//                                Event_Renamed.EventErrorMessage = "PaintPictureコマンドの" + SrcFormatter.Format((object)i) + "番目のパラメータ「" + buf + "」が不正です";
 //                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 374062
@@ -13688,7 +13688,7 @@
 //                    Array.Resize(ref GUI.ListItemID, Information.UBound(list) + 1);
 //                    Array.Resize(ref GUI.ListItemFlag, Information.UBound(list) + 1);
 //                    list[Information.UBound(list)] = buf;
-//                    GUI.ListItemID[Information.UBound(list)] = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i - LineNum);
+//                    GUI.ListItemID[Information.UBound(list)] = SrcFormatter.Format(i - LineNum);
 //                    GUI.ListItemFlag[Information.UBound(list)] = false;
 //                }
 //            }
@@ -14707,7 +14707,7 @@
 
 //                                    if (inumber > withBlock2.CountItem())
 //                                    {
-//                                        Event_Renamed.EventErrorMessage = "指定されたユニットは" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)withBlock2.CountItem()) + "個のアイテムしか持っていません";
+//                                        Event_Renamed.EventErrorMessage = "指定されたユニットは" + SrcFormatter.Format((object)withBlock2.CountItem()) + "個のアイテムしか持っていません";
 //                                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 416523
@@ -14957,7 +14957,7 @@
 
 //                                if (inumber > withBlock9.CountItem())
 //                                {
-//                                    Event_Renamed.EventErrorMessage = "指定されたユニットは" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)withBlock9.CountItem()) + "個のアイテムしか持っていません";
+//                                    Event_Renamed.EventErrorMessage = "指定されたユニットは" + SrcFormatter.Format((object)withBlock9.CountItem()) + "個のアイテムしか持っていません";
 //                                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 422013
@@ -16979,7 +16979,7 @@
 
 //                            if (withBlock.get_AliasLevelIsPlusMod(i) | withBlock.get_AliasLevelIsMultMod(i))
 //                            {
-//                                sdata_array[i] = GeneralLib.LIndex(ref sdata_array[i], 1) + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(slevel) + " " + GeneralLib.ListTail(ref sdata_array[i], 2);
+//                                sdata_array[i] = GeneralLib.LIndex(ref sdata_array[i], 1) + "Lv" + SrcFormatter.Format(slevel) + " " + GeneralLib.ListTail(ref sdata_array[i], 2);
 //                                sdata_array[i] = Strings.Trim(sdata_array[i]);
 //                            }
 //                        }
@@ -17048,7 +17048,7 @@
 //                if (!string.IsNullOrEmpty(sdata))
 //                {
 //                    // 別名指定があった場合
-//                    string argnew_value = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(slevel) + " " + sdata;
+//                    string argnew_value = SrcFormatter.Format(slevel) + " " + sdata;
 //                    Expression.SetVariableAsString(ref vname, ref argnew_value);
 
 //                    // 必要技能用
@@ -17060,13 +17060,13 @@
 //                            Expression.DefineGlobalVariable(ref vname);
 //                        }
 
-//                        string argnew_value1 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(slevel);
+//                        string argnew_value1 = SrcFormatter.Format(slevel);
 //                        Expression.SetVariableAsString(ref vname, ref argnew_value1);
 //                    }
 //                }
 //                else
 //                {
-//                    string argnew_value2 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(slevel);
+//                    string argnew_value2 = SrcFormatter.Format(slevel);
 //                    Expression.SetVariableAsString(ref vname, ref argnew_value2);
 //                }
 
@@ -19125,7 +19125,7 @@
 //                                                    tcolor = Conversions.ToInteger(cname);
 //                                                    j = (short)((int)j + 1);
 //                                                    // 空白のオプションをスキップ
-//                                                    options = options + "フィルタ " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)tcolor) + " " + withBlock.GetArgAsString(j) + " ";
+//                                                    options = options + "フィルタ " + SrcFormatter.Format((object)tcolor) + " " + withBlock.GetArgAsString(j) + " ";
 //                                                    break;
 //                                                }
 

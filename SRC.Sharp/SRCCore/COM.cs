@@ -1092,11 +1092,11 @@
 //                    hit_prob = withBlock7.HitProbability(w, ref Commands.SelectedTarget, true);
 //                    crit_prob = withBlock7.CriticalProbability(w, ref Commands.SelectedTarget);
 //                    string argtarea = "";
-//                    caption_msg = "反撃：" + withBlock7.WeaponNickname(w) + " 攻撃力=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.WeaponPower(w, ref argtarea));
+//                    caption_msg = "反撃：" + withBlock7.WeaponNickname(w) + " 攻撃力=" + SrcFormatter.Format(withBlock7.WeaponPower(w, ref argtarea));
 //                    string argoname2 = "予測命中率非表示";
 //                    if (!Expression.IsOptionDefined(ref argoname2))
 //                    {
-//                        caption_msg = caption_msg + " 命中率=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GeneralLib.MinLng(hit_prob, 100)) + "％（" + crit_prob + "％）";
+//                        caption_msg = caption_msg + " 命中率=" + SrcFormatter.Format(GeneralLib.MinLng(hit_prob, 100)) + "％（" + crit_prob + "％）";
 //                    }
 
 //                    list = new string[4];
@@ -1112,8 +1112,8 @@
 //                    string argoname3 = "予測命中率非表示";
 //                    if (!Expression.IsOptionDefined(ref argoname3))
 //                    {
-//                        list[2] = "防御：命中率＝" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GeneralLib.MinLng(hit_prob, 100)) + "％（" + withBlock7.CriticalProbability(w, ref Commands.SelectedTarget, "防御") + "％）";
-//                        list[3] = "回避：命中率＝" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GeneralLib.MinLng(hit_prob / 2, 100)) + "％（" + withBlock7.CriticalProbability(w, ref Commands.SelectedTarget, "回避") + "％）";
+//                        list[2] = "防御：命中率＝" + SrcFormatter.Format(GeneralLib.MinLng(hit_prob, 100)) + "％（" + withBlock7.CriticalProbability(w, ref Commands.SelectedTarget, "防御") + "％）";
+//                        list[3] = "回避：命中率＝" + SrcFormatter.Format(GeneralLib.MinLng(hit_prob / 2, 100)) + "％（" + withBlock7.CriticalProbability(w, ref Commands.SelectedTarget, "回避") + "％）";
 //                    }
 //                    else
 //                    {
@@ -1196,26 +1196,26 @@
 //                                {
 //                                    // 反撃を選択した場合は反撃に使う武器を選択
 //                                    string argtarea1 = "";
-//                                    buf = "反撃：" + withBlock7.WeaponNickname(w) + " 攻撃力=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.WeaponPower(w, ref argtarea1));
+//                                    buf = "反撃：" + withBlock7.WeaponNickname(w) + " 攻撃力=" + SrcFormatter.Format(withBlock7.WeaponPower(w, ref argtarea1));
 //                                    string argoname5 = "予測命中率非表示";
 //                                    if (!Expression.IsOptionDefined(ref argoname5))
 //                                    {
-//                                        buf = buf + " 命中率=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GeneralLib.MinLng(hit_prob, 100)) + "％（" + crit_prob + "％）" + " ： ";
+//                                        buf = buf + " 命中率=" + SrcFormatter.Format(GeneralLib.MinLng(hit_prob, 100)) + "％（" + crit_prob + "％）" + " ： ";
 //                                    }
 
 //                                    {
 //                                        var withBlock11 = Commands.SelectedTarget.MainPilot();
 //                                        string argtname = "格闘";
-//                                        buf = buf + withBlock11.get_Nickname(false) + " " + Expression.Term(ref argtname, ref Commands.SelectedTarget) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock11.Infight) + " ";
+//                                        buf = buf + withBlock11.get_Nickname(false) + " " + Expression.Term(ref argtname, ref Commands.SelectedTarget) + SrcFormatter.Format(withBlock11.Infight) + " ";
 //                                        if (withBlock11.HasMana())
 //                                        {
 //                                            string argtname1 = "魔力";
-//                                            buf = buf + Expression.Term(ref argtname1, ref Commands.SelectedTarget) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock11.Shooting);
+//                                            buf = buf + Expression.Term(ref argtname1, ref Commands.SelectedTarget) + SrcFormatter.Format(withBlock11.Shooting);
 //                                        }
 //                                        else
 //                                        {
 //                                            string argtname2 = "射撃";
-//                                            buf = buf + Expression.Term(ref argtname2, ref Commands.SelectedTarget) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock11.Shooting);
+//                                            buf = buf + Expression.Term(ref argtname2, ref Commands.SelectedTarget) + SrcFormatter.Format(withBlock11.Shooting);
 //                                        }
 //                                    }
 
@@ -1997,7 +1997,7 @@
 //                        if (SRC.Money > prev_money)
 //                        {
 //                            string argtname3 = "資金";
-//                            GUI.DisplaySysMessage(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.Money - prev_money) + "の" + Expression.Term(ref argtname3, ref Commands.SelectedUnit) + "を得た。");
+//                            GUI.DisplaySysMessage(SrcFormatter.Format(SRC.Money - prev_money) + "の" + Expression.Term(ref argtname3, ref Commands.SelectedUnit) + "を得た。");
 //                        }
 //                    }
 //                    else
@@ -2066,7 +2066,7 @@
 //                            if (earnings > 0)
 //                            {
 //                                string argtname4 = "資金";
-//                                GUI.DisplaySysMessage(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(earnings) + "の" + Expression.Term(ref argtname4, ref Commands.SelectedTarget) + "を得た。");
+//                                GUI.DisplaySysMessage(SrcFormatter.Format(earnings) + "の" + Expression.Term(ref argtname4, ref Commands.SelectedTarget) + "を得た。");
 //                            }
 //                        }
 //                        else
@@ -5090,11 +5090,11 @@
 //                        }
 //                }
 
-//                string argmsg = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Commands.SelectedTarget.HP - tmp);
+//                string argmsg = "+" + SrcFormatter.Format(Commands.SelectedTarget.HP - tmp);
 //                GUI.DrawSysString(Commands.SelectedTarget.x, Commands.SelectedTarget.y, ref argmsg);
 //                object argu2 = Commands.SelectedUnit;
 //                GUI.UpdateMessageForm(ref Commands.SelectedTarget, ref argu2);
-//                GUI.DisplaySysMessage(Commands.SelectedTarget.Nickname + "のＨＰが[" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Commands.SelectedTarget.HP - tmp) + "]回復した。");
+//                GUI.DisplaySysMessage(Commands.SelectedTarget.Nickname + "のＨＰが[" + SrcFormatter.Format(Commands.SelectedTarget.HP - tmp) + "]回復した。");
 //            }
 
 //            // 経験値獲得

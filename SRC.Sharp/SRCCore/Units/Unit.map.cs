@@ -333,7 +333,7 @@ namespace SRCCore.Units
             //        for (i = 1; i <= 4; i++)
             //        {
             //            // 画像を透過表示
-            //            string argfname = fname + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i) + ".bmp";
+            //            string argfname = fname + SrcFormatter.Format(i) + ".bmp";
             //            string argdraw_option = "透過";
             //            if (GUI.DrawPicture(argfname, GUI.MapToPixelX(x), GUI.MapToPixelY(y), 32, 32, 0, 0, 0, 0, argdraw_option) == false)
             //            {

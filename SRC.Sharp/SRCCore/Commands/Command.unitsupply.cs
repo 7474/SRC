@@ -211,12 +211,12 @@ namespace SRCCore.Commands
             //        withBlock.EN = withBlock.EN - Conversions.Toint(localLIndex1());
             //    }
 
-            //    string argmsg = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SelectedTarget.HP - tmp);
+            //    string argmsg = "+" + SrcFormatter.Format(SelectedTarget.HP - tmp);
             //    GUI.DrawSysString(SelectedTarget.x, SelectedTarget.y, argmsg);
             //    object argu2 = SelectedUnit;
             //    GUI.UpdateMessageForm(SelectedTarget, argu2);
             //    string argtname = "ＨＰ";
-            //    GUI.DisplaySysMessage(SelectedTarget.Nickname + "の" + Expression.Term(argtname, SelectedTarget) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SelectedTarget.HP - tmp) + "回復した。");
+            //    GUI.DisplaySysMessage(SelectedTarget.Nickname + "の" + Expression.Term(argtname, SelectedTarget) + "が" + SrcFormatter.Format(SelectedTarget.HP - tmp) + "回復した。");
 
             //    // 経験値獲得
             //    string argexp_situation = "修理";

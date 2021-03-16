@@ -18,6 +18,7 @@ namespace SRCCore.Units
         private Events.Event Event => SRC.Event;
         private Commands.Command Commands => SRC.Commands;
         private Expressions.Expression Expression => SRC.Expression;
+        private Sound Sound => SRC.Sound;
 
         public Unit(SRC src)
         {

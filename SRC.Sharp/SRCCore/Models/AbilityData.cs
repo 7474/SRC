@@ -108,7 +108,7 @@ namespace SRCCore.Models
 
         //                if (dat.Name == "付加" & string.IsNullOrEmpty(elevel))
         //                {
-        //                    elevel = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.DEFAULT_LEVEL);
+        //                    elevel = SrcFormatter.Format(SRC.DEFAULT_LEVEL);
         //                }
 
         //                dat.Data = Strings.Trim(etype + " " + elevel + " " + edata);
@@ -170,7 +170,7 @@ namespace SRCCore.Models
 
         //            if (dat.Name == "付加" & string.IsNullOrEmpty(elevel))
         //            {
-        //                elevel = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.DEFAULT_LEVEL);
+        //                elevel = SrcFormatter.Format(SRC.DEFAULT_LEVEL);
         //            }
 
         //            dat.Data = Strings.Trim(etype + " " + elevel + " " + edata);
@@ -196,7 +196,7 @@ namespace SRCCore.Models
         //        }
         //        else
         //        {
-        //            colEffects.Add(dat, dat.Name + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(j));
+        //            colEffects.Add(dat, dat.Name + SrcFormatter.Format(j));
         //        }
         //    }
         //}
@@ -348,11 +348,11 @@ namespace SRCCore.Models
         //                EffectNameRet = Expression.Term(ref argtname, u: ref argu) + "を";
         //                if (elevel > 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(((long)(500d * elevel * (10d + heal_lv)) / 10L)) + "回復";
+        //                    EffectNameRet = EffectNameRet + SrcFormatter.Format(((long)(500d * elevel * (10d + heal_lv)) / 10L)) + "回復";
         //                }
         //                else if (elevel < 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((-500 * elevel)) + "減少";
+        //                    EffectNameRet = EffectNameRet + SrcFormatter.Format((-500 * elevel)) + "減少";
         //                }
 
         //                break;
@@ -365,11 +365,11 @@ namespace SRCCore.Models
         //                EffectNameRet = Expression.Term(ref argtname1, u: ref argu1) + "を";
         //                if (elevel > 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((50d * elevel * (10d + supply_lv)) / 10) + "回復";
+        //                    EffectNameRet = EffectNameRet + SrcFormatter.Format((50d * elevel * (10d + supply_lv)) / 10) + "回復";
         //                }
         //                else if (elevel < 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((-50 * elevel)) + "減少";
+        //                    EffectNameRet = EffectNameRet + SrcFormatter.Format((-50 * elevel)) + "減少";
         //                }
 
         //                break;
@@ -390,11 +390,11 @@ namespace SRCCore.Models
 
         //                if (elevel > 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((10d * elevel)) + "回復";
+        //                    EffectNameRet = EffectNameRet + "を" + SrcFormatter.Format((10d * elevel)) + "回復";
         //                }
         //                else if (elevel < 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((-10 * elevel)) + "減少";
+        //                    EffectNameRet = EffectNameRet + "を" + SrcFormatter.Format((-10 * elevel)) + "減少";
         //                }
 
         //                break;
@@ -407,11 +407,11 @@ namespace SRCCore.Models
         //                EffectNameRet = Expression.Term(ref argtname2, u: ref argu2) + "を";
         //                if (elevel > 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((10d * elevel)) + "回復";
+        //                    EffectNameRet = EffectNameRet + SrcFormatter.Format((10d * elevel)) + "回復";
         //                }
         //                else if (elevel < 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((-10 * elevel)) + "減少";
+        //                    EffectNameRet = EffectNameRet + SrcFormatter.Format((-10 * elevel)) + "減少";
         //                }
 
         //                break;
@@ -424,11 +424,11 @@ namespace SRCCore.Models
         //                EffectNameRet = Expression.Term(ref argtname3, u: ref argu3) + "を";
         //                if (elevel > 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((10d * elevel)) + "増加";
+        //                    EffectNameRet = EffectNameRet + SrcFormatter.Format((10d * elevel)) + "増加";
         //                }
         //                else if (elevel < 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((-10 * elevel)) + "減少";
+        //                    EffectNameRet = EffectNameRet + SrcFormatter.Format((-10 * elevel)) + "減少";
         //                }
 
         //                break;
@@ -571,7 +571,7 @@ namespace SRCCore.Models
 
         //                if (0d < elevel2 & elevel2 <= 10d)
         //                {
-        //                    EffectNameRet = cname + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(elevel2) + "ターン)";
+        //                    EffectNameRet = cname + "(" + SrcFormatter.Format(elevel2) + "ターン)";
         //                }
         //                else
         //                {
@@ -691,11 +691,11 @@ namespace SRCCore.Models
         //                            flevel = GeneralLib.StrToDbl(ref argexpr);
         //                            if (flevel >= 0d)
         //                            {
-        //                                EffectNameRet = WeaponType(ref wclass) + "の攻撃力を+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(100d * flevel);
+        //                                EffectNameRet = WeaponType(ref wclass) + "の攻撃力を+" + SrcFormatter.Format(100d * flevel);
         //                            }
         //                            else
         //                            {
-        //                                EffectNameRet = WeaponType(ref wclass) + "の攻撃力を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(100d * flevel);
+        //                                EffectNameRet = WeaponType(ref wclass) + "の攻撃力を" + SrcFormatter.Format(100d * flevel);
         //                            }
 
         //                            break;
@@ -716,11 +716,11 @@ namespace SRCCore.Models
         //                            flevel = GeneralLib.StrToDbl(ref argexpr1);
         //                            if (flevel >= 0d)
         //                            {
-        //                                EffectNameRet = WeaponType(ref wclass) + "の命中率を+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(5d * flevel);
+        //                                EffectNameRet = WeaponType(ref wclass) + "の命中率を+" + SrcFormatter.Format(5d * flevel);
         //                            }
         //                            else
         //                            {
-        //                                EffectNameRet = WeaponType(ref wclass) + "の命中率を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(5d * flevel);
+        //                                EffectNameRet = WeaponType(ref wclass) + "の命中率を" + SrcFormatter.Format(5d * flevel);
         //                            }
 
         //                            break;
@@ -742,11 +742,11 @@ namespace SRCCore.Models
         //                            flevel = GeneralLib.StrToDbl(ref argexpr2);
         //                            if (flevel >= 0d)
         //                            {
-        //                                EffectNameRet = WeaponType(ref wclass) + "のＣＴ率を+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(5d * flevel);
+        //                                EffectNameRet = WeaponType(ref wclass) + "のＣＴ率を+" + SrcFormatter.Format(5d * flevel);
         //                            }
         //                            else
         //                            {
-        //                                EffectNameRet = WeaponType(ref wclass) + "のＣＴ率を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(5d * flevel);
+        //                                EffectNameRet = WeaponType(ref wclass) + "のＣＴ率を" + SrcFormatter.Format(5d * flevel);
         //                            }
 
         //                            break;
@@ -767,11 +767,11 @@ namespace SRCCore.Models
         //                            flevel = GeneralLib.StrToLng(ref argexpr3);
         //                            if (flevel >= 0d)
         //                            {
-        //                                EffectNameRet = WeaponType(ref wclass) + "の射程を+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(flevel);
+        //                                EffectNameRet = WeaponType(ref wclass) + "の射程を+" + SrcFormatter.Format(flevel);
         //                            }
         //                            else
         //                            {
-        //                                EffectNameRet = WeaponType(ref wclass) + "の射程を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(flevel);
+        //                                EffectNameRet = WeaponType(ref wclass) + "の射程を" + SrcFormatter.Format(flevel);
         //                            }
 
         //                            break;
@@ -932,7 +932,7 @@ namespace SRCCore.Models
 
         //                            if (string.IsNullOrEmpty(EffectNameRet) | EffectNameRet == "非表示")
         //                            {
-        //                                if ((GeneralLib.LIndex(ref ae.Data, 2) ?? "") != (Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.DEFAULT_LEVEL) ?? "") & GeneralLib.LLength(ref ae.Data) <= 3)
+        //                                if ((GeneralLib.LIndex(ref ae.Data, 2) ?? "") != (SrcFormatter.Format(SRC.DEFAULT_LEVEL) ?? "") & GeneralLib.LLength(ref ae.Data) <= 3)
         //                                {
         //                                    EffectNameRet = GeneralLib.LIndex(ref ae.Data, 1) + "Lv" + GeneralLib.LIndex(ref ae.Data, 2) + "付加";
         //                                }
@@ -943,7 +943,7 @@ namespace SRCCore.Models
         //                            }
         //                            else
         //                            {
-        //                                if ((GeneralLib.LIndex(ref ae.Data, 2) ?? "") != (Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.DEFAULT_LEVEL) ?? "") & GeneralLib.LLength(ref ae.Data) <= 3)
+        //                                if ((GeneralLib.LIndex(ref ae.Data, 2) ?? "") != (SrcFormatter.Format(SRC.DEFAULT_LEVEL) ?? "") & GeneralLib.LLength(ref ae.Data) <= 3)
         //                                {
         //                                    EffectNameRet = EffectNameRet + "Lv" + GeneralLib.LIndex(ref ae.Data, 2);
         //                                }
@@ -959,7 +959,7 @@ namespace SRCCore.Models
         //                {
         //                    if (0d < elevel2 & elevel2 <= 10d)
         //                    {
-        //                        EffectNameRet = EffectNameRet + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(elevel2) + "ターン)";
+        //                        EffectNameRet = EffectNameRet + "(" + SrcFormatter.Format(elevel2) + "ターン)";
         //                    }
         //                }
 
@@ -984,7 +984,7 @@ namespace SRCCore.Models
 
         //                if (0d < elevel2 & elevel2 <= 10d)
         //                {
-        //                    EffectNameRet = EffectNameRet + "強化(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(elevel2) + "ターン)";
+        //                    EffectNameRet = EffectNameRet + "強化(" + SrcFormatter.Format(elevel2) + "ターン)";
         //                }
 
         //                break;
@@ -1005,7 +1005,7 @@ namespace SRCCore.Models
         //                {
         //                    UnitData localItem() { object argIndex1 = ae.Data; var ret = SRC.UDList.Item(ref argIndex1); return ret; }
 
-        //                    EffectNameRet = localItem().Nickname + "を" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(elevel2), VbStrConv.Wide) + "体召喚";
+        //                    EffectNameRet = localItem().Nickname + "を" + Strings.StrConv(SrcFormatter.Format(elevel2), VbStrConv.Wide) + "体召喚";
         //                }
         //                else
         //                {
@@ -1033,7 +1033,7 @@ namespace SRCCore.Models
         //                {
         //                    UnitData localItem2() { object argIndex1 = uname; var ret = SRC.UDList.Item(ref argIndex1); return ret; }
 
-        //                    EffectNameRet = localItem2().Nickname + "に変身" + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(elevel2) + "ターン)";
+        //                    EffectNameRet = localItem2().Nickname + "に変身" + "(" + SrcFormatter.Format(elevel2) + "ターン)";
         //                }
         //                else
         //                {
@@ -1049,7 +1049,7 @@ namespace SRCCore.Models
         //            {
         //                if (0d < elevel2 & elevel2 <= 10d)
         //                {
-        //                    EffectNameRet = "任意の味方ユニットに変身" + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(elevel2) + "ターン)";
+        //                    EffectNameRet = "任意の味方ユニットに変身" + "(" + SrcFormatter.Format(elevel2) + "ターン)";
         //                }
         //                else
         //                {

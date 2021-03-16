@@ -101,7 +101,7 @@ namespace SRCCore.CmdDatas.Commands
                                 //    tcolor = Conversions.ToInteger(cname);
                                 //    if (tcolor != ColorTranslator.ToOle(Color.White) | GetArgAsString((i - 1)) == "フィルタ")
                                 //    {
-                                //        options = options + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)tcolor) + " ";
+                                //        options = options + SrcFormatter.Format((object)tcolor) + " ";
                                 //    }
                                 //}
                             }

@@ -174,14 +174,14 @@ namespace SRCCore.Units
         //            else if (fd.Level >= 0d)
         //            {
         //                // レベル指定あり
-        //                FeatureNameIntRet = fd.Name + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(fd.Level);
+        //                FeatureNameIntRet = fd.Name + "Lv" + SrcFormatter.Format(fd.Level);
         //                if (fd.Name == "射撃強化")
         //                {
         //                    if (CountPilot() > 0)
         //                    {
         //                        if (MainPilot().HasMana())
         //                        {
-        //                            FeatureNameIntRet = "魔力強化Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(fd.Level);
+        //                            FeatureNameIntRet = "魔力強化Lv" + SrcFormatter.Format(fd.Level);
         //                        }
         //                    }
         //                }
@@ -193,18 +193,18 @@ namespace SRCCore.Units
         //                {
         //                    case "格闘強化":
         //                        {
-        //                            FeatureNameIntRet = "格闘低下" + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Math.Abs(fd.Level));
+        //                            FeatureNameIntRet = "格闘低下" + "Lv" + SrcFormatter.Format(Math.Abs(fd.Level));
         //                            break;
         //                        }
 
         //                    case "射撃強化":
         //                        {
-        //                            FeatureNameIntRet = "射撃低下" + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Math.Abs(fd.Level));
+        //                            FeatureNameIntRet = "射撃低下" + "Lv" + SrcFormatter.Format(Math.Abs(fd.Level));
         //                            if (CountPilot() > 0)
         //                            {
         //                                if (MainPilot().HasMana())
         //                                {
-        //                                    FeatureNameIntRet = "魔力低下Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Math.Abs(fd.Level));
+        //                                    FeatureNameIntRet = "魔力低下Lv" + SrcFormatter.Format(Math.Abs(fd.Level));
         //                                }
         //                            }
 
@@ -213,31 +213,31 @@ namespace SRCCore.Units
 
         //                    case "命中強化":
         //                        {
-        //                            FeatureNameIntRet = "命中低下" + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Math.Abs(fd.Level));
+        //                            FeatureNameIntRet = "命中低下" + "Lv" + SrcFormatter.Format(Math.Abs(fd.Level));
         //                            break;
         //                        }
 
         //                    case "回避強化":
         //                        {
-        //                            FeatureNameIntRet = "回避低下" + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Math.Abs(fd.Level));
+        //                            FeatureNameIntRet = "回避低下" + "Lv" + SrcFormatter.Format(Math.Abs(fd.Level));
         //                            break;
         //                        }
 
         //                    case "技量強化":
         //                        {
-        //                            FeatureNameIntRet = "技量低下" + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Math.Abs(fd.Level));
+        //                            FeatureNameIntRet = "技量低下" + "Lv" + SrcFormatter.Format(Math.Abs(fd.Level));
         //                            break;
         //                        }
 
         //                    case "反応強化":
         //                        {
-        //                            FeatureNameIntRet = "反応低下" + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Math.Abs(fd.Level));
+        //                            FeatureNameIntRet = "反応低下" + "Lv" + SrcFormatter.Format(Math.Abs(fd.Level));
         //                            break;
         //                        }
 
         //                    default:
         //                        {
-        //                            FeatureNameIntRet = fd.Name + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(fd.Level);
+        //                            FeatureNameIntRet = fd.Name + "Lv" + SrcFormatter.Format(fd.Level);
         //                            break;
         //                        }
         //                }
@@ -568,7 +568,7 @@ namespace SRCCore.Units
         //                }
         //                else
         //                {
-        //                    colFeature.Add(fd, fd.Name + ":" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(colFeature.Count));
+        //                    colFeature.Add(fd, fd.Name + ":" + SrcFormatter.Format(colFeature.Count));
         //                }
 
         //            NextFeature:
@@ -711,7 +711,7 @@ namespace SRCCore.Units
         //                        }
         //                        else
         //                        {
-        //                            withBlock2.Add(fd, fd.Name + ":" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock2.Count + 1));
+        //                            withBlock2.Add(fd, fd.Name + ":" + SrcFormatter.Format(withBlock2.Count + 1));
         //                        }
         //                    }
         //                }
@@ -762,7 +762,7 @@ namespace SRCCore.Units
         //                        }
         //                        else
         //                        {
-        //                            withBlock4.Add(farray[i], farray[i].Name + ":" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i));
+        //                            withBlock4.Add(farray[i], farray[i].Name + ":" + SrcFormatter.Format(i));
         //                        }
         //                    }
         //                }

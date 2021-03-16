@@ -100,7 +100,7 @@ namespace Project1
 
             //string argini_section = "Option";
             //string argini_entry = "MessageWait";
-            //string argini_data = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GUI.MessageWait);
+            //string argini_data = SrcFormatter.Format(GUI.MessageWait);
             //GeneralLib.WriteIni(ref argini_section, ref argini_entry, ref argini_data);
 
             //// 戦闘アニメ表示
@@ -290,7 +290,7 @@ namespace Project1
             //// MP3再生音量
             //string argini_section22 = "Option";
             //string argini_entry22 = "MP3Volume";
-            //string argini_data22 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Sound.MP3Volume);
+            //string argini_data22 = SrcFormatter.Format(Sound.MP3Volume);
             //GeneralLib.WriteIni(ref argini_section22, ref argini_entry22, ref argini_data22);
 
             // ダイアログを閉じる
@@ -485,7 +485,7 @@ namespace Project1
 
             //// MP3音量
             //SavedMP3Volume = Sound.MP3Volume;
-            //txtMP3Volume.Text = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Sound.MP3Volume);
+            //txtMP3Volume.Text = SrcFormatter.Format(Sound.MP3Volume);
         }
 
         // MP3音量変更
@@ -495,7 +495,7 @@ namespace Project1
         {
             //var IsMP3Supported = default(object);
             //Sound.MP3Volume = (short)newScrollValue;
-            //txtMP3Volume.Text = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Sound.MP3Volume);
+            //txtMP3Volume.Text = SrcFormatter.Format(Sound.MP3Volume);
             //// UPGRADE_WARNING: オブジェクト IsMP3Supported の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
             //if (Conversions.ToBoolean(IsMP3Supported))
             //{
@@ -508,7 +508,7 @@ namespace Project1
         {
             //var IsMP3Supported = default(object);
             //Sound.MP3Volume = (short)newScrollValue;
-            //txtMP3Volume.Text = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Sound.MP3Volume);
+            //txtMP3Volume.Text = SrcFormatter.Format(Sound.MP3Volume);
             //// UPGRADE_WARNING: オブジェクト IsMP3Supported の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
             //if (Conversions.ToBoolean(IsMP3Supported))
             //{

@@ -291,11 +291,11 @@ namespace SRCCore.Commands
 
             //        string localRightPaddedString1() { string argbuf = withBlock1.MainPilot().get_Nickname(false); var ret = GeneralLib.RightPaddedString(argbuf, 17); withBlock1.MainPilot().get_Nickname(false) = argbuf; return ret; }
 
-            //        string localLeftPaddedString() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
+            //        string localLeftPaddedString() { string argbuf = SrcFormatter.Format(withBlock1.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
 
-            //        string localRightPaddedString2() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.HP) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MaxHP); var ret = GeneralLib.RightPaddedString(argbuf, 12); return ret; }
+            //        string localRightPaddedString2() { string argbuf = SrcFormatter.Format(withBlock1.HP) + "/" + SrcFormatter.Format(withBlock1.MaxHP); var ret = GeneralLib.RightPaddedString(argbuf, 12); return ret; }
 
-            //        string localRightPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.EN) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MaxEN); var ret = GeneralLib.RightPaddedString(argbuf, 8); return ret; }
+            //        string localRightPaddedString3() { string argbuf = SrcFormatter.Format(withBlock1.EN) + "/" + SrcFormatter.Format(withBlock1.MaxEN); var ret = GeneralLib.RightPaddedString(argbuf, 8); return ret; }
 
             //        list[i] = localRightPaddedString() + localRightPaddedString1() + localLeftPaddedString() + " " + localRightPaddedString2() + localRightPaddedString3();
             //        GUI.ListItemID[i] = withBlock1.ID;
@@ -610,7 +610,7 @@ namespace SRCCore.Commands
             //{
             //    case "移動命令":
             //        {
-            //            SelectedUnit.Mode = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SelectedX) + " " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SelectedY);
+            //            SelectedUnit.Mode = SrcFormatter.Format(SelectedX) + " " + SrcFormatter.Format(SelectedY);
             //            break;
             //        }
 

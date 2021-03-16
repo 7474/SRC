@@ -343,7 +343,7 @@ namespace SRCCore.Units
             //            PilotMessage(argSituation, msg_mode: argmsg_mode);
             //        }
 
-            //        msg = withBlock1.get_Nickname(false) + "は経験値[" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GetExpRet) + "]を獲得、" + "レベル[" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.Level) + "]にレベルアップ。";
+            //        msg = withBlock1.get_Nickname(false) + "は経験値[" + SrcFormatter.Format(GetExpRet) + "]を獲得、" + "レベル[" + SrcFormatter.Format(withBlock1.Level) + "]にレベルアップ。";
 
             //        // 特殊能力の習得
             //        var loopTo3 = withBlock1.CountSkill();
@@ -456,7 +456,7 @@ namespace SRCCore.Units
             //    }
             //    else if (GetExpRet > 0)
             //    {
-            //        GUI.DisplaySysMessage(withBlock1.get_Nickname(false) + "は" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GetExpRet) + "の経験値を得た。");
+            //        GUI.DisplaySysMessage(withBlock1.get_Nickname(false) + "は" + SrcFormatter.Format(GetExpRet) + "の経験値を得た。");
             //    }
             //}
 
@@ -895,7 +895,7 @@ namespace SRCCore.Units
 
             //                if (withBlock.HP > 0)
             //                {
-            //                    string argmsg = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tdmg);
+            //                    string argmsg = SrcFormatter.Format(tdmg);
             //                    GUI.DrawSysString(withBlock.x, withBlock.y, argmsg);
             //                    GUI.MainForm.picMain(0).Refresh();
             //                }
@@ -949,7 +949,7 @@ namespace SRCCore.Units
             //                    }
             //                    else
             //                    {
-            //                        GUI.DisplaySysMessage(withBlock.Nickname + "は" + tdmg + "のダメージを受けた。;" + "残りＨＰは" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.HP) + "（損傷率 = " + 100 * (withBlock.MaxHP - withBlock.HP) / withBlock.MaxHP + "％）");
+            //                        GUI.DisplaySysMessage(withBlock.Nickname + "は" + tdmg + "のダメージを受けた。;" + "残りＨＰは" + SrcFormatter.Format(withBlock.HP) + "（損傷率 = " + 100 * (withBlock.MaxHP - withBlock.HP) / withBlock.MaxHP + "％）");
             //                        Event_Renamed.HandleEvent("損傷率", withBlock.MainPilot().ID, 100 - withBlock.HP * 100 / withBlock.MaxHP);
             //                    }
 

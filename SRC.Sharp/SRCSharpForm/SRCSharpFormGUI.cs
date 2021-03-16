@@ -244,8 +244,8 @@ namespace SRCSharpForm
             //    frmMessage.txtEN2.Visible = false;
             //    frmMessage.picUnit1.Visible = false;
             //    frmMessage.picUnit2.Visible = false;
-            //    frmMessage.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(frmMessage.Width) - frmMessage.ClientRectangle.Width * tppx + 508 * tppx);
-            //    frmMessage.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(frmMessage.Height) - frmMessage.ClientRectangle.Height * tppy + 84 * tppy);
+            //    frmMessage.Width = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(frmMessage.Width) - frmMessage.ClientRectangle.Width * tppx + 508 * tppx);
+            //    frmMessage.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(frmMessage.Height) - frmMessage.ClientRectangle.Height * tppy + 84 * tppy);
             //    frmMessage.picFace.Top = 8;
             //    frmMessage.picFace.Left = 8;
             //    frmMessage.picMessage.Top = 7;
@@ -291,8 +291,8 @@ namespace SRCSharpForm
 
             //    object argu21 = null;
             //    UpdateMessageForm(u1, u2: argu21);
-            //    frmMessage.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(frmMessage.Width) - frmMessage.ClientRectangle.Width * tppx + 508 * tppx);
-            //    frmMessage.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(frmMessage.Height) - frmMessage.ClientRectangle.Height * tppy + 118 * tppy);
+            //    frmMessage.Width = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(frmMessage.Width) - frmMessage.ClientRectangle.Width * tppx + 508 * tppx);
+            //    frmMessage.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(frmMessage.Height) - frmMessage.ClientRectangle.Height * tppy + 118 * tppy);
             //    frmMessage.picFace.Top = 42;
             //    frmMessage.picFace.Left = 8;
             //    frmMessage.picMessage.Top = 41;
@@ -317,8 +317,8 @@ namespace SRCSharpForm
             //    frmMessage.picUnit2.Visible = true;
             //    object argu2 = u2;
             //    UpdateMessageForm(u1, argu2);
-            //    frmMessage.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(frmMessage.Width) - frmMessage.ClientRectangle.Width * tppx + 508 * tppx);
-            //    frmMessage.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(frmMessage.Height) - frmMessage.ClientRectangle.Height * tppy + 118 * tppy);
+            //    frmMessage.Width = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(frmMessage.Width) - frmMessage.ClientRectangle.Width * tppx + 508 * tppx);
+            //    frmMessage.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(frmMessage.Height) - frmMessage.ClientRectangle.Height * tppy + 118 * tppy);
             //    frmMessage.picFace.Top = 42;
             //    frmMessage.picFace.Left = 8;
             //    frmMessage.picMessage.Top = 41;
@@ -353,8 +353,8 @@ namespace SRCSharpForm
             else
             {
                 //// メインウィンドウが表示されていない場合は画面中央に表示
-                //frmMessage.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(frmMessage.Width)) / 2d);
-                //frmMessage.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(frmMessage.Height)) / 2d);
+                //frmMessage.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(frmMessage.Width)) / 2d);
+                //frmMessage.Top = (int)SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(frmMessage.Height)) / 2d);
             }
 
             // ウィンドウをクリアしておく
@@ -937,13 +937,13 @@ namespace SRCSharpForm
             //            // 攻撃力
             //            if (wpower[w] < 10000)
             //            {
-            //                string localLeftPaddedString() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(wpower[w]); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
+            //                string localLeftPaddedString() { string argbuf = SrcFormatter.Format(wpower[w]); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
             //                list[Information.UBound(list)] = GeneralLib.RightPaddedString(withBlock2.Nickname(), 27) + localLeftPaddedString();
             //            }
             //            else
             //            {
-            //                string localLeftPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(wpower[w]); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
+            //                string localLeftPaddedString1() { string argbuf = SrcFormatter.Format(wpower[w]); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
             //                list[Information.UBound(list)] = GeneralLib.RightPaddedString(withBlock2.Nickname(), 26) + localLeftPaddedString1();
             //            }
@@ -951,7 +951,7 @@ namespace SRCSharpForm
             //            // 最大射程
             //            if (u.WeaponMaxRange(w) > 1)
             //            {
-            //                buf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock2.MinRange) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponMaxRange(w));
+            //                buf = SrcFormatter.Format(withBlock2.MinRange) + "-" + SrcFormatter.Format(u.WeaponMaxRange(w));
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + GeneralLib.LeftPaddedString(buf, 5);
             //            }
             //            else
@@ -962,13 +962,13 @@ namespace SRCSharpForm
             //            // 命中率修正
             //            if (u.WeaponPrecision(w) >= 0)
             //            {
-            //                string localLeftPaddedString2() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponPrecision(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
+            //                string localLeftPaddedString2() { string argbuf = "+" + SrcFormatter.Format(u.WeaponPrecision(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString2();
             //            }
             //            else
             //            {
-            //                string localLeftPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponPrecision(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
+            //                string localLeftPaddedString3() { string argbuf = SrcFormatter.Format(u.WeaponPrecision(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString3();
             //            }
@@ -976,7 +976,7 @@ namespace SRCSharpForm
             //            // 残り弾数
             //            if (withBlock2.Bullet > 0)
             //            {
-            //                string localLeftPaddedString4() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.Bullet(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 3); return ret; }
+            //                string localLeftPaddedString4() { string argbuf = SrcFormatter.Format(u.Bullet(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 3); return ret; }
 
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString4();
             //            }
@@ -988,7 +988,7 @@ namespace SRCSharpForm
             //            // ＥＮ消費量
             //            if (withBlock2.ENConsumption > 0)
             //            {
-            //                string localLeftPaddedString5() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponENConsumption(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
+            //                string localLeftPaddedString5() { string argbuf = SrcFormatter.Format(u.WeaponENConsumption(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString5();
             //            }
@@ -1000,13 +1000,13 @@ namespace SRCSharpForm
             //            // クリティカル率修正
             //            if (u.WeaponCritical(w) >= 0)
             //            {
-            //                string localLeftPaddedString6() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponCritical(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
+            //                string localLeftPaddedString6() { string argbuf = "+" + SrcFormatter.Format(u.WeaponCritical(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString6();
             //            }
             //            else
             //            {
-            //                string localLeftPaddedString7() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponCritical(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
+            //                string localLeftPaddedString7() { string argbuf = SrcFormatter.Format(u.WeaponCritical(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString7();
             //            }
@@ -1205,7 +1205,7 @@ namespace SRCSharpForm
             //        {
             //            var withBlock4 = u.Weapon(w);
             //            // 攻撃力
-            //            string localLeftPaddedString8() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(wpower[w]); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
+            //            string localLeftPaddedString8() { string argbuf = SrcFormatter.Format(wpower[w]); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
             //            list[Information.UBound(list)] = GeneralLib.RightPaddedString(withBlock4.Nickname(), 29) + localLeftPaddedString8();
 
@@ -1213,18 +1213,18 @@ namespace SRCSharpForm
             //            string argoname = "予測命中率非表示";
             //            if (!Expression.IsOptionDefined(argoname))
             //            {
-            //                buf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GeneralLib.MinLng(u.HitProbability(w, Commands.SelectedUnit, true), 100)) + "%";
+            //                buf = SrcFormatter.Format(GeneralLib.MinLng(u.HitProbability(w, Commands.SelectedUnit, true), 100)) + "%";
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + GeneralLib.LeftPaddedString(buf, 5);
             //            }
             //            else if (u.WeaponPrecision(w) >= 0)
             //            {
-            //                string localLeftPaddedString10() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponPrecision(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
+            //                string localLeftPaddedString10() { string argbuf = "+" + SrcFormatter.Format(u.WeaponPrecision(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString10();
             //            }
             //            else
             //            {
-            //                string localLeftPaddedString9() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponPrecision(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
+            //                string localLeftPaddedString9() { string argbuf = SrcFormatter.Format(u.WeaponPrecision(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString9();
             //            }
@@ -1234,18 +1234,18 @@ namespace SRCSharpForm
             //            string argoname1 = "予測命中率非表示";
             //            if (!Expression.IsOptionDefined(argoname1))
             //            {
-            //                buf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GeneralLib.MinLng(u.CriticalProbability(w, Commands.SelectedUnit), 100)) + "%";
+            //                buf = SrcFormatter.Format(GeneralLib.MinLng(u.CriticalProbability(w, Commands.SelectedUnit), 100)) + "%";
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + GeneralLib.LeftPaddedString(buf, 5);
             //            }
             //            else if (u.WeaponCritical(w) >= 0)
             //            {
-            //                string localLeftPaddedString12() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponCritical(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
+            //                string localLeftPaddedString12() { string argbuf = "+" + SrcFormatter.Format(u.WeaponCritical(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString12();
             //            }
             //            else
             //            {
-            //                string localLeftPaddedString11() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponCritical(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
+            //                string localLeftPaddedString11() { string argbuf = SrcFormatter.Format(u.WeaponCritical(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString11();
             //            }
@@ -1253,7 +1253,7 @@ namespace SRCSharpForm
             //            // 残り弾数
             //            if (withBlock4.Bullet > 0)
             //            {
-            //                string localLeftPaddedString13() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.Bullet(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 3); return ret; }
+            //                string localLeftPaddedString13() { string argbuf = SrcFormatter.Format(u.Bullet(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 3); return ret; }
 
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString13();
             //            }
@@ -1265,7 +1265,7 @@ namespace SRCSharpForm
             //            // ＥＮ消費量
             //            if (withBlock4.ENConsumption > 0)
             //            {
-            //                string localLeftPaddedString14() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponENConsumption(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
+            //                string localLeftPaddedString14() { string argbuf = SrcFormatter.Format(u.WeaponENConsumption(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString14();
             //            }
@@ -1508,7 +1508,7 @@ namespace SRCSharpForm
             //    GetCursorPos(PT);
             //    {
             //        var withBlock = MainForm;
-            //        if ((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Left) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() <= PT.X & PT.X <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Left) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() & (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Top) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY())
+            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X & PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX() & (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
             //        {
             //            if ((GetAsyncKeyState(RButtonID) & 0x8000) != 0)
             //            {
@@ -1524,7 +1524,7 @@ namespace SRCSharpForm
             //    GetCursorPos(PT);
             //    {
             //        var withBlock1 = My.MyProject.Forms.frmMessage;
-            //        if ((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Left) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() <= PT.X & PT.X <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Left) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() & (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Top) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Height)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY())
+            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X & PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() & (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
             //        {
             //            if ((GetAsyncKeyState(RButtonID) & 0x8000) != 0)
             //            {

@@ -1121,7 +1121,7 @@ namespace SRCSharpForm
                 //    if (withBlock.Font.Name != MainForm.picMain(0).Font.Name)
                 //    {
                 //        sf = (Font)Control.DefaultFont.Clone();
-                //        sf = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeName(sf, MainForm.picMain(0).Font.Name);
+                //        sf = SrcFormatter.FontChangeName(sf, MainForm.picMain(0).Font.Name);
                 //        withBlock.Font = sf;
                 //    }
                 //    withBlock.Font.Size = MainForm.picMain(0).Font.Size;
@@ -1134,7 +1134,7 @@ namespace SRCSharpForm
                 //    if (withBlock1.Font.Name != MainForm.picMain(0).Font.Name)
                 //    {
                 //        sf = (Font)Control.DefaultFont.Clone();
-                //        sf = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeName(sf, MainForm.picMain(0).Font.Name);
+                //        sf = SrcFormatter.FontChangeName(sf, MainForm.picMain(0).Font.Name);
                 //        withBlock1.Font = sf;
                 //    }
                 //    withBlock1.Font.Size = MainForm.picMain(0).Font.Size;

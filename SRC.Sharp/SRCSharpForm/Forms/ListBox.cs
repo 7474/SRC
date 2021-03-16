@@ -430,8 +430,8 @@ namespace SRCSharpForm
             var Button = ResolveMouseButton(eventArgs);
             //int Button = (eventArgs.Button / 0x100000);
             //int Shift = (ModifierKeys / 0x10000);
-            //float X = (float)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(eventArgs.X);
-            //float Y = (float)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(eventArgs.Y);
+            //float X = (float)SrcFormatter.PixelsToTwipsX(eventArgs.X);
+            //float Y = (float)SrcFormatter.PixelsToTwipsY(eventArgs.Y);
             switch (Button)
             {
                 case GuiButton.Left:
@@ -481,8 +481,8 @@ namespace SRCSharpForm
             var Button = ResolveMouseButton(eventArgs);
             //int Button = (eventArgs.Button / 0x100000);
             //int Shift = (ModifierKeys / 0x10000);
-            //float X = (float)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(eventArgs.X);
-            //float Y = (float)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(eventArgs.Y);
+            //float X = (float)SrcFormatter.PixelsToTwipsX(eventArgs.X);
+            //float Y = (float)SrcFormatter.PixelsToTwipsY(eventArgs.Y);
             switch (Button)
             {
                 case GuiButton.Left:

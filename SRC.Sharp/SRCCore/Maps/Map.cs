@@ -638,7 +638,7 @@ namespace SRCCore.Maps
                     //                    // 定義されていたらデータの妥当性チェック
                     //                    if (!SRC.TDList.IsDefined(MapData[i, j, MapDataIndex.LayerType]))
                     //                    {
-                    //                        Interaction.MsgBox("定義されていない" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(MapData[i, j, MapDataIndex.LayerType]) + "番の地形データが使われています");
+                    //                        Interaction.MsgBox("定義されていない" + SrcFormatter.Format(MapData[i, j, MapDataIndex.LayerType]) + "番の地形データが使われています");
                     //                        FileSystem.FileClose(FileNumber);
                     //                        Environment.Exit(0);
                     //                    }

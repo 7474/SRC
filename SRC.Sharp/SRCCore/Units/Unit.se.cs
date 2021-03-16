@@ -443,7 +443,7 @@ namespace SRCCore.Units
             //                            // カットインの表示
             //                            if (wait_time > 0)
             //                            {
-            //                                anime = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(wait_time / 100d) + ";" + anime;
+            //                                anime = SrcFormatter.Format(wait_time / 100d) + ";" + anime;
             //                                wait_time = 0;
             //                                need_refresh = false;
             //                            }
@@ -478,7 +478,7 @@ namespace SRCCore.Units
             //                            // 画面処理コマンド
             //                            if (wait_time > 0)
             //                            {
-            //                                anime = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(wait_time / 100d) + ";" + anime;
+            //                                anime = SrcFormatter.Format(wait_time / 100d) + ";" + anime;
             //                                wait_time = 0;
             //                                need_refresh = false;
             //                            }
@@ -532,7 +532,7 @@ namespace SRCCore.Units
             //                // メッセージ表示として処理
             //                if (wait_time > 0)
             //                {
-            //                    anime = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(wait_time / 100d) + ";" + anime;
+            //                    anime = SrcFormatter.Format(wait_time / 100d) + ";" + anime;
             //                    wait_time = 0;
             //                }
 

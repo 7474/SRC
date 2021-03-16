@@ -1175,7 +1175,7 @@ namespace SRCCore.Commands
             //            if (earnings > 0)
             //            {
             //                string argtname = "資金";
-            //                GUI.DisplaySysMessage(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(earnings) + "の" + Expression.Term(argtname, SelectedUnit) + "を得た。");
+            //                GUI.DisplaySysMessage(SrcFormatter.Format(earnings) + "の" + Expression.Term(argtname, SelectedUnit) + "を得た。");
             //            }
 
             //            // スペシャルパワー効果「敵破壊時再行動」

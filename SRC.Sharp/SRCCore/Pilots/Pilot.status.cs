@@ -212,7 +212,7 @@ namespace SRCCore.Pilots
         //                            }
         //                            else
         //                            {
-        //                                withBlock2.Add(skill_data[i], skill_name[i] + ":" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i));
+        //                                withBlock2.Add(skill_data[i], skill_name[i] + ":" + SrcFormatter.Format(i));
         //                            }
 
         //                            break;

@@ -2703,7 +2703,7 @@
 //            // 発射回数
 //            if (attack_times > 0)
 //            {
-//                aname = aname + " " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(attack_times);
+//                aname = aname + " " + SrcFormatter.Format(attack_times);
 //            }
 
 //            // 画像
@@ -4268,7 +4268,7 @@
 //            // 命中数
 //            if (attack_times > 0)
 //            {
-//                aname = aname + " " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(attack_times);
+//                aname = aname + " " + SrcFormatter.Format(attack_times);
 //            }
 
 //            // 命中アニメ表示
@@ -5352,7 +5352,7 @@
 //            {
 //                {
 //                    var withBlock = My.MyProject.Forms.frmMessage;
-//                    if ((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Left) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() <= PT.X & PT.X <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Left) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() & (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Top) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY())
+//                    if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X & PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX() & (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
 //                    {
 //                        if ((GUI.GetAsyncKeyState(GUI.RButtonID) & 0x8000) != 0)
 //                        {
@@ -5368,7 +5368,7 @@
 //            {
 //                {
 //                    var withBlock1 = GUI.MainForm;
-//                    if ((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Left) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() <= PT.X & PT.X <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Left) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() & (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Top) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Height)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY())
+//                    if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X & PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() & (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
 //                    {
 //                        if ((GUI.GetAsyncKeyState(GUI.RButtonID) & 0x8000) != 0)
 //                        {
@@ -5482,7 +5482,7 @@
 //                string argfname2 = @"Unit\" + u.get_Bitmap(false);
 //                string argdraw_option = "透過 " + draw_mode;
 //                GUI.DrawPicture(ref argfname2, GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, ref argdraw_option);
-//                string argfname3 = fname + "0" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i) + ".bmp";
+//                string argfname3 = fname + "0" + SrcFormatter.Format(i) + ".bmp";
 //                string argdraw_option1 = "透過 " + draw_mode;
 //                GUI.DrawPicture(ref argfname3, GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, ref argdraw_option1);
 //                GUI.MainForm.picMain(0).Refresh();
@@ -5572,7 +5572,7 @@
 
 //                // 爆発用画像の個数
 //                i = 2;
-//                string argfname1 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
+//                string argfname1 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
 //                while (GeneralLib.FileExists(ref argfname1))
 //                    i = (short)(i + 1);
 //                explode_image_num = (short)(i - 1);
@@ -5585,7 +5585,7 @@
 //            {
 //                {
 //                    var withBlock = My.MyProject.Forms.frmMessage;
-//                    if ((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Left) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() <= PT.X & PT.X <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Left) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() & (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Top) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY())
+//                    if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X & PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX() & (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
 //                    {
 //                        if ((GUI.GetAsyncKeyState(GUI.RButtonID) & 0x8000) != 0)
 //                        {
@@ -5601,7 +5601,7 @@
 //            {
 //                {
 //                    var withBlock1 = GUI.MainForm;
-//                    if ((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Left) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() <= PT.X & PT.X <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Left) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() & (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Top) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Height)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY())
+//                    if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X & PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() & (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
 //                    {
 //                        if ((GUI.GetAsyncKeyState(GUI.RButtonID) & 0x8000) != 0)
 //                        {
@@ -5652,7 +5652,7 @@
 //                            for (i = 1; i <= loopTo; i++)
 //                            {
 //                                GUI.ClearPicture();
-//                                string argfname2 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
+//                                string argfname2 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
 //                                string argdraw_option = "透過";
 //                                GUI.DrawPicture(ref argfname2, GUI.MapToPixelX(tx) - 64, GUI.MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, ref argdraw_option);
 //                                GUI.MainForm.picMain(0).Refresh();
@@ -5668,7 +5668,7 @@
 //                            for (i = 1; i <= loopTo1; i++)
 //                            {
 //                                GUI.ClearPicture();
-//                                string argfname3 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
+//                                string argfname3 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
 //                                string argdraw_option1 = "透過";
 //                                GUI.DrawPicture(ref argfname3, GUI.MapToPixelX(tx) - 56, GUI.MapToPixelY(ty) - 56, 144, 144, 0, 0, 0, 0, ref argdraw_option1);
 //                                GUI.MainForm.picMain(0).Refresh();
@@ -5684,7 +5684,7 @@
 //                            for (i = 1; i <= loopTo2; i++)
 //                            {
 //                                GUI.ClearPicture();
-//                                string argfname4 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
+//                                string argfname4 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
 //                                string argdraw_option2 = "透過";
 //                                GUI.DrawPicture(ref argfname4, GUI.MapToPixelX(tx) - 48, GUI.MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, ref argdraw_option2);
 //                                GUI.MainForm.picMain(0).Refresh();
@@ -5700,7 +5700,7 @@
 //                            for (i = 1; i <= loopTo3; i++)
 //                            {
 //                                GUI.ClearPicture();
-//                                string argfname5 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
+//                                string argfname5 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
 //                                string argdraw_option3 = "透過";
 //                                GUI.DrawPicture(ref argfname5, GUI.MapToPixelX(tx) - 40, GUI.MapToPixelY(ty) - 40, 112, 112, 0, 0, 0, 0, ref argdraw_option3);
 //                                GUI.MainForm.picMain(0).Refresh();
@@ -5716,7 +5716,7 @@
 //                            for (i = 1; i <= loopTo4; i++)
 //                            {
 //                                GUI.ClearPicture();
-//                                string argfname6 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
+//                                string argfname6 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
 //                                string argdraw_option4 = "透過";
 //                                GUI.DrawPicture(ref argfname6, GUI.MapToPixelX(tx) - 24, GUI.MapToPixelY(ty) - 24, 80, 80, 0, 0, 0, 0, ref argdraw_option4);
 //                                GUI.MainForm.picMain(0).Refresh();
@@ -5732,7 +5732,7 @@
 //                            for (i = 1; i <= loopTo5; i++)
 //                            {
 //                                GUI.ClearPicture();
-//                                string argfname7 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
+//                                string argfname7 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
 //                                string argdraw_option5 = "透過";
 //                                GUI.DrawPicture(ref argfname7, GUI.MapToPixelX(tx) - 8, GUI.MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, ref argdraw_option5);
 //                                GUI.MainForm.picMain(0).Refresh();
@@ -5756,7 +5756,7 @@
 //                            var loopTo6 = explode_image_num;
 //                            for (i = 1; i <= loopTo6; i++)
 //                            {
-//                                string argfname8 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
+//                                string argfname8 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
 //                                string argdraw_option6 = "透過";
 //                                GUI.DrawPicture(ref argfname8, GUI.MapToPixelX(tx) - 64, GUI.MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, ref argdraw_option6);
 //                                GUI.MainForm.picMain(0).Refresh();
@@ -5771,7 +5771,7 @@
 //                            var loopTo7 = explode_image_num;
 //                            for (i = 1; i <= loopTo7; i++)
 //                            {
-//                                string argfname9 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
+//                                string argfname9 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
 //                                string argdraw_option7 = "透過";
 //                                GUI.DrawPicture(ref argfname9, GUI.MapToPixelX(tx) - 48, GUI.MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, ref argdraw_option7);
 //                                GUI.MainForm.picMain(0).Refresh();
@@ -5786,7 +5786,7 @@
 //                            var loopTo8 = explode_image_num;
 //                            for (i = 1; i <= loopTo8; i++)
 //                            {
-//                                string argfname10 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
+//                                string argfname10 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
 //                                string argdraw_option8 = "透過";
 //                                GUI.DrawPicture(ref argfname10, GUI.MapToPixelX(tx) - 32, GUI.MapToPixelY(ty) - 32, 96, 96, 0, 0, 0, 0, ref argdraw_option8);
 //                                GUI.MainForm.picMain(0).Refresh();
@@ -5801,7 +5801,7 @@
 //                            var loopTo9 = explode_image_num;
 //                            for (i = 1; i <= loopTo9; i++)
 //                            {
-//                                string argfname11 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
+//                                string argfname11 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
 //                                string argdraw_option9 = "透過";
 //                                GUI.DrawPicture(ref argfname11, GUI.MapToPixelX(tx) - 16, GUI.MapToPixelY(ty) - 16, 64, 64, 0, 0, 0, 0, ref argdraw_option9);
 //                                GUI.MainForm.picMain(0).Refresh();
@@ -5816,7 +5816,7 @@
 //                            var loopTo10 = explode_image_num;
 //                            for (i = 1; i <= loopTo10; i++)
 //                            {
-//                                string argfname12 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
+//                                string argfname12 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
 //                                string argdraw_option10 = "透過";
 //                                GUI.DrawPicture(ref argfname12, GUI.MapToPixelX(tx) - 8, GUI.MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, ref argdraw_option10);
 //                                GUI.MainForm.picMain(0).Refresh();
@@ -5831,7 +5831,7 @@
 //                            var loopTo11 = explode_image_num;
 //                            for (i = 1; i <= loopTo11; i++)
 //                            {
-//                                string argfname13 = explode_image_path + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i, "00") + ".bmp";
+//                                string argfname13 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
 //                                string argdraw_option11 = "透過";
 //                                GUI.DrawPicture(ref argfname13, GUI.MapToPixelX(tx), GUI.MapToPixelY(ty), 32, 32, 0, 0, 0, 0, ref argdraw_option11);
 //                                GUI.MainForm.picMain(0).Refresh();
