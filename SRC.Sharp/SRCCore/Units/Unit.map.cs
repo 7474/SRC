@@ -191,85 +191,85 @@ namespace SRCCore.Units
             switch (Map.Terrain(x, y).Class ?? "")
             {
                 case "空":
-                        Area = "空中";
-                        break;
+                    Area = "空中";
+                    break;
 
                 case "陸":
-                        if (IsTransAvailable("地中") & Area == "地中")
-                        {
-                            Area = "地中";
-                        }
-                        else if (IsTransAvailable("空") && get_Adaption(1) >= get_Adaption(2))
-                        {
-                            Area = "空中";
-                        }
-                        else if (IsTransAvailable("陸"))
-                        {
-                            Area = "地上";
-                        }
-                        else
-                        {
-                            Area = "空中";
-                        }
+                    if (IsTransAvailable("地中") & Area == "地中")
+                    {
+                        Area = "地中";
+                    }
+                    else if (IsTransAvailable("空") && get_Adaption(1) >= get_Adaption(2))
+                    {
+                        Area = "空中";
+                    }
+                    else if (IsTransAvailable("陸"))
+                    {
+                        Area = "地上";
+                    }
+                    else
+                    {
+                        Area = "空中";
+                    }
 
-                        break;
+                    break;
 
                 case "屋内":
-                        if (IsTransAvailable("空") && get_Adaption(1) >= get_Adaption(2))
-                        {
-                            Area = "空中";
-                        }
-                        else if (IsTransAvailable("陸"))
-                        {
-                            Area = "地上";
-                        }
-                        else
-                        {
-                            Area = "空中";
-                        }
+                    if (IsTransAvailable("空") && get_Adaption(1) >= get_Adaption(2))
+                    {
+                        Area = "空中";
+                    }
+                    else if (IsTransAvailable("陸"))
+                    {
+                        Area = "地上";
+                    }
+                    else
+                    {
+                        Area = "空中";
+                    }
 
-                        break;
+                    break;
 
                 case "月面":
-                        if (IsTransAvailable("空") || IsTransAvailable("宇宙"))
-                        {
-                            Area = "宇宙";
-                        }
-                        else if (IsTransAvailable("陸"))
-                        {
-                            Area = "地上";
-                        }
-                        else
-                        {
-                            Area = "宇宙";
-                        }
+                    if (IsTransAvailable("空") || IsTransAvailable("宇宙"))
+                    {
+                        Area = "宇宙";
+                    }
+                    else if (IsTransAvailable("陸"))
+                    {
+                        Area = "地上";
+                    }
+                    else
+                    {
+                        Area = "宇宙";
+                    }
 
-                        break;
+                    break;
 
                 case "水":
                 case "深水":
-                        if (IsTransAvailable("空") && get_Adaption(1) >= get_Adaption(2))
-                        {
-                            Area = "空中";
-                        }
-                        else if (IsTransAvailable("水上"))
-                        {
-                            Area = "水上";
-                        }
-                        else
-                        {
-                            Area = "水中";
-                        }
+                    if (IsTransAvailable("空") && get_Adaption(1) >= get_Adaption(2))
+                    {
+                        Area = "空中";
+                    }
+                    else if (IsTransAvailable("水上"))
+                    {
+                        Area = "水上";
+                    }
+                    else
+                    {
+                        Area = "水中";
+                    }
 
-                        break;
+                    break;
 
                 case "宇宙":
-                        Area = "宇宙";
-                        break;
+                    Area = "宇宙";
+                    break;
 
                 default:
-                        Area = "地上";
-                        break;
+                    Area = "地上";
+                    break;
             }
 
             // マップに登録
@@ -407,7 +407,7 @@ namespace SRCCore.Units
                 GUI.EraseUnitBitmap(x, y, false);
             }
 
-            //    SRC.PList.UpdateSupportMod(this);
+            SRC.PList.UpdateSupportMod(this);
 
             // ユニット位置を指定された座標に
             var prev_x = x;

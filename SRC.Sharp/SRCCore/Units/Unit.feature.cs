@@ -7,6 +7,8 @@ namespace SRCCore.Units
     // === ユニット用特殊能力関連処理 ===
     public partial class Unit
     {
+        public IList<Models.FeatureData> Features => colFeature.List;
+
         //        // 特殊能力の総数
         //        public int CountFeature()
         //        {

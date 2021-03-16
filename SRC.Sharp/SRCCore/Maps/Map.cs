@@ -3479,142 +3479,131 @@ namespace SRCCore.Maps
                     }
 
                     // TODO
-                    MaskData[i, j] = false;
-                    //switch (u2.Party0 ?? "")
-                    //{
-                    //    case "味方":
-                    //        {
-                    //            string argfname17 = "母艦";
-                    //            string argfname18 = "合体";
-                    //            string argfname19 = "合体";
-                    //            if (u2.IsFeatureAvailable(argfname17))
-                    //            {
-                    //                // 母艦に着艦？
-                    //                string argfname15 = "母艦";
-                    //                if (!currentUnit.IsFeatureAvailable(argfname15) & u2.Area != "地中")
-                    //                {
-                    //                    string argfname14 = "格納不可";
-                    //                    if (!currentUnit.IsFeatureAvailable(argfname14))
-                    //                    {
-                    //                        MaskData[i, j] = false;
-                    //                    }
-                    //                }
-                    //            }
-                    //            else if (currentUnit.IsFeatureAvailable(argfname18) & u2.IsFeatureAvailable(argfname19))
-                    //            {
-                    //                // ２体合体？
-                    //                MaskData[i, j] = true;
-                    //                var loopTo61 = currentUnit.CountFeature();
-                    //                for (k = 1; k <= loopTo61; k++)
-                    //                {
-                    //                    string localFeature() { object argIndex1 = k; var ret = currentUnit.Feature(argIndex1); return ret; }
+                    switch (u2.Party0 ?? "")
+                    {
+                        case "味方":
+                            {
+                                if (u2.IsFeatureAvailable("母艦"))
+                                {
+                                    // 母艦に着艦？
+                                    if (!currentUnit.IsFeatureAvailable("母艦") && u2.Area != "地中")
+                                    {
+                                        if (!currentUnit.IsFeatureAvailable("格納不可"))
+                                        {
+                                            MaskData[i, j] = false;
+                                        }
+                                    }
+                                }
+                                else if (currentUnit.IsFeatureAvailable("合体") && u2.IsFeatureAvailable("合体"))
+                                {
+                                    // ２体合体？
+                                    MaskData[i, j] = true;
+                                    // TODO Impl
+                                    //var loopTo61 = currentUnit.CountFeature();
+                                    //for (k = 1; k <= loopTo61; k++)
+                                    //{
+                                    //    if (currentUnit.Feature() == "合体" && !string.IsNullOrEmpty(currentUnit.FeatureName()))
+                                    //    {
+                                    //        object argIndex18 = k;
+                                    //        buf = currentUnit.FeatureData(argIndex18);
+                                    //        bool localIsDefined() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
-                    //                    string localFeatureName() { object argIndex1 = k; var ret = currentUnit.FeatureName(argIndex1); return ret; }
+                                    //        bool localIsDefined1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
-                    //                    if (localFeature() == "合体" & !string.IsNullOrEmpty(localFeatureName()))
-                    //                    {
-                    //                        object argIndex18 = k;
-                    //                        buf = currentUnit.FeatureData(argIndex18);
-                    //                        bool localIsDefined() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
+                                    //        if (GeneralLib.LLength(buf) == 3 & localIsDefined() & localIsDefined1())
+                                    //        {
+                                    //            object argIndex20 = GeneralLib.LIndex(buf, 2);
+                                    //            {
+                                    //                var withBlock5 = SRC.UList.Item(argIndex20);
+                                    //                object argIndex19 = "行動不能";
+                                    //                if (withBlock5.IsConditionSatisfied(argIndex19))
+                                    //                {
+                                    //                    break;
+                                    //                }
 
-                    //                        bool localIsDefined1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
+                                    //                if (withBlock5.Status == "破棄")
+                                    //                {
+                                    //                    break;
+                                    //                }
+                                    //            }
 
-                    //                        if (GeneralLib.LLength(buf) == 3 & localIsDefined() & localIsDefined1())
-                    //                        {
-                    //                            object argIndex20 = GeneralLib.LIndex(buf, 2);
-                    //                            {
-                    //                                var withBlock5 = SRC.UList.Item(argIndex20);
-                    //                                object argIndex19 = "行動不能";
-                    //                                if (withBlock5.IsConditionSatisfied(argIndex19))
-                    //                                {
-                    //                                    break;
-                    //                                }
+                                    //            Unit localItem() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
 
-                    //                                if (withBlock5.Status == "破棄")
-                    //                                {
-                    //                                    break;
-                    //                                }
-                    //                            }
+                                    //            string argfname16 = "合体制限";
+                                    //            if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
+                                    //            {
+                                    //                MaskData[i, j] = false;
+                                    //                break;
+                                    //            }
+                                    //            else if ((u2.Name ?? "") == (localItem().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable(argfname16))
+                                    //            {
+                                    //                MaskData[i, j] = false;
+                                    //                break;
+                                    //            }
+                                    //        }
+                                    //    }
+                                    //}
+                                }
 
-                    //                            Unit localItem() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
+                                break;
+                            }
 
-                    //                            string argfname16 = "合体制限";
-                    //                            if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
-                    //                            {
-                    //                                MaskData[i, j] = false;
-                    //                                break;
-                    //                            }
-                    //                            else if ((u2.Name ?? "") == (localItem().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable(argfname16))
-                    //                            {
-                    //                                MaskData[i, j] = false;
-                    //                                break;
-                    //                            }
-                    //                        }
-                    //                    }
-                    //                }
-                    //            }
+                        case "ＮＰＣ":
+                            {
+                                if (currentUnit.IsFeatureAvailable("合体") && u2.IsFeatureAvailable("合体"))
+                                {
+                                    // ２体合体？
+                                    MaskData[i, j] = true;
+                                    //var loopTo62 = currentUnit.CountFeature();
+                                    //for (k = 1; k <= loopTo62; k++)
+                                    //{
+                                    //    object argIndex24 = k;
+                                    //    if (currentUnit.Feature(argIndex24) == "合体")
+                                    //    {
+                                    //        object argIndex21 = k;
+                                    //        buf = currentUnit.FeatureData(argIndex21);
+                                    //        bool localIsDefined2() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
-                    //            break;
-                    //        }
+                                    //        bool localIsDefined3() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
-                    //    case "ＮＰＣ":
-                    //        {
-                    //            string argfname21 = "合体";
-                    //            string argfname22 = "合体";
-                    //            if (currentUnit.IsFeatureAvailable(argfname21) & u2.IsFeatureAvailable(argfname22))
-                    //            {
-                    //                // ２体合体？
-                    //                MaskData[i, j] = true;
-                    //                var loopTo62 = currentUnit.CountFeature();
-                    //                for (k = 1; k <= loopTo62; k++)
-                    //                {
-                    //                    object argIndex24 = k;
-                    //                    if (currentUnit.Feature(argIndex24) == "合体")
-                    //                    {
-                    //                        object argIndex21 = k;
-                    //                        buf = currentUnit.FeatureData(argIndex21);
-                    //                        bool localIsDefined2() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
+                                    //        if (GeneralLib.LLength(buf) == 3 & localIsDefined2() & localIsDefined3())
+                                    //        {
+                                    //            object argIndex23 = GeneralLib.LIndex(buf, 2);
+                                    //            {
+                                    //                var withBlock6 = SRC.UList.Item(argIndex23);
+                                    //                object argIndex22 = "行動不能";
+                                    //                if (withBlock6.IsConditionSatisfied(argIndex22))
+                                    //                {
+                                    //                    break;
+                                    //                }
 
-                    //                        bool localIsDefined3() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
+                                    //                if (withBlock6.Status == "破棄")
+                                    //                {
+                                    //                    break;
+                                    //                }
+                                    //            }
 
-                    //                        if (GeneralLib.LLength(buf) == 3 & localIsDefined2() & localIsDefined3())
-                    //                        {
-                    //                            object argIndex23 = GeneralLib.LIndex(buf, 2);
-                    //                            {
-                    //                                var withBlock6 = SRC.UList.Item(argIndex23);
-                    //                                object argIndex22 = "行動不能";
-                    //                                if (withBlock6.IsConditionSatisfied(argIndex22))
-                    //                                {
-                    //                                    break;
-                    //                                }
+                                    //            Unit localItem1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
 
-                    //                                if (withBlock6.Status == "破棄")
-                    //                                {
-                    //                                    break;
-                    //                                }
-                    //                            }
+                                    //            string argfname20 = "合体制限";
+                                    //            if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
+                                    //            {
+                                    //                MaskData[i, j] = false;
+                                    //                break;
+                                    //            }
+                                    //            else if ((u2.Name ?? "") == (localItem1().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable(argfname20))
+                                    //            {
+                                    //                MaskData[i, j] = false;
+                                    //                break;
+                                    //            }
+                                    //        }
+                                    //    }
+                                    //}
+                                }
 
-                    //                            Unit localItem1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
-
-                    //                            string argfname20 = "合体制限";
-                    //                            if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
-                    //                            {
-                    //                                MaskData[i, j] = false;
-                    //                                break;
-                    //                            }
-                    //                            else if ((u2.Name ?? "") == (localItem1().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable(argfname20))
-                    //                            {
-                    //                                MaskData[i, j] = false;
-                    //                                break;
-                    //                            }
-                    //                        }
-                    //                    }
-                    //                }
-                    //            }
-
-                    //            break;
-                    //        }
-                    //}
+                                break;
+                            }
+                    }
                 }
             }
 
