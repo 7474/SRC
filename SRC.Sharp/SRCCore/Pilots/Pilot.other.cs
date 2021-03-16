@@ -122,7 +122,7 @@ namespace SRCCore.Pilots
         // 行動決定に用いられる戦闘判断力
         public int TacticalTechnique0()
         {
-            return (TechniqueBase - Level + 10d * SkillLevel("戦術", ref_mode: ""));
+            return (int)(TechniqueBase - Level + 10d * SkillLevel("戦術", ref_mode: ""));
         }
 
         public int TacticalTechnique()

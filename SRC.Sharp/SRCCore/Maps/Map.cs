@@ -4869,9 +4869,12 @@ namespace SRCCore.Maps
         }
 
         // ユニット u が (dst_x,dst_y) に行くのに最も近い移動範囲内の場所 (X,Y) はどこか検索
-        public void NearestPoint(Unit u, int dst_x, int dst_y, int X, int Y)
+        public void NearestPoint(Unit u, int dst_x, int dst_y, out int X, out int Y)
         {
-            throw new NotImplementedException();
+            // TODO Impl
+            X = dst_x + 1;
+            Y = dst_y;
+            //throw new NotImplementedException();
             //int k, i, j, n;
             //var total_cost = new int[52, 52];
             //var cur_speed = new int[52, 52];
