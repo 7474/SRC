@@ -6,11 +6,11 @@ using System.Windows.Forms;
 
 namespace SRCSharpForm
 {
-    public partial class SRCSharpForm : Form
+    public partial class RootForm : Form
     {
         private SRCCore.SRC SRC;
 
-        public SRCSharpForm()
+        public RootForm()
         {
             InitializeComponent();
 

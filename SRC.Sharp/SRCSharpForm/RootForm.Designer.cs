@@ -1,7 +1,7 @@
 ﻿
 namespace SRCSharpForm
 {
-    partial class SRCSharpForm
+    partial class RootForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -29,7 +29,7 @@ namespace SRCSharpForm
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SRCSharpForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RootForm));
             this.label1 = new System.Windows.Forms.Label();
             this.labTitle = new System.Windows.Forms.Label();
             this.SuspendLayout();
