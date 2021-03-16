@@ -148,7 +148,7 @@ namespace SRCCore.Units
             double SpecialPowerEffectLevelRet = default;
             //int i;
             //double lv;
-            //lv = SRC.DEFAULT_LEVEL;
+            //lv = Constants.DEFAULT_LEVEL;
             //foreach (Condition cnd in colSpecialPowerInEffect)
             //{
             //    {
@@ -169,7 +169,7 @@ namespace SRCCore.Units
             //    }
             //}
 
-            //if (lv != SRC.DEFAULT_LEVEL)
+            //if (lv != Constants.DEFAULT_LEVEL)
             //{
             //    SpecialPowerEffectLevelRet = lv;
             //}

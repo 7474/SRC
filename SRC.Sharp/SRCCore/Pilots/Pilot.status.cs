@@ -156,7 +156,7 @@ namespace SRCCore.Pilots
         //                sd.Level = GeneralLib.StrToDbl(ref argexpr);
         //                if (sd.Level == -1)
         //                {
-        //                    sd.Level = SRC.DEFAULT_LEVEL;
+        //                    sd.Level = Constants.DEFAULT_LEVEL;
         //                }
 
         //                sd.StrData = GeneralLib.ListTail(ref buf, 2);
@@ -913,7 +913,7 @@ namespace SRCCore.Pilots
         //        {
         //            if (Strings.InStr(Name, "(ザコ)") == 0 & Strings.InStr(Name, "(汎用)") == 0)
         //            {
-        //                my_cmd_rank = SRC.DEFAULT_LEVEL;
+        //                my_cmd_rank = Constants.DEFAULT_LEVEL;
         //            }
         //            else
         //            {
@@ -928,7 +928,7 @@ namespace SRCCore.Pilots
         //        team = SkillData(ref argIndex4);
 
         //        // 周りのユニットを調べる
-        //        cs_level = SRC.DEFAULT_LEVEL;
+        //        cs_level = Constants.DEFAULT_LEVEL;
         //        max_range = 5;
         //        var loopTo = (short)GeneralLib.MinLng(withBlock.x + max_range, Map.MapWidth);
         //        for (i = (short)GeneralLib.MaxLng(withBlock.x - max_range, 1); i <= loopTo; i++)
@@ -1064,7 +1064,7 @@ namespace SRCCore.Pilots
         //        }
 
         //        // 広域サポートによる修正
-        //        if (cs_level != SRC.DEFAULT_LEVEL)
+        //        if (cs_level != Constants.DEFAULT_LEVEL)
         //        {
         //            HitMod2 = (short)(HitMod2 + 5d * cs_level);
         //            DodgeMod2 = (short)(DodgeMod2 + 5d * cs_level);
@@ -1073,7 +1073,7 @@ namespace SRCCore.Pilots
         //        // 指揮能力による修正
         //        switch (my_cmd_rank)
         //        {
-        //            case SRC.DEFAULT_LEVEL:
+        //            case Constants.DEFAULT_LEVEL:
         //                {
         //                    break;
         //                }

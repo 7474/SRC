@@ -470,8 +470,7 @@ namespace SRCCore
                     }
 
                     // 隠れ身中
-                    string argsptype = "隠れ身";
-                    if (u.IsUnderSpecialPowerEffect(argsptype))
+                    if (u.IsUnderSpecialPowerEffect("隠れ身"))
                     {
                         goto NextLoop;
                     }

@@ -140,7 +140,7 @@ namespace SRCCore.Pilots
         //            sd = (SkillData)colSkill[Index];
         //            sname = sd.Name;
         //            SkillLevelRet = sd.Level;
-        //            if (SkillLevelRet == SRC.DEFAULT_LEVEL)
+        //            if (SkillLevelRet == Constants.DEFAULT_LEVEL)
         //            {
         //                SkillLevelRet = 1d;
         //            }
@@ -217,7 +217,7 @@ namespace SRCCore.Pilots
         //                {
         //                    object argIndex3 = sname + "付加";
         //                    SkillLevelRet = withBlock.ConditionLevel(argIndex3);
-        //                    if (SkillLevelRet == SRC.DEFAULT_LEVEL)
+        //                    if (SkillLevelRet == Constants.DEFAULT_LEVEL)
         //                    {
         //                        SkillLevelRet = 1d;
         //                    }
@@ -226,7 +226,7 @@ namespace SRCCore.Pilots
         //                {
         //                    object argIndex4 = sname + "付加２";
         //                    SkillLevelRet = withBlock.ConditionLevel(argIndex4);
-        //                    if (SkillLevelRet == SRC.DEFAULT_LEVEL)
+        //                    if (SkillLevelRet == Constants.DEFAULT_LEVEL)
         //                    {
         //                        SkillLevelRet = 1d;
         //                    }
@@ -269,7 +269,7 @@ namespace SRCCore.Pilots
 
         //             */
         //            sd = (SkillData)colSkill[Index];
-        //            if (sd.Level != SRC.DEFAULT_LEVEL)
+        //            if (sd.Level != Constants.DEFAULT_LEVEL)
         //            {
         //                IsSkillLevelSpecifiedRet = true;
         //                sname = sd.Name;
@@ -322,7 +322,7 @@ namespace SRCCore.Pilots
         //                if (withBlock.IsConditionSatisfied(argIndex5))
         //                {
         //                    object argIndex3 = sname + "付加";
-        //                    if (withBlock.ConditionLevel(argIndex3) != SRC.DEFAULT_LEVEL)
+        //                    if (withBlock.ConditionLevel(argIndex3) != Constants.DEFAULT_LEVEL)
         //                    {
         //                        IsSkillLevelSpecifiedRet = true;
         //                    }
@@ -330,7 +330,7 @@ namespace SRCCore.Pilots
         //                else if (localIsConditionSatisfied())
         //                {
         //                    object argIndex4 = sname + "付加２";
-        //                    if (withBlock.ConditionLevel(argIndex4) != SRC.DEFAULT_LEVEL)
+        //                    if (withBlock.ConditionLevel(argIndex4) != Constants.DEFAULT_LEVEL)
         //                    {
         //                        IsSkillLevelSpecifiedRet = true;
         //                    }
@@ -541,7 +541,7 @@ namespace SRCCore.Pilots
         //            }
 
         //            // レベル指定
-        //            if (sd.Level != SRC.DEFAULT_LEVEL & Strings.InStr(SkillNameRet, "Lv") == 0 & Strings.Left(SkillNameRet, 1) != "(")
+        //            if (sd.Level != Constants.DEFAULT_LEVEL & Strings.InStr(SkillNameRet, "Lv") == 0 & Strings.Left(SkillNameRet, 1) != "(")
         //            {
         //                SkillNameRet = SkillNameRet + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(sd.Level);
         //            }
@@ -680,7 +680,7 @@ namespace SRCCore.Pilots
 
         //                                // レベル指定
         //                                object argIndex1 = sname + "付加２";
-        //                                if (withBlock.ConditionLevel(argIndex1) != SRC.DEFAULT_LEVEL)
+        //                                if (withBlock.ConditionLevel(argIndex1) != Constants.DEFAULT_LEVEL)
         //                                {
         //                                    if (Strings.InStr(SkillNameRet, "Lv") > 0)
         //                                    {
@@ -718,7 +718,7 @@ namespace SRCCore.Pilots
 
         //                                // レベル指定
         //                                object argIndex3 = sname + "付加";
-        //                                if (withBlock.ConditionLevel(argIndex3) != SRC.DEFAULT_LEVEL)
+        //                                if (withBlock.ConditionLevel(argIndex3) != Constants.DEFAULT_LEVEL)
         //                                {
         //                                    if (Strings.InStr(SkillNameRet, "Lv") > 0)
         //                                    {
