@@ -494,13 +494,11 @@ namespace SRCCore
                     // 攻撃に使う武器を選択
                     if (moved)
                     {
-                        string argamode3 = "移動後";
-                        tmp_w = SelectWeapon(Commands.SelectedUnit, u, argamode3, prob, dmg);
+                        tmp_w = SelectWeapon(Commands.SelectedUnit, u, "移動後", prob, dmg);
                     }
                     else
                     {
-                        string argamode4 = "移動可能";
-                        tmp_w = SelectWeapon(Commands.SelectedUnit, u, argamode4, prob, dmg);
+                        tmp_w = SelectWeapon(Commands.SelectedUnit, u, "移動可能", prob, dmg);
                     }
 
                     if (tmp_w <= 0)

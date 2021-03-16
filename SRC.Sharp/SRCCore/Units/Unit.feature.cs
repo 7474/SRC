@@ -270,17 +270,7 @@ namespace SRCCore.Units
         public double FeatureLevel(string Index)
         {
             var level = colFeature[Index]?.Level ?? 0d;
-            fd = (FeatureData);
-            FeatureLevelRet = fd.Level;
-            if (level == Constants.DEFAULT_LEVEL)
-            {
-                FeatureLevelRet = 1d;
-            }
-
-            return FeatureLevelRet;
-        ErrorHandler:
-            ;
-            FeatureLevelRet = 0d;
+            return level == Constants.DEFAULT_LEVEL ? 1d : level;
         }
 
         // 特殊能力のデータ
