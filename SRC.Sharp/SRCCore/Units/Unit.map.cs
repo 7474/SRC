@@ -339,7 +339,6 @@ namespace SRCCore.Units
             //            {
             //                break;
             //            }
-            //            // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //            GUI.MainForm.picMain(0).Refresh();
 
             //            // ウェイト

@@ -2933,7 +2933,6 @@ namespace SRCCore.Models
         //            // オブジェクト色等をデフォルトに戻す
         //            Event_Renamed.ObjColor = ColorTranslator.ToOle(Color.White);
         //            Event_Renamed.ObjFillColor = ColorTranslator.ToOle(Color.White);
-        //            // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
         //            Event_Renamed.ObjFillStyle = vbFSTransparent;
         //            Event_Renamed.ObjDrawWidth = 1;
         //            Event_Renamed.ObjDrawOption = "";
@@ -2975,7 +2974,6 @@ namespace SRCCore.Models
         //                if (Strings.LCase(anime) == "clear")
         //                {
         //                    GUI.ClearPicture();
-        //                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
         //                    GUI.MainForm.picMain(0).Refresh();
         //                    goto NextAnime;
         //                }
@@ -3119,7 +3117,6 @@ namespace SRCCore.Models
         //                if (GUI.IsPictureDrawn & Strings.LCase(buf) != "keep")
         //                {
         //                    GUI.ClearPicture();
-        //                    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
         //                    GUI.MainForm.picMain(0).Refresh();
         //                }
 

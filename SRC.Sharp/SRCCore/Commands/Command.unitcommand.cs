@@ -288,7 +288,6 @@ namespace SRCCore.Commands
 
                 //        case OrderCmdID: // 命令/換装
                 //            {
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                if (GUI.MainForm.mnuUnitCommandItem.Item(OrderCmdID).Caption == "命令")
                 //                {
                 //                    StartOrderCommand();
@@ -324,7 +323,6 @@ namespace SRCCore.Commands
                 //                GUI.LockGUI();
 
                 //                // ユニットコマンドの使用イベント
-                //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                Event_Renamed.HandleEvent("使用", unit.MainPilot().ID, GUI.MainForm.mnuUnitCommandItem.Item(idx).Caption);
                 //                if (SRC.IsScenarioFinished)
                 //                {
@@ -353,7 +351,6 @@ namespace SRCCore.Commands
                 //                // ユニットコマンドの使用後イベント
                 //                if (unit.CurrentForm().CountPilot() > 0)
                 //                {
-                //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //                    Event_Renamed.HandleEvent("使用後", unit.CurrentForm().MainPilot().ID, GUI.MainForm.mnuUnitCommandItem.Item(idx).Caption);
                 //                    if (SRC.IsScenarioFinished)
                 //                    {

@@ -44,6 +44,7 @@ namespace SRCCore.CmdDatas
         // 引数
         private IList<CmdArgument> args = new List<CmdArgument>();
 
+        // コマンドを実行し、実行後のEventDataLine#IDを返す
         public int Exec()
         {
             SRC.LogDebug(Name.ToString(), args.Select(x => x.strArg).ToArray());

@@ -9,6 +9,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="GUI.ref.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Melanchall.DryWetMidi" Version="5.1.2" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
@@ -22,5 +26,6 @@
 	
 	<ItemGroup>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
+		<None Include="GUI.ref.cs" />
 	</ItemGroup>
 </Project>

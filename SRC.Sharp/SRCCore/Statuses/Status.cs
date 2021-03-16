@@ -56,7 +56,6 @@
 //            // ステータスウィンドウを消去
 //            ClearUnitStatus();
 
-//            // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //            pic = GUI.MainForm.picUnitStatus;
 //            pic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(pic.Font, 12f);
 
@@ -69,43 +68,33 @@
 //                // Global変数が宣言されていれば、ステータス画面用変数の同期を取る
 //                GlobalVariableLoad();
 //                pic.BackColor = ColorTranslator.FromOle(StatusWindowBackBolor);
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.DrawWidth = StatusWindowFrameWidth;
 //                color = StatusWindowFrameColor;
 //                lineStart = (int)((StatusWindowFrameWidth - 1) / 2d);
 //                lineEnd = (int)((StatusWindowFrameWidth + 1) / 2d);
-//                // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.FillStyle = vbFSTransparent;
 //                // 一旦高さを最大にする
 //                pic.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(235d);
 //                pic.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(GUI.MapPHeight - 20);
 //                wHeight = (short)GetGlobalStatusSize(ref X, ref Y);
 //                // 枠線を引く
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.Line(lineStart, lineStart); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.FillStyle = Event_Renamed.ObjFillStyle;
 //                // 高さを設定する
 //                pic.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(wHeight);
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.CurrentX = 5;
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.CurrentY = 5;
 //                // 文字色をリセット
 //                pic.ForeColor = ColorTranslator.FromOle(StatusFontColorNormalString);
 //            }
 //            // ADD  END  240a
-//            // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.Print("ターン数 " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.Turn));
 //            // ADD START 240a
 //            if (GUI.NewGUIMode)
 //            {
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.CurrentX = 5;
 //            }
 //            // ADD  END  240a
-//            // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            string argtname = "資金";
 //            Unit argu = null;
 //            pic.Print(Expression.Term(ref argtname, ref argu, 8) + " " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.Money));
@@ -130,7 +119,6 @@
 //            }
 
 //            // 地形情報の表示
-//            // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.Print();
 
 //            // 地形名称
@@ -138,74 +126,59 @@
 //            // マップ画像表示
 //            if (GUI.NewGUIMode)
 //            {
-//                // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                ret = GUI.BitBlt(pic.hDC, 5, 48, 32, 32, GUI.MainForm.picBack.hDC, (X - 1) * 32, (Y - 1) * 32, GUI.SRCCOPY);
 //            }
 //            else
 //            {
-//                // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                ret = GUI.BitBlt(pic.hDC, 0, 48, 32, 32, GUI.MainForm.picBack.hDC, (X - 1) * 32, (Y - 1) * 32, GUI.SRCCOPY);
 //            }
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.CurrentX = 37;
-//            // UPGRADE_ISSUE: PictureBox プロパティ pic.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //            pic.CurrentY = 65;
 //            // ADD  END  240a
 //            if (Strings.InStr(Map.TerrainName(X, Y), "(") > 0)
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.Print("(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(X) + "," + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Y) + ") " + Strings.Left(Map.TerrainName(X, Y), Strings.InStr(Map.TerrainName(X, Y), "(") - 1));
 //            }
 //            else
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.Print("(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(X) + "," + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Y) + ") " + Map.TerrainName(X, Y));
 //            }
 
 //            // ADD START 240a
 //            if (GUI.NewGUIMode)
 //            {
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.CurrentX = 5;
 //            }
 //            // ADD  END  240a
 //            // 命中修正
 //            if (Map.TerrainEffectForHit(X, Y) >= 0)
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.Print("回避 +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHit(X, Y)) + "%");
 //            }
 //            else
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.Print("回避 " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHit(X, Y)) + "%");
 //            }
 
 //            // ダメージ修正
 //            if (Map.TerrainEffectForDamage(X, Y) >= 0)
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.Print("  防御 +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForDamage(X, Y)) + "%");
 //            }
 //            else
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.Print("  防御 " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForDamage(X, Y)) + "%");
 //            }
 
 //            // ADD START 240a
 //            if (GUI.NewGUIMode)
 //            {
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.CurrentX = 5;
 //            }
 //            // ADD  END  240a
 //            // ＨＰ回復率
 //            if (Map.TerrainEffectForHPRecover(X, Y) > 0)
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname1 = "ＨＰ";
 //                Unit argu1 = null;
 //                pic.Print(Expression.Term(ref argtname1, u: ref argu1) + " +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHPRecover(X, Y)) + "%  ");
@@ -214,7 +187,6 @@
 //            // ＥＮ回復率
 //            if (Map.TerrainEffectForENRecover(X, Y) > 0)
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname2 = "ＥＮ";
 //                Unit argu2 = null;
 //                pic.Print(Expression.Term(ref argtname2, u: ref argu2) + " +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForENRecover(X, Y)) + "%");
@@ -222,7 +194,6 @@
 
 //            if (Map.TerrainEffectForHPRecover(X, Y) > 0 | Map.TerrainEffectForENRecover(X, Y) > 0)
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.Print();
 //            }
 
@@ -249,7 +220,6 @@
 //            // ADD START 240a
 //            if (GUI.NewGUIMode)
 //            {
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.CurrentX = 5;
 //            }
 //            // ADD  END  240a
@@ -257,7 +227,6 @@
 //            string argfname = "ＨＰ減少";
 //            if (td.IsFeatureAvailable(ref argfname))
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname3 = "ＨＰ";
 //                Unit argu3 = null;
 //                object argIndex1 = "ＨＰ減少";
@@ -268,7 +237,6 @@
 //            string argfname1 = "ＥＮ減少";
 //            if (td.IsFeatureAvailable(ref argfname1))
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname4 = "ＥＮ";
 //                Unit argu4 = null;
 //                object argIndex3 = "ＥＮ減少";
@@ -280,14 +248,12 @@
 //            string argfname3 = "ＥＮ減少";
 //            if (td.IsFeatureAvailable(ref argfname2) | td.IsFeatureAvailable(ref argfname3))
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.Print();
 //            }
 
 //            // ADD START 240a
 //            if (GUI.NewGUIMode)
 //            {
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.CurrentX = 5;
 //            }
 //            // ADD  END  240a
@@ -295,7 +261,6 @@
 //            string argfname4 = "ＨＰ増加";
 //            if (td.IsFeatureAvailable(ref argfname4))
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname5 = "ＨＰ";
 //                Unit argu5 = null;
 //                object argIndex5 = "ＨＰ増加";
@@ -305,7 +270,6 @@
 //            string argfname5 = "ＥＮ増加";
 //            if (td.IsFeatureAvailable(ref argfname5))
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname6 = "ＥＮ";
 //                Unit argu6 = null;
 //                object argIndex6 = "ＥＮ増加";
@@ -316,7 +280,6 @@
 //            string argfname7 = "ＥＮ増加";
 //            if (td.IsFeatureAvailable(ref argfname6) | td.IsFeatureAvailable(ref argfname7))
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.Print();
 //            }
 //            // MOD  END
@@ -324,7 +287,6 @@
 //            // ADD START 240a
 //            if (GUI.NewGUIMode)
 //            {
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.CurrentX = 5;
 //            }
 //            // ADD  END  240a
@@ -332,7 +294,6 @@
 //            string argfname8 = "ＨＰ低下";
 //            if (td.IsFeatureAvailable(ref argfname8))
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname7 = "ＨＰ";
 //                Unit argu7 = null;
 //                object argIndex7 = "ＨＰ低下";
@@ -342,7 +303,6 @@
 //            string argfname9 = "ＥＮ低下";
 //            if (td.IsFeatureAvailable(ref argfname9))
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname8 = "ＥＮ";
 //                Unit argu8 = null;
 //                object argIndex8 = "ＥＮ低下";
@@ -353,14 +313,12 @@
 //            string argfname11 = "ＥＮ低下";
 //            if (td.IsFeatureAvailable(ref argfname10) | td.IsFeatureAvailable(ref argfname11))
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.Print();
 //            }
 
 //            // ADD START 240a
 //            if (GUI.NewGUIMode)
 //            {
-//                // UPGRADE_ISSUE: PictureBox プロパティ pic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                pic.CurrentX = 5;
 //            }
 //            // ADD  END  240a
@@ -368,7 +326,6 @@
 //            string argfname12 = "摩擦";
 //            if (td.IsFeatureAvailable(ref argfname12))
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                object argIndex9 = "摩擦";
 //                pic.Print("摩擦Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(td.FeatureLevel(ref argIndex9)));
 //            }
@@ -377,7 +334,6 @@
 //            string argfname13 = "状態付加";
 //            if (td.IsFeatureAvailable(ref argfname13))
 //            {
-//                // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                object argIndex10 = "状態付加";
 //                pic.Print(td.FeatureData(ref argIndex10) + "状態付加");
 //            }
@@ -433,22 +389,15 @@
 //            if (!GUI.NewGUIMode)
 //            {
 //                // MOD  END  MARGE
-//                // UPGRADE_ISSUE: Control picPilotStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                ppic = GUI.MainForm.picPilotStatus;
-//                // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                upic = GUI.MainForm.picUnitStatus;
-//                // UPGRADE_ISSUE: PictureBox メソッド ppic.Cls はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                ppic.Cls();
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Cls はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Cls();
 //            }
 //            else
 //            {
-//                // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                ppic = GUI.MainForm.picUnitStatus;
-//                // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                upic = GUI.MainForm.picUnitStatus;
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Cls はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Cls();
 //                // ADD START 240a
 //                // global変数とステータス描画用の変数を同期
@@ -456,22 +405,15 @@
 //                // 新ＧＵＩでは地形表示したときにサイズを変えているので元に戻す
 //                upic.SetBounds((int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(GUI.MainPWidth - 240), (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(10d), (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(235d), (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(GUI.MainPHeight - 20));
 //                upic.BackColor = ColorTranslator.FromOle(StatusWindowBackBolor);
-//                // UPGRADE_ISSUE: PictureBox プロパティ upic.DrawWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.DrawWidth = StatusWindowFrameWidth;
 //                color = StatusWindowFrameColor;
 //                lineStart = (int)((StatusWindowFrameWidth - 1) / 2d);
 //                lineEnd = (int)((StatusWindowFrameWidth + 1) / 2d);
-//                // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-//                // UPGRADE_ISSUE: PictureBox プロパティ upic.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.FillStyle = vbFSTransparent;
 //                // 枠線を引く
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Line(lineStart, lineStart); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-//                // UPGRADE_ISSUE: PictureBox プロパティ upic.FillStyle はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.FillStyle = Event_Renamed.ObjFillStyle;
-//                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.CurrentX = 5;
-//                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.CurrentY = 5;
 //                // 文字色をリセット
 //                upic.ForeColor = ColorTranslator.FromOle(StatusFontColorNormalString);
@@ -500,7 +442,6 @@
 //                    // キャラ画面をクリア
 //                    if (GUI.MainWidth == 15)
 //                    {
-//                        // UPGRADE_ISSUE: Control picFace は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        GUI.MainForm.picFace = Image.FromFile("");
 //                    }
 //                    else
@@ -518,10 +459,8 @@
 //                    if (GUI.NewGUIMode)
 //                    {
 //                        // MOD  END
-//                        // UPGRADE_ISSUE: PictureBox プロパティ ppic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        ppic.CurrentX = 68;
 //                    }
-//                    // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname = "レベル";
 //                    ppic.Print(Expression.Term(ref argtname, ref u));
 //                    // MOD START 240a
@@ -529,10 +468,8 @@
 //                    if (GUI.NewGUIMode)
 //                    {
 //                        // MOD  END
-//                        // UPGRADE_ISSUE: PictureBox プロパティ ppic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        ppic.CurrentX = 68;
 //                    }
-//                    // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname1 = "気力";
 //                    ppic.Print(Expression.Term(ref argtname1, ref u));
 //                    // MOD START 240a
@@ -549,10 +486,8 @@
 //                    if (GUI.NewGUIMode)
 //                    {
 //                        // MOD  END
-//                        // UPGRADE_ISSUE: PictureBox プロパティ ppic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        ppic.CurrentX = 68;
 //                    }
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname2 = "格闘";
 //                    string argtname3 = "射撃";
 //                    upic.Print(Expression.Term(ref argtname2, ref u, 4) + "               " + Expression.Term(ref argtname3, ref u));
@@ -561,10 +496,8 @@
 //                    if (GUI.NewGUIMode)
 //                    {
 //                        // MOD  END
-//                        // UPGRADE_ISSUE: PictureBox プロパティ ppic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        ppic.CurrentX = 68;
 //                    }
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname4 = "命中";
 //                    string argtname5 = "回避";
 //                    upic.Print(Expression.Term(ref argtname4, ref u, 4) + "               " + Expression.Term(ref argtname5, ref u));
@@ -573,16 +506,12 @@
 //                    if (GUI.NewGUIMode)
 //                    {
 //                        // MOD  END
-//                        // UPGRADE_ISSUE: PictureBox プロパティ ppic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        ppic.CurrentX = 68;
 //                    }
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname6 = "技量";
 //                    string argtname7 = "反応";
 //                    upic.Print(Expression.Term(ref argtname6, ref u, 4) + "               " + Expression.Term(ref argtname7, ref u));
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print();
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print();
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 0)
@@ -698,17 +627,13 @@
 //                    if (!string.IsNullOrEmpty(fname))
 //                    {
 //                        ;
-//                        // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        GUI.MainForm.picTmp = Image.FromFile(fname);
 //                        ;
-//                        // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-//                        // UPGRADE_ISSUE: Control picFace は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        GUI.MainForm.picFace.PaintPicture(GUI.MainForm.picTmp.Picture, 0, 0, 64, 64);
 //                    }
 //                    else
 //                    {
 //                        // 画像ファイルが見つからなかった場合はキャラ画面をクリア
-//                        // UPGRADE_ISSUE: Control picFace は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                        GUI.MainForm.picFace = Image.FromFile("");
 //                    }
 //                }
@@ -733,10 +658,8 @@
 //                if (GUI.NewGUIMode)
 //                {
 //                    // MOD  END
-//                    // UPGRADE_ISSUE: PictureBox プロパティ ppic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    ppic.CurrentX = 68;
 //                }
-//                // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                ppic.Print(p.get_Nickname(false));
 //                ppic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeBold(ppic.Font, false);
 //                ppic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(ppic.Font, 10f);
@@ -753,10 +676,8 @@
 //                    if (GUI.NewGUIMode)
 //                    {
 //                        // MOD  END
-//                        // UPGRADE_ISSUE: PictureBox プロパティ ppic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        ppic.CurrentX = 68;
 //                    }
-//                    // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname8 = "レベル";
 //                    ppic.Print(Expression.Term(ref argtname8, ref u));
 //                    // MOD START 240a
@@ -764,10 +685,8 @@
 //                    if (GUI.NewGUIMode)
 //                    {
 //                        // MOD  END
-//                        // UPGRADE_ISSUE: PictureBox プロパティ ppic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        ppic.CurrentX = 68;
 //                    }
-//                    // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname9 = "気力";
 //                    ppic.Print(Expression.Term(ref argtname9, ref u));
 //                    // MOD START 240a
@@ -784,10 +703,8 @@
 //                    if (GUI.NewGUIMode)
 //                    {
 //                        // MOD  END
-//                        // UPGRADE_ISSUE: PictureBox プロパティ ppic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        ppic.CurrentX = 68;
 //                    }
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname10 = "格闘";
 //                    string argtname11 = "射撃";
 //                    upic.Print(Expression.Term(ref argtname10, ref u, 4) + "               " + Expression.Term(ref argtname11, ref u));
@@ -796,10 +713,8 @@
 //                    if (GUI.NewGUIMode)
 //                    {
 //                        // MOD  END
-//                        // UPGRADE_ISSUE: PictureBox プロパティ ppic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        ppic.CurrentX = 68;
 //                    }
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname12 = "命中";
 //                    string argtname13 = "回避";
 //                    upic.Print(Expression.Term(ref argtname12, ref u, 4) + "               " + Expression.Term(ref argtname13, ref u));
@@ -808,16 +723,12 @@
 //                    if (GUI.NewGUIMode)
 //                    {
 //                        // MOD  END
-//                        // UPGRADE_ISSUE: PictureBox プロパティ ppic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        ppic.CurrentX = 68;
 //                    }
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname14 = "技量";
 //                    string argtname15 = "反応";
 //                    upic.Print(Expression.Term(ref argtname14, ref u, 4) + "               " + Expression.Term(ref argtname15, ref u));
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print();
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print();
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 0)
@@ -836,10 +747,8 @@
 //                if (GUI.NewGUIMode)
 //                {
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox プロパティ ppic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    ppic.CurrentX = 68;
 //                }
-//                // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname16 = "レベル";
 //                ppic.Print(Expression.Term(ref argtname16, ref u) + " ");
 //                // MOD START 240a
@@ -848,7 +757,6 @@
 //                // MOD  END  240a
 //                if (p.Party == "味方")
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    ppic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Level) + " (" + p.Exp + ")");
 //                    switch (u.Action)
 //                    {
@@ -858,7 +766,6 @@
 //                                // ppic.ForeColor = rgb(0, 0, 200)
 //                                ppic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
 //                                // MOD  END  240a
-//                                // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                ppic.Print(" Ｗ");
 //                                // MOD START 240a
 //                                // ppic.ForeColor = rgb(0, 0, 0)
@@ -872,7 +779,6 @@
 //                                // ppic.ForeColor = rgb(0, 0, 200)
 //                                ppic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
 //                                // MOD  END  240a
-//                                // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                ppic.Print(" Ｔ");
 //                                // MOD START 240a
 //                                // ppic.ForeColor = rgb(0, 0, 0)
@@ -884,7 +790,6 @@
 //                }
 //                else if (!is_unknown)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    ppic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Level));
 //                    if (u.Action == 2)
 //                    {
@@ -892,7 +797,6 @@
 //                        // ppic.ForeColor = rgb(0, 0, 200)
 //                        ppic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
 //                        // MOD  END  240a
-//                        // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        ppic.Print(" Ｗ");
 //                        // MOD START 240a
 //                        // ppic.ForeColor = rgb(0, 0, 0)
@@ -902,10 +806,8 @@
 //                }
 //                else
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    ppic.Print("？");
 //                }
-//                // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                ppic.Print();
 
 //                // 気力
@@ -915,10 +817,8 @@
 //                // MOD  END  240a
 //                if (GUI.MainWidth != 15)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ ppic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    ppic.CurrentX = 68;
 //                }
-//                // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname17 = "気力";
 //                ppic.Print(Expression.Term(ref argtname17, ref u) + " ");
 //                // MOD START 240a
@@ -929,18 +829,15 @@
 //                {
 //                    if (p.MoraleMod > 0)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        ppic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Morale) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.MoraleMod) + " (" + p.Personality + ")");
 //                    }
 //                    else
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        ppic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Morale) + " (" + p.Personality + ")");
 //                    }
 //                }
 //                else
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    ppic.Print("？");
 //                }
 
@@ -953,10 +850,8 @@
 //                    // MOD  END  240a
 //                    if (GUI.MainWidth != 15)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ ppic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        ppic.CurrentX = 68;
 //                    }
-//                    // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname18 = "ＳＰ";
 //                    ppic.Print(Expression.Term(ref argtname18, ref u) + " ");
 //                    // MOD START 240a
@@ -965,12 +860,10 @@
 //                    // MOD  END  240a
 //                    if (!is_unknown)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        ppic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.SP) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.MaxSP));
 //                    }
 //                    else
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        ppic.Print("？");
 //                    }
 //                }
@@ -991,23 +884,19 @@
 //                    if (GUI.NewGUIMode)
 //                    {
 //                        // MOD  END
-//                        // UPGRADE_ISSUE: PictureBox プロパティ ppic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        ppic.CurrentX = 68;
 //                    }
-//                    // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    ppic.Print(u.SpecialPowerInEffect());
 //                }
 //                // ADD START 240a
 //                else if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    ppic.Print(" ");
 //                    // ADD  END  240a
 //                }
 //                // ADD START 240a
 //                if (isNoSp)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    ppic.Print(" ");
 //                }
 
@@ -1018,7 +907,6 @@
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
@@ -1027,7 +915,6 @@
 //                // upic.ForeColor = rgb(0, 0, 150)
 //                upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                // MOD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname19 = "格闘";
 //                upic.Print(Expression.Term(ref argtname19, ref u, 4) + " ");
 //                // MOD START 240a
@@ -1036,7 +923,6 @@
 //                // MOD  END  240a
 //                if (is_unknown)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argbuf = "？";
 //                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf, 4) + Strings.Space(10));
 //                }
@@ -1046,7 +932,6 @@
 //                    {
 //                        case var @case when @case > 0:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localLeftPaddedString() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.InfightBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                string localRightPaddedString() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.InfightMod + p.InfightMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
@@ -1057,7 +942,6 @@
 
 //                        case var case1 when case1 < 0:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localLeftPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.InfightBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                string localRightPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.InfightMod + p.InfightMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
@@ -1068,7 +952,6 @@
 
 //                        case 0:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localLeftPaddedString2() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Infight); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                upic.Print(localLeftPaddedString2() + Strings.Space(9));
@@ -1078,7 +961,6 @@
 //                }
 //                else
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argbuf1 = "--";
 //                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf1, 5) + Strings.Space(9));
 //                }
@@ -1090,13 +972,11 @@
 //                // MOD  END  240a
 //                if (!p.HasMana())
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname20 = "射撃";
 //                    upic.Print(Expression.Term(ref argtname20, ref u, 4) + " ");
 //                }
 //                else
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname21 = "魔力";
 //                    upic.Print(Expression.Term(ref argtname21, ref u, 4) + " ");
 //                }
@@ -1106,7 +986,6 @@
 //                // MOD  END  240a
 //                if (is_unknown)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argbuf2 = "？";
 //                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf2, 4));
 //                }
@@ -1116,7 +995,6 @@
 //                    {
 //                        case var case2 when case2 > 0:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localLeftPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.ShootingBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                string localRightPaddedString2() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.ShootingMod + p.ShootingMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 5); return ret; }
@@ -1127,7 +1005,6 @@
 
 //                        case var case3 when case3 < 0:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localLeftPaddedString4() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.ShootingBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                string localRightPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.ShootingMod + p.ShootingMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 5); return ret; }
@@ -1138,7 +1015,6 @@
 
 //                        case 0:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localLeftPaddedString5() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Shooting); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                upic.Print(localLeftPaddedString5() + Strings.Space(5));
@@ -1148,7 +1024,6 @@
 //                }
 //                else
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argbuf3 = "--";
 //                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf3, 5) + Strings.Space(5));
 //                }
@@ -1156,7 +1031,6 @@
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
@@ -1165,7 +1039,6 @@
 //                // upic.ForeColor = rgb(0, 0, 150)
 //                upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                // MOD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname22 = "命中";
 //                upic.Print(Expression.Term(ref argtname22, ref u, 4) + " ");
 //                // MOD START 240a
@@ -1174,7 +1047,6 @@
 //                // MOD  END  240a
 //                if (is_unknown)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argbuf4 = "？";
 //                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf4, 4) + Strings.Space(10));
 //                }
@@ -1184,7 +1056,6 @@
 //                    {
 //                        case var case4 when case4 > 0:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localLeftPaddedString6() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.HitBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                string localRightPaddedString4() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.HitMod + p.HitMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
@@ -1195,7 +1066,6 @@
 
 //                        case var case5 when case5 < 0:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localLeftPaddedString7() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.HitBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                string localRightPaddedString5() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.HitMod + p.HitMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
@@ -1206,7 +1076,6 @@
 
 //                        case 0:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localLeftPaddedString8() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Hit); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                upic.Print(localLeftPaddedString8() + Strings.Space(9));
@@ -1216,7 +1085,6 @@
 //                }
 //                else
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argbuf5 = "--";
 //                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf5, 5) + Strings.Space(9));
 //                }
@@ -1226,7 +1094,6 @@
 //                // upic.ForeColor = rgb(0, 0, 150)
 //                upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                // MOD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname23 = "回避";
 //                upic.Print(Expression.Term(ref argtname23, ref u, 4) + " ");
 //                // MOD START 240a
@@ -1235,7 +1102,6 @@
 //                // MOD  END  240a
 //                if (is_unknown)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argbuf6 = "？";
 //                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf6, 4));
 //                }
@@ -1245,7 +1111,6 @@
 //                    {
 //                        case var case6 when case6 > 0:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localLeftPaddedString9() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.DodgeBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                string localRightPaddedString6() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.DodgeMod + p.DodgeMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
@@ -1256,7 +1121,6 @@
 
 //                        case var case7 when case7 < 0:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localLeftPaddedString10() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.DodgeBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                string localRightPaddedString7() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.DodgeMod + p.DodgeMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
@@ -1267,7 +1131,6 @@
 
 //                        case 0:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localLeftPaddedString11() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Dodge); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                upic.Print(localLeftPaddedString11() + Strings.Space(9));
@@ -1277,7 +1140,6 @@
 //                }
 //                else
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argbuf7 = "--";
 //                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf7, 5) + Strings.Space(9));
 //                }
@@ -1285,7 +1147,6 @@
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
@@ -1294,7 +1155,6 @@
 //                // upic.ForeColor = rgb(0, 0, 150)
 //                upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                // MOD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname24 = "技量";
 //                upic.Print(Expression.Term(ref argtname24, ref u, 4) + " ");
 //                // MOD START 240a
@@ -1303,7 +1163,6 @@
 //                // MOD  END  240a
 //                if (is_unknown)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argbuf8 = "？";
 //                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf8, 4) + Strings.Space(10));
 //                }
@@ -1313,7 +1172,6 @@
 //                    {
 //                        case var case8 when case8 > 0:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localLeftPaddedString12() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.TechniqueBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                string localRightPaddedString8() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.TechniqueMod + p.TechniqueMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
@@ -1324,7 +1182,6 @@
 
 //                        case var case9 when case9 < 0:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localLeftPaddedString13() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.TechniqueBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                string localRightPaddedString9() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.TechniqueMod + p.TechniqueMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
@@ -1335,7 +1192,6 @@
 
 //                        case 0:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localLeftPaddedString14() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Technique); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                upic.Print(localLeftPaddedString14() + Strings.Space(9));
@@ -1345,7 +1201,6 @@
 //                }
 //                else
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argbuf9 = "--";
 //                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf9, 5) + Strings.Space(9));
 //                }
@@ -1355,7 +1210,6 @@
 //                // upic.ForeColor = rgb(0, 0, 150)
 //                upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                // MOD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname25 = "反応";
 //                upic.Print(Expression.Term(ref argtname25, ref u, 4) + " ");
 //                // MOD START 240a
@@ -1364,7 +1218,6 @@
 //                // MOD  END  240a
 //                if (is_unknown)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argbuf10 = "？";
 //                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf10, 4));
 //                }
@@ -1374,7 +1227,6 @@
 //                    {
 //                        case var case10 when case10 > 0:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localLeftPaddedString15() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.IntuitionBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                string localRightPaddedString10() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.IntuitionMod + p.IntuitionMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
@@ -1385,7 +1237,6 @@
 
 //                        case var case11 when case11 < 0:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localLeftPaddedString16() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.IntuitionBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                string localRightPaddedString11() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.IntuitionMod + p.IntuitionMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
@@ -1396,7 +1247,6 @@
 
 //                        case 0:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localLeftPaddedString17() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Intuition); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                upic.Print(localLeftPaddedString17() + Strings.Space(9));
@@ -1406,7 +1256,6 @@
 //                }
 //                else
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argbuf11 = "--";
 //                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf11, 5) + Strings.Space(9));
 //                }
@@ -1417,7 +1266,6 @@
 //                {
 //                    if (GUI.NewGUIMode)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.CurrentX = 5;
 //                    }
 //                    // 防御
@@ -1425,7 +1273,6 @@
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname26 = "防御";
 //                    upic.Print(Expression.Term(ref argtname26, ref u) + " ");
 //                    // MOD START 240a
@@ -1434,20 +1281,17 @@
 //                    // MOD  END  240a
 //                    if (is_unknown)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        string argbuf12 = "？";
 //                        upic.Print(GeneralLib.LeftPaddedString(ref argbuf12, 4));
 //                    }
 //                    else if (!p.IsSupport(ref u))
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        string localLeftPaddedString18() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Defense); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                        upic.Print(localLeftPaddedString18());
 //                    }
 //                    else
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        string argbuf13 = "--";
 //                        upic.Print(GeneralLib.LeftPaddedString(ref argbuf13, 5));
 //                    }
@@ -1456,7 +1300,6 @@
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
@@ -1467,7 +1310,6 @@
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname27 = "スペシャルパワー";
 //                    upic.Print(Expression.Term(ref argtname27, ref u, 18) + " ");
 //                    // MOD START 240a
@@ -1489,7 +1331,6 @@
 //                                // MOD  END  240a
 
 //                            }
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            SpecialPowerData localItem() { object argIndex1 = p.get_SpecialPower(i); var ret = SRC.SPDList.Item(ref argIndex1); p.get_SpecialPower(i) = Conversions.ToString(argIndex1); return ret; }
 
 //                            upic.Print(localItem().ShortName);
@@ -1501,17 +1342,14 @@
 //                    }
 //                    else
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print("？");
 //                    }
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print();
 //                }
 
 //                // 未識別のユニットはこれ以降の情報を表示しない
 //                if (is_unknown)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentY = upic.CurrentY + 8;
 //                    goto UnitStatus;
 //                }
@@ -1520,7 +1358,6 @@
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
@@ -1547,7 +1384,6 @@
 //                        // upic.ForeColor = rgb(0, 0, 150)
 //                        upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                        // MOD  END  240a
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(sname + " ");
 //                        // MOD START 240a
 //                        // upic.ForeColor = rgb(0, 0, 0)
@@ -1560,7 +1396,6 @@
 //                            upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityDisable, Information.RGB(150, 0, 0))));
 //                            // MOD  END  240a
 //                        }
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Plana) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.MaxPlana()));
 //                        // MOD START 240a
 //                        // upic.ForeColor = rgb(0, 0, 0)
@@ -1572,7 +1407,6 @@
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
@@ -1586,7 +1420,6 @@
 //                        // upic.ForeColor = rgb(0, 0, 150)
 //                        upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                        // MOD  END  240a
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        object argIndex11 = "同調率";
 //                        upic.Print(p.SkillName(ref argIndex11) + " ");
 //                        // MOD START 240a
@@ -1600,7 +1433,6 @@
 //                            upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityDisable, Information.RGB(150, 0, 0))));
 //                            // MOD  END  240a
 //                        }
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.SynchroRate()) + "%");
 //                        // MOD START 240a
 //                        // upic.ForeColor = rgb(0, 0, 0)
@@ -1612,7 +1444,6 @@
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
@@ -1626,13 +1457,11 @@
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("得意技 ");
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string localRightPaddedString12() { object argIndex1 = "得意技"; string argbuf = p.SkillData(ref argIndex1); var ret = GeneralLib.RightPaddedString(ref argbuf, 12); return ret; }
 
 //                    upic.Print(localRightPaddedString12());
@@ -1646,20 +1475,17 @@
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("不得手 ");
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    object argIndex13 = "不得手";
 //                    upic.Print(p.SkillData(ref argIndex13));
 //                }
 
 //                if (n > 0)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print();
 //                }
 
@@ -2188,29 +2014,23 @@
 //                    }
 
 //                    // 特殊能力名を表示
-//                    // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-//                    // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
 //                    if (LenB(Strings.StrConv(sname, vbFromUnicode)) > 19)
 //                    {
 //                        if (n > 0)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print();
 //                            // ADD START 240a
 //                            if (GUI.NewGUIMode)
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.CurrentX = 5;
 //                            }
 //                            // ADD  END  240a
 //                        }
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(sname);
 //                        n = 2;
 //                    }
 //                    else
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(GeneralLib.RightPaddedString(ref sname, 19));
 //                        n = (short)(n + 1);
 //                    }
@@ -2220,12 +2040,10 @@
 //                    // 必要に応じて改行
 //                    if (n > 1)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print();
 //                        // ADD START 240a
 //                        if (GUI.NewGUIMode)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.CurrentX = 5;
 //                        }
 //                        // ADD  END  240a
@@ -2238,18 +2056,15 @@
 
 //                if (n > 0)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print();
 //                    // ADD START 240a
 //                    if (GUI.NewGUIMode)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.CurrentX = 5;
 //                    }
 //                    // ADD  END  240a
 //                }
 
-//                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.CurrentY = upic.CurrentY + 8;
 //                UnitStatus:
 //                ;
@@ -2270,13 +2085,11 @@
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                    // 文字色をリセット
 //                    upic.ForeColor = ColorTranslator.FromOle(StatusFontColorNormalString);
 //                }
 //                // ADD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Print(withBlock.Nickname0);
 //                upic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeBold(upic.Font, false);
 //                upic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(upic.Font, 9f);
@@ -2288,19 +2101,16 @@
 //                    // ADD START 240a
 //                    if (GUI.NewGUIMode)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.CurrentX = 5;
 //                    }
 //                    // ADD  END  240a
 //                    // ユニットの位置を地形名称
 //                    if (Strings.InStr(Map.TerrainName(withBlock.x, withBlock.y), "(") > 0)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(withBlock.Area + " (" + Strings.Left(Map.TerrainName(withBlock.x, withBlock.y), Strings.InStr(Map.TerrainName(withBlock.x, withBlock.y), "(") - 1));
 //                    }
 //                    else
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(withBlock.Area + " (" + Map.TerrainName(withBlock.x, withBlock.y));
 //                    }
 
@@ -2309,12 +2119,10 @@
 //                    {
 //                        if (Map.TerrainEffectForHit(withBlock.x, withBlock.y) >= 0)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print(" 回＆防+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHit(withBlock.x, withBlock.y)) + "%");
 //                        }
 //                        else
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print(" 回＆防" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHit(withBlock.x, withBlock.y)) + "%");
 //                        }
 //                    }
@@ -2322,23 +2130,19 @@
 //                    {
 //                        if (Map.TerrainEffectForHit(withBlock.x, withBlock.y) >= 0)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print(" 回+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHit(withBlock.x, withBlock.y)) + "%");
 //                        }
 //                        else
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print(" 回" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHit(withBlock.x, withBlock.y)) + "%");
 //                        }
 
 //                        if (Map.TerrainEffectForDamage(withBlock.x, withBlock.y) >= 0)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print(" 防+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForDamage(withBlock.x, withBlock.y)) + "%");
 //                        }
 //                        else
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print(" 防" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForDamage(withBlock.x, withBlock.y)) + "%");
 //                        }
 //                    }
@@ -2346,7 +2150,6 @@
 //                    // ＨＰ＆ＥＮ回復
 //                    if (Map.TerrainEffectForHPRecover(withBlock.x, withBlock.y) > 0)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        string argtname28 = "ＨＰ";
 //                        Unit argu = null;
 //                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname28, u: ref argu), 1) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHPRecover(withBlock.x, withBlock.y)) + "%");
@@ -2354,7 +2157,6 @@
 
 //                    if (Map.TerrainEffectForENRecover(withBlock.x, withBlock.y) > 0)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        string argtname29 = "ＥＮ";
 //                        Unit argu1 = null;
 //                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname29, u: ref argu1), 1) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForENRecover(withBlock.x, withBlock.y)) + "%");
@@ -2383,7 +2185,6 @@
 //                    string argfname14 = "ＨＰ減少";
 //                    if (td.IsFeatureAvailable(ref argfname14))
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        string argtname30 = "ＨＰ";
 //                        Unit argu2 = null;
 //                        object argIndex33 = "ＨＰ減少";
@@ -2393,7 +2194,6 @@
 //                    string argfname15 = "ＥＮ減少";
 //                    if (td.IsFeatureAvailable(ref argfname15))
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        string argtname31 = "ＥＮ";
 //                        Unit argu3 = null;
 //                        object argIndex34 = "ＥＮ減少";
@@ -2404,7 +2204,6 @@
 //                    string argfname16 = "ＨＰ増加";
 //                    if (td.IsFeatureAvailable(ref argfname16))
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        string argtname32 = "ＨＰ";
 //                        Unit argu4 = null;
 //                        object argIndex35 = "ＨＰ増加";
@@ -2414,7 +2213,6 @@
 //                    string argfname17 = "ＥＮ増加";
 //                    if (td.IsFeatureAvailable(ref argfname17))
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        string argtname33 = "ＥＮ";
 //                        Unit argu5 = null;
 //                        object argIndex36 = "ＥＮ増加";
@@ -2425,7 +2223,6 @@
 //                    string argfname18 = "ＨＰ低下";
 //                    if (td.IsFeatureAvailable(ref argfname18))
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        string argtname34 = "ＨＰ";
 //                        Unit argu6 = null;
 //                        object argIndex37 = "ＨＰ低下";
@@ -2435,7 +2232,6 @@
 //                    string argfname19 = "ＥＮ低下";
 //                    if (td.IsFeatureAvailable(ref argfname19))
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        string argtname35 = "ＥＮ";
 //                        Unit argu7 = null;
 //                        object argIndex38 = "ＥＮ低下";
@@ -2446,12 +2242,10 @@
 //                    string argfname20 = "摩擦";
 //                    if (td.IsFeatureAvailable(ref argfname20))
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        object argIndex39 = "摩擦";
 //                        upic.Print(" 摩L" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(td.FeatureLevel(ref argIndex39)));
 //                    }
 
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print(")");
 //                }
 //                else
@@ -2460,13 +2254,11 @@
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("ランク ");
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Rank));
 //                }
 
@@ -2476,7 +2268,6 @@
 //                    // ADD START 240a
 //                    if (GUI.NewGUIMode)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.CurrentX = 5;
 //                    }
 //                    // ADD  END  240a
@@ -2485,7 +2276,6 @@
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname36 = "ＨＰ";
 //                    Unit argu8 = null;
 //                    upic.Print(Expression.Term(ref argtname36, ref argu8, 6) + " ");
@@ -2493,13 +2283,11 @@
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("?????/?????");
 
 //                    // ADD START 240a
 //                    if (GUI.NewGUIMode)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.CurrentX = 5;
 //                    }
 //                    // ADD  END  240a
@@ -2508,7 +2296,6 @@
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname37 = "ＥＮ";
 //                    Unit argu9 = null;
 //                    upic.Print(Expression.Term(ref argtname37, ref argu9, 6) + " ");
@@ -2516,13 +2303,11 @@
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("???/???");
 
 //                    // ADD START 240a
 //                    if (GUI.NewGUIMode)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.CurrentX = 5;
 //                    }
 //                    // ADD  END  240a
@@ -2531,7 +2316,6 @@
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname38 = "装甲";
 //                    Unit argu10 = null;
 //                    upic.Print(Expression.Term(ref argtname38, ref argu10, 6) + " ");
@@ -2539,7 +2323,6 @@
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argbuf14 = "？";
 //                    upic.Print(GeneralLib.RightPaddedString(ref argbuf14, 12));
 
@@ -2548,7 +2331,6 @@
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname39 = "運動性";
 //                    Unit argu11 = null;
 //                    upic.Print(Expression.Term(ref argtname39, ref argu11, 6) + " ");
@@ -2556,13 +2338,11 @@
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("？");
 
 //                    // ADD START 240a
 //                    if (GUI.NewGUIMode)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.CurrentX = 5;
 //                    }
 //                    // ADD  END  240a
@@ -2571,7 +2351,6 @@
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname40 = "タイプ";
 //                    Unit argu12 = null;
 //                    upic.Print(Expression.Term(ref argtname40, ref argu12, 6) + " ");
@@ -2579,7 +2358,6 @@
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argbuf15 = "？";
 //                    upic.Print(GeneralLib.RightPaddedString(ref argbuf15, 12));
 
@@ -2588,7 +2366,6 @@
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname41 = "移動力";
 //                    Unit argu13 = null;
 //                    upic.Print(Expression.Term(ref argtname41, ref argu13, 6) + " ");
@@ -2596,13 +2373,11 @@
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("？");
 
 //                    // ADD START 240a
 //                    if (GUI.NewGUIMode)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.CurrentX = 5;
 //                    }
 //                    // ADD  END  240a
@@ -2611,13 +2386,11 @@
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("適応   ");
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argbuf16 = "？";
 //                    upic.Print(GeneralLib.RightPaddedString(ref argbuf16, 12));
 
@@ -2626,7 +2399,6 @@
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string argtname42 = "サイズ";
 //                    Unit argu14 = null;
 //                    upic.Print(Expression.Term(ref argtname42, ref argu14, 6) + " ");
@@ -2634,7 +2406,6 @@
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("？");
 
 //                    // サポートアタックを得られるかどうかのみ表示
@@ -2645,7 +2416,6 @@
 //                        object argIndex42 = "憑依";
 //                        if (withBlock.Party == "敵" | withBlock.Party == "中立" | withBlock.IsConditionSatisfied(ref argIndex40) | withBlock.IsConditionSatisfied(ref argIndex41) | withBlock.IsConditionSatisfied(ref argIndex42))
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print();
 
 //                            // 攻撃手段
@@ -2653,13 +2423,11 @@
 //                            // upic.ForeColor = rgb(0, 0, 150)
 //                            upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                            // MOD  END  240a
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print("攻撃     ");
 //                            // MOD START 240a
 //                            // upic.ForeColor = rgb(0, 0, 0)
 //                            upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                            // MOD  END  240a
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print(Commands.SelectedUnit.WeaponNickname(Commands.SelectedWeapon));
 //                            // サポートアタックを得られる？
 //                            string argattr3 = "合";
@@ -2668,7 +2436,6 @@
 //                            {
 //                                if (Commands.SelectedUnit.LookForSupportAttack(ref u) is object)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    upic.Print(" [援]");
 //                                }
 //                            }
@@ -2716,7 +2483,6 @@
 
 //                    if (buf == "通常")
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print("自由行動中");
 //                    }
 //                    else if (localIsDefined())
@@ -2731,16 +2497,13 @@
 //                                    var withBlock2 = withBlock1.Unit_Renamed;
 //                                    if (withBlock2.Status_Renamed == "出撃")
 //                                    {
-//                                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                        upic.Print(withBlock2.Nickname + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock2.x) + "," + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock2.y) + ")を");
 //                                        if (withBlock2.Party == "味方")
 //                                        {
-//                                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                            upic.Print("護衛中");
 //                                        }
 //                                        else
 //                                        {
-//                                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                            upic.Print("追跡中");
 //                                        }
 //                                    }
@@ -2751,7 +2514,6 @@
 //                    else if (GeneralLib.LLength(ref buf) == 2)
 //                    {
 //                        // 思考モードに座標が指定されている場合
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print("(" + GeneralLib.LIndex(ref buf, 1) + "," + GeneralLib.LIndex(ref buf, 2) + ")に移動中");
 //                    }
 //                }
@@ -2787,7 +2549,6 @@
 //                    // ADD START 240a
 //                    if (GUI.NewGUIMode)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.CurrentX = 5;
 //                    }
 //                    // ADD  END  240a
@@ -2830,7 +2591,6 @@
 
 //                                if (0 < localConditionLifetime1() & localConditionLifetime2() < 100)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    short localConditionLifetime() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                    upic.Print("残り時間" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime()) + "ターン");
@@ -2844,7 +2604,6 @@
 //                        case "吸収付加":
 //                        case "弱点付加":
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localConditionData3() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
 
 //                                string localCondition3() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
@@ -2856,19 +2615,16 @@
 
 //                                if (0 < localConditionLifetime4() & localConditionLifetime5() < 100)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    short localConditionLifetime3() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                    upic.Print(" " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime3()) + "T");
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("");
 //                                break;
 //                            }
 
 //                        case "特殊効果無効化付加":
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localConditionData4() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
 
 //                                upic.Print(localConditionData4() + "無効化付加");
@@ -2878,19 +2634,16 @@
 
 //                                if (0 < localConditionLifetime7() & localConditionLifetime8() < 100)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    short localConditionLifetime6() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime6()) + "ターン");
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("");
 //                                break;
 //                            }
 
 //                        case "攻撃属性付加":
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localConditionData5() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
 
 //                                string localLIndex2() { string arglist = hs755742c2c238431abd43e11d0920ad14(); var ret = GeneralLib.LIndex(ref arglist, 1); return ret; }
@@ -2902,26 +2655,22 @@
 
 //                                if (0 < localConditionLifetime10() & localConditionLifetime11() < 100)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    short localConditionLifetime9() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime9()) + "ターン");
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("");
 //                                break;
 //                            }
 
 //                        case "武器強化付加":
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                double localConditionLevel() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
 
 //                                upic.Print("武器強化Lv" + localConditionLevel() + "付加");
 //                                object argIndex51 = i;
 //                                if (!string.IsNullOrEmpty(withBlock.ConditionData(ref argIndex51)))
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    string localConditionData6() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
 
 //                                    upic.Print("(" + localConditionData6() + ")");
@@ -2933,26 +2682,22 @@
 
 //                                if (0 < localConditionLifetime13() & localConditionLifetime14() < 100)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    short localConditionLifetime12() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime12()) + "ターン");
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("");
 //                                break;
 //                            }
 
 //                        case "命中率強化付加":
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                double localConditionLevel1() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
 
 //                                upic.Print("命中率強化Lv" + localConditionLevel1() + "付加");
 //                                object argIndex52 = i;
 //                                if (!string.IsNullOrEmpty(withBlock.ConditionData(ref argIndex52)))
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    string localConditionData7() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
 
 //                                    upic.Print("(" + localConditionData7() + ")");
@@ -2964,26 +2709,22 @@
 
 //                                if (0 < localConditionLifetime16() & localConditionLifetime17() < 100)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    short localConditionLifetime15() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime15()) + "ターン");
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("");
 //                                break;
 //                            }
 
 //                        case "ＣＴ率強化付加":
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                double localConditionLevel2() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
 
 //                                upic.Print("ＣＴ率強化Lv" + localConditionLevel2() + "付加");
 //                                object argIndex53 = i;
 //                                if (!string.IsNullOrEmpty(withBlock.ConditionData(ref argIndex53)))
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    string localConditionData8() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
 
 //                                    upic.Print("(" + localConditionData8() + ")");
@@ -2995,26 +2736,22 @@
 
 //                                if (0 < localConditionLifetime19() & localConditionLifetime20() < 100)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    short localConditionLifetime18() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime18()) + "ターン");
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("");
 //                                break;
 //                            }
 
 //                        case "特殊効果発動率強化付加":
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                double localConditionLevel3() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
 
 //                                upic.Print("特殊効果発動率強化Lv" + localConditionLevel3() + "付加");
 //                                object argIndex54 = i;
 //                                if (!string.IsNullOrEmpty(withBlock.ConditionData(ref argIndex54)))
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    string localConditionData9() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
 
 //                                    upic.Print("(" + localConditionData9() + ")");
@@ -3026,19 +2763,16 @@
 
 //                                if (0 < localConditionLifetime22() & localConditionLifetime23() < 100)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    short localConditionLifetime21() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime21()) + "ターン");
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("");
 //                                break;
 //                            }
 
 //                        case "地形適応変更付加":
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("地形適応変更付加");
 //                                short localConditionLifetime25() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -3046,25 +2780,21 @@
 
 //                                if (0 < localConditionLifetime25() & localConditionLifetime26() < 100)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    short localConditionLifetime24() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime24()) + "ターン");
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("");
 //                                break;
 //                            }
 
 //                        case "盾付加":
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string localConditionData10() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
 
 //                                string localLIndex3() { string arglist = hsba8faef602a144028d0b911086dca487(); var ret = GeneralLib.LIndex(ref arglist, 1); return ret; }
 
 //                                upic.Print(localLIndex3() + "付加");
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                double localConditionLevel4() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
 
 //                                upic.Print("(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLevel4()) + ")");
@@ -3074,12 +2804,10 @@
 
 //                                if (0 < localConditionLifetime28() & localConditionLifetime29() < 100)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    short localConditionLifetime27() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime27()) + "ターン");
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("");
 //                                break;
 //                            }
@@ -3092,7 +2820,6 @@
 //                                {
 //                                    buf = Strings.Left(buf, Strings.InStr(buf, "Lv") - 1);
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                double localConditionLevel5() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
 
 //                                upic.Print(buf + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLevel5()), VbStrConv.Wide) + "体破壊");
@@ -3101,7 +2828,6 @@
 
 //                        case "ダミー付加":
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                double localConditionLevel6() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
 
 //                                object argIndex56 = "ダミー";
@@ -3112,12 +2838,10 @@
 
 //                                if (0 < localConditionLifetime31() & localConditionLifetime32() < 100)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    short localConditionLifetime30() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime30()) + "ターン");
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("");
 //                                break;
 //                            }
@@ -3127,17 +2851,14 @@
 //                                object argIndex57 = i;
 //                                if (!string.IsNullOrEmpty(withBlock.ConditionData(ref argIndex57)))
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    string localConditionData11() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
 
 //                                    upic.Print(localConditionData11());
 //                                }
 //                                else
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    upic.Print("バリア発動");
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                short localConditionLifetime33() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime33()) + "ターン");
@@ -3149,17 +2870,14 @@
 //                                object argIndex58 = i;
 //                                if (!string.IsNullOrEmpty(withBlock.ConditionData(ref argIndex58)))
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    string localConditionData12() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
 
 //                                    upic.Print(localConditionData12());
 //                                }
 //                                else
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    upic.Print("フィールド発動");
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                short localConditionLifetime34() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime34()) + "ターン");
@@ -3168,7 +2886,6 @@
 
 //                        case "装甲劣化":
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string argtname43 = "装甲";
 //                                upic.Print(Expression.Term(ref argtname43, ref u) + "劣化");
 //                                short localConditionLifetime36() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
@@ -3177,19 +2894,16 @@
 
 //                                if (0 < localConditionLifetime36() & localConditionLifetime37() < 20)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    short localConditionLifetime35() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime35()) + "ターン");
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("");
 //                                break;
 //                            }
 
 //                        case "運動性ＵＰ":
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string argtname44 = "運動性";
 //                                upic.Print(Expression.Term(ref argtname44, ref u) + "ＵＰ");
 //                                short localConditionLifetime39() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
@@ -3198,19 +2912,16 @@
 
 //                                if (0 < localConditionLifetime39() & localConditionLifetime40() < 20)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    short localConditionLifetime38() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime38()) + "ターン");
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("");
 //                                break;
 //                            }
 
 //                        case "運動性ＤＯＷＮ":
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string argtname45 = "運動性";
 //                                upic.Print(Expression.Term(ref argtname45, ref u) + "ＤＯＷＮ");
 //                                short localConditionLifetime42() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
@@ -3219,19 +2930,16 @@
 
 //                                if (0 < localConditionLifetime42() & localConditionLifetime43() < 20)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    short localConditionLifetime41() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime41()) + "ターン");
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("");
 //                                break;
 //                            }
 
 //                        case "移動力ＵＰ":
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string argtname46 = "移動力";
 //                                upic.Print(Expression.Term(ref argtname46, ref u) + "ＵＰ");
 //                                short localConditionLifetime45() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
@@ -3240,19 +2948,16 @@
 
 //                                if (0 < localConditionLifetime45() & localConditionLifetime46() < 20)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    short localConditionLifetime44() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime44()) + "ターン");
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("");
 //                                break;
 //                            }
 
 //                        case "移動力ＤＯＷＮ":
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                string argtname47 = "移動力";
 //                                upic.Print(Expression.Term(ref argtname47, ref u) + "ＤＯＷＮ");
 //                                short localConditionLifetime48() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
@@ -3261,12 +2966,10 @@
 
 //                                if (0 < localConditionLifetime48() & localConditionLifetime49() < 20)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    short localConditionLifetime47() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime47()) + "ターン");
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("");
 //                                break;
 //                            }
@@ -3280,23 +2983,19 @@
 //                                {
 //                                    if (withBlock.IsHero())
 //                                    {
-//                                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                        string localCondition4() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
 
 //                                        string localCondition5() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
 
 //                                        upic.Print(Strings.Left(localCondition4(), Strings.Len(localCondition5()) - 3));
-//                                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                        upic.Print("準備中");
 //                                    }
 //                                    else
 //                                    {
-//                                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                        string localCondition6() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
 
 //                                        upic.Print(localCondition6());
 //                                    }
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    short localConditionLifetime50() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime50()) + "ターン");
@@ -3377,7 +3076,6 @@
 //                                Array.Resize(ref name_list, Information.UBound(name_list) + 1 + 1);
 //                                name_list[Information.UBound(name_list)] = buf;
 
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print(buf);
 //                                short localConditionLifetime52() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -3385,12 +3083,10 @@
 
 //                                if (0 < localConditionLifetime52() & localConditionLifetime53() < 20)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    short localConditionLifetime51() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime51()) + "ターン");
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("");
 //                                break;
 //                            }
@@ -3403,39 +3099,27 @@
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
 //                // ＨＰ
-//                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                cx = upic.CurrentX;
-//                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                cy = upic.CurrentY;
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Line(116, cy + 2); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Line(116, cy + 2); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Line(117, cy + 8); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Line(118 + GUI.GauageWidth, cy + 3); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Line(117, cy + 3); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 //                if (withBlock.HP > 0)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Line(117, cy + 3); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 //                }
-//                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.CurrentX = cx;
-//                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.CurrentY = cy;
 //                // MOD START 240a
 //                // upic.ForeColor = rgb(0, 0, 150)
 //                upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                // MOD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname48 = "ＨＰ";
 //                upic.Print(Expression.Term(ref argtname48, ref u, 6) + " ");
 //                // MOD START 240a
@@ -3445,31 +3129,25 @@
 //                object argIndex61 = "データ不明";
 //                if (withBlock.IsConditionSatisfied(ref argIndex61))
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("?????/?????");
 //                }
 //                else
 //                {
 //                    if (withBlock.HP < 100000)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.HP));
 //                    }
 //                    else
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print("?????");
 //                    }
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("/");
 //                    if (withBlock.MaxHP < 100000)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MaxHP));
 //                    }
 //                    else
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print("?????");
 //                    }
 //                }
@@ -3477,39 +3155,27 @@
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
 //                // ＥＮ
-//                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                cx = upic.CurrentX;
-//                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                cy = upic.CurrentY;
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Line(116, cy + 2); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Line(116, cy + 2); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Line(117, cy + 8); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Line(118 + GUI.GauageWidth, cy + 3); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Line(117, cy + 3); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 //                if (withBlock.EN > 0)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Line(117, cy + 3); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 //                }
-//                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.CurrentX = cx;
-//                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.CurrentY = cy;
 //                // MOD START 240a
 //                // upic.ForeColor = rgb(0, 0, 150)
 //                upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                // MOD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname49 = "ＥＮ";
 //                upic.Print(Expression.Term(ref argtname49, ref u, 6) + " ");
 //                // MOD START 240a
@@ -3519,31 +3185,25 @@
 //                object argIndex62 = "データ不明";
 //                if (withBlock.IsConditionSatisfied(ref argIndex62))
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("???/???");
 //                }
 //                else
 //                {
 //                    if (withBlock.EN < 1000)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.EN));
 //                    }
 //                    else
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print("???");
 //                    }
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("/");
 //                    if (withBlock.MaxEN < 1000)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MaxEN));
 //                    }
 //                    else
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print("???");
 //                    }
 //                }
@@ -3551,7 +3211,6 @@
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
@@ -3560,7 +3219,6 @@
 //                // upic.ForeColor = rgb(0, 0, 150)
 //                upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                // MOD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname50 = "装甲";
 //                upic.Print(Expression.Term(ref argtname50, ref u, 6) + " ");
 //                // MOD START 240a
@@ -3571,7 +3229,6 @@
 //                {
 //                    case var case13 when case13 > 0:
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            string localRightPaddedString13() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("基本値")) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("修正値")); var ret = GeneralLib.RightPaddedString(ref argbuf, 12); return ret; }
 
 //                            upic.Print(localRightPaddedString13());
@@ -3580,7 +3237,6 @@
 
 //                    case var case14 when case14 < 0:
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            string localRightPaddedString14() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("基本値")) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("修正値")); var ret = GeneralLib.RightPaddedString(ref argbuf, 12); return ret; }
 
 //                            upic.Print(localRightPaddedString14());
@@ -3589,7 +3245,6 @@
 
 //                    case 0:
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            string localRightPaddedString15() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("")); var ret = GeneralLib.RightPaddedString(ref argbuf, 12); return ret; }
 
 //                            upic.Print(localRightPaddedString15());
@@ -3602,7 +3257,6 @@
 //                // upic.ForeColor = rgb(0, 0, 150)
 //                upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                // MOD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname51 = "運動性";
 //                upic.Print(Expression.Term(ref argtname51, ref u, 6) + " ");
 //                // MOD START 240a
@@ -3613,21 +3267,18 @@
 //                {
 //                    case var case15 when case15 > 0:
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Mobility("基本値")) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Mobility("修正値")));
 //                            break;
 //                        }
 
 //                    case var case16 when case16 < 0:
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Mobility("基本値")) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Mobility("修正値")));
 //                            break;
 //                        }
 
 //                    case 0:
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Mobility("")));
 //                            break;
 //                        }
@@ -3636,7 +3287,6 @@
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
@@ -3645,14 +3295,12 @@
 //                // upic.ForeColor = rgb(0, 0, 150)
 //                upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                // MOD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname52 = "タイプ";
 //                upic.Print(Expression.Term(ref argtname52, ref u, 6) + " ");
 //                // MOD START 240a
 //                // upic.ForeColor = rgb(0, 0, 0)
 //                upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                // MOD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string localRightPaddedString16() { string argbuf = withBlock.Transportation; var ret = GeneralLib.RightPaddedString(ref argbuf, 12); withBlock.Transportation = argbuf; return ret; }
 
 //                upic.Print(localRightPaddedString16());
@@ -3662,7 +3310,6 @@
 //                // upic.ForeColor = rgb(0, 0, 150)
 //                upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                // MOD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname53 = "移動力";
 //                upic.Print(Expression.Term(ref argtname53, ref u, 6) + " ");
 //                // MOD START 240a
@@ -3674,20 +3321,17 @@
 //                string argfname22 = "テレポート";
 //                if (withBlock.IsFeatureAvailable(ref argfname22) & (withBlock.Data.Speed == 0 | localLIndex5() == "0"))
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    object argIndex63 = "テレポート";
 //                    upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Speed + withBlock.FeatureLevel(ref argIndex63)));
 //                }
 //                else
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Speed));
 //                }
 
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
@@ -3696,7 +3340,6 @@
 //                // upic.ForeColor = rgb(0, 0, 150)
 //                upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                // MOD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Print("適応   ");
 //                // MOD START 240a
 //                // upic.ForeColor = rgb(0, 0, 0)
@@ -3708,48 +3351,41 @@
 //                    {
 //                        case 5:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("S");
 //                                break;
 //                            }
 
 //                        case 4:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("A");
 //                                break;
 //                            }
 
 //                        case 3:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("B");
 //                                break;
 //                            }
 
 //                        case 2:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("C");
 //                                break;
 //                            }
 
 //                        case 1:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("D");
 //                                break;
 //                            }
 
 //                        default:
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print("E");
 //                                break;
 //                            }
 //                    }
 //                }
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Print(Strings.Space(8));
 
 //                // ユニットサイズ
@@ -3757,14 +3393,12 @@
 //                // upic.ForeColor = rgb(0, 0, 150)
 //                upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                // MOD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                string argtname54 = "サイズ";
 //                upic.Print(Expression.Term(ref argtname54, ref u, 6) + " ");
 //                // MOD START 240a
 //                // upic.ForeColor = rgb(0, 0, 0)
 //                upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                // MOD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Print(Strings.StrConv(withBlock.Size, VbStrConv.Wide));
 
 //                // 防御属性の表示
@@ -3773,7 +3407,6 @@
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
@@ -3784,7 +3417,6 @@
 //                    {
 //                        if (n > 0)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print();
 //                        }
 
@@ -3794,23 +3426,19 @@
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("吸収   ");
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print(GeneralLib.RightPaddedString(ref withBlock.strAbsorb, 12));
 //                    n = (short)(n + 1);
 //                    if (n > 1)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print();
 //                        // ADD START 240a
 //                        if (GUI.NewGUIMode)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.CurrentX = 5;
 //                        }
 //                        // ADD  END  240a
@@ -3825,12 +3453,10 @@
 //                    {
 //                        if (n > 0)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print();
 //                            // ADD START 240a
 //                            if (GUI.NewGUIMode)
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.CurrentX = 5;
 //                            }
 //                            // ADD  END  240a
@@ -3842,23 +3468,19 @@
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("無効化 ");
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print(GeneralLib.RightPaddedString(ref withBlock.strImmune, 12));
 //                    n = (short)(n + 1);
 //                    if (n > 1)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print();
 //                        // ADD START 240a
 //                        if (GUI.NewGUIMode)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.CurrentX = 5;
 //                        }
 //                        // ADD  END  240a
@@ -3873,12 +3495,10 @@
 //                    {
 //                        if (n > 0)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print();
 //                            // ADD START 240a
 //                            if (GUI.NewGUIMode)
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.CurrentX = 5;
 //                            }
 //                            // ADD  END  240a
@@ -3889,30 +3509,25 @@
 
 //                    if (n == 0 & GUI.NewGUIMode)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.CurrentX = 5;
 //                    }
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("耐性   ");
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print(GeneralLib.RightPaddedString(ref withBlock.strResist, 12));
 //                    n = (short)(n + 1);
 //                    if (n > 1)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print();
 //                        // ADD START 240a
 //                        if (GUI.NewGUIMode)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.CurrentX = 5;
 //                        }
 //                        // ADD  END  240a
@@ -3927,12 +3542,10 @@
 //                    {
 //                        if (n > 0)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print();
 //                            // ADD START 240a
 //                            if (GUI.NewGUIMode)
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.CurrentX = 5;
 //                            }
 //                            // ADD  END  240a
@@ -3943,30 +3556,25 @@
 
 //                    if (n == 0 & GUI.NewGUIMode)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.CurrentX = 5;
 //                    }
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("弱点   ");
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print(GeneralLib.RightPaddedString(ref withBlock.strWeakness, 12));
 //                    n = (short)(n + 1);
 //                    if (n > 1)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print();
 //                        // ADD START 240a
 //                        if (GUI.NewGUIMode)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.CurrentX = 5;
 //                        }
 //                        // ADD  END  240a
@@ -3981,12 +3589,10 @@
 //                    {
 //                        if (n > 0)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print();
 //                            // ADD START 240a
 //                            if (GUI.NewGUIMode)
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.CurrentX = 5;
 //                            }
 //                            // ADD  END  240a
@@ -3997,30 +3603,25 @@
 
 //                    if (n == 0 & GUI.NewGUIMode)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.CurrentX = 5;
 //                    }
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("有効   ");
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print(GeneralLib.RightPaddedString(ref withBlock.strEffective, 12));
 //                    n = (short)(n + 1);
 //                    if (n > 1)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print();
 //                        // ADD START 240a
 //                        if (GUI.NewGUIMode)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.CurrentX = 5;
 //                        }
 //                        // ADD  END  240a
@@ -4035,12 +3636,10 @@
 //                    {
 //                        if (n > 0)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print();
 //                            // ADD START 240a
 //                            if (GUI.NewGUIMode)
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.CurrentX = 5;
 //                            }
 //                            // ADD  END  240a
@@ -4051,30 +3650,25 @@
 
 //                    if (n == 0 & GUI.NewGUIMode)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.CurrentX = 5;
 //                    }
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("特無効 ");
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print(GeneralLib.RightPaddedString(ref withBlock.strSpecialEffectImmune, 12));
 //                    n = (short)(n + 1);
 //                    if (n > 1)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print();
 //                        // ADD START 240a
 //                        if (GUI.NewGUIMode)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.CurrentX = 5;
 //                        }
 //                        // ADD  END  240a
@@ -4085,12 +3679,10 @@
 //                // 必要に応じて改行
 //                if (n > 0)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print();
 //                    // ADD START 240a
 //                    if (GUI.NewGUIMode)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.CurrentX = 5;
 //                    }
 //                    // ADD  END  240a
@@ -4101,7 +3693,6 @@
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
@@ -4116,10 +3707,8 @@
 //                    {
 //                        if (GUI.NewGUIMode)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.CurrentX = 5;
 //                        }
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        string argbuf17 = "武器・防具クラス";
 //                        upic.Print(GeneralLib.RightPaddedString(ref argbuf17, 19));
 //                        Array.Resize(ref flist, 2);
@@ -4141,7 +3730,6 @@
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
@@ -4164,7 +3752,6 @@
 //                                case "パーツ合体":
 //                                case "ノーマルモード":
 //                                    {
-//                                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                        string localAllFeature() { object argIndex1 = i; var ret = withBlock.AllFeature(ref argIndex1); return ret; }
 
 //                                        string localRightPaddedString17() { string argbuf = hs5fe6f1588051411f97aaada3678aab3c(); var ret = GeneralLib.RightPaddedString(ref argbuf, 19); return ret; }
@@ -4173,12 +3760,10 @@
 //                                        n = (short)(n + 1);
 //                                        if (n > 1)
 //                                        {
-//                                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                            upic.Print();
 //                                            // ADD START 240a
 //                                            if (GUI.NewGUIMode)
 //                                            {
-//                                                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                                upic.CurrentX = 5;
 //                                            }
 //                                            // ADD  END  240a
@@ -4210,17 +3795,14 @@
 //                                            }
 //                                        }
 
-//                                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                        upic.Print(GeneralLib.RightPaddedString(ref fname, 19));
 //                                        n = (short)(n + 1);
 //                                        if (n > 1)
 //                                        {
-//                                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                            upic.Print();
 //                                            // ADD START 240a
 //                                            if (GUI.NewGUIMode)
 //                                            {
-//                                                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                                upic.CurrentX = 5;
 //                                            }
 //                                            // ADD  END  240a
@@ -5145,29 +4727,23 @@
 //                    }
 
 //                    // 特殊能力名を表示
-//                    // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-//                    // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
 //                    if (LenB(Strings.StrConv(fname, vbFromUnicode)) > 19)
 //                    {
 //                        if (n > 0)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print();
 //                            // ADD START 240a
 //                            if (GUI.NewGUIMode)
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.CurrentX = 5;
 //                            }
 //                            // ADD  END  240a
 //                        }
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(fname);
 //                        n = 2;
 //                    }
 //                    else
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(GeneralLib.RightPaddedString(ref fname, 19));
 //                        n = (short)(n + 1);
 //                    }
@@ -5175,12 +4751,10 @@
 //                    // 必要に応じて改行
 //                    if (n > 1)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print();
 //                        // ADD START 240a
 //                        if (GUI.NewGUIMode)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.CurrentX = 5;
 //                        }
 //                        // ADD  END  240a
@@ -5198,14 +4772,12 @@
 
 //                if (n > 0)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print();
 //                }
 
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
@@ -5231,35 +4803,29 @@
 //                            {
 //                                if (j == 1)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    upic.Print();
 //                                    // ADD START 240a
 //                                    if (GUI.NewGUIMode)
 //                                    {
-//                                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                        upic.CurrentX = 5;
 //                                    }
 //                                    // ADD  END  240a
 //                                }
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print(withBlock6.Nickname());
 //                                j = 2;
 //                            }
 //                            else
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print(GeneralLib.RightPaddedString(ref withBlock6.Nickname(), 19));
 //                                j = (short)(j + 1);
 //                            }
 
 //                            if (j == 2)
 //                            {
-//                                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                upic.Print();
 //                                // ADD START 240a
 //                                if (GUI.NewGUIMode)
 //                                {
-//                                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                                    upic.CurrentX = 5;
 //                                }
 //                                // ADD  END  240a
@@ -5273,12 +4839,10 @@
 
 //                    if (j > 0)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print();
 //                        // ADD START 240a
 //                        if (GUI.NewGUIMode)
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.CurrentX = 5;
 //                        }
 //                        // ADD  END  240a
@@ -5308,13 +4872,11 @@
 //                    goto SkipAttackExpResult;
 //                }
 
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Print();
 
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
@@ -5323,13 +4885,11 @@
 //                // upic.ForeColor = rgb(0, 0, 150)
 //                upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                // MOD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Print("攻撃     ");
 //                // MOD START 240a
 //                // upic.ForeColor = rgb(0, 0, 0)
 //                upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                // MOD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Print(Commands.SelectedUnit.WeaponNickname(Commands.SelectedWeapon));
 //                // サポートアタックを得られる？
 //                string argattr5 = "合";
@@ -5338,18 +4898,15 @@
 //                {
 //                    if (Commands.SelectedUnit.LookForSupportAttack(ref u) is object)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(" [援]");
 //                    }
 //                    else
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print();
 //                    }
 //                }
 //                else
 //                {
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print();
 //                }
 
@@ -5379,7 +4936,6 @@
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
@@ -5391,7 +4947,6 @@
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("ダメージ ");
 //                    dmg = Commands.SelectedUnit.Damage(Commands.SelectedWeapon, ref u, true);
 //                    if (def_mode == "防御")
@@ -5411,14 +4966,12 @@
 //                        upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                        // MOD  END  240a
 //                    }
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(dmg));
 //                }
 
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
@@ -5430,7 +4983,6 @@
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("命中率   ");
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 0)
@@ -5443,7 +4995,6 @@
 //                    }
 
 //                    cprob = Commands.SelectedUnit.CriticalProbability(Commands.SelectedWeapon, ref u, def_mode);
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print(GeneralLib.MinLng(prob, 100) + "％（" + cprob + "％）");
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 0)
@@ -5454,7 +5005,6 @@
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
@@ -5465,30 +5015,25 @@
 //                    // upic.ForeColor = rgb(0, 0, 150)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print("反撃     ");
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print(withBlock.WeaponNickname(w));
 //                    // サポートガードを受けられる？
 //                    if (u.LookForSupportGuard(ref Commands.SelectedUnit, Commands.SelectedWeapon) is object)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(" [援]");
 //                    }
 //                    else
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print();
 //                    }
 
 //                    // ADD START 240a
 //                    if (GUI.NewGUIMode)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.CurrentX = 5;
 //                    }
 //                    // ADD  END  240a
@@ -5500,7 +5045,6 @@
 //                        // upic.ForeColor = rgb(0, 0, 150)
 //                        upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                        // MOD  END  240a
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print("ダメージ ");
 //                        dmg = withBlock.Damage(w, ref Commands.SelectedUnit, true);
 //                        if (dmg >= Commands.SelectedUnit.HP)
@@ -5514,14 +5058,12 @@
 //                            upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                            // MOD  END  240a
 //                        }
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(dmg));
 //                    }
 
 //                    // ADD START 240a
 //                    if (GUI.NewGUIMode)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.CurrentX = 5;
 //                    }
 //                    // ADD  END  240a
@@ -5533,7 +5075,6 @@
 //                        // upic.ForeColor = rgb(0, 0, 150)
 //                        upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                        // MOD  END  240a
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print("命中率   ");
 //                        // MOD START 240a
 //                        // upic.ForeColor = rgb(0, 0, 0)
@@ -5541,7 +5082,6 @@
 //                        // MOD  END  240a
 //                        prob = withBlock.HitProbability(w, ref Commands.SelectedUnit, true);
 //                        cprob = withBlock.CriticalProbability(w, ref Commands.SelectedUnit);
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GeneralLib.MinLng(prob, 100)) + "％（" + cprob + "％）");
 //                    }
 //                }
@@ -5554,12 +5094,10 @@
 //                    // MOD  END  240a
 //                    if (!string.IsNullOrEmpty(def_mode))
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(def_mode);
 //                    }
 //                    else
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print("反撃不能");
 //                    }
 //                    // MOD START 240a
@@ -5569,12 +5107,10 @@
 //                    // サポートガードを受けられる？
 //                    if (u.LookForSupportGuard(ref Commands.SelectedUnit, Commands.SelectedWeapon) is object)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print(" [援]");
 //                    }
 //                    else
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print();
 //                    }
 //                }
@@ -5586,20 +5122,16 @@
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.CurrentX = 5;
 //                }
 //                // ADD  END  240a
 //                // 武器一覧
-//                // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.CurrentY = upic.CurrentY + 8;
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Print(Strings.Space(25));
 //                // MOD START 240a
 //                // upic.ForeColor = rgb(0, 0, 150)
 //                upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
 //                // MOD  END  240a
-//                // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                upic.Print("攻撃 射程");
 //                // MOD START 240a
 //                // upic.ForeColor = rgb(0, 0, 0)
@@ -5659,7 +5191,6 @@
 //                var loopTo24 = withBlock.CountWeapon();
 //                for (i = 1; i <= loopTo24; i++)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    if (upic.CurrentY > 420)
 //                    {
 //                        break;
@@ -5716,8 +5247,6 @@
 //                    // 武器が特殊効果を持つ場合は略称で表記
 //                    if (withBlock.WeaponMaxRange(w) > 1)
 //                    {
-//                        // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-//                        // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
 //                        string localLeftPaddedString21() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Weapon(w).MinRange) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.WeaponMaxRange(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 34 - LenB(Strings.StrConv(buf, vbFromUnicode))); return ret; }
 
 //                        buf = buf + localLeftPaddedString21();
@@ -5730,8 +5259,6 @@
 //                    }
 //                    else
 //                    {
-//                        // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-//                        // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
 //                        string argbuf20 = "1";
 //                        buf = buf + GeneralLib.LeftPaddedString(ref argbuf20, 34 - LenB(Strings.StrConv(buf, vbFromUnicode)));
 //                        // ADD START MARGE
@@ -5757,11 +5284,9 @@
 //                    // ADD START 240a
 //                    if (GUI.NewGUIMode)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.CurrentX = 5;
 //                    }
 //                    // ADD  END  240a
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    upic.Print(buf);
 //                    // MOD START 240a
 //                    // upic.ForeColor = rgb(0, 0, 0)
@@ -5775,7 +5300,6 @@
 //                var loopTo26 = withBlock.CountAbility();
 //                for (i = 1; i <= loopTo26; i++)
 //                {
-//                    // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    if (upic.CurrentY > 420)
 //                    {
 //                        break;
@@ -5812,61 +5336,50 @@
 //                    // ADD START 240a
 //                    if (GUI.NewGUIMode)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox プロパティ upic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.CurrentX = 5;
 //                    }
 //                    // ADD  END  240a
 //                    // アビリティの表示
-//                    // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                    string localRightPaddedString18() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.AbilityNickname(i)); var ret = GeneralLib.RightPaddedString(ref argbuf, 29); return ret; }
 
 //                    upic.Print(localRightPaddedString18());
 //                    if (withBlock.AbilityMaxRange(i) > 1)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        string localLeftPaddedString22() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.AbilityMinRange(i)) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.AbilityMaxRange(i)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                        upic.Print(localLeftPaddedString22());
 //                        string argattr14 = "Ｐ";
 //                        if (withBlock.IsAbilityClassifiedAs(i, ref argattr14))
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print("P");
 //                        }
 
 //                        string argattr15 = "Ｍ";
 //                        if (withBlock.IsAbilityClassifiedAs(i, ref argattr15))
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print("M");
 //                        }
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print();
 //                    }
 //                    else if (withBlock.AbilityMaxRange(i) == 1)
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print("    1");
 //                        // ADD START MARGE
 //                        string argattr16 = "Ｑ";
 //                        if (withBlock.IsAbilityClassifiedAs(i, ref argattr16))
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print("Q");
 //                        }
 //                        // ADD END MARGE
 //                        string argattr17 = "Ｍ";
 //                        if (withBlock.IsAbilityClassifiedAs(i, ref argattr17))
 //                        {
-//                            // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                            upic.Print("M");
 //                        }
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print();
 //                    }
 //                    else
 //                    {
-//                        // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 //                        upic.Print("    -");
 //                    }
 //                    // MOD START 240a
@@ -5888,7 +5401,6 @@
 //            {
 //                // MOD  END
 //                // ステータスウィンドウをリフレッシュ
-//                // UPGRADE_ISSUE: Control picFace は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                GUI.MainForm.picFace.Refresh();
 //                ppic.Refresh();
 //                upic.Refresh();
@@ -6014,20 +5526,15 @@
 //        {
 //            if (GUI.MainWidth == 15)
 //            {
-//                // UPGRADE_ISSUE: Control picFace は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                GUI.MainForm.picFace = Image.FromFile("");
-//                // UPGRADE_ISSUE: Control picPilotStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                GUI.MainForm.picPilotStatus.Cls();
-//                // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                GUI.MainForm.picUnitStatus.Cls();
 //                // UPGRADE_NOTE: オブジェクト DisplayedUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 //                DisplayedUnit = null;
 //            }
 //            else
 //            {
-//                // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                GUI.MainForm.picUnitStatus.Visible = false;
-//                // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 //                GUI.MainForm.picUnitStatus.Cls();
 //                IsStatusWindowDisabled = true;
 //                Application.DoEvents();

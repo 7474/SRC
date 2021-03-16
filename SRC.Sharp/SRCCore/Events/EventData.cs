@@ -61,7 +61,6 @@ namespace SRCCore.Events
             ObjColor = Color.White;
             ObjFillColor = Color.White;
             // XXX マッピング先が微妙。実装見て見直す。
-            // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
             ObjFillStyle = HatchStyle.Min;
             ObjDrawWidth = 1;
             ObjDrawOption = "";
@@ -924,8 +923,6 @@ namespace SRCCore.Events
                                 //                                    break;
                                 //                                }
                                 //                        }
-                                //                        // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-                                //                        // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
                                 //                        if ((buf ?? "") != (buf2 ?? "") & buf != "end" & buf != "suspend" & Strings.Len(buf) == LenB(Strings.StrConv(buf, vbFromUnicode)))
                                 //                        {
                                 //                            DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");

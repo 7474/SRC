@@ -120,7 +120,6 @@ namespace SRCSharpForm
 
             //short X, Y;
 
-            //// UPGRADE_ISSUE: Load ステートメント はサポートされていません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B530EFF2-3132-48F8-B8BC-D88AF543D321"' をクリックしてください。
             //Load(frmToolTip);
             frmMessage = new frmMessage()
             {

@@ -17,7 +17,6 @@ namespace SRCCore
             //            string buf;
 
             //            // ２重起動禁止
-            //            // UPGRADE_ISSUE: App プロパティ App.PrevInstance はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="076C26E5-B7A9-4E77-B69C-B4448DF39E58"' をクリックしてください。
             //            if (App.PrevInstance)
             //            {
             //                Environment.Exit(0);
@@ -700,18 +699,15 @@ namespace SRCCore
             //            {
             //                if (Strings.LCase(buf) == "on")
             //                {
-            //                    // UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //                    GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked = true;
             //                }
             //                else
             //                {
-            //                    // UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //                    GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked = false;
             //                }
             //            }
             //            else
             //            {
-            //                // UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //                GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked = false;
             //                string argini_section72 = "Option";
             //                string argini_entry72 = "AutoDefense";
