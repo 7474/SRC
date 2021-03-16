@@ -376,7 +376,7 @@ namespace SRCCore.Units
 
             //                                    if (withBlock4.get_AliasLevelIsPlusMod(j) | withBlock4.get_AliasLevelIsMultMod(j))
             //                                    {
-            //                                        sdata2 = GeneralLib.LIndex(ref sdata2, 1) + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(slevel) + " " + GeneralLib.ListTail(ref sdata2, 2);
+            //                                        sdata2 = GeneralLib.LIndex(ref sdata2, 1) + "Lv" + SrcFormatter.Format(slevel) + " " + GeneralLib.ListTail(ref sdata2, 2);
             //                                        sdata2 = Strings.Trim(sdata2);
             //                                    }
             //                                }

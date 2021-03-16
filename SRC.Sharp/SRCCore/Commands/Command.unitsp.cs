@@ -101,7 +101,7 @@ namespace SRCCore.Commands
             //            pid_list[Information.UBound(pname_list)] = p.ID;
             //            string localRightPaddedString() { string argbuf = p.get_Nickname(false); var ret = GeneralLib.RightPaddedString(argbuf, 17); p.get_Nickname(false) = argbuf; return ret; }
 
-            //            string localRightPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.SP) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.MaxSP); var ret = GeneralLib.RightPaddedString(argbuf, 8); return ret; }
+            //            string localRightPaddedString1() { string argbuf = SrcFormatter.Format(p.SP) + "/" + SrcFormatter.Format(p.MaxSP); var ret = GeneralLib.RightPaddedString(argbuf, 8); return ret; }
 
             //            pname_list[Information.UBound(pname_list)] = localRightPaddedString() + localRightPaddedString1();
             //            var loopTo2 = p.CountSpecialPower;
@@ -134,7 +134,7 @@ namespace SRCCore.Commands
             //                pid_list[Information.UBound(pname_list)] = withBlock2.ID;
             //                string localRightPaddedString4() { string argbuf = withBlock2.get_Nickname(false); var ret = GeneralLib.RightPaddedString(argbuf, 17); withBlock2.get_Nickname(false) = argbuf; return ret; }
 
-            //                string localRightPaddedString5() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock2.SP) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock2.MaxSP); var ret = GeneralLib.RightPaddedString(argbuf, 8); return ret; }
+            //                string localRightPaddedString5() { string argbuf = SrcFormatter.Format(withBlock2.SP) + "/" + SrcFormatter.Format(withBlock2.MaxSP); var ret = GeneralLib.RightPaddedString(argbuf, 8); return ret; }
 
             //                pname_list[Information.UBound(pname_list)] = localRightPaddedString4() + localRightPaddedString5();
             //                var loopTo4 = withBlock2.CountSpecialPower;
@@ -167,7 +167,7 @@ namespace SRCCore.Commands
             //                pid_list[Information.UBound(pname_list)] = withBlock1.ID;
             //                string localRightPaddedString2() { string argbuf = withBlock1.get_Nickname(false); var ret = GeneralLib.RightPaddedString(argbuf, 17); withBlock1.get_Nickname(false) = argbuf; return ret; }
 
-            //                string localRightPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.SP) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MaxSP); var ret = GeneralLib.RightPaddedString(argbuf, 8); return ret; }
+            //                string localRightPaddedString3() { string argbuf = SrcFormatter.Format(withBlock1.SP) + "/" + SrcFormatter.Format(withBlock1.MaxSP); var ret = GeneralLib.RightPaddedString(argbuf, 8); return ret; }
 
             //                pname_list[Information.UBound(pname_list)] = localRightPaddedString2() + localRightPaddedString3();
             //                var loopTo3 = withBlock1.CountSpecialPower;
@@ -252,7 +252,7 @@ namespace SRCCore.Commands
             //    for (i = 1; i <= loopTo5; i++)
             //    {
             //        sname = withBlock3.get_SpecialPower(i);
-            //        string localLeftPaddedString() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock3.SpecialPowerCost(sname)); var ret = GeneralLib.LeftPaddedString(argbuf, 3); return ret; }
+            //        string localLeftPaddedString() { string argbuf = SrcFormatter.Format(withBlock3.SpecialPowerCost(sname)); var ret = GeneralLib.LeftPaddedString(argbuf, 3); return ret; }
 
             //        SpecialPowerData localItem3() { object argIndex1 = sname; var ret = SRC.SPDList.Item(argIndex1); return ret; }
 
@@ -279,7 +279,7 @@ namespace SRCCore.Commands
             //    string arglb_caption2 = Expression.Term(argtname4, SelectedUnit) + "選択";
             //    string argtname5 = "SP";
             //    string argtname6 = "SP";
-            //    string arglb_info2 = "名称         消費" + Expression.Term(argtname5, SelectedUnit) + "（" + withBlock4.get_Nickname(false) + " " + Expression.Term(argtname6, SelectedUnit) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.SP) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.MaxSP) + "）";
+            //    string arglb_info2 = "名称         消費" + Expression.Term(argtname5, SelectedUnit) + "（" + withBlock4.get_Nickname(false) + " " + Expression.Term(argtname6, SelectedUnit) + "=" + SrcFormatter.Format(withBlock4.SP) + "/" + SrcFormatter.Format(withBlock4.MaxSP) + "）";
             //    string arglb_mode2 = "カーソル移動(行きのみ)";
             //    i = GUI.ListBox(arglb_caption2, sp_list, arglb_info2, arglb_mode2);
             //}
@@ -595,7 +595,7 @@ namespace SRCCore.Commands
 
             //                    string localRightPaddedString7() { string argbuf = u.MainPilot().get_Nickname(false); var ret = GeneralLib.RightPaddedString(argbuf, 18); u.MainPilot().get_Nickname(false) = argbuf; return ret; }
 
-            //                    string localLeftPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(argbuf, 3); return ret; }
+            //                    string localLeftPaddedString1() { string argbuf = SrcFormatter.Format(u.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(argbuf, 3); return ret; }
 
             //                    list[Information.UBound(list)] = localRightPaddedString6() + localRightPaddedString7() + localLeftPaddedString1();
             //                    id_list[Information.UBound(list)] = u.ID;

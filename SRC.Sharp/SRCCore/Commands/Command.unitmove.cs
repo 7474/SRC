@@ -48,110 +48,94 @@ namespace SRCCore.Commands
             PrevUnitArea = u.Area;
             PrevUnitEN = u.EN;
 
-            //// 移動後に着艦or合体する場合はプレイヤーに確認を取る
-            //if (Map.MapDataForUnit[SelectedX, SelectedY] is object)
-            //{
-            //    string argfname = "母艦";
-            //    string argfname1 = "母艦";
-            //    if (Map.MapDataForUnit[SelectedX, SelectedY].IsFeatureAvailable(argfname) & !u.IsFeatureAvailable(argfname1))
-            //    {
-            //        ret = Interaction.MsgBox("着艦しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "着艦");
-            //    }
-            //    else
-            //    {
-            //        ret = Interaction.MsgBox("合体しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "合体");
-            //    }
+            // 移動後に着艦or合体する場合はプレイヤーに確認を取る
+            if (Map.MapDataForUnit[SelectedX, SelectedY] != null)
+            {
+                GuiDialogResult res;
+                if (Map.MapDataForUnit[SelectedX, SelectedY].IsFeatureAvailable("母艦") && !u.IsFeatureAvailable("母艦"))
+                {
 
-            //    if (ret == MsgBoxResult.Cancel)
-            //    {
-            //        CancelCommand();
-            //        GUI.UnlockGUI();
-            //        return;
-            //    }
-            //}
+                    res = GUI.Confirm("着艦しますか？", "着艦", GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
+                }
+                else
+                {
+                    res = GUI.Confirm("合体しますか？", "合体", GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
+                }
+
+                if (res == GuiDialogResult.Cancel)
+                {
+                    CancelCommand();
+                    GUI.UnlockGUI();
+                    return;
+                }
+            }
 
             // ユニットを移動
             u.Move(SelectedX, SelectedY);
 
-            //// 移動後に着艦または合体した？
-            //if (!ReferenceEquals(Map.MapDataForUnit[u.x, u.y], SelectedUnit))
-            //{
-            //    string argfname2 = "母艦";
-            //    string argfname3 = "母艦";
-            //    if (Map.MapDataForUnit[u.x, u.y].IsFeatureAvailable(argfname2) & !u.IsFeatureAvailable(argfname3) & u.CountPilot() > 0)
-            //    {
-            //        // 着艦メッセージ表示
-            //        string argmain_situation = "着艦(" + u.Name + ")";
-            //        string argmain_situation1 = "着艦";
-            //        if (u.IsMessageDefined(argmain_situation))
-            //        {
-            //            Unit argu1 = null;
-            //            Unit argu2 = null;
-            //            GUI.OpenMessageForm(u1: argu1, u2: argu2);
-            //            string argSituation = "着艦(" + u.Name + ")";
-            //            string argmsg_mode = "";
-            //            u.PilotMessage(argSituation, msg_mode: argmsg_mode);
-            //            GUI.CloseMessageForm();
-            //        }
-            //        else if (u.IsMessageDefined(argmain_situation1))
-            //        {
-            //            Unit argu11 = null;
-            //            Unit argu21 = null;
-            //            GUI.OpenMessageForm(u1: argu11, u2: argu21);
-            //            string argSituation1 = "着艦";
-            //            string argmsg_mode1 = "";
-            //            u.PilotMessage(argSituation1, msg_mode: argmsg_mode1);
-            //            GUI.CloseMessageForm();
-            //        }
+            // 移動後に着艦または合体した？
+            if (!ReferenceEquals(Map.MapDataForUnit[u.x, u.y], SelectedUnit))
+            {
+                if (Map.MapDataForUnit[u.x, u.y].IsFeatureAvailable("母艦") && !u.IsFeatureAvailable("母艦") && u.CountPilot() > 0)
+                {
+                    // 着艦メッセージ表示
+                    if (u.IsMessageDefined("着艦(" + u.Name + ")"))
+                    {
+                        GUI.OpenMessageForm(u1: null, u2: null);
+                        u.PilotMessage("着艦(" + u.Name + ")", msg_mode: "");
+                        GUI.CloseMessageForm();
+                    }
+                    else if (u.IsMessageDefined("着艦"))
+                    {
+                        GUI.OpenMessageForm(u1: null, u2: null);
+                        u.PilotMessage("着艦", msg_mode: "");
+                        GUI.CloseMessageForm();
+                    }
+                    u.SpecialEffect("着艦", u.Name);
 
-            //        string argmain_situation2 = "着艦";
-            //        string argsub_situation = u.Name;
-            //        u.SpecialEffect(argmain_situation2, argsub_situation);
-            //        u.Name = argsub_situation;
+                    // 収納イベント
+                    SelectedTarget = Map.MapDataForUnit[u.x, u.y];
+                    Event.HandleEvent("収納", u.MainPilot().ID);
+                }
+                else
+                {
+                    // 合体後のユニットを選択
+                    SelectedUnit = Map.MapDataForUnit[u.x, u.y];
 
-            //        // 収納イベント
-            //        SelectedTarget = Map.MapDataForUnit[u.x, u.y];
-            //        Event_Renamed.HandleEvent("収納", u.MainPilot().ID);
-            //    }
-            //    else
-            //    {
-            //        // 合体後のユニットを選択
-            //        SelectedUnit = Map.MapDataForUnit[u.x, u.y];
+                    // 合体イベント
+                    Event.HandleEvent("合体", SelectedUnit.MainPilot().ID, SelectedUnit.Name);
+                }
 
-            //        // 合体イベント
-            //        Event_Renamed.HandleEvent("合体", SelectedUnit.MainPilot().ID, SelectedUnit.Name);
-            //    }
+                // 移動後の収納・合体イベントでステージが終了することがあるので
+                if (SRC.IsScenarioFinished)
+                {
+                    SRC.IsScenarioFinished = false;
+                    GUI.UnlockGUI();
+                    return;
+                }
 
-            //    // 移動後の収納・合体イベントでステージが終了することがあるので
-            //    if (SRC.IsScenarioFinished)
-            //    {
-            //        SRC.IsScenarioFinished = false;
-            //        GUI.UnlockGUI();
-            //        return;
-            //    }
+                if (SRC.IsCanceled)
+                {
+                    SRC.IsCanceled = false;
+                    Status.ClearUnitStatus();
+                    GUI.RedrawScreen();
+                    CommandState = "ユニット選択";
+                    GUI.UnlockGUI();
+                    return;
+                }
 
-            //    if (SRC.IsCanceled)
-            //    {
-            //        SRC.IsCanceled = false;
-            //        Status.ClearUnitStatus();
-            //        GUI.RedrawScreen();
-            //        CommandState = "ユニット選択";
-            //        GUI.UnlockGUI();
-            //        return;
-            //    }
+                // 残り行動数を減少させる
+                SelectedUnit.UseAction();
 
-            //    // 残り行動数を減少させる
-            //    SelectedUnit.UseAction();
-
-            //    // 持続期間が「移動」のスペシャルパワー効果を削除
-            //    string argstype = "移動";
-            //    SelectedUnit.RemoveSpecialPowerInEffect(argstype);
-            //    Status.DisplayUnitStatus(SelectedUnit);
-            //    GUI.RedrawScreen();
-            //    CommandState = "ユニット選択";
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+                // 持続期間が「移動」のスペシャルパワー効果を削除
+                string argstype = "移動";
+                SelectedUnit.RemoveSpecialPowerInEffect(argstype);
+                Status.DisplayUnitStatus(SelectedUnit);
+                GUI.RedrawScreen();
+                CommandState = "ユニット選択";
+                GUI.UnlockGUI();
+                return;
+            }
 
             if (SelectedUnitMoveCost > 0)
             {
@@ -340,7 +324,7 @@ namespace SRCCore.Commands
 
         //                // 収納イベント
         //                SelectedTarget = Map.MapDataForUnit[SelectedX, SelectedY];
-        //                Event_Renamed.HandleEvent("収納", withBlock.MainPilot().ID);
+        //                Event.HandleEvent("収納", withBlock.MainPilot().ID);
         //            }
         //            else
         //            {
@@ -348,7 +332,7 @@ namespace SRCCore.Commands
         //                SelectedUnit = Map.MapDataForUnit[SelectedX, SelectedY];
 
         //                // 合体イベント
-        //                Event_Renamed.HandleEvent("合体", SelectedUnit.MainPilot().ID, SelectedUnit.Name);
+        //                Event.HandleEvent("合体", SelectedUnit.MainPilot().ID, SelectedUnit.Name);
         //            }
 
         //            // 移動後の収納・合体イベントでステージが終了することがあるので
@@ -558,7 +542,7 @@ namespace SRCCore.Commands
 
         //                // 収納イベント
         //                SelectedTarget = Map.MapDataForUnit[SelectedX, SelectedY];
-        //                Event_Renamed.HandleEvent("収納", withBlock.MainPilot().ID);
+        //                Event.HandleEvent("収納", withBlock.MainPilot().ID);
         //            }
         //            else
         //            {
@@ -566,7 +550,7 @@ namespace SRCCore.Commands
         //                SelectedUnit = Map.MapDataForUnit[SelectedX, SelectedY];
 
         //                // 合体イベント
-        //                Event_Renamed.HandleEvent("合体", SelectedUnit.MainPilot().ID, SelectedUnit.Name);
+        //                Event.HandleEvent("合体", SelectedUnit.MainPilot().ID, SelectedUnit.Name);
         //            }
 
         //            // 移動後の収納・合体イベントでステージが終了することがあるので

@@ -35,15 +35,15 @@ namespace Project1
             //        Static cur_msg As String
 
             // */
-            //tw = (short)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX();
+            //tw = (short)SrcFormatter.TwipsPerPixelX();
             //if ((msg ?? "") != (cur_msg ?? ""))
             //{
             //    cur_msg = msg;
             //    {
             //        var withBlock = picMessage;
             //        // メッセージ長にサイズを合わせる
-            //        withBlock.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX((withBlock.TextWidth(msg) + 6) * tw);
-            //        withBlock.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((withBlock.TextHeight(msg) + 4) * tw);
+            //        withBlock.Width = (int)SrcFormatter.TwipsToPixelsX((withBlock.TextWidth(msg) + 6) * tw);
+            //        withBlock.Height = (int)SrcFormatter.TwipsToPixelsY((withBlock.TextHeight(msg) + 4) * tw);
             //        Width = withBlock.Width;
             //        Height = withBlock.Height;
 
@@ -52,8 +52,8 @@ namespace Project1
             //        My.MyProject.Forms.frmToolTip.picMessage.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
             //        My.MyProject.Forms.frmToolTip.picMessage.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
             //        withBlock.ForeColor = Color.Black;
-            //        My.MyProject.Forms.frmToolTip.picMessage.Line(0, (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height) - 1d) / tw); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-            //        My.MyProject.Forms.frmToolTip.picMessage.Line((long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width) - 1d) / tw, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
+            //        My.MyProject.Forms.frmToolTip.picMessage.Line(0, (long)(SrcFormatter.PixelsToTwipsY(withBlock.Height) - 1d) / tw); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
+            //        My.MyProject.Forms.frmToolTip.picMessage.Line((long)(SrcFormatter.PixelsToTwipsX(withBlock.Width) - 1d) / tw, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 
             //        // メッセージを書き込み
             //        withBlock.CurrentX = 3;
@@ -66,8 +66,8 @@ namespace Project1
 
             //// フォームの位置を設定
             //ret = GUI.GetCursorPos(ref PT);
-            //Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(PT.X * tw + 0);
-            //Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((PT.Y + 24) * tw);
+            //Left = (int)SrcFormatter.TwipsToPixelsX(PT.X * tw + 0);
+            //Top = (int)SrcFormatter.TwipsToPixelsY((PT.Y + 24) * tw);
 
             //// フォームを非アクティブで表示
             //ret = GUI.ShowWindow(Handle.ToInt32(), GUI.SW_SHOWNA);

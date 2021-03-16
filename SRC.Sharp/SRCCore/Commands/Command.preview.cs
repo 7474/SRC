@@ -94,7 +94,7 @@ namespace SRCCore.Commands
             //        Array.Resize(list, Information.UBound(list) + 1 + 1);
             //        Array.Resize(id_list, Information.UBound(list) + 1);
             //        list[Information.UBound(list)] = fname;
-            //        id_list[Information.UBound(list)] = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i);
+            //        id_list[Information.UBound(list)] = SrcFormatter.Format(i);
             //    NextSkill:
             //        ;
             //    }
@@ -224,7 +224,7 @@ namespace SRCCore.Commands
             //        Array.Resize(is_unit_feature, Information.UBound(list) + 1);
             //        object argIndex7 = i;
             //        list[Information.UBound(list)] = withBlock2.AllFeatureName(argIndex7);
-            //        id_list[Information.UBound(list)] = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i);
+            //        id_list[Information.UBound(list)] = SrcFormatter.Format(i);
             //        is_unit_feature[Information.UBound(list)] = true;
             //    NextFeature:
             //        ;

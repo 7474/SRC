@@ -629,16 +629,16 @@ namespace SRCCore.Units
             //        // イベントによる攻撃の場合は命中率をスペシャルパワーの影響を含めずに表示
             //        if (def_mode == "回避")
             //        {
-            //            buf = "命中率 = " + GeneralLib.MinLng(HitProbability(w, t, false) / 2, 100) + "％" + "（" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(CriticalProbability(w, t, def_mode)) + "％）";
+            //            buf = "命中率 = " + GeneralLib.MinLng(HitProbability(w, t, false) / 2, 100) + "％" + "（" + SrcFormatter.Format(CriticalProbability(w, t, def_mode)) + "％）";
             //        }
             //        else
             //        {
-            //            buf = "命中率 = " + GeneralLib.MinLng(HitProbability(w, t, false), 100) + "％" + "（" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(CriticalProbability(w, t, def_mode)) + "％）";
+            //            buf = "命中率 = " + GeneralLib.MinLng(HitProbability(w, t, false), 100) + "％" + "（" + SrcFormatter.Format(CriticalProbability(w, t, def_mode)) + "％）";
             //        }
             //    }
             //    else
             //    {
-            //        buf = "命中率 = " + GeneralLib.MinLng(prob, 100) + "％" + "（" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(CriticalProbability(w, t, def_mode)) + "％）";
+            //        buf = "命中率 = " + GeneralLib.MinLng(prob, 100) + "％" + "（" + SrcFormatter.Format(CriticalProbability(w, t, def_mode)) + "％）";
             //    }
 
             //    // 攻撃解説表示
@@ -1573,12 +1573,12 @@ namespace SRCCore.Units
                 //        {
                 //            if (!SRC.BattleAnimation & su is object)
                 //            {
-                //                string argmsg = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(dmg);
+                //                string argmsg = SrcFormatter.Format(dmg);
                 //                GUI.DrawSysString(prev_x, prev_y, argmsg);
                 //            }
                 //            else
                 //            {
-                //                string argmsg1 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(dmg);
+                //                string argmsg1 = SrcFormatter.Format(dmg);
                 //                GUI.DrawSysString(t.x, t.y, argmsg1);
                 //            }
                 //        }
@@ -2047,19 +2047,19 @@ namespace SRCCore.Units
                 //    {
                 //        if (attack_num > 1)
                 //        {
-                //            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(hit_count) + "回命中し、";
+                //            msg = msg + SrcFormatter.Format(hit_count) + "回命中し、";
                 //        }
 
-                //        GUI.DisplaySysMessage(msg + t.Nickname + "は[" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(dmg) + "]のダメージを受けた。");
+                //        GUI.DisplaySysMessage(msg + t.Nickname + "は[" + SrcFormatter.Format(dmg) + "]のダメージを受けた。");
                 //    }
                 //    else
                 //    {
                 //        if (attack_num > 1)
                 //        {
-                //            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(hit_count) + "回命中し、";
+                //            msg = msg + SrcFormatter.Format(hit_count) + "回命中し、";
                 //        }
 
-                //        GUI.DisplaySysMessage(msg + t.Nickname + "は[" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(dmg) + "]のダメージを受けた。;" + "残りＨＰは" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(t.HP) + "（損傷率 = " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(100 * (t.MaxHP - t.HP) / t.MaxHP) + "％）");
+                //        GUI.DisplaySysMessage(msg + t.Nickname + "は[" + SrcFormatter.Format(dmg) + "]のダメージを受けた。;" + "残りＨＰは" + SrcFormatter.Format(t.HP) + "（損傷率 = " + SrcFormatter.Format(100 * (t.MaxHP - t.HP) / t.MaxHP) + "％）");
                 //    }
 
                 //    // 特殊能力「不安定」による暴走チェック
@@ -2120,7 +2120,7 @@ namespace SRCCore.Units
                 {
                     //    if (attack_num > 1)
                     //    {
-                    //        msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(hit_count) + "回命中し、";
+                    //        msg = msg + SrcFormatter.Format(hit_count) + "回命中し、";
                     //    }
 
                     //    string argmain_situation78 = "破壊";
@@ -2134,11 +2134,11 @@ namespace SRCCore.Units
                     //    }
                     //    else if (t.IsHero())
                     //    {
-                    //        GUI.DisplaySysMessage(msg + t.Nickname + "は[" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(dmg) + "]のダメージを受け倒された。");
+                    //        GUI.DisplaySysMessage(msg + t.Nickname + "は[" + SrcFormatter.Format(dmg) + "]のダメージを受け倒された。");
                     //    }
                     //    else
                     //    {
-                    //        GUI.DisplaySysMessage(msg + t.Nickname + "は[" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(dmg) + "]のダメージを受け破壊された。");
+                    //        GUI.DisplaySysMessage(msg + t.Nickname + "は[" + SrcFormatter.Format(dmg) + "]のダメージを受け破壊された。");
                     //    }
 
                     //    // 復活するかどうかのチェックを行う

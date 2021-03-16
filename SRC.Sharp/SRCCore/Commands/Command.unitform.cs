@@ -1355,13 +1355,13 @@ namespace SRCCore.Commands
             //                    withBlock1.Nickname0 = argbuf1;
             //                }
 
-            //                string localLeftPaddedString() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MaxHP); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
+            //                string localLeftPaddedString() { string argbuf = SrcFormatter.Format(withBlock1.MaxHP); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
 
-            //                string localLeftPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MaxEN); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
+            //                string localLeftPaddedString1() { string argbuf = SrcFormatter.Format(withBlock1.MaxEN); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-            //                string localLeftPaddedString2() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.get_Armor("")); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
+            //                string localLeftPaddedString2() { string argbuf = SrcFormatter.Format(withBlock1.get_Armor("")); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-            //                string localLeftPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
+            //                string localLeftPaddedString3() { string argbuf = SrcFormatter.Format(withBlock1.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString() + localLeftPaddedString1() + localLeftPaddedString2() + localLeftPaddedString3() + " " + withBlock1.Data.Adaption;
 
@@ -1382,7 +1382,7 @@ namespace SRCCore.Commands
             //                    }
             //                }
 
-            //                string localLeftPaddedString4() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(max_value); var ret = GeneralLib.LeftPaddedString(argbuf, 7); return ret; }
+            //                string localLeftPaddedString4() { string argbuf = SrcFormatter.Format(max_value); var ret = GeneralLib.LeftPaddedString(argbuf, 7); return ret; }
 
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString4();
 
@@ -1401,7 +1401,7 @@ namespace SRCCore.Commands
             //                    }
             //                }
 
-            //                string localLeftPaddedString5() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(max_value); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
+            //                string localLeftPaddedString5() { string argbuf = SrcFormatter.Format(max_value); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString5();
 

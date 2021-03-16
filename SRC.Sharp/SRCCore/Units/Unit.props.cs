@@ -22,76 +22,74 @@ namespace SRCCore.Units
             }
         }
 
-        //// 愛称
-        //public string Nickname0
-        //{
-        //    get
-        //    {
-        //        string Nickname0Ret = default;
-        //        int idx;
-        //        Unit u;
-        //        Nickname0Ret = Data.Nickname;
+        // 愛称
+        public string Nickname0
+        {
+            get
+            {
+                string Nickname0Ret = default;
+                int idx;
+                Unit u;
+                Nickname0Ret = Data.Nickname;
 
-        //        // 愛称変更能力による変更
-        //        string argfname = "愛称変更";
-        //        if (IsFeatureAvailable(argfname))
-        //        {
-        //            object argIndex1 = "愛称変更";
-        //            Nickname0Ret = FeatureData(argIndex1);
-        //            idx = (int)Strings.InStr(Nickname0Ret, "$(愛称)");
-        //            if (idx > 0)
-        //            {
-        //                Nickname0Ret = Strings.Left(Nickname0Ret, idx - 1) + Data.Nickname + Strings.Mid(Nickname0Ret, idx + 5);
-        //            }
+                // 愛称変更能力による変更
+                if (IsFeatureAvailable("愛称変更"))
+                {
+                    Nickname0Ret = FeatureData("愛称変更");
+                    idx = (int)Strings.InStr(Nickname0Ret, "$(愛称)");
+                    if (idx > 0)
+                    {
+                        Nickname0Ret = Strings.Left(Nickname0Ret, idx - 1) + Data.Nickname + Strings.Mid(Nickname0Ret, idx + 5);
+                    }
 
-        //            idx = (int)Strings.InStr(Nickname0Ret, "$(パイロット愛称)");
-        //            if (idx > 0)
-        //            {
-        //                if (CountPilot() > 0)
-        //                {
-        //                    Nickname0Ret = Strings.Left(Nickname0Ret, idx - 1) + MainPilot().get_Nickname(true) + Strings.Mid(Nickname0Ret, idx + 10);
-        //                }
-        //                else
-        //                {
-        //                    Nickname0Ret = Strings.Left(Nickname0Ret, idx - 1) + "○○" + Strings.Mid(Nickname0Ret, idx + 10);
-        //                }
-        //            }
-        //        }
+                    idx = (int)Strings.InStr(Nickname0Ret, "$(パイロット愛称)");
+                    if (idx > 0)
+                    {
+                        if (CountPilot() > 0)
+                        {
+                            Nickname0Ret = Strings.Left(Nickname0Ret, idx - 1) + MainPilot().get_Nickname(true) + Strings.Mid(Nickname0Ret, idx + 10);
+                        }
+                        else
+                        {
+                            Nickname0Ret = Strings.Left(Nickname0Ret, idx - 1) + "○○" + Strings.Mid(Nickname0Ret, idx + 10);
+                        }
+                    }
+                }
 
-        //        u = Event_Renamed.SelectedUnitForEvent;
-        //        Event_Renamed.SelectedUnitForEvent = this;
-        //        Expression.ReplaceSubExpression(Nickname0Ret);
-        //        Event_Renamed.SelectedUnitForEvent = u;
-        //        return Nickname0Ret;
-        //    }
-        //}
+                u = Event.SelectedUnitForEvent;
+                Event.SelectedUnitForEvent = this;
+                Expression.ReplaceSubExpression(ref Nickname0Ret);
+                Event.SelectedUnitForEvent = u;
+                return Nickname0Ret;
+            }
+        }
 
-        //// メッセージ中で表示する際の愛称は等身大基準ではパイロット名を使う
-        //public string Nickname
-        //{
-        //    get
-        //    {
-        //        string NicknameRet = default;
-        //        string argoname = "等身大基準";
-        //        if (Expression.IsOptionDefined(argoname))
-        //        {
-        //            if (CountPilot() > 0)
-        //            {
-        //                {
-        //                    var withBlock = MainPilot();
-        //                    if (Strings.InStr(withBlock.Name, "(ザコ)") == 0 & Strings.InStr(withBlock.Name, "(汎用)") == 0)
-        //                    {
-        //                        NicknameRet = MainPilot().get_Nickname(false);
-        //                        return default;
-        //                    }
-        //                }
-        //            }
-        //        }
+        // メッセージ中で表示する際の愛称は等身大基準ではパイロット名を使う
+        public string Nickname
+        {
+            get
+            {
+                string NicknameRet = default;
+                string argoname = "等身大基準";
+                if (Expression.IsOptionDefined(argoname))
+                {
+                    if (CountPilot() > 0)
+                    {
+                        {
+                            var withBlock = MainPilot();
+                            if (Strings.InStr(withBlock.Name, "(ザコ)") == 0 & Strings.InStr(withBlock.Name, "(汎用)") == 0)
+                            {
+                                NicknameRet = MainPilot().get_Nickname(false);
+                                return default;
+                            }
+                        }
+                    }
+                }
 
-        //        NicknameRet = Nickname0;
-        //        return NicknameRet;
-        //    }
-        //}
+                NicknameRet = Nickname0;
+                return NicknameRet;
+            }
+        }
 
         //// 読み仮名
         //public string KanaName
@@ -155,10 +153,10 @@ namespace SRCCore.Units
         //            KanaNameRet = GeneralLib.StrToHiragana(KanaNameRet);
         //        }
 
-        //        u = Event_Renamed.SelectedUnitForEvent;
-        //        Event_Renamed.SelectedUnitForEvent = this;
+        //        u = Event.SelectedUnitForEvent;
+        //        Event.SelectedUnitForEvent = this;
         //        Expression.ReplaceSubExpression(KanaNameRet);
-        //        Event_Renamed.SelectedUnitForEvent = u;
+        //        Event.SelectedUnitForEvent = u;
         //        return KanaNameRet;
         //    }
         //}
@@ -207,56 +205,56 @@ namespace SRCCore.Units
         // ユニットクラス
         public string Class => Data.Class;
 
-        //// ユニットクラスから余分な指定を除いたもの
-        //public string Class0
-        //{
-        //    get
-        //    {
-        //        string Class0Ret = default;
-        //        int i, n;
-        //        Class0Ret = Data.Class_Renamed;
+        // ユニットクラスから余分な指定を除いたもの
+        public string Class0
+        {
+            get
+            {
+                string Class0Ret = default;
+                int i, n;
+                Class0Ret = Data.Class;
 
-        //        // 人間ユニット指定を削除
-        //        if (Strings.Left(Class0Ret, 1) == "(")
-        //        {
-        //            Class0Ret = Strings.Mid(Class0Ret, 2, Strings.Len(Class0Ret) - 2);
-        //        }
+                // 人間ユニット指定を削除
+                if (Strings.Left(Class0Ret, 1) == "(")
+                {
+                    Class0Ret = Strings.Mid(Class0Ret, 2, Strings.Len(Class0Ret) - 2);
+                }
 
-        //        // 専用指定を削除
-        //        if (Strings.Right(Class0Ret, 3) == "専用)")
-        //        {
-        //            n = 1;
-        //            i = (int)(Strings.Len(Class0Ret) - 2);
-        //            do
-        //            {
-        //                i = (int)(i - 1);
-        //                switch (Strings.Mid(Class0Ret, i, 1) ?? "")
-        //                {
-        //                    case "(":
-        //                        {
-        //                            n = (int)(n - 1);
-        //                            if (n == 0)
-        //                            {
-        //                                Class0Ret = Strings.Left(Class0Ret, i - 1);
-        //                                break;
-        //                            }
+                // 専用指定を削除
+                if (Strings.Right(Class0Ret, 3) == "専用)")
+                {
+                    n = 1;
+                    i = (int)(Strings.Len(Class0Ret) - 2);
+                    do
+                    {
+                        i = (int)(i - 1);
+                        switch (Strings.Mid(Class0Ret, i, 1) ?? "")
+                        {
+                            case "(":
+                                {
+                                    n = (int)(n - 1);
+                                    if (n == 0)
+                                    {
+                                        Class0Ret = Strings.Left(Class0Ret, i - 1);
+                                        break;
+                                    }
 
-        //                            break;
-        //                        }
+                                    break;
+                                }
 
-        //                    case ")":
-        //                        {
-        //                            n = (int)(n + 1);
-        //                            break;
-        //                        }
-        //                }
-        //            }
-        //            while (i > 0);
-        //        }
+                            case ")":
+                                {
+                                    n = (int)(n + 1);
+                                    break;
+                                }
+                        }
+                    }
+                    while (i > 0);
+                }
 
-        //        return Class0Ret;
-        //    }
-        //}
+                return Class0Ret;
+            }
+        }
 
 
         //// ユニットサイズ

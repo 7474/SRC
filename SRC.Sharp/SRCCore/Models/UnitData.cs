@@ -343,7 +343,7 @@ namespace SRCCore.Models
             //                    {
             //                        string buf = fd.StrData;
             //                        string args2 = "Lv1";
-            //                        string args3 = "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(flevel);
+            //                        string args3 = "Lv" + SrcFormatter.Format(flevel);
             //                        GeneralLib.ReplaceString(ref buf, ref args2, ref args3);
             //                        fd.StrData = buf;
             //                    }

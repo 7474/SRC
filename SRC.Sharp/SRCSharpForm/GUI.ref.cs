@@ -429,24 +429,24 @@ namespace Project1
             {
                 var withBlock = MainForm;
                 // メインウィンドウの位置＆サイズを設定
-                X = (short)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX();
-                Y = (short)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY();
+                X = (short)SrcFormatter.TwipsPerPixelX();
+                Y = (short)SrcFormatter.TwipsPerPixelY();
                 // MOD START MARGE
                 // If MainWidth = 15 Then
                 if (!NewGUIMode)
                 {
                     // MOD END MARGE
-                    withBlock.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.ClientRectangle.Width) * X + (MainPWidth + 24 + 225 + 4) * X);
-                    withBlock.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.ClientRectangle.Height) * Y + (MainPHeight + 24) * Y);
+                    withBlock.Width = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(withBlock.Width) - SrcFormatter.PixelsToTwipsX(withBlock.ClientRectangle.Width) * X + (MainPWidth + 24 + 225 + 4) * X);
+                    withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(withBlock.Height) - SrcFormatter.PixelsToTwipsY(withBlock.ClientRectangle.Height) * Y + (MainPHeight + 24) * Y);
                 }
                 else
                 {
-                    withBlock.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.ClientRectangle.Width) * X + MainPWidth * X);
-                    withBlock.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.ClientRectangle.Height) * Y + MainPHeight * Y);
+                    withBlock.Width = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(withBlock.Width) - SrcFormatter.PixelsToTwipsX(withBlock.ClientRectangle.Width) * X + MainPWidth * X);
+                    withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(withBlock.Height) - SrcFormatter.PixelsToTwipsY(withBlock.ClientRectangle.Height) * Y + MainPHeight * Y);
                 }
 
-                withBlock.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / 2d);
-                withBlock.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / 2d);
+                withBlock.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(withBlock.Width)) / 2d);
+                withBlock.Top = (int)SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height)) / 2d);
 
                 // スクロールバーの位置を設定
                 // MOD START MARGE
@@ -543,8 +543,8 @@ namespace Project1
             // UPGRADE_NOTE: オブジェクト LeftUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             LeftUnit = null;
 
-            tppx = (short)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX();
-            tppy = (short)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY();
+            tppx = (short)SrcFormatter.TwipsPerPixelX();
+            tppy = (short)SrcFormatter.TwipsPerPixelY();
 
             Load(My.MyProject.Forms.frmMessage);
             {
@@ -583,8 +583,8 @@ namespace Project1
                     withBlock.txtEN2.Visible = false;
                     withBlock.picUnit1.Visible = false;
                     withBlock.picUnit2.Visible = false;
-                    withBlock.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width) - withBlock.ClientRectangle.Width * tppx + 508 * tppx);
-                    withBlock.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height) - withBlock.ClientRectangle.Height * tppy + 84 * tppy);
+                    withBlock.Width = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(withBlock.Width) - withBlock.ClientRectangle.Width * tppx + 508 * tppx);
+                    withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(withBlock.Height) - withBlock.ClientRectangle.Height * tppy + 84 * tppy);
                     withBlock.picFace.Top = 8;
                     withBlock.picFace.Left = 8;
                     withBlock.picMessage.Top = 7;
@@ -630,8 +630,8 @@ namespace Project1
 
                     object argu21 = null;
                     UpdateMessageForm(ref u1, u2: ref argu21);
-                    withBlock.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width) - withBlock.ClientRectangle.Width * tppx + 508 * tppx);
-                    withBlock.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height) - withBlock.ClientRectangle.Height * tppy + 118 * tppy);
+                    withBlock.Width = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(withBlock.Width) - withBlock.ClientRectangle.Width * tppx + 508 * tppx);
+                    withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(withBlock.Height) - withBlock.ClientRectangle.Height * tppy + 118 * tppy);
                     withBlock.picFace.Top = 42;
                     withBlock.picFace.Left = 8;
                     withBlock.picMessage.Top = 41;
@@ -656,8 +656,8 @@ namespace Project1
                     withBlock.picUnit2.Visible = true;
                     object argu2 = u2;
                     UpdateMessageForm(ref u1, ref argu2);
-                    withBlock.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width) - withBlock.ClientRectangle.Width * tppx + 508 * tppx);
-                    withBlock.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height) - withBlock.ClientRectangle.Height * tppy + 118 * tppy);
+                    withBlock.Width = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(withBlock.Width) - withBlock.ClientRectangle.Width * tppx + 508 * tppx);
+                    withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(withBlock.Height) - withBlock.ClientRectangle.Height * tppy + 118 * tppy);
                     withBlock.picFace.Top = 42;
                     withBlock.picFace.Left = 8;
                     withBlock.picMessage.Top = 41;
@@ -672,28 +672,28 @@ namespace Project1
                     {
                         if (MainWidth == 15)
                         {
-                            withBlock.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(MainForm.Left));
+                            withBlock.Left = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(MainForm.Left));
                         }
                         else
                         {
-                            withBlock.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(MainForm.Left) + (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(MainForm.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / 2L);
+                            withBlock.Left = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(MainForm.Left) + (long)(SrcFormatter.PixelsToTwipsX(MainForm.Width) - SrcFormatter.PixelsToTwipsX(withBlock.Width)) / 2L);
                         }
 
                         if (MessageWindowIsOut)
                         {
-                            withBlock.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(MainForm.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(MainForm.Height) - 350d);
+                            withBlock.Top = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(MainForm.Top) + SrcFormatter.PixelsToTwipsY(MainForm.Height) - 350d);
                         }
                         else
                         {
-                            withBlock.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(MainForm.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(MainForm.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height));
+                            withBlock.Top = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(MainForm.Top) + SrcFormatter.PixelsToTwipsY(MainForm.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height));
                         }
                     }
                 }
                 else
                 {
                     // メインウィンドウが表示されていない場合は画面中央に表示
-                    withBlock.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / 2d);
-                    withBlock.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / 2d);
+                    withBlock.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(withBlock.Width)) / 2d);
+                    withBlock.Top = (int)SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height)) / 2d);
                 }
 
                 // ウィンドウをクリアしておく
@@ -884,8 +884,8 @@ namespace Project1
                     {
                         if (lu.HP < 100000)
                         {
-                            string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lu.HP);
-                            buf = GeneralLib.LeftPaddedString(ref argbuf, (short)GeneralLib.MinLng(Strings.Len(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lu.MaxHP)), 5));
+                            string argbuf = SrcFormatter.Format(lu.HP);
+                            buf = GeneralLib.LeftPaddedString(ref argbuf, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxHP)), 5));
                         }
                         else
                         {
@@ -894,7 +894,7 @@ namespace Project1
 
                         if (lu.MaxHP < 100000)
                         {
-                            buf = buf + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lu.MaxHP);
+                            buf = buf + "/" + SrcFormatter.Format(lu.MaxHP);
                         }
                         else
                         {
@@ -935,8 +935,8 @@ namespace Project1
                     {
                         if (lu.EN < 1000)
                         {
-                            string argbuf1 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lu.EN);
-                            buf = GeneralLib.LeftPaddedString(ref argbuf1, (short)GeneralLib.MinLng(Strings.Len(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lu.MaxEN)), 3));
+                            string argbuf1 = SrcFormatter.Format(lu.EN);
+                            buf = GeneralLib.LeftPaddedString(ref argbuf1, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxEN)), 3));
                         }
                         else
                         {
@@ -945,7 +945,7 @@ namespace Project1
 
                         if (lu.MaxEN < 1000)
                         {
-                            buf = buf + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lu.MaxEN);
+                            buf = buf + "/" + SrcFormatter.Format(lu.MaxEN);
                         }
                         else
                         {
@@ -1019,8 +1019,8 @@ namespace Project1
                     {
                         if (ru.HP < 100000)
                         {
-                            string argbuf2 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(ru.HP);
-                            buf = GeneralLib.LeftPaddedString(ref argbuf2, (short)GeneralLib.MinLng(Strings.Len(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(ru.MaxHP)), 5));
+                            string argbuf2 = SrcFormatter.Format(ru.HP);
+                            buf = GeneralLib.LeftPaddedString(ref argbuf2, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxHP)), 5));
                         }
                         else
                         {
@@ -1029,7 +1029,7 @@ namespace Project1
 
                         if (ru.MaxHP < 100000)
                         {
-                            buf = buf + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(ru.MaxHP);
+                            buf = buf + "/" + SrcFormatter.Format(ru.MaxHP);
                         }
                         else
                         {
@@ -1070,8 +1070,8 @@ namespace Project1
                     {
                         if (ru.EN < 1000)
                         {
-                            string argbuf3 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(ru.EN);
-                            buf = GeneralLib.LeftPaddedString(ref argbuf3, (short)GeneralLib.MinLng(Strings.Len(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(ru.MaxEN)), 3));
+                            string argbuf3 = SrcFormatter.Format(ru.EN);
+                            buf = GeneralLib.LeftPaddedString(ref argbuf3, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxEN)), 3));
                         }
                         else
                         {
@@ -1080,7 +1080,7 @@ namespace Project1
 
                         if (ru.MaxEN < 1000)
                         {
-                            buf = buf + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(ru.MaxEN);
+                            buf = buf + "/" + SrcFormatter.Format(ru.MaxEN);
                         }
                         else
                         {
@@ -1151,8 +1151,8 @@ namespace Project1
                             {
                                 if (lu.HP < 100000)
                                 {
-                                    string argbuf4 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp);
-                                    buf = GeneralLib.LeftPaddedString(ref argbuf4, (short)GeneralLib.MinLng(Strings.Len(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lu.MaxHP)), 5));
+                                    string argbuf4 = SrcFormatter.Format(tmp);
+                                    buf = GeneralLib.LeftPaddedString(ref argbuf4, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxHP)), 5));
                                 }
                                 else
                                 {
@@ -1161,7 +1161,7 @@ namespace Project1
 
                                 if (lu.MaxHP < 100000)
                                 {
-                                    buf = buf + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lu.MaxHP);
+                                    buf = buf + "/" + SrcFormatter.Format(lu.MaxHP);
                                 }
                                 else
                                 {
@@ -1191,8 +1191,8 @@ namespace Project1
                             {
                                 if (lu.EN < 1000)
                                 {
-                                    string argbuf5 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp);
-                                    buf = GeneralLib.LeftPaddedString(ref argbuf5, (short)GeneralLib.MinLng(Strings.Len(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lu.MaxEN)), 3));
+                                    string argbuf5 = SrcFormatter.Format(tmp);
+                                    buf = GeneralLib.LeftPaddedString(ref argbuf5, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxEN)), 3));
                                 }
                                 else
                                 {
@@ -1201,7 +1201,7 @@ namespace Project1
 
                                 if (lu.MaxEN < 1000)
                                 {
-                                    buf = buf + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lu.MaxEN);
+                                    buf = buf + "/" + SrcFormatter.Format(lu.MaxEN);
                                 }
                                 else
                                 {
@@ -1235,8 +1235,8 @@ namespace Project1
                             {
                                 if (ru.HP < 100000)
                                 {
-                                    string argbuf6 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp);
-                                    buf = GeneralLib.LeftPaddedString(ref argbuf6, (short)GeneralLib.MinLng(Strings.Len(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(ru.MaxHP)), 5));
+                                    string argbuf6 = SrcFormatter.Format(tmp);
+                                    buf = GeneralLib.LeftPaddedString(ref argbuf6, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxHP)), 5));
                                 }
                                 else
                                 {
@@ -1245,7 +1245,7 @@ namespace Project1
 
                                 if (ru.MaxHP < 100000)
                                 {
-                                    buf = buf + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(ru.MaxHP);
+                                    buf = buf + "/" + SrcFormatter.Format(ru.MaxHP);
                                 }
                                 else
                                 {
@@ -1275,8 +1275,8 @@ namespace Project1
                             {
                                 if (ru.EN < 1000)
                                 {
-                                    string argbuf7 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp);
-                                    buf = GeneralLib.LeftPaddedString(ref argbuf7, (short)GeneralLib.MinLng(Strings.Len(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(ru.MaxEN)), 3));
+                                    string argbuf7 = SrcFormatter.Format(tmp);
+                                    buf = GeneralLib.LeftPaddedString(ref argbuf7, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxEN)), 3));
                                 }
                                 else
                                 {
@@ -1285,7 +1285,7 @@ namespace Project1
 
                                 if (ru.MaxEN < 1000)
                                 {
-                                    buf = buf + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(ru.MaxEN);
+                                    buf = buf + "/" + SrcFormatter.Format(ru.MaxEN);
                                 }
                                 else
                                 {
@@ -1680,10 +1680,10 @@ namespace Project1
                 if (msg_head == 1)
                 {
                     // フォント設定を初期化
-                    p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeBold(p.Font, false);
-                    p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeItalic(p.Font, false);
-                    p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeName(p.Font, "ＭＳ Ｐ明朝");
-                    p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(p.Font, 12f);
+                    p.Font = SrcFormatter.FontChangeBold(p.Font, false);
+                    p.Font = SrcFormatter.FontChangeItalic(p.Font, false);
+                    p.Font = SrcFormatter.FontChangeName(p.Font, "ＭＳ Ｐ明朝");
+                    p.Font = SrcFormatter.FontChangeSize(p.Font, 12f);
                     p.ForeColor = Color.Black;
                 }
                 // メッセージの途中から表示
@@ -1734,7 +1734,7 @@ namespace Project1
                     }
 
                     // メッセージが途切れてしまう場合は必ず改行
-                    if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > 0.95d * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(p.Width))
+                    if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > 0.95d * SrcFormatter.PixelsToTwipsX(p.Width))
                     {
                         string argmsg1 = Strings.Mid(buf, line_head, j - line_head + 1);
                         PrintMessage(ref argmsg1);
@@ -1807,7 +1807,7 @@ namespace Project1
                     }
 
                     // 改行の判定
-                    if (MessageLen(Strings.Mid(messages[i], line_head)) < 0.95d * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(p.Width))
+                    if (MessageLen(Strings.Mid(messages[i], line_head)) < 0.95d * SrcFormatter.PixelsToTwipsX(p.Width))
                     {
                         // 全体が一行に収まる場合
                         goto NextLoop;
@@ -1817,7 +1817,7 @@ namespace Project1
                     {
                         case "。":
                             {
-                                if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[1] * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(p.Width))
+                                if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[1] * SrcFormatter.PixelsToTwipsX(p.Width))
                                 {
                                     string argmsg2 = Strings.Mid(buf, line_head, j - line_head + 1);
                                     PrintMessage(ref argmsg2);
@@ -1837,7 +1837,7 @@ namespace Project1
 
                         case "、":
                             {
-                                if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[2] * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(p.Width))
+                                if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[2] * SrcFormatter.PixelsToTwipsX(p.Width))
                                 {
                                     string argmsg3 = Strings.Mid(buf, line_head, j - line_head + 1);
                                     PrintMessage(ref argmsg3);
@@ -1862,7 +1862,7 @@ namespace Project1
                                 if (pname != "システム" & (ch == "！" | ch == "？" | ch == "…" | ch == "‥" | ch == "・" | ch == "･" | ch == "～"))
                                 {
                                     // 文の区切り
-                                    if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[1] * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(p.Width))
+                                    if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[1] * SrcFormatter.PixelsToTwipsX(p.Width))
                                     {
                                         string argmsg4 = Strings.Mid(buf, line_head, j - line_head + 1);
                                         PrintMessage(ref argmsg4);
@@ -1878,7 +1878,7 @@ namespace Project1
                                     }
                                 }
                                 // 単なる空白
-                                else if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[0] * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(p.Width))
+                                else if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[0] * SrcFormatter.PixelsToTwipsX(p.Width))
                                 {
                                     string argmsg5 = Strings.Mid(buf, line_head, j - line_head + 1);
                                     PrintMessage(ref argmsg5);
@@ -1898,7 +1898,7 @@ namespace Project1
 
                         default:
                             {
-                                if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[0] * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(p.Width))
+                                if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[0] * SrcFormatter.PixelsToTwipsX(p.Width))
                                 {
                                     string argmsg6 = Strings.Mid(buf, line_head, j - line_head + 1);
                                     PrintMessage(ref argmsg6);
@@ -1982,7 +1982,7 @@ namespace Project1
                     {
                         {
                             var withBlock1 = My.MyProject.Forms.frmMessage;
-                            if ((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Left) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() <= PT.X & PT.X <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Left) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() & (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Top) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Height)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY())
+                            if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X & PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() & (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
                             {
                                 lstate = GetAsyncKeyState(LButtonID);
                                 rstate = GetAsyncKeyState(RButtonID);
@@ -2008,7 +2008,7 @@ namespace Project1
                     {
                         {
                             var withBlock2 = MainForm;
-                            if ((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock2.Left) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() <= PT.X & PT.X <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock2.Left) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock2.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() & (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.Top) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.Height)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY())
+                            if ((long)SrcFormatter.PixelsToTwipsX(withBlock2.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X & PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock2.Left) + SrcFormatter.PixelsToTwipsX(withBlock2.Width)) / (long)SrcFormatter.TwipsPerPixelX() & (long)SrcFormatter.PixelsToTwipsY(withBlock2.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock2.Top) + SrcFormatter.PixelsToTwipsY(withBlock2.Height)) / (long)SrcFormatter.TwipsPerPixelY())
                             {
                                 lstate = GetAsyncKeyState(LButtonID);
                                 rstate = GetAsyncKeyState(RButtonID);
@@ -2062,10 +2062,10 @@ namespace Project1
             }
 
             // フォント設定を元に戻す
-            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeBold(p.Font, false);
-            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeItalic(p.Font, false);
-            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeName(p.Font, "ＭＳ Ｐ明朝");
-            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(p.Font, 12f);
+            p.Font = SrcFormatter.FontChangeBold(p.Font, false);
+            p.Font = SrcFormatter.FontChangeItalic(p.Font, false);
+            p.Font = SrcFormatter.FontChangeName(p.Font, "ＭＳ Ｐ明朝");
+            p.Font = SrcFormatter.FontChangeSize(p.Font, 12f);
             p.ForeColor = Color.Black;
             return;
             ErrorHandler:
@@ -2161,31 +2161,31 @@ namespace Project1
                                 {
                                     case "b":
                                         {
-                                            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeBold(p.Font, true);
+                                            p.Font = SrcFormatter.FontChangeBold(p.Font, true);
                                             break;
                                         }
 
                                     case "/b":
                                         {
-                                            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeBold(p.Font, false);
+                                            p.Font = SrcFormatter.FontChangeBold(p.Font, false);
                                             break;
                                         }
 
                                     case "i":
                                         {
-                                            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeItalic(p.Font, true);
+                                            p.Font = SrcFormatter.FontChangeItalic(p.Font, true);
                                             break;
                                         }
 
                                     case "/i":
                                         {
-                                            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeItalic(p.Font, false);
+                                            p.Font = SrcFormatter.FontChangeItalic(p.Font, false);
                                             break;
                                         }
 
                                     case "big":
                                         {
-                                            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(p.Font, p.Font.SizeInPoints + 2f);
+                                            p.Font = SrcFormatter.FontChangeSize(p.Font, p.Font.SizeInPoints + 2f);
                                             last_x = p.CurrentX;
                                             last_y = p.CurrentY;
                                             p.Print();
@@ -2200,13 +2200,13 @@ namespace Project1
 
                                     case "/big":
                                         {
-                                            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(p.Font, p.Font.SizeInPoints - 2f);
+                                            p.Font = SrcFormatter.FontChangeSize(p.Font, p.Font.SizeInPoints - 2f);
                                             break;
                                         }
 
                                     case "small":
                                         {
-                                            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(p.Font, p.Font.SizeInPoints - 2f);
+                                            p.Font = SrcFormatter.FontChangeSize(p.Font, p.Font.SizeInPoints - 2f);
                                             last_x = p.CurrentX;
                                             last_y = p.CurrentY;
                                             p.Print();
@@ -2221,7 +2221,7 @@ namespace Project1
 
                                     case "/small":
                                         {
-                                            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(p.Font, p.Font.SizeInPoints + 2f);
+                                            p.Font = SrcFormatter.FontChangeSize(p.Font, p.Font.SizeInPoints + 2f);
                                             break;
                                         }
 
@@ -2233,7 +2233,7 @@ namespace Project1
 
                                     case "/size":
                                         {
-                                            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(p.Font, 12f);
+                                            p.Font = SrcFormatter.FontChangeSize(p.Font, 12f);
                                             break;
                                         }
 
@@ -2381,7 +2381,7 @@ namespace Project1
                                                 // サイズ設定
                                                 if (Information.IsNumeric(Strings.Mid(tag, 6)))
                                                 {
-                                                    p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(p.Font, Conversions.ToInteger(Strings.Mid(tag, 6)));
+                                                    p.Font = SrcFormatter.FontChangeSize(p.Font, Conversions.ToInteger(Strings.Mid(tag, 6)));
                                                     last_x = p.CurrentX;
                                                     last_y = p.CurrentY;
                                                     p.Print();
@@ -2942,7 +2942,7 @@ namespace Project1
                                                 {
                                                     if (Conversions.ToInteger(cname) != ColorTranslator.ToOle(Color.White))
                                                     {
-                                                        options = options + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Conversions.ToInteger(cname)) + " ";
+                                                        options = options + SrcFormatter.Format(Conversions.ToInteger(cname)) + " ";
                                                     }
                                                 }
                                             }
@@ -2970,7 +2970,7 @@ namespace Project1
                                 else
                                 {
                                     fname0 = Strings.Mid(fname0, 2);
-                                    fname = fname0 + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(first_id, "00") + fsuffix;
+                                    fname = fname0 + SrcFormatter.Format(first_id, "00") + fsuffix;
                                 }
 
                                 // ウィンドウが表示されていなければ表示
@@ -3015,7 +3015,7 @@ namespace Project1
                                     var loopTo2 = last_id;
                                     for (j = first_id; j <= loopTo2; j++)
                                     {
-                                        fname = fpath + fname0 + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(j, "00") + fsuffix;
+                                        fname = fpath + fname0 + SrcFormatter.Format(j, "00") + fsuffix;
                                         DrawPicture(ref fname, 0, 0, 64, 64, 0, 0, 0, 0, ref options);
                                         My.MyProject.Forms.frmMessage.picFace.Refresh();
                                         if (wait_time > 0)
@@ -3127,7 +3127,7 @@ namespace Project1
                                 var loopTo3 = last_id;
                                 for (j = first_id; j <= loopTo3; j++)
                                 {
-                                    fname = fname0 + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(j, "00") + fsuffix;
+                                    fname = fname0 + SrcFormatter.Format(j, "00") + fsuffix;
                                     if (clear_every_time)
                                     {
                                         ClearPicture();
@@ -3233,10 +3233,10 @@ namespace Project1
                 p.CurrentX = 1;
 
                 // フォント設定を初期化
-                p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeBold(p.Font, false);
-                p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeItalic(p.Font, false);
-                p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeName(p.Font, "ＭＳ Ｐ明朝");
-                p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(p.Font, 12f);
+                p.Font = SrcFormatter.FontChangeBold(p.Font, false);
+                p.Font = SrcFormatter.FontChangeItalic(p.Font, false);
+                p.Font = SrcFormatter.FontChangeName(p.Font, "ＭＳ Ｐ明朝");
+                p.Font = SrcFormatter.FontChangeSize(p.Font, 12f);
                 p.ForeColor = Color.Black;
 
                 // 話者名と括弧の表示処理
@@ -3368,7 +3368,7 @@ namespace Project1
                     }
 
                     // メッセージが途切れてしまう場合は必ず改行
-                    if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > 0.95d * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(p.Width))
+                    if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > 0.95d * SrcFormatter.PixelsToTwipsX(p.Width))
                     {
                         string argmsg1 = Strings.Mid(buf, line_head, j - line_head + 1);
                         PrintMessage(ref argmsg1, !is_char_message);
@@ -3439,7 +3439,7 @@ namespace Project1
                     }
 
                     // 改行の判定
-                    if (MessageLen(Strings.Mid(messages[i], line_head)) < 0.95d * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(p.Width))
+                    if (MessageLen(Strings.Mid(messages[i], line_head)) < 0.95d * SrcFormatter.PixelsToTwipsX(p.Width))
                     {
                         // 全体が一行に収まる場合
                         goto NextLoop;
@@ -3449,7 +3449,7 @@ namespace Project1
                     {
                         case "。":
                             {
-                                if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[1] * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(p.Width))
+                                if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[1] * SrcFormatter.PixelsToTwipsX(p.Width))
                                 {
                                     string argmsg2 = Strings.Mid(buf, line_head, j - line_head + 1);
                                     PrintMessage(ref argmsg2, !is_char_message);
@@ -3467,7 +3467,7 @@ namespace Project1
 
                         case " ":
                             {
-                                if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[1] * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(p.Width))
+                                if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[1] * SrcFormatter.PixelsToTwipsX(p.Width))
                                 {
                                     string argmsg3 = Strings.Mid(buf, line_head, j - line_head);
                                     PrintMessage(ref argmsg3, !is_char_message);
@@ -3485,7 +3485,7 @@ namespace Project1
 
                         case "、":
                             {
-                                if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[2] * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(p.Width))
+                                if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[2] * SrcFormatter.PixelsToTwipsX(p.Width))
                                 {
                                     string argmsg4 = Strings.Mid(buf, line_head, j - line_head + 1);
                                     PrintMessage(ref argmsg4, !is_char_message);
@@ -3503,7 +3503,7 @@ namespace Project1
 
                         default:
                             {
-                                if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[0] * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(p.Width))
+                                if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[0] * SrcFormatter.PixelsToTwipsX(p.Width))
                                 {
                                     string argmsg5 = Strings.Mid(buf, line_head, j - line_head);
                                     PrintMessage(ref argmsg5, !is_char_message);
@@ -3532,10 +3532,10 @@ namespace Project1
                 }
 
                 // フォント設定を元に戻す
-                p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeBold(p.Font, false);
-                p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeItalic(p.Font, false);
-                p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeName(p.Font, "ＭＳ Ｐ明朝");
-                p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(p.Font, 12f);
+                p.Font = SrcFormatter.FontChangeBold(p.Font, false);
+                p.Font = SrcFormatter.FontChangeItalic(p.Font, false);
+                p.Font = SrcFormatter.FontChangeName(p.Font, "ＭＳ Ｐ明朝");
+                p.Font = SrcFormatter.FontChangeSize(p.Font, 12f);
                 p.ForeColor = Color.Black;
 
                 // デフォルトのウェイト
@@ -3661,10 +3661,10 @@ namespace Project1
             p.CurrentX = 1;
 
             // フォント設定を初期化
-            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeBold(p.Font, false);
-            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeItalic(p.Font, false);
-            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeName(p.Font, "ＭＳ Ｐ明朝");
-            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(p.Font, 12f);
+            p.Font = SrcFormatter.FontChangeBold(p.Font, false);
+            p.Font = SrcFormatter.FontChangeItalic(p.Font, false);
+            p.Font = SrcFormatter.FontChangeName(p.Font, "ＭＳ Ｐ明朝");
+            p.Font = SrcFormatter.FontChangeSize(p.Font, 12f);
             p.ForeColor = Color.Black;
 
             // メッセージを表示
@@ -3718,20 +3718,20 @@ namespace Project1
                     }
                 }
 
-                if (MessageLen(Strings.Mid(msg, line_head)) < Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(p.Width))
+                if (MessageLen(Strings.Mid(msg, line_head)) < SrcFormatter.PixelsToTwipsX(p.Width))
                 {
                     // 全体が一行に収まる場合
                     goto NextLoop;
                 }
 
-                if (GeneralLib.IsSpace(ref ch) & MessageLen(Strings.Mid(msg, line_head, i - line_head)) > 0.5d * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(p.Width))
+                if (GeneralLib.IsSpace(ref ch) & MessageLen(Strings.Mid(msg, line_head, i - line_head)) > 0.5d * SrcFormatter.PixelsToTwipsX(p.Width))
                 {
                     buf = Strings.Mid(msg, line_head, i - line_head);
                     PrintMessage(ref buf, true);
                     lnum = (short)(lnum + 1);
                     line_head = (short)(i + 1);
                 }
-                else if (MessageLen(Strings.Mid(msg, line_head, i - line_head + 1)) > 0.95d * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(p.Width))
+                else if (MessageLen(Strings.Mid(msg, line_head, i - line_head + 1)) > 0.95d * SrcFormatter.PixelsToTwipsX(p.Width))
                 {
                     buf = Strings.Mid(msg, line_head, i - line_head + 1);
                     PrintMessage(ref buf, true);
@@ -3750,7 +3750,7 @@ namespace Project1
                         }
                     }
 
-                    if (MessageLen(Strings.Mid(msg, line_head, j - line_head)) > 0.95d * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(p.Width))
+                    if (MessageLen(Strings.Mid(msg, line_head, j - line_head)) > 0.95d * SrcFormatter.PixelsToTwipsX(p.Width))
                     {
                         buf = Strings.Mid(msg, line_head, i - line_head);
                         PrintMessage(ref buf, true);
@@ -3768,10 +3768,10 @@ namespace Project1
             lnum = (short)(lnum + 1);
 
             // フォント設定を元に戻す
-            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeBold(p.Font, false);
-            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeItalic(p.Font, false);
-            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeName(p.Font, "ＭＳ Ｐ明朝");
-            p.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(p.Font, 12f);
+            p.Font = SrcFormatter.FontChangeBold(p.Font, false);
+            p.Font = SrcFormatter.FontChangeItalic(p.Font, false);
+            p.Font = SrcFormatter.FontChangeName(p.Font, "ＭＳ Ｐ明朝");
+            p.Font = SrcFormatter.FontChangeSize(p.Font, 12f);
             p.ForeColor = Color.Black;
 
             // ウェイトを計算
@@ -5330,7 +5330,7 @@ namespace Project1
                                 if (tdir == withBlock.Item(withBlock.OrderedID(j)).Bitmap)
                                 {
                                     tnum = Strings.Mid(fname, i + 1, Strings.Len(fname) - i - 4);
-                                    tname = Strings.Left(fname, i) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GeneralLib.StrToLng(ref tnum), "0000") + ".bmp";
+                                    tname = Strings.Left(fname, i) + SrcFormatter.Format(GeneralLib.StrToLng(ref tnum), "0000") + ".bmp";
                                     break;
                                 }
                             }
@@ -6300,14 +6300,14 @@ namespace Project1
                         withBlock.txtComment.Width = withBlock.labCaption.Width;
                         withBlock.txtComment.Text = "";
                         withBlock.txtComment.Top = withBlock.lstItems.Top + withBlock.lstItems.Height + 5;
-                        withBlock.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height) + 600d);
+                        withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(withBlock.Height) + 600d);
                     }
                 }
                 else if (withBlock.txtComment.Enabled)
                 {
                     withBlock.txtComment.Enabled = false;
                     withBlock.txtComment.Visible = false;
-                    withBlock.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height) - 600d);
+                    withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(withBlock.Height) - 600d);
                 }
 
                 // キャプション
@@ -6377,20 +6377,20 @@ namespace Project1
                 // 表示位置を設定
                 if (MainForm.Visible & withBlock.HorizontalSize == "S")
                 {
-                    withBlock.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(MainForm.Left));
+                    withBlock.Left = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(MainForm.Left));
                 }
                 else
                 {
-                    withBlock.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / 2d);
+                    withBlock.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(withBlock.Width)) / 2d);
                 }
 
                 if (MainForm.Visible & !((int)MainForm.WindowState == 1) & withBlock.VerticalSize == "M" & Strings.InStr(lb_mode, "中央表示") == 0)
                 {
-                    withBlock.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(MainForm.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(MainForm.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height));
+                    withBlock.Top = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(MainForm.Top) + SrcFormatter.PixelsToTwipsY(MainForm.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height));
                 }
                 else
                 {
-                    withBlock.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / 2d);
+                    withBlock.Top = (int)SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height)) / 2d);
                 }
 
                 // 先頭のアイテムを設定
@@ -6512,7 +6512,7 @@ namespace Project1
                     {
                         withBlock.txtComment.Enabled = false;
                         withBlock.txtComment.Visible = false;
-                        withBlock.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height) - 600d);
+                        withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(withBlock.Height) - 600d);
                     }
                 }
 
@@ -6539,7 +6539,7 @@ namespace Project1
                             }
 
                             withBlock.Visible = false;
-                            withBlock.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height) + 2400d);
+                            withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(withBlock.Height) + 2400d);
                             withBlock.lstItems.Height = 260;
                             withBlock.VerticalSize = "L";
                             break;
@@ -6564,7 +6564,7 @@ namespace Project1
                             }
 
                             withBlock.Visible = false;
-                            withBlock.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height) - 2400d);
+                            withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(withBlock.Height) - 2400d);
                             withBlock.lstItems.Height = 100;
                             withBlock.VerticalSize = "M";
                             break;
@@ -6589,7 +6589,7 @@ namespace Project1
                             }
 
                             withBlock.Visible = false;
-                            withBlock.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width) + 2350d);
+                            withBlock.Width = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(withBlock.Width) + 2350d);
                             withBlock.lstItems.Width = 637;
                             withBlock.labCaption.Width = 637;
                             withBlock.HorizontalSize = "M";
@@ -6615,7 +6615,7 @@ namespace Project1
                             }
 
                             withBlock.Visible = false;
-                            withBlock.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width) - 2350d);
+                            withBlock.Width = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(withBlock.Width) - 2350d);
                             withBlock.lstItems.Width = 486;
                             withBlock.labCaption.Width = 486;
                             withBlock.HorizontalSize = "S";
@@ -6636,7 +6636,7 @@ namespace Project1
             {
                 var withBlock = My.MyProject.Forms.frmListBox;
                 // リストボックスにユニットやＨＰのゲージを追加
-                withBlock.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height) + 535d);
+                withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(withBlock.Height) + 535d);
                 withBlock.labCaption.Top = 42;
                 withBlock.lstItems.Top = 69;
                 withBlock.imgPilot1.Visible = true;
@@ -6694,8 +6694,8 @@ namespace Project1
                     withBlock.imgPilot1.Image = Image.FromFile("");
                 }
 
-                withBlock.txtLevel1.Text = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.MainPilot().Level);
-                withBlock.txtMorale1.Text = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.MainPilot().Morale);
+                withBlock.txtLevel1.Text = SrcFormatter.Format(u.MainPilot().Level);
+                withBlock.txtMorale1.Text = SrcFormatter.Format(u.MainPilot().Morale);
                 if (string.IsNullOrEmpty(Map.MapDrawMode))
                 {
                     if (u.BitmapID > 0)
@@ -6732,7 +6732,7 @@ namespace Project1
                     withBlock.labHP1.Text = Expression.Term(ref argtname1, u: ref argu1);
                     if (u.HP < 100000)
                     {
-                        withBlock.txtHP1.Text = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.HP);
+                        withBlock.txtHP1.Text = SrcFormatter.Format(u.HP);
                     }
                     else
                     {
@@ -6741,7 +6741,7 @@ namespace Project1
 
                     if (u.MaxHP < 100000)
                     {
-                        withBlock.txtHP1.Text = withBlock.txtHP1.Text + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.MaxHP);
+                        withBlock.txtHP1.Text = withBlock.txtHP1.Text + "/" + SrcFormatter.Format(u.MaxHP);
                     }
                     else
                     {
@@ -6767,7 +6767,7 @@ namespace Project1
                     withBlock1.labEN1.Text = Expression.Term(ref argtname3, ref t);
                     if (u.EN < 1000)
                     {
-                        withBlock1.txtEN1.Text = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.EN);
+                        withBlock1.txtEN1.Text = SrcFormatter.Format(u.EN);
                     }
                     else
                     {
@@ -6776,7 +6776,7 @@ namespace Project1
 
                     if (u.MaxEN < 1000)
                     {
-                        withBlock1.txtEN1.Text = withBlock1.txtEN1.Text + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.MaxEN);
+                        withBlock1.txtEN1.Text = withBlock1.txtEN1.Text + "/" + SrcFormatter.Format(u.MaxEN);
                     }
                     else
                     {
@@ -6818,8 +6818,8 @@ namespace Project1
                     withBlock2.imgPilot2.Image = Image.FromFile("");
                 }
 
-                withBlock2.txtLevel2.Text = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(t.MainPilot().Level);
-                withBlock2.txtMorale2.Text = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(t.MainPilot().Morale);
+                withBlock2.txtLevel2.Text = SrcFormatter.Format(t.MainPilot().Level);
+                withBlock2.txtMorale2.Text = SrcFormatter.Format(t.MainPilot().Morale);
                 if (string.IsNullOrEmpty(Map.MapDrawMode))
                 {
                     if (t.BitmapID > 0)
@@ -6855,7 +6855,7 @@ namespace Project1
                     withBlock2.labHP2.Text = Expression.Term(ref argtname5, ref t);
                     if (t.HP < 100000)
                     {
-                        withBlock2.txtHP2.Text = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(t.HP);
+                        withBlock2.txtHP2.Text = SrcFormatter.Format(t.HP);
                     }
                     else
                     {
@@ -6864,7 +6864,7 @@ namespace Project1
 
                     if (t.MaxHP < 100000)
                     {
-                        withBlock2.txtHP2.Text = withBlock2.txtHP2.Text + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(t.MaxHP);
+                        withBlock2.txtHP2.Text = withBlock2.txtHP2.Text + "/" + SrcFormatter.Format(t.MaxHP);
                     }
                     else
                     {
@@ -6890,7 +6890,7 @@ namespace Project1
                     withBlock3.labEN2.Text = Expression.Term(ref argtname7, ref t);
                     if (t.EN < 1000)
                     {
-                        withBlock3.txtEN2.Text = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(t.EN);
+                        withBlock3.txtEN2.Text = SrcFormatter.Format(t.EN);
                     }
                     else
                     {
@@ -6899,7 +6899,7 @@ namespace Project1
 
                     if (t.MaxEN < 1000)
                     {
-                        withBlock3.txtEN2.Text = withBlock3.txtEN2.Text + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(t.MaxEN);
+                        withBlock3.txtEN2.Text = withBlock3.txtEN2.Text + "/" + SrcFormatter.Format(t.MaxEN);
                     }
                     else
                     {
@@ -6916,7 +6916,7 @@ namespace Project1
         {
             {
                 var withBlock = My.MyProject.Forms.frmListBox;
-                withBlock.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height) - 535d);
+                withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(withBlock.Height) - 535d);
                 withBlock.labCaption.Top = 4;
                 withBlock.lstItems.Top = 32;
                 withBlock.imgPilot1.Visible = false;
@@ -7093,13 +7093,13 @@ namespace Project1
                         // 攻撃力
                         if (wpower[w] < 10000)
                         {
-                            string localLeftPaddedString() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(wpower[w]); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                            string localLeftPaddedString() { string argbuf = SrcFormatter.Format(wpower[w]); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
 
                             list[Information.UBound(list)] = GeneralLib.RightPaddedString(ref withBlock2.Nickname(), 27) + localLeftPaddedString();
                         }
                         else
                         {
-                            string localLeftPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(wpower[w]); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                            string localLeftPaddedString1() { string argbuf = SrcFormatter.Format(wpower[w]); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
                             list[Information.UBound(list)] = GeneralLib.RightPaddedString(ref withBlock2.Nickname(), 26) + localLeftPaddedString1();
                         }
@@ -7107,7 +7107,7 @@ namespace Project1
                         // 最大射程
                         if (u.WeaponMaxRange(w) > 1)
                         {
-                            buf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock2.MinRange) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponMaxRange(w));
+                            buf = SrcFormatter.Format(withBlock2.MinRange) + "-" + SrcFormatter.Format(u.WeaponMaxRange(w));
                             list[Information.UBound(list)] = list[Information.UBound(list)] + GeneralLib.LeftPaddedString(ref buf, 5);
                         }
                         else
@@ -7118,13 +7118,13 @@ namespace Project1
                         // 命中率修正
                         if (u.WeaponPrecision(w) >= 0)
                         {
-                            string localLeftPaddedString2() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponPrecision(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                            string localLeftPaddedString2() { string argbuf = "+" + SrcFormatter.Format(u.WeaponPrecision(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString2();
                         }
                         else
                         {
-                            string localLeftPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponPrecision(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                            string localLeftPaddedString3() { string argbuf = SrcFormatter.Format(u.WeaponPrecision(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString3();
                         }
@@ -7132,7 +7132,7 @@ namespace Project1
                         // 残り弾数
                         if (withBlock2.Bullet > 0)
                         {
-                            string localLeftPaddedString4() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.Bullet(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 3); return ret; }
+                            string localLeftPaddedString4() { string argbuf = SrcFormatter.Format(u.Bullet(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 3); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString4();
                         }
@@ -7144,7 +7144,7 @@ namespace Project1
                         // ＥＮ消費量
                         if (withBlock2.ENConsumption > 0)
                         {
-                            string localLeftPaddedString5() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponENConsumption(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                            string localLeftPaddedString5() { string argbuf = SrcFormatter.Format(u.WeaponENConsumption(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString5();
                         }
@@ -7156,13 +7156,13 @@ namespace Project1
                         // クリティカル率修正
                         if (u.WeaponCritical(w) >= 0)
                         {
-                            string localLeftPaddedString6() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponCritical(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                            string localLeftPaddedString6() { string argbuf = "+" + SrcFormatter.Format(u.WeaponCritical(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString6();
                         }
                         else
                         {
-                            string localLeftPaddedString7() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponCritical(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                            string localLeftPaddedString7() { string argbuf = SrcFormatter.Format(u.WeaponCritical(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString7();
                         }
@@ -7361,7 +7361,7 @@ namespace Project1
                     {
                         var withBlock4 = u.Weapon(w);
                         // 攻撃力
-                        string localLeftPaddedString8() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(wpower[w]); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                        string localLeftPaddedString8() { string argbuf = SrcFormatter.Format(wpower[w]); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
 
                         list[Information.UBound(list)] = GeneralLib.RightPaddedString(ref withBlock4.Nickname(), 29) + localLeftPaddedString8();
 
@@ -7369,18 +7369,18 @@ namespace Project1
                         string argoname = "予測命中率非表示";
                         if (!Expression.IsOptionDefined(ref argoname))
                         {
-                            buf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GeneralLib.MinLng(u.HitProbability(w, ref Commands.SelectedUnit, true), 100)) + "%";
+                            buf = SrcFormatter.Format(GeneralLib.MinLng(u.HitProbability(w, ref Commands.SelectedUnit, true), 100)) + "%";
                             list[Information.UBound(list)] = list[Information.UBound(list)] + GeneralLib.LeftPaddedString(ref buf, 5);
                         }
                         else if (u.WeaponPrecision(w) >= 0)
                         {
-                            string localLeftPaddedString10() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponPrecision(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                            string localLeftPaddedString10() { string argbuf = "+" + SrcFormatter.Format(u.WeaponPrecision(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString10();
                         }
                         else
                         {
-                            string localLeftPaddedString9() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponPrecision(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                            string localLeftPaddedString9() { string argbuf = SrcFormatter.Format(u.WeaponPrecision(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString9();
                         }
@@ -7390,18 +7390,18 @@ namespace Project1
                         string argoname1 = "予測命中率非表示";
                         if (!Expression.IsOptionDefined(ref argoname1))
                         {
-                            buf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GeneralLib.MinLng(u.CriticalProbability(w, ref Commands.SelectedUnit), 100)) + "%";
+                            buf = SrcFormatter.Format(GeneralLib.MinLng(u.CriticalProbability(w, ref Commands.SelectedUnit), 100)) + "%";
                             list[Information.UBound(list)] = list[Information.UBound(list)] + GeneralLib.LeftPaddedString(ref buf, 5);
                         }
                         else if (u.WeaponCritical(w) >= 0)
                         {
-                            string localLeftPaddedString12() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponCritical(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                            string localLeftPaddedString12() { string argbuf = "+" + SrcFormatter.Format(u.WeaponCritical(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString12();
                         }
                         else
                         {
-                            string localLeftPaddedString11() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponCritical(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                            string localLeftPaddedString11() { string argbuf = SrcFormatter.Format(u.WeaponCritical(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString11();
                         }
@@ -7409,7 +7409,7 @@ namespace Project1
                         // 残り弾数
                         if (withBlock4.Bullet > 0)
                         {
-                            string localLeftPaddedString13() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.Bullet(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 3); return ret; }
+                            string localLeftPaddedString13() { string argbuf = SrcFormatter.Format(u.Bullet(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 3); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString13();
                         }
@@ -7421,7 +7421,7 @@ namespace Project1
                         // ＥＮ消費量
                         if (withBlock4.ENConsumption > 0)
                         {
-                            string localLeftPaddedString14() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.WeaponENConsumption(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                            string localLeftPaddedString14() { string argbuf = SrcFormatter.Format(u.WeaponENConsumption(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString14();
                         }
@@ -7679,7 +7679,7 @@ namespace Project1
                         // 最大射程
                         if (u.AbilityMaxRange(i) > 1)
                         {
-                            string localLeftPaddedString() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.AbilityMinRange(i)) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.AbilityMaxRange(i)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                            string localLeftPaddedString() { string argbuf = SrcFormatter.Format(u.AbilityMinRange(i)) + "-" + SrcFormatter.Format(u.AbilityMaxRange(i)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString();
                         }
@@ -7695,7 +7695,7 @@ namespace Project1
                         // 残り使用回数
                         if (withBlock3.Stock > 0)
                         {
-                            string localLeftPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.Stock(i)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 3); return ret; }
+                            string localLeftPaddedString1() { string argbuf = SrcFormatter.Format(u.Stock(i)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 3); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString1();
                         }
@@ -7707,7 +7707,7 @@ namespace Project1
                         // ＥＮ消費量
                         if (withBlock3.ENConsumption > 0)
                         {
-                            string localLeftPaddedString2() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.AbilityENConsumption(i)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                            string localLeftPaddedString2() { string argbuf = SrcFormatter.Format(u.AbilityENConsumption(i)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString2();
                         }
@@ -7813,14 +7813,14 @@ namespace Project1
                 withBlock.lstItems.Height = 86;
 
                 // 表示位置を設定
-                withBlock.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / 2d);
+                withBlock.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(withBlock.Width)) / 2d);
                 if (MainForm.Visible == true & !((int)MainForm.WindowState == 1))
                 {
-                    withBlock.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(MainForm.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(MainForm.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height));
+                    withBlock.Top = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(MainForm.Top) + SrcFormatter.PixelsToTwipsY(MainForm.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height));
                 }
                 else
                 {
-                    withBlock.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / 2d);
+                    withBlock.Top = (int)SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height)) / 2d);
                 }
 
                 // 入力制限時間に関する設定を行う
@@ -7890,14 +7890,14 @@ namespace Project1
                 }
 
                 // 表示位置を設定
-                withBlock.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / 2d);
+                withBlock.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(withBlock.Width)) / 2d);
                 if (MainForm.Visible == true & !((int)MainForm.WindowState == 1) & !is_center)
                 {
-                    withBlock.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(MainForm.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(MainForm.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height));
+                    withBlock.Top = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(MainForm.Top) + SrcFormatter.PixelsToTwipsY(MainForm.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height));
                 }
                 else
                 {
-                    withBlock.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / 2d);
+                    withBlock.Top = (int)SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height)) / 2d);
                 }
 
                 // 先頭に表示するアイテムを設定
@@ -7947,8 +7947,8 @@ namespace Project1
                 for (i = 1; i <= loopTo; i++)
                     withBlock.lstItems.Items.Add("　" + list[i]);
                 withBlock.cmdSort.Text = "名称順に並べ替え";
-                withBlock.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(MainForm.Left));
-                withBlock.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / 2d);
+                withBlock.Left = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(MainForm.Left));
+                withBlock.Top = (int)SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height)) / 2d);
                 withBlock.ShowDialog();
             }
 
@@ -9039,7 +9039,7 @@ namespace Project1
                             i = (short)(i + 1);
                             string argexpr = GeneralLib.LIndex(ref draw_option, i);
                             angle = GeneralLib.StrToLng(ref argexpr);
-                            pic_option2 = pic_option2 + " 右回転=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(angle % 360);
+                            pic_option2 = pic_option2 + " 右回転=" + SrcFormatter.Format(angle % 360);
                             break;
                         }
 
@@ -9049,7 +9049,7 @@ namespace Project1
                             int localStrToLng() { string argexpr = GeneralLib.LIndex(ref draw_option, i); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
 
                             angle = -localStrToLng();
-                            pic_option2 = pic_option2 + " 右回転=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(angle % 360);
+                            pic_option2 = pic_option2 + " 右回転=" + SrcFormatter.Format(angle % 360);
                             break;
                         }
 
@@ -9141,8 +9141,8 @@ namespace Project1
                         orig_pic = MainForm.picBuf(i);
                         {
                             var withBlock = orig_pic;
-                            orig_width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width);
-                            orig_height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height);
+                            orig_width = (int)SrcFormatter.PixelsToTwipsX(withBlock.Width);
+                            orig_height = (int)SrcFormatter.PixelsToTwipsY(withBlock.Height);
                         }
                         // Debug.Print "Reuse " & Format$(i) & " As Stretched"
                         goto EditedPicture;
@@ -9167,8 +9167,8 @@ namespace Project1
                         orig_pic = MainForm.picBuf(i);
                         {
                             var withBlock1 = orig_pic;
-                            orig_width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Width);
-                            orig_height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Height);
+                            orig_width = (int)SrcFormatter.PixelsToTwipsX(withBlock1.Width);
+                            orig_height = (int)SrcFormatter.PixelsToTwipsY(withBlock1.Height);
                         }
                         // Debug.Print "Reuse " & Format$(i) & " As Edited"
                         found_orig = true;
@@ -9193,8 +9193,8 @@ namespace Project1
                             orig_pic = MainForm.picBuf(i);
                             {
                                 var withBlock2 = orig_pic;
-                                orig_width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock2.Width);
-                                orig_height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.Height);
+                                orig_width = (int)SrcFormatter.PixelsToTwipsX(withBlock2.Width);
+                                orig_height = (int)SrcFormatter.PixelsToTwipsY(withBlock2.Height);
                             }
                             // Debug.Print "Reuse " & Format$(i) & " As Partial"
                             goto LoadedOrigPicture;
@@ -9217,8 +9217,8 @@ namespace Project1
                         orig_pic = MainForm.picBuf(i);
                         {
                             var withBlock3 = orig_pic;
-                            orig_width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock3.Width);
-                            orig_height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock3.Height);
+                            orig_width = (int)SrcFormatter.PixelsToTwipsX(withBlock3.Width);
+                            orig_height = (int)SrcFormatter.PixelsToTwipsY(withBlock3.Height);
                         }
                         // Debug.Print "Reuse " & Format$(i) & " As Orig"
                         goto LoadedOrigPicture;
@@ -9235,12 +9235,12 @@ namespace Project1
                         // 黒で塗りつぶし
                         if (dx == SRC.DEFAULT_LEVEL)
                         {
-                            dx = (int)((long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(pic.Width) - dw) / 2L);
+                            dx = (int)((long)(SrcFormatter.PixelsToTwipsX(pic.Width) - dw) / 2L);
                         }
 
                         if (dy == SRC.DEFAULT_LEVEL)
                         {
-                            dy = (int)((long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(pic.Height) - dh) / 2L);
+                            dy = (int)((long)(SrcFormatter.PixelsToTwipsY(pic.Height) - dh) / 2L);
                         }
                         ret = PatBlt(pic.hDC, dx, dy, dw, dh, BLACKNESS);
                         goto DrewPicture;
@@ -9253,12 +9253,12 @@ namespace Project1
                         // 白で塗りつぶし
                         if (dx == SRC.DEFAULT_LEVEL)
                         {
-                            dx = (int)((long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(pic.Width) - dw) / 2L);
+                            dx = (int)((long)(SrcFormatter.PixelsToTwipsX(pic.Width) - dw) / 2L);
                         }
 
                         if (dy == SRC.DEFAULT_LEVEL)
                         {
-                            dy = (int)((long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(pic.Height) - dh) / 2L);
+                            dy = (int)((long)(SrcFormatter.PixelsToTwipsY(pic.Height) - dh) / 2L);
                         }
                         ret = PatBlt(pic.hDC, dx, dy, dw, dh, WHITENESS);
                         goto DrewPicture;
@@ -9494,7 +9494,7 @@ namespace Project1
                         {
                             tdir = Strings.Left(tname, i) + @"\";
                             tnum = Strings.Mid(tname, i + 1, Strings.Len(tname) - i - 4);
-                            tname = Strings.Left(tname, i) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GeneralLib.StrToLng(ref tnum), "0000") + ".bmp";
+                            tname = Strings.Left(tname, i) + SrcFormatter.Format(GeneralLib.StrToLng(ref tnum), "0000") + ".bmp";
                         }
                     }
                 }
@@ -9524,7 +9524,7 @@ namespace Project1
                             if (tdir == withBlock4.Item(withBlock4.OrderedID(j)).Bitmap)
                             {
                                 tnum = Strings.Mid(fname, i + 1, Strings.Len(fname) - i - 4);
-                                tname = Strings.Left(fname, i) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GeneralLib.StrToLng(ref tnum), "0000") + ".bmp";
+                                tname = Strings.Left(fname, i) + SrcFormatter.Format(GeneralLib.StrToLng(ref tnum), "0000") + ".bmp";
                                 break;
                             }
                         }
@@ -10009,15 +10009,15 @@ namespace Project1
             // 読み込んだ画像のサイズ(バイト数)をバッファ情報に記録しておく
             {
                 var withBlock5 = orig_pic;
-                PicBufSize[i] = (int)((double)display_byte_pixel * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock5.Width) * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock5.Height));
+                PicBufSize[i] = (int)((double)display_byte_pixel * SrcFormatter.PixelsToTwipsX(withBlock5.Width) * SrcFormatter.PixelsToTwipsY(withBlock5.Height));
             }
 
             LoadedOrigPicture:
             ;
             {
                 var withBlock6 = orig_pic;
-                orig_width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock6.Width);
-                orig_height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock6.Height);
+                orig_width = (int)SrcFormatter.PixelsToTwipsX(withBlock6.Width);
+                orig_height = (int)SrcFormatter.PixelsToTwipsY(withBlock6.Height);
             }
 
             // 原画像の一部のみを描画？
@@ -10323,7 +10323,7 @@ namespace Project1
             }
 
             // 描画先が画面外の場合や描画サイズが0の場合は画像のロードのみを行う
-            if (dx >= Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(pic.Width) | dy >= Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(pic.Height) | dx + dw <= 0 | dy + dh <= 0 | dw <= 0 | dh <= 0)
+            if (dx >= SrcFormatter.PixelsToTwipsX(pic.Width) | dy >= SrcFormatter.PixelsToTwipsY(pic.Height) | dx + dw <= 0 | dy + dh <= 0 | dw <= 0 | dh <= 0)
             {
                 load_only = true;
             }
@@ -10377,8 +10377,8 @@ namespace Project1
                 {
                     var withBlock9 = stretched_pic;
                     withBlock9.Image = Image.FromFile("");
-                    withBlock9.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(dw);
-                    withBlock9.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(dh);
+                    withBlock9.Width = (int)SrcFormatter.TwipsToPixelsX(dw);
+                    withBlock9.Height = (int)SrcFormatter.TwipsToPixelsY(dh);
                 }
 
                 // バッファに拡大した画像を保存
@@ -10471,8 +10471,8 @@ namespace Project1
                     {
                         var withBlock10 = mask_pic;
                         withBlock10.Image = Image.FromFile("");
-                        withBlock10.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(orig_width);
-                        withBlock10.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(orig_height);
+                        withBlock10.Width = (int)SrcFormatter.TwipsToPixelsX(orig_width);
+                        withBlock10.Height = (int)SrcFormatter.TwipsToPixelsY(orig_height);
                     }
 
                     // マスク画像を作成
@@ -10530,8 +10530,8 @@ namespace Project1
                 {
                     var withBlock11 = stretched_pic;
                     withBlock11.Image = Image.FromFile("");
-                    withBlock11.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(dw);
-                    withBlock11.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(dh);
+                    withBlock11.Width = (int)SrcFormatter.TwipsToPixelsX(dw);
+                    withBlock11.Height = (int)SrcFormatter.TwipsToPixelsY(dh);
                 }
 
                 // バッファに拡大した画像を保存
@@ -10567,8 +10567,8 @@ namespace Project1
                     {
                         var withBlock12 = mask_pic;
                         withBlock12.Image = Image.FromFile("");
-                        withBlock12.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(orig_width);
-                        withBlock12.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(orig_height);
+                        withBlock12.Width = (int)SrcFormatter.TwipsToPixelsX(orig_width);
+                        withBlock12.Height = (int)SrcFormatter.TwipsToPixelsY(orig_height);
                     }
 
                     // マスク画像を作成
@@ -10593,8 +10593,8 @@ namespace Project1
                     {
                         var withBlock13 = stretched_mask_pic;
                         withBlock13.Image = Image.FromFile("");
-                        withBlock13.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(dw);
-                        withBlock13.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(dh);
+                        withBlock13.Width = (int)SrcFormatter.TwipsToPixelsX(dw);
+                        withBlock13.Height = (int)SrcFormatter.TwipsToPixelsY(dh);
                     }
 
                     // バッファに拡大したマスク画像を保存
@@ -10635,8 +10635,8 @@ namespace Project1
 
                 // 拡大画像用の領域を作成
                 stretched_pic = MainForm.picStretchedTmp(0);
-                stretched_pic.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(dw);
-                stretched_pic.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(dh);
+                stretched_pic.Width = (int)SrcFormatter.TwipsToPixelsX(dw);
+                stretched_pic.Height = (int)SrcFormatter.TwipsToPixelsY(dh);
 
                 // バッファに拡大した画像を保存
                 ret = StretchBlt(stretched_pic.hDC, 0, 0, dw, dh, orig_pic.hDC, 0, 0, orig_width, orig_height, SRCCOPY);
@@ -10684,8 +10684,8 @@ namespace Project1
                     mask_pic = MainForm.picBuf(i);
                     {
                         var withBlock14 = mask_pic;
-                        withBlock14.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(orig_width);
-                        withBlock14.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(orig_height);
+                        withBlock14.Width = (int)SrcFormatter.TwipsToPixelsX(orig_width);
+                        withBlock14.Height = (int)SrcFormatter.TwipsToPixelsY(orig_height);
                     }
 
                     // マスク画像を作成
@@ -10695,8 +10695,8 @@ namespace Project1
                 // 拡大マスク画像用の領域を作成
                 stretched_mask_pic = MainForm.picStretchedTmp(1);
                 stretched_mask_pic.Image = Image.FromFile("");
-                stretched_mask_pic.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(dw);
-                stretched_mask_pic.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(dh);
+                stretched_mask_pic.Width = (int)SrcFormatter.TwipsToPixelsX(dw);
+                stretched_mask_pic.Height = (int)SrcFormatter.TwipsToPixelsY(dh);
 
                 // マスク画像を拡大して拡大マスク画像を作成
                 ret = StretchBlt(stretched_mask_pic.hDC, 0, 0, dw, dh, mask_pic.hDC, 0, 0, orig_width, orig_height, SRCCOPY);
@@ -10785,8 +10785,8 @@ namespace Project1
 
                     // バッファを初期化
                     mask_pic = MainForm.picBuf(i);
-                    mask_pic.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(orig_width);
-                    mask_pic.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(orig_height);
+                    mask_pic.Width = (int)SrcFormatter.TwipsToPixelsX(orig_width);
+                    mask_pic.Height = (int)SrcFormatter.TwipsToPixelsY(orig_height);
 
                     // マスク画像を作成
                     Graphics.MakeMask(ref orig_pic.hDC, ref mask_pic.hDC, ref orig_width, ref orig_height, ref BGColor);
@@ -11046,7 +11046,7 @@ namespace Project1
                     if (withBlock.Font.Name != MainForm.picMain(0).Font.Name)
                     {
                         sf = (Font)Control.DefaultFont.Clone();
-                        sf = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeName(sf, MainForm.picMain(0).Font.Name);
+                        sf = SrcFormatter.FontChangeName(sf, MainForm.picMain(0).Font.Name);
                         withBlock.Font = sf;
                     }
                     withBlock.Font.Size = MainForm.picMain(0).Font.Size;
@@ -11059,7 +11059,7 @@ namespace Project1
                     if (withBlock1.Font.Name != MainForm.picMain(0).Font.Name)
                     {
                         sf = (Font)Control.DefaultFont.Clone();
-                        sf = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeName(sf, MainForm.picMain(0).Font.Name);
+                        sf = SrcFormatter.FontChangeName(sf, MainForm.picMain(0).Font.Name);
                         withBlock1.Font = sf;
                     }
                     withBlock1.Font.Size = MainForm.picMain(0).Font.Size;
@@ -11092,7 +11092,7 @@ namespace Project1
             // 書き込み先の座標を求める
             if (HCentering)
             {
-                pic.CurrentX = (Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(pic.Width) - pic.TextWidth(msg)) / 2;
+                pic.CurrentX = (SrcFormatter.PixelsToTwipsX(pic.Width) - pic.TextWidth(msg)) / 2;
             }
             else if (X != SRC.DEFAULT_LEVEL)
             {
@@ -11101,7 +11101,7 @@ namespace Project1
 
             if (VCentering)
             {
-                pic.CurrentY = (Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(pic.Height) - pic.TextHeight(msg)) / 2;
+                pic.CurrentY = (SrcFormatter.PixelsToTwipsY(pic.Height) - pic.TextHeight(msg)) / 2;
             }
             else if (Y != SRC.DEFAULT_LEVEL)
             {
@@ -11137,7 +11137,7 @@ namespace Project1
                         if (withBlock3.Font.Name != pic.Font.Name)
                         {
                             sf = (Font)Control.DefaultFont.Clone();
-                            sf = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeName(sf, pic.Font.Name);
+                            sf = SrcFormatter.FontChangeName(sf, pic.Font.Name);
                             withBlock3.Font = sf;
                         }
                         withBlock3.Font.Size = pic.Font.SizeInPoints;
@@ -11235,7 +11235,7 @@ namespace Project1
                 if (withBlock.Font.Name != "ＭＳ Ｐ明朝")
                 {
                     sf = (Font)Control.DefaultFont.Clone();
-                    sf = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeName(sf, "ＭＳ Ｐ明朝");
+                    sf = SrcFormatter.FontChangeName(sf, "ＭＳ Ｐ明朝");
                     withBlock.Font = sf;
                 }
                 {
@@ -11264,7 +11264,7 @@ namespace Project1
                 if (withBlock.Font.Name != prev_name)
                 {
                     sf = (Font)Control.DefaultFont.Clone();
-                    sf = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeName(sf, prev_name);
+                    sf = SrcFormatter.FontChangeName(sf, prev_name);
                     withBlock.Font = sf;
                 }
                 {
@@ -11410,26 +11410,26 @@ namespace Project1
                     // メッセージウィンドウまで移動
                     {
                         var withBlock = My.MyProject.Forms.frmMessage;
-                        if (PT.X < (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Left) + 0.05d * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX())
+                        if (PT.X < (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + 0.05d * SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX())
                         {
-                            tx = (int)((long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Left) + 0.05d * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX());
+                            tx = (int)((long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + 0.05d * SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX());
                         }
-                        else if (PT.X > (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Left) + 0.95d * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX())
+                        else if (PT.X > (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + 0.95d * SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX())
                         {
-                            tx = (int)((long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Left) + 0.95d * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX());
+                            tx = (int)((long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + 0.95d * SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX());
                         }
                         else
                         {
                             tx = PT.X;
                         }
 
-                        if (PT.Y < (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() - withBlock.ClientRectangle.Height + withBlock.picMessage.Top)
+                        if (PT.Y < (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY() - withBlock.ClientRectangle.Height + withBlock.picMessage.Top)
                         {
-                            ty = (int)((long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() - withBlock.ClientRectangle.Height + withBlock.picMessage.Top);
+                            ty = (int)((long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY() - withBlock.ClientRectangle.Height + withBlock.picMessage.Top);
                         }
-                        else if (PT.Y > (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Top) + 0.9d * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY())
+                        else if (PT.Y > (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + 0.9d * SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
                         {
-                            ty = (int)((long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Top) + 0.9d * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY());
+                            ty = (int)((long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + 0.9d * SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY());
                         }
                         else
                         {
@@ -11442,13 +11442,13 @@ namespace Project1
                     // リストボックスまで移動
                     {
                         var withBlock1 = My.MyProject.Forms.frmListBox;
-                        if (PT.X < (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Left) + 0.1d * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX())
+                        if (PT.X < (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + 0.1d * SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX())
                         {
-                            tx = (int)((long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Left) + 0.1d * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX());
+                            tx = (int)((long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + 0.1d * SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX());
                         }
-                        else if (PT.X > (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Left) + 0.9d * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX())
+                        else if (PT.X > (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + 0.9d * SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX())
                         {
-                            tx = (int)((long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Left) + 0.9d * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX());
+                            tx = (int)((long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + 0.9d * SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX());
                         }
                         else
                         {
@@ -11462,7 +11462,7 @@ namespace Project1
                             i = withBlock1.lstItems.Items.Count;
                             do
                             {
-                                if (!ListItemFlag[i] & Strings.InStr(Microsoft.VisualBasic.Compatibility.VB6.Support.GetItemString(withBlock1.lstItems, i), "援護攻撃：") == 0)
+                                if (!ListItemFlag[i] & Strings.InStr(SrcFormatter.GetItemString(withBlock1.lstItems, i), "援護攻撃：") == 0)
                                 {
                                     break;
                                 }
@@ -11477,7 +11477,7 @@ namespace Project1
                             i = withBlock1.lstItems.TopIndex + 1;
                         }
 
-                        ty = (int)((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Top) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() + (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Height) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() - withBlock1.ClientRectangle.Height + withBlock1.lstItems.Top + 16 * (i - withBlock1.lstItems.TopIndex) - 8L);
+                        ty = (int)((long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() + (long)SrcFormatter.PixelsToTwipsY(withBlock1.Height) / (long)SrcFormatter.TwipsPerPixelY() - withBlock1.ClientRectangle.Height + withBlock1.lstItems.Top + 16 * (i - withBlock1.lstItems.TopIndex) - 8L);
                     }
                 }
             }
@@ -11502,13 +11502,13 @@ namespace Project1
                     // End If
                     if (NewGUIMode)
                     {
-                        tx = (int)((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock2.Left) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() + 32 * (t.x - (MapX - MainWidth / 2)) + 4L);
-                        ty = (int)((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.Top) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() + (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.Height) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.ClientRectangle.Height) + 32 * (t.y - (MapY - MainHeight / 2)) + 16d);
+                        tx = (int)((long)SrcFormatter.PixelsToTwipsX(withBlock2.Left) / (long)SrcFormatter.TwipsPerPixelX() + 32 * (t.x - (MapX - MainWidth / 2)) + 4L);
+                        ty = (int)((long)SrcFormatter.PixelsToTwipsY(withBlock2.Top) / (long)SrcFormatter.TwipsPerPixelY() + (long)SrcFormatter.PixelsToTwipsY(withBlock2.Height) / (long)SrcFormatter.TwipsPerPixelY() - SrcFormatter.PixelsToTwipsY(withBlock2.ClientRectangle.Height) + 32 * (t.y - (MapY - MainHeight / 2)) + 16d);
                     }
                     else
                     {
-                        tx = (int)((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock2.Left) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() + 32 * (t.x - (MapX - MainWidth / 2)) + 24L);
-                        ty = (int)((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.Top) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() + (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.Height) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.ClientRectangle.Height) + 32 * (t.y - (MapY - MainHeight / 2)) + 20d);
+                        tx = (int)((long)SrcFormatter.PixelsToTwipsX(withBlock2.Left) / (long)SrcFormatter.TwipsPerPixelX() + 32 * (t.x - (MapX - MainWidth / 2)) + 24L);
+                        ty = (int)((long)SrcFormatter.PixelsToTwipsY(withBlock2.Top) / (long)SrcFormatter.TwipsPerPixelY() + (long)SrcFormatter.PixelsToTwipsY(withBlock2.Height) / (long)SrcFormatter.TwipsPerPixelY() - SrcFormatter.PixelsToTwipsY(withBlock2.ClientRectangle.Height) + 32 * (t.y - (MapY - MainHeight / 2)) + 20d);
                     }
                     // MOD  END  240a
                 }
@@ -11594,8 +11594,8 @@ namespace Project1
         public static void OpenTitleForm()
         {
             Load(My.MyProject.Forms.frmTitle);
-            My.MyProject.Forms.frmTitle.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(My.MyProject.Forms.frmTitle.Width)) / 2d);
-            My.MyProject.Forms.frmTitle.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(My.MyProject.Forms.frmTitle.Height)) / 2d);
+            My.MyProject.Forms.frmTitle.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(My.MyProject.Forms.frmTitle.Width)) / 2d);
+            My.MyProject.Forms.frmTitle.Top = (int)SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(My.MyProject.Forms.frmTitle.Height)) / 2d);
             My.MyProject.Forms.frmTitle.Show();
             My.MyProject.Forms.frmTitle.Refresh();
         }
@@ -11619,8 +11619,8 @@ namespace Project1
             Load(My.MyProject.Forms.frmNowLoading);
             {
                 var withBlock = My.MyProject.Forms.frmNowLoading;
-                withBlock.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / 2d);
-                withBlock.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / 2d);
+                withBlock.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(withBlock.Width)) / 2d);
+                withBlock.Top = (int)SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height)) / 2d);
                 withBlock.Show();
                 withBlock.Label1.Refresh();
             }
@@ -11758,8 +11758,8 @@ namespace Project1
                 var withBlock = My.MyProject.Forms.frmErrorMessage;
                 ret = SetWindowPos(withBlock.Handle.ToInt32(), -1, 0, 0, 0, 0, 0x3);
                 withBlock.txtMessage.Text = msg;
-                withBlock.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / 2d);
-                withBlock.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / 2d);
+                withBlock.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(withBlock.Width)) / 2d);
+                withBlock.Top = (int)SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height)) / 2d);
                 withBlock.Show();
             }
 
@@ -11828,7 +11828,7 @@ namespace Project1
                 GetCursorPos(ref PT);
                 {
                     var withBlock = MainForm;
-                    if ((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Left) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() <= PT.X & PT.X <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Left) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() & (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Top) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY())
+                    if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X & PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX() & (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
                     {
                         if ((GetAsyncKeyState(RButtonID) & 0x8000) != 0)
                         {
@@ -11845,7 +11845,7 @@ namespace Project1
                 GetCursorPos(ref PT);
                 {
                     var withBlock1 = My.MyProject.Forms.frmMessage;
-                    if ((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Left) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() <= PT.X & PT.X <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Left) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() & (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Top) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Height)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY())
+                    if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X & PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() & (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
                     {
                         if ((GetAsyncKeyState(RButtonID) & 0x8000) != 0)
                         {
@@ -11871,22 +11871,22 @@ namespace Project1
                 if (Strings.InStr(msg, ".") > 0)
                 {
                     StringType.MidStmtStr(ref msg, Strings.InStr(msg, "."), Constants.vbCr.Length, Constants.vbCr);
-                    withBlock.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(1170d);
+                    withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(1170d);
                 }
                 else
                 {
-                    withBlock.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(800d);
+                    withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(800d);
                 }
 
                 if (MainForm.Visible == true & !((int)MainForm.WindowState == 1))
                 {
-                    withBlock.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX((double)MainForm.Left) + (MainForm.picMain(0).width * Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX((double)MainForm.Width) / Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX((double)MainForm.ClientRectangle.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX((double)withBlock.Width)) / 2);
-                    withBlock.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(MainForm.Top) + (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(MainForm.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / 2L);
+                    withBlock.Left = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX((double)MainForm.Left) + (MainForm.picMain(0).width * SrcFormatter.PixelsToTwipsX((double)MainForm.Width) / SrcFormatter.PixelsToTwipsX((double)MainForm.ClientRectangle.Width) - SrcFormatter.PixelsToTwipsX((double)withBlock.Width)) / 2);
+                    withBlock.Top = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(MainForm.Top) + (long)(SrcFormatter.PixelsToTwipsY(MainForm.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height)) / 2L);
                 }
                 else
                 {
-                    withBlock.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / 2d);
-                    withBlock.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / 2d);
+                    withBlock.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(withBlock.Width)) / 2d);
+                    withBlock.Top = (int)SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height)) / 2d);
                 }
 
                 if (Strings.InStr(msg, ".") > 0)

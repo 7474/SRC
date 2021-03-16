@@ -119,11 +119,11 @@ namespace SRCCore.CmdDatas.Commands
 
             //        if (plevel == p.Level)
             //        {
-            //            msg = msg + ";" + p.get_Nickname(false) + " 経験値 +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(2 * p.SP);
+            //            msg = msg + ";" + p.get_Nickname(false) + " 経験値 +" + SrcFormatter.Format(2 * p.SP);
             //        }
             //        else
             //        {
-            //            msg = msg + ";" + p.get_Nickname(false) + " 経験値 +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(2 * p.SP) + " レベルアップ！（Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Level) + "）";
+            //            msg = msg + ";" + p.get_Nickname(false) + " 経験値 +" + SrcFormatter.Format(2 * p.SP) + " レベルアップ！（Lv" + SrcFormatter.Format(p.Level) + "）";
             //        }
 
             //        n = (n + 1);

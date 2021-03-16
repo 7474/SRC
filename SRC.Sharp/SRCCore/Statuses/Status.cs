@@ -57,7 +57,7 @@
 //            ClearUnitStatus();
 
 //            pic = GUI.MainForm.picUnitStatus;
-//            pic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(pic.Font, 12f);
+//            pic.Font = SrcFormatter.FontChangeSize(pic.Font, 12f);
 
 //            // ADD START 240a
 //            // マウスカーソルの位置は？
@@ -74,21 +74,21 @@
 //                lineEnd = (int)((StatusWindowFrameWidth + 1) / 2d);
 //                pic.FillStyle = vbFSTransparent;
 //                // 一旦高さを最大にする
-//                pic.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(235d);
-//                pic.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(GUI.MapPHeight - 20);
+//                pic.Width = (int)SrcFormatter.TwipsToPixelsX(235d);
+//                pic.Height = (int)SrcFormatter.TwipsToPixelsY(GUI.MapPHeight - 20);
 //                wHeight = (short)GetGlobalStatusSize(ref X, ref Y);
 //                // 枠線を引く
 //                pic.Line(lineStart, lineStart); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 //                pic.FillStyle = Event_Renamed.ObjFillStyle;
 //                // 高さを設定する
-//                pic.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(wHeight);
+//                pic.Height = (int)SrcFormatter.TwipsToPixelsY(wHeight);
 //                pic.CurrentX = 5;
 //                pic.CurrentY = 5;
 //                // 文字色をリセット
 //                pic.ForeColor = ColorTranslator.FromOle(StatusFontColorNormalString);
 //            }
 //            // ADD  END  240a
-//            pic.Print("ターン数 " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.Turn));
+//            pic.Print("ターン数 " + SrcFormatter.Format(SRC.Turn));
 //            // ADD START 240a
 //            if (GUI.NewGUIMode)
 //            {
@@ -97,7 +97,7 @@
 //            // ADD  END  240a
 //            string argtname = "資金";
 //            Unit argu = null;
-//            pic.Print(Expression.Term(ref argtname, ref argu, 8) + " " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.Money));
+//            pic.Print(Expression.Term(ref argtname, ref argu, 8) + " " + SrcFormatter.Format(SRC.Money));
 
 //            // MOV START 240a ↑に移動
 //            // 'マウスカーソルの位置は？
@@ -108,11 +108,11 @@
 //            // マップ外をクリックした時はここで終了
 //            if (X < 1 | Map.MapWidth < X | Y < 1 | Map.MapHeight < Y)
 //            {
-//                pic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(pic.Font, 9f);
+//                pic.Font = SrcFormatter.FontChangeSize(pic.Font, 9f);
 //                if (GUI.NewGUIMode)
 //                {
 //                    // 高さを設定する
-//                    pic.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(wHeight);
+//                    pic.Height = (int)SrcFormatter.TwipsToPixelsY(wHeight);
 //                }
 
 //                return;
@@ -137,11 +137,11 @@
 //            // ADD  END  240a
 //            if (Strings.InStr(Map.TerrainName(X, Y), "(") > 0)
 //            {
-//                pic.Print("(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(X) + "," + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Y) + ") " + Strings.Left(Map.TerrainName(X, Y), Strings.InStr(Map.TerrainName(X, Y), "(") - 1));
+//                pic.Print("(" + SrcFormatter.Format(X) + "," + SrcFormatter.Format(Y) + ") " + Strings.Left(Map.TerrainName(X, Y), Strings.InStr(Map.TerrainName(X, Y), "(") - 1));
 //            }
 //            else
 //            {
-//                pic.Print("(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(X) + "," + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Y) + ") " + Map.TerrainName(X, Y));
+//                pic.Print("(" + SrcFormatter.Format(X) + "," + SrcFormatter.Format(Y) + ") " + Map.TerrainName(X, Y));
 //            }
 
 //            // ADD START 240a
@@ -153,21 +153,21 @@
 //            // 命中修正
 //            if (Map.TerrainEffectForHit(X, Y) >= 0)
 //            {
-//                pic.Print("回避 +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHit(X, Y)) + "%");
+//                pic.Print("回避 +" + SrcFormatter.Format(Map.TerrainEffectForHit(X, Y)) + "%");
 //            }
 //            else
 //            {
-//                pic.Print("回避 " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHit(X, Y)) + "%");
+//                pic.Print("回避 " + SrcFormatter.Format(Map.TerrainEffectForHit(X, Y)) + "%");
 //            }
 
 //            // ダメージ修正
 //            if (Map.TerrainEffectForDamage(X, Y) >= 0)
 //            {
-//                pic.Print("  防御 +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForDamage(X, Y)) + "%");
+//                pic.Print("  防御 +" + SrcFormatter.Format(Map.TerrainEffectForDamage(X, Y)) + "%");
 //            }
 //            else
 //            {
-//                pic.Print("  防御 " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForDamage(X, Y)) + "%");
+//                pic.Print("  防御 " + SrcFormatter.Format(Map.TerrainEffectForDamage(X, Y)) + "%");
 //            }
 
 //            // ADD START 240a
@@ -181,7 +181,7 @@
 //            {
 //                string argtname1 = "ＨＰ";
 //                Unit argu1 = null;
-//                pic.Print(Expression.Term(ref argtname1, u: ref argu1) + " +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHPRecover(X, Y)) + "%  ");
+//                pic.Print(Expression.Term(ref argtname1, u: ref argu1) + " +" + SrcFormatter.Format(Map.TerrainEffectForHPRecover(X, Y)) + "%  ");
 //            }
 
 //            // ＥＮ回復率
@@ -189,7 +189,7 @@
 //            {
 //                string argtname2 = "ＥＮ";
 //                Unit argu2 = null;
-//                pic.Print(Expression.Term(ref argtname2, u: ref argu2) + " +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForENRecover(X, Y)) + "%");
+//                pic.Print(Expression.Term(ref argtname2, u: ref argu2) + " +" + SrcFormatter.Format(Map.TerrainEffectForENRecover(X, Y)) + "%");
 //            }
 
 //            if (Map.TerrainEffectForHPRecover(X, Y) > 0 | Map.TerrainEffectForENRecover(X, Y) > 0)
@@ -231,7 +231,7 @@
 //                Unit argu3 = null;
 //                object argIndex1 = "ＨＰ減少";
 //                object argIndex2 = "ＨＰ減少";
-//                pic.Print(Expression.Term(ref argtname3, u: ref argu3) + " -" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(ref argIndex1)) + "% (" + td.FeatureData(ref argIndex2) + ")  ");
+//                pic.Print(Expression.Term(ref argtname3, u: ref argu3) + " -" + SrcFormatter.Format(10d * td.FeatureLevel(ref argIndex1)) + "% (" + td.FeatureData(ref argIndex2) + ")  ");
 //            }
 
 //            string argfname1 = "ＥＮ減少";
@@ -241,7 +241,7 @@
 //                Unit argu4 = null;
 //                object argIndex3 = "ＥＮ減少";
 //                object argIndex4 = "ＥＮ減少";
-//                pic.Print(Expression.Term(ref argtname4, u: ref argu4) + " -" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(ref argIndex3)) + "% (" + td.FeatureData(ref argIndex4) + ")  ");
+//                pic.Print(Expression.Term(ref argtname4, u: ref argu4) + " -" + SrcFormatter.Format(10d * td.FeatureLevel(ref argIndex3)) + "% (" + td.FeatureData(ref argIndex4) + ")  ");
 //            }
 
 //            string argfname2 = "ＨＰ減少";
@@ -264,7 +264,7 @@
 //                string argtname5 = "ＨＰ";
 //                Unit argu5 = null;
 //                object argIndex5 = "ＨＰ増加";
-//                pic.Print(Expression.Term(ref argtname5, u: ref argu5) + " +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(1000d * td.FeatureLevel(ref argIndex5)) + "  ");
+//                pic.Print(Expression.Term(ref argtname5, u: ref argu5) + " +" + SrcFormatter.Format(1000d * td.FeatureLevel(ref argIndex5)) + "  ");
 //            }
 
 //            string argfname5 = "ＥＮ増加";
@@ -273,7 +273,7 @@
 //                string argtname6 = "ＥＮ";
 //                Unit argu6 = null;
 //                object argIndex6 = "ＥＮ増加";
-//                pic.Print(Expression.Term(ref argtname6, u: ref argu6) + " +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(ref argIndex6)) + "  ");
+//                pic.Print(Expression.Term(ref argtname6, u: ref argu6) + " +" + SrcFormatter.Format(10d * td.FeatureLevel(ref argIndex6)) + "  ");
 //            }
 
 //            string argfname6 = "ＨＰ増加";
@@ -297,7 +297,7 @@
 //                string argtname7 = "ＨＰ";
 //                Unit argu7 = null;
 //                object argIndex7 = "ＨＰ低下";
-//                pic.Print(Expression.Term(ref argtname7, u: ref argu7) + " -" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(1000d * td.FeatureLevel(ref argIndex7)) + "  ");
+//                pic.Print(Expression.Term(ref argtname7, u: ref argu7) + " -" + SrcFormatter.Format(1000d * td.FeatureLevel(ref argIndex7)) + "  ");
 //            }
 
 //            string argfname9 = "ＥＮ低下";
@@ -306,7 +306,7 @@
 //                string argtname8 = "ＥＮ";
 //                Unit argu8 = null;
 //                object argIndex8 = "ＥＮ低下";
-//                pic.Print(Expression.Term(ref argtname8, u: ref argu8) + " -" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(ref argIndex8)) + "  ");
+//                pic.Print(Expression.Term(ref argtname8, u: ref argu8) + " -" + SrcFormatter.Format(10d * td.FeatureLevel(ref argIndex8)) + "  ");
 //            }
 
 //            string argfname10 = "ＨＰ低下";
@@ -327,7 +327,7 @@
 //            if (td.IsFeatureAvailable(ref argfname12))
 //            {
 //                object argIndex9 = "摩擦";
-//                pic.Print("摩擦Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(td.FeatureLevel(ref argIndex9)));
+//                pic.Print("摩擦Lv" + SrcFormatter.Format(td.FeatureLevel(ref argIndex9)));
 //            }
 //            // ADD START MARGE
 //            // 状態異常付加
@@ -340,7 +340,7 @@
 //            // ADD END MARGE
 
 //            // フォントサイズを元に戻しておく
-//            pic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(pic.Font, 9f);
+//            pic.Font = SrcFormatter.FontChangeSize(pic.Font, 9f);
 //        }
 
 //        // ユニットステータスを表示
@@ -403,7 +403,7 @@
 //                // global変数とステータス描画用の変数を同期
 //                GlobalVariableLoad();
 //                // 新ＧＵＩでは地形表示したときにサイズを変えているので元に戻す
-//                upic.SetBounds((int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(GUI.MainPWidth - 240), (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(10d), (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(235d), (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(GUI.MainPHeight - 20));
+//                upic.SetBounds((int)SrcFormatter.TwipsToPixelsX(GUI.MainPWidth - 240), (int)SrcFormatter.TwipsToPixelsY(10d), (int)SrcFormatter.TwipsToPixelsX(235d), (int)SrcFormatter.TwipsToPixelsY(GUI.MainPHeight - 20));
 //                upic.BackColor = ColorTranslator.FromOle(StatusWindowBackBolor);
 //                upic.DrawWidth = StatusWindowFrameWidth;
 //                color = StatusWindowFrameColor;
@@ -651,8 +651,8 @@
 //                }
 
 //                // パイロット愛称
-//                ppic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(ppic.Font, 10.5f);
-//                ppic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeBold(ppic.Font, false);
+//                ppic.Font = SrcFormatter.FontChangeSize(ppic.Font, 10.5f);
+//                ppic.Font = SrcFormatter.FontChangeBold(ppic.Font, false);
 //                // MOD START 240a
 //                // If MainWidth <> 15 Then
 //                if (GUI.NewGUIMode)
@@ -661,8 +661,8 @@
 //                    ppic.CurrentX = 68;
 //                }
 //                ppic.Print(p.get_Nickname(false));
-//                ppic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeBold(ppic.Font, false);
-//                ppic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(ppic.Font, 10f);
+//                ppic.Font = SrcFormatter.FontChangeBold(ppic.Font, false);
+//                ppic.Font = SrcFormatter.FontChangeSize(ppic.Font, 10f);
 
 //                // ダミーパイロット？
 //                if (p.Nickname0 == "パイロット不在")
@@ -757,7 +757,7 @@
 //                // MOD  END  240a
 //                if (p.Party == "味方")
 //                {
-//                    ppic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Level) + " (" + p.Exp + ")");
+//                    ppic.Print(SrcFormatter.Format(p.Level) + " (" + p.Exp + ")");
 //                    switch (u.Action)
 //                    {
 //                        case 2:
@@ -790,7 +790,7 @@
 //                }
 //                else if (!is_unknown)
 //                {
-//                    ppic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Level));
+//                    ppic.Print(SrcFormatter.Format(p.Level));
 //                    if (u.Action == 2)
 //                    {
 //                        // MOD START 240a
@@ -829,11 +829,11 @@
 //                {
 //                    if (p.MoraleMod > 0)
 //                    {
-//                        ppic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Morale) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.MoraleMod) + " (" + p.Personality + ")");
+//                        ppic.Print(SrcFormatter.Format(p.Morale) + "+" + SrcFormatter.Format(p.MoraleMod) + " (" + p.Personality + ")");
 //                    }
 //                    else
 //                    {
-//                        ppic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Morale) + " (" + p.Personality + ")");
+//                        ppic.Print(SrcFormatter.Format(p.Morale) + " (" + p.Personality + ")");
 //                    }
 //                }
 //                else
@@ -860,7 +860,7 @@
 //                    // MOD  END  240a
 //                    if (!is_unknown)
 //                    {
-//                        ppic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.SP) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.MaxSP));
+//                        ppic.Print(SrcFormatter.Format(p.SP) + "/" + SrcFormatter.Format(p.MaxSP));
 //                    }
 //                    else
 //                    {
@@ -901,8 +901,8 @@
 //                }
 
 //                // upicを明示的に初期化
-//                upic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeBold(upic.Font, false);
-//                upic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(upic.Font, 9f);
+//                upic.Font = SrcFormatter.FontChangeBold(upic.Font, false);
+//                upic.Font = SrcFormatter.FontChangeSize(upic.Font, 9f);
 
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
@@ -932,9 +932,9 @@
 //                    {
 //                        case var @case when @case > 0:
 //                            {
-//                                string localLeftPaddedString() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.InfightBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                                string localLeftPaddedString() { string argbuf = SrcFormatter.Format(p.InfightBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
-//                                string localRightPaddedString() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.InfightMod + p.InfightMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+//                                string localRightPaddedString() { string argbuf = "+" + SrcFormatter.Format(p.InfightMod + p.InfightMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
 
 //                                upic.Print(localLeftPaddedString() + localRightPaddedString());
 //                                break;
@@ -942,9 +942,9 @@
 
 //                        case var case1 when case1 < 0:
 //                            {
-//                                string localLeftPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.InfightBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                                string localLeftPaddedString1() { string argbuf = SrcFormatter.Format(p.InfightBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
-//                                string localRightPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.InfightMod + p.InfightMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+//                                string localRightPaddedString1() { string argbuf = SrcFormatter.Format(p.InfightMod + p.InfightMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
 
 //                                upic.Print(localLeftPaddedString1() + localRightPaddedString1());
 //                                break;
@@ -952,7 +952,7 @@
 
 //                        case 0:
 //                            {
-//                                string localLeftPaddedString2() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Infight); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                                string localLeftPaddedString2() { string argbuf = SrcFormatter.Format(p.Infight); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                upic.Print(localLeftPaddedString2() + Strings.Space(9));
 //                                break;
@@ -995,9 +995,9 @@
 //                    {
 //                        case var case2 when case2 > 0:
 //                            {
-//                                string localLeftPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.ShootingBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                                string localLeftPaddedString3() { string argbuf = SrcFormatter.Format(p.ShootingBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
-//                                string localRightPaddedString2() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.ShootingMod + p.ShootingMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 5); return ret; }
+//                                string localRightPaddedString2() { string argbuf = "+" + SrcFormatter.Format(p.ShootingMod + p.ShootingMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 5); return ret; }
 
 //                                upic.Print(localLeftPaddedString3() + localRightPaddedString2());
 //                                break;
@@ -1005,9 +1005,9 @@
 
 //                        case var case3 when case3 < 0:
 //                            {
-//                                string localLeftPaddedString4() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.ShootingBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                                string localLeftPaddedString4() { string argbuf = SrcFormatter.Format(p.ShootingBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
-//                                string localRightPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.ShootingMod + p.ShootingMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 5); return ret; }
+//                                string localRightPaddedString3() { string argbuf = SrcFormatter.Format(p.ShootingMod + p.ShootingMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 5); return ret; }
 
 //                                upic.Print(localLeftPaddedString4() + localRightPaddedString3());
 //                                break;
@@ -1015,7 +1015,7 @@
 
 //                        case 0:
 //                            {
-//                                string localLeftPaddedString5() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Shooting); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                                string localLeftPaddedString5() { string argbuf = SrcFormatter.Format(p.Shooting); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                upic.Print(localLeftPaddedString5() + Strings.Space(5));
 //                                break;
@@ -1056,9 +1056,9 @@
 //                    {
 //                        case var case4 when case4 > 0:
 //                            {
-//                                string localLeftPaddedString6() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.HitBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                                string localLeftPaddedString6() { string argbuf = SrcFormatter.Format(p.HitBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
-//                                string localRightPaddedString4() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.HitMod + p.HitMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+//                                string localRightPaddedString4() { string argbuf = "+" + SrcFormatter.Format(p.HitMod + p.HitMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
 
 //                                upic.Print(localLeftPaddedString6() + localRightPaddedString4());
 //                                break;
@@ -1066,9 +1066,9 @@
 
 //                        case var case5 when case5 < 0:
 //                            {
-//                                string localLeftPaddedString7() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.HitBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                                string localLeftPaddedString7() { string argbuf = SrcFormatter.Format(p.HitBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
-//                                string localRightPaddedString5() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.HitMod + p.HitMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+//                                string localRightPaddedString5() { string argbuf = SrcFormatter.Format(p.HitMod + p.HitMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
 
 //                                upic.Print(localLeftPaddedString7() + localRightPaddedString5());
 //                                break;
@@ -1076,7 +1076,7 @@
 
 //                        case 0:
 //                            {
-//                                string localLeftPaddedString8() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Hit); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                                string localLeftPaddedString8() { string argbuf = SrcFormatter.Format(p.Hit); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                upic.Print(localLeftPaddedString8() + Strings.Space(9));
 //                                break;
@@ -1111,9 +1111,9 @@
 //                    {
 //                        case var case6 when case6 > 0:
 //                            {
-//                                string localLeftPaddedString9() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.DodgeBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                                string localLeftPaddedString9() { string argbuf = SrcFormatter.Format(p.DodgeBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
-//                                string localRightPaddedString6() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.DodgeMod + p.DodgeMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+//                                string localRightPaddedString6() { string argbuf = "+" + SrcFormatter.Format(p.DodgeMod + p.DodgeMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
 
 //                                upic.Print(localLeftPaddedString9() + localRightPaddedString6());
 //                                break;
@@ -1121,9 +1121,9 @@
 
 //                        case var case7 when case7 < 0:
 //                            {
-//                                string localLeftPaddedString10() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.DodgeBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                                string localLeftPaddedString10() { string argbuf = SrcFormatter.Format(p.DodgeBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
-//                                string localRightPaddedString7() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.DodgeMod + p.DodgeMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+//                                string localRightPaddedString7() { string argbuf = SrcFormatter.Format(p.DodgeMod + p.DodgeMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
 
 //                                upic.Print(localLeftPaddedString10() + localRightPaddedString7());
 //                                break;
@@ -1131,7 +1131,7 @@
 
 //                        case 0:
 //                            {
-//                                string localLeftPaddedString11() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Dodge); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                                string localLeftPaddedString11() { string argbuf = SrcFormatter.Format(p.Dodge); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                upic.Print(localLeftPaddedString11() + Strings.Space(9));
 //                                break;
@@ -1172,9 +1172,9 @@
 //                    {
 //                        case var case8 when case8 > 0:
 //                            {
-//                                string localLeftPaddedString12() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.TechniqueBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                                string localLeftPaddedString12() { string argbuf = SrcFormatter.Format(p.TechniqueBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
-//                                string localRightPaddedString8() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.TechniqueMod + p.TechniqueMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+//                                string localRightPaddedString8() { string argbuf = "+" + SrcFormatter.Format(p.TechniqueMod + p.TechniqueMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
 
 //                                upic.Print(localLeftPaddedString12() + localRightPaddedString8());
 //                                break;
@@ -1182,9 +1182,9 @@
 
 //                        case var case9 when case9 < 0:
 //                            {
-//                                string localLeftPaddedString13() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.TechniqueBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                                string localLeftPaddedString13() { string argbuf = SrcFormatter.Format(p.TechniqueBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
-//                                string localRightPaddedString9() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.TechniqueMod + p.TechniqueMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+//                                string localRightPaddedString9() { string argbuf = SrcFormatter.Format(p.TechniqueMod + p.TechniqueMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
 
 //                                upic.Print(localLeftPaddedString13() + localRightPaddedString9());
 //                                break;
@@ -1192,7 +1192,7 @@
 
 //                        case 0:
 //                            {
-//                                string localLeftPaddedString14() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Technique); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                                string localLeftPaddedString14() { string argbuf = SrcFormatter.Format(p.Technique); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                upic.Print(localLeftPaddedString14() + Strings.Space(9));
 //                                break;
@@ -1227,9 +1227,9 @@
 //                    {
 //                        case var case10 when case10 > 0:
 //                            {
-//                                string localLeftPaddedString15() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.IntuitionBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                                string localLeftPaddedString15() { string argbuf = SrcFormatter.Format(p.IntuitionBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
-//                                string localRightPaddedString10() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.IntuitionMod + p.IntuitionMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+//                                string localRightPaddedString10() { string argbuf = "+" + SrcFormatter.Format(p.IntuitionMod + p.IntuitionMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
 
 //                                upic.Print(localLeftPaddedString15() + localRightPaddedString10());
 //                                break;
@@ -1237,9 +1237,9 @@
 
 //                        case var case11 when case11 < 0:
 //                            {
-//                                string localLeftPaddedString16() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.IntuitionBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                                string localLeftPaddedString16() { string argbuf = SrcFormatter.Format(p.IntuitionBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
-//                                string localRightPaddedString11() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.IntuitionMod + p.IntuitionMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+//                                string localRightPaddedString11() { string argbuf = SrcFormatter.Format(p.IntuitionMod + p.IntuitionMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
 
 //                                upic.Print(localLeftPaddedString16() + localRightPaddedString11());
 //                                break;
@@ -1247,7 +1247,7 @@
 
 //                        case 0:
 //                            {
-//                                string localLeftPaddedString17() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Intuition); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                                string localLeftPaddedString17() { string argbuf = SrcFormatter.Format(p.Intuition); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                                upic.Print(localLeftPaddedString17() + Strings.Space(9));
 //                                break;
@@ -1286,7 +1286,7 @@
 //                    }
 //                    else if (!p.IsSupport(ref u))
 //                    {
-//                        string localLeftPaddedString18() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Defense); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                        string localLeftPaddedString18() { string argbuf = SrcFormatter.Format(p.Defense); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                        upic.Print(localLeftPaddedString18());
 //                    }
@@ -1396,7 +1396,7 @@
 //                            upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityDisable, Information.RGB(150, 0, 0))));
 //                            // MOD  END  240a
 //                        }
-//                        upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Plana) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.MaxPlana()));
+//                        upic.Print(SrcFormatter.Format(p.Plana) + "/" + SrcFormatter.Format(p.MaxPlana()));
 //                        // MOD START 240a
 //                        // upic.ForeColor = rgb(0, 0, 0)
 //                        upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -1433,7 +1433,7 @@
 //                            upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityDisable, Information.RGB(150, 0, 0))));
 //                            // MOD  END  240a
 //                        }
-//                        upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.SynchroRate()) + "%");
+//                        upic.Print(SrcFormatter.Format(p.SynchroRate()) + "%");
 //                        // MOD START 240a
 //                        // upic.ForeColor = rgb(0, 0, 0)
 //                        upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -1626,7 +1626,7 @@
 
 //                                    if (u.AuraLevel(true) > Conversions.ToDouble(slevel))
 //                                    {
-//                                        sname = sname + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.AuraLevel(true) - Conversions.ToDouble(slevel));
+//                                        sname = sname + "+" + SrcFormatter.Format(u.AuraLevel(true) - Conversions.ToDouble(slevel));
 //                                    }
 //                                }
 
@@ -1647,7 +1647,7 @@
 
 //                                    if (u.PsychicLevel(true) > Conversions.ToDouble(slevel))
 //                                    {
-//                                        sname = sname + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.PsychicLevel(true) - Conversions.ToDouble(slevel));
+//                                        sname = sname + "+" + SrcFormatter.Format(u.PsychicLevel(true) - Conversions.ToDouble(slevel));
 //                                    }
 //                                }
 
@@ -1888,7 +1888,7 @@
 //                                        // MOD  END  240a
 //                                    }
 
-//                                    sname = sname + " (残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(ret) + "回)";
+//                                    sname = sname + " (残り" + SrcFormatter.Format(ret) + "回)";
 //                                }
 
 //                                break;
@@ -1907,7 +1907,7 @@
 //                                        // MOD  END  240a
 //                                    }
 
-//                                    sname = sname + " (残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(ret) + "回)";
+//                                    sname = sname + " (残り" + SrcFormatter.Format(ret) + "回)";
 //                                }
 
 //                                break;
@@ -1927,7 +1927,7 @@
 //                                        // MOD  END  240a
 //                                    }
 
-//                                    sname = sname + " (残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(ret) + "回)";
+//                                    sname = sname + " (残り" + SrcFormatter.Format(ret) + "回)";
 //                                }
 
 //                                break;
@@ -1946,7 +1946,7 @@
 //                                        // MOD  END  240a
 //                                    }
 
-//                                    sname = sname + " (残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(ret) + "回)";
+//                                    sname = sname + " (残り" + SrcFormatter.Format(ret) + "回)";
 //                                }
 
 //                                break;
@@ -1963,7 +1963,7 @@
 //                                    }
 //                                    else if (ret > 0)
 //                                    {
-//                                        sname = sname + " (残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(ret) + "回)";
+//                                        sname = sname + " (残り" + SrcFormatter.Format(ret) + "回)";
 //                                    }
 //                                    else
 //                                    {
@@ -2080,8 +2080,8 @@
 //                // ここからはユニットに関する情報
 
 //                // ユニット愛称
-//                upic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(upic.Font, 10.5f);
-//                upic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeBold(upic.Font, false);
+//                upic.Font = SrcFormatter.FontChangeSize(upic.Font, 10.5f);
+//                upic.Font = SrcFormatter.FontChangeBold(upic.Font, false);
 //                // ADD START 240a
 //                if (GUI.NewGUIMode)
 //                {
@@ -2091,8 +2091,8 @@
 //                }
 //                // ADD  END  240a
 //                upic.Print(withBlock.Nickname0);
-//                upic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeBold(upic.Font, false);
-//                upic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(upic.Font, 9f);
+//                upic.Font = SrcFormatter.FontChangeBold(upic.Font, false);
+//                upic.Font = SrcFormatter.FontChangeSize(upic.Font, 9f);
 //                if (withBlock.Status_Renamed == "出撃" & !string.IsNullOrEmpty(Map.MapFileName))
 //                {
 
@@ -2119,31 +2119,31 @@
 //                    {
 //                        if (Map.TerrainEffectForHit(withBlock.x, withBlock.y) >= 0)
 //                        {
-//                            upic.Print(" 回＆防+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHit(withBlock.x, withBlock.y)) + "%");
+//                            upic.Print(" 回＆防+" + SrcFormatter.Format(Map.TerrainEffectForHit(withBlock.x, withBlock.y)) + "%");
 //                        }
 //                        else
 //                        {
-//                            upic.Print(" 回＆防" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHit(withBlock.x, withBlock.y)) + "%");
+//                            upic.Print(" 回＆防" + SrcFormatter.Format(Map.TerrainEffectForHit(withBlock.x, withBlock.y)) + "%");
 //                        }
 //                    }
 //                    else
 //                    {
 //                        if (Map.TerrainEffectForHit(withBlock.x, withBlock.y) >= 0)
 //                        {
-//                            upic.Print(" 回+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHit(withBlock.x, withBlock.y)) + "%");
+//                            upic.Print(" 回+" + SrcFormatter.Format(Map.TerrainEffectForHit(withBlock.x, withBlock.y)) + "%");
 //                        }
 //                        else
 //                        {
-//                            upic.Print(" 回" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHit(withBlock.x, withBlock.y)) + "%");
+//                            upic.Print(" 回" + SrcFormatter.Format(Map.TerrainEffectForHit(withBlock.x, withBlock.y)) + "%");
 //                        }
 
 //                        if (Map.TerrainEffectForDamage(withBlock.x, withBlock.y) >= 0)
 //                        {
-//                            upic.Print(" 防+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForDamage(withBlock.x, withBlock.y)) + "%");
+//                            upic.Print(" 防+" + SrcFormatter.Format(Map.TerrainEffectForDamage(withBlock.x, withBlock.y)) + "%");
 //                        }
 //                        else
 //                        {
-//                            upic.Print(" 防" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForDamage(withBlock.x, withBlock.y)) + "%");
+//                            upic.Print(" 防" + SrcFormatter.Format(Map.TerrainEffectForDamage(withBlock.x, withBlock.y)) + "%");
 //                        }
 //                    }
 
@@ -2152,14 +2152,14 @@
 //                    {
 //                        string argtname28 = "ＨＰ";
 //                        Unit argu = null;
-//                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname28, u: ref argu), 1) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHPRecover(withBlock.x, withBlock.y)) + "%");
+//                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname28, u: ref argu), 1) + "+" + SrcFormatter.Format(Map.TerrainEffectForHPRecover(withBlock.x, withBlock.y)) + "%");
 //                    }
 
 //                    if (Map.TerrainEffectForENRecover(withBlock.x, withBlock.y) > 0)
 //                    {
 //                        string argtname29 = "ＥＮ";
 //                        Unit argu1 = null;
-//                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname29, u: ref argu1), 1) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForENRecover(withBlock.x, withBlock.y)) + "%");
+//                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname29, u: ref argu1), 1) + "+" + SrcFormatter.Format(Map.TerrainEffectForENRecover(withBlock.x, withBlock.y)) + "%");
 //                    }
 
 //                    // MOD START 240a
@@ -2188,7 +2188,7 @@
 //                        string argtname30 = "ＨＰ";
 //                        Unit argu2 = null;
 //                        object argIndex33 = "ＨＰ減少";
-//                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname30, u: ref argu2), 1) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(ref argIndex33)) + "%");
+//                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname30, u: ref argu2), 1) + "-" + SrcFormatter.Format(10d * td.FeatureLevel(ref argIndex33)) + "%");
 //                    }
 
 //                    string argfname15 = "ＥＮ減少";
@@ -2197,7 +2197,7 @@
 //                        string argtname31 = "ＥＮ";
 //                        Unit argu3 = null;
 //                        object argIndex34 = "ＥＮ減少";
-//                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname31, u: ref argu3), 1) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(ref argIndex34)) + "%");
+//                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname31, u: ref argu3), 1) + "-" + SrcFormatter.Format(10d * td.FeatureLevel(ref argIndex34)) + "%");
 //                    }
 
 //                    // ＨＰ＆ＥＮ増加
@@ -2207,7 +2207,7 @@
 //                        string argtname32 = "ＨＰ";
 //                        Unit argu4 = null;
 //                        object argIndex35 = "ＨＰ増加";
-//                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname32, u: ref argu4), 1) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(1000d * td.FeatureLevel(ref argIndex35)));
+//                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname32, u: ref argu4), 1) + "+" + SrcFormatter.Format(1000d * td.FeatureLevel(ref argIndex35)));
 //                    }
 
 //                    string argfname17 = "ＥＮ増加";
@@ -2216,7 +2216,7 @@
 //                        string argtname33 = "ＥＮ";
 //                        Unit argu5 = null;
 //                        object argIndex36 = "ＥＮ増加";
-//                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname33, u: ref argu5), 1) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(ref argIndex36)));
+//                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname33, u: ref argu5), 1) + "+" + SrcFormatter.Format(10d * td.FeatureLevel(ref argIndex36)));
 //                    }
 
 //                    // ＨＰ＆ＥＮ低下
@@ -2226,7 +2226,7 @@
 //                        string argtname34 = "ＨＰ";
 //                        Unit argu6 = null;
 //                        object argIndex37 = "ＨＰ低下";
-//                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname34, u: ref argu6), 1) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(1000d * td.FeatureLevel(ref argIndex37)));
+//                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname34, u: ref argu6), 1) + "-" + SrcFormatter.Format(1000d * td.FeatureLevel(ref argIndex37)));
 //                    }
 
 //                    string argfname19 = "ＥＮ低下";
@@ -2235,7 +2235,7 @@
 //                        string argtname35 = "ＥＮ";
 //                        Unit argu7 = null;
 //                        object argIndex38 = "ＥＮ低下";
-//                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname35, u: ref argu7), 1) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(ref argIndex38)));
+//                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname35, u: ref argu7), 1) + "-" + SrcFormatter.Format(10d * td.FeatureLevel(ref argIndex38)));
 //                    }
 
 //                    // 摩擦
@@ -2243,7 +2243,7 @@
 //                    if (td.IsFeatureAvailable(ref argfname20))
 //                    {
 //                        object argIndex39 = "摩擦";
-//                        upic.Print(" 摩L" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(td.FeatureLevel(ref argIndex39)));
+//                        upic.Print(" 摩L" + SrcFormatter.Format(td.FeatureLevel(ref argIndex39)));
 //                    }
 
 //                    upic.Print(")");
@@ -2259,7 +2259,7 @@
 //                    // upic.ForeColor = rgb(0, 0, 0)
 //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                    // MOD  END  240a
-//                    upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Rank));
+//                    upic.Print(SrcFormatter.Format(withBlock.Rank));
 //                }
 
 //                // 未確認ユニット？
@@ -2497,7 +2497,7 @@
 //                                    var withBlock2 = withBlock1.Unit_Renamed;
 //                                    if (withBlock2.Status_Renamed == "出撃")
 //                                    {
-//                                        upic.Print(withBlock2.Nickname + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock2.x) + "," + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock2.y) + ")を");
+//                                        upic.Print(withBlock2.Nickname + "(" + SrcFormatter.Format(withBlock2.x) + "," + SrcFormatter.Format(withBlock2.y) + ")を");
 //                                        if (withBlock2.Party == "味方")
 //                                        {
 //                                            upic.Print("護衛中");
@@ -2593,7 +2593,7 @@
 //                                {
 //                                    short localConditionLifetime() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                    upic.Print("残り時間" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime()) + "ターン");
+//                                    upic.Print("残り時間" + SrcFormatter.Format(localConditionLifetime()) + "ターン");
 //                                }
 
 //                                break;
@@ -2617,7 +2617,7 @@
 //                                {
 //                                    short localConditionLifetime3() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                    upic.Print(" " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime3()) + "T");
+//                                    upic.Print(" " + SrcFormatter.Format(localConditionLifetime3()) + "T");
 //                                }
 //                                upic.Print("");
 //                                break;
@@ -2636,7 +2636,7 @@
 //                                {
 //                                    short localConditionLifetime6() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime6()) + "ターン");
+//                                    upic.Print(" 残り" + SrcFormatter.Format(localConditionLifetime6()) + "ターン");
 //                                }
 //                                upic.Print("");
 //                                break;
@@ -2657,7 +2657,7 @@
 //                                {
 //                                    short localConditionLifetime9() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime9()) + "ターン");
+//                                    upic.Print(" 残り" + SrcFormatter.Format(localConditionLifetime9()) + "ターン");
 //                                }
 //                                upic.Print("");
 //                                break;
@@ -2684,7 +2684,7 @@
 //                                {
 //                                    short localConditionLifetime12() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime12()) + "ターン");
+//                                    upic.Print(" 残り" + SrcFormatter.Format(localConditionLifetime12()) + "ターン");
 //                                }
 //                                upic.Print("");
 //                                break;
@@ -2711,7 +2711,7 @@
 //                                {
 //                                    short localConditionLifetime15() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime15()) + "ターン");
+//                                    upic.Print(" 残り" + SrcFormatter.Format(localConditionLifetime15()) + "ターン");
 //                                }
 //                                upic.Print("");
 //                                break;
@@ -2738,7 +2738,7 @@
 //                                {
 //                                    short localConditionLifetime18() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime18()) + "ターン");
+//                                    upic.Print(" 残り" + SrcFormatter.Format(localConditionLifetime18()) + "ターン");
 //                                }
 //                                upic.Print("");
 //                                break;
@@ -2765,7 +2765,7 @@
 //                                {
 //                                    short localConditionLifetime21() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime21()) + "ターン");
+//                                    upic.Print(" 残り" + SrcFormatter.Format(localConditionLifetime21()) + "ターン");
 //                                }
 //                                upic.Print("");
 //                                break;
@@ -2782,7 +2782,7 @@
 //                                {
 //                                    short localConditionLifetime24() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime24()) + "ターン");
+//                                    upic.Print(" 残り" + SrcFormatter.Format(localConditionLifetime24()) + "ターン");
 //                                }
 //                                upic.Print("");
 //                                break;
@@ -2797,7 +2797,7 @@
 //                                upic.Print(localLIndex3() + "付加");
 //                                double localConditionLevel4() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
 
-//                                upic.Print("(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLevel4()) + ")");
+//                                upic.Print("(" + SrcFormatter.Format(localConditionLevel4()) + ")");
 //                                short localConditionLifetime28() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                short localConditionLifetime29() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
@@ -2806,7 +2806,7 @@
 //                                {
 //                                    short localConditionLifetime27() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime27()) + "ターン");
+//                                    upic.Print(" 残り" + SrcFormatter.Format(localConditionLifetime27()) + "ターン");
 //                                }
 //                                upic.Print("");
 //                                break;
@@ -2822,7 +2822,7 @@
 //                                }
 //                                double localConditionLevel5() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
 
-//                                upic.Print(buf + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLevel5()), VbStrConv.Wide) + "体破壊");
+//                                upic.Print(buf + Strings.StrConv(SrcFormatter.Format(localConditionLevel5()), VbStrConv.Wide) + "体破壊");
 //                                break;
 //                            }
 
@@ -2831,7 +2831,7 @@
 //                                double localConditionLevel6() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
 
 //                                object argIndex56 = "ダミー";
-//                                upic.Print(withBlock.FeatureName(ref argIndex56) + "残り" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLevel6()), VbStrConv.Wide) + "体");
+//                                upic.Print(withBlock.FeatureName(ref argIndex56) + "残り" + Strings.StrConv(SrcFormatter.Format(localConditionLevel6()), VbStrConv.Wide) + "体");
 //                                short localConditionLifetime31() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
 //                                short localConditionLifetime32() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
@@ -2840,7 +2840,7 @@
 //                                {
 //                                    short localConditionLifetime30() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime30()) + "ターン");
+//                                    upic.Print(" 残り" + SrcFormatter.Format(localConditionLifetime30()) + "ターン");
 //                                }
 //                                upic.Print("");
 //                                break;
@@ -2861,7 +2861,7 @@
 //                                }
 //                                short localConditionLifetime33() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime33()) + "ターン");
+//                                upic.Print(" 残り" + SrcFormatter.Format(localConditionLifetime33()) + "ターン");
 //                                break;
 //                            }
 
@@ -2880,7 +2880,7 @@
 //                                }
 //                                short localConditionLifetime34() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime34()) + "ターン");
+//                                upic.Print(" 残り" + SrcFormatter.Format(localConditionLifetime34()) + "ターン");
 //                                break;
 //                            }
 
@@ -2896,7 +2896,7 @@
 //                                {
 //                                    short localConditionLifetime35() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime35()) + "ターン");
+//                                    upic.Print(" 残り" + SrcFormatter.Format(localConditionLifetime35()) + "ターン");
 //                                }
 //                                upic.Print("");
 //                                break;
@@ -2914,7 +2914,7 @@
 //                                {
 //                                    short localConditionLifetime38() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime38()) + "ターン");
+//                                    upic.Print(" 残り" + SrcFormatter.Format(localConditionLifetime38()) + "ターン");
 //                                }
 //                                upic.Print("");
 //                                break;
@@ -2932,7 +2932,7 @@
 //                                {
 //                                    short localConditionLifetime41() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime41()) + "ターン");
+//                                    upic.Print(" 残り" + SrcFormatter.Format(localConditionLifetime41()) + "ターン");
 //                                }
 //                                upic.Print("");
 //                                break;
@@ -2950,7 +2950,7 @@
 //                                {
 //                                    short localConditionLifetime44() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime44()) + "ターン");
+//                                    upic.Print(" 残り" + SrcFormatter.Format(localConditionLifetime44()) + "ターン");
 //                                }
 //                                upic.Print("");
 //                                break;
@@ -2968,7 +2968,7 @@
 //                                {
 //                                    short localConditionLifetime47() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime47()) + "ターン");
+//                                    upic.Print(" 残り" + SrcFormatter.Format(localConditionLifetime47()) + "ターン");
 //                                }
 //                                upic.Print("");
 //                                break;
@@ -2998,7 +2998,7 @@
 //                                    }
 //                                    short localConditionLifetime50() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime50()) + "ターン");
+//                                    upic.Print(" 残り" + SrcFormatter.Format(localConditionLifetime50()) + "ターン");
 //                                    goto NextCondition;
 //                                }
 
@@ -3049,7 +3049,7 @@
 
 //                                    double localConditionLevel8() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
 
-//                                    buf = Strings.Left(localCondition10(), Strings.Len(localCondition11()) - 2) + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLevel8()) + "付加";
+//                                    buf = Strings.Left(localCondition10(), Strings.Len(localCondition11()) - 2) + "Lv" + SrcFormatter.Format(localConditionLevel8()) + "付加";
 //                                }
 //                                else
 //                                {
@@ -3085,7 +3085,7 @@
 //                                {
 //                                    short localConditionLifetime51() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                    upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime51()) + "ターン");
+//                                    upic.Print(" 残り" + SrcFormatter.Format(localConditionLifetime51()) + "ターン");
 //                                }
 //                                upic.Print("");
 //                                break;
@@ -3135,7 +3135,7 @@
 //                {
 //                    if (withBlock.HP < 100000)
 //                    {
-//                        upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.HP));
+//                        upic.Print(SrcFormatter.Format(withBlock.HP));
 //                    }
 //                    else
 //                    {
@@ -3144,7 +3144,7 @@
 //                    upic.Print("/");
 //                    if (withBlock.MaxHP < 100000)
 //                    {
-//                        upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MaxHP));
+//                        upic.Print(SrcFormatter.Format(withBlock.MaxHP));
 //                    }
 //                    else
 //                    {
@@ -3191,7 +3191,7 @@
 //                {
 //                    if (withBlock.EN < 1000)
 //                    {
-//                        upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.EN));
+//                        upic.Print(SrcFormatter.Format(withBlock.EN));
 //                    }
 //                    else
 //                    {
@@ -3200,7 +3200,7 @@
 //                    upic.Print("/");
 //                    if (withBlock.MaxEN < 1000)
 //                    {
-//                        upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MaxEN));
+//                        upic.Print(SrcFormatter.Format(withBlock.MaxEN));
 //                    }
 //                    else
 //                    {
@@ -3229,7 +3229,7 @@
 //                {
 //                    case var case13 when case13 > 0:
 //                        {
-//                            string localRightPaddedString13() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("基本値")) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("修正値")); var ret = GeneralLib.RightPaddedString(ref argbuf, 12); return ret; }
+//                            string localRightPaddedString13() { string argbuf = SrcFormatter.Format(withBlock.get_Armor("基本値")) + "+" + SrcFormatter.Format(withBlock.get_Armor("修正値")); var ret = GeneralLib.RightPaddedString(ref argbuf, 12); return ret; }
 
 //                            upic.Print(localRightPaddedString13());
 //                            break;
@@ -3237,7 +3237,7 @@
 
 //                    case var case14 when case14 < 0:
 //                        {
-//                            string localRightPaddedString14() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("基本値")) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("修正値")); var ret = GeneralLib.RightPaddedString(ref argbuf, 12); return ret; }
+//                            string localRightPaddedString14() { string argbuf = SrcFormatter.Format(withBlock.get_Armor("基本値")) + SrcFormatter.Format(withBlock.get_Armor("修正値")); var ret = GeneralLib.RightPaddedString(ref argbuf, 12); return ret; }
 
 //                            upic.Print(localRightPaddedString14());
 //                            break;
@@ -3245,7 +3245,7 @@
 
 //                    case 0:
 //                        {
-//                            string localRightPaddedString15() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("")); var ret = GeneralLib.RightPaddedString(ref argbuf, 12); return ret; }
+//                            string localRightPaddedString15() { string argbuf = SrcFormatter.Format(withBlock.get_Armor("")); var ret = GeneralLib.RightPaddedString(ref argbuf, 12); return ret; }
 
 //                            upic.Print(localRightPaddedString15());
 //                            break;
@@ -3267,19 +3267,19 @@
 //                {
 //                    case var case15 when case15 > 0:
 //                        {
-//                            upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Mobility("基本値")) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Mobility("修正値")));
+//                            upic.Print(SrcFormatter.Format(withBlock.get_Mobility("基本値")) + "+" + SrcFormatter.Format(withBlock.get_Mobility("修正値")));
 //                            break;
 //                        }
 
 //                    case var case16 when case16 < 0:
 //                        {
-//                            upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Mobility("基本値")) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Mobility("修正値")));
+//                            upic.Print(SrcFormatter.Format(withBlock.get_Mobility("基本値")) + SrcFormatter.Format(withBlock.get_Mobility("修正値")));
 //                            break;
 //                        }
 
 //                    case 0:
 //                        {
-//                            upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Mobility("")));
+//                            upic.Print(SrcFormatter.Format(withBlock.get_Mobility("")));
 //                            break;
 //                        }
 //                }
@@ -3322,11 +3322,11 @@
 //                if (withBlock.IsFeatureAvailable(ref argfname22) & (withBlock.Data.Speed == 0 | localLIndex5() == "0"))
 //                {
 //                    object argIndex63 = "テレポート";
-//                    upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Speed + withBlock.FeatureLevel(ref argIndex63)));
+//                    upic.Print(SrcFormatter.Format(withBlock.Speed + withBlock.FeatureLevel(ref argIndex63)));
 //                }
 //                else
 //                {
-//                    upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Speed));
+//                    upic.Print(SrcFormatter.Format(withBlock.Speed));
 //                }
 
 //                // ADD START 240a
@@ -4584,7 +4584,7 @@
 //                                object argIndex75 = "盾";
 //                                object argIndex76 = "盾ダメージ";
 //                                object argIndex77 = "盾";
-//                                fname = fname + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GeneralLib.MaxLng((int)(withBlock.AllFeatureLevel(ref argIndex75) - withBlock.ConditionLevel(ref argIndex76)), 0)) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.AllFeatureLevel(ref argIndex77)) + ")";
+//                                fname = fname + "(" + SrcFormatter.Format(GeneralLib.MaxLng((int)(withBlock.AllFeatureLevel(ref argIndex75) - withBlock.ConditionLevel(ref argIndex76)), 0)) + "/" + SrcFormatter.Format(withBlock.AllFeatureLevel(ref argIndex77)) + ")";
 //                                break;
 //                            }
 
@@ -4671,7 +4671,7 @@
 //                                        buf = "範囲";
 //                                    }
 
-//                                    fname = fname + "(" + buf + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(j) + "マス)";
+//                                    fname = fname + "(" + buf + SrcFormatter.Format(j) + "マス)";
 //                                }
 
 //                                break;
@@ -4966,7 +4966,7 @@
 //                        upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                        // MOD  END  240a
 //                    }
-//                    upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(dmg));
+//                    upic.Print(SrcFormatter.Format(dmg));
 //                }
 
 //                // ADD START 240a
@@ -5058,7 +5058,7 @@
 //                            upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
 //                            // MOD  END  240a
 //                        }
-//                        upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(dmg));
+//                        upic.Print(SrcFormatter.Format(dmg));
 //                    }
 
 //                    // ADD START 240a
@@ -5082,7 +5082,7 @@
 //                        // MOD  END  240a
 //                        prob = withBlock.HitProbability(w, ref Commands.SelectedUnit, true);
 //                        cprob = withBlock.CriticalProbability(w, ref Commands.SelectedUnit);
-//                        upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GeneralLib.MinLng(prob, 100)) + "％（" + cprob + "％）");
+//                        upic.Print(SrcFormatter.Format(GeneralLib.MinLng(prob, 100)) + "％（" + cprob + "％）");
 //                    }
 //                }
 //                else
@@ -5229,17 +5229,17 @@
 //                    string argtarea1 = "";
 //                    if (withBlock.WeaponPower(w, ref argtarea1) < 10000)
 //                    {
-//                        string argbuf18 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.WeaponNickname(w));
+//                        string argbuf18 = SrcFormatter.Format(withBlock.WeaponNickname(w));
 //                        buf = GeneralLib.RightPaddedString(ref argbuf18, 25);
-//                        string localLeftPaddedString19() { string argtarea = ""; string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.WeaponPower(w, ref argtarea)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+//                        string localLeftPaddedString19() { string argtarea = ""; string argbuf = SrcFormatter.Format(withBlock.WeaponPower(w, ref argtarea)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
 
 //                        buf = buf + localLeftPaddedString19();
 //                    }
 //                    else
 //                    {
-//                        string argbuf19 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.WeaponNickname(w));
+//                        string argbuf19 = SrcFormatter.Format(withBlock.WeaponNickname(w));
 //                        buf = GeneralLib.RightPaddedString(ref argbuf19, 24);
-//                        string localLeftPaddedString20() { string argtarea = ""; string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.WeaponPower(w, ref argtarea)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                        string localLeftPaddedString20() { string argtarea = ""; string argbuf = SrcFormatter.Format(withBlock.WeaponPower(w, ref argtarea)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                        buf = buf + localLeftPaddedString20();
 //                    }
@@ -5247,7 +5247,7 @@
 //                    // 武器が特殊効果を持つ場合は略称で表記
 //                    if (withBlock.WeaponMaxRange(w) > 1)
 //                    {
-//                        string localLeftPaddedString21() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Weapon(w).MinRange) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.WeaponMaxRange(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 34 - LenB(Strings.StrConv(buf, vbFromUnicode))); return ret; }
+//                        string localLeftPaddedString21() { string argbuf = SrcFormatter.Format(withBlock.Weapon(w).MinRange) + "-" + SrcFormatter.Format(withBlock.WeaponMaxRange(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 34 - LenB(Strings.StrConv(buf, vbFromUnicode))); return ret; }
 
 //                        buf = buf + localLeftPaddedString21();
 //                        // 移動後攻撃可能
@@ -5340,12 +5340,12 @@
 //                    }
 //                    // ADD  END  240a
 //                    // アビリティの表示
-//                    string localRightPaddedString18() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.AbilityNickname(i)); var ret = GeneralLib.RightPaddedString(ref argbuf, 29); return ret; }
+//                    string localRightPaddedString18() { string argbuf = SrcFormatter.Format(withBlock.AbilityNickname(i)); var ret = GeneralLib.RightPaddedString(ref argbuf, 29); return ret; }
 
 //                    upic.Print(localRightPaddedString18());
 //                    if (withBlock.AbilityMaxRange(i) > 1)
 //                    {
-//                        string localLeftPaddedString22() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.AbilityMinRange(i)) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.AbilityMaxRange(i)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+//                        string localLeftPaddedString22() { string argbuf = SrcFormatter.Format(withBlock.AbilityMinRange(i)) + "-" + SrcFormatter.Format(withBlock.AbilityMaxRange(i)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
 
 //                        upic.Print(localLeftPaddedString22());
 //                        string argattr14 = "Ｐ";
@@ -5412,12 +5412,12 @@
 //                    // MOD START 240a
 //                    // upic.Move MainPWidth - 230 - 5, 10
 //                    // 画面左側にカーソルがある場合
-//                    upic.SetBounds((int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(GUI.MainPWidth - 240), (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(10d), 0, 0, BoundsSpecified.X | BoundsSpecified.Y);
+//                    upic.SetBounds((int)SrcFormatter.TwipsToPixelsX(GUI.MainPWidth - 240), (int)SrcFormatter.TwipsToPixelsY(10d), 0, 0, BoundsSpecified.X | BoundsSpecified.Y);
 //                }
 //                // MOD  END
 //                else
 //                {
-//                    upic.SetBounds((int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(5d), (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(10d), 0, 0, BoundsSpecified.X | BoundsSpecified.Y);
+//                    upic.SetBounds((int)SrcFormatter.TwipsToPixelsX(5d), (int)SrcFormatter.TwipsToPixelsY(10d), 0, 0, BoundsSpecified.X | BoundsSpecified.Y);
 //                }
 
 //                if (upic.Visible)

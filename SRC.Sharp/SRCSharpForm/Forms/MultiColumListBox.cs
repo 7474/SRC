@@ -48,8 +48,8 @@ namespace Project1
         {
             //short Button = (short)((int)eventArgs.Button / 0x100000);
             //short Shift = (short)((int)ModifierKeys / 0x10000);
-            //float X = (float)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(eventArgs.X);
-            //float Y = (float)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(eventArgs.Y);
+            //float X = (float)SrcFormatter.PixelsToTwipsX(eventArgs.X);
+            //float Y = (float)SrcFormatter.PixelsToTwipsY(eventArgs.Y);
             //switch (Button)
             //{
             //    case 1:
@@ -118,8 +118,8 @@ namespace Project1
         {
             //short Button = (short)((int)eventArgs.Button / 0x100000);
             //short Shift = (short)((int)ModifierKeys / 0x10000);
-            //float X = (float)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(eventArgs.X);
-            //float Y = (float)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(eventArgs.Y);
+            //float X = (float)SrcFormatter.PixelsToTwipsX(eventArgs.X);
+            //float Y = (float)SrcFormatter.PixelsToTwipsY(eventArgs.Y);
             //short itm;
             //short lines;
             //{
@@ -132,8 +132,8 @@ namespace Project1
             //    }
 
             //    // マウスカーソルがあるアイテムを算出
-            //    itm = (long)(X * ClientRectangle.Width) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Width) / (withBlock.Width / withBlock.Columns) * lines;
-            //    itm = (short)(itm + ((long)(Y * ClientRectangle.Width) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Width) + 1L) / 16L);
+            //    itm = (long)(X * ClientRectangle.Width) / (long)SrcFormatter.PixelsToTwipsX(Width) / (withBlock.Width / withBlock.Columns) * lines;
+            //    itm = (short)(itm + ((long)(Y * ClientRectangle.Width) / (long)SrcFormatter.PixelsToTwipsX(Width) + 1L) / 16L);
             //    itm = (short)(itm + withBlock.TopIndex);
 
             //    // カーソル上のアイテムをハイライト表示

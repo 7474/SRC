@@ -151,11 +151,11 @@
 //                        if (u.FeatureName0(ref argIndex14) == "オーラバリア")
 //                        {
 //                            object argIndex13 = "オーラバリア";
-//                            msg = "オーラ技「オ」の攻撃力と" + u.FeatureName0(ref argIndex13) + "の強度に" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(100d * slevel)) + "の修正を与える。";
+//                            msg = "オーラ技「オ」の攻撃力と" + u.FeatureName0(ref argIndex13) + "の強度に" + SrcFormatter.Format((int)(100d * slevel)) + "の修正を与える。";
 //                        }
 //                        else
 //                        {
-//                            msg = "オーラ技「オ」の攻撃力の強度に" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(100d * slevel)) + "の修正を与える。";
+//                            msg = "オーラ技「オ」の攻撃力の強度に" + SrcFormatter.Format((int)(100d * slevel)) + "の修正を与える。";
 //                        }
 
 //                        string argfname = "オーラ変換器";
@@ -174,7 +174,7 @@
 
 //                case "分身":
 //                    {
-//                        msg = Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)((long)(100d * slevel) / 16L)) + "% の確率で分身し、攻撃を回避する。";
+//                        msg = SrcFormatter.Format((int)((long)(100d * slevel) / 16L)) + "% の確率で分身し、攻撃を回避する。";
 //                        break;
 //                    }
 
@@ -185,7 +185,7 @@
 //                        msg = Expression.Term(ref argtname4, ref u) + "・" + Expression.Term(ref argtname5, ref u);
 //                        if (slevel > 0d)
 //                        {
-//                            msg = msg + "に +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel + 3d)) + " の修正を与える。";
+//                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel + 3d)) + " の修正を与える。";
 //                        }
 //                        else
 //                        {
@@ -194,7 +194,7 @@
 
 //                        if (slevel > 3d)
 //                        {
-//                            msg = msg + ";思念誘導攻撃(サ)の射程を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)((long)slevel / 4L)) + "だけ延長する。";
+//                            msg = msg + ";思念誘導攻撃(サ)の射程を" + SrcFormatter.Format((int)((long)slevel / 4L)) + "だけ延長する。";
 //                        }
 
 //                        break;
@@ -207,7 +207,7 @@
 //                        msg = Expression.Term(ref argtname6, ref u) + "・" + Expression.Term(ref argtname7, ref u);
 //                        if (slevel > 0d)
 //                        {
-//                            msg = msg + "に +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel + 3d)) + " の修正を与える。;";
+//                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel + 3d)) + " の修正を与える。;";
 //                        }
 //                        else
 //                        {
@@ -216,7 +216,7 @@
 
 //                        if (slevel > 3d)
 //                        {
-//                            msg = msg + "思念誘導攻撃(サ)の射程を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)((long)slevel / 4L)) + "だけ延長する。";
+//                            msg = msg + "思念誘導攻撃(サ)の射程を" + SrcFormatter.Format((int)((long)slevel / 4L)) + "だけ延長する。";
 //                        }
 
 //                        string argtname8 = "ＳＰ";
@@ -231,7 +231,7 @@
 //                        msg = Expression.Term(ref argtname9, ref u) + "・" + Expression.Term(ref argtname10, ref u);
 //                        if (slevel > 0d)
 //                        {
-//                            msg = msg + "に +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel + 3d)) + " の修正を与える。";
+//                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel + 3d)) + " の修正を与える。";
 //                        }
 //                        else
 //                        {
@@ -243,13 +243,13 @@
 
 //                case "切り払い":
 //                    {
-//                        msg = "格闘武器(武)、突進技(突)、実弾攻撃(実)による攻撃を " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)((long)(100d * slevel) / 16L)) + "% の確率で切り払って回避する。";
+//                        msg = "格闘武器(武)、突進技(突)、実弾攻撃(実)による攻撃を " + SrcFormatter.Format((int)((long)(100d * slevel) / 16L)) + "% の確率で切り払って回避する。";
 //                        break;
 //                    }
 
 //                case "迎撃":
 //                    {
-//                        msg = "実弾攻撃(実)による攻撃を " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)((long)(100d * slevel) / 16L)) + "% の確率で迎撃する。";
+//                        msg = "実弾攻撃(実)による攻撃を " + SrcFormatter.Format((int)((long)(100d * slevel) / 16L)) + "% の確率で迎撃する。";
 //                        break;
 //                    }
 
@@ -267,11 +267,11 @@
 //                        string argfname1 = "盾";
 //                        if (u.IsFeatureAvailable(ref argfname1))
 //                        {
-//                            msg = "シールド防御を行い、ダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(100d * slevel + 400d)) + "減少させる。";
+//                            msg = "シールド防御を行い、ダメージを" + SrcFormatter.Format((int)(100d * slevel + 400d)) + "減少させる。";
 //                        }
 //                        else
 //                        {
-//                            msg = Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)((long)(100d * slevel) / 16L)) + "% の確率でシールド防御を行う。";
+//                            msg = SrcFormatter.Format((int)((long)(100d * slevel) / 16L)) + "% の確率でシールド防御を行う。";
 //                        }
 
 //                        break;
@@ -288,11 +288,11 @@
 //                        }
 //                        else if (slevel >= 0d)
 //                        {
-//                            msg = msg + "が " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * slevel) + "% 増加する。";
+//                            msg = msg + "が " + SrcFormatter.Format(10d * slevel) + "% 増加する。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "が " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(-10 * slevel) + "% 減少する。";
+//                            msg = msg + "が " + SrcFormatter.Format(-10 * slevel) + "% 減少する。";
 //                        }
 
 //                        break;
@@ -326,12 +326,12 @@
 //                        if (slevel >= 0d)
 //                        {
 //                            object argIndex16 = "同調率";
-//                            msg = p.SkillName0(ref argIndex16) + "の成長率が " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * slevel) + "% 増加する。";
+//                            msg = p.SkillName0(ref argIndex16) + "の成長率が " + SrcFormatter.Format(10d * slevel) + "% 増加する。";
 //                        }
 //                        else
 //                        {
 //                            object argIndex17 = "同調率";
-//                            msg = p.SkillName0(ref argIndex17) + "の成長率が " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(-10 * slevel) + "% 減少する。";
+//                            msg = p.SkillName0(ref argIndex17) + "の成長率が " + SrcFormatter.Format(-10 * slevel) + "% 減少する。";
 //                        }
 
 //                        break;
@@ -352,12 +352,12 @@
 //                        if (slevel >= 0d)
 //                        {
 //                            object argIndex18 = "霊力";
-//                            msg = p.SkillName0(ref argIndex18) + "の成長率が " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * slevel) + "% 増加する。";
+//                            msg = p.SkillName0(ref argIndex18) + "の成長率が " + SrcFormatter.Format(10d * slevel) + "% 増加する。";
 //                        }
 //                        else
 //                        {
 //                            object argIndex19 = "霊力";
-//                            msg = p.SkillName0(ref argIndex19) + "の成長率が " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(-10 * slevel) + "% 減少する。";
+//                            msg = p.SkillName0(ref argIndex19) + "の成長率が " + SrcFormatter.Format(-10 * slevel) + "% 減少する。";
 //                        }
 
 //                        break;
@@ -413,11 +413,11 @@
 //                        }
 //                        else if (slevel >= 0d)
 //                        {
-//                            msg = "入手する経験値が " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * slevel) + "% 増加する。";
+//                            msg = "入手する経験値が " + SrcFormatter.Format(10d * slevel) + "% 増加する。";
 //                        }
 //                        else
 //                        {
-//                            msg = "入手する経験値が " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(-10 * slevel) + "% 減少する。";
+//                            msg = "入手する経験値が " + SrcFormatter.Format(-10 * slevel) + "% 減少する。";
 //                        }
 
 //                        break;
@@ -433,7 +433,7 @@
 //                case "英雄":
 //                    {
 //                        string argtname27 = "ＨＰ";
-//                        msg = Expression.Term(ref argtname27, ref u) + "が０になった時に" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)((long)(100d * slevel) / 16L)) + "%の確率で復活する。";
+//                        msg = Expression.Term(ref argtname27, ref u) + "が０になった時に" + SrcFormatter.Format((int)((long)(100d * slevel) / 16L)) + "%の確率で復活する。";
 //                        break;
 //                    }
 
@@ -443,7 +443,7 @@
 //                        string argtname29 = "回避";
 //                        string argtname30 = "ＣＴ率";
 //                        string argtname31 = "ＳＰ";
-//                        msg = Expression.Term(ref argtname28, ref u) + "・" + Expression.Term(ref argtname29, ref u) + "・" + Expression.Term(ref argtname30, ref u) + "にそれぞれ +5。;" + "サイキック攻撃(超)の攻撃力に +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(100d * slevel)) + "。;" + Expression.Term(ref argtname31, ref u) + "消費量を20%削減する。";
+//                        msg = Expression.Term(ref argtname28, ref u) + "・" + Expression.Term(ref argtname29, ref u) + "・" + Expression.Term(ref argtname30, ref u) + "にそれぞれ +5。;" + "サイキック攻撃(超)の攻撃力に +" + SrcFormatter.Format((int)(100d * slevel)) + "。;" + Expression.Term(ref argtname31, ref u) + "消費量を20%削減する。";
 //                        break;
 //                    }
 
@@ -463,11 +463,11 @@
 //                        msg = Expression.Term(ref argtname34, ref u) + "・" + Expression.Term(ref argtname35, ref u) + "・" + Expression.Term(ref argtname36, ref u);
 //                        if (slevel >= 0d)
 //                        {
-//                            msg = msg + "にそれぞれ +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel)) + " の修正を与える。";
+//                            msg = msg + "にそれぞれ +" + SrcFormatter.Format((int)(2d * slevel)) + " の修正を与える。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "にそれぞれ " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel)) + " の修正を与える。";
+//                            msg = msg + "にそれぞれ " + SrcFormatter.Format((int)(2d * slevel)) + " の修正を与える。";
 //                        }
 
 //                        break;
@@ -547,7 +547,7 @@
 //                        string argtname37 = "アビリティ";
 //                        string argtname38 = "アビリティ";
 //                        string argtname39 = "ＥＮ";
-//                        msg = "術属性を持つ武装・" + Expression.Term(ref argtname37, ref u) + "及び必要技能が" + sname0 + "の武装・" + Expression.Term(ref argtname38, ref u) + "の消費" + Expression.Term(ref argtname39, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i) + "%減少させる。";
+//                        msg = "術属性を持つ武装・" + Expression.Term(ref argtname37, ref u) + "及び必要技能が" + sname0 + "の武装・" + Expression.Term(ref argtname38, ref u) + "の消費" + Expression.Term(ref argtname39, ref u) + "を" + SrcFormatter.Format(i) + "%減少させる。";
 //                        break;
 //                    }
 
@@ -625,7 +625,7 @@
 //                        string argtname40 = "アビリティ";
 //                        string argtname41 = "アビリティ";
 //                        string argtname42 = "ＥＮ";
-//                        msg = "技属性を持つ武装・" + Expression.Term(ref argtname40, ref u) + "及び必要技能が" + sname0 + "の武装・" + Expression.Term(ref argtname41, ref u) + "の消費" + Expression.Term(ref argtname42, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i) + "%減少させる。";
+//                        msg = "技属性を持つ武装・" + Expression.Term(ref argtname40, ref u) + "及び必要技能が" + sname0 + "の武装・" + Expression.Term(ref argtname41, ref u) + "の消費" + Expression.Term(ref argtname42, ref u) + "を" + SrcFormatter.Format(i) + "%減少させる。";
 //                        break;
 //                    }
 
@@ -645,17 +645,17 @@
 //                            if (!p.IsSkillLevelSpecified(ref argIndex20))
 //                            {
 //                                string argtname45 = "気力";
-//                                msg = "出撃時の" + Expression.Term(ref argtname45, ref u) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.MinMorale + 5d * slevel) + "に増加する。";
+//                                msg = "出撃時の" + Expression.Term(ref argtname45, ref u) + "が" + SrcFormatter.Format(p.MinMorale + 5d * slevel) + "に増加する。";
 //                            }
 //                            else if (slevel >= 0d)
 //                            {
 //                                string argtname47 = "気力";
-//                                msg = "出撃時の" + Expression.Term(ref argtname47, ref u) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.MinMorale + 5d * slevel) + "に増加する。";
+//                                msg = "出撃時の" + Expression.Term(ref argtname47, ref u) + "が" + SrcFormatter.Format(p.MinMorale + 5d * slevel) + "に増加する。";
 //                            }
 //                            else
 //                            {
 //                                string argtname46 = "気力";
-//                                msg = "出撃時の" + Expression.Term(ref argtname46, ref u) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.MinMorale + 5d * slevel) + "に減少する。";
+//                                msg = "出撃時の" + Expression.Term(ref argtname46, ref u) + "が" + SrcFormatter.Format(p.MinMorale + 5d * slevel) + "に減少する。";
 //                            }
 //                        }
 //                        else
@@ -669,12 +669,12 @@
 //                            else if (slevel >= 0d)
 //                            {
 //                                string argtname50 = "気力";
-//                                msg = "出撃時の" + Expression.Term(ref argtname50, ref u) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(100d + 5d * slevel) + "に増加する。";
+//                                msg = "出撃時の" + Expression.Term(ref argtname50, ref u) + "が" + SrcFormatter.Format(100d + 5d * slevel) + "に増加する。";
 //                            }
 //                            else
 //                            {
 //                                string argtname49 = "気力";
-//                                msg = "出撃時の" + Expression.Term(ref argtname49, ref u) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(100d + 5d * slevel) + "に減少する。";
+//                                msg = "出撃時の" + Expression.Term(ref argtname49, ref u) + "が" + SrcFormatter.Format(100d + 5d * slevel) + "に減少する。";
 //                            }
 //                        }
 
@@ -702,14 +702,14 @@
 //                    {
 //                        string argtname53 = "命中";
 //                        string argtname54 = "回避";
-//                        msg = "半径" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.CommandRange()), VbStrConv.Wide) + "マス以内にいる味方ザコ・汎用及び階級所有パイロットの" + Expression.Term(ref argtname53, ref u) + "・" + Expression.Term(ref argtname54, ref u);
+//                        msg = "半径" + Strings.StrConv(SrcFormatter.Format(p.CommandRange()), VbStrConv.Wide) + "マス以内にいる味方ザコ・汎用及び階級所有パイロットの" + Expression.Term(ref argtname53, ref u) + "・" + Expression.Term(ref argtname54, ref u);
 //                        if (slevel >= 0d)
 //                        {
-//                            msg = msg + "に +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(5d * slevel)) + "。";
+//                            msg = msg + "に +" + SrcFormatter.Format((int)(5d * slevel)) + "。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "に " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(5d * slevel)) + "。";
+//                            msg = msg + "に " + SrcFormatter.Format((int)(5d * slevel)) + "。";
 //                        }
 
 //                        break;
@@ -719,10 +719,10 @@
 //                    {
 //                        if (Strings.InStr(sname, "階級Lv") == 0)
 //                        {
-//                            msg = "階級レベル" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)slevel), VbStrConv.Wide) + "に相当する。;";
+//                            msg = "階級レベル" + Strings.StrConv(SrcFormatter.Format((int)slevel), VbStrConv.Wide) + "に相当する。;";
 //                        }
 
-//                        msg = msg + "半径" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.CommandRange()), VbStrConv.Wide) + "マス以内にいるザコ及び階級所有パイロットに指揮効果を与える。";
+//                        msg = msg + "半径" + Strings.StrConv(SrcFormatter.Format(p.CommandRange()), VbStrConv.Wide) + "マス以内にいるザコ及び階級所有パイロットに指揮効果を与える。";
 //                        break;
 //                    }
 
@@ -732,11 +732,11 @@
 //                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref argtname55, ref u);
 //                        if (slevel >= 0d)
 //                        {
-//                            msg = msg + "に +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel)) + "。";
+//                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "に " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel)) + "。";
+//                            msg = msg + "に " + SrcFormatter.Format((int)(2d * slevel)) + "。";
 //                        }
 
 //                        break;
@@ -748,11 +748,11 @@
 //                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref argtname56, ref u);
 //                        if (slevel >= 0d)
 //                        {
-//                            msg = msg + "に +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel)) + "。";
+//                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "に " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel)) + "。";
+//                            msg = msg + "に " + SrcFormatter.Format((int)(2d * slevel)) + "。";
 //                        }
 
 //                        break;
@@ -764,11 +764,11 @@
 //                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref argtname57, ref u);
 //                        if (slevel >= 0d)
 //                        {
-//                            msg = msg + "に +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel)) + "。";
+//                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "に " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel)) + "。";
+//                            msg = msg + "に " + SrcFormatter.Format((int)(2d * slevel)) + "。";
 //                        }
 
 //                        break;
@@ -780,11 +780,11 @@
 //                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref argtname58, ref u);
 //                        if (slevel >= 0d)
 //                        {
-//                            msg = msg + "に +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel)) + "。";
+//                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "に " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel)) + "。";
+//                            msg = msg + "に " + SrcFormatter.Format((int)(2d * slevel)) + "。";
 //                        }
 
 //                        break;
@@ -796,11 +796,11 @@
 //                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref argtname59, ref u);
 //                        if (slevel >= 0d)
 //                        {
-//                            msg = msg + "に +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel)) + "。";
+//                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "に " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel)) + "。";
+//                            msg = msg + "に " + SrcFormatter.Format((int)(2d * slevel)) + "。";
 //                        }
 
 //                        break;
@@ -812,11 +812,11 @@
 //                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref argtname60, ref u);
 //                        if (slevel >= 0d)
 //                        {
-//                            msg = msg + "に +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel)) + "。";
+//                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "に " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel)) + "。";
+//                            msg = msg + "に " + SrcFormatter.Format((int)(2d * slevel)) + "。";
 //                        }
 
 //                        break;
@@ -828,11 +828,11 @@
 //                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref argtname61, ref u);
 //                        if (slevel >= 0d)
 //                        {
-//                            msg = msg + "に +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel)) + "。";
+//                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "に " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(2d * slevel)) + "。";
+//                            msg = msg + "に " + SrcFormatter.Format((int)(2d * slevel)) + "。";
 //                        }
 
 //                        break;
@@ -845,11 +845,11 @@
 //                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref argtname62, ref u) + "・" + Expression.Term(ref argtname63, ref u);
 //                        if (slevel >= 0d)
 //                        {
-//                            msg = msg + "に +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(3d * slevel)) + "。";
+//                            msg = msg + "に +" + SrcFormatter.Format((int)(3d * slevel)) + "。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "に " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(3d * slevel)) + "。";
+//                            msg = msg + "に " + SrcFormatter.Format((int)(3d * slevel)) + "。";
 //                        }
 
 //                        break;
@@ -862,11 +862,11 @@
 //                        msg = "半径２マス以内にいる味方パイロットの" + Expression.Term(ref argtname64, ref u) + "・" + Expression.Term(ref argtname65, ref u);
 //                        if (slevel >= 0d)
 //                        {
-//                            msg = msg + "に +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(5d * slevel)) + "。";
+//                            msg = msg + "に +" + SrcFormatter.Format((int)(5d * slevel)) + "。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "に " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(5d * slevel)) + "。";
+//                            msg = msg + "に " + SrcFormatter.Format((int)(5d * slevel)) + "。";
 //                        }
 
 //                        break;
@@ -874,25 +874,25 @@
 
 //                case "援護":
 //                    {
-//                        msg = "隣接するユニットにサポートアタックとサポートガードを" + "１ターンにそれぞれ" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)slevel) + "回行う。";
+//                        msg = "隣接するユニットにサポートアタックとサポートガードを" + "１ターンにそれぞれ" + SrcFormatter.Format((int)slevel) + "回行う。";
 //                        break;
 //                    }
 
 //                case "援護攻撃":
 //                    {
-//                        msg = "隣接するユニットにサポートアタックを１ターンに" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)slevel) + "回行う。";
+//                        msg = "隣接するユニットにサポートアタックを１ターンに" + SrcFormatter.Format((int)slevel) + "回行う。";
 //                        break;
 //                    }
 
 //                case "援護防御":
 //                    {
-//                        msg = "隣接するユニットにサポートガードを１ターンに" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)slevel) + "回行う。";
+//                        msg = "隣接するユニットにサポートガードを１ターンに" + SrcFormatter.Format((int)slevel) + "回行う。";
 //                        break;
 //                    }
 
 //                case "統率":
 //                    {
-//                        msg = "自分から攻撃をかけた場合、" + "サポートアタックが同時援護攻撃に変更される。;" + "（１ターンに " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)slevel) + "回）";
+//                        msg = "自分から攻撃をかけた場合、" + "サポートアタックが同時援護攻撃に変更される。;" + "（１ターンに " + SrcFormatter.Format((int)slevel) + "回）";
 //                        break;
 //                    }
 
@@ -904,7 +904,7 @@
 
 //                case "カウンター":
 //                    {
-//                        msg = "１ターンに " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)slevel) + "回" + "反撃がカウンター攻撃になり、相手の攻撃に先制して反撃を行う。";
+//                        msg = "１ターンに " + SrcFormatter.Format((int)slevel) + "回" + "反撃がカウンター攻撃になり、相手の攻撃に先制して反撃を行う。";
 //                        break;
 //                    }
 
@@ -927,14 +927,14 @@
 
 //                case "先読み":
 //                    {
-//                        msg = Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)((long)(100d * slevel) / 16L)) + "%の確率で" + "反撃がカウンター攻撃になり、相手の攻撃に先制して反撃を行う。";
+//                        msg = SrcFormatter.Format((int)((long)(100d * slevel) / 16L)) + "%の確率で" + "反撃がカウンター攻撃になり、相手の攻撃に先制して反撃を行う。";
 //                        break;
 //                    }
 
 //                case "再攻撃":
 //                    {
 //                        string argtname68 = "反応";
-//                        msg = "自分の攻撃の直後に " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)((long)(100d * slevel) / 16L)) + "% の確率で再攻撃を行う。" + "ただしパイロットの" + Expression.Term(ref argtname68, ref u) + "が相手を下回る場合、確率は半減。";
+//                        msg = "自分の攻撃の直後に " + SrcFormatter.Format((int)((long)(100d * slevel) / 16L)) + "% の確率で再攻撃を行う。" + "ただしパイロットの" + Expression.Term(ref argtname68, ref u) + "が相手を下回る場合、確率は半減。";
 //                        break;
 //                    }
 
@@ -949,12 +949,12 @@
 //                        if (slevel >= 0d)
 //                        {
 //                            string argtname69 = "装甲";
-//                            msg = "ダメージ計算の際に" + Expression.Term(ref argtname69, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(5d * slevel)) + "%増加させる。";
+//                            msg = "ダメージ計算の際に" + Expression.Term(ref argtname69, ref u) + "を" + SrcFormatter.Format((int)(5d * slevel)) + "%増加させる。";
 //                        }
 //                        else
 //                        {
 //                            string argtname70 = "装甲";
-//                            msg = "ダメージ計算の際に" + Expression.Term(ref argtname70, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(5d * Math.Abs(slevel))) + "%減少させる。";
+//                            msg = "ダメージ計算の際に" + Expression.Term(ref argtname70, ref u) + "を" + SrcFormatter.Format((int)(5d * Math.Abs(slevel))) + "%減少させる。";
 //                        }
 
 //                        break;
@@ -977,7 +977,7 @@
 //                case "ＳＰ回復":
 //                    {
 //                        string argtname73 = "ＳＰ";
-//                        msg = "毎ターン" + Expression.Term(ref argtname73, ref u) + "がパイロットレベル/8+5回復する(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Level / 8 + 5) + ")。";
+//                        msg = "毎ターン" + Expression.Term(ref argtname73, ref u) + "がパイロットレベル/8+5回復する(+" + SrcFormatter.Format(p.Level / 8 + 5) + ")。";
 //                        break;
 //                    }
 
@@ -989,11 +989,11 @@
 //                        string argoname2 = "攻撃力低成長";
 //                        if (Expression.IsOptionDefined(ref argoname2))
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(slevel + 0.5d) + "になる。";
+//                            msg = msg + SrcFormatter.Format(slevel + 0.5d) + "になる。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(slevel + 1d) + "になる。";
+//                            msg = msg + SrcFormatter.Format(slevel + 1d) + "になる。";
 //                        }
 
 //                        break;
@@ -1016,11 +1016,11 @@
 //                        string argoname3 = "攻撃力低成長";
 //                        if (Expression.IsOptionDefined(ref argoname3))
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(slevel + 0.5d) + "になる。";
+//                            msg = msg + SrcFormatter.Format(slevel + 0.5d) + "になる。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(slevel + 1d) + "になる。";
+//                            msg = msg + SrcFormatter.Format(slevel + 1d) + "になる。";
 //                        }
 
 //                        break;
@@ -1029,28 +1029,28 @@
 //                case "命中成長":
 //                    {
 //                        string argtname77 = "命中";
-//                        msg = "レベルアップ時の" + Expression.Term(ref argtname77, ref u) + "の増加量が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(slevel + 2d) + "になる。";
+//                        msg = "レベルアップ時の" + Expression.Term(ref argtname77, ref u) + "の増加量が" + SrcFormatter.Format(slevel + 2d) + "になる。";
 //                        break;
 //                    }
 
 //                case "回避成長":
 //                    {
 //                        string argtname78 = "回避";
-//                        msg = "レベルアップ時の" + Expression.Term(ref argtname78, ref u) + "の増加量が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(slevel + 2d) + "になる。";
+//                        msg = "レベルアップ時の" + Expression.Term(ref argtname78, ref u) + "の増加量が" + SrcFormatter.Format(slevel + 2d) + "になる。";
 //                        break;
 //                    }
 
 //                case "技量成長":
 //                    {
 //                        string argtname79 = "技量";
-//                        msg = "レベルアップ時の" + Expression.Term(ref argtname79, ref u) + "の増加量が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(slevel + 1d) + "になる。";
+//                        msg = "レベルアップ時の" + Expression.Term(ref argtname79, ref u) + "の増加量が" + SrcFormatter.Format(slevel + 1d) + "になる。";
 //                        break;
 //                    }
 
 //                case "反応成長":
 //                    {
 //                        string argtname80 = "反応";
-//                        msg = "レベルアップ時の" + Expression.Term(ref argtname80, ref u) + "の増加量が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(slevel + 1d) + "になる。";
+//                        msg = "レベルアップ時の" + Expression.Term(ref argtname80, ref u) + "の増加量が" + SrcFormatter.Format(slevel + 1d) + "になる。";
 //                        break;
 //                    }
 
@@ -1062,11 +1062,11 @@
 //                        string argoname4 = "防御力低成長";
 //                        if (Expression.IsOptionDefined(ref argoname4))
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(slevel + 0.5d) + "になる。";
+//                            msg = msg + SrcFormatter.Format(slevel + 0.5d) + "になる。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(slevel + 1d) + "になる。";
+//                            msg = msg + SrcFormatter.Format(slevel + 1d) + "になる。";
 //                        }
 
 //                        break;
@@ -1078,7 +1078,7 @@
 //                        string argtname83 = "ＳＰ";
 //                        string argtname84 = "ＳＰ";
 //                        string argtname85 = "ＳＰ";
-//                        msg = Expression.Term(ref argtname82, ref u) + "が最大" + Expression.Term(ref argtname83, ref u) + "の20%未満(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.MaxSP / 5) + "未満)の場合、" + "ターン開始時に" + Expression.Term(ref argtname84, ref u) + "が最大" + Expression.Term(ref argtname85, ref u) + "の10%分回復する(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.MaxSP / 10) + ")。";
+//                        msg = Expression.Term(ref argtname82, ref u) + "が最大" + Expression.Term(ref argtname83, ref u) + "の20%未満(" + SrcFormatter.Format(p.MaxSP / 5) + "未満)の場合、" + "ターン開始時に" + Expression.Term(ref argtname84, ref u) + "が最大" + Expression.Term(ref argtname85, ref u) + "の10%分回復する(+" + SrcFormatter.Format(p.MaxSP / 10) + ")。";
 //                        break;
 //                    }
 
@@ -1087,12 +1087,12 @@
 //                        if (slevel >= -1)
 //                        {
 //                            string argtname86 = "気力";
-//                            msg = "ダメージを受けた際に" + Expression.Term(ref argtname86, ref u) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(slevel + 1d)) + "。";
+//                            msg = "ダメージを受けた際に" + Expression.Term(ref argtname86, ref u) + "+" + SrcFormatter.Format((int)(slevel + 1d)) + "。";
 //                        }
 //                        else
 //                        {
 //                            string argtname87 = "気力";
-//                            msg = "ダメージを受けた際に" + Expression.Term(ref argtname87, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(slevel + 1d)) + "。";
+//                            msg = "ダメージを受けた際に" + Expression.Term(ref argtname87, ref u) + SrcFormatter.Format((int)(slevel + 1d)) + "。";
 //                        }
 
 //                        break;
@@ -1103,12 +1103,12 @@
 //                        if (slevel >= 0d)
 //                        {
 //                            string argtname88 = "気力";
-//                            msg = "攻撃を命中させた際に" + Expression.Term(ref argtname88, ref u) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)slevel) + "。(マップ攻撃は例外)";
+//                            msg = "攻撃を命中させた際に" + Expression.Term(ref argtname88, ref u) + "+" + SrcFormatter.Format((int)slevel) + "。(マップ攻撃は例外)";
 //                        }
 //                        else
 //                        {
 //                            string argtname89 = "気力";
-//                            msg = "攻撃を命中させた際に" + Expression.Term(ref argtname89, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)slevel) + "。(マップ攻撃は例外)";
+//                            msg = "攻撃を命中させた際に" + Expression.Term(ref argtname89, ref u) + SrcFormatter.Format((int)slevel) + "。(マップ攻撃は例外)";
 //                        }
 
 //                        break;
@@ -1119,12 +1119,12 @@
 //                        if (slevel >= 0d)
 //                        {
 //                            string argtname90 = "気力";
-//                            msg = "攻撃を外してしまった際に" + Expression.Term(ref argtname90, ref u) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)slevel) + "。(マップ攻撃は例外)";
+//                            msg = "攻撃を外してしまった際に" + Expression.Term(ref argtname90, ref u) + "+" + SrcFormatter.Format((int)slevel) + "。(マップ攻撃は例外)";
 //                        }
 //                        else
 //                        {
 //                            string argtname91 = "気力";
-//                            msg = "攻撃を外してしまった際に" + Expression.Term(ref argtname91, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)slevel) + "。(マップ攻撃は例外)";
+//                            msg = "攻撃を外してしまった際に" + Expression.Term(ref argtname91, ref u) + SrcFormatter.Format((int)slevel) + "。(マップ攻撃は例外)";
 //                        }
 
 //                        break;
@@ -1135,12 +1135,12 @@
 //                        if (slevel >= 0d)
 //                        {
 //                            string argtname92 = "気力";
-//                            msg = "攻撃を回避した際に" + Expression.Term(ref argtname92, ref u) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)slevel) + "。";
+//                            msg = "攻撃を回避した際に" + Expression.Term(ref argtname92, ref u) + "+" + SrcFormatter.Format((int)slevel) + "。";
 //                        }
 //                        else
 //                        {
 //                            string argtname93 = "気力";
-//                            msg = "攻撃を回避した際に" + Expression.Term(ref argtname93, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)slevel) + "。";
+//                            msg = "攻撃を回避した際に" + Expression.Term(ref argtname93, ref u) + SrcFormatter.Format((int)slevel) + "。";
 //                        }
 
 //                        break;
@@ -1164,11 +1164,11 @@
 //                        msg = "思考パターン決定の際に用いられる" + Expression.Term(ref argtname100, ref u);
 //                        if (slevel >= 0d)
 //                        {
-//                            msg = msg + "初期値がレベル×10増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(10d * slevel)) + ")。";
+//                            msg = msg + "初期値がレベル×10増加(+" + SrcFormatter.Format((int)(10d * slevel)) + ")。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "初期値がレベル×10減少(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(10d * slevel)) + ")。";
+//                            msg = msg + "初期値がレベル×10減少(" + SrcFormatter.Format((int)(10d * slevel)) + ")。";
 //                        }
 
 //                        break;
@@ -1215,11 +1215,11 @@
 //                        msg = msg + "である場合、ターゲットに与えるダメージが";
 //                        if (slevel >= 0d)
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * slevel) + "%増加する。";
+//                            msg = msg + SrcFormatter.Format(10d * slevel) + "%増加する。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(-10 * slevel) + "%減少する。";
+//                            msg = msg + SrcFormatter.Format(-10 * slevel) + "%減少する。";
 //                        }
 
 //                        break;
@@ -1236,11 +1236,11 @@
 //                        msg = msg + "の" + Expression.Term(ref argtname106, ref u) + "消費量が";
 //                        if (slevel >= 0d)
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * slevel) + "%減少する。";
+//                            msg = msg + SrcFormatter.Format(10d * slevel) + "%減少する。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(-10 * slevel) + "%増加する。";
+//                            msg = msg + SrcFormatter.Format(-10 * slevel) + "%増加する。";
 //                        }
 
 //                        break;
@@ -1261,11 +1261,11 @@
 //                        msg = "修理装置や回復" + Expression.Term(ref argtname109, ref u) + "を使った際の" + Expression.Term(ref argtname110, ref u) + "回復量が ";
 //                        if (slevel >= 0d)
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * slevel) + "% 増加する。";
+//                            msg = msg + SrcFormatter.Format(10d * slevel) + "% 増加する。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(-10 * slevel) + "% 減少する。";
+//                            msg = msg + SrcFormatter.Format(-10 * slevel) + "% 減少する。";
 //                        }
 
 //                        break;
@@ -1284,11 +1284,11 @@
 //                        msg = msg + "補給" + Expression.Term(ref argtname111, ref u) + "を使った際の" + Expression.Term(ref argtname112, ref u) + "回復量が ";
 //                        if (slevel >= 0d)
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * slevel) + "% 増加する。";
+//                            msg = msg + SrcFormatter.Format(10d * slevel) + "% 増加する。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(-10 * slevel) + "% 減少する。";
+//                            msg = msg + SrcFormatter.Format(-10 * slevel) + "% 減少する。";
 //                        }
 
 //                        break;
@@ -1303,7 +1303,7 @@
 //                        }
 
 //                        string argtname113 = "気力";
-//                        msg = Expression.Term(ref argtname113, ref u) + "の上限が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i) + "になる。";
+//                        msg = Expression.Term(ref argtname113, ref u) + "の上限が" + SrcFormatter.Format(i) + "になる。";
 //                        break;
 //                    }
 
@@ -1316,7 +1316,7 @@
 //                        }
 
 //                        string argtname114 = "気力";
-//                        msg = Expression.Term(ref argtname114, ref u) + "の下限が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i) + "になる。";
+//                        msg = Expression.Term(ref argtname114, ref u) + "の下限が" + SrcFormatter.Format(i) + "になる。";
 //                        break;
 //                    }
 
@@ -1636,7 +1636,7 @@
 //                        object argIndex8 = "Ｓ防御";
 //                        string argref_mode = "";
 //                        prob = (short)((long)(p.SkillLevel(ref argIndex8, ref_mode: ref argref_mode) * 100d) / 16L);
-//                        msg = sname + "Lv/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で防御を行い、" + "ダメージを半減。";
+//                        msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で防御を行い、" + "ダメージを半減。";
 //                        break;
 //                    }
 
@@ -1652,7 +1652,7 @@
 //                            prob = (short)((long)((p.SkillLevel(ref argIndex10, ref_mode: ref argref_mode1) + 1d) * 100d) / 16L);
 //                        }
 
-//                        msg = "(" + sname + "Lv+1)/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で防御を行い、" + "ダメージを半減。";
+//                        msg = "(" + sname + "Lv+1)/16の確率(" + SrcFormatter.Format(prob) + "%)で防御を行い、" + "ダメージを半減。";
 //                        break;
 //                    }
 
@@ -1663,7 +1663,7 @@
 //                        object argIndex12 = "Ｓ防御";
 //                        string argref_mode2 = "";
 //                        prob = (short)((long)(p.SkillLevel(ref argIndex12, ref_mode: ref argref_mode2) * 100d) / 16L);
-//                        msg = sname + "Lv/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で防御を行い、" + "ダメージを2/3に減少。";
+//                        msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で防御を行い、" + "ダメージを2/3に減少。";
 //                        break;
 //                    }
 
@@ -1676,11 +1676,11 @@
 //                        prob = (short)((long)(p.SkillLevel(ref argIndex14, ref_mode: ref argref_mode3) * 100d) / 16L);
 //                        if (flevel > 0d)
 //                        {
-//                            msg = sname + "Lv/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で防御を行い、" + "ダメージを半減した上で更に" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(100d * flevel) + "減少。";
+//                            msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で防御を行い、" + "ダメージを半減した上で更に" + SrcFormatter.Format(100d * flevel) + "減少。";
 //                        }
 //                        else
 //                        {
-//                            msg = sname + "Lv/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で防御を行い、" + "ダメージを半減。";
+//                            msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で防御を行い、" + "ダメージを半減。";
 //                        }
 
 //                        msg = msg + "発動時に5ＥＮ消費。「無」属性を持つ武器には無効。";
@@ -1702,7 +1702,7 @@
 //                            prob = (short)((long)((p.SkillLevel(ref argIndex17, ref_mode: ref argref_mode5) + 2d) * 100d) / 16L);
 //                        }
 
-//                        msg = "(" + sname + "Lv+2)/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で防御を行い、" + "ダメージを半減。";
+//                        msg = "(" + sname + "Lv+2)/16の確率(" + SrcFormatter.Format(prob) + "%)で防御を行い、" + "ダメージを半減。";
 //                        break;
 //                    }
 
@@ -1718,7 +1718,7 @@
 //                            slevel = 100d * slevel + 400d;
 //                        }
 
-//                        msg = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(flevel) + "回、攻撃によって貫通されるまでシールド防御を行い、" + "ダメージを減少させる(-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)slevel) + ")。;" + "ただし攻撃側が「破」属性を持っていた場合、一度に２回分破壊される。;" + "ダメージの減少量はパイロットの" + sname + "レベルによって決まる。";
+//                        msg = SrcFormatter.Format(flevel) + "回、攻撃によって貫通されるまでシールド防御を行い、" + "ダメージを減少させる(-" + SrcFormatter.Format((int)slevel) + ")。;" + "ただし攻撃側が「破」属性を持っていた場合、一度に２回分破壊される。;" + "ダメージの減少量はパイロットの" + sname + "レベルによって決まる。";
 //                        break;
 //                    }
 
@@ -1736,7 +1736,7 @@
 //                            }
 //                        }
 
-//                        msg = msg + "ダメージ" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(1000d * flevel)) + "以下の攻撃を無効化。";
+//                        msg = msg + "ダメージ" + SrcFormatter.Format((int)(1000d * flevel)) + "以下の攻撃を無効化。";
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 3)))
 //                        {
 //                            int localStrToLng() { string argexpr = GeneralLib.LIndex(ref fdata, 3); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
@@ -1829,11 +1829,11 @@
 
 //                                        if (u.SyncLevel() >= 30d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 //                                        else if (u.SyncLevel() > 0d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 
 //                                        break;
@@ -1848,7 +1848,7 @@
 //                                            lv_mod = 10d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PlanaLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PlanaLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -1861,7 +1861,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.AuraLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.AuraLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -1874,7 +1874,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PsychicLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PsychicLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -1886,7 +1886,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.SkillLevel(opt)) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + SrcFormatter.Format(lv_mod * u.SkillLevel(opt)) + ")。";
 //                                        break;
 //                                    }
 //                            }
@@ -1902,7 +1902,7 @@
 //                        object argIndex25 = "Ｓ防御";
 //                        string argref_mode7 = "";
 //                        prob = (short)((long)(p.SkillLevel(ref argIndex25, ref_mode: ref argref_mode7) * 100d) / 16L);
-//                        msg = sname + "Lv/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で発動し、";
+//                        msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で発動し、";
 //                        if (!string.IsNullOrEmpty(GeneralLib.LIndex(ref fdata, 2)) & GeneralLib.LIndex(ref fdata, 2) != "全")
 //                        {
 //                            if (Strings.Left(GeneralLib.LIndex(ref fdata, 2), 1) == "!")
@@ -1915,7 +1915,7 @@
 //                            }
 //                        }
 
-//                        msg = msg + "ダメージ" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(1000d * flevel)) + "以下の攻撃を無効化。";
+//                        msg = msg + "ダメージ" + SrcFormatter.Format((int)(1000d * flevel)) + "以下の攻撃を無効化。";
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 3)))
 //                        {
 //                            int localStrToLng1() { string argexpr = GeneralLib.LIndex(ref fdata, 3); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
@@ -2009,11 +2009,11 @@
 
 //                                        if (u.SyncLevel() >= 30d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 //                                        else if (u.SyncLevel() > 0d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 
 //                                        break;
@@ -2028,7 +2028,7 @@
 //                                            lv_mod = 10d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PlanaLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PlanaLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -2041,7 +2041,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.AuraLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.AuraLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -2054,7 +2054,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PsychicLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PsychicLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -2066,7 +2066,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.SkillLevel(opt)) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + SrcFormatter.Format(lv_mod * u.SkillLevel(opt)) + ")。";
 //                                        break;
 //                                    }
 //                            }
@@ -2100,7 +2100,7 @@
 //                            }
 //                        }
 
-//                        msg = msg + "ダメージ" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(1000d * flevel)) + "以下の攻撃を無効化。";
+//                        msg = msg + "ダメージ" + SrcFormatter.Format((int)(1000d * flevel)) + "以下の攻撃を無効化。";
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 4)))
 //                        {
 //                            int localStrToLng2() { string argexpr = GeneralLib.LIndex(ref fdata, 4); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
@@ -2120,7 +2120,7 @@
 //                        else
 //                        {
 //                            string argtname9 = "ＥＮ";
-//                            msg = msg + ";発動時に" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(20 * i) + Expression.Term(ref argtname9, ref u) + "消費。";
+//                            msg = msg + ";発動時に" + SrcFormatter.Format(20 * i) + Expression.Term(ref argtname9, ref u) + "消費。";
 //                        }
 
 //                        string argexpr7 = GeneralLib.LIndex(ref fdata, 5);
@@ -2150,11 +2150,11 @@
 
 //                        if (flevel >= 0d)
 //                        {
-//                            msg = msg + "攻撃のダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(500d * flevel)) + "減少させる。";
+//                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(500d * flevel)) + "減少させる。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "攻撃のダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(-500 * flevel)) + "増加させる。";
+//                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(-500 * flevel)) + "増加させる。";
 //                        }
 
 //                        int localStrToLng3() { string argexpr = GeneralLib.LIndex(ref fdata, 3); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
@@ -2242,11 +2242,11 @@
 
 //                                        if (u.SyncLevel() >= 30d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 //                                        else if (u.SyncLevel() > 0d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 
 //                                        break;
@@ -2261,7 +2261,7 @@
 //                                            lv_mod = 10d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PlanaLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PlanaLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -2274,7 +2274,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.AuraLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.AuraLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -2287,7 +2287,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PsychicLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PsychicLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -2299,7 +2299,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.SkillLevel(opt)) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + SrcFormatter.Format(lv_mod * u.SkillLevel(opt)) + ")。";
 //                                        break;
 //                                    }
 //                            }
@@ -2315,7 +2315,7 @@
 //                        object argIndex35 = "Ｓ防御";
 //                        string argref_mode8 = "";
 //                        prob = (short)((long)(p.SkillLevel(ref argIndex35, ref_mode: ref argref_mode8) * 100d) / 16L);
-//                        msg = sname + "Lv/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で発動し、";
+//                        msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で発動し、";
 //                        if (!string.IsNullOrEmpty(GeneralLib.LIndex(ref fdata, 2)) & GeneralLib.LIndex(ref fdata, 2) != "全")
 //                        {
 //                            if (Strings.Left(GeneralLib.LIndex(ref fdata, 2), 1) == "!")
@@ -2330,11 +2330,11 @@
 
 //                        if (flevel >= 0d)
 //                        {
-//                            msg = msg + "攻撃のダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(500d * flevel)) + "減少させる。";
+//                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(500d * flevel)) + "減少させる。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "攻撃のダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(-500 * flevel)) + "増加させる。";
+//                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(-500 * flevel)) + "増加させる。";
 //                        }
 
 //                        int localStrToLng4() { string argexpr = GeneralLib.LIndex(ref fdata, 3); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
@@ -2422,11 +2422,11 @@
 
 //                                        if (u.SyncLevel() >= 30d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 //                                        else if (u.SyncLevel() > 0d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 
 //                                        break;
@@ -2441,7 +2441,7 @@
 //                                            lv_mod = 10d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PlanaLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PlanaLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -2454,7 +2454,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.AuraLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.AuraLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -2467,7 +2467,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PsychicLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PsychicLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -2479,7 +2479,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.SkillLevel(opt)) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + SrcFormatter.Format(lv_mod * u.SkillLevel(opt)) + ")。";
 //                                        break;
 //                                    }
 //                            }
@@ -2515,11 +2515,11 @@
 
 //                        if (flevel >= 0d)
 //                        {
-//                            msg = msg + "攻撃のダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(500d * flevel)) + "減少させる。";
+//                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(500d * flevel)) + "減少させる。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "攻撃のダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(-500 * flevel)) + "増加させる。";
+//                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(-500 * flevel)) + "増加させる。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 4)))
@@ -2541,7 +2541,7 @@
 //                        else
 //                        {
 //                            string argtname19 = "ＥＮ";
-//                            msg = msg + ";発動時に" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(20 * i) + Expression.Term(ref argtname19, ref u) + "消費。";
+//                            msg = msg + ";発動時に" + SrcFormatter.Format(20 * i) + Expression.Term(ref argtname19, ref u) + "消費。";
 //                        }
 
 //                        string argexpr15 = GeneralLib.LIndex(ref fdata, 5);
@@ -2571,15 +2571,15 @@
 
 //                        if (flevel > 10d)
 //                        {
-//                            msg = msg + "攻撃のダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(10d * flevel - 100d)) + "%吸収する。";
+//                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(10d * flevel - 100d)) + "%吸収する。";
 //                        }
 //                        else if (flevel >= 0d)
 //                        {
-//                            msg = msg + "攻撃のダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(10d * flevel)) + "%減少させる。";
+//                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(10d * flevel)) + "%減少させる。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "攻撃のダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(-10 * flevel)) + "%増加させる。";
+//                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(-10 * flevel)) + "%増加させる。";
 //                        }
 
 //                        int localStrToLng6() { string argexpr = GeneralLib.LIndex(ref fdata, 3); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
@@ -2673,11 +2673,11 @@
 
 //                                        if (u.SyncLevel() >= 30d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 //                                        else if (u.SyncLevel() > 0d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 
 //                                        break;
@@ -2692,7 +2692,7 @@
 //                                            lv_mod = 0.2d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PlanaLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PlanaLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -2705,7 +2705,7 @@
 //                                            lv_mod = 5d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.AuraLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.AuraLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -2718,7 +2718,7 @@
 //                                            lv_mod = 5d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PsychicLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PsychicLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -2730,7 +2730,7 @@
 //                                            lv_mod = 5d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.SkillLevel(opt)) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + SrcFormatter.Format(lv_mod * u.SkillLevel(opt)) + ")。";
 //                                        break;
 //                                    }
 //                            }
@@ -2746,7 +2746,7 @@
 //                        object argIndex45 = "Ｓ防御";
 //                        string argref_mode9 = "";
 //                        prob = (short)((long)(p.SkillLevel(ref argIndex45, ref_mode: ref argref_mode9) * 100d) / 16L);
-//                        msg = sname + "Lv/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で発動し、";
+//                        msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で発動し、";
 //                        if (!string.IsNullOrEmpty(GeneralLib.LIndex(ref fdata, 2)) & GeneralLib.LIndex(ref fdata, 2) != "全")
 //                        {
 //                            if (Strings.Left(GeneralLib.LIndex(ref fdata, 2), 1) == "!")
@@ -2761,15 +2761,15 @@
 
 //                        if (flevel > 10d)
 //                        {
-//                            msg = msg + "攻撃のダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(10d * flevel - 100d)) + "%吸収する。";
+//                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(10d * flevel - 100d)) + "%吸収する。";
 //                        }
 //                        else if (flevel >= 0d)
 //                        {
-//                            msg = msg + "攻撃のダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(10d * flevel)) + "%減少させる。";
+//                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(10d * flevel)) + "%減少させる。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "攻撃のダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(-10 * flevel)) + "%増加させる。";
+//                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(-10 * flevel)) + "%増加させる。";
 //                        }
 
 //                        int localStrToLng8() { string argexpr = GeneralLib.LIndex(ref fdata, 3); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
@@ -2863,11 +2863,11 @@
 
 //                                        if (u.SyncLevel() >= 30d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + "%)。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + "%)。";
 //                                        }
 //                                        else if (u.SyncLevel() > 0d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + "%)。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + "%)。";
 //                                        }
 
 //                                        break;
@@ -2882,7 +2882,7 @@
 //                                            lv_mod = 0.2d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PlanaLevel()) + "%)。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PlanaLevel()) + "%)。";
 //                                        break;
 //                                    }
 
@@ -2895,7 +2895,7 @@
 //                                            lv_mod = 5d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.AuraLevel()) + "%)。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.AuraLevel()) + "%)。";
 //                                        break;
 //                                    }
 
@@ -2908,7 +2908,7 @@
 //                                            lv_mod = 5d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PsychicLevel()) + "%)。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PsychicLevel()) + "%)。";
 //                                        break;
 //                                    }
 
@@ -2920,7 +2920,7 @@
 //                                            lv_mod = 5d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.SkillLevel(opt)) + "%)。";
+//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + SrcFormatter.Format(lv_mod * u.SkillLevel(opt)) + "%)。";
 //                                        break;
 //                                    }
 //                            }
@@ -2956,15 +2956,15 @@
 
 //                        if (flevel > 10d)
 //                        {
-//                            msg = msg + "攻撃のダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(10d * flevel - 100d)) + "%吸収する。";
+//                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(10d * flevel - 100d)) + "%吸収する。";
 //                        }
 //                        else if (flevel >= 0d)
 //                        {
-//                            msg = msg + "攻撃のダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(10d * flevel)) + "%減少させる。";
+//                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(10d * flevel)) + "%減少させる。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "攻撃のダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(-10 * flevel)) + "%増加させる。";
+//                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(-10 * flevel)) + "%増加させる。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 4)))
@@ -2986,7 +2986,7 @@
 //                        else
 //                        {
 //                            string argtname31 = "ＥＮ";
-//                            msg = msg + ";発動時に" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(20 * i) + Expression.Term(ref argtname31, ref u) + "消費。";
+//                            msg = msg + ";発動時に" + SrcFormatter.Format(20 * i) + Expression.Term(ref argtname31, ref u) + "消費。";
 //                        }
 
 //                        string argexpr21 = GeneralLib.LIndex(ref fdata, 5);
@@ -3016,11 +3016,11 @@
 
 //                        if (flevel >= 0d)
 //                        {
-//                            msg = msg + "攻撃に対して装甲を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(100d * flevel)) + "増加させる。";
+//                            msg = msg + "攻撃に対して装甲を" + SrcFormatter.Format((int)(100d * flevel)) + "増加させる。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "攻撃に対して装甲を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(-100 * flevel)) + "減少させる。";
+//                            msg = msg + "攻撃に対して装甲を" + SrcFormatter.Format((int)(-100 * flevel)) + "減少させる。";
 //                        }
 
 //                        string argexpr22 = GeneralLib.LIndex(ref fdata, 3);
@@ -3064,11 +3064,11 @@
 
 //                                        if (u.SyncLevel() >= 30d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 //                                        else if (u.SyncLevel() > 0d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 
 //                                        break;
@@ -3083,7 +3083,7 @@
 //                                            lv_mod = 2d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PlanaLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PlanaLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -3096,7 +3096,7 @@
 //                                            lv_mod = 50d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.AuraLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.AuraLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -3109,7 +3109,7 @@
 //                                            lv_mod = 50d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PsychicLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PsychicLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -3121,7 +3121,7 @@
 //                                            lv_mod = 50d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.SkillLevel(opt)) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + SrcFormatter.Format(lv_mod * u.SkillLevel(opt)) + ")。";
 //                                        break;
 //                                    }
 //                            }
@@ -3146,15 +3146,15 @@
 
 //                        if (flevel > 10d)
 //                        {
-//                            msg = msg + "攻撃に対してダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(100 - (int)(10d * flevel)) + "%吸収する。";
+//                            msg = msg + "攻撃に対してダメージを" + SrcFormatter.Format(100 - (int)(10d * flevel)) + "%吸収する。";
 //                        }
 //                        else if (flevel >= 0d)
 //                        {
-//                            msg = msg + "攻撃に対してダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(10d * flevel)) + "%軽減させる。";
+//                            msg = msg + "攻撃に対してダメージを" + SrcFormatter.Format((int)(10d * flevel)) + "%軽減させる。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "攻撃に対してダメージを" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(-10 * flevel)) + "%増加させる。";
+//                            msg = msg + "攻撃に対してダメージを" + SrcFormatter.Format((int)(-10 * flevel)) + "%増加させる。";
 //                        }
 
 //                        string argexpr24 = GeneralLib.LIndex(ref fdata, 3);
@@ -3198,11 +3198,11 @@
 
 //                                        if (u.SyncLevel() >= 30d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + "%)。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + "%)。";
 //                                        }
 //                                        else if (u.SyncLevel() > 0d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + "%)。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + "%)。";
 //                                        }
 
 //                                        break;
@@ -3217,7 +3217,7 @@
 //                                            lv_mod = 2d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PlanaLevel()) + "%)。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PlanaLevel()) + "%)。";
 //                                        break;
 //                                    }
 
@@ -3230,7 +3230,7 @@
 //                                            lv_mod = 50d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.AuraLevel()) + "%)。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.AuraLevel()) + "%)。";
 //                                        break;
 //                                    }
 
@@ -3243,7 +3243,7 @@
 //                                            lv_mod = 50d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PsychicLevel()) + "%)。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PsychicLevel()) + "%)。";
 //                                        break;
 //                                    }
 
@@ -3255,7 +3255,7 @@
 //                                            lv_mod = 50d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.SkillLevel(opt)) + "%)。";
+//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + SrcFormatter.Format(lv_mod * u.SkillLevel(opt)) + "%)。";
 //                                        break;
 //                                    }
 //                            }
@@ -3280,7 +3280,7 @@
 
 //                        if (flevel != 1d)
 //                        {
-//                            msg = msg + "ダメージ" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(500d * flevel)) + "までの";
+//                            msg = msg + "ダメージ" + SrcFormatter.Format((int)(500d * flevel)) + "までの";
 //                        }
 
 //                        msg = msg + "攻撃を";
@@ -3301,13 +3301,13 @@
 //                            i = (short)GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
 //                            sname = u.SkillName0(Strings.Left(buf, i - 1));
 //                            prob = (short)((long)((u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToShort(Strings.Mid(buf, i))) * 100d) / 16L);
-//                            msg = msg + "(" + sname + "Lv" + Strings.Mid(buf, i) + ")/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で受け止め、";
+//                            msg = msg + "(" + sname + "Lv" + Strings.Mid(buf, i) + ")/16の確率(" + SrcFormatter.Format(prob) + "%)で受け止め、";
 //                        }
 //                        else
 //                        {
 //                            sname = u.SkillName0(buf);
 //                            prob = (short)((long)(u.SkillLevel(buf) * 100d) / 16L);
-//                            msg = msg + sname + "Lv/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で受け止め、";
+//                            msg = msg + sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で受け止め、";
 //                        }
 
 //                        buf = GeneralLib.LIndex(ref fdata, 2);
@@ -3396,11 +3396,11 @@
 
 //                                        if (u.SyncLevel() >= 30d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 //                                        else if (u.SyncLevel() > 0d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 
 //                                        break;
@@ -3415,7 +3415,7 @@
 //                                            lv_mod = 10d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PlanaLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PlanaLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -3428,7 +3428,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.AuraLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.AuraLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -3441,7 +3441,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PsychicLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PsychicLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -3453,7 +3453,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.SkillLevel(opt)) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + SrcFormatter.Format(lv_mod * u.SkillLevel(opt)) + ")。";
 //                                        break;
 //                                    }
 //                            }
@@ -3478,7 +3478,7 @@
 
 //                        if (flevel != 1d)
 //                        {
-//                            msg = msg + "ダメージ" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(500d * flevel)) + "までの";
+//                            msg = msg + "ダメージ" + SrcFormatter.Format((int)(500d * flevel)) + "までの";
 //                        }
 
 //                        msg = msg + "攻撃を";
@@ -3499,13 +3499,13 @@
 //                            i = (short)GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
 //                            sname = u.SkillName0(Strings.Left(buf, i - 1));
 //                            prob = (short)((long)((u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToShort(Strings.Mid(buf, i))) * 100d) / 16L);
-//                            msg = msg + "(" + sname + "Lv" + Strings.Mid(buf, i) + ")/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で反射。";
+//                            msg = msg + "(" + sname + "Lv" + Strings.Mid(buf, i) + ")/16の確率(" + SrcFormatter.Format(prob) + "%)で反射。";
 //                        }
 //                        else
 //                        {
 //                            sname = u.SkillName0(buf);
 //                            prob = (short)((long)(u.SkillLevel(buf) * 100d) / 16L);
-//                            msg = msg + sname + "Lv/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で反射。";
+//                            msg = msg + sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で反射。";
 //                        }
 
 //                        int localStrToLng12() { string argexpr = GeneralLib.LIndex(ref fdata, 4); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
@@ -3587,11 +3587,11 @@
 
 //                                        if (u.SyncLevel() >= 30d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 //                                        else if (u.SyncLevel() > 0d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 
 //                                        break;
@@ -3606,7 +3606,7 @@
 //                                            lv_mod = 10d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PlanaLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PlanaLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -3619,7 +3619,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.AuraLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.AuraLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -3632,7 +3632,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PsychicLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PsychicLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -3644,7 +3644,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.SkillLevel(opt)) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + SrcFormatter.Format(lv_mod * u.SkillLevel(opt)) + ")。";
 //                                        break;
 //                                    }
 //                            }
@@ -3669,7 +3669,7 @@
 
 //                        if (flevel != 1d)
 //                        {
-//                            msg = msg + "ダメージ" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(500d * flevel)) + "以下の";
+//                            msg = msg + "ダメージ" + SrcFormatter.Format((int)(500d * flevel)) + "以下の";
 //                        }
 
 //                        msg = msg + "攻撃を";
@@ -3693,13 +3693,13 @@
 //                            i = (short)GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
 //                            sname = u.SkillName0(Strings.Left(buf, i - 1));
 //                            prob = (short)((long)((u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToShort(Strings.Mid(buf, i))) * 100d) / 16L);
-//                            msg = msg + "(" + sname + "Lv" + Strings.Mid(buf, i) + ")/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で阻止。";
+//                            msg = msg + "(" + sname + "Lv" + Strings.Mid(buf, i) + ")/16の確率(" + SrcFormatter.Format(prob) + "%)で阻止。";
 //                        }
 //                        else
 //                        {
 //                            sname = u.SkillName0(buf);
 //                            prob = (short)((long)(u.SkillLevel(buf) * 100d) / 16L);
-//                            msg = msg + sname + "Lv/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で阻止。";
+//                            msg = msg + sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で阻止。";
 //                        }
 
 //                        int localStrToLng13() { string argexpr = GeneralLib.LIndex(ref fdata, 4); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
@@ -3781,11 +3781,11 @@
 
 //                                        if (u.SyncLevel() >= 30d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 //                                        else if (u.SyncLevel() > 0d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 
 //                                        break;
@@ -3800,7 +3800,7 @@
 //                                            lv_mod = 10d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PlanaLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PlanaLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -3813,7 +3813,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.AuraLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.AuraLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -3826,7 +3826,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PsychicLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PsychicLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -3838,7 +3838,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.SkillLevel(opt)) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + SrcFormatter.Format(lv_mod * u.SkillLevel(opt)) + ")。";
 //                                        break;
 //                                    }
 //                            }
@@ -3874,7 +3874,7 @@
 
 //                        if (flevel != 1d)
 //                        {
-//                            msg = msg + "ダメージ" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(500d * flevel)) + "以下の";
+//                            msg = msg + "ダメージ" + SrcFormatter.Format((int)(500d * flevel)) + "以下の";
 //                        }
 
 //                        msg = msg + "攻撃を";
@@ -3898,13 +3898,13 @@
 //                            i = (short)GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
 //                            sname = u.SkillName0(Strings.Left(buf, i - 1));
 //                            prob = (short)((long)((u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToShort(Strings.Mid(buf, i))) * 100d) / 16L);
-//                            msg = msg + "(" + sname + "Lv" + Strings.Mid(buf, i) + ")/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で阻止。";
+//                            msg = msg + "(" + sname + "Lv" + Strings.Mid(buf, i) + ")/16の確率(" + SrcFormatter.Format(prob) + "%)で阻止。";
 //                        }
 //                        else
 //                        {
 //                            sname = u.SkillName0(buf);
 //                            prob = (short)((long)(u.SkillLevel(buf) * 100d) / 16L);
-//                            msg = msg + sname + "Lv/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で阻止。";
+//                            msg = msg + sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で阻止。";
 //                        }
 
 //                        int localStrToLng14() { string argexpr = GeneralLib.LIndex(ref fdata, 5); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
@@ -3936,7 +3936,7 @@
 //                    {
 //                        prob = (short)((long)(flevel * 100d) / 16L);
 //                        string argtname47 = "ＨＰ";
-//                        msg = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(flevel) + "/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で発動し、" + "ダメージを" + Expression.Term(ref argtname47, ref u) + "に変換。;" + "ただし、「武」「突」「接」による攻撃には無効。";
+//                        msg = SrcFormatter.Format(flevel) + "/16の確率(" + SrcFormatter.Format(prob) + "%)で発動し、" + "ダメージを" + Expression.Term(ref argtname47, ref u) + "に変換。;" + "ただし、「武」「突」「接」による攻撃には無効。";
 //                        break;
 //                    }
 
@@ -3957,7 +3957,7 @@
 //                        string argtname48 = "ＥＮ";
 //                        string argtname49 = "ＥＮ";
 //                        msg = msg + "攻撃を受けた際にダメージを" + Expression.Term(ref argtname48, ref u) + "に変換。;" + "変換効率は " + Expression.Term(ref argtname49, ref u) + "増加 ＝ ";
-//                        msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(0.01d * flevel);
+//                        msg = msg + SrcFormatter.Format(0.01d * flevel);
 //                        msg = msg + " × ダメージ";
 //                        break;
 //                    }
@@ -3984,7 +3984,7 @@
 
 //                        if (flevel != 1d)
 //                        {
-//                            msg = msg + "ダメージ" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(500d * flevel)) + "までの";
+//                            msg = msg + "ダメージ" + SrcFormatter.Format((int)(500d * flevel)) + "までの";
 //                        }
 
 //                        msg = msg + "攻撃を受けた際に";
@@ -4001,13 +4001,13 @@
 //                            i = (short)GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
 //                            sname = u.SkillName0(Strings.Left(buf, i - 1));
 //                            prob = (short)((long)((u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToShort(Strings.Mid(buf, i))) * 100d) / 16L);
-//                            msg = msg + "(" + sname + "Lv" + Strings.Mid(buf, i) + ")/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で、";
+//                            msg = msg + "(" + sname + "Lv" + Strings.Mid(buf, i) + ")/16の確率(" + SrcFormatter.Format(prob) + "%)で、";
 //                        }
 //                        else
 //                        {
 //                            sname = u.SkillName0(buf);
 //                            prob = (short)((long)(u.SkillLevel(buf) * 100d) / 16L);
-//                            msg = msg + sname + "Lv/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で、";
+//                            msg = msg + sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で、";
 //                        }
 
 //                        buf = GeneralLib.LIndex(ref fdata, 2);
@@ -4096,11 +4096,11 @@
 
 //                                        if (u.SyncLevel() >= 30d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(+" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 //                                        else if (u.SyncLevel() > 0d)
 //                                        {
-//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
+//                                            msg = msg + ";パイロットの" + sname + "により強度が変化(" + SrcFormatter.Format(lv_mod * (u.SyncLevel() - 30d)) + ")。";
 //                                        }
 
 //                                        break;
@@ -4115,7 +4115,7 @@
 //                                            lv_mod = 10d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PlanaLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PlanaLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -4128,7 +4128,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.AuraLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.AuraLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -4141,7 +4141,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.PsychicLevel()) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "により強度が増加(+" + SrcFormatter.Format(lv_mod * u.PsychicLevel()) + ")。";
 //                                        break;
 //                                    }
 
@@ -4153,7 +4153,7 @@
 //                                            lv_mod = 200d;
 //                                        }
 
-//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lv_mod * u.SkillLevel(opt)) + ")。";
+//                                        msg = msg + ";パイロットの" + sname + "レベルにより強度が増加(+" + SrcFormatter.Format(lv_mod * u.SkillLevel(opt)) + ")。";
 //                                        break;
 //                                    }
 //                            }
@@ -4166,7 +4166,7 @@
 //                    {
 //                        string argtname53 = "ＨＰ";
 //                        string argtname54 = "ＨＰ";
-//                        msg = "毎ターン最大" + Expression.Term(ref argtname53, ref u) + "の" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * flevel) + "%分の" + Expression.Term(ref argtname54, ref u) + "を回復。";
+//                        msg = "毎ターン最大" + Expression.Term(ref argtname53, ref u) + "の" + SrcFormatter.Format(10d * flevel) + "%分の" + Expression.Term(ref argtname54, ref u) + "を回復。";
 //                        break;
 //                    }
 
@@ -4174,7 +4174,7 @@
 //                    {
 //                        string argtname55 = "ＥＮ";
 //                        string argtname56 = "ＥＮ";
-//                        msg = "毎ターン最大" + Expression.Term(ref argtname55, ref u) + "の" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * flevel) + "%分の" + Expression.Term(ref argtname56, ref u) + "を回復。";
+//                        msg = "毎ターン最大" + Expression.Term(ref argtname55, ref u) + "の" + SrcFormatter.Format(10d * flevel) + "%分の" + Expression.Term(ref argtname56, ref u) + "を回復。";
 //                        break;
 //                    }
 
@@ -4182,7 +4182,7 @@
 //                    {
 //                        object argIndex74 = "霊力";
 //                        sname = p.SkillName0(ref argIndex74);
-//                        msg = "毎ターン最大" + sname + "の" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * flevel) + "%分の" + sname + "を回復。";
+//                        msg = "毎ターン最大" + sname + "の" + SrcFormatter.Format(10d * flevel) + "%分の" + sname + "を回復。";
 //                        break;
 //                    }
 
@@ -4190,7 +4190,7 @@
 //                    {
 //                        string argtname57 = "ＨＰ";
 //                        string argtname58 = "ＨＰ";
-//                        msg = "毎ターン最大" + Expression.Term(ref argtname57, ref u) + "の" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * flevel) + "%分の" + Expression.Term(ref argtname58, ref u) + "を消費。";
+//                        msg = "毎ターン最大" + Expression.Term(ref argtname57, ref u) + "の" + SrcFormatter.Format(10d * flevel) + "%分の" + Expression.Term(ref argtname58, ref u) + "を消費。";
 //                        break;
 //                    }
 
@@ -4198,7 +4198,7 @@
 //                    {
 //                        string argtname59 = "ＥＮ";
 //                        string argtname60 = "ＥＮ";
-//                        msg = "毎ターン最大" + Expression.Term(ref argtname59, ref u) + "の" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * flevel) + "%分の" + Expression.Term(ref argtname60, ref u) + "を消費。";
+//                        msg = "毎ターン最大" + Expression.Term(ref argtname59, ref u) + "の" + SrcFormatter.Format(10d * flevel) + "%分の" + Expression.Term(ref argtname60, ref u) + "を消費。";
 //                        break;
 //                    }
 
@@ -4206,7 +4206,7 @@
 //                    {
 //                        object argIndex75 = "霊力";
 //                        sname = p.SkillName0(ref argIndex75);
-//                        msg = "毎ターン最大" + sname + "の" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * flevel) + "%分の" + sname + "を消費。";
+//                        msg = "毎ターン最大" + sname + "の" + SrcFormatter.Format(10d * flevel) + "%分の" + sname + "を消費。";
 //                        break;
 //                    }
 
@@ -4219,7 +4219,7 @@
 
 //                case "超回避":
 //                    {
-//                        msg = "あらゆる攻撃を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * flevel) + "%の確率で回避。";
+//                        msg = "あらゆる攻撃を" + SrcFormatter.Format(10d * flevel) + "%の確率で回避。";
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
 //                        {
 //                            int localStrToLng16() { string argexpr = GeneralLib.LIndex(ref fdata, 2); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
@@ -4254,7 +4254,7 @@
 
 //                case "緊急テレポート":
 //                    {
-//                        msg = "攻撃を受けた際に" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * flevel) + "%の確率で" + "テレポートし、攻撃を回避。;" + "テレポート先は" + GeneralLib.LIndex(ref fdata, 2) + "マス以内の範囲の内、" + "最も敵から遠い地点から選ばれる。";
+//                        msg = "攻撃を受けた際に" + SrcFormatter.Format(10d * flevel) + "%の確率で" + "テレポートし、攻撃を回避。;" + "テレポート先は" + GeneralLib.LIndex(ref fdata, 2) + "マス以内の範囲の内、" + "最も敵から遠い地点から選ばれる。";
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 3)))
 //                        {
 //                            int localStrToLng17() { string argexpr = GeneralLib.LIndex(ref fdata, 3); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
@@ -4295,7 +4295,7 @@
 //                            buf = Strings.Left(buf, Strings.InStr(buf, "Lv") - 1);
 //                        }
 
-//                        msg = buf + "を身代わりにして攻撃を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(flevel) + "回まで回避。";
+//                        msg = buf + "を身代わりにして攻撃を" + SrcFormatter.Format(flevel) + "回まで回避。";
 //                        break;
 //                    }
 
@@ -4315,11 +4315,11 @@
 
 //                        if (flevel >= 0d)
 //                        {
-//                            msg = msg + "攻撃の命中率を本来の" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(100d - 10d * flevel)) + "%に減少させる。";
+//                            msg = msg + "攻撃の命中率を本来の" + SrcFormatter.Format((int)(100d - 10d * flevel)) + "%に減少させる。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + "攻撃の命中率を本来の" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(100d - 10d * flevel)) + "%に増加させる。";
+//                            msg = msg + "攻撃の命中率を本来の" + SrcFormatter.Format((int)(100d - 10d * flevel)) + "%に増加させる。";
 //                        }
 
 //                        string argexpr44 = GeneralLib.LIndex(ref fdata, 3);
@@ -4336,11 +4336,11 @@
 //                    {
 //                        if (flevel >= 0d)
 //                        {
-//                            msg = "武器の特殊効果を受ける確率を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * flevel) + "%減少させる。";
+//                            msg = "武器の特殊効果を受ける確率を" + SrcFormatter.Format(10d * flevel) + "%減少させる。";
 //                        }
 //                        else
 //                        {
-//                            msg = "武器の特殊効果を受ける確率を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(-10 * flevel) + "%増加させる。";
+//                            msg = "武器の特殊効果を受ける確率を" + SrcFormatter.Format(-10 * flevel) + "%増加させる。";
 //                        }
 
 //                        break;
@@ -4421,7 +4421,7 @@
 //                        msg = sname + "に合わせて各種能力が上昇する。";
 //                        if (flevel_specified)
 //                        {
-//                            msg = msg + ";（" + sname + "上限 = " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(flevel) + "）";
+//                            msg = msg + ";（" + sname + "上限 = " + SrcFormatter.Format(flevel) + "）";
 //                        }
 
 //                        break;
@@ -4434,7 +4434,7 @@
 //                        msg = sname + "レベルに合わせて各種能力が上昇する。";
 //                        if (flevel_specified)
 //                        {
-//                            msg = msg + ";（" + sname + "上限レベル = " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(flevel) + "）";
+//                            msg = msg + ";（" + sname + "上限レベル = " + SrcFormatter.Format(flevel) + "）";
 //                        }
 
 //                        break;
@@ -4449,7 +4449,7 @@
 //                        msg = sname + "レベルごとに" + Expression.Term(ref argtname77, ref u) + "+100、" + Expression.Term(ref argtname78, ref u) + "+5";
 //                        if (flevel_specified)
 //                        {
-//                            msg = msg + ";（" + sname + "上限レベル = " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(flevel) + "）";
+//                            msg = msg + ";（" + sname + "上限レベル = " + SrcFormatter.Format(flevel) + "）";
 //                        }
 
 //                        break;
@@ -4462,7 +4462,7 @@
 //                        msg = sname + "に合わせて各種能力が上昇する。";
 //                        if (flevel_specified)
 //                        {
-//                            msg = msg + ";（" + sname + "上限 = " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(flevel) + "%）";
+//                            msg = msg + ";（" + sname + "上限 = " + SrcFormatter.Format(flevel) + "%）";
 //                        }
 
 //                        break;
@@ -4472,7 +4472,7 @@
 //                    {
 //                        if (flevel_specified)
 //                        {
-//                            msg = "敵から" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(flevel), VbStrConv.Wide) + "マス以内にいない限り発見されない。" + "ただし自分から攻撃すると１ターン無効。";
+//                            msg = "敵から" + Strings.StrConv(SrcFormatter.Format(flevel), VbStrConv.Wide) + "マス以内にいない限り発見されない。" + "ただし自分から攻撃すると１ターン無効。";
 //                        }
 //                        else
 //                        {
@@ -4491,7 +4491,7 @@
 //                case "テレポート":
 //                    {
 //                        string argtname79 = "移動力";
-//                        msg = "テレポートを行い、" + Expression.Term(ref argtname79, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.Speed + flevel) + "で地形を無視して移動。;";
+//                        msg = "テレポートを行い、" + Expression.Term(ref argtname79, ref u) + SrcFormatter.Format(u.Speed + flevel) + "で地形を無視して移動。;";
 //                        if (GeneralLib.LLength(ref fdata) > 1)
 //                        {
 //                            if (Conversions.ToShort(GeneralLib.LIndex(ref fdata, 2)) > 0)
@@ -4512,7 +4512,7 @@
 //                case "ジャンプ":
 //                    {
 //                        string argtname82 = "移動力";
-//                        msg = Expression.Term(ref argtname82, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(u.Speed + flevel) + "で地上地形を無視しながらジャンプ移動。";
+//                        msg = Expression.Term(ref argtname82, ref u) + SrcFormatter.Format(u.Speed + flevel) + "で地上地形を無視しながらジャンプ移動。";
 //                        if (GeneralLib.LLength(ref fdata) > 1)
 //                        {
 //                            string argexpr45 = GeneralLib.LIndex(ref fdata, 2);
@@ -4599,11 +4599,11 @@
 //                        msg = GeneralLib.LIndex(ref fdata, 2) + "にいると、" + Expression.Term(ref argtname85, ref u) + "が";
 //                        if (flevel >= 0d)
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(flevel) + "増加。";
+//                            msg = msg + SrcFormatter.Format(flevel) + "増加。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(-flevel) + "減少。";
+//                            msg = msg + SrcFormatter.Format(-flevel) + "減少。";
 //                        }
 
 //                        break;
@@ -4760,7 +4760,7 @@
 //                        msg = "パーツを分離し" + uname + "に変形。";
 //                        if (flevel_specified)
 //                        {
-//                            msg = msg + ";ユニット破壊時に" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * flevel) + "%の確率で発動。";
+//                            msg = msg + ";ユニット破壊時に" + SrcFormatter.Format(10d * flevel) + "%の確率で発動。";
 //                        }
 
 //                        break;
@@ -4842,14 +4842,14 @@
 //                        if (Strings.InStr(fdata, "気力発動") > 0)
 //                        {
 //                            string argtname86 = "気力";
-//                            msg = Expression.Term(ref argtname86, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(100d + 10d * flevel) + "で特殊形態" + uname + "に";
+//                            msg = Expression.Term(ref argtname86, ref u) + SrcFormatter.Format(100d + 10d * flevel) + "で特殊形態" + uname + "に";
 //                        }
 //                        else if (flevel <= 5d)
 //                        {
 //                            string argtname89 = "気力";
 //                            string argtname90 = "ＨＰ";
 //                            string argtname91 = "ＨＰ";
-//                            msg = Expression.Term(ref argtname89, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(100d + 10d * flevel) + "、" + "もしくは" + Expression.Term(ref argtname90, ref u) + "が最大" + Expression.Term(ref argtname91, ref u) + "の1/4以下で特殊形態" + uname + "に";
+//                            msg = Expression.Term(ref argtname89, ref u) + SrcFormatter.Format(100d + 10d * flevel) + "、" + "もしくは" + Expression.Term(ref argtname90, ref u) + "が最大" + Expression.Term(ref argtname91, ref u) + "の1/4以下で特殊形態" + uname + "に";
 //                        }
 //                        else
 //                        {
@@ -5021,11 +5021,11 @@
 //                        msg = "半径３マス以内の味方ユニットに対する攻撃の命中率を元の";
 //                        if (flevel >= 0d)
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(100d - 5d * flevel) + "%に減少させる。";
+//                            msg = msg + SrcFormatter.Format(100d - 5d * flevel) + "%に減少させる。";
 //                        }
 //                        else
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(100d - 5d * flevel) + "%に増加させる。";
+//                            msg = msg + SrcFormatter.Format(100d - 5d * flevel) + "%に増加させる。";
 //                        }
 
 //                        buf = fname;
@@ -5073,12 +5073,12 @@
 //                        if (flevel >= 0d)
 //                        {
 //                            string argtname95 = "格闘";
-//                            msg = "パイロットの" + Expression.Term(ref argtname95, ref u) + "を+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref argtname95, ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 //                        else
 //                        {
 //                            string argtname96 = "格闘";
-//                            msg = "パイロットの" + Expression.Term(ref argtname96, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref argtname96, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
@@ -5097,23 +5097,23 @@
 //                            if (flevel >= 0d)
 //                            {
 //                                string argtname98 = "魔力";
-//                                msg = "パイロットの" + Expression.Term(ref argtname98, ref u) + "を+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "。";
+//                                msg = "パイロットの" + Expression.Term(ref argtname98, ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                            }
 //                            else
 //                            {
 //                                string argtname99 = "魔力";
-//                                msg = "パイロットの" + Expression.Term(ref argtname99, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "。";
+//                                msg = "パイロットの" + Expression.Term(ref argtname99, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                            }
 //                        }
 //                        else if (flevel >= 0d)
 //                        {
 //                            string argtname100 = "射撃";
-//                            msg = "パイロットの" + Expression.Term(ref argtname100, ref u) + "を+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref argtname100, ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 //                        else
 //                        {
 //                            string argtname101 = "射撃";
-//                            msg = "パイロットの" + Expression.Term(ref argtname101, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref argtname101, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
@@ -5130,12 +5130,12 @@
 //                        if (flevel >= 0d)
 //                        {
 //                            string argtname103 = "命中";
-//                            msg = "パイロットの" + Expression.Term(ref argtname103, ref u) + "を+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref argtname103, ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 //                        else
 //                        {
 //                            string argtname104 = "命中";
-//                            msg = "パイロットの" + Expression.Term(ref argtname104, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref argtname104, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
@@ -5151,12 +5151,12 @@
 //                        if (flevel >= 0d)
 //                        {
 //                            string argtname105 = "回避";
-//                            msg = "パイロットの" + Expression.Term(ref argtname105, ref u) + "を+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref argtname105, ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 //                        else
 //                        {
 //                            string argtname106 = "回避";
-//                            msg = "パイロットの" + Expression.Term(ref argtname106, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref argtname106, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
@@ -5173,12 +5173,12 @@
 //                        if (flevel >= 0d)
 //                        {
 //                            string argtname108 = "技量";
-//                            msg = "パイロットの" + Expression.Term(ref argtname108, ref u) + "を+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref argtname108, ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 //                        else
 //                        {
 //                            string argtname109 = "技量";
-//                            msg = "パイロットの" + Expression.Term(ref argtname109, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref argtname109, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
@@ -5195,12 +5195,12 @@
 //                        if (flevel >= 0d)
 //                        {
 //                            string argtname111 = "反応";
-//                            msg = "パイロットの" + Expression.Term(ref argtname111, ref u) + "を+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref argtname111, ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 //                        else
 //                        {
 //                            string argtname112 = "反応";
-//                            msg = "パイロットの" + Expression.Term(ref argtname112, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref argtname112, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
@@ -5217,12 +5217,12 @@
 //                        if (flevel >= 0d)
 //                        {
 //                            string argtname114 = "ＨＰ";
-//                            msg = "最大" + Expression.Term(ref argtname114, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(200d * flevel)) + "増加。";
+//                            msg = "最大" + Expression.Term(ref argtname114, ref u) + "を" + SrcFormatter.Format((short)(200d * flevel)) + "増加。";
 //                        }
 //                        else
 //                        {
 //                            string argtname115 = "ＨＰ";
-//                            msg = "最大" + Expression.Term(ref argtname115, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(-200 * flevel)) + "減少。";
+//                            msg = "最大" + Expression.Term(ref argtname115, ref u) + "を" + SrcFormatter.Format((short)(-200 * flevel)) + "減少。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
@@ -5239,12 +5239,12 @@
 //                        if (flevel >= 0d)
 //                        {
 //                            string argtname117 = "ＥＮ";
-//                            msg = "最大" + Expression.Term(ref argtname117, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(10d * flevel)) + "増加。";
+//                            msg = "最大" + Expression.Term(ref argtname117, ref u) + "を" + SrcFormatter.Format((short)(10d * flevel)) + "増加。";
 //                        }
 //                        else
 //                        {
 //                            string argtname118 = "ＥＮ";
-//                            msg = "最大" + Expression.Term(ref argtname118, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(-10 * flevel)) + "減少。";
+//                            msg = "最大" + Expression.Term(ref argtname118, ref u) + "を" + SrcFormatter.Format((short)(-10 * flevel)) + "減少。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
@@ -5261,12 +5261,12 @@
 //                        if (flevel >= 0d)
 //                        {
 //                            string argtname120 = "装甲";
-//                            msg = Expression.Term(ref argtname120, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(100d * flevel)) + "増加。";
+//                            msg = Expression.Term(ref argtname120, ref u) + "を" + SrcFormatter.Format((short)(100d * flevel)) + "増加。";
 //                        }
 //                        else
 //                        {
 //                            string argtname121 = "装甲";
-//                            msg = Expression.Term(ref argtname121, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(-100 * flevel)) + "減少。";
+//                            msg = Expression.Term(ref argtname121, ref u) + "を" + SrcFormatter.Format((short)(-100 * flevel)) + "減少。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
@@ -5283,12 +5283,12 @@
 //                        if (flevel >= 0d)
 //                        {
 //                            string argtname123 = "運動性";
-//                            msg = Expression.Term(ref argtname123, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "増加。";
+//                            msg = Expression.Term(ref argtname123, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "増加。";
 //                        }
 //                        else
 //                        {
 //                            string argtname124 = "運動性";
-//                            msg = Expression.Term(ref argtname124, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(-5 * flevel)) + "減少。";
+//                            msg = Expression.Term(ref argtname124, ref u) + "を" + SrcFormatter.Format((short)(-5 * flevel)) + "減少。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
@@ -5305,12 +5305,12 @@
 //                        if (flevel >= 0d)
 //                        {
 //                            string argtname126 = "移動力";
-//                            msg = Expression.Term(ref argtname126, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)flevel) + "増加。";
+//                            msg = Expression.Term(ref argtname126, ref u) + "を" + SrcFormatter.Format((short)flevel) + "増加。";
 //                        }
 //                        else
 //                        {
 //                            string argtname127 = "移動力";
-//                            msg = Expression.Term(ref argtname127, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)flevel) + "減少。";
+//                            msg = Expression.Term(ref argtname127, ref u) + "を" + SrcFormatter.Format((short)flevel) + "減少。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
@@ -5327,12 +5327,12 @@
 //                        if (flevel >= 0d)
 //                        {
 //                            string argtname129 = "ＨＰ";
-//                            msg = "最大" + Expression.Term(ref argtname129, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "%分増加。";
+//                            msg = "最大" + Expression.Term(ref argtname129, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "%分増加。";
 //                        }
 //                        else
 //                        {
 //                            string argtname130 = "ＨＰ";
-//                            msg = "最大" + Expression.Term(ref argtname130, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(-5 * flevel)) + "%分減少。";
+//                            msg = "最大" + Expression.Term(ref argtname130, ref u) + "を" + SrcFormatter.Format((short)(-5 * flevel)) + "%分減少。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
@@ -5349,12 +5349,12 @@
 //                        if (flevel >= 0d)
 //                        {
 //                            string argtname132 = "ＥＮ";
-//                            msg = "最大" + Expression.Term(ref argtname132, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "%分増加。";
+//                            msg = "最大" + Expression.Term(ref argtname132, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "%分増加。";
 //                        }
 //                        else
 //                        {
 //                            string argtname133 = "ＥＮ";
-//                            msg = "最大" + Expression.Term(ref argtname133, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(-5 * flevel)) + "%分減少。";
+//                            msg = "最大" + Expression.Term(ref argtname133, ref u) + "を" + SrcFormatter.Format((short)(-5 * flevel)) + "%分減少。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
@@ -5371,12 +5371,12 @@
 //                        if (flevel >= 0d)
 //                        {
 //                            string argtname135 = "装甲";
-//                            msg = Expression.Term(ref argtname135, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "%分増加。";
+//                            msg = Expression.Term(ref argtname135, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "%分増加。";
 //                        }
 //                        else
 //                        {
 //                            string argtname136 = "装甲";
-//                            msg = Expression.Term(ref argtname136, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(-5 * flevel)) + "%分減少。";
+//                            msg = Expression.Term(ref argtname136, ref u) + "を" + SrcFormatter.Format((short)(-5 * flevel)) + "%分減少。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
@@ -5393,12 +5393,12 @@
 //                        if (flevel >= 0d)
 //                        {
 //                            string argtname138 = "運動性";
-//                            msg = Expression.Term(ref argtname138, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * flevel)) + "%分増加。";
+//                            msg = Expression.Term(ref argtname138, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "%分増加。";
 //                        }
 //                        else
 //                        {
 //                            string argtname139 = "運動性";
-//                            msg = Expression.Term(ref argtname139, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(-5 * flevel)) + "%分減少。";
+//                            msg = Expression.Term(ref argtname139, ref u) + "を" + SrcFormatter.Format((short)(-5 * flevel)) + "%分減少。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
@@ -5464,13 +5464,13 @@
 //                            i = (short)GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
 //                            sname = u.SkillName0(Strings.Left(buf, i - 1));
 //                            prob = (short)((long)((u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToShort(Strings.Mid(buf, i))) * 100d) / 16L);
-//                            msg = msg + "(" + sname + "Lv" + Strings.Mid(buf, i) + ")/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で";
+//                            msg = msg + "(" + sname + "Lv" + Strings.Mid(buf, i) + ")/16の確率(" + SrcFormatter.Format(prob) + "%)で";
 //                        }
 //                        else
 //                        {
 //                            sname = u.SkillName0(buf);
 //                            prob = (short)((long)(u.SkillLevel(buf) * 100d) / 16L);
-//                            msg = msg + sname + "Lv/16の確率(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(prob) + "%)で";
+//                            msg = msg + sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で";
 //                        }
 
 //                        buf = GeneralLib.LIndex(ref fdata, 2);
@@ -5558,7 +5558,7 @@
 //                        }
 //                        else
 //                        {
-//                            msg = "このユニットは敵ユニットによる" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(flevel) + "レベル以下のＺＯＣの影響を受けない。";
+//                            msg = "このユニットは敵ユニットによる" + SrcFormatter.Format(flevel) + "レベル以下のＺＯＣの影響を受けない。";
 //                        }
 
 //                        break;
@@ -5572,7 +5572,7 @@
 //                        }
 //                        else
 //                        {
-//                            msg = "このユニットが隣接する敵ユニットによる" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(flevel) + "レベル以下のＺＯＣを無効化する。";
+//                            msg = "このユニットが隣接する敵ユニットによる" + SrcFormatter.Format(flevel) + "レベル以下のＺＯＣを無効化する。";
 //                        }
 
 //                        break;
@@ -5596,7 +5596,7 @@
 //                        }
 //                        else
 //                        {
-//                            msg = msg + buf + "マス以内に設定された" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(flevel) + "レベル以下のＺＯＣの影響を無効化する。";
+//                            msg = msg + buf + "マス以内に設定された" + SrcFormatter.Format(flevel) + "レベル以下のＺＯＣの影響を無効化する。";
 //                        }
 
 //                        break;
@@ -6627,7 +6627,7 @@
 //                {
 //                    string localAttributeName() { string argatr = Strings.Left(atr, Strings.InStr(atr, "L") - 1); var ret = AttributeName(ref u, ref argatr, is_ability); return ret; }
 
-//                    aname = localAttributeName() + "レベル" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Strings.Mid(atr, Strings.InStr(atr, "L") + 1)), VbStrConv.Wide);
+//                    aname = localAttributeName() + "レベル" + Strings.StrConv(SrcFormatter.Format(Strings.Mid(atr, Strings.InStr(atr, "L") + 1)), VbStrConv.Wide);
 //                }
 //                else
 //                {
@@ -6762,7 +6762,7 @@
 //                        }
 //                        else
 //                        {
-//                            msg = "ユニットランクや特殊能力による攻撃力上昇が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * alevel) + "％になる。";
+//                            msg = "ユニットランクや特殊能力による攻撃力上昇が" + SrcFormatter.Format(10d * alevel) + "％になる。";
 //                        }
 
 //                        msg = "ユニットランクや特殊能力による攻撃力上昇が通常の半分。";
@@ -6777,7 +6777,7 @@
 //                        }
 //                        else
 //                        {
-//                            msg = "ユニットランクによる攻撃力上昇が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * alevel) + "％になる。";
+//                            msg = "ユニットランクによる攻撃力上昇が" + SrcFormatter.Format(10d * alevel) + "％になる。";
 //                        }
 
 //                        break;
@@ -6896,7 +6896,7 @@
 //                        if (alevel > 0d)
 //                        {
 //                            string argtname15 = "装甲";
-//                            msg = "相手の" + Expression.Term(ref argtname15, ref u) + "を本来の" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(100d - 10d * alevel) + "％の値とみなしてダメージ計算を行う。";
+//                            msg = "相手の" + Expression.Term(ref argtname15, ref u) + "を本来の" + SrcFormatter.Format(100d - 10d * alevel) + "％の値とみなしてダメージ計算を行う。";
 //                        }
 //                        else
 //                        {
@@ -6970,7 +6970,7 @@
 
 //                case "Ａ":
 //                    {
-//                        msg = "使用すると" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(alevel) + "ターン後に再チャージが完了するまで使用不能。";
+//                        msg = "使用すると" + SrcFormatter.Format(alevel) + "ターン後に再チャージが完了するまで使用不能。";
 //                        if (!is_ability)
 //                        {
 //                            var loopTo = u.CountWeapon();
@@ -7195,7 +7195,7 @@
 
 //                case "気":
 //                    {
-//                        msg = "使用時に気力" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(5d * alevel) + "を消費。";
+//                        msg = "使用時に気力" + SrcFormatter.Format(5d * alevel) + "を消費。";
 //                        break;
 //                    }
 
@@ -7203,14 +7203,14 @@
 //                case "プ":
 //                    {
 //                        object argIndex10 = "霊力";
-//                        msg = "使用時に" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(5d * alevel) + p.SkillName0(ref argIndex10) + "を消費。";
+//                        msg = "使用時に" + SrcFormatter.Format(5d * alevel) + p.SkillName0(ref argIndex10) + "を消費。";
 //                        break;
 //                    }
 
 //                case "失":
 //                    {
 //                        string argtname26 = "ＨＰ";
-//                        msg = "使用時に" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((long)(alevel * u.MaxHP) / 10L) + "の" + Expression.Term(ref argtname26, ref u) + "を失う。";
+//                        msg = "使用時に" + SrcFormatter.Format((long)(alevel * u.MaxHP) / 10L) + "の" + Expression.Term(ref argtname26, ref u) + "を失う。";
 //                        break;
 //                    }
 
@@ -7218,7 +7218,7 @@
 //                    {
 //                        string argtname27 = "資金";
 //                        string argtname28 = "資金";
-//                        msg = "使用時に" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GeneralLib.MaxLng((int)alevel, 1) * u.Value / 10) + "の" + Expression.Term(ref argtname27, ref u) + "が必要。;" + Expression.Term(ref argtname28, ref u) + "が足りない場合は使用不可。";
+//                        msg = "使用時に" + SrcFormatter.Format(GeneralLib.MaxLng((int)alevel, 1) * u.Value / 10) + "の" + Expression.Term(ref argtname27, ref u) + "が必要。;" + Expression.Term(ref argtname28, ref u) + "が足りない場合は使用不可。";
 //                        break;
 //                    }
 
@@ -7238,7 +7238,7 @@
 //                                string argtname30 = "ＥＮ";
 //                                string argtname31 = "ＥＮ";
 //                                string argtname32 = "ＥＮ";
-//                                msg = "全" + Expression.Term(ref argtname29, ref u) + "を使って攻撃し、使用後に" + Expression.Term(ref argtname30, ref u) + "が0になる。;" + "(残り" + Expression.Term(ref argtname31, ref u) + "－必要" + Expression.Term(ref argtname32, ref u) + ")×" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(alevel), VbStrConv.Wide) + "だけ攻撃力が上昇。";
+//                                msg = "全" + Expression.Term(ref argtname29, ref u) + "を使って攻撃し、使用後に" + Expression.Term(ref argtname30, ref u) + "が0になる。;" + "(残り" + Expression.Term(ref argtname31, ref u) + "－必要" + Expression.Term(ref argtname32, ref u) + ")×" + Strings.StrConv(SrcFormatter.Format(alevel), VbStrConv.Wide) + "だけ攻撃力が上昇。";
 //                            }
 //                            else
 //                            {
@@ -7378,7 +7378,7 @@
 //                        msg = "クリティカル発生時に相手を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7399,7 +7399,7 @@
 //                        msg = "クリティカル発生時に相手を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7421,7 +7421,7 @@
 //                            msg = "クリティカル発生時に相手の装甲を";
 //                            if (alevel > 0d)
 //                            {
-//                                msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                                msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                            }
 //                            else
 //                            {
@@ -7444,7 +7444,7 @@
 //                        msg = "クリティカル発生時に相手が持つバリア等の防御能力を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7466,7 +7466,7 @@
 //                            msg = "クリティカル発生時に相手を";
 //                            if (alevel > 0d)
 //                            {
-//                                msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                                msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                            }
 //                            else
 //                            {
@@ -7489,7 +7489,7 @@
 //                        msg = "クリティカル発生時に相手を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7513,7 +7513,7 @@
 //                        msg = "クリティカル発生時に相手を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7534,7 +7534,7 @@
 //                        msg = "クリティカル発生時に相手を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7557,7 +7557,7 @@
 //                        msg = "クリティカル発生時に相手を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7578,7 +7578,7 @@
 //                        msg = "クリティカル発生時に相手を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7600,7 +7600,7 @@
 //                            msg = "クリティカル発生時に相手を";
 //                            if (alevel > 0d)
 //                            {
-//                                msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                                msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                            }
 //                            else
 //                            {
@@ -7623,7 +7623,7 @@
 //                        msg = "クリティカル発生時に相手を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7644,7 +7644,7 @@
 //                        msg = "クリティカル発生時に相手を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7665,7 +7665,7 @@
 //                        msg = "クリティカル発生時に相手を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7686,7 +7686,7 @@
 //                        msg = "クリティカル発生時に相手を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7707,7 +7707,7 @@
 //                        msg = "クリティカル発生時に相手を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7728,7 +7728,7 @@
 //                        msg = "クリティカル発生時に相手を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7749,7 +7749,7 @@
 //                        msg = "クリティカル発生時に相手を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7788,7 +7788,7 @@
 //                        if (alevel > 0d)
 //                        {
 //                            string argtname39 = "ＨＰ";
-//                            msg = "クリティカル発生時に相手を「死の宣告」状態にし、" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン後に" + Expression.Term(ref argtname39, ref u) + "を１にする。";
+//                            msg = "クリティカル発生時に相手を「死の宣告」状態にし、" + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン後に" + Expression.Term(ref argtname39, ref u) + "を１にする。";
 //                        }
 //                        else
 //                        {
@@ -7809,12 +7809,12 @@
 //                        else if (alevel >= 0d)
 //                        {
 //                            string argtname43 = "気力";
-//                            msg = "相手の" + Expression.Term(ref argtname43, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * alevel)) + "低下させる。";
+//                            msg = "相手の" + Expression.Term(ref argtname43, ref u) + "を" + SrcFormatter.Format((short)(5d * alevel)) + "低下させる。";
 //                        }
 //                        else
 //                        {
 //                            string argtname42 = "気力";
-//                            msg = "相手の" + Expression.Term(ref argtname42, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(-5 * alevel)) + "増加させる。";
+//                            msg = "相手の" + Expression.Term(ref argtname42, ref u) + "を" + SrcFormatter.Format((short)(-5 * alevel)) + "増加させる。";
 //                        }
 
 //                        break;
@@ -7830,12 +7830,12 @@
 //                        else if (alevel >= 0d)
 //                        {
 //                            string argtname46 = "気力";
-//                            msg = "相手の" + Expression.Term(ref argtname46, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(5d * alevel)) + "低下させ、その半分を吸収する。";
+//                            msg = "相手の" + Expression.Term(ref argtname46, ref u) + "を" + SrcFormatter.Format((short)(5d * alevel)) + "低下させ、その半分を吸収する。";
 //                        }
 //                        else
 //                        {
 //                            string argtname45 = "気力";
-//                            msg = "相手の" + Expression.Term(ref argtname45, ref u) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)(-5 * alevel)) + "増加させ、その半分を与える。";
+//                            msg = "相手の" + Expression.Term(ref argtname45, ref u) + "を" + SrcFormatter.Format((short)(-5 * alevel)) + "増加させ、その半分を与える。";
 //                        }
 
 //                        break;
@@ -7851,7 +7851,7 @@
 //                        msg = "クリティカル発生時に相手の攻撃力を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7873,7 +7873,7 @@
 //                        msg = "クリティカル発生時に相手の" + Expression.Term(ref argtname47, ref u) + "を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7895,7 +7895,7 @@
 //                        msg = "クリティカル発生時に相手の" + Expression.Term(ref argtname48, ref u) + "を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7917,7 +7917,7 @@
 //                        msg = "クリティカル発生時に相手の" + Expression.Term(ref argtname49, ref u) + "を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -7944,7 +7944,7 @@
 //                    {
 //                        if (alevel > 0d)
 //                        {
-//                            msg = "相手ユニットを" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "マス吹き飛ばす。;" + "クリティカル発生時は吹き飛ばし距離＋１。";
+//                            msg = "相手ユニットを" + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "マス吹き飛ばす。;" + "クリティカル発生時は吹き飛ばし距離＋１。";
 //                        }
 //                        else
 //                        {
@@ -7959,7 +7959,7 @@
 //                        if (alevel > 0d)
 //                        {
 //                            string argtname50 = "サイズ";
-//                            msg = "相手ユニットを" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "マス吹き飛ばす。;" + "クリティカル発生時は吹き飛ばし距離＋１。" + Expression.Term(ref argtname50, ref u) + "制限あり。";
+//                            msg = "相手ユニットを" + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "マス吹き飛ばす。;" + "クリティカル発生時は吹き飛ばし距離＋１。" + Expression.Term(ref argtname50, ref u) + "制限あり。";
 //                        }
 //                        else
 //                        {
@@ -7978,19 +7978,19 @@
 
 //                case "転":
 //                    {
-//                        msg = "クリティカル発生時に相手ユニットを" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "マス強制テレポートさせる。テレポート先はランダムに選ばれる。";
+//                        msg = "クリティカル発生時に相手ユニットを" + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "マス強制テレポートさせる。テレポート先はランダムに選ばれる。";
 //                        break;
 //                    }
 
 //                case "連":
 //                    {
-//                        msg = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(alevel) + "回連続して攻撃を行う。;" + "攻撃によって与えるダメージは下記の式で計算される。;" + "  通常のダメージ量 × 命中回数 ／ 攻撃回数";
+//                        msg = SrcFormatter.Format(alevel) + "回連続して攻撃を行う。;" + "攻撃によって与えるダメージは下記の式で計算される。;" + "  通常のダメージ量 × 命中回数 ／ 攻撃回数";
 //                        break;
 //                    }
 
 //                case "再":
 //                    {
-//                        msg = Microsoft.VisualBasic.Compatibility.VB6.Support.Format((long)(100d * alevel) / 16L) + "%の確率で再攻撃。";
+//                        msg = SrcFormatter.Format((long)(100d * alevel) / 16L) + "%の確率で再攻撃。";
 //                        break;
 //                    }
 
@@ -8008,7 +8008,7 @@
 
 //                case "難":
 //                    {
-//                        msg = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * alevel) + "%の確率で失敗する。";
+//                        msg = SrcFormatter.Format(10d * alevel) + "%の確率で失敗する。";
 //                        break;
 //                    }
 
@@ -8182,7 +8182,7 @@
 //                        msg = "クリティカル発生時に相手を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -8203,7 +8203,7 @@
 //                        msg = "クリティカル発生時に相手を";
 //                        if (alevel > 0d)
 //                        {
-//                            msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                        }
 //                        else
 //                        {
@@ -8225,7 +8225,7 @@
 //                            msg = "クリティカル発生時に相手を";
 //                            if (alevel > 0d)
 //                            {
-//                                msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                                msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                            }
 //                            else
 //                            {
@@ -8249,7 +8249,7 @@
 //                            msg = "クリティカル発生時に相手を";
 //                            if (alevel > 0d)
 //                            {
-//                                msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                                msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                            }
 //                            else
 //                            {
@@ -8287,11 +8287,11 @@
 //                        string argoname8 = "ダメージ倍率低下";
 //                        if (Expression.IsOptionDefined(ref argoname8))
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(100d + 10d * (alevel + 2d));
+//                            msg = msg + SrcFormatter.Format(100d + 10d * (alevel + 2d));
 //                        }
 //                        else
 //                        {
-//                            msg = msg + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(100d + 25d * (alevel + 2d));
+//                            msg = msg + SrcFormatter.Format(100d + 25d * (alevel + 2d));
 //                        }
 
 //                        msg = msg + "% のダメージを与える。";
@@ -8438,7 +8438,7 @@
 //                            whatsthis = "攻撃";
 //                        }
 
-//                        msg = "相手のメインパイロットのレベルが" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "の倍数の場合にのみ有効な" + whatsthis + "。";
+//                        msg = "相手のメインパイロットのレベルが" + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "の倍数の場合にのみ有効な" + whatsthis + "。";
 //                        break;
 //                    }
 
@@ -8455,7 +8455,7 @@
 
 //                case "小":
 //                    {
-//                        msg = "最小射程が" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "になる。";
+//                        msg = "最小射程が" + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "になる。";
 //                        break;
 //                    }
 
@@ -8480,7 +8480,7 @@
 //                                    msg = "クリティカル発生時に相手に" + Strings.Mid(atype, 2) + "属性に対する弱点を";
 //                                    if (alevel > 0d)
 //                                    {
-//                                        msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                                        msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                                    }
 //                                    else
 //                                    {
@@ -8501,7 +8501,7 @@
 //                                    msg = "クリティカル発生時に相手に" + Strings.Mid(atype, 2) + "属性に対する有効を";
 //                                    if (alevel > 0d)
 //                                    {
-//                                        msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                                        msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                                    }
 //                                    else
 //                                    {
@@ -8574,7 +8574,7 @@
 //                                    msg = msg + "を";
 //                                    if (alevel > 0d)
 //                                    {
-//                                        msg = msg + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((short)alevel), VbStrConv.Wide) + "ターン";
+//                                        msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
 //                                    }
 //                                    else
 //                                    {

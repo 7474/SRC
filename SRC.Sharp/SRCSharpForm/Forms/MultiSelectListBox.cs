@@ -50,7 +50,7 @@ namespace Project1
             //for (i = 1; i <= loopTo; i++)
             //{
             //    ItemFlag[i - 1] = false;
-            //    Microsoft.VisualBasic.Compatibility.VB6.Support.SetItemString(lstItems, i - 1, "　" + Strings.Mid(Microsoft.VisualBasic.Compatibility.VB6.Support.GetItemString(lstItems, i - 1), 2));
+            //    SrcFormatter.SetItemString(lstItems, i - 1, "　" + Strings.Mid(SrcFormatter.GetItemString(lstItems, i - 1), 2));
             //}
 
             //var loopTo1 = (short)GeneralLib.MinLng(GUI.MaxListItem, lstItems.Items.Count);
@@ -59,7 +59,7 @@ namespace Project1
             //    if (!ItemFlag[i - 1])
             //    {
             //        ItemFlag[i - 1] = true;
-            //        Microsoft.VisualBasic.Compatibility.VB6.Support.SetItemString(lstItems, i - 1, "○" + Strings.Mid(Microsoft.VisualBasic.Compatibility.VB6.Support.GetItemString(lstItems, i - 1), 2));
+            //        SrcFormatter.SetItemString(lstItems, i - 1, "○" + Strings.Mid(SrcFormatter.GetItemString(lstItems, i - 1), 2));
             //    }
             //}
 
@@ -75,7 +75,7 @@ namespace Project1
             //    }
             //}
 
-            //lblNumber.Text = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SelectedItemNum) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GUI.MaxListItem);
+            //lblNumber.Text = SrcFormatter.Format(SelectedItemNum) + "/" + SrcFormatter.Format(GUI.MaxListItem);
             //if (SelectedItemNum > 0 & SelectedItemNum <= GUI.MaxListItem)
             //{
             //    if (!cmdFinish.Enabled)
@@ -98,7 +98,7 @@ namespace Project1
             //for (i = 1; i <= loopTo; i++)
             //{
             //    ItemFlag[i - 1] = false;
-            //    Microsoft.VisualBasic.Compatibility.VB6.Support.SetItemString(lstItems, i - 1, "　" + Strings.Mid(Microsoft.VisualBasic.Compatibility.VB6.Support.GetItemString(lstItems, i - 1), 2));
+            //    SrcFormatter.SetItemString(lstItems, i - 1, "　" + Strings.Mid(SrcFormatter.GetItemString(lstItems, i - 1), 2));
             //}
 
             //var loopTo1 = (short)GeneralLib.MinLng(GUI.MaxListItem, lstItems.Items.Count);
@@ -107,7 +107,7 @@ namespace Project1
             //    if (!ItemFlag[lstItems.Items.Count - i])
             //    {
             //        ItemFlag[lstItems.Items.Count - i] = true;
-            //        Microsoft.VisualBasic.Compatibility.VB6.Support.SetItemString(lstItems, lstItems.Items.Count - i, "○" + Strings.Mid(Microsoft.VisualBasic.Compatibility.VB6.Support.GetItemString(lstItems, lstItems.Items.Count - i), 2));
+            //        SrcFormatter.SetItemString(lstItems, lstItems.Items.Count - i, "○" + Strings.Mid(SrcFormatter.GetItemString(lstItems, lstItems.Items.Count - i), 2));
             //    }
             //}
 
@@ -123,7 +123,7 @@ namespace Project1
             //    }
             //}
 
-            //lblNumber.Text = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SelectedItemNum) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GUI.MaxListItem);
+            //lblNumber.Text = SrcFormatter.Format(SelectedItemNum) + "/" + SrcFormatter.Format(GUI.MaxListItem);
             //if (SelectedItemNum > 0 & SelectedItemNum <= GUI.MaxListItem)
             //{
             //    if (!cmdFinish.Enabled)
@@ -156,7 +156,7 @@ namespace Project1
             //    item_list = new string[withBlock.Items.Count + 1];
             //    var loopTo = (short)withBlock.Items.Count;
             //    for (i = 1; i <= loopTo; i++)
-            //        item_list[i] = Microsoft.VisualBasic.Compatibility.VB6.Support.GetItemString(lstItems, i - 1);
+            //        item_list[i] = SrcFormatter.GetItemString(lstItems, i - 1);
             //}
 
             //if (cmdSort.Text == "レベル順に並べ替え")
@@ -263,7 +263,7 @@ namespace Project1
             //    withBlock4.Visible = false;
             //    var loopTo7 = (short)withBlock4.Items.Count;
             //    for (i = 1; i <= loopTo7; i++)
-            //        Microsoft.VisualBasic.Compatibility.VB6.Support.SetItemString(lstItems, i - 1, item_list[i]);
+            //        SrcFormatter.SetItemString(lstItems, i - 1, item_list[i]);
             //    withBlock4.TopIndex = 0;
             //    withBlock4.Visible = true;
             //}
@@ -274,7 +274,7 @@ namespace Project1
         private void frmMultiSelectListBox_Activated(object eventSender, EventArgs eventArgs)
         {
             //SelectedItemNum = 0;
-            //lblNumber.Text = "0/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GUI.MaxListItem);
+            //lblNumber.Text = "0/" + SrcFormatter.Format(GUI.MaxListItem);
             //ItemFlag = new bool[lstItems.Items.Count + 1];
             //if (lstItems.Items.Count > 0)
             //{
@@ -298,11 +298,11 @@ namespace Project1
 
             //        // 選択されたユニット数を減らす
             //        SelectedItemNum = (short)(SelectedItemNum - 1);
-            //        lblNumber.Text = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SelectedItemNum) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GUI.MaxListItem);
+            //        lblNumber.Text = SrcFormatter.Format(SelectedItemNum) + "/" + SrcFormatter.Format(GUI.MaxListItem);
             //        ItemFlag[i] = false;
 
             //        // 選択状態の表示を更新
-            //        Microsoft.VisualBasic.Compatibility.VB6.Support.SetItemString(lstItems, i, "　" + Strings.Mid(Microsoft.VisualBasic.Compatibility.VB6.Support.GetItemString(lstItems, i), 2));
+            //        SrcFormatter.SetItemString(lstItems, i, "　" + Strings.Mid(SrcFormatter.GetItemString(lstItems, i), 2));
 
             //        // 選択終了が可能か判定
             //        if (SelectedItemNum > 0 & SelectedItemNum <= GUI.MaxListItem)
@@ -323,11 +323,11 @@ namespace Project1
 
             //        // 選択されたユニット数を増やす
             //        SelectedItemNum = (short)(SelectedItemNum + 1);
-            //        lblNumber.Text = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SelectedItemNum) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GUI.MaxListItem);
+            //        lblNumber.Text = SrcFormatter.Format(SelectedItemNum) + "/" + SrcFormatter.Format(GUI.MaxListItem);
             //        ItemFlag[i] = true;
 
             //        // 選択状態の表示を更新
-            //        Microsoft.VisualBasic.Compatibility.VB6.Support.SetItemString(lstItems, i, "○" + Strings.Mid(Microsoft.VisualBasic.Compatibility.VB6.Support.GetItemString(lstItems, i), 2));
+            //        SrcFormatter.SetItemString(lstItems, i, "○" + Strings.Mid(SrcFormatter.GetItemString(lstItems, i), 2));
 
             //        // 選択終了が可能か判定
             //        if (SelectedItemNum > 0 & SelectedItemNum <= GUI.MaxListItem)
@@ -350,8 +350,8 @@ namespace Project1
         {
             //short Button = (short)((int)eventArgs.Button / 0x100000);
             //short Shift = (short)((int)ModifierKeys / 0x10000);
-            //float X = (float)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(eventArgs.X);
-            //float Y = (float)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(eventArgs.Y);
+            //float X = (float)SrcFormatter.PixelsToTwipsX(eventArgs.X);
+            //float Y = (float)SrcFormatter.PixelsToTwipsY(eventArgs.Y);
             //short i;
 
             //// 左クリック以外は無視
@@ -369,11 +369,11 @@ namespace Project1
 
             //        // 選択されたユニット数を減らす
             //        SelectedItemNum = (short)(SelectedItemNum - 1);
-            //        lblNumber.Text = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SelectedItemNum) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GUI.MaxListItem);
+            //        lblNumber.Text = SrcFormatter.Format(SelectedItemNum) + "/" + SrcFormatter.Format(GUI.MaxListItem);
             //        ItemFlag[i] = false;
 
             //        // 選択状態の表示を更新
-            //        Microsoft.VisualBasic.Compatibility.VB6.Support.SetItemString(lstItems, i, "　" + Strings.Mid(Microsoft.VisualBasic.Compatibility.VB6.Support.GetItemString(lstItems, i), 2));
+            //        SrcFormatter.SetItemString(lstItems, i, "　" + Strings.Mid(SrcFormatter.GetItemString(lstItems, i), 2));
 
             //        // 選択終了が可能か判定
             //        if (SelectedItemNum > 0 & SelectedItemNum <= GUI.MaxListItem)
@@ -394,11 +394,11 @@ namespace Project1
 
             //        // 選択されたユニット数を増やす
             //        SelectedItemNum = (short)(SelectedItemNum + 1);
-            //        lblNumber.Text = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SelectedItemNum) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GUI.MaxListItem);
+            //        lblNumber.Text = SrcFormatter.Format(SelectedItemNum) + "/" + SrcFormatter.Format(GUI.MaxListItem);
             //        ItemFlag[i] = true;
 
             //        // 選択状態の表示を更新
-            //        Microsoft.VisualBasic.Compatibility.VB6.Support.SetItemString(lstItems, i, "○" + Strings.Mid(Microsoft.VisualBasic.Compatibility.VB6.Support.GetItemString(lstItems, i), 2));
+            //        SrcFormatter.SetItemString(lstItems, i, "○" + Strings.Mid(SrcFormatter.GetItemString(lstItems, i), 2));
 
             //        // 選択終了が可能か判定
             //        if (SelectedItemNum > 0 & SelectedItemNum <= GUI.MaxListItem)
@@ -421,12 +421,12 @@ namespace Project1
         {
             //short Button = (short)((int)eventArgs.Button / 0x100000);
             //short Shift = (short)((int)ModifierKeys / 0x10000);
-            //float X = (float)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(eventArgs.X);
-            //float Y = (float)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(eventArgs.Y);
+            //float X = (float)SrcFormatter.PixelsToTwipsX(eventArgs.X);
+            //float Y = (float)SrcFormatter.PixelsToTwipsY(eventArgs.Y);
             //short itm;
 
             //// カーソルがあるアイテムを算出
-            //itm = (short)(((long)(Y * ClientRectangle.Width) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Width) + 1L) / 16L);
+            //itm = (short)(((long)(Y * ClientRectangle.Width) / (long)SrcFormatter.PixelsToTwipsX(Width) + 1L) / 16L);
             //itm = (short)(itm + lstItems.TopIndex);
 
             //// カーソルがあるアイテムをハイライト表示
