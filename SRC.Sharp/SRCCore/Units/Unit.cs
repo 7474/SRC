@@ -15,6 +15,7 @@ namespace SRCCore.Units
         private SRC SRC { get; }
         private Map Map => SRC.Map;
         private IGUI GUI => SRC.GUI;
+        private Events.Event Event => SRC.Event;
         private Commands.Command Commands => SRC.Commands;
         private Expressions.Expression Expression => SRC.Expression;
 
