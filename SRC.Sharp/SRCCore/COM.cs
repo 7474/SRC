@@ -101,7 +101,7 @@ namespace SRCCore
                     return;
                 }
 
-                foreach(var p in Commands.SelectedUnit.SubPilots.Concat(Commands.SelectedUnit.Supports))
+                foreach (var p in Commands.SelectedUnit.SubPilots.Concat(Commands.SelectedUnit.Supports))
                 {
                     TrySpecialPower(p);
                     if (SRC.IsScenarioFinished | SRC.IsCanceled)
@@ -125,22 +125,14 @@ namespace SRCCore
 
             // 特殊な思考モードの場合の処理
             {
-                var withBlock = Commands.SelectedUnit;
+                var selectedUnit = Commands.SelectedUnit;
                 // 指定された地点を目指す場合
-                int localLLength() { string arglist = withBlock.Mode; var ret = GeneralLib.LLength(arglist); withBlock.Mode = arglist; return ret; }
+                int localLLength() { string arglist = selectedUnit.Mode; var ret = GeneralLib.LLength(arglist); selectedUnit.Mode = arglist; return ret; }
 
                 if (localLLength() == 2)
                 {
-                    string localLIndex() { string arglist = withBlock.Mode; var ret = GeneralLib.LIndex(arglist, 1); withBlock.Mode = arglist; return ret; }
-
-                    string localLIndex1() { string arglist = withBlock.Mode; var ret = GeneralLib.LIndex(arglist, 1); withBlock.Mode = arglist; return ret; }
-
-                    dst_x = Conversions.ToInteger(localLIndex1());
-                    string localLIndex2() { string arglist = withBlock.Mode; var ret = GeneralLib.LIndex(arglist, 2); withBlock.Mode = arglist; return ret; }
-
-                    string localLIndex3() { string arglist = withBlock.Mode; var ret = GeneralLib.LIndex(arglist, 2); withBlock.Mode = arglist; return ret; }
-
-                    dst_y = Conversions.ToInteger(localLIndex3());
+                    dst_x = Conversions.ToInteger(GeneralLib.LIndex(selectedUnit.Mode, 1));
+                    dst_y = Conversions.ToInteger(GeneralLib.LIndex(selectedUnit.Mode, 2));
                     if (1 <= dst_x & dst_x <= Map.MapWidth & 1 <= dst_y & dst_y <= Map.MapHeight)
                     {
                         goto Move;
@@ -148,38 +140,30 @@ namespace SRCCore
                 }
 
                 // 逃亡し続ける場合
-                if (withBlock.Mode == "逃亡")
+                if (selectedUnit.Mode == "逃亡")
                 {
                     goto Move;
                 }
 
                 // 思考モードが「パイロット名」の場合の処理
-                bool localIsDefined() { object argIndex1 = withBlock.Mode; var ret = SRC.PList.IsDefined(argIndex1); withBlock.Mode = Conversions.ToString(argIndex1); return ret; }
-
-                if (!localIsDefined())
+                if (!SRC.PList.IsDefined(selectedUnit.Mode))
                 {
                     goto TryBattleTransform;
                 }
 
-                Pilot localItem() { object argIndex1 = withBlock.Mode; var ret = SRC.PList.Item(argIndex1); withBlock.Mode = Conversions.ToString(argIndex1); return ret; }
-
-                if (localItem().Unit is null)
+                if (SRC.PList.Item(selectedUnit.Mode).Unit is null)
                 {
                     goto TryBattleTransform;
                 }
 
-                Pilot localItem1() { object argIndex1 = withBlock.Mode; var ret = SRC.PList.Item(argIndex1); withBlock.Mode = Conversions.ToString(argIndex1); return ret; }
-
-                if (localItem1().Unit.Status != "出撃")
+                if (SRC.PList.Item(selectedUnit.Mode).Unit.Status != "出撃")
                 {
                     goto TryBattleTransform;
                 }
 
-                Pilot localItem2() { object argIndex1 = withBlock.Mode; var ret = SRC.PList.Item(argIndex1); withBlock.Mode = Conversions.ToString(argIndex1); return ret; }
-
-                Commands.SelectedTarget = localItem2().Unit;
+                Commands.SelectedTarget = SRC.PList.Item(selectedUnit.Mode).Unit;
                 Map.AreaInSpeed(Commands.SelectedUnit);
-                if (!withBlock.IsAlly(Commands.SelectedTarget))
+                if (!selectedUnit.IsAlly(Commands.SelectedTarget))
                 {
                     // ユニットが敵の場合はそのユニットを狙う
                     string argamode = "移動可能";
@@ -219,9 +203,9 @@ namespace SRCCore
                     // 隣接することを優先する
                     string argsname = "援護";
                     string argsname1 = "援護防御";
-                    if (withBlock.MainPilot().IsSkillAvailable(argsname) | withBlock.MainPilot().IsSkillAvailable(argsname1))
+                    if (selectedUnit.MainPilot().IsSkillAvailable(argsname) | selectedUnit.MainPilot().IsSkillAvailable(argsname1))
                     {
-                        if (Math.Abs((withBlock.x - dst_x)) + Math.Abs((withBlock.y - dst_y)) > 1)
+                        if (Math.Abs((selectedUnit.x - dst_x)) + Math.Abs((selectedUnit.y - dst_y)) > 1)
                         {
                             goto Move;
                         }
@@ -230,9 +214,9 @@ namespace SRCCore
                     }
 
                     string argfname1 = "合体技";
-                    if (withBlock.IsFeatureAvailable(argfname1))
+                    if (selectedUnit.IsFeatureAvailable(argfname1))
                     {
-                        if (Math.Abs((withBlock.x - dst_x)) > 1 | Math.Abs((withBlock.y - dst_y)) > 1)
+                        if (Math.Abs((selectedUnit.x - dst_x)) > 1 | Math.Abs((selectedUnit.y - dst_y)) > 1)
                         {
                             goto Move;
                         }
@@ -251,13 +235,13 @@ namespace SRCCore
                     // 護衛するユニットを脅かすユニットが存在するかチェック
                     foreach (Unit currentU in SRC.UList.Items)
                     {
-                        u = currentU;
+                        selectedUnit = currentU;
                         {
-                            var withBlock1 = u;
-                            if (withBlock1.Status == "出撃" & Commands.SelectedUnit.IsEnemy(u) & Math.Abs((dst_x - withBlock1.x)) + Math.Abs((dst_y - withBlock1.y)) <= 5)
+                            var withBlock1 = selectedUnit;
+                            if (withBlock1.Status == "出撃" & Commands.SelectedUnit.IsEnemy(selectedUnit) & Math.Abs((dst_x - withBlock1.x)) + Math.Abs((dst_y - withBlock1.y)) <= 5)
                             {
                                 string argamode1 = "移動可能";
-                                tmp_w = SelectWeapon(Commands.SelectedUnit, u, argamode1, prob, dmg);
+                                tmp_w = SelectWeapon(Commands.SelectedUnit, selectedUnit, argamode1, prob, dmg);
                             }
                             else
                             {
@@ -270,7 +254,7 @@ namespace SRCCore
                                 if (distance > (Math.Abs((dst_x - withBlock1.x)) + Math.Abs((dst_y - withBlock1.y))))
                                 {
                                     // 近い位置にいるユニットを優先
-                                    Commands.SelectedTarget = u;
+                                    Commands.SelectedTarget = selectedUnit;
                                     w = tmp_w;
                                     distance = (Math.Abs((dst_x - withBlock1.x)) + Math.Abs((dst_y - withBlock1.y)));
                                     max_prob = prob;
@@ -282,13 +266,13 @@ namespace SRCCore
                                     // より危険度が高いユニットを優先
                                     if (prob > max_prob & prob > 50)
                                     {
-                                        Commands.SelectedTarget = u;
+                                        Commands.SelectedTarget = selectedUnit;
                                         w = tmp_w;
                                         max_prob = prob;
                                     }
                                     else if (max_prob == 0 & dmg > max_dmg)
                                     {
-                                        Commands.SelectedTarget = u;
+                                        Commands.SelectedTarget = selectedUnit;
                                         w = tmp_w;
                                         max_dmg = dmg;
                                     }
@@ -410,25 +394,21 @@ namespace SRCCore
 
             // ターゲットにするユニットを探す
             {
-                var withBlock3 = Commands.SelectedUnit;
+                var selectedUnit = Commands.SelectedUnit;
                 Map.AreaInSpeed(Commands.SelectedUnit);
 
                 // 護衛すべきユニットがいる場合は移動範囲を限定
                 if (guard_unit_mode)
                 {
-                    Pilot localItem3() { object argIndex1 = withBlock3.Mode; var ret = SRC.PList.Item(argIndex1); withBlock3.Mode = Conversions.ToString(argIndex1); return ret; }
-
                     {
-                        var withBlock4 = localItem3().Unit;
-                        var loopTo2 = Map.MapWidth;
-                        for (i = 1; i <= loopTo2; i++)
+                        var guardTarget = SRC.PList.Item(selectedUnit.Mode).Unit;
+                        for (i = 1; i <= Map.MapWidth; i++)
                         {
-                            var loopTo3 = Map.MapHeight;
-                            for (j = 1; j <= loopTo3; j++)
+                            for (j = 1; j <= Map.MapHeight; j++)
                             {
                                 if (!Map.MaskData[i, j])
                                 {
-                                    if (Math.Abs((withBlock4.x - i)) + Math.Abs((withBlock4.y - j)) > 1)
+                                    if (Math.Abs((guardTarget.x - i)) + Math.Abs((guardTarget.y - j)) > 1)
                                     {
                                         Map.MaskData[i, j] = true;
                                     }
@@ -439,12 +419,11 @@ namespace SRCCore
                 }
 
                 // 個々のユニットに対してターゲットとなり得るか判定
-                // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
                 Commands.SelectedTarget = null;
                 w = 0;
                 max_prob = 0;
                 max_dmg = 0;
-                foreach (Unit currentU1 in SRC.UList)
+                foreach (Unit currentU1 in SRC.UList.Items)
                 {
                     u = currentU1;
                     if (u.Status != "出撃")
@@ -453,13 +432,13 @@ namespace SRCCore
                     }
 
                     // 敵かどうかを判定
-                    if (withBlock3.IsAlly(u))
+                    if (selectedUnit.IsAlly(u))
                     {
                         goto NextLoop;
                     }
 
                     // 特定の陣営のみを狙う思考モードの場合
-                    switch (withBlock3.Mode ?? "")
+                    switch (selectedUnit.Mode ?? "")
                     {
                         case "味方":
                             {
@@ -475,7 +454,7 @@ namespace SRCCore
                         case "敵":
                         case "中立":
                             {
-                                if ((u.Party ?? "") != (withBlock3.Mode ?? ""))
+                                if ((u.Party ?? "") != (selectedUnit.Mode ?? ""))
                                 {
                                     goto NextLoop;
                                 }
@@ -498,21 +477,16 @@ namespace SRCCore
                     }
 
                     // ステルスの敵は遠距離からは攻撃を受けない
-                    string argfname2 = "ステルス";
-                    object argIndex4 = "ステルス無効";
-                    string argfname3 = "ステルス無効化";
-                    if (u.IsFeatureAvailable(argfname2) & !u.IsConditionSatisfied(argIndex4) & !withBlock3.IsFeatureAvailable(argfname3))
+                    if (u.IsFeatureAvailable("ステルス") && !u.IsConditionSatisfied("ステルス無効") && !selectedUnit.IsFeatureAvailable("ステルス無効化"))
                     {
-                        object argIndex3 = "ステルス";
-                        if (u.IsFeatureLevelSpecified(argIndex3))
+                        if (u.IsFeatureLevelSpecified("ステルス"))
                         {
-                            object argIndex2 = "ステルス";
-                            if (Math.Abs((withBlock3.x - u.x)) + Math.Abs((withBlock3.y - u.y)) > u.FeatureLevel(argIndex2))
+                            if (Math.Abs((selectedUnit.x - u.x)) + Math.Abs((selectedUnit.y - u.y)) > u.FeatureLevel("ステルス"))
                             {
                                 goto NextLoop;
                             }
                         }
-                        else if (Math.Abs((withBlock3.x - u.x)) + Math.Abs((withBlock3.y - u.y)) > 3)
+                        else if (Math.Abs((selectedUnit.x - u.x)) + Math.Abs((selectedUnit.y - u.y)) > 3)
                         {
                             goto NextLoop;
                         }
@@ -536,7 +510,7 @@ namespace SRCCore
                     }
 
                     // サポートガードされる？
-                    if (withBlock3.MainPilot().TacticalTechnique() >= 150)
+                    if (selectedUnit.MainPilot().TacticalTechnique() >= 150)
                     {
                         if (u.LookForSupportGuard(Commands.SelectedUnit, tmp_w) is object)
                         {
@@ -549,14 +523,14 @@ namespace SRCCore
 
                     // 間接攻撃？
                     string argattr = "間";
-                    indirect_attack = withBlock3.IsWeaponClassifiedAs(w, argattr);
+                    indirect_attack = selectedUnit.IsWeaponClassifiedAs(w, argattr);
 
                     // 召喚ユニットは自分がやられてしまうような攻撃はかけない
                     string argfname4 = "召喚ユニット";
                     object argIndex5 = "暴走";
                     object argIndex6 = "混乱";
                     object argIndex7 = "狂戦士";
-                    if (withBlock3.Party == "ＮＰＣ" & withBlock3.IsFeatureAvailable(argfname4) & !withBlock3.IsConditionSatisfied(argIndex5) & !withBlock3.IsConditionSatisfied(argIndex6) & !withBlock3.IsConditionSatisfied(argIndex7) & !indirect_attack)
+                    if (selectedUnit.Party == "ＮＰＣ" & selectedUnit.IsFeatureAvailable(argfname4) & !selectedUnit.IsConditionSatisfied(argIndex5) & !selectedUnit.IsConditionSatisfied(argIndex6) & !selectedUnit.IsConditionSatisfied(argIndex7) & !indirect_attack)
                     {
                         string argamode5 = "反撃";
                         tw = SelectWeapon(u, Commands.SelectedUnit, argamode5, tprob, tdmg);
@@ -571,7 +545,7 @@ namespace SRCCore
                     if (prob > 50)
                     {
                         // 重要なユニットは優先してターゲットにする
-                        if (withBlock3.MainPilot().TacticalTechnique() >= 150)
+                        if (selectedUnit.MainPilot().TacticalTechnique() >= 150)
                         {
                             string argsname2 = "指揮";
                             string argsname3 = "広域サポート";
@@ -624,15 +598,15 @@ namespace SRCCore
                             if (u.IsWeaponAvailable(i, argref_mode) & !u.IsWeaponClassifiedAs(i, argattr2))
                             {
                                 string argattr1 = "移動後攻撃可";
-                                if (!moved & withBlock3.Mode != "固定" & withBlock3.IsWeaponClassifiedAs(tmp_w, argattr1))
+                                if (!moved & selectedUnit.Mode != "固定" & selectedUnit.IsWeaponClassifiedAs(tmp_w, argattr1))
                                 {
-                                    if (u.WeaponMaxRange(i) >= withBlock3.WeaponMaxRange(tmp_w))
+                                    if (u.WeaponMaxRange(i) >= selectedUnit.WeaponMaxRange(tmp_w))
                                     {
                                         tw = i;
                                         break;
                                     }
                                 }
-                                else if (u.WeaponMaxRange(i) >= (Math.Abs((withBlock3.x - u.x)) + Math.Abs((withBlock3.y - u.y))))
+                                else if (u.WeaponMaxRange(i) >= (Math.Abs((selectedUnit.x - u.x)) + Math.Abs((selectedUnit.y - u.y))))
                                 {
                                     tw = i;
                                     break;
@@ -660,7 +634,7 @@ namespace SRCCore
                         }
 
                         // 重要なユニットは優先してターゲットにする
-                        if (withBlock3.MainPilot().TacticalTechnique() >= 150)
+                        if (selectedUnit.MainPilot().TacticalTechnique() >= 150)
                         {
                             string argsname4 = "指揮";
                             string argsname5 = "広域サポート";
@@ -712,9 +686,9 @@ namespace SRCCore
                 // 射程内に敵がいなければ移動、もしくは待機
                 if (Commands.SelectedTarget is null)
                 {
-                    int localLLength1() { string arglist = withBlock3.Mode; var ret = GeneralLib.LLength(arglist); withBlock3.Mode = arglist; return ret; }
+                    int localLLength1() { string arglist = selectedUnit.Mode; var ret = GeneralLib.LLength(arglist); selectedUnit.Mode = arglist; return ret; }
 
-                    if (withBlock3.Mode == "待機" | withBlock3.Mode == "固定" | localLLength1() == 2)
+                    if (selectedUnit.Mode == "待機" | selectedUnit.Mode == "固定" | localLLength1() == 2)
                     {
                         goto EndOfOperation;
                     }
