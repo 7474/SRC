@@ -26,6 +26,16 @@ namespace SRCCore.Pilots
             return colSkill[Index]?.Name ?? "";
         }
 
+        public bool HasSupportSkill()
+        {
+            return IsSkillAvailable("援護")
+                || IsSkillAvailable("援護攻撃")
+                || IsSkillAvailable("援護防御")
+                || IsSkillAvailable("統率")
+                || IsSkillAvailable("指揮")
+                || IsSkillAvailable("広域サポート");
+        }
+
         // 現在のレベルにおいて特殊能力 sname が使用可能か
         public bool IsSkillAvailable(string sname)
         {

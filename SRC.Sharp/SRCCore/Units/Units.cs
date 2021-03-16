@@ -1299,31 +1299,33 @@ namespace SRCCore.Units
         //        }
 
 
-        //        // ハイパーモードの自動発動チェック
-        //        public void CheckAutoHyperMode()
-        //        {
-        //            foreach (Unit u in colUnits)
-        //                u.CheckAutoHyperMode();
-        //        }
+        // ハイパーモードの自動発動チェック
+        public void CheckAutoHyperMode()
+        {
+            foreach (Unit u in colUnits.List)
+            {
+                u.CheckAutoHyperMode();
+            }
+        }
 
-        //        // ノーマルモードの自動発動チェック
-        //        public void CheckAutoNormalMode()
-        //        {
-        //            var is_redraw_necessary = default(bool);
-        //            foreach (Unit u in colUnits)
-        //            {
-        //                if (u.CheckAutoNormalMode(true))
-        //                {
-        //                    is_redraw_necessary = true;
-        //                }
-        //            }
+        // ノーマルモードの自動発動チェック
+        public void CheckAutoNormalMode()
+        {
+            var is_redraw_necessary = default(bool);
+            foreach (Unit u in colUnits.List)
+            {
+                if (u.CheckAutoNormalMode(true))
+                {
+                    is_redraw_necessary = true;
+                }
+            }
 
-        //            // 画面の再描画が必要？
-        //            if (is_redraw_necessary)
-        //            {
-        //                GUI.RedrawScreen();
-        //            }
-        //        }
+            // 画面の再描画が必要？
+            if (is_redraw_necessary)
+            {
+                GUI.RedrawScreen();
+            }
+        }
 
         //        // 破棄されたユニットを削除
         //        public void Clean()

@@ -447,7 +447,7 @@ namespace SRCCore
                 GUI.RedrawScreen();
 
                 // 敵(ＮＰＣ)フェイズ用ＢＧＭを演奏
-                    var terrain = Map.Terrain(1, 1);
+                var terrain = Map.Terrain(1, 1);
                 if (Stage == "ＮＰＣ")
                 {
                     switch (terrain?.Class ?? "")
@@ -471,7 +471,8 @@ namespace SRCCore
                             }
                             break;
                     }
-                } else
+                }
+                else
                 {
 
                     switch (terrain?.Class ?? "")
@@ -569,306 +570,263 @@ namespace SRCCore
                 return;
             }
 
-            //GUI.LockGUI();
+            GUI.LockGUI();
 
-            //// CPUによるユニット操作
-            //for (phase = 1; phase <= 5; phase++)
-            //{
-            //    var loopTo = UList.Count();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        // フェイズ中に行動するユニットを選択
-            //        object argIndex1 = i;
-            //        Commands.SelectedUnit = UList.Item(argIndex1);
-            //        {
-            //            var withBlock8 = Commands.SelectedUnit;
-            //            if (withBlock8.Status != "出撃")
-            //            {
-            //                goto NextLoop;
-            //            }
+            CPUOperation(uparty);
 
-            //            if (withBlock8.Action == 0)
-            //            {
-            //                goto NextLoop;
-            //            }
-
-            //            if ((withBlock8.Party ?? "") != (uparty ?? ""))
-            //            {
-            //                goto NextLoop;
-            //            }
-
-            //            u = Commands.SelectedUnit;
-
-            //            // 他のユニットを護衛しているユニットは護衛対象と同じ順に行動
-            //            bool localIsDefined() { object argIndex1 = withBlock8.Mode; var ret = PList.IsDefined(argIndex1); withBlock8.Mode = Conversions.ToString(argIndex1); return ret; }
-
-            //            if (localIsDefined())
-            //            {
-            //                object argIndex2 = withBlock8.Mode;
-            //                {
-            //                    var withBlock9 = PList.Item(argIndex2);
-            //                    if (withBlock9.Unit is object)
-            //                    {
-            //                        if (withBlock9.Unit.Party == uparty)
-            //                        {
-            //                            u = withBlock9.Unit;
-            //                        }
-            //                    }
-            //                }
-
-            //                withBlock8.Mode = Conversions.ToString(argIndex2);
-            //            }
-
-            //            bool localIsDefined1() { object argIndex1 = u.Mode; var ret = PList.IsDefined(argIndex1); u.Mode = Conversions.ToString(argIndex1); return ret; }
-
-            //            if (localIsDefined1())
-            //            {
-            //                object argIndex3 = u.Mode;
-            //                {
-            //                    var withBlock10 = PList.Item(argIndex3);
-            //                    if (withBlock10.Unit is object)
-            //                    {
-            //                        if (withBlock10.Unit.Party == uparty)
-            //                        {
-            //                            u = withBlock10.Unit;
-            //                        }
-            //                    }
-            //                }
-
-            //                u.Mode = Conversions.ToString(argIndex3);
-            //            }
-
-            //            switch (phase)
-            //            {
-            //                case 1:
-            //                    {
-            //                        // 最初にサポート能力を持たないザコユニットが行動
-            //                        if (u.BossRank >= 0)
-            //                        {
-            //                            goto NextLoop;
-            //                        }
-
-            //                        {
-            //                            var withBlock11 = u.MainPilot();
-            //                            string argsname = "援護";
-            //                            string argsname1 = "援護攻撃";
-            //                            string argsname2 = "援護防御";
-            //                            string argsname3 = "統率";
-            //                            string argsname4 = "指揮";
-            //                            string argsname5 = "広域サポート";
-            //                            if (withBlock11.IsSkillAvailable(argsname) | withBlock11.IsSkillAvailable(argsname1) | withBlock11.IsSkillAvailable(argsname2) | withBlock11.IsSkillAvailable(argsname3) | withBlock11.IsSkillAvailable(argsname4) | withBlock11.IsSkillAvailable(argsname5))
-            //                            {
-            //                                goto NextLoop;
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case 2:
-            //                    {
-            //                        // 次にサポート能力を持たないボスユニットが行動
-            //                        {
-            //                            var withBlock12 = u.MainPilot();
-            //                            string argsname6 = "援護";
-            //                            string argsname7 = "援護攻撃";
-            //                            string argsname8 = "援護防御";
-            //                            string argsname9 = "統率";
-            //                            string argsname10 = "指揮";
-            //                            string argsname11 = "広域サポート";
-            //                            if (withBlock12.IsSkillAvailable(argsname6) | withBlock12.IsSkillAvailable(argsname7) | withBlock12.IsSkillAvailable(argsname8) | withBlock12.IsSkillAvailable(argsname9) | withBlock12.IsSkillAvailable(argsname10) | withBlock12.IsSkillAvailable(argsname11))
-            //                            {
-            //                                goto NextLoop;
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case 3:
-            //                    {
-            //                        // 次に統率能力を持つユニットが行動
-            //                        string argsname12 = "統率";
-            //                        if (!u.MainPilot().IsSkillAvailable(argsname12))
-            //                        {
-            //                            goto NextLoop;
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case 4:
-            //                    {
-            //                        // 次にサポート能力を持つザコユニットが行動
-            //                        if (u.BossRank >= 0)
-            //                        {
-            //                            goto NextLoop;
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case 5:
-            //                    {
-            //                        break;
-            //                    }
-            //                    // 最後にサポート能力を持つボスユニットが行動
-            //            }
-            //        }
-
-            //        while (Commands.SelectedUnit.Action > 0)
-            //        {
-            //            // 途中で状態が変更された場合
-            //            if (Commands.SelectedUnit.Status != "出撃")
-            //            {
-            //                break;
-            //            }
-
-            //            // 途中で陣営が変更された場合
-            //            if ((Commands.SelectedUnit.Party ?? "") != (uparty ?? ""))
-            //            {
-            //                break;
-            //            }
-
-            //            if (!GUI.IsRButtonPressed())
-            //            {
-            //                Status.DisplayUnitStatus(Commands.SelectedUnit);
-            //                GUI.Center(Commands.SelectedUnit.x, Commands.SelectedUnit.y);
-            //                GUI.RedrawScreen();
-            //                Application.DoEvents();
-            //            }
-
-            //            IsCanceled = false; // Cancelコマンドのクリア
-
-            //            // ユニットを行動させる
-            //            COM.OperateUnit();
-            //            if (IsScenarioFinished)
-            //            {
-            //                return;
-            //            }
-
-            //            // ハイパーモード・ノーマルモードの自動発動チェック
-            //            UList.CheckAutoHyperMode();
-            //            UList.CheckAutoNormalMode();
-
-            //            // Cancelコマンドが実行されたらここで終了
-            //            if (IsCanceled)
-            //            {
-            //                if (Commands.SelectedUnit is null)
-            //                {
-            //                    break;
-            //                }
-
-            //                if (Commands.SelectedUnit.Status != "出撃")
-            //                {
-            //                    break;
-            //                }
-
-            //                IsCanceled = false;
-            //            }
-
-            //            // 行動数を減少
-            //            Commands.SelectedUnit.UseAction();
-
-            //            // 接触イベント
-            //            {
-            //                var withBlock13 = Commands.SelectedUnit;
-            //                if (withBlock13.Status == "出撃" & withBlock13.x > 1)
-            //                {
-            //                    if (Map.MapDataForUnit[withBlock13.x - 1, withBlock13.y] is object)
-            //                    {
-            //                        Commands.SelectedTarget = Map.MapDataForUnit[withBlock13.x - 1, withBlock13.y];
-            //                        Event.HandleEvent("接触", withBlock13.MainPilot().ID, Map.MapDataForUnit[withBlock13.x - 1, withBlock13.y].MainPilot.ID);
-            //                        if (IsScenarioFinished)
-            //                        {
-            //                            return;
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //            {
-            //                var withBlock14 = Commands.SelectedUnit;
-            //                if (withBlock14.Status == "出撃" & withBlock14.x < Map.MapWidth)
-            //                {
-            //                    if (Map.MapDataForUnit[withBlock14.x + 1, withBlock14.y] is object)
-            //                    {
-            //                        Commands.SelectedTarget = Map.MapDataForUnit[withBlock14.x + 1, withBlock14.y];
-            //                        Event.HandleEvent("接触", withBlock14.MainPilot().ID, Map.MapDataForUnit[withBlock14.x + 1, withBlock14.y].MainPilot.ID);
-            //                        if (IsScenarioFinished)
-            //                        {
-            //                            return;
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //            {
-            //                var withBlock15 = Commands.SelectedUnit;
-            //                if (withBlock15.Status == "出撃" & withBlock15.y > 1)
-            //                {
-            //                    if (Map.MapDataForUnit[withBlock15.x, withBlock15.y - 1] is object)
-            //                    {
-            //                        Commands.SelectedTarget = Map.MapDataForUnit[withBlock15.x, withBlock15.y - 1];
-            //                        Event.HandleEvent("接触", withBlock15.MainPilot().ID, Map.MapDataForUnit[withBlock15.x, withBlock15.y - 1].MainPilot.ID);
-            //                        if (IsScenarioFinished)
-            //                        {
-            //                            return;
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //            {
-            //                var withBlock16 = Commands.SelectedUnit;
-            //                if (withBlock16.Status == "出撃" & withBlock16.y < Map.MapHeight)
-            //                {
-            //                    if (Map.MapDataForUnit[withBlock16.x, withBlock16.y + 1] is object)
-            //                    {
-            //                        Commands.SelectedTarget = Map.MapDataForUnit[withBlock16.x, withBlock16.y + 1];
-            //                        Event.HandleEvent("接触", withBlock16.MainPilot().ID, Map.MapDataForUnit[withBlock16.x, withBlock16.y + 1].MainPilot.ID);
-            //                        if (IsScenarioFinished)
-            //                        {
-            //                            return;
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //            // 進入イベント
-            //            {
-            //                var withBlock17 = Commands.SelectedUnit;
-            //                if (withBlock17.Status == "出撃")
-            //                {
-            //                    Event.HandleEvent("進入", withBlock17.MainPilot().ID, withBlock17.x, withBlock17.y);
-            //                    if (IsScenarioFinished)
-            //                    {
-            //                        return;
-            //                    }
-            //                }
-            //            }
-
-            //            // 行動終了イベント
-            //            {
-            //                var withBlock18 = Commands.SelectedUnit;
-            //                if (withBlock18.Status == "出撃")
-            //                {
-            //                    Event.HandleEvent("行動終了", withBlock18.MainPilot().ID);
-            //                    if (IsScenarioFinished)
-            //                    {
-            //                        return;
-            //                    }
-            //                }
-            //            }
-            //        }
-
-            //    NextLoop:
-            //        ;
-            //    }
-            //}
+            if (IsScenarioFinished)
+            {
+                return;
+            }
 
             // ステータスウィンドウの表示を消去
             GUIStatus.ClearUnitStatus();
+        }
+
+        private void CPUOperation(string uparty)
+        {
+            // CPUによるユニット操作
+            for (var phase = 1; phase <= 5; phase++)
+            {
+                foreach (var u in UList.Items)
+                {
+                    // フェイズ中に行動するユニットを選択
+                    Commands.SelectedUnit = u;
+                    if (u.Status != "出撃")
+                    {
+                        continue;
+                    }
+
+                    if (u.Action == 0)
+                    {
+                        continue;
+                    }
+
+                    if ((u.Party ?? "") != (uparty ?? ""))
+                    {
+                        continue;
+                    }
+
+                    var phaseJudgeUnit = u;
+
+                    // 他のユニットを護衛しているユニットは護衛対象と同じ順に行動
+                    if (PList.IsDefined(u.Mode))
+                    {
+                        var p = PList.Item(u.Mode);
+                        if (p.Unit != null)
+                        {
+                            if (p.Unit.Party == uparty)
+                            {
+                                phaseJudgeUnit = p.Unit;
+                            }
+                        }
+                    }
+                    // XXX 二段階走査してるってこと？
+                    if (PList.IsDefined(phaseJudgeUnit.Mode))
+                    {
+                        var p = PList.Item(phaseJudgeUnit.Mode);
+                        if (p.Unit != null)
+                        {
+                            if (p.Unit.Party == uparty)
+                            {
+                                phaseJudgeUnit = p.Unit;
+                            }
+                        }
+                    }
+
+                    switch (phase)
+                    {
+                        case 1:
+                            // 最初にサポート能力を持たないザコユニットが行動
+                            if (phaseJudgeUnit.BossRank >= 0)
+                            {
+                                continue;
+                            }
+                            if (phaseJudgeUnit.MainPilot().HasSupportSkill())
+                            {
+                                continue;
+                            }
+
+                            break;
+
+                        case 2:
+                            // 次にサポート能力を持たないボスユニットが行動
+                            if (phaseJudgeUnit.MainPilot().HasSupportSkill())
+                            {
+                                continue;
+                            }
+
+                            break;
+
+                        case 3:
+                            // 次に統率能力を持つユニットが行動
+                            if (!phaseJudgeUnit.MainPilot().IsSkillAvailable("統率"))
+                            {
+                                continue;
+                            }
+                            break;
+
+                        case 4:
+                            // 次にサポート能力を持つザコユニットが行動
+                            if (phaseJudgeUnit.BossRank >= 0)
+                            {
+                                continue;
+                            }
+                            break;
+
+                        case 5:
+                            // 最後にサポート能力を持つボスユニットが行動
+                            break;
+                    }
+
+                    while (Commands.SelectedUnit.Action > 0)
+                    {
+                        // 途中で状態が変更された場合
+                        if (Commands.SelectedUnit.Status != "出撃")
+                        {
+                            break;
+                        }
+
+                        // 途中で陣営が変更された場合
+                        if ((Commands.SelectedUnit.Party ?? "") != (uparty ?? ""))
+                        {
+                            break;
+                        }
+
+                        if (!GUI.IsRButtonPressed())
+                        {
+                            GUIStatus.DisplayUnitStatus(Commands.SelectedUnit);
+                            GUI.Center(Commands.SelectedUnit.x, Commands.SelectedUnit.y);
+                            GUI.RedrawScreen();
+                            // XXX
+                            //Application.DoEvents();
+                        }
+
+                        IsCanceled = false; // Cancelコマンドのクリア
+
+                        // ユニットを行動させる
+                        COM.OperateUnit();
+                        if (IsScenarioFinished)
+                        {
+                            return;
+                        }
+
+                        // ハイパーモード・ノーマルモードの自動発動チェック
+                        UList.CheckAutoHyperMode();
+                        UList.CheckAutoNormalMode();
+
+                        // Cancelコマンドが実行されたらここで終了
+                        if (IsCanceled)
+                        {
+                            if (Commands.SelectedUnit is null)
+                            {
+                                break;
+                            }
+
+                            if (Commands.SelectedUnit.Status != "出撃")
+                            {
+                                break;
+                            }
+
+                            IsCanceled = false;
+                        }
+
+                        // 行動数を減少
+                        Commands.SelectedUnit.UseAction();
+
+                        // 接触イベント
+                        {
+                            var withBlock13 = Commands.SelectedUnit;
+                            if (withBlock13.Status == "出撃" & withBlock13.x > 1)
+                            {
+                                if (Map.MapDataForUnit[withBlock13.x - 1, withBlock13.y] is object)
+                                {
+                                    Commands.SelectedTarget = Map.MapDataForUnit[withBlock13.x - 1, withBlock13.y];
+                                    Event.HandleEvent("接触", withBlock13.MainPilot().ID, Map.MapDataForUnit[withBlock13.x - 1, withBlock13.y].MainPilot().ID);
+                                    if (IsScenarioFinished)
+                                    {
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+
+                        {
+                            var withBlock14 = Commands.SelectedUnit;
+                            if (withBlock14.Status == "出撃" & withBlock14.x < Map.MapWidth)
+                            {
+                                if (Map.MapDataForUnit[withBlock14.x + 1, withBlock14.y] is object)
+                                {
+                                    Commands.SelectedTarget = Map.MapDataForUnit[withBlock14.x + 1, withBlock14.y];
+                                    Event.HandleEvent("接触", withBlock14.MainPilot().ID, Map.MapDataForUnit[withBlock14.x + 1, withBlock14.y].MainPilot().ID);
+                                    if (IsScenarioFinished)
+                                    {
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+
+                        {
+                            var withBlock15 = Commands.SelectedUnit;
+                            if (withBlock15.Status == "出撃" & withBlock15.y > 1)
+                            {
+                                if (Map.MapDataForUnit[withBlock15.x, withBlock15.y - 1] is object)
+                                {
+                                    Commands.SelectedTarget = Map.MapDataForUnit[withBlock15.x, withBlock15.y - 1];
+                                    Event.HandleEvent("接触", withBlock15.MainPilot().ID, Map.MapDataForUnit[withBlock15.x, withBlock15.y - 1].MainPilot().ID);
+                                    if (IsScenarioFinished)
+                                    {
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+
+                        {
+                            var withBlock16 = Commands.SelectedUnit;
+                            if (withBlock16.Status == "出撃" & withBlock16.y < Map.MapHeight)
+                            {
+                                if (Map.MapDataForUnit[withBlock16.x, withBlock16.y + 1] is object)
+                                {
+                                    Commands.SelectedTarget = Map.MapDataForUnit[withBlock16.x, withBlock16.y + 1];
+                                    Event.HandleEvent("接触", withBlock16.MainPilot().ID, Map.MapDataForUnit[withBlock16.x, withBlock16.y + 1].MainPilot().ID);
+                                    if (IsScenarioFinished)
+                                    {
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+
+                        // 進入イベント
+                        {
+                            var withBlock17 = Commands.SelectedUnit;
+                            if (withBlock17.Status == "出撃")
+                            {
+                                Event.HandleEvent("進入", withBlock17.MainPilot().ID, "" + withBlock17.x, "" + withBlock17.y);
+                                if (IsScenarioFinished)
+                                {
+                                    return;
+                                }
+                            }
+                        }
+
+                        // 行動終了イベント
+                        {
+                            var withBlock18 = Commands.SelectedUnit;
+                            if (withBlock18.Status == "出撃")
+                            {
+                                Event.HandleEvent("行動終了", withBlock18.MainPilot().ID);
+                                if (IsScenarioFinished)
+                                {
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         // ゲームオーバー

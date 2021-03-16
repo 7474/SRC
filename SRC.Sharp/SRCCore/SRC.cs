@@ -27,6 +27,7 @@ namespace SRCCore
         public Map Map { get; }
         public Commands.Command Commands { get; }
         public Sound Sound { get; }
+        public COM COM { get; }
 
         // パイロットデータのリスト
         public PilotDataList PDList;
@@ -150,6 +151,7 @@ namespace SRCCore
             Map = new Map(this);
             Commands = new Commands.Command(this);
             Sound = new Sound(this);
+            COM = new COM(this);
 
             PDList = new PilotDataList(this);
             NPDList = new NonPilotDataList(this);
