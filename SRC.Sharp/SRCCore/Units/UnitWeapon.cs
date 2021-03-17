@@ -5541,5 +5541,44 @@ namespace SRCCore.Units
             //ExpDamageRet = dmg;
             //return ExpDamageRet;
         }
+
+        // 弾数
+        public int Bullet()
+        {
+            // TODO Impl
+            return 2;
+            //int BulletRet = default;
+            //BulletRet = (int)(dblBullet[w] * intMaxBullet[w]);
+            //return BulletRet;
+        }
+
+        // 最大弾数
+        public int MaxBullet()
+        {
+            // TODO Impl
+            return 2;
+            //int MaxBulletRet = default;
+            //MaxBulletRet = intMaxBullet[w];
+            //return MaxBulletRet;
+        }
+
+        // 弾数を設定
+        public void SetBullet(int new_bullet)
+        {
+            // TODO Impl
+            //if (new_bullet < 0)
+            //{
+            //    dblBullet[w] = 0d;
+            //}
+            //else if (intMaxBullet[w] > 0)
+            //{
+            //    dblBullet[w] = new_bullet / (double)intMaxBullet[w];
+            //}
+            //else
+            //{
+            //    dblBullet[w] = 1d;
+            //}
+        }
+
     }
 }
