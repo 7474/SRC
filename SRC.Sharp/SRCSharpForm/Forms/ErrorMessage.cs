@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Project1
+namespace SRCSharpForm
 {
     internal partial class frmErrorMessage : Form
     {
@@ -11,5 +11,10 @@ namespace Project1
         // 再頒布または改変することができます。
 
         // エラーメッセージ表示用フォーム
+
+        public void SetErrorMessage(string msg)
+        {
+            txtMessage.Text = msg;
+        }
     }
 }

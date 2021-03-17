@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.CompilerServices;
 
-namespace Project1
+namespace SRCSharpForm
 {
     [DesignerGenerated()]
     internal partial class frmErrorMessage
