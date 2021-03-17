@@ -1482,6 +1482,13 @@ namespace SRCSharpForm
         public void ErrorMessage(string msg)
         {
             LogError(msg);
+
+            // SRCは非モーダルだが余計なことを考えたくないのでモーダルにしておく。
+            using (var form = new frmErrorMessage())
+            {
+                form.SetErrorMessage(msg);
+                form.ShowDialog();
+            }
         }
 
         public void DataErrorMessage(string msg, string fname, int line_num, string line_buf, string dname)
