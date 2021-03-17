@@ -17,19 +17,19 @@ namespace SRCCore.Pilots
         {
             //// 闘争本能によって初期気力は変化する
             //string argsname = "闘争本能";
-            //if (IsSkillAvailable(ref argsname))
+            //if (IsSkillAvailable(argsname))
             //{
             //    if (MinMorale > 100)
             //    {
             //        object argIndex1 = "闘争本能";
             //        string argref_mode = "";
-            //        SetMorale((short)(MinMorale + 5d * SkillLevel(ref argIndex1, ref_mode: ref argref_mode)));
+            //        SetMorale((MinMorale + 5d * SkillLevel(argIndex1, ref_mode: argref_mode)));
             //    }
             //    else
             //    {
             //        object argIndex2 = "闘争本能";
             //        string argref_mode1 = "";
-            //        SetMorale((short)(100d + 5d * SkillLevel(ref argIndex2, ref_mode: ref argref_mode1)));
+            //        SetMorale((100d + 5d * SkillLevel(argIndex2, ref_mode: argref_mode1)));
             //    }
             //}
             //else
@@ -42,12 +42,12 @@ namespace SRCCore.Pilots
         }
 
         //// 同調率
-        //public short SynchroRate()
+        //public int SynchroRate()
         //{
-        //    short SynchroRateRet = default;
-        //    short lv;
+        //    int SynchroRateRet = default;
+        //    int lv;
         //    string argsname = "同調率";
-        //    if (!IsSkillAvailable(ref argsname))
+        //    if (!IsSkillAvailable(argsname))
         //    {
         //        return SynchroRateRet;
         //    }
@@ -55,32 +55,32 @@ namespace SRCCore.Pilots
         //    // 同調率基本値
         //    object argIndex1 = "同調率";
         //    string argref_mode = "";
-        //    SynchroRateRet = (short)SkillLevel(ref argIndex1, ref_mode: ref argref_mode);
+        //    SynchroRateRet = SkillLevel(argIndex1, ref_mode: argref_mode);
 
         //    // レベルによる増加分
-        //    lv = (short)GeneralLib.MinLng(Level, 100);
+        //    lv = GeneralLib.MinLng(Level, 100);
         //    string argsname1 = "同調率成長";
-        //    if (IsSkillAvailable(ref argsname1))
+        //    if (IsSkillAvailable(argsname1))
         //    {
         //        object argIndex2 = "同調率成長";
         //        string argref_mode1 = "";
-        //        SynchroRateRet = (short)(SynchroRateRet + (long)(lv * (10d + SkillLevel(ref argIndex2, ref_mode: ref argref_mode1))) / 10L);
+        //        SynchroRateRet = (SynchroRateRet + (long)(lv * (10d + SkillLevel(argIndex2, ref_mode: argref_mode1))) / 10L);
         //    }
         //    else
         //    {
-        //        SynchroRateRet = (short)(SynchroRateRet + lv);
+        //        SynchroRateRet = (SynchroRateRet + lv);
         //    }
 
         //    return SynchroRateRet;
         //}
 
         //// 指揮範囲
-        //public short CommandRange()
+        //public int CommandRange()
         //{
-        //    short CommandRangeRet = default;
+        //    int CommandRangeRet = default;
         //    // 指揮能力を持っていなければ範囲は0
         //    string argsname = "指揮";
-        //    if (!IsSkillAvailable(ref argsname))
+        //    if (!IsSkillAvailable(argsname))
         //    {
         //        CommandRangeRet = 0;
         //        return CommandRangeRet;
@@ -89,7 +89,7 @@ namespace SRCCore.Pilots
         //    // 指揮能力を持っている場合は階級レベルに依存
         //    object argIndex1 = "階級";
         //    string argref_mode = "";
-        //    switch (SkillLevel(ref argIndex1, ref_mode: ref argref_mode))
+        //    switch (SkillLevel(argIndex1, ref_mode: argref_mode))
         //    {
         //        case var @case when 0d <= @case && @case <= 6d:
         //            {
@@ -119,44 +119,36 @@ namespace SRCCore.Pilots
         //    return CommandRangeRet;
         //}
 
-        //// 行動決定に用いられる戦闘判断力
-        //public short TacticalTechnique0()
-        //{
-        //    short TacticalTechnique0Ret = default;
-        //    object argIndex1 = "戦術";
-        //    string argref_mode = "";
-        //    TacticalTechnique0Ret = (short)(TechniqueBase - Level + 10d * SkillLevel(ref argIndex1, ref_mode: ref argref_mode));
-        //    return TacticalTechnique0Ret;
-        //}
+        // 行動決定に用いられる戦闘判断力
+        public int TacticalTechnique0()
+        {
+            return (int)(TechniqueBase - Level + 10d * SkillLevel("戦術", ref_mode: ""));
+        }
 
-        //public short TacticalTechnique()
-        //{
-        //    short TacticalTechniqueRet = default;
-        //    // 正常な判断能力がある？
-        //    if (Unit_Renamed is object)
-        //    {
-        //        {
-        //            var withBlock = Unit_Renamed;
-        //            object argIndex1 = "混乱";
-        //            object argIndex2 = "暴走";
-        //            object argIndex3 = "狂戦士";
-        //            if (withBlock.IsConditionSatisfied(ref argIndex1) | withBlock.IsConditionSatisfied(ref argIndex2) | withBlock.IsConditionSatisfied(ref argIndex3))
-        //            {
-        //                return TacticalTechniqueRet;
-        //            }
-        //        }
-        //    }
+        public int TacticalTechnique()
+        {
+            int TacticalTechniqueRet = default;
+            // 正常な判断能力がある？
+            if (Unit is object)
+            {
+                if (Unit.IsConditionSatisfied("混乱")
+                    || Unit.IsConditionSatisfied("暴走")
+                    || Unit.IsConditionSatisfied("狂戦士"))
+                {
+                    return 0;
+                }
+            }
 
-        //    TacticalTechniqueRet = TacticalTechnique0();
-        //    return TacticalTechniqueRet;
-        //}
+            TacticalTechniqueRet = TacticalTechnique0();
+            return TacticalTechniqueRet;
+        }
 
         //// イベントコマンド SetRelation で設定した値を返す
-        //public short Relation(ref Pilot t)
+        //public int Relation(Pilot t)
         //{
-        //    short RelationRet = default;
+        //    int RelationRet = default;
         //    string argexpr = "関係:" + Name + ":" + t.Name;
-        //    RelationRet = (short)Expression.GetValueAsLong(ref argexpr);
+        //    RelationRet = Expression.GetValueAsLong(argexpr);
         //    return RelationRet;
         //}
 
@@ -166,14 +158,14 @@ namespace SRCCore.Pilots
         //    bool HasManaRet = default;
         //    string argsname = "術";
         //    string argsname1 = "魔力所有";
-        //    if (IsSkillAvailable(ref argsname) | IsSkillAvailable(ref argsname1))
+        //    if (IsSkillAvailable(argsname) | IsSkillAvailable(argsname1))
         //    {
         //        HasManaRet = true;
         //        return HasManaRet;
         //    }
 
         //    string argoname = "魔力使用";
-        //    if (Expression.IsOptionDefined(ref argoname))
+        //    if (Expression.IsOptionDefined(argoname))
         //    {
         //        HasManaRet = true;
         //        return HasManaRet;

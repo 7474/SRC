@@ -3,6 +3,9 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.VB;
+using System.Collections.Generic;
+
 namespace SRCCore.Models
 {
     // アビリティデータのクラス
@@ -27,8 +30,9 @@ namespace SRCCore.Models
         // 必要条件
         public string NecessaryCondition;
 
-        //// 効果
-        //private Collection colEffects = new Collection();
+        // 効果
+        private SrcCollection<AbilityEffect> colEffects = new SrcCollection<AbilityEffect>();
+        public IList<AbilityEffect> Effects => colEffects.List;
 
         // アビリティ愛称
         public string Nickname()
@@ -46,160 +50,161 @@ namespace SRCCore.Models
         }
 
         // アビリティに効果を追加
-        public void SetEffect(string elist) { }
-        // TODO Impl
-        //    int j, i, k;
-        //    string buf;
-        //    AbilityEffect dat;
-        //    string elevel, etype, edata;
-        //    GeneralLib.TrimString(ref elist);
-        //    var loopTo = GeneralLib.ListLength(ref elist);
-        //    for (i = 1; i <= loopTo; i++)
-        //    {
-        //        dat = NewAbilityEffect();
-        //        buf = GeneralLib.ListIndex(ref elist, i);
-        //        j = Strings.InStr(buf, "Lv");
-        //        k = Strings.InStr(buf, "=");
-        //        if (j > 0 & (k == 0 | j < k))
-        //        {
-        //            // レベル指定のある効果(データ指定があるものを含む)
-        //            dat.Name = Strings.Left(buf, j - 1);
-        //            if (k > 0)
-        //            {
-        //                // データ指定があるもの
-        //                dat.Level = Conversions.ToDouble(Strings.Mid(buf, j + 2, k - (j + 2)));
-        //                buf = Strings.Mid(buf, k + 1);
-        //                if (Strings.Left(buf, 1) == "\"")
-        //                {
-        //                    buf = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-        //                }
+        public void SetEffect(string elist)
+        {
+            // TODO Impl
+            //    int j, i, k;
+            //    string buf;
+            //    AbilityEffect dat;
+            //    string elevel, etype, edata;
+            //    GeneralLib.TrimString(ref elist);
+            //    var loopTo = GeneralLib.ListLength(ref elist);
+            //    for (i = 1; i <= loopTo; i++)
+            //    {
+            //        dat = NewAbilityEffect();
+            //        buf = GeneralLib.ListIndex(ref elist, i);
+            //        j = Strings.InStr(buf, "Lv");
+            //        k = Strings.InStr(buf, "=");
+            //        if (j > 0 & (k == 0 | j < k))
+            //        {
+            //            // レベル指定のある効果(データ指定があるものを含む)
+            //            dat.Name = Strings.Left(buf, j - 1);
+            //            if (k > 0)
+            //            {
+            //                // データ指定があるもの
+            //                dat.Level = Conversions.ToDouble(Strings.Mid(buf, j + 2, k - (j + 2)));
+            //                buf = Strings.Mid(buf, k + 1);
+            //                if (Strings.Left(buf, 1) == "\"")
+            //                {
+            //                    buf = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
+            //                }
 
-        //                j = Strings.InStr(buf, "Lv");
-        //                k = Strings.InStr(buf, "=");
-        //                if (j > 0 & (k == 0 | j < k))
-        //                {
-        //                    // データ指定内にレベル指定がある
-        //                    etype = Strings.Left(buf, j - 1);
-        //                    if (k > 0)
-        //                    {
-        //                        elevel = Strings.Mid(buf, j + 2, k - (j + 2));
-        //                        edata = Strings.Mid(buf, k + 1);
-        //                    }
-        //                    else
-        //                    {
-        //                        elevel = Strings.Mid(buf, j + 2);
-        //                        edata = "";
-        //                    }
-        //                }
-        //                else if (k > 0)
-        //                {
-        //                    // データ指定内にデータ指定がある
-        //                    etype = Strings.Left(buf, k - 1);
-        //                    elevel = "";
-        //                    edata = Strings.Mid(buf, k + 1);
-        //                }
-        //                else
-        //                {
-        //                    // 単純なデータ指定
-        //                    etype = buf;
-        //                    elevel = "";
-        //                    edata = "";
-        //                }
+            //                j = Strings.InStr(buf, "Lv");
+            //                k = Strings.InStr(buf, "=");
+            //                if (j > 0 & (k == 0 | j < k))
+            //                {
+            //                    // データ指定内にレベル指定がある
+            //                    etype = Strings.Left(buf, j - 1);
+            //                    if (k > 0)
+            //                    {
+            //                        elevel = Strings.Mid(buf, j + 2, k - (j + 2));
+            //                        edata = Strings.Mid(buf, k + 1);
+            //                    }
+            //                    else
+            //                    {
+            //                        elevel = Strings.Mid(buf, j + 2);
+            //                        edata = "";
+            //                    }
+            //                }
+            //                else if (k > 0)
+            //                {
+            //                    // データ指定内にデータ指定がある
+            //                    etype = Strings.Left(buf, k - 1);
+            //                    elevel = "";
+            //                    edata = Strings.Mid(buf, k + 1);
+            //                }
+            //                else
+            //                {
+            //                    // 単純なデータ指定
+            //                    etype = buf;
+            //                    elevel = "";
+            //                    edata = "";
+            //                }
 
-        //                if (dat.Name == "付加" & string.IsNullOrEmpty(elevel))
-        //                {
-        //                    elevel = SrcFormatter.Format(SRC.DEFAULT_LEVEL);
-        //                }
+            //                if (dat.Name == "付加" & string.IsNullOrEmpty(elevel))
+            //                {
+            //                    elevel = SrcFormatter.Format(SRC.DEFAULT_LEVEL);
+            //                }
 
-        //                dat.Data = Strings.Trim(etype + " " + elevel + " " + edata);
-        //            }
-        //            else
-        //            {
-        //                // データ指定がないもの
-        //                dat.Level = Conversions.ToDouble(Strings.Mid(buf, j + 2));
-        //            }
-        //        }
-        //        else if (k > 0)
-        //        {
-        //            // データ指定を含む効果
-        //            dat.Name = Strings.Left(buf, k - 1);
-        //            buf = Strings.Mid(buf, k + 1);
-        //            if (Strings.Asc(buf) == 34) // "
-        //            {
-        //                buf = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-        //            }
+            //                dat.Data = Strings.Trim(etype + " " + elevel + " " + edata);
+            //            }
+            //            else
+            //            {
+            //                // データ指定がないもの
+            //                dat.Level = Conversions.ToDouble(Strings.Mid(buf, j + 2));
+            //            }
+            //        }
+            //        else if (k > 0)
+            //        {
+            //            // データ指定を含む効果
+            //            dat.Name = Strings.Left(buf, k - 1);
+            //            buf = Strings.Mid(buf, k + 1);
+            //            if (Strings.Asc(buf) == 34) // "
+            //            {
+            //                buf = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
+            //            }
 
-        //            j = Strings.InStr(buf, "Lv");
-        //            k = Strings.InStr(buf, "=");
-        //            if (dat.Name == "解説")
-        //            {
-        //                // 解説の指定
-        //                etype = buf;
-        //                elevel = "";
-        //                edata = "";
-        //            }
-        //            else if (j > 0)
-        //            {
-        //                // データ指定内にレベル指定がある
-        //                etype = Strings.Left(buf, j - 1);
-        //                if (k > 0)
-        //                {
-        //                    elevel = Strings.Mid(buf, j + 2, k - (j + 2));
-        //                    edata = Strings.Mid(buf, k + 1);
-        //                }
-        //                else
-        //                {
-        //                    elevel = Strings.Mid(buf, j + 2);
-        //                    edata = "";
-        //                }
-        //            }
-        //            else if (k > 0)
-        //            {
-        //                // データ指定内にデータ指定がある
-        //                etype = Strings.Left(buf, k - 1);
-        //                elevel = "";
-        //                edata = Strings.Mid(buf, k + 1);
-        //            }
-        //            else
-        //            {
-        //                // 単純なデータ指定
-        //                etype = buf;
-        //                elevel = "";
-        //                edata = "";
-        //            }
+            //            j = Strings.InStr(buf, "Lv");
+            //            k = Strings.InStr(buf, "=");
+            //            if (dat.Name == "解説")
+            //            {
+            //                // 解説の指定
+            //                etype = buf;
+            //                elevel = "";
+            //                edata = "";
+            //            }
+            //            else if (j > 0)
+            //            {
+            //                // データ指定内にレベル指定がある
+            //                etype = Strings.Left(buf, j - 1);
+            //                if (k > 0)
+            //                {
+            //                    elevel = Strings.Mid(buf, j + 2, k - (j + 2));
+            //                    edata = Strings.Mid(buf, k + 1);
+            //                }
+            //                else
+            //                {
+            //                    elevel = Strings.Mid(buf, j + 2);
+            //                    edata = "";
+            //                }
+            //            }
+            //            else if (k > 0)
+            //            {
+            //                // データ指定内にデータ指定がある
+            //                etype = Strings.Left(buf, k - 1);
+            //                elevel = "";
+            //                edata = Strings.Mid(buf, k + 1);
+            //            }
+            //            else
+            //            {
+            //                // 単純なデータ指定
+            //                etype = buf;
+            //                elevel = "";
+            //                edata = "";
+            //            }
 
-        //            if (dat.Name == "付加" & string.IsNullOrEmpty(elevel))
-        //            {
-        //                elevel = SrcFormatter.Format(SRC.DEFAULT_LEVEL);
-        //            }
+            //            if (dat.Name == "付加" & string.IsNullOrEmpty(elevel))
+            //            {
+            //                elevel = SrcFormatter.Format(SRC.DEFAULT_LEVEL);
+            //            }
 
-        //            dat.Data = Strings.Trim(etype + " " + elevel + " " + edata);
-        //        }
-        //        else
-        //        {
-        //            // 効果名のみ
-        //            dat.Name = buf;
-        //        }
+            //            dat.Data = Strings.Trim(etype + " " + elevel + " " + edata);
+            //        }
+            //        else
+            //        {
+            //            // 効果名のみ
+            //            dat.Name = buf;
+            //        }
 
-        //        j = 1;
-        //        foreach (AbilityEffect dat2 in colEffects)
-        //        {
-        //            if ((dat.Name ?? "") == (dat2.Name ?? ""))
-        //            {
-        //                j = (j + 1);
-        //            }
-        //        }
+            //        j = 1;
+            //        foreach (AbilityEffect dat2 in colEffects)
+            //        {
+            //            if ((dat.Name ?? "") == (dat2.Name ?? ""))
+            //            {
+            //                j = (j + 1);
+            //            }
+            //        }
 
-        //        if (j == 1)
-        //        {
-        //            colEffects.Add(dat, dat.Name);
-        //        }
-        //        else
-        //        {
-        //            colEffects.Add(dat, dat.Name + SrcFormatter.Format(j));
-        //        }
-        //    }
-        //}
+            //        if (j == 1)
+            //        {
+            //            colEffects.Add(dat, dat.Name);
+            //        }
+            //        else
+            //        {
+            //            colEffects.Add(dat, dat.Name + SrcFormatter.Format(j));
+            //        }
+            //    }
+        }
 
         //private AbilityEffect NewAbilityEffect()
         //{

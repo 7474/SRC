@@ -6663,7 +6663,7 @@
 //            else
 //            {
 //                atype = atr;
-//                alevel = SRC.DEFAULT_LEVEL;
+//                alevel = Constants.DEFAULT_LEVEL;
 //            }
 
 //            {
@@ -6756,7 +6756,7 @@
 
 //                case "Ｒ":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            msg = "ユニットランクや特殊能力による攻撃力上昇が通常の半分。";
 //                        }
@@ -6771,7 +6771,7 @@
 
 //                case "改":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            msg = "ユニットランクによる攻撃力上昇が通常の半分。";
 //                        }
@@ -7370,7 +7370,7 @@
 
 //                case "縛":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 2d;
 //                        }
@@ -7391,7 +7391,7 @@
 
 //                case "Ｓ":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 1d;
 //                        }
@@ -7412,7 +7412,7 @@
 
 //                case "劣":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            msg = "クリティカル発生時に相手の装甲を半減させる。";
 //                        }
@@ -7436,7 +7436,7 @@
 
 //                case "中":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 1d;
 //                        }
@@ -7457,7 +7457,7 @@
 
 //                case "石":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            msg = "クリティカル発生時に相手を石化させる。";
 //                        }
@@ -7481,7 +7481,7 @@
 
 //                case "凍":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 3d;
 //                        }
@@ -7505,7 +7505,7 @@
 
 //                case "痺":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 3d;
 //                        }
@@ -7526,7 +7526,7 @@
 
 //                case "眠":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 3d;
 //                        }
@@ -7549,7 +7549,7 @@
 
 //                case "乱":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 3d;
 //                        }
@@ -7570,7 +7570,7 @@
 
 //                case "魅":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 3d;
 //                        }
@@ -7591,7 +7591,7 @@
 
 //                case "憑":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            msg = "クリティカル発生時に相手を乗っ取って支配する。";
 //                        }
@@ -7615,7 +7615,7 @@
 
 //                case "盲":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 3d;
 //                        }
@@ -7636,7 +7636,7 @@
 
 //                case "毒":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 3d;
 //                        }
@@ -7657,7 +7657,7 @@
 
 //                case "撹":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 2d;
 //                        }
@@ -7678,7 +7678,7 @@
 
 //                case "恐":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 3d;
 //                        }
@@ -7699,7 +7699,7 @@
 
 //                case "不":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 1d;
 //                        }
@@ -7720,7 +7720,7 @@
 
 //                case "止":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 1d;
 //                        }
@@ -7741,7 +7741,7 @@
 
 //                case "黙":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 3d;
 //                        }
@@ -7801,7 +7801,7 @@
 
 //                case "脱":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            string argtname41 = "気力";
 //                            msg = "相手の" + Expression.Term(ref argtname41, ref u) + "を10低下させる。";
@@ -7822,7 +7822,7 @@
 
 //                case "Ｄ":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            string argtname44 = "気力";
 //                            msg = "相手の" + Expression.Term(ref argtname44, ref u) + "を10低下させ、その半分を吸収する。";
@@ -7843,7 +7843,7 @@
 
 //                case "低攻":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 3d;
 //                        }
@@ -7864,7 +7864,7 @@
 
 //                case "低防":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 3d;
 //                        }
@@ -7886,7 +7886,7 @@
 
 //                case "低運":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 3d;
 //                        }
@@ -7908,7 +7908,7 @@
 
 //                case "低移":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 3d;
 //                        }
@@ -8174,7 +8174,7 @@
 
 //                case "踊":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 3d;
 //                        }
@@ -8195,7 +8195,7 @@
 
 //                case "狂":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            alevel = 3d;
 //                        }
@@ -8216,7 +8216,7 @@
 
 //                case "ゾ":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            msg = "クリティカル発生時に相手をゾンビ状態にする。";
 //                        }
@@ -8240,7 +8240,7 @@
 
 //                case "害":
 //                    {
-//                        if (alevel == SRC.DEFAULT_LEVEL)
+//                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
 //                            msg = "クリティカル発生時に相手の自己回復能力を破壊する。";
 //                        }
@@ -8472,7 +8472,7 @@
 //                        {
 //                            case "弱":
 //                                {
-//                                    if (alevel == SRC.DEFAULT_LEVEL)
+//                                    if (alevel == Constants.DEFAULT_LEVEL)
 //                                    {
 //                                        alevel = 3d;
 //                                    }
@@ -8493,7 +8493,7 @@
 
 //                            case "効":
 //                                {
-//                                    if (alevel == SRC.DEFAULT_LEVEL)
+//                                    if (alevel == Constants.DEFAULT_LEVEL)
 //                                    {
 //                                        alevel = 3d;
 //                                    }
@@ -8514,7 +8514,7 @@
 
 //                            case "剋":
 //                                {
-//                                    if (alevel == SRC.DEFAULT_LEVEL)
+//                                    if (alevel == Constants.DEFAULT_LEVEL)
 //                                    {
 //                                        alevel = 3d;
 //                                    }

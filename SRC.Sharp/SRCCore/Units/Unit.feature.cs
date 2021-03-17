@@ -168,7 +168,7 @@ namespace SRCCore.Units
         //                    FeatureNameIntRet = "";
         //                }
         //            }
-        //            else if (fd.Level == SRC.DEFAULT_LEVEL)
+        //            else if (fd.Level == Constants.DEFAULT_LEVEL)
         //            {
         //                // レベル指定なし
         //                FeatureNameIntRet = fd.Name;
@@ -266,33 +266,12 @@ namespace SRCCore.Units
         //            return FeatureName0Ret;
         //        }
 
-        //        // 特殊能力のレベル
-        //        public double FeatureLevel(object Index)
-        //        {
-        //            double FeatureLevelRet = default;
-        //            FeatureData fd;
-        //            ;
-        //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-        //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 34249
-
-
-        //            Input:
-
-        //                    On Error GoTo ErrorHandler
-
-        //             */
-        //            fd = (FeatureData)colFeature[Index];
-        //            FeatureLevelRet = fd.Level;
-        //            if (fd.Level == SRC.DEFAULT_LEVEL)
-        //            {
-        //                FeatureLevelRet = 1d;
-        //            }
-
-        //            return FeatureLevelRet;
-        //        ErrorHandler:
-        //            ;
-        //            FeatureLevelRet = 0d;
-        //        }
+        // 特殊能力のレベル
+        public double FeatureLevel(string Index)
+        {
+            var level = colFeature[Index]?.Level ?? 0d;
+            return level == Constants.DEFAULT_LEVEL ? 1d : level;
+        }
 
         // 特殊能力のデータ
         public string FeatureData(string Index)
@@ -329,36 +308,11 @@ namespace SRCCore.Units
             return colFeature.ContainsKey(fname);
         }
 
-        //        // 特殊能力にレベル指定がされている？
-        //        public bool IsFeatureLevelSpecified(object Index)
-        //        {
-        //            bool IsFeatureLevelSpecifiedRet = default;
-        //            FeatureData fd;
-        //            ;
-        //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-        //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 35598
-
-
-        //            Input:
-
-        //                    On Error GoTo ErrorHandler
-
-        //             */
-        //            fd = (FeatureData)colFeature[Index];
-        //            if (fd.Level == SRC.DEFAULT_LEVEL)
-        //            {
-        //                IsFeatureLevelSpecifiedRet = false;
-        //            }
-        //            else
-        //            {
-        //                IsFeatureLevelSpecifiedRet = true;
-        //            }
-
-        //            return IsFeatureLevelSpecifiedRet;
-        //        ErrorHandler:
-        //            ;
-        //            IsFeatureLevelSpecifiedRet = false;
-        //        }
+        // 特殊能力にレベル指定がされている？
+        public bool IsFeatureLevelSpecified(string Index)
+        {
+            return (colFeature[Index]?.Level ?? Constants.DEFAULT_LEVEL) != Constants.DEFAULT_LEVEL;
+        }
 
         //        // 特殊能力の総数(必要条件を満たさないものを含む)
         //        public int CountAllFeature()
@@ -403,7 +357,7 @@ namespace SRCCore.Units
         //             */
         //            fd = (FeatureData)colAllFeature[Index];
         //            AllFeatureLevelRet = fd.Level;
-        //            if (fd.Level == SRC.DEFAULT_LEVEL)
+        //            if (fd.Level == Constants.DEFAULT_LEVEL)
         //            {
         //                AllFeatureLevelRet = 1d;
         //            }
@@ -430,7 +384,7 @@ namespace SRCCore.Units
 
         //             */
         //            fd = (FeatureData)colAllFeature[Index];
-        //            if (fd.Level != SRC.DEFAULT_LEVEL)
+        //            if (fd.Level != Constants.DEFAULT_LEVEL)
         //            {
         //                AllFeatureLevelSpecifiedRet = true;
         //            }
@@ -480,7 +434,7 @@ namespace SRCCore.Units
 
         //             */
         //            fd = (FeatureData)colAllFeature[Index];
-        //            if (fd.Level == SRC.DEFAULT_LEVEL)
+        //            if (fd.Level == Constants.DEFAULT_LEVEL)
         //            {
         //                IsAllFeatureLevelSpecifiedRet = false;
         //            }

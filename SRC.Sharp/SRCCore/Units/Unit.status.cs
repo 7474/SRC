@@ -285,7 +285,7 @@ namespace SRCCore.Units
             //                        else
             //                        {
             //                            stype = buf;
-            //                            slevel = SRC.DEFAULT_LEVEL;
+            //                            slevel = Constants.DEFAULT_LEVEL;
             //                        }
             //                    }
             //                    else
@@ -306,7 +306,7 @@ namespace SRCCore.Units
             //                        else
             //                        {
             //                            stype = buf;
-            //                            slevel = SRC.DEFAULT_LEVEL;
+            //                            slevel = Constants.DEFAULT_LEVEL;
             //                        }
             //                    }
 
@@ -332,7 +332,7 @@ namespace SRCCore.Units
             //                                        stype2 = GeneralLib.LIndex(ref sdata, 1);
             //                                    }
 
-            //                                    slevel2 = SRC.DEFAULT_LEVEL;
+            //                                    slevel2 = Constants.DEFAULT_LEVEL;
             //                                    sdata2 = withBlock4.get_AliasData(j);
             //                                }
             //                                else
@@ -340,7 +340,7 @@ namespace SRCCore.Units
             //                                    // 通常の能力
             //                                    if (withBlock4.get_AliasLevelIsPlusMod(j))
             //                                    {
-            //                                        if (slevel == SRC.DEFAULT_LEVEL)
+            //                                        if (slevel == Constants.DEFAULT_LEVEL)
             //                                        {
             //                                            slevel = 1d;
             //                                        }
@@ -349,14 +349,14 @@ namespace SRCCore.Units
             //                                    }
             //                                    else if (withBlock4.get_AliasLevelIsMultMod(j))
             //                                    {
-            //                                        if (slevel == SRC.DEFAULT_LEVEL)
+            //                                        if (slevel == Constants.DEFAULT_LEVEL)
             //                                        {
             //                                            slevel = 1d;
             //                                        }
 
             //                                        slevel2 = slevel * withBlock4.get_AliasLevel(j);
             //                                    }
-            //                                    else if (slevel != SRC.DEFAULT_LEVEL)
+            //                                    else if (slevel != Constants.DEFAULT_LEVEL)
             //                                    {
             //                                        slevel2 = slevel;
             //                                    }
@@ -513,7 +513,7 @@ namespace SRCCore.Units
             //                                        stype2 = GeneralLib.LIndex(ref sdata, 1);
             //                                    }
 
-            //                                    slevel2 = SRC.DEFAULT_LEVEL;
+            //                                    slevel2 = Constants.DEFAULT_LEVEL;
             //                                    sdata2 = withBlock5.get_AliasData(j);
             //                                    // 属性使用不能攻撃により使用不能になった技能を封印する。
             //                                    object argIndex11 = stype2 + "使用不能";
@@ -530,14 +530,14 @@ namespace SRCCore.Units
             //                                    // 通常の能力
             //                                    if (withBlock5.get_AliasLevelIsMultMod(j))
             //                                    {
-            //                                        if (slevel == SRC.DEFAULT_LEVEL)
+            //                                        if (slevel == Constants.DEFAULT_LEVEL)
             //                                        {
             //                                            slevel = 1d;
             //                                        }
 
             //                                        slevel2 = slevel * withBlock5.get_AliasLevel(j);
             //                                    }
-            //                                    else if (slevel != SRC.DEFAULT_LEVEL)
+            //                                    else if (slevel != Constants.DEFAULT_LEVEL)
             //                                    {
             //                                        slevel2 = slevel;
             //                                    }

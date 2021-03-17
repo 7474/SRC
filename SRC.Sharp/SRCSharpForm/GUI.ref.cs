@@ -2796,7 +2796,7 @@ namespace Project1
             }
 
             messages[Information.UBound(messages)] = buf + Strings.Mid(msg, line_head);
-            wait_time = SRC.DEFAULT_LEVEL;
+            wait_time = Constants.DEFAULT_LEVEL;
 
             // 強制改行の位置を設定
             string argoname = "改行時余白短縮";
@@ -3030,7 +3030,7 @@ namespace Project1
                                     }
                                 }
 
-                                wait_time = SRC.DEFAULT_LEVEL;
+                                wait_time = Constants.DEFAULT_LEVEL;
                                 DisplayedPilot = fname;
                                 goto NextMessage;
                             }
@@ -3041,7 +3041,7 @@ namespace Project1
                                 buf2 = GeneralLib.LIndex(ref buf, 2);
                                 if (buf2 == "-")
                                 {
-                                    dw = SRC.DEFAULT_LEVEL.ToString();
+                                    dw = Constants.DEFAULT_LEVEL.ToString();
                                 }
                                 else
                                 {
@@ -3051,7 +3051,7 @@ namespace Project1
                                 buf2 = GeneralLib.LIndex(ref buf, 3);
                                 if (buf2 == "-")
                                 {
-                                    dh = SRC.DEFAULT_LEVEL.ToString();
+                                    dh = Constants.DEFAULT_LEVEL.ToString();
                                 }
                                 else
                                 {
@@ -3060,8 +3060,8 @@ namespace Project1
                             }
                             else
                             {
-                                dw = SRC.DEFAULT_LEVEL.ToString();
-                                dh = SRC.DEFAULT_LEVEL.ToString();
+                                dw = Constants.DEFAULT_LEVEL.ToString();
+                                dh = Constants.DEFAULT_LEVEL.ToString();
                             }
 
                             // 表示画像の位置
@@ -3070,7 +3070,7 @@ namespace Project1
                                 buf2 = GeneralLib.LIndex(ref buf, 4);
                                 if (buf2 == "-")
                                 {
-                                    dx = SRC.DEFAULT_LEVEL.ToString();
+                                    dx = Constants.DEFAULT_LEVEL.ToString();
                                 }
                                 else
                                 {
@@ -3080,7 +3080,7 @@ namespace Project1
                                 buf2 = GeneralLib.LIndex(ref buf, 5);
                                 if (buf2 == "-")
                                 {
-                                    dy = SRC.DEFAULT_LEVEL.ToString();
+                                    dy = Constants.DEFAULT_LEVEL.ToString();
                                 }
                                 else
                                 {
@@ -3089,8 +3089,8 @@ namespace Project1
                             }
                             else
                             {
-                                dx = SRC.DEFAULT_LEVEL.ToString();
-                                dy = SRC.DEFAULT_LEVEL.ToString();
+                                dx = Constants.DEFAULT_LEVEL.ToString();
+                                dy = Constants.DEFAULT_LEVEL.ToString();
                             }
 
                             if (wait_time > 0)
@@ -3118,7 +3118,7 @@ namespace Project1
                                         Sleep(start_time + wait_time - cur_time);
                                     }
 
-                                    wait_time = SRC.DEFAULT_LEVEL;
+                                    wait_time = Constants.DEFAULT_LEVEL;
                                 }
                             }
                             else
@@ -3147,7 +3147,7 @@ namespace Project1
                                     }
                                 }
 
-                                wait_time = SRC.DEFAULT_LEVEL;
+                                wait_time = Constants.DEFAULT_LEVEL;
                             }
 
                             goto NextMessage;
@@ -3174,7 +3174,7 @@ namespace Project1
                                 }
 
                                 Sleep(wait_time);
-                                wait_time = SRC.DEFAULT_LEVEL;
+                                wait_time = Constants.DEFAULT_LEVEL;
                             }
 
                             goto NextMessage;
@@ -3539,7 +3539,7 @@ namespace Project1
                 p.ForeColor = Color.Black;
 
                 // デフォルトのウェイト
-                if (wait_time == SRC.DEFAULT_LEVEL)
+                if (wait_time == Constants.DEFAULT_LEVEL)
                 {
                     wait_time = (lnum - prev_lnum + 1) * MessageWait;
                     if (msg_mode == "高速")
@@ -3578,7 +3578,7 @@ namespace Project1
                     Application.DoEvents();
                 }
 
-                wait_time = SRC.DEFAULT_LEVEL;
+                wait_time = Constants.DEFAULT_LEVEL;
                 NextMessage:
                 ;
             }
@@ -9158,7 +9158,7 @@ namespace Project1
                 if ((PicBufFname[i] ?? "") == (fname ?? ""))
                 {
                     // オプションも同じ？
-                    if ((PicBufOption[i] ?? "") == (pic_option ?? "") & (PicBufOption2[i] ?? "") == (pic_option2 ?? "") & !PicBufIsMask[i] & PicBufDW[i] == SRC.DEFAULT_LEVEL & PicBufDH[i] == SRC.DEFAULT_LEVEL & PicBufSX[i] == sx & PicBufSY[i] == sy & PicBufSW[i] == sw & PicBufSH[i] == sh)
+                    if ((PicBufOption[i] ?? "") == (pic_option ?? "") & (PicBufOption2[i] ?? "") == (pic_option2 ?? "") & !PicBufIsMask[i] & PicBufDW[i] == Constants.DEFAULT_LEVEL & PicBufDH[i] == Constants.DEFAULT_LEVEL & PicBufSX[i] == sx & PicBufSY[i] == sy & PicBufSW[i] == sw & PicBufSH[i] == sh)
                     {
                         // 同じファイル、オプションによる画像が見つかった
 
@@ -9186,7 +9186,7 @@ namespace Project1
                     // 同じファイル？
                     if ((PicBufFname[i] ?? "") == (fname ?? ""))
                     {
-                        if (string.IsNullOrEmpty(PicBufOption[i]) & string.IsNullOrEmpty(PicBufOption2[i]) & !PicBufIsMask[i] & PicBufDW[i] == SRC.DEFAULT_LEVEL & PicBufDH[i] == SRC.DEFAULT_LEVEL & PicBufSX[i] == sx & PicBufSY[i] == sy & PicBufSW[i] == sw & PicBufSH[i] == sh)
+                        if (string.IsNullOrEmpty(PicBufOption[i]) & string.IsNullOrEmpty(PicBufOption2[i]) & !PicBufIsMask[i] & PicBufDW[i] == Constants.DEFAULT_LEVEL & PicBufDH[i] == Constants.DEFAULT_LEVEL & PicBufSX[i] == sx & PicBufSY[i] == sy & PicBufSW[i] == sw & PicBufSH[i] == sh)
                         {
                             // 以前使用した部分画像をそのまま利用
                             UsePicBuf(i);
@@ -9210,7 +9210,7 @@ namespace Project1
                 // 同じファイル？
                 if ((PicBufFname[i] ?? "") == (fname ?? ""))
                 {
-                    if (string.IsNullOrEmpty(PicBufOption[i]) & string.IsNullOrEmpty(PicBufOption2[i]) & !PicBufIsMask[i] & PicBufDW[i] == SRC.DEFAULT_LEVEL & PicBufDH[i] == SRC.DEFAULT_LEVEL & PicBufSW[i] == 0)
+                    if (string.IsNullOrEmpty(PicBufOption[i]) & string.IsNullOrEmpty(PicBufOption2[i]) & !PicBufIsMask[i] & PicBufDW[i] == Constants.DEFAULT_LEVEL & PicBufDH[i] == Constants.DEFAULT_LEVEL & PicBufSW[i] == 0)
                     {
                         // 以前使用した原画像をそのまま利用
                         UsePicBuf(i);
@@ -9233,12 +9233,12 @@ namespace Project1
                 case @"event\black.bmp":
                     {
                         // 黒で塗りつぶし
-                        if (dx == SRC.DEFAULT_LEVEL)
+                        if (dx == Constants.DEFAULT_LEVEL)
                         {
                             dx = (int)((long)(SrcFormatter.PixelsToTwipsX(pic.Width) - dw) / 2L);
                         }
 
-                        if (dy == SRC.DEFAULT_LEVEL)
+                        if (dy == Constants.DEFAULT_LEVEL)
                         {
                             dy = (int)((long)(SrcFormatter.PixelsToTwipsY(pic.Height) - dh) / 2L);
                         }
@@ -9251,12 +9251,12 @@ namespace Project1
                 case @"event\white.bmp":
                     {
                         // 白で塗りつぶし
-                        if (dx == SRC.DEFAULT_LEVEL)
+                        if (dx == Constants.DEFAULT_LEVEL)
                         {
                             dx = (int)((long)(SrcFormatter.PixelsToTwipsX(pic.Width) - dw) / 2L);
                         }
 
-                        if (dy == SRC.DEFAULT_LEVEL)
+                        if (dy == Constants.DEFAULT_LEVEL)
                         {
                             dy = (int)((long)(SrcFormatter.PixelsToTwipsY(pic.Height) - dh) / 2L);
                         }
@@ -9995,8 +9995,8 @@ namespace Project1
             PicBufFname[i] = fname;
             PicBufOption[i] = "";
             PicBufOption2[i] = "";
-            PicBufDW[i] = SRC.DEFAULT_LEVEL;
-            PicBufDH[i] = SRC.DEFAULT_LEVEL;
+            PicBufDW[i] = Constants.DEFAULT_LEVEL;
+            PicBufDH[i] = Constants.DEFAULT_LEVEL;
             PicBufSX[i] = 0;
             PicBufSY[i] = 0;
             PicBufSW[i] = 0;
@@ -10030,8 +10030,8 @@ namespace Project1
                     PicBufFname[i] = fname;
                     PicBufOption[i] = "";
                     PicBufOption2[i] = "";
-                    PicBufDW[i] = SRC.DEFAULT_LEVEL;
-                    PicBufDH[i] = SRC.DEFAULT_LEVEL;
+                    PicBufDW[i] = Constants.DEFAULT_LEVEL;
+                    PicBufDH[i] = Constants.DEFAULT_LEVEL;
                     PicBufSX[i] = (short)sx;
                     PicBufSY[i] = (short)sy;
                     PicBufSW[i] = (short)sw;
@@ -10045,12 +10045,12 @@ namespace Project1
                         withBlock7.Picture = Image.FromFile("");
                         withBlock7.width = sw;
                         withBlock7.Height = sh;
-                        if (sx == SRC.DEFAULT_LEVEL)
+                        if (sx == Constants.DEFAULT_LEVEL)
                         {
                             sx = (orig_width - sw) / 2;
                         }
 
-                        if (sy == SRC.DEFAULT_LEVEL)
+                        if (sy == Constants.DEFAULT_LEVEL)
                         {
                             sy = (orig_height - sh) / 2;
                         }
@@ -10075,8 +10075,8 @@ namespace Project1
                 PicBufFname[i] = fname;
                 PicBufOption[i] = pic_option;
                 PicBufOption2[i] = pic_option2;
-                PicBufDW[i] = SRC.DEFAULT_LEVEL;
-                PicBufDH[i] = SRC.DEFAULT_LEVEL;
+                PicBufDW[i] = Constants.DEFAULT_LEVEL;
+                PicBufDH[i] = Constants.DEFAULT_LEVEL;
                 PicBufSX[i] = (short)sx;
                 PicBufSY[i] = (short)sy;
                 PicBufSW[i] = (short)sw;
@@ -10256,12 +10256,12 @@ namespace Project1
 
 
             // クリッピング処理
-            if (dw == SRC.DEFAULT_LEVEL)
+            if (dw == Constants.DEFAULT_LEVEL)
             {
                 dw = orig_width;
             }
 
-            if (dh == SRC.DEFAULT_LEVEL)
+            if (dh == Constants.DEFAULT_LEVEL)
             {
                 dh = orig_height;
             }
@@ -10269,12 +10269,12 @@ namespace Project1
             if (permanent)
             {
                 // 背景描画の場合、センタリングはマップ中央に
-                if (dx == SRC.DEFAULT_LEVEL)
+                if (dx == Constants.DEFAULT_LEVEL)
                 {
                     dx = (MapPWidth - dw) / 2;
                 }
 
-                if (dy == SRC.DEFAULT_LEVEL)
+                if (dy == Constants.DEFAULT_LEVEL)
                 {
                     if (string.IsNullOrEmpty(Map.MapFileName))
                     {
@@ -10290,7 +10290,7 @@ namespace Project1
             // 場合は修正が必要
             else if (Strings.InStr(fname, "EFFECT_") > 0 | Strings.InStr(fname, @"スペシャルパワー\") > 0 | Strings.InStr(fname, @"精神コマンド\") > 0)
             {
-                if (dx == SRC.DEFAULT_LEVEL)
+                if (dx == Constants.DEFAULT_LEVEL)
                 {
                     dx = (MainPWidth - dw) / 2;
                     if (MainWidth % 2 == 0)
@@ -10299,7 +10299,7 @@ namespace Project1
                     }
                 }
 
-                if (dy == SRC.DEFAULT_LEVEL)
+                if (dy == Constants.DEFAULT_LEVEL)
                 {
                     dy = (MainPHeight - dh) / 2;
                     if (MainHeight % 2 == 0)
@@ -10311,12 +10311,12 @@ namespace Project1
             else
             {
                 // 通常描画の場合、センタリングは画面中央に
-                if (dx == SRC.DEFAULT_LEVEL)
+                if (dx == Constants.DEFAULT_LEVEL)
                 {
                     dx = (MainPWidth - dw) / 2;
                 }
 
-                if (dy == SRC.DEFAULT_LEVEL)
+                if (dy == Constants.DEFAULT_LEVEL)
                 {
                     dy = (MainPHeight - dh) / 2;
                 }
@@ -11094,7 +11094,7 @@ namespace Project1
             {
                 pic.CurrentX = (SrcFormatter.PixelsToTwipsX(pic.Width) - pic.TextWidth(msg)) / 2;
             }
-            else if (X != SRC.DEFAULT_LEVEL)
+            else if (X != Constants.DEFAULT_LEVEL)
             {
                 pic.CurrentX = X;
             }
@@ -11103,7 +11103,7 @@ namespace Project1
             {
                 pic.CurrentY = (SrcFormatter.PixelsToTwipsY(pic.Height) - pic.TextHeight(msg)) / 2;
             }
-            else if (Y != SRC.DEFAULT_LEVEL)
+            else if (Y != Constants.DEFAULT_LEVEL)
             {
                 pic.CurrentY = Y;
             }
@@ -11148,7 +11148,7 @@ namespace Project1
                 }
 
                 // 次回の書き込みのため、X座標位置を設定し直す
-                if (X != SRC.DEFAULT_LEVEL)
+                if (X != Constants.DEFAULT_LEVEL)
                 {
                     pic.CurrentX = X;
                 }

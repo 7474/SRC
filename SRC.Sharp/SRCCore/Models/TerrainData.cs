@@ -109,7 +109,7 @@ namespace SRCCore.Models
         //    {
         //        FeatureNameRet = GeneralLib.ListIndex(fd.StrData, 1);
         //    }
-        //    else if (fd.Level != SRC.DEFAULT_LEVEL)
+        //    else if (fd.Level != Constants.DEFAULT_LEVEL)
         //    {
         //        FeatureNameRet = fd.Name + "Lv" + SrcFormatter.Format(fd.Level);
         //    }
@@ -128,7 +128,7 @@ namespace SRCCore.Models
         //    FeatureData fd;
         //    fd = (FeatureData)colFeature[Index];
         //    FeatureLevelRet = fd.Level;
-        //    if (FeatureLevelRet == SRC.DEFAULT_LEVEL)
+        //    if (FeatureLevelRet == Constants.DEFAULT_LEVEL)
         //    {
         //        FeatureLevelRet = 1d;
         //    }
@@ -164,7 +164,7 @@ namespace SRCCore.Models
         //    bool IsFeatureLevelSpecifiedRet = default;
         //    FeatureData fd;
         //    fd = (FeatureData)colFeature[Index];
-        //    if (fd.Level == SRC.DEFAULT_LEVEL)
+        //    if (fd.Level == Constants.DEFAULT_LEVEL)
         //    {
         //        IsFeatureLevelSpecifiedRet = false;
         //    }

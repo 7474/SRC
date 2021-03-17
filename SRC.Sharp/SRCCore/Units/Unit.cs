@@ -114,8 +114,8 @@ namespace SRCCore.Units
         //// 装備しているアイテム
         //private Collection colItem = new Collection();
 
-        //// 現在の特殊ステータス
-        //private Collection colCondition = new Collection();
+        // 現在の特殊ステータス
+        private SrcCollection<Condition> colCondition = new SrcCollection<Condition>();
 
         // 各武器の残弾数
         private double[] dblBullet;

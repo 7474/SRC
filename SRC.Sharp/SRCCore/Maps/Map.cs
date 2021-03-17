@@ -6,9 +6,11 @@ using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.Units;
+using SRCCore.VB;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace SRCCore.Maps
 {
@@ -746,7 +748,6 @@ namespace SRCCore.Maps
             //MapDrawFilterTransPercent = 0d;
         }
 
-
         // 中断用セーブデータにマップデータをセーブ
         public void DumpMapData()
         {
@@ -986,7 +987,6 @@ namespace SRCCore.Maps
 
             //return RestoreMapDataRet;
         }
-
 
         // (X,Y)を中心とする min_range - max_range のエリアを選択
         // エリア内のユニットは uparty の指示に従い選択
@@ -2232,7 +2232,7 @@ namespace SRCCore.Maps
             //bool is_trans_available_in_sky;
             //bool is_trans_available_in_moon_sky;
             //var is_adaptable_in_water = default(bool);
-            var is_adaptable_in_space = false;
+            //var is_adaptable_in_space = false;
             //var is_swimable = default(bool);
             //string[] adopted_terrain;
             //string[] allowed_terrains;
@@ -2262,69 +2262,6 @@ namespace SRCCore.Maps
             {
                 move_area = currentUnit.Area;
             }
-            #region TODO
-            //// 移動能力の可否を調べておく
-            //string argarea_name = "陸";
-            //is_trans_available_on_ground = currentUnit.IsTransAvailable(argarea_name) & currentUnit.get_Adaption(2) != 0;
-            //string argarea_name1 = "水";
-            //is_trans_available_in_water = currentUnit.IsTransAvailable(argarea_name1) & currentUnit.get_Adaption(3) != 0;
-            //string argarea_name2 = "空";
-            //is_trans_available_in_sky = currentUnit.IsTransAvailable(argarea_name2) & currentUnit.get_Adaption(1) != 0;
-            //string argarea_name3 = "空";
-            //string argarea_name4 = "宇宙";
-            //is_trans_available_in_moon_sky = currentUnit.IsTransAvailable(argarea_name3) & currentUnit.get_Adaption(1) != 0 | currentUnit.IsTransAvailable(argarea_name4) & currentUnit.get_Adaption(4) != 0;
-            //string argfname = "水中移動";
-            //if (Strings.Mid(currentUnit.Data.Adaption, 3, 1) != "-" | currentUnit.IsFeatureAvailable(argfname))
-            //{
-            //    is_adaptable_in_water = true;
-            //}
-
-            //string argfname1 = "宇宙移動";
-            //if (Strings.Mid(currentUnit.Data.Adaption, 4, 1) != "-" | currentUnit.IsFeatureAvailable(argfname1))
-            //{
-            //    is_adaptable_in_space = true;
-            //}
-
-            //string argfname2 = "水上移動";
-            //string argfname3 = "ホバー移動";
-            //if (currentUnit.IsFeatureAvailable(argfname2) | currentUnit.IsFeatureAvailable(argfname3))
-            //{
-            //    is_trans_available_on_water = true;
-            //}
-
-            //string argfname4 = "水泳";
-            //if (currentUnit.IsFeatureAvailable(argfname4))
-            //{
-            //    is_swimable = true;
-            //}
-
-            // 地形適応のある地形のリストを作成
-            var adopted_terrain = new List<string>();
-            //if (currentUnit.IsFeatureAvailable("地形適応"))
-            //{
-            //    var loopTo = currentUnit.CountFeature();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        object argIndex2 = i;
-            //        if (currentUnit.Feature(argIndex2) == "地形適応")
-            //        {
-            //            object argIndex1 = i;
-            //            buf = currentUnit.FeatureData(argIndex1);
-            //            if (GeneralLib.LLength(buf) == 0)
-            //            {
-            //                string argmsg = "ユニット「" + currentUnit.Name + "」の地形適応能力に対応地形が指定されていません";
-            //                GUI.ErrorMessage(argmsg);
-            //                SRC.TerminateSRC();
-            //            }
-
-            //            n = GeneralLib.LLength(buf);
-            //            Array.Resize(adopted_terrain, Information.UBound(adopted_terrain) + n);
-            //            var loopTo1 = n;
-            //            for (j = 2; j <= loopTo1; j++)
-            //                adopted_terrain[Information.UBound(adopted_terrain) - j + 2] = GeneralLib.LIndex(buf, j);
-            //        }
-            //    }
-            //}
 
             // 移動力
             uspeed = currentUnit.Speed;
@@ -2376,6 +2313,833 @@ namespace SRCCore.Maps
                     PointInZOC[i, j] = 0;
                 }
             }
+
+            // 各地形の移動コストを算出しておく
+            FillMoveCost(u, move_cost, move_area, x1, y1, x2, y2);
+
+            //// ユニットがいるため通り抜け出来ない場所をチェック
+            //string argfname13 = "すり抜け移動";
+            //string argsptype1 = "すり抜け移動";
+            //if (!currentUnit.IsFeatureAvailable(argfname13) & !currentUnit.IsUnderSpecialPowerEffect(argsptype1))
+            //{
+            //    foreach (Unit currentU2 in SRC.UList)
+            //    {
+            //        u2 = currentU2;
+            //        {
+            //            var withBlock1 = u2;
+            //            if (withBlock1.Status == "出撃")
+            //            {
+            //                blocked = false;
+
+            //                // 敵対する場合は通り抜け不可
+            //                if (withBlock1.IsEnemy(u, true))
+            //                {
+            //                    blocked = true;
+            //                }
+
+            //                // 陣営が合わない場合も通り抜け不可
+            //                switch (withBlock1.Party0 ?? "")
+            //                {
+            //                    case "味方":
+            //                    case "ＮＰＣ":
+            //                        {
+            //                            if (u.Party0 != "味方" & u.Party0 != "ＮＰＣ")
+            //                            {
+            //                                blocked = true;
+            //                            }
+
+            //                            break;
+            //                        }
+
+            //                    default:
+            //                        {
+            //                            if ((withBlock1.Party0 ?? "") != (u.Party0 ?? ""))
+            //                            {
+            //                                blocked = true;
+            //                            }
+
+            //                            break;
+            //                        }
+            //                }
+
+            //                // 通り抜けられない場合
+            //                if (blocked)
+            //                {
+            //                    move_cost[withBlock1.x, withBlock1.y] = 1000000;
+            //                }
+
+            //                // ＺＯＣ
+            //                if (blocked & !ByJump)
+            //                {
+            //                    is_zoc = false;
+            //                    zarea = 0;
+            //                    string argfname12 = "ＺＯＣ";
+            //                    string argoname = "ＺＯＣ";
+            //                    if (withBlock1.IsFeatureAvailable(argfname12) | Expression.IsOptionDefined(argoname))
+            //                    {
+            //                        is_zoc = true;
+            //                        zarea = 1;
+
+            //                        // ＺＯＣ側のＺＯＣレベル
+            //                        object argIndex10 = "ＺＯＣ";
+            //                        n = withBlock1.FeatureLevel(argIndex10);
+            //                        if (n == 1)
+            //                            n = 10000;
+
+            //                        // Option「ＺＯＣ」が指定されている
+            //                        n = Math.Max(1, n);
+            //                        string argfname11 = "ＺＯＣ無効化";
+            //                        if (u.IsFeatureAvailable(argfname11))
+            //                        {
+            //                            // 移動側のＺＯＣ無効化レベル
+            //                            // レベル指定なし、またはLv1はLv10000として扱う
+            //                            object argIndex11 = "ＺＯＣ無効化";
+            //                            l = u.FeatureLevel(argIndex11);
+            //                            if (l == 1)
+            //                                l = 10000;
+
+            //                            // 移動側のＺＯＣ無効化レベルの方が高い場合、
+            //                            // ＺＯＣ不可能
+            //                            if (l >= n)
+            //                            {
+            //                                is_zoc = false;
+            //                            }
+            //                        }
+
+            //                        // 隣接するユニットが「隣接ユニットＺＯＣ無効化」を持っている場合
+            //                        if (is_zoc)
+            //                        {
+            //                            for (i = -1; i <= 1; i++)
+            //                            {
+            //                                var loopTo44 = Math.Abs(Math.Abs(i) - 1);
+            //                                for (j = (Math.Abs(i) - 1); j <= loopTo44; j++)
+            //                                {
+            //                                    if ((i != 0 | j != 0) & withBlock1.x + i >= 1 & (withBlock1.x + i) <= MapWidth & withBlock1.y + j >= 1 & (withBlock1.y + j) <= MapHeight)
+            //                                    {
+            //                                        // 隣接ユニットが存在する？
+            //                                        if (MapDataForUnit[(withBlock1.x + i), (withBlock1.y + j)] is object)
+            //                                        {
+            //                                            buf = withBlock1.Party0;
+            //                                            {
+            //                                                var withBlock2 = MapDataForUnit[(withBlock1.x + i), (withBlock1.y + j)];
+            //                                                // 敵対陣営？
+            //                                                switch (withBlock2.Party0 ?? "")
+            //                                                {
+            //                                                    case "味方":
+            //                                                    case "ＮＰＣ":
+            //                                                        {
+            //                                                            if (buf == "味方" | buf == "ＮＰＣ")
+            //                                                            {
+            //                                                                break;
+            //                                                            }
+
+            //                                                            break;
+            //                                                        }
+
+            //                                                    default:
+            //                                                        {
+            //                                                            if ((withBlock2.Party0 ?? "") == (buf ?? ""))
+            //                                                            {
+            //                                                                break;
+            //                                                            }
+
+            //                                                            break;
+            //                                                        }
+            //                                                }
+
+            //                                                object argIndex12 = "隣接ユニットＺＯＣ無効化";
+            //                                                l = withBlock2.FeatureLevel(argIndex12);
+            //                                                if (l == 1)
+            //                                                    l = 10000;
+
+            //                                                // 移動側のＺＯＣ無効化レベルの方が高い場合、
+            //                                                // ＺＯＣ不可能
+            //                                                if (l >= n)
+            //                                                {
+            //                                                    is_zoc = false;
+            //                                                    break;
+            //                                                }
+            //                                            }
+            //                                        }
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+
+            //                    if (is_zoc)
+            //                    {
+            //                        // 特殊能力「ＺＯＣ」が指定されているなら、そのデータの2つ目の値をＺＯＣの範囲に設定
+            //                        // 2つ目の値が省略されている場合は1を設定
+            //                        // ＺＯＣLvが0以下の場合、オプション「ＺＯＣ」が指定されていても範囲を0に設定
+            //                        object argIndex13 = "ＺＯＣ";
+            //                        string arglist4 = withBlock1.FeatureData(argIndex13);
+            //                        if (GeneralLib.LLength(arglist4) >= 2)
+            //                        {
+            //                            string localLIndex() { object argIndex1 = "ＺＯＣ"; string arglist = withBlock1.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+
+            //                            string localLIndex1() { object argIndex1 = "ＺＯＣ"; string arglist = withBlock1.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+
+            //                            zarea = Math.Max(Conversions.ToInteger(localLIndex1()), 0);
+            //                        }
+
+            //                        // 相対距離＋ＺＯＣの範囲が移動力以内のとき、ＺＯＣを設定
+            //                        if (((Math.Abs((u.x - withBlock1.x)) + Math.Abs((u.y - withBlock1.y))) - zarea) <= uspeed)
+            //                        {
+            //                            // 水平・垂直方向のみのＺＯＣかどうかを判断
+            //                            is_hzoc = false;
+            //                            is_vzoc = false;
+            //                            object argIndex16 = "ＺＯＣ";
+            //                            if (Conversions.ToBoolean(Strings.InStr(withBlock1.FeatureData(argIndex16), "直線")))
+            //                            {
+            //                                is_hzoc = true;
+            //                                is_vzoc = true;
+            //                            }
+            //                            else
+            //                            {
+            //                                object argIndex14 = "ＺＯＣ";
+            //                                if (Conversions.ToBoolean(Strings.InStr(withBlock1.FeatureData(argIndex14), "水平")))
+            //                                {
+            //                                    is_hzoc = true;
+            //                                }
+
+            //                                object argIndex15 = "ＺＯＣ";
+            //                                if (Conversions.ToBoolean(Strings.InStr(withBlock1.FeatureData(argIndex15), "垂直")))
+            //                                {
+            //                                    is_vzoc = true;
+            //                                }
+            //                            }
+
+            //                            if (is_hzoc | is_vzoc)
+            //                            {
+            //                                var loopTo45 = zarea;
+            //                                for (i = (zarea * -1); i <= loopTo45; i++)
+            //                                {
+            //                                    if (i == 0)
+            //                                    {
+            //                                        if (PointInZOC[withBlock1.x, withBlock1.y] < 0)
+            //                                        {
+            //                                            if (n > Math.Abs(PointInZOC[withBlock1.x, withBlock1.y]))
+            //                                            {
+            //                                                PointInZOC[withBlock1.x, withBlock1.y] = n;
+            //                                            }
+            //                                        }
+            //                                        else
+            //                                        {
+            //                                            PointInZOC[withBlock1.x, withBlock1.y] = Math.Max(n, PointInZOC[withBlock1.x, withBlock1.y]);
+            //                                        }
+            //                                    }
+            //                                    else
+            //                                    {
+            //                                        // 水平ＺＯＣ
+            //                                        if (is_hzoc & withBlock1.x + i >= 1 & (withBlock1.x + i) <= MapWidth)
+            //                                        {
+            //                                            if (PointInZOC[(withBlock1.x + i), withBlock1.y] < 0)
+            //                                            {
+            //                                                if (n > Math.Abs(PointInZOC[(withBlock1.x + i), withBlock1.y]))
+            //                                                {
+            //                                                    PointInZOC[(withBlock1.x + i), withBlock1.y] = n;
+            //                                                }
+            //                                            }
+            //                                            else
+            //                                            {
+            //                                                PointInZOC[(withBlock1.x + i), withBlock1.y] = Math.Max(n, PointInZOC[(withBlock1.x + i), withBlock1.y]);
+            //                                            }
+            //                                        }
+            //                                        // 垂直ＺＯＣ
+            //                                        if (is_vzoc & withBlock1.y + i >= 1 & (withBlock1.y + i) <= MapHeight)
+            //                                        {
+            //                                            if (PointInZOC[withBlock1.x, (withBlock1.y + i)] < 0)
+            //                                            {
+            //                                                if (n > Math.Abs(PointInZOC[withBlock1.x, (withBlock1.y + i)]))
+            //                                                {
+            //                                                    PointInZOC[withBlock1.x, (withBlock1.y + i)] = n;
+            //                                                }
+            //                                            }
+            //                                            else
+            //                                            {
+            //                                                PointInZOC[withBlock1.x, (withBlock1.y + i)] = Math.Max(n, PointInZOC[withBlock1.x, (withBlock1.y + i)]);
+            //                                            }
+            //                                        }
+            //                                    }
+            //                                }
+            //                            }
+            //                            else
+            //                            {
+            //                                // 全方位ＺＯＣ
+            //                                var loopTo46 = zarea;
+            //                                for (i = (zarea * -1); i <= loopTo46; i++)
+            //                                {
+            //                                    var loopTo47 = Math.Abs((Math.Abs(i) - zarea));
+            //                                    for (j = (Math.Abs(i) - zarea); j <= loopTo47; j++)
+            //                                    {
+            //                                        if (withBlock1.x + i >= 1 & (withBlock1.x + i) <= MapWidth & withBlock1.y + j >= 1 & (withBlock1.y + j) <= MapHeight)
+            //                                        {
+            //                                            if (PointInZOC[(withBlock1.x + i), (withBlock1.y + j)] < 0)
+            //                                            {
+            //                                                if (n > Math.Abs(PointInZOC[(withBlock1.x + i), (withBlock1.y + j)]))
+            //                                                {
+            //                                                    PointInZOC[(withBlock1.x + i), (withBlock1.y + j)] = n;
+            //                                                }
+            //                                            }
+            //                                            else
+            //                                            {
+            //                                                PointInZOC[(withBlock1.x + i), (withBlock1.y + j)] = Math.Max(n, PointInZOC[(withBlock1.x + i), (withBlock1.y + j)]);
+            //                                            }
+            //                                        }
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //                // 「広域ＺＯＣ無効化」を所持している場合の処理
+            //                else if (((Math.Abs((u.x - withBlock1.x)) + Math.Abs((u.y - withBlock1.y))) - zarea) <= uspeed)
+            //                {
+            //                    // レベル指定なし、またはLv1はLv10000として扱う
+            //                    object argIndex17 = "広域ＺＯＣ無効化";
+            //                    l = withBlock1.FeatureLevel(argIndex17);
+            //                    if (l == 1)
+            //                        l = 10000;
+            //                    if (l > 0)
+            //                    {
+            //                        string localLIndex2() { object argIndex1 = "広域ＺＯＣ無効化"; string arglist = withBlock1.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+
+            //                        int localStrToLng() { string argexpr = hs1020e5bbaf214f5a820fb8d152076551(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
+
+            //                        n = Math.Max(localStrToLng(), 1);
+            //                        var loopTo48 = n;
+            //                        for (i = (n * -1); i <= loopTo48; i++)
+            //                        {
+            //                            var loopTo49 = Math.Abs((Math.Abs(i) - n));
+            //                            for (j = (Math.Abs(i) - n); j <= loopTo49; j++)
+            //                            {
+            //                                if (withBlock1.x + i >= 1 & (withBlock1.x + i) <= MapWidth & withBlock1.y + j >= 1 & (withBlock1.y + j) <= MapHeight)
+            //                                {
+            //                                    PointInZOC[(withBlock1.x + i), (withBlock1.y + j)] = PointInZOC[(withBlock1.x + i), (withBlock1.y + j)] - l;
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+
+            //// 移動停止地形はＺＯＣして扱う
+            //if (!ByJump)
+            //{
+            //    {
+            //        var withBlock3 = SRC.TDList;
+            //        var loopTo50 = x2;
+            //        for (i = x1; i <= loopTo50; i++)
+            //        {
+            //            var loopTo51 = y2;
+            //            for (j = y1; j <= loopTo51; j++)
+            //            {
+            //                // MOD START 240a
+            //                // If .IsFeatureAvailable(MapData(i, j, 0), "移動停止") Then
+            //                // PointInZOC(i, j) = 20000
+            //                // End If
+            //                if (TerrainHasMoveStop(i, j))
+            //                {
+            //                    PointInZOC[i, j] = 20000;
+            //                }
+            //                // MOD  END  240a
+            //            }
+            //        }
+            //    }
+            //}
+
+            // マップ上の各地点に到達するのに必要な移動力を計算する
+
+            // まず移動コスト計算用の配列を初期化
+            for (var i = 0; i <= MapWidth + 1; i++)
+            {
+                for (var j = 0; j <= MapHeight + 1; j++)
+                {
+                    TotalMoveCost[i, j] = 1000000;
+                }
+            }
+
+            // 現在いる場所は移動する必要がないため、必要移動力が0
+            TotalMoveCost[currentUnit.x, currentUnit.y] = 0;
+
+            // 必要移動力の計算
+            for (var sp = 1; sp <= uspeed; sp++)
+            {
+                // 現在の必要移動力を保存
+                for (var i = 0; i <= MapWidth + 1; i++)
+                {
+                    for (var j = 0; j <= MapHeight + 1; j++)
+                    {
+                        cur_cost[i, j] = TotalMoveCost[i, j];
+                    }
+                }
+
+                var xmax = Math.Min(currentUnit.x + sp, MapWidth);
+                var xmin = Math.Max(1, currentUnit.x - sp);
+                for (var x = xmin; x <= xmax; x++)
+                {
+                    var ymax = Math.Min(currentUnit.y + sp, MapHeight);
+                    var ymin = Math.Max(1, currentUnit.y - sp);
+                    for (var y = ymin; y <= ymax; y++)
+                    {
+                        // 隣接する地点と比較して最も低い必要移動力を求める
+                        var tmp = cur_cost[x, y];
+                        // TODO ZOCとかもろもろ
+                        //if (sp > 1)
+                        //{
+                        //    {
+                        //        var withBlock4 = SRC.TDList;
+                        //        tmp = Math.Min(tmp, Operators.AddObject(cur_cost[x - 1, y], Interaction.IIf(PointInZOC[x - 1, y] > 0, 10000, 0)));
+                        //        tmp = Math.Min(tmp, Operators.AddObject(cur_cost[x + 1, y], Interaction.IIf(PointInZOC[x + 1, y] > 0, 10000, 0)));
+                        //        tmp = Math.Min(tmp, Operators.AddObject(cur_cost[x, y - 1], Interaction.IIf(PointInZOC[x, y - 1] > 0, 10000, 0)));
+                        //        tmp = Math.Min(tmp, Operators.AddObject(cur_cost[x, y + 1], Interaction.IIf(PointInZOC[x, y + 1] > 0, 10000, 0)));
+                        //    }
+                        //}
+                        //else
+                        {
+                            tmp = Math.Min(tmp, cur_cost[x - 1, y]);
+                            tmp = Math.Min(tmp, cur_cost[x + 1, y]);
+                            tmp = Math.Min(tmp, cur_cost[x, y - 1]);
+                            tmp = Math.Min(tmp, cur_cost[x, y + 1]);
+                        }
+                        // 地形に進入するのに必要な移動力を加算
+                        tmp = tmp + move_cost[x, y];
+                        // 前回の値とどちらが低い？
+                        TotalMoveCost[x, y] = Math.Min(tmp, cur_cost[x, y]);
+                    }
+                }
+            }
+
+
+            // 算出された必要移動力を元に進入可能か判定
+            for (var i = 1; i <= MapWidth; i++)
+            {
+                for (var j = 1; j <= MapHeight; j++)
+                {
+                    MaskData[i, j] = true;
+
+                    // 必要移動力が移動力以内？
+                    if (TotalMoveCost[i, j] > uspeed)
+                    {
+                        continue;
+                    }
+
+                    var u2 = MapDataForUnit[i, j];
+
+                    // ユニットが存在？
+                    if (u2 is null)
+                    {
+                        MaskData[i, j] = false;
+                        continue;
+                    }
+
+                    // 合体＆着艦するのは味方のみ
+                    if (currentUnit.Party0 != "味方")
+                    {
+                        continue;
+                    }
+
+                    // TODO
+                    switch (u2.Party0 ?? "")
+                    {
+                        case "味方":
+                            {
+                                if (u2.IsFeatureAvailable("母艦"))
+                                {
+                                    // 母艦に着艦？
+                                    if (!currentUnit.IsFeatureAvailable("母艦") && u2.Area != "地中")
+                                    {
+                                        if (!currentUnit.IsFeatureAvailable("格納不可"))
+                                        {
+                                            MaskData[i, j] = false;
+                                        }
+                                    }
+                                }
+                                else if (currentUnit.IsFeatureAvailable("合体") && u2.IsFeatureAvailable("合体"))
+                                {
+                                    // ２体合体？
+                                    MaskData[i, j] = true;
+                                    // TODO Impl
+                                    //var loopTo61 = currentUnit.CountFeature();
+                                    //for (k = 1; k <= loopTo61; k++)
+                                    //{
+                                    //    if (currentUnit.Feature() == "合体" && !string.IsNullOrEmpty(currentUnit.FeatureName()))
+                                    //    {
+                                    //        object argIndex18 = k;
+                                    //        buf = currentUnit.FeatureData(argIndex18);
+                                    //        bool localIsDefined() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
+
+                                    //        bool localIsDefined1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
+
+                                    //        if (GeneralLib.LLength(buf) == 3 & localIsDefined() & localIsDefined1())
+                                    //        {
+                                    //            object argIndex20 = GeneralLib.LIndex(buf, 2);
+                                    //            {
+                                    //                var withBlock5 = SRC.UList.Item(argIndex20);
+                                    //                object argIndex19 = "行動不能";
+                                    //                if (withBlock5.IsConditionSatisfied(argIndex19))
+                                    //                {
+                                    //                    break;
+                                    //                }
+
+                                    //                if (withBlock5.Status == "破棄")
+                                    //                {
+                                    //                    break;
+                                    //                }
+                                    //            }
+
+                                    //            Unit localItem() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
+
+                                    //            string argfname16 = "合体制限";
+                                    //            if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
+                                    //            {
+                                    //                MaskData[i, j] = false;
+                                    //                break;
+                                    //            }
+                                    //            else if ((u2.Name ?? "") == (localItem().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable(argfname16))
+                                    //            {
+                                    //                MaskData[i, j] = false;
+                                    //                break;
+                                    //            }
+                                    //        }
+                                    //    }
+                                    //}
+                                }
+
+                                break;
+                            }
+
+                        case "ＮＰＣ":
+                            {
+                                if (currentUnit.IsFeatureAvailable("合体") && u2.IsFeatureAvailable("合体"))
+                                {
+                                    // ２体合体？
+                                    MaskData[i, j] = true;
+                                    //var loopTo62 = currentUnit.CountFeature();
+                                    //for (k = 1; k <= loopTo62; k++)
+                                    //{
+                                    //    object argIndex24 = k;
+                                    //    if (currentUnit.Feature(argIndex24) == "合体")
+                                    //    {
+                                    //        object argIndex21 = k;
+                                    //        buf = currentUnit.FeatureData(argIndex21);
+                                    //        bool localIsDefined2() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
+
+                                    //        bool localIsDefined3() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
+
+                                    //        if (GeneralLib.LLength(buf) == 3 & localIsDefined2() & localIsDefined3())
+                                    //        {
+                                    //            object argIndex23 = GeneralLib.LIndex(buf, 2);
+                                    //            {
+                                    //                var withBlock6 = SRC.UList.Item(argIndex23);
+                                    //                object argIndex22 = "行動不能";
+                                    //                if (withBlock6.IsConditionSatisfied(argIndex22))
+                                    //                {
+                                    //                    break;
+                                    //                }
+
+                                    //                if (withBlock6.Status == "破棄")
+                                    //                {
+                                    //                    break;
+                                    //                }
+                                    //            }
+
+                                    //            Unit localItem1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
+
+                                    //            string argfname20 = "合体制限";
+                                    //            if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
+                                    //            {
+                                    //                MaskData[i, j] = false;
+                                    //                break;
+                                    //            }
+                                    //            else if ((u2.Name ?? "") == (localItem1().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable(argfname20))
+                                    //            {
+                                    //                MaskData[i, j] = false;
+                                    //                break;
+                                    //            }
+                                    //        }
+                                    //    }
+                                    //}
+                                }
+
+                                break;
+                            }
+                    }
+                }
+            }
+
+            //// ジャンプ＆透過移動先は進入可能？
+            //string argfname23 = "透過移動";
+            //string argsptype2 = "透過移動";
+            //if (ByJump | currentUnit.IsFeatureAvailable(argfname23) | currentUnit.IsUnderSpecialPowerEffect(argsptype2))
+            //{
+            //    var loopTo63 = x2;
+            //    for (i = x1; i <= loopTo63; i++)
+            //    {
+            //        var loopTo64 = y2;
+            //        for (j = y1; j <= loopTo64; j++)
+            //        {
+            //            if (MaskData[i, j])
+            //            {
+            //                goto NextLoop2;
+            //            }
+
+            //            // ユニットがいる地形に進入出来るということは
+            //            // 合体or着艦可能ということなので地形は無視
+            //            if (MapDataForUnit[i, j] is object)
+            //            {
+            //                goto NextLoop2;
+            //            }
+
+            //            switch (currentUnit.Area ?? "")
+            //            {
+            //                case "地上":
+            //                    {
+            //                        switch (TerrainClass(i, j) ?? "")
+            //                        {
+            //                            case "空":
+            //                                {
+            //                                    MaskData[i, j] = true;
+            //                                    break;
+            //                                }
+
+            //                            case "水":
+            //                                {
+            //                                    if (!is_adaptable_in_water & !is_trans_available_on_water & !is_trans_available_in_water)
+            //                                    {
+            //                                        MaskData[i, j] = true;
+            //                                    }
+
+            //                                    break;
+            //                                }
+
+            //                            case "深水":
+            //                                {
+            //                                    if (!is_trans_available_on_water & !is_trans_available_in_water)
+            //                                    {
+            //                                        MaskData[i, j] = true;
+            //                                    }
+
+            //                                    break;
+            //                                }
+
+            //                            case "宇宙":
+            //                                {
+            //                                    if (!is_adaptable_in_space)
+            //                                    {
+            //                                        MaskData[i, j] = true;
+            //                                    }
+
+            //                                    break;
+            //                                }
+            //                        }
+
+            //                        break;
+            //                    }
+
+            //                case "水上":
+            //                    {
+            //                        switch (TerrainClass(i, j) ?? "")
+            //                        {
+            //                            case "空":
+            //                                {
+            //                                    MaskData[i, j] = true;
+            //                                    break;
+            //                                }
+
+            //                            case "宇宙":
+            //                                {
+            //                                    if (!is_adaptable_in_space)
+            //                                    {
+            //                                        MaskData[i, j] = true;
+            //                                    }
+
+            //                                    break;
+            //                                }
+            //                        }
+
+            //                        break;
+            //                    }
+
+            //                case "水中":
+            //                    {
+            //                        switch (TerrainClass(i, j) ?? "")
+            //                        {
+            //                            case "空":
+            //                                {
+            //                                    MaskData[i, j] = true;
+            //                                    break;
+            //                                }
+
+            //                            case "深水":
+            //                                {
+            //                                    if (!is_trans_available_on_water & !is_trans_available_in_water)
+            //                                    {
+            //                                        MaskData[i, j] = true;
+            //                                    }
+
+            //                                    break;
+            //                                }
+
+            //                            case "宇宙":
+            //                                {
+            //                                    if (!is_adaptable_in_space)
+            //                                    {
+            //                                        MaskData[i, j] = true;
+            //                                    }
+
+            //                                    break;
+            //                                }
+            //                        }
+
+            //                        break;
+            //                    }
+
+            //                case "空中":
+            //                    {
+            //                        switch (TerrainClass(i, j) ?? "")
+            //                        {
+            //                            case "空":
+            //                                {
+            //                                    if (TerrainMoveCost(i, j) > 100)
+            //                                    {
+            //                                        MaskData[i, j] = true;
+            //                                    }
+
+            //                                    break;
+            //                                }
+
+            //                            case "宇宙":
+            //                                {
+            //                                    if (!is_adaptable_in_space)
+            //                                    {
+            //                                        MaskData[i, j] = true;
+            //                                    }
+
+            //                                    break;
+            //                                }
+            //                        }
+
+            //                        break;
+            //                    }
+
+            //                case "地中":
+            //                    {
+            //                        if (TerrainClass(i, j) != "陸")
+            //                        {
+            //                            MaskData[i, j] = true;
+            //                        }
+
+            //                        break;
+            //                    }
+
+            //                case "宇宙":
+            //                    {
+            //                        switch (TerrainClass(i, j) ?? "")
+            //                        {
+            //                            case "陸":
+            //                            case "屋内":
+            //                                {
+            //                                    if (!is_trans_available_in_sky & !is_trans_available_on_ground)
+            //                                    {
+            //                                        MaskData[i, j] = true;
+            //                                    }
+
+            //                                    break;
+            //                                }
+
+            //                            case "空":
+            //                                {
+            //                                    if (!is_trans_available_in_sky | TerrainMoveCost(i, j) > 10)
+            //                                    {
+            //                                        MaskData[i, j] = true;
+            //                                    }
+
+            //                                    break;
+            //                                }
+
+            //                            case "水":
+            //                                {
+            //                                    if (!is_trans_available_in_water & !is_trans_available_on_water & !is_adaptable_in_water)
+            //                                    {
+            //                                        MaskData[i, j] = true;
+            //                                    }
+
+            //                                    break;
+            //                                }
+
+            //                            case "深水":
+            //                                {
+            //                                    if (!is_trans_available_on_water & !is_trans_available_in_water)
+            //                                    {
+            //                                        MaskData[i, j] = true;
+            //                                    }
+
+            //                                    break;
+            //                                }
+            //                        }
+
+            //                        break;
+            //                    }
+            //            }
+
+            //            // 移動制限
+            //            if (Information.UBound(allowed_terrains) > 0)
+            //            {
+            //                var loopTo65 = Information.UBound(allowed_terrains);
+            //                for (k = 2; k <= loopTo65; k++)
+            //                {
+            //                    if ((TerrainName(i, j) ?? "") == (allowed_terrains[k] ?? ""))
+            //                    {
+            //                        break;
+            //                    }
+            //                }
+
+            //                if (k > Information.UBound(allowed_terrains))
+            //                {
+            //                    MaskData[i, j] = true;
+            //                }
+            //            }
+
+            //            // 進入不可
+            //            var loopTo66 = Information.UBound(prohibited_terrains);
+            //            for (k = 2; k <= loopTo66; k++)
+            //            {
+            //                if ((TerrainName(i, j) ?? "") == (prohibited_terrains[k] ?? ""))
+            //                {
+            //                    MaskData[i, j] = true;
+            //                    break;
+            //                }
+            //            }
+
+            //        NextLoop2:
+            //            ;
+            //        }
+            //    }
+            //}
+
+            // 現在いる場所は常に進入可能
+            MaskData[currentUnit.x, currentUnit.y] = false;
+        }
+
+        private void FillMoveCost(Unit u, int[,] move_cost, string move_area, int x1, int y1, int x2, int y2)
+        {
+            // 移動能力の可否を調べておく
+            var is_trans_available_on_ground = u.IsTransAvailable("陸") && u.get_Adaption(2) != 0;
+            var is_trans_available_in_water = u.IsTransAvailable("水") && u.get_Adaption(3) != 0;
+            var is_adaptable_in_water = Strings.Mid(u.Data.Adaption, 3, 1) != "-" || u.IsFeatureAvailable("水中移動");
+            var is_adaptable_in_space = Strings.Mid(u.Data.Adaption, 4, 1) != "-" || u.IsFeatureAvailable("宇宙移動");
+            var is_trans_available_on_water = u.IsFeatureAvailable("水上移動") || u.IsFeatureAvailable("ホバー移動");
+            var adopted_terrain = GeneralLib.ToL(u.FeatureData("地形適応")).Skip(1).ToList();
+
+            x1 = Math.Max(1, x1);
+            x2 = Math.Min(MapWidth, x2);
+            y1 = Math.Max(1, y1);
+            y2 = Math.Min(MapHeight, y2);
 
             // 各地形の移動コストを算出しておく
             switch (move_area ?? "")
@@ -3050,815 +3814,6 @@ namespace SRCCore.Maps
             //            move_cost[i, j] = 2;
             //    }
             //}
-
-            //// ユニットがいるため通り抜け出来ない場所をチェック
-            //string argfname13 = "すり抜け移動";
-            //string argsptype1 = "すり抜け移動";
-            //if (!currentUnit.IsFeatureAvailable(argfname13) & !currentUnit.IsUnderSpecialPowerEffect(argsptype1))
-            //{
-            //    foreach (Unit currentU2 in SRC.UList)
-            //    {
-            //        u2 = currentU2;
-            //        {
-            //            var withBlock1 = u2;
-            //            if (withBlock1.Status == "出撃")
-            //            {
-            //                blocked = false;
-
-            //                // 敵対する場合は通り抜け不可
-            //                if (withBlock1.IsEnemy(u, true))
-            //                {
-            //                    blocked = true;
-            //                }
-
-            //                // 陣営が合わない場合も通り抜け不可
-            //                switch (withBlock1.Party0 ?? "")
-            //                {
-            //                    case "味方":
-            //                    case "ＮＰＣ":
-            //                        {
-            //                            if (u.Party0 != "味方" & u.Party0 != "ＮＰＣ")
-            //                            {
-            //                                blocked = true;
-            //                            }
-
-            //                            break;
-            //                        }
-
-            //                    default:
-            //                        {
-            //                            if ((withBlock1.Party0 ?? "") != (u.Party0 ?? ""))
-            //                            {
-            //                                blocked = true;
-            //                            }
-
-            //                            break;
-            //                        }
-            //                }
-
-            //                // 通り抜けられない場合
-            //                if (blocked)
-            //                {
-            //                    move_cost[withBlock1.x, withBlock1.y] = 1000000;
-            //                }
-
-            //                // ＺＯＣ
-            //                if (blocked & !ByJump)
-            //                {
-            //                    is_zoc = false;
-            //                    zarea = 0;
-            //                    string argfname12 = "ＺＯＣ";
-            //                    string argoname = "ＺＯＣ";
-            //                    if (withBlock1.IsFeatureAvailable(argfname12) | Expression.IsOptionDefined(argoname))
-            //                    {
-            //                        is_zoc = true;
-            //                        zarea = 1;
-
-            //                        // ＺＯＣ側のＺＯＣレベル
-            //                        object argIndex10 = "ＺＯＣ";
-            //                        n = withBlock1.FeatureLevel(argIndex10);
-            //                        if (n == 1)
-            //                            n = 10000;
-
-            //                        // Option「ＺＯＣ」が指定されている
-            //                        n = Math.Max(1, n);
-            //                        string argfname11 = "ＺＯＣ無効化";
-            //                        if (u.IsFeatureAvailable(argfname11))
-            //                        {
-            //                            // 移動側のＺＯＣ無効化レベル
-            //                            // レベル指定なし、またはLv1はLv10000として扱う
-            //                            object argIndex11 = "ＺＯＣ無効化";
-            //                            l = u.FeatureLevel(argIndex11);
-            //                            if (l == 1)
-            //                                l = 10000;
-
-            //                            // 移動側のＺＯＣ無効化レベルの方が高い場合、
-            //                            // ＺＯＣ不可能
-            //                            if (l >= n)
-            //                            {
-            //                                is_zoc = false;
-            //                            }
-            //                        }
-
-            //                        // 隣接するユニットが「隣接ユニットＺＯＣ無効化」を持っている場合
-            //                        if (is_zoc)
-            //                        {
-            //                            for (i = -1; i <= 1; i++)
-            //                            {
-            //                                var loopTo44 = Math.Abs(Math.Abs(i) - 1);
-            //                                for (j = (Math.Abs(i) - 1); j <= loopTo44; j++)
-            //                                {
-            //                                    if ((i != 0 | j != 0) & withBlock1.x + i >= 1 & (withBlock1.x + i) <= MapWidth & withBlock1.y + j >= 1 & (withBlock1.y + j) <= MapHeight)
-            //                                    {
-            //                                        // 隣接ユニットが存在する？
-            //                                        if (MapDataForUnit[(withBlock1.x + i), (withBlock1.y + j)] is object)
-            //                                        {
-            //                                            buf = withBlock1.Party0;
-            //                                            {
-            //                                                var withBlock2 = MapDataForUnit[(withBlock1.x + i), (withBlock1.y + j)];
-            //                                                // 敵対陣営？
-            //                                                switch (withBlock2.Party0 ?? "")
-            //                                                {
-            //                                                    case "味方":
-            //                                                    case "ＮＰＣ":
-            //                                                        {
-            //                                                            if (buf == "味方" | buf == "ＮＰＣ")
-            //                                                            {
-            //                                                                break;
-            //                                                            }
-
-            //                                                            break;
-            //                                                        }
-
-            //                                                    default:
-            //                                                        {
-            //                                                            if ((withBlock2.Party0 ?? "") == (buf ?? ""))
-            //                                                            {
-            //                                                                break;
-            //                                                            }
-
-            //                                                            break;
-            //                                                        }
-            //                                                }
-
-            //                                                object argIndex12 = "隣接ユニットＺＯＣ無効化";
-            //                                                l = withBlock2.FeatureLevel(argIndex12);
-            //                                                if (l == 1)
-            //                                                    l = 10000;
-
-            //                                                // 移動側のＺＯＣ無効化レベルの方が高い場合、
-            //                                                // ＺＯＣ不可能
-            //                                                if (l >= n)
-            //                                                {
-            //                                                    is_zoc = false;
-            //                                                    break;
-            //                                                }
-            //                                            }
-            //                                        }
-            //                                    }
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-
-            //                    if (is_zoc)
-            //                    {
-            //                        // 特殊能力「ＺＯＣ」が指定されているなら、そのデータの2つ目の値をＺＯＣの範囲に設定
-            //                        // 2つ目の値が省略されている場合は1を設定
-            //                        // ＺＯＣLvが0以下の場合、オプション「ＺＯＣ」が指定されていても範囲を0に設定
-            //                        object argIndex13 = "ＺＯＣ";
-            //                        string arglist4 = withBlock1.FeatureData(argIndex13);
-            //                        if (GeneralLib.LLength(arglist4) >= 2)
-            //                        {
-            //                            string localLIndex() { object argIndex1 = "ＺＯＣ"; string arglist = withBlock1.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                            string localLIndex1() { object argIndex1 = "ＺＯＣ"; string arglist = withBlock1.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                            zarea = Math.Max(Conversions.ToInteger(localLIndex1()), 0);
-            //                        }
-
-            //                        // 相対距離＋ＺＯＣの範囲が移動力以内のとき、ＺＯＣを設定
-            //                        if (((Math.Abs((u.x - withBlock1.x)) + Math.Abs((u.y - withBlock1.y))) - zarea) <= uspeed)
-            //                        {
-            //                            // 水平・垂直方向のみのＺＯＣかどうかを判断
-            //                            is_hzoc = false;
-            //                            is_vzoc = false;
-            //                            object argIndex16 = "ＺＯＣ";
-            //                            if (Conversions.ToBoolean(Strings.InStr(withBlock1.FeatureData(argIndex16), "直線")))
-            //                            {
-            //                                is_hzoc = true;
-            //                                is_vzoc = true;
-            //                            }
-            //                            else
-            //                            {
-            //                                object argIndex14 = "ＺＯＣ";
-            //                                if (Conversions.ToBoolean(Strings.InStr(withBlock1.FeatureData(argIndex14), "水平")))
-            //                                {
-            //                                    is_hzoc = true;
-            //                                }
-
-            //                                object argIndex15 = "ＺＯＣ";
-            //                                if (Conversions.ToBoolean(Strings.InStr(withBlock1.FeatureData(argIndex15), "垂直")))
-            //                                {
-            //                                    is_vzoc = true;
-            //                                }
-            //                            }
-
-            //                            if (is_hzoc | is_vzoc)
-            //                            {
-            //                                var loopTo45 = zarea;
-            //                                for (i = (zarea * -1); i <= loopTo45; i++)
-            //                                {
-            //                                    if (i == 0)
-            //                                    {
-            //                                        if (PointInZOC[withBlock1.x, withBlock1.y] < 0)
-            //                                        {
-            //                                            if (n > Math.Abs(PointInZOC[withBlock1.x, withBlock1.y]))
-            //                                            {
-            //                                                PointInZOC[withBlock1.x, withBlock1.y] = n;
-            //                                            }
-            //                                        }
-            //                                        else
-            //                                        {
-            //                                            PointInZOC[withBlock1.x, withBlock1.y] = Math.Max(n, PointInZOC[withBlock1.x, withBlock1.y]);
-            //                                        }
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        // 水平ＺＯＣ
-            //                                        if (is_hzoc & withBlock1.x + i >= 1 & (withBlock1.x + i) <= MapWidth)
-            //                                        {
-            //                                            if (PointInZOC[(withBlock1.x + i), withBlock1.y] < 0)
-            //                                            {
-            //                                                if (n > Math.Abs(PointInZOC[(withBlock1.x + i), withBlock1.y]))
-            //                                                {
-            //                                                    PointInZOC[(withBlock1.x + i), withBlock1.y] = n;
-            //                                                }
-            //                                            }
-            //                                            else
-            //                                            {
-            //                                                PointInZOC[(withBlock1.x + i), withBlock1.y] = Math.Max(n, PointInZOC[(withBlock1.x + i), withBlock1.y]);
-            //                                            }
-            //                                        }
-            //                                        // 垂直ＺＯＣ
-            //                                        if (is_vzoc & withBlock1.y + i >= 1 & (withBlock1.y + i) <= MapHeight)
-            //                                        {
-            //                                            if (PointInZOC[withBlock1.x, (withBlock1.y + i)] < 0)
-            //                                            {
-            //                                                if (n > Math.Abs(PointInZOC[withBlock1.x, (withBlock1.y + i)]))
-            //                                                {
-            //                                                    PointInZOC[withBlock1.x, (withBlock1.y + i)] = n;
-            //                                                }
-            //                                            }
-            //                                            else
-            //                                            {
-            //                                                PointInZOC[withBlock1.x, (withBlock1.y + i)] = Math.Max(n, PointInZOC[withBlock1.x, (withBlock1.y + i)]);
-            //                                            }
-            //                                        }
-            //                                    }
-            //                                }
-            //                            }
-            //                            else
-            //                            {
-            //                                // 全方位ＺＯＣ
-            //                                var loopTo46 = zarea;
-            //                                for (i = (zarea * -1); i <= loopTo46; i++)
-            //                                {
-            //                                    var loopTo47 = Math.Abs((Math.Abs(i) - zarea));
-            //                                    for (j = (Math.Abs(i) - zarea); j <= loopTo47; j++)
-            //                                    {
-            //                                        if (withBlock1.x + i >= 1 & (withBlock1.x + i) <= MapWidth & withBlock1.y + j >= 1 & (withBlock1.y + j) <= MapHeight)
-            //                                        {
-            //                                            if (PointInZOC[(withBlock1.x + i), (withBlock1.y + j)] < 0)
-            //                                            {
-            //                                                if (n > Math.Abs(PointInZOC[(withBlock1.x + i), (withBlock1.y + j)]))
-            //                                                {
-            //                                                    PointInZOC[(withBlock1.x + i), (withBlock1.y + j)] = n;
-            //                                                }
-            //                                            }
-            //                                            else
-            //                                            {
-            //                                                PointInZOC[(withBlock1.x + i), (withBlock1.y + j)] = Math.Max(n, PointInZOC[(withBlock1.x + i), (withBlock1.y + j)]);
-            //                                            }
-            //                                        }
-            //                                    }
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //                // 「広域ＺＯＣ無効化」を所持している場合の処理
-            //                else if (((Math.Abs((u.x - withBlock1.x)) + Math.Abs((u.y - withBlock1.y))) - zarea) <= uspeed)
-            //                {
-            //                    // レベル指定なし、またはLv1はLv10000として扱う
-            //                    object argIndex17 = "広域ＺＯＣ無効化";
-            //                    l = withBlock1.FeatureLevel(argIndex17);
-            //                    if (l == 1)
-            //                        l = 10000;
-            //                    if (l > 0)
-            //                    {
-            //                        string localLIndex2() { object argIndex1 = "広域ＺＯＣ無効化"; string arglist = withBlock1.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                        int localStrToLng() { string argexpr = hs1020e5bbaf214f5a820fb8d152076551(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-            //                        n = Math.Max(localStrToLng(), 1);
-            //                        var loopTo48 = n;
-            //                        for (i = (n * -1); i <= loopTo48; i++)
-            //                        {
-            //                            var loopTo49 = Math.Abs((Math.Abs(i) - n));
-            //                            for (j = (Math.Abs(i) - n); j <= loopTo49; j++)
-            //                            {
-            //                                if (withBlock1.x + i >= 1 & (withBlock1.x + i) <= MapWidth & withBlock1.y + j >= 1 & (withBlock1.y + j) <= MapHeight)
-            //                                {
-            //                                    PointInZOC[(withBlock1.x + i), (withBlock1.y + j)] = PointInZOC[(withBlock1.x + i), (withBlock1.y + j)] - l;
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// 移動停止地形はＺＯＣして扱う
-            //if (!ByJump)
-            //{
-            //    {
-            //        var withBlock3 = SRC.TDList;
-            //        var loopTo50 = x2;
-            //        for (i = x1; i <= loopTo50; i++)
-            //        {
-            //            var loopTo51 = y2;
-            //            for (j = y1; j <= loopTo51; j++)
-            //            {
-            //                // MOD START 240a
-            //                // If .IsFeatureAvailable(MapData(i, j, 0), "移動停止") Then
-            //                // PointInZOC(i, j) = 20000
-            //                // End If
-            //                if (TerrainHasMoveStop(i, j))
-            //                {
-            //                    PointInZOC[i, j] = 20000;
-            //                }
-            //                // MOD  END  240a
-            //            }
-            //        }
-            //    }
-            //}
-            #endregion
-
-            // マップ上の各地点に到達するのに必要な移動力を計算する
-
-            // まず移動コスト計算用の配列を初期化
-            for (var i = 0; i <= MapWidth + 1; i++)
-            {
-                for (var j = 0; j <= MapHeight + 1; j++)
-                {
-                    TotalMoveCost[i, j] = 1000000;
-                }
-            }
-
-            // 現在いる場所は移動する必要がないため、必要移動力が0
-            TotalMoveCost[currentUnit.x, currentUnit.y] = 0;
-
-            // 必要移動力の計算
-            for (var sp = 1; sp <= uspeed; sp++)
-            {
-                // 現在の必要移動力を保存
-                for (var i = 0; i <= MapWidth + 1; i++)
-                {
-                    for (var j = 0; j <= MapHeight + 1; j++)
-                    {
-                        cur_cost[i, j] = TotalMoveCost[i, j];
-                    }
-                }
-
-                var xmax = Math.Min(currentUnit.x + sp, MapWidth);
-                var xmin = Math.Max(1, currentUnit.x - sp);
-                for (var x = xmin; x <= xmax; x++)
-                {
-                    var ymax = Math.Min(currentUnit.y + sp, MapHeight);
-                    var ymin = Math.Max(1, currentUnit.y - sp);
-                    for (var y = ymin; y <= ymax; y++)
-                    {
-                        // 隣接する地点と比較して最も低い必要移動力を求める
-                        var tmp = cur_cost[x, y];
-                        // TODO ZOCとかもろもろ
-                        //if (sp > 1)
-                        //{
-                        //    {
-                        //        var withBlock4 = SRC.TDList;
-                        //        tmp = Math.Min(tmp, Operators.AddObject(cur_cost[x - 1, y], Interaction.IIf(PointInZOC[x - 1, y] > 0, 10000, 0)));
-                        //        tmp = Math.Min(tmp, Operators.AddObject(cur_cost[x + 1, y], Interaction.IIf(PointInZOC[x + 1, y] > 0, 10000, 0)));
-                        //        tmp = Math.Min(tmp, Operators.AddObject(cur_cost[x, y - 1], Interaction.IIf(PointInZOC[x, y - 1] > 0, 10000, 0)));
-                        //        tmp = Math.Min(tmp, Operators.AddObject(cur_cost[x, y + 1], Interaction.IIf(PointInZOC[x, y + 1] > 0, 10000, 0)));
-                        //    }
-                        //}
-                        //else
-                        {
-                            tmp = Math.Min(tmp, cur_cost[x - 1, y]);
-                            tmp = Math.Min(tmp, cur_cost[x + 1, y]);
-                            tmp = Math.Min(tmp, cur_cost[x, y - 1]);
-                            tmp = Math.Min(tmp, cur_cost[x, y + 1]);
-                        }
-                        // 地形に進入するのに必要な移動力を加算
-                        tmp = tmp + move_cost[x, y];
-                        // 前回の値とどちらが低い？
-                        TotalMoveCost[x, y] = Math.Min(tmp, cur_cost[x, y]);
-                    }
-                }
-            }
-
-
-            // 算出された必要移動力を元に進入可能か判定
-            for (var i = 1; i <= MapWidth; i++)
-            {
-                for (var j = 1; j <= MapHeight; j++)
-                {
-                    MaskData[i, j] = true;
-
-                    // 必要移動力が移動力以内？
-                    if (TotalMoveCost[i, j] > uspeed)
-                    {
-                        continue;
-                    }
-
-                    var u2 = MapDataForUnit[i, j];
-
-                    // ユニットが存在？
-                    if (u2 is null)
-                    {
-                        MaskData[i, j] = false;
-                        continue;
-                    }
-
-                    // 合体＆着艦するのは味方のみ
-                    if (currentUnit.Party0 != "味方")
-                    {
-                        continue;
-                    }
-
-                    // TODO
-                    switch (u2.Party0 ?? "")
-                    {
-                        case "味方":
-                            {
-                                if (u2.IsFeatureAvailable("母艦"))
-                                {
-                                    // 母艦に着艦？
-                                    if (!currentUnit.IsFeatureAvailable("母艦") && u2.Area != "地中")
-                                    {
-                                        if (!currentUnit.IsFeatureAvailable("格納不可"))
-                                        {
-                                            MaskData[i, j] = false;
-                                        }
-                                    }
-                                }
-                                else if (currentUnit.IsFeatureAvailable("合体") && u2.IsFeatureAvailable("合体"))
-                                {
-                                    // ２体合体？
-                                    MaskData[i, j] = true;
-                                    // TODO Impl
-                                    //var loopTo61 = currentUnit.CountFeature();
-                                    //for (k = 1; k <= loopTo61; k++)
-                                    //{
-                                    //    if (currentUnit.Feature() == "合体" && !string.IsNullOrEmpty(currentUnit.FeatureName()))
-                                    //    {
-                                    //        object argIndex18 = k;
-                                    //        buf = currentUnit.FeatureData(argIndex18);
-                                    //        bool localIsDefined() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-                                    //        bool localIsDefined1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-                                    //        if (GeneralLib.LLength(buf) == 3 & localIsDefined() & localIsDefined1())
-                                    //        {
-                                    //            object argIndex20 = GeneralLib.LIndex(buf, 2);
-                                    //            {
-                                    //                var withBlock5 = SRC.UList.Item(argIndex20);
-                                    //                object argIndex19 = "行動不能";
-                                    //                if (withBlock5.IsConditionSatisfied(argIndex19))
-                                    //                {
-                                    //                    break;
-                                    //                }
-
-                                    //                if (withBlock5.Status == "破棄")
-                                    //                {
-                                    //                    break;
-                                    //                }
-                                    //            }
-
-                                    //            Unit localItem() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
-
-                                    //            string argfname16 = "合体制限";
-                                    //            if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
-                                    //            {
-                                    //                MaskData[i, j] = false;
-                                    //                break;
-                                    //            }
-                                    //            else if ((u2.Name ?? "") == (localItem().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable(argfname16))
-                                    //            {
-                                    //                MaskData[i, j] = false;
-                                    //                break;
-                                    //            }
-                                    //        }
-                                    //    }
-                                    //}
-                                }
-
-                                break;
-                            }
-
-                        case "ＮＰＣ":
-                            {
-                                if (currentUnit.IsFeatureAvailable("合体") && u2.IsFeatureAvailable("合体"))
-                                {
-                                    // ２体合体？
-                                    MaskData[i, j] = true;
-                                    //var loopTo62 = currentUnit.CountFeature();
-                                    //for (k = 1; k <= loopTo62; k++)
-                                    //{
-                                    //    object argIndex24 = k;
-                                    //    if (currentUnit.Feature(argIndex24) == "合体")
-                                    //    {
-                                    //        object argIndex21 = k;
-                                    //        buf = currentUnit.FeatureData(argIndex21);
-                                    //        bool localIsDefined2() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-                                    //        bool localIsDefined3() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-                                    //        if (GeneralLib.LLength(buf) == 3 & localIsDefined2() & localIsDefined3())
-                                    //        {
-                                    //            object argIndex23 = GeneralLib.LIndex(buf, 2);
-                                    //            {
-                                    //                var withBlock6 = SRC.UList.Item(argIndex23);
-                                    //                object argIndex22 = "行動不能";
-                                    //                if (withBlock6.IsConditionSatisfied(argIndex22))
-                                    //                {
-                                    //                    break;
-                                    //                }
-
-                                    //                if (withBlock6.Status == "破棄")
-                                    //                {
-                                    //                    break;
-                                    //                }
-                                    //            }
-
-                                    //            Unit localItem1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
-
-                                    //            string argfname20 = "合体制限";
-                                    //            if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
-                                    //            {
-                                    //                MaskData[i, j] = false;
-                                    //                break;
-                                    //            }
-                                    //            else if ((u2.Name ?? "") == (localItem1().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable(argfname20))
-                                    //            {
-                                    //                MaskData[i, j] = false;
-                                    //                break;
-                                    //            }
-                                    //        }
-                                    //    }
-                                    //}
-                                }
-
-                                break;
-                            }
-                    }
-                }
-            }
-
-            //// ジャンプ＆透過移動先は進入可能？
-            //string argfname23 = "透過移動";
-            //string argsptype2 = "透過移動";
-            //if (ByJump | currentUnit.IsFeatureAvailable(argfname23) | currentUnit.IsUnderSpecialPowerEffect(argsptype2))
-            //{
-            //    var loopTo63 = x2;
-            //    for (i = x1; i <= loopTo63; i++)
-            //    {
-            //        var loopTo64 = y2;
-            //        for (j = y1; j <= loopTo64; j++)
-            //        {
-            //            if (MaskData[i, j])
-            //            {
-            //                goto NextLoop2;
-            //            }
-
-            //            // ユニットがいる地形に進入出来るということは
-            //            // 合体or着艦可能ということなので地形は無視
-            //            if (MapDataForUnit[i, j] is object)
-            //            {
-            //                goto NextLoop2;
-            //            }
-
-            //            switch (currentUnit.Area ?? "")
-            //            {
-            //                case "地上":
-            //                    {
-            //                        switch (TerrainClass(i, j) ?? "")
-            //                        {
-            //                            case "空":
-            //                                {
-            //                                    MaskData[i, j] = true;
-            //                                    break;
-            //                                }
-
-            //                            case "水":
-            //                                {
-            //                                    if (!is_adaptable_in_water & !is_trans_available_on_water & !is_trans_available_in_water)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case "深水":
-            //                                {
-            //                                    if (!is_trans_available_on_water & !is_trans_available_in_water)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case "宇宙":
-            //                                {
-            //                                    if (!is_adaptable_in_space)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
-
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "水上":
-            //                    {
-            //                        switch (TerrainClass(i, j) ?? "")
-            //                        {
-            //                            case "空":
-            //                                {
-            //                                    MaskData[i, j] = true;
-            //                                    break;
-            //                                }
-
-            //                            case "宇宙":
-            //                                {
-            //                                    if (!is_adaptable_in_space)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
-
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "水中":
-            //                    {
-            //                        switch (TerrainClass(i, j) ?? "")
-            //                        {
-            //                            case "空":
-            //                                {
-            //                                    MaskData[i, j] = true;
-            //                                    break;
-            //                                }
-
-            //                            case "深水":
-            //                                {
-            //                                    if (!is_trans_available_on_water & !is_trans_available_in_water)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case "宇宙":
-            //                                {
-            //                                    if (!is_adaptable_in_space)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
-
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "空中":
-            //                    {
-            //                        switch (TerrainClass(i, j) ?? "")
-            //                        {
-            //                            case "空":
-            //                                {
-            //                                    if (TerrainMoveCost(i, j) > 100)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case "宇宙":
-            //                                {
-            //                                    if (!is_adaptable_in_space)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
-
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "地中":
-            //                    {
-            //                        if (TerrainClass(i, j) != "陸")
-            //                        {
-            //                            MaskData[i, j] = true;
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "宇宙":
-            //                    {
-            //                        switch (TerrainClass(i, j) ?? "")
-            //                        {
-            //                            case "陸":
-            //                            case "屋内":
-            //                                {
-            //                                    if (!is_trans_available_in_sky & !is_trans_available_on_ground)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case "空":
-            //                                {
-            //                                    if (!is_trans_available_in_sky | TerrainMoveCost(i, j) > 10)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case "水":
-            //                                {
-            //                                    if (!is_trans_available_in_water & !is_trans_available_on_water & !is_adaptable_in_water)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case "深水":
-            //                                {
-            //                                    if (!is_trans_available_on_water & !is_trans_available_in_water)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
-
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        break;
-            //                    }
-            //            }
-
-            //            // 移動制限
-            //            if (Information.UBound(allowed_terrains) > 0)
-            //            {
-            //                var loopTo65 = Information.UBound(allowed_terrains);
-            //                for (k = 2; k <= loopTo65; k++)
-            //                {
-            //                    if ((TerrainName(i, j) ?? "") == (allowed_terrains[k] ?? ""))
-            //                    {
-            //                        break;
-            //                    }
-            //                }
-
-            //                if (k > Information.UBound(allowed_terrains))
-            //                {
-            //                    MaskData[i, j] = true;
-            //                }
-            //            }
-
-            //            // 進入不可
-            //            var loopTo66 = Information.UBound(prohibited_terrains);
-            //            for (k = 2; k <= loopTo66; k++)
-            //            {
-            //                if ((TerrainName(i, j) ?? "") == (prohibited_terrains[k] ?? ""))
-            //                {
-            //                    MaskData[i, j] = true;
-            //                    break;
-            //                }
-            //            }
-
-            //        NextLoop2:
-            //            ;
-            //        }
-            //    }
-            //}
-
-            // 現在いる場所は常に進入可能
-            MaskData[currentUnit.x, currentUnit.y] = false;
         }
 
         // ユニット u がテレポートして移動できる範囲を選択
@@ -4869,618 +4824,129 @@ namespace SRCCore.Maps
         }
 
         // ユニット u が (dst_x,dst_y) に行くのに最も近い移動範囲内の場所 (X,Y) はどこか検索
-        public void NearestPoint(Unit u, int dst_x, int dst_y, int X, int Y)
+        public void NearestPoint(Unit u, int dst_x, int dst_y, out int X, out int Y)
         {
-            throw new NotImplementedException();
-            //int k, i, j, n;
-            //var total_cost = new int[52, 52];
-            //var cur_speed = new int[52, 52];
-            //var move_cost = new int[52, 52];
-            //int tmp;
-            //bool is_trans_available_on_ground;
-            //bool is_trans_available_in_water;
-            //bool is_trans_available_on_water;
-            //var is_adaptable_in_water = default(bool);
-            //string[] adopted_terrain;
-            //string[] allowed_terrains;
-            //string[] prohibited_terrains;
-            //bool is_changed;
-            //int min_x, max_x;
-            //int min_y, max_y;
+            X = u.x;
+            Y = u.y;
+            // 目的地がマップ外にならないように
+            dst_x = Math.Max(Math.Min(dst_x, MapWidth), 1);
+            dst_y = Math.Max(Math.Min(dst_y, MapHeight), 1);
 
-            //// 目的地がマップ外にならないように
-            //dst_x = Math.Max(Math.Min(dst_x, MapWidth), 1);
-            //dst_y = Math.Max(Math.Min(dst_y, MapHeight), 1);
+            // XXX マップの最大サイズの制限になるはず
+            var total_cost = new int[52, 52];
+            var move_cost = new int[52, 52];
+            var cur_speed = new int[52, 52];
 
-            //// 移動能力の可否を調べておく
-            //X = u.x;
-            //Y = u.y;
-            //string argarea_name = "陸";
-            //is_trans_available_on_ground = u.IsTransAvailable(argarea_name) & u.get_Adaption(2) != 0;
-            //string argarea_name1 = "水";
-            //is_trans_available_in_water = u.IsTransAvailable(argarea_name1) & u.get_Adaption(3) != 0;
-            //string argfname = "水中移動";
-            //if (Strings.Mid(u.Data.Adaption, 3, 1) != "-" | u.IsFeatureAvailable(argfname))
-            //{
-            //    is_adaptable_in_water = true;
-            //}
+            // 各地形の移動コストを算出しておく
+            FillMoveCost(u, move_cost, u.Area, 0, 0, 51, 51);
+            // XXX FillMoveCost で考慮する能力のすり合わせ
+            // 線路移動
+            // 移動制限
+            // 進入不可
+            // ホバー移動
+            // ジャンプ移動
 
-            //string argfname1 = "水上移動";
-            //string argfname2 = "ホバー移動";
-            //if (u.IsFeatureAvailable(argfname1) | u.IsFeatureAvailable(argfname2))
-            //{
-            //    is_trans_available_on_water = true;
-            //}
+            var loopTo34 = (MapWidth + 1);
+            for (var i = 0; i <= loopTo34; i++)
+            {
+                var loopTo35 = (MapHeight + 1);
+                for (var j = 0; j <= loopTo35; j++)
+                    total_cost[i, j] = 1000000;
+            }
 
-            //int localLLength() { object argIndex1 = "地形適応"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LLength(arglist); return ret; }
+            total_cost[dst_x, dst_y] = 0;
 
-            //adopted_terrain = new string[(localLLength() + 1)];
-            //var loopTo = Information.UBound(adopted_terrain);
-            //for (i = 2; i <= loopTo; i++)
-            //{
-            //    object argIndex1 = "地形適応";
-            //    string arglist = u.FeatureData(argIndex1);
-            //    adopted_terrain[i] = GeneralLib.LIndex(arglist, i);
-            //}
+            // 目的地から各地点に到達するのにかかる移動力を計算
+            {
+                var i = 0;
+                int min_x, max_x;
+                int min_y, max_y;
+                bool is_changed;
+                do
+                {
+                    i = (i + 1);
 
-            //// 各地形の移動コストを算出しておく
-            //switch (u.Area ?? "")
-            //{
-            //    case "空中":
-            //        {
-            //            var loopTo1 = MapWidth;
-            //            for (i = 1; i <= loopTo1; i++)
-            //            {
-            //                var loopTo2 = MapHeight;
-            //                for (j = 1; j <= loopTo2; j++)
-            //                {
-            //                    if (TerrainClass(i, j) == "空")
-            //                    {
-            //                        move_cost[i, j] = TerrainMoveCost(i, j);
-            //                        var loopTo3 = Information.UBound(adopted_terrain);
-            //                        for (k = 2; k <= loopTo3; k++)
-            //                        {
-            //                            if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
-            //                            {
-            //                                move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-            //                                break;
-            //                            }
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        move_cost[i, j] = 2;
-            //                    }
-            //                }
-            //            }
+                    // タイムアウト
+                    if (i > 3 * (MapWidth + MapHeight))
+                    {
+                        break;
+                    }
 
-            //            break;
-            //        }
+                    is_changed = false;
+                    var loopTo36 = (MapWidth + 1);
+                    for (var j = 0; j <= loopTo36; j++)
+                    {
+                        var loopTo37 = (MapHeight + 1);
+                        for (var k = 0; k <= loopTo37; k++)
+                            cur_speed[j, k] = total_cost[j, k];
+                    }
 
-            //    case "地上":
-            //        {
-            //            var loopTo4 = MapWidth;
-            //            for (i = 1; i <= loopTo4; i++)
-            //            {
-            //                var loopTo5 = MapHeight;
-            //                for (j = 1; j <= loopTo5; j++)
-            //                {
-            //                    switch (TerrainClass(i, j) ?? "")
-            //                    {
-            //                        case "陸":
-            //                        case "屋内":
-            //                        case "月面":
-            //                            {
-            //                                if (is_trans_available_on_ground)
-            //                                {
-            //                                    move_cost[i, j] = TerrainMoveCost(i, j);
-            //                                    var loopTo6 = Information.UBound(adopted_terrain);
-            //                                    for (k = 2; k <= loopTo6; k++)
-            //                                    {
-            //                                        if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
-            //                                        {
-            //                                            move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-            //                                            break;
-            //                                        }
-            //                                    }
-            //                                }
-            //                                else
-            //                                {
-            //                                    move_cost[i, j] = 1000000;
-            //                                }
+                    min_x = Math.Max(1, dst_x - i);
+                    max_x = Math.Min(dst_x + i, MapWidth);
+                    var loopTo38 = max_x;
+                    for (var j = min_x; j <= loopTo38; j++)
+                    {
+                        min_y = Math.Max(1, dst_y - (i - Math.Abs((dst_x - j))));
+                        max_y = Math.Min(dst_y + (i - Math.Abs((dst_x - j))), MapHeight);
+                        var loopTo39 = max_y;
+                        for (var k = min_y; k <= loopTo39; k++)
+                        {
+                            var tmp = cur_speed[j, k];
+                            tmp = Math.Min(tmp, cur_speed[j - 1, k]);
+                            tmp = Math.Min(tmp, cur_speed[j + 1, k]);
+                            tmp = Math.Min(tmp, cur_speed[j, k - 1]);
+                            tmp = Math.Min(tmp, cur_speed[j, k + 1]);
+                            tmp = tmp + move_cost[j, k];
+                            if (tmp < cur_speed[j, k])
+                            {
+                                is_changed = true;
+                                total_cost[j, k] = tmp;
+                            }
+                        }
+                    }
 
-            //                                break;
-            //                            }
+                    // 最短経路を発見した
+                    if (total_cost[X, Y] <= Math.Abs((dst_x - X)) + Math.Abs((dst_y - Y)) + 2)
+                    {
+                        break;
+                    }
+                }
+                while (is_changed);
+            }
 
-            //                        case "水":
-            //                            {
-            //                                if (is_trans_available_in_water)
-            //                                {
-            //                                    move_cost[i, j] = 2;
-            //                                }
-            //                                else if (is_adaptable_in_water)
-            //                                {
-            //                                    move_cost[i, j] = TerrainMoveCost(i, j);
-            //                                    var loopTo7 = Information.UBound(adopted_terrain);
-            //                                    for (k = 2; k <= loopTo7; k++)
-            //                                    {
-            //                                        if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
-            //                                        {
-            //                                            move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-            //                                            break;
-            //                                        }
-            //                                    }
-            //                                }
-            //                                else
-            //                                {
-            //                                    move_cost[i, j] = 1000000;
-            //                                }
-
-            //                                break;
-            //                            }
-
-            //                        case "深水":
-            //                            {
-            //                                if (is_trans_available_in_water)
-            //                                {
-            //                                    move_cost[i, j] = 1;
-            //                                }
-            //                                else
-            //                                {
-            //                                    move_cost[i, j] = 1000000;
-            //                                }
-
-            //                                break;
-            //                            }
-
-            //                        case "空":
-            //                            {
-            //                                move_cost[i, j] = 1000000;
-            //                                break;
-            //                            }
-            //                    }
-            //                }
-            //            }
-
-            //            break;
-            //        }
-
-            //    case "水上":
-            //        {
-            //            var loopTo8 = MapWidth;
-            //            for (i = 1; i <= loopTo8; i++)
-            //            {
-            //                var loopTo9 = MapHeight;
-            //                for (j = 1; j <= loopTo9; j++)
-            //                {
-            //                    switch (TerrainClass(i, j) ?? "")
-            //                    {
-            //                        case "陸":
-            //                        case "屋内":
-            //                        case "月面":
-            //                            {
-            //                                if (is_trans_available_on_ground)
-            //                                {
-            //                                    move_cost[i, j] = TerrainMoveCost(i, j);
-            //                                    var loopTo10 = Information.UBound(adopted_terrain);
-            //                                    for (k = 2; k <= loopTo10; k++)
-            //                                    {
-            //                                        if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
-            //                                        {
-            //                                            move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-            //                                            break;
-            //                                        }
-            //                                    }
-            //                                }
-            //                                else
-            //                                {
-            //                                    move_cost[i, j] = 1000000;
-            //                                }
-
-            //                                break;
-            //                            }
-
-            //                        case "水":
-            //                        case "深水":
-            //                            {
-            //                                move_cost[i, j] = 2;
-            //                                break;
-            //                            }
-
-            //                        case "空":
-            //                            {
-            //                                move_cost[i, j] = 1000000;
-            //                                break;
-            //                            }
-            //                    }
-            //                }
-            //            }
-
-            //            break;
-            //        }
-
-            //    case "水中":
-            //        {
-            //            var loopTo11 = MapWidth;
-            //            for (i = 1; i <= loopTo11; i++)
-            //            {
-            //                var loopTo12 = MapHeight;
-            //                for (j = 1; j <= loopTo12; j++)
-            //                {
-            //                    switch (TerrainClass(i, j) ?? "")
-            //                    {
-            //                        case "陸":
-            //                        case "屋内":
-            //                        case "月面":
-            //                            {
-            //                                if (is_trans_available_on_ground)
-            //                                {
-            //                                    move_cost[i, j] = TerrainMoveCost(i, j);
-            //                                    var loopTo13 = Information.UBound(adopted_terrain);
-            //                                    for (k = 2; k <= loopTo13; k++)
-            //                                    {
-            //                                        if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
-            //                                        {
-            //                                            move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-            //                                            break;
-            //                                        }
-            //                                    }
-            //                                }
-            //                                else
-            //                                {
-            //                                    move_cost[i, j] = 1000000;
-            //                                }
-
-            //                                break;
-            //                            }
-
-            //                        case "水":
-            //                            {
-            //                                if (is_trans_available_in_water)
-            //                                {
-            //                                    move_cost[i, j] = 2;
-            //                                }
-            //                                else
-            //                                {
-            //                                    move_cost[i, j] = TerrainMoveCost(i, j);
-            //                                    var loopTo14 = Information.UBound(adopted_terrain);
-            //                                    for (k = 2; k <= loopTo14; k++)
-            //                                    {
-            //                                        if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
-            //                                        {
-            //                                            move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-            //                                            break;
-            //                                        }
-            //                                    }
-            //                                }
-
-            //                                break;
-            //                            }
-
-            //                        case "深水":
-            //                            {
-            //                                if (is_trans_available_in_water)
-            //                                {
-            //                                    move_cost[i, j] = 1;
-            //                                }
-            //                                else
-            //                                {
-            //                                    move_cost[i, j] = 1000000;
-            //                                }
-
-            //                                break;
-            //                            }
-
-            //                        case "空":
-            //                            {
-            //                                move_cost[i, j] = 1000000;
-            //                                break;
-            //                            }
-            //                    }
-            //                }
-            //            }
-
-            //            break;
-            //        }
-
-            //    case "宇宙":
-            //        {
-            //            var loopTo15 = MapWidth;
-            //            for (i = 1; i <= loopTo15; i++)
-            //            {
-            //                var loopTo16 = MapHeight;
-            //                for (j = 1; j <= loopTo16; j++)
-            //                {
-            //                    move_cost[i, j] = TerrainMoveCost(i, j);
-            //                    var loopTo17 = Information.UBound(adopted_terrain);
-            //                    for (k = 2; k <= loopTo17; k++)
-            //                    {
-            //                        if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
-            //                        {
-            //                            move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-            //                            break;
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //            break;
-            //        }
-
-            //    case "地中":
-            //        {
-            //            var loopTo18 = MapWidth;
-            //            for (i = 1; i <= loopTo18; i++)
-            //            {
-            //                var loopTo19 = MapHeight;
-            //                for (j = 1; j <= loopTo19; j++)
-            //                {
-            //                    if (TerrainClass(i, j) == "陸")
-            //                    {
-            //                        move_cost[i, j] = 2;
-            //                    }
-            //                    else
-            //                    {
-            //                        move_cost[i, j] = 1000000;
-            //                    }
-            //                }
-            //            }
-
-            //            break;
-            //        }
-            //}
-            //// 線路移動
-            //string argfname3 = "線路移動";
-            //if (u.IsFeatureAvailable(argfname3))
-            //{
-            //    if (u.Area == "地上")
-            //    {
-            //        var loopTo20 = MapWidth;
-            //        for (i = 1; i <= loopTo20; i++)
-            //        {
-            //            var loopTo21 = MapHeight;
-            //            for (j = 1; j <= loopTo21; j++)
-            //            {
-            //                if (TerrainName(i, j) == "線路")
-            //                {
-            //                    move_cost[i, j] = 1;
-            //                }
-            //                else
-            //                {
-            //                    move_cost[i, j] = 1000000;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// 移動制限
-            //allowed_terrains = new string[1];
-            //string argfname4 = "移動制限";
-            //if (u.IsFeatureAvailable(argfname4))
-            //{
-            //    if (u.Area != "空中" & u.Area != "地中")
-            //    {
-            //        object argIndex2 = "移動制限";
-            //        string arglist1 = u.FeatureData(argIndex2);
-            //        n = GeneralLib.LLength(arglist1);
-            //        allowed_terrains = new string[(n + 1)];
-            //        var loopTo22 = n;
-            //        for (i = 2; i <= loopTo22; i++)
-            //        {
-            //            object argIndex3 = "移動制限";
-            //            string arglist2 = u.FeatureData(argIndex3);
-            //            allowed_terrains[i] = GeneralLib.LIndex(arglist2, i);
-            //        }
-
-            //        var loopTo23 = MapWidth;
-            //        for (i = 1; i <= loopTo23; i++)
-            //        {
-            //            var loopTo24 = MapHeight;
-            //            for (j = 1; j <= loopTo24; j++)
-            //            {
-            //                var loopTo25 = n;
-            //                for (k = 2; k <= loopTo25; k++)
-            //                {
-            //                    if ((TerrainName(i, j) ?? "") == (allowed_terrains[k] ?? ""))
-            //                    {
-            //                        break;
-            //                    }
-            //                }
-
-            //                if (k > n)
-            //                {
-            //                    move_cost[i, j] = 1000000;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// 進入不可
-            //prohibited_terrains = new string[1];
-            //string argfname5 = "進入不可";
-            //if (u.IsFeatureAvailable(argfname5))
-            //{
-            //    if (u.Area != "空中" & u.Area != "地中")
-            //    {
-            //        object argIndex4 = "進入不可";
-            //        string arglist3 = u.FeatureData(argIndex4);
-            //        n = GeneralLib.LLength(arglist3);
-            //        prohibited_terrains = new string[(n + 1)];
-            //        var loopTo26 = n;
-            //        for (i = 2; i <= loopTo26; i++)
-            //        {
-            //            object argIndex5 = "進入不可";
-            //            string arglist4 = u.FeatureData(argIndex5);
-            //            prohibited_terrains[i] = GeneralLib.LIndex(arglist4, i);
-            //        }
-
-            //        var loopTo27 = MapWidth;
-            //        for (i = 1; i <= loopTo27; i++)
-            //        {
-            //            var loopTo28 = MapHeight;
-            //            for (j = 1; j <= loopTo28; j++)
-            //            {
-            //                var loopTo29 = n;
-            //                for (k = 2; k <= loopTo29; k++)
-            //                {
-            //                    if ((TerrainName(i, j) ?? "") == (prohibited_terrains[k] ?? ""))
-            //                    {
-            //                        move_cost[i, j] = 1000000;
-            //                        break;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// ホバー移動
-            //string argfname6 = "ホバー移動";
-            //if (u.IsFeatureAvailable(argfname6))
-            //{
-            //    if (u.Area == "地上" | u.Area == "水上")
-            //    {
-            //        var loopTo30 = MapWidth;
-            //        for (i = 1; i <= loopTo30; i++)
-            //        {
-            //            var loopTo31 = MapHeight;
-            //            for (j = 1; j <= loopTo31; j++)
-            //            {
-            //                switch (TerrainName(i, j) ?? "")
-            //                {
-            //                    case "砂漠":
-            //                    case "月面":
-            //                        {
-            //                            move_cost[i, j] = 1;
-            //                            break;
-            //                        }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// ジャンプ移動
-            //string argfname7 = "ジャンプ移動";
-            //if (u.IsFeatureAvailable(argfname7))
-            //{
-            //    if (u.Area == "地上" | u.Area == "水上" | u.Area == "水中")
-            //    {
-            //        var loopTo32 = MapWidth;
-            //        for (i = 1; i <= loopTo32; i++)
-            //        {
-            //            var loopTo33 = MapHeight;
-            //            for (j = 1; j <= loopTo33; j++)
-            //            {
-            //                switch (TerrainClass(i, j) ?? "")
-            //                {
-            //                    case "陸":
-            //                    case "月面":
-            //                        {
-            //                            move_cost[i, j] = 1;
-            //                            break;
-            //                        }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //var loopTo34 = (MapWidth + 1);
-            //for (i = 0; i <= loopTo34; i++)
-            //{
-            //    var loopTo35 = (MapHeight + 1);
-            //    for (j = 0; j <= loopTo35; j++)
-            //        total_cost[i, j] = 1000000;
-            //}
-
-            //total_cost[dst_x, dst_y] = 0;
-
-            //// 目的地から各地点に到達するのにかかる移動力を計算
-            //i = 0;
-            //do
-            //{
-            //    i = (i + 1);
-
-            //    // タイムアウト
-            //    if (i > 3 * (MapWidth + MapHeight))
-            //    {
-            //        break;
-            //    }
-
-            //    is_changed = false;
-            //    var loopTo36 = (MapWidth + 1);
-            //    for (j = 0; j <= loopTo36; j++)
-            //    {
-            //        var loopTo37 = (MapHeight + 1);
-            //        for (k = 0; k <= loopTo37; k++)
-            //            cur_speed[j, k] = total_cost[j, k];
-            //    }
-
-            //    min_x = Math.Max(1, dst_x - i);
-            //    max_x = Math.Min(dst_x + i, MapWidth);
-            //    var loopTo38 = max_x;
-            //    for (j = min_x; j <= loopTo38; j++)
-            //    {
-            //        min_y = Math.Max(1, dst_y - (i - Math.Abs((dst_x - j))));
-            //        max_y = Math.Min(dst_y + (i - Math.Abs((dst_x - j))), MapHeight);
-            //        var loopTo39 = max_y;
-            //        for (k = min_y; k <= loopTo39; k++)
-            //        {
-            //            tmp = cur_speed[j, k];
-            //            tmp = Math.Min(tmp, cur_speed[j - 1, k]);
-            //            tmp = Math.Min(tmp, cur_speed[j + 1, k]);
-            //            tmp = Math.Min(tmp, cur_speed[j, k - 1]);
-            //            tmp = Math.Min(tmp, cur_speed[j, k + 1]);
-            //            tmp = tmp + move_cost[j, k];
-            //            if (tmp < cur_speed[j, k])
-            //            {
-            //                is_changed = true;
-            //                total_cost[j, k] = tmp;
-            //            }
-            //        }
-            //    }
-
-            //    // 最短経路を発見した
-            //    if (total_cost[X, Y] <= Math.Abs((dst_x - X)) + Math.Abs((dst_y - Y)) + 2)
-            //    {
-            //        break;
-            //    }
-            //}
-            //while (is_changed);
-
-            //// 移動可能範囲内で目的地に最も近い場所を見付ける
-            //tmp = total_cost[X, Y];
-            //var loopTo40 = MapWidth;
-            //for (i = 1; i <= loopTo40; i++)
-            //{
-            //    var loopTo41 = MapHeight;
-            //    for (j = 1; j <= loopTo41; j++)
-            //    {
-            //        if (!MaskData[i, j])
-            //        {
-            //            if (MapDataForUnit[i, j] is null)
-            //            {
-            //                if (total_cost[i, j] < tmp)
-            //                {
-            //                    X = i;
-            //                    Y = j;
-            //                    tmp = total_cost[i, j];
-            //                }
-            //                else if (total_cost[i, j] == tmp)
-            //                {
-            //                    if (Math.Pow(Math.Abs((dst_x - i)), 2d) + Math.Pow(Math.Abs((dst_y - j)), 2d) < Math.Pow(Math.Abs((dst_x - X)), 2d) + Math.Pow(Math.Abs((dst_y - Y)), 2d))
-            //                    {
-            //                        X = i;
-            //                        Y = j;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+            // 移動可能範囲内で目的地に最も近い場所を見付ける
+            {
+                var tmp = total_cost[X, Y];
+                var loopTo40 = MapWidth;
+                for (var i = 1; i <= loopTo40; i++)
+                {
+                    var loopTo41 = MapHeight;
+                    for (var j = 1; j <= loopTo41; j++)
+                    {
+                        // XXX MaskData の更新してない気がする
+                        if (!MaskData[i, j])
+                        {
+                            if (MapDataForUnit[i, j] is null)
+                            {
+                                if (total_cost[i, j] < tmp)
+                                {
+                                    X = i;
+                                    Y = j;
+                                    tmp = total_cost[i, j];
+                                }
+                                else if (total_cost[i, j] == tmp)
+                                {
+                                    if (Math.Pow(Math.Abs((dst_x - i)), 2d) + Math.Pow(Math.Abs((dst_y - j)), 2d) < Math.Pow(Math.Abs((dst_x - X)), 2d) + Math.Pow(Math.Abs((dst_y - Y)), 2d))
+                                    {
+                                        X = i;
+                                        Y = j;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         // ユニット u が敵から最も遠くなる場所(X,Y)を検索

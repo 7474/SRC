@@ -2,6 +2,7 @@
 using SRCCore.Pilots;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SRCCore.Units
@@ -366,6 +367,8 @@ namespace SRCCore.Units
             return colPilot[1];
         }
 
+        public IEnumerable<Pilot> SubPilots => colPilot.List.Skip(1);
+        public IEnumerable<Pilot> Supports => colPilot.List;
 
         // サポートパイロットを追加
         public void AddSupport(Pilot p)
@@ -423,121 +426,122 @@ namespace SRCCore.Units
             return colSupport[Index];
         }
 
-        //// 追加サポート
-        //public Pilot AdditionalSupport()
-        //{
-        //    Pilot AdditionalSupportRet = default;
-        //    string pname;
-        //    Pilot p;
-        //    int i;
+        // 追加サポート
+        public Pilot AdditionalSupport()
+        {
+            throw new NotImplementedException();
+            //    Pilot AdditionalSupportRet = default;
+            //    string pname;
+            //    Pilot p;
+            //    int i;
 
-        //    // 追加サポートパイロットの名称
-        //    object argIndex1 = "追加サポート";
-        //    pname = FeatureData(argIndex1);
+            //    // 追加サポートパイロットの名称
+            //    object argIndex1 = "追加サポート";
+            //    pname = FeatureData(argIndex1);
 
-        //    // 追加サポートが存在しない？
-        //    if (string.IsNullOrEmpty(pname))
-        //    {
-        //        return AdditionalSupportRet;
-        //    }
+            //    // 追加サポートが存在しない？
+            //    if (string.IsNullOrEmpty(pname))
+            //    {
+            //        return AdditionalSupportRet;
+            //    }
 
-        //    // 他にパイロットが乗っていない場合は無効
-        //    if (CountPilot() == 0)
-        //    {
-        //        return AdditionalSupportRet;
-        //    }
+            //    // 他にパイロットが乗っていない場合は無効
+            //    if (CountPilot() == 0)
+            //    {
+            //        return AdditionalSupportRet;
+            //    }
 
-        //    // 既に登録済みであるかチェック
-        //    if (pltAdditionalSupport is object)
-        //    {
-        //        if ((pltAdditionalSupport.Name ?? "") == (pname ?? ""))
-        //        {
-        //            AdditionalSupportRet = pltAdditionalSupport;
-        //            pltAdditionalSupport.Unit_Renamed = this;
-        //            return AdditionalSupportRet;
-        //        }
-        //    }
+            //    // 既に登録済みであるかチェック
+            //    if (pltAdditionalSupport is object)
+            //    {
+            //        if ((pltAdditionalSupport.Name ?? "") == (pname ?? ""))
+            //        {
+            //            AdditionalSupportRet = pltAdditionalSupport;
+            //            pltAdditionalSupport.Unit_Renamed = this;
+            //            return AdditionalSupportRet;
+            //        }
+            //    }
 
-        //    var loopTo = CountOtherForm();
-        //    for (i = 1; i <= loopTo; i++)
-        //    {
-        //        object argIndex2 = i;
-        //        {
-        //            var withBlock = OtherForm(argIndex2);
-        //            if (withBlock.pltAdditionalSupport is object)
-        //            {
-        //                if ((withBlock.pltAdditionalSupport.Name ?? "") == (pname ?? ""))
-        //                {
-        //                    withBlock.pltAdditionalSupport.Unit_Renamed = this;
-        //                    AdditionalSupportRet = withBlock.pltAdditionalSupport;
-        //                    return AdditionalSupportRet;
-        //                }
-        //            }
-        //        }
-        //    }
+            //    var loopTo = CountOtherForm();
+            //    for (i = 1; i <= loopTo; i++)
+            //    {
+            //        object argIndex2 = i;
+            //        {
+            //            var withBlock = OtherForm(argIndex2);
+            //            if (withBlock.pltAdditionalSupport is object)
+            //            {
+            //                if ((withBlock.pltAdditionalSupport.Name ?? "") == (pname ?? ""))
+            //                {
+            //                    withBlock.pltAdditionalSupport.Unit_Renamed = this;
+            //                    AdditionalSupportRet = withBlock.pltAdditionalSupport;
+            //                    return AdditionalSupportRet;
+            //                }
+            //            }
+            //        }
+            //    }
 
-        //    // 既に作成されていればそれを使う
-        //    // (ただし他のユニットの追加サポートとして登録済みの場合は除く)
-        //    object argIndex7 = pname;
-        //    if (SRC.PList.IsDefined(argIndex7))
-        //    {
-        //        object argIndex3 = pname;
-        //        p = SRC.PList.Item(argIndex3);
-        //        if (!p.IsAdditionalSupport | Strings.InStr(pname, "(ザコ)") == 0 & Strings.InStr(pname, "(汎用)") == 0)
-        //        {
-        //            pltAdditionalSupport = p;
-        //            {
-        //                var withBlock1 = pltAdditionalSupport;
-        //                withBlock1.IsAdditionalSupport = true;
-        //                withBlock1.Party = Party0;
-        //                withBlock1.Unit_Renamed = this;
-        //                object argIndex4 = 1;
-        //                withBlock1.Level = Pilot(argIndex4).Level;
-        //                object argIndex5 = 1;
-        //                withBlock1.Exp = Pilot(argIndex5).Exp;
-        //                if (withBlock1.Personality != "機械")
-        //                {
-        //                    object argIndex6 = 1;
-        //                    withBlock1.Morale = Pilot(argIndex6).Morale;
-        //                }
-        //            }
+            //    // 既に作成されていればそれを使う
+            //    // (ただし他のユニットの追加サポートとして登録済みの場合は除く)
+            //    object argIndex7 = pname;
+            //    if (SRC.PList.IsDefined(argIndex7))
+            //    {
+            //        object argIndex3 = pname;
+            //        p = SRC.PList.Item(argIndex3);
+            //        if (!p.IsAdditionalSupport | Strings.InStr(pname, "(ザコ)") == 0 & Strings.InStr(pname, "(汎用)") == 0)
+            //        {
+            //            pltAdditionalSupport = p;
+            //            {
+            //                var withBlock1 = pltAdditionalSupport;
+            //                withBlock1.IsAdditionalSupport = true;
+            //                withBlock1.Party = Party0;
+            //                withBlock1.Unit_Renamed = this;
+            //                object argIndex4 = 1;
+            //                withBlock1.Level = Pilot(argIndex4).Level;
+            //                object argIndex5 = 1;
+            //                withBlock1.Exp = Pilot(argIndex5).Exp;
+            //                if (withBlock1.Personality != "機械")
+            //                {
+            //                    object argIndex6 = 1;
+            //                    withBlock1.Morale = Pilot(argIndex6).Morale;
+            //                }
+            //            }
 
-        //            AdditionalSupportRet = pltAdditionalSupport;
-        //            return AdditionalSupportRet;
-        //        }
-        //    }
+            //            AdditionalSupportRet = pltAdditionalSupport;
+            //            return AdditionalSupportRet;
+            //        }
+            //    }
 
-        //    // まだ作成されていないので作成する
-        //    bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
+            //    // まだ作成されていないので作成する
+            //    bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
 
-        //    if (!localIsDefined())
-        //    {
-        //        string argmsg = "追加サポート「" + pname + "」のデータが定義されていません";
-        //        GUI.ErrorMessage(argmsg);
-        //        return AdditionalSupportRet;
-        //    }
+            //    if (!localIsDefined())
+            //    {
+            //        string argmsg = "追加サポート「" + pname + "」のデータが定義されていません";
+            //        GUI.ErrorMessage(argmsg);
+            //        return AdditionalSupportRet;
+            //    }
 
-        //    object argIndex8 = 1;
-        //    string argpparty = Party0;
-        //    string arggid = "";
-        //    pltAdditionalSupport = SRC.PList.Add(pname, Pilot(argIndex8).Level, argpparty, gid: arggid);
-        //    this.Party0 = argpparty;
-        //    {
-        //        var withBlock2 = pltAdditionalSupport;
-        //        withBlock2.IsAdditionalSupport = true;
-        //        withBlock2.Unit_Renamed = this;
-        //        object argIndex9 = 1;
-        //        withBlock2.Exp = Pilot(argIndex9).Exp;
-        //        if (withBlock2.Personality != "機械")
-        //        {
-        //            object argIndex10 = 1;
-        //            withBlock2.Morale = Pilot(argIndex10).Morale;
-        //        }
-        //    }
+            //    object argIndex8 = 1;
+            //    string argpparty = Party0;
+            //    string arggid = "";
+            //    pltAdditionalSupport = SRC.PList.Add(pname, Pilot(argIndex8).Level, argpparty, gid: arggid);
+            //    this.Party0 = argpparty;
+            //    {
+            //        var withBlock2 = pltAdditionalSupport;
+            //        withBlock2.IsAdditionalSupport = true;
+            //        withBlock2.Unit_Renamed = this;
+            //        object argIndex9 = 1;
+            //        withBlock2.Exp = Pilot(argIndex9).Exp;
+            //        if (withBlock2.Personality != "機械")
+            //        {
+            //            object argIndex10 = 1;
+            //            withBlock2.Morale = Pilot(argIndex10).Morale;
+            //        }
+            //    }
 
-        //    AdditionalSupportRet = pltAdditionalSupport;
-        //    return AdditionalSupportRet;
-        //}
+            //    AdditionalSupportRet = pltAdditionalSupport;
+            //    return AdditionalSupportRet;
+        }
 
         //// いずれかのパイロットが特殊能力 sname を持っているか判定
         //public bool IsSkillAvailable(string sname)

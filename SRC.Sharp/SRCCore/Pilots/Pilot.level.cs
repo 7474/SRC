@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.Units;
 using SRCCore.VB;
@@ -82,6 +83,68 @@ namespace SRCCore.Pilots
                 {
                     Update();
                 }
+            }
+        }
+
+        // 気力
+        public int Morale
+        {
+            get => proMorale;
+            set
+            {
+                SetMorale(value);
+            }
+        }
+
+        public int MaxMorale
+        {
+            get
+            {
+                int MaxMoraleRet = 150;
+                if (IsSkillAvailable("気力上限"))
+                {
+                    if (IsSkillLevelSpecified("気力上限"))
+                    {
+                        MaxMoraleRet = GeneralLib.MaxLng((int)SkillLevel("気力上限", ref_mode: ""), 0);
+                    }
+                }
+
+                return MaxMoraleRet;
+            }
+        }
+
+        public int MinMorale
+        {
+            get
+            {
+                int MinMoraleRet = 50;
+                if (IsSkillAvailable("気力下限"))
+                {
+                    if (IsSkillLevelSpecified("気力下限"))
+                    {
+                        MinMoraleRet = (int)GeneralLib.MaxLng((int)SkillLevel("気力下限", ref_mode: ""), 0);
+                    }
+                }
+
+                return MinMoraleRet;
+            }
+        }
+
+        private void SetMorale(int new_morale)
+        {
+            var maxm = MaxMorale;
+            var minm = MinMorale;
+            if (new_morale > maxm)
+            {
+                proMorale = maxm;
+            }
+            else if (new_morale < minm)
+            {
+                proMorale = minm;
+            }
+            else
+            {
+                proMorale = new_morale;
             }
         }
     }

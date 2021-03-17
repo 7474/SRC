@@ -1430,7 +1430,7 @@
 //                tmp = GUI.IsPictureVisible;
 //                string argfname1 = @"Event\cursor.bmp";
 //                string argdraw_option = "透過";
-//                GUI.DrawPicture(ref argfname1, SRC.DEFAULT_LEVEL, SRC.DEFAULT_LEVEL, SRC.DEFAULT_LEVEL, SRC.DEFAULT_LEVEL, 0, 0, 0, 0, ref argdraw_option);
+//                GUI.DrawPicture(ref argfname1, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, 0, 0, 0, 0, ref argdraw_option);
 //                GUI.IsPictureVisible = tmp;
 //                GUI.IsCursorVisible = true;
 //            }
@@ -12910,7 +12910,7 @@
 //            buf = GetArgAsString(3);
 //            if (buf == "-")
 //            {
-//                dx = SRC.DEFAULT_LEVEL;
+//                dx = Constants.DEFAULT_LEVEL;
 //            }
 //            else
 //            {
@@ -12920,7 +12920,7 @@
 //            buf = GetArgAsString(4);
 //            if (buf == "-")
 //            {
-//                dy = SRC.DEFAULT_LEVEL;
+//                dy = Constants.DEFAULT_LEVEL;
 //            }
 //            else
 //            {
@@ -12933,7 +12933,7 @@
 //                buf = GetArgAsString(5);
 //                if (buf == "-")
 //                {
-//                    dw = SRC.DEFAULT_LEVEL;
+//                    dw = Constants.DEFAULT_LEVEL;
 //                }
 //                else
 //                {
@@ -12948,7 +12948,7 @@
 //                buf = GetArgAsString(6);
 //                if (buf == "-")
 //                {
-//                    dh = SRC.DEFAULT_LEVEL;
+//                    dh = Constants.DEFAULT_LEVEL;
 //                }
 //                else
 //                {
@@ -12962,8 +12962,8 @@
 //            }
 //            else
 //            {
-//                dw = SRC.DEFAULT_LEVEL;
-//                dh = SRC.DEFAULT_LEVEL;
+//                dw = Constants.DEFAULT_LEVEL;
+//                dh = Constants.DEFAULT_LEVEL;
 //            }
 
 //            // 原画像における転送元座標＆サイズ
@@ -12972,7 +12972,7 @@
 //                buf = GetArgAsString(7);
 //                if (buf == "-")
 //                {
-//                    sx = SRC.DEFAULT_LEVEL;
+//                    sx = Constants.DEFAULT_LEVEL;
 //                }
 //                else
 //                {
@@ -12982,7 +12982,7 @@
 //                buf = GetArgAsString(8);
 //                if (buf == "-")
 //                {
-//                    sy = SRC.DEFAULT_LEVEL;
+//                    sy = Constants.DEFAULT_LEVEL;
 //                }
 //                else
 //                {
@@ -13025,7 +13025,7 @@
 //                        // MOD START マージ
 //                        // DrawString GetArgAsString(2), -1, -1, without_cr
 //                        string argmsg = GetArgAsString(2);
-//                        GUI.DrawString(ref argmsg, SRC.DEFAULT_LEVEL, SRC.DEFAULT_LEVEL, without_cr);
+//                        GUI.DrawString(ref argmsg, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, without_cr);
 //                        break;
 //                    }
 //                // MOD END マージ
@@ -16941,7 +16941,7 @@
 //                            }
 //                            else
 //                            {
-//                                slevel_array[i] = SRC.DEFAULT_LEVEL;
+//                                slevel_array[i] = Constants.DEFAULT_LEVEL;
 //                            }
 
 //                            sdata_array[i] = withBlock.get_AliasData(i);
@@ -17659,8 +17659,8 @@
 //            }
 //            else
 //            {
-//                dw = SRC.DEFAULT_LEVEL;
-//                dh = SRC.DEFAULT_LEVEL;
+//                dw = Constants.DEFAULT_LEVEL;
+//                dh = Constants.DEFAULT_LEVEL;
 //            }
 
 //            if (!GUI.MainForm.Visible)
@@ -17669,7 +17669,7 @@
 //            }
 
 //            string argdraw_option = "";
-//            ret = Conversions.ToShort(GUI.DrawPicture(ref fname, SRC.DEFAULT_LEVEL, SRC.DEFAULT_LEVEL, dw, dh, 0, 0, 0, 0, ref argdraw_option));
+//            ret = Conversions.ToShort(GUI.DrawPicture(ref fname, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, dw, dh, 0, 0, 0, 0, ref argdraw_option));
 //            GUI.MainForm.picMain(0).Refresh();
 //            ExecShowImageCmdRet = LineNum + 1;
 //            return ExecShowImageCmdRet;
