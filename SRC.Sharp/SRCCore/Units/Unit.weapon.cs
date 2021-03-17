@@ -16,7 +16,8 @@ namespace SRCCore.Units
         // 1オフセット
         public UnitWeapon Weapon(int w)
         {
-            return WData[w - 1];
+            var index = w - 1;
+            return index >= 0 && index < WData.Count ? WData[index] : null;
         }
 
         public int CountWeapon()
