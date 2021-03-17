@@ -21,39 +21,27 @@ namespace SRCCore.Commands
         private IDictionary<int, LabelData> UnitCommandLabelList = new Dictionary<int, LabelData>();
 
         // 現在選択されているもの
-        public Unit SelectedUnit; // ユニット
-        public string SelectedCommand; // コマンド
-        public Unit SelectedTarget; // ターゲット
-        public int SelectedX; // Ｘ座標
-        public int SelectedY; // Ｙ座標
-        public int SelectedWeapon; // 武器
-        public string SelectedWeaponName;
-        public int SelectedTWeapon; // 反撃武器
-        public string SelectedTWeaponName;
-        public string SelectedDefenseOption; // 防御方法
-        public int SelectedAbility; // アビリティ
-        public string SelectedAbilityName;
-        public Pilot SelectedPilot; // パイロット
-        public int SelectedItem; // リストボックス中のアイテム
-        public string SelectedSpecialPower; // スペシャルパワー
-        public Unit[] SelectedPartners; // 合体技のパートナー
-        public int SelectedUnitMoveCost; // 選択したユニットの移動力消費量
+        private SelectedState SelectedState = new SelectedState();
+        public Unit SelectedUnit { get => SelectedState.SelectedUnit; set { SelectedState.SelectedUnit = value; } } // ユニット
+        public string SelectedCommand { get => SelectedState.SelectedCommand; set { SelectedState.SelectedCommand = value; } } // コマンド
+        public Unit SelectedTarget { get => SelectedState.SelectedTarget; set { SelectedState.SelectedTarget = value; } } // ターゲット
+        public int SelectedX { get => SelectedState.SelectedX; set { SelectedState.SelectedX = value; } } // Ｘ座標
+        public int SelectedY { get => SelectedState.SelectedY; set { SelectedState.SelectedY = value; } } // Ｙ座標
+        public int SelectedWeapon { get => SelectedState.SelectedWeapon; set { SelectedState.SelectedWeapon = value; } } // 武器
+        public string SelectedWeaponName { get => SelectedState.SelectedWeaponName; set { SelectedState.SelectedWeaponName = value; } }
+        public int SelectedTWeapon { get => SelectedState.SelectedTWeapon; set { SelectedState.SelectedTWeapon = value; } } // 反撃武器
+        public string SelectedTWeaponName { get => SelectedState.SelectedTWeaponName; set { SelectedState.SelectedTWeaponName = value; } }
+        public string SelectedDefenseOption { get => SelectedState.SelectedDefenseOption; set { SelectedState.SelectedDefenseOption = value; } } // 防御方法
+        public int SelectedAbility { get => SelectedState.SelectedAbility; set { SelectedState.SelectedAbility = value; } } // アビリティ
+        public string SelectedAbilityName { get => SelectedState.SelectedAbilityName; set { SelectedState.SelectedAbilityName = value; } }
+        public Pilot SelectedPilot { get => SelectedState.SelectedPilot; set { SelectedState.SelectedPilot = value; } } // パイロット
+        public int SelectedItem { get => SelectedState.SelectedItem; set { SelectedState.SelectedItem = value; } } // リストボックス中のアイテム
+        public string SelectedSpecialPower { get => SelectedState.SelectedSpecialPower; set { SelectedState.SelectedSpecialPower = value; } } // スペシャルパワー
+        public Unit[] SelectedPartners { get => SelectedState.SelectedPartners; set { SelectedState.SelectedPartners = value; } } // 合体技のパートナー
+        public int SelectedUnitMoveCost { get => SelectedState.SelectedUnitMoveCost; set { SelectedState.SelectedUnitMoveCost = value; } } // 選択したユニットの移動力消費量
 
         // 選択状況の記録用変数
-        public int SelectionStackIndex;
-        public Unit[] SavedSelectedUnit;
-        public Unit[] SavedSelectedTarget;
-        public Unit[] SavedSelectedUnitForEvent;
-        public Unit[] SavedSelectedTargetForEvent;
-        public int[] SavedSelectedWeapon;
-        public string[] SavedSelectedWeaponName;
-        public int[] SavedSelectedTWeapon;
-        public string[] SavedSelectedTWeaponName;
-        public string[] SavedSelectedDefenseOption;
-        public int[] SavedSelectedAbility;
-        public string[] SavedSelectedAbilityName;
-        public int[] SavedSelectedX;
-        public int[] SavedSelectedY;
+        private Stack<SelectedState> SavedState = new Stack<SelectedState>();
 
         // 援護を使うかどうか
         public bool UseSupportAttack;
