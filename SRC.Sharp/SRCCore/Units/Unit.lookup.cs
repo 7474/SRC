@@ -988,7 +988,8 @@ namespace SRCCore.Units
         // (tx,ty)の地点の周囲にサポートを行ってくれるユニットがいるかどうかを判定。
         public int LookForSupport(int tx, int ty, bool for_attack = false)
         {
-            throw new NotImplementedException();
+            return 0;
+            // TODO Impl
             //int LookForSupportRet = default;
             //Unit u;
             //int i;

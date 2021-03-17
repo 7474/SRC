@@ -3136,6 +3136,11 @@ namespace SRCCore.Maps
             var is_trans_available_on_water = u.IsFeatureAvailable("水上移動") || u.IsFeatureAvailable("ホバー移動");
             var adopted_terrain = GeneralLib.ToL(u.FeatureData("地形適応")).Skip(1).ToList();
 
+            x1 = Math.Max(1, x1);
+            x2 = Math.Min(MapWidth, x2);
+            y1 = Math.Max(1, y1);
+            y2 = Math.Min(MapHeight, y2);
+
             // 各地形の移動コストを算出しておく
             switch (move_area ?? "")
             {
@@ -4821,23 +4826,6 @@ namespace SRCCore.Maps
         // ユニット u が (dst_x,dst_y) に行くのに最も近い移動範囲内の場所 (X,Y) はどこか検索
         public void NearestPoint(Unit u, int dst_x, int dst_y, out int X, out int Y)
         {
-            //int k, i, j, n;
-            //var total_cost = new int[52, 52];
-            //var cur_speed = new int[52, 52];
-            //var move_cost = new int[52, 52];
-            //int tmp;
-            //bool is_trans_available_on_ground;
-            //bool is_trans_available_in_water;
-            //bool is_trans_available_on_water;
-            //var is_adaptable_in_water = default(bool);
-            //string[] adopted_terrain;
-            //string[] allowed_terrains;
-            //string[] prohibited_terrains;
-            //bool is_changed;
-            //int min_x, max_x;
-            //int min_y, max_y;
-
-
             X = u.x;
             Y = u.y;
             // 目的地がマップ外にならないように
@@ -4851,7 +4839,6 @@ namespace SRCCore.Maps
 
             // 各地形の移動コストを算出しておく
             FillMoveCost(u, move_cost, u.Area, 0, 0, 51, 51);
-
             // XXX FillMoveCost で考慮する能力のすり合わせ
             // 線路移動
             // 移動制限
@@ -4860,92 +4847,100 @@ namespace SRCCore.Maps
             // ジャンプ移動
 
             var loopTo34 = (MapWidth + 1);
-            for (i = 0; i <= loopTo34; i++)
+            for (var i = 0; i <= loopTo34; i++)
             {
                 var loopTo35 = (MapHeight + 1);
-                for (j = 0; j <= loopTo35; j++)
+                for (var j = 0; j <= loopTo35; j++)
                     total_cost[i, j] = 1000000;
             }
 
             total_cost[dst_x, dst_y] = 0;
 
             // 目的地から各地点に到達するのにかかる移動力を計算
-            i = 0;
-            do
             {
-                i = (i + 1);
-
-                // タイムアウト
-                if (i > 3 * (MapWidth + MapHeight))
+                var i = 0;
+                int min_x, max_x;
+                int min_y, max_y;
+                bool is_changed;
+                do
                 {
-                    break;
-                }
+                    i = (i + 1);
 
-                is_changed = false;
-                var loopTo36 = (MapWidth + 1);
-                for (j = 0; j <= loopTo36; j++)
-                {
-                    var loopTo37 = (MapHeight + 1);
-                    for (k = 0; k <= loopTo37; k++)
-                        cur_speed[j, k] = total_cost[j, k];
-                }
-
-                min_x = Math.Max(1, dst_x - i);
-                max_x = Math.Min(dst_x + i, MapWidth);
-                var loopTo38 = max_x;
-                for (j = min_x; j <= loopTo38; j++)
-                {
-                    min_y = Math.Max(1, dst_y - (i - Math.Abs((dst_x - j))));
-                    max_y = Math.Min(dst_y + (i - Math.Abs((dst_x - j))), MapHeight);
-                    var loopTo39 = max_y;
-                    for (k = min_y; k <= loopTo39; k++)
+                    // タイムアウト
+                    if (i > 3 * (MapWidth + MapHeight))
                     {
-                        tmp = cur_speed[j, k];
-                        tmp = Math.Min(tmp, cur_speed[j - 1, k]);
-                        tmp = Math.Min(tmp, cur_speed[j + 1, k]);
-                        tmp = Math.Min(tmp, cur_speed[j, k - 1]);
-                        tmp = Math.Min(tmp, cur_speed[j, k + 1]);
-                        tmp = tmp + move_cost[j, k];
-                        if (tmp < cur_speed[j, k])
+                        break;
+                    }
+
+                    is_changed = false;
+                    var loopTo36 = (MapWidth + 1);
+                    for (var j = 0; j <= loopTo36; j++)
+                    {
+                        var loopTo37 = (MapHeight + 1);
+                        for (var k = 0; k <= loopTo37; k++)
+                            cur_speed[j, k] = total_cost[j, k];
+                    }
+
+                    min_x = Math.Max(1, dst_x - i);
+                    max_x = Math.Min(dst_x + i, MapWidth);
+                    var loopTo38 = max_x;
+                    for (var j = min_x; j <= loopTo38; j++)
+                    {
+                        min_y = Math.Max(1, dst_y - (i - Math.Abs((dst_x - j))));
+                        max_y = Math.Min(dst_y + (i - Math.Abs((dst_x - j))), MapHeight);
+                        var loopTo39 = max_y;
+                        for (var k = min_y; k <= loopTo39; k++)
                         {
-                            is_changed = true;
-                            total_cost[j, k] = tmp;
+                            var tmp = cur_speed[j, k];
+                            tmp = Math.Min(tmp, cur_speed[j - 1, k]);
+                            tmp = Math.Min(tmp, cur_speed[j + 1, k]);
+                            tmp = Math.Min(tmp, cur_speed[j, k - 1]);
+                            tmp = Math.Min(tmp, cur_speed[j, k + 1]);
+                            tmp = tmp + move_cost[j, k];
+                            if (tmp < cur_speed[j, k])
+                            {
+                                is_changed = true;
+                                total_cost[j, k] = tmp;
+                            }
                         }
                     }
-                }
 
-                // 最短経路を発見した
-                if (total_cost[X, Y] <= Math.Abs((dst_x - X)) + Math.Abs((dst_y - Y)) + 2)
-                {
-                    break;
+                    // 最短経路を発見した
+                    if (total_cost[X, Y] <= Math.Abs((dst_x - X)) + Math.Abs((dst_y - Y)) + 2)
+                    {
+                        break;
+                    }
                 }
+                while (is_changed);
             }
-            while (is_changed);
 
             // 移動可能範囲内で目的地に最も近い場所を見付ける
-            tmp = total_cost[X, Y];
-            var loopTo40 = MapWidth;
-            for (i = 1; i <= loopTo40; i++)
             {
-                var loopTo41 = MapHeight;
-                for (j = 1; j <= loopTo41; j++)
+                var tmp = total_cost[X, Y];
+                var loopTo40 = MapWidth;
+                for (var i = 1; i <= loopTo40; i++)
                 {
-                    if (!MaskData[i, j])
+                    var loopTo41 = MapHeight;
+                    for (var j = 1; j <= loopTo41; j++)
                     {
-                        if (MapDataForUnit[i, j] is null)
+                        // XXX MaskData の更新してない気がする
+                        if (!MaskData[i, j])
                         {
-                            if (total_cost[i, j] < tmp)
+                            if (MapDataForUnit[i, j] is null)
                             {
-                                X = i;
-                                Y = j;
-                                tmp = total_cost[i, j];
-                            }
-                            else if (total_cost[i, j] == tmp)
-                            {
-                                if (Math.Pow(Math.Abs((dst_x - i)), 2d) + Math.Pow(Math.Abs((dst_y - j)), 2d) < Math.Pow(Math.Abs((dst_x - X)), 2d) + Math.Pow(Math.Abs((dst_y - Y)), 2d))
+                                if (total_cost[i, j] < tmp)
                                 {
                                     X = i;
                                     Y = j;
+                                    tmp = total_cost[i, j];
+                                }
+                                else if (total_cost[i, j] == tmp)
+                                {
+                                    if (Math.Pow(Math.Abs((dst_x - i)), 2d) + Math.Pow(Math.Abs((dst_y - j)), 2d) < Math.Pow(Math.Abs((dst_x - X)), 2d) + Math.Pow(Math.Abs((dst_y - Y)), 2d))
+                                    {
+                                        X = i;
+                                        Y = j;
+                                    }
                                 }
                             }
                         }
