@@ -130,91 +130,92 @@ namespace SRCCore.Units
         //    ConditionDataRet = "";
         //}
 
-        //// 特殊能力の残りターン数を更新
-        //public void UpdateCondition(bool decrement_lifetime = false)
-        //{
-        //    var update_is_necessary = default(bool);
-        //    var charge_complete = default(bool);
-        //    foreach (Condition cnd in colCondition)
-        //    {
-        //        if (decrement_lifetime)
-        //        {
-        //            // 残りターン数を1減らす
-        //            if (cnd.Lifetime > 0)
-        //            {
-        //                cnd.Lifetime = (cnd.Lifetime - 1);
-        //            }
-        //        }
+        // 特殊能力の残りターン数を更新
+        public void UpdateCondition(bool decrement_lifetime = false)
+        {
+            // TODO Impl
+            //    var update_is_necessary = default(bool);
+            //    var charge_complete = default(bool);
+            //    foreach (Condition cnd in colCondition)
+            //    {
+            //        if (decrement_lifetime)
+            //        {
+            //            // 残りターン数を1減らす
+            //            if (cnd.Lifetime > 0)
+            //            {
+            //                cnd.Lifetime = (cnd.Lifetime - 1);
+            //            }
+            //        }
 
-        //        if (cnd.Lifetime == 0)
-        //        {
-        //            // 残りターン数が0なら削除
-        //            colCondition.Remove(cnd.Name);
-        //            switch (cnd.Name ?? "")
-        //            {
-        //                case "魅了":
-        //                    {
-        //                        // 魅了を解除
-        //                        if (Master is object)
-        //                        {
-        //                            object argIndex1 = ID;
-        //                            Master.CurrentForm().DeleteSlave(ref argIndex1);
-        //                            // UPGRADE_NOTE: オブジェクト Master をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-        //                            Master = null;
-        //                        }
+            //        if (cnd.Lifetime == 0)
+            //        {
+            //            // 残りターン数が0なら削除
+            //            colCondition.Remove(cnd.Name);
+            //            switch (cnd.Name ?? "")
+            //            {
+            //                case "魅了":
+            //                    {
+            //                        // 魅了を解除
+            //                        if (Master is object)
+            //                        {
+            //                            object argIndex1 = ID;
+            //                            Master.CurrentForm().DeleteSlave(ref argIndex1);
+            //                            // UPGRADE_NOTE: オブジェクト Master をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+            //                            Master = null;
+            //                        }
 
-        //                        Mode = "通常";
-        //                        break;
-        //                    }
+            //                        Mode = "通常";
+            //                        break;
+            //                    }
 
-        //                case "チャージ":
-        //                    {
-        //                        // チャージ完了
-        //                        charge_complete = true;
-        //                        break;
-        //                    }
+            //                case "チャージ":
+            //                    {
+            //                        // チャージ完了
+            //                        charge_complete = true;
+            //                        break;
+            //                    }
 
-        //                case "活動限界":
-        //                    {
-        //                        // 活動限界時間切れ
-        //                        GUI.Center(x, y);
-        //                        Escape();
-        //                        Unit argu1 = null;
-        //                        Unit argu2 = null;
-        //                        GUI.OpenMessageForm(u1: ref argu1, u2: ref argu2);
-        //                        GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
-        //                        GUI.CloseMessageForm();
-        //                        Event_Renamed.HandleEvent("破壊", MainPilot().ID);
-        //                        break;
-        //                    }
+            //                case "活動限界":
+            //                    {
+            //                        // 活動限界時間切れ
+            //                        GUI.Center(x, y);
+            //                        Escape();
+            //                        Unit argu1 = null;
+            //                        Unit argu2 = null;
+            //                        GUI.OpenMessageForm(u1: ref argu1, u2: ref argu2);
+            //                        GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
+            //                        GUI.CloseMessageForm();
+            //                        Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+            //                        break;
+            //                    }
 
-        //                default:
-        //                    {
-        //                        // 特殊能力付加を解除
-        //                        if (Strings.Right(cnd.Name, 2) == "付加" | Strings.Right(cnd.Name, 2) == "強化")
-        //                        {
-        //                            update_is_necessary = true;
-        //                        }
+            //                default:
+            //                    {
+            //                        // 特殊能力付加を解除
+            //                        if (Strings.Right(cnd.Name, 2) == "付加" | Strings.Right(cnd.Name, 2) == "強化")
+            //                        {
+            //                            update_is_necessary = true;
+            //                        }
 
-        //                        break;
-        //                    }
-        //            }
-        //        }
-        //    }
+            //                        break;
+            //                    }
+            //            }
+            //        }
+            //    }
 
-        //    // チャージ状態が終了したらチャージ完了状態にする
-        //    if (charge_complete)
-        //    {
-        //        string argcname = "チャージ完了";
-        //        string argcdata = "";
-        //        AddCondition(ref argcname, 1, cdata: ref argcdata);
-        //    }
+            //    // チャージ状態が終了したらチャージ完了状態にする
+            //    if (charge_complete)
+            //    {
+            //        string argcname = "チャージ完了";
+            //        string argcdata = "";
+            //        AddCondition(ref argcname, 1, cdata: ref argcdata);
+            //    }
 
-        //    // ユニットのステータス変化あり？
-        //    if (update_is_necessary)
-        //    {
-        //        Update();
-        //    }
-        //}
+            //    // ユニットのステータス変化あり？
+            //    if (update_is_necessary)
+            //    {
+            //        Update();
+            //    }
+        }
     }
 }
