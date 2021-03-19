@@ -124,133 +124,117 @@ namespace SRCCore.Pilots
         // 特殊能力が使用不能の場合はレベル 0
         public double SkillLevel(string Index, string ref_mode = "")
         {
-            return 0d;
-            // TODO Impl
-            //    double SkillLevelRet = default;
-            //    string sname;
-            //    SkillData sd;
-            //    ;
-            //    /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 49058
+            SkillData sd = colSkill[Index];
+            string sname = sd?.Name;
+            double SkillLevelRet = sd?.Level ?? 0;
+            if (SkillLevelRet == Constants.DEFAULT_LEVEL)
+            {
+                SkillLevelRet = 1d;
+            }
 
+            if (string.IsNullOrEmpty(sname))
+            {
+                // XXX これ引数に数字で参照指定してた場合向けか？
+                if (Information.IsNumeric(Index))
+                {
+                    return SkillLevelRet;
+                }
+                else
+                {
+                    sname = Conversions.ToString(Index);
+                }
+            }
 
-            //    Input:
+            if (ref_mode == "修正値")
+            {
+                SkillLevelRet = 0d;
+            }
+            else if (ref_mode == "基本値")
+            {
+                return SkillLevelRet;
+            }
 
-            //            On Error GoTo ErrorHandler
+            // 重複可能な能力は特殊能力付加で置き換えられことはない
+            switch (sname ?? "")
+            {
+                case "ハンター":
+                case "ＳＰ消費減少":
+                case "スペシャルパワー自動発動":
+                    {
+                        if (Information.IsNumeric(Index))
+                        {
+                            return SkillLevelRet;
+                        }
 
-            //     */
-            //    sd = (SkillData)colSkill[Index];
-            //    sname = sd.Name;
-            //    SkillLevelRet = sd.Level;
-            //    if (SkillLevelRet == Constants.DEFAULT_LEVEL)
-            //    {
-            //        SkillLevelRet = 1d;
-            //    }
+                        break;
+                    }
+            }
 
-            //ErrorHandler:
-            //    ;
-            //    if (string.IsNullOrEmpty(sname))
-            //    {
-            //        if (Information.IsNumeric(Index))
-            //        {
-            //            return SkillLevelRet;
-            //        }
-            //        else
-            //        {
-            //            // UPGRADE_WARNING: オブジェクト Index の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //            sname = Conversions.ToString(Index);
-            //        }
-            //    }
+            // 特殊能力付加＆強化による修正
+            if (Unit is null)
+            {
+                return SkillLevelRet;
+            }
 
-            //    if (ref_mode == "修正値")
-            //    {
-            //        SkillLevelRet = 0d;
-            //    }
-            //    else if (ref_mode == "基本値")
-            //    {
-            //        return SkillLevelRet;
-            //    }
+            {
+                // TODO Impl
+                //if (Unit.CountCondition() == 0)
+                //{
+                //    return SkillLevelRet;
+                //}
 
-            //    // 重複可能な能力は特殊能力付加で置き換えられことはない
-            //    switch (sname ?? "")
-            //    {
-            //        case "ハンター":
-            //        case "ＳＰ消費減少":
-            //        case "スペシャルパワー自動発動":
-            //            {
-            //                if (Information.IsNumeric(Index))
-            //                {
-            //                    return SkillLevelRet;
-            //                }
+                //if (Unit.CountPilot() == 0)
+                //{
+                //    return SkillLevelRet;
+                //}
 
-            //                break;
-            //            }
-            //    }
+                //object argIndex1 = 1;
+                //object argIndex2 = 1;
+                //if (!ReferenceEquals(this, Unit.MainPilot()) & !ReferenceEquals(this, Unit.Pilot(argIndex2)))
+                //{
+                //    return SkillLevelRet;
+                //}
 
-            //    // 特殊能力付加＆強化による修正
-            //    if (Unit is null)
-            //    {
-            //        return SkillLevelRet;
-            //    }
+                //bool localIsConditionSatisfied() { object argIndex1 = sname + "付加２"; var ret = Unit.IsConditionSatisfied(argIndex1); return ret; }
 
-            //    {
-            //        var withBlock = Unit;
-            //        if (withBlock.CountCondition() == 0)
-            //        {
-            //            return SkillLevelRet;
-            //        }
+                //object argIndex5 = sname + "付加";
+                //if (Unit.IsConditionSatisfied(argIndex5))
+                //{
+                //    object argIndex3 = sname + "付加";
+                //    SkillLevelRet = Unit.ConditionLevel(argIndex3);
+                //    if (SkillLevelRet == Constants.DEFAULT_LEVEL)
+                //    {
+                //        SkillLevelRet = 1d;
+                //    }
+                //}
+                //else if (localIsConditionSatisfied())
+                //{
+                //    object argIndex4 = sname + "付加２";
+                //    SkillLevelRet = Unit.ConditionLevel(argIndex4);
+                //    if (SkillLevelRet == Constants.DEFAULT_LEVEL)
+                //    {
+                //        SkillLevelRet = 1d;
+                //    }
+                //}
 
-            //        if (withBlock.CountPilot() == 0)
-            //        {
-            //            return SkillLevelRet;
-            //        }
+                //object argIndex6 = sname + "強化";
+                //if (Unit.IsConditionSatisfied(argIndex6))
+                //{
+                //    double localConditionLevel() { object argIndex1 = sname + "強化"; var ret = Unit.ConditionLevel(argIndex1); return ret; }
 
-            //        object argIndex1 = 1;
-            //        object argIndex2 = 1;
-            //        if (!ReferenceEquals(this, withBlock.MainPilot()) & !ReferenceEquals(this, withBlock.Pilot(argIndex2)))
-            //        {
-            //            return SkillLevelRet;
-            //        }
+                //    SkillLevelRet = SkillLevelRet + localConditionLevel();
+                //}
 
-            //        bool localIsConditionSatisfied() { object argIndex1 = sname + "付加２"; var ret = withBlock.IsConditionSatisfied(argIndex1); return ret; }
+                //object argIndex7 = sname + "強化２";
+                //if (Unit.IsConditionSatisfied(argIndex7))
+                //{
+                //    double localConditionLevel1() { object argIndex1 = sname + "強化２"; var ret = Unit.ConditionLevel(argIndex1); return ret; }
 
-            //        object argIndex5 = sname + "付加";
-            //        if (withBlock.IsConditionSatisfied(argIndex5))
-            //        {
-            //            object argIndex3 = sname + "付加";
-            //            SkillLevelRet = withBlock.ConditionLevel(argIndex3);
-            //            if (SkillLevelRet == Constants.DEFAULT_LEVEL)
-            //            {
-            //                SkillLevelRet = 1d;
-            //            }
-            //        }
-            //        else if (localIsConditionSatisfied())
-            //        {
-            //            object argIndex4 = sname + "付加２";
-            //            SkillLevelRet = withBlock.ConditionLevel(argIndex4);
-            //            if (SkillLevelRet == Constants.DEFAULT_LEVEL)
-            //            {
-            //                SkillLevelRet = 1d;
-            //            }
-            //        }
+                //    SkillLevelRet = SkillLevelRet + localConditionLevel1();
+                //}
+            }
 
-            //        object argIndex6 = sname + "強化";
-            //        if (withBlock.IsConditionSatisfied(argIndex6))
-            //        {
-            //            double localConditionLevel() { object argIndex1 = sname + "強化"; var ret = withBlock.ConditionLevel(argIndex1); return ret; }
-
-            //            SkillLevelRet = SkillLevelRet + localConditionLevel();
-            //        }
-
-            //        object argIndex7 = sname + "強化２";
-            //        if (withBlock.IsConditionSatisfied(argIndex7))
-            //        {
-            //            double localConditionLevel1() { object argIndex1 = sname + "強化２"; var ret = withBlock.ConditionLevel(argIndex1); return ret; }
-
-            //            SkillLevelRet = SkillLevelRet + localConditionLevel1();
-            //        }
-            //    }
-
-            //    return SkillLevelRet;
+            return SkillLevelRet;
         }
 
         // 特殊能力 Index にレベル指定がなされているか判定

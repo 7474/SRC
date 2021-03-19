@@ -33,7 +33,7 @@ namespace SRCCore.Models
         }
         private void AddDummyData()
         {
-            var pd = new PilotData();
+            var pd = new PilotData(SRC);
 
             // ユニットステータスコマンドの無人ユニット用
             pd.Name = "ステータス表示用ダミーパイロット(ザコ)";
@@ -52,12 +52,10 @@ namespace SRCCore.Models
         // パイロットデータリストにデータを追加
         public PilotData Add(string pname)
         {
-            PilotData AddRet = default;
-            var new_pilot_data = new PilotData();
+            var new_pilot_data = new PilotData(SRC);
             new_pilot_data.Name = pname;
             colPilotDataList.Add(new_pilot_data, pname);
-            AddRet = new_pilot_data;
-            return AddRet;
+            return new_pilot_data;
         }
 
         // パイロットデータリストに登録されているデータの総数

@@ -138,7 +138,7 @@ namespace SRCCore.Lib
             }
 
             var l = ToL(list);
-            if (l.Count <= idx)
+            if (l.Count >= idx)
             {
                 return l[idx - 1];
             }
@@ -345,153 +345,11 @@ namespace SRCCore.Lib
             return hasError ? -1 : larray.Length;
         }
 
-        //        // リスト list から idx 番目以降の全要素を返す (括弧を考慮)
-        //        public static string ListTail(string list, int idx)
-        //        {
-        //            string ListTailRet = default;
-        //            int n, i, ch;
-        //            int list_len, paren = default;
-        //            bool in_single_quote = default, in_double_quote = default;
-
-        //            // idxが正の数でなければ空文字列を返す
-        //            if (idx < 1)
-        //            {
-        //                return ListTailRet;
-        //            }
-
-        //            list_len = Strings.Len(list);
-
-        //            // idx番目の要素まで読み飛ばす
-        //            n = 0;
-        //            i = 0;
-        //            while (true)
-        //            {
-        //                // 空白を読み飛ばす
-        //                while (true)
-        //                {
-        //                    i = (i + 1);
-
-        //                    // 文字列の終り？
-        //                    if (i > list_len)
-        //                    {
-        //                        return ListTailRet;
-        //                    }
-
-        //                    // 次の文字
-        //                    ch = Strings.Asc(Strings.Mid(list, i, 1));
-
-        //                    // 空白でない？
-        //                    switch (ch)
-        //                    {
-        //                        // スキップ
-        //                        case 9:
-        //                        case 32:
-        //                            {
-        //                                break;
-        //                            }
-
-        //                        default:
-        //                            {
-        //                                break;
-        //                            }
-        //                    }
-        //                }
-
-        //                // 要素数を１つ増やす
-        //                n = (n + 1);
-
-        //                // 求める要素？
-        //                if (n == idx)
-        //                {
-        //                    break;
-        //                }
-
-        //                // 要素を読み飛ばす
-        //                while (true)
-        //                {
-        //                    if (in_single_quote)
-        //                    {
-        //                        if (ch == 96) // "`"
-        //                        {
-        //                            in_single_quote = false;
-        //                        }
-        //                    }
-        //                    else if (in_double_quote)
-        //                    {
-        //                        if (ch == 34) // """"
-        //                        {
-        //                            in_double_quote = false;
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        switch (ch)
-        //                        {
-        //                            case 40:
-        //                            case 91: // "(", "["
-        //                                {
-        //                                    paren = (paren + 1);
-        //                                    break;
-        //                                }
-
-        //                            case 41:
-        //                            case 93: // ")", "]"
-        //                                {
-        //                                    paren = (paren - 1);
-        //                                    if (paren < 0)
-        //                                    {
-        //                                        // 括弧の対応が取れていない
-        //                                        return ListTailRet;
-        //                                    }
-
-        //                                    break;
-        //                                }
-
-        //                            case 96: // "`"
-        //                                {
-        //                                    in_single_quote = true;
-        //                                    break;
-        //                                }
-
-        //                            case 34: // """"
-        //                                {
-        //                                    in_double_quote = true;
-        //                                    break;
-        //                                }
-        //                        }
-        //                    }
-
-        //                    i = (i + 1);
-
-        //                    // 文字列の終り？
-        //                    if (i > list_len)
-        //                    {
-        //                        return ListTailRet;
-        //                    }
-
-        //                    // 次の文字
-        //                    ch = Strings.Asc(Strings.Mid(list, i, 1));
-
-        //                    // 要素の末尾か判定
-        //                    if (!in_single_quote & !in_double_quote & paren == 0)
-        //                    {
-        //                        // 空白？
-        //                        switch (ch)
-        //                        {
-        //                            case 9:
-        //                            case 32:
-        //                                {
-        //                                    break;
-        //                                }
-        //                        }
-        //                    }
-        //                }
-        //            }
-
-        //            ListTailRet = Strings.Mid(list, i);
-        //            return ListTailRet;
-        //        }
-
+        // リスト list から idx 番目以降の全要素を返す (括弧を考慮)
+        public static string ListTail(string list, int idx)
+        {
+            return idx > 1 ? string.Join(" ", ToList(list ?? "").Skip(idx - 1)) : "";
+        }
 
         //        // タブを考慮したTrim
         //        // UPGRADE_NOTE: str は str_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
