@@ -256,26 +256,19 @@ namespace SRCCore.Units
             }
         }
 
+        // ユニットサイズ
+        public string Size
+        {
+            get
+            {
+                if (IsFeatureAvailable("サイズ変更"))
+                {
+                    return FeatureData("サイズ変更");
+                }
 
-        //// ユニットサイズ
-        //public string Size
-        //{
-        //    get
-        //    {
-        //        string SizeRet = default;
-        //        string argfname = "サイズ変更";
-        //        if (IsFeatureAvailable(argfname))
-        //        {
-        //            object argIndex1 = "サイズ変更";
-        //            SizeRet = FeatureData(argIndex1);
-        //            return default;
-        //        }
-
-        //        SizeRet = Data.Size;
-        //        return SizeRet;
-        //    }
-        //}
-
+                return Data.Size;
+            }
+        }
 
         // 最大ＨＰ値
         public int MaxHP
@@ -979,55 +972,57 @@ namespace SRCCore.Units
         //    return ArmorRet;
         //}
 
-        //// 運動性
-        //public int get_Mobility(string ref_mode)
-        //{
-        //    int MobilityRet = default;
-        //    MobilityRet = intMobility;
-        //    switch (ref_mode ?? "")
-        //    {
-        //        case "基本値":
-        //            {
-        //                return default;
-        //            }
+        // 運動性
+        public int get_Mobility(string ref_mode)
+        {
+            return intMobility;
+            // TODO Impl
+            //    int MobilityRet = default;
+            //    MobilityRet = intMobility;
+            //    switch (ref_mode ?? "")
+            //    {
+            //        case "基本値":
+            //            {
+            //                return default;
+            //            }
 
-        //        case "修正値":
-        //            {
-        //                MobilityRet = 0;
-        //                break;
-        //            }
-        //    }
+            //        case "修正値":
+            //            {
+            //                MobilityRet = 0;
+            //                break;
+            //            }
+            //    }
 
-        //    // パイロットによる修正
-        //    if (CountPilot() > 0)
-        //    {
-        //        // サイキックドライブ装備ユニットは超能力レベルに応じて運動性が変化
-        //        string argfname = "サイキックドライブ";
-        //        if (IsFeatureAvailable(argfname))
-        //        {
-        //            MobilityRet = (int)(MobilityRet + 5d * PsychicLevel());
-        //        }
+            //    // パイロットによる修正
+            //    if (CountPilot() > 0)
+            //    {
+            //        // サイキックドライブ装備ユニットは超能力レベルに応じて運動性が変化
+            //        string argfname = "サイキックドライブ";
+            //        if (IsFeatureAvailable(argfname))
+            //        {
+            //            MobilityRet = (int)(MobilityRet + 5d * PsychicLevel());
+            //        }
 
-        //        // オーラ変換器装備ユニットはオーラレベルに応じて運動性が変化
-        //        string argfname1 = "オーラ変換器";
-        //        if (IsFeatureAvailable(argfname1))
-        //        {
-        //            MobilityRet = (int)(MobilityRet + 2d * AuraLevel());
-        //        }
+            //        // オーラ変換器装備ユニットはオーラレベルに応じて運動性が変化
+            //        string argfname1 = "オーラ変換器";
+            //        if (IsFeatureAvailable(argfname1))
+            //        {
+            //            MobilityRet = (int)(MobilityRet + 2d * AuraLevel());
+            //        }
 
-        //        // シンクロドライブ装備ユニットは同調率レベルに応じて運動性が変化
-        //        string argfname2 = "シンクロドライブ";
-        //        if (IsFeatureAvailable(argfname2))
-        //        {
-        //            if (MainPilot().SynchroRate() > 0)
-        //            {
-        //                MobilityRet = (int)(MobilityRet + (long)(SyncLevel() - 50d) / 2L);
-        //            }
-        //        }
-        //    }
+            //        // シンクロドライブ装備ユニットは同調率レベルに応じて運動性が変化
+            //        string argfname2 = "シンクロドライブ";
+            //        if (IsFeatureAvailable(argfname2))
+            //        {
+            //            if (MainPilot().SynchroRate() > 0)
+            //            {
+            //                MobilityRet = (int)(MobilityRet + (long)(SyncLevel() - 50d) / 2L);
+            //            }
+            //        }
+            //    }
 
-        //    return MobilityRet;
-        //}
+            //    return MobilityRet;
+        }
 
         //// ビットマップ
         //public string get_Bitmap(bool use_orig)

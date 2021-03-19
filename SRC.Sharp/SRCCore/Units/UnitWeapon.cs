@@ -2101,10 +2101,10 @@ namespace SRCCore.Units
         // is_true_value によって補正を省くかどうかを指定できるようにしている
         public int HitProbability(Unit t, bool is_true_value)
         {
-            return 75;
+            //return 75;
             // TODO impl
             //int HitProbabilityRet = default;
-            //int prob;
+            int prob;
             //int mpskill;
             //int i, j;
             //Unit u;
@@ -2114,40 +2114,38 @@ namespace SRCCore.Units
             //string fdata;
             //double flevel, prob_mod;
             //int nmorale;
-            //// 命中、回避、地形補正、サイズ補正の数値を定義
-            //int ed_hit, ed_avd;
-            //double ed_aradap, ed_size = default;
+            // 命中、回避、地形補正、サイズ補正の数値を定義
+            int ed_hit, ed_avd;
+            double ed_aradap, ed_size;
 
-            //// 初期値
-            //ed_aradap = 1d;
+            // 初期値
+            ed_aradap = 1d;
 
-            //// スペシャルパワーによる捨て身状態
-            //if (t.IsUnderSpecialPowerEffect("無防備"))
-            //{
-            //    HitProbabilityRet = 100;
-            //    return HitProbabilityRet;
-            //}
+            // スペシャルパワーによる捨て身状態
+            if (t.IsUnderSpecialPowerEffect("無防備"))
+            {
+                return 100;
+            }
 
-            //// パイロットの技量によって命中率を正確に予測できるか左右される
-            //mpskill = MainPilot().TacticalTechnique();
+            // パイロットの技量によって命中率を正確に予測できるか左右される
+            var mpskill = Unit.MainPilot().TacticalTechnique();
 
-            //// スペシャルパワーによる影響
-            //if (is_true_value || mpskill >= 160)
-            //{
-            //    if (t.IsUnderSpecialPowerEffect("絶対回避"))
-            //    {
-            //        HitProbabilityRet = 0;
-            //        return HitProbabilityRet;
-            //    }
+            // スペシャルパワーによる影響
+            if (is_true_value || mpskill >= 160)
+            {
+                if (t.IsUnderSpecialPowerEffect("絶対回避"))
+                {
+                    return 0;
+                }
 
-            //    if (Unit.IsUnderSpecialPowerEffect("絶対命中"))
-            //    {
-            //        HitProbabilityRet = 1000;
-            //        return HitProbabilityRet;
-            //    }
-            //}
+                if (Unit.IsUnderSpecialPowerEffect("絶対命中"))
+                {
+                    return 1000;
+                }
+            }
 
-            //// 自ユニットによる修正
+            // 自ユニットによる修正
+            var atackerPilot = Unit.MainPilot();
             //{
             //    var withBlock = MainPilot();
             //    object argIndex2 = "命中補正";
@@ -2166,12 +2164,13 @@ namespace SRCCore.Units
             //    }
             //    else
             //    {
-            //        // 命中を一時保存
-            //        ed_hit = 100 + withBlock.Hit + withBlock.Intuition + get_Mobility("") + WeaponPrecision(w);
+            // 命中を一時保存
+            ed_hit = 100 + atackerPilot.Hit + atackerPilot.Intuition + Unit.get_Mobility("") + WeaponPrecision();
             //    }
             //}
 
-            //// 敵ユニットによる修正
+            // 敵ユニットによる修正
+            var targetPilot = t.MainPilot();
             //{
             //    var withBlock1 = t.MainPilot();
             //    object argIndex4 = "回避補正";
@@ -2189,8 +2188,8 @@ namespace SRCCore.Units
             //    }
             //    else
             //    {
-            //        // 回避を一時保存
-            //        ed_avd = (withBlock1.Dodge + withBlock1.Intuition) + t.get_Mobility("");
+            // 回避を一時保存
+            ed_avd = (targetPilot.Dodge + targetPilot.Intuition) + t.get_Mobility("");
             //    }
             //}
 
@@ -2294,45 +2293,49 @@ namespace SRCCore.Units
             //        ed_aradap = ed_aradap * uadaption;
             //    }
 
-            //    // サイズ補正
-            //    switch (withBlock2.Size ?? "")
-            //    {
-            //        case "M":
-            //            {
-            //                ed_size = 1d;
-            //                break;
-            //            }
+            // サイズ補正
+            switch (t.Size ?? "")
+            {
+                case "M":
+                    {
+                        ed_size = 1d;
+                        break;
+                    }
 
-            //        case "L":
-            //            {
-            //                ed_size = 1.2d;
-            //                break;
-            //            }
+                case "L":
+                    {
+                        ed_size = 1.2d;
+                        break;
+                    }
 
-            //        case "S":
-            //            {
-            //                ed_size = 0.8d;
-            //                break;
-            //            }
+                case "S":
+                    {
+                        ed_size = 0.8d;
+                        break;
+                    }
 
-            //        case "LL":
-            //            {
-            //                ed_size = 1.4d;
-            //                break;
-            //            }
+                case "LL":
+                    {
+                        ed_size = 1.4d;
+                        break;
+                    }
 
-            //        case "SS":
-            //            {
-            //                ed_size = 0.5d;
-            //                break;
-            //            }
+                case "SS":
+                    {
+                        ed_size = 0.5d;
+                        break;
+                    }
 
-            //        case "XL":
-            //            {
-            //                ed_size = 2d;
-            //                break;
-            //            }
-            //    }
+                case "XL":
+                    {
+                        ed_size = 2d;
+                        break;
+                    }
+                default:
+                    // XXX 元は処理してない
+                    ed_size = 1d;
+                    break;
+            }
             //}
 
             //// 命中率計算実行
@@ -2353,9 +2356,9 @@ namespace SRCCore.Units
             //    prob = SRC.BCList.Item(argIndex5).Calculate();
             //}
             //else
-            //{
-            //    prob = ((ed_hit - ed_avd) * ed_aradap * ed_size);
-            //}
+            {
+                prob = (int)((ed_hit - ed_avd) * ed_aradap * ed_size);
+            }
 
             //// 不意打ち
             //string argfname = "ステルス";
@@ -2893,16 +2896,7 @@ namespace SRCCore.Units
             //    prob = SRC.BCList.Item(argIndex34).Calculate();
             //}
 
-            //if (prob < 0)
-            //{
-            //    HitProbabilityRet = 0;
-            //}
-            //else
-            //{
-            //    HitProbabilityRet = prob;
-            //}
-
-            //return HitProbabilityRet;
+            return Math.Max(0, prob);
         }
 
         // 武器 w のユニット t に対するダメージ

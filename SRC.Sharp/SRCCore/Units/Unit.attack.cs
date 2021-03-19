@@ -659,10 +659,11 @@ namespace SRCCore.Units
             //        GUI.DisplaySysMessage(msg + buf, SRC.BattleAnimation);
             //    }
             //}
+            // XXX 仮メッセージ
             GUI.DisplaySysMessage(
                 $"{Name}({w.Name}) -> {t.Name}" +
                 Environment.NewLine +
-                $"{dmg}",
+                $"{prob}%...{dmg}",
                 SRC.BattleAnimation);
 
             //msg = "";
