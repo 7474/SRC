@@ -86,8 +86,8 @@ namespace SRCSharpForm
             this.picPilotStatus = new System.Windows.Forms.PictureBox();
             this.picUnitStatus = new System.Windows.Forms.PictureBox();
             this.picUnitBitmap = new System.Windows.Forms.PictureBox();
-            this.HScrollBar = new FormLib.SrcHScrollBar();
-            this.VScrollBar = new FormLib.SrcVScrollBar();
+            this.HScrollBar = new SRCSharpForm.FormLib.SrcHScrollBar();
+            this.VScrollBar = new SRCSharpForm.FormLib.SrcVScrollBar();
             this.picMask = new System.Windows.Forms.PictureBox();
             this.picTmp = new System.Windows.Forms.PictureBox();
             this.picBack = new System.Windows.Forms.PictureBox();
@@ -219,6 +219,7 @@ namespace SRCSharpForm
             this.picFace.Name = "picFace";
             this.picFace.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.picFace.Size = new System.Drawing.Size(68, 68);
+            this.picFace.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picFace.TabIndex = 16;
             this.picFace.TabStop = false;
             this.picFace.Click += new System.EventHandler(this.picFace_Click);
