@@ -192,93 +192,88 @@ namespace SRCCore.Models
             last_sname = sname;
             last_sdata = sdata;
 
-            // TODO Impl
-            //// エリアスが定義されている？
-            //object argIndex2 = sname;
-            //if (SRC.ALDList.IsDefined(argIndex2))
-            //{
-            //    if (GeneralLib.LIndex(sdata, 1) != "解説")
-            //    {
-            //        object argIndex1 = sname;
-            //        {
-            //            var withBlock = SRC.ALDList.Item(argIndex1);
-            //            var loopTo = withBlock.Count;
-            //            for (i = 1; i <= loopTo; i++)
-            //            {
-            //                // エリアスの定義に従って特殊能力定義を置き換える
-            //                sd = new SkillData();
-            //                sd.Name = withBlock.get_AliasType(i);
-            //                string localLIndex() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.LIndex(arglist, 1); withBlock.get_AliasData(i) = arglist; return ret; }
-
-            //                if (localLIndex() == "解説")
-            //                {
-            //                    if (!string.IsNullOrEmpty(sdata))
-            //                    {
-            //                        sd.Name = GeneralLib.LIndex(sdata, 1);
-            //                    }
-            //                }
-
-            //                if (withBlock.get_AliasLevelIsPlusMod(i))
-            //                {
-            //                    if (slevel == Constants.DEFAULT_LEVEL)
-            //                    {
-            //                        slevel = 1d;
-            //                    }
-
-            //                    sd.Level = slevel + withBlock.get_AliasLevel(i);
-            //                }
-            //                else if (withBlock.get_AliasLevelIsMultMod(i))
-            //                {
-            //                    if (slevel == Constants.DEFAULT_LEVEL)
-            //                    {
-            //                        slevel = 1d;
-            //                    }
-
-            //                    sd.Level = slevel * withBlock.get_AliasLevel(i);
-            //                }
-            //                else if (slevel != Constants.DEFAULT_LEVEL)
-            //                {
-            //                    sd.Level = slevel;
-            //                }
-            //                else
-            //                {
-            //                    sd.Level = withBlock.get_AliasLevel(i);
-            //                }
-
-            //                sd.StrData = withBlock.get_AliasData(i);
-            //                if (!string.IsNullOrEmpty(sdata))
-            //                {
-            //                    string localLIndex1() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.LIndex(arglist, 1); withBlock.get_AliasData(i) = arglist; return ret; }
-
-            //                    if (withBlock.get_AliasData(i) != "非表示" & localLIndex1() != "解説")
-            //                    {
-            //                        string localListTail() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.ListTail(arglist, 2); withBlock.get_AliasData(i) = arglist; return ret; }
-
-            //                        sd.StrData = Strings.Trim(sdata + " " + localListTail());
-            //                    }
-            //                }
-
-            //                if (withBlock.get_AliasLevelIsPlusMod(i) | withBlock.get_AliasLevelIsMultMod(i))
-            //                {
-            //                    sd.StrData = sd.StrData + "Lv" + SrcFormatter.Format(slevel);
-            //                }
-
-            //                sd.NecessaryLevel = lv;
-            //                colSkill.Add(sd, sname + SrcFormatter.Format(colSkill.Count));
-            //            }
-            //        }
-
-            //        return;
-            //    }
-            //}
+            // エリアスが定義されている？
+            if (SRC.ALDList.IsDefined(sname))
+            {
+                if (GeneralLib.LIndex(sdata, 1) != "解説")
+                {
+                    RegisterAlias(sname, slevel, sdata, lv);
+                    return;
+                }
+            }
 
             // 特殊能力を登録
-            var sd = new SkillData();
-            sd.Name = sname;
-            sd.Level = slevel;
-            sd.StrData = sdata;
-            sd.NecessaryLevel = lv;
-            colSkill.Add(sd, sname + SrcFormatter.Format(colSkill.Count));
+            {
+                var sd = new SkillData();
+                sd.Name = sname;
+                sd.Level = slevel;
+                sd.StrData = sdata;
+                sd.NecessaryLevel = lv;
+                colSkill.Add(sd, sname + SrcFormatter.Format(colSkill.Count));
+            }
+        }
+
+        private void RegisterAlias(string sname, double slevel, string sdata, int lv)
+        {
+            var aliasData = SRC.ALDList.Item(sname);
+            foreach (var aliasElement in aliasData.Elements)
+            {
+                // エリアスの定義に従って特殊能力定義を置き換える
+                var sd = new SkillData();
+                sd.Name = aliasElement.strAliasType;
+
+                if (GeneralLib.LIndex(aliasElement.strAliasData, 1) == "解説")
+                {
+                    if (!string.IsNullOrEmpty(sdata))
+                    {
+                        sd.Name = GeneralLib.LIndex(sdata, 1);
+                    }
+                }
+
+                if (aliasElement.blnAliasLevelIsPlusMod)
+                {
+                    if (slevel == Constants.DEFAULT_LEVEL)
+                    {
+                        slevel = 1d;
+                    }
+
+                    sd.Level = slevel + aliasElement.dblAliasLevel;
+                }
+                else if (aliasElement.blnAliasLevelIsMultMod)
+                {
+                    if (slevel == Constants.DEFAULT_LEVEL)
+                    {
+                        slevel = 1d;
+                    }
+
+                    sd.Level = slevel * aliasElement.dblAliasLevel;
+                }
+                else if (slevel != Constants.DEFAULT_LEVEL)
+                {
+                    sd.Level = slevel;
+                }
+                else
+                {
+                    sd.Level = aliasElement.dblAliasLevel;
+                }
+
+                sd.StrData = aliasElement.strAliasData;
+                if (!string.IsNullOrEmpty(sdata))
+                {
+                    if (aliasElement.strAliasData != "非表示" & GeneralLib.LIndex(aliasElement.strAliasData, 1) != "解説")
+                    {
+                        sd.StrData = Strings.Trim(sdata + " " + GeneralLib.ListTail(aliasElement.strAliasData, 2));
+                    }
+                }
+
+                if (aliasElement.blnAliasLevelIsPlusMod | aliasElement.blnAliasLevelIsMultMod)
+                {
+                    sd.StrData = sd.StrData + "Lv" + SrcFormatter.Format(slevel);
+                }
+
+                sd.NecessaryLevel = lv;
+                colSkill.Add(sd, sname + SrcFormatter.Format(colSkill.Count));
+            }
         }
 
         // 指定したレベルの時点で所有しているパイロット用特殊能力を列挙
