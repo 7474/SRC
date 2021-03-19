@@ -471,24 +471,23 @@ namespace SRCCore.Units
                 GUI.UpdateMessageForm(this, t);
             }
 
-            //// 防御手段による命中率低下
-            //if (def_mode == "回避")
-            //{
-            //    string argsptype = "絶対命中";
-            //    string argsptype1 = "無防備";
-            //    string argfname = "回避不可";
-            //    object argIndex1 = "移動不能";
-            //    if (!IsUnderSpecialPowerEffect(argsptype) & !t.IsUnderSpecialPowerEffect(argsptype1) & !t.IsFeatureAvailable(argfname) & !t.IsConditionSatisfied(argIndex1))
-            //    {
-            //        prob = (prob / 2);
-            //    }
-            //}
+            // 防御手段による命中率低下
+            if (def_mode == "回避")
+            {
+                if (!IsUnderSpecialPowerEffect("絶対命中")
+                    && !t.IsUnderSpecialPowerEffect("無防備")
+                    && !t.IsFeatureAvailable("回避不可")
+                    && !t.IsConditionSatisfied("移動不能"))
+                {
+                    prob = (prob / 2);
+                }
+            }
 
-            //// 反射攻撃の場合は命中率が低下
-            //if (attack_mode == "反射")
-            //{
-            //    prob = (prob / 2);
-            //}
+            // 反射攻撃の場合は命中率が低下
+            if (attack_mode == "反射")
+            {
+                prob = (prob / 2);
+            }
 
             //// 攻撃を行ったことについてのシステムメッセージ
             //if (!be_quiet)
@@ -659,12 +658,6 @@ namespace SRCCore.Units
             //        GUI.DisplaySysMessage(msg + buf, SRC.BattleAnimation);
             //    }
             //}
-            // XXX 仮メッセージ
-            GUI.DisplaySysMessage(
-                $"{Name}({w.Name}) -> {t.Name}" +
-                Environment.NewLine +
-                $"{prob}%...{dmg}",
-                SRC.BattleAnimation);
 
             //msg = "";
 
@@ -1493,6 +1486,13 @@ namespace SRCCore.Units
 
             //ApplyDamage:
             //;
+
+            // XXX 仮メッセージ
+            GUI.DisplaySysMessage(
+                $"{Name}({w.Name}) -> {t.Name}" +
+                Environment.NewLine +
+                $"{prob}%...{(is_hit ? "Hit" : "Miss")} {dmg}",
+                SRC.BattleAnimation);
 
             // ダメージの適用
             t.HP = t.HP - dmg;
