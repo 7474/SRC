@@ -52,14 +52,14 @@ namespace SRCCore
 
         public void LoadDataDirectory(string fpath)
         {
-            var aliasFilePath = Path.Combine(fpath, "alias.txt");
+            var aliasFilePath = FileSystem.PathCombine(fpath, "alias.txt");
             if (GeneralLib.FileExists(aliasFilePath))
             {
                 ALDList.Load(aliasFilePath);
             }
 
-            var mindFilePath = Path.Combine(fpath, "mind.txt");
-            var spFilePath = Path.Combine(fpath, "sp.txt");
+            var mindFilePath = FileSystem.PathCombine(fpath, "mind.txt");
+            var spFilePath = FileSystem.PathCombine(fpath, "sp.txt");
             if (GeneralLib.FileExists(mindFilePath))
             {
                 SPDList.Load(mindFilePath);
@@ -69,25 +69,25 @@ namespace SRCCore
                 SPDList.Load(spFilePath);
             }
 
-            var pilotFilePath = Path.Combine(fpath, "pilot.txt");
+            var pilotFilePath = FileSystem.PathCombine(fpath, "pilot.txt");
             if (GeneralLib.FileExists(pilotFilePath))
             {
                 PDList.Load(pilotFilePath);
             }
 
-            var nonPilotFilePath = Path.Combine(fpath, "non_pilot.txt");
+            var nonPilotFilePath = FileSystem.PathCombine(fpath, "non_pilot.txt");
             if (GeneralLib.FileExists(nonPilotFilePath))
             {
                 NPDList.Load(nonPilotFilePath);
             }
 
-            var robotFilePath = Path.Combine(fpath, "robot.txt");
+            var robotFilePath = FileSystem.PathCombine(fpath, "robot.txt");
             if (GeneralLib.FileExists(robotFilePath))
             {
                 UDList.Load(robotFilePath);
             }
 
-            var unitFilePath = Path.Combine(fpath, "unit.txt");
+            var unitFilePath = FileSystem.PathCombine(fpath, "unit.txt");
             if (GeneralLib.FileExists(unitFilePath))
             {
                 UDList.Load(unitFilePath);
@@ -99,13 +99,13 @@ namespace SRCCore
             //    GUI.DisplayLoadingProgress();
             //}
 
-            var pilotMessageFilePath = Path.Combine(fpath, "pilot_message.txt");
+            var pilotMessageFilePath = FileSystem.PathCombine(fpath, "pilot_message.txt");
             if (GeneralLib.FileExists(pilotMessageFilePath))
             {
                 MDList.Load(pilotMessageFilePath, false);
             }
 
-            var pilotDialogFilePath = Path.Combine(fpath, "pilot_dialog.txt");
+            var pilotDialogFilePath = FileSystem.PathCombine(fpath, "pilot_dialog.txt");
             if (GeneralLib.FileExists(pilotDialogFilePath))
             {
                 DDList.Load(pilotDialogFilePath);
@@ -132,7 +132,7 @@ namespace SRCCore
             //    EADList.Load(ref argfname21);
             //}
 
-            var itemFilePath = Path.Combine(fpath, "item.txt");
+            var itemFilePath = FileSystem.PathCombine(fpath, "item.txt");
             if (GeneralLib.FileExists(itemFilePath))
             {
                 IDList.Load(itemFilePath);
@@ -153,14 +153,14 @@ namespace SRCCore
             // 初めて実行する際に、各フォルダにDataフォルダがあるかチェック
             if (!init_search_data_folder)
             {
-                if (Strings.Len(Lib.FileSystem.Dir(Path.Combine(ScenarioPath, "Data"), FileAttribute.Directory)) > 0)
+                if (Strings.Len(Lib.FileSystem.Dir(FileSystem.PathCombine(ScenarioPath, "Data"), FileAttribute.Directory)) > 0)
                 {
                     scenario_data_dir_exists = true;
                 }
 
                 if (Strings.Len(ExtDataPath) > 0 & (ScenarioPath ?? "") != (ExtDataPath ?? ""))
                 {
-                    if (Strings.Len(Lib.FileSystem.Dir(Path.Combine(ExtDataPath, "Data"), FileAttribute.Directory)) > 0)
+                    if (Strings.Len(Lib.FileSystem.Dir(FileSystem.PathCombine(ExtDataPath, "Data"), FileAttribute.Directory)) > 0)
                     {
                         extdata_data_dir_exists = true;
                     }
@@ -168,7 +168,7 @@ namespace SRCCore
 
                 if (Strings.Len(ExtDataPath2) > 0 & (ScenarioPath ?? "") != (ExtDataPath2 ?? ""))
                 {
-                    if (Strings.Len(Lib.FileSystem.Dir(Path.Combine(ExtDataPath2, "Data"), FileAttribute.Directory)) > 0)
+                    if (Strings.Len(Lib.FileSystem.Dir(FileSystem.PathCombine(ExtDataPath2, "Data"), FileAttribute.Directory)) > 0)
                     {
                         extdata2_data_dir_exists = true;
                     }
@@ -176,7 +176,7 @@ namespace SRCCore
 
                 if ((ScenarioPath ?? "") != (AppPath ?? ""))
                 {
-                    if (Strings.Len(Lib.FileSystem.Dir(Path.Combine(AppPath, "Data"), FileAttribute.Directory)) > 0)
+                    if (Strings.Len(Lib.FileSystem.Dir(FileSystem.PathCombine(AppPath, "Data"), FileAttribute.Directory)) > 0)
                     {
                         src_data_dir_exists = true;
                     }
@@ -186,10 +186,10 @@ namespace SRCCore
             }
 
             // フォルダを検索
-            fname2 = Path.Combine("Data", fname);
+            fname2 = FileSystem.PathCombine("Data", fname);
             if (scenario_data_dir_exists)
             {
-                SearchDataFolderRet = Path.Combine(ScenarioPath, fname2);
+                SearchDataFolderRet = FileSystem.PathCombine(ScenarioPath, fname2);
                 if (Strings.Len(Lib.FileSystem.Dir(SearchDataFolderRet, FileAttribute.Directory)) > 0)
                 {
                     return SearchDataFolderRet;
@@ -198,7 +198,7 @@ namespace SRCCore
 
             if (extdata_data_dir_exists)
             {
-                SearchDataFolderRet = Path.Combine(ExtDataPath, fname2);
+                SearchDataFolderRet = FileSystem.PathCombine(ExtDataPath, fname2);
                 if (Strings.Len(Lib.FileSystem.Dir(SearchDataFolderRet, FileAttribute.Directory)) > 0)
                 {
                     return SearchDataFolderRet;
@@ -207,7 +207,7 @@ namespace SRCCore
 
             if (extdata2_data_dir_exists)
             {
-                SearchDataFolderRet = Path.Combine(ExtDataPath2, fname2);
+                SearchDataFolderRet = FileSystem.PathCombine(ExtDataPath2, fname2);
                 if (Strings.Len(Lib.FileSystem.Dir(SearchDataFolderRet, FileAttribute.Directory)) > 0)
                 {
                     return SearchDataFolderRet;
@@ -216,7 +216,7 @@ namespace SRCCore
 
             if (src_data_dir_exists)
             {
-                SearchDataFolderRet = Path.Combine(AppPath, fname2);
+                SearchDataFolderRet = FileSystem.PathCombine(AppPath, fname2);
                 if (Strings.Len(Lib.FileSystem.Dir(SearchDataFolderRet, FileAttribute.Directory)) > 0)
                 {
                     return SearchDataFolderRet;

@@ -262,13 +262,13 @@ namespace SRCCore
                 SRC.ExtDataPath2,
                 SRC.AppPath,
             }.Where(x => Directory.Exists(x))
-                .Select(x => Path.Combine(x, "Midi"))
+                .Select(x => SRC.FileSystem.PathCombine(x, "Midi"))
                 .Where(x => Directory.Exists(x))
                 .ToList();
 
             var midiNames = GeneralLib.ToList(midi_name, true);
             var existFile = midiNames
-                .SelectMany(x => baseDirs.Select(y => Path.Combine(y, x)))
+                .SelectMany(x => baseDirs.Select(y => SRC.FileSystem.PathCombine(y, x)))
                 .FirstOrDefault(x => File.Exists(x));
 
             return existFile;
@@ -665,13 +665,13 @@ namespace SRCCore
                 SRC.ExtDataPath2,
                 SRC.AppPath,
             }.Where(x => Directory.Exists(x))
-                .Select(x => Path.Combine(x, "Sound"))
+                .Select(x => SRC.FileSystem.PathCombine(x, "Sound"))
                 .Where(x => Directory.Exists(x))
                 .ToList();
 
             var waveNames = GeneralLib.ToList(wave_name, true);
             var existFile = waveNames
-                .SelectMany(x => baseDirs.Select(y => Path.Combine(y, x)))
+                .SelectMany(x => baseDirs.Select(y => SRC.FileSystem.PathCombine(y, x)))
                 .FirstOrDefault(x => File.Exists(x));
 
             if (string.IsNullOrEmpty(existFile))

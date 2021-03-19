@@ -1,26 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SRCCore.Filesystem
 {
     public class LocalFileSystem : IFileSystem
     {
-        public string ToPath(params string[] paths)
+        public string PathCombine(params string[] paths)
         {
-            return Path.Combine(paths);
+            // 先頭の `\` は絶対パスのルートとして扱われないことを期待されている。
+            return Path.Combine(paths.Select(x => Regex.Replace(x, @"^\\", "")).ToArray());
         }
 
         public bool FileExists(params string[] paths)
         {
-            string path = ToPath(paths);
+            string path = PathCombine(paths);
             return File.Exists(path);
         }
 
         public Stream Open(params string[] paths)
         {
-            return new FileStream(ToPath(paths), FileMode.Open);
+            return new FileStream(PathCombine(paths), FileMode.Open);
         }
     }
 }

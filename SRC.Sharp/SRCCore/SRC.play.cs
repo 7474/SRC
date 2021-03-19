@@ -17,8 +17,8 @@ namespace SRCCore
             {
                 fname = new string[]
                 {
-                    Path.Combine(ScenarioPath, fname),
-                    Path.Combine(AppPath, fname),
+                    FileSystem.PathCombine(ScenarioPath, fname),
+                    FileSystem.PathCombine(AppPath, fname),
                 }.FirstOrDefault(x => GeneralLib.FileExists(x)) ?? fname;
             }
 
