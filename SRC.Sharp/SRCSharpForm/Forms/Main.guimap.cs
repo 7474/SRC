@@ -437,7 +437,7 @@ namespace SRCSharpForm
             }
         }
 
-        private void DrawUnit(Graphics g, MapCell cell, SRCCore.Units.Unit u, Rectangle destRect)
+        public void DrawUnit(Graphics g, MapCell cell, SRCCore.Units.Unit u, Rectangle destRect)
         {
             // タイル
             switch (u.Party0 ?? "")

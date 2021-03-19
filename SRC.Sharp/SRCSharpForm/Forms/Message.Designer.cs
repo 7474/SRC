@@ -45,7 +45,7 @@ namespace SRCSharpForm
         public PictureBox picEN1;
         public PictureBox picHP1;
         public TextBox txtHP1;
-        private PictureBox picMessage;
+        public PictureBox picMessage;
         public Label labHP2;
         public Label labEN2;
         public Label labEN1;
@@ -137,9 +137,11 @@ namespace SRCSharpForm
             this.txtHP2.Location = new System.Drawing.Point(323, 10);
             this.txtHP2.MaxLength = 0;
             this.txtHP2.Name = "txtHP2";
+            this.txtHP2.ReadOnly = true;
             this.txtHP2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txtHP2.Size = new System.Drawing.Size(88, 13);
             this.txtHP2.TabIndex = 10;
+            this.txtHP2.TabStop = false;
             this.txtHP2.Text = "99999/99999";
             // 
             // picHP2
@@ -179,9 +181,11 @@ namespace SRCSharpForm
             this.txtEN2.Location = new System.Drawing.Point(443, 10);
             this.txtEN2.MaxLength = 0;
             this.txtEN2.Name = "txtEN2";
+            this.txtEN2.ReadOnly = true;
             this.txtEN2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txtEN2.Size = new System.Drawing.Size(57, 13);
             this.txtEN2.TabIndex = 7;
+            this.txtEN2.TabStop = false;
             this.txtEN2.Text = "999/999";
             // 
             // txtEN1
@@ -195,9 +199,11 @@ namespace SRCSharpForm
             this.txtEN1.Location = new System.Drawing.Point(192, 10);
             this.txtEN1.MaxLength = 0;
             this.txtEN1.Name = "txtEN1";
+            this.txtEN1.ReadOnly = true;
             this.txtEN1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txtEN1.Size = new System.Drawing.Size(57, 13);
             this.txtEN1.TabIndex = 6;
+            this.txtEN1.TabStop = false;
             this.txtEN1.Text = "999/999";
             // 
             // picEN1
@@ -237,9 +243,11 @@ namespace SRCSharpForm
             this.txtHP1.Location = new System.Drawing.Point(72, 10);
             this.txtHP1.MaxLength = 0;
             this.txtHP1.Name = "txtHP1";
+            this.txtHP1.ReadOnly = true;
             this.txtHP1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txtHP1.Size = new System.Drawing.Size(88, 13);
             this.txtHP1.TabIndex = 2;
+            this.txtHP1.TabStop = false;
             this.txtHP1.Text = "99999/99999";
             // 
             // picMessage
@@ -368,7 +376,7 @@ namespace SRCSharpForm
 
         }
 
-        private Label labKariText;
+        public Label labKariText;
         /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
     }
 }
