@@ -786,6 +786,8 @@ namespace SRCCore.Units
             if (w.IsWeaponClassifiedAs("連"))
             {
                 attack_num = (int)w.WeaponLevel("連");
+                // TODO レベル取得してないから0除算しちゃうの回避しておく
+                attack_num = Math.Max(attack_num, 1);
             }
             else
             {
