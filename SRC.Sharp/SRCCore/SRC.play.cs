@@ -832,58 +832,44 @@ namespace SRCCore
         // ゲームオーバー
         public void GameOver()
         {
-            throw new NotImplementedException();
-            //var fname = default(string);
-            //Sound.KeepBGM = false;
-            //Sound.BossBGM = false;
-            //Sound.StopBGM();
-            //GUI.MainForm.Hide();
+            var fname = default(string);
+            Sound.KeepBGM = false;
+            Sound.BossBGM = false;
+            Sound.StopBGM();
+            GUI.MainFormHide();
 
-            //// GameOver.eveを探す
-            //bool localFileExists() { string argfname = AppPath + @"Data\System\GameOver.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
+            // GameOver.eveを探す
+            var gameOverFiles = new string[]
+            {
+                FileSystem.PathCombine(ScenarioPath, "Data", "System", "GameOver.eve"),
+                FileSystem.PathCombine(AppPath, "Data", "System", "GameOver.eve"),
+            };
+            var gameOverFile = gameOverFiles.FirstOrDefault(x => GeneralLib.FileExists(x));
+            if (string.IsNullOrEmpty(gameOverFile))
+            {
+                // GameOver.eveが無ければそのまま終了
+                TerminateSRC();
+            }
 
-            //string argfname4 = ScenarioPath + @"Data\System\GameOver.eve";
-            //if (GeneralLib.FileExists(argfname4))
-            //{
-            //    fname = ScenarioPath + @"Data\System\GameOver.eve";
-            //    string argfname1 = ScenarioPath + @"Data\System\non_pilot.txt";
-            //    if (GeneralLib.FileExists(argfname1))
-            //    {
-            //        string argfname = ScenarioPath + @"Data\System\non_pilot.txt";
-            //        NPDList.Load(argfname);
-            //    }
-            //}
-            //else if (localFileExists())
-            //{
-            //    fname = AppPath + @"Data\System\GameOver.eve";
-            //    string argfname3 = AppPath + @"Data\System\non_pilot.txt";
-            //    if (GeneralLib.FileExists(argfname3))
-            //    {
-            //        string argfname2 = AppPath + @"Data\System\non_pilot.txt";
-            //        NPDList.Load(argfname2);
-            //    }
-            //}
-            //else
-            //{
-            //    // GameOver.eveが無ければそのまま終了
-            //    TerminateSRC();
-            //}
+            var nonPilotFile = FileSystem.PathCombine( Path.GetDirectoryName(gameOverFile), "non_pilot.txt");
+            if (GeneralLib.FileExists(nonPilotFile))
+            {
+                NPDList.Load(nonPilotFile);
+            }
 
-            //// GameOver.eveを読み込み
-            //Event.ClearEventData();
-            //string argload_mode = "";
-            //Event.LoadEventData(fname, load_mode: argload_mode);
-            //ScenarioFileName = fname;
-            //string arglname = "プロローグ";
-            //if (!Event.IsEventDefined(arglname))
-            //{
-            //    string argmsg = fname + "中にプロローグイベントが定義されていません";
-            //    GUI.ErrorMessage(argmsg);
-            //    TerminateSRC();
-            //}
+            // GameOver.eveを読み込み
+            Event.ClearEventData();
+            Event.LoadEventData(gameOverFile, load_mode: "");
+            ScenarioFileName = fname;
+            if (!Event.IsEventDefined("プロローグ"))
+            {
+                string argmsg = fname + "中にプロローグイベントが定義されていません";
+                GUI.ErrorMessage(argmsg);
+                TerminateSRC();
+            }
 
-            //// GameOver.eveのプロローグイベントを実施
-            //Event.HandleEvent("プロローグ");
+            // GameOver.eveのプロローグイベントを実施
+            Event.HandleEvent("プロローグ");
         }
 
         // ゲームクリア
