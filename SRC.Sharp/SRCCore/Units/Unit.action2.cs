@@ -571,20 +571,19 @@ namespace SRCCore.Units
         // ユニットが破壊された時の処理
         public void Die(bool without_update = false)
         {
-            // TODO Impl
             //    short i, j;
             //    string pname;
-            //    HP = 0;
-            //    Status_Renamed = "破壊";
+            HP = 0;
+            Status = "破壊";
 
-            //    // 破壊をキャンセルし、破壊イベント内で処理をしたい場合
-            //    object argIndex2 = "破壊キャンセル";
-            //    if (IsConditionSatisfied(argIndex2))
-            //    {
-            //        object argIndex1 = "破壊キャンセル";
-            //        DeleteCondition(argIndex1);
-            //        goto SkipExplode;
-            //    }
+            // TODO Impl
+            //// 破壊をキャンセルし、破壊イベント内で処理をしたい場合
+            //object argIndex2 = ;
+            //if (IsConditionSatisfied("破壊キャンセル"))
+            //{
+            //    DeleteCondition("破壊キャンセル");
+            //    goto SkipExplode;
+            //}
 
             Map.MapDataForUnit[x, y] = null;
 
@@ -657,7 +656,7 @@ namespace SRCCore.Units
             //                {
             //                    if (p.Unit_Renamed is object)
             //                    {
-            //                        if (p.Unit_Renamed.Status_Renamed == "出撃" | p.Unit_Renamed.Status_Renamed == "格納")
+            //                        if (p.Unit_Renamed.Status == "出撃" | p.Unit_Renamed.Status == "格納")
             //                        {
             //                            p.Unit_Renamed.Die(true);
             //                        }
@@ -942,7 +941,7 @@ namespace SRCCore.Units
             //                    u = Commands.SelectedUnit;
             //                    Commands.SelectedUnit = withBlock.CurrentForm();
             //                    Commands.SelectedTarget = this;
-            //                    if (withBlock.Status_Renamed == "破壊")
+            //                    if (withBlock.Status == "破壊")
             //                    {
             //                        GUI.DisplaySysMessage(withBlock.Nickname + "は破壊された");
             //                        Event_Renamed.HandleEvent("破壊", withBlock.MainPilot().ID);

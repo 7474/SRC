@@ -11,18 +11,8 @@ namespace SRCCore.Events
         {
             SRC.LogDebug("", Args);
 
-            int event_que_idx;
-            int ret;
-            int i;
-            bool flag;
-            bool prev_is_gui_locked;
-            int prev_call_depth;
-            string uparty;
-            Unit u;
-            bool main_event_done;
-
             // 画面入力をロック
-            prev_is_gui_locked = GUI.IsGUILocked;
+            var prev_is_gui_locked = GUI.IsGUILocked;
             if (!GUI.IsGUILocked)
             {
                 GUI.LockGUI();
@@ -34,13 +24,13 @@ namespace SRCCore.Events
             //// 引数に指定されたユニットを優先
             //if (Information.UBound(Args) > 0)
             //{
-            //    if (SRC.PList.IsDefined(ref Args[1]))
+            //    if (SRC.PList.IsDefined(Args[1]))
             //    {
             //        {
-            //            var withBlock = SRC.PList.Item(ref Args[1]);
-            //            if (withBlock.Unit_Renamed is object)
+            //            var withBlock = SRC.PList.Item(Args[1]);
+            //            if (withBlock.Unit is object)
             //            {
-            //                SelectedUnitForEvent = withBlock.Unit_Renamed;
+            //                SelectedUnitForEvent = withBlock.Unit;
             //            }
             //        }
             //    }
@@ -66,90 +56,69 @@ namespace SRCCore.Events
                         break;
                     }
 
-                //case "破壊":
-                //    {
-                //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject("破壊 ", Args[1]));
-                //        {
-                //            var withBlock1 = SRC.PList.Item(ref Args[1]);
-                //            uparty = withBlock1.Party;
-                //            if (withBlock1.Unit_Renamed is object)
-                //            {
-                //                {
-                //                    var withBlock2 = withBlock1.Unit_Renamed;
-                //                    // 格納されていたユニットも破壊しておく
-                //                    // MOD START MARGE
-                //                    // For i = 1 To .CountUnitOnBoard
-                //                    // Set u = .UnitOnBoard(1)
-                //                    // .UnloadUnit u.ID
-                //                    // u.Status = "破壊"
-                //                    // u.HP = 0
-                //                    // ReDim Preserve EventQue(UBound(EventQue) + 1)
-                //                    // EventQue(UBound(EventQue)) = _
-                //                    // '                                "破壊 " & u.MainPilot.ID
-                //                    // Next
-                //                    while (withBlock2.CountUnitOnBoard() > 0)
-                //                    {
-                //                        object argIndex1 = 1;
-                //                        u = withBlock2.UnitOnBoard(ref argIndex1);
-                //                        withBlock2.UnloadUnit(ref (object)u.ID);
-                //                        u.Status_Renamed = "破壊";
-                //                        u.HP = 0;
-                //                        Array.Resize(ref EventQue, Information.UBound(EventQue) + 1 + 1);
-                //                        EventQue[Information.UBound(EventQue)] = "マップ攻撃破壊 " + u.MainPilot().ID;
-                //                    }
-                //                    // MOD END MARGE
-                //                    uparty = withBlock2.Party0;
-                //                }
-                //            }
-                //        }
+                case "破壊":
+                    {
+                        EventQue.Enqueue("破壊 " + Args[1]);
+                        var p = SRC.PList.Item(Args[1]);
+                        var uparty = p.Party;
+                        if (p.Unit != null)
+                        {
+                            var u = p.Unit;
+                            // TODO Impl
+                            //// 格納されていたユニットも破壊しておく
+                            //while (u.CountUnitOnBoard() > 0)
+                            //{
+                            //    object argIndex1 = 1;
+                            //    u = u.UnitOnBoard(argIndex1);
+                            //    u.UnloadUnit((object)u.ID);
+                            //    u.Status_Renamed = "破壊";
+                            //    u.HP = 0;
+                            //    Array.Resize(EventQue, Information.UBound(EventQue) + 1 + 1);
+                            //    EventQue[Information.UBound(EventQue)] = "マップ攻撃破壊 " + u.MainPilot().ID;
+                            //}
+                            uparty = u.Party0;
+                        }
 
-                //        // 全滅の判定
-                //        flag = false;
-                //        foreach (Unit currentU in SRC.UList)
-                //        {
-                //            u = currentU;
-                //            {
-                //                var withBlock3 = u;
-                //                object argIndex2 = "憑依";
-                //                if ((withBlock3.Party0 ?? "") == (uparty ?? "") & withBlock3.Status_Renamed == "出撃" & !withBlock3.IsConditionSatisfied(ref argIndex2))
-                //                {
-                //                    flag = true;
-                //                    break;
-                //                }
-                //            }
-                //        }
-
-                //        if (!flag)
-                //        {
-                //            Array.Resize(ref EventQue, Information.UBound(EventQue) + 1 + 1);
-                //            EventQue[Information.UBound(EventQue)] = "全滅 " + uparty;
-                //        }
-
-                //        break;
-                //    }
+                        // 全滅の判定
+                        var flag = false;
+                        foreach (Unit currentU in SRC.UList.Items)
+                        {
+                            if ((currentU.Party0 ?? "") == (uparty ?? "")
+                                && currentU.Status == "出撃"
+                                && !currentU.IsConditionSatisfied("憑依"))
+                            {
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if (!flag)
+                        {
+                            EventQue.Enqueue("全滅 " + uparty);
+                        }
+                        break;
+                    }
 
                 //case "マップ攻撃破壊":
                 //    {
                 //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                 //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject("マップ攻撃破壊 ", Args[1]));
                 //        {
-                //            var withBlock4 = SRC.PList.Item(ref Args[1]);
+                //            var withBlock4 = SRC.PList.Item(Args[1]);
                 //            uparty = withBlock4.Party;
-                //            if (withBlock4.Unit_Renamed is object)
+                //            if (withBlock4.Unit is object)
                 //            {
                 //                {
-                //                    var withBlock5 = withBlock4.Unit_Renamed;
+                //                    var withBlock5 = withBlock4.Unit;
                 //                    // 格納されていたユニットも破壊しておく
                 //                    var loopTo = withBlock5.CountUnitOnBoard();
                 //                    for (i = 1; i <= loopTo; i++)
                 //                    {
                 //                        object argIndex3 = i;
-                //                        u = withBlock5.UnitOnBoard(ref argIndex3);
-                //                        withBlock5.UnloadUnit(ref (object)u.ID);
+                //                        u = withBlock5.UnitOnBoard(argIndex3);
+                //                        withBlock5.UnloadUnit((object)u.ID);
                 //                        u.Status_Renamed = "破壊";
                 //                        u.HP = 0;
-                //                        Array.Resize(ref EventQue, Information.UBound(EventQue) + 1 + 1);
+                //                        Array.Resize(EventQue, Information.UBound(EventQue) + 1 + 1);
                 //                        EventQue[Information.UBound(EventQue)] = "マップ攻撃破壊 " + u.MainPilot().ID;
                 //                    }
 
@@ -190,34 +159,34 @@ namespace SRCCore.Events
                 //    {
                 //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                 //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("進入 ", Args[1]), " "), SrcFormatter.Format(Args[2])), " "), SrcFormatter.Format(Args[3])));
-                //        Array.Resize(ref EventQue, Information.UBound(EventQue) + 1 + 1);
+                //        Array.Resize(EventQue, Information.UBound(EventQue) + 1 + 1);
                 //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                 //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("進入 ", Args[1]), " "), Map.TerrainName(Conversions.Toint(Args[2]), Conversions.Toint(Args[3]))));
                 //        // UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                 //        if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(Args[2], 1, false)))
                 //        {
-                //            Array.Resize(ref EventQue, Information.UBound(EventQue) + 1 + 1);
+                //            Array.Resize(EventQue, Information.UBound(EventQue) + 1 + 1);
                 //            // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                 //            EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject("脱出 ", Args[1]), " W"));
                 //        }
                 //        // UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                 //        else if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(Args[2], Map.MapWidth, false)))
                 //        {
-                //            Array.Resize(ref EventQue, Information.UBound(EventQue) + 1 + 1);
+                //            Array.Resize(EventQue, Information.UBound(EventQue) + 1 + 1);
                 //            // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                 //            EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject("脱出 ", Args[1]), " E"));
                 //        }
                 //        // UPGRADE_WARNING: オブジェクト Args(3) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                 //        if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(Args[3], 1, false)))
                 //        {
-                //            Array.Resize(ref EventQue, Information.UBound(EventQue) + 1 + 1);
+                //            Array.Resize(EventQue, Information.UBound(EventQue) + 1 + 1);
                 //            // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                 //            EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject("脱出 ", Args[1]), " N"));
                 //        }
                 //        // UPGRADE_WARNING: オブジェクト Args(3) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                 //        else if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(Args[3], Map.MapHeight, false)))
                 //        {
-                //            Array.Resize(ref EventQue, Information.UBound(EventQue) + 1 + 1);
+                //            Array.Resize(EventQue, Information.UBound(EventQue) + 1 + 1);
                 //            // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                 //            EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject("脱出 ", Args[1]), " S"));
                 //        }
@@ -246,10 +215,10 @@ namespace SRCCore.Events
                 //        // UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                 //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                 //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("ユニットコマンド ", Args[1]), " "), Args[2]));
-                //        if (!IsEventDefined(ref EventQue[Information.UBound(EventQue)]))
+                //        if (!IsEventDefined(EventQue[Information.UBound(EventQue)]))
                 //        {
                 //            // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //            EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("ユニットコマンド ", Args[1]), " "), SRC.PList.Item(ref Args[2]).Unit_Renamed.Name));
+                //            EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("ユニットコマンド ", Args[1]), " "), SRC.PList.Item(Args[2]).Unit.Name));
                 //        }
 
                 //        break;
@@ -263,7 +232,7 @@ namespace SRCCore.Events
             //if (CallDepth > MaxCallDepth)
             //{
             //    string argmsg = "サブルーチンの呼び出し階層が" + SrcFormatter.Format(MaxCallDepth) + "を超えているため、イベントの処理が出来ません";
-            //    GUI.ErrorMessage(ref argmsg);
+            //    GUI.ErrorMessage(argmsg);
             //    CallDepth = MaxCallDepth;
             //    return;
             //}
@@ -275,7 +244,7 @@ namespace SRCCore.Events
             //SaveBasePoint();
 
             // 呼び出し階層数をインクリメント
-            prev_call_depth = CallDepth;
+            var prev_call_depth = CallDepth;
             CallDepth = (CallDepth + 1);
 
             // 各イベントを発生させる
@@ -290,14 +259,14 @@ namespace SRCCore.Events
 
                 //// 前のイベントで他のユニットが出現している可能性があるので
                 //// 本当に全滅したのか判定
-                //if (GeneralLib.LIndex(ref EventQue[i], 1) == "全滅")
+                //if (GeneralLib.LIndex(EventQue[i], 1) == "全滅")
                 //{
-                //    uparty = GeneralLib.LIndex(ref EventQue[i], 2);
+                //    uparty = GeneralLib.LIndex(EventQue[i], 2);
                 //    foreach (Unit currentU1 in SRC.UList)
                 //    {
                 //        u = currentU1;
                 //        object argIndex4 = "憑依";
-                //        if ((u.Party0 ?? "") == (uparty ?? "") & u.Status_Renamed == "出撃" & !u.IsConditionSatisfied(ref argIndex4))
+                //        if ((u.Party0 ?? "") == (uparty ?? "") & u.Status_Renamed == "出撃" & !u.IsConditionSatisfied(argIndex4))
                 //        {
                 //            continue;
                 //        }
@@ -305,7 +274,8 @@ namespace SRCCore.Events
                 //}
 
                 CurrentLabel = -1;
-                main_event_done = false;
+                var ret = -1;
+                var main_event_done = false;
                 while (true)
                 {
                     //// 現在選択されているユニット＆ターゲットをイベント用に設定
@@ -314,13 +284,13 @@ namespace SRCCore.Events
                     //// 引数に指定されたユニットを優先
                     //if (Information.UBound(Args) > 0)
                     //{
-                    //    if (SRC.PList.IsDefined(ref Args[1]))
+                    //    if (SRC.PList.IsDefined(Args[1]))
                     //    {
                     //        {
-                    //            var withBlock6 = SRC.PList.Item(ref Args[1]);
-                    //            if (withBlock6.Unit_Renamed is object)
+                    //            var withBlock6 = SRC.PList.Item(Args[1]);
+                    //            if (withBlock6.Unit is object)
                     //            {
-                    //                SelectedUnitForEvent = withBlock6.Unit_Renamed;
+                    //                SelectedUnitForEvent = withBlock6.Unit;
                     //            }
                     //        }
                     //    }
@@ -441,7 +411,7 @@ namespace SRCCore.Events
             //}
 
             //// イベントキューを元に戻す
-            //Array.Resize(ref EventQue, GeneralLib.MinLng(event_que_idx - 1, Information.UBound(EventQue)) + 1);
+            //Array.Resize(EventQue, GeneralLib.MinLng(event_que_idx - 1, Information.UBound(EventQue)) + 1);
 
             //// フォント設定をデフォルトに戻す
             //{
