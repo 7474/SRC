@@ -886,10 +886,10 @@ namespace SRCCore
             // スペシャルパワーデータをロード
             var spFiles = new string[]
             {
-                Path.Combine(ScenarioPath, "Data", "System", "sp.txt"),
-                Path.Combine(ScenarioPath, "Data", "System", "mind.txt"),
-                Path.Combine(AppPath, "Data", "System", "sp.txt"),
-                Path.Combine(AppPath, "Data", "System", "mind.txt"),
+                FileSystem.PathCombine(ScenarioPath, "Data", "System", "sp.txt"),
+                FileSystem.PathCombine(ScenarioPath, "Data", "System", "mind.txt"),
+                FileSystem.PathCombine(AppPath, "Data", "System", "sp.txt"),
+                FileSystem.PathCombine(AppPath, "Data", "System", "mind.txt"),
             };
             foreach (var spFile in spFiles)
             {
@@ -916,7 +916,7 @@ namespace SRCCore
             //                IDList.Load(argfname9);
             //            }
             // 地形データをロード
-            string appTerrainPath = Path.Combine(AppPath, "Data", "System", "terrain.txt");
+            string appTerrainPath = FileSystem.PathCombine(AppPath, "Data", "System", "terrain.txt");
             if (GeneralLib.FileExists(appTerrainPath))
             {
                 TDList.Load(appTerrainPath);
@@ -925,7 +925,7 @@ namespace SRCCore
             {
                 throw new TerminateException(@"地形データファイル「Data\System\terrain.txt」が見つかりません");
             }
-            string scenarioTerrainPath = Path.Combine(ScenarioPath, "Data", "System", "terrain.txt");
+            string scenarioTerrainPath = FileSystem.PathCombine(ScenarioPath, "Data", "System", "terrain.txt");
             if (GeneralLib.FileExists(scenarioTerrainPath))
             {
                 TDList.Load(scenarioTerrainPath);
@@ -934,8 +934,8 @@ namespace SRCCore
             // バトルコンフィグデータをロード
             var bcFiles = new string[]
             {
-                Path.Combine(ScenarioPath, "Data", "System", "battle.txt"),
-                Path.Combine(AppPath, "Data", "System", "battle.txt"),
+                FileSystem.PathCombine(ScenarioPath, "Data", "System", "battle.txt"),
+                FileSystem.PathCombine(AppPath, "Data", "System", "battle.txt"),
             };
             foreach (var bcFile in bcFiles)
             {

@@ -372,7 +372,7 @@ namespace SRCSharpForm
                     g.DrawString(sb.ToString(), StatusFont, StatusNormalStringBrush, 0, 0);
                 }
                 // XXX get_Bitmap
-                picFace.Image = imageBuffer.Get(Path.Combine("Pilot", p.Data.Bitmap));
+                picFace.Image = imageBuffer.Get(SRC.FileSystem.PathCombine("Pilot", p.Data.Bitmap));
             }
             if (u != null)
             {

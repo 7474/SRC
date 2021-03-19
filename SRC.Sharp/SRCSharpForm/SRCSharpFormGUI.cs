@@ -470,7 +470,7 @@ namespace SRCSharpForm
                 // キャラ画像の表示
                 if (fname != "-.bmp")
                 {
-                    fname = Path.Combine("Pilot", fname);
+                    fname = SRC.FileSystem.PathCombine("Pilot", fname);
                     if ((DisplayedPilot ?? "") != (fname ?? "") || (DisplayMode ?? "") != (msg_mode ?? ""))
                     {
                         string argdraw_option = "メッセージ " + msg_mode;

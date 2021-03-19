@@ -455,7 +455,7 @@ namespace SRCSharpForm
             }
 
             // XXX BitmapMissing
-            var image = imageBuffer.GetTransparent(Path.Combine("Unit", u.CurrentForm().Data.Bitmap));
+            var image = imageBuffer.GetTransparent(SRC.FileSystem.PathCombine("Unit", u.CurrentForm().Data.Bitmap));
             if (image != null)
             {
                 g.DrawImage(image, destRect);

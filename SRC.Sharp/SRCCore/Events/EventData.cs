@@ -95,12 +95,12 @@ namespace SRCCore.Events
 
                 // スペシャルパワーアニメ用インクルードファイルをダウンロード
                 bool spAnimeIncludeLoaded =
-                    LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
-                    || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath2, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
-                    || LoadEventData2IfExist(Path.Combine(SRC.AppPath, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
-                    || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath, "Lib", "精神コマンド.eve"), EventDataSource.System)
-                    || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath2, "Lib", "精神コマンド.eve"), EventDataSource.System)
-                    || LoadEventData2IfExist(Path.Combine(SRC.AppPath, "Lib", "精神コマンド.eve"), EventDataSource.System);
+                    LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
+                    || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath2, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
+                    || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.AppPath, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
+                    || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath, "Lib", "精神コマンド.eve"), EventDataSource.System)
+                    || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath2, "Lib", "精神コマンド.eve"), EventDataSource.System)
+                    || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.AppPath, "Lib", "精神コマンド.eve"), EventDataSource.System);
 
                 // 汎用戦闘アニメ用インクルードファイルをダウンロード
                 // TODO Impl
@@ -112,9 +112,9 @@ namespace SRCCore.Events
                 //}
 
                 bool battleAnimeIncludeLoaded =
-                    LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
-                    || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath2, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
-                    || LoadEventData2IfExist(Path.Combine(SRC.AppPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System);
+                    LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
+                    || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath2, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
+                    || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.AppPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System);
                 if (!battleAnimeIncludeLoaded)
                 {
                     // 戦闘アニメ表示切り替えコマンドを非表示に
@@ -150,14 +150,14 @@ namespace SRCCore.Events
 
                     // スペシャルパワーアニメ用インクルードファイルをダウンロード
                     bool spAnimeIncludeLoaded =
-                        LoadEventData2IfExist(Path.Combine(SRC.ScenarioPath, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
-                        || LoadEventData2IfExist(Path.Combine(SRC.ScenarioPath, "Lib", "精神コマンド.eve"), EventDataSource.System)
-                        || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
-                        || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath2, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
-                        || LoadEventData2IfExist(Path.Combine(SRC.AppPath, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
-                        || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath, "Lib", "精神コマンド.eve"), EventDataSource.System)
-                        || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath2, "Lib", "精神コマンド.eve"), EventDataSource.System)
-                        || LoadEventData2IfExist(Path.Combine(SRC.AppPath, "Lib", "精神コマンド.eve"), EventDataSource.System);
+                        LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ScenarioPath, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ScenarioPath, "Lib", "精神コマンド.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath2, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.AppPath, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath, "Lib", "精神コマンド.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath2, "Lib", "精神コマンド.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.AppPath, "Lib", "精神コマンド.eve"), EventDataSource.System);
 
                     // 汎用戦闘アニメ用インクルードファイルをダウンロード
                     // TODO Impl
@@ -170,10 +170,10 @@ namespace SRCCore.Events
 
 
                     bool battleAnimeIncludeLoaded =
-                        LoadEventData2IfExist(Path.Combine(SRC.ScenarioPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
-                        || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
-                        || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath2, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
-                        || LoadEventData2IfExist(Path.Combine(SRC.AppPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System);
+                        LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ScenarioPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath2, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.AppPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System);
                     if (!battleAnimeIncludeLoaded)
                     {
                         // 戦闘アニメ表示切り替えコマンドを非表示に
@@ -182,7 +182,7 @@ namespace SRCCore.Events
                 }
 
                 // シナリオ添付の汎用インクルードファイルをダウンロード
-                LoadEventData2IfExist(Path.Combine(SRC.ScenarioPath, "Lib", "include.eve"), EventDataSource.System);
+                LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ScenarioPath, "Lib", "include.eve"), EventDataSource.System);
 
                 // システム側のイベントデータの総行数＆ファイル数を記録しておく
                 // XXX 要らんのでは
@@ -230,13 +230,13 @@ namespace SRCCore.Events
                 foreach (var title in SRC.Titles)
                 {
                     var tfolder = SRC.SearchDataFolder(title);
-                    LoadEventData2IfExist(Path.Combine(tfolder, "include.eve"), EventDataSource.Scenario);
+                    LoadEventData2IfExist(SRC.FileSystem.PathCombine(tfolder, "include.eve"), EventDataSource.Scenario);
                 }
                 // 汎用Dataインクルードファイルをロード
-                LoadEventData2IfExist(Path.Combine(SRC.ScenarioPath, "Data", "include.eve"), EventDataSource.Scenario);
-                LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath, "Data", "include.eve"), EventDataSource.Scenario);
-                LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath2, "Data", "include.eve"), EventDataSource.Scenario);
-                LoadEventData2IfExist(Path.Combine(SRC.AppPath, "Data", "include.eve"), EventDataSource.Scenario);
+                LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ScenarioPath, "Data", "include.eve"), EventDataSource.Scenario);
+                LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath, "Data", "include.eve"), EventDataSource.Scenario);
+                LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath2, "Data", "include.eve"), EventDataSource.Scenario);
+                LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.AppPath, "Data", "include.eve"), EventDataSource.Scenario);
 
             }
 

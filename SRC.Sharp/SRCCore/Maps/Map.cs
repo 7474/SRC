@@ -478,9 +478,9 @@ namespace SRCCore.Maps
             var tbitmap = cell.BitmapNo;
             var fnames = new string[]
             {
-                Path.Combine("Bitmap", "Map", tbmpname, string.Format("{0}{1:0000}.bmp", tbmpname, tbitmap)),
-                Path.Combine("Bitmap", "Map", string.Format("{0}{1:0000}.bmp", tbmpname, tbitmap)),
-                Path.Combine("Bitmap", "Map", string.Format("{0}{1}.bmp", tbmpname, tbitmap)),
+                SRC.FileSystem.PathCombine("Bitmap", "Map", tbmpname, string.Format("{0}{1:0000}.bmp", tbmpname, tbitmap)),
+                SRC.FileSystem.PathCombine("Bitmap", "Map", string.Format("{0}{1:0000}.bmp", tbmpname, tbitmap)),
+                SRC.FileSystem.PathCombine("Bitmap", "Map", string.Format("{0}{1}.bmp", tbmpname, tbitmap)),
             };
             var dnames = new string[]
             {
@@ -500,7 +500,7 @@ namespace SRCCore.Maps
                 {
                     foreach (var file in fnames)
                     {
-                        var fpath = Path.Combine(dir, file);
+                        var fpath = SRC.FileSystem.PathCombine(dir, file);
                         if (File.Exists(fpath))
                         {
                             // TODO ビットマップ名記録

@@ -117,7 +117,7 @@ namespace SRCSharpForm.Resoruces
         public string SearchFile(string name)
         {
             return ImageFilders()
-                .Select(x => Path.Combine(x, name))
+                .Select(x => SRC.FileSystem.PathCombine(x, name))
                 .FirstOrDefault(x => File.Exists(x));
         }
 
@@ -140,18 +140,18 @@ namespace SRCSharpForm.Resoruces
 
             var subDirectories = new List<string>()
             {
-                Path.Combine("Bitmap"),
-                Path.Combine("Bitmap", "Anime"),
-                Path.Combine("Bitmap", "Event"),
-                Path.Combine("Bitmap", "Cutin"),
-                Path.Combine("Bitmap", "Pilot"),
-                Path.Combine("Bitmap", "Unit"),
-                Path.Combine("Bitmap", "Map"),
+                SRC.FileSystem.PathCombine("Bitmap"),
+                SRC.FileSystem.PathCombine("Bitmap", "Anime"),
+                SRC.FileSystem.PathCombine("Bitmap", "Event"),
+                SRC.FileSystem.PathCombine("Bitmap", "Cutin"),
+                SRC.FileSystem.PathCombine("Bitmap", "Pilot"),
+                SRC.FileSystem.PathCombine("Bitmap", "Unit"),
+                SRC.FileSystem.PathCombine("Bitmap", "Map"),
             };
 
             // XXX 走査順とか多分固定的に持ったほうがよさそう。
             existBitmapDirectories = subDirectories
-                .SelectMany(x => baseDirectories.Select(y => Path.Combine(y, x)))
+                .SelectMany(x => baseDirectories.Select(y => SRC.FileSystem.PathCombine(y, x)))
                 .Where(x => !string.IsNullOrEmpty(FileSystem.Dir(x, FileAttribute.Directory)))
                 .ToList();
             existMapBitmapDirectories = existBitmapDirectories.Where(x => x.EndsWith("Map")).ToList();
