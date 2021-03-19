@@ -974,18 +974,15 @@ namespace SRCCore.Units
             //    {
             //        su.Update();
 
-            //        // メッセージウィンドウの表示を入れ替え
-            //        if (Party == "味方" | Party == "ＮＰＣ")
-            //        {
-            //            object argu22 = this;
-            //            GUI.UpdateMessageForm(su, argu22);
-            //        }
-            //        else
-            //        {
-            //            var argu12 = this;
-            //            object argu23 = su;
-            //            GUI.UpdateMessageForm(argu12, argu23);
-            //        }
+            // メッセージウィンドウの表示を入れ替え
+            if (Party == "味方" | Party == "ＮＰＣ")
+            {
+                GUI.UpdateMessageForm(su, this);
+            }
+            else
+            {
+                GUI.UpdateMessageForm(this, su);
+            }
 
             //        if (!SRC.BattleAnimation)
             //        {
@@ -1519,19 +1516,16 @@ namespace SRCCore.Units
                 //    GUI.Sleep(150);
                 //}
 
-                //// ダメージによるＨＰゲージ減少を表示
-                //if (attack_mode != "反射")
-                //{
-                //    var argu15 = this;
-                //    object argu26 = t;
-                //    GUI.UpdateMessageForm(argu15, argu26);
-                //}
-                //else
-                //{
-                //    var argu16 = this;
-                //    object argu27 = null;
-                //    GUI.UpdateMessageForm(argu16, argu27);
-                //}
+                // ダメージによるＨＰゲージ減少を表示
+                if (attack_mode != "反射")
+                {
+                    GUI.UpdateMessageForm(this, t);
+                }
+                else
+                {
+                    // XXX これ多分機能しない
+                    GUI.UpdateMessageForm(this, null);
+                }
 
                 //// ダメージ量表示前にカットインは一旦消去しておく
                 //string argoname6 = "戦闘中画面初期化無効";
