@@ -390,7 +390,615 @@ namespace SRCSharpForm
 
         public void UpdateMessageForm(Unit u1, Unit u2)
         {
-            throw new NotImplementedException();
+            Unit lu, ru;
+            int ret;
+            var i = default(short);
+            string buf;
+            var num = default(short);
+            int tmp;
+            {
+                var withBlock = My.MyProject.Forms.frmMessage;
+                // ウィンドウにユニット情報が表示されていない場合はそのまま終了
+                if (withBlock.Visible)
+                {
+                    if (!withBlock.picUnit1.Visible & !withBlock.picUnit2.Visible)
+                    {
+                        return;
+                    }
+                }
+
+                // luを左に表示するユニット、ruを右に表示するユニットに設定
+                // UPGRADE_NOTE: IsMissing() は IsNothing() に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="8AE1CB93-37AB-439A-A4FF-BE3B6760BB23"' をクリックしてください。
+                if (Information.IsNothing(u2))
+                {
+                    // １体のユニットのみ表示
+                    if (u1.Party == "味方" | u1.Party == "ＮＰＣ")
+                    {
+                        // UPGRADE_NOTE: オブジェクト lu をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+                        lu = null;
+                        ru = u1;
+                    }
+                    else
+                    {
+                        lu = u1;
+                        // UPGRADE_NOTE: オブジェクト ru をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+                        ru = null;
+                    }
+                }
+                else if (u2 is null)
+                {
+                    // 反射攻撃
+                    // 前回表示されたユニットをそのまま使用
+                    lu = LeftUnit;
+                    ru = RightUnit;
+                }
+                else if ((ReferenceEquals(u2, LeftUnit) | ReferenceEquals(u1, RightUnit)) & !ReferenceEquals(LeftUnit, RightUnit))
+                {
+                    lu = (Unit)u2;
+                    ru = u1;
+                }
+                else
+                {
+                    lu = u1;
+                    ru = (Unit)u2;
+                }
+
+                // 現在表示されている順番に応じてユニットの入れ替え
+                if (ReferenceEquals(lu, RightUnit) & ReferenceEquals(ru, LeftUnit) & !ReferenceEquals(LeftUnit, RightUnit))
+                {
+                    lu = LeftUnit;
+                    ru = RightUnit;
+                }
+
+                // 表示するユニットのＧＵＩ部品を表示
+                if (lu is object)
+                {
+                    if (!withBlock.labHP1.Visible)
+                    {
+                        withBlock.labHP1.Visible = true;
+                        withBlock.labEN1.Visible = true;
+                        withBlock.picHP1.Visible = true;
+                        withBlock.picEN1.Visible = true;
+                        withBlock.txtHP1.Visible = true;
+                        withBlock.txtEN1.Visible = true;
+                        withBlock.picUnit1.Visible = true;
+                    }
+                }
+
+                if (ru is object)
+                {
+                    if (!withBlock.labHP2.Visible)
+                    {
+                        withBlock.labHP2.Visible = true;
+                        withBlock.labEN2.Visible = true;
+                        withBlock.picHP2.Visible = true;
+                        withBlock.picEN2.Visible = true;
+                        withBlock.txtHP2.Visible = true;
+                        withBlock.txtEN2.Visible = true;
+                        withBlock.picUnit2.Visible = true;
+                    }
+                }
+
+                // 未表示のユニットを表示する
+                if (lu is object & !ReferenceEquals(lu, LeftUnit))
+                {
+                    // 左のユニットが未表示なので表示する
+
+                    // ユニット画像
+                    if (lu.BitmapID > 0)
+                    {
+                        if (string.IsNullOrEmpty(Map.MapDrawMode))
+                        {
+                            ret = BitBlt(withBlock.picUnit1.hDC, 0, 0, 32, 32, MainForm.picUnitBitmap.hDC, 32 * ((int)lu.BitmapID % 15), 96 * ((int)lu.BitmapID / 15), SRCCOPY);
+                        }
+                        else
+                        {
+                            var argpic = withBlock.picUnit1;
+                            string argfname = "";
+                            LoadUnitBitmap(ref lu, ref argpic, 0, 0, true, fname: ref argfname);
+                            withBlock.picUnit1 = argpic;
+                        }
+                    }
+                    else
+                    {
+                        // 非表示のユニットの場合はユニットのいる地形タイルを表示
+                        ret = BitBlt(withBlock.picUnit1.hDC, 0, 0, 32, 32, MainForm.picBack.hDC, 32 * ((int)lu.x - 1), 32 * ((int)lu.y - 1), SRCCOPY);
+                    }
+
+                    withBlock.picUnit1.Refresh();
+
+                    // ＨＰ名称
+                    object argIndex1 = "データ不明";
+                    if (lu.IsConditionSatisfied(ref argIndex1))
+                    {
+                        string argtname = "HP";
+                        Unit argu = null;
+                        withBlock.labHP1.Text = Expression.Term(ref argtname, u: ref argu);
+                    }
+                    else
+                    {
+                        string argtname1 = "HP";
+                        withBlock.labHP1.Text = Expression.Term(ref argtname1, ref lu);
+                    }
+
+                    // ＨＰ数値
+                    object argIndex2 = "データ不明";
+                    if (lu.IsConditionSatisfied(ref argIndex2))
+                    {
+                        withBlock.txtHP1.Text = "?????/?????";
+                    }
+                    else
+                    {
+                        if (lu.HP < 100000)
+                        {
+                            string argbuf = SrcFormatter.Format(lu.HP);
+                            buf = GeneralLib.LeftPaddedString(ref argbuf, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxHP)), 5));
+                        }
+                        else
+                        {
+                            buf = "?????";
+                        }
+
+                        if (lu.MaxHP < 100000)
+                        {
+                            buf = buf + "/" + SrcFormatter.Format(lu.MaxHP);
+                        }
+                        else
+                        {
+                            buf = buf + "/?????";
+                        }
+
+                        withBlock.txtHP1.Text = buf;
+                    }
+
+                    // ＨＰゲージ
+                    withBlock.picHP1.Cls();
+                    if (lu.HP > 0 | i < num)
+                    {
+                        withBlock.picHP1.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
+                    }
+
+                    // ＥＮ名称
+                    object argIndex3 = "データ不明";
+                    if (lu.IsConditionSatisfied(ref argIndex3))
+                    {
+                        string argtname2 = "EN";
+                        Unit argu1 = null;
+                        withBlock.labEN1.Text = Expression.Term(ref argtname2, u: ref argu1);
+                    }
+                    else
+                    {
+                        string argtname3 = "EN";
+                        withBlock.labEN1.Text = Expression.Term(ref argtname3, ref lu);
+                    }
+
+                    // ＥＮ数値
+                    object argIndex4 = "データ不明";
+                    if (lu.IsConditionSatisfied(ref argIndex4))
+                    {
+                        withBlock.txtEN1.Text = "???/???";
+                    }
+                    else
+                    {
+                        if (lu.EN < 1000)
+                        {
+                            string argbuf1 = SrcFormatter.Format(lu.EN);
+                            buf = GeneralLib.LeftPaddedString(ref argbuf1, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxEN)), 3));
+                        }
+                        else
+                        {
+                            buf = "???";
+                        }
+
+                        if (lu.MaxEN < 1000)
+                        {
+                            buf = buf + "/" + SrcFormatter.Format(lu.MaxEN);
+                        }
+                        else
+                        {
+                            buf = buf + "/???";
+                        }
+
+                        withBlock.txtEN1.Text = buf;
+                    }
+
+                    // ＥＮゲージ
+                    withBlock.picEN1.Cls();
+                    if (lu.EN > 0 | i < num)
+                    {
+                        withBlock.picEN1.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
+                    }
+
+                    // 表示内容を記録
+                    LeftUnit = lu;
+                    LeftUnitHPRatio = lu.HP / (double)lu.MaxHP;
+                    LeftUnitENRatio = lu.EN / (double)lu.MaxEN;
+                }
+
+                if (ru is object & !ReferenceEquals(RightUnit, ru))
+                {
+                    // 右のユニットが未表示なので表示する
+
+                    // ユニット画像
+                    if (ru.BitmapID > 0)
+                    {
+                        if (string.IsNullOrEmpty(Map.MapDrawMode))
+                        {
+                            ret = BitBlt(withBlock.picUnit2.hDC, 0, 0, 32, 32, MainForm.picUnitBitmap.hDC, 32 * ((int)ru.BitmapID % 15), 96 * ((int)ru.BitmapID / 15), SRCCOPY);
+                        }
+                        else
+                        {
+                            var argpic1 = withBlock.picUnit2;
+                            string argfname1 = "";
+                            LoadUnitBitmap(ref ru, ref argpic1, 0, 0, true, fname: ref argfname1);
+                            withBlock.picUnit2 = argpic1;
+                        }
+                    }
+                    else
+                    {
+                        // 非表示のユニットの場合はユニットのいる地形タイルを表示
+                        ret = BitBlt(withBlock.picUnit2.hDC, 0, 0, 32, 32, MainForm.picBack.hDC, 32 * ((int)ru.x - 1), 32 * ((int)ru.y - 1), SRCCOPY);
+                    }
+
+                    withBlock.picUnit2.Refresh();
+
+                    // ＨＰ数値
+                    object argIndex5 = "データ不明";
+                    if (ru.IsConditionSatisfied(ref argIndex5))
+                    {
+                        string argtname4 = "HP";
+                        Unit argu2 = null;
+                        withBlock.labHP2.Text = Expression.Term(ref argtname4, u: ref argu2);
+                    }
+                    else
+                    {
+                        string argtname5 = "HP";
+                        withBlock.labHP2.Text = Expression.Term(ref argtname5, ref ru);
+                    }
+
+                    // ＨＰ数値
+                    object argIndex6 = "データ不明";
+                    if (ru.IsConditionSatisfied(ref argIndex6))
+                    {
+                        withBlock.txtHP2.Text = "?????/?????";
+                    }
+                    else
+                    {
+                        if (ru.HP < 100000)
+                        {
+                            string argbuf2 = SrcFormatter.Format(ru.HP);
+                            buf = GeneralLib.LeftPaddedString(ref argbuf2, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxHP)), 5));
+                        }
+                        else
+                        {
+                            buf = "?????";
+                        }
+
+                        if (ru.MaxHP < 100000)
+                        {
+                            buf = buf + "/" + SrcFormatter.Format(ru.MaxHP);
+                        }
+                        else
+                        {
+                            buf = buf + "/?????";
+                        }
+
+                        withBlock.txtHP2.Text = buf;
+                    }
+
+                    // ＨＰゲージ
+                    withBlock.picHP2.Cls();
+                    if (ru.HP > 0 | i < num)
+                    {
+                        withBlock.picHP2.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
+                    }
+
+                    // ＥＮ名称
+                    object argIndex7 = "データ不明";
+                    if (ru.IsConditionSatisfied(ref argIndex7))
+                    {
+                        string argtname6 = "EN";
+                        Unit argu3 = null;
+                        withBlock.labEN2.Text = Expression.Term(ref argtname6, u: ref argu3);
+                    }
+                    else
+                    {
+                        string argtname7 = "EN";
+                        withBlock.labEN2.Text = Expression.Term(ref argtname7, ref ru);
+                    }
+
+                    // ＥＮ数値
+                    object argIndex8 = "データ不明";
+                    if (ru.IsConditionSatisfied(ref argIndex8))
+                    {
+                        withBlock.txtEN2.Text = "???/???";
+                    }
+                    else
+                    {
+                        if (ru.EN < 1000)
+                        {
+                            string argbuf3 = SrcFormatter.Format(ru.EN);
+                            buf = GeneralLib.LeftPaddedString(ref argbuf3, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxEN)), 3));
+                        }
+                        else
+                        {
+                            buf = "???";
+                        }
+
+                        if (ru.MaxEN < 1000)
+                        {
+                            buf = buf + "/" + SrcFormatter.Format(ru.MaxEN);
+                        }
+                        else
+                        {
+                            buf = buf + "/???";
+                        }
+
+                        withBlock.txtEN2.Text = buf;
+                    }
+
+                    // ＥＮゲージ
+                    withBlock.picEN2.Cls();
+                    if (ru.EN > 0 | i < num)
+                    {
+                        withBlock.picEN2.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
+                    }
+
+                    // 表示内容を記録
+                    RightUnit = ru;
+                    RightUnitHPRatio = ru.HP / (double)ru.MaxHP;
+                    RightUnitENRatio = ru.EN / (double)ru.MaxEN;
+                }
+
+                // 前回の表示からのＨＰ、ＥＮの変化をアニメ表示
+
+                // 変化がない場合はアニメ表示の必要がないのでチェックしておく
+                num = 0;
+                if (lu is object)
+                {
+                    if (lu.HP / (double)lu.MaxHP != LeftUnitHPRatio | lu.EN / (double)lu.MaxEN != LeftUnitENRatio)
+                    {
+                        num = 8;
+                    }
+                }
+
+                if (ru is object)
+                {
+                    if (ru.HP != RightUnitHPRatio | ru.EN != RightUnitENRatio)
+                    {
+                        num = 8;
+                    }
+                }
+
+                // 右ボタンが押されている場合はアニメーション表示を短縮化
+                if (num > 0)
+                {
+                    if (IsRButtonPressed())
+                    {
+                        num = 2;
+                    }
+                }
+
+                var loopTo = num;
+                for (i = 1; i <= loopTo; i++)
+                {
+                    // 左側のユニット
+                    if (lu is object)
+                    {
+                        // ＨＰ
+                        if (lu.HP / (double)lu.MaxHP != LeftUnitHPRatio)
+                        {
+                            tmp = (int)((long)(lu.MaxHP * LeftUnitHPRatio * (num - i) + lu.HP * i) / num);
+                            object argIndex9 = "データ不明";
+                            if (lu.IsConditionSatisfied(ref argIndex9))
+                            {
+                                withBlock.txtHP1.Text = "?????/?????";
+                            }
+                            else
+                            {
+                                if (lu.HP < 100000)
+                                {
+                                    string argbuf4 = SrcFormatter.Format(tmp);
+                                    buf = GeneralLib.LeftPaddedString(ref argbuf4, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxHP)), 5));
+                                }
+                                else
+                                {
+                                    buf = "?????";
+                                }
+
+                                if (lu.MaxHP < 100000)
+                                {
+                                    buf = buf + "/" + SrcFormatter.Format(lu.MaxHP);
+                                }
+                                else
+                                {
+                                    buf = buf + "/?????";
+                                }
+
+                                withBlock.txtHP1.Text = buf;
+                            }
+
+                            withBlock.picHP1.Cls();
+                            if (lu.HP > 0 | i < num)
+                            {
+                                withBlock.picHP1.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
+                            }
+                        }
+
+                        // ＥＮ
+                        if (lu.EN / (double)lu.MaxEN != LeftUnitENRatio)
+                        {
+                            tmp = (int)((long)(lu.MaxEN * LeftUnitENRatio * (num - i) + lu.EN * i) / num);
+                            object argIndex10 = "データ不明";
+                            if (lu.IsConditionSatisfied(ref argIndex10))
+                            {
+                                withBlock.txtEN1.Text = "???/???";
+                            }
+                            else
+                            {
+                                if (lu.EN < 1000)
+                                {
+                                    string argbuf5 = SrcFormatter.Format(tmp);
+                                    buf = GeneralLib.LeftPaddedString(ref argbuf5, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxEN)), 3));
+                                }
+                                else
+                                {
+                                    buf = "???";
+                                }
+
+                                if (lu.MaxEN < 1000)
+                                {
+                                    buf = buf + "/" + SrcFormatter.Format(lu.MaxEN);
+                                }
+                                else
+                                {
+                                    buf = buf + "/???";
+                                }
+
+                                withBlock.txtEN1.Text = buf;
+                            }
+
+                            withBlock.picEN1.Cls();
+                            if (lu.EN > 0 | i < num)
+                            {
+                                withBlock.picEN1.Line(-1, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
+                            }
+                        }
+                    }
+
+                    // 右側のユニット
+                    if (ru is object)
+                    {
+                        // ＨＰ
+                        if (ru.HP / (double)ru.MaxHP != RightUnitHPRatio)
+                        {
+                            tmp = (int)((long)(ru.MaxHP * RightUnitHPRatio * (num - i) + ru.HP * i) / num);
+                            object argIndex11 = "データ不明";
+                            if (ru.IsConditionSatisfied(ref argIndex11))
+                            {
+                                withBlock.txtHP2.Text = "?????/?????";
+                            }
+                            else
+                            {
+                                if (ru.HP < 100000)
+                                {
+                                    string argbuf6 = SrcFormatter.Format(tmp);
+                                    buf = GeneralLib.LeftPaddedString(ref argbuf6, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxHP)), 5));
+                                }
+                                else
+                                {
+                                    buf = "?????";
+                                }
+
+                                if (ru.MaxHP < 100000)
+                                {
+                                    buf = buf + "/" + SrcFormatter.Format(ru.MaxHP);
+                                }
+                                else
+                                {
+                                    buf = buf + "/?????";
+                                }
+
+                                withBlock.txtHP2.Text = buf;
+                            }
+
+                            withBlock.picHP2.Cls();
+                            if (ru.HP > 0 | i < num)
+                            {
+                                withBlock.picHP2.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
+                            }
+                        }
+
+                        // ＥＮ
+                        if (ru.EN / (double)ru.MaxEN != RightUnitENRatio)
+                        {
+                            tmp = (int)((long)(ru.MaxEN * RightUnitENRatio * (num - i) + ru.EN * i) / num);
+                            object argIndex12 = "データ不明";
+                            if (ru.IsConditionSatisfied(ref argIndex12))
+                            {
+                                withBlock.txtEN2.Text = "???/???";
+                            }
+                            else
+                            {
+                                if (ru.EN < 1000)
+                                {
+                                    string argbuf7 = SrcFormatter.Format(tmp);
+                                    buf = GeneralLib.LeftPaddedString(ref argbuf7, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxEN)), 3));
+                                }
+                                else
+                                {
+                                    buf = "???";
+                                }
+
+                                if (ru.MaxEN < 1000)
+                                {
+                                    buf = buf + "/" + SrcFormatter.Format(ru.MaxEN);
+                                }
+                                else
+                                {
+                                    buf = buf + "/???";
+                                }
+
+                                withBlock.txtEN2.Text = buf;
+                            }
+
+                            withBlock.picEN2.Cls();
+                            if (ru.EN > 0 | i < num)
+                            {
+                                withBlock.picEN2.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
+                            }
+                        }
+                    }
+
+                    // リフレッシュ
+                    if (lu is object)
+                    {
+                        if (lu.HP / (double)lu.MaxHP != LeftUnitHPRatio)
+                        {
+                            withBlock.picHP1.Refresh();
+                            withBlock.txtHP1.Refresh();
+                        }
+
+                        if (lu.EN / (double)lu.MaxEN != LeftUnitENRatio)
+                        {
+                            withBlock.picEN1.Refresh();
+                            withBlock.txtEN1.Refresh();
+                        }
+                    }
+
+                    if (ru is object)
+                    {
+                        if (ru.HP / (double)ru.MaxHP != RightUnitHPRatio)
+                        {
+                            withBlock.picHP2.Refresh();
+                            withBlock.txtHP2.Refresh();
+                        }
+
+                        if (ru.EN / (double)ru.MaxEN != RightUnitENRatio)
+                        {
+                            withBlock.picEN2.Refresh();
+                            withBlock.txtEN2.Refresh();
+                        }
+                    }
+
+                    Sleep(20);
+                }
+
+                // 表示内容を記録
+                if (lu is object)
+                {
+                    LeftUnitHPRatio = lu.HP / (double)lu.MaxHP;
+                    LeftUnitENRatio = lu.EN / (double)lu.MaxEN;
+                }
+
+                if (ru is object)
+                {
+                    RightUnitHPRatio = ru.HP / (double)ru.MaxHP;
+                    RightUnitENRatio = ru.EN / (double)ru.MaxEN;
+                }
+
+                Application.DoEvents();
+            }
         }
 
         public void SaveMessageFormStatus()

@@ -47,9 +47,7 @@ namespace SRCCore.Units
             double hp_ratio, en_ratio;
             bool separate_parts;
             int orig_w;
-            // ADD START MARGE
             bool is_ext_anime_defined;
-            // ADD END MARGE
 
             wname = w.Name;
             wnickname = w.WeaponNickname();
@@ -124,7 +122,6 @@ namespace SRCCore.Units
             tarea = t.Area;
         begin:
             ;
-
 
             // 情報を更新
             Update();
@@ -465,15 +462,14 @@ namespace SRCCore.Units
             //    }
             //}
 
-            //if (attack_mode != "マップ攻撃" & attack_mode != "反射")
-            //{
-            //    // 武器使用による弾数＆ＥＮの消費
-            //    UseWeapon(w);
-            //    // 武器使用によるＥＮ消費の表示
-            //    var argu11 = this;
-            //    object argu21 = t;
-            //    GUI.UpdateMessageForm(argu11, argu21);
-            //}
+            if (attack_mode != "マップ攻撃" & attack_mode != "反射")
+            {
+                // TODO Impl
+                //// 武器使用による弾数＆ＥＮの消費
+                //UseWeapon(w);
+                // 武器使用によるＥＮ消費の表示
+                GUI.UpdateMessageForm(this, t);
+            }
 
             //// 防御手段による命中率低下
             //if (def_mode == "回避")
