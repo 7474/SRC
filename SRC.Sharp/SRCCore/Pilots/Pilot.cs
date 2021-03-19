@@ -21,8 +21,7 @@ namespace SRCCore.Pilots
             SRC = src;
             Data = data;
 
-            // Impl
-            //Update();
+            Update();
         }
 
         // パイロットデータへのポインタ

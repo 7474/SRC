@@ -7,6 +7,8 @@ using SRCCore.Models;
 using SRCCore.Units;
 using SRCCore.VB;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.Pilots
 {
@@ -28,60 +30,40 @@ namespace SRCCore.Pilots
             // 以前の一覧を削除
             colSkill.Clear();
 
-            //    // パイロットデータを参照しながら使用可能な特殊能力を検索
-            //    skill_num = 0;
-            //    foreach (SkillData currentSd in Data.colSkill)
-            //    {
-            //        sd = currentSd;
-            //        {
-            //            var withBlock1 = sd;
-            //            if (Level >= withBlock1.NecessaryLevel)
-            //            {
-            //                // 既に登録済み？
-            //                if (withBlock1.Name == "ＳＰ消費減少" | withBlock1.Name == "スペシャルパワー自動発動" | withBlock1.Name == "ハンター")
-            //                {
-            //                    // これらの特殊能力は同種の能力を複数持つことが出来る
-            //                    var loopTo1 = skill_num;
-            //                    for (i = 1; i <= loopTo1; i++)
-            //                    {
-            //                        if ((withBlock1.Name ?? "") == (skill_name[i] ?? ""))
-            //                        {
-            //                            if ((withBlock1.StrData ?? "") == (skill_data[i].StrData ?? ""))
-            //                            {
-            //                                // ただしデータ指定まで同一であれば同じ能力と見なす
-            //                                break;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //                else
-            //                {
-            //                    var loopTo2 = skill_num;
-            //                    for (i = 1; i <= loopTo2; i++)
-            //                    {
-            //                        if ((withBlock1.Name ?? "") == (skill_name[i] ?? ""))
-            //                        {
-            //                            break;
-            //                        }
-            //                    }
-            //                }
+            // パイロットデータを参照しながら使用可能な特殊能力を検索
+            var effectiveSkills = new List<SkillData>();
+            foreach (SkillData sd in Data.Skills)
+            {
+                if (Level >= sd.NecessaryLevel)
+                {
+                    SkillData registerd;
+                    // 既に登録済み？
+                    if (sd.Name == "ＳＰ消費減少" | sd.Name == "スペシャルパワー自動発動" | sd.Name == "ハンター")
+                    {
+                        // これらの特殊能力は同種の能力を複数持つことが出来る
+                        // ただしデータ指定まで同一であれば同じ能力と見なす
+                        registerd = effectiveSkills.FirstOrDefault(x => x.Name == sd.Name && x.StrData == x.StrData);
+                    }
+                    else
+                    {
+                        registerd = effectiveSkills.FirstOrDefault(x => x.Name == sd.Name);
+                    }
 
-            //                if (i > skill_num)
-            //                {
-            //                    // 未登録
-            //                    skill_num = (skill_num + 1);
-            //                    skill_name[skill_num] = withBlock1.Name;
-            //                    skill_data[skill_num] = sd;
-            //                }
-            //                else if (withBlock1.NecessaryLevel > skill_data[i].NecessaryLevel)
-            //                {
-            //                    // 登録済みである場合は習得レベルが高いものを優先
-            //                    skill_data[i] = sd;
-            //                }
-            //            }
-            //        }
-            //    }
+                    if (registerd == null)
+                    {
+                        // 未登録
+                        effectiveSkills.Add(sd);
+                    }
+                    else if (sd.NecessaryLevel > registerd.NecessaryLevel)
+                    {
+                        // 登録済みである場合は習得レベルが高いものを優先
+                        effectiveSkills.Remove(registerd);
+                        effectiveSkills.Add(sd);
+                    }
+                }
+            }
 
+            // TODO Impl
             //    // SetSkillコマンドで付加された特殊能力を検索
             //    string sname, alist, sdata;
             //    string buf;
@@ -179,50 +161,33 @@ namespace SRCCore.Pilots
             //        }
             //    }
 
-            //    // 使用可能な特殊能力を登録
-            //    {
-            //        var withBlock2 = colSkill;
-            //        var loopTo7 = skill_num;
-            //        for (i = 1; i <= loopTo7; i++)
-            //        {
-            //            if (skill_data[i] is object)
-            //            {
-            //                switch (skill_name[i] ?? "")
-            //                {
-            //                    case "ＳＰ消費減少":
-            //                    case "スペシャルパワー自動発動":
-            //                    case "ハンター":
-            //                        {
-            //                            var loopTo8 = (i - 1);
-            //                            for (j = 1; j <= loopTo8; j++)
-            //                            {
-            //                                if ((skill_name[i] ?? "") == (skill_name[j] ?? ""))
-            //                                {
-            //                                    break;
-            //                                }
-            //                            }
+            // 使用可能な特殊能力を登録
+            {
+                var i = 0;
+                foreach (var sd in effectiveSkills)
+                {
+                    i++;
+                    switch (sd.Name ?? "")
+                    {
+                        case "ＳＰ消費減少":
+                        case "スペシャルパワー自動発動":
+                        case "ハンター":
+                            if (colSkill.ContainsKey(sd.Name))
+                            {
+                                colSkill.Add(sd, sd.Name + ":" + i);
+                            }
+                            else
+                            {
+                                colSkill.Add(sd, sd.Name);
+                            }
+                            break;
 
-            //                            if (j >= i)
-            //                            {
-            //                                withBlock2.Add(skill_data[i], skill_name[i]);
-            //                            }
-            //                            else
-            //                            {
-            //                                withBlock2.Add(skill_data[i], skill_name[i] + ":" + SrcFormatter.Format(i));
-            //                            }
-
-            //                            break;
-            //                        }
-
-            //                    default:
-            //                        {
-            //                            withBlock2.Add(skill_data[i], skill_name[i]);
-            //                            break;
-            //                        }
-            //                }
-            //            }
-            //        }
-            //    }
+                        default:
+                            colSkill.Add(sd, sd.Name);
+                            break;
+                    }
+                }
+            }
             #endregion
 
             // これから下は能力値の計算
