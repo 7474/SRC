@@ -290,58 +290,48 @@ namespace SRCCore.Pilots
             IntuitionMod = 0;
 
             #region パイロット用特殊能力による修正
-            //    object argIndex23 = "超感覚";
-            //    string argref_mode21 = "";
-            //    lv = SkillLevel(argIndex23, ref_mode: argref_mode21);
-            //    if (lv > 0d)
-            //    {
-            //        HitMod = (HitMod + 2d * lv + 3d);
-            //        DodgeMod = (DodgeMod + 2d * lv + 3d);
-            //    }
+            lv = SkillLevel("超感覚", "");
+            if (lv > 0d)
+            {
+                HitMod = (int)(HitMod + 2d * lv + 3d);
+                DodgeMod = (int)(DodgeMod + 2d * lv + 3d);
+            }
 
-            //    object argIndex24 = "知覚強化";
-            //    string argref_mode22 = "";
-            //    lv = SkillLevel(argIndex24, ref_mode: argref_mode22);
-            //    if (lv > 0d)
-            //    {
-            //        HitMod = (HitMod + 2d * lv + 3d);
-            //        DodgeMod = (DodgeMod + 2d * lv + 3d);
-            //    }
+            lv = SkillLevel("知覚強化", "");
+            if (lv > 0d)
+            {
+                HitMod = (int)(HitMod + 2d * lv + 3d);
+                DodgeMod = (int)(DodgeMod + 2d * lv + 3d);
+            }
 
-            //    object argIndex25 = "念力";
-            //    string argref_mode23 = "";
-            //    lv = SkillLevel(argIndex25, ref_mode: argref_mode23);
-            //    if (lv > 0d)
-            //    {
-            //        HitMod = (HitMod + 2d * lv + 3d);
-            //        DodgeMod = (DodgeMod + 2d * lv + 3d);
-            //    }
+            lv = SkillLevel("念力", "");
+            if (lv > 0d)
+            {
+                HitMod = (int)(HitMod + 2d * lv + 3d);
+                DodgeMod = (int)(DodgeMod + 2d * lv + 3d);
+            }
 
-            //    object argIndex26 = "超反応";
-            //    string argref_mode24 = "";
-            //    lv = SkillLevel(argIndex26, ref_mode: argref_mode24);
-            //    HitMod = (HitMod + 2d * lv);
-            //    DodgeMod = (DodgeMod + 2d * lv);
-            //    string argsname = "サイボーグ";
-            //    if (IsSkillAvailable(argsname))
-            //    {
-            //        HitMod = (HitMod + 5);
-            //        DodgeMod = (DodgeMod + 5);
-            //    }
+            lv = SkillLevel("超反応", "");
+            HitMod = (int)(HitMod + 2d * lv);
+            DodgeMod = (int)(DodgeMod + 2d * lv);
 
-            //    string argsname1 = "悟り";
-            //    if (IsSkillAvailable(argsname1))
-            //    {
-            //        HitMod = (HitMod + 10);
-            //        DodgeMod = (DodgeMod + 10);
-            //    }
+            if (IsSkillAvailable("サイボーグ"))
+            {
+                HitMod = (HitMod + 5);
+                DodgeMod = (DodgeMod + 5);
+            }
 
-            //    string argsname2 = "超能力";
-            //    if (IsSkillAvailable(argsname2))
-            //    {
-            //        HitMod = (HitMod + 5);
-            //        DodgeMod = (DodgeMod + 5);
-            //    }
+            if (IsSkillAvailable("悟り"))
+            {
+                HitMod = (HitMod + 10);
+                DodgeMod = (DodgeMod + 10);
+            }
+
+            if (IsSkillAvailable("超能力"))
+            {
+                HitMod = (HitMod + 5);
+                DodgeMod = (DodgeMod + 5);
+            }
             #endregion
 
             #region これから下はユニットによる修正値の計算
