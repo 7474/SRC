@@ -148,7 +148,7 @@ namespace SRCCore.Units
         public IList<UnitWeapon> Weapons => WData.AsReadOnly();
 
         // アビリティデータ
-        private AbilityData[] adata;
+        private AbilityData[] adata = new AbilityData[] { };
 
         // 選択したマップ攻撃の攻撃力
         private int SelectedMapAttackPower;

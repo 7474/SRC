@@ -13,7 +13,6 @@ namespace SRCCore.Units
     // === アビリティ関連処理 ===
     public partial class Unit
     {
-
         public IEnumerable<AbilityData> AbilityDatas => new List<AbilityData>(adata);
 
         //        // アビリティ
