@@ -3,6 +3,8 @@ using SRCCore;
 using SRCCore.Commands;
 using SRCCore.Lib;
 using SRCCore.Units;
+using SRCCore.VB;
+using SRCSharpForm.Extensions;
 using SRCSharpForm.Resoruces;
 using System;
 using System.Collections.Generic;
@@ -396,617 +398,570 @@ namespace SRCSharpForm
             Application.DoEvents();
         }
 
+
+        private Brush BarBackBrush = new SolidBrush(Color.FromArgb(0xc0, 0, 0));
+        private Brush BarForeBrush = new SolidBrush(Color.FromArgb(0, 0xc0, 0));
         public void UpdateMessageForm(Unit u1, Unit u2)
         {
-            //Unit lu, ru;
-            //int ret;
-            //var i = default(short);
-            //string buf;
-            //var num = default(short);
-            //int tmp;
-            //{
-            //    var withBlock = My.MyProject.Forms.frmMessage;
-            //    // ウィンドウにユニット情報が表示されていない場合はそのまま終了
-            //    if (withBlock.Visible)
-            //    {
-            //        if (!withBlock.picUnit1.Visible & !withBlock.picUnit2.Visible)
-            //        {
-            //            return;
-            //        }
-            //    }
+            Unit lu, ru;
+            {
+                // ウィンドウにユニット情報が表示されていない場合はそのまま終了
+                if (frmMessage.Visible)
+                {
+                    if (!frmMessage.picUnit1.Visible & !frmMessage.picUnit2.Visible)
+                    {
+                        return;
+                    }
+                }
 
-            //    // luを左に表示するユニット、ruを右に表示するユニットに設定
-            //    // UPGRADE_NOTE: IsMissing() は IsNothing() に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="8AE1CB93-37AB-439A-A4FF-BE3B6760BB23"' をクリックしてください。
-            //    if (Information.IsNothing(u2))
-            //    {
-            //        // １体のユニットのみ表示
-            //        if (u1.Party == "味方" | u1.Party == "ＮＰＣ")
-            //        {
-            //            // UPGRADE_NOTE: オブジェクト lu をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //            lu = null;
-            //            ru = u1;
-            //        }
-            //        else
-            //        {
-            //            lu = u1;
-            //            // UPGRADE_NOTE: オブジェクト ru をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //            ru = null;
-            //        }
-            //    }
-            //    else if (u2 is null)
-            //    {
-            //        // 反射攻撃
-            //        // 前回表示されたユニットをそのまま使用
-            //        lu = LeftUnit;
-            //        ru = RightUnit;
-            //    }
-            //    else if ((ReferenceEquals(u2, LeftUnit) | ReferenceEquals(u1, RightUnit)) & !ReferenceEquals(LeftUnit, RightUnit))
-            //    {
-            //        lu = (Unit)u2;
-            //        ru = u1;
-            //    }
-            //    else
-            //    {
-            //        lu = u1;
-            //        ru = (Unit)u2;
-            //    }
+                // luを左に表示するユニット、ruを右に表示するユニットに設定
+                // XXX IsNothing と Null の差分とか考慮してねー
+                //if (Information.IsNothing(u2))
+                if (u2 is null)
+                {
+                    // １体のユニットのみ表示
+                    if (u1.Party == "味方" | u1.Party == "ＮＰＣ")
+                    {
+                        lu = null;
+                        ru = u1;
+                    }
+                    else
+                    {
+                        lu = u1;
+                        ru = null;
+                    }
+                }
+                else if (u2 is null)
+                {
+                    // 反射攻撃
+                    // 前回表示されたユニットをそのまま使用
+                    lu = LeftUnit;
+                    ru = RightUnit;
+                }
+                else if ((ReferenceEquals(u2, LeftUnit) | ReferenceEquals(u1, RightUnit)) & !ReferenceEquals(LeftUnit, RightUnit))
+                {
+                    lu = u2;
+                    ru = u1;
+                }
+                else
+                {
+                    lu = u1;
+                    ru = u2;
+                }
 
-            //    // 現在表示されている順番に応じてユニットの入れ替え
-            //    if (ReferenceEquals(lu, RightUnit) & ReferenceEquals(ru, LeftUnit) & !ReferenceEquals(LeftUnit, RightUnit))
-            //    {
-            //        lu = LeftUnit;
-            //        ru = RightUnit;
-            //    }
+                // 現在表示されている順番に応じてユニットの入れ替え
+                if (ReferenceEquals(lu, RightUnit) & ReferenceEquals(ru, LeftUnit) & !ReferenceEquals(LeftUnit, RightUnit))
+                {
+                    lu = LeftUnit;
+                    ru = RightUnit;
+                }
 
-            //    // 表示するユニットのＧＵＩ部品を表示
-            //    if (lu is object)
-            //    {
-            //        if (!withBlock.labHP1.Visible)
-            //        {
-            //            withBlock.labHP1.Visible = true;
-            //            withBlock.labEN1.Visible = true;
-            //            withBlock.picHP1.Visible = true;
-            //            withBlock.picEN1.Visible = true;
-            //            withBlock.txtHP1.Visible = true;
-            //            withBlock.txtEN1.Visible = true;
-            //            withBlock.picUnit1.Visible = true;
-            //        }
-            //    }
+                // 表示するユニットのＧＵＩ部品を表示
+                if (lu != null)
+                {
+                    if (!frmMessage.labHP1.Visible)
+                    {
+                        frmMessage.labHP1.Visible = true;
+                        frmMessage.labEN1.Visible = true;
+                        frmMessage.picHP1.Visible = true;
+                        frmMessage.picEN1.Visible = true;
+                        frmMessage.txtHP1.Visible = true;
+                        frmMessage.txtEN1.Visible = true;
+                        frmMessage.picUnit1.Visible = true;
+                    }
+                }
 
-            //    if (ru is object)
-            //    {
-            //        if (!withBlock.labHP2.Visible)
-            //        {
-            //            withBlock.labHP2.Visible = true;
-            //            withBlock.labEN2.Visible = true;
-            //            withBlock.picHP2.Visible = true;
-            //            withBlock.picEN2.Visible = true;
-            //            withBlock.txtHP2.Visible = true;
-            //            withBlock.txtEN2.Visible = true;
-            //            withBlock.picUnit2.Visible = true;
-            //        }
-            //    }
+                if (ru != null)
+                {
+                    if (!frmMessage.labHP2.Visible)
+                    {
+                        frmMessage.labHP2.Visible = true;
+                        frmMessage.labEN2.Visible = true;
+                        frmMessage.picHP2.Visible = true;
+                        frmMessage.picEN2.Visible = true;
+                        frmMessage.txtHP2.Visible = true;
+                        frmMessage.txtEN2.Visible = true;
+                        frmMessage.picUnit2.Visible = true;
+                    }
+                }
 
-            //    // 未表示のユニットを表示する
-            //    if (lu is object & !ReferenceEquals(lu, LeftUnit))
-            //    {
-            //        // 左のユニットが未表示なので表示する
+                string buf;
+                // 未表示のユニットを表示する
+                if (lu is object & !ReferenceEquals(lu, LeftUnit))
+                {
+                    // 左のユニットが未表示なので表示する
 
-            //        // ユニット画像
-            //        if (lu.BitmapID > 0)
-            //        {
-            //            if (string.IsNullOrEmpty(Map.MapDrawMode))
-            //            {
-            //                ret = BitBlt(withBlock.picUnit1.hDC, 0, 0, 32, 32, MainForm.picUnitBitmap.hDC, 32 * ((int)lu.BitmapID % 15), 96 * ((int)lu.BitmapID / 15), SRCCOPY);
-            //            }
-            //            else
-            //            {
-            //                var argpic = withBlock.picUnit1;
-            //                string argfname = "";
-            //                LoadUnitBitmap(ref lu, ref argpic, 0, 0, true, fname: ref argfname);
-            //                withBlock.picUnit1 = argpic;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            // 非表示のユニットの場合はユニットのいる地形タイルを表示
-            //            ret = BitBlt(withBlock.picUnit1.hDC, 0, 0, 32, 32, MainForm.picBack.hDC, 32 * ((int)lu.x - 1), 32 * ((int)lu.y - 1), SRCCOPY);
-            //        }
+                    // ユニット画像
+                    frmMessage.picUnit1.NewImageIfNull();
+                    using (var g = Graphics.FromImage(frmMessage.picUnit1.Image))
+                    {
+                        MainForm.DrawUnit(g, Map.CellAtPoint(lu.x, lu.y), lu, new Rectangle(0, 0, frmMessage.picUnit1.Width, frmMessage.picUnit1.Height));
+                    }
+                    // TODO BitmapID
+                    //if (lu.BitmapID > 0)
+                    //{
 
-            //        withBlock.picUnit1.Refresh();
+                    //    if (string.IsNullOrEmpty(Map.MapDrawMode))
+                    //    {
+                    //        ret = BitBlt(frmMessage.picUnit1.hDC, 0, 0, 32, 32, MainForm.picUnitBitmap.hDC, 32 * ((int)lu.BitmapID % 15), 96 * ((int)lu.BitmapID / 15), SRCCOPY);
+                    //    }
+                    //    else
+                    //    {
+                    //        var argpic = frmMessage.picUnit1;
+                    //        string argfname = "";
+                    //        LoadUnitBitmap(lu, argpic, 0, 0, true, fname: argfname);
+                    //        frmMessage.picUnit1 = argpic;
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    // 非表示のユニットの場合はユニットのいる地形タイルを表示
+                    //    ret = BitBlt(frmMessage.picUnit1.hDC, 0, 0, 32, 32, MainForm.picBack.hDC, 32 * ((int)lu.x - 1), 32 * ((int)lu.y - 1), SRCCOPY);
+                    //}
 
-            //        // ＨＰ名称
-            //        object argIndex1 = "データ不明";
-            //        if (lu.IsConditionSatisfied(ref argIndex1))
-            //        {
-            //            string argtname = "HP";
-            //            Unit argu = null;
-            //            withBlock.labHP1.Text = Expression.Term(ref argtname, u: ref argu);
-            //        }
-            //        else
-            //        {
-            //            string argtname1 = "HP";
-            //            withBlock.labHP1.Text = Expression.Term(ref argtname1, ref lu);
-            //        }
+                    frmMessage.picUnit1.Refresh();
 
-            //        // ＨＰ数値
-            //        object argIndex2 = "データ不明";
-            //        if (lu.IsConditionSatisfied(ref argIndex2))
-            //        {
-            //            withBlock.txtHP1.Text = "?????/?????";
-            //        }
-            //        else
-            //        {
-            //            if (lu.HP < 100000)
-            //            {
-            //                string argbuf = SrcFormatter.Format(lu.HP);
-            //                buf = GeneralLib.LeftPaddedString(ref argbuf, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxHP)), 5));
-            //            }
-            //            else
-            //            {
-            //                buf = "?????";
-            //            }
+                    // ＨＰ名称
+                    if (lu.IsConditionSatisfied("データ不明"))
+                    {
+                        frmMessage.labHP1.Text = Expression.Term("HP", null);
+                    }
+                    else
+                    {
+                        frmMessage.labHP1.Text = Expression.Term("HP", lu);
+                    }
 
-            //            if (lu.MaxHP < 100000)
-            //            {
-            //                buf = buf + "/" + SrcFormatter.Format(lu.MaxHP);
-            //            }
-            //            else
-            //            {
-            //                buf = buf + "/?????";
-            //            }
+                    // ＨＰ数値
+                    if (lu.IsConditionSatisfied("データ不明"))
+                    {
+                        frmMessage.txtHP1.Text = "?????/?????";
+                    }
+                    else
+                    {
+                        if (lu.HP < 100000)
+                        {
+                            string argbuf = SrcFormatter.Format(lu.HP);
+                            buf = GeneralLib.LeftPaddedString(argbuf, GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxHP)), 5));
+                        }
+                        else
+                        {
+                            buf = "?????";
+                        }
 
-            //            withBlock.txtHP1.Text = buf;
-            //        }
+                        if (lu.MaxHP < 100000)
+                        {
+                            buf = buf + "/" + SrcFormatter.Format(lu.MaxHP);
+                        }
+                        else
+                        {
+                            buf = buf + "/?????";
+                        }
 
-            //        // ＨＰゲージ
-            //        withBlock.picHP1.Cls();
-            //        if (lu.HP > 0 | i < num)
-            //        {
-            //            withBlock.picHP1.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-            //        }
+                        frmMessage.txtHP1.Text = buf;
+                    }
 
-            //        // ＥＮ名称
-            //        object argIndex3 = "データ不明";
-            //        if (lu.IsConditionSatisfied(ref argIndex3))
-            //        {
-            //            string argtname2 = "EN";
-            //            Unit argu1 = null;
-            //            withBlock.labEN1.Text = Expression.Term(ref argtname2, u: ref argu1);
-            //        }
-            //        else
-            //        {
-            //            string argtname3 = "EN";
-            //            withBlock.labEN1.Text = Expression.Term(ref argtname3, ref lu);
-            //        }
+                    // ＨＰゲージ
+                    frmMessage.picHP1.DrawBar((float)lu.HP / lu.MaxHP, BarBackBrush, BarForeBrush);
 
-            //        // ＥＮ数値
-            //        object argIndex4 = "データ不明";
-            //        if (lu.IsConditionSatisfied(ref argIndex4))
-            //        {
-            //            withBlock.txtEN1.Text = "???/???";
-            //        }
-            //        else
-            //        {
-            //            if (lu.EN < 1000)
-            //            {
-            //                string argbuf1 = SrcFormatter.Format(lu.EN);
-            //                buf = GeneralLib.LeftPaddedString(ref argbuf1, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxEN)), 3));
-            //            }
-            //            else
-            //            {
-            //                buf = "???";
-            //            }
+                    // ＥＮ名称
+                    if (lu.IsConditionSatisfied("データ不明"))
+                    {
+                        frmMessage.labEN1.Text = Expression.Term("EN", null);
+                    }
+                    else
+                    {
+                        frmMessage.labEN1.Text = Expression.Term("EN", lu);
+                    }
 
-            //            if (lu.MaxEN < 1000)
-            //            {
-            //                buf = buf + "/" + SrcFormatter.Format(lu.MaxEN);
-            //            }
-            //            else
-            //            {
-            //                buf = buf + "/???";
-            //            }
+                    // ＥＮ数値
+                    if (lu.IsConditionSatisfied("データ不明"))
+                    {
+                        frmMessage.txtEN1.Text = "???/???";
+                    }
+                    else
+                    {
+                        if (lu.EN < 1000)
+                        {
+                            string argbuf1 = SrcFormatter.Format(lu.EN);
+                            buf = GeneralLib.LeftPaddedString(argbuf1, GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxEN)), 3));
+                        }
+                        else
+                        {
+                            buf = "???";
+                        }
 
-            //            withBlock.txtEN1.Text = buf;
-            //        }
+                        if (lu.MaxEN < 1000)
+                        {
+                            buf = buf + "/" + SrcFormatter.Format(lu.MaxEN);
+                        }
+                        else
+                        {
+                            buf = buf + "/???";
+                        }
 
-            //        // ＥＮゲージ
-            //        withBlock.picEN1.Cls();
-            //        if (lu.EN > 0 | i < num)
-            //        {
-            //            withBlock.picEN1.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-            //        }
+                        frmMessage.txtEN1.Text = buf;
+                    }
 
-            //        // 表示内容を記録
-            //        LeftUnit = lu;
-            //        LeftUnitHPRatio = lu.HP / (double)lu.MaxHP;
-            //        LeftUnitENRatio = lu.EN / (double)lu.MaxEN;
-            //    }
+                    // ＥＮゲージ
+                    frmMessage.picEN1.DrawBar((float)lu.EN / lu.MaxEN, BarBackBrush, BarForeBrush);
 
-            //    if (ru is object & !ReferenceEquals(RightUnit, ru))
-            //    {
-            //        // 右のユニットが未表示なので表示する
+                    // 表示内容を記録
+                    LeftUnit = lu;
+                    LeftUnitHPRatio = lu.HP / (double)lu.MaxHP;
+                    LeftUnitENRatio = lu.EN / (double)lu.MaxEN;
+                }
 
-            //        // ユニット画像
-            //        if (ru.BitmapID > 0)
-            //        {
-            //            if (string.IsNullOrEmpty(Map.MapDrawMode))
-            //            {
-            //                ret = BitBlt(withBlock.picUnit2.hDC, 0, 0, 32, 32, MainForm.picUnitBitmap.hDC, 32 * ((int)ru.BitmapID % 15), 96 * ((int)ru.BitmapID / 15), SRCCOPY);
-            //            }
-            //            else
-            //            {
-            //                var argpic1 = withBlock.picUnit2;
-            //                string argfname1 = "";
-            //                LoadUnitBitmap(ref ru, ref argpic1, 0, 0, true, fname: ref argfname1);
-            //                withBlock.picUnit2 = argpic1;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            // 非表示のユニットの場合はユニットのいる地形タイルを表示
-            //            ret = BitBlt(withBlock.picUnit2.hDC, 0, 0, 32, 32, MainForm.picBack.hDC, 32 * ((int)ru.x - 1), 32 * ((int)ru.y - 1), SRCCOPY);
-            //        }
+                if (ru is object & !ReferenceEquals(RightUnit, ru))
+                {
+                    // 右のユニットが未表示なので表示する
 
-            //        withBlock.picUnit2.Refresh();
+                    // ユニット画像
+                    frmMessage.picUnit2.NewImageIfNull();
+                    using (var g = Graphics.FromImage(frmMessage.picUnit2.Image))
+                    {
+                        MainForm.DrawUnit(g, Map.CellAtPoint(ru.x, ru.y), ru, new Rectangle(0, 0, frmMessage.picUnit2.Width, frmMessage.picUnit2.Height));
+                    }
+                    // TODO BitmapID
+                    //if (ru.BitmapID > 0)
+                    //{
+                    //    if (string.IsNullOrEmpty(Map.MapDrawMode))
+                    //    {
+                    //        ret = BitBlt(frmMessage.picUnit2.hDC, 0, 0, 32, 32, MainForm.picUnitBitmap.hDC, 32 * ((int)ru.BitmapID % 15), 96 * ((int)ru.BitmapID / 15), SRCCOPY);
+                    //    }
+                    //    else
+                    //    {
+                    //        var argpic1 = frmMessage.picUnit2;
+                    //        string argfname1 = "";
+                    //        LoadUnitBitmap(ru, argpic1, 0, 0, true, fname: argfname1);
+                    //        frmMessage.picUnit2 = argpic1;
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    // 非表示のユニットの場合はユニットのいる地形タイルを表示
+                    //    ret = BitBlt(frmMessage.picUnit2.hDC, 0, 0, 32, 32, MainForm.picBack.hDC, 32 * ((int)ru.x - 1), 32 * ((int)ru.y - 1), SRCCOPY);
+                    //}
 
-            //        // ＨＰ数値
-            //        object argIndex5 = "データ不明";
-            //        if (ru.IsConditionSatisfied(ref argIndex5))
-            //        {
-            //            string argtname4 = "HP";
-            //            Unit argu2 = null;
-            //            withBlock.labHP2.Text = Expression.Term(ref argtname4, u: ref argu2);
-            //        }
-            //        else
-            //        {
-            //            string argtname5 = "HP";
-            //            withBlock.labHP2.Text = Expression.Term(ref argtname5, ref ru);
-            //        }
+                    frmMessage.picUnit2.Refresh();
 
-            //        // ＨＰ数値
-            //        object argIndex6 = "データ不明";
-            //        if (ru.IsConditionSatisfied(ref argIndex6))
-            //        {
-            //            withBlock.txtHP2.Text = "?????/?????";
-            //        }
-            //        else
-            //        {
-            //            if (ru.HP < 100000)
-            //            {
-            //                string argbuf2 = SrcFormatter.Format(ru.HP);
-            //                buf = GeneralLib.LeftPaddedString(ref argbuf2, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxHP)), 5));
-            //            }
-            //            else
-            //            {
-            //                buf = "?????";
-            //            }
+                    // ＨＰ数値
+                    if (ru.IsConditionSatisfied("データ不明"))
+                    {
+                        frmMessage.labHP2.Text = Expression.Term("HP", null);
+                    }
+                    else
+                    {
+                        frmMessage.labHP2.Text = Expression.Term("HP", ru);
+                    }
 
-            //            if (ru.MaxHP < 100000)
-            //            {
-            //                buf = buf + "/" + SrcFormatter.Format(ru.MaxHP);
-            //            }
-            //            else
-            //            {
-            //                buf = buf + "/?????";
-            //            }
+                    // ＨＰ数値
+                    if (ru.IsConditionSatisfied("データ不明"))
+                    {
+                        frmMessage.txtHP2.Text = "?????/?????";
+                    }
+                    else
+                    {
+                        if (ru.HP < 100000)
+                        {
+                            string argbuf2 = SrcFormatter.Format(ru.HP);
+                            buf = GeneralLib.LeftPaddedString(argbuf2, GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxHP)), 5));
+                        }
+                        else
+                        {
+                            buf = "?????";
+                        }
 
-            //            withBlock.txtHP2.Text = buf;
-            //        }
+                        if (ru.MaxHP < 100000)
+                        {
+                            buf = buf + "/" + SrcFormatter.Format(ru.MaxHP);
+                        }
+                        else
+                        {
+                            buf = buf + "/?????";
+                        }
 
-            //        // ＨＰゲージ
-            //        withBlock.picHP2.Cls();
-            //        if (ru.HP > 0 | i < num)
-            //        {
-            //            withBlock.picHP2.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-            //        }
+                        frmMessage.txtHP2.Text = buf;
+                    }
 
-            //        // ＥＮ名称
-            //        object argIndex7 = "データ不明";
-            //        if (ru.IsConditionSatisfied(ref argIndex7))
-            //        {
-            //            string argtname6 = "EN";
-            //            Unit argu3 = null;
-            //            withBlock.labEN2.Text = Expression.Term(ref argtname6, u: ref argu3);
-            //        }
-            //        else
-            //        {
-            //            string argtname7 = "EN";
-            //            withBlock.labEN2.Text = Expression.Term(ref argtname7, ref ru);
-            //        }
+                    // ＨＰゲージ
+                    frmMessage.picHP2.DrawBar((float)ru.HP / ru.MaxHP, BarBackBrush, BarForeBrush);
 
-            //        // ＥＮ数値
-            //        object argIndex8 = "データ不明";
-            //        if (ru.IsConditionSatisfied(ref argIndex8))
-            //        {
-            //            withBlock.txtEN2.Text = "???/???";
-            //        }
-            //        else
-            //        {
-            //            if (ru.EN < 1000)
-            //            {
-            //                string argbuf3 = SrcFormatter.Format(ru.EN);
-            //                buf = GeneralLib.LeftPaddedString(ref argbuf3, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxEN)), 3));
-            //            }
-            //            else
-            //            {
-            //                buf = "???";
-            //            }
+                    // ＥＮ名称
+                    if (ru.IsConditionSatisfied("データ不明"))
+                    {
+                        frmMessage.labEN2.Text = Expression.Term("EN", null);
+                    }
+                    else
+                    {
+                        frmMessage.labEN2.Text = Expression.Term("EN", ru);
+                    }
 
-            //            if (ru.MaxEN < 1000)
-            //            {
-            //                buf = buf + "/" + SrcFormatter.Format(ru.MaxEN);
-            //            }
-            //            else
-            //            {
-            //                buf = buf + "/???";
-            //            }
+                    // ＥＮ数値
+                    if (ru.IsConditionSatisfied("データ不明"))
+                    {
+                        frmMessage.txtEN2.Text = "???/???";
+                    }
+                    else
+                    {
+                        if (ru.EN < 1000)
+                        {
+                            string argbuf3 = SrcFormatter.Format(ru.EN);
+                            buf = GeneralLib.LeftPaddedString(argbuf3, GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxEN)), 3));
+                        }
+                        else
+                        {
+                            buf = "???";
+                        }
 
-            //            withBlock.txtEN2.Text = buf;
-            //        }
+                        if (ru.MaxEN < 1000)
+                        {
+                            buf = buf + "/" + SrcFormatter.Format(ru.MaxEN);
+                        }
+                        else
+                        {
+                            buf = buf + "/???";
+                        }
 
-            //        // ＥＮゲージ
-            //        withBlock.picEN2.Cls();
-            //        if (ru.EN > 0 | i < num)
-            //        {
-            //            withBlock.picEN2.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-            //        }
+                        frmMessage.txtEN2.Text = buf;
+                    }
 
-            //        // 表示内容を記録
-            //        RightUnit = ru;
-            //        RightUnitHPRatio = ru.HP / (double)ru.MaxHP;
-            //        RightUnitENRatio = ru.EN / (double)ru.MaxEN;
-            //    }
+                    // ＥＮゲージ
+                    frmMessage.picEN2.DrawBar((float)ru.EN / ru.MaxEN, BarBackBrush, BarForeBrush);
 
-            //    // 前回の表示からのＨＰ、ＥＮの変化をアニメ表示
+                    // 表示内容を記録
+                    RightUnit = ru;
+                    RightUnitHPRatio = ru.HP / (double)ru.MaxHP;
+                    RightUnitENRatio = ru.EN / (double)ru.MaxEN;
+                }
 
-            //    // 変化がない場合はアニメ表示の必要がないのでチェックしておく
-            //    num = 0;
-            //    if (lu is object)
-            //    {
-            //        if (lu.HP / (double)lu.MaxHP != LeftUnitHPRatio | lu.EN / (double)lu.MaxEN != LeftUnitENRatio)
-            //        {
-            //            num = 8;
-            //        }
-            //    }
+                // 前回の表示からのＨＰ、ＥＮの変化をアニメ表示
 
-            //    if (ru is object)
-            //    {
-            //        if (ru.HP != RightUnitHPRatio | ru.EN != RightUnitENRatio)
-            //        {
-            //            num = 8;
-            //        }
-            //    }
+                // 変化がない場合はアニメ表示の必要がないのでチェックしておく
+                var num = 0;
+                if (lu is object)
+                {
+                    if (lu.HP / (double)lu.MaxHP != LeftUnitHPRatio | lu.EN / (double)lu.MaxEN != LeftUnitENRatio)
+                    {
+                        num = 8;
+                    }
+                }
 
-            //    // 右ボタンが押されている場合はアニメーション表示を短縮化
-            //    if (num > 0)
-            //    {
-            //        if (IsRButtonPressed())
-            //        {
-            //            num = 2;
-            //        }
-            //    }
+                if (ru is object)
+                {
+                    // XXX これ常に真になるんじゃないか？
+                    if (ru.HP != RightUnitHPRatio | ru.EN != RightUnitENRatio)
+                    {
+                        num = 8;
+                    }
+                }
 
-            //    var loopTo = num;
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        // 左側のユニット
-            //        if (lu is object)
-            //        {
-            //            // ＨＰ
-            //            if (lu.HP / (double)lu.MaxHP != LeftUnitHPRatio)
-            //            {
-            //                tmp = (int)((long)(lu.MaxHP * LeftUnitHPRatio * (num - i) + lu.HP * i) / num);
-            //                object argIndex9 = "データ不明";
-            //                if (lu.IsConditionSatisfied(ref argIndex9))
-            //                {
-            //                    withBlock.txtHP1.Text = "?????/?????";
-            //                }
-            //                else
-            //                {
-            //                    if (lu.HP < 100000)
-            //                    {
-            //                        string argbuf4 = SrcFormatter.Format(tmp);
-            //                        buf = GeneralLib.LeftPaddedString(ref argbuf4, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxHP)), 5));
-            //                    }
-            //                    else
-            //                    {
-            //                        buf = "?????";
-            //                    }
+                // 右ボタンが押されている場合はアニメーション表示を短縮化
+                if (num > 0)
+                {
+                    if (IsRButtonPressed())
+                    {
+                        num = 2;
+                    }
+                }
 
-            //                    if (lu.MaxHP < 100000)
-            //                    {
-            //                        buf = buf + "/" + SrcFormatter.Format(lu.MaxHP);
-            //                    }
-            //                    else
-            //                    {
-            //                        buf = buf + "/?????";
-            //                    }
+                for (var i = 1; i <= num; i++)
+                {
+                    // 左側のユニット
+                    if (lu is object)
+                    {
+                        // ＨＰ
+                        if (lu.HP / (double)lu.MaxHP != LeftUnitHPRatio)
+                        {
+                            var tmp = (int)((lu.MaxHP * LeftUnitHPRatio * (num - i) + lu.HP * i) / num);
+                            if (lu.IsConditionSatisfied("データ不明"))
+                            {
+                                frmMessage.txtHP1.Text = "?????/?????";
+                            }
+                            else
+                            {
+                                if (lu.HP < 100000)
+                                {
+                                    string argbuf4 = SrcFormatter.Format(tmp);
+                                    buf = GeneralLib.LeftPaddedString(argbuf4, GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxHP)), 5));
+                                }
+                                else
+                                {
+                                    buf = "?????";
+                                }
 
-            //                    withBlock.txtHP1.Text = buf;
-            //                }
+                                if (lu.MaxHP < 100000)
+                                {
+                                    buf = buf + "/" + SrcFormatter.Format(lu.MaxHP);
+                                }
+                                else
+                                {
+                                    buf = buf + "/?????";
+                                }
 
-            //                withBlock.picHP1.Cls();
-            //                if (lu.HP > 0 | i < num)
-            //                {
-            //                    withBlock.picHP1.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-            //                }
-            //            }
+                                frmMessage.txtHP1.Text = buf;
+                            }
 
-            //            // ＥＮ
-            //            if (lu.EN / (double)lu.MaxEN != LeftUnitENRatio)
-            //            {
-            //                tmp = (int)((long)(lu.MaxEN * LeftUnitENRatio * (num - i) + lu.EN * i) / num);
-            //                object argIndex10 = "データ不明";
-            //                if (lu.IsConditionSatisfied(ref argIndex10))
-            //                {
-            //                    withBlock.txtEN1.Text = "???/???";
-            //                }
-            //                else
-            //                {
-            //                    if (lu.EN < 1000)
-            //                    {
-            //                        string argbuf5 = SrcFormatter.Format(tmp);
-            //                        buf = GeneralLib.LeftPaddedString(ref argbuf5, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxEN)), 3));
-            //                    }
-            //                    else
-            //                    {
-            //                        buf = "???";
-            //                    }
+                            frmMessage.picHP1.DrawBar((float)tmp / lu.MaxHP, BarBackBrush, BarForeBrush);
+                        }
 
-            //                    if (lu.MaxEN < 1000)
-            //                    {
-            //                        buf = buf + "/" + SrcFormatter.Format(lu.MaxEN);
-            //                    }
-            //                    else
-            //                    {
-            //                        buf = buf + "/???";
-            //                    }
+                        // ＥＮ
+                        if (lu.EN / (double)lu.MaxEN != LeftUnitENRatio)
+                        {
+                            var tmp = (int)((lu.MaxEN * LeftUnitENRatio * (num - i) + lu.EN * i) / num);
+                            if (lu.IsConditionSatisfied("データ不明"))
+                            {
+                                frmMessage.txtEN1.Text = "???/???";
+                            }
+                            else
+                            {
+                                if (lu.EN < 1000)
+                                {
+                                    string argbuf5 = SrcFormatter.Format(tmp);
+                                    buf = GeneralLib.LeftPaddedString(argbuf5, GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxEN)), 3));
+                                }
+                                else
+                                {
+                                    buf = "???";
+                                }
 
-            //                    withBlock.txtEN1.Text = buf;
-            //                }
+                                if (lu.MaxEN < 1000)
+                                {
+                                    buf = buf + "/" + SrcFormatter.Format(lu.MaxEN);
+                                }
+                                else
+                                {
+                                    buf = buf + "/???";
+                                }
 
-            //                withBlock.picEN1.Cls();
-            //                if (lu.EN > 0 | i < num)
-            //                {
-            //                    withBlock.picEN1.Line(-1, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-            //                }
-            //            }
-            //        }
+                                frmMessage.txtEN1.Text = buf;
+                            }
 
-            //        // 右側のユニット
-            //        if (ru is object)
-            //        {
-            //            // ＨＰ
-            //            if (ru.HP / (double)ru.MaxHP != RightUnitHPRatio)
-            //            {
-            //                tmp = (int)((long)(ru.MaxHP * RightUnitHPRatio * (num - i) + ru.HP * i) / num);
-            //                object argIndex11 = "データ不明";
-            //                if (ru.IsConditionSatisfied(ref argIndex11))
-            //                {
-            //                    withBlock.txtHP2.Text = "?????/?????";
-            //                }
-            //                else
-            //                {
-            //                    if (ru.HP < 100000)
-            //                    {
-            //                        string argbuf6 = SrcFormatter.Format(tmp);
-            //                        buf = GeneralLib.LeftPaddedString(ref argbuf6, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxHP)), 5));
-            //                    }
-            //                    else
-            //                    {
-            //                        buf = "?????";
-            //                    }
+                            frmMessage.picEN1.DrawBar((float)tmp / lu.MaxEN, BarBackBrush, BarForeBrush);
+                        }
+                    }
 
-            //                    if (ru.MaxHP < 100000)
-            //                    {
-            //                        buf = buf + "/" + SrcFormatter.Format(ru.MaxHP);
-            //                    }
-            //                    else
-            //                    {
-            //                        buf = buf + "/?????";
-            //                    }
+                    // 右側のユニット
+                    if (ru is object)
+                    {
+                        // ＨＰ
+                        if (ru.HP / (double)ru.MaxHP != RightUnitHPRatio)
+                        {
+                            var tmp = (int)((long)(ru.MaxHP * RightUnitHPRatio * (num - i) + ru.HP * i) / num);
+                            if (ru.IsConditionSatisfied("データ不明"))
+                            {
+                                frmMessage.txtHP2.Text = "?????/?????";
+                            }
+                            else
+                            {
+                                if (ru.HP < 100000)
+                                {
+                                    string argbuf6 = SrcFormatter.Format(tmp);
+                                    buf = GeneralLib.LeftPaddedString(argbuf6, GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxHP)), 5));
+                                }
+                                else
+                                {
+                                    buf = "?????";
+                                }
 
-            //                    withBlock.txtHP2.Text = buf;
-            //                }
+                                if (ru.MaxHP < 100000)
+                                {
+                                    buf = buf + "/" + SrcFormatter.Format(ru.MaxHP);
+                                }
+                                else
+                                {
+                                    buf = buf + "/?????";
+                                }
 
-            //                withBlock.picHP2.Cls();
-            //                if (ru.HP > 0 | i < num)
-            //                {
-            //                    withBlock.picHP2.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-            //                }
-            //            }
+                                frmMessage.txtHP2.Text = buf;
+                            }
 
-            //            // ＥＮ
-            //            if (ru.EN / (double)ru.MaxEN != RightUnitENRatio)
-            //            {
-            //                tmp = (int)((long)(ru.MaxEN * RightUnitENRatio * (num - i) + ru.EN * i) / num);
-            //                object argIndex12 = "データ不明";
-            //                if (ru.IsConditionSatisfied(ref argIndex12))
-            //                {
-            //                    withBlock.txtEN2.Text = "???/???";
-            //                }
-            //                else
-            //                {
-            //                    if (ru.EN < 1000)
-            //                    {
-            //                        string argbuf7 = SrcFormatter.Format(tmp);
-            //                        buf = GeneralLib.LeftPaddedString(ref argbuf7, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxEN)), 3));
-            //                    }
-            //                    else
-            //                    {
-            //                        buf = "???";
-            //                    }
+                            frmMessage.picHP2.DrawBar((float)tmp / ru.MaxHP, BarBackBrush, BarForeBrush);
+                        }
 
-            //                    if (ru.MaxEN < 1000)
-            //                    {
-            //                        buf = buf + "/" + SrcFormatter.Format(ru.MaxEN);
-            //                    }
-            //                    else
-            //                    {
-            //                        buf = buf + "/???";
-            //                    }
+                        // ＥＮ
+                        if (ru.EN / (double)ru.MaxEN != RightUnitENRatio)
+                        {
+                            var tmp = (int)((ru.MaxEN * RightUnitENRatio * (num - i) + ru.EN * i) / num);
+                            if (ru.IsConditionSatisfied("データ不明"))
+                            {
+                                frmMessage.txtEN2.Text = "???/???";
+                            }
+                            else
+                            {
+                                if (ru.EN < 1000)
+                                {
+                                    string argbuf7 = SrcFormatter.Format(tmp);
+                                    buf = GeneralLib.LeftPaddedString(argbuf7, GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxEN)), 3));
+                                }
+                                else
+                                {
+                                    buf = "???";
+                                }
 
-            //                    withBlock.txtEN2.Text = buf;
-            //                }
+                                if (ru.MaxEN < 1000)
+                                {
+                                    buf = buf + "/" + SrcFormatter.Format(ru.MaxEN);
+                                }
+                                else
+                                {
+                                    buf = buf + "/???";
+                                }
 
-            //                withBlock.picEN2.Cls();
-            //                if (ru.EN > 0 | i < num)
-            //                {
-            //                    withBlock.picEN2.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-            //                }
-            //            }
-            //        }
+                                frmMessage.txtEN2.Text = buf;
+                            }
 
-            //        // リフレッシュ
-            //        if (lu is object)
-            //        {
-            //            if (lu.HP / (double)lu.MaxHP != LeftUnitHPRatio)
-            //            {
-            //                withBlock.picHP1.Refresh();
-            //                withBlock.txtHP1.Refresh();
-            //            }
+                            frmMessage.picEN2.DrawBar((float)tmp / ru.MaxEN, BarBackBrush, BarForeBrush);
+                        }
+                    }
 
-            //            if (lu.EN / (double)lu.MaxEN != LeftUnitENRatio)
-            //            {
-            //                withBlock.picEN1.Refresh();
-            //                withBlock.txtEN1.Refresh();
-            //            }
-            //        }
+                    // リフレッシュ
+                    if (lu is object)
+                    {
+                        if (lu.HP / (double)lu.MaxHP != LeftUnitHPRatio)
+                        {
+                            frmMessage.picHP1.Refresh();
+                            frmMessage.txtHP1.Refresh();
+                        }
 
-            //        if (ru is object)
-            //        {
-            //            if (ru.HP / (double)ru.MaxHP != RightUnitHPRatio)
-            //            {
-            //                withBlock.picHP2.Refresh();
-            //                withBlock.txtHP2.Refresh();
-            //            }
+                        if (lu.EN / (double)lu.MaxEN != LeftUnitENRatio)
+                        {
+                            frmMessage.picEN1.Refresh();
+                            frmMessage.txtEN1.Refresh();
+                        }
+                    }
 
-            //            if (ru.EN / (double)ru.MaxEN != RightUnitENRatio)
-            //            {
-            //                withBlock.picEN2.Refresh();
-            //                withBlock.txtEN2.Refresh();
-            //            }
-            //        }
+                    if (ru is object)
+                    {
+                        if (ru.HP / (double)ru.MaxHP != RightUnitHPRatio)
+                        {
+                            frmMessage.picHP2.Refresh();
+                            frmMessage.txtHP2.Refresh();
+                        }
 
-            //        Sleep(20);
-            //    }
+                        if (ru.EN / (double)ru.MaxEN != RightUnitENRatio)
+                        {
+                            frmMessage.picEN2.Refresh();
+                            frmMessage.txtEN2.Refresh();
+                        }
+                    }
 
-            //    // 表示内容を記録
-            //    if (lu is object)
-            //    {
-            //        LeftUnitHPRatio = lu.HP / (double)lu.MaxHP;
-            //        LeftUnitENRatio = lu.EN / (double)lu.MaxEN;
-            //    }
+                    Sleep(20);
+                }
 
-            //    if (ru is object)
-            //    {
-            //        RightUnitHPRatio = ru.HP / (double)ru.MaxHP;
-            //        RightUnitENRatio = ru.EN / (double)ru.MaxEN;
-            //    }
+                // 表示内容を記録
+                if (lu is object)
+                {
+                    LeftUnitHPRatio = lu.HP / (double)lu.MaxHP;
+                    LeftUnitENRatio = lu.EN / (double)lu.MaxEN;
+                }
 
-            //    Application.DoEvents();
-            //}
+                if (ru is object)
+                {
+                    RightUnitHPRatio = ru.HP / (double)ru.MaxHP;
+                    RightUnitENRatio = ru.EN / (double)ru.MaxEN;
+                }
+            }
+            Application.DoEvents();
         }
 
         public void SaveMessageFormStatus()
@@ -1435,7 +1390,7 @@ namespace SRCSharpForm
             //    var loopTo1 = withBlock.CountWeapon();
             //    for (i = 1; i <= loopTo1; i++)
             //    {
-            //        var loopTo2 = (short)(i - 1);
+            //        var loopTo2 = (i - 1);
             //        for (j = 1; j <= loopTo2; j++)
             //        {
             //            if (wpower[i] > wpower[warray[i - j]])
@@ -1458,14 +1413,14 @@ namespace SRCSharpForm
             //                        break;
             //                    }
             //                }
-            //                else if (withBlock.Weapon((short)(i - j)).ENConsumption == 0 & withBlock.Weapon(warray[i - j]).Bullet == 0)
+            //                else if (withBlock.Weapon((i - j)).ENConsumption == 0 & withBlock.Weapon(warray[i - j]).Bullet == 0)
             //                {
             //                    break;
             //                }
             //            }
             //        }
 
-            //        var loopTo3 = (short)(j - 1);
+            //        var loopTo3 = (j - 1);
             //        for (k = 1; k <= loopTo3; k++)
             //            warray[i - k + 1] = warray[i - k];
             //        warray[i - j + 1] = i;

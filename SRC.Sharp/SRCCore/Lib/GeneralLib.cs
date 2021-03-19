@@ -651,13 +651,15 @@ namespace SRCCore.Lib
         //        }
 
 
-        //        // 文字列 buf の長さが length になるように左側にスペースを付加する
-        //        public static string LeftPaddedString(string buf, int length)
-        //        {
-        //            string LeftPaddedStringRet = default;
-        //            LeftPaddedStringRet = Strings.Space(MaxLng(length - LenB(Strings.StrConv(buf, vbFromUnicode)), 0)) + buf;
-        //            return LeftPaddedStringRet;
-        //        }
+        // 文字列 buf の長さが length になるように左側にスペースを付加する
+        public static string LeftPaddedString(string buf, int length)
+        {
+            return buf;
+            // TODO 面倒くさいのでとりあえずパス
+            //string LeftPaddedStringRet = default;
+            //LeftPaddedStringRet = Strings.Space(MaxLng(length - LenB(Strings.StrConv(buf, vbFromUnicode)), 0)) + buf;
+            //return LeftPaddedStringRet;
+        }
 
         //        // 文字列 buf の長さが length になるように右側にスペースを付加する
         //        public static string RightPaddedString(string buf, int length)

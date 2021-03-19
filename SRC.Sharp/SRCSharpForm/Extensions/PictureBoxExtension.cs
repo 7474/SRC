@@ -12,5 +12,16 @@ namespace SRCSharpForm.Extensions
                 pic.Image = new Bitmap(pic.ClientSize.Width, pic.ClientSize.Height);
             }
         }
+
+        public static void DrawBar(this PictureBox pic, float ratio, Brush back, Brush fore)
+        {
+            NewImageIfNull(pic);
+
+            using (var g = Graphics.FromImage(pic.Image))
+            {
+                g.FillRectangle(back, g.VisibleClipBounds);
+                g.FillRectangle(fore, 0f, 0f, g.VisibleClipBounds.Width * ratio, g.VisibleClipBounds.Height);
+            }
+        }
     }
 }
