@@ -626,10 +626,10 @@ namespace SRCCore.Commands
             //    }
             //}
 
-            //// イベント用に戦闘に参加するユニットの情報を記録しておく
-            //AttackUnit = SelectedUnit;
-            //attack_target = SelectedUnit;
-            //attack_target_hp_ratio = SelectedUnit.HP / (double)SelectedUnit.MaxHP;
+            // イベント用に戦闘に参加するユニットの情報を記録しておく
+            AttackUnit = SelectedUnit;
+            attack_target = SelectedUnit;
+            attack_target_hp_ratio = SelectedUnit.HP / (double)SelectedUnit.MaxHP;
             //defense_target = SelectedTarget;
             //defense_target_hp_ratio = SelectedTarget.HP / (double)SelectedTarget.MaxHP;
             //defense_target2 = null;
@@ -1273,26 +1273,26 @@ namespace SRCCore.Commands
             //    SelectedTWeaponName = "";
             //}
 
-            //// 攻撃を受けた攻撃側ユニット
-            //{
-            //    var withBlock19 = attack_target.CurrentForm();
-            //    if (withBlock19.Status == "破壊")
-            //    {
-            //        Event.HandleEvent("破壊", withBlock19.MainPilot().ID);
-            //    }
-            //    else if (withBlock19.Status == "出撃" & withBlock19.HP / (double)withBlock19.MaxHP < attack_target_hp_ratio)
-            //    {
-            //        Event.HandleEvent("損傷率", withBlock19.MainPilot().ID, 100 * (withBlock19.MaxHP - withBlock19.HP) / withBlock19.MaxHP);
-            //    }
-            //}
+            // 攻撃を受けた攻撃側ユニット
+            {
+                var withBlock19 = attack_target.CurrentForm();
+                if (withBlock19.Status == "破壊")
+                {
+                    Event.HandleEvent("破壊", withBlock19.MainPilot().ID);
+                }
+                else if (withBlock19.Status == "出撃" & withBlock19.HP / (double)withBlock19.MaxHP < attack_target_hp_ratio)
+                {
+                    Event.HandleEvent("損傷率", withBlock19.MainPilot().ID, "" + (100 * (withBlock19.MaxHP - withBlock19.HP) / withBlock19.MaxHP));
+                }
+            }
 
-            //if (SRC.IsScenarioFinished)
-            //{
-            //    GUI.UnlockGUI();
-            //    SRC.IsScenarioFinished = false;
-            //    SelectedPartners = new Unit[0];
-            //    return;
-            //}
+            if (SRC.IsScenarioFinished)
+            {
+                GUI.UnlockGUI();
+                SRC.IsScenarioFinished = false;
+                SelectedPartners = new Unit[0];
+                return;
+            }
 
             //if (SRC.IsCanceled)
             //{
