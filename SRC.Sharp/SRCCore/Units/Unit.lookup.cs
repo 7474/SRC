@@ -634,7 +634,8 @@ namespace SRCCore.Units
         // いるかどうかを判定
         public Unit LookForSupportGuard(Unit t, int tw)
         {
-            throw new NotImplementedException();
+            return null;
+            // TODO Impl
             //Unit LookForSupportGuardRet = default;
             //Unit u;
             //int i;

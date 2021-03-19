@@ -14,6 +14,7 @@ namespace SRCCore.Pilots
     {
         protected SRC SRC { get; }
         private IGUI GUI => SRC.GUI;
+        private Expressions.Expression Expression => SRC.Expression;
 
         public Pilot(SRC src, PilotData data)
         {
