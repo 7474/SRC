@@ -74,8 +74,11 @@ namespace SRCCore.Models
         public string Raw = "";
         public string DataComment = "";
 
-        public PilotData() : base()
+        private SRC SRC;
+        public PilotData(SRC src)
         {
+            SRC = src;
+
             SpecialPowers = new List<PilotDataSpecialPower>();
             colSkill = new SrcCollection<SkillData>();
             colFeature = new SrcCollection<FeatureData>();
