@@ -66,10 +66,11 @@ namespace SRCCore.Events
             ObjDrawOption = "";
 
             // ラベルの初期化
+            // 全部登録しなおしているので全部消してしまってよい
+            // XXX 本当か？　手抜きが祟っているだけでは？
             colNormalLabelList.Clear();
-            var maxEventId = EventData.Any() ? EventData.Max(x => x.ID) : -1;
-            colEventLabelList.Values.Where(x => x.EventDataId > maxEventId).ToList()
-                .ForEach(x => colEventLabelList.Remove(x));
+            colEventLabelList.Clear();
+            colSysNormalLabelList.Clear();
 
             // デバッグモードの設定
             // TODO Impl
