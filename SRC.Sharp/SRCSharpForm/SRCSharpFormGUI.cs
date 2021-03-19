@@ -227,103 +227,7 @@ namespace SRCSharpForm
                 frmMessage.Activate();
             }
 
-            //if (u1 is null)
-            //{
-            //    // ユニット表示なし
-            //    frmMessage.labHP1.Visible = false;
-            //    frmMessage.labHP2.Visible = false;
-            //    frmMessage.labEN1.Visible = false;
-            //    frmMessage.labEN2.Visible = false;
-            //    frmMessage.picHP1.Visible = false;
-            //    frmMessage.picHP2.Visible = false;
-            //    frmMessage.picEN1.Visible = false;
-            //    frmMessage.picEN2.Visible = false;
-            //    frmMessage.txtHP1.Visible = false;
-            //    frmMessage.txtHP2.Visible = false;
-            //    frmMessage.txtEN1.Visible = false;
-            //    frmMessage.txtEN2.Visible = false;
-            //    frmMessage.picUnit1.Visible = false;
-            //    frmMessage.picUnit2.Visible = false;
-            //    frmMessage.Width = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(frmMessage.Width) - frmMessage.ClientRectangle.Width * tppx + 508 * tppx);
-            //    frmMessage.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(frmMessage.Height) - frmMessage.ClientRectangle.Height * tppy + 84 * tppy);
-            //    frmMessage.picFace.Top = 8;
-            //    frmMessage.picFace.Left = 8;
-            //    frmMessage.picMessage.Top = 7;
-            //    frmMessage.picMessage.Left = 84;
-            //}
-            //else if (u2 is null)
-            //{
-            //    // ユニット表示１体のみ
-            //    if (u1.Party == "味方" | u1.Party == "ＮＰＣ")
-            //    {
-            //        frmMessage.labHP1.Visible = false;
-            //        frmMessage.labEN1.Visible = false;
-            //        frmMessage.picHP1.Visible = false;
-            //        frmMessage.picEN1.Visible = false;
-            //        frmMessage.txtHP1.Visible = false;
-            //        frmMessage.txtEN1.Visible = false;
-            //        frmMessage.picUnit1.Visible = false;
-            //        frmMessage.labHP2.Visible = true;
-            //        frmMessage.labEN2.Visible = true;
-            //        frmMessage.picHP2.Visible = true;
-            //        frmMessage.picEN2.Visible = true;
-            //        frmMessage.txtHP2.Visible = true;
-            //        frmMessage.txtEN2.Visible = true;
-            //        frmMessage.picUnit2.Visible = true;
-            //    }
-            //    else
-            //    {
-            //        frmMessage.labHP1.Visible = true;
-            //        frmMessage.labEN1.Visible = true;
-            //        frmMessage.picHP1.Visible = true;
-            //        frmMessage.picEN1.Visible = true;
-            //        frmMessage.txtHP1.Visible = true;
-            //        frmMessage.txtEN1.Visible = true;
-            //        frmMessage.picUnit1.Visible = true;
-            //        frmMessage.labHP2.Visible = false;
-            //        frmMessage.labEN2.Visible = false;
-            //        frmMessage.picHP2.Visible = false;
-            //        frmMessage.picEN2.Visible = false;
-            //        frmMessage.txtHP2.Visible = false;
-            //        frmMessage.txtEN2.Visible = false;
-            //        frmMessage.picUnit2.Visible = false;
-            //    }
-
-            //    object argu21 = null;
-            //    UpdateMessageForm(u1, u2: argu21);
-            //    frmMessage.Width = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(frmMessage.Width) - frmMessage.ClientRectangle.Width * tppx + 508 * tppx);
-            //    frmMessage.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(frmMessage.Height) - frmMessage.ClientRectangle.Height * tppy + 118 * tppy);
-            //    frmMessage.picFace.Top = 42;
-            //    frmMessage.picFace.Left = 8;
-            //    frmMessage.picMessage.Top = 41;
-            //    frmMessage.picMessage.Left = 84;
-            //}
-            //else
-            //{
-            //    // ユニットを２体表示
-            //    frmMessage.labHP1.Visible = true;
-            //    frmMessage.labHP2.Visible = true;
-            //    frmMessage.labEN1.Visible = true;
-            //    frmMessage.labEN2.Visible = true;
-            //    frmMessage.picHP1.Visible = true;
-            //    frmMessage.picHP2.Visible = true;
-            //    frmMessage.picEN1.Visible = true;
-            //    frmMessage.picEN2.Visible = true;
-            //    frmMessage.txtHP1.Visible = true;
-            //    frmMessage.txtHP2.Visible = true;
-            //    frmMessage.txtEN1.Visible = true;
-            //    frmMessage.txtEN2.Visible = true;
-            //    frmMessage.picUnit1.Visible = true;
-            //    frmMessage.picUnit2.Visible = true;
-            //    object argu2 = u2;
-            //    UpdateMessageForm(u1, argu2);
-            //    frmMessage.Width = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(frmMessage.Width) - frmMessage.ClientRectangle.Width * tppx + 508 * tppx);
-            //    frmMessage.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(frmMessage.Height) - frmMessage.ClientRectangle.Height * tppy + 118 * tppy);
-            //    frmMessage.picFace.Top = 42;
-            //    frmMessage.picFace.Left = 8;
-            //    frmMessage.picMessage.Top = 41;
-            //    frmMessage.picMessage.Left = 84;
-            //}
+            SetMessageWindowUnit(u1, u2);
 
             // メッセージウィンドウの位置設定
             if (MainForm.Visible && MainForm.WindowState != FormWindowState.Minimized)
@@ -370,6 +274,110 @@ namespace SRCSharpForm
             frmMessage.TopMost = true;
 
             Application.DoEvents();
+        }
+
+        private void SetMessageWindowUnit(Unit u1, Unit u2)
+        {
+            if (u1 is null)
+            {
+                // ユニット表示なし
+                frmMessage.labHP1.Visible = false;
+                frmMessage.labHP2.Visible = false;
+                frmMessage.labEN1.Visible = false;
+                frmMessage.labEN2.Visible = false;
+                frmMessage.picHP1.Visible = false;
+                frmMessage.picHP2.Visible = false;
+                frmMessage.picEN1.Visible = false;
+                frmMessage.picEN2.Visible = false;
+                frmMessage.txtHP1.Visible = false;
+                frmMessage.txtHP2.Visible = false;
+                frmMessage.txtEN1.Visible = false;
+                frmMessage.txtEN2.Visible = false;
+                frmMessage.picUnit1.Visible = false;
+                frmMessage.picUnit2.Visible = false;
+                // XXX 余白
+                frmMessage.Width = frmMessage.Width - frmMessage.ClientRectangle.Width + 508;
+                frmMessage.Height = frmMessage.Height - frmMessage.ClientRectangle.Height + 84;
+                frmMessage.picFace.Top = 8;
+                frmMessage.picFace.Left = 8;
+                frmMessage.labKariText.Top = 7;
+                frmMessage.labKariText.Left = 84;
+            }
+            else if (u2 is null)
+            {
+                // ユニット表示１体のみ
+                if (u1.Party == "味方" | u1.Party == "ＮＰＣ")
+                {
+                    frmMessage.labHP1.Visible = false;
+                    frmMessage.labEN1.Visible = false;
+                    frmMessage.picHP1.Visible = false;
+                    frmMessage.picEN1.Visible = false;
+                    frmMessage.txtHP1.Visible = false;
+                    frmMessage.txtEN1.Visible = false;
+                    frmMessage.picUnit1.Visible = false;
+                    frmMessage.labHP2.Visible = true;
+                    frmMessage.labEN2.Visible = true;
+                    frmMessage.picHP2.Visible = true;
+                    frmMessage.picEN2.Visible = true;
+                    frmMessage.txtHP2.Visible = true;
+                    frmMessage.txtEN2.Visible = true;
+                    frmMessage.picUnit2.Visible = true;
+                }
+                else
+                {
+                    frmMessage.labHP1.Visible = true;
+                    frmMessage.labEN1.Visible = true;
+                    frmMessage.picHP1.Visible = true;
+                    frmMessage.picEN1.Visible = true;
+                    frmMessage.txtHP1.Visible = true;
+                    frmMessage.txtEN1.Visible = true;
+                    frmMessage.picUnit1.Visible = true;
+                    frmMessage.labHP2.Visible = false;
+                    frmMessage.labEN2.Visible = false;
+                    frmMessage.picHP2.Visible = false;
+                    frmMessage.picEN2.Visible = false;
+                    frmMessage.txtHP2.Visible = false;
+                    frmMessage.txtEN2.Visible = false;
+                    frmMessage.picUnit2.Visible = false;
+                }
+
+                UpdateMessageForm(u1, null);
+                // XXX 余白
+                frmMessage.Width = frmMessage.Width - frmMessage.ClientRectangle.Width + 508;
+                frmMessage.Height = frmMessage.Height - frmMessage.ClientRectangle.Height + 118;
+                frmMessage.picFace.Top = 42;
+                frmMessage.picFace.Left = 8;
+                frmMessage.labKariText.Top = 41;
+                frmMessage.labKariText.Left = 84;
+            }
+            else
+            {
+                // ユニットを２体表示
+                frmMessage.labHP1.Visible = true;
+                frmMessage.labHP2.Visible = true;
+                frmMessage.labEN1.Visible = true;
+                frmMessage.labEN2.Visible = true;
+                frmMessage.picHP1.Visible = true;
+                frmMessage.picHP2.Visible = true;
+                frmMessage.picEN1.Visible = true;
+                frmMessage.picEN2.Visible = true;
+                frmMessage.txtHP1.Visible = true;
+                frmMessage.txtHP2.Visible = true;
+                frmMessage.txtEN1.Visible = true;
+                frmMessage.txtEN2.Visible = true;
+                frmMessage.picUnit1.Visible = true;
+                frmMessage.picUnit2.Visible = true;
+                UpdateMessageForm(u1, u2);
+                // XXX 余白
+                frmMessage.Width = frmMessage.Width - frmMessage.ClientRectangle.Width + 508;
+                frmMessage.Height = frmMessage.Height - frmMessage.ClientRectangle.Height + 118;
+                frmMessage.picFace.Top = 42;
+                frmMessage.picFace.Left = 8;
+                frmMessage.picMessage.Top = 41;
+                frmMessage.picMessage.Left = 84;
+                frmMessage.labKariText.Top = 41;
+                frmMessage.labKariText.Left = 84;
+            }
         }
 
         public void CloseMessageForm()

@@ -45,7 +45,7 @@ namespace SRCSharpForm
         public PictureBox picEN1;
         public PictureBox picHP1;
         public TextBox txtHP1;
-        private PictureBox picMessage;
+        public PictureBox picMessage;
         public Label labHP2;
         public Label labEN2;
         public Label labEN1;
@@ -368,7 +368,7 @@ namespace SRCSharpForm
 
         }
 
-        private Label labKariText;
+        public Label labKariText;
         /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
     }
 }
