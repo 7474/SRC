@@ -786,8 +786,7 @@ namespace SRCCore.Units
 
             // 命中回数を求める
             hit_count = 0;
-            var loopTo1 = attack_num;
-            for (i = 1; i <= loopTo1; i++)
+            for (i = 1; i <= attack_num; i++)
             {
                 if (GeneralLib.Dice(100) <= prob)
                 {
@@ -1168,7 +1167,9 @@ namespace SRCCore.Units
 
             // これ以降は命中時の処理
 
-            is_hit = true;
+            // XXX 仮に hit_count 見てる
+            is_hit = hit_count > 0;
+            //is_hit = true;
 
             //// シールド防御判定
             //CheckShieldFeature(w, t, dmg, be_quiet, use_shield, use_shield_msg);
