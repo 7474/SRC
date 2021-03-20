@@ -884,93 +884,93 @@ namespace SRCCore.Units
         //}
 
 
-        //// 装甲
-        //public int get_Armor(string ref_mode)
-        //{
-        //    int ArmorRet = default;
-        //    ArmorRet = lngArmor;
+        // 装甲
+        public int get_Armor(string ref_mode)
+        {
+            return lngArmor;
+            // TODO Impl
+            //int ArmorRet = lngArmor;
+            //// ステータス表示用
+            //switch (ref_mode ?? "")
+            //{
+            //    case "基本値":
+            //        {
+            //            object argIndex1 = "装甲劣化";
+            //            if (IsConditionSatisfied(argIndex1))
+            //            {
+            //                ArmorRet = ArmorRet / 2;
+            //            }
 
-        //    // ステータス表示用
-        //    switch (ref_mode ?? "")
-        //    {
-        //        case "基本値":
-        //            {
-        //                object argIndex1 = "装甲劣化";
-        //                if (IsConditionSatisfied(argIndex1))
-        //                {
-        //                    ArmorRet = ArmorRet / 2;
-        //                }
+            //            object argIndex2 = "石化";
+            //            if (IsConditionSatisfied(argIndex2))
+            //            {
+            //                ArmorRet = 2 * ArmorRet;
+            //            }
 
-        //                object argIndex2 = "石化";
-        //                if (IsConditionSatisfied(argIndex2))
-        //                {
-        //                    ArmorRet = 2 * ArmorRet;
-        //                }
+            //            object argIndex3 = "凍結";
+            //            if (IsConditionSatisfied(argIndex3))
+            //            {
+            //                ArmorRet = ArmorRet / 2;
+            //            }
 
-        //                object argIndex3 = "凍結";
-        //                if (IsConditionSatisfied(argIndex3))
-        //                {
-        //                    ArmorRet = ArmorRet / 2;
-        //                }
+            //            return default;
+            //        }
 
-        //                return default;
-        //            }
+            //    case "修正値":
+            //        {
+            //            ArmorRet = 0;
+            //            break;
+            //        }
+            //}
 
-        //        case "修正値":
-        //            {
-        //                ArmorRet = 0;
-        //                break;
-        //            }
-        //    }
+            //// パイロットによる修正
+            //if (CountPilot() > 0)
+            //{
+            //    // 霊力による装甲修正
+            //    string argfname = "霊力変換器";
+            //    if (IsFeatureAvailable(argfname))
+            //    {
+            //        ArmorRet = (int)(ArmorRet + 5d * PlanaLevel());
+            //    }
 
-        //    // パイロットによる修正
-        //    if (CountPilot() > 0)
-        //    {
-        //        // 霊力による装甲修正
-        //        string argfname = "霊力変換器";
-        //        if (IsFeatureAvailable(argfname))
-        //        {
-        //            ArmorRet = (int)(ArmorRet + 5d * PlanaLevel());
-        //        }
+            //    // サイキックドライブ装備ユニットは超能力レベルに応じて装甲が変化
+            //    string argfname1 = "サイキックドライブ";
+            //    if (IsFeatureAvailable(argfname1))
+            //    {
+            //        ArmorRet = (int)(ArmorRet + 100d * PsychicLevel());
+            //    }
 
-        //        // サイキックドライブ装備ユニットは超能力レベルに応じて装甲が変化
-        //        string argfname1 = "サイキックドライブ";
-        //        if (IsFeatureAvailable(argfname1))
-        //        {
-        //            ArmorRet = (int)(ArmorRet + 100d * PsychicLevel());
-        //        }
+            //    // オーラ変換器装備ユニットはオーラレベルに応じて装甲が変化
+            //    string argfname2 = "オーラ変換器";
+            //    if (IsFeatureAvailable(argfname2))
+            //    {
+            //        ArmorRet = (int)(ArmorRet + 50d * AuraLevel());
+            //    }
+            //}
 
-        //        // オーラ変換器装備ユニットはオーラレベルに応じて装甲が変化
-        //        string argfname2 = "オーラ変換器";
-        //        if (IsFeatureAvailable(argfname2))
-        //        {
-        //            ArmorRet = (int)(ArmorRet + 50d * AuraLevel());
-        //        }
-        //    }
+            //// 装甲が劣化している場合は装甲値は半減
+            //object argIndex4 = "装甲劣化";
+            //if (IsConditionSatisfied(argIndex4))
+            //{
+            //    ArmorRet = ArmorRet / 2;
+            //}
 
-        //    // 装甲が劣化している場合は装甲値は半減
-        //    object argIndex4 = "装甲劣化";
-        //    if (IsConditionSatisfied(argIndex4))
-        //    {
-        //        ArmorRet = ArmorRet / 2;
-        //    }
+            //// 石化しているユニットはとても固い……
+            //object argIndex5 = "石化";
+            //if (IsConditionSatisfied(argIndex5))
+            //{
+            //    ArmorRet = 2 * ArmorRet;
+            //}
 
-        //    // 石化しているユニットはとても固い……
-        //    object argIndex5 = "石化";
-        //    if (IsConditionSatisfied(argIndex5))
-        //    {
-        //        ArmorRet = 2 * ArmorRet;
-        //    }
+            //// 凍っているユニットは脆くなる
+            //object argIndex6 = "凍結";
+            //if (IsConditionSatisfied(argIndex6))
+            //{
+            //    ArmorRet = ArmorRet / 2;
+            //}
 
-        //    // 凍っているユニットは脆くなる
-        //    object argIndex6 = "凍結";
-        //    if (IsConditionSatisfied(argIndex6))
-        //    {
-        //        ArmorRet = ArmorRet / 2;
-        //    }
-
-        //    return ArmorRet;
-        //}
+            //return ArmorRet;
+        }
 
         // 運動性
         public int get_Mobility(string ref_mode)
