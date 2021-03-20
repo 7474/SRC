@@ -15,30 +15,25 @@ namespace SRCCore.Pilots
         // 全回復
         public void FullRecover()
         {
-            //// 闘争本能によって初期気力は変化する
-            //string argsname = "闘争本能";
-            //if (IsSkillAvailable(argsname))
-            //{
-            //    if (MinMorale > 100)
-            //    {
-            //        object argIndex1 = "闘争本能";
-            //        string argref_mode = "";
-            //        SetMorale((MinMorale + 5d * SkillLevel(argIndex1, ref_mode: argref_mode)));
-            //    }
-            //    else
-            //    {
-            //        object argIndex2 = "闘争本能";
-            //        string argref_mode1 = "";
-            //        SetMorale((100d + 5d * SkillLevel(argIndex2, ref_mode: argref_mode1)));
-            //    }
-            //}
-            //else
-            //{
-            //    SetMorale(100);
-            //}
+            // 闘争本能によって初期気力は変化する
+            if (IsSkillAvailable("闘争本能"))
+            {
+                if (MinMorale > 100)
+                {
+                    SetMorale((int)(MinMorale + 5d * SkillLevel("闘争本能", "")));
+                }
+                else
+                {
+                    SetMorale((int)(100d + 5d * SkillLevel("闘争本能", "")));
+                }
+            }
+            else
+            {
+                SetMorale(100);
+            }
 
-            //SP = MaxSP;
-            //Plana = MaxPlana();
+            SP = MaxSP;
+            Plana = MaxPlana();
         }
 
         //// 同調率

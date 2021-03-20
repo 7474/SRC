@@ -1937,7 +1937,6 @@ namespace SRCCore.Units
             return IsWeaponUsefulRet;
         }
 
-
         // ユニット t が武器 w の射程範囲内にいるかをチェック
         public bool IsTargetWithinRange(Unit t)
         {
@@ -3409,23 +3408,24 @@ namespace SRCCore.Units
             //        DamageRet = SRC.BCList.Item(argIndex12).Calculate();
             //    }
             //    else
-            //    {
-            //        // 装甲値によってダメージを軽減
-            //        DamageRet = DamageRet - arm;
+            {
+                // 装甲値によってダメージを軽減
+                DamageRet = DamageRet - arm;
 
-            //        // 地形補正
-            //        if (Map.TerrainClass(t.x, t.y) == "月面")
-            //        {
-            //            if (t.Area == "地上")
-            //            {
-            //                DamageRet = (DamageRet * ((100 - Map.TerrainEffectForDamage(t.x, t.y)) / 100d));
-            //            }
-            //        }
-            //        else if (t.Area != "空中")
-            //        {
-            //            DamageRet = (DamageRet * ((100 - Map.TerrainEffectForDamage(t.x, t.y)) / 100d));
-            //        }
-            //    }
+                // TODO Impl
+                //// 地形補正
+                //if (Map.Terrain(t.x, t.y).Class == "月面")
+                //{
+                //    if (t.Area == "地上")
+                //    {
+                //        DamageRet = (DamageRet * ((100 - Map.Terrain(t.x, t.y).EffectForDamage) / 100d));
+                //    }
+                //}
+                //else if (t.Area != "空中")
+                //{
+                //    DamageRet = (DamageRet * ((100 - Map.Terrain(t.x, t.y).EffectForDamage) / 100d));
+                //}
+            }
 
             //    // 散属性武器は離れるほどダメージダウン
             //    string argstring21 = "散";
