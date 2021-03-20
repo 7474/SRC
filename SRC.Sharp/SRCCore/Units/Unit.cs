@@ -151,7 +151,7 @@ namespace SRCCore.Units
         private AbilityData[] adata = new AbilityData[] { };
 
         // 選択したマップ攻撃の攻撃力
-        private int SelectedMapAttackPower;
+        public int SelectedMapAttackPower;
 
         // 選択したマップ攻撃の攻撃力
         private bool IsMapAttackCanceled;
