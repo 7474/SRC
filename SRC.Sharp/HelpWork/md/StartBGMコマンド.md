@@ -64,7 +64,7 @@ SRCでは幾つかのシチュエーションで特定のMIDIが再生される�
 
 ・RenameBGMコマンドを使う
 
-・シナリオのフォルダに[Src.ini](Src.ini.md)ファイルを作り、Src.iniファイル内に再生したMIDIファイルを指定
+・シナリオのフォルダに[Src.ini](設定変更.md)ファイルを作り、Src.iniファイル内に再生したMIDIファイルを指定
 
 ([BGM]のOpeningの項目だけを指定して下さい)
 
