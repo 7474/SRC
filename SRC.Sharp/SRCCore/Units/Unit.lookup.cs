@@ -9,6 +9,7 @@ using SRCCore.Pilots;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace SRCCore.Units
 {
@@ -1997,6 +1998,1357 @@ namespace SRCCore.Units
             //}
 
             //return IsCombinationAbilityAvailableRet;
+        }
+
+        // (tx,ty)にユニットが進入可能か？
+        public bool IsAbleToEnter(short tx, short ty)
+        {
+            return true;
+            // TODO Impl
+            //bool IsAbleToEnterRet = default;
+            //bool ignore_move_cost;
+
+            //// 使用不能の形態はどの地形に対しても進入不可能とみなす
+            //if (!IsAvailable())
+            //{
+            //    IsAbleToEnterRet = false;
+            //    return IsAbleToEnterRet;
+            //}
+
+            //// 単に必要技能をチェックしている場合？
+            //if (string.IsNullOrEmpty(Map.MapFileName))
+            //{
+            //    IsAbleToEnterRet = true;
+            //    return IsAbleToEnterRet;
+            //}
+
+            //// マップ外？
+            //if (tx < 1 | Map.MapWidth < tx | ty < 1 | Map.MapHeight < ty)
+            //{
+            //    IsAbleToEnterRet = false;
+            //    return IsAbleToEnterRet;
+            //}
+
+            //// 地形適応チェック
+            //switch (Map.TerrainClass(tx, ty) ?? "")
+            //{
+            //    case "空":
+            //        {
+            //            string argarea_name = "空";
+            //            string argfname = "空中移動";
+            //            if (!IsTransAvailable(argarea_name) & !CurrentForm().IsFeatureAvailable(argfname))
+            //            {
+            //                IsAbleToEnterRet = false;
+            //                return IsAbleToEnterRet;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "水":
+            //        {
+            //            string argarea_name1 = "空";
+            //            string argfname1 = "空中移動";
+            //            string argarea_name2 = "水上";
+            //            if (IsTransAvailable(argarea_name1) | CurrentForm().IsFeatureAvailable(argfname1) | IsTransAvailable(argarea_name2))
+            //            {
+            //                IsAbleToEnterRet = true;
+            //                return IsAbleToEnterRet;
+            //            }
+
+            //            string argfname2 = "水中移動";
+            //            if (get_Adaption(3) == 0 & !CurrentForm().IsFeatureAvailable(argfname2))
+            //            {
+            //                IsAbleToEnterRet = false;
+            //                return IsAbleToEnterRet;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "深水":
+            //        {
+            //            string argarea_name3 = "空";
+            //            string argfname3 = "空中移動";
+            //            string argarea_name4 = "水上";
+            //            if (IsTransAvailable(argarea_name3) | CurrentForm().IsFeatureAvailable(argfname3) | IsTransAvailable(argarea_name4))
+            //            {
+            //                IsAbleToEnterRet = true;
+            //                return IsAbleToEnterRet;
+            //            }
+
+            //            string argarea_name5 = "水";
+            //            string argfname4 = "水中移動";
+            //            if (!IsTransAvailable(argarea_name5) & !CurrentForm().IsFeatureAvailable(argfname4))
+            //            {
+            //                IsAbleToEnterRet = false;
+            //                return IsAbleToEnterRet;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "宇宙":
+            //        {
+            //            string argfname5 = "宇宙移動";
+            //            if (get_Adaption(4) == 0 & !CurrentForm().IsFeatureAvailable(argfname5))
+            //            {
+            //                IsAbleToEnterRet = false;
+            //                return IsAbleToEnterRet;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "月面":
+            //        {
+            //            string argarea_name6 = "空";
+            //            string argfname6 = "空中移動";
+            //            string argarea_name7 = "宇";
+            //            string argfname7 = "宇宙移動";
+            //            if (IsTransAvailable(argarea_name6) | CurrentForm().IsFeatureAvailable(argfname6) | IsTransAvailable(argarea_name7) | CurrentForm().IsFeatureAvailable(argfname7))
+            //            {
+            //                IsAbleToEnterRet = true;
+            //                return IsAbleToEnterRet;
+            //            }
+
+            //            break;
+            //        }
+
+            //    default:
+            //        {
+            //            string argarea_name8 = "空";
+            //            string argfname8 = "空中移動";
+            //            if (IsTransAvailable(argarea_name8) | CurrentForm().IsFeatureAvailable(argfname8))
+            //            {
+            //                IsAbleToEnterRet = true;
+            //                return IsAbleToEnterRet;
+            //            }
+
+            //            string argarea_name9 = "陸";
+            //            string argfname9 = "陸上移動";
+            //            if (!IsTransAvailable(argarea_name9) & !CurrentForm().IsFeatureAvailable(argfname9))
+            //            {
+            //                IsAbleToEnterRet = false;
+            //                return IsAbleToEnterRet;
+            //            }
+
+            //            break;
+            //        }
+            //}
+
+            //// 進入不能？
+            //if (Map.TerrainMoveCost(tx, ty) >= 1000)
+            //{
+            //    IsAbleToEnterRet = false;
+            //    return IsAbleToEnterRet;
+            //}
+
+            //IsAbleToEnterRet = true;
+            //return IsAbleToEnterRet;
+        }
+
+        // この形態が使用可能か？ (Disable＆必要技能のチェック)
+        public bool IsAvailable()
+        {
+            return true;
+            // TODO Impl
+            //bool IsAvailableRet = default;
+            //short i;
+            //IsAvailableRet = true;
+
+            //// イベントコマンド「Disable」
+            //bool localIsDisabled() { string argfname = Name; var ret = IsDisabled(argfname); Name = argfname; return ret; }
+
+            //if (localIsDisabled())
+            //{
+            //    IsAvailableRet = false;
+            //    return IsAvailableRet;
+            //}
+
+            //// 制限時間の切れた形態？
+            //if (Status_Renamed == "他形態")
+            //{
+            //    object argIndex1 = "行動不能";
+            //    if (IsConditionSatisfied(argIndex1))
+            //    {
+            //        IsAvailableRet = false;
+            //        return IsAvailableRet;
+            //    }
+            //}
+
+            //{
+            //    var withBlock = CurrentForm();
+            //    // 技能チェックが必要？
+            //    string argfname = "必要技能";
+            //    string argfname1 = "不必要技能";
+            //    if (withBlock.CountPilot() == 0 | !IsFeatureAvailable(argfname) & !IsFeatureAvailable(argfname1))
+            //    {
+            //        return IsAvailableRet;
+            //    }
+
+            //    // 必要技能をチェック
+            //    var loopTo = CountFeature();
+            //    for (i = 1; i <= loopTo; i++)
+            //    {
+            //        object argIndex2 = i;
+            //        switch (Feature(argIndex2) ?? "")
+            //        {
+            //            case "必要技能":
+            //                {
+            //                    string localFeatureData() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
+
+            //                    bool localIsNecessarySkillSatisfied() { string argnabilities = hsc9e6151c7b7e42d6b233bb86f17bea66(); Pilot argp = null; var ret = withBlock.IsNecessarySkillSatisfied(argnabilities, p: argp); return ret; }
+
+            //                    if (!localIsNecessarySkillSatisfied())
+            //                    {
+            //                        IsAvailableRet = false;
+            //                        return IsAvailableRet;
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case "不必要技能":
+            //                {
+            //                    string localFeatureData1() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
+
+            //                    string argnabilities = localFeatureData1();
+            //                    Pilot argp = null;
+            //                    if (withBlock.IsNecessarySkillSatisfied(argnabilities, p: argp))
+            //                    {
+            //                        IsAvailableRet = false;
+            //                        return IsAvailableRet;
+            //                    }
+
+            //                    break;
+            //                }
+            //        }
+            //    }
+            //}
+
+            //return IsAvailableRet;
+        }
+
+        // 必要技能を満たしているか？
+        public bool IsNecessarySkillSatisfied(string nabilities, [Optional, DefaultParameterValue(null)] Pilot p)
+        {
+            return true;
+            // TODO Impl
+            //bool IsNecessarySkillSatisfiedRet = default;
+            //short i, num;
+            //var nskill_list = new string[101];
+            //if (Strings.Len(nabilities) == 0)
+            //{
+            //    IsNecessarySkillSatisfiedRet = true;
+            //    return IsNecessarySkillSatisfiedRet;
+            //}
+
+            //num = GeneralLib.LLength(nabilities);
+            //var loopTo = (short)GeneralLib.MinLng(num, 100);
+            //for (i = 1; i <= loopTo; i++)
+            //    nskill_list[i] = GeneralLib.LIndex(nabilities, i);
+
+            //// 個々の必要条件をチェック
+            //i = 1;
+            //while (i <= GeneralLib.MinLng(num, 100))
+            //{
+            //    if (IsNecessarySkillSatisfied2(nskill_list[i], p))
+            //    {
+            //        // 必要条件が満たされた場合、その後の「or」をスキップ
+            //        if (i <= num - 2)
+            //        {
+            //            while (Strings.LCase(nskill_list[i + 1]) == "or")
+            //            {
+            //                i = (short)(i + 2);
+            //                // 検査する必要条件が無くなったので必要技能が満たされたと判定
+            //                if (i == num)
+            //                {
+            //                    IsNecessarySkillSatisfiedRet = true;
+            //                    return IsNecessarySkillSatisfiedRet;
+            //                }
+            //                else if (i > num)
+            //                {
+            //                    // orの後ろに必要条件がない
+            //                    string argmsg = Name + "に対する必要技能「" + nabilities + "」が不正です";
+            //                    GUI.ErrorMessage(argmsg);
+            //                    SRC.TerminateSRC();
+            //                }
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        // 必要条件が満たされなかった場合、その後に「or」がなければ
+            //        // 必要技能が満たされなかったと判定
+            //        if (i > num - 2)
+            //        {
+            //            return IsNecessarySkillSatisfiedRet;
+            //        }
+
+            //        i = (short)(i + 1);
+            //        if (Strings.LCase(nskill_list[i]) != "or")
+            //        {
+            //            return IsNecessarySkillSatisfiedRet;
+            //        }
+            //    }
+
+            //    i = (short)(i + 1);
+            //}
+
+            //IsNecessarySkillSatisfiedRet = true;
+            //return IsNecessarySkillSatisfiedRet;
+        }
+
+        public bool IsNecessarySkillSatisfied2(string ndata, Pilot p)
+        {
+            return true;
+            // TODO Impl
+            //bool IsNecessarySkillSatisfied2Ret = default;
+            //string stype2, stype, sname;
+            //double slevel;
+            //double nlevel;
+            //var mp = default(Pilot);
+            //short i, j;
+
+            //// ステータスコマンド実行時は条件が満たされていると見なす？
+            //if (Strings.Left(ndata, 1) == "+")
+            //{
+            //    if (Status_Renamed == "出撃" & InterMission.InStatusCommand())
+            //    {
+            //        IsNecessarySkillSatisfied2Ret = true;
+            //        return IsNecessarySkillSatisfied2Ret;
+            //    }
+
+            //    ndata = Strings.Mid(ndata, 2);
+            //}
+
+            //// 召喚者技能を参照？
+            //if (Strings.Left(ndata, 1) == "*")
+            //{
+            //    if (Summoner is null)
+            //    {
+            //        return IsNecessarySkillSatisfied2Ret;
+            //    }
+
+            //    string argndata = Strings.Mid(ndata, 2);
+            //    Pilot argp = null;
+            //    IsNecessarySkillSatisfied2Ret = Summoner.IsNecessarySkillSatisfied2(argndata, argp);
+            //    return IsNecessarySkillSatisfied2Ret;
+            //}
+
+            //i = (short)Strings.InStr(ndata, "Lv");
+            //if (i > 0)
+            //{
+            //    sname = Strings.Left(ndata, i - 1);
+            //    string argexpr = Strings.Mid(ndata, i + 2);
+            //    nlevel = GeneralLib.StrToDbl(argexpr);
+            //}
+            //else
+            //{
+            //    sname = ndata;
+            //    nlevel = 1d;
+            //}
+
+            //// 不必要技能？
+            //if (Strings.Left(sname, 1) == "!")
+            //{
+            //    bool localIsNecessarySkillSatisfied2() { string argndata = Strings.Mid(ndata, 2); var ret = IsNecessarySkillSatisfied2(argndata, p); return ret; }
+
+            //    IsNecessarySkillSatisfied2Ret = !localIsNecessarySkillSatisfied2();
+            //    return IsNecessarySkillSatisfied2Ret;
+            //}
+
+            //// 必要技能の判定に使用するパイロットを設定
+            //if (p is null)
+            //{
+            //    if (CountPilot() > 0)
+            //    {
+            //        mp = MainPilot();
+            //    }
+            //    else
+            //    {
+            //        {
+            //            var withBlock = CurrentForm();
+            //            if (withBlock.CountPilot() > 0)
+            //            {
+            //                mp = withBlock.MainPilot();
+            //            }
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    mp = p;
+            //}
+
+            //// ダミーパイロットの場合は無視
+            //if (mp is object)
+            //{
+            //    if (mp.Nickname0 == "パイロット不在")
+            //    {
+            //        // UPGRADE_NOTE: オブジェクト mp をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+            //        mp = null;
+            //    }
+            //}
+
+            //slevel = -10000;
+
+            //// まず名称が変わらない必要技能を判定
+            //switch (sname ?? "")
+            //{
+            //    case "レベル":
+            //        {
+            //            if (mp is object)
+            //            {
+            //                slevel = mp.Level;
+            //            }
+            //            else
+            //            {
+            //                slevel = 0d;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "格闘":
+            //        {
+            //            if (mp is object)
+            //            {
+            //                slevel = mp.InfightBase;
+            //            }
+            //            else
+            //            {
+            //                slevel = 0d;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "射撃":
+            //        {
+            //            slevel = 0d;
+            //            if (mp is object)
+            //            {
+            //                if (!mp.HasMana())
+            //                {
+            //                    slevel = mp.ShootingBase;
+            //                }
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "魔力":
+            //        {
+            //            slevel = 0d;
+            //            if (mp is object)
+            //            {
+            //                if (mp.HasMana())
+            //                {
+            //                    slevel = mp.ShootingBase;
+            //                }
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "命中":
+            //        {
+            //            if (mp is object)
+            //            {
+            //                slevel = mp.HitBase;
+            //            }
+            //            else
+            //            {
+            //                slevel = 0d;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "回避":
+            //        {
+            //            if (mp is object)
+            //            {
+            //                slevel = mp.DodgeBase;
+            //            }
+            //            else
+            //            {
+            //                slevel = 0d;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "技量":
+            //        {
+            //            if (mp is object)
+            //            {
+            //                slevel = mp.TechniqueBase;
+            //            }
+            //            else
+            //            {
+            //                slevel = 0d;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "反応":
+            //        {
+            //            if (mp is object)
+            //            {
+            //                slevel = mp.IntuitionBase;
+            //            }
+            //            else
+            //            {
+            //                slevel = 0d;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "格闘初期値":
+            //        {
+            //            slevel = 0d;
+            //            if (mp is object)
+            //            {
+            //                string argoname = "攻撃力低成長";
+            //                if (Expression.IsOptionDefined(argoname))
+            //                {
+            //                    slevel = mp.InfightBase - mp.Level / 2;
+            //                }
+            //                else
+            //                {
+            //                    slevel = mp.InfightBase - mp.Level;
+            //                }
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "射撃初期値":
+            //        {
+            //            slevel = 0d;
+            //            if (mp is object)
+            //            {
+            //                if (!mp.HasMana())
+            //                {
+            //                    string argoname1 = "攻撃力低成長";
+            //                    if (Expression.IsOptionDefined(argoname1))
+            //                    {
+            //                        slevel = mp.ShootingBase - mp.Level / 2;
+            //                    }
+            //                    else
+            //                    {
+            //                        slevel = mp.ShootingBase - mp.Level;
+            //                    }
+            //                }
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "魔力初期値":
+            //        {
+            //            slevel = 0d;
+            //            if (mp is object)
+            //            {
+            //                if (mp.HasMana())
+            //                {
+            //                    string argoname2 = "攻撃力低成長";
+            //                    if (Expression.IsOptionDefined(argoname2))
+            //                    {
+            //                        slevel = mp.ShootingBase - mp.Level / 2;
+            //                    }
+            //                    else
+            //                    {
+            //                        slevel = mp.ShootingBase - mp.Level;
+            //                    }
+            //                }
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "命中初期値":
+            //        {
+            //            slevel = 0d;
+            //            if (mp is object)
+            //            {
+            //                slevel = mp.HitBase - mp.Level;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "回避初期値":
+            //        {
+            //            slevel = 0d;
+            //            if (mp is object)
+            //            {
+            //                slevel = mp.DodgeBase - mp.Level;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "技量初期値":
+            //        {
+            //            slevel = 0d;
+            //            if (mp is object)
+            //            {
+            //                slevel = mp.TechniqueBase - mp.Level;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "反応初期値":
+            //        {
+            //            slevel = 0d;
+            //            if (mp is object)
+            //            {
+            //                slevel = mp.IntuitionBase - mp.Level;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "男性":
+            //        {
+            //            slevel = 0d;
+            //            if (mp is object)
+            //            {
+            //                if (mp.Sex == "男性")
+            //                {
+            //                    slevel = 1d;
+            //                }
+
+            //                if (Data.PilotNum > 1)
+            //                {
+            //                    var loopTo = CountPilot();
+            //                    for (i = 1; i <= loopTo; i++)
+            //                    {
+            //                        Pilot localPilot() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
+
+            //                        if (localPilot().Sex == "男性")
+            //                        {
+            //                            slevel = 1d;
+            //                        }
+            //                    }
+            //                }
+
+            //                var loopTo1 = CountSupport();
+            //                for (i = 1; i <= loopTo1; i++)
+            //                {
+            //                    Pilot localSupport() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
+
+            //                    if (localSupport().Sex == "男性")
+            //                    {
+            //                        slevel = 1d;
+            //                    }
+            //                }
+
+            //                string argfname = "追加サポート";
+            //                if (IsFeatureAvailable(argfname))
+            //                {
+            //                    if (AdditionalSupport().Sex == "男性")
+            //                    {
+            //                        slevel = 1d;
+            //                    }
+            //                }
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "女性":
+            //        {
+            //            slevel = 0d;
+            //            if (mp is object)
+            //            {
+            //                if (mp.Sex == "女性")
+            //                {
+            //                    slevel = 1d;
+            //                }
+
+            //                if (Data.PilotNum > 1)
+            //                {
+            //                    var loopTo2 = CountPilot();
+            //                    for (i = 1; i <= loopTo2; i++)
+            //                    {
+            //                        Pilot localPilot1() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
+
+            //                        if (localPilot1().Sex == "女性")
+            //                        {
+            //                            slevel = 1d;
+            //                        }
+            //                    }
+            //                }
+
+            //                var loopTo3 = CountSupport();
+            //                for (i = 1; i <= loopTo3; i++)
+            //                {
+            //                    Pilot localSupport1() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
+
+            //                    if (localSupport1().Sex == "女性")
+            //                    {
+            //                        slevel = 1d;
+            //                    }
+            //                }
+
+            //                string argfname1 = "追加サポート";
+            //                if (IsFeatureAvailable(argfname1))
+            //                {
+            //                    if (AdditionalSupport().Sex == "女性")
+            //                    {
+            //                        slevel = 1d;
+            //                    }
+            //                }
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "生身":
+            //        {
+            //            if (IsHero())
+            //            {
+            //                slevel = 1d;
+            //            }
+            //            else
+            //            {
+            //                slevel = 0d;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "瀕死":
+            //        {
+            //            if (HP <= MaxHP / 4)
+            //            {
+            //                slevel = 1d;
+            //            }
+            //            else
+            //            {
+            //                slevel = 0d;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "ＨＰ":
+            //        {
+            //            slevel = 10d * HP / MaxHP;
+            //            break;
+            //        }
+
+            //    case "ＥＮ":
+            //        {
+            //            slevel = 10d * EN / MaxEN;
+            //            break;
+            //        }
+
+            //    case "気力":
+            //        {
+            //            if (mp is object)
+            //            {
+            //                slevel = mp.Morale - 100d;
+            //                slevel = slevel / 10d;
+            //            }
+            //            else
+            //            {
+            //                slevel = 0d;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "ランク":
+            //        {
+            //            slevel = Rank;
+            //            break;
+            //        }
+
+            //    case "地上":
+            //    case "空中":
+            //    case "水中":
+            //    case "水上":
+            //    case "宇宙":
+            //    case "地中":
+            //        {
+            //            slevel = 0d;
+            //            if (Status_Renamed == "出撃")
+            //            {
+            //                if ((sname ?? "") == (Area ?? ""))
+            //                {
+            //                    slevel = 1d;
+            //                }
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "アイテム":
+            //        {
+            //            // 使い捨てアイテム表記用
+            //            slevel = 1d;
+            //            break;
+            //        }
+
+            //    case "当て身技":
+            //    case "自動反撃":
+            //        {
+            //            // アビリティで付加された当て身技及び自動反撃専用の武器が表示されるのを
+            //            // 防ぐため、これらの必要技能は常に満たされないとみなす
+            //            return IsNecessarySkillSatisfied2Ret;
+            //        }
+            //}
+
+            //// 上の条件のいずれかに該当？
+            //if (slevel != -10000)
+            //{
+            //    // 指定された技能のレベルが必要なレベル以上の場合に必要技能が満たされたと判定
+            //    if (slevel >= nlevel)
+            //    {
+            //        IsNecessarySkillSatisfied2Ret = true;
+            //    }
+
+            //    return IsNecessarySkillSatisfied2Ret;
+            //}
+
+            //// 必要技能の種類を判別
+            //if (mp is object)
+            //{
+            //    stype = mp.SkillType(sname);
+            //}
+            //else
+            //{
+            //    stype = sname;
+            //}
+
+            //// 名称が変わる可能性がある必要技能を判定
+            //string iname;
+            //string uname;
+            //Unit u;
+            //short max_range;
+            //switch (stype ?? "")
+            //{
+            //    case "超感覚":
+            //        {
+            //            if (p is object)
+            //            {
+            //                object argIndex1 = "超感覚";
+            //                string argref_mode = "";
+            //                slevel = p.SkillLevel(argIndex1, ref_mode: argref_mode);
+            //                if ((stype ?? "") != (sname ?? ""))
+            //                {
+            //                    if ((p.SkillNameForNS(stype) ?? "") != (sname ?? ""))
+            //                    {
+            //                        slevel = 0d;
+            //                    }
+            //                }
+
+            //                object argIndex2 = "知覚強化";
+            //                string argref_mode1 = "";
+            //                slevel = slevel + p.SkillLevel(argIndex2, ref_mode: argref_mode1);
+            //            }
+            //            else if (mp is object)
+            //            {
+            //                object argIndex3 = "超感覚";
+            //                string argref_mode2 = "";
+            //                slevel = mp.SkillLevel(argIndex3, ref_mode: argref_mode2);
+            //                if (Data.PilotNum > 1)
+            //                {
+            //                    var loopTo4 = CountPilot();
+            //                    for (i = 2; i <= loopTo4; i++)
+            //                    {
+            //                        object argIndex5 = i;
+            //                        {
+            //                            var withBlock1 = Pilot(argIndex5);
+            //                            object argIndex4 = "超感覚";
+            //                            string argref_mode3 = "";
+            //                            slevel = GeneralLib.MaxDbl(slevel, withBlock1.SkillLevel(argIndex4, ref_mode: argref_mode3));
+            //                            double localSkillLevel() { object argIndex1 = sname; string argref_mode = ""; var ret = withBlock1.SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
+
+            //                            slevel = GeneralLib.MaxDbl(slevel, localSkillLevel());
+            //                        }
+            //                    }
+            //                }
+
+            //                var loopTo5 = CountSupport();
+            //                for (i = 1; i <= loopTo5; i++)
+            //                {
+            //                    object argIndex7 = i;
+            //                    {
+            //                        var withBlock2 = Support(argIndex7);
+            //                        object argIndex6 = "超感覚";
+            //                        string argref_mode4 = "";
+            //                        slevel = GeneralLib.MaxDbl(slevel, withBlock2.SkillLevel(argIndex6, ref_mode: argref_mode4));
+            //                        double localSkillLevel1() { object argIndex1 = sname; string argref_mode = ""; var ret = withBlock2.SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
+
+            //                        slevel = GeneralLib.MaxDbl(slevel, localSkillLevel1());
+            //                    }
+            //                }
+
+            //                string argfname2 = "追加サポート";
+            //                if (IsFeatureAvailable(argfname2))
+            //                {
+            //                    {
+            //                        var withBlock3 = AdditionalSupport();
+            //                        object argIndex8 = "超感覚";
+            //                        string argref_mode5 = "";
+            //                        slevel = GeneralLib.MaxDbl(slevel, withBlock3.SkillLevel(argIndex8, ref_mode: argref_mode5));
+            //                        double localSkillLevel2() { object argIndex1 = sname; string argref_mode = ""; var ret = withBlock3.SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
+
+            //                        slevel = GeneralLib.MaxDbl(slevel, localSkillLevel2());
+            //                    }
+            //                }
+
+            //                if ((stype ?? "") != (sname ?? ""))
+            //                {
+            //                    if ((mp.SkillNameForNS(stype) ?? "") != (sname ?? ""))
+            //                    {
+            //                        slevel = 0d;
+            //                    }
+            //                }
+
+            //                object argIndex9 = "知覚強化";
+            //                string argref_mode6 = "";
+            //                slevel = slevel + mp.SkillLevel(argIndex9, ref_mode: argref_mode6);
+            //                if (Data.PilotNum > 1)
+            //                {
+            //                    var loopTo6 = CountPilot();
+            //                    for (i = 2; i <= loopTo6; i++)
+            //                    {
+            //                        Pilot localPilot2() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
+
+            //                        object argIndex10 = "知覚強化";
+            //                        string argref_mode7 = "";
+            //                        slevel = GeneralLib.MaxDbl(slevel, localPilot2().SkillLevel(argIndex10, ref_mode: argref_mode7));
+            //                    }
+            //                }
+
+            //                var loopTo7 = CountSupport();
+            //                for (i = 1; i <= loopTo7; i++)
+            //                {
+            //                    Pilot localSupport2() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
+
+            //                    object argIndex11 = "知覚強化";
+            //                    string argref_mode8 = "";
+            //                    slevel = GeneralLib.MaxDbl(slevel, localSupport2().SkillLevel(argIndex11, ref_mode: argref_mode8));
+            //                }
+
+            //                string argfname3 = "追加サポート";
+            //                if (IsFeatureAvailable(argfname3))
+            //                {
+            //                    object argIndex12 = "知覚強化";
+            //                    string argref_mode9 = "";
+            //                    slevel = GeneralLib.MaxDbl(slevel, AdditionalSupport().SkillLevel(argIndex12, ref_mode: argref_mode9));
+            //                }
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "同調率":
+            //        {
+            //            if (p is object)
+            //            {
+            //                slevel = p.SynchroRate();
+            //            }
+            //            else if (mp is object)
+            //            {
+            //                slevel = mp.SynchroRate();
+            //                if (Data.PilotNum > 1)
+            //                {
+            //                    var loopTo8 = CountPilot();
+            //                    for (i = 2; i <= loopTo8; i++)
+            //                    {
+            //                        Pilot localPilot3() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
+
+            //                        slevel = GeneralLib.MaxDbl(slevel, localPilot3().SynchroRate());
+            //                    }
+            //                }
+
+            //                var loopTo9 = CountSupport();
+            //                for (i = 1; i <= loopTo9; i++)
+            //                {
+            //                    Pilot localSupport3() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
+
+            //                    slevel = GeneralLib.MaxDbl(slevel, localSupport3().SynchroRate());
+            //                }
+
+            //                string argfname4 = "追加サポート";
+            //                if (IsFeatureAvailable(argfname4))
+            //                {
+            //                    slevel = GeneralLib.MaxDbl(slevel, AdditionalSupport().SynchroRate());
+            //                }
+            //            }
+
+            //            if ((stype ?? "") != (sname ?? ""))
+            //            {
+            //                if ((mp.SkillNameForNS(stype) ?? "") != (sname ?? ""))
+            //                {
+            //                    slevel = 0d;
+            //                }
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "オーラ":
+            //        {
+            //            if (p is object)
+            //            {
+            //                object argIndex13 = "オーラ";
+            //                string argref_mode10 = "";
+            //                slevel = p.SkillLevel(argIndex13, ref_mode: argref_mode10);
+            //            }
+            //            else if (mp is object)
+            //            {
+            //                slevel = AuraLevel();
+            //            }
+
+            //            if ((stype ?? "") != (sname ?? ""))
+            //            {
+            //                if ((mp.SkillNameForNS(stype) ?? "") != (sname ?? ""))
+            //                {
+            //                    slevel = 0d;
+            //                }
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "霊力":
+            //        {
+            //            if (p is object)
+            //            {
+            //                slevel = p.Plana;
+            //            }
+            //            else if (mp is object)
+            //            {
+            //                slevel = mp.Plana;
+            //            }
+
+            //            if ((stype ?? "") != (sname ?? ""))
+            //            {
+            //                if ((mp.SkillNameForNS(stype) ?? "") != (sname ?? ""))
+            //                {
+            //                    slevel = 0d;
+            //                }
+            //            }
+
+            //            break;
+            //        }
+
+            //    default:
+            //        {
+            //            // 上記以外のパイロット用特殊能力
+
+            //            if (mp is object)
+            //            {
+            //                // 特定パイロット専用？
+            //                if ((sname ?? "") == (mp.Name ?? "") | (sname ?? "") == (mp.get_Nickname(false) ?? ""))
+            //                {
+            //                    slevel = 1d;
+            //                }
+            //                else if ((stype ?? "") == (sname ?? ""))
+            //                {
+            //                    object argIndex14 = stype;
+            //                    string argref_mode11 = "";
+            //                    slevel = mp.SkillLevel(argIndex14, ref_mode: argref_mode11);
+            //                }
+            //                else if ((mp.SkillNameForNS(stype) ?? "") == (sname ?? ""))
+            //                {
+            //                    object argIndex15 = stype;
+            //                    string argref_mode12 = "";
+            //                    slevel = mp.SkillLevel(argIndex15, ref_mode: argref_mode12);
+            //                }
+
+            //                // パイロット数が括弧つきでない場合のみ
+            //                if (Data.PilotNum > 1)
+            //                {
+            //                    // サブパイロットの技能を検索
+            //                    var loopTo10 = CountPilot();
+            //                    for (i = 2; i <= loopTo10; i++)
+            //                    {
+            //                        object argIndex16 = i;
+            //                        {
+            //                            var withBlock4 = Pilot(argIndex16);
+            //                            if ((sname ?? "") == (withBlock4.Name ?? "") | (sname ?? "") == (withBlock4.get_Nickname(false) ?? ""))
+            //                            {
+            //                                slevel = 1d;
+            //                                break;
+            //                            }
+
+            //                            stype2 = withBlock4.SkillType(sname);
+            //                            if ((stype2 ?? "") == (sname ?? ""))
+            //                            {
+            //                                double localSkillLevel3() { object argIndex1 = stype2; string argref_mode = ""; var ret = withBlock4.SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
+
+            //                                slevel = GeneralLib.MaxDbl(slevel, localSkillLevel3());
+            //                            }
+            //                            else if ((withBlock4.SkillNameForNS(stype2) ?? "") == (sname ?? ""))
+            //                            {
+            //                                double localSkillLevel4() { object argIndex1 = stype2; string argref_mode = ""; var ret = withBlock4.SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
+
+            //                                slevel = GeneralLib.MaxDbl(slevel, localSkillLevel4());
+            //                            }
+            //                        }
+            //                    }
+            //                }
+
+            //                // サポートパイロットの技能を検索
+            //                var loopTo11 = CountSupport();
+            //                for (i = 1; i <= loopTo11; i++)
+            //                {
+            //                    object argIndex17 = i;
+            //                    {
+            //                        var withBlock5 = Support(argIndex17);
+            //                        if ((sname ?? "") == (withBlock5.Name ?? "") | (sname ?? "") == (withBlock5.get_Nickname(false) ?? ""))
+            //                        {
+            //                            slevel = 1d;
+            //                            break;
+            //                        }
+
+            //                        stype2 = withBlock5.SkillType(sname);
+            //                        if ((stype2 ?? "") == (sname ?? ""))
+            //                        {
+            //                            double localSkillLevel5() { object argIndex1 = stype2; string argref_mode = ""; var ret = withBlock5.SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
+
+            //                            slevel = GeneralLib.MaxDbl(slevel, localSkillLevel5());
+            //                        }
+            //                        else if ((withBlock5.SkillNameForNS(stype2) ?? "") == (sname ?? ""))
+            //                        {
+            //                            double localSkillLevel6() { object argIndex1 = stype2; string argref_mode = ""; var ret = withBlock5.SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
+
+            //                            slevel = GeneralLib.MaxDbl(slevel, localSkillLevel6());
+            //                        }
+            //                    }
+            //                }
+
+            //                // 追加サポートの技能を検索
+            //                string argfname5 = "追加サポート";
+            //                if (IsFeatureAvailable(argfname5) & CountPilot() > 0)
+            //                {
+            //                    {
+            //                        var withBlock6 = AdditionalSupport();
+            //                        if ((sname ?? "") == (withBlock6.Name ?? "") | (sname ?? "") == (withBlock6.get_Nickname(false) ?? ""))
+            //                        {
+            //                            slevel = 1d;
+            //                        }
+            //                        else
+            //                        {
+            //                            stype2 = withBlock6.SkillType(sname);
+            //                            if ((stype2 ?? "") == (sname ?? ""))
+            //                            {
+            //                                double localSkillLevel7() { object argIndex1 = stype2; string argref_mode = ""; var ret = withBlock6.SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
+
+            //                                slevel = GeneralLib.MaxDbl(slevel, localSkillLevel7());
+            //                            }
+            //                            else if ((withBlock6.SkillNameForNS(stype2) ?? "") == (sname ?? ""))
+            //                            {
+            //                                double localSkillLevel8() { object argIndex1 = stype2; string argref_mode = ""; var ret = withBlock6.SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
+
+            //                                slevel = GeneralLib.MaxDbl(slevel, localSkillLevel8());
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //            }
+
+            //            if (slevel == 0d)
+            //            {
+            //                // ユニット名またはクラスに該当？
+            //                if ((sname ?? "") == (Name ?? "") | (sname ?? "") == (Nickname0 ?? "") | (sname ?? "") == (Class0 ?? ""))
+            //                {
+            //                    slevel = 1d;
+            //                }
+            //            }
+
+            //            if (slevel == 0d)
+            //            {
+            //                if (Strings.Left(sname, 1) == "@")
+            //                {
+            //                    // 地形を指定した必要技能
+            //                    if (Status_Renamed == "出撃" & 1 <= x & x <= Map.MapWidth & 1 <= y & y <= Map.MapHeight)
+            //                    {
+            //                        if ((Strings.Mid(sname, 2) ?? "") == (Map.TerrainName(x, y) ?? ""))
+            //                        {
+            //                            slevel = 1d;
+            //                        }
+            //                    }
+            //                }
+            //                else if (Strings.Right(sname, 2) == "装備")
+            //                {
+            //                    // アイテムを指定した必要技能
+            //                    iname = Strings.Left(sname, Strings.Len(sname) - 2);
+            //                    var loopTo12 = CountItem();
+            //                    for (i = 1; i <= loopTo12; i++)
+            //                    {
+            //                        object argIndex18 = i;
+            //                        {
+            //                            var withBlock7 = Item(argIndex18);
+            //                            if (withBlock7.Activated)
+            //                            {
+            //                                if ((iname ?? "") == (withBlock7.Name ?? "") | (iname ?? "") == (withBlock7.Class0() ?? ""))
+            //                                {
+            //                                    slevel = 1d;
+            //                                    break;
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //                else if (Strings.Right(sname, 2) == "隣接" | Strings.Right(sname, 4) == "マス以内")
+            //                {
+            //                    // 特定のユニットが近くにいることを指定した必要技能
+            //                    if (Status_Renamed == "出撃")
+            //                    {
+            //                        if (Strings.Right(sname, 2) == "隣接")
+            //                        {
+            //                            uname = Strings.Left(sname, Strings.Len(sname) - 2);
+            //                            max_range = 1;
+            //                        }
+            //                        else
+            //                        {
+            //                            uname = Strings.Left(sname, Strings.Len(sname) - 5);
+            //                            string argexpr1 = Strings.Mid(sname, Strings.Len(sname) - 4, 1);
+            //                            max_range = (short)GeneralLib.StrToLng(argexpr1);
+            //                        }
+
+            //                        var loopTo13 = (short)GeneralLib.MinLng(x + max_range, Map.MapWidth);
+            //                        for (i = (short)GeneralLib.MaxLng(x - max_range, 1); i <= loopTo13; i++)
+            //                        {
+            //                            var loopTo14 = (short)GeneralLib.MinLng(y + max_range, Map.MapHeight);
+            //                            for (j = (short)GeneralLib.MaxLng(y - max_range, 1); j <= loopTo14; j++)
+            //                            {
+            //                                u = Map.MapDataForUnit[i, j];
+
+            //                                // 距離が範囲外？
+            //                                if ((short)(Math.Abs((short)(x - i)) + Math.Abs((short)(y - j))) > max_range)
+            //                                {
+            //                                    goto NextNeighbor;
+            //                                }
+
+            //                                // ユニットがいない？
+            //                                if (u is null)
+            //                                {
+            //                                    goto NextNeighbor;
+            //                                }
+
+            //                                // ユニットが自分？
+            //                                if (ReferenceEquals(u, this) | x == i & y == j)
+            //                                {
+            //                                    goto NextNeighbor;
+            //                                }
+
+            //                                // ユニットが敵？
+            //                                if (IsEnemy(u))
+            //                                {
+            //                                    goto NextNeighbor;
+            //                                }
+            //                                // 合体技のパートナーに該当するか
+            //                                if (uname == "母艦")
+            //                                {
+            //                                    string argfname6 = "母艦";
+            //                                    if (!u.IsFeatureAvailable(argfname6))
+            //                                    {
+            //                                        goto NextNeighbor;
+            //                                    }
+            //                                }
+            //                                else if ((u.Name ?? "") != (uname ?? "") & (u.MainPilot().Name ?? "") != (uname ?? ""))
+            //                                {
+            //                                    goto NextNeighbor;
+            //                                }
+
+            //                                // 行動出来なければだめ
+            //                                object argIndex19 = "混乱";
+            //                                object argIndex20 = "恐怖";
+            //                                object argIndex21 = "憑依";
+            //                                if (u.MaxAction() == 0 | u.IsConditionSatisfied(argIndex19) | u.IsConditionSatisfied(argIndex20) | u.IsConditionSatisfied(argIndex21))
+            //                                {
+            //                                    goto NextNeighbor;
+            //                                }
+
+            //                                // パートナーが見つかった
+            //                                IsNecessarySkillSatisfied2Ret = true;
+            //                                return IsNecessarySkillSatisfied2Ret;
+            //                            NextNeighbor:
+            //                                ;
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //                else if (Strings.Right(sname, 2) == "状態")
+            //                {
+            //                    // 特殊状態を指定した必要技能
+            //                    object argIndex22 = Strings.Left(sname, Strings.Len(sname) - 2);
+            //                    if (IsConditionSatisfied(argIndex22))
+            //                    {
+            //                        slevel = 1d;
+            //                    }
+            //                }
+            //            }
+
+            //            break;
+            //        }
+            //}
+
+            //// 指定された技能のレベルが必要なレベル以上の場合に必要技能が満たされたと判定
+            //if (slevel >= nlevel)
+            //{
+            //    IsNecessarySkillSatisfied2Ret = true;
+            //}
+
+            //return IsNecessarySkillSatisfied2Ret;
+        }
+
+        // 能力 fname を封印されているか？
+        public bool IsDisabled(string fname)
+        {
+            bool IsDisabledRet = default;
+            if (Strings.Len(fname) == 0)
+            {
+                IsDisabledRet = false;
+                return IsDisabledRet;
+            }
+
+            if (Expression.IsGlobalVariableDefined("Disable(" + fname + ")"))
+            {
+                IsDisabledRet = true;
+                return IsDisabledRet;
+            }
+
+            if (Expression.IsGlobalVariableDefined("Disable(" + Name + "," + fname + ")"))
+            {
+                IsDisabledRet = true;
+                return IsDisabledRet;
+            }
+
+            IsDisabledRet = false;
+            return IsDisabledRet;
+        }
+
+        // 現在、自分が攻撃を受けている側かどうか判定
+        public bool IsDefense()
+        {
+            bool IsDefenseRet = default;
+            if ((Party ?? "") == (SRC.Stage ?? ""))
+            {
+                IsDefenseRet = false;
+            }
+            else
+            {
+                IsDefenseRet = true;
+            }
+
+            return IsDefenseRet;
         }
     }
 }

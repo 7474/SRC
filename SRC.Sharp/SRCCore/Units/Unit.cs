@@ -110,6 +110,7 @@ namespace SRCCore.Units
 
         // 格納したユニット
         private SrcCollection<Unit> colUnitOnBoard = new SrcCollection<Unit>();
+        public IList<Unit> UnitOnBoards => colUnitOnBoard.List;
 
         //// 装備しているアイテム
         //private Collection colItem = new Collection();

@@ -51741,7 +51741,6 @@ namespace Project1
             return IsDisabledRet;
         }
 
-
         // 現在、自分が攻撃を受けている側かどうか判定
         public bool IsDefense()
         {

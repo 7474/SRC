@@ -2,6 +2,7 @@
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SRCCore.Units
@@ -144,40 +145,18 @@ namespace SRCCore.Units
                 of.y = y;
             }
 
-            // TODO Impl
-            //var loopTo5 = CountUnitOnBoard();
-            //for (i = 1; i <= loopTo5; i++)
-            //{
-            //    object argIndex2 = i;
-            //    {
-            //        var withBlock1 = UnitOnBoard(argIndex2);
-            //        withBlock1.x = x;
-            //        withBlock1.y = y;
-            //    }
-            //}
+            foreach (var u in UnitOnBoards)
+            {
+                u.x = x;
+                u.y = y;
+            }
 
-            //// 格納されていた場合はあらかじめ降ろしておく
-            //if (Status_Renamed == "格納")
-            //{
-            //    foreach (Unit u in SRC.UList)
-            //    {
-            //        var loopTo6 = u.CountUnitOnBoard();
-            //        for (i = 1; i <= loopTo6; i++)
-            //        {
-            //            Unit localUnitOnBoard() { object argIndex1 = i; var ret = u.UnitOnBoard(argIndex1); return ret; }
-
-            //            if ((ID ?? "") == (localUnitOnBoard().ID ?? ""))
-            //            {
-            //                object argIndex3 = ID;
-            //                u.UnloadUnit(argIndex3);
-            //                goto EndLoop;
-            //            }
-            //        }
-            //    }
-
-            //EndLoop:
-            //    ;
-            //}
+            // 格納されていた場合はあらかじめ降ろしておく
+            if (Status == "格納")
+            {
+                var boardUnit = SRC.UList.Items.First(x => x.UnitOnBoard(ID) != null);
+                boardUnit?.UnitOnBoard(ID);
+            }
 
             // Statusを更新
             Status = "出撃";
@@ -420,71 +399,63 @@ namespace SRCCore.Units
                 of.y = y;
             }
 
-            //    var loopTo1 = CountUnitOnBoard();
-            //    for (i = 1; i <= loopTo1; i++)
-            //    {
-            //        object argIndex2 = i;
-            //        {
-            //            var withBlock1 = UnitOnBoard(argIndex2);
-            //            withBlock1.x = x;
-            //            withBlock1.y = y;
-            //        }
-            //    }
+            foreach (var u in UnitOnBoards)
+            {
+                u.x = x;
+                u.y = y;
+            }
 
-            //    // 指定された場所に既にユニットが存在？
-            //    if (Map.MapDataForUnit[x, y] is object)
-            //    {
-            //        {
-            //            var withBlock2 = Map.MapDataForUnit[x, y];
-            //            // 合体？
-            //            var loopTo2 = withBlock2.CountFeature();
-            //            for (i = 1; i <= loopTo2; i++)
-            //            {
-            //                string localFeature() { object argIndex1 = i; var ret = withBlock2.Feature(argIndex1); return ret; }
+            // 指定された場所に既にユニットが存在？
+            if (Map.MapDataForUnit[x, y] != null)
+            {
+                var targetUnit = Map.MapDataForUnit[x, y];
+                //// 合体？
+                //var loopTo2 = targetUnit.CountFeature();
+                //for (i = 1; i <= loopTo2; i++)
+                //{
+                //    string localFeature() { object argIndex1 = i; var ret = targetUnit.Feature(argIndex1); return ret; }
 
-            //                string localFeatureData2() { object argIndex1 = i; var ret = withBlock2.FeatureData(argIndex1); return ret; }
+                //    string localFeatureData2() { object argIndex1 = i; var ret = targetUnit.FeatureData(argIndex1); return ret; }
 
-            //                int localLLength() { string arglist = hsb631fea4c5cf49098946ae0a91f0346e(); var ret = GeneralLib.LLength(arglist); return ret; }
+                //    int localLLength() { string arglist = hsb631fea4c5cf49098946ae0a91f0346e(); var ret = GeneralLib.LLength(arglist); return ret; }
 
-            //                if (localFeature() == "合体" & localLLength() == 3)
-            //                {
-            //                    string localFeatureData1() { object argIndex1 = i; var ret = withBlock2.FeatureData(argIndex1); return ret; }
+                //    if (localFeature() == "合体" & localLLength() == 3)
+                //    {
+                //        string localFeatureData1() { object argIndex1 = i; var ret = targetUnit.FeatureData(argIndex1); return ret; }
 
-            //                    string localLIndex1() { string arglist = hsb6975299bb8a44cda80cb8aa733a682c(); var ret = GeneralLib.LIndex(arglist, 3); return ret; }
+                //        string localLIndex1() { string arglist = hsb6975299bb8a44cda80cb8aa733a682c(); var ret = GeneralLib.LIndex(arglist, 3); return ret; }
 
-            //                    object argIndex3 = localLIndex1();
-            //                    if (SRC.UList.IsDefined(argIndex3))
-            //                    {
-            //                        string localFeatureData() { object argIndex1 = i; var ret = withBlock2.FeatureData(argIndex1); return ret; }
+                //        object argIndex3 = localLIndex1();
+                //        if (SRC.UList.IsDefined(argIndex3))
+                //        {
+                //            string localFeatureData() { object argIndex1 = i; var ret = targetUnit.FeatureData(argIndex1); return ret; }
 
-            //                        string localLIndex() { string arglist = hs429ff88444314337bcbc774b8db33f1c(); var ret = GeneralLib.LIndex(arglist, 3); return ret; }
+                //            string localLIndex() { string arglist = hs429ff88444314337bcbc774b8db33f1c(); var ret = GeneralLib.LIndex(arglist, 3); return ret; }
 
-            //                        Unit localItem() { object argIndex1 = (object)hs60134dcbf45946b48db157b192860c4e(); var ret = SRC.UList.Item(argIndex1); return ret; }
+                //            Unit localItem() { object argIndex1 = (object)hs60134dcbf45946b48db157b192860c4e(); var ret = SRC.UList.Item(argIndex1); return ret; }
 
-            //                        if (ReferenceEquals(localItem().CurrentForm(), this))
-            //                        {
-            //                            string arguname = "";
-            //                            Combine(uname: arguname);
-            //                            return;
-            //                        }
-            //                    }
-            //                }
-            //            }
+                //            if (ReferenceEquals(localItem().CurrentForm(), this))
+                //            {
+                //                string arguname = "";
+                //                Combine(uname: arguname);
+                //                return;
+                //            }
+                //        }
+                //    }
+                //}
 
-            //            // 着艦？
-            //            string argfname = "母艦";
-            //            if (!withBlock2.IsFeatureAvailable(argfname))
-            //            {
-            //                string argmsg = "合体元ユニット「" + Name + "」が複数あるため合体処理が出来ません";
-            //                GUI.ErrorMessage(argmsg);
-            //                return;
-            //            }
-            //        }
+                // 着艦？
+                if (!targetUnit.IsFeatureAvailable("母艦"))
+                {
+                    string argmsg = "合体元ユニット「" + Name + "」が複数あるため合体処理が出来ません";
+                    GUI.ErrorMessage(argmsg);
+                    return;
+                }
 
-            //        // 着艦処理
-            //        Land(Map.MapDataForUnit[x, y], by_cancel);
-            //        return;
-            //    }
+                // 着艦処理
+                Land(targetUnit, by_cancel);
+                return;
+            }
 
             //    // 移動先によるユニット位置変更
             //    switch (Map.TerrainClass(x, y) ?? "")
@@ -897,7 +868,7 @@ namespace SRCCore.Units
             //    int i, j;
 
             //    // 母艦に乗っていた場合は降りておく
-            //    if (Status_Renamed == "格納")
+            //    if (Status == "格納")
             //    {
             //        foreach (Unit currentU in SRC.UList)
             //        {
@@ -921,7 +892,7 @@ namespace SRCCore.Units
             //    }
 
             //    // 出撃している場合は画面上からユニットを消去
-            //    if (Status_Renamed == "出撃" | Status_Renamed == "破壊")
+            //    if (Status == "出撃" | Status == "破壊")
             //    {
             //        if (ReferenceEquals(Map.MapDataForUnit[x, y], this))
             //        {
@@ -940,9 +911,9 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    if (Status_Renamed == "出撃" | Status_Renamed == "格納")
+            //    if (Status == "出撃" | Status == "格納")
             //    {
-            //        Status_Renamed = "待機";
+            //        Status = "待機";
             //    }
 
             //    // 破壊をキャンセル状態は解除
@@ -957,7 +928,7 @@ namespace SRCCore.Units
             //    foreach (Unit currentU1 in colUnitOnBoard)
             //    {
             //        u = currentU1;
-            //        u.Status_Renamed = "待機";
+            //        u.Status = "待機";
             //        colUnitOnBoard.Remove(u.ID);
             //    }
 
@@ -977,237 +948,229 @@ namespace SRCCore.Units
         // 母艦 u に着艦
         public void Land(Unit u, bool by_cancel = false, bool is_event = false)
         {
-            //    string tclass;
-            //    int i;
+            // Landコマンドで着艦した場合
+            if (is_event)
+            {
+                if (Status == "出撃" || Status == "格納")
+                {
+                    Escape();
+                }
+                else
+                {
+                    // 出撃のための前準備
 
-            //    // Landコマンドで着艦した場合
-            //    if (is_event)
-            //    {
-            //        if (Status_Renamed == "出撃" | Status_Renamed == "格納")
-            //        {
-            //            Escape();
-            //        }
-            //        else
-            //        {
-            //            // 出撃のための前準備
+                    // ユニットが存在する位置を決定
+                    string tclass;
+                    if (u.Status == "出撃")
+                    {
+                        tclass = Map.Terrain(u.x, u.y).Class;
+                    }
+                    else
+                    {
+                        tclass = Map.Terrain((Map.MapWidth / 2), (Map.MapHeight / 2)).Class;
+                    }
 
-            //            // ユニットが存在する位置を決定
-            //            if (u.Status_Renamed == "出撃")
-            //            {
-            //                tclass = Map.TerrainClass(u.x, u.y);
-            //            }
-            //            else
-            //            {
-            //                tclass = Map.TerrainClass((Map.MapWidth / 2), (Map.MapHeight / 2));
-            //            }
+                    switch (tclass ?? "")
+                    {
+                        case "空":
+                            {
+                                Area = "空中";
+                                break;
+                            }
 
-            //            switch (tclass ?? "")
-            //            {
-            //                case "空":
-            //                    {
-            //                        Area = "空中";
-            //                        break;
-            //                    }
+                        case "陸":
+                        case "屋内":
+                            {
+                                string argarea_name = "空";
+                                string argarea_name1 = "陸";
+                                if (IsTransAvailable(argarea_name) & Strings.Mid(strAdaption, 1, 1) == "A")
+                                {
+                                    Area = "空中";
+                                }
+                                else if (IsTransAvailable(argarea_name1))
+                                {
+                                    Area = "地上";
+                                }
+                                else
+                                {
+                                    Area = "空中";
+                                }
 
-            //                case "陸":
-            //                case "屋内":
-            //                    {
-            //                        string argarea_name = "空";
-            //                        string argarea_name1 = "陸";
-            //                        if (IsTransAvailable(argarea_name) & Strings.Mid(strAdaption, 1, 1) == "A")
-            //                        {
-            //                            Area = "空中";
-            //                        }
-            //                        else if (IsTransAvailable(argarea_name1))
-            //                        {
-            //                            Area = "地上";
-            //                        }
-            //                        else
-            //                        {
-            //                            Area = "空中";
-            //                        }
+                                break;
+                            }
 
-            //                        break;
-            //                    }
+                        case "月面":
+                            {
+                                string argarea_name2 = "空";
+                                string argarea_name3 = "宇宙";
+                                string argarea_name4 = "陸";
+                                if ((IsTransAvailable(argarea_name2) | IsTransAvailable(argarea_name3)) & Strings.Mid(strAdaption, 4, 1) == "A")
+                                {
+                                    Area = "宇宙";
+                                }
+                                else if (IsTransAvailable(argarea_name4))
+                                {
+                                    Area = "地上";
+                                }
+                                else
+                                {
+                                    Area = "宇宙";
+                                }
 
-            //                case "月面":
-            //                    {
-            //                        string argarea_name2 = "空";
-            //                        string argarea_name3 = "宇宙";
-            //                        string argarea_name4 = "陸";
-            //                        if ((IsTransAvailable(argarea_name2) | IsTransAvailable(argarea_name3)) & Strings.Mid(strAdaption, 4, 1) == "A")
-            //                        {
-            //                            Area = "宇宙";
-            //                        }
-            //                        else if (IsTransAvailable(argarea_name4))
-            //                        {
-            //                            Area = "地上";
-            //                        }
-            //                        else
-            //                        {
-            //                            Area = "宇宙";
-            //                        }
+                                break;
+                            }
 
-            //                        break;
-            //                    }
+                        case "水":
+                        case "深水":
+                            {
+                                string argarea_name5 = "空";
+                                string argarea_name6 = "水上";
+                                if (IsTransAvailable(argarea_name5))
+                                {
+                                    Area = "空中";
+                                }
+                                else if (IsTransAvailable(argarea_name6))
+                                {
+                                    Area = "水上";
+                                }
+                                else
+                                {
+                                    Area = "水中";
+                                }
 
-            //                case "水":
-            //                case "深水":
-            //                    {
-            //                        string argarea_name5 = "空";
-            //                        string argarea_name6 = "水上";
-            //                        if (IsTransAvailable(argarea_name5))
-            //                        {
-            //                            Area = "空中";
-            //                        }
-            //                        else if (IsTransAvailable(argarea_name6))
-            //                        {
-            //                            Area = "水上";
-            //                        }
-            //                        else
-            //                        {
-            //                            Area = "水中";
-            //                        }
+                                break;
+                            }
 
-            //                        break;
-            //                    }
+                        case "宇宙":
+                            {
+                                Area = "宇宙";
+                                break;
+                            }
+                    }
 
-            //                case "宇宙":
-            //                    {
-            //                        Area = "宇宙";
-            //                        break;
-            //                    }
-            //            }
+                    // 行動回数等を回復
+                    UsedAction = 0;
+                    UsedSupportAttack = 0;
+                    UsedSupportGuard = 0;
+                    UsedSyncAttack = 0;
+                    UsedCounterAttack = 0;
+                    // XXX BitmapID 周り処理するなら
+                    //if (BitmapID == 0)
+                    //{
+                    //    {
+                    //        var withBlock = SRC.UList.Item(Name);
+                    //        if ((withBlock.Party0 ?? "") == (Party0 ?? "") & withBlock.BitmapID != 0 & (withBlock.get_Bitmap(false) ?? "") == (get_Bitmap(false) ?? ""))
+                    //        {
+                    //            BitmapID = withBlock.BitmapID;
+                    //        }
+                    //        else
+                    //        {
+                    //            var argu = this;
+                    //            BitmapID = GUI.MakeUnitBitmap(argu);
+                    //        }
+                    //    }
+                    //}
 
-            //            // 行動回数等を回復
-            //            UsedAction = 0;
-            //            UsedSupportAttack = 0;
-            //            UsedSupportGuard = 0;
-            //            UsedSyncAttack = 0;
-            //            UsedCounterAttack = 0;
-            //            if (BitmapID == 0)
-            //            {
-            //                object argIndex1 = Name;
-            //                {
-            //                    var withBlock = SRC.UList.Item(argIndex1);
-            //                    if ((withBlock.Party0 ?? "") == (Party0 ?? "") & withBlock.BitmapID != 0 & (withBlock.get_Bitmap(false) ?? "") == (get_Bitmap(false) ?? ""))
-            //                    {
-            //                        BitmapID = withBlock.BitmapID;
-            //                    }
-            //                    else
-            //                    {
-            //                        var argu = this;
-            //                        BitmapID = GUI.MakeUnitBitmap(argu);
-            //                    }
-            //                }
+                    if (IsFeatureAvailable("制御不可"))
+                    {
+                        AddCondition("暴走", -1, Constants.DEFAULT_LEVEL, "");
+                    }
+                }
+            }
 
-            //                Name = Conversions.ToString(argIndex1);
-            //            }
+            // 母艦に自分自身を格納
+            u.LoadUnit(this);
 
-            //            string argfname = "制御不可";
-            //            if (IsFeatureAvailable(argfname))
-            //            {
-            //                string argcname = "暴走";
-            //                string argcdata = "";
-            //                AddCondition(argcname, -1, cdata: argcdata);
-            //            }
-            //        }
-            //    }
+            // 座標を母艦に合わせる
+            x = u.x;
+            y = u.y;
+            Status = "格納";
+            if (Area != "宇宙" & Area != "空中")
+            {
+                Area = "地上";
+            }
 
-            //    // 母艦に自分自身を格納
-            //    var argu1 = this;
-            //    u.LoadUnit(argu1);
+            // 気力減少
+            if (!by_cancel)
+            {
+                // TODO Impl
+                //{
+                //    var withBlock1 = MainPilot();
+                //    if (withBlock1.Personality != "機械")
+                //    {
+                //        string argoname = "母艦収納時気力低下小";
+                //        if (Expression.IsOptionDefined(argoname))
+                //        {
+                //            withBlock1.Morale = GeneralLib.MinLng(withBlock1.Morale, GeneralLib.MaxLng(withBlock1.Morale - 5, 100));
+                //        }
+                //        else
+                //        {
+                //            withBlock1.Morale = (withBlock1.Morale - 5);
+                //        }
+                //    }
+                //}
 
-            //    // 座標を母艦に合わせる
-            //    x = u.x;
-            //    y = u.y;
-            //    Status_Renamed = "格納";
-            //    if (Area != "宇宙" & Area != "空中")
-            //    {
-            //        Area = "地上";
-            //    }
+                //var loopTo = CountPilot();
+                //for (i = 1; i <= loopTo; i++)
+                //{
+                //    object argIndex2 = i;
+                //    {
+                //        var withBlock2 = Pilot(argIndex2);
+                //        if ((MainPilot().ID ?? "") != (withBlock2.ID ?? "") & withBlock2.Personality != "機械")
+                //        {
+                //            string argoname1 = "母艦収納時気力低下小";
+                //            if (Expression.IsOptionDefined(argoname1))
+                //            {
+                //                withBlock2.Morale = GeneralLib.MinLng(withBlock2.Morale, GeneralLib.MaxLng(withBlock2.Morale - 5, 100));
+                //            }
+                //            else
+                //            {
+                //                withBlock2.Morale = (withBlock2.Morale - 5);
+                //            }
+                //        }
+                //    }
+                //}
 
-            //    // 気力減少
-            //    if (!by_cancel)
-            //    {
-            //        {
-            //            var withBlock1 = MainPilot();
-            //            if (withBlock1.Personality != "機械")
-            //            {
-            //                string argoname = "母艦収納時気力低下小";
-            //                if (Expression.IsOptionDefined(argoname))
-            //                {
-            //                    withBlock1.Morale = GeneralLib.MinLng(withBlock1.Morale, GeneralLib.MaxLng(withBlock1.Morale - 5, 100));
-            //                }
-            //                else
-            //                {
-            //                    withBlock1.Morale = (withBlock1.Morale - 5);
-            //                }
-            //            }
-            //        }
+                //var loopTo1 = CountSupport();
+                //for (i = 1; i <= loopTo1; i++)
+                //{
+                //    object argIndex3 = i;
+                //    {
+                //        var withBlock3 = Support(argIndex3);
+                //        if (withBlock3.Personality != "機械")
+                //        {
+                //            string argoname2 = "母艦収納時気力低下小";
+                //            if (Expression.IsOptionDefined(argoname2))
+                //            {
+                //                withBlock3.Morale = GeneralLib.MinLng(withBlock3.Morale, GeneralLib.MaxLng(withBlock3.Morale - 5, 100));
+                //            }
+                //            else
+                //            {
+                //                withBlock3.Morale = (withBlock3.Morale - 5);
+                //            }
+                //        }
+                //    }
+                //}
 
-            //        var loopTo = CountPilot();
-            //        for (i = 1; i <= loopTo; i++)
-            //        {
-            //            object argIndex2 = i;
-            //            {
-            //                var withBlock2 = Pilot(argIndex2);
-            //                if ((MainPilot().ID ?? "") != (withBlock2.ID ?? "") & withBlock2.Personality != "機械")
-            //                {
-            //                    string argoname1 = "母艦収納時気力低下小";
-            //                    if (Expression.IsOptionDefined(argoname1))
-            //                    {
-            //                        withBlock2.Morale = GeneralLib.MinLng(withBlock2.Morale, GeneralLib.MaxLng(withBlock2.Morale - 5, 100));
-            //                    }
-            //                    else
-            //                    {
-            //                        withBlock2.Morale = (withBlock2.Morale - 5);
-            //                    }
-            //                }
-            //            }
-            //        }
-
-            //        var loopTo1 = CountSupport();
-            //        for (i = 1; i <= loopTo1; i++)
-            //        {
-            //            object argIndex3 = i;
-            //            {
-            //                var withBlock3 = Support(argIndex3);
-            //                if (withBlock3.Personality != "機械")
-            //                {
-            //                    string argoname2 = "母艦収納時気力低下小";
-            //                    if (Expression.IsOptionDefined(argoname2))
-            //                    {
-            //                        withBlock3.Morale = GeneralLib.MinLng(withBlock3.Morale, GeneralLib.MaxLng(withBlock3.Morale - 5, 100));
-            //                    }
-            //                    else
-            //                    {
-            //                        withBlock3.Morale = (withBlock3.Morale - 5);
-            //                    }
-            //                }
-            //            }
-            //        }
-
-            //        string argfname1 = "追加サポート";
-            //        if (IsFeatureAvailable(argfname1))
-            //        {
-            //            {
-            //                var withBlock4 = AdditionalSupport();
-            //                if (withBlock4.Personality != "機械")
-            //                {
-            //                    string argoname3 = "母艦収納時気力低下小";
-            //                    if (Expression.IsOptionDefined(argoname3))
-            //                    {
-            //                        withBlock4.Morale = GeneralLib.MinLng(withBlock4.Morale, GeneralLib.MaxLng(withBlock4.Morale - 5, 100));
-            //                    }
-            //                    else
-            //                    {
-            //                        withBlock4.Morale = (withBlock4.Morale - 5);
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
+                //if (IsFeatureAvailable("追加サポート"))
+                //{
+                //    {
+                //        var withBlock4 = AdditionalSupport();
+                //        if (withBlock4.Personality != "機械")
+                //        {
+                //            string argoname3 = "母艦収納時気力低下小";
+                //            if (Expression.IsOptionDefined(argoname3))
+                //            {
+                //                withBlock4.Morale = GeneralLib.MinLng(withBlock4.Morale, GeneralLib.MaxLng(withBlock4.Morale - 5, 100));
+                //            }
+                //            else
+                //            {
+                //                withBlock4.Morale = (withBlock4.Morale - 5);
+                //            }
+                //        }
+                //    }
+                //}
+            }
         }
 
         // new_form へ変形（換装、ハイパーモード、パーツ分離＆合体を含む）
@@ -1229,10 +1192,10 @@ namespace SRCCore.Units
             //    en_ratio = 100 * EN / (double)MaxEN;
             //    object argIndex1 = new_form;
             //    u = OtherForm(argIndex1);
-            //    u.Status_Renamed = Status_Renamed;
-            //    if (Status_Renamed != "破棄")
+            //    u.Status = Status;
+            //    if (Status != "破棄")
             //    {
-            //        Status_Renamed = "他形態";
+            //        Status = "他形態";
             //    }
 
             //    // 制御不可能な形態から元に戻る場合は暴走を解除
@@ -1770,7 +1733,7 @@ namespace SRCCore.Units
             //            withBlock.DeleteCondition(argIndex39);
             //        }
 
-            //        switch (withBlock.Status_Renamed ?? "")
+            //        switch (withBlock.Status ?? "")
             //        {
             //            case "出撃":
             //                {
@@ -1852,7 +1815,7 @@ namespace SRCCore.Units
             //    string prev_status;
             //    double hp_ratio = default, en_ratio = default;
             //    string fdata;
-            //    prev_status = Status_Renamed;
+            //    prev_status = Status;
             //    if (string.IsNullOrEmpty(uname))
             //    {
             //        // 合体形態が指定されてなければその場所にいるユニットと２体合体
@@ -2014,7 +1977,7 @@ namespace SRCCore.Units
             //    string BGM;
             //    if (!is_event)
             //    {
-            //        if (Status_Renamed == "出撃")
+            //        if (Status == "出撃")
             //        {
             //            // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
             //            string argfname = "追加パイロット";
@@ -2221,11 +2184,11 @@ namespace SRCCore.Units
             //        // マップ上から撤退させる
             //        {
             //            var withBlock3 = rarray[i].CurrentForm();
-            //            switch (withBlock3.Status_Renamed ?? "")
+            //            switch (withBlock3.Status ?? "")
             //            {
             //                case "出撃":
             //                    {
-            //                        withBlock3.Status_Renamed = "待機";
+            //                        withBlock3.Status = "待機";
             //                        // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             //                        Map.MapDataForUnit[withBlock3.x, withBlock3.y] = null;
             //                        GUI.EraseUnitBitmap(withBlock3.x, withBlock3.y);
@@ -2234,7 +2197,7 @@ namespace SRCCore.Units
 
             //                case "格納":
             //                    {
-            //                        withBlock3.Status_Renamed = "待機";
+            //                        withBlock3.Status = "待機";
             //                        foreach (Unit eu in SRC.UList)
             //                        {
             //                            var loopTo18 = eu.CountUnitOnBoard();
@@ -2270,11 +2233,11 @@ namespace SRCCore.Units
             //            var withBlock4 = rarray[i];
             //            if (i == 1)
             //            {
-            //                withBlock4.Status_Renamed = "旧主形態";
+            //                withBlock4.Status = "旧主形態";
             //            }
             //            else
             //            {
-            //                withBlock4.Status_Renamed = "旧形態";
+            //                withBlock4.Status = "旧形態";
             //            }
 
             //            hp_ratio = hp_ratio + 100 * withBlock4.HP / (double)withBlock4.MaxHP;
@@ -2590,7 +2553,7 @@ namespace SRCCore.Units
             //    }
             //    else
             //    {
-            //        u.Status_Renamed = prev_status;
+            //        u.Status = prev_status;
             //    }
 
             //    // 分離ユニットの座標を合体後のユニットの座標に合わせる
@@ -2620,7 +2583,7 @@ namespace SRCCore.Units
             //en_ratio = 100 * EN / (double)MaxEN;
 
             //// まずは撤退
-            //if (Status_Renamed == "出撃")
+            //if (Status == "出撃")
             //{
             //    // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             //    Map.MapDataForUnit[x, y] = null;
@@ -2648,7 +2611,7 @@ namespace SRCCore.Units
             //var loopTo1 = Information.UBound(uarray);
             //for (i = 1; i <= loopTo1; i++)
             //{
-            //    if (uarray[i].Status_Renamed == "旧主形態")
+            //    if (uarray[i].Status == "旧主形態")
             //    {
             //        break;
             //    }
@@ -2747,7 +2710,7 @@ namespace SRCCore.Units
             //                string argfname2 = "召喚ユニット";
             //                if (withBlock1.IsFeatureAvailable(argfname2))
             //                {
-            //                    if (Status_Renamed == "出撃" | Status_Renamed == "格納")
+            //                    if (Status == "出撃" | Status == "格納")
             //                    {
             //                        object argIndex6 = "追加パイロット";
             //                        pname = withBlock1.FeatureData(argIndex6);
@@ -2932,8 +2895,8 @@ namespace SRCCore.Units
             //        withBlock1.SyncBullet();
 
             //        // 出撃 or 格納？
-            //        withBlock1.Status_Renamed = Status_Renamed;
-            //        switch (Status_Renamed ?? "")
+            //        withBlock1.Status = Status;
+            //        switch (Status ?? "")
             //        {
             //            case "出撃":
             //                {
@@ -3050,7 +3013,7 @@ namespace SRCCore.Units
             //}
 
             //// 格納されている場合は母艦から自分のエントリーを外しておく
-            //if (Status_Renamed == "格納")
+            //if (Status == "格納")
             //{
             //    foreach (Unit u in SRC.UList)
             //    {
@@ -3072,7 +3035,7 @@ namespace SRCCore.Units
             //    ;
             //}
 
-            //Status_Renamed = "他形態";
+            //Status = "他形態";
 
             //// ユニットステータスコマンドの場合以外は制限時間付き合体ユニットは
             //// ２度とその形態を利用できない

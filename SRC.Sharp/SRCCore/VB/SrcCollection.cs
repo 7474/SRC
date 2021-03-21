@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SRCCore.Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -180,6 +181,11 @@ namespace SRCCore.VB
         {
             // XXX reallocもったいない。参照時にCastしてListしたほうがいい？
             list = dict.Values.Cast<V>().ToList();
+        }
+
+        internal void Add(FeatureData fd, object p)
+        {
+            throw new NotImplementedException();
         }
     }
 }

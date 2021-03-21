@@ -11,7 +11,7 @@ namespace SRCCore.Units
     public partial class Unit
     {
         // 特殊状態を付加
-        public void AddCondition(ref string cname, int ltime, double clevel = Constants.DEFAULT_LEVEL, string cdata = "")
+        public void AddCondition(string cname, int ltime, double clevel = Constants.DEFAULT_LEVEL, string cdata = "")
         {
             var new_condition = new Condition();
 

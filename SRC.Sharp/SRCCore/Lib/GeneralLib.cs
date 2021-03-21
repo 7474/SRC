@@ -137,7 +137,7 @@ namespace SRCCore.Lib
                 return "";
             }
 
-            var l = ToL(list);
+            var l = ToL(list ?? "");
             if (l.Count >= idx)
             {
                 return l[idx - 1];
