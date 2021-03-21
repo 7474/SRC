@@ -18,7 +18,7 @@
 
 ![](../images/bm0.gif) ラベル名は必ず「"」で括ってください。
 
-消去したイベントラベルは[**RestoreEvent**コマンド](RestoreEventコマンド)で復活させることができます。
+消去したイベントラベルは[**RestoreEvent**コマンド](RestoreEventコマンド.md)で復活させることができます。
 
 **例**
 

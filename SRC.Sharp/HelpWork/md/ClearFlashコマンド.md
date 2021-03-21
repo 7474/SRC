@@ -8,4 +8,4 @@ FLASHファイルの消去
 
 **解説**
 
-[PlayFlashコマンド](PlayFlashコマンド)でオプションに「保持」を指定して再生したFLASHファイルを消去します。
+[PlayFlashコマンド](PlayFlashコマンド.md)でオプションに「保持」を指定して再生したFLASHファイルを消去します。

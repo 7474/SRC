@@ -16,7 +16,7 @@
 
 **解説**
 
-*message* をテロップとして１秒間画面に表示します。この際、[Midiフォルダ](Midiフォルダ)中の Subtitle.mid が演奏されます。Subtitle.midを演奏したくない場合や他のMIDIを演奏したい場合は[**KeepBGM**コマンド](KeepBGMコマンド)を使ってください。
+*message* をテロップとして１秒間画面に表示します。この際、[Midiフォルダ](Midiフォルダ.md)中の Subtitle.mid が演奏されます。Subtitle.midを演奏したくない場合や他のMIDIを演奏したい場合は[**KeepBGM**コマンド](KeepBGMコマンド.md)を使ってください。
 
 *message* の長さは全角で１行に25文字まで、メッセージ中に「.」を挿入することにより一度だけ改行を行うことができます。
 
