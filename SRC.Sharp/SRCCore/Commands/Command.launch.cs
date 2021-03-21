@@ -110,96 +110,80 @@ namespace SRCCore.Commands
         // 「発進」コマンドを終了
         private void FinishLaunchCommand()
         {
-            throw new NotImplementedException();
-            //// MOD END MARGE
-            //int ret;
-            //GUI.LockGUI();
-            //{
-            //    var withBlock = SelectedTarget;
-            //    // 発進コマンドの目的地にユニットがいた場合
-            //    if (Map.MapDataForUnit[SelectedX, SelectedY] is object)
-            //    {
-            //        string argfname = "母艦";
-            //        if (Map.MapDataForUnit[SelectedX, SelectedY].IsFeatureAvailable(argfname))
-            //        {
-            //            ret = Interaction.MsgBox("着艦しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "着艦");
-            //        }
-            //        else
-            //        {
-            //            ret = Interaction.MsgBox("合体しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "合体");
-            //        }
+            GUI.LockGUI();
+            {
+                var launchUnit = SelectedTarget;
+                // 発進コマンドの目的地にユニットがいた場合
+                // XXX 着艦と合体の処理要らんの？
+                if (Map.MapDataForUnit[SelectedX, SelectedY] is object)
+                {
+                    GuiDialogResult res;
+                    if (Map.MapDataForUnit[SelectedX, SelectedY].IsFeatureAvailable("母艦") && !launchUnit.IsFeatureAvailable("母艦"))
+                    {
 
-            //        if (ret == MsgBoxResult.Cancel)
-            //        {
-            //            CancelCommand();
-            //            GUI.UnlockGUI();
-            //            return;
-            //        }
-            //    }
+                        res = GUI.Confirm("着艦しますか？", "着艦", GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
+                    }
+                    else
+                    {
+                        res = GUI.Confirm("合体しますか？", "合体", GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
+                    }
 
-            //    // メッセージの表示
-            //    string argmain_situation = "発進(" + withBlock.Name + ")";
-            //    string argmain_situation1 = "発進";
-            //    if (withBlock.IsMessageDefined(argmain_situation))
-            //    {
-            //        Unit argu1 = null;
-            //        Unit argu2 = null;
-            //        GUI.OpenMessageForm(u1: argu1, u2: argu2);
-            //        string argSituation = "発進(" + withBlock.Name + ")";
-            //        string argmsg_mode = "";
-            //        withBlock.PilotMessage(argSituation, msg_mode: argmsg_mode);
-            //        GUI.CloseMessageForm();
-            //    }
-            //    else if (withBlock.IsMessageDefined(argmain_situation1))
-            //    {
-            //        Unit argu11 = null;
-            //        Unit argu21 = null;
-            //        GUI.OpenMessageForm(u1: argu11, u2: argu21);
-            //        string argSituation1 = "発進";
-            //        string argmsg_mode1 = "";
-            //        withBlock.PilotMessage(argSituation1, msg_mode: argmsg_mode1);
-            //        GUI.CloseMessageForm();
-            //    }
+                    if (res == GuiDialogResult.Cancel)
+                    {
+                        CancelCommand();
+                        GUI.UnlockGUI();
+                        return;
+                    }
+                }
 
-            //    string argmain_situation2 = "発進";
-            //    string argsub_situation = withBlock.Name;
-            //    withBlock.SpecialEffect(argmain_situation2, argsub_situation);
-            //    withBlock.Name = argsub_situation;
-            //    PrevUnitArea = withBlock.Area;
-            //    PrevUnitEN = withBlock.EN;
-            //    withBlock.Status_Renamed = "出撃";
+                // メッセージの表示
+                if (launchUnit.IsMessageDefined("発進(" + launchUnit.Name + ")"))
+                {
+                    GUI.OpenMessageForm(null, null);
+                    launchUnit.PilotMessage("発進(" + launchUnit.Name + ")", "");
+                    GUI.CloseMessageForm();
+                }
+                else if (launchUnit.IsMessageDefined("発進"))
+                {
+                    GUI.OpenMessageForm(null, null);
+                    launchUnit.PilotMessage("発進", "");
+                    GUI.CloseMessageForm();
+                }
 
-            //    // 指定した位置に発進したユニットを移動
-            //    withBlock.Move(SelectedX, SelectedY);
-            //}
+                launchUnit.SpecialEffect("発進", launchUnit.Name);
+                PrevUnitArea = launchUnit.Area;
+                PrevUnitEN = launchUnit.EN;
+                launchUnit.Status = "出撃";
 
-            //// 発進したユニットを母艦から降ろす
-            //{
-            //    var withBlock1 = SelectedUnit;
-            //    PrevUnitX = withBlock1.x;
-            //    PrevUnitY = withBlock1.y;
-            //    withBlock1.UnloadUnit((object)SelectedTarget.ID);
+                // 指定した位置に発進したユニットを移動
+                launchUnit.Move(SelectedX, SelectedY);
+            }
 
-            //    // 母艦の位置には発進したユニットが表示されているので元に戻しておく
-            //    Map.MapDataForUnit[withBlock1.x, withBlock1.y] = SelectedUnit;
-            //    GUI.PaintUnitBitmap(SelectedUnit);
-            //}
+            // 発進したユニットを母艦から降ろす
+            {
+                SelectedUnit.UnloadUnit(SelectedTarget.ID);
 
-            //SelectedUnit = SelectedTarget;
-            //{
-            //    var withBlock2 = SelectedUnit;
-            //    if ((Map.MapDataForUnit[withBlock2.x, withBlock2.y].ID ?? "") != (withBlock2.ID ?? ""))
-            //    {
-            //        GUI.RedrawScreen();
-            //        CommandState = "ユニット選択";
-            //        GUI.UnlockGUI();
-            //        return;
-            //    }
-            //}
+                // 母艦の位置には発進したユニットが表示されているので元に戻しておく
+                // XXX してないよ。。。
+                //Map.MapDataForUnit[withBlock1.x, withBlock1.y] = SelectedUnit;
+                //GUI.PaintUnitBitmap(SelectedUnit);
+            }
 
-            //CommandState = "移動後コマンド選択";
-            //GUI.UnlockGUI();
-            //ProceedCommand();
+            SelectedUnit = SelectedTarget;
+            {
+                var withBlock2 = SelectedUnit;
+                if ((Map.MapDataForUnit[withBlock2.x, withBlock2.y].ID ?? "") != (withBlock2.ID ?? ""))
+                {
+                    GUI.RedrawScreen();
+                    CommandState = "ユニット選択";
+                    GUI.UnlockGUI();
+                    return;
+                }
+            }
+
+            CommandState = "移動後コマンド選択";
+            GUI.UnlockGUI();
+            ProceedCommand();
         }
 
     }
