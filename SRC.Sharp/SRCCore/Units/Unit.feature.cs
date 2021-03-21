@@ -1,4 +1,7 @@
-﻿using System;
+﻿using SRCCore.Lib;
+using SRCCore.Models;
+using SRCCore.VB;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -481,79 +484,57 @@ namespace SRCCore.Units
         //            IsFeatureActivatedRet = false;
         //        }
 
-        //        // 特殊能力を登録
-        //        private void AddFeatures(Collection fdc, bool is_item = false)
-        //        {
-        //            if (fdc is null)
-        //            {
-        //                return;
-        //            }
+        // 特殊能力を登録
+        private void AddFeatures(IList<FeatureData> fdc, bool is_item = false)
+        {
+            if (fdc is null)
+            {
+                return;
+            }
 
-        //            foreach (FeatureData fd in fdc)
-        //            {
-        //                // アイテムで指定された下記の能力はアイテムそのものの属性なので
-        //                // ユニット側には追加しない
-        //                if (is_item)
-        //                {
-        //                    switch (fd.Name ?? "")
-        //                    {
-        //                        case "必要技能":
-        //                        case "不必要技能":
-        //                        case "表示":
-        //                        case "非表示":
-        //                        case "呪い":
-        //                            {
-        //                                goto NextFeature;
-        //                                break;
-        //                            }
-        //                    }
-        //                }
+            foreach (FeatureData fd in fdc)
+            {
+                // アイテムで指定された下記の能力はアイテムそのものの属性なので
+                // ユニット側には追加しない
+                if (is_item)
+                {
+                    switch (fd.Name ?? "")
+                    {
+                        case "必要技能":
+                        case "不必要技能":
+                        case "表示":
+                        case "非表示":
+                        case "呪い":
+                            continue;
+                    }
+                }
 
-        //                // 封印されている？
-        //                bool localIsDisabled() { string argfname = GeneralLib.LIndex(fd.StrData, 1); var ret = IsDisabled(argfname); return ret; }
+                // 封印されている？
+                if (IsDisabled(fd.Name) | IsDisabled(GeneralLib.LIndex(fd.StrData, 1)))
+                {
+                    continue;
+                }
 
-        //                if (IsDisabled(fd.Name) | localIsDisabled())
-        //                {
-        //                    goto NextFeature;
-        //                }
+                // 既にその能力が登録されている？
+                if (!IsFeatureRegistered(fd.Name))
+                {
+                    colFeature.Add(fd, fd.Name);
+                }
+                else
+                {
+                    colFeature.Add(fd, fd.Name + ":" + SrcFormatter.Format(colFeature.Count));
+                }
 
-        //                // 既にその能力が登録されている？
-        //                if (!IsFeatureRegistered(fd.Name))
-        //                {
-        //                    colFeature.Add(fd, fd.Name);
-        //                }
-        //                else
-        //                {
-        //                    colFeature.Add(fd, fd.Name + ":" + SrcFormatter.Format(colFeature.Count));
-        //                }
+            NextFeature:
+                ;
+            }
+        }
 
-        //            NextFeature:
-        //                ;
-        //            }
-        //        }
-
-        //        // 特殊能力を登録済み？
-        //        private bool IsFeatureRegistered(string fname)
-        //        {
-        //            bool IsFeatureRegisteredRet = default;
-        //            FeatureData fd;
-        //            ;
-        //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-        //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 107792
-
-
-        //            Input:
-
-        //                    On Error GoTo ErrorHandler
-
-        //             */
-        //            fd = (FeatureData)colFeature[fname];
-        //            IsFeatureRegisteredRet = true;
-        //            return IsFeatureRegisteredRet;
-        //        ErrorHandler:
-        //            ;
-        //            IsFeatureRegisteredRet = false;
-        //        }
+        // 特殊能力を登録済み？
+        private bool IsFeatureRegistered(string fname)
+        {
+            return colFeature[fname] != null;
+        }
 
         //        // 特殊能力を登録済み？(必要条件を満たさない特殊能力を含む)
         //        private bool IsAllFeatureRegistered(string fname)

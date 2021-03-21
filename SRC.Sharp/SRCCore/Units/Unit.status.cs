@@ -108,17 +108,10 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    // 特殊能力を更新
+            // 特殊能力を更新
 
-            //    // まず特殊能力リストをクリア
-            //    {
-            //        var withBlock2 = colFeature;
-            //        foreach (FeatureData currentFd in colFeature)
-            //        {
-            //            fd = currentFd;
-            //            withBlock2.Remove(1);
-            //        }
-            //    }
+            // まず特殊能力リストをクリア
+            colFeature.Clear();
 
             //    // 付加された特殊能力
             //    foreach (Condition cnd in colCondition)
@@ -138,8 +131,8 @@ namespace SRCCore.Units
 
             //    AdditionalFeaturesNum = (short)colFeature.Count;
 
-            //    // ユニットデータで定義されている特殊能力
-            //    AddFeatures(ref Data.colFeature);
+            // ユニットデータで定義されている特殊能力
+            AddFeatures(Data.Features);
 
             //    // アイテムで得られた特殊能力
             //    var loopTo = CountItem();
