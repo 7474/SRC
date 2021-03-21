@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
 using System;
@@ -596,16 +597,14 @@ namespace SRCCore.Commands
                 }
             }
 
-            //{
-            //    var withBlock3 = SelectedUnit;
-            //    // 攻撃参加ユニット以外はマスク
-            //    foreach (Unit u in SRC.UList)
-            //    {
-            //        if (u.Status == "出撃")
-            //        {
-            //            Map.MaskData[u.x, u.y] = true;
-            //        }
-            //    }
+            // 攻撃参加ユニット以外はマスク
+            foreach (Unit u in SRC.UList.Items)
+            {
+                if (u.Status == "出撃")
+                {
+                    Map.MaskData[u.x, u.y] = true;
+                }
+            }
 
             //    // 合体技パートナーのハイライト表示
             //    var loopTo1 = Information.UBound(partners);
@@ -617,13 +616,12 @@ namespace SRCCore.Commands
             //        }
             //    }
 
-            //    Map.MaskData[withBlock3.x, withBlock3.y] = false;
-            //    Map.MaskData[SelectedTarget.x, SelectedTarget.y] = false;
-            //    if (!SRC.BattleAnimation)
-            //    {
-            //        GUI.MaskScreen();
-            //    }
-            //}
+            Map.MaskData[SelectedUnit.x, SelectedUnit.y] = false;
+            Map.MaskData[SelectedTarget.x, SelectedTarget.y] = false;
+            if (!SRC.BattleAnimation)
+            {
+                GUI.MaskScreen();
+            }
 
             // イベント用に戦闘に参加するユニットの情報を記録しておく
             AttackUnit = SelectedUnit;
@@ -641,76 +639,68 @@ namespace SRCCore.Commands
             ty = SelectedTarget.y;
             GUI.OpenMessageForm(SelectedTarget, SelectedUnit);
 
-            //// 相手の先制攻撃？
-            //{
-            //    var withBlock5 = SelectedTarget;
-            //    // MOD START MARGE
-            //    // If SelectedTWeapon > 0 And .MaxAction > 0 And .IsWeaponAvailable(SelectedTWeapon, "移動前") Then
-            //    // SelectedTWeapon > 0の判定は、IsWeaponAvailableで行うようにした
-            //    string argref_mode1 = "移動前";
-            //    if (withBlock5.MaxAction() > 0 & withBlock5.IsWeaponAvailable(SelectedTWeapon, argref_mode1))
-            //    {
-            //        // MOD END MARGE
-            //        string argattr8 = "後";
-            //        if (!withBlock5.IsWeaponClassifiedAs(SelectedTWeapon, argattr8))
-            //        {
-            //            string argattr6 = "後";
-            //            string argattr7 = "先";
-            //            object argIndex3 = "先読み";
-            //            string argref_mode = "";
-            //            string argsptype = "カウンター";
-            //            if (SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, argattr6))
-            //            {
-            //                def_mode = "先制攻撃";
-            //                string argattr3 = "自";
-            //                if (withBlock5.IsWeaponClassifiedAs(SelectedTWeapon, argattr3))
-            //                {
-            //                    is_suiside = true;
-            //                }
+            // 相手の先制攻撃？
+            {
+                var targetUnit = SelectedTarget;
+                var targetWeapon = targetUnit.Weapon(SelectedTWeapon);
+                if (targetWeapon != null 
+                    &&targetUnit.MaxAction() > 0 
+                    && targetWeapon.IsWeaponAvailable("移動前"))
+                {
+                    if (!targetWeapon.IsWeaponClassifiedAs("後"))
+                    {
+                        var selectedWeapon = SelectedUnit.Weapon(SelectedWeapon);
+                        if (selectedWeapon.IsWeaponClassifiedAs("後"))
+                        {
+                            def_mode = "先制攻撃";
+                            if (targetWeapon.IsWeaponClassifiedAs( "自"))
+                            {
+                                is_suiside = true;
+                            }
 
-            //                // 先制攻撃攻撃を実施
-            //                withBlock5.Attack(SelectedTWeapon, SelectedUnit, "先制攻撃", "");
-            //                SelectedTarget = withBlock5.CurrentForm();
-            //            }
-            //            else if (withBlock5.IsWeaponClassifiedAs(SelectedTWeapon, argattr7) | withBlock5.MainPilot().SkillLevel(argIndex3, ref_mode: argref_mode) >= GeneralLib.Dice(16) | withBlock5.IsUnderSpecialPowerEffect(argsptype))
-            //            {
-            //                def_mode = "先制攻撃";
-            //                string argattr4 = "自";
-            //                if (withBlock5.IsWeaponClassifiedAs(SelectedTWeapon, argattr4))
-            //                {
-            //                    is_suiside = true;
-            //                }
+                            // 先制攻撃攻撃を実施
+                            targetUnit.Attack(targetWeapon, SelectedUnit, "先制攻撃", "");
+                            SelectedTarget = targetUnit.CurrentForm();
+                        }
+                        else if (targetWeapon.IsWeaponClassifiedAs("先") 
+                            || targetUnit.MainPilot().SkillLevel("先読み", "") >= GeneralLib.Dice(16) 
+                            || targetUnit.IsUnderSpecialPowerEffect("カウンター"))
+                        {
+                            def_mode = "先制攻撃";
+                            if (targetWeapon.IsWeaponClassifiedAs( "自"))
+                            {
+                                is_suiside = true;
+                            }
 
-            //                // カウンター攻撃を実施
-            //                withBlock5.Attack(SelectedTWeapon, SelectedUnit, "カウンター", "");
-            //                SelectedTarget = withBlock5.CurrentForm();
-            //            }
-            //            else if (withBlock5.MaxCounterAttack() > withBlock5.UsedCounterAttack)
-            //            {
-            //                def_mode = "先制攻撃";
-            //                string argattr5 = "自";
-            //                if (withBlock5.IsWeaponClassifiedAs(SelectedTWeapon, argattr5))
-            //                {
-            //                    is_suiside = true;
-            //                }
+                            // カウンター攻撃を実施
+                            targetUnit.Attack(targetWeapon, SelectedUnit, "カウンター", "");
+                            SelectedTarget = targetUnit.CurrentForm();
+                        }
+                        else if (targetUnit.MaxCounterAttack() > targetUnit.UsedCounterAttack)
+                        {
+                            def_mode = "先制攻撃";
+                            if (targetWeapon.IsWeaponClassifiedAs( "自"))
+                            {
+                                is_suiside = true;
+                            }
 
-            //                // カウンター攻撃の残り回数を減少
-            //                withBlock5.UsedCounterAttack = (withBlock5.UsedCounterAttack + 1);
+                            // カウンター攻撃の残り回数を減少
+                            targetUnit.UsedCounterAttack = (targetUnit.UsedCounterAttack + 1);
 
-            //                // カウンター攻撃を実施
-            //                withBlock5.Attack(SelectedTWeapon, SelectedUnit, "カウンター", "");
-            //                SelectedTarget = withBlock5.CurrentForm();
-            //            }
-            //        }
+                            // カウンター攻撃を実施
+                            targetUnit.Attack(targetWeapon, SelectedUnit, "カウンター", "");
+                            SelectedTarget = targetUnit.CurrentForm();
+                        }
+                    }
 
-            //        // 攻撃側のユニットがかばわれた場合は攻撃側のターゲットを再設定
-            //        if (SupportGuardUnit2 is object)
-            //        {
-            //            attack_target = SupportGuardUnit2;
-            //            attack_target_hp_ratio = SupportGuardUnitHPRatio2;
-            //        }
-            //    }
-            //}
+                    // 攻撃側のユニットがかばわれた場合は攻撃側のターゲットを再設定
+                    if (SupportGuardUnit2 is object)
+                    {
+                        attack_target = SupportGuardUnit2;
+                        attack_target_hp_ratio = SupportGuardUnitHPRatio2;
+                    }
+                }
+            }
 
             //// サポートアタックのパートナーを探す
             //{
@@ -1206,15 +1196,14 @@ namespace SRCCore.Commands
             //    }
             //}
 
-            //{
-            //    var withBlock14 = SelectedTarget;
-            //    if (withBlock14.Status == "出撃")
-            //    {
-            //        // 持続期間が「戦闘終了」のスペシャルパワー効果を削除
-            //        string argstype2 = "戦闘終了";
-            //        withBlock14.RemoveSpecialPowerInEffect(argstype2);
-            //    }
-            //}
+            {
+                var withBlock14 = SelectedTarget;
+                if (withBlock14.Status == "出撃")
+                {
+                    // 持続期間が「戦闘終了」のスペシャルパワー効果を削除
+                    withBlock14.RemoveSpecialPowerInEffect("戦闘終了");
+                }
+            }
 
             GUI.CloseMessageForm();
             Status.ClearUnitStatus();
