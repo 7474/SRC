@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; UTF-8">
+<TITLE>PlaySoundコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="PlaySoundコマンド">
+</OBJECT>
+
+<P><A NAME=".2.ucu"></A></P>
+
+<P><B>PlaySoundコマンド</B></P>
+
+<P>WAVEファイル(MP3ファイル)を再生</P>
+
+<P><B>書式</B></P>
+
+<P><B>PlaySound</B> <I>file</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>file</I>再生するWAVEファイル名(MP3ファイル名)</P>
+
+<P>通常のコマンドの引数と違ってスペースを使用しても「"」で</P>
+
+<P>囲う必要はないが、式を使う場合は括弧で囲むこと</P>
+
+<P><B>解説</B></P>
+
+<P>ファイル<I>file</I> を再生します。<I>file</I> にはWAVEファイルまたはMP3ファイルを指定して下さい。<I>file</I> は<A HREF="src2c1g.htm">Soundフォルダ</A>内に置かれている必要があります。</P>
+
+<P>WAVEファイルとしてはSRC用効果音集が利用できます。効果音集に含まれているWAVEファイルについては効果音集に添付されているReadme.txtを参照して下さい。</P>
+
+<P><I>file</I> に「Null.wav」を指定するとWAVEファイルの再生を停止する事が出来ます。また「-.wav」を指定した場合、<B>PlaySound</B>コマンドは無視されます。</P>
+
+<P>MP3ファイルを再生する場合、MP3ファイルのＢＧＭが演奏されているとＢＧＭのMP3ファイルは中断されてしまうので注意して下さい。</P>
+
+<P><B>例</B></P>
+
+<P>爆発音を出す場合には</P>
+
+<P>PlaySound Explode.wav</P>
+
+<P>を使って下さい。</P>
+
+</BODY>
+</HTML>

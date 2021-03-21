@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; UTF-8">
+<TITLE>Cancelコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Cancelコマンド">
+</OBJECT>
+
+<P><A NAME="1kdttcd"></A></P>
+
+<P><B>Cancelコマンド</B></P>
+
+<P>イベント後の行動やイベント処理をキャンセル</P>
+
+<P><B>書式</B></P>
+
+<P><B>Cancel</B></P>
+
+<P><B>解説</B></P>
+
+<P>イベント後のユニットの行動やイベント処理をキャンセルします。<B>Cancel</B>コマンドの処理内容は<B>Cancel</B>コマンドが実行されたイベントの種類によって以下のように変化します。</P>
+
+<P><B>・行動前のイベント</B> (<B>例</B> <A HREF="src36wh.htm">攻撃イベント</A>、<A HREF="src79ig.htm">使用イベント</A>)</P>
+
+<P>対象となる行動がキャンセルされます。例えば攻撃イベントの場合はイベント後の攻撃及び反撃は行われません。また、アビリティを使用した際の使用イベントの場合はアビリティが実行されません。</P>
+
+<P>このように行動自身はキャンセルされますが、対象となるユニットの行動数は減少します。また、行動終了に伴う<A HREF="src76g5.htm">接触イベント</A>、<A HREF="src36wl.htm">進入イベント</A>、<A HREF="src2hme.htm">行動終了イベント</A>は実施されます。</P>
+
+<P><B>・行動後のイベント</B> (<B>例</B> <A HREF="src36wf.htm">破壊イベント</A>、<A HREF="src79ih.htm">使用後イベント</A>)</P>
+
+<P><B>Cancel</B>コマンド以降のイベント処理がすべてキャンセルされ、対象となるユニットの行動数も減少しません。</P>
+
+<P><B>・<A HREF="src2hm7.htm">ユニットコマンドイベント</A></B></P>
+
+<P>コマンドがキャンセルされたと見なされ、ユニットコマンド選択モードに戻ります。</P>
+
+<P><B>例</B></P>
+
+<P>#マイクがミーアに攻撃をかけたときの攻撃前</P>
+
+<P>攻撃 マイク ミーア:</P>
+
+<P>#ミーアの乗るユニットの損傷率が50%を超える場合</P>
+
+<P>If Damage(ミーア) &gt; 50 Then</P>
+
+<P>Talk マイク</P>
+
+<P>いくぜ、ミーア！ こいつでとどめだ！！</P>
+
+<P>Talk ミーア</P>
+
+<P>ちょ、ちょっとまった～！ 降参します～</P>
+
+<P>End</P>
+
+<P></P>
+
+<P>#ミーアの陣営を味方に変更</P>
+
+<P>ChangeParty ミーア 味方</P>
+
+<P></P>
+
+<P>#マイクの攻撃をキャンセル</P>
+
+<P>Cancel</P>
+
+<P></P>
+
+<P>#イベントを消去</P>
+
+<P>ClearEvent</P>
+
+<P>EndIf</P>
+
+<P>#イベントを終了</P>
+
+<P>Exit</P>
+
+</BODY>
+</HTML>

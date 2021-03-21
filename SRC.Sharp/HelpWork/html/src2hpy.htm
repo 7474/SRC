@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; UTF-8">
+<TITLE>PaintStringコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="PaintStringコマンド">
+</OBJECT>
+
+<P><A NAME=".2.mav"></A></P>
+
+<P><B>PaintStringコマンド</B></P>
+
+<P>文字列を表示</P>
+
+<P><B>書式</B></P>
+
+<P><B>PaintString</B> [<I>x y</I>] <I>message</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>x</I>表示領域のX座標（ピクセル）</P>
+
+<P><I>y</I>表示領域のY座標（ピクセル）</P>
+
+<P><I>message</I>表示する文字列</P>
+
+<P><B>解説</B></P>
+
+<P>マップウィンドウに文字列<I>message</I> を表示します。表示位置は<I>x y</I> に座標を指定して行います。座標に「-」(半角文字)を指定すると画像がそれぞれの座標の中心に表示されます。なお、マップウィンドウのサイズは480×480です。表示位置を省略した場合は直前に<B>PaintString</B>コマンドで書き込んだ文字列の下に<I>message</I> が表示されます。</P>
+
+<P><I>x y</I> で指定された座標は描き込み先画面の左上隅が(0,0)になるように計算されますが、システム変数BaseX,BaseYの値を変更することで基準位置を変更することが可能です。詳しくは<A HREF="src2ks6.htm">変数</A>のページを参照してください。</P>
+
+<P><B>PaintString</B>コマンドで表示する文字のフォントや表示方法を変更するには<A HREF="src2hpp.htm"><B>Font</B>コマンド</A>を使います。<B>Font</B>コマンドを使わなかった場合、「<B>ＭＳ Ｐ明朝、16pt、Bold、白色</B>」のフォントが使われます。</P>
+
+<P><B>PaintString</B>コマンドで描画した文字はそのままでは表示されません。<A HREF="src79m2.htm"><B>Refresh</B>コマンド</A>を用いて画面を更新し、表示してください(<B>Font</B>コマンドで背景オプションを指定した場合は<A HREF="src79m1.htm"><B>Redraw</B>コマンド</A>)。これは<B>PaintPicture</B>コマンドや<B>PaintString</B>コマンドを連続して使用したときに画面の更新を一度で済ませ、画面のちらつきを防ぐための仕様です。</P>
+
+<P>なお、<B>Refresh</B>コマンドの替わりに<A HREF="src2c1d.htm"><B>Wait</B>コマンド</A>を使っても画面更新が行われます。用途に応じて使い分けるといいでしょう。</P>
+
+<P><B>PaintString</B>コマンドで描画した文字を消すには</P>
+
+<P>・<A HREF="src2hpq.htm"><B>ClearPicture</B>コマンド</A>で描画した文字を消去する</P>
+
+<P>・<A HREF="src79m1.htm"><B>Redraw</B>コマンド</A>でマップを再描画する</P>
+
+<P>・<A HREF="src79m0.htm"><B>Cls</B>コマンド</A>でマップウィンドウの表示内容を消去する</P>
+
+<P>の３種類の方法があります。通常は<B>ClearPicture</B>コマンドを使って下さい。</P>
+
+<P><I>message</I> に指定した文字列の中には<B>Talk</B>コマンドと同様、「$(式)」の形で式をそのまま記述することができます(<I>message</I> 全体を「"」でくくる必要がない)。</P>
+
+<P><I>message</I> を書きこんだ後、<B>PaintString</B>コマンドは自動的に改行を行います。改行を行わないようにするには<I>message</I> の後に「;」を付け加えてください。</P>
+
+<P><B>PaintString</B>コマンドは文字表示の際にフォントスムージングを行います。このため、大きなサイズのフォントの縁は滑らかに表示されます。なお、フォントスムージングの適用が開始されるフォントサイズはフォントによって異なります。また、フォントスムージングが適用されるのはTrueTypeフォントのみです。</P>
+
+<P><B>PaintString</B>コマンドと<B>Font</B>コマンドを組みあわせて文字が徐々に表示、あるいは消えていくような処理を行う場合は必ず<A HREF="src2hrh.htm"><B>FadeIn</B>コマンド</A>、<A HREF="src2hri.htm"><B>FadeOut</B>コマンド</A>、<A HREF="src2hti.htm"><B>WhiteIn</B>コマンド</A>、<A HREF="src2hrp.htm"><B>WhiteOut</B>コマンド</A>を使うか、下の例のように<A HREF="src2c1d.htm"><B>Wait</B>コマンド</A>を使ってウェイト処理を行ってください。<B>PaintString</B>コマンドで文字を表示するだけではウェイト処理が行われないため、環境によって表示時間が変わってしまう等の問題が発生してしまいます。</P>
+
+<P><B>例</B></P>
+
+<P>#フォントサイズ・種類を変更</P>
+
+<P>Font 24pt Ｐゴシック Regular</P>
+
+<P>#フェードインしながら１秒間かけてメッセージを表示</P>
+
+<P>#ウェイトの同期処理を開始</P>
+
+<P>Wait Start</P>
+
+<P>For i = 1 To 20</P>
+
+<P>#色を変更</P>
+
+<P>Font RGB(4 * i, 8 * i, 12.5 * i)</P>
+
+<P>#メッセージを表示</P>
+
+<P>PaintString - 200 "A long time ago in a galaxy far,"</P>
+
+<P>PaintString "far away ...."</P>
+
+<P>#画面を更新</P>
+
+<P>Refresh</P>
+
+<P>#ウェイト処理</P>
+
+<P>Wait Until (0.5 * i)</P>
+
+<P>Next</P>
+
+<P>#デフォルトのフォントに戻しておく</P>
+
+<P>Font</P>
+
+<P><B>例２</B></P>
+
+<P>Call TypeWrite 100 100 "消えた海賊船を追え！"</P>
+
+<P># ルパン３世オープニング風タイプライターメッセージ</P>
+
+<P># (X座標, Y座標, メッセージ)</P>
+
+<P>TypeWrite:</P>
+
+<P>Local i</P>
+
+<P>#メッセージの書きこみ位置を設定</P>
+
+<P>PaintString Args(1) Args(2) "";</P>
+
+<P>For i = 1 To Len(Args(3))</P>
+
+<P>#タイプ音を鳴らす</P>
+
+<P>PlaySound Type.wav</P>
+
+<P>#改行を行わずにメッセージを１文字だけ書き込む</P>
+
+<P>PaintString Mid(Args(3),i,1);</P>
+
+<P>#ウェイト処理とともに画面を更新し、書き込んだ文字を表示</P>
+
+<P>Wait 1</P>
+
+<P>Next</P>
+
+<P>Wait 2</P>
+
+<P>Return</P>
+
+</BODY>
+</HTML>

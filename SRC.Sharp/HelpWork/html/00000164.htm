@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; UTF-8">
+<TITLE>Arcコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Arcコマンド">
+</OBJECT>
+
+<P><A NAME=".2.nep"></A></P>
+
+<P><B>Arcコマンド</B></P>
+
+<P>円弧を描画</P>
+
+<P><B>書式</B></P>
+
+<P><B>Arc</B> <I>x y r start end</I> [<I>color</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>x y</I>描画する円弧の中心(ピクセル)</P>
+
+<P><I>r</I>描画する円弧の半径(ピクセル)</P>
+
+<P><I>start</I>描画する円弧の開始角度</P>
+
+<P><I>end</I>描画する円弧の終了角度</P>
+
+<P><I>color</I>描画色(省略可能)</P>
+
+<P><B>解説</B></P>
+
+<P>マップウインドウの(<I>x</I>,<I>y</I>)を中心とする半径<I>r</I> の円弧を描きます。描画した図形は<A HREF="00000277.htm"><B>Refresh</B>コマンド</A>を実行した時点で表示されます。</P>
+
+<P>マップウィンドウの左上隅の座標は(0,0)、右下隅の座標は(479,479)となっています。(<I>x</I>,<I>y</I>)はこの範囲で指定して下さい。</P>
+
+<P>ただし、システム変数BaseX,BaseYの値を変更することで基準位置を変更することが可能です。詳しくは<A HREF="00000135.htm">変数</A>のページを参照してください。</P>
+
+<P>円弧の開始・終了角度は<I>start</I>,<I>end</I> で指定します。角度の指定は右向きが0度で、そこから時計と逆周りに増加していきます(<B>例</B> 上向きが90)。0から360までの値で指定して下さい。</P>
+
+<P><I>color</I>には円弧の描画色を指定することができます。指定を省略した場合は<A HREF="00000191.htm"><B>Color</B>コマンド</A>で指定した色が使われます。描画色はＲＧＢ16進(HTMLの色指定と同形式)で指定します。ＲＧＢ値からＲＧＢ16進を計算するにはRGB関数を使います。</P>
+
+<P><B>Arc</B>コマンドで描画される円弧の線の太さは通常1ピクセルです。線をより太くしたい場合は<A HREF="00000204.htm"><B>DrawWidth</B>コマンド</A>を使ってください。</P>
+
+<P><B>Arc</B>コマンドで描画される円弧は塗りつぶしが行われません。円弧の内側を塗りつぶしたい場合には<A HREF="00000215.htm"><B>FillStyle</B>コマンド</A>及び<A HREF="00000214.htm"><B>FillColor</B>コマンド</A>を併用してください。</P>
+
+<P><B>例</B></P>
+
+<P>#(100,150)を中心とする、半径50の半円(円の上半分)を描画</P>
+
+<P>Arc 100 150 50 0 180</P>
+
+<P>#画面を更新</P>
+
+<P>Refresh</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; UTF-8">
+<TITLE>Confirmコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Confirmコマンド">
+</OBJECT>
+
+<P><A NAME="1kdtlcj"></A></P>
+
+<P><B>Confirmコマンド</B></P>
+
+<P>プレイヤーへの選択肢確認</P>
+
+<P><B>書式</B></P>
+
+<P><B>Confirm</B> <I>message</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>message</I>説明用メッセージ</P>
+
+<P><B>解説</B></P>
+
+<P>「OK」「キャンセル」の２つのボタンからなるダイアログを表示し、プレイヤーの選択を促します。ＯＫを選択した場合にはシステム変数選択に1が、キャンセルの場合は0が設定されます。<I>message</I> には選択肢のダイアログに表示される説明文を指定します。</P>
+
+<P><B>例</B></P>
+
+<P>#選択のやり直しができるようにループを使う</P>
+
+<P>Do</P>
+
+<P>#選択をやり直した場合にダイアログを消さないように連続表示を使う</P>
+
+<P>Ask "あまったユニットをどうしますか？" 連続表示 キャンセル可</P>
+
+<P>処分して資金にする</P>
+
+<P>取っておく</P>
+
+<P>End</P>
+
+<P></P>
+
+<P>#処分を選んだ場合は再確認</P>
+
+<P>If 選択 = １ Then</P>
+
+<P>Confirm 本当に処分していいですか？</P>
+
+<P>EndIf</P>
+
+<P></P>
+
+<P>#上のConfirmでキャンセルを選んだ場合(選択 = 0)は選択をやり直す</P>
+
+<P>Loop While (選択 = 0)</P>
+
+<P>#選択のダイアログを消去</P>
+
+<P>Ask 終了</P>
+
+</BODY>
+</HTML>

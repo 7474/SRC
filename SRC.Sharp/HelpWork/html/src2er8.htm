@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; UTF-8">
+<TITLE>StartBGMコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="StartBGMコマンド">
+</OBJECT>
+
+<P><A NAME=".2.let"></A></P>
+
+<P><B>StartBGMコマンド</B></P>
+
+<P>ＢＧＭを演奏</P>
+
+<P><B>書式</B></P>
+
+<P><B>StartBGM</B> <I>file</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>file</I>再生するMIDIファイル名(もしくはMP3ファイル名)。</P>
+
+<P>通常のコマンドの引数と違ってスペースを使用しても「"」で</P>
+
+<P>囲う必要はないが、式を指定する場合は括弧で囲むこと。</P>
+
+<P>リスト形式で指定することで複数のファイルを指定することも可能。</P>
+
+<P><B>解説</B></P>
+
+<P>MIDIファイル<I>file</I>の再生を開始します。<I>file</I> は戦闘用ＢＧＭと同じ<A HREF="src7yuj.htm">Midiフォルダ</A>内に置かれている必要があります。</P>
+
+<P><I>file</I> の再生が終了した際には自動的に再生がリピートされます。リピートさせたくない場合には<A HREF="src373o.htm"><B>PlayMIDI</B>コマンド</A>を使用してください。</P>
+
+<P>設定したＢＧＭをターン開始時や戦闘開始時に変更したくない場合には<A HREF="src2hma.htm"><B>KeepBGM</B>コマンド</A>を<B>StartBGM</B>コマンドの直後に使用して下さい。</P>
+
+<P><B>例</B></P>
+
+<P>Talk 速人</P>
+
+<P>さあ、行くとしましょうか！</P>
+
+<P>End</P>
+
+<P>#MIDIファイル「Ride of the Valkyrie.mid」の演奏を開始</P>
+
+<P>StartBGM Ride of the Valkyrie.mid</P>
+
+<P>SRCでは幾つかのシチュエーションで特定のMIDIが再生されるようになっています。</P>
+
+<P><B>SRC起動時</B>Opening.mid</P>
+
+<P><B>味方フェイズBGM</B>Map1.mid</P>
+
+<P><B>敵フェイズBGM</B>Map2.mid</P>
+
+<P><B>味方フェイズBGM（屋内）</B>Map3.mid</P>
+
+<P><B>敵フェイズBGM（屋内）</B>Map4.mid</P>
+
+<P><B>味方フェイズBGM（宇宙）</B>Map5.mid</P>
+
+<P><B>敵フェイズBGM（宇宙）</B>Map6.mid</P>
+
+<P><B>プロローグ・エピローグ</B>Briefing.mid</P>
+
+<P><B>インターミッション</B>Intermission.mid</P>
+
+<P><B>テロップ</B>Subtitle.mid</P>
+
+<P><B>ゲームオーバー時</B>End.mid</P>
+
+<P>このようなシチュエーションのMIDIを変更したい場合は幾つかの方法があります。</P>
+
+<P>・RenameBGMコマンドを使う</P>
+
+<P>・シナリオのフォルダに<A HREF="src76ef.htm">Src.ini</A>ファイルを作り、Src.iniファイル内に再生したMIDIファイルを指定</P>
+
+<P>([BGM]のOpeningの項目だけを指定して下さい)</P>
+
+<P>・再生したいMIDIファイルをシナリオ側のMIDIフォルダに<A HREF="src2hpx.htm"><B>CopyFile</B>コマンド</A>で上のファイル名に合わせてコピー</P>
+
+<P>シナリオにMIDIファイルを添付しない場合、シナリオをプレイする人がシナリオ作者の望むMIDIファイルを持っているかどうかは分かりません。このような場合、<B>StartBGM</B>コマンドを列挙して再生するMIDIファイルを複数指定することでMIDIファイルが全く再生されないという危険性を下げることが出来ます。このとき、後ろの<B>StartBGM</B>コマンドに指定されたMIDIファイルほど優先度が高くなります。</P>
+
+<P><B>例</B></P>
+
+<P>#「ばっちり.mid」があればそれを再生し、無ければ「間に合わせ.mid」を再生</P>
+
+<P>StartBGM 間に合わせ.mid</P>
+
+<P>StartBGM ばっちり.mid</P>
+
+<P>また、複数のMIDIファイルをリスト形式で指定するという方法もあります。最初のファイルから検索が行われ、最初に見つかったファイルが再生されます。リスト形式で指定するには全体を「"」で囲み、ファイル名にスペースが使われている場合はファイル名()で囲んでください。</P>
+
+<P><B>例</B></P>
+
+<P>StartBGM "ばっちり.mid それなり.mid (かな～り 間に合わせの.mid)"</P>
+
+</BODY>
+</HTML>

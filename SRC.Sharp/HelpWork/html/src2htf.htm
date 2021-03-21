@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; UTF-8">
+<TITLE>SetMessageコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="SetMessageコマンド">
+</OBJECT>
+
+<P><A NAME=".2.mcs"></A></P>
+
+<P><B>SetMessageコマンド</B></P>
+
+<P>戦闘メッセージを設定</P>
+
+<P><B>書式</B></P>
+
+<P><B>SetMessage</B> <I>unit situation message</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit</I>ユニットのメインパイロット及びその表情パターンの名称・愛称、または<A HREF="src2hpr.htm">ユニットＩＤ</A></P>
+
+<P><I>situation</I>メッセージを設定するシチュエーション名</P>
+
+<P><I>message</I>使用するメッセージを指定、または「解除」</P>
+
+<P><B>解説</B></P>
+
+<P>次の戦闘において、<I>unit</I> がシチュエーション<I>situation</I> で表示する戦闘メッセージを<I>message</I> に設定します。<A HREF="src36wh.htm"><B>攻撃イベント</B></A>時や、<A HREF="src7ysl.htm"><B>Attack</B>コマンド</A>によるイベント戦闘時に使用します。設定された戦闘メッセージは一度だけ有効です。</P>
+
+<P><I>situation</I> はメッセージデータで用いるシチュエーションの名称を使って指定します。ただし、ユニット限定のシチュエーションや相手限定のシチュエーションは使えないので注意して下さい。</P>
+
+<P>メッセージの指定<I>message</I> には２通りの方法があります。</P>
+
+<P><B>(1) 番号で指定</B></P>
+
+<P>メッセージデータ(ダイアログデータ)にある、<I>message</I> 番目の<I>situation</I> メッセージが表示されます。</P>
+
+<P>SetMessage ジェイ 回避 3</P>
+
+<P>の場合、データ中の3番目の回避メッセージを表示します。</P>
+
+<P><B>(2) メッセージを直接指定</B></P>
+
+<P>表示するメッセージを直接文字列で指定します。この書式のみ<I>unit</I> にメインパイロットの表情名を指定することができます(下の例を参照)。この場合、メッセージとともに表示されるパイロット画像が指定した表情に変更されます。</P>
+
+<P><B>SetMessage</B>コマンドで指定したメッセージを解除するには<I>message</I> にメッセージを指定する代わりに「解除」を指定して下さい。</P>
+
+<P><B>例</B></P>
+
+<P>#烈の攻撃メッセージを設定</P>
+
+<P>SetMessage 烈(攻撃) 攻撃 "こいつでとどめだッ！！ 龍神！ 覇王斬！！"</P>
+
+<P>#龍神覇王斬で宇宙怪獣ルグルスを破壊</P>
+
+<P>SpecialPower 烈 必殺</P>
+
+<P>Attack 烈 龍神覇王斬 宇宙怪獣ルグルス 無抵抗</P>
+
+</BODY>
+</HTML>

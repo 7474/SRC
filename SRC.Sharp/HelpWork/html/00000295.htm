@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; UTF-8">
+<TITLE>Setコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Setコマンド">
+</OBJECT>
+
+<P><A NAME=".2.lev"></A></P>
+
+<P><B>Setコマンド</B></P>
+
+<P>変数を書き換え</P>
+
+<P><B>書式</B></P>
+
+<P><B>Set</B> <I>variable</I> [<I>value</I>] または <I>variable</I> = <I>value</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>variable</I>変数名</P>
+
+<P><I>value</I>変数に書き込む値（省略可）</P>
+
+<P><B>解説</B></P>
+
+<P>変数 <I>variable</I> に<I>value</I> を書き込みます。<I>variable</I> が今まで使用されていない場合には変数<I>variable</I> が自動的に作成されます。この際、<I>variable</I> はそのステージ中にのみ有効な<A HREF="src2c1e.htm">ローカル変数</A>に設定されます。複数のステージに渡って有効なグローバル変数を作成したい場合には<A HREF="00000226.htm"><B>Global</B>コマンド</A>を使用します。</P>
+
+<P><I>value</I> の項目を省略した場合には<I>variable</I> に 1 が代入されます(フラグの定義として使って下さい)。</P>
+
+<P><IMG SRC="../images/bm0.gif" ALT="" BORDER=0>変数名にパイロット名や陣営名を使用すると予期せぬ動作を招く恐れがあります。</P>
+
+<P>命名の際には注意してください。</P>
+
+<P>代入先の変数名 <I>variable</I> にEval関数を使うことで、代入先の変数の指定に式を使うことが出来ます。</P>
+
+<P><B>例</B></P>
+
+<P>#全て変数xに100を代入するという処理</P>
+
+<P>Set x 100</P>
+
+<P>x = 100</P>
+
+<P>a = "x"</P>
+
+<P>Set Eval(a) 100</P>
+
+<P>b = "x"</P>
+
+<P>Eval(b) = 100</P>
+
+</BODY>
+</HTML>

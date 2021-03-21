@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; UTF-8">
+<TITLE>PSetコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="PSetコマンド">
+</OBJECT>
+
+<P><A NAME=".2.mbs"></A></P>
+
+<P><B>PSetコマンド</B></P>
+
+<P>点を描画</P>
+
+<P><B>書式</B></P>
+
+<P><B>PSet</B> <I>ｘ y</I> [<I>color</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>x y</I>表示する点の座標(ピクセル)</P>
+
+<P><I>color</I>描画色(省略可能)</P>
+
+<P><B>解説</B></P>
+
+<P>マップウインドウの(<I>x</I>,<I>y</I>)に点を描画します。描画した図形は<A HREF="00000277.htm"><B>Refresh</B>コマンド</A>を実行した時点で表示されます。</P>
+
+<P><I>color</I>にＲＧＢ16進(HTMLの色指定と同形式)で描画色を指定することができます。RGB値はRGB関数を使えば計算することができます。指定を省略した場合は<A HREF="00000191.htm"><B>Color</B>コマンド</A>で指定した色が使われます</P>
+
+<P><I>x y</I> で指定された座標は描き込み先画面の左上隅が(0,0)になるように計算されますが、システム変数BaseX,BaseYの値を変更することで基準位置を変更することが可能です。詳しくは<A HREF="00000135.htm">変数</A>のページを参照してください。</P>
+
+<P><B>例</B></P>
+
+<P>#描画色を(255,255,255)に変更</P>
+
+<P>Color RGB(255,255,255)</P>
+
+<P>#ランダムに点を100個描画</P>
+
+<P>For i = 1 To 100</P>
+
+<P>PSet Random(100) Random(100)</P>
+
+<P>Next</P>
+
+<P>#画面を更新</P>
+
+<P>Refresh</P>
+
+</BODY>
+</HTML>

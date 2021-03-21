@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; UTF-8">
+<TITLE>PlayMIDIコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="PlayMIDIコマンド">
+</OBJECT>
+
+<P><A NAME=".2.uct"></A></P>
+
+<P><B>PlayMIDIコマンド</B></P>
+
+<P>MIDIファイルを再生(MP3ファイルを再生)</P>
+
+<P><B>書式</B></P>
+
+<P><B>PlayMIDI</B> <I>file</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>file</I>再生するMIDIファイル名(もしくはMP3ファイル名)。</P>
+
+<P>通常のコマンドの引数と違ってスペースを使用しても「"」で</P>
+
+<P>囲う必要はないが、式を指定する場合は括弧で囲むこと。</P>
+
+<P>リスト形式で指定することで複数のファイルを指定することも可能。</P>
+
+<P><B>解説</B></P>
+
+<P>ＢＧＭ用ファイル<I>file</I> を再生します。<I>file</I> は戦闘用ＢＧＭと同じ<A HREF="src7yuj.htm">Midiフォルダ</A>内に置かれている必要があります。</P>
+
+<P><A HREF="src2er8.htm"><B>StartBGM</B>コマンド</A>と異なり<I>file</I> の再生が終了しても再生はリピートされません。</P>
+
+<P>MP3ファイルを再生する場合、MP3ファイルの効果音が再生されるとＢＧＭのMP3ファイルの再生は中断されてしまうので注意して下さい。</P>
+
+<P><B>例</B></P>
+
+<P>増援ユニット出現時に音楽を演奏したいときには</P>
+
+<P>PlayMIDI Enemy Appears.mid</P>
+
+<P>を実行してください。</P>
+
+<P>シナリオにMIDIファイルを添付しない場合、シナリオをプレイする人がシナリオ作者の望むMIDIファイルを持っているかどうかは分かりません。このような場合、<B>PlayMIDI</B>コマンドを列挙して再生するMIDIファイルを複数指定することでMIDIファイルが全く再生されないという危険性を下げることが出来ます。このとき、後ろの<B>PlayMIDI</B>コマンドに指定されたMIDIファイルほど優先度が高くなります。</P>
+
+<P><B>例</B></P>
+
+<P>#「ばっちり.mid」があればそれを再生し、無ければ「間に合わせ.mid」を再生</P>
+
+<P>PlayMIDI 間に合わせ.mid</P>
+
+<P>PlayMIDI ばっちり.mid</P>
+
+<P>また、複数のMIDIファイルをリスト形式で指定するという方法もあります。最初のファイルから検索が行われ、最初に見つかったファイルが再生されます。リスト形式で指定するには全体を「"」で囲み、ファイル名にスペースが使われている場合はファイル名()で囲んでください。</P>
+
+<P><B>例</B></P>
+
+<P>PlayMIDI "ばっちり.mid それなり.mid (かな～り 間に合わせの.mid)"</P>
+
+</BODY>
+</HTML>

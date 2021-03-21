@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; UTF-8">
+<TITLE>Doコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Doコマンド">
+</OBJECT>
+
+<P><A NAME="1kdttdh"></A></P>
+
+<P><B>Doコマンド</B></P>
+
+<P>指定した条件が真の間、一連のイベントコマンドを繰り返し実行</P>
+
+<P><B>書式１</B></P>
+
+<P><B>Do While</B> <I>expression</I></P>
+
+<P><I>commands</I></P>
+
+<P><B>Loop</B></P>
+
+<P><B>書式２</B></P>
+
+<P><B>Do</B></P>
+
+<P><I>commands</I></P>
+
+<P><B>Loop While</B> <I>expression</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>expression</I>条件式</P>
+
+<P><I>commands</I>実行するイベントコマンド。複数行指定可能</P>
+
+<P><B>解説</B></P>
+
+<P>条件式 <I>expression</I> の値が 0 でない間、<B>Do</B>行から<B>Loop</B>行までのイベントコマンド列 <I>commands</I> を繰り返し実行します。式の値の評価は<B>While</B>行を実行するたびに行われます。<A HREF="src2er6.htm"><B>Skip</B>コマンド</A>や<A HREF="src7yub.htm"><B>Break</B>コマンド</A>を使えば実行の流れを変えることができます。</P>
+
+<P><IMG SRC="../images/bm0.gif" ALT="" BORDER=0> イベントファイルが見やすいように<I>commands</I> にはインデントをつけるようにして下さい。</P>
+
+<P><B>例</B></P>
+
+<P>Talk コーネリアス</P>
+
+<P>よし！ ドール隊１２機、全機発進！</P>
+
+<P>End</P>
+
+<P>#コーネリアスの乗るユニットの周りに12機のドールを出撃させる</P>
+
+<P>#(説明用にDoコマンドを使ってますが、実はForコマンドのほうが簡単…)</P>
+
+<P>i = 0</P>
+
+<P>Do While (i &lt; 12)</P>
+
+<P>Incr i</P>
+
+<P>Create 敵 ドール 0 一般兵士 18 X(コーネリアス) Y(コーネリアス)</P>
+
+<P>Loop</P>
+
+</BODY>
+</HTML>

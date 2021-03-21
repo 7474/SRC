@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; UTF-8">
+<TITLE>RecoverHPコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="RecoverHPコマンド">
+</OBJECT>
+
+<P><A NAME=".2.udo"></A></P>
+
+<P><B>RecoverHPコマンド</B></P>
+
+<P>ＨＰを回復</P>
+
+<P><B>書式</B></P>
+
+<P><B>RecoverHP</B> [<I>unit</I>] <I>rate</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit</I>ＨＰを回復するユニットの<A HREF="src7ysq.htm">メインパイロット名</A>または<A HREF="src2hpr.htm">ユニットＩＤ</A>（省略可）</P>
+
+<P><I>rate</I>ＨＰの回復率（浮動小数点数も指定可）</P>
+
+<P><B>解説</B></P>
+
+<P><I>unit</I> のＨＰを<I>rate</I> %だけ回復します。マイナスの値を指定してＨＰを減少させることもできます。</P>
+
+<P><IMG SRC="../images/bm0.gif" ALT="" BORDER=0> ＨＰの増減の度合いを割合でなく一定値で指定したい場合はHP関数を使ってください</P>
+
+<P><B>RecoverHP</B>コマンドによってＨＰが最大ＨＰを越えたり、0になることはありません。従って<B>RecoverHP</B>コマンドによってユニットが破壊されることはありません。</P>
+
+<P><B>例</B></P>
+
+<P>#カインの乗るユニットの損傷率が70%以上になった時</P>
+
+<P>損傷率 カイン 70:</P>
+
+<P>Talk カイン</P>
+
+<P>ここで… ここでやられる訳にはいかないんだ！</P>
+
+<P>Talk システム</P>
+
+<P>カインのＨＰが全快した！</P>
+
+<P>End</P>
+
+<P>#カインの乗るユニットのＨＰを全快させる</P>
+
+<P>RecoverHP 100</P>
+
+<P>#イベントを終了</P>
+
+<P>Exit</P>
+
+</BODY>
+</HTML>

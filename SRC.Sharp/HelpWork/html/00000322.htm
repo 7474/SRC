@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; UTF-8">
+<TITLE>UseAbilityコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="UseAbilityコマンド">
+</OBJECT>
+
+<P><A NAME="1kdtlbc"></A></P>
+
+<P><B>UseAbilityコマンド</B></P>
+
+<P>アビリティを使用</P>
+
+<P><B>書式</B></P>
+
+<P><B>UseAbility</B> [<I>unit</I>] <I>ability</I> <I>target</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit</I>アビリティを使用するユニットの<A HREF="src7ysq.htm">メインパイロット名</A>または<A HREF="src2hpr.htm">ユニットＩＤ</A>（省略可）</P>
+
+<P><I>ability</I>使用するアビリティの名称</P>
+
+<P><I>target</I>アビリティの使用対象ユニットの<A HREF="src7ysq.htm">メインパイロット名</A>または<A HREF="src2hpr.htm">ユニットＩＤ</A>（省略可）</P>
+
+<P><B>解説</B></P>
+
+<P><I>unit</I> が<I>target</I> にアビリティ<I>ability</I> を使用します。<I>unit</I> の指定を省略した場合はデフォルトユニットがアビリティを実行します。射程が0のアビリティや召喚アビリティなどの効果対象を指定する必要のないアビリティの場合は<I>target</I> を省略することができます。なお、残りＥＮや気力条件などのアビリティの使用条件が満たされている必要はありません。</P>
+
+<P><B>UseAbility</B>コマンドの結果、イベントが発生することはありません。従って<A HREF="00000153.htm"><B>使用イベント</B></A>、<A HREF="00000154.htm"><B>使用後イベント</B></A>は発生しません。また、経験値も入手されません。</P>
+
+<P><B>UseAbility</B>コマンドが使用できるのは通常のアビリティを使用する場合のみです。マップアビリティを使用させる場合は<A HREF="00000248.htm"><B>MapAbility</B>コマンド</A>を使ってください。</P>
+
+<P>プレイヤー操作時と異なり、<B>UseAbility</B>コマンドではアビリティを使用するユニットがマップ画面中央に表示されません。中央に表示したい場合には<A HREF="00000173.htm"><B>Center</B>コマンド</A>を使って下さい。</P>
+
+<P><B>例</B></P>
+
+<P>Talk アリス</P>
+
+<P>$(主人公愛称)！ しっかりして！！</P>
+
+<P>End</P>
+
+<P>#アリスが主人公に対してアビリティ「癒しの言葉」を使用</P>
+
+<P>UseAbility アリス 癒しの言葉 主人公</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; UTF-8">
+<TITLE>Globalコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Globalコマンド">
+</OBJECT>
+
+<P><A NAME=".2.uau"></A></P>
+
+<P><B>Globalコマンド</B></P>
+
+<P>グローバル変数を作成</P>
+
+<P><B>書式</B></P>
+
+<P><B>Global</B> <I>variable</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>variable</I>作成するグローバル変数名</P>
+
+<P><B>解説</B></P>
+
+<P>グローバル変数<I>variable</I> を作成します。<A HREF="00000295.htm"><B>Set</B>コマンド</A>で自動作成された<A HREF="src2c1e.htm">ローカル変数</A>と異なり、グローバル変数はステージクリア後も保存され(変数の値もそのまま保たれます)、セーブデータにもセーブされます。</P>
+
+<P>配列の場合、個々の要素に対して<B>Global</B>コマンドを実行する必要はありません。変数名を<I>variable</I> に指定すれば個々の要素はすべてグローバル変数と見なされます。</P>
+
+<P><B>例</B> Global 信頼度</P>
+
+<P>の例ですと、信頼度[サラ]もグローバル変数と見なされます。</P>
+
+<P>作成時の変数の値は空文字列(数値として扱う場合は0)となっているのでフラグとして使う場合は作成後に値を 1 に設定してください。<B>Set</B>コマンドに変数名のみを与えて実行すればOKです。コマンドの引数に変数名を使用するとコマンドの引数に変数の内容が指定されたものとして扱われるので、変数名の付け方には注意してください。</P>
+
+<P>既に<B>Global</B>コマンドで作成されているグローバル変数に対して<B>Global</B>コマンドを実行してもエラーは発生しません。</P>
+
+<P><B>例</B></P>
+
+<P>Global トール説得</P>
+
+<P>Set トール説得</P>
+
+</BODY>
+</HTML>
