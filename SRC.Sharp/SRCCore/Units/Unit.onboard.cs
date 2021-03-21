@@ -7,6 +7,7 @@ using SRCCore.Models;
 using SRCCore.Pilots;
 using SRCCore.VB;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.Units
 {
@@ -20,71 +21,37 @@ namespace SRCCore.Units
         }
 
         // 搭載したユニットを削除
-        public void UnloadUnit(object Index)
+        public void UnloadUnit(string Index)
         {
-            short i;
-            ;
-#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 896556
+            if (colUnitOnBoard.Remove(Index)) { return; }
 
-
-            Input:
-
-                    On Error GoTo ErrorHandler
-
-             */
-            colUnitOnBoard.Remove(Index);
-            return;
-        ErrorHandler:
-            ;
-            var loopTo = (short)colUnitOnBoard.Count;
-            for (i = 1; i <= loopTo; i++)
+            // XXX 一致のケース考慮してなかったかも？
+            //if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(colUnitOnBoard[i].Name, Index, false)))
+            foreach (var u in UnitOnBoards.Where(x => x.Name == Index))
             {
-                // UPGRADE_WARNING: オブジェクト colUnitOnBoard(i).Name の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(colUnitOnBoard[(int)i].Name, Index, false)))
-                {
-                    colUnitOnBoard.Remove(i);
-                    return;
-                }
+                colUnitOnBoard.Remove(u);
+                return;
             }
         }
 
         // 搭載したユニットの総数
-        public short CountUnitOnBoard()
+        public int CountUnitOnBoard()
         {
-            short CountUnitOnBoardRet = default;
-            CountUnitOnBoardRet = (short)colUnitOnBoard.Count;
-            return CountUnitOnBoardRet;
+            return colUnitOnBoard.Count;
         }
 
         // 搭載したユニット
-        public Unit UnitOnBoard(object Index)
+        public Unit UnitOnBoard(string Index)
         {
-            Unit UnitOnBoardRet = default;
-            ;
-#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 897275
-
-
-            Input:
-
-                    On Error GoTo ErrorHandler
-
-             */
-            UnitOnBoardRet = (Unit)colUnitOnBoard[Index];
-            return UnitOnBoardRet;
-        ErrorHandler:
-            ;
-            foreach (Unit u in colUnitOnBoard)
+            var u = colUnitOnBoard[Index];
+            if (u != null)
             {
-                // UPGRADE_WARNING: オブジェクト Index の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(u.Name, Index, false)))
-                {
-                    UnitOnBoardRet = u;
-                    return UnitOnBoardRet;
-                }
+                return u;
+            }
+            else
+            {
+                return UnitOnBoards.FirstOrDefault(x => x.Name == Index);
             }
         }
-
     }
 }
