@@ -9,10 +9,12 @@
 
   <ItemGroup>
     <Compile Remove="Events\Event.ref.cs" />
+    <Compile Remove="Units\Unit.ref.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
+    <None Include="Units\Unit.ref.cs" />
   </ItemGroup>
 
   <ItemGroup>
