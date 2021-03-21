@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SRCCore.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -21,6 +22,8 @@ namespace SRCCore.Events
 
         public void DisplayEventErrorMessage(EventDataLine line, string msg)
         {
+            SRC.DataErrors.Add(new InvalidSrcData(msg, line.File, line.LineNum, line.Data, "eve"));
+
             string buf;
 
             // エラーが起こったファイル、行番号、エラーメッセージを表示
