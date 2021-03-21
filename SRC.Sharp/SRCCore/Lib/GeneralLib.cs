@@ -767,61 +767,62 @@ namespace SRCCore.Lib
         }
 
 
-        //        // 武器属性処理用の関数群。
+        // 武器属性処理用の関数群。
 
-        //        // 属性を一つ取得する。複数文字の属性もひとつとして取得する。
-        //        // ただしＭは防御特性において単体文字として扱われるために除く。
-        //        // 検索文字列 aname
-        //        // 検索位置 idx (検索終了位置を返す)
-        //        // 取得文字長 length (特殊効果数カウント用。基本的に0(属性取得)か1(属性頭文字取得))
-        //        public static string GetClassBundle(string aname, int idx, int length = 0)
-        //        {
-        //            string GetClassBundleRet = default;
-        //            int i;
-        //            string ch;
-        //            i = idx;
-        //            ch = Strings.Mid(aname, i, 1);
-        //            // 弱、効、剋があればその次の文字まで一緒に取得する。
-        //            // 入れ子可能なため弱、効、剋が続く限りループ
-        //            while (ch == "弱" | ch == "効" | ch == "剋")
-        //            {
-        //                // 属性指定の最後の文字が弱効剋だった場合、属性なし
-        //                if (i >= Strings.Len(aname))
-        //                    goto NotFoundClass;
-        //                i = (i + 1);
-        //                ch = Strings.Mid(aname, i, 1);
-        //            }
-        //            // 低があればその次の文字まで一緒に取得する。
-        //            if (ch == "低")
-        //            {
-        //                i = (i + 1);
-        //                // midの開始位置指定は文字数を超えていても大丈夫なはずですが念の為
-        //                if (i > Strings.Len(aname))
-        //                {
-        //                    goto NotFoundClass;
-        //                }
+        // XXX ヒットを配列にして返すのがよさそう
+        // 属性を一つ取得する。複数文字の属性もひとつとして取得する。
+        // ただしＭは防御特性において単体文字として扱われるために除く。
+        // 検索文字列 aname
+        // 検索位置 idx (検索終了位置を返す)
+        // 取得文字長 length (特殊効果数カウント用。基本的に0(属性取得)か1(属性頭文字取得))
+        public static string GetClassBundle(string aname, ref int idx, int length = 0)
+        {
+            string GetClassBundleRet = default;
+            int i;
+            string ch;
+            i = idx;
+            ch = Strings.Mid(aname, i, 1);
+            // 弱、効、剋があればその次の文字まで一緒に取得する。
+            // 入れ子可能なため弱、効、剋が続く限りループ
+            while (ch == "弱" | ch == "効" | ch == "剋")
+            {
+                // 属性指定の最後の文字が弱効剋だった場合、属性なし
+                if (i >= Strings.Len(aname))
+                    goto NotFoundClass;
+                i = (i + 1);
+                ch = Strings.Mid(aname, i, 1);
+            }
+            // 低があればその次の文字まで一緒に取得する。
+            if (ch == "低")
+            {
+                i = (i + 1);
+                // midの開始位置指定は文字数を超えていても大丈夫なはずですが念の為
+                if (i > Strings.Len(aname))
+                {
+                    goto NotFoundClass;
+                }
 
-        //                ch = Strings.Mid(aname, i, 1);
-        //                if (ch != "攻" & ch != "防" & ch != "運" & ch != "移")
-        //                {
-        //                    goto NotFoundClass;
-        //                }
-        //            }
+                ch = Strings.Mid(aname, i, 1);
+                if (ch != "攻" & ch != "防" & ch != "運" & ch != "移")
+                {
+                    goto NotFoundClass;
+                }
+            }
 
-        //            if (length == 0)
-        //            {
-        //                GetClassBundleRet = Strings.Mid(aname, idx, i - idx + 1);
-        //            }
-        //            else
-        //            {
-        //                GetClassBundleRet = Strings.Mid(aname, idx, length);
-        //            }
+            if (length == 0)
+            {
+                GetClassBundleRet = Strings.Mid(aname, idx, i - idx + 1);
+            }
+            else
+            {
+                GetClassBundleRet = Strings.Mid(aname, idx, length);
+            }
 
-        //        NotFoundClass:
-        //            ;
-        //            idx = i;
-        //            return GetClassBundleRet;
-        //        }
+        NotFoundClass:
+            ;
+            idx = i;
+            return GetClassBundleRet;
+        }
 
         // InStrと同じ動作。ただし見つかった文字の前に「弱」「効」「剋」があった場合、別属性と判定する)
         public static int InStrNotNest(string string1, string string2, int start = 1)
@@ -829,7 +830,7 @@ namespace SRCCore.Lib
             int InStrNotNestRet = default;
             int i;
             string c;
-            i = Strings.InStr(start, string1, string2);
+            i = Strings.InStr(start, string1 ?? "", string2);
             // 先頭一致か、一致なしのとき、ここで取得
             if (i <= 1)
             {

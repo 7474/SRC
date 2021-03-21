@@ -4657,7 +4657,7 @@ namespace SRCCore.Units
         // 武器wでユニットtに攻撃をかけた時のダメージの期待値
         public int ExpDamage(Unit t, bool is_true_value, double dmg_mod = 0d)
         {
-            int ExpDamageRet = default;
+            int ExpDamageRet = 0;
             int dmg;
             int j, i, idx;
             double slevel;
@@ -4680,48 +4680,49 @@ namespace SRCCore.Units
             // ダメージ
             dmg = Damage(t, is_true_value);
 
+            // ダメージに修正を加える場合
+            if (dmg_mod > 0d)
+            {
+                if (GeneralLib.InStrNotNest(wclass, "殺") == 0)
+                {
+                    dmg = (int)(dmg * dmg_mod);
+                }
+            }
+
+            // 抹殺攻撃は一撃で相手を倒せない限り効果がない
+            if (GeneralLib.InStrNotNest(wclass, "殺") > 0)
+            {
+                if (t.HP > dmg)
+                {
+                    return ExpDamageRet;
+                }
+            }
+
+            // ダメージが与えられない場合
+            if (dmg <= 0)
+            {
+                // 地形適応や封印武器、限定武器、性別限定武器、無効化、吸収が原因であれば期待値は0
+                if (WeaponAdaption(t.Area) == 0d 
+                    || GeneralLib.InStrNotNest(wclass, "封") > 0 
+                    || GeneralLib.InStrNotNest(wclass, "限") > 0 
+                    || GeneralLib.InStrNotNest(wclass, "♂") > 0 
+                    || GeneralLib.InStrNotNest(wclass, "♀") > 0 
+                    || t.Immune(wclass) | t.Absorb(wclass))
+                {
+                    return ExpDamageRet;
+                }
+
+                // それ以外の要因であればダミーでダメージwとする。
+                // こうしておかないと敵が攻撃が無駄の場合はまったく自分から
+                // 攻撃しなくなってしまうので。
+                // 単純にExpDamage=1などとしないのは攻撃力の高い武器を優先させて使わせるため
+                ExpDamageRet = WeaponNo();
+                return ExpDamageRet;
+            }
+
             return dmg;
 
-            // TODO Impl
-            //// ダメージに修正を加える場合
-            //if (dmg_mod > 0d)
-            //{
-            //    if (GeneralLib.InStrNotNest(wclass, "殺") == 0)
-            //    {
-            //        dmg = (int)(dmg * dmg_mod);
-            //    }
-            //}
-
-            //// 抹殺攻撃は一撃で相手を倒せない限り効果がない
-            //if (GeneralLib.InStrNotNest(wclass, "殺") > 0)
-            //{
-            //    if (t.HP > dmg)
-            //    {
-            //        return ExpDamageRet;
-            //    }
-            //}
-
-            //// ダメージが与えられない場合
-            //if (dmg <= 0)
-            //{
-            //    // 地形適応や封印武器、限定武器、性別限定武器、無効化、吸収が原因であれば期待値は0
-            //    string argstring22 = "封";
-            //    string argstring23 = "限";
-            //    string argstring24 = "♂";
-            //    string argstring25 = "♀";
-            //    if (WeaponAdaption(t.Area) == 0d | GeneralLib.InStrNotNest(wclass, argstring22) > 0 | GeneralLib.InStrNotNest(wclass, argstring23) > 0 | GeneralLib.InStrNotNest(wclass, argstring24) > 0 | GeneralLib.InStrNotNest(wclass, argstring25) > 0 | t.Immune(wclass) | t.Absorb(wclass))
-            //    {
-            //        return ExpDamageRet;
-            //    }
-
-            //    // それ以外の要因であればダミーでダメージwとする。
-            //    // こうしておかないと敵が攻撃が無駄の場合はまったく自分から
-            //    // 攻撃しなくなってしまうので。
-            //    // 単純にExpDamage=1などとしないのは攻撃力の高い武器を優先させて使わせるため
-            //    ExpDamageRet = WeaponNo();
-            //    return ExpDamageRet;
-            //}
-
+            //TODO Impl
             //// バリア無効化
             //string argstring27 = "無";
             //string argsptype = "防御能力無効化";
