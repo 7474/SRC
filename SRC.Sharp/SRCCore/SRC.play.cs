@@ -881,60 +881,47 @@ namespace SRCCore
         // ゲームを途中終了
         public void ExitGame()
         {
-            throw new NotImplementedException();
-            //var fname = default(string);
-            //Sound.KeepBGM = false;
-            //Sound.BossBGM = false;
-            //Sound.StopBGM();
+            var fname = default(string);
+            Sound.KeepBGM = false;
+            Sound.BossBGM = false;
+            Sound.StopBGM();
 
-            //// Exit.eveを探す
-            //GUI.MainForm.Hide();
-            //bool localFileExists() { string argfname = AppPath + @"Data\System\Exit.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
+            // Exit.eveを探す
+            GUI.MainFormHide();
+            var exitFiles = new string[]
+            {
+                FileSystem.PathCombine(ScenarioPath, "Data", "System", "Exit.eve"),
+                FileSystem.PathCombine(AppPath, "Data", "System", "Exit.eve"),
+            };
+            var exitFile = exitFiles.FirstOrDefault(x => GeneralLib.FileExists(x));
+            if (string.IsNullOrEmpty(exitFile))
+            {
+                // Exit.eveが無ければそのまま終了
+                TerminateSRC();
+            }
 
-            //string argfname4 = ScenarioPath + @"Data\System\Exit.eve";
-            //if (GeneralLib.FileExists(argfname4))
-            //{
-            //    fname = ScenarioPath + @"Data\System\Exit.eve";
-            //    string argfname1 = ScenarioPath + @"Data\System\non_pilot.txt";
-            //    if (GeneralLib.FileExists(argfname1))
-            //    {
-            //        string argfname = ScenarioPath + @"Data\System\non_pilot.txt";
-            //        NPDList.Load(argfname);
-            //    }
-            //}
-            //else if (localFileExists())
-            //{
-            //    fname = AppPath + @"Data\System\Exit.eve";
-            //    string argfname3 = AppPath + @"Data\System\non_pilot.txt";
-            //    if (GeneralLib.FileExists(argfname3))
-            //    {
-            //        string argfname2 = AppPath + @"Data\System\non_pilot.txt";
-            //        NPDList.Load(argfname2);
-            //    }
-            //}
-            //else
-            //{
-            //    // Exit.eveが無ければそのまま終了
-            //    TerminateSRC();
-            //}
+            var nonPilotFile = FileSystem.PathCombine(Path.GetDirectoryName(exitFile), "non_pilot.txt");
+            if (GeneralLib.FileExists(nonPilotFile))
+            {
+                NPDList.Load(nonPilotFile);
+            }
 
-            //// Exit.eveを読み込み
-            //Event.ClearEventData();
-            //string argload_mode = "";
-            //Event.LoadEventData(fname, load_mode: argload_mode);
-            //string arglname = "プロローグ";
-            //if (!Event.IsEventDefined(arglname))
-            //{
-            //    string argmsg = fname + "中にプロローグイベントが定義されていません";
-            //    GUI.ErrorMessage(argmsg);
-            //    TerminateSRC();
-            //}
+            // Exit.eveを読み込み
+            Event.ClearEventData();
+            Event.LoadEventData(exitFile, load_mode: "");
+            ScenarioFileName = fname;
+            if (!Event.IsEventDefined("プロローグ"))
+            {
+                string argmsg = fname + "中にプロローグイベントが定義されていません";
+                GUI.ErrorMessage(argmsg);
+                TerminateSRC();
+            }
 
-            //// Exit.eveのプロローグイベントを実施
-            //Event.HandleEvent("プロローグ");
+            // Exit.eveのプロローグイベントを実施
+            Event.HandleEvent("プロローグ");
 
-            //// SRCを終了
-            //TerminateSRC();
+            // SRCを終了
+            TerminateSRC();
         }
 
         // SRCを終了
