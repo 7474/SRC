@@ -8,7 +8,15 @@ namespace HelpConverter
     class FileConverter
     {
         static readonly Regex nameRegex = new Regex("<TITLE>(.+)</TITLE>", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+        static readonly Regex anchorRegex = new Regex("<A HREF=\".+?.htm?\">(.+?)</A>", RegexOptions.IgnoreCase);
+        static readonly Regex tagRegex = new Regex("<[^>]+>", RegexOptions.IgnoreCase);
 
+        static readonly ReverseMarkdown.Converter converter = new ReverseMarkdown.Converter(new ReverseMarkdown.Config
+        {
+            // Objectタグを落とす
+            UnknownTags = ReverseMarkdown.Config.UnknownTagsOption.Drop,
+            GithubFlavored = true,
+        });
         public string SourcePath { get; private set; }
         public string DestPath { get; private set; }
         public string SourceContent { get; private set; }
@@ -25,12 +33,23 @@ namespace HelpConverter
             DestPath = ResolvePath();
 
             // Impl
-            ConvertedContent = SourceContent;
+            ConvertedContent = ConvertContent();
         }
 
         private string ResolvePath()
         {
-            return (nameRegex.Match(SourceContent).Groups.Values.Skip(1).FirstOrDefault().Value ?? SourcePath) + ".md";
+            return "md/" + (nameRegex.Match(SourceContent).Groups.Values.Skip(1).FirstOrDefault()?.Value ?? SourcePath) + ".md";
+        }
+
+        private string ConvertContent()
+        {
+            var tmpContent = anchorRegex.Replace(SourceContent, (m) =>
+            {
+                var rawName = m.Groups[1].Value;
+                var name = tagRegex.Replace(rawName, "");
+                return $"<a href=\"{name}\">{rawName}</a>";
+            });
+            return converter.Convert(tmpContent).TrimStart();
         }
     }
 
@@ -38,10 +57,7 @@ namespace HelpConverter
     {
         static void Main(string[] args)
         {
-            args = new string[]
-            {
-                @"C:\Users\koudenpa\source\repos\src\SRC\SRC.Sharp\HelpWork\html"
-            };
+            Directory.CreateDirectory("md");
             args
                 .Where(x => Directory.Exists(x))
                 .SelectMany(x => Directory.EnumerateFiles(x, "*.html", SearchOption.AllDirectories)
@@ -55,10 +71,6 @@ namespace HelpConverter
                     Console.Out.WriteLine($"{x.SourcePath} -> {x.DestPath}");
                     File.WriteAllText(x.DestPath, x.ConvertedContent);
                 });
-
-
         }
-
-
     }
 }
