@@ -36,12 +36,16 @@ namespace SRCSharpForm
 
         private IList<ListBoxItem> ListBoxItems;
         private ListBoxItem SelectedItem => lstItems.SelectedIndex >= 0 ? ListBoxItems[lstItems.SelectedIndex] : null;
-        // TODO フラグが0件の時にくそ動作になる
-        private bool HasFlag => ListBoxItems.Any(x => x.ListItemFlag);
+        private bool HasFlag;
 
-        public void ShowItems(frmMain MainForm, string lb_caption, IList<ListBoxItem> list, string lb_info, string lb_mode)
+        public void ShowItems(frmMain MainForm, ListBoxArgs args)
         {
-            ListBoxItems = list;
+            ListBoxItems = args.Items;
+            HasFlag = args.HasFlag;
+            var list = args.Items;
+            var lb_caption = args.lb_caption;
+            var lb_info = args.lb_info;
+            var lb_mode = args.lb_mode;
 
             // コメントウィンドウの処理
             if (Strings.InStr(lb_mode, "コメント") > 0)

@@ -184,7 +184,7 @@ namespace SRCCore
         // === 各種リストボックスに関する処理 ===
 
         // リストボックスを表示
-        int ListBox(string lb_caption, IList<ListBoxItem> list, string lb_info, string lb_mode = "");
+        int ListBox(ListBoxArgs args);
         // リストボックスを閉じる
         void CloseListBox();
         // リストボックスの高さを大きくする
@@ -329,11 +329,22 @@ namespace SRCCore
         public string Text { get; set; }
 
         // 選択でき『ない』かどうか
-        // 全要素 false なら無視
         public bool ListItemFlag { get; set; }
         // フォーカス時に表示するコメント
         public string ListItemComment { get; set; }
         // リスト表示の呼び出し側での識別用ID
         public string ListItemID { get; set; }
+    }
+
+    public class ListBoxArgs
+    {
+        public IList<ListBoxItem> Items { get; set; } = new List<ListBoxItem>();
+
+        // 選択でき『ない』かどうかを処理するか
+        public bool HasFlag { get; set; }
+
+        public string lb_caption;
+        public string lb_info;
+        public string lb_mode = "";
     }
 }

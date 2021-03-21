@@ -1313,9 +1313,9 @@ namespace SRCSharpForm
             MainForm.MoveUnitBitmap2(u, wait_time0, division);
         }
 
-        public int ListBox(string lb_caption, IList<ListBoxItem> list, string lb_info, string lb_mode)
+        public int ListBox(ListBoxArgs args)
         {
-            frmListBox.ShowItems(MainForm, lb_caption, list, lb_info, lb_mode);
+            frmListBox.ShowItems(MainForm, args);
             var ListBoxRet = Commands.SelectedItem;
             Application.DoEvents();
 
@@ -1887,11 +1887,15 @@ namespace SRCSharpForm
                 ListItemFlag = !x.IsWeaponAvailable(lb_mode),
                 ListItemID = "",
             }).ToList();
-            var ret = ListBox(caption_msg,
-                list,
+            var ret = ListBox(new ListBoxArgs
+            {
+                Items = list,
+                HasFlag = true,
+                lb_caption = caption_msg,
                 //"名称                         攻撃 命中 " + Expression.Term(argtname4, u, 2) + "   弾  " + Expression.Term(argtname5, u, 2) + " 適応 分類",
-                "名称                         攻撃 命中 CT   弾  EN 適応 分類",
-                "");
+                lb_info = "名称                         攻撃 命中 CT   弾  EN 適応 分類",
+                lb_mode = "",
+            });
             //var WeaponListBoxRet = wlist[ret];
             var WeaponListBoxRet = ret;
             Application.DoEvents();

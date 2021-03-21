@@ -216,9 +216,13 @@ namespace SRCCore
                     + SrcFormatter.Format(SRC.TotalTurn) + " "
                     //+ Expression.Term("資金", u: argu)
                     + SrcFormatter.Format(SRC.Money);
-                string arglb_info = "コマンド";
-                string arglb_mode = "連続表示";
-                var ret = GUI.ListBox(arglb_caption, name_list, arglb_info, arglb_mode);
+                var ret = GUI.ListBox(new ListBoxArgs()
+                {
+                    Items = name_list,
+                    HasFlag = false,
+                    lb_caption = "コマンド",
+                    lb_mode = "連続表示",
+                });
                 if (ret == 0) { continue; }
 
                 // 選択されたインターミッションコマンドを実行
