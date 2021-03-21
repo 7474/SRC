@@ -47,7 +47,7 @@ namespace HelpConverter
             {
                 var rawName = m.Groups[1].Value;
                 var name = tagRegex.Replace(rawName, "");
-                return $"<a href=\"{name}\">{rawName}</a>";
+                return $"<a href=\"{name}.md\">{rawName}</a>";
             });
             return converter.Convert(tmpContent).TrimStart();
         }
