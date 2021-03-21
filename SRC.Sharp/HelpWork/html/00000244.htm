@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>Loadコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Loadコマンド">
+</OBJECT>
+
+<P><A NAME="1kdtldk"></A></P>
+
+<P><B>Loadコマンド</B></P>
+
+<P>データをロード</P>
+
+<P><B>書式</B></P>
+
+<P><B>Load</B> <I>title</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>title</I>ロードするデータの作品名</P>
+
+<P><B>解説</B></P>
+
+<P>指定した作品<I>title</I> のデータをロードします。プレイヤーの選択によってロードするデータが変わる場合に、ロードするデータを削減するために使用します。</P>
+
+<P>指定した<I>title</I> のデータが既にロード済みの場合はデータのロードは行われません。ロードを強制的に行いたい場合は<B>Load</B>コマンドを使う前に<A HREF="00000221.htm"><B>Forget</B>コマンド</A>を使ってデータを消去していおいて下さい。</P>
+
+<P><B>例</B></P>
+
+<P>#プレイヤーに対戦相手を選択させる</P>
+
+<P>Ask 次の対戦相手を選んでください</P>
+
+<P>ドラゴンファイター</P>
+
+<P>流離いの剣士</P>
+
+<P>End</P>
+
+<P>If 選択 = 1 Then</P>
+
+<P>#ドラゴンファイターチームを選択した場合</P>
+
+<P></P>
+
+<P>#ドラゴンライダーズのデータをロード</P>
+
+<P>Load ドラゴンライダーズ</P>
+
+<P></P>
+
+<P>#ドラゴンファイターのユニットを出撃させる</P>
+
+<P>Create 敵 レッドドラゴン 0 アレックス 30 7 3</P>
+
+<P></P>
+
+<P>Talk アレックス</P>
+
+<P>さあて、炎の竜の力、見せてやるぜ！</P>
+
+<P>End</P>
+
+<P>Else</P>
+
+<P>#流離いの剣士チームを選択した場合</P>
+
+<P></P>
+
+<P>#流離いの剣士レイドのデータをロード</P>
+
+<P>Load 流離いの剣士レイド</P>
+
+<P></P>
+
+<P>#剣士レイドを出撃させる</P>
+
+<P>Create 敵 剣士レイド 0 レイド 30 7 3</P>
+
+<P></P>
+
+<P>Talk レイド</P>
+
+<P>剣の道は死ぬか生きるか…… さあ、勝負だ！</P>
+
+<P>End</P>
+
+<P>EndIf</P>
+
+</BODY>
+</HTML>

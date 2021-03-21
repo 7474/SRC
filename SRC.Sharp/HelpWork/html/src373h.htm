@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>SpecialPowerコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="SpecialPowerコマンド">
+</OBJECT>
+
+<P><A NAME=".2.ucm"></A></P>
+
+<P><B>SpecialPowerコマンド</B></P>
+
+<P>スペシャルパワーを実行</P>
+
+<P><B>書式</B></P>
+
+<P><B>SpecialPower</B> [<I>unit</I>] <I>spower</I> [<I>target</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit</I>スペシャルパワーを使用するユニットの<A HREF="src7ysq.htm">メインパイロット名</A>または<A HREF="src2hpr.htm">ユニットＩＤ</A>（省略可）</P>
+
+<P><I>spower</I>使用するスペシャルパワー</P>
+
+<P><I>target</I>スペシャルパワーの対象となるユニットの<A HREF="src7ysq.htm">メインパイロット名</A>または<A HREF="src2hpr.htm">ユニットＩＤ</A></P>
+
+<P>「挑発」「みがわり」の効果を持つスペシャルパワーを指定する場合に必要</P>
+
+<P><B>解説</B></P>
+
+<P><I>unit</I> に対してスペシャルパワー<I>spower</I> を実行します。ＳＰは消費しません。スペシャルパワーを利用すればイベントで戦闘を行う際に結果を自由にコントロールすることができます。</P>
+
+<P>スペシャルパワーの持続期間が「即効」である場合、<I>unit</I>が<I>spower</I> をその場で実行します。それ以外の持続期間を持つスペシャルパワーの場合は<I>unit</I> に<I>spower</I> の効果が付加されます。ただし、「挑発」「みがわり」を効果に持つスペシャルパワーの場合は使用する場合は<I>target</I> に効果が付加されます。この場合は必ず<I>target</I> を指定して下さい。</P>
+
+<P><B>SpecialPower</B>コマンド専用のスペシャルパワーとして標準的に使われているスペシャルパワーには以下のものがあります。これらのスペシャルパワーの効果は通常のスペシャルパワーより優先されます(「必中」がかかっていても「見切り」があれば切り払い等の回避能力が発動する)。</P>
+
+<P><B>必殺</B>確実に命中し、相手を一撃で破壊します。一回限りです。</P>
+
+<P><B>瀕死</B>確実に命中し、相手を一撃で瀕死状態(ＨＰ=10)にします。一回限りです。</P>
+
+<P><B>痛打</B>特殊効果を持つ武器の場合は特殊効果を、そうでない通常武器の場合は</P>
+
+<P>クリティカルを100%の確率で発動させます。一回限りです。</P>
+
+<P><B>見切り</B>切り払い等の特殊防御効果発動率を100%にします。一回限りです。</P>
+
+<P>これらのスペシャルパワーは本体に添付されている Data\System\sp.txt で定義されています。</P>
+
+<P><B>SpecialPower</B>コマンドで付加したスペシャルパワーの効果は<A HREF="src79k4.htm"><B>ClearSpecialPower</B>コマンド</A>で削除することができます。</P>
+
+<P>プレイヤーがスペシャルパワーを使用した場合と異なり、<B>SpecialPower</B>コマンドでスペシャルパワーを使ってもアニメーション表示は行われません。アニメーションを表示させたい場合はLib\スペシャルパワー.eveの中で定義されているサブルーチンSpecialPowerAnimeを使用してください。</P>
+
+<P>(本コマンドはSRC Ver.1.6までのMindコマンドに相当するコマンドです。)</P>
+
+<P><B>書式</B></P>
+
+<P><B>SpecialPowerAnime</B> <I>spower unit</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>spower </I>アニメ表示するスペシャルパワー</P>
+
+<P><I>unit</I>スペシャルパワーを使用するユニットの<A HREF="src7ysq.htm">メインパイロット名</A>または<A HREF="src2hpr.htm">ユニットＩＤ</A></P>
+
+<P>のようにして使います。詳しくはスペシャルパワー.eveの中をご覧下さい。</P>
+
+<P><B>例</B></P>
+
+<P>Talk ゾック</P>
+
+<P>くっ、任務失敗か……</P>
+
+<P>End</P>
+
+<P>#スペシャルパワー「自爆」のアニメーション表示を行う</P>
+
+<P>SpecialPowerAnime 自爆 ゾック</P>
+
+<P>#ゾックの乗るユニットを自爆させる</P>
+
+<P>SpecialPower ゾック 自爆</P>
+
+<P>Exit</P>
+
+</BODY>
+</HTML>

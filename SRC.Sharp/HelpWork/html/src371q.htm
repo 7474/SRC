@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>Ifコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Ifコマンド">
+</OBJECT>
+
+<P><A NAME=".2.ubn"></A></P>
+
+<P><B>Ifコマンド</B></P>
+
+<P>コマンドを条件付き実行</P>
+
+<P><B>書式１</B></P>
+
+<P><B>If</B> <I>condition</I> <B>Exit</B></P>
+
+<P><B>書式２</B></P>
+
+<P><B>If</B> <I>condition</I> <B>GoTo</B> <I>label</I></P>
+
+<P><B>書式３</B></P>
+
+<P><B>If</B> <I>condition</I> <B>Then</B></P>
+
+<P><I>commands</I></P>
+
+<P><B>EndIf</B></P>
+
+<P><B>書式４</B></P>
+
+<P><B>If</B> <I>condition</I> <B>Then</B></P>
+
+<P><I>commands</I></P>
+
+<P><B>Else</B></P>
+
+<P><I>commands</I></P>
+
+<P><B>EndIf</B></P>
+
+<P><B>書式５</B></P>
+
+<P><B>If</B> <I>condition</I> <B>Then</B></P>
+
+<P><I>commands</I></P>
+
+<P><B>ElseIf</B> <I>condition</I> <B>Then</B></P>
+
+<P><I>commands</I></P>
+
+<P>:</P>
+
+<P><B>Else</B></P>
+
+<P><I>commands</I></P>
+
+<P><B>EndIf</B></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>condition</I>条件式。式またはパイロット名が指定可能</P>
+
+<P>先頭に Not が付けられている場合は条件式の結果は逆になる</P>
+
+<P><I>label</I>ジャンプ先のラベル。「:」は不要</P>
+
+<P><I>commands</I>実行されるイベントコマンド</P>
+
+<P>複数行指定可能</P>
+
+<P><B>解説</B></P>
+
+<P>条件分岐を行うためのコマンドです。条件式<I>condition</I> が成り立つときに各種の処理が行われます。（<B>書式４・５</B>を除く）</P>
+
+<P><B>書式１</B><B>Exit</B>を実行し、イベントを終了</P>
+
+<P><B>書式２</B>ラベル <I>label</I> にジャンプ</P>
+
+<P><B>書式３</B>イベントコマンド列 <I>commands</I> を実行</P>
+
+<P><B>書式４</B>の場合、条件式が成り立ったときに<B>If</B>文の後の<I>commands</I> が、条件式が成り立たなかったときに<B>Else</B>文の後の<I>commands</I> が実行されます。</P>
+
+<P><B>書式５</B>の場合は条件式が複数存在します。まず最初に<B>If</B>文の条件式がチェックされ、成り立っている場合は<B>If</B>文の後の <I>commands</I> が実行されます。成り立ってない場合は<B>ElseIf</B>文の条件式がチェックされ、成り立っていれば<B>ElseIf</B>文の後の <I>commands</I> が実行されます。順次<B>ElseIf</B>文の条件式をチェックしていき、そのどれもが成り立っていなければ<B>Else</B>文の後の <I>commands</I> が実行されます。<B>ElseIf</B>文は何個でも指定することができます。一つでもかまいません。</P>
+
+<P>条件式<I>condition</I> が成り立つ条件は条件式の内容によって異なります。</P>
+
+<P><B>式</B>式の値が 0 でなければ成り立ちます</P>
+
+<P><B>パイロット名</B>パイロットが乗っているユニットが出撃していれば成り立ちます</P>
+
+<P>パイロット名には名称と愛称のどちらでも指定できます</P>
+
+<P>格納されている場合には成り立ちません</P>
+
+<P>条件式の先頭に単項演算子「Not」が付けられていた場合、条件式の結果は逆になります。</P>
+
+<P><B>例</B> Not ジェイ</P>
+
+<P>の場合、ジェイが乗るユニットが出撃していなければ条件式が成り立つことになります。</P>
+
+<P><I>commands</I> および<I>commands2</I> に書けるイベントコマンドには制限はありません。<B>If</B>コマンドを書いて複数の<B>If</B>コマンドからなる入れ子構造を作ってもかまいません。</P>
+
+<P><IMG SRC="../images/bm0.gif" ALT="" BORDER=0>イベントデータを見やすくするため、必ずインデントを使ってください。</P>
+
+<P>インデントしていないと<B>If</B>コマンドの範囲が分からなくなります。</P>
+
+<P><B>例</B></P>
+
+<P>#5ターン目の敵フェイズの開始時</P>
+
+<P>ターン 5 敵:</P>
+
+<P>#レイを出撃</P>
+
+<P>Create レキシントン弐型 0 レイ 30 3 3</P>
+
+<P>If 敵数 &gt; 10 Then</P>
+
+<P>#敵数が10機より多い場合</P>
+
+<P>Talk レイ</P>
+
+<P>流石だな…… よく持ちこたえている</P>
+
+<P>End</P>
+
+<P>ElseIf 敵数 &lt; 5 Then</P>
+
+<P>#敵数が5機未満の場合</P>
+
+<P>If ネリィ Then</P>
+
+<P>#ネリィが生き残っている場合</P>
+
+<P>Talk レイ</P>
+
+<P>どういうことだ、ネリィ！ これでは時間稼ぎにもならんぞ！</P>
+
+<P>Talk ネリィ</P>
+
+<P>気安く言ってくれるね！ 後からやって来てほざくんじゃないよ！！</P>
+
+<P>End</P>
+
+<P>Else</P>
+
+<P>#ネリィが既に倒されている場合</P>
+
+<P>Talk レイ</P>
+
+<P>どうやら遅すぎたようだな…… ここは計画を変更するか</P>
+
+<P>End</P>
+
+<P>Escape レイ</P>
+
+<P>EndIf</P>
+
+<P>Else</P>
+
+<P>#敵数が5～10機の場合</P>
+
+<P>Talk レイ</P>
+
+<P>ふむ、相手が帝国軍ではな。これでも善戦しているというところか……</P>
+
+<P>End</P>
+
+<P>EndIf</P>
+
+<P>イベントを終了</P>
+
+<P>Exit</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>進入イベント</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="進入イベント">
+</OBJECT>
+
+<P><A NAME=".2.u_u"></A></P>
+
+<P><B>進入イベント</B></P>
+
+<P>ユニットが特定の地点に進入したときに発生するイベント</P>
+
+<P><B>書式</B></P>
+
+<P><B>進入</B> <I>unit x y</I> : または  <B>進入</B> <I>unit terrain</I> :</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit</I>ユニットの<A HREF="src7ysq.htm">メインパイロット名</A>、ユニット名、または<A HREF="src7ysp.htm">陣営名</A></P>
+
+<P><I>x y</I>ユニットが進入した座標（左上隅が(1,1)）</P>
+
+<P><I>terrain</I>ユニットが進入した地形の名称</P>
+
+<P><B>解説</B></P>
+
+<P>(<I>x</I>,<I>y</I>)のポイントに<I>unit</I> が進入した場合に発生するイベントです。マップの左上隅の座標が(1,1)になります。</P>
+
+<P>ユニットが進入した地点がマップの端に位置するときには<B>進入イベント</B>に続いて<A HREF="00000151.htm"><B>脱出イベント</B></A>が発生します。</P>
+
+<P><A HREF="00000252.htm"><B>Move</B>コマンド</A>等を使ってイベントでユニットを移動させた場合、<B>進入イベント</B>は発生しません。</P>
+
+<P><B>例</B></P>
+
+<P>#敵が(4,4)の地点に進入</P>
+
+<P>進入 敵 4 4:</P>
+
+<P>Talk エリック</P>
+
+<P>よーし、敵拠点を制覇だ！ ざまあねえな！</P>
+
+<P>End</P>
+
+<P>#ゲームオーバー</P>
+
+<P>GameOver</P>
+
+</BODY>
+</HTML>

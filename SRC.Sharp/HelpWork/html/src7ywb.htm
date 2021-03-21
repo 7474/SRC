@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>ClearEventコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="ClearEventコマンド">
+</OBJECT>
+
+<P><A NAME="1kdttdk"></A></P>
+
+<P><B>ClearEventコマンド</B></P>
+
+<P>イベントラベルを消去</P>
+
+<P><B>書式</B></P>
+
+<P><B>ClearEvent</B> [<I>label</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>label</I>消去するイベントラベル（省略可）</P>
+
+<P><B>解説</B></P>
+
+<P>指定されたイベントラベル<I>label</I> を消去します。ラベルの消去後は同じイベントが発生してもそのイベントラベルへの分岐は行われません。戦闘時の会話イベントや説得イベントなど、同じイベントを２回以上発生させたくない場合に使用してください。</P>
+
+<P><I>label</I> を省略した場合には発生したイベントに対応したイベントラベルが指定されたと解釈されます。ラベル名を指定する場合、「:」は必要ありません。</P>
+
+<P><IMG SRC="../images/bm0.gif" ALT="" BORDER=0> ラベル名は必ず「"」で括ってください。</P>
+
+<P>消去したイベントラベルは<A HREF="src2hm8.htm"><B>RestoreEvent</B>コマンド</A>で復活させることができます。</P>
+
+<P><B>例</B></P>
+
+<P>攻撃 バルド ジョー:</P>
+
+<P>Talk バルド</P>
+
+<P>ジョー！ 今ままでの借り、ここで返させてもらう！</P>
+
+<P>Talk ジョー</P>
+
+<P>憎しみのからは何も生まれない！ バルド！！</P>
+
+<P>End</P>
+
+<P>ClearEvent</P>
+
+<P>ClearEvent "攻撃 ジョー バルド"</P>
+
+<P>Exit</P>
+
+<P>攻撃 ジョー バルド:</P>
+
+<P>Talk ジョー</P>
+
+<P>バルド！ なぜだ、なぜそこまで戦いにこだわる！？</P>
+
+<P>Talk バルド</P>
+
+<P>戦いこそが私の生きがいなのだ！ 貴様を倒すことがな！</P>
+
+<P>End</P>
+
+<P>ClearEvent</P>
+
+<P>ClearEvent "攻撃 バルド ジョー"</P>
+
+<P>Exit</P>
+
+</BODY>
+</HTML>

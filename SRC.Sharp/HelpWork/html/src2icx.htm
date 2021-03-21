@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>再開イベント</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="再開イベント">
+</OBJECT>
+
+<P><A NAME=".2.n.q"></A></P>
+
+<P><B>再開イベント</B></P>
+
+<P>中断セーブデータから再開した際にマップの再描画を行うためのイベント</P>
+
+<P><B>書式</B></P>
+
+<P><B>再開</B>:</P>
+
+<P><B>解説</B></P>
+
+<P>中断セーブデータからプレイを再開した時に発生するイベントです。マップに直接画像を描画している場合、中断セーブデータからの再開時には描画した画像が消えてしまうため、<B>再開</B>イベントを使って再描画する必要があります。なお、<B>再開</B>イベント実行後には自動的に画面の描画が行われるため、<A HREF="src79lz.htm"><B>PaintPicture</B>コマンド</A>を使った後に<A HREF="src79m1.htm"><B>Redraw</B>コマンド</A>を使って画面を更新する必要はありません。</P>
+
+<P><B>例</B></P>
+
+<P>#プレイヤーが中断セーブデータからプレイを再開</P>
+
+<P>再開:</P>
+
+<P>#(5,8)の位置に宇宙要塞の画像を描画</P>
+
+<P>PaintPicture SpaceFortress.bmp (32 * (5 - 1)) (32 * (8 - 1)) 透過 背景</P>
+
+<P>#イベントを終了</P>
+
+<P>Exit</P>
+
+</BODY>
+</HTML>

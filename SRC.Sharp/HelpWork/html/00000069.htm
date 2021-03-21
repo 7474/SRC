@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>非戦闘員データ</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="非戦闘員データ">
+</OBJECT>
+
+<P><A NAME=".2.u.r"></A></P>
+
+<P><B>非戦闘員データ</B></P>
+
+<P>ユニットにパイロットとして乗り込んで戦うことのない非戦闘員キャラクターデータです。イベント時に非戦闘員キャラクターを<A HREF="00000315.htm"><B>Talk</B>コマンド</A>でしゃべらせたり、<A HREF="00000076.htm">ダイアログデータ</A>を使って複数の表情パターンがある戦闘メッセージを作るときに使います。non_pilot.txt に記述します。</P>
+
+<P><B>書式</B></P>
+
+<P>名称</P>
+
+<P>愛称, 顔グラフィックデータファイル名</P>
+
+<P>各行が長すぎる場合は途中で改行が可能です。改行する際は行の末尾に「_」を付けて下さい。</P>
+
+<P>「#」で始まる行はコメント行とみなされ、データ読み込みの際に存在しないものとして扱われます。また、「//」以降の文字列はコメント部分として無視されます。</P>
+
+<P><B>例</B></P>
+
+<P>銀狐小隊</P>
+
+<P>銀狐小隊, Hyp_SilverFoxSquadron.bmp</P>
+
+<P>レイ＝ウイットロック(通常)</P>
+
+<P>レイ, Hyp_RayWhitlock(N).bmp</P>
+
+<P>レイ(通常)</P>
+
+<P>レイ, Hyp_RayWhitlock(N).bmp</P>
+
+<P>マリス＝キャニオン(通常)</P>
+
+<P>マリス, Hyp_MarisCanyon(N).bmp</P>
+
+<P>マリス(通常)</P>
+
+<P>マリス, Hyp_MarisCanyon(N).bmp</P>
+
+<P>マリス＝キャニオン(通常)(ルージュ)</P>
+
+<P>マリス, Hyp_MarisCanyon(N)(Rouge).bmp</P>
+
+<P>マリス(通常)(ルージュ)</P>
+
+<P>マリス, Hyp_MarisCanyon(N)(Rouge).bmp</P>
+
+<P><B>項目解説</B></P>
+
+<P><B>(1)名称</B></P>
+
+<P>非戦闘員の名称を指定します。パイロットの表情パターンの場合は名称を</P>
+
+<P><B>パイロット名称(表情名)</B> または <B>愛称(表情名)</B></P>
+
+<P><B>例</B> 如月舞(笑顔)</P>
+
+<P>の形式で指定して下さい。これによりシステム側がパイロットの表情パターンであると認識することができます。</P>
+
+<P><B>(2)愛称</B></P>
+
+<P><B>(3)顔グラフィックデータファイル名</B></P>
+
+<P>パイロットデータとすべて同じです。</P>
+
+<P><IMG SRC="../images/bm0.gif" ALT="" BORDER=0>同じ名前のパイロットデータと非戦闘員データの両方が存在する場合、</P>
+
+<P>SRCは常にパイロットデータを優先して使用します。</P>
+
+</BODY>
+</HTML>

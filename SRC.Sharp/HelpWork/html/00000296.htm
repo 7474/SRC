@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>SetBulletコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="SetBulletコマンド">
+</OBJECT>
+
+<P><A NAME=".2.mdq"></A></P>
+
+<P><B>SetBulletコマンド</B></P>
+
+<P>ユニットの武器の残弾数を変更</P>
+
+<P><B>書式</B></P>
+
+<P><B>SetBullet</B> [<I>unit</I>] <I>weapon bullet</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit</I>残弾数を変更するユニットの<A HREF="src7ysq.htm">メインパイロット名</A>または<A HREF="src2hpr.htm">ユニットＩＤ</A>（省略可）</P>
+
+<P><I>weapon</I>武器名称または武器番号</P>
+
+<P><I>bullet</I>残弾数</P>
+
+<P><B>解説</B></P>
+
+<P><I>unit</I> の武器<I>weapon</I> の残弾数を <I>bullet</I>に変更します。<I>weapon</I> は武器名称、または武器番号で指定します。</P>
+
+<P>武器番号はそのユニットが持っている武器に対して1～武器総数で付けられた数字です。<A HREF="00000219.htm"><B>For</B>コマンド</A>等を使って武器の弾数を一括して変更したい場合に使います。アイテム等で武器が追加されることもあるので、武器番号はユニットデータ上の武器の並びとは必ずしも一致しないので注意して下さい。</P>
+
+<P><B>SetBullet</B>コマンドで「共」や「斉」属性を持つ武器の残弾数を変更しても他の武器やアビリティの残弾数や使用回数は変化しません。従って他の武器の残弾数やアビリティの使用回数を同時に変更しない限り、これらの属性による弾数及び使用回数の共有化は保たれないので注意して下さい。</P>
+
+<P><B>例</B></P>
+
+<P>#ロイド艦長の乗るユニットの１番目の武装の残弾数を3にする</P>
+
+<P>SetBullet ロイド艦長 1 3</P>
+
+<P>#ジェイの乗るユニットのホーミングミサイルの残弾数を5にする</P>
+
+<P>SetBullet ジェイ ホーミングミサイル 5</P>
+
+</BODY>
+</HTML>

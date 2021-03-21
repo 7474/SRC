@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>Switchコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Switchコマンド">
+</OBJECT>
+
+<P><A NAME="1kdtlbe"></A></P>
+
+<P><B>Switchコマンド</B></P>
+
+<P>条件式の値にあわせて対応するコマンドを実行します。</P>
+
+<P><B>書式</B></P>
+
+<P><B>Switch</B> <I>expression</I></P>
+
+<P><B>Case</B> <I>value</I></P>
+
+<P><I>commands</I></P>
+
+<P><B>Case</B> <I>value</I></P>
+
+<P><I>commands</I></P>
+
+<P>：</P>
+
+<P><B>EndSw</B></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>expression</I>条件式</P>
+
+<P><I>value</I>対応する値</P>
+
+<P><I>commands</I>実行するイベントコマンド。複数行指定可能</P>
+
+<P><B>解説</B></P>
+
+<P>条件式<I>expression</I> の値が<I>value</I> の値に等しい<B>Case</B>文以降の<I>commands</I> を実行します。一つの<B>Case</B>文に複数の <I>value</I> を設定することもできます。</P>
+
+<P><B>例</B> Case 1 2 3</P>
+
+<P><I>value</I> に Else を指定すると、その<B>Case</B>文は<I>expression</I> の値にかかわらず実行されるようになります。<B>Switch</B>文の最後に配置し、「どの<B>Case</B>文にも該当しなかった場合」の処理に使用してください。</P>
+
+<P><I>expression</I> の値に該当する<B>Case</B>文の検索は上から順に行われます。従って複数の<B>Case</B>文が条件を満たしている場合は最も上のものが優先されます。</P>
+
+<P><IMG SRC="../images/bm0.gif" ALT="" BORDER=0> イベントファイルが見やすいように<I>commands</I> にはインデントをつけるようにして下さい。</P>
+
+<P><B>例</B></P>
+
+<P>#配列にデータを設定</P>
+
+<P>感情[1] = 同</P>
+
+<P>感情[2] = 友</P>
+
+<P>感情[3] = 喜</P>
+
+<P>感情[4] = 愛</P>
+
+<P>感情[5] = 悲</P>
+
+<P>感情[6] = 冷</P>
+
+<P>感情[7] = 怒</P>
+
+<P>感情[8] = 悩</P>
+
+<P>感情[0] = 無</P>
+
+<P>Talk アリス</P>
+
+<P>ふふ、信じるも信じないも自由だけどね～</P>
+
+<P>End</P>
+
+<P>#5秒間の時間制限で選択肢を表示</P>
+
+<P>Question 50 感情選択</P>
+
+<P>同</P>
+
+<P>友</P>
+
+<P>喜</P>
+
+<P>愛</P>
+
+<P>悲</P>
+
+<P>冷</P>
+
+<P>怒</P>
+
+<P>悩</P>
+
+<P>End</P>
+
+<P>#選択肢に基づいて処理を行う</P>
+
+<P>Switch 感情[選択]</P>
+
+<P>Case 同 友</P>
+
+<P>Talk アリス</P>
+
+<P>ふ～ん、いい心がけね～</P>
+
+<P>End</P>
+
+<P>Case 喜</P>
+
+<P>Talk アリス</P>
+
+<P>あら、$(主人公愛称)って余裕ね。たのもしい～</P>
+
+<P>End</P>
+
+<P>Case 愛</P>
+
+<P>Talk アリス</P>
+
+<P>うふふ～ $(主人公愛称)は大丈夫よ。私が付いてるからね～</P>
+
+<P>End</P>
+
+<P>Case 冷 怒</P>
+
+<P>Talk アリス</P>
+
+<P>あれ、$(主人公愛称)って意外に気が短いのね。長生きできないよ～</P>
+
+<P>End</P>
+
+<P>Case Else</P>
+
+<P>Talk アリス</P>
+
+<P>どうしたの？</P>
+
+<P>End</P>
+
+<P>EndSw</P>
+
+</BODY>
+</HTML>

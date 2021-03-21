@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>LineReadコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="LineReadコマンド">
+</OBJECT>
+
+<P><A NAME="1kdtldf"></A></P>
+
+<P><B>LineReadコマンド</B></P>
+
+<P>ファイルから文字列を読みだす</P>
+
+<P><B>書式</B></P>
+
+<P><B>LineRead </B><I>handle var</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>handle</I>ファイルハンドル</P>
+
+<P><I>var</I>読み出した文字列を格納する変数</P>
+
+<P><B>解説</B></P>
+
+<P><A HREF="src79lv.htm"><B>Open</B>コマンド</A>で開いたファイルから一行分の文字列を読み出し、変数<I>var</I>に格納します。どのファイルから読みこむかを指定するため、<B>Open</B>コマンドで得たファイルハンドルを<I>handle</I>に指定します。</P>
+
+<P>ファイルの長さを超えてファイルを読み出すことはできません。ファイルの最後まで来たかどうかはEOF関数を使って確認してください。</P>
+
+<P>ファイルからデータを読み出した後は<A HREF="src79lw.htm"><B>Close</B>コマンド</A>を使い、ファイルを閉じてください。</P>
+
+<P><B>例</B></P>
+
+<P>#主人公に関する設定をセーブするサブルーチン「セーブパーソナルデータ」</P>
+
+<P>セーブパーソナルデータ:</P>
+
+<P>#ファイルハンドル用変数</P>
+
+<P>Local F</P>
+
+<P>#パーソナルデータ.txtを出力モードで開く</P>
+
+<P>Open パーソナルデータ.txt For 出力 As F</P>
+
+<P>#各変数の値をファイルに書き込み</P>
+
+<P>Print F 主人公苗字</P>
+
+<P>Print F 主人公名前</P>
+
+<P>Print F 主人公愛称</P>
+
+<P>#ファイルを閉じる</P>
+
+<P>Close F</P>
+
+<P>Talk システム</P>
+
+<P>パーソナルデータをパーソナルデータ.txtにセーブしました</P>
+
+<P>End</P>
+
+<P>#サブルーチンを終了</P>
+
+<P>Return</P>
+
+<P>#主人公に関する設定をロードするサブルーチン「ロードパーソナルデータ」</P>
+
+<P>ロードパーソナルデータ:</P>
+
+<P>#ファイルハンドル用変数</P>
+
+<P>Local F</P>
+
+<P>#パーソナルデータ.txtを入力モードで開く</P>
+
+<P>Open パーソナルデータ.txt For 入力 As F</P>
+
+<P>#各変数の値をファイルから読み込み</P>
+
+<P>LineRead F 主人公苗字</P>
+
+<P>LineRead F 主人公名前</P>
+
+<P>LineRead F 主人公愛称</P>
+
+<P>#ファイルを閉じる</P>
+
+<P>Close F</P>
+
+<P>Talk システム</P>
+
+<P>パーソナルデータをパーソナルデータ.txtからロードしました</P>
+
+<P>End</P>
+
+<P>#サブルーチンを終了</P>
+
+<P>Return</P>
+
+</BODY>
+</HTML>

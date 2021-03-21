@@ -1,0 +1,1868 @@
+<HTML>
+<!--Sitemap 1.0-->
+<OBJECT type="text/site properties">
+</OBJECT>
+<UL>
+	<LI><OBJECT type="text/sitemap">
+		<param name="Name" value="はじめに">
+		<param name="Local" value="html/00000001.htm">
+		</OBJECT>
+		<A HREF="html/00000001.htm">はじめに</A><BR>
+	<LI><OBJECT type="text/sitemap">
+		<param name="Name" value="お使いになる前に">
+		<param name="Local" value="">
+		</OBJECT>
+	<UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="動作環境">
+			<param name="Local" value="html/00000002.htm">
+			</OBJECT>
+			<A HREF="html/00000002.htm">動作環境</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="使用条件">
+			<param name="Local" value="html/00000003.htm">
+			</OBJECT>
+			<A HREF="html/00000003.htm">使用条件</A><BR>
+	</UL>
+	<LI><OBJECT type="text/sitemap">
+		<param name="Name" value="インストールとアンインストール">
+		<param name="Local" value="">
+		</OBJECT>
+	<UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="インストールの手順">
+			<param name="Local" value="html/00000004.htm">
+			</OBJECT>
+			<A HREF="html/00000004.htm">インストールの手順</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="ランタイムライブラリのインストール">
+			<param name="Local" value="html/00000005.htm">
+			</OBJECT>
+			<A HREF="html/00000005.htm">ランタイムライブラリのインストール</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="SRCのインストール">
+			<param name="Local" value="html/00000006.htm">
+			</OBJECT>
+			<A HREF="html/00000006.htm">SRCのインストール</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="サンプルシナリオをプレイする">
+			<param name="Local" value="html/00000007.htm">
+			</OBJECT>
+			<A HREF="html/00000007.htm">サンプルシナリオをプレイする</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="インストール時のエラーへの対処">
+			<param name="Local" value="html/00000008.htm">
+			</OBJECT>
+			<A HREF="html/00000008.htm">インストール時のエラーへの対処</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="他のシナリオをプレイする">
+			<param name="Local" value="html/00000009.htm">
+			</OBJECT>
+			<A HREF="html/00000009.htm">他のシナリオをプレイする</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="MIDIファイルのインストール">
+			<param name="Local" value="html/00000010.htm">
+			</OBJECT>
+			<A HREF="html/00000010.htm">MIDIファイルのインストール</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="更新インストール">
+			<param name="Local" value="html/00000011.htm">
+			</OBJECT>
+			<A HREF="html/00000011.htm">更新インストール</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="アンインストール">
+			<param name="Local" value="html/00000012.htm">
+			</OBJECT>
+			<A HREF="html/00000012.htm">アンインストール</A><BR>
+	</UL>
+	<LI><OBJECT type="text/sitemap">
+		<param name="Name" value="操作方法">
+		<param name="Local" value="">
+		</OBJECT>
+	<UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="SRCの起動">
+			<param name="Local" value="html/00000013.htm">
+			</OBJECT>
+			<A HREF="html/00000013.htm">SRCの起動</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="ゲームの流れ">
+			<param name="Local" value="html/00000014.htm">
+			</OBJECT>
+			<A HREF="html/00000014.htm">ゲームの流れ</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="基本操作">
+			<param name="Local" value="html/00000015.htm">
+			</OBJECT>
+			<A HREF="html/00000015.htm">基本操作</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="画面の説明">
+			<param name="Local" value="">
+			</OBJECT>
+		<UL>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="画面の説明">
+				<param name="Local" value="html/00000016.htm">
+				</OBJECT>
+				<A HREF="html/00000016.htm">画面の説明</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="マップウインドウ">
+				<param name="Local" value="html/00000017.htm">
+				</OBJECT>
+				<A HREF="html/00000017.htm">マップウインドウ</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ステータスウインドウ">
+				<param name="Local" value="html/00000018.htm">
+				</OBJECT>
+				<A HREF="html/00000018.htm">ステータスウインドウ</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="メッセージウインドウ">
+				<param name="Local" value="html/00000019.htm">
+				</OBJECT>
+				<A HREF="html/00000019.htm">メッセージウインドウ</A><BR>
+		</UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="ユニットコマンド">
+			<param name="Local" value="">
+			</OBJECT>
+		<UL>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="移動">
+				<param name="Local" value="html/00000020.htm">
+				</OBJECT>
+				<A HREF="html/00000020.htm">移動</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="攻撃">
+				<param name="Local" value="html/00000021.htm">
+				</OBJECT>
+				<A HREF="html/00000021.htm">攻撃</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="アビリティ">
+				<param name="Local" value="html/00000022.htm">
+				</OBJECT>
+				<A HREF="html/00000022.htm">アビリティ</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="会話">
+				<param name="Local" value="html/00000023.htm">
+				</OBJECT>
+				<A HREF="html/00000023.htm">会話</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="修理">
+				<param name="Local" value="html/00000024.htm">
+				</OBJECT>
+				<A HREF="html/00000024.htm">修理</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="補給">
+				<param name="Local" value="html/00000025.htm">
+				</OBJECT>
+				<A HREF="html/00000025.htm">補給</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="チャージ">
+				<param name="Local" value="html/00000026.htm">
+				</OBJECT>
+				<A HREF="html/00000026.htm">チャージ</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="スペシャルパワー">
+				<param name="Local" value="html/00000027.htm">
+				</OBJECT>
+				<A HREF="html/00000027.htm">スペシャルパワー</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="変形">
+				<param name="Local" value="html/00000028.htm">
+				</OBJECT>
+				<A HREF="html/00000028.htm">変形</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="分離">
+				<param name="Local" value="html/00000029.htm">
+				</OBJECT>
+				<A HREF="html/00000029.htm">分離</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ハイパーモード">
+				<param name="Local" value="html/00000030.htm">
+				</OBJECT>
+				<A HREF="html/00000030.htm">ハイパーモード</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="合体">
+				<param name="Local" value="html/00000031.htm">
+				</OBJECT>
+				<A HREF="html/00000031.htm">合体</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="地上">
+				<param name="Local" value="html/00000032.htm">
+				</OBJECT>
+				<A HREF="html/00000032.htm">地上</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="空中">
+				<param name="Local" value="html/00000033.htm">
+				</OBJECT>
+				<A HREF="html/00000033.htm">空中</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="地中">
+				<param name="Local" value="html/00000034.htm">
+				</OBJECT>
+				<A HREF="html/00000034.htm">地中</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="水上">
+				<param name="Local" value="html/00000035.htm">
+				</OBJECT>
+				<A HREF="html/00000035.htm">水上</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="水中">
+				<param name="Local" value="html/00000036.htm">
+				</OBJECT>
+				<A HREF="html/00000036.htm">水中</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="発進">
+				<param name="Local" value="html/00000037.htm">
+				</OBJECT>
+				<A HREF="html/00000037.htm">発進</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="アイテム">
+				<param name="Local" value="html/00000038.htm">
+				</OBJECT>
+				<A HREF="html/00000038.htm">アイテム</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="召喚解除">
+				<param name="Local" value="html/00000039.htm">
+				</OBJECT>
+				<A HREF="html/00000039.htm">召喚解除</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="命令">
+				<param name="Local" value="html/00000040.htm">
+				</OBJECT>
+				<A HREF="html/00000040.htm">命令</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="特殊能力一覧">
+				<param name="Local" value="html/00000041.htm">
+				</OBJECT>
+				<A HREF="html/00000041.htm">特殊能力一覧</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="武装一覧">
+				<param name="Local" value="html/00000042.htm">
+				</OBJECT>
+				<A HREF="html/00000042.htm">武装一覧</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="アビリティ一覧">
+				<param name="Local" value="html/00000043.htm">
+				</OBJECT>
+				<A HREF="html/00000043.htm">アビリティ一覧</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="待機">
+				<param name="Local" value="html/00000044.htm">
+				</OBJECT>
+				<A HREF="html/00000044.htm">待機</A><BR>
+		</UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="マップコマンド">
+			<param name="Local" value="">
+			</OBJECT>
+		<UL>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ターン終了">
+				<param name="Local" value="html/00000045.htm">
+				</OBJECT>
+				<A HREF="html/00000045.htm">ターン終了</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="中断">
+				<param name="Local" value="html/00000046.htm">
+				</OBJECT>
+				<A HREF="html/00000046.htm">中断</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="部隊表">
+				<param name="Local" value="html/00000047.htm">
+				</OBJECT>
+				<A HREF="html/00000047.htm">部隊表</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="スペシャルパワー検索">
+				<param name="Local" value="html/00000048.htm">
+				</OBJECT>
+				<A HREF="html/00000048.htm">スペシャルパワー検索</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="全体マップ">
+				<param name="Local" value="html/00000049.htm">
+				</OBJECT>
+				<A HREF="html/00000049.htm">全体マップ</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="作戦目的">
+				<param name="Local" value="html/00000050.htm">
+				</OBJECT>
+				<A HREF="html/00000050.htm">作戦目的</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="自動反撃モード">
+				<param name="Local" value="html/00000051.htm">
+				</OBJECT>
+				<A HREF="html/00000051.htm">自動反撃モード</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="設定変更">
+				<param name="Local" value="html/00000052.htm">
+				</OBJECT>
+				<A HREF="html/00000052.htm">設定変更</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="リスタート">
+				<param name="Local" value="html/00000053.htm">
+				</OBJECT>
+				<A HREF="html/00000053.htm">リスタート</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="クイックロード">
+				<param name="Local" value="html/00000054.htm">
+				</OBJECT>
+				<A HREF="html/00000054.htm">クイックロード</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="クイックセーブ">
+				<param name="Local" value="html/00000055.htm">
+				</OBJECT>
+				<A HREF="html/00000055.htm">クイックセーブ</A><BR>
+		</UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="インターミッションコマンド">
+			<param name="Local" value="">
+			</OBJECT>
+		<UL>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="SRCを終了">
+				<param name="Local" value="html/00000056.htm">
+				</OBJECT>
+				<A HREF="html/00000056.htm">SRCを終了</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="次のマップへ">
+				<param name="Local" value="html/00000057.htm">
+				</OBJECT>
+				<A HREF="html/00000057.htm">次のマップへ</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="データーセーブ">
+				<param name="Local" value="html/00000058.htm">
+				</OBJECT>
+				<A HREF="html/00000058.htm">データーセーブ</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="機体改造">
+				<param name="Local" value="html/00000059.htm">
+				</OBJECT>
+				<A HREF="html/00000059.htm">機体改造</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="乗り換え">
+				<param name="Local" value="html/00000060.htm">
+				</OBJECT>
+				<A HREF="html/00000060.htm">乗り換え</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="アイテム交換">
+				<param name="Local" value="html/00000061.htm">
+				</OBJECT>
+				<A HREF="html/00000061.htm">アイテム交換</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="換装">
+				<param name="Local" value="html/00000062.htm">
+				</OBJECT>
+				<A HREF="html/00000062.htm">換装</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="パイロットステータス">
+				<param name="Local" value="html/00000063.htm">
+				</OBJECT>
+				<A HREF="html/00000063.htm">パイロットステータス</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ユニットステータス">
+				<param name="Local" value="html/00000064.htm">
+				</OBJECT>
+				<A HREF="html/00000064.htm">ユニットステータス</A><BR>
+			</UL>
+		</UL>
+	<LI><OBJECT type="text/sitemap">
+		<param name="Name" value="データの作成">
+		<param name="Local" value="">
+		</OBJECT>
+	<UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="データを作成する前に">
+			<param name="Local" value="html/00000065.htm">
+			</OBJECT>
+			<A HREF="html/00000065.htm">データを作成する前に</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="データ形式">
+			<param name="Local" value="html/00000066.htm">
+			</OBJECT>
+			<A HREF="html/00000066.htm">データ形式</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="パイロットデータ">
+			<param name="Local" value="html/00000067.htm">
+			</OBJECT>
+			<A HREF="html/00000067.htm">パイロットデータ</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="パイロット用特殊能力">
+			<param name="Local" value="html/00000068.htm">
+			</OBJECT>
+			<A HREF="html/00000068.htm">パイロット用特殊能力</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="非戦闘員データ">
+			<param name="Local" value="html/00000069.htm">
+			</OBJECT>
+			<A HREF="html/00000069.htm">非戦闘員データ</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="ユニットデータ">
+			<param name="Local" value="html/00000070.htm">
+			</OBJECT>
+			<A HREF="html/00000070.htm">ユニットデータ</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="ユニット用特殊能力">
+			<param name="Local" value="html/00000071.htm">
+			</OBJECT>
+			<A HREF="html/00000071.htm">ユニット用特殊能力</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="武器属性">
+			<param name="Local" value="html/00000072.htm">
+			</OBJECT>
+			<A HREF="html/00000072.htm">武器属性</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="必要技能">
+			<param name="Local" value="html/00000073.htm">
+			</OBJECT>
+			<A HREF="html/00000073.htm">必要技能</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="アビリティ効果">
+			<param name="Local" value="html/00000074.htm">
+			</OBJECT>
+			<A HREF="html/00000074.htm">アビリティ効果</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="メッセージデータ">
+			<param name="Local" value="html/00000075.htm">
+			</OBJECT>
+			<A HREF="html/00000075.htm">メッセージデータ</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="ダイアログデータ">
+			<param name="Local" value="html/00000076.htm">
+			</OBJECT>
+			<A HREF="html/00000076.htm">ダイアログデータ</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="戦闘アニメデータ">
+			<param name="Local" value="html/00000077.htm">
+			</OBJECT>
+			<A HREF="html/00000077.htm">戦闘アニメデータ</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="特殊効果データ">
+			<param name="Local" value="html/00000078.htm">
+			</OBJECT>
+			<A HREF="html/00000078.htm">特殊効果データ</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="アイテムデータ">
+			<param name="Local" value="html/00000079.htm">
+			</OBJECT>
+			<A HREF="html/00000079.htm">アイテムデータ</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="スペシャルパワーデータ">
+			<param name="Local" value="html/00000080.htm">
+			</OBJECT>
+			<A HREF="html/00000080.htm">スペシャルパワーデータ</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="エリアスデータ">
+			<param name="Local" value="html/00000081.htm">
+			</OBJECT>
+			<A HREF="html/00000081.htm">エリアスデータ</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="地形データ">
+			<param name="Local" value="html/00000082.htm">
+			</OBJECT>
+			<A HREF="html/00000082.htm">地形データ</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="戦闘システム詳細">
+			<param name="Local" value="html/00000083.htm">
+			</OBJECT>
+			<A HREF="html/00000083.htm">戦闘システム詳細</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="バトルコンフィグデータ">
+			<param name="Local" value="html/00000084.htm">
+			</OBJECT>
+			<A HREF="html/00000084.htm">バトルコンフィグデータ</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="行動パターン">
+			<param name="Local" value="html/00000085.htm">
+			</OBJECT>
+			<A HREF="html/00000085.htm">行動パターン</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="パイロット用特殊能力リファレンス">
+			<param name="Local" value="">
+			</OBJECT>
+		<UL>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="防御・回避に関する特殊能力">
+				<param name="Local" value="html/00000086.htm">
+				</OBJECT>
+				<A HREF="html/00000086.htm">防御・回避に関する特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="攻撃に関する特殊能力">
+				<param name="Local" value="html/00000087.htm">
+				</OBJECT>
+				<A HREF="html/00000087.htm">攻撃に関する特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="特異資質に関する特殊能力">
+				<param name="Local" value="html/00000088.htm">
+				</OBJECT>
+				<A HREF="html/00000088.htm">特異資質に関する特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="瀕死時に発動する特殊能力">
+				<param name="Local" value="html/00000089.htm">
+				</OBJECT>
+				<A HREF="html/00000089.htm">瀕死時に発動する特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="援護行動に関する特殊能力">
+				<param name="Local" value="html/00000090.htm">
+				</OBJECT>
+				<A HREF="html/00000090.htm">援護行動に関する特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="サポート系特殊能力">
+				<param name="Local" value="html/00000091.htm">
+				</OBJECT>
+				<A HREF="html/00000091.htm">サポート系特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="パイロット成長に関する特殊能力">
+				<param name="Local" value="html/00000092.htm">
+				</OBJECT>
+				<A HREF="html/00000092.htm">パイロット成長に関する特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="スペシャルパワーに関する特殊能力">
+				<param name="Local" value="html/00000093.htm">
+				</OBJECT>
+				<A HREF="html/00000093.htm">スペシャルパワーに関する特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="気力に関する特殊能力">
+				<param name="Local" value="html/00000094.htm">
+				</OBJECT>
+				<A HREF="html/00000094.htm">気力に関する特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="その他の特殊能力">
+				<param name="Local" value="html/00000095.htm">
+				</OBJECT>
+				<A HREF="html/00000095.htm">その他の特殊能力</A><BR>
+		</UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="ユニット用特殊能力リファレンス">
+			<param name="Local" value="">
+			</OBJECT>
+		<UL>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="防御特性に関する特殊能力">
+				<param name="Local" value="html/00000096.htm">
+				</OBJECT>
+				<A HREF="html/00000096.htm">防御特性に関する特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="防御系特殊能力">
+				<param name="Local" value="html/00000097.htm">
+				</OBJECT>
+				<A HREF="html/00000097.htm">防御系特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="回避系特殊能力">
+				<param name="Local" value="html/00000098.htm">
+				</OBJECT>
+				<A HREF="html/00000098.htm">回避系特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="回復系特殊能力">
+				<param name="Local" value="html/00000099.htm">
+				</OBJECT>
+				<A HREF="html/00000099.htm">回復系特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="コンバータ系特殊能力">
+				<param name="Local" value="html/00000100.htm">
+				</OBJECT>
+				<A HREF="html/00000100.htm">コンバータ系特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="移動系特殊能力">
+				<param name="Local" value="html/00000101.htm">
+				</OBJECT>
+				<A HREF="html/00000101.htm">移動系特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="変形系特殊能力">
+				<param name="Local" value="html/00000102.htm">
+				</OBJECT>
+				<A HREF="html/00000102.htm">変形系特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="パイロット関連特殊能力">
+				<param name="Local" value="html/00000103.htm">
+				</OBJECT>
+				<A HREF="html/00000103.htm">パイロット関連特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="アイテム関連特殊能力">
+				<param name="Local" value="html/00000104.htm">
+				</OBJECT>
+				<A HREF="html/00000104.htm">アイテム関連特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="武器関連特殊能力">
+				<param name="Local" value="html/00000105.htm">
+				</OBJECT>
+				<A HREF="html/00000105.htm">武器関連特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ＢＧＭ関連特殊能力">
+				<param name="Local" value="html/00000106.htm">
+				</OBJECT>
+				<A HREF="html/00000106.htm">ＢＧＭ関連特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ユニット改造関連特殊能力">
+				<param name="Local" value="html/00000107.htm">
+				</OBJECT>
+				<A HREF="html/00000107.htm">ユニット改造関連特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ユニット強化関連特殊能力">
+				<param name="Local" value="html/00000108.htm">
+				</OBJECT>
+				<A HREF="html/00000108.htm">ユニット強化関連特殊能力</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="その他の特殊能力">
+				<param name="Local" value="html/00000095.htm">
+				</OBJECT>
+				<A HREF="html/00000095.htm">その他の特殊能力</A><BR>
+		</UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="武器属性リファレンス">
+			<param name="Local" value="">
+			</OBJECT>
+		<UL>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ダメージ算出方法に関する属性">
+				<param name="Local" value="html/00000109.htm">
+				</OBJECT>
+				<A HREF="html/00000109.htm">ダメージ算出方法に関する属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="使用可能時に関する属性">
+				<param name="Local" value="html/00000110.htm">
+				</OBJECT>
+				<A HREF="html/00000110.htm">使用可能時に関する属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="攻撃種類に関する属性">
+				<param name="Local" value="html/00000111.htm">
+				</OBJECT>
+				<A HREF="html/00000111.htm">攻撃種類に関する属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="攻撃の実行手順に関する属性">
+				<param name="Local" value="html/00000112.htm">
+				</OBJECT>
+				<A HREF="html/00000112.htm">攻撃の実行手順に関する属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="マップ攻撃に関する属性">
+				<param name="Local" value="html/00000113.htm">
+				</OBJECT>
+				<A HREF="html/00000113.htm">マップ攻撃に関する属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="パイロット能力と連動する属性">
+				<param name="Local" value="html/00000114.htm">
+				</OBJECT>
+				<A HREF="html/00000114.htm">パイロット能力と連動する属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="攻撃対象を特定する属性">
+				<param name="Local" value="html/00000115.htm">
+				</OBJECT>
+				<A HREF="html/00000115.htm">攻撃対象を特定する属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="使用時のペナルティに関する属性">
+				<param name="Local" value="html/00000116.htm">
+				</OBJECT>
+				<A HREF="html/00000116.htm">使用時のペナルティに関する属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ＥＮ消費量に関する属性">
+				<param name="Local" value="html/00000117.htm">
+				</OBJECT>
+				<A HREF="html/00000117.htm">ＥＮ消費量に関する属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="弾数に関する属性">
+				<param name="Local" value="html/00000118.htm">
+				</OBJECT>
+				<A HREF="html/00000118.htm">弾数に関する属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="チャージ攻撃に関する属性">
+				<param name="Local" value="html/00000119.htm">
+				</OBJECT>
+				<A HREF="html/00000119.htm">チャージ攻撃に関する属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="合体技に関する属性">
+				<param name="Local" value="html/00000120.htm">
+				</OBJECT>
+				<A HREF="html/00000120.htm">合体技に関する属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="変形技に関する属性">
+				<param name="Local" value="html/00000121.htm">
+				</OBJECT>
+				<A HREF="html/00000121.htm">変形技に関する属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="特殊効果攻撃属性">
+				<param name="Local" value="html/00000122.htm">
+				</OBJECT>
+				<A HREF="html/00000122.htm">特殊効果攻撃属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="防御能力を無効化する属性">
+				<param name="Local" value="html/00000123.htm">
+				</OBJECT>
+				<A HREF="html/00000123.htm">防御能力を無効化する属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="吸収攻撃に関する属性">
+				<param name="Local" value="html/00000124.htm">
+				</OBJECT>
+				<A HREF="html/00000124.htm">吸収攻撃に関する属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="攻撃力変動に関する属性">
+				<param name="Local" value="html/00000125.htm">
+				</OBJECT>
+				<A HREF="html/00000125.htm">攻撃力変動に関する属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="命中率変動に関する属性">
+				<param name="Local" value="html/00000126.htm">
+				</OBJECT>
+				<A HREF="html/00000126.htm">命中率変動に関する属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="クリティカル率変動に関する属性">
+				<param name="Local" value="html/00000127.htm">
+				</OBJECT>
+				<A HREF="html/00000127.htm">クリティカル率変動に関する属性</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="クリティカル時のダメージ増加量に関する属性">
+				<param name="Local" value="html/00000128.htm">
+				</OBJECT>
+				<A HREF="html/00000128.htm">クリティカル時のダメージ増加量に関する属性</A><BR>
+			</UL>
+		</UL>
+	<LI><OBJECT type="text/sitemap">
+		<param name="Name" value="シナリオの作成">
+		<param name="Local" value="">
+		</OBJECT>
+	<UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="シナリオを作成する前に">
+			<param name="Local" value="html/00000129.htm">
+			</OBJECT>
+			<A HREF="html/00000129.htm">シナリオを作成する前に</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="シナリオの構成">
+			<param name="Local" value="html/00000130.htm">
+			</OBJECT>
+			<A HREF="html/00000130.htm">シナリオの構成</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="イベントデータ">
+			<param name="Local" value="html/00000131.htm">
+			</OBJECT>
+			<A HREF="html/00000131.htm">イベントデータ</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="イベントラベル">
+			<param name="Local" value="html/00000132.htm">
+			</OBJECT>
+			<A HREF="html/00000132.htm">イベントラベル</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="イベントコマンド">
+			<param name="Local" value="html/00000133.htm">
+			</OBJECT>
+			<A HREF="html/00000133.htm">イベントコマンド</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="式">
+			<param name="Local" value="html/00000134.htm">
+			</OBJECT>
+			<A HREF="html/00000134.htm">式</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="変数">
+			<param name="Local" value="html/00000135.htm">
+			</OBJECT>
+			<A HREF="html/00000135.htm">変数</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="関数">
+			<param name="Local" value="html/00000136.htm">
+			</OBJECT>
+			<A HREF="html/00000136.htm">関数</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Systemフォルダ">
+			<param name="Local" value="html/00000137.htm">
+			</OBJECT>
+			<A HREF="html/00000137.htm">Systemフォルダ</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="マップデータ">
+			<param name="Local" value="html/00000138.htm">
+			</OBJECT>
+			<A HREF="html/00000138.htm">マップデータ</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="イベントラベルリファレンス">
+			<param name="Local" value="">
+			</OBJECT>
+		<UL>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="プロローグイベント">
+				<param name="Local" value="html/00000139.htm">
+				</OBJECT>
+				<A HREF="html/00000139.htm">プロローグイベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="スタートイベント">
+				<param name="Local" value="html/00000140.htm">
+				</OBJECT>
+				<A HREF="html/00000140.htm">スタートイベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="エピローグイベント">
+				<param name="Local" value="html/00000141.htm">
+				</OBJECT>
+				<A HREF="html/00000141.htm">エピローグイベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ターンイベント">
+				<param name="Local" value="html/00000142.htm">
+				</OBJECT>
+				<A HREF="html/00000142.htm">ターンイベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="損傷率イベント">
+				<param name="Local" value="html/00000143.htm">
+				</OBJECT>
+				<A HREF="html/00000143.htm">損傷率イベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="破壊イベント">
+				<param name="Local" value="html/00000144.htm">
+				</OBJECT>
+				<A HREF="html/00000144.htm">破壊イベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="全滅イベント">
+				<param name="Local" value="html/00000145.htm">
+				</OBJECT>
+				<A HREF="html/00000145.htm">全滅イベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="攻撃イベント">
+				<param name="Local" value="html/00000146.htm">
+				</OBJECT>
+				<A HREF="html/00000146.htm">攻撃イベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="攻撃後イベント">
+				<param name="Local" value="html/00000147.htm">
+				</OBJECT>
+				<A HREF="html/00000147.htm">攻撃後イベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="会話イベント">
+				<param name="Local" value="html/00000148.htm">
+				</OBJECT>
+				<A HREF="html/00000148.htm">会話イベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="接触イベント">
+				<param name="Local" value="html/00000149.htm">
+				</OBJECT>
+				<A HREF="html/00000149.htm">接触イベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="進入イベント">
+				<param name="Local" value="html/00000150.htm">
+				</OBJECT>
+				<A HREF="html/00000150.htm">進入イベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="脱出イベント">
+				<param name="Local" value="html/00000151.htm">
+				</OBJECT>
+				<A HREF="html/00000151.htm">脱出イベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="収納イベント">
+				<param name="Local" value="html/00000152.htm">
+				</OBJECT>
+				<A HREF="html/00000152.htm">収納イベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="使用イベント">
+				<param name="Local" value="html/00000153.htm">
+				</OBJECT>
+				<A HREF="html/00000153.htm">使用イベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="使用後イベント">
+				<param name="Local" value="html/00000154.htm">
+				</OBJECT>
+				<A HREF="html/00000154.htm">使用後イベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="変形イベント">
+				<param name="Local" value="html/00000155.htm">
+				</OBJECT>
+				<A HREF="html/00000155.htm">変形イベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="合体イベント">
+				<param name="Local" value="html/00000156.htm">
+				</OBJECT>
+				<A HREF="html/00000156.htm">合体イベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="分離イベント">
+				<param name="Local" value="html/00000157.htm">
+				</OBJECT>
+				<A HREF="html/00000157.htm">分離イベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="行動終了イベント">
+				<param name="Local" value="html/00000158.htm">
+				</OBJECT>
+				<A HREF="html/00000158.htm">行動終了イベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="レベルアップイベント">
+				<param name="Local" value="html/00000159.htm">
+				</OBJECT>
+				<A HREF="html/00000159.htm">レベルアップイベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="勝利条件イベント">
+				<param name="Local" value="html/00000160.htm">
+				</OBJECT>
+				<A HREF="html/00000160.htm">勝利条件イベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="再開イベント">
+				<param name="Local" value="html/00000161.htm">
+				</OBJECT>
+				<A HREF="html/00000161.htm">再開イベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="マップコマンドイベント">
+				<param name="Local" value="html/00000162.htm">
+				</OBJECT>
+				<A HREF="html/00000162.htm">マップコマンドイベント</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ユニットコマンドイベント">
+				<param name="Local" value="html/00000163.htm">
+				</OBJECT>
+				<A HREF="html/00000163.htm">ユニットコマンドイベント</A><BR>
+		</UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="イベントコマンドリファレンス">
+			<param name="Local" value="">
+			</OBJECT>
+		<UL>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Arcコマンド">
+				<param name="Local" value="html/00000164.htm">
+				</OBJECT>
+				<A HREF="html/00000164.htm">Arcコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Arrayコマンド">
+				<param name="Local" value="html/00000165.htm">
+				</OBJECT>
+				<A HREF="html/00000165.htm">Arrayコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Askコマンド">
+				<param name="Local" value="html/00000166.htm">
+				</OBJECT>
+				<A HREF="html/00000166.htm">Askコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Attackコマンド">
+				<param name="Local" value="html/00000167.htm">
+				</OBJECT>
+				<A HREF="html/00000167.htm">Attackコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="AutoTalkコマンド">
+				<param name="Local" value="html/00000168.htm">
+				</OBJECT>
+				<A HREF="html/00000168.htm">AutoTalkコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="BossRankコマンド">
+				<param name="Local" value="html/00000169.htm">
+				</OBJECT>
+				<A HREF="html/00000169.htm">BossRankコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Breakコマンド">
+				<param name="Local" value="html/00000170.htm">
+				</OBJECT>
+				<A HREF="html/00000170.htm">Breakコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Callコマンド">
+				<param name="Local" value="html/00000171.htm">
+				</OBJECT>
+				<A HREF="html/00000171.htm">Callコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Cancelコマンド">
+				<param name="Local" value="html/00000172.htm">
+				</OBJECT>
+				<A HREF="html/00000172.htm">Cancelコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Centerコマンド">
+				<param name="Local" value="html/00000173.htm">
+				</OBJECT>
+				<A HREF="html/00000173.htm">Centerコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ChangeAreaコマンド">
+				<param name="Local" value="html/00000174.htm">
+				</OBJECT>
+				<A HREF="html/00000174.htm">ChangeAreaコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ChangeMapコマンド">
+				<param name="Local" value="html/00000175.htm">
+				</OBJECT>
+				<A HREF="html/00000175.htm">ChangeMapコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ChangeModeコマンド">
+				<param name="Local" value="html/00000176.htm">
+				</OBJECT>
+				<A HREF="html/00000176.htm">ChangeModeコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ChangePartyコマンド">
+				<param name="Local" value="html/00000177.htm">
+				</OBJECT>
+				<A HREF="html/00000177.htm">ChangePartyコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ChangeTerrainコマンド">
+				<param name="Local" value="html/00000178.htm">
+				</OBJECT>
+				<A HREF="html/00000178.htm">ChangeTerrainコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ChangeUnitBitmapコマンド">
+				<param name="Local" value="html/00000179.htm">
+				</OBJECT>
+				<A HREF="html/00000179.htm">ChangeUnitBitmapコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Chargeコマンド">
+				<param name="Local" value="html/00000180.htm">
+				</OBJECT>
+				<A HREF="html/00000180.htm">Chargeコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Circleコマンド">
+				<param name="Local" value="html/00000181.htm">
+				</OBJECT>
+				<A HREF="html/00000181.htm">Circleコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ClearEventコマンド">
+				<param name="Local" value="html/00000182.htm">
+				</OBJECT>
+				<A HREF="html/00000182.htm">ClearEventコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ClearFlashコマンド">
+				<param name="Local" value="html/00000183.htm">
+				</OBJECT>
+				<A HREF="html/00000183.htm">ClearFlashコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ClearObjコマンド">
+				<param name="Local" value="html/00000184.htm">
+				</OBJECT>
+				<A HREF="html/00000184.htm">ClearObjコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ClearPictureコマンド">
+				<param name="Local" value="html/00000185.htm">
+				</OBJECT>
+				<A HREF="html/00000185.htm">ClearPictureコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ClearSkillコマンド">
+				<param name="Local" value="html/00000186.htm">
+				</OBJECT>
+				<A HREF="html/00000186.htm">ClearSkillコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ClearSpecialPowerコマンド">
+				<param name="Local" value="html/00000187.htm">
+				</OBJECT>
+				<A HREF="html/00000187.htm">ClearSpecialPowerコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ClearStatusコマンド">
+				<param name="Local" value="html/00000188.htm">
+				</OBJECT>
+				<A HREF="html/00000188.htm">ClearStatusコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Closeコマンド">
+				<param name="Local" value="html/00000189.htm">
+				</OBJECT>
+				<A HREF="html/00000189.htm">Closeコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Clsコマンド">
+				<param name="Local" value="html/00000190.htm">
+				</OBJECT>
+				<A HREF="html/00000190.htm">Clsコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Colorコマンド">
+				<param name="Local" value="html/00000191.htm">
+				</OBJECT>
+				<A HREF="html/00000191.htm">Colorコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ColorFilterコマンド">
+				<param name="Local" value="html/00000192.htm">
+				</OBJECT>
+				<A HREF="html/00000192.htm">ColorFilterコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Combineコマンド">
+				<param name="Local" value="html/00000193.htm">
+				</OBJECT>
+				<A HREF="html/00000193.htm">Combineコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Confirmコマンド">
+				<param name="Local" value="html/00000194.htm">
+				</OBJECT>
+				<A HREF="html/00000194.htm">Confirmコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Continueコマンド">
+				<param name="Local" value="html/00000195.htm">
+				</OBJECT>
+				<A HREF="html/00000195.htm">Continueコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="CopyArrayコマンド">
+				<param name="Local" value="html/00000196.htm">
+				</OBJECT>
+				<A HREF="html/00000196.htm">CopyArrayコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="CopyFileコマンド">
+				<param name="Local" value="html/00000197.htm">
+				</OBJECT>
+				<A HREF="html/00000197.htm">CopyFileコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Createコマンド">
+				<param name="Local" value="html/00000198.htm">
+				</OBJECT>
+				<A HREF="html/00000198.htm">Createコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="CreateFolderコマンド">
+				<param name="Local" value="html/00000199.htm">
+				</OBJECT>
+				<A HREF="html/00000199.htm">CreateFolderコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Destroyコマンド">
+				<param name="Local" value="html/00000200.htm">
+				</OBJECT>
+				<A HREF="html/00000200.htm">Destroyコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Disableコマンド">
+				<param name="Local" value="html/00000201.htm">
+				</OBJECT>
+				<A HREF="html/00000201.htm">Disableコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Doコマンド">
+				<param name="Local" value="html/00000202.htm">
+				</OBJECT>
+				<A HREF="html/00000202.htm">Doコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="DrawOptionコマンド">
+				<param name="Local" value="html/00000203.htm">
+				</OBJECT>
+				<A HREF="html/00000203.htm">DrawOptionコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="DrawWidthコマンド">
+				<param name="Local" value="html/00000204.htm">
+				</OBJECT>
+				<A HREF="html/00000204.htm">DrawWidthコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Enableコマンド">
+				<param name="Local" value="html/00000205.htm">
+				</OBJECT>
+				<A HREF="html/00000205.htm">Enableコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Equipコマンド">
+				<param name="Local" value="html/00000206.htm">
+				</OBJECT>
+				<A HREF="html/00000206.htm">Equipコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Escapeコマンド">
+				<param name="Local" value="html/00000207.htm">
+				</OBJECT>
+				<A HREF="html/00000207.htm">Escapeコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ExchangeItemコマンド">
+				<param name="Local" value="html/00000208.htm">
+				</OBJECT>
+				<A HREF="html/00000208.htm">ExchangeItemコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Exitコマンド">
+				<param name="Local" value="html/00000209.htm">
+				</OBJECT>
+				<A HREF="html/00000209.htm">Exitコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Explodeコマンド">
+				<param name="Local" value="html/00000210.htm">
+				</OBJECT>
+				<A HREF="html/00000210.htm">Explodeコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ExpUpコマンド">
+				<param name="Local" value="html/00000211.htm">
+				</OBJECT>
+				<A HREF="html/00000211.htm">ExpUpコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="FadeInコマンド">
+				<param name="Local" value="html/00000212.htm">
+				</OBJECT>
+				<A HREF="html/00000212.htm">FadeInコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="FadeOutコマンド">
+				<param name="Local" value="html/00000213.htm">
+				</OBJECT>
+				<A HREF="html/00000213.htm">FadeOutコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="FillColorコマンド">
+				<param name="Local" value="html/00000214.htm">
+				</OBJECT>
+				<A HREF="html/00000214.htm">FillColorコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="FillStyleコマンド">
+				<param name="Local" value="html/00000215.htm">
+				</OBJECT>
+				<A HREF="html/00000215.htm">FillStyleコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Finishコマンド">
+				<param name="Local" value="html/00000216.htm">
+				</OBJECT>
+				<A HREF="html/00000216.htm">Finishコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Fixコマンド">
+				<param name="Local" value="html/00000217.htm">
+				</OBJECT>
+				<A HREF="html/00000217.htm">Fixコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Fontコマンド">
+				<param name="Local" value="html/00000218.htm">
+				</OBJECT>
+				<A HREF="html/00000218.htm">Fontコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Forコマンド">
+				<param name="Local" value="html/00000219.htm">
+				</OBJECT>
+				<A HREF="html/00000219.htm">Forコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ForEachコマンド">
+				<param name="Local" value="html/00000220.htm">
+				</OBJECT>
+				<A HREF="html/00000220.htm">ForEachコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Forgetコマンド">
+				<param name="Local" value="html/00000221.htm">
+				</OBJECT>
+				<A HREF="html/00000221.htm">Forgetコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="FreeMemoryコマンド">
+				<param name="Local" value="html/00000222.htm">
+				</OBJECT>
+				<A HREF="html/00000222.htm">FreeMemoryコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="GameClearコマンド">
+				<param name="Local" value="html/00000223.htm">
+				</OBJECT>
+				<A HREF="html/00000223.htm">GameClearコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="GameOverコマンド">
+				<param name="Local" value="html/00000224.htm">
+				</OBJECT>
+				<A HREF="html/00000224.htm">GameOverコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="GetOffコマンド">
+				<param name="Local" value="html/00000225.htm">
+				</OBJECT>
+				<A HREF="html/00000225.htm">GetOffコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Globalコマンド">
+				<param name="Local" value="html/00000226.htm">
+				</OBJECT>
+				<A HREF="html/00000226.htm">Globalコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="GoToコマンド">
+				<param name="Local" value="html/00000227.htm">
+				</OBJECT>
+				<A HREF="html/00000227.htm">GoToコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Hideコマンド">
+				<param name="Local" value="html/00000228.htm">
+				</OBJECT>
+				<A HREF="html/00000228.htm">Hideコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="HotPointコマンド">
+				<param name="Local" value="html/00000229.htm">
+				</OBJECT>
+				<A HREF="html/00000229.htm">HotPointコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Ifコマンド">
+				<param name="Local" value="html/00000230.htm">
+				</OBJECT>
+				<A HREF="html/00000230.htm">Ifコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Incrコマンド">
+				<param name="Local" value="html/00000231.htm">
+				</OBJECT>
+				<A HREF="html/00000231.htm">Incrコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="IncreaseMoraleコマンド">
+				<param name="Local" value="html/00000232.htm">
+				</OBJECT>
+				<A HREF="html/00000232.htm">IncreaseMoraleコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Inputコマンド">
+				<param name="Local" value="html/00000233.htm">
+				</OBJECT>
+				<A HREF="html/00000233.htm">Inputコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="IntermissionCommandコマンド">
+				<param name="Local" value="html/00000234.htm">
+				</OBJECT>
+				<A HREF="html/00000234.htm">IntermissionCommandコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Itemコマンド">
+				<param name="Local" value="html/00000235.htm">
+				</OBJECT>
+				<A HREF="html/00000235.htm">Itemコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Joinコマンド">
+				<param name="Local" value="html/00000236.htm">
+				</OBJECT>
+				<A HREF="html/00000236.htm">Joinコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="KeepBGMコマンド">
+				<param name="Local" value="html/00000237.htm">
+				</OBJECT>
+				<A HREF="html/00000237.htm">KeepBGMコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Landコマンド">
+				<param name="Local" value="html/00000238.htm">
+				</OBJECT>
+				<A HREF="html/00000238.htm">Landコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Launchコマンド">
+				<param name="Local" value="html/00000239.htm">
+				</OBJECT>
+				<A HREF="html/00000239.htm">Launchコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Leaveコマンド">
+				<param name="Local" value="html/00000240.htm">
+				</OBJECT>
+				<A HREF="html/00000240.htm">Leaveコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="LevelUpコマンド">
+				<param name="Local" value="html/00000241.htm">
+				</OBJECT>
+				<A HREF="html/00000241.htm">LevelUpコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Lineコマンド">
+				<param name="Local" value="html/00000242.htm">
+				</OBJECT>
+				<A HREF="html/00000242.htm">Lineコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="LineReadコマンド">
+				<param name="Local" value="html/00000243.htm">
+				</OBJECT>
+				<A HREF="html/00000243.htm">LineReadコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Loadコマンド">
+				<param name="Local" value="html/00000244.htm">
+				</OBJECT>
+				<A HREF="html/00000244.htm">Loadコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Localコマンド">
+				<param name="Local" value="html/00000245.htm">
+				</OBJECT>
+				<A HREF="html/00000245.htm">Localコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="MakePilotListコマンド">
+				<param name="Local" value="html/00000246.htm">
+				</OBJECT>
+				<A HREF="html/00000246.htm">MakePilotListコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="MakeUnitListコマンド">
+				<param name="Local" value="html/00000247.htm">
+				</OBJECT>
+				<A HREF="html/00000247.htm">MakeUnitListコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="MapAbilityコマンド">
+				<param name="Local" value="html/00000248.htm">
+				</OBJECT>
+				<A HREF="html/00000248.htm">MapAbilityコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="MapAttackコマンド">
+				<param name="Local" value="html/00000249.htm">
+				</OBJECT>
+				<A HREF="html/00000249.htm">MapAttackコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Moneyコマンド">
+				<param name="Local" value="html/00000250.htm">
+				</OBJECT>
+				<A HREF="html/00000250.htm">Moneyコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Monotoneコマンド">
+				<param name="Local" value="html/00000251.htm">
+				</OBJECT>
+				<A HREF="html/00000251.htm">Monotoneコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Moveコマンド">
+				<param name="Local" value="html/00000252.htm">
+				</OBJECT>
+				<A HREF="html/00000252.htm">Moveコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Nightコマンド">
+				<param name="Local" value="html/00000253.htm">
+				</OBJECT>
+				<A HREF="html/00000253.htm">Nightコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Noonコマンド">
+				<param name="Local" value="html/00000254.htm">
+				</OBJECT>
+				<A HREF="html/00000254.htm">Noonコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Openコマンド">
+				<param name="Local" value="html/00000255.htm">
+				</OBJECT>
+				<A HREF="html/00000255.htm">Openコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Optionコマンド">
+				<param name="Local" value="html/00000256.htm">
+				</OBJECT>
+				<A HREF="html/00000256.htm">Optionコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Organizeコマンド">
+				<param name="Local" value="html/00000257.htm">
+				</OBJECT>
+				<A HREF="html/00000257.htm">Organizeコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Ovalコマンド">
+				<param name="Local" value="html/00000258.htm">
+				</OBJECT>
+				<A HREF="html/00000258.htm">Ovalコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="PaintPictureコマンド">
+				<param name="Local" value="html/00000259.htm">
+				</OBJECT>
+				<A HREF="html/00000259.htm">PaintPictureコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="PaintStringコマンド">
+				<param name="Local" value="html/00000260.htm">
+				</OBJECT>
+				<A HREF="html/00000260.htm">PaintStringコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Pilotコマンド">
+				<param name="Local" value="html/00000261.htm">
+				</OBJECT>
+				<A HREF="html/00000261.htm">Pilotコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="PlayFlashコマンド">
+				<param name="Local" value="html/00000262.htm">
+				</OBJECT>
+				<A HREF="html/00000262.htm">PlayFlashコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="PlayMIDIコマンド">
+				<param name="Local" value="html/00000263.htm">
+				</OBJECT>
+				<A HREF="html/00000263.htm">PlayMIDIコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="PlaySoundコマンド">
+				<param name="Local" value="html/00000264.htm">
+				</OBJECT>
+				<A HREF="html/00000264.htm">PlaySoundコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Polygonコマンド">
+				<param name="Local" value="html/00000265.htm">
+				</OBJECT>
+				<A HREF="html/00000265.htm">Polygonコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Printコマンド">
+				<param name="Local" value="html/00000266.htm">
+				</OBJECT>
+				<A HREF="html/00000266.htm">Printコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="PSetコマンド">
+				<param name="Local" value="html/00000267.htm">
+				</OBJECT>
+				<A HREF="html/00000267.htm">PSetコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Questionコマンド">
+				<param name="Local" value="html/00000268.htm">
+				</OBJECT>
+				<A HREF="html/00000268.htm">Questionコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Quitコマンド">
+				<param name="Local" value="html/00000269.htm">
+				</OBJECT>
+				<A HREF="html/00000269.htm">Quitコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="QuickLoadコマンド">
+				<param name="Local" value="html/00000270.htm">
+				</OBJECT>
+				<A HREF="html/00000270.htm">QuickLoadコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="RankUpコマンド">
+				<param name="Local" value="html/00000271.htm">
+				</OBJECT>
+				<A HREF="html/00000271.htm">RankUpコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="RecoverENコマンド">
+				<param name="Local" value="html/00000272.htm">
+				</OBJECT>
+				<A HREF="html/00000272.htm">RecoverENコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="RecoverHPコマンド">
+				<param name="Local" value="html/00000273.htm">
+				</OBJECT>
+				<A HREF="html/00000273.htm">RecoverHPコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="RecoverPlanaコマンド">
+				<param name="Local" value="html/00000274.htm">
+				</OBJECT>
+				<A HREF="html/00000274.htm">RecoverPlanaコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="RecoverSPコマンド">
+				<param name="Local" value="html/00000275.htm">
+				</OBJECT>
+				<A HREF="html/00000275.htm">RecoverSPコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Redrawコマンド">
+				<param name="Local" value="html/00000276.htm">
+				</OBJECT>
+				<A HREF="html/00000276.htm">Redrawコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Refreshコマンド">
+				<param name="Local" value="html/00000277.htm">
+				</OBJECT>
+				<A HREF="html/00000277.htm">Refreshコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Releaseコマンド">
+				<param name="Local" value="html/00000278.htm">
+				</OBJECT>
+				<A HREF="html/00000278.htm">Releaseコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="RemoveFileコマンド">
+				<param name="Local" value="html/00000279.htm">
+				</OBJECT>
+				<A HREF="html/00000279.htm">RemoveFileコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="RemoveFolderコマンド">
+				<param name="Local" value="html/00000280.htm">
+				</OBJECT>
+				<A HREF="html/00000280.htm">RemoveFolderコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="RemoveItemコマンド">
+				<param name="Local" value="html/00000281.htm">
+				</OBJECT>
+				<A HREF="html/00000281.htm">RemoveItemコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="RemovePilotコマンド">
+				<param name="Local" value="html/00000282.htm">
+				</OBJECT>
+				<A HREF="html/00000282.htm">RemovePilotコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="RemoveUnitコマンド">
+				<param name="Local" value="html/00000283.htm">
+				</OBJECT>
+				<A HREF="html/00000283.htm">RemoveUnitコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="RenameBGMコマンド">
+				<param name="Local" value="html/00000284.htm">
+				</OBJECT>
+				<A HREF="html/00000284.htm">RenameBGMコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="RenameFileコマンド">
+				<param name="Local" value="html/00000285.htm">
+				</OBJECT>
+				<A HREF="html/00000285.htm">RenameFileコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="RenameTermコマンド">
+				<param name="Local" value="html/00000286.htm">
+				</OBJECT>
+				<A HREF="html/00000286.htm">RenameTermコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ReplacePilotコマンド">
+				<param name="Local" value="html/00000287.htm">
+				</OBJECT>
+				<A HREF="html/00000287.htm">ReplacePilotコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Requireコマンド">
+				<param name="Local" value="html/00000288.htm">
+				</OBJECT>
+				<A HREF="html/00000288.htm">Requireコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="RestoreEventコマンド">
+				<param name="Local" value="html/00000289.htm">
+				</OBJECT>
+				<A HREF="html/00000289.htm">RestoreEventコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Returnコマンド">
+				<param name="Local" value="html/00000290.htm">
+				</OBJECT>
+				<A HREF="html/00000290.htm">Returnコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Rideコマンド">
+				<param name="Local" value="html/00000291.htm">
+				</OBJECT>
+				<A HREF="html/00000291.htm">Rideコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Selectコマンド">
+				<param name="Local" value="html/00000292.htm">
+				</OBJECT>
+				<A HREF="html/00000292.htm">Selectコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="SelectTargetコマンド">
+				<param name="Local" value="html/00000293.htm">
+				</OBJECT>
+				<A HREF="html/00000293.htm">SelectTargetコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Sepiaコマンド">
+				<param name="Local" value="html/00000294.htm">
+				</OBJECT>
+				<A HREF="html/00000294.htm">Sepiaコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Setコマンド">
+				<param name="Local" value="html/00000295.htm">
+				</OBJECT>
+				<A HREF="html/00000295.htm">Setコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="SetBulletコマンド">
+				<param name="Local" value="html/00000296.htm">
+				</OBJECT>
+				<A HREF="html/00000296.htm">SetBulletコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="SetMessageコマンド">
+				<param name="Local" value="html/00000297.htm">
+				</OBJECT>
+				<A HREF="html/00000297.htm">SetMessageコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="SetRelationコマンド">
+				<param name="Local" value="html/00000298.htm">
+				</OBJECT>
+				<A HREF="html/00000298.htm">SetRelationコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="SetSkillコマンド">
+				<param name="Local" value="html/00000299.htm">
+				</OBJECT>
+				<A HREF="html/00000299.htm">SetSkillコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="SetStatusコマンド">
+				<param name="Local" value="html/00000300.htm">
+				</OBJECT>
+				<A HREF="html/00000300.htm">SetStatusコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="SetStockコマンド">
+				<param name="Local" value="html/00000301.htm">
+				</OBJECT>
+				<A HREF="html/00000301.htm">SetStockコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Showコマンド">
+				<param name="Local" value="html/00000302.htm">
+				</OBJECT>
+				<A HREF="html/00000302.htm">Showコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ShowUnitStatusコマンド">
+				<param name="Local" value="html/00000303.htm">
+				</OBJECT>
+				<A HREF="html/00000303.htm">ShowUnitStatusコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Skipコマンド">
+				<param name="Local" value="html/00000304.htm">
+				</OBJECT>
+				<A HREF="html/00000304.htm">Skipコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Sortコマンド">
+				<param name="Local" value="html/00000305.htm">
+				</OBJECT>
+				<A HREF="html/00000305.htm">Sortコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="SpecialPowerコマンド">
+				<param name="Local" value="html/00000306.htm">
+				</OBJECT>
+				<A HREF="html/00000306.htm">SpecialPowerコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Splitコマンド">
+				<param name="Local" value="html/00000307.htm">
+				</OBJECT>
+				<A HREF="html/00000307.htm">Splitコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="StartBGMコマンド">
+				<param name="Local" value="html/00000308.htm">
+				</OBJECT>
+				<A HREF="html/00000308.htm">StartBGMコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="StopBGMコマンド">
+				<param name="Local" value="html/00000309.htm">
+				</OBJECT>
+				<A HREF="html/00000309.htm">StopBGMコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="StopSummoningコマンド">
+				<param name="Local" value="html/00000310.htm">
+				</OBJECT>
+				<A HREF="html/00000310.htm">StopSummoningコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Sunsetコマンド">
+				<param name="Local" value="html/00000311.htm">
+				</OBJECT>
+				<A HREF="html/00000311.htm">Sunsetコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Supplyコマンド">
+				<param name="Local" value="html/00000312.htm">
+				</OBJECT>
+				<A HREF="html/00000312.htm">Supplyコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Swapコマンド">
+				<param name="Local" value="html/00000313.htm">
+				</OBJECT>
+				<A HREF="html/00000313.htm">Swapコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Switchコマンド">
+				<param name="Local" value="html/00000314.htm">
+				</OBJECT>
+				<A HREF="html/00000314.htm">Switchコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Talkコマンド">
+				<param name="Local" value="html/00000315.htm">
+				</OBJECT>
+				<A HREF="html/00000315.htm">Talkコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Telopコマンド">
+				<param name="Local" value="html/00000316.htm">
+				</OBJECT>
+				<A HREF="html/00000316.htm">Telopコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Transformコマンド">
+				<param name="Local" value="html/00000317.htm">
+				</OBJECT>
+				<A HREF="html/00000317.htm">Transformコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Unitコマンド">
+				<param name="Local" value="html/00000318.htm">
+				</OBJECT>
+				<A HREF="html/00000318.htm">Unitコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="UnSetコマンド">
+				<param name="Local" value="html/00000319.htm">
+				</OBJECT>
+				<A HREF="html/00000319.htm">UnSetコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Upgradeコマンド">
+				<param name="Local" value="html/00000320.htm">
+				</OBJECT>
+				<A HREF="html/00000320.htm">Upgradeコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="UpVarコマンド">
+				<param name="Local" value="html/00000321.htm">
+				</OBJECT>
+				<A HREF="html/00000321.htm">UpVarコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="UseAbilityコマンド">
+				<param name="Local" value="html/00000322.htm">
+				</OBJECT>
+				<A HREF="html/00000322.htm">UseAbilityコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Waitコマンド">
+				<param name="Local" value="html/00000323.htm">
+				</OBJECT>
+				<A HREF="html/00000323.htm">Waitコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Waterコマンド">
+				<param name="Local" value="html/00000324.htm">
+				</OBJECT>
+				<A HREF="html/00000324.htm">Waterコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="WhiteInコマンド">
+				<param name="Local" value="html/00000325.htm">
+				</OBJECT>
+				<A HREF="html/00000325.htm">WhiteInコマンド</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="WhiteOutコマンド">
+				<param name="Local" value="html/00000326.htm">
+				</OBJECT>
+				<A HREF="html/00000326.htm">WhiteOutコマンド</A><BR>
+		</UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="関数リファレンス">
+			<param name="Local" value="">
+			</OBJECT>
+		<UL>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ユニット情報関数">
+				<param name="Local" value="html/00000327.htm">
+				</OBJECT>
+				<A HREF="html/00000327.htm">ユニット情報関数</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="パイロット情報関数">
+				<param name="Local" value="html/00000328.htm">
+				</OBJECT>
+				<A HREF="html/00000328.htm">パイロット情報関数</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Info関数">
+				<param name="Local" value="html/00000329.htm">
+				</OBJECT>
+				<A HREF="html/00000329.htm">Info関数</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="文字列処理関数">
+				<param name="Local" value="html/00000330.htm">
+				</OBJECT>
+				<A HREF="html/00000330.htm">文字列処理関数</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="リスト処理関数">
+				<param name="Local" value="html/00000331.htm">
+				</OBJECT>
+				<A HREF="html/00000331.htm">リスト処理関数</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="算術処理関数">
+				<param name="Local" value="html/00000332.htm">
+				</OBJECT>
+				<A HREF="html/00000332.htm">算術処理関数</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="ファイル処理関数">
+				<param name="Local" value="html/00000333.htm">
+				</OBJECT>
+				<A HREF="html/00000333.htm">ファイル処理関数</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="描画処理関数">
+				<param name="Local" value="html/00000334.htm">
+				</OBJECT>
+				<A HREF="html/00000334.htm">描画処理関数</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="時間データ処理関数">
+				<param name="Local" value="html/00000335.htm">
+				</OBJECT>
+				<A HREF="html/00000335.htm">時間データ処理関数</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="正規表現関数">
+				<param name="Local" value="html/00000336.htm">
+				</OBJECT>
+				<A HREF="html/00000336.htm">正規表現関数</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="その他の関数">
+				<param name="Local" value="html/00000337.htm">
+				</OBJECT>
+				<A HREF="html/00000337.htm">その他の関数</A><BR>
+			</UL>
+		</UL>
+	<LI><OBJECT type="text/sitemap">
+		<param name="Name" value="最後に">
+		<param name="Local" value="">
+		</OBJECT>
+	<UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="更新履歴(2010)">
+			<param name="Local" value="html/00000338.htm">
+			</OBJECT>
+			<A HREF="html/00000338.htm">更新履歴(2010)</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="更新履歴(2008)">
+			<param name="Local" value="html/00000339.htm">
+			</OBJECT>
+			<A HREF="html/00000339.htm">更新履歴(2008)</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="更新履歴(2007)">
+			<param name="Local" value="html/00000340.htm">
+			</OBJECT>
+			<A HREF="html/00000340.htm">更新履歴(2007)</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="更新履歴(2006)">
+			<param name="Local" value="html/00000341.htm">
+			</OBJECT>
+			<A HREF="html/00000341.htm">更新履歴(2006)</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="更新履歴(2005)">
+			<param name="Local" value="html/00000342.htm">
+			</OBJECT>
+			<A HREF="html/00000342.htm">更新履歴(2005)</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="更新履歴(2004)">
+			<param name="Local" value="html/00000343.htm">
+			</OBJECT>
+			<A HREF="html/00000343.htm">更新履歴(2004)</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="更新履歴(2003)">
+			<param name="Local" value="html/00000344.htm">
+			</OBJECT>
+			<A HREF="html/00000344.htm">更新履歴(2003)</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="更新履歴(2002)">
+			<param name="Local" value="html/00000345.htm">
+			</OBJECT>
+			<A HREF="html/00000345.htm">更新履歴(2002)</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="更新履歴(2001)">
+			<param name="Local" value="html/00000346.htm">
+			</OBJECT>
+			<A HREF="html/00000346.htm">更新履歴(2001)</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="更新履歴(2000)">
+			<param name="Local" value="html/00000347.htm">
+			</OBJECT>
+			<A HREF="html/00000347.htm">更新履歴(2000)</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="更新履歴(1999)">
+			<param name="Local" value="html/00000348.htm">
+			</OBJECT>
+			<A HREF="html/00000348.htm">更新履歴(1999)</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="更新履歴(1998)">
+			<param name="Local" value="html/00000349.htm">
+			</OBJECT>
+			<A HREF="html/00000349.htm">更新履歴(1998)</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="更新履歴(1997)">
+			<param name="Local" value="html/00000350.htm">
+			</OBJECT>
+			<A HREF="html/00000350.htm">更新履歴(1997)</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="サポート情報">
+			<param name="Local" value="html/00000351.htm">
+			</OBJECT>
+			<A HREF="html/00000351.htm">サポート情報</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="スペシャルサンクス">
+			<param name="Local" value="html/00000352.htm">
+			</OBJECT>
+			<A HREF="html/00000352.htm">スペシャルサンクス</A><BR>
+	</UL>
+</UL>
+</HTML>

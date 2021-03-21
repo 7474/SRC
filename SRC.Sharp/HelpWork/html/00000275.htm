@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>RecoverSPコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="RecoverSPコマンド">
+</OBJECT>
+
+<P><A NAME="1kdtlcg"></A></P>
+
+<P><B>RecoverSPコマンド</B></P>
+
+<P>ＳＰを回復</P>
+
+<P><B>書式</B></P>
+
+<P><B>RecoverSP</B> [<I>pilot</I>] <I>rate</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>pilot</I>ＳＰを回復するパイロット名（省略可）</P>
+
+<P><I>rate</I>ＳＰの回復率（浮動小数点数も指定可）</P>
+
+<P><B>解説</B></P>
+
+<P><I>pilot</I> のＳＰを<I>rate</I> %だけ回復します。マイナスの値を指定してＳＰを減少させることもできます。パイロット名が省略された場合はデフォルトユニットのメインパイロットのＳＰを回復させます。</P>
+
+<P><IMG SRC="../images/bm0.gif" ALT="" BORDER=0> ＳＰの増減の度合いを割合でなく一定値で指定したい場合はSP関数を使ってください</P>
+
+<P><B>RecoverSP</B>コマンドによってＳＰが最大ＳＰを越えたり、0未満になることはありません。</P>
+
+<P><B>例</B></P>
+
+<P># ジェイのＳＰを全快させる</P>
+
+<P>RecoverSP ジェイ 100</P>
+
+</BODY>
+</HTML>

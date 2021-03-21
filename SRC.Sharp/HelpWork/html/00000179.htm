@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>ChangeUnitBitmapコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="ChangeUnitBitmapコマンド">
+</OBJECT>
+
+<P><A NAME=".2.n.n"></A></P>
+
+<P><B>ChangeUnitBitmapコマンド</B></P>
+
+<P>ユニット画像を一時的に変更</P>
+
+<P><B>書式１</B></P>
+
+<P><B>ChangeUnitBitmap</B> [<I>unit</I>] <I>bitmap</I></P>
+
+<P><B>書式２</B></P>
+
+<P><B>ChangeUnitBitmap</B> [<I>unit</I>] 非表示 or 非表示解除</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit</I>エリアを変更するユニットの<A HREF="src7ysq.htm">メインパイロット名</A>または<A HREF="src2hpr.htm">ユニットＩＤ</A>（省略可）</P>
+
+<P><I>bitmap</I>表示するユニット画像名(32×32のbmpファイルのみ)</P>
+
+<P>画像名の代わりに「-」を指定すると元の画像に戻る</P>
+
+<P><B>解説</B></P>
+
+<P><I>unit</I> のユニット画像を一時的に<I>bitmap</I> に変更します(書式１の場合)。変更されたユニット画像は戦闘終了後に元に戻ります。戦闘時に他の形態に変化して攻撃するような戦闘アニメを表現することを目的として作られています。</P>
+
+<P><B>ChangeUnitBitmap</B>コマンド自体は画面更新を行いません。<A HREF="00000277.htm"><B>Refresh</B>コマンド</A>等を使うか、他のタイミング(戦闘終了時など)で画面更新が行われるまで、指定した画像による表示は行われません。</P>
+
+<P>ユニット画像の変更を解除し、元の画像に戻したいときは<I>bitmap</I> に「-」を指定して下さい。戦闘以外のシチュエーションで<B>ChangeUnitBitmap</B>コマンドを使う場合は必ずこの操作を行って元の画像に手動で戻すようにして下さい。</P>
+
+<P><B>ChangeUnitBitmap</B>コマンド実行時はInfo関数で参照されたユニット画像ファイル名も<I>bitmap</I> に設定されます。</P>
+
+<P><B>ChangeUnitBitmap</B>コマンドはユニットを一時的に非表示にする際にも使用できます。この場合は書式２のようにしてオプションに「非表示」を指定して下さい。非表示を止める際には「非表示解除」を指定します。ユニット画像の変更の場合と同様、ユニットの非表示化は戦闘終了後に自動的に解除されます。また、ユニットを非表示にしても画面更新は<A HREF="00000277.htm"><B>Refresh</B>コマンド</A>等を使うまで行われません。</P>
+
+<P><B>例</B></P>
+
+<P>戦闘アニメ_瞬間変形:</P>
+
+<P>#引数１  対象ユニットＩＤ</P>
+
+<P>#引数２  画像名</P>
+
+<P>#引数３  効果音</P>
+
+<P>Center Args(1)</P>
+
+<P>PlaySound Args(3)</P>
+
+<P>#ユニット画像を変更</P>
+
+<P>ChangeUnitBitmap Args(1) Args(2)</P>
+
+<P>Return</P>
+
+</BODY>
+</HTML>

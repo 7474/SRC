@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>Continueコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Continueコマンド">
+</OBJECT>
+
+<P><A NAME="1kdttde"></A></P>
+
+<P><B>Continueコマンド</B></P>
+
+<P>現在のステージを終了し、次のステージに移行</P>
+
+<P><B>書式</B></P>
+
+<P><B>Continue</B> [<I>stage</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>stage</I>次のステージのイベントファイル名（省略可）</P>
+
+<P><B>解説</B></P>
+
+<P>現在のステージを終了し、イベントファイル<I>stage</I> による次のステージに移ります。現在のステージを終了する前に<A HREF="src7ysj.htm"><B>エピローグイベント</B></A>が実行されます。stageに設定したファイル名はシステム変数「次ステージ」に設定されます。設定したファイル名は<B>Conitinue</B>コマンド実行後もシステム変数「次ステージ」の値を変更することで変えることができます。</P>
+
+<P><I>stage</I>は指定しなくても構いません。ただしこの場合、<B>エピローグイベント</B>中もしくはインターミッションでの<A HREF="src79k3.htm">サブステージ</A>中でシステム変数「次ステージ」を設定する必要があります。</P>
+
+<P><B>Continue</B>コマンド以降のコマンドは実行されません。<A HREF="src36zx.htm"><B>Exit</B>コマンド</A>も不要です。</P>
+
+<P><B>例</B></P>
+
+<P>#敵が全滅した場合</P>
+
+<P>全滅 敵:</P>
+
+<P>Talk ロイド艦長</P>
+
+<P>よし、敵は片付いたな。全機、帰艦せよ！</P>
+
+<P>End</P>
+
+<P>#次のステージに移行</P>
+
+<P>Continue Scenario02.eve</P>
+
+</BODY>
+</HTML>

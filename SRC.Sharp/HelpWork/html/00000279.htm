@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>RemoveFileコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="RemoveFileコマンド">
+</OBJECT>
+
+<P><A NAME=".2.mat"></A></P>
+
+<P><B>RemoveFileコマンド</B></P>
+
+<P>ファイルを削除</P>
+
+<P><B>書式</B></P>
+
+<P><B>RemoveFile</B> <I>file</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>file</I>削除するファイルのファイル名</P>
+
+<P><B>解説</B></P>
+
+<P>指定したファイル<I>file</I> を削除します。ファイルのパスは<A HREF="00000255.htm"><B>Open</B>コマンド</A>と同じようにシナリオが入っているフォルダを起点として計算されます。指定したファイルが存在しなかった場合、コマンドはそのまま終了します。エラーは発生しません。</P>
+
+<P><B>例</B></P>
+
+<P>#プレイヤーが指定したファイルを削除する</P>
+
+<P>Talk システム</P>
+
+<P>消去するデータファイルを選んでください</P>
+
+<P>End</P>
+
+<P>fname = LoadFileDialog("データファイル", "dat")</P>
+
+<P>If fname &lt;&gt; "" Then</P>
+
+<P>RemoveFile fname</P>
+
+<P>EndIf</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>ChangePartyコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="ChangePartyコマンド">
+</OBJECT>
+
+<P><A NAME="1kdttci"></A></P>
+
+<P><B>ChangePartyコマンド</B></P>
+
+<P>ユニットの陣営を変更</P>
+
+<P><B>書式</B></P>
+
+<P><B>ChangeParty</B> [<I>unit</I>] <I>party</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit</I>陣営を変更するユニットの<A HREF="src7ysq.htm">メインパイロット名</A>または<A HREF="src2hpr.htm">ユニットＩＤ</A>（省略可）</P>
+
+<P><I>party</I>新しい<A HREF="src7ysp.htm">陣営名</A></P>
+
+<P><B>解説</B></P>
+
+<P><I>unit</I> が所属する陣営を<I>party</I> に変更します。説得の際などに利用してください。</P>
+
+<P>陣営が変更された結果その陣営に属するユニットがマップ状からなくなっても<A HREF="00000145.htm">全滅イベント</A>は発生しないので注意してください。</P>
+
+<P><B>例</B></P>
+
+<P>#ダイがレイアを説得した時</P>
+
+<P>会話 ダイ レイア:</P>
+
+<P>Talk ダイ</P>
+
+<P>レイア！ 君なら分かっているはずだ！ 本当に倒すべき敵が誰かを！</P>
+
+<P>Talk レイア</P>
+
+<P>……分かったよ、ダイ。あんたたちに協力しよう。</P>
+
+<P>End</P>
+
+<P>#レイアの陣営を味方に変更</P>
+
+<P>ChangeParty レイア 味方</P>
+
+<P>#イベントを消去</P>
+
+<P>ClearEvent</P>
+
+<P>#イベントを終了</P>
+
+<P>Exit</P>
+
+</BODY>
+</HTML>
