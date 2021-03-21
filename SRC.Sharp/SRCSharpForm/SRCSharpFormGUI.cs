@@ -18,6 +18,20 @@ namespace SRCSharpForm
 {
     public partial class SRCSharpFormGUI : IGUI
     {
+        public bool Terminate()
+        {
+            return true;
+        }
+
+        public void Sleep(int dwMilliseconds, bool withEvents = true)
+        {
+            if (withEvents)
+            {
+                Application.DoEvents();
+            }
+            Thread.Sleep(dwMilliseconds);
+        }
+
         public bool IsGUILocked { get; set; }
         public short TopItem { get; set; }
         public bool MessageWindowIsOut { get; set; }
@@ -2172,15 +2186,6 @@ namespace SRCSharpForm
         public void UpdateScreen()
         {
             MainForm.UpdateScreen();
-        }
-
-        public void Sleep(int dwMilliseconds, bool withEvents = true)
-        {
-            if (withEvents)
-            {
-                Application.DoEvents();
-            }
-            Thread.Sleep(dwMilliseconds);
         }
 
         public GuiDialogResult Confirm(string message, string title, GuiConfirmOption option)

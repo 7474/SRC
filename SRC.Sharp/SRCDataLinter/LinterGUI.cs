@@ -4,9 +4,9 @@ using SRCCore.Units;
 using System;
 using System.Collections.Generic;
 
-namespace SRCCoreTests.TestLib
+namespace SRCDataLinter
 {
-    class MockGUI : IGUI
+    class LinterGUI : IGUI
     {
         public bool IsGUILocked { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int TopItem { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -409,7 +409,7 @@ namespace SRCCoreTests.TestLib
 
         public bool Terminate()
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public void UnlockGUI()

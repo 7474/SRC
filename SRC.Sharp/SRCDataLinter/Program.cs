@@ -1,4 +1,5 @@
 ﻿using SRCCore.Exceptions;
+using SRCCore.Filesystem;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -14,10 +15,19 @@ namespace SRCDataLinter
             sw.Start();
 
             var SRC = new SRCCore.SRC();
+            SRC.AppPath = AppContext.BaseDirectory;
+            SRC.ScenarioPath = Environment.CurrentDirectory;
+            SRC.GUI = new LinterGUI();
+            SRC.FileSystem = new LocalFileSystem();
+            SRC.Event.InitEventData();
+
             var hasError = false;
             var files = args
                 .Where(x => Directory.Exists(x))
                 .SelectMany(x => Directory.EnumerateFiles(x, "*.txt", SearchOption.AllDirectories))
+                .Concat(args
+                    .Where(x => Directory.Exists(x))
+                    .SelectMany(x => Directory.EnumerateFiles(x, "*.eve", SearchOption.AllDirectories)))
                 .Concat(args.Where(x => File.Exists(x)));
 
             foreach (var file in files)
@@ -57,7 +67,15 @@ namespace SRCDataLinter
                         SRC.IDList.Load(file.Name, file.OpenRead());
                         break;
                     default:
-                        Console.WriteLine($"Not supported file [{file.Name}]");
+                        if (file.Name.ToLower().EndsWith(".eve"))
+                        {
+                            // TODO 検証用のモードを用意してもいいかもしれない。
+                            SRC.Event.LoadEventData(file.FullName, "");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Not supported file [{file.Name}]");
+                        }
                         break;
                 }
             }
