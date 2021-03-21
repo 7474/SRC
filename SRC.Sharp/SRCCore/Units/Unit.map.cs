@@ -2,6 +2,7 @@
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SRCCore.Units
@@ -144,40 +145,18 @@ namespace SRCCore.Units
                 of.y = y;
             }
 
-            // TODO Impl
-            //var loopTo5 = CountUnitOnBoard();
-            //for (i = 1; i <= loopTo5; i++)
-            //{
-            //    object argIndex2 = i;
-            //    {
-            //        var withBlock1 = UnitOnBoard(argIndex2);
-            //        withBlock1.x = x;
-            //        withBlock1.y = y;
-            //    }
-            //}
+            foreach (var u in UnitOnBoards)
+            {
+                u.x = x;
+                u.y = y;
+            }
 
-            //// 格納されていた場合はあらかじめ降ろしておく
-            //if (Status_Renamed == "格納")
-            //{
-            //    foreach (Unit u in SRC.UList)
-            //    {
-            //        var loopTo6 = u.CountUnitOnBoard();
-            //        for (i = 1; i <= loopTo6; i++)
-            //        {
-            //            Unit localUnitOnBoard() { object argIndex1 = i; var ret = u.UnitOnBoard(argIndex1); return ret; }
-
-            //            if ((ID ?? "") == (localUnitOnBoard().ID ?? ""))
-            //            {
-            //                object argIndex3 = ID;
-            //                u.UnloadUnit(argIndex3);
-            //                goto EndLoop;
-            //            }
-            //        }
-            //    }
-
-            //EndLoop:
-            //    ;
-            //}
+            // 格納されていた場合はあらかじめ降ろしておく
+            if (Status == "格納")
+            {
+                var boardUnit = SRC.UList.Items.First(x => x.UnitOnBoard(ID) != null);
+                boardUnit?.UnitOnBoard(ID);
+            }
 
             // Statusを更新
             Status = "出撃";
