@@ -851,7 +851,7 @@ namespace SRCCore
                 TerminateSRC();
             }
 
-            var nonPilotFile = FileSystem.PathCombine( Path.GetDirectoryName(gameOverFile), "non_pilot.txt");
+            var nonPilotFile = FileSystem.PathCombine(Path.GetDirectoryName(gameOverFile), "non_pilot.txt");
             if (GeneralLib.FileExists(nonPilotFile))
             {
                 NPDList.Load(nonPilotFile);
@@ -982,7 +982,10 @@ namespace SRCCore
             //// なぜかこれがないと不正終了する……
             //Application.DoEvents();
 
-            Environment.Exit(0);
+            if (GUI?.Terminate() ?? true)
+            {
+                Environment.Exit(0);
+            }
         }
     }
 }

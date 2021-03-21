@@ -407,6 +407,11 @@ namespace SRCCoreTests.TestLib
             throw new NotImplementedException();
         }
 
+        public bool Terminate()
+        {
+            throw new NotImplementedException();
+        }
+
         public void UnlockGUI()
         {
             throw new NotImplementedException();

@@ -407,6 +407,11 @@ namespace SRCDataLinter
             throw new NotImplementedException();
         }
 
+        public bool Terminate()
+        {
+            return false;
+        }
+
         public void UnlockGUI()
         {
             throw new NotImplementedException();

@@ -12,6 +12,9 @@ namespace SRCCore
     // ユーザーインターフェースと画面描画の処理を行うためのインタフェース
     public interface IGUI
     {
+        /// <returns>プロセスを終了してもよい場合に true</returns>
+        bool Terminate();
+
         void Sleep(int dwMilliseconds, bool withEvents = true);
         //// XXX 要プロパティ更新、戻り値で返したほうがいい気はする。そもそも実行をロックしたくない。
         //void StartWaitClick();
