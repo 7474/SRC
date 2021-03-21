@@ -1,6 +1,7 @@
 ﻿
 using SRCCore.Units;
 using SRCCore.VB;
+using System.Linq;
 
 namespace SRCCore.Events
 {
@@ -64,18 +65,15 @@ namespace SRCCore.Events
                         if (p.Unit != null)
                         {
                             var u = p.Unit;
-                            // TODO Impl
-                            //// 格納されていたユニットも破壊しておく
-                            //while (u.CountUnitOnBoard() > 0)
-                            //{
-                            //    object argIndex1 = 1;
-                            //    u = u.UnitOnBoard(argIndex1);
-                            //    u.UnloadUnit((object)u.ID);
-                            //    u.Status_Renamed = "破壊";
-                            //    u.HP = 0;
-                            //    Array.Resize(EventQue, Information.UBound(EventQue) + 1 + 1);
-                            //    EventQue[Information.UBound(EventQue)] = "マップ攻撃破壊 " + u.MainPilot().ID;
-                            //}
+                            // 格納されていたユニットも破壊しておく
+                            while (u.CountUnitOnBoard() > 0)
+                            {
+                                var onBoardUnit = u.UnitOnBoards.First();
+                                onBoardUnit.UnloadUnit(onBoardUnit.ID);
+                                onBoardUnit.Status = "破壊";
+                                onBoardUnit.HP = 0;
+                                EventQue.Enqueue("マップ攻撃破壊 " + onBoardUnit.MainPilot().ID);
+                            }
                             uparty = u.Party0;
                         }
 
@@ -98,37 +96,30 @@ namespace SRCCore.Events
                         break;
                     }
 
-                //case "マップ攻撃破壊":
-                //    {
-                //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject("マップ攻撃破壊 ", Args[1]));
-                //        {
-                //            var withBlock4 = SRC.PList.Item(Args[1]);
-                //            uparty = withBlock4.Party;
-                //            if (withBlock4.Unit is object)
-                //            {
-                //                {
-                //                    var withBlock5 = withBlock4.Unit;
-                //                    // 格納されていたユニットも破壊しておく
-                //                    var loopTo = withBlock5.CountUnitOnBoard();
-                //                    for (i = 1; i <= loopTo; i++)
-                //                    {
-                //                        object argIndex3 = i;
-                //                        u = withBlock5.UnitOnBoard(argIndex3);
-                //                        withBlock5.UnloadUnit((object)u.ID);
-                //                        u.Status_Renamed = "破壊";
-                //                        u.HP = 0;
-                //                        Array.Resize(EventQue, Information.UBound(EventQue) + 1 + 1);
-                //                        EventQue[Information.UBound(EventQue)] = "マップ攻撃破壊 " + u.MainPilot().ID;
-                //                    }
+                case "マップ攻撃破壊":
+                    {
+                        EventQue.Enqueue("マップ攻撃破壊 " + Args[1]);
+                        var p = SRC.PList.Item(Args[1]);
+                        var uparty = p.Party;
+                        if (p.Unit != null)
+                        {
+                            var u = p.Unit;
+                            // 格納されていたユニットも破壊しておく
+                            while (u.CountUnitOnBoard() > 0)
+                            {
+                                var onBoardUnit = u.UnitOnBoards.First();
+                                onBoardUnit.UnloadUnit(onBoardUnit.ID);
+                                onBoardUnit.Status = "破壊";
+                                onBoardUnit.HP = 0;
+                                EventQue.Enqueue("マップ攻撃破壊 " + onBoardUnit.MainPilot().ID);
+                            }
+                            uparty = u.Party0;
+                        }
 
-                //                    uparty = withBlock5.Party0;
-                //                }
-                //            }
-                //        }
-
-                //        break;
-                //    }
+                        // XXX 全滅の処理どこでやってんの？
+                        
+                        break;
+                    }
 
                 case "ターン":
                     EventQue.Enqueue(string.Join(" ", "ターン ", "全", Args[2]));
