@@ -207,7 +207,7 @@ namespace SRCCoreTests.TestLib
             throw new NotImplementedException();
         }
 
-        public int ListBox(string lb_caption, IList<ListBoxItem> list, string lb_info, string lb_mode = "")
+        public int ListBox(ListBoxArgs args)
         {
             throw new NotImplementedException();
         }
