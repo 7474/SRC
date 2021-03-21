@@ -1836,15 +1836,14 @@ namespace SRCCore.Commands
                         }
                     }
 
-                    //// 発進コマンド
-                    //string argfname29 = "母艦";
-                    //if (currentUnit.IsFeatureAvailable(argfname29) & currentUnit.Area != "地中")
-                    //{
-                    //    if (currentUnit.CountUnitOnBoard() > 0)
-                    //    {
-                    //        GUI.MainForm.mnuUnitCommandItem(LaunchCmdID).Visible = true;
-                    //    }
-                    //}
+                    // 発進コマンド
+                    if (currentUnit.IsFeatureAvailable("母艦") & currentUnit.Area != "地中")
+                    {
+                        if (currentUnit.CountUnitOnBoard() > 0)
+                        {
+                            unitCommands.Add(new UiCommand(LaunchCmdID, "発進"));
+                        }
+                    }
 
                     //// アイテムコマンド
                     //var loopTo25 = currentUnit.CountAbility();
@@ -2605,31 +2604,31 @@ namespace SRCCore.Commands
                         GUI.IsGUILocked = false;
                         return;
 
-                        //case "テレポート":
-                        //        FinishTeleportCommand();
-                        //        GUI.IsGUILocked = false;
-                        //        return;
+                    //case "テレポート":
+                    //        FinishTeleportCommand();
+                    //        GUI.IsGUILocked = false;
+                    //        return;
 
-                        //case "ジャンプ":
-                        //        FinishJumpCommand();
-                        //        GUI.IsGUILocked = false;
-                        //        return;
+                    //case "ジャンプ":
+                    //        FinishJumpCommand();
+                    //        GUI.IsGUILocked = false;
+                    //        return;
 
-                        //case "マップ攻撃":
-                        //        MapAttackCommand();
-                        //        GUI.IsGUILocked = false;
-                        //        return;
+                    //case "マップ攻撃":
+                    //        MapAttackCommand();
+                    //        GUI.IsGUILocked = false;
+                    //        return;
 
-                        //case "マップアビリティ":
-                        //case "マップアイテム":
-                        //        MapAbilityCommand();
-                        //        GUI.IsGUILocked = false;
-                        //        return;
+                    //case "マップアビリティ":
+                    //case "マップアイテム":
+                    //        MapAbilityCommand();
+                    //        GUI.IsGUILocked = false;
+                    //        return;
 
-                        //case "発進":
-                        //        FinishLaunchCommand();
-                        //        GUI.IsGUILocked = false;
-                        //        return;
+                    case "発進":
+                        FinishLaunchCommand();
+                        GUI.IsGUILocked = false;
+                        return;
 
                         //case "移動命令":
                         //        FinishOrderCommand();
@@ -2812,29 +2811,27 @@ namespace SRCCore.Commands
                             Map.AreaInSpeed(SelectedUnit, true);
                             break;
 
-                            //case "発進":
-                            //    var targetUnit = SelectedTarget;
-                            //    string localLIndex() { object argIndex1 = "テレポート"; string arglist = targetUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+                        case "発進":
+                            var targetUnit = SelectedTarget;
 
-                            //    int localLLength() { object argIndex1 = "ジャンプ"; string arglist = targetUnit.FeatureData(argIndex1); var ret = GeneralLib.LLength(arglist); return ret; }
-
-                            //    string localLIndex1() { object argIndex1 = "ジャンプ"; string arglist = targetUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-                            //    string argfname = "テレポート";
-                            //    string argfname1 = "ジャンプ";
-                            //    if (targetUnit.IsFeatureAvailable(argfname) & (targetUnit.Data.Speed == 0 | localLIndex() == "0"))
-                            //    {
-                            //        Map.AreaInTeleport(SelectedTarget);
-                            //    }
-                            //    else if (targetUnit.IsFeatureAvailable(argfname1) & (targetUnit.Data.Speed == 0 | localLLength() < 2 | localLIndex1() == "0"))
-                            //    {
-                            //        Map.AreaInSpeed(SelectedTarget, true);
-                            //    }
-                            //    else
-                            //    {
-                            //        Map.AreaInSpeed(SelectedTarget);
-                            //    }
-                            //    break;
+                            if (targetUnit.IsFeatureAvailable("テレポート")
+                                && (targetUnit.Data.Speed == 0
+                                || GeneralLib.LIndex(targetUnit.FeatureData("テレポート"), 2) == "0"))
+                            {
+                                Map.AreaInTeleport(SelectedTarget);
+                            }
+                            else if (targetUnit.IsFeatureAvailable("ジャンプ")
+                                && (targetUnit.Data.Speed == 0
+                                || GeneralLib.LLength(targetUnit.FeatureData("ジャンプ")) < 2
+                                || GeneralLib.LIndex(targetUnit.FeatureData("ジャンプ"), 2) == "0"))
+                            {
+                                Map.AreaInSpeed(SelectedTarget, true);
+                            }
+                            else
+                            {
+                                Map.AreaInSpeed(SelectedTarget);
+                            }
+                            break;
                     }
 
                     currentUnit.x = tmp_x;

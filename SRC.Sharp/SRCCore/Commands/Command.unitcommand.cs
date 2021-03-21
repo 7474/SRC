@@ -236,11 +236,11 @@ namespace SRCCore.Commands
                         break;
                     }
 
-                //        case LaunchCmdID: // 発進
-                //            {
-                //                StartLaunchCommand();
-                //                break;
-                //            }
+                case LaunchCmdID: // 発進
+                    {
+                        StartLaunchCommand();
+                        break;
+                    }
 
                 //        case ItemCmdID: // アイテム
                 //            {

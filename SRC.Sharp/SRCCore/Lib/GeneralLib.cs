@@ -519,14 +519,15 @@ namespace SRCCore.Lib
             //return LeftPaddedStringRet;
         }
 
-        //        // 文字列 buf の長さが length になるように右側にスペースを付加する
-        //        public static string RightPaddedString(string buf, int length)
-        //        {
-        //            string RightPaddedStringRet = default;
-        //            RightPaddedStringRet = buf + Strings.Space(MaxLng(length - LenB(Strings.StrConv(buf, vbFromUnicode)), 0));
-        //            return RightPaddedStringRet;
-        //        }
-
+        // 文字列 buf の長さが length になるように右側にスペースを付加する
+        public static string RightPaddedString(string buf, int length)
+        {
+            return buf;
+            // TODO 面倒くさいのでとりあえずパス
+            //string RightPaddedStringRet = default;
+            //RightPaddedStringRet = buf + Strings.Space(MaxLng(length - LenB(Strings.StrConv(buf, vbFromUnicode)), 0));
+            //return RightPaddedStringRet;
+        }
 
         //        // Src.ini ファイルの ini_section から ini_entry の値を読み出す
         //        public static string ReadIni(string ini_section, string ini_entry)
