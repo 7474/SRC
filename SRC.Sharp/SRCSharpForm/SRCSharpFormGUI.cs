@@ -996,7 +996,7 @@ namespace SRCSharpForm
             DisplayMessagePilot(pname, msg_mode, out pnickname, out left_margin);
 
             var tmpMsg = msg;
-            Expression.ReplaceSubExpression(ref tmpMsg);
+            Expression.FormatMessage(ref tmpMsg);
 
             frmMessage.SetMessage(tmpMsg);
             Application.DoEvents();
@@ -1350,22 +1350,22 @@ namespace SRCSharpForm
 
         public void EnlargeListBoxHeight()
         {
-            throw new NotImplementedException();
+            frmListBox.EnlargeListBoxHeight();
         }
 
         public void ReduceListBoxHeight()
         {
-            throw new NotImplementedException();
+            frmListBox.ReduceListBoxHeight();
         }
 
         public void EnlargeListBoxWidth()
         {
-            throw new NotImplementedException();
+            frmListBox.EnlargeListBoxWidth();
         }
 
         public void ReduceListBoxWidth()
         {
-            throw new NotImplementedException();
+            frmListBox.ReduceListBoxWidth();
         }
 
         public void AddPartsToListBox()
