@@ -109,7 +109,7 @@ namespace SRCCore.CmdDatas.Commands
                                 answerList.Add(new ListBoxItem
                                 {
                                     Text = buf,
-                                    ListItemID = "" + (EventData.ID - i),
+                                    ListItemID = "" + (i - EventData.ID),
                                     ListItemFlag = false,
                                 });
                             }
