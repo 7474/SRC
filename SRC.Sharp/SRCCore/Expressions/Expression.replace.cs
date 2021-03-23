@@ -10,6 +10,8 @@ namespace SRCCore.Expressions
 {
     public partial class Expression
     {
+        // TODO ref 取って戻り値か out 変数を受けるようにする決断をする。
+
         // str に対して式置換を行う
         public void ReplaceSubExpression(ref string str)
         {
@@ -67,6 +69,18 @@ namespace SRCCore.Expressions
                 }
                 str = Strings.Left(str, start_idx - 1) + localGetValueAsString(str) + Strings.Right(str, str_len - end_idx);
             }
+        }
+
+        // msg に対して式置換等の処理を行う
+        public void FormatMessage(ref string msg)
+        {
+            // ちゃんと横棒がつながって表示されるように罫線文字に置換
+            msg = msg.Replace("――", "──")
+                .Replace("ーー", "──")
+                .Replace("─―", "──")
+                .Replace("─ー", "──");
+            // 式置換
+            ReplaceSubExpression(ref msg);
         }
     }
 }
