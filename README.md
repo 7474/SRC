@@ -68,7 +68,7 @@ koudenpa はSRCに付属のサンプルシナリオで動作確認を試して�
 
 ## Convert log
 
-- VB6 -> VB.NET
+- VB5 -> VB.NET
     - Visual Basic 2008 Express Edition
 - VB.NET -> C#
     - Visual Studio 2019 + Code Converter (VB - C#)
