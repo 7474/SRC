@@ -192,6 +192,11 @@ namespace SRCDataLinter
             Console.Error.WriteLine(msg);
         }
 
+        public GuiDialogResult Input(string message, string title, string defaultValue, out string value)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool IsRButtonPressed(bool ignore_message_wait = false)
         {
             throw new NotImplementedException();

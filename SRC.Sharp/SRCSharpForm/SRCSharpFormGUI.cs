@@ -5,6 +5,7 @@ using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
 using SRCSharpForm.Extensions;
+using SRCSharpForm.Forms;
 using SRCSharpForm.Resoruces;
 using System;
 using System.Collections.Generic;
@@ -2215,6 +2216,18 @@ namespace SRCSharpForm
                 res = MessageBox.Show(message, title, buttons);
             }
             return res == DialogResult.OK ? GuiDialogResult.Ok : GuiDialogResult.Cancel;
+        }
+
+        public GuiDialogResult Input(string message, string title, string defaultValue, out string value)
+        {
+            using (var dialog = new InputForm())
+            {
+                dialog.Text = title;
+                dialog.InputText = defaultValue;
+                var res = dialog.ShowDialog();
+                value = dialog.InputText;
+                return res == DialogResult.OK ? GuiDialogResult.Ok : GuiDialogResult.Cancel;
+            }
         }
     }
 }
