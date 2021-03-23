@@ -84,5 +84,5 @@ koudenpa はSRCに付属のサンプルシナリオで動作確認を試して�
     - static な空間は一応インスタンスにする
 - 実行環境依存な処理はSRCCoreには含めない
     - GUIプロジェクトに実装する
-- short（VB6のint）は int にする
+- short（VBのint）は int にする
 - 15Twip = 1Pixel
