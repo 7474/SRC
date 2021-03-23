@@ -13,34 +13,13 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            int ExecConfirmCmdRet = default;
-            short ret;
-            if ((int)ArgNum != 2)
+            if (ArgNum != 2)
             {
-                Event_Renamed.EventErrorMessage = "Confirmコマンドの引数の数が違います";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 198480
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, "Confirmコマンドの引数の数が違います");
             }
 
-            // 一度イベントを解消しておかないとMsgBoxを連続で使用したときに
-            // 動作がおかしくなる（ＶＢのバグ？）
-            Application.DoEvents();
-            ret = (short)Interaction.MsgBox(GetArgAsString(2), (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "選択");
-            if (ret == 1)
-            {
-                Event_Renamed.SelectedAlternative = 1.ToString();
-            }
-            else
-            {
-                Event_Renamed.SelectedAlternative = 0.ToString();
-            }
+            var res = GUI.Confirm(GetArgAsString(2), "選択", GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
+            Event.SelectedAlternative = res == GuiDialogResult.Ok ? "1" : "0";
 
             return EventData.ID + 1;
         }
