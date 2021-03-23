@@ -278,5 +278,11 @@ namespace SRCCore.CmdDatas
             var start = EventData.ID + 1;
             return Enumerable.Range(start, Event.EventCmd.Count - start);
         }
+
+        public IEnumerable<int> BeforeEventIdRange()
+        {
+            var start = EventData.ID - 1;
+            return Enumerable.Range(0, start).Select(x => start - x);
+        }
     }
 }

@@ -94,7 +94,7 @@ namespace SRCCore.CmdDatas.Commands
 
                         // 選択肢の読みこみ
                         CmdData hitEndCmd = null;
-                        for (var i = EventData.ID + 1; i < Event.EventData.Count; i++)
+                        foreach (var i in AfterEventIdRange())
                         {
                             var buf = Event.EventData[i].Data;
                             Expression.FormatMessage(ref buf);
