@@ -392,21 +392,19 @@ namespace SRCCore.Expressions
                 //            return GetVariableRet;
                 //        }
 
-                //    case "選択":
-                //        {
-                //            if (etype == ValueType.NumericType)
-                //            {
-                //                num_result = Conversions.ToDouble(Event.SelectedAlternative);
-                //                GetVariableRet = ValueType.NumericType;
-                //            }
-                //            else
-                //            {
-                //                str_result = Event.SelectedAlternative;
-                //                GetVariableRet = ValueType.StringType;
-                //            }
+                case "選択":
+                    if (etype == ValueType.NumericType)
+                    {
+                        num_result = Conversions.ToDouble(Event.SelectedAlternative);
+                        GetVariableRet = ValueType.NumericType;
+                    }
+                    else
+                    {
+                        str_result = Event.SelectedAlternative;
+                        GetVariableRet = ValueType.StringType;
+                    }
 
-                //            return GetVariableRet;
-                //        }
+                    return GetVariableRet;
 
                 //    case "ターン数":
                 //        {

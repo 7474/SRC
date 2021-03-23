@@ -38,6 +38,89 @@ namespace SRCSharpForm
         private ListBoxItem SelectedItem => lstItems.SelectedIndex >= 0 ? ListBoxItems[lstItems.SelectedIndex] : null;
         private bool HasFlag;
 
+
+        // リストボックスの高さを大きくする
+        public void EnlargeListBoxHeight()
+        {
+            switch (VerticalSize ?? "")
+            {
+                case "M":
+                    if (WindowState != FormWindowState.Normal)
+                    {
+                        Visible = true;
+                        WindowState = FormWindowState.Normal;
+                    }
+
+                    Visible = false;
+                    Height = Height + 160;
+                    lstItems.Height = 260;
+                    VerticalSize = "L";
+                    break;
+            }
+        }
+
+        // リストボックスの高さを小さくする
+        public void ReduceListBoxHeight()
+        {
+            switch (VerticalSize ?? "")
+            {
+                case "L":
+                    if (WindowState != FormWindowState.Normal)
+                    {
+                        Visible = true;
+                        WindowState = FormWindowState.Normal;
+                    }
+
+                    Visible = false;
+                    Height = Height - 160;
+                    lstItems.Height = 100;
+                    VerticalSize = "M";
+                    break;
+            }
+        }
+
+        // リストボックスの幅を大きくする
+        public void EnlargeListBoxWidth()
+        {
+            switch (HorizontalSize ?? "")
+            {
+                case "S":
+                    if (WindowState != FormWindowState.Normal)
+                    {
+                        Visible = true;
+                        WindowState = FormWindowState.Normal;
+                    }
+
+                    Visible = false;
+                    Width = Width + 157;
+                    lstItems.Width = 637;
+                    labCaption.Width = 637;
+                    HorizontalSize = "M";
+                    break;
+            }
+        }
+
+        // リストボックスの幅を小さくする
+        public void ReduceListBoxWidth()
+        {
+            switch (HorizontalSize ?? "")
+            {
+                case "M":
+                    if (WindowState != FormWindowState.Normal)
+                    {
+                        Visible = true;
+                        WindowState = FormWindowState.Normal;
+                    }
+
+                    Visible = false;
+                    Width = Width - 157;
+                    lstItems.Width = 486;
+                    labCaption.Width = 486;
+                    HorizontalSize = "S";
+                    break;
+            }
+        }
+
         public void ShowItems(frmMain MainForm, ListBoxArgs args)
         {
             ListBoxItems = args.Items;

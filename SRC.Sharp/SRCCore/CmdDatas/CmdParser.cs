@@ -45,11 +45,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "ask":
-                    //    {
-                    //        CmdName = CmdType.AskCmd;
-                    //        break;
-                    //    }
+                    case "ask":
+                        return new AskCmd(src, data);
 
                     //case "attack":
                     //    {
@@ -209,11 +206,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "confirm":
-                    //    {
-                    //        CmdName = CmdType.ConfirmCmd;
-                    //        break;
-                    //    }
+                    case "confirm":
+                        return new ConfirmCmd(src, data);
 
                     case "continue":
                         return new ContinueCmd(src, data);
@@ -465,11 +459,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "input":
-                    //    {
-                    //        CmdName = CmdType.InputCmd;
-                    //        break;
-                    //    }
+                    case "input":
+                        return new InputCmd(src, data);
 
                     //case "intermissioncommand":
                     //    {
@@ -658,11 +649,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "question":
-                    //    {
-                    //        CmdName = CmdType.QuestionCmd;
-                    //        break;
-                    //    }
+                    case "question":
+                        return new QuestionCmd(src, data);
 
                     //case "quickload":
                     //    {

@@ -5,6 +5,7 @@ using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
 using SRCSharpForm.Extensions;
+using SRCSharpForm.Forms;
 using SRCSharpForm.Resoruces;
 using System;
 using System.Collections.Generic;
@@ -994,7 +995,10 @@ namespace SRCSharpForm
             string left_margin;
             DisplayMessagePilot(pname, msg_mode, out pnickname, out left_margin);
 
-            frmMessage.SetMessage(msg);
+            var tmpMsg = msg;
+            Expression.FormatMessage(ref tmpMsg);
+
+            frmMessage.SetMessage(tmpMsg);
             Application.DoEvents();
 
             // 次のメッセージ待ち
@@ -1346,22 +1350,22 @@ namespace SRCSharpForm
 
         public void EnlargeListBoxHeight()
         {
-            throw new NotImplementedException();
+            frmListBox.EnlargeListBoxHeight();
         }
 
         public void ReduceListBoxHeight()
         {
-            throw new NotImplementedException();
+            frmListBox.ReduceListBoxHeight();
         }
 
         public void EnlargeListBoxWidth()
         {
-            throw new NotImplementedException();
+            frmListBox.EnlargeListBoxWidth();
         }
 
         public void ReduceListBoxWidth()
         {
-            throw new NotImplementedException();
+            frmListBox.ReduceListBoxWidth();
         }
 
         public void AddPartsToListBox()
@@ -2215,6 +2219,18 @@ namespace SRCSharpForm
                 res = MessageBox.Show(message, title, buttons);
             }
             return res == DialogResult.OK ? GuiDialogResult.Ok : GuiDialogResult.Cancel;
+        }
+
+        public GuiDialogResult Input(string message, string title, string defaultValue, out string value)
+        {
+            using (var dialog = new InputForm())
+            {
+                dialog.Text = title;
+                dialog.InputText = defaultValue;
+                var res = dialog.ShowDialog();
+                value = dialog.InputText;
+                return res == DialogResult.OK ? GuiDialogResult.Ok : GuiDialogResult.Cancel;
+            }
         }
     }
 }
