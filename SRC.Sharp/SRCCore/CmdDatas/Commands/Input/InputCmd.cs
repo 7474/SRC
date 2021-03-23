@@ -13,41 +13,23 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            int ExecInputCmdRet = default;
-            // UPGRADE_NOTE: str は str_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-            string str_Renamed;
+            string input;
+            GuiDialogResult res;
             switch (ArgNum)
             {
                 case 3:
-                    {
-                        str_Renamed = Interaction.InputBox(GetArgAsString((short)3), "SRC");
-                        break;
-                    }
+                    res = GUI.Input(GetArgAsString(3), "SRC", "", out input);
+                    break;
 
                 case 4:
-                    {
-                        str_Renamed = Interaction.InputBox(GetArgAsString((short)3), "SRC", GetArgAsString((short)4));
-                        break;
-                    }
+                    res = GUI.Input(GetArgAsString(3), "SRC", GetArgAsString(4), out input);
+                    break;
 
                 default:
-                    {
-                        Event_Renamed.EventErrorMessage = "Inputコマンドの引数の数が違います";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 296282
-
-
-                        Input:
-                                        Error(0)
-
-                         */
-                        break;
-                    }
+                    throw new EventErrorException(this, "Inputコマンドの引数の数が違います");
             }
 
-            string argvname = GetArg(2);
-            Expression.SetVariableAsString(ref argvname, ref str_Renamed);
+            Expression.SetVariableAsString(GetArg(2), res == GuiDialogResult.Ok ? input : "");
             return EventData.ID + 1;
         }
     }
