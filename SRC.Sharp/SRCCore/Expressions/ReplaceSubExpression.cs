@@ -31,6 +31,7 @@ namespace SRCCore.Expressions
                 var loopTo = str_len;
                 for (i = (start_idx + 2); i <= loopTo; i++)
                 {
+                    var endKakko = false;
                     switch (Strings.Mid(str, i, 1) ?? "")
                     {
                         case ")":
@@ -39,9 +40,8 @@ namespace SRCCore.Expressions
                                 if (n == 0)
                                 {
                                     end_idx = i;
-                                    break;
+                                    endKakko = true;
                                 }
-
                                 break;
                             }
 
@@ -51,6 +51,7 @@ namespace SRCCore.Expressions
                                 break;
                             }
                     }
+                    if (endKakko) { break; }
                 }
 
                 if (i > str_len)

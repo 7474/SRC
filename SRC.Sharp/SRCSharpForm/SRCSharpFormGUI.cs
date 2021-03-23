@@ -995,7 +995,10 @@ namespace SRCSharpForm
             string left_margin;
             DisplayMessagePilot(pname, msg_mode, out pnickname, out left_margin);
 
-            frmMessage.SetMessage(msg);
+            var tmpMsg = msg;
+            Expression.ReplaceSubExpression(ref tmpMsg);
+
+            frmMessage.SetMessage(tmpMsg);
             Application.DoEvents();
 
             // 次のメッセージ待ち
