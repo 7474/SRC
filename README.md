@@ -64,7 +64,7 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
 1. 文字コードを変換したSRCフォルダ内に実行ファイルをコピーする
 1. SRCSharpForm.exe を実行する
 
-koudenpa はSRCに付属のサンプルシナリオで動作確認を試しています。
+SRCに付属のサンプルシナリオや https://github.com/7474/SRC-SharpTestScenario で動作確認しながら作っています。
 
 ## Convert log
 
