@@ -63,11 +63,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "break":
-                    //    {
-                    //        CmdName = CmdType.BreakCmd;
-                    //        break;
-                    //    }
+                    case "break":
+                        return new BreakCmd(src, data);
 
                     case "call":
                         return new CallCmd(src, data);
@@ -862,11 +859,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "skip":
-                    //    {
-                    //        CmdName = CmdType.SkipCmd;
-                    //        break;
-                    //    }
+                    case "skip":
+                        return new SkipCmd(src, data);
 
                     //case "sort":
                     //    {
