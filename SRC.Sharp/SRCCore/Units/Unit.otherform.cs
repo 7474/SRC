@@ -67,7 +67,7 @@ namespace SRCCore.Units
 
             // 見つからなければユニット名称で検索
             var uname = Index;
-            u = colOtherForm.Values.FirstOrDefault(x => u.Name == uname);
+            u = colOtherForm.Values.FirstOrDefault(x => x.Name == uname);
             if (u != null)
             {
                 return u;
