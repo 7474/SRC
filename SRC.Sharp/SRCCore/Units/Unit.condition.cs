@@ -44,43 +44,43 @@ namespace SRCCore.Units
             colCondition.Add(new_condition, cname);
         }
 
-        //// 特殊状態を削除
-        //public void DeleteCondition(string Index)
-        //{
-        //    {
-        //        var withBlock = colCondition[Index];
-        //        colCondition.Remove(Index);
+        // 特殊状態を削除
+        public void DeleteCondition(string Index)
+        {
+            {
+                var withBlock = colCondition[Index];
+                colCondition.Remove(Index);
 
-        //        // 特殊能力付加の場合はユニットのステータスをアップデート
-        //        if (Strings.Right(Conversions.ToString(withBlock.Name), 2) == "付加"
-        //            && Strings.InStr(Conversions.ToString(withBlock.StrData), "パイロット能力付加") == 0)
-        //        {
-        //            Update();
-        //        }
-        //    }
-        //}
+                // 特殊能力付加の場合はユニットのステータスをアップデート
+                if (Strings.Right(Conversions.ToString(withBlock.Name), 2) == "付加"
+                    && Strings.InStr(Conversions.ToString(withBlock.StrData), "パイロット能力付加") == 0)
+                {
+                    Update();
+                }
+            }
+        }
 
-        //public void DeleteCondition0(string Index)
-        //{
-        //    colCondition.Remove(Index);
-        //}
+        public void DeleteCondition0(string Index)
+        {
+            colCondition.Remove(Index);
+        }
 
-        //// 付加された特殊状態の総数
-        //public int CountCondition()
-        //{
-        //    int CountConditionRet = default;
-        //    CountConditionRet = colCondition.Count;
-        //    return CountConditionRet;
-        //}
+        public void ClearCondition()
+        {
+            colCondition.Clear();
+        }
 
-        //// 特殊状態
-        //public string Condition(string Index)
-        //{
-        //    string ConditionRet = default;
-        //    // UPGRADE_WARNING: オブジェクト colCondition.Item().Name の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //    ConditionRet = Conversions.ToString(colCondition[Index].Name);
-        //    return ConditionRet;
-        //}
+        // 付加された特殊状態の総数
+        public int CountCondition()
+        {
+            return colCondition.Count;
+        }
+
+        // 特殊状態
+        public string Condition(string Index)
+        {
+            return colCondition[Index].Name;
+        }
 
         // 特殊状態の残りターン数
         public int ConditionLifetime(string Index)

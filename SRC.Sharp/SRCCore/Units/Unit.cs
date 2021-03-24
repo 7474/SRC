@@ -117,6 +117,7 @@ namespace SRCCore.Units
 
         // 現在の特殊ステータス
         private SrcCollection<Condition> colCondition = new SrcCollection<Condition>();
+        public IList<Condition> Conditions => colCondition.List;
 
         // 各武器の残弾数
         private double[] dblBullet;

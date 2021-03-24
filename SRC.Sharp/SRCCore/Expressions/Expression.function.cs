@@ -21,6 +21,7 @@ namespace SRCCore.Expressions
         // === 関数に関する処理 ===
 
         private IDictionary<string, IFunction> systemFunctionMap = new IFunction[] {
+            new Functions.Unit(),
             new X(),
             new Y(),
         }.ToDictionary(x => x.Name.ToLower());

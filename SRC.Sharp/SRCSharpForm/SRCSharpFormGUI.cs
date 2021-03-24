@@ -2205,7 +2205,9 @@ namespace SRCSharpForm
                 owner = frmMessage;
             }
 
-            var buttons = MessageBoxButtons.OKCancel;
+            var buttons = option.HasFlag(GuiConfirmOption.OkCancel)
+                ? MessageBoxButtons.OKCancel
+                : MessageBoxButtons.OK;
             MessageBoxIcon? icon = option.HasFlag(GuiConfirmOption.Question) ? MessageBoxIcon.Question : null;
 
             DialogResult res;

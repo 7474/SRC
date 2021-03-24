@@ -3,8 +3,10 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Lib;
 using SRCCore.VB;
 using System;
+using System.Linq;
 
 namespace SRCCore.Commands
 {
@@ -13,15 +15,7 @@ namespace SRCCore.Commands
         // 「変形」コマンド
         private void TransformCommand()
         {
-            throw new NotImplementedException();
-            //string[] list;
-            //string[] list_id;
-            //int i;
-            //int ret;
-            //string uname, fdata;
-            //string prev_uname;
-
-            //// MOD START MARGE
+            // MOD START MARGE
             //// If MainWidth <> 15 Then
             //if (GUI.NewGUIMode)
             //{
@@ -29,366 +23,346 @@ namespace SRCCore.Commands
             //    Status.ClearUnitStatus();
             //}
 
-            //GUI.LockGUI();
-            //object argIndex1 = "変形";
-            //fdata = SelectedUnit.FeatureData(argIndex1);
-            //if (string.IsNullOrEmpty(Map.MapFileName))
-            //{
-            //    // ユニットステータスコマンドの場合
-            //    {
-            //        var withBlock = SelectedUnit;
-            //        list = new string[1];
-            //        list_id = new string[1];
-            //        // 変形可能な形態一覧を作成
-            //        var loopTo = GeneralLib.LLength(fdata);
-            //        for (i = 2; i <= loopTo; i++)
-            //        {
-            //            object argIndex2 = GeneralLib.LIndex(fdata, i);
-            //            {
-            //                var withBlock1 = withBlock.OtherForm(argIndex2);
-            //                if (withBlock1.IsAvailable())
-            //                {
-            //                    Array.Resize(list, Information.UBound(list) + 1 + 1);
-            //                    Array.Resize(list_id, Information.UBound(list) + 1);
-            //                    list[Information.UBound(list)] = withBlock1.Nickname;
-            //                    list_id[Information.UBound(list)] = withBlock1.Name;
-            //                }
-            //            }
-            //        }
+            GUI.LockGUI();
+            var fdata = SelectedUnit.FeatureData("変形");
+            if (Map.IsStatusView)
+            {
+                // TODO Impl
+                //// ユニットステータスコマンドの場合
+                //{
+                //    var withBlock = SelectedUnit;
+                //    list = new string[1];
+                //    list_id = new string[1];
+                //    // 変形可能な形態一覧を作成
+                //    var loopTo = GeneralLib.LLength(fdata);
+                //    for (i = 2; i <= loopTo; i++)
+                //    {
+                //        object argIndex2 = GeneralLib.LIndex(fdata, i);
+                //        {
+                //            var withBlock1 = withBlock.OtherForm(argIndex2);
+                //            if (withBlock1.IsAvailable())
+                //            {
+                //                Array.Resize(list, Information.UBound(list) + 1 + 1);
+                //                Array.Resize(list_id, Information.UBound(list) + 1);
+                //                list[Information.UBound(list)] = withBlock1.Nickname;
+                //                list_id[Information.UBound(list)] = withBlock1.Name;
+                //            }
+                //        }
+                //    }
 
-            //        GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
+                //    GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
 
-            //        // 変形する形態を選択
-            //        if (Information.UBound(list) > 1)
-            //        {
-            //            GUI.TopItem = 1;
-            //            string arglb_caption = "変形";
-            //            string arglb_info = "名前";
-            //            string arglb_mode = "カーソル移動";
-            //            ret = GUI.ListBox(arglb_caption, list, arglb_info, arglb_mode);
-            //            if (ret == 0)
-            //            {
-            //                CancelCommand();
-            //                GUI.UnlockGUI();
-            //                return;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            ret = 1;
-            //        }
+                //    // 変形する形態を選択
+                //    if (Information.UBound(list) > 1)
+                //    {
+                //        GUI.TopItem = 1;
+                //        string arglb_caption = "変形";
+                //        string arglb_info = "名前";
+                //        string arglb_mode = "カーソル移動";
+                //        ret = GUI.ListBox(arglb_caption, list, arglb_info, arglb_mode);
+                //        if (ret == 0)
+                //        {
+                //            CancelCommand();
+                //            GUI.UnlockGUI();
+                //            return;
+                //        }
+                //    }
+                //    else
+                //    {
+                //        ret = 1;
+                //    }
 
-            //        // 変形を実施
-            //        Unit localOtherForm() { var tmp = list_id; object argIndex1 = tmp[ret]; var ret = withBlock.OtherForm(argIndex1); return ret; }
+                //    // 変形を実施
+                //    Unit localOtherForm() { var tmp = list_id; object argIndex1 = tmp[ret]; var ret = withBlock.OtherForm(argIndex1); return ret; }
 
-            //        string argnew_form = localOtherForm().Name;
-            //        withBlock.Transform(argnew_form);
-            //        localOtherForm().Name = argnew_form;
+                //    string argnew_form = localOtherForm().Name;
+                //    withBlock.Transform(argnew_form);
+                //    localOtherForm().Name = argnew_form;
 
-            //        // ユニットリストの表示を更新
-            //        string argsmode = "";
-            //        Event_Renamed.MakeUnitList(smode: argsmode);
+                //    // ユニットリストの表示を更新
+                //    string argsmode = "";
+                //    Event.MakeUnitList(smode: argsmode);
 
-            //        // ステータスウィンドウの表示を更新
-            //        Status.DisplayUnitStatus(withBlock.CurrentForm());
+                //    // ステータスウィンドウの表示を更新
+                //    Status.DisplayUnitStatus(withBlock.CurrentForm());
 
-            //        // コマンドを終了
-            //        GUI.UnlockGUI();
-            //        CommandState = "ユニット選択";
-            //        return;
-            //    }
-            //}
+                //    // コマンドを終了
+                //    GUI.UnlockGUI();
+                //    CommandState = "ユニット選択";
+                //    return;
+                //}
+            }
 
-            //// 変形可能な形態の一覧を作成
-            //list = new string[1];
-            //list_id = new string[1];
-            //GUI.ListItemFlag = new bool[1];
-            //var loopTo1 = GeneralLib.LLength(fdata);
-            //for (i = 2; i <= loopTo1; i++)
-            //{
-            //    object argIndex3 = GeneralLib.LIndex(fdata, i);
-            //    {
-            //        var withBlock2 = SelectedUnit.OtherForm(argIndex3);
-            //        if (withBlock2.IsAvailable())
-            //        {
-            //            Array.Resize(list, Information.UBound(list) + 1 + 1);
-            //            Array.Resize(list_id, Information.UBound(list) + 1);
-            //            Array.Resize(GUI.ListItemFlag, Information.UBound(list) + 1);
-            //            list[Information.UBound(list)] = withBlock2.Nickname0;
-            //            list_id[Information.UBound(list)] = withBlock2.Name;
-            //            if (withBlock2.IsAbleToEnter(SelectedUnit.x, SelectedUnit.y) | string.IsNullOrEmpty(Map.MapFileName))
-            //            {
-            //                GUI.ListItemFlag[Information.UBound(list)] = false;
-            //            }
-            //            else
-            //            {
-            //                GUI.ListItemFlag[Information.UBound(list)] = true;
-            //            }
-            //        }
-            //    }
-            //}
+            // 変形可能な形態の一覧を作成
+            var forms = GeneralLib.ToL(fdata).Skip(1)
+                .Select(x => SelectedUnit.OtherForm(x))
+                .Where(x => x.IsAvailable())
+                .Select(x => new ListBoxItem
+                {
+                    ListItemID = x.Name,
+                    Text = x.Nickname0,
+                    ListItemFlag = !(x.IsAbleToEnter(SelectedUnit.x, SelectedUnit.y) || Map.IsStatusView)
+                }).ToList();
+            // 変形先の形態を選択
+            int ret;
+            if (forms.Count() == 1)
+            {
+                if (forms.First().ListItemFlag)
+                {
+                    GUI.Confirm("この地形では" + GeneralLib.LIndex(fdata, 1) + "できません", "", GuiConfirmOption.Ok);
+                    CancelCommand();
+                    GUI.UnlockGUI();
+                    return;
+                }
 
-            //// 変形先の形態を選択
-            //if (Information.UBound(list) == 1)
-            //{
-            //    if (GUI.ListItemFlag[1])
-            //    {
-            //        Interaction.MsgBox("この地形では" + GeneralLib.LIndex(fdata, 1) + "できません");
-            //        CancelCommand();
-            //        GUI.UnlockGUI();
-            //        return;
-            //    }
+                ret = 1;
+            }
+            else
+            {
+                GUI.TopItem = 1;
+                ret = GUI.ListBox(new ListBoxArgs
+                {
+                    lb_caption = SelectedUnit.IsHero() ? "変身先" : "変形先",
+                    lb_info = "名前",
+                    lb_mode = "カーソル移動",
+                    HasFlag = true,
+                    Items = forms,
+                });
 
-            //    ret = 1;
-            //}
-            //else
-            //{
-            //    GUI.TopItem = 1;
-            //    if (!SelectedUnit.IsHero())
-            //    {
-            //        string arglb_caption1 = "変形先";
-            //        string arglb_info1 = "名前";
-            //        string arglb_mode1 = "カーソル移動";
-            //        ret = GUI.ListBox(arglb_caption1, list, arglb_info1, arglb_mode1);
-            //    }
-            //    else
-            //    {
-            //        string arglb_caption2 = "変身先";
-            //        string arglb_info2 = "名前";
-            //        string arglb_mode2 = "カーソル移動";
-            //        ret = GUI.ListBox(arglb_caption2, list, arglb_info2, arglb_mode2);
-            //    }
+                if (ret == 0)
+                {
+                    CancelCommand();
+                    GUI.UnlockGUI();
+                    return;
+                }
+            }
 
-            //    if (ret == 0)
-            //    {
-            //        CancelCommand();
-            //        GUI.UnlockGUI();
-            //        return;
-            //    }
-            //}
+            var uname = forms[ret - 1].ListItemID;
+            var targetUnit = SRC.UDList.Item(uname);
+            // TODO Impl
+            string BGM;
+            {
+                //var withBlock3 = SelectedUnit;
+                //// ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
+                //object argIndex6 = uname;
+                //{
+                //    var withBlock4 = SRC.UDList.Item(argIndex6);
+                //    string argfname = "追加パイロット";
+                //    if (withBlock4.IsFeatureAvailable(argfname))
+                //    {
+                //        bool localIsDefined1() { object argIndex1 = "追加パイロット"; object argIndex2 = withBlock4.FeatureData(argIndex1); var ret = SRC.PList.IsDefined(argIndex2); return ret; }
 
-            //uname = list_id[ret];
-            //string BGM;
-            //{
-            //    var withBlock3 = SelectedUnit;
-            //    // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
-            //    object argIndex6 = uname;
-            //    {
-            //        var withBlock4 = SRC.UDList.Item(argIndex6);
-            //        string argfname = "追加パイロット";
-            //        if (withBlock4.IsFeatureAvailable(argfname))
-            //        {
-            //            bool localIsDefined1() { object argIndex1 = "追加パイロット"; object argIndex2 = withBlock4.FeatureData(argIndex1); var ret = SRC.PList.IsDefined(argIndex2); return ret; }
+                //        if (!localIsDefined1())
+                //        {
+                //            bool localIsDefined() { object argIndex1 = "追加パイロット"; object argIndex2 = withBlock4.FeatureData(argIndex1); var ret = SRC.PDList.IsDefined(argIndex2); return ret; }
 
-            //            if (!localIsDefined1())
-            //            {
-            //                bool localIsDefined() { object argIndex1 = "追加パイロット"; object argIndex2 = withBlock4.FeatureData(argIndex1); var ret = SRC.PDList.IsDefined(argIndex2); return ret; }
+                //            if (!localIsDefined())
+                //            {
+                //                object argIndex4 = "追加パイロット";
+                //                string argmsg = uname + "の追加パイロット「" + withBlock4.FeatureData(argIndex4) + "」のデータが見つかりません";
+                //                GUI.ErrorMessage(argmsg);
+                //                SRC.TerminateSRC();
+                //            }
 
-            //                if (!localIsDefined())
-            //                {
-            //                    object argIndex4 = "追加パイロット";
-            //                    string argmsg = uname + "の追加パイロット「" + withBlock4.FeatureData(argIndex4) + "」のデータが見つかりません";
-            //                    GUI.ErrorMessage(argmsg);
-            //                    SRC.TerminateSRC();
-            //                }
+                //            object argIndex5 = "追加パイロット";
+                //            string argpname = withBlock4.FeatureData(argIndex5);
+                //            string argpparty = SelectedUnit.Party0;
+                //            string arggid = "";
+                //            SRC.PList.Add(argpname, SelectedUnit.MainPilot().Level, argpparty, gid: arggid);
+                //            SelectedUnit.Party0 = argpparty;
+                //        }
+                //    }
+                //}
 
-            //                object argIndex5 = "追加パイロット";
-            //                string argpname = withBlock4.FeatureData(argIndex5);
-            //                string argpparty = SelectedUnit.Party0;
-            //                string arggid = "";
-            //                SRC.PList.Add(argpname, SelectedUnit.MainPilot().Level, argpparty, gid: arggid);
-            //                SelectedUnit.Party0 = argpparty;
-            //            }
-            //        }
-            //    }
+                //// ＢＧＭの変更
+                //string argfname1 = "変形ＢＧＭ";
+                //if (withBlock3.IsFeatureAvailable(argfname1))
+                //{
+                //    var loopTo2 = withBlock3.CountFeature();
+                //    for (i = 1; i <= loopTo2; i++)
+                //    {
+                //        string localFeature() { object argIndex1 = i; var ret = withBlock3.Feature(argIndex1); return ret; }
 
-            //    // ＢＧＭの変更
-            //    string argfname1 = "変形ＢＧＭ";
-            //    if (withBlock3.IsFeatureAvailable(argfname1))
-            //    {
-            //        var loopTo2 = withBlock3.CountFeature();
-            //        for (i = 1; i <= loopTo2; i++)
-            //        {
-            //            string localFeature() { object argIndex1 = i; var ret = withBlock3.Feature(argIndex1); return ret; }
+                //        string localFeatureData2() { object argIndex1 = i; var ret = withBlock3.FeatureData(argIndex1); return ret; }
 
-            //            string localFeatureData2() { object argIndex1 = i; var ret = withBlock3.FeatureData(argIndex1); return ret; }
+                //        string localLIndex() { string arglist = hs6c18ebb7075745309751cd168b7bf5f0(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-            //            string localLIndex() { string arglist = hs6c18ebb7075745309751cd168b7bf5f0(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
+                //        if (localFeature() == "変形ＢＧＭ" & (localLIndex() ?? "") == (uname ?? ""))
+                //        {
+                //            string localFeatureData() { object argIndex1 = i; var ret = withBlock3.FeatureData(argIndex1); return ret; }
 
-            //            if (localFeature() == "変形ＢＧＭ" & (localLIndex() ?? "") == (uname ?? ""))
-            //            {
-            //                string localFeatureData() { object argIndex1 = i; var ret = withBlock3.FeatureData(argIndex1); return ret; }
+                //            string localFeatureData1() { object argIndex1 = i; var ret = withBlock3.FeatureData(argIndex1); return ret; }
 
-            //                string localFeatureData1() { object argIndex1 = i; var ret = withBlock3.FeatureData(argIndex1); return ret; }
+                //            string argmidi_name = Strings.Mid(localFeatureData(), Strings.InStr(localFeatureData1(), " ") + 1);
+                //            BGM = Sound.SearchMidiFile(argmidi_name);
+                //            if (Strings.Len(BGM) > 0)
+                //            {
+                //                Sound.ChangeBGM(BGM);
+                //                GUI.Sleep(500);
+                //            }
 
-            //                string argmidi_name = Strings.Mid(localFeatureData(), Strings.InStr(localFeatureData1(), " ") + 1);
-            //                BGM = Sound.SearchMidiFile(argmidi_name);
-            //                if (Strings.Len(BGM) > 0)
-            //                {
-            //                    Sound.ChangeBGM(BGM);
-            //                    GUI.Sleep(500);
-            //                }
+                //            break;
+                //        }
+                //    }
+                //}
 
-            //                break;
-            //            }
-            //        }
-            //    }
+                //// メッセージを表示
+                //bool localIsMessageDefined2() { string argmain_situation = "変形(" + withBlock3.Name + "=>" + uname + ")"; var ret = withBlock3.IsMessageDefined(argmain_situation); return ret; }
 
-            //    // メッセージを表示
-            //    bool localIsMessageDefined2() { string argmain_situation = "変形(" + withBlock3.Name + "=>" + uname + ")"; var ret = withBlock3.IsMessageDefined(argmain_situation); return ret; }
+                //bool localIsMessageDefined3() { string argmain_situation = "変形(" + uname + ")"; var ret = withBlock3.IsMessageDefined(argmain_situation); return ret; }
 
-            //    bool localIsMessageDefined3() { string argmain_situation = "変形(" + uname + ")"; var ret = withBlock3.IsMessageDefined(argmain_situation); return ret; }
+                //bool localIsMessageDefined4() { object argIndex1 = "変形"; string argmain_situation = "変形(" + withBlock3.FeatureName(argIndex1) + ")"; var ret = withBlock3.IsMessageDefined(argmain_situation); return ret; }
 
-            //    bool localIsMessageDefined4() { object argIndex1 = "変形"; string argmain_situation = "変形(" + withBlock3.FeatureName(argIndex1) + ")"; var ret = withBlock3.IsMessageDefined(argmain_situation); return ret; }
+                //if (localIsMessageDefined2() | localIsMessageDefined3() | localIsMessageDefined4())
+                //{
+                //    GUI.Center(withBlock3.x, withBlock3.y);
+                //    GUI.RefreshScreen();
+                //    Unit argu1 = null;
+                //    Unit argu2 = null;
+                //    GUI.OpenMessageForm(u1: argu1, u2: argu2);
+                //    bool localIsMessageDefined() { string argmain_situation = "変形(" + uname + ")"; var ret = withBlock3.IsMessageDefined(argmain_situation); return ret; }
 
-            //    if (localIsMessageDefined2() | localIsMessageDefined3() | localIsMessageDefined4())
-            //    {
-            //        GUI.Center(withBlock3.x, withBlock3.y);
-            //        GUI.RefreshScreen();
-            //        Unit argu1 = null;
-            //        Unit argu2 = null;
-            //        GUI.OpenMessageForm(u1: argu1, u2: argu2);
-            //        bool localIsMessageDefined() { string argmain_situation = "変形(" + uname + ")"; var ret = withBlock3.IsMessageDefined(argmain_situation); return ret; }
+                //    bool localIsMessageDefined1() { object argIndex1 = "変形"; string argmain_situation = "変形(" + withBlock3.FeatureName(argIndex1) + ")"; var ret = withBlock3.IsMessageDefined(argmain_situation); return ret; }
 
-            //        bool localIsMessageDefined1() { object argIndex1 = "変形"; string argmain_situation = "変形(" + withBlock3.FeatureName(argIndex1) + ")"; var ret = withBlock3.IsMessageDefined(argmain_situation); return ret; }
+                //    string argmain_situation = "変形(" + withBlock3.Name + "=>" + uname + ")";
+                //    if (withBlock3.IsMessageDefined(argmain_situation))
+                //    {
+                //        string argSituation = "変形(" + withBlock3.Name + "=>" + uname + ")";
+                //        string argmsg_mode = "";
+                //        withBlock3.PilotMessage(argSituation, msg_mode: argmsg_mode);
+                //    }
+                //    else if (localIsMessageDefined())
+                //    {
+                //        string argSituation1 = "変形(" + uname + ")";
+                //        string argmsg_mode1 = "";
+                //        withBlock3.PilotMessage(argSituation1, msg_mode: argmsg_mode1);
+                //    }
+                //    else if (localIsMessageDefined1())
+                //    {
+                //        object argIndex7 = "変形";
+                //        string argSituation2 = "変形(" + withBlock3.FeatureName(argIndex7) + ")";
+                //        string argmsg_mode2 = "";
+                //        withBlock3.PilotMessage(argSituation2, msg_mode: argmsg_mode2);
+                //    }
 
-            //        string argmain_situation = "変形(" + withBlock3.Name + "=>" + uname + ")";
-            //        if (withBlock3.IsMessageDefined(argmain_situation))
-            //        {
-            //            string argSituation = "変形(" + withBlock3.Name + "=>" + uname + ")";
-            //            string argmsg_mode = "";
-            //            withBlock3.PilotMessage(argSituation, msg_mode: argmsg_mode);
-            //        }
-            //        else if (localIsMessageDefined())
-            //        {
-            //            string argSituation1 = "変形(" + uname + ")";
-            //            string argmsg_mode1 = "";
-            //            withBlock3.PilotMessage(argSituation1, msg_mode: argmsg_mode1);
-            //        }
-            //        else if (localIsMessageDefined1())
-            //        {
-            //            object argIndex7 = "変形";
-            //            string argSituation2 = "変形(" + withBlock3.FeatureName(argIndex7) + ")";
-            //            string argmsg_mode2 = "";
-            //            withBlock3.PilotMessage(argSituation2, msg_mode: argmsg_mode2);
-            //        }
+                //    GUI.CloseMessageForm();
+                //}
 
-            //        GUI.CloseMessageForm();
-            //    }
+                //// アニメ表示
+                //bool localIsAnimationDefined() { string argmain_situation = "変形(" + uname + ")"; string argsub_situation = ""; var ret = withBlock3.IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //    // アニメ表示
-            //    bool localIsAnimationDefined() { string argmain_situation = "変形(" + uname + ")"; string argsub_situation = ""; var ret = withBlock3.IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+                //bool localIsAnimationDefined1() { object argIndex1 = "変形"; string argmain_situation = "変形(" + withBlock3.FeatureName(argIndex1) + ")"; string argsub_situation = ""; var ret = withBlock3.IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //    bool localIsAnimationDefined1() { object argIndex1 = "変形"; string argmain_situation = "変形(" + withBlock3.FeatureName(argIndex1) + ")"; string argsub_situation = ""; var ret = withBlock3.IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+                //bool localIsSpecialEffectDefined() { string argmain_situation = "変形(" + withBlock3.Name + "=>" + uname + ")"; string argsub_situation = ""; var ret = withBlock3.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //    bool localIsSpecialEffectDefined() { string argmain_situation = "変形(" + withBlock3.Name + "=>" + uname + ")"; string argsub_situation = ""; var ret = withBlock3.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+                //bool localIsSpecialEffectDefined1() { string argmain_situation = "変形(" + uname + ")"; string argsub_situation = ""; var ret = withBlock3.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //    bool localIsSpecialEffectDefined1() { string argmain_situation = "変形(" + uname + ")"; string argsub_situation = ""; var ret = withBlock3.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+                //bool localIsSpecialEffectDefined2() { object argIndex1 = "変形"; string argmain_situation = "変形(" + withBlock3.FeatureName(argIndex1) + ")"; string argsub_situation = ""; var ret = withBlock3.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //    bool localIsSpecialEffectDefined2() { object argIndex1 = "変形"; string argmain_situation = "変形(" + withBlock3.FeatureName(argIndex1) + ")"; string argsub_situation = ""; var ret = withBlock3.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+                //string argmain_situation7 = "変形(" + withBlock3.Name + "=>" + uname + ")";
+                //string argsub_situation6 = "";
+                //if (withBlock3.IsAnimationDefined(argmain_situation7, sub_situation: argsub_situation6))
+                //{
+                //    string argmain_situation1 = "変形(" + withBlock3.Name + "=>" + uname + ")";
+                //    string argsub_situation = "";
+                //    withBlock3.PlayAnimation(argmain_situation1, sub_situation: argsub_situation);
+                //}
+                //else if (localIsAnimationDefined())
+                //{
+                //    string argmain_situation2 = "変形(" + uname + ")";
+                //    string argsub_situation1 = "";
+                //    withBlock3.PlayAnimation(argmain_situation2, sub_situation: argsub_situation1);
+                //}
+                //else if (localIsAnimationDefined1())
+                //{
+                //    object argIndex8 = "変形";
+                //    string argmain_situation3 = "変形(" + withBlock3.FeatureName(argIndex8) + ")";
+                //    string argsub_situation2 = "";
+                //    withBlock3.PlayAnimation(argmain_situation3, sub_situation: argsub_situation2);
+                //}
+                //else if (localIsSpecialEffectDefined())
+                //{
+                //    string argmain_situation4 = "変形(" + withBlock3.Name + "=>" + uname + ")";
+                //    string argsub_situation3 = "";
+                //    withBlock3.SpecialEffect(argmain_situation4, sub_situation: argsub_situation3);
+                //}
+                //else if (localIsSpecialEffectDefined1())
+                //{
+                //    string argmain_situation5 = "変形(" + uname + ")";
+                //    string argsub_situation4 = "";
+                //    withBlock3.SpecialEffect(argmain_situation5, sub_situation: argsub_situation4);
+                //}
+                //else if (localIsSpecialEffectDefined2())
+                //{
+                //    object argIndex9 = "変形";
+                //    string argmain_situation6 = "変形(" + withBlock3.FeatureName(argIndex9) + ")";
+                //    string argsub_situation5 = "";
+                //    withBlock3.SpecialEffect(argmain_situation6, sub_situation: argsub_situation5);
+                //}
+            }
 
-            //    string argmain_situation7 = "変形(" + withBlock3.Name + "=>" + uname + ")";
-            //    string argsub_situation6 = "";
-            //    if (withBlock3.IsAnimationDefined(argmain_situation7, sub_situation: argsub_situation6))
-            //    {
-            //        string argmain_situation1 = "変形(" + withBlock3.Name + "=>" + uname + ")";
-            //        string argsub_situation = "";
-            //        withBlock3.PlayAnimation(argmain_situation1, sub_situation: argsub_situation);
-            //    }
-            //    else if (localIsAnimationDefined())
-            //    {
-            //        string argmain_situation2 = "変形(" + uname + ")";
-            //        string argsub_situation1 = "";
-            //        withBlock3.PlayAnimation(argmain_situation2, sub_situation: argsub_situation1);
-            //    }
-            //    else if (localIsAnimationDefined1())
-            //    {
-            //        object argIndex8 = "変形";
-            //        string argmain_situation3 = "変形(" + withBlock3.FeatureName(argIndex8) + ")";
-            //        string argsub_situation2 = "";
-            //        withBlock3.PlayAnimation(argmain_situation3, sub_situation: argsub_situation2);
-            //    }
-            //    else if (localIsSpecialEffectDefined())
-            //    {
-            //        string argmain_situation4 = "変形(" + withBlock3.Name + "=>" + uname + ")";
-            //        string argsub_situation3 = "";
-            //        withBlock3.SpecialEffect(argmain_situation4, sub_situation: argsub_situation3);
-            //    }
-            //    else if (localIsSpecialEffectDefined1())
-            //    {
-            //        string argmain_situation5 = "変形(" + uname + ")";
-            //        string argsub_situation4 = "";
-            //        withBlock3.SpecialEffect(argmain_situation5, sub_situation: argsub_situation4);
-            //    }
-            //    else if (localIsSpecialEffectDefined2())
-            //    {
-            //        object argIndex9 = "変形";
-            //        string argmain_situation6 = "変形(" + withBlock3.FeatureName(argIndex9) + ")";
-            //        string argsub_situation5 = "";
-            //        withBlock3.SpecialEffect(argmain_situation6, sub_situation: argsub_situation5);
-            //    }
-            //}
+            // 変形
+            var prev_uname = SelectedUnit.Name;
+            SelectedUnit.Transform(uname);
+            SelectedUnit = Map.MapDataForUnit[SelectedUnit.x, SelectedUnit.y];
 
-            //// 変形
-            //prev_uname = SelectedUnit.Name;
-            //SelectedUnit.Transform(uname);
-            //SelectedUnit = Map.MapDataForUnit[SelectedUnit.x, SelectedUnit.y];
+            // 変形をキャンセルする？
+            if (SelectedUnit.Action == 0)
+            {
+                var confirmRet = GUI.Confirm(
+                    "この形態ではこれ以上の行動が出来ません。" + Constants.vbCr + Constants.vbLf + "それでも変形しますか？",
+                    "変形",
+                    GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
+                if (confirmRet == GuiDialogResult.Cancel)
+                {
+                    SelectedUnit.Transform(prev_uname);
+                    SelectedUnit = Map.MapDataForUnit[SelectedUnit.x, SelectedUnit.y];
+                    if (SelectedUnit.IsConditionSatisfied("消耗"))
+                    {
+                        SelectedUnit.DeleteCondition("消耗");
+                    }
+                }
 
-            //// 変形をキャンセルする？
-            //if (SelectedUnit.Action == 0)
-            //{
-            //    ret = Interaction.MsgBox("この形態ではこれ以上の行動が出来ません。" + Constants.vbCr + Constants.vbLf + "それでも変形しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "変形");
-            //    if (ret == MsgBoxResult.Cancel)
-            //    {
-            //        SelectedUnit.Transform(prev_uname);
-            //        SelectedUnit = Map.MapDataForUnit[SelectedUnit.x, SelectedUnit.y];
-            //        object argIndex11 = "消耗";
-            //        if (SelectedUnit.IsConditionSatisfied(argIndex11))
-            //        {
-            //            object argIndex10 = "消耗";
-            //            SelectedUnit.DeleteCondition(argIndex10);
-            //        }
-            //    }
+                GUI.RedrawScreen();
+            }
 
-            //    GUI.RedrawScreen();
-            //}
+            // 変形イベント
+            {
+                Event.HandleEvent("変形", SelectedUnit.CurrentForm().MainPilot().ID, SelectedUnit.CurrentForm().Name);
+            }
 
-            //// 変形イベント
-            //{
-            //    var withBlock5 = SelectedUnit.CurrentForm();
-            //    Event_Renamed.HandleEvent("変形", withBlock5.MainPilot().ID, withBlock5.Name);
-            //}
+            if (SRC.IsScenarioFinished)
+            {
+                SRC.IsScenarioFinished = false;
+                Status.ClearUnitStatus();
+                GUI.RedrawScreen();
+                CommandState = "ユニット選択";
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //if (SRC.IsScenarioFinished)
-            //{
-            //    SRC.IsScenarioFinished = false;
-            //    Status.ClearUnitStatus();
-            //    GUI.RedrawScreen();
-            //    CommandState = "ユニット選択";
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+            SRC.IsCanceled = false;
 
-            //SRC.IsCanceled = false;
+            // ハイパーモード・ノーマルモードの自動発動をチェック
+            SelectedUnit.CurrentForm().CheckAutoHyperMode();
+            SelectedUnit.CurrentForm().CheckAutoNormalMode();
 
-            //// ハイパーモード・ノーマルモードの自動発動をチェック
-            //SelectedUnit.CurrentForm().CheckAutoHyperMode();
-            //SelectedUnit.CurrentForm().CheckAutoNormalMode();
+            // カーソル自動移動
+            if (SelectedUnit.Status == "出撃")
+            {
+                if (SRC.AutoMoveCursor)
+                {
+                    string argcursor_mode = "ユニット選択";
+                    GUI.MoveCursorPos(argcursor_mode, SelectedUnit);
+                }
 
-            //// カーソル自動移動
-            //if (SelectedUnit.Status_Renamed == "出撃")
-            //{
-            //    if (SRC.AutoMoveCursor)
-            //    {
-            //        string argcursor_mode = "ユニット選択";
-            //        GUI.MoveCursorPos(argcursor_mode, SelectedUnit);
-            //    }
+                Status.DisplayUnitStatus(SelectedUnit);
+            }
 
-            //    Status.DisplayUnitStatus(SelectedUnit);
-            //}
-
-            //CommandState = "ユニット選択";
-            //GUI.UnlockGUI();
+            // XXX RedrawScreen 元はしてなかった気がする
+            GUI.RedrawScreen();
+            CommandState = "ユニット選択";
+            GUI.UnlockGUI();
         }
 
         // 「ハイパーモード」コマンド
@@ -431,7 +405,7 @@ namespace SRCCore.Commands
 
             //        // ユニットリストの表示を更新
             //        string argsmode = "";
-            //        Event_Renamed.MakeUnitList(smode: argsmode);
+            //        Event.MakeUnitList(smode: argsmode);
 
             //        // ステータスウィンドウの表示を更新
             //        Status.DisplayUnitStatus(withBlock.CurrentForm());
@@ -646,7 +620,7 @@ namespace SRCCore.Commands
             //// 変形イベント
             //{
             //    var withBlock4 = SelectedUnit.CurrentForm();
-            //    Event_Renamed.HandleEvent("変形", withBlock4.MainPilot().ID, withBlock4.Name);
+            //    Event.HandleEvent("変形", withBlock4.MainPilot().ID, withBlock4.Name);
             //}
 
             //if (SRC.IsScenarioFinished)
@@ -662,7 +636,7 @@ namespace SRCCore.Commands
             //SRC.IsCanceled = false;
 
             //// カーソル自動移動
-            //if (SelectedUnit.Status_Renamed == "出撃")
+            //if (SelectedUnit.Status == "出撃")
             //{
             //    if (SRC.AutoMoveCursor)
             //    {
@@ -702,7 +676,7 @@ namespace SRCCore.Commands
             //        string argnew_form = localLIndex();
             //        withBlock.Transform(argnew_form);
             //        string argsmode = "";
-            //        Event_Renamed.MakeUnitList(smode: argsmode);
+            //        Event.MakeUnitList(smode: argsmode);
             //        Status.DisplayUnitStatus(withBlock.CurrentForm());
             //        GUI.UnlockGUI();
             //        CommandState = "ユニット選択";
@@ -743,7 +717,7 @@ namespace SRCCore.Commands
             //GUI.RedrawScreen();
 
             //// 変形イベント
-            //Event_Renamed.HandleEvent("変形", SelectedUnit.MainPilot().ID, SelectedUnit.Name);
+            //Event.HandleEvent("変形", SelectedUnit.MainPilot().ID, SelectedUnit.Name);
             //SRC.IsScenarioFinished = false;
             //SRC.IsCanceled = false;
             //CommandState = "ユニット選択";
@@ -795,7 +769,7 @@ namespace SRCCore.Commands
 
             //    // ユニットリストの表示を更新
             //    string argsmode = "";
-            //    Event_Renamed.MakeUnitList(smode: argsmode);
+            //    Event.MakeUnitList(smode: argsmode);
 
             //    // コマンドを終了
             //    CommandState = "ユニット選択";
@@ -1073,7 +1047,7 @@ namespace SRCCore.Commands
             //}
 
             //// 分離イベント
-            //Event_Renamed.HandleEvent("分離", SelectedUnit.MainPilot().ID, uname);
+            //Event.HandleEvent("分離", SelectedUnit.MainPilot().ID, uname);
             //if (SRC.IsScenarioFinished)
             //{
             //    SRC.IsScenarioFinished = false;
@@ -1139,7 +1113,7 @@ namespace SRCCore.Commands
 
             //            // ユニットリストの表示を更新
             //            string argsmode = "";
-            //            Event_Renamed.MakeUnitList(smode: argsmode);
+            //            Event.MakeUnitList(smode: argsmode);
 
             //            // コマンドを終了
             //            CommandState = "ユニット選択";
@@ -1194,7 +1168,7 @@ namespace SRCCore.Commands
             //                }
 
             //                string argfname1 = "合体制限";
-            //                if (u.Status_Renamed != "出撃" & u.CurrentForm().IsFeatureAvailable(argfname1))
+            //                if (u.Status != "出撃" & u.CurrentForm().IsFeatureAvailable(argfname1))
             //                {
             //                    goto NextLoop;
             //                }
@@ -1253,7 +1227,7 @@ namespace SRCCore.Commands
 
             //    // ユニットリストの表示を更新
             //    string argsmode1 = "";
-            //    Event_Renamed.MakeUnitList(smode: argsmode1);
+            //    Event.MakeUnitList(smode: argsmode1);
 
             //    // コマンドを終了
             //    CommandState = "ユニット選択";
@@ -1284,7 +1258,7 @@ namespace SRCCore.Commands
             //Status.DisplayUnitStatus(SelectedUnit);
 
             //// 合体イベント
-            //Event_Renamed.HandleEvent("合体", SelectedUnit.MainPilot().ID, SelectedUnit.Name);
+            //Event.HandleEvent("合体", SelectedUnit.MainPilot().ID, SelectedUnit.Name);
             //if (SRC.IsScenarioFinished)
             //{
             //    SRC.IsScenarioFinished = false;
@@ -1471,7 +1445,7 @@ namespace SRCCore.Commands
 
             //    // ユニットリストの再構築
             //    string argsmode = "";
-            //    Event_Renamed.MakeUnitList(smode: argsmode);
+            //    Event.MakeUnitList(smode: argsmode);
 
             //    // カーソル自動移動
             //    if (SRC.AutoMoveCursor)

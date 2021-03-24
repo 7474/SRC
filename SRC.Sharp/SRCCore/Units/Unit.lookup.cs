@@ -9,12 +9,42 @@ using SRCCore.Pilots;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace SRCCore.Units
 {
+    // === 各種処理を行うための関数＆サブルーチン ===
     public partial class Unit
     {
+        // 出撃中？
+        public bool IsOperational()
+        {
+            if (Status == "出撃")
+            {
+                return true;
+            }
+
+            return OtherForms.Any(x => x.Status == "出撃");
+        }
+
+        // ユニットがユニット nm と同一？
+        public bool IsEqual(string nm)
+        {
+            if ((Name ?? "") == (nm ?? ""))
+            {
+                return true;
+            }
+
+            return OtherForms.Any(x => (x.Name ?? "") == (nm ?? ""));
+        }
+
+        // 人間ユニットかどうか判定
+        public bool IsHero()
+        {
+            return Strings.Left(Data.Class, 1) == "(";
+        }
+
         // (tx,ty)の地点の周囲に「連携攻撃」を行ってくれるユニットがいるかどうかを判定
         public Unit LookForAttackHelp(int tx, int ty)
         {
@@ -1257,7 +1287,7 @@ namespace SRCCore.Units
             //}
 
             //// 出撃していない場合
-            //if (Status_Renamed != "出撃" | string.IsNullOrEmpty(Map.MapFileName))
+            //if (Status != "出撃" | string.IsNullOrEmpty(Map.MapFileName))
             //{
             //    // パートナーが仲間にいるだけでよい
             //    var loopTo1 = cnum;
@@ -1272,7 +1302,7 @@ namespace SRCCore.Units
             //            string argIndex5 = uname;
             //            {
             //                var withBlock = SRC.UList.Item(argIndex5);
-            //                if (withBlock.Status_Renamed == "出撃" | withBlock.Status_Renamed == "待機")
+            //                if (withBlock.Status == "出撃" | withBlock.Status == "待機")
             //                {
             //                    goto NextPartner;
             //                }
@@ -1293,7 +1323,7 @@ namespace SRCCore.Units
 
             //                {
             //                    var withBlock1 = localItem().Unit_Renamed;
-            //                    if (withBlock1.Status_Renamed == "出撃" | withBlock1.Status_Renamed == "待機")
+            //                    if (withBlock1.Status == "出撃" | withBlock1.Status == "待機")
             //                    {
             //                        goto NextPartner;
             //                    }
@@ -1820,7 +1850,7 @@ namespace SRCCore.Units
             //Unit[] partners;
             //partners = new Unit[1];
             //string argattr = "Ｍ";
-            //if (Status_Renamed == "待機" | string.IsNullOrEmpty(Map.MapFileName))
+            //if (Status == "待機" | string.IsNullOrEmpty(Map.MapFileName))
             //{
             //    // 出撃時以外は相手が仲間にいるだけでＯＫ
             //    string argctype_Renamed = "武装";
@@ -1914,7 +1944,7 @@ namespace SRCCore.Units
             //Unit[] partners;
             //partners = new Unit[1];
             //string argattr = "Ｍ";
-            //if (Status_Renamed == "待機" | string.IsNullOrEmpty(Map.MapFileName))
+            //if (Status == "待機" | string.IsNullOrEmpty(Map.MapFileName))
             //{
             //    // 出撃時以外は相手が仲間にいるだけでＯＫ
             //    string argctype_Renamed = "アビリティ";
@@ -2001,7 +2031,7 @@ namespace SRCCore.Units
         }
 
         // (tx,ty)にユニットが進入可能か？
-        public bool IsAbleToEnter(short tx, short ty)
+        public bool IsAbleToEnter(int tx, int ty)
         {
             return true;
             // TODO Impl
@@ -2154,7 +2184,7 @@ namespace SRCCore.Units
             return true;
             // TODO Impl
             //bool IsAvailableRet = default;
-            //short i;
+            //int i;
             //IsAvailableRet = true;
 
             //// イベントコマンド「Disable」
@@ -2167,7 +2197,7 @@ namespace SRCCore.Units
             //}
 
             //// 制限時間の切れた形態？
-            //if (Status_Renamed == "他形態")
+            //if (Status == "他形態")
             //{
             //    object argIndex1 = "行動不能";
             //    if (IsConditionSatisfied(argIndex1))
@@ -2236,7 +2266,7 @@ namespace SRCCore.Units
             return true;
             // TODO Impl
             //bool IsNecessarySkillSatisfiedRet = default;
-            //short i, num;
+            //int i, num;
             //var nskill_list = new string[101];
             //if (Strings.Len(nabilities) == 0)
             //{
@@ -2245,7 +2275,7 @@ namespace SRCCore.Units
             //}
 
             //num = GeneralLib.LLength(nabilities);
-            //var loopTo = (short)GeneralLib.MinLng(num, 100);
+            //var loopTo = (int)GeneralLib.MinLng(num, 100);
             //for (i = 1; i <= loopTo; i++)
             //    nskill_list[i] = GeneralLib.LIndex(nabilities, i);
 
@@ -2260,7 +2290,7 @@ namespace SRCCore.Units
             //        {
             //            while (Strings.LCase(nskill_list[i + 1]) == "or")
             //            {
-            //                i = (short)(i + 2);
+            //                i = (int)(i + 2);
             //                // 検査する必要条件が無くなったので必要技能が満たされたと判定
             //                if (i == num)
             //                {
@@ -2286,14 +2316,14 @@ namespace SRCCore.Units
             //            return IsNecessarySkillSatisfiedRet;
             //        }
 
-            //        i = (short)(i + 1);
+            //        i = (int)(i + 1);
             //        if (Strings.LCase(nskill_list[i]) != "or")
             //        {
             //            return IsNecessarySkillSatisfiedRet;
             //        }
             //    }
 
-            //    i = (short)(i + 1);
+            //    i = (int)(i + 1);
             //}
 
             //IsNecessarySkillSatisfiedRet = true;
@@ -2309,12 +2339,12 @@ namespace SRCCore.Units
             //double slevel;
             //double nlevel;
             //var mp = default(Pilot);
-            //short i, j;
+            //int i, j;
 
             //// ステータスコマンド実行時は条件が満たされていると見なす？
             //if (Strings.Left(ndata, 1) == "+")
             //{
-            //    if (Status_Renamed == "出撃" & InterMission.InStatusCommand())
+            //    if (Status == "出撃" & InterMission.InStatusCommand())
             //    {
             //        IsNecessarySkillSatisfied2Ret = true;
             //        return IsNecessarySkillSatisfied2Ret;
@@ -2337,7 +2367,7 @@ namespace SRCCore.Units
             //    return IsNecessarySkillSatisfied2Ret;
             //}
 
-            //i = (short)Strings.InStr(ndata, "Lv");
+            //i = (int)Strings.InStr(ndata, "Lv");
             //if (i > 0)
             //{
             //    sname = Strings.Left(ndata, i - 1);
@@ -2781,7 +2811,7 @@ namespace SRCCore.Units
             //    case "地中":
             //        {
             //            slevel = 0d;
-            //            if (Status_Renamed == "出撃")
+            //            if (Status == "出撃")
             //            {
             //                if ((sname ?? "") == (Area ?? ""))
             //                {
@@ -2834,7 +2864,7 @@ namespace SRCCore.Units
             //string iname;
             //string uname;
             //Unit u;
-            //short max_range;
+            //int max_range;
             //switch (stype ?? "")
             //{
             //    case "超感覚":
@@ -3176,7 +3206,7 @@ namespace SRCCore.Units
             //                if (Strings.Left(sname, 1) == "@")
             //                {
             //                    // 地形を指定した必要技能
-            //                    if (Status_Renamed == "出撃" & 1 <= x & x <= Map.MapWidth & 1 <= y & y <= Map.MapHeight)
+            //                    if (Status == "出撃" & 1 <= x & x <= Map.MapWidth & 1 <= y & y <= Map.MapHeight)
             //                    {
             //                        if ((Strings.Mid(sname, 2) ?? "") == (Map.TerrainName(x, y) ?? ""))
             //                        {
@@ -3208,7 +3238,7 @@ namespace SRCCore.Units
             //                else if (Strings.Right(sname, 2) == "隣接" | Strings.Right(sname, 4) == "マス以内")
             //                {
             //                    // 特定のユニットが近くにいることを指定した必要技能
-            //                    if (Status_Renamed == "出撃")
+            //                    if (Status == "出撃")
             //                    {
             //                        if (Strings.Right(sname, 2) == "隣接")
             //                        {
@@ -3219,19 +3249,19 @@ namespace SRCCore.Units
             //                        {
             //                            uname = Strings.Left(sname, Strings.Len(sname) - 5);
             //                            string argexpr1 = Strings.Mid(sname, Strings.Len(sname) - 4, 1);
-            //                            max_range = (short)GeneralLib.StrToLng(argexpr1);
+            //                            max_range = (int)GeneralLib.StrToLng(argexpr1);
             //                        }
 
-            //                        var loopTo13 = (short)GeneralLib.MinLng(x + max_range, Map.MapWidth);
-            //                        for (i = (short)GeneralLib.MaxLng(x - max_range, 1); i <= loopTo13; i++)
+            //                        var loopTo13 = (int)GeneralLib.MinLng(x + max_range, Map.MapWidth);
+            //                        for (i = (int)GeneralLib.MaxLng(x - max_range, 1); i <= loopTo13; i++)
             //                        {
-            //                            var loopTo14 = (short)GeneralLib.MinLng(y + max_range, Map.MapHeight);
-            //                            for (j = (short)GeneralLib.MaxLng(y - max_range, 1); j <= loopTo14; j++)
+            //                            var loopTo14 = (int)GeneralLib.MinLng(y + max_range, Map.MapHeight);
+            //                            for (j = (int)GeneralLib.MaxLng(y - max_range, 1); j <= loopTo14; j++)
             //                            {
             //                                u = Map.MapDataForUnit[i, j];
 
             //                                // 距離が範囲外？
-            //                                if ((short)(Math.Abs((short)(x - i)) + Math.Abs((short)(y - j))) > max_range)
+            //                                if ((int)(Math.Abs((int)(x - i)) + Math.Abs((int)(y - j))) > max_range)
             //                                {
             //                                    goto NextNeighbor;
             //                                }
