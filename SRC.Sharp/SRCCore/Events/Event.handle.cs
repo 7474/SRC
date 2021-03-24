@@ -117,7 +117,7 @@ namespace SRCCore.Events
                         }
 
                         // XXX 全滅の処理どこでやってんの？
-                        
+
                         break;
                     }
 
@@ -146,44 +146,26 @@ namespace SRCCore.Events
                     EventQue.Enqueue(string.Join(" ", "接触", Args[1], Args[2]));
                     break;
 
-                //case "進入":
-                //    {
-                //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("進入 ", Args[1]), " "), SrcFormatter.Format(Args[2])), " "), SrcFormatter.Format(Args[3])));
-                //        Array.Resize(EventQue, Information.UBound(EventQue) + 1 + 1);
-                //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("進入 ", Args[1]), " "), Map.TerrainName(Conversions.Toint(Args[2]), Conversions.Toint(Args[3]))));
-                //        // UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(Args[2], 1, false)))
-                //        {
-                //            Array.Resize(EventQue, Information.UBound(EventQue) + 1 + 1);
-                //            // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //            EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject("脱出 ", Args[1]), " W"));
-                //        }
-                //        // UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        else if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(Args[2], Map.MapWidth, false)))
-                //        {
-                //            Array.Resize(EventQue, Information.UBound(EventQue) + 1 + 1);
-                //            // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //            EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject("脱出 ", Args[1]), " E"));
-                //        }
-                //        // UPGRADE_WARNING: オブジェクト Args(3) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(Args[3], 1, false)))
-                //        {
-                //            Array.Resize(EventQue, Information.UBound(EventQue) + 1 + 1);
-                //            // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //            EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject("脱出 ", Args[1]), " N"));
-                //        }
-                //        // UPGRADE_WARNING: オブジェクト Args(3) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        else if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(Args[3], Map.MapHeight, false)))
-                //        {
-                //            Array.Resize(EventQue, Information.UBound(EventQue) + 1 + 1);
-                //            // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //            EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject("脱出 ", Args[1]), " S"));
-                //        }
-
-                //        break;
-                //    }
+                case "進入":
+                    EventQue.Enqueue(string.Join(" ", "進入", Args[1], Args[2], Args[3]));
+                    EventQue.Enqueue(string.Join(" ", "進入", Args[1], Map.Terrain(Conversions.ToInteger(Args[2]), Conversions.ToInteger(Args[3])).Name));
+                    if (Conversions.ToInteger(Args[2]) == 1)
+                    {
+                        EventQue.Enqueue(string.Join(" ", "脱出", Args[1], "W"));
+                    }
+                    else if (Conversions.ToInteger(Args[2]) == Map.MapWidth)
+                    {
+                        EventQue.Enqueue(string.Join(" ", "脱出", Args[1], "E"));
+                    }
+                    else if (Conversions.ToInteger(Args[3]) == 1)
+                    {
+                        EventQue.Enqueue(string.Join(" ", "脱出", Args[1], "N"));
+                    }
+                    else if (Conversions.ToInteger(Args[3]) == Map.MapHeight)
+                    {
+                        EventQue.Enqueue(string.Join(" ", "脱出", Args[1], "S"));
+                    }
+                    break;
 
                 case "収納":
                     EventQue.Enqueue(string.Join(" ", "収納", Args[1]));

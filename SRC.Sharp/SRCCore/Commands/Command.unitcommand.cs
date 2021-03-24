@@ -251,7 +251,7 @@ namespace SRCCore.Commands
                 //                GUI.LockGUI();
 
                 //                // 召喚解除の使用イベント
-                //                Event_Renamed.HandleEvent("使用", unit.MainPilot().ID, "召喚解除");
+                //                Event.HandleEvent("使用", unit.MainPilot().ID, "召喚解除");
                 //                if (SRC.IsScenarioFinished)
                 //                {
                 //                    SRC.IsScenarioFinished = false;
@@ -269,7 +269,7 @@ namespace SRCCore.Commands
                 //                unit.DismissServant();
 
                 //                // 召喚解除の使用後イベント
-                //                Event_Renamed.HandleEvent("使用後", unit.CurrentForm().MainPilot().ID, "召喚解除");
+                //                Event.HandleEvent("使用後", unit.CurrentForm().MainPilot().ID, "召喚解除");
                 //                if (SRC.IsScenarioFinished)
                 //                {
                 //                    SRC.IsScenarioFinished = false;
@@ -321,7 +321,7 @@ namespace SRCCore.Commands
                 //                GUI.LockGUI();
 
                 //                // ユニットコマンドの使用イベント
-                //                Event_Renamed.HandleEvent("使用", unit.MainPilot().ID, GUI.MainForm.mnuUnitCommandItem.Item(idx).Caption);
+                //                Event.HandleEvent("使用", unit.MainPilot().ID, GUI.MainForm.mnuUnitCommandItem.Item(idx).Caption);
                 //                if (SRC.IsScenarioFinished)
                 //                {
                 //                    SRC.IsScenarioFinished = false;
@@ -337,7 +337,7 @@ namespace SRCCore.Commands
                 //                }
 
                 //                // ユニットコマンドを実行
-                //                Event_Renamed.HandleEvent(UnitCommandLabelList[idx - UnitCommand1CmdID + 1]);
+                //                Event.HandleEvent(UnitCommandLabelList[idx - UnitCommand1CmdID + 1]);
                 //                if (SRC.IsCanceled)
                 //                {
                 //                    SRC.IsCanceled = false;
@@ -349,7 +349,7 @@ namespace SRCCore.Commands
                 //                // ユニットコマンドの使用後イベント
                 //                if (unit.CurrentForm().CountPilot() > 0)
                 //                {
-                //                    Event_Renamed.HandleEvent("使用後", unit.CurrentForm().MainPilot().ID, GUI.MainForm.mnuUnitCommandItem.Item(idx).Caption);
+                //                    Event.HandleEvent("使用後", unit.CurrentForm().MainPilot().ID, GUI.MainForm.mnuUnitCommandItem.Item(idx).Caption);
                 //                    if (SRC.IsScenarioFinished)
                 //                    {
                 //                        SRC.IsScenarioFinished = false;
@@ -508,7 +508,7 @@ namespace SRCCore.Commands
 
             //    if (SelectedTarget is object)
             //    {
-            //        Event_Renamed.HandleEvent("接触", SelectedUnit.MainPilot().ID, SelectedTarget.MainPilot().ID);
+            //        Event.HandleEvent("接触", SelectedUnit.MainPilot().ID, SelectedTarget.MainPilot().ID);
             //        // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             //        SelectedTarget = null;
             //        if (SRC.IsScenarioFinished)
@@ -527,13 +527,13 @@ namespace SRCCore.Commands
             //    }
             //}
 
-            //// 進入イベント
-            //Event_Renamed.HandleEvent("進入", SelectedUnit.MainPilot().ID, SelectedUnit.x, SelectedUnit.y);
-            //if (SRC.IsScenarioFinished)
-            //{
-            //    SRC.IsScenarioFinished = false;
-            //    return;
-            //}
+            // 進入イベント
+            Event.HandleEvent("進入", SelectedUnit.MainPilot().ID, "" + SelectedUnit.x, "" + SelectedUnit.y);
+            if (SRC.IsScenarioFinished)
+            {
+                SRC.IsScenarioFinished = false;
+                return;
+            }
 
             //if (SelectedUnit.CountPilot() == 0)
             //{
