@@ -1537,32 +1537,22 @@ namespace SRCCore.Commands
                     //    GUI.MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Visible = false;
                     //}
 
-                    //// 変形コマンド
-                    //string argfname20 = "変形";
-                    //object argIndex61 = "変形";
-                    //object argIndex62 = "形態固定";
-                    //object argIndex63 = "機体固定";
-                    //if (currentUnit.IsFeatureAvailable(argfname20) & !string.IsNullOrEmpty(currentUnit.FeatureName(argIndex61)) & !currentUnit.IsConditionSatisfied(argIndex62) & !currentUnit.IsConditionSatisfied(argIndex63))
-                    //{
-                    //    object argIndex58 = "変形";
-                    //    GUI.MainForm.mnuUnitCommandItem(TransformCmdID).Caption = currentUnit.FeatureName(argIndex58);
-                    //    object argIndex60 = "変形";
-                    //    string arglist16 = currentUnit.FeatureData(argIndex60);
-                    //    var loopTo20 = GeneralLib.LLength(arglist16);
-                    //    for (i = 2; i <= loopTo20; i++)
-                    //    {
-                    //        object argIndex59 = "変形";
-                    //        string arglist15 = currentUnit.FeatureData(argIndex59);
-                    //        uname = GeneralLib.LIndex(arglist15, i);
-                    //        Unit localOtherForm4() { object argIndex1 = uname; var ret = currentUnit.OtherForm(argIndex1); return ret; }
-
-                    //        if (localOtherForm4().IsAvailable())
-                    //        {
-                    //            GUI.MainForm.mnuUnitCommandItem(TransformCmdID).Visible = true;
-                    //            break;
-                    //        }
-                    //    }
-                    //}
+                    // 変形コマンド
+                    if (currentUnit.IsFeatureAvailable("変形")
+                        && !string.IsNullOrEmpty(currentUnit.FeatureName("変形"))
+                        && !currentUnit.IsConditionSatisfied("形態固定")
+                        && !currentUnit.IsConditionSatisfied("機体固定"))
+                    {
+                        var cmdName = currentUnit.FeatureName("変形");
+                        foreach (var uname in GeneralLib.ToL(currentUnit.FeatureData("変形")).Skip(1))
+                        {
+                            if (currentUnit.OtherForm(uname)?.IsAvailable() ?? false)
+                            {
+                                unitCommands.Add(new UiCommand(TransformCmdID, cmdName));
+                                break;
+                            }
+                        }
+                    }
 
                     //// 分離コマンド
                     //string argfname22 = "分離";

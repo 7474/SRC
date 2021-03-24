@@ -99,11 +99,9 @@ namespace SRCCore.Commands
                 //                break;
                 //            }
 
-                //        case TransformCmdID: // 変形
-                //            {
-                //                TransformCommand();
-                //                break;
-                //            }
+                case TransformCmdID: // 変形
+                    TransformCommand();
+                    break;
 
                 //        case SplitCmdID: // 分離
                 //            {

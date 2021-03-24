@@ -147,27 +147,18 @@ namespace SRCCore.Pilots
         //    return RelationRet;
         //}
 
-        //// 射撃能力が「魔力」と表示されるかどうか
-        //public bool HasMana()
-        //{
-        //    bool HasManaRet = default;
-        //    string argsname = "術";
-        //    string argsname1 = "魔力所有";
-        //    if (IsSkillAvailable(argsname) | IsSkillAvailable(argsname1))
-        //    {
-        //        HasManaRet = true;
-        //        return HasManaRet;
-        //    }
-
-        //    string argoname = "魔力使用";
-        //    if (Expression.IsOptionDefined(argoname))
-        //    {
-        //        HasManaRet = true;
-        //        return HasManaRet;
-        //    }
-
-        //    HasManaRet = false;
-        //    return HasManaRet;
-        //}
+        // 射撃能力が「魔力」と表示されるかどうか
+        public bool HasMana()
+        {
+            if (IsSkillAvailable("術") | IsSkillAvailable("魔力所有"))
+            {
+                return true;
+            }
+            if (Expression.IsOptionDefined("魔力使用"))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
