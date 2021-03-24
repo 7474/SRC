@@ -1188,622 +1188,422 @@ namespace SRCCore.Units
             //    double hp_ratio, en_ratio;
             //    int prev_x, prev_y;
             //    string buf;
-            //    hp_ratio = 100 * HP / (double)MaxHP;
-            //    en_ratio = 100 * EN / (double)MaxEN;
-            //    object argIndex1 = new_form;
-            //    u = OtherForm(argIndex1);
-            //    u.Status = Status;
-            //    if (Status != "破棄")
-            //    {
-            //        Status = "他形態";
-            //    }
-
-            //    // 制御不可能な形態から元に戻る場合は暴走を解除
-            //    string argfname = "制御不可";
-            //    if (IsFeatureAvailable(argfname))
-            //    {
-            //        object argIndex3 = "暴走";
-            //        if (IsConditionSatisfied(argIndex3))
-            //        {
-            //            object argIndex2 = "暴走";
-            //            DeleteCondition(argIndex2);
-            //        }
-            //    }
-
-            //    // 元の形態に戻る？
-            //    object argIndex17 = "ノーマルモード";
-            //    string arglist4 = FeatureData(argIndex17);
-            //    if ((GeneralLib.LIndex(arglist4, 1) ?? "") == (new_form ?? ""))
-            //    {
-            //        object argIndex14 = "ノーマルモード付加";
-            //        if (IsConditionSatisfied(argIndex14))
-            //        {
-            //            // 変身が解ける場合
-            //            if (!string.IsNullOrEmpty(Map.MapFileName))
-            //            {
-            //                object argIndex5 = "ノーマルモード";
-            //                string arglist1 = FeatureData(argIndex5);
-            //                var loopTo = GeneralLib.LLength(arglist1);
-            //                for (i = 2; i <= loopTo; i++)
-            //                {
-            //                    object argIndex4 = "ノーマルモード";
-            //                    string arglist = FeatureData(argIndex4);
-            //                    switch (GeneralLib.LIndex(arglist, i) ?? "")
-            //                    {
-            //                        case "消耗あり":
-            //                            {
-            //                                string argcname = "消耗";
-            //                                string argcdata = "";
-            //                                AddCondition(argcname, 1, cdata: argcdata);
-            //                                break;
-            //                            }
-
-            //                        case "気力低下":
-            //                            {
-            //                                IncreaseMorale(-10);
-            //                                break;
-            //                            }
-            //                    }
-            //                }
-            //            }
-
-            //            object argIndex6 = "ノーマルモード付加";
-            //            DeleteCondition(argIndex6);
-            //            object argIndex10 = "能力コピー";
-            //            if (IsConditionSatisfied(argIndex10))
-            //            {
-            //                object argIndex7 = "能力コピー";
-            //                DeleteCondition(argIndex7);
-            //                object argIndex8 = "パイロット画像";
-            //                DeleteCondition(argIndex8);
-            //                object argIndex9 = "メッセージ";
-            //                DeleteCondition(argIndex9);
-            //            }
-            //        }
-            //        // ハイパーモードが解ける場合
-            //        else if (!string.IsNullOrEmpty(Map.MapFileName))
-            //        {
-            //            string argcname1 = "消耗";
-            //            string argcdata1 = "";
-            //            AddCondition(argcname1, 1, cdata: argcdata1);
-            //            object argIndex13 = "ノーマルモード";
-            //            string arglist3 = FeatureData(argIndex13);
-            //            var loopTo1 = GeneralLib.LLength(arglist3);
-            //            for (i = 2; i <= loopTo1; i++)
-            //            {
-            //                object argIndex12 = "ノーマルモード";
-            //                string arglist2 = FeatureData(argIndex12);
-            //                switch (GeneralLib.LIndex(arglist2, i) ?? "")
-            //                {
-            //                    case "消耗なし":
-            //                        {
-            //                            object argIndex11 = "消耗";
-            //                            DeleteCondition(argIndex11);
-            //                            break;
-            //                        }
-
-            //                    case "気力低下":
-            //                        {
-            //                            IncreaseMorale(-10);
-            //                            break;
-            //                        }
-            //                }
-            //            }
-            //        }
-
-            //        object argIndex16 = "残り時間";
-            //        if (IsConditionSatisfied(argIndex16))
-            //        {
-            //            object argIndex15 = "残り時間";
-            //            DeleteCondition(argIndex15);
-            //        }
-            //    }
-
-            //    // 戦闘アニメで変更されたユニット画像を元に戻す
-            //    object argIndex19 = "ユニット画像";
-            //    if (IsConditionSatisfied(argIndex19))
-            //    {
-            //        object argIndex18 = "ユニット画像";
-            //        DeleteCondition(argIndex18);
-            //        var argu = this;
-            //        BitmapID = GUI.MakeUnitBitmap(argu);
-            //    }
-
-            //    object argIndex21 = "非表示付加";
-            //    if (IsConditionSatisfied(argIndex21))
-            //    {
-            //        object argIndex20 = "非表示付加";
-            //        DeleteCondition(argIndex20);
-            //        var argu1 = this;
-            //        BitmapID = GUI.MakeUnitBitmap(argu1);
-            //    }
-
-            //    int counter;
-            //    {
-            //        var withBlock = u;
-            //        // パラメータ受け継ぎ
-            //        withBlock.BossRank = BossRank;
-            //        withBlock.Rank = Rank;
-            //        withBlock.Mode = Mode;
-            //        withBlock.Area = Area;
-            //        withBlock.UsedSupportAttack = UsedSupportAttack;
-            //        withBlock.UsedSupportGuard = UsedSupportGuard;
-            //        withBlock.UsedSyncAttack = UsedSyncAttack;
-            //        withBlock.UsedCounterAttack = UsedCounterAttack;
-            //        withBlock.Master = Master;
-            //        // UPGRADE_NOTE: オブジェクト Master をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        Master = null;
-            //        withBlock.Summoner = Summoner;
-            //        // UPGRADE_NOTE: オブジェクト Summoner をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        Summoner = null;
-
-            //        // アイテム受け継ぎ
-            //        var loopTo2 = CountItem();
-            //        for (i = 1; i <= loopTo2; i++)
-            //        {
-            //            Item localItem() { object argIndex1 = i; var ret = Item(argIndex1); return ret; }
-
-            //            var argitm = localItem();
-            //            withBlock.AddItem0(argitm);
-            //        }
-
-            //        // スペシャルパワー効果のコピー
-            //        CopySpecialPowerInEffect(u);
-            //        RemoveAllSpecialPowerInEffect();
-
-            //        // 特殊ステータスのコピー
-            //        var loopTo3 = withBlock.CountCondition();
-            //        for (i = 1; i <= loopTo3; i++)
-            //        {
-            //            object argIndex22 = 1;
-            //            withBlock.DeleteCondition0(argIndex22);
-            //        }
-
-            //        var loopTo4 = CountCondition();
-            //        for (i = 1; i <= loopTo4; i++)
-            //        {
-            //            int localConditionLifetime1() { object argIndex1 = i; var ret = ConditionLifetime(argIndex1); return ret; }
-
-            //            string localConditionData1() { object argIndex1 = i; var ret = ConditionData(argIndex1); return ret; }
-
-            //            string localConditionData2() { object argIndex1 = i; var ret = ConditionData(argIndex1); return ret; }
-
-            //            if (localConditionLifetime1() != 0 & Strings.InStr(localConditionData1(), "パイロット能力付加") == 0 & Strings.InStr(localConditionData2(), "パイロット能力強化") == 0)
-            //            {
-            //                string localCondition() { object argIndex1 = i; var ret = Condition(argIndex1); return ret; }
-
-            //                int localConditionLifetime() { object argIndex1 = i; var ret = ConditionLifetime(argIndex1); return ret; }
-
-            //                double localConditionLevel() { object argIndex1 = i; var ret = ConditionLevel(argIndex1); return ret; }
-
-            //                string localConditionData() { object argIndex1 = i; var ret = ConditionData(argIndex1); return ret; }
-
-            //                string argcname2 = localCondition();
-            //                string argcdata2 = localConditionData();
-            //                withBlock.AddCondition(argcname2, localConditionLifetime(), localConditionLevel(), argcdata2);
-            //            }
-            //        }
-
-            //        var loopTo5 = CountCondition();
-            //        for (i = 1; i <= loopTo5; i++)
-            //        {
-            //            object argIndex23 = 1;
-            //            DeleteCondition0(argIndex23);
-            //        }
-
-            //        // パイロットの乗せ換え
-            //        object argIndex24 = "変形";
-            //        list = FeatureData(argIndex24);
-            //        if (GeneralLib.LLength(list) > 0 & Data.PilotNum == -GeneralLib.LLength(list) & CountPilot() == GeneralLib.LLength(list))
-            //        {
-            //            // 変形によりパイロットの順番が変化する場合
-            //            var loopTo6 = GeneralLib.LLength(list);
-            //            for (idx = 2; idx <= loopTo6; idx++)
-            //            {
-            //                if ((withBlock.Name ?? "") == (GeneralLib.LIndex(list, idx) ?? ""))
-            //                {
-            //                    break;
-            //                }
-            //            }
-
-            //            if (idx <= GeneralLib.LLength(list))
-            //            {
-            //                object argIndex25 = "変形";
-            //                list = withBlock.FeatureData(argIndex25);
-            //                var loopTo7 = GeneralLib.LLength(list);
-            //                for (idx2 = 2; idx2 <= loopTo7; idx2++)
-            //                {
-            //                    buf = GeneralLib.LIndex(list, idx2);
-            //                    if ((Name ?? "") == (buf ?? ""))
-            //                    {
-            //                        break;
-            //                    }
-            //                }
-
-            //                j = 2;
-            //                var loopTo8 = CountPilot();
-            //                for (i = 1; i <= loopTo8; i++)
-            //                {
-            //                    switch (i)
-            //                    {
-            //                        case 1:
-            //                            {
-            //                                Pilot localPilot() { object argIndex1 = idx; var ret = Pilot(argIndex1); return ret; }
-
-            //                                var argp = localPilot();
-            //                                withBlock.AddPilot(argp);
-            //                                break;
-            //                            }
-
-            //                        case var @case when @case == idx2:
-            //                            {
-            //                                object argIndex26 = 1;
-            //                                var argp1 = Pilot(argIndex26);
-            //                                withBlock.AddPilot(argp1);
-            //                                break;
-            //                            }
-
-            //                        default:
-            //                            {
-            //                                if (idx == j)
-            //                                {
-            //                                    j = (j + 1);
-            //                                }
-
-            //                                Pilot localPilot1() { object argIndex1 = j; var ret = Pilot(argIndex1); return ret; }
-
-            //                                var argp2 = localPilot1();
-            //                                withBlock.AddPilot(argp2);
-            //                                j = (j + 1);
-            //                                break;
-            //                            }
-            //                    }
-            //                }
-            //            }
-            //            else
-            //            {
-            //                var loopTo9 = CountPilot();
-            //                for (i = 1; i <= loopTo9; i++)
-            //                {
-            //                    Pilot localPilot2() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
-
-            //                    var argp3 = localPilot2();
-            //                    withBlock.AddPilot(argp3);
-            //                }
-            //            }
-            //        }
-            //        else
-            //        {
-            //            var loopTo10 = CountPilot();
-            //            for (i = 1; i <= loopTo10; i++)
-            //            {
-            //                Pilot localPilot3() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
-
-            //                var argp4 = localPilot3();
-            //                withBlock.AddPilot(argp4);
-            //            }
-            //        }
-
-            //        var loopTo11 = CountSupport();
-            //        for (i = 1; i <= loopTo11; i++)
-            //        {
-            //            Pilot localSupport() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
-
-            //            var argp5 = localSupport();
-            //            withBlock.AddSupport(argp5);
-            //        }
-
-            //        var loopTo12 = CountUnitOnBoard();
-            //        for (i = 1; i <= loopTo12; i++)
-            //        {
-            //            Unit localUnitOnBoard() { object argIndex1 = i; var ret = UnitOnBoard(argIndex1); return ret; }
-
-            //            var argu2 = localUnitOnBoard();
-            //            withBlock.LoadUnit(argu2);
-            //        }
-
-            //        var loopTo13 = CountServant();
-            //        for (i = 1; i <= loopTo13; i++)
-            //        {
-            //            Unit localServant() { object argIndex1 = i; var ret = Servant(argIndex1); return ret; }
-
-            //            var argu3 = localServant();
-            //            withBlock.AddServant(argu3);
-            //        }
-
-            //        var loopTo14 = CountSlave();
-            //        for (i = 1; i <= loopTo14; i++)
-            //        {
-            //            Unit localSlave() { object argIndex1 = i; var ret = Slave(argIndex1); return ret; }
-
-            //            var argu4 = localSlave();
-            //            withBlock.AddSlave(argu4);
-            //        }
-
-            //        var loopTo15 = CountPilot();
-            //        for (i = 1; i <= loopTo15; i++)
-            //        {
-            //            object argIndex27 = 1;
-            //            DeletePilot(argIndex27);
-            //        }
-
-            //        var loopTo16 = CountSupport();
-            //        for (i = 1; i <= loopTo16; i++)
-            //        {
-            //            object argIndex28 = 1;
-            //            DeleteSupport(argIndex28);
-            //        }
-
-            //        var loopTo17 = CountUnitOnBoard();
-            //        for (i = 1; i <= loopTo17; i++)
-            //        {
-            //            object argIndex29 = 1;
-            //            UnloadUnit(argIndex29);
-            //        }
-
-            //        var loopTo18 = CountServant();
-            //        for (i = 1; i <= loopTo18; i++)
-            //        {
-            //            object argIndex30 = 1;
-            //            DeleteServant(argIndex30);
-            //        }
-
-            //        var loopTo19 = CountSlave();
-            //        for (i = 1; i <= loopTo19; i++)
-            //        {
-            //            object argIndex31 = 1;
-            //            DeleteSlave(argIndex31);
-            //        }
-
-            //        var loopTo20 = withBlock.CountPilot();
-            //        for (i = 1; i <= loopTo20; i++)
-            //        {
-            //            Pilot localPilot4() { object argIndex1 = i; var ret = withBlock.Pilot(argIndex1); return ret; }
-
-            //            localPilot4().Unit_Renamed = u;
-            //        }
-
-            //        var loopTo21 = withBlock.CountSupport();
-            //        for (i = 1; i <= loopTo21; i++)
-            //        {
-            //            Pilot localSupport1() { object argIndex1 = i; var ret = withBlock.Support(argIndex1); return ret; }
-
-            //            localSupport1().Unit_Renamed = u;
-            //            Pilot localSupport4() { object argIndex1 = i; var ret = withBlock.Support(argIndex1); return ret; }
-
-            //            if (localSupport4().SupportIndex > 0)
-            //            {
-            //                string argfname1 = "分離";
-            //                string argfname2 = "分離";
-            //                if (IsFeatureAvailable(argfname1) & withBlock.IsFeatureAvailable(argfname2))
-            //                {
-            //                    object argIndex33 = "分離";
-            //                    string arglist6 = withBlock.FeatureData(argIndex33);
-            //                    var loopTo22 = GeneralLib.LLength(arglist6);
-            //                    for (j = 2; j <= loopTo22; j++)
-            //                    {
-            //                        Pilot localSupport3() { object argIndex1 = i; var ret = withBlock.Support(argIndex1); return ret; }
-
-            //                        string localLIndex() { object argIndex1 = "分離"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, j); return ret; }
-
-            //                        object argIndex32 = "分離";
-            //                        string arglist5 = FeatureData(argIndex32);
-            //                        if ((GeneralLib.LIndex(arglist5, (localSupport3().SupportIndex + 1)) ?? "") == (localLIndex() ?? ""))
-            //                        {
-            //                            Pilot localSupport2() { object argIndex1 = i; var ret = withBlock.Support(argIndex1); return ret; }
-
-            //                            localSupport2().SupportIndex = (j - 1);
-            //                            break;
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-
-            //        withBlock.Update();
-
-            //        // 弾数データを記録
-            //        wname = new string[(CountWeapon() + 1)];
-            //        wbullet = new int[(CountWeapon() + 1)];
-            //        wmaxbullet = new int[(CountWeapon() + 1)];
-            //        var loopTo23 = CountWeapon();
-            //        for (i = 1; i <= loopTo23; i++)
-            //        {
-            //            wname[i] = Weapon(i).Name;
-            //            wbullet[i] = Bullet(i);
-            //            wmaxbullet[i] = MaxBullet(i);
-            //        }
-
-            //        aname = new string[(CountAbility() + 1)];
-            //        astock = new int[(CountAbility() + 1)];
-            //        amaxstock = new int[(CountAbility() + 1)];
-            //        var loopTo24 = CountAbility();
-            //        for (i = 1; i <= loopTo24; i++)
-            //        {
-            //            aname[i] = Ability(i).Name;
-            //            astock[i] = Stock(i);
-            //            amaxstock[i] = MaxStock(i);
-            //        }
-
-            //        // 弾数の受け継ぎ
-            //        idx = 1;
-            //        var loopTo25 = withBlock.CountWeapon();
-            //        for (i = 1; i <= loopTo25; i++)
-            //        {
-            //            counter = idx;
-            //            var loopTo26 = Information.UBound(wname);
-            //            for (j = counter; j <= loopTo26; j++)
-            //            {
-            //                if ((withBlock.Weapon(i).Name ?? "") == (wname[j] ?? "") & withBlock.MaxBullet(i) > 0 & wmaxbullet[j] > 0)
-            //                {
-            //                    withBlock.SetBullet(i, ((wbullet[j] * withBlock.MaxBullet(i)) / wmaxbullet[j]));
-            //                    idx = (j + 1);
-            //                    break;
-            //                }
-            //            }
-            //        }
-
-            //        idx = 1;
-            //        var loopTo27 = withBlock.CountAbility();
-            //        for (i = 1; i <= loopTo27; i++)
-            //        {
-            //            counter = idx;
-            //            var loopTo28 = Information.UBound(aname);
-            //            for (j = counter; j <= loopTo28; j++)
-            //            {
-            //                if ((withBlock.Ability(i).Name ?? "") == (aname[j] ?? "") & withBlock.MaxStock(i) > 0 & amaxstock[j] > 0)
-            //                {
-            //                    withBlock.SetStock(i, ((astock[j] * withBlock.MaxStock(i)) / amaxstock[j]));
-            //                    idx = (j + 1);
-            //                    break;
-            //                }
-            //            }
-            //        }
-
-            //        // 弾数・使用回数共有の実現
-            //        withBlock.SyncBullet();
-
-            //        // アイテムを削除
-            //        var loopTo29 = CountItem();
-            //        for (i = 1; i <= loopTo29; i++)
-            //        {
-            //            object argIndex34 = 1;
-            //            DeleteItem(argIndex34);
-            //        }
-
-            //        withBlock.Update();
-
-            //        // ＨＰ＆ＥＮの受け継ぎ
-            //        string localLIndex1() { object argIndex1 = "パーツ分離"; string arglist = FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //        if ((new_form ?? "") == (localLIndex1() ?? ""))
-            //        {
-            //            withBlock.HP = withBlock.MaxHP;
-            //        }
-            //        else
-            //        {
-            //            withBlock.HP = (int)(withBlock.MaxHP * hp_ratio / 100d);
-            //        }
-
-            //        withBlock.EN = (int)(withBlock.MaxEN * en_ratio / 100d);
-
-            //        // ノーマルモードや制限時間つきの形態の場合は残り時間を付加
-            //        object argIndex40 = "残り時間";
-            //        string argfname5 = "ノーマルモード";
-            //        string argfname6 = "制限時間";
-            //        if (!withBlock.IsConditionSatisfied(argIndex40))
-            //        {
-            //            string argfname3 = "ノーマルモード";
-            //            string argfname4 = "制限時間";
-            //            if (withBlock.IsFeatureAvailable(argfname3))
-            //            {
-            //                string localLIndex4() { object argIndex1 = "ノーマルモード"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                if (Information.IsNumeric(localLIndex4()))
-            //                {
-            //                    object argIndex36 = "残り時間";
-            //                    if (withBlock.IsConditionSatisfied(argIndex36))
-            //                    {
-            //                        object argIndex35 = "残り時間";
-            //                        withBlock.DeleteCondition(argIndex35);
-            //                    }
-
-            //                    string localLIndex2() { object argIndex1 = "ノーマルモード"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                    string localLIndex3() { object argIndex1 = "ノーマルモード"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                    string argcname3 = "残り時間";
-            //                    string argcdata3 = "";
-            //                    withBlock.AddCondition(argcname3, Conversions.Toint(localLIndex3()), cdata: argcdata3);
-            //                }
-            //            }
-            //            else if (withBlock.IsFeatureAvailable(argfname4))
-            //            {
-            //                string argcname4 = "残り時間";
-            //                object argIndex37 = "制限時間";
-            //                object argIndex38 = "制限時間";
-            //                string argcdata4 = "";
-            //                withBlock.AddCondition(argcname4, Conversions.Toint(withBlock.FeatureData(argIndex38)), cdata: argcdata4);
-            //            }
-            //        }
-            //        else if (!withBlock.IsFeatureAvailable(argfname5) & !withBlock.IsFeatureAvailable(argfname6))
-            //        {
-            //            // 残り時間が必要ない形態にTransformコマンドで強制変形された？
-            //            object argIndex39 = "残り時間";
-            //            withBlock.DeleteCondition(argIndex39);
-            //        }
-
-            //        switch (withBlock.Status ?? "")
-            //        {
-            //            case "出撃":
-            //                {
-            //                    // 変形後のユニットを出撃させる
-            //                    // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //                    Map.MapDataForUnit[x, y] = null;
-            //                    prev_x = x;
-            //                    prev_y = y;
-            //                    withBlock.UsedAction = UsedAction;
-            //                    withBlock.StandBy(x, y);
-            //                    if (withBlock.x != prev_x | withBlock.y != prev_y)
-            //                    {
-            //                        GUI.EraseUnitBitmap(prev_x, prev_y, false);
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case "格納":
-            //                {
-            //                    // 変形後のユニットを格納する
-            //                    foreach (Unit eu in SRC.UList)
-            //                    {
-            //                        var loopTo30 = eu.CountUnitOnBoard();
-            //                        for (j = 1; j <= loopTo30; j++)
-            //                        {
-            //                            Unit localUnitOnBoard1() { object argIndex1 = j; var ret = eu.UnitOnBoard(argIndex1); return ret; }
-
-            //                            if ((ID ?? "") == (localUnitOnBoard1().ID ?? ""))
-            //                            {
-            //                                object argIndex41 = ID;
-            //                                eu.UnloadUnit(argIndex41);
-            //                                eu.LoadUnit(u);
-            //                                goto EndLoop;
-            //                            }
-            //                        }
-            //                    }
-
-            //                EndLoop:
-            //                    ;
-            //                    break;
-            //                }
-            //        }
-            //    }
-
-            //    if (string.IsNullOrEmpty(Map.MapFileName))
-            //    {
-            //        return;
-            //    }
-
-            //    // ハイパーモードが解ける場合
-            //    object argIndex42 = "ノーマルモード";
-            //    buf = FeatureData(argIndex42);
-            //    if ((GeneralLib.LIndex(buf, 1) ?? "") == (new_form ?? ""))
-            //    {
-            //        var loopTo31 = GeneralLib.LLength(buf);
-            //        for (i = 2; i <= loopTo31; i++)
-            //        {
-            //            switch (GeneralLib.LIndex(buf, i) ?? "")
-            //            {
-            //                case "回数制限":
-            //                    {
-            //                        string argcname5 = "行動不能";
-            //                        string argcdata5 = "";
-            //                        AddCondition(argcname5, -1, cdata: argcdata5);
-            //                        break;
-            //                    }
-            //            }
-            //        }
-            //    }
+            var hp_ratio = 100 * HP / (double)MaxHP;
+            var en_ratio = 100 * EN / (double)MaxEN;
+            object argIndex1 = new_form;
+            var u = OtherForm(new_form);
+            u.Status = Status;
+            if (Status != "破棄")
+            {
+                Status = "他形態";
+            }
+
+            // 制御不可能な形態から元に戻る場合は暴走を解除
+            if (IsFeatureAvailable("制御不可"))
+            {
+                if (IsConditionSatisfied("暴走"))
+                {
+                    DeleteCondition("暴走");
+                }
+            }
+
+            // 元の形態に戻る？
+            string normalModeData = FeatureData("ノーマルモード");
+            if ((GeneralLib.LIndex(normalModeData, 1) ?? "") == (new_form ?? ""))
+            {
+                if (IsConditionSatisfied("ノーマルモード付加"))
+                {
+                    // 変身が解ける場合
+                    if (!string.IsNullOrEmpty(Map.MapFileName))
+                    {
+                        foreach (var opt in GeneralLib.ToL(normalModeData).Skip(1))
+                        {
+                            switch (opt ?? "")
+                            {
+                                case "消耗あり":
+                                    AddCondition("消耗", 1, cdata: "");
+                                    break;
+
+                                case "気力低下":
+                                    IncreaseMorale(-10);
+                                    break;
+                            }
+                        }
+                    }
+
+                    DeleteCondition("ノーマルモード付加");
+                    if (IsConditionSatisfied("能力コピー"))
+                    {
+                        DeleteCondition("能力コピー");
+                        DeleteCondition("パイロット画像");
+                        DeleteCondition("メッセージ");
+                    }
+                }
+                // ハイパーモードが解ける場合
+                else if (!Map.IsStatusView)
+                {
+                    AddCondition("消耗", 1, cdata: "");
+                    foreach (var opt in GeneralLib.ToL(normalModeData).Skip(1))
+                    {
+                        switch (opt ?? "")
+                        {
+                            case "消耗なし":
+                                DeleteCondition("消耗");
+                                break;
+
+                            case "気力低下":
+                                IncreaseMorale(-10);
+                                break;
+                        }
+                    }
+                }
+
+                if (IsConditionSatisfied("残り時間"))
+                {
+                    DeleteCondition("残り時間");
+                }
+            }
+
+            // 戦闘アニメで変更されたユニット画像を元に戻す
+            if (IsConditionSatisfied("ユニット画像"))
+            {
+                DeleteCondition("ユニット画像");
+                BitmapID = GUI.MakeUnitBitmap(this);
+            }
+
+            if (IsConditionSatisfied("非表示付加"))
+            {
+                DeleteCondition("非表示付加");
+                BitmapID = GUI.MakeUnitBitmap(this);
+            }
+
+            int counter;
+            {
+                // パラメータ受け継ぎ
+                u.BossRank = BossRank;
+                u.Rank = Rank;
+                u.Mode = Mode;
+                u.Area = Area;
+                u.UsedSupportAttack = UsedSupportAttack;
+                u.UsedSupportGuard = UsedSupportGuard;
+                u.UsedSyncAttack = UsedSyncAttack;
+                u.UsedCounterAttack = UsedCounterAttack;
+                u.Master = Master;
+                Master = null;
+                u.Summoner = Summoner;
+                Summoner = null;
+
+                // アイテム受け継ぎ
+                // TODO Impl
+                //var loopTo2 = CountItem();
+                //for (i = 1; i <= loopTo2; i++)
+                //{
+                //    Item localItem() { object argIndex1 = i; var ret = Item(argIndex1); return ret; }
+
+                //    var argitm = localItem();
+                //    u.AddItem0(argitm);
+                //}
+
+                // スペシャルパワー効果のコピー
+                CopySpecialPowerInEffect(u);
+                RemoveAllSpecialPowerInEffect();
+
+                // 特殊ステータスのコピー
+                u.ClearCondition();
+                foreach (var condition in Conditions
+                    .Where(x => x.Lifetime > 0)
+                    .Where(x => Strings.InStr(x.StrData, "パイロット能力付加") == 0)
+                    .Where(x => Strings.InStr(x.StrData, "パイロット能力強化") == 0))
+                {
+                    u.AddCondition(condition.Name, condition.Lifetime, condition.Level, condition.StrData);
+                }
+                ClearCondition();
+
+                // パイロットの乗せ換え
+                var forms = GeneralLib.ToL(FeatureData("変形")).Skip(1).ToList();
+                forms.Insert(0, Name);
+                if (Data.PilotNum == -(forms.Count)
+                    && CountPilot() == forms.Count)
+                {
+                    // XXX 動作確認しとらん、複数人乗りユニットまだ作れない
+                    // 変形によりパイロットの順番が変化する場合
+                    var tuForms = GeneralLib.ToL(u.FeatureData("変形")).Skip(1).ToList();
+                    tuForms.Insert(0, u.Name);
+                    if (forms.OrderBy(x => x).SequenceEqual(tuForms.OrderBy(x => x)))
+                    {
+                        tuForms.ForEach(tuForm =>
+                        {
+                            u.AddPilot(Pilots[forms.IndexOf(tuForm)]);
+                        });
+                    }
+                    else
+                    {
+                        foreach (var p in Pilots)
+                        {
+                            u.AddPilot(p);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var p in Pilots)
+                    {
+                        u.AddPilot(p);
+                    }
+                }
+
+                foreach (var p in Supports)
+                {
+                    u.AddSupport(p);
+                }
+
+
+                foreach (var cu in UnitOnBoards)
+                {
+                    u.LoadUnit(cu);
+                }
+
+                //var loopTo13 = CountServant();
+                //for (i = 1; i <= loopTo13; i++)
+                //{
+                //    Unit localServant() { object argIndex1 = i; var ret = Servant(argIndex1); return ret; }
+
+                //    var argu3 = localServant();
+                //    u.AddServant(argu3);
+                //}
+
+                //var loopTo14 = CountSlave();
+                //for (i = 1; i <= loopTo14; i++)
+                //{
+                //    Unit localSlave() { object argIndex1 = i; var ret = Slave(argIndex1); return ret; }
+
+                //    var argu4 = localSlave();
+                //    u.AddSlave(argu4);
+                //}
+
+                colPilot.Clear();
+                colSupport.Clear();
+                colUnitOnBoard.Clear();
+                //var loopTo15 = CountPilot();
+                //for (i = 1; i <= loopTo15; i++)
+                //{
+                //    object argIndex27 = 1;
+                //    DeletePilot(argIndex27);
+                //}
+
+                //var loopTo16 = CountSupport();
+                //for (i = 1; i <= loopTo16; i++)
+                //{
+                //    object argIndex28 = 1;
+                //    DeleteSupport(argIndex28);
+                //}
+
+                //var loopTo17 = CountUnitOnBoard();
+                //for (i = 1; i <= loopTo17; i++)
+                //{
+                //    object argIndex29 = 1;
+                //    UnloadUnit(argIndex29);
+                //}
+
+                //var loopTo18 = CountServant();
+                //for (i = 1; i <= loopTo18; i++)
+                //{
+                //    object argIndex30 = 1;
+                //    DeleteServant(argIndex30);
+                //}
+
+                //var loopTo19 = CountSlave();
+                //for (i = 1; i <= loopTo19; i++)
+                //{
+                //    object argIndex31 = 1;
+                //    DeleteSlave(argIndex31);
+                //}
+
+                foreach (var p in u.Pilots)
+                {
+                    p.Unit = u;
+                }
+
+                // 合体ロボットの変形時に分離先のパイロットのインデックスを合わせる
+                foreach (var p in u.Supports)
+                {
+                    if (p.SupportIndex > 0)
+                    {
+                        if (IsFeatureAvailable("分離") && u.IsFeatureAvailable("分離"))
+                        {
+                            var cuForms = GeneralLib.ToL(FeatureData("分離")).Skip(1).ToList();
+                            var tuForms = GeneralLib.ToL(u.FeatureData("分離")).Skip(1).ToList();
+                            var cuForm = cuForms[p.SupportIndex - 1];
+                            for (var tuIndex = 0; tuForms.Count < tuIndex; tuIndex++)
+                            {
+                                var tuForm = tuForms[tuIndex];
+                                if (tuForm == cuForm)
+                                {
+                                    p.SupportIndex = tuIndex + 1;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                u.Update();
+
+                // TODO Impl
+                //// 弾数データを記録
+                //wname = new string[(CountWeapon() + 1)];
+                //wbullet = new int[(CountWeapon() + 1)];
+                //wmaxbullet = new int[(CountWeapon() + 1)];
+                //var loopTo23 = CountWeapon();
+                //for (i = 1; i <= loopTo23; i++)
+                //{
+                //    wname[i] = Weapon(i).Name;
+                //    wbullet[i] = Bullet(i);
+                //    wmaxbullet[i] = MaxBullet(i);
+                //}
+
+                //aname = new string[(CountAbility() + 1)];
+                //astock = new int[(CountAbility() + 1)];
+                //amaxstock = new int[(CountAbility() + 1)];
+                //var loopTo24 = CountAbility();
+                //for (i = 1; i <= loopTo24; i++)
+                //{
+                //    aname[i] = Ability(i).Name;
+                //    astock[i] = Stock(i);
+                //    amaxstock[i] = MaxStock(i);
+                //}
+
+                //// 弾数の受け継ぎ
+                //idx = 1;
+                //var loopTo25 = u.CountWeapon();
+                //for (i = 1; i <= loopTo25; i++)
+                //{
+                //    counter = idx;
+                //    var loopTo26 = Information.UBound(wname);
+                //    for (j = counter; j <= loopTo26; j++)
+                //    {
+                //        if ((u.Weapon(i).Name ?? "") == (wname[j] ?? "") & u.MaxBullet(i) > 0 & wmaxbullet[j] > 0)
+                //        {
+                //            u.SetBullet(i, ((wbullet[j] * u.MaxBullet(i)) / wmaxbullet[j]));
+                //            idx = (j + 1);
+                //            break;
+                //        }
+                //    }
+                //}
+
+                //idx = 1;
+                //var loopTo27 = u.CountAbility();
+                //for (i = 1; i <= loopTo27; i++)
+                //{
+                //    counter = idx;
+                //    var loopTo28 = Information.UBound(aname);
+                //    for (j = counter; j <= loopTo28; j++)
+                //    {
+                //        if ((u.Ability(i).Name ?? "") == (aname[j] ?? "") & u.MaxStock(i) > 0 & amaxstock[j] > 0)
+                //        {
+                //            u.SetStock(i, ((astock[j] * u.MaxStock(i)) / amaxstock[j]));
+                //            idx = (j + 1);
+                //            break;
+                //        }
+                //    }
+                //}
+
+                //// 弾数・使用回数共有の実現
+                //u.SyncBullet();
+
+                //// アイテムを削除
+                //var loopTo29 = CountItem();
+                //for (i = 1; i <= loopTo29; i++)
+                //{
+                //    object argIndex34 = 1;
+                //    DeleteItem(argIndex34);
+                //}
+
+                u.Update();
+
+                // ＨＰ＆ＥＮの受け継ぎ
+                if ((new_form ?? "") == (GeneralLib.LIndex(FeatureData("パーツ分離"), 2) ?? ""))
+                {
+                    u.HP = u.MaxHP;
+                }
+                else
+                {
+                    u.HP = (int)(u.MaxHP * hp_ratio / 100d);
+                }
+
+                u.EN = (int)(u.MaxEN * en_ratio / 100d);
+
+                // ノーマルモードや制限時間つきの形態の場合は残り時間を付加
+                if (!u.IsConditionSatisfied("残り時間"))
+                {
+                    if (u.IsFeatureAvailable("ノーマルモード"))
+                    {
+                        var lastTime = GeneralLib.LIndex(u.FeatureData("ノーマルモード"), 2);
+                        if (Information.IsNumeric(lastTime))
+                        {
+                            if (u.IsConditionSatisfied("残り時間"))
+                            {
+                                u.DeleteCondition("残り時間");
+                            }
+                            u.AddCondition("残り時間", Conversions.ToInteger(lastTime), cdata: "");
+                        }
+                    }
+                    else if (u.IsFeatureAvailable("制限時間"))
+                    {
+                        u.AddCondition("残り時間", Conversions.ToInteger(u.FeatureData("制限時間")), cdata: "");
+                    }
+                }
+                else if (!u.IsFeatureAvailable("ノーマルモード") & !u.IsFeatureAvailable("制限時間"))
+                {
+                    // 残り時間が必要ない形態にTransformコマンドで強制変形された？
+                    u.DeleteCondition("残り時間");
+                }
+
+                switch (u.Status ?? "")
+                {
+                    case "出撃":
+                        // 変形後のユニットを出撃させる
+                        Map.MapDataForUnit[x, y] = null;
+                        var prev_x = x;
+                        var prev_y = y;
+                        u.UsedAction = UsedAction;
+                        u.StandBy(x, y);
+                        if (u.x != prev_x | u.y != prev_y)
+                        {
+                            GUI.EraseUnitBitmap(prev_x, prev_y, false);
+                        }
+
+                        break;
+
+                    case "格納":
+                        // 変形後のユニットを格納する
+                        foreach (Unit eu in SRC.UList.Items)
+                        {
+                            if (eu.UnitOnBoards.Any(x => x.ID == ID))
+                            {
+                                eu.UnloadUnit(ID);
+                                eu.LoadUnit(u);
+                            }
+                        }
+                        break;
+                }
+            }
+
+            if (Map.IsStatusView)
+            {
+                return;
+            }
+
+            // ハイパーモードが解ける場合
+            foreach (var opt in GeneralLib.ToL(FeatureData("ノーマルモード")).Skip(1))
+            {
+                switch (opt ?? "")
+                {
+                    case "回数制限":
+                        AddCondition("行動不能", -1, cdata: "");
+                        break;
+                }
+            }
         }
 
         // 合体

@@ -359,6 +359,8 @@ namespace SRCCore.Commands
                 Status.DisplayUnitStatus(SelectedUnit);
             }
 
+            // XXX RedrawScreen 元はしてなかった気がする
+            GUI.RedrawScreen();
             CommandState = "ユニット選択";
             GUI.UnlockGUI();
         }

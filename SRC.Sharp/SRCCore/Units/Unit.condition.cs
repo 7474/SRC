@@ -65,6 +65,11 @@ namespace SRCCore.Units
             colCondition.Remove(Index);
         }
 
+        public void ClearCondition()
+        {
+            colCondition.Clear();
+        }
+
         // 付加された特殊状態の総数
         public int CountCondition()
         {
