@@ -26,6 +26,8 @@ namespace SRCCore.Events
         // 常時イベントラベルらしき行かどうか
         public bool IsAlwaysEventLabel => Data.FirstOrDefault() == '*';
 
+        public int NextID => ID + 1;
+
         public EventDataLine(int id, EventDataSource source, string file, int lineNum, string data)
         {
             ID = id;

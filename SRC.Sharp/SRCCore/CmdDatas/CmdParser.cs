@@ -251,27 +251,11 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "do":
-                    //    {
-                    //        CmdName = CmdType.DoCmd;
-                    //        if (ArgNum == 3)
-                    //        {
-                    //            args[1].strArg = Strings.LCase(args[1].strArg);
-                    //        }
+                    case "do":
+                        return new DoCmd(src, data);
 
-                    //        break;
-                    //    }
-
-                    //case "loop":
-                    //    {
-                    //        CmdName = CmdType.LoopCmd;
-                    //        if (ArgNum == 3)
-                    //        {
-                    //            args[1].strArg = Strings.LCase(args[1].strArg);
-                    //        }
-
-                    //        break;
-                    //    }
+                    case "loop":
+                        return new LoopCmd(src, data);
 
                     //case "drawoption":
                     //    {
