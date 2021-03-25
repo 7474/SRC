@@ -84,11 +84,11 @@ namespace SRCCore.Pilots
                 //    u.AddPilot(argp1);
                 //}
 
-                //// Pilotコマンドで作成されたパイロットは全て味方なので搭乗時に変更が必要
-                //Party = u.Party0;
+                // Pilotコマンドで作成されたパイロットは全て味方なので搭乗時に変更が必要
+                Party = u.Party0;
 
-                //// ユニットのステータスをアップデート
-                //u.Update();
+                // ユニットのステータスをアップデート
+                u.Update();
 
                 //// 霊力値のアップデート
                 //if (plana_ratio >= 0d)
