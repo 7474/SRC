@@ -102,7 +102,6 @@ namespace SRCCore.CmdDatas.Commands
             //            Event_Renamed.SelectedAlternative = GUI.ListItemID[Commands.SelectedItem];
             //            GUI.ListItemID = new string[1];
             //            ExecQuestionCmdRet = i + 1;
-            return EventData.ID + 1;
         }
     }
 }
