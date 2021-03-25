@@ -470,11 +470,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "launch":
-                    //    {
-                    //        CmdName = CmdType.LaunchCmd;
-                    //        break;
-                    //    }
+                    case "launch":
+                        return new LaunchCmd(src, data);
 
                     //case "leave":
                     //    {
