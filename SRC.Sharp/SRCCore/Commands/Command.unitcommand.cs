@@ -103,11 +103,9 @@ namespace SRCCore.Commands
                     TransformCommand();
                     break;
 
-                //        case SplitCmdID: // 分離
-                //            {
-                //                SplitCommand();
-                //                break;
-                //            }
+                case SplitCmdID: // 分離
+                    SplitCommand();
+                    break;
 
                 //        case CombineCmdID: // 合体
                 //            {

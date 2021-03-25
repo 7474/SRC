@@ -727,9 +727,7 @@ namespace SRCCore.Commands
         // 「分離」コマンド
         private void SplitCommand()
         {
-            throw new NotImplementedException();
-            //// MOD END MARGE
-            //string uname, tname, fname;
+            string uname, tname, fname;
             //int ret;
             //string BGM;
 
@@ -741,337 +739,327 @@ namespace SRCCore.Commands
             //    Status.ClearUnitStatus();
             //}
 
-            //GUI.LockGUI();
-            //if (string.IsNullOrEmpty(Map.MapFileName))
-            //{
-            //    // ユニットステータスコマンドの場合
+            GUI.LockGUI();
+            if (Map.IsStatusView)
+            {
+                // ユニットステータスコマンドの場合
 
-            //    // 分離を実施
-            //    {
-            //        var withBlock = SelectedUnit;
-            //        string argfname = "パーツ分離";
-            //        if (withBlock.IsFeatureAvailable(argfname))
-            //        {
-            //            object argIndex1 = "パーツ分離";
-            //            string arglist = withBlock.FeatureData(argIndex1);
-            //            tname = GeneralLib.LIndex(arglist, 2);
-            //            withBlock.Transform(tname);
-            //        }
-            //        else
-            //        {
-            //            withBlock.Split_Renamed();
-            //        }
+                // 分離を実施
+                {
+                    var u = SelectedUnit;
+                    if (u.IsFeatureAvailable("パーツ分離"))
+                    {
+                        tname = GeneralLib.LIndex(u.FeatureData("パーツ分離"), 2);
+                        u.Transform(tname);
+                    }
+                    else
+                    {
+                        u.Split();
+                    }
 
-            //        SRC.UList.CheckAutoHyperMode();
-            //        SRC.UList.CheckAutoNormalMode();
-            //        Status.DisplayUnitStatus(Map.MapDataForUnit[withBlock.x, withBlock.y]);
-            //    }
+                    SRC.UList.CheckAutoHyperMode();
+                    SRC.UList.CheckAutoNormalMode();
+                    Status.DisplayUnitStatus(Map.MapDataForUnit[u.x, u.y]);
+                }
 
-            //    // ユニットリストの表示を更新
-            //    string argsmode = "";
-            //    Event.MakeUnitList(smode: argsmode);
+                // TODO Impl
+                //// ユニットリストの表示を更新
+                //string argsmode = "";
+                //Event.MakeUnitList(smode: argsmode);
 
-            //    // コマンドを終了
-            //    CommandState = "ユニット選択";
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+                // コマンドを終了
+                CommandState = "ユニット選択";
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //{
-            //    var withBlock1 = SelectedUnit;
-            //    string argfname3 = "パーツ分離";
-            //    if (withBlock1.IsFeatureAvailable(argfname3))
-            //    {
-            //        // パーツ分離を行う場合
+            {
+                var u = SelectedUnit;
+                if (u.IsFeatureAvailable("パーツ分離"))
+                {
+                    // パーツ分離を行う場合
+                    var confirmRes = GUI.Confirm("パーツを分離しますか？", "パーツ分離", GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
+                    if (confirmRes == GuiDialogResult.Cancel)
+                    {
+                        GUI.UnlockGUI();
+                        CancelCommand();
+                        return;
+                    }
 
-            //        ret = Interaction.MsgBox("パーツを分離しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "パーツ分離");
-            //        if (ret == MsgBoxResult.Cancel)
-            //        {
-            //            GUI.UnlockGUI();
-            //            CancelCommand();
-            //            return;
-            //        }
+                    tname = GeneralLib.LIndex(u.FeatureData("パーツ分離"), 2);
 
-            //        object argIndex2 = "パーツ分離";
-            //        string arglist1 = withBlock1.FeatureData(argIndex2);
-            //        tname = GeneralLib.LIndex(arglist1, 2);
-            //        Unit localOtherForm() { object argIndex1 = tname; var ret = withBlock1.OtherForm(argIndex1); return ret; }
+                    if (!u.OtherForm(tname).IsAbleToEnter(u.x, u.y))
+                    {
+                        GUI.Confirm("この地形では分離できません", "", GuiConfirmOption.Ok);
+                        GUI.UnlockGUI();
+                        CancelCommand();
+                        return;
+                    }
 
-            //        if (!localOtherForm().IsAbleToEnter(withBlock1.x, withBlock1.y))
-            //        {
-            //            Interaction.MsgBox("この地形では分離できません");
-            //            GUI.UnlockGUI();
-            //            CancelCommand();
-            //            return;
-            //        }
+                    // TODO Impl
+                    //// ＢＧＭ変更
+                    //string argfname1 = "分離ＢＧＭ";
+                    //if (u.IsFeatureAvailable(argfname1))
+                    //{
+                    //    object argIndex3 = "分離ＢＧＭ";
+                    //    string argmidi_name = u.FeatureData(argIndex3);
+                    //    BGM = Sound.SearchMidiFile(argmidi_name);
+                    //    if (Strings.Len(BGM) > 0)
+                    //    {
+                    //        object argIndex4 = "分離ＢＧＭ";
+                    //        string argbgm_name = u.FeatureData(argIndex4);
+                    //        Sound.StartBGM(argbgm_name);
+                    //        GUI.Sleep(500);
+                    //    }
+                    //}
 
-            //        // ＢＧＭ変更
-            //        string argfname1 = "分離ＢＧＭ";
-            //        if (withBlock1.IsFeatureAvailable(argfname1))
-            //        {
-            //            object argIndex3 = "分離ＢＧＭ";
-            //            string argmidi_name = withBlock1.FeatureData(argIndex3);
-            //            BGM = Sound.SearchMidiFile(argmidi_name);
-            //            if (Strings.Len(BGM) > 0)
-            //            {
-            //                object argIndex4 = "分離ＢＧＭ";
-            //                string argbgm_name = withBlock1.FeatureData(argIndex4);
-            //                Sound.StartBGM(argbgm_name);
-            //                GUI.Sleep(500);
-            //            }
-            //        }
+                    //fname = u.FeatureName("パーツ分離");
 
-            //        object argIndex5 = "パーツ分離";
-            //        fname = withBlock1.FeatureName(argIndex5);
+                    //// メッセージを表示
+                    //bool localIsMessageDefined1() { string argmain_situation = "分離(" + u.Name + ")"; var ret = u.IsMessageDefined(argmain_situation); return ret; }
 
-            //        // メッセージを表示
-            //        bool localIsMessageDefined1() { string argmain_situation = "分離(" + withBlock1.Name + ")"; var ret = withBlock1.IsMessageDefined(argmain_situation); return ret; }
+                    //bool localIsMessageDefined2() { string argmain_situation = "分離(" + fname + ")"; var ret = u.IsMessageDefined(argmain_situation); return ret; }
 
-            //        bool localIsMessageDefined2() { string argmain_situation = "分離(" + fname + ")"; var ret = withBlock1.IsMessageDefined(argmain_situation); return ret; }
+                    //string argmain_situation1 = "分離";
+                    //if (localIsMessageDefined1() | localIsMessageDefined2() | u.IsMessageDefined(argmain_situation1))
+                    //{
+                    //    GUI.Center(u.x, u.y);
+                    //    GUI.RefreshScreen();
+                    //    Unit argu1 = null;
+                    //    Unit argu2 = null;
+                    //    GUI.OpenMessageForm(u1: argu1, u2: argu2);
+                    //    bool localIsMessageDefined() { string argmain_situation = "分離(" + fname + ")"; var ret = u.IsMessageDefined(argmain_situation); return ret; }
 
-            //        string argmain_situation1 = "分離";
-            //        if (localIsMessageDefined1() | localIsMessageDefined2() | withBlock1.IsMessageDefined(argmain_situation1))
-            //        {
-            //            GUI.Center(withBlock1.x, withBlock1.y);
-            //            GUI.RefreshScreen();
-            //            Unit argu1 = null;
-            //            Unit argu2 = null;
-            //            GUI.OpenMessageForm(u1: argu1, u2: argu2);
-            //            bool localIsMessageDefined() { string argmain_situation = "分離(" + fname + ")"; var ret = withBlock1.IsMessageDefined(argmain_situation); return ret; }
+                    //    string argmain_situation = "分離(" + u.Name + ")";
+                    //    if (u.IsMessageDefined(argmain_situation))
+                    //    {
+                    //        string argSituation = "分離(" + u.Name + ")";
+                    //        string argmsg_mode = "";
+                    //        u.PilotMessage(argSituation, msg_mode: argmsg_mode);
+                    //    }
+                    //    else if (localIsMessageDefined())
+                    //    {
+                    //        string argSituation2 = "分離(" + fname + ")";
+                    //        string argmsg_mode2 = "";
+                    //        u.PilotMessage(argSituation2, msg_mode: argmsg_mode2);
+                    //    }
+                    //    else
+                    //    {
+                    //        string argSituation1 = "分離";
+                    //        string argmsg_mode1 = "";
+                    //        u.PilotMessage(argSituation1, msg_mode: argmsg_mode1);
+                    //    }
 
-            //            string argmain_situation = "分離(" + withBlock1.Name + ")";
-            //            if (withBlock1.IsMessageDefined(argmain_situation))
-            //            {
-            //                string argSituation = "分離(" + withBlock1.Name + ")";
-            //                string argmsg_mode = "";
-            //                withBlock1.PilotMessage(argSituation, msg_mode: argmsg_mode);
-            //            }
-            //            else if (localIsMessageDefined())
-            //            {
-            //                string argSituation2 = "分離(" + fname + ")";
-            //                string argmsg_mode2 = "";
-            //                withBlock1.PilotMessage(argSituation2, msg_mode: argmsg_mode2);
-            //            }
-            //            else
-            //            {
-            //                string argSituation1 = "分離";
-            //                string argmsg_mode1 = "";
-            //                withBlock1.PilotMessage(argSituation1, msg_mode: argmsg_mode1);
-            //            }
+                    //    GUI.CloseMessageForm();
+                    //}
 
-            //            GUI.CloseMessageForm();
-            //        }
+                    //// アニメ表示
+                    //bool localIsAnimationDefined() { string argmain_situation = "分離(" + fname + ")"; string argsub_situation = ""; var ret = u.IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //        // アニメ表示
-            //        bool localIsAnimationDefined() { string argmain_situation = "分離(" + fname + ")"; string argsub_situation = ""; var ret = withBlock1.IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+                    //bool localIsSpecialEffectDefined() { string argmain_situation = "分離(" + u.Name + ")"; string argsub_situation = ""; var ret = u.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //        bool localIsSpecialEffectDefined() { string argmain_situation = "分離(" + withBlock1.Name + ")"; string argsub_situation = ""; var ret = withBlock1.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+                    //bool localIsSpecialEffectDefined1() { string argmain_situation = "分離(" + fname + ")"; string argsub_situation = ""; var ret = u.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //        bool localIsSpecialEffectDefined1() { string argmain_situation = "分離(" + fname + ")"; string argsub_situation = ""; var ret = withBlock1.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+                    //string argmain_situation8 = "分離(" + u.Name + ")";
+                    //string argsub_situation6 = "";
+                    //string argmain_situation9 = "分離";
+                    //string argsub_situation7 = "";
+                    //if (u.IsAnimationDefined(argmain_situation8, sub_situation: argsub_situation6))
+                    //{
+                    //    string argmain_situation2 = "分離(" + u.Name + ")";
+                    //    string argsub_situation = "";
+                    //    u.PlayAnimation(argmain_situation2, sub_situation: argsub_situation);
+                    //}
+                    //else if (localIsAnimationDefined())
+                    //{
+                    //    string argmain_situation4 = "分離(" + fname + ")";
+                    //    string argsub_situation2 = "";
+                    //    u.PlayAnimation(argmain_situation4, sub_situation: argsub_situation2);
+                    //}
+                    //else if (u.IsAnimationDefined(argmain_situation9, sub_situation: argsub_situation7))
+                    //{
+                    //    string argmain_situation5 = "分離";
+                    //    string argsub_situation3 = "";
+                    //    u.PlayAnimation(argmain_situation5, sub_situation: argsub_situation3);
+                    //}
+                    //else if (localIsSpecialEffectDefined())
+                    //{
+                    //    string argmain_situation6 = "分離(" + u.Name + ")";
+                    //    string argsub_situation4 = "";
+                    //    u.SpecialEffect(argmain_situation6, sub_situation: argsub_situation4);
+                    //}
+                    //else if (localIsSpecialEffectDefined1())
+                    //{
+                    //    string argmain_situation7 = "分離(" + fname + ")";
+                    //    string argsub_situation5 = "";
+                    //    u.SpecialEffect(argmain_situation7, sub_situation: argsub_situation5);
+                    //}
+                    //else
+                    //{
+                    //    string argmain_situation3 = "分離";
+                    //    string argsub_situation1 = "";
+                    //    u.SpecialEffect(argmain_situation3, sub_situation: argsub_situation1);
+                    //}
 
-            //        string argmain_situation8 = "分離(" + withBlock1.Name + ")";
-            //        string argsub_situation6 = "";
-            //        string argmain_situation9 = "分離";
-            //        string argsub_situation7 = "";
-            //        if (withBlock1.IsAnimationDefined(argmain_situation8, sub_situation: argsub_situation6))
-            //        {
-            //            string argmain_situation2 = "分離(" + withBlock1.Name + ")";
-            //            string argsub_situation = "";
-            //            withBlock1.PlayAnimation(argmain_situation2, sub_situation: argsub_situation);
-            //        }
-            //        else if (localIsAnimationDefined())
-            //        {
-            //            string argmain_situation4 = "分離(" + fname + ")";
-            //            string argsub_situation2 = "";
-            //            withBlock1.PlayAnimation(argmain_situation4, sub_situation: argsub_situation2);
-            //        }
-            //        else if (withBlock1.IsAnimationDefined(argmain_situation9, sub_situation: argsub_situation7))
-            //        {
-            //            string argmain_situation5 = "分離";
-            //            string argsub_situation3 = "";
-            //            withBlock1.PlayAnimation(argmain_situation5, sub_situation: argsub_situation3);
-            //        }
-            //        else if (localIsSpecialEffectDefined())
-            //        {
-            //            string argmain_situation6 = "分離(" + withBlock1.Name + ")";
-            //            string argsub_situation4 = "";
-            //            withBlock1.SpecialEffect(argmain_situation6, sub_situation: argsub_situation4);
-            //        }
-            //        else if (localIsSpecialEffectDefined1())
-            //        {
-            //            string argmain_situation7 = "分離(" + fname + ")";
-            //            string argsub_situation5 = "";
-            //            withBlock1.SpecialEffect(argmain_situation7, sub_situation: argsub_situation5);
-            //        }
-            //        else
-            //        {
-            //            string argmain_situation3 = "分離";
-            //            string argsub_situation1 = "";
-            //            withBlock1.SpecialEffect(argmain_situation3, sub_situation: argsub_situation1);
-            //        }
+                    // パーツ分離
+                    uname = u.Name;
+                    u.Transform(tname);
+                    SelectedUnit = Map.MapDataForUnit[u.x, u.y];
+                    Status.DisplayUnitStatus(SelectedUnit);
+                }
+                else
+                {
+                    // 通常の分離を行う場合
 
-            //        // パーツ分離
-            //        uname = withBlock1.Name;
-            //        withBlock1.Transform(tname);
-            //        SelectedUnit = Map.MapDataForUnit[withBlock1.x, withBlock1.y];
-            //        Status.DisplayUnitStatus(SelectedUnit);
-            //    }
-            //    else
-            //    {
-            //        // 通常の分離を行う場合
+                    var confirmRes = GUI.Confirm("分離しますか？", "分離", GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
+                    if (confirmRes == GuiDialogResult.Cancel)
+                    {
+                        GUI.UnlockGUI();
+                        CancelCommand();
+                        return;
+                    }
 
-            //        ret = Interaction.MsgBox("分離しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "分離");
-            //        if (ret == MsgBoxResult.Cancel)
-            //        {
-            //            GUI.UnlockGUI();
-            //            CancelCommand();
-            //            return;
-            //        }
+                    // TODO Impl
+                    //// ＢＧＭを変更
+                    //string argfname2 = "分離ＢＧＭ";
+                    //if (u.IsFeatureAvailable(argfname2))
+                    //{
+                    //    object argIndex6 = "分離ＢＧＭ";
+                    //    string argmidi_name1 = u.FeatureData(argIndex6);
+                    //    BGM = Sound.SearchMidiFile(argmidi_name1);
+                    //    if (Strings.Len(BGM) > 0)
+                    //    {
+                    //        object argIndex7 = "分離ＢＧＭ";
+                    //        string argbgm_name1 = u.FeatureData(argIndex7);
+                    //        Sound.StartBGM(argbgm_name1);
+                    //        GUI.Sleep(500);
+                    //    }
+                    //}
 
-            //        // ＢＧＭを変更
-            //        string argfname2 = "分離ＢＧＭ";
-            //        if (withBlock1.IsFeatureAvailable(argfname2))
-            //        {
-            //            object argIndex6 = "分離ＢＧＭ";
-            //            string argmidi_name1 = withBlock1.FeatureData(argIndex6);
-            //            BGM = Sound.SearchMidiFile(argmidi_name1);
-            //            if (Strings.Len(BGM) > 0)
-            //            {
-            //                object argIndex7 = "分離ＢＧＭ";
-            //                string argbgm_name1 = withBlock1.FeatureData(argIndex7);
-            //                Sound.StartBGM(argbgm_name1);
-            //                GUI.Sleep(500);
-            //            }
-            //        }
+                    //object argIndex8 = "分離";
+                    //fname = u.FeatureName(argIndex8);
 
-            //        object argIndex8 = "分離";
-            //        fname = withBlock1.FeatureName(argIndex8);
+                    //// メッセージを表示
+                    //bool localIsMessageDefined4() { string argmain_situation = "分離(" + u.Name + ")"; var ret = u.IsMessageDefined(argmain_situation); return ret; }
 
-            //        // メッセージを表示
-            //        bool localIsMessageDefined4() { string argmain_situation = "分離(" + withBlock1.Name + ")"; var ret = withBlock1.IsMessageDefined(argmain_situation); return ret; }
+                    //bool localIsMessageDefined5() { string argmain_situation = "分離(" + fname + ")"; var ret = u.IsMessageDefined(argmain_situation); return ret; }
 
-            //        bool localIsMessageDefined5() { string argmain_situation = "分離(" + fname + ")"; var ret = withBlock1.IsMessageDefined(argmain_situation); return ret; }
+                    //string argmain_situation11 = "分離";
+                    //if (localIsMessageDefined4() | localIsMessageDefined5() | u.IsMessageDefined(argmain_situation11))
+                    //{
+                    //    GUI.Center(u.x, u.y);
+                    //    GUI.RefreshScreen();
+                    //    Unit argu11 = null;
+                    //    Unit argu21 = null;
+                    //    GUI.OpenMessageForm(u1: argu11, u2: argu21);
+                    //    bool localIsMessageDefined3() { string argmain_situation = "分離(" + fname + ")"; var ret = u.IsMessageDefined(argmain_situation); return ret; }
 
-            //        string argmain_situation11 = "分離";
-            //        if (localIsMessageDefined4() | localIsMessageDefined5() | withBlock1.IsMessageDefined(argmain_situation11))
-            //        {
-            //            GUI.Center(withBlock1.x, withBlock1.y);
-            //            GUI.RefreshScreen();
-            //            Unit argu11 = null;
-            //            Unit argu21 = null;
-            //            GUI.OpenMessageForm(u1: argu11, u2: argu21);
-            //            bool localIsMessageDefined3() { string argmain_situation = "分離(" + fname + ")"; var ret = withBlock1.IsMessageDefined(argmain_situation); return ret; }
+                    //    string argmain_situation10 = "分離(" + u.Name + ")";
+                    //    if (u.IsMessageDefined(argmain_situation10))
+                    //    {
+                    //        string argSituation3 = "分離(" + u.Name + ")";
+                    //        string argmsg_mode3 = "";
+                    //        u.PilotMessage(argSituation3, msg_mode: argmsg_mode3);
+                    //    }
+                    //    else if (localIsMessageDefined3())
+                    //    {
+                    //        string argSituation5 = "分離(" + fname + ")";
+                    //        string argmsg_mode5 = "";
+                    //        u.PilotMessage(argSituation5, msg_mode: argmsg_mode5);
+                    //    }
+                    //    else
+                    //    {
+                    //        string argSituation4 = "分離";
+                    //        string argmsg_mode4 = "";
+                    //        u.PilotMessage(argSituation4, msg_mode: argmsg_mode4);
+                    //    }
 
-            //            string argmain_situation10 = "分離(" + withBlock1.Name + ")";
-            //            if (withBlock1.IsMessageDefined(argmain_situation10))
-            //            {
-            //                string argSituation3 = "分離(" + withBlock1.Name + ")";
-            //                string argmsg_mode3 = "";
-            //                withBlock1.PilotMessage(argSituation3, msg_mode: argmsg_mode3);
-            //            }
-            //            else if (localIsMessageDefined3())
-            //            {
-            //                string argSituation5 = "分離(" + fname + ")";
-            //                string argmsg_mode5 = "";
-            //                withBlock1.PilotMessage(argSituation5, msg_mode: argmsg_mode5);
-            //            }
-            //            else
-            //            {
-            //                string argSituation4 = "分離";
-            //                string argmsg_mode4 = "";
-            //                withBlock1.PilotMessage(argSituation4, msg_mode: argmsg_mode4);
-            //            }
+                    //    GUI.CloseMessageForm();
+                    //}
 
-            //            GUI.CloseMessageForm();
-            //        }
+                    //// アニメ表示
+                    //bool localIsAnimationDefined1() { string argmain_situation = "分離(" + fname + ")"; string argsub_situation = ""; var ret = u.IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //        // アニメ表示
-            //        bool localIsAnimationDefined1() { string argmain_situation = "分離(" + fname + ")"; string argsub_situation = ""; var ret = withBlock1.IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+                    //bool localIsSpecialEffectDefined2() { string argmain_situation = "分離(" + u.Name + ")"; string argsub_situation = ""; var ret = u.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //        bool localIsSpecialEffectDefined2() { string argmain_situation = "分離(" + withBlock1.Name + ")"; string argsub_situation = ""; var ret = withBlock1.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+                    //bool localIsSpecialEffectDefined3() { string argmain_situation = "分離(" + fname + ")"; string argsub_situation = ""; var ret = u.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //        bool localIsSpecialEffectDefined3() { string argmain_situation = "分離(" + fname + ")"; string argsub_situation = ""; var ret = withBlock1.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+                    //string argmain_situation18 = "分離(" + u.Name + ")";
+                    //string argsub_situation14 = "";
+                    //string argmain_situation19 = "分離";
+                    //string argsub_situation15 = "";
+                    //if (u.IsAnimationDefined(argmain_situation18, sub_situation: argsub_situation14))
+                    //{
+                    //    string argmain_situation12 = "分離(" + u.Name + ")";
+                    //    string argsub_situation8 = "";
+                    //    u.PlayAnimation(argmain_situation12, sub_situation: argsub_situation8);
+                    //}
+                    //else if (localIsAnimationDefined1())
+                    //{
+                    //    string argmain_situation14 = "分離(" + fname + ")";
+                    //    string argsub_situation10 = "";
+                    //    u.PlayAnimation(argmain_situation14, sub_situation: argsub_situation10);
+                    //}
+                    //else if (u.IsAnimationDefined(argmain_situation19, sub_situation: argsub_situation15))
+                    //{
+                    //    string argmain_situation15 = "分離";
+                    //    string argsub_situation11 = "";
+                    //    u.PlayAnimation(argmain_situation15, sub_situation: argsub_situation11);
+                    //}
+                    //else if (localIsSpecialEffectDefined2())
+                    //{
+                    //    string argmain_situation16 = "分離(" + u.Name + ")";
+                    //    string argsub_situation12 = "";
+                    //    u.SpecialEffect(argmain_situation16, sub_situation: argsub_situation12);
+                    //}
+                    //else if (localIsSpecialEffectDefined3())
+                    //{
+                    //    string argmain_situation17 = "分離(" + fname + ")";
+                    //    string argsub_situation13 = "";
+                    //    u.SpecialEffect(argmain_situation17, sub_situation: argsub_situation13);
+                    //}
+                    //else
+                    //{
+                    //    string argmain_situation13 = "分離";
+                    //    string argsub_situation9 = "";
+                    //    u.SpecialEffect(argmain_situation13, sub_situation: argsub_situation9);
+                    //}
 
-            //        string argmain_situation18 = "分離(" + withBlock1.Name + ")";
-            //        string argsub_situation14 = "";
-            //        string argmain_situation19 = "分離";
-            //        string argsub_situation15 = "";
-            //        if (withBlock1.IsAnimationDefined(argmain_situation18, sub_situation: argsub_situation14))
-            //        {
-            //            string argmain_situation12 = "分離(" + withBlock1.Name + ")";
-            //            string argsub_situation8 = "";
-            //            withBlock1.PlayAnimation(argmain_situation12, sub_situation: argsub_situation8);
-            //        }
-            //        else if (localIsAnimationDefined1())
-            //        {
-            //            string argmain_situation14 = "分離(" + fname + ")";
-            //            string argsub_situation10 = "";
-            //            withBlock1.PlayAnimation(argmain_situation14, sub_situation: argsub_situation10);
-            //        }
-            //        else if (withBlock1.IsAnimationDefined(argmain_situation19, sub_situation: argsub_situation15))
-            //        {
-            //            string argmain_situation15 = "分離";
-            //            string argsub_situation11 = "";
-            //            withBlock1.PlayAnimation(argmain_situation15, sub_situation: argsub_situation11);
-            //        }
-            //        else if (localIsSpecialEffectDefined2())
-            //        {
-            //            string argmain_situation16 = "分離(" + withBlock1.Name + ")";
-            //            string argsub_situation12 = "";
-            //            withBlock1.SpecialEffect(argmain_situation16, sub_situation: argsub_situation12);
-            //        }
-            //        else if (localIsSpecialEffectDefined3())
-            //        {
-            //            string argmain_situation17 = "分離(" + fname + ")";
-            //            string argsub_situation13 = "";
-            //            withBlock1.SpecialEffect(argmain_situation17, sub_situation: argsub_situation13);
-            //        }
-            //        else
-            //        {
-            //            string argmain_situation13 = "分離";
-            //            string argsub_situation9 = "";
-            //            withBlock1.SpecialEffect(argmain_situation13, sub_situation: argsub_situation9);
-            //        }
+                    // 分離
+                    uname = u.Name;
+                    u.Split();
 
-            //        // 分離
-            //        uname = withBlock1.Name;
-            //        withBlock1.Split_Renamed();
+                    // 選択ユニットを再設定
+                    SelectedUnit = SRC.UList.Item(GeneralLib.LIndex(u.FeatureData("分離"), 2));
+                    Status.DisplayUnitStatus(SelectedUnit);
+                }
+            }
 
-            //        // 選択ユニットを再設定
-            //        string localLIndex() { object argIndex1 = "分離"; string arglist = withBlock1.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+            // 分離イベント
+            Event.HandleEvent("分離", SelectedUnit.MainPilot().ID, uname);
+            if (SRC.IsScenarioFinished)
+            {
+                SRC.IsScenarioFinished = false;
+                Status.ClearUnitStatus();
+                GUI.RedrawScreen();
+                CommandState = "ユニット選択";
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //        object argIndex9 = localLIndex();
-            //        SelectedUnit = SRC.UList.Item(argIndex9);
-            //        Status.DisplayUnitStatus(SelectedUnit);
-            //    }
-            //}
+            SRC.IsCanceled = false;
 
-            //// 分離イベント
-            //Event.HandleEvent("分離", SelectedUnit.MainPilot().ID, uname);
-            //if (SRC.IsScenarioFinished)
-            //{
-            //    SRC.IsScenarioFinished = false;
-            //    Status.ClearUnitStatus();
-            //    GUI.RedrawScreen();
-            //    CommandState = "ユニット選択";
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+            // カーソル自動移動
+            if (SRC.AutoMoveCursor)
+            {
+                GUI.MoveCursorPos("ユニット選択", SelectedUnit);
+            }
 
-            //SRC.IsCanceled = false;
-
-            //// カーソル自動移動
-            //if (SRC.AutoMoveCursor)
-            //{
-            //    string argcursor_mode = "ユニット選択";
-            //    GUI.MoveCursorPos(argcursor_mode, SelectedUnit);
-            //}
-
-            //// ハイパーモード＆ノーマルモードの自動発動チェック
-            //SRC.UList.CheckAutoHyperMode();
-            //SRC.UList.CheckAutoNormalMode();
-            //CommandState = "ユニット選択";
-            //GUI.UnlockGUI();
+            // ハイパーモード＆ノーマルモードの自動発動チェック
+            SRC.UList.CheckAutoHyperMode();
+            SRC.UList.CheckAutoNormalMode();
+            CommandState = "ユニット選択";
+            GUI.UnlockGUI();
         }
 
         // 「合体」コマンド

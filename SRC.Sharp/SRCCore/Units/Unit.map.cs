@@ -2370,7 +2370,7 @@ namespace SRCCore.Units
 
         // 分離
         // UPGRADE_NOTE: Split は Split_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        public void Split_Renamed()
+        public void Split()
         {
             //int k, i, j, l;
             //int idx, n;

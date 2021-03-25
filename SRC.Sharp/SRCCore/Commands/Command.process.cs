@@ -1554,57 +1554,24 @@ namespace SRCCore.Commands
                         }
                     }
 
-                    //// 分離コマンド
-                    //string argfname22 = "分離";
-                    //object argIndex66 = "分離";
-                    //object argIndex67 = "形態固定";
-                    //object argIndex68 = "機体固定";
-                    //if (currentUnit.IsFeatureAvailable(argfname22) & !string.IsNullOrEmpty(currentUnit.FeatureName(argIndex66)) & !currentUnit.IsConditionSatisfied(argIndex67) & !currentUnit.IsConditionSatisfied(argIndex68))
-                    //{
-                    //    GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible = true;
-                    //    object argIndex64 = "分離";
-                    //    GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Caption = currentUnit.FeatureName(argIndex64);
-                    //    object argIndex65 = "分離";
-                    //    buf = currentUnit.FeatureData(argIndex65);
+                    // 分離コマンド
+                    if (currentUnit.IsFeatureAvailable("分離")
+                        && !string.IsNullOrEmpty(currentUnit.FeatureName("分離"))
+                        && !currentUnit.IsConditionSatisfied("形態固定")
+                        && !currentUnit.IsConditionSatisfied("機体固定"))
+                    {
+                        var splitForms = GeneralLib.ToL(currentUnit.FeatureData("分離")).Skip(1).ToList();
 
-                    //    // 分離形態が利用出来ない場合は分離を行わない
-                    //    var loopTo21 = GeneralLib.LLength(buf);
-                    //    for (i = 2; i <= loopTo21; i++)
-                    //    {
-                    //        bool localIsDefined2() { object argIndex1 = GeneralLib.LIndex(buf, i); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-                    //        if (!localIsDefined2())
-                    //        {
-                    //            GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible = false;
-                    //            break;
-                    //        }
-                    //    }
-
-                    //    // パイロットが足らない場合も分離を行わない
-                    //    if (GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible)
-                    //    {
-                    //        n = 0;
-                    //        var loopTo22 = GeneralLib.LLength(buf);
-                    //        for (i = 2; i <= loopTo22; i++)
-                    //        {
-                    //            Unit localItem1() { object argIndex1 = GeneralLib.LIndex(buf, i); var ret = SRC.UList.Item(argIndex1); return ret; }
-
-                    //            {
-                    //                var withBlock11 = localItem1().Data;
-                    //                string argfname21 = "召喚ユニット";
-                    //                if (!withBlock11.IsFeatureAvailable(argfname21))
-                    //                {
-                    //                    n = (n + Math.Abs(withBlock11.PilotNum));
-                    //                }
-                    //            }
-                    //        }
-
-                    //        if (currentUnit.CountPilot() < n)
-                    //        {
-                    //            GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible = false;
-                    //        }
-                    //    }
-                    //}
+                        // 分離形態が利用出来ない場合は分離を行わない
+                        // パイロットが足らない場合も分離を行わない
+                        if (splitForms.All(x => SRC.UList.IsDefined(x))
+                            && currentUnit.CountPilot() >= splitForms.Select(x => SRC.UList.Item(x))
+                                .Where(x => !x.IsFeatureAvailable("召喚ユニット"))
+                                .Count())
+                        {
+                            unitCommands.Add(new UiCommand(SplitCmdID, currentUnit.FeatureName("分離")));
+                        }
+                    }
 
                     //string argfname23 = "パーツ分離";
                     //object argIndex70 = "パーツ分離";
