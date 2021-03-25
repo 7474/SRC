@@ -368,7 +368,7 @@ namespace SRCCore.Units
         }
 
         public IEnumerable<Pilot> SubPilots => colPilot.List.Skip(1);
-        public IEnumerable<Pilot> Supports => colPilot.List;
+        public IEnumerable<Pilot> Supports => colSupport.List;
 
         // サポートパイロットを追加
         public void AddSupport(Pilot p)
@@ -377,9 +377,9 @@ namespace SRCCore.Units
         }
 
         // サポートパイロットを削除
-        public void DeleteSupport(string Index)
+        public void DeleteSupport(Pilot p)
         {
-            colSupport.Remove(Index);
+            colSupport.Remove(p);
         }
 
         //// サポートパイロットの入れ替え
