@@ -4,6 +4,7 @@ using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.Units;
 using SRCCore.VB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -1582,98 +1583,71 @@ namespace SRCCore.Commands
                     //    GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible = true;
                     //}
 
-                    //// 合体コマンド
-                    //string argfname25 = "合体";
-                    //object argIndex74 = "形態固定";
-                    //object argIndex75 = "機体固定";
-                    //if (currentUnit.IsFeatureAvailable(argfname25) & !currentUnit.IsConditionSatisfied(argIndex74) & !currentUnit.IsConditionSatisfied(argIndex75))
-                    //{
-                    //    var loopTo23 = currentUnit.CountFeature();
-                    //    for (i = 1; i <= loopTo23; i++)
-                    //    {
-                    //        // 3体以上からなる合体能力を持っているか？
-                    //        string localFeature() { object argIndex1 = i; var ret = currentUnit.Feature(argIndex1); return ret; }
+                    // 合体コマンド
+                    if (currentUnit.IsFeatureAvailable("合体")
+                        && !currentUnit.IsConditionSatisfied("形態固定")
+                        && !currentUnit.IsConditionSatisfied("機体固定"))
+                    {
+                        foreach (var fd in currentUnit.Features)
+                        {
+                            // 3体以上からなる合体能力を持っているか？
+                            var opts = GeneralLib.ToL(fd.StrData);
+                            var conbinename = opts.First();
+                            var unitnames = opts.Skip(1).ToList();
+                            var conbineunitname = unitnames.First();
+                            var partunitnames = unitnames.Skip(1).ToList();
+                            if (fd.Name == "合体"
+                                && !string.IsNullOrEmpty(currentUnit.FeatureName(fd.Name))
+                                && partunitnames.Count >= 2)
+                            {
+                                var n = 0;
+                                // パートナーは隣接しているか？
+                                foreach (var uname in partunitnames)
+                                {
+                                    var partu = SRC.UList.Item(uname);
+                                    if (partu is null)
+                                    {
+                                        break;
+                                    }
 
-                    //        string localFeatureName() { object argIndex1 = i; var ret = currentUnit.FeatureName(argIndex1); return ret; }
+                                    if (!partu.IsOperational())
+                                    {
+                                        break;
+                                    }
 
-                    //        string localFeatureData10() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
+                                    if (partu.Status != "出撃" & partu.CurrentForm().IsFeatureAvailable("合体制限"))
+                                    {
+                                        break;
+                                    }
 
-                    //        int localLLength2() { string arglist = hsc81ad842db7849b2b1585eed09bb5348(); var ret = GeneralLib.LLength(arglist); return ret; }
+                                    if (Math.Abs((currentUnit.x - partu.CurrentForm().x)) + Math.Abs((currentUnit.y - partu.CurrentForm().y)) > 2)
+                                    {
+                                        break;
+                                    }
 
-                    //        if (localFeature() == "合体" & !string.IsNullOrEmpty(localFeatureName()) & localLLength2() > 3)
-                    //        {
-                    //            n = 0;
-                    //            // パートナーは隣接しているか？
-                    //            string localFeatureData6() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
+                                    n = (n + 1);
+                                }
 
-                    //            string arglist17 = localFeatureData6();
-                    //            var loopTo24 = GeneralLib.LLength(arglist17);
-                    //            for (j = 3; j <= loopTo24; j++)
-                    //            {
-                    //                string localFeatureData5() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
+                                // 合体先のユニットが作成され、かつ合体可能な状態にあるか？
+                                var u = SRC.UList.Item(conbineunitname);
+                                if (u is null)
+                                {
+                                    n = 0;
+                                }
+                                else if (u.IsConditionSatisfied("行動不能"))
+                                {
+                                    n = 0;
+                                }
 
-                    //                string localLIndex16() { string arglist = hsd2010d4d78e3489683c8d110139f0dc7(); var ret = GeneralLib.LIndex(arglist, j); return ret; }
-
-                    //                object argIndex71 = localLIndex16();
-                    //                u = SRC.UList.Item(argIndex71);
-                    //                if (u is null)
-                    //                {
-                    //                    break;
-                    //                }
-
-                    //                if (!u.IsOperational())
-                    //                {
-                    //                    break;
-                    //                }
-
-                    //                string argfname24 = "合体制限";
-                    //                if (u.Status_Renamed != "出撃" & u.CurrentForm().IsFeatureAvailable(argfname24))
-                    //                {
-                    //                    break;
-                    //                }
-
-                    //                if (Math.Abs((currentUnit.x - u.CurrentForm().x)) + Math.Abs((currentUnit.y - u.CurrentForm().y)) > 2)
-                    //                {
-                    //                    break;
-                    //                }
-
-                    //                n = (n + 1);
-                    //            }
-
-                    //            // 合体先のユニットが作成され、かつ合体可能な状態にあるか？
-                    //            string localFeatureData7() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                    //            string arglist18 = localFeatureData7();
-                    //            uname = GeneralLib.LIndex(arglist18, 2);
-                    //            object argIndex72 = uname;
-                    //            u = SRC.UList.Item(argIndex72);
-                    //            object argIndex73 = "行動不能";
-                    //            if (u is null)
-                    //            {
-                    //                n = 0;
-                    //            }
-                    //            else if (u.IsConditionSatisfied(argIndex73))
-                    //            {
-                    //                n = 0;
-                    //            }
-
-                    //            // すべての条件を満たしている場合
-                    //            string localFeatureData9() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                    //            int localLLength1() { string arglist = hs7cff35930ba14e62b7ee40e2d0172e97(); var ret = GeneralLib.LLength(arglist); return ret; }
-
-                    //            if (n == localLLength1() - 2)
-                    //            {
-                    //                GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Visible = true;
-                    //                string localFeatureData8() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                    //                string arglist19 = localFeatureData8();
-                    //                GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Caption = GeneralLib.LIndex(arglist19, 1);
-                    //                break;
-                    //            }
-                    //        }
-                    //    }
-                    //}
+                                // すべての条件を満たしている場合
+                                if (n == partunitnames.Count)
+                                {
+                                    unitCommands.Add(new UiCommand(CombineCmdID, conbinename));
+                                    break;
+                                }
+                            }
+                        }
+                    }
 
                     //object argIndex88 = "ノーマルモード付加";
                     //if (!currentUnit.IsConditionSatisfied(argIndex88))
