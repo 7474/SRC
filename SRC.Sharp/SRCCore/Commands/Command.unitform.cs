@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.VB;
 using System;
@@ -1063,9 +1064,8 @@ namespace SRCCore.Commands
         }
 
         // 「合体」コマンド
-        private void CombineCommand()
+        private void CombineCommand(UiCommand command)
         {
-            throw new NotImplementedException();
             //// MOD END MARGE
             //int i, j;
             //string[] list;
@@ -1079,193 +1079,125 @@ namespace SRCCore.Commands
             //    Status.ClearUnitStatus();
             //}
 
-            //GUI.LockGUI();
+            GUI.LockGUI();
             //list = new string[1];
             //GUI.ListItemFlag = new bool[1];
-            //{
-            //    var withBlock = SelectedUnit;
-            //    if (string.IsNullOrEmpty(Map.MapFileName))
-            //    {
-            //        // ユニットステータスコマンドの時
-            //        // パーツ合体ならば……
-            //        string argfname = "パーツ合体";
-            //        if (GUI.MainForm.mnuUnitCommandItem.Item(CombineCmdID).Caption == "パーツ合体" & withBlock.IsFeatureAvailable(argfname))
-            //        {
-            //            // パーツ合体を実施
-            //            object argIndex1 = "パーツ合体";
-            //            string argnew_form = withBlock.FeatureData(argIndex1);
-            //            withBlock.Transform(argnew_form);
-            //            Status.DisplayUnitStatus(Map.MapDataForUnit[withBlock.x, withBlock.y]);
-            //            Map.MapDataForUnit[withBlock.x, withBlock.y].CheckAutoHyperMode();
-            //            Map.MapDataForUnit[withBlock.x, withBlock.y].CheckAutoNormalMode();
+            var currentUnit = SelectedUnit;
+            if (string.IsNullOrEmpty(Map.MapFileName))
+            {
+                // ユニットステータスコマンドの時
+                // パーツ合体ならば……
+                if (command.Label == "パーツ合体" & currentUnit.IsFeatureAvailable("パーツ合体"))
+                {
+                    // パーツ合体を実施
+                    string argnew_form = currentUnit.FeatureData("パーツ合体");
+                    currentUnit.Transform(argnew_form);
+                    Status.DisplayUnitStatus(Map.MapDataForUnit[currentUnit.x, currentUnit.y]);
+                    Map.MapDataForUnit[currentUnit.x, currentUnit.y].CheckAutoHyperMode();
+                    Map.MapDataForUnit[currentUnit.x, currentUnit.y].CheckAutoNormalMode();
 
-            //            // ユニットリストの表示を更新
-            //            string argsmode = "";
-            //            Event.MakeUnitList(smode: argsmode);
+                    // TODO Impl
+                    //// ユニットリストの表示を更新
+                    //Event.MakeUnitList(smode: "");
 
-            //            // コマンドを終了
-            //            CommandState = "ユニット選択";
-            //            GUI.UnlockGUI();
-            //            return;
-            //        }
-            //    }
+                    // コマンドを終了
+                    CommandState = "ユニット選択";
+                    GUI.UnlockGUI();
+                    return;
+                }
+            }
 
-            //    // 選択可能な合体パターンのリストを作成
-            //    var loopTo = withBlock.CountFeature();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        string localFeature() { object argIndex1 = i; var ret = withBlock.Feature(argIndex1); return ret; }
+            // 選択可能な合体パターンのリストを作成
+            var combines = currentUnit.CombineFeatures(SRC);
+            int i;
 
-            //        string localFeatureData4() { object argIndex1 = i; var ret = withBlock.FeatureData(argIndex1); return ret; }
+            // どの合体を行うかを選択
+            if (combines.Count == 1)
+            {
+                i = 1;
+            }
+            else
+            {
+                GUI.TopItem = 1;
+                i = GUI.ListBox(new ListBoxArgs
+                {
+                    lb_caption = "合体後の形態",
+                    lb_info = "名前",
+                    lb_mode = "",
+                    HasFlag = false,
+                    Items = combines.Select(x => new ListBoxItem { }).ToList(),
+                });
+                if (i == 0)
+                {
+                    CancelCommand();
+                    GUI.UnlockGUI();
+                    return;
+                }
+            }
+            var combineunitname = GeneralLib.ToL(combines[i - 1].Data).Skip(1).First();
 
-            //        int localLLength() { string arglist = hsdebc20cc3cfc47d3be3b16b45d9b88b4(); var ret = GeneralLib.LLength(arglist); return ret; }
+            if (Map.IsStatusView)
+            {
+                // ユニットステータスコマンドの時
+                SelectedUnit.Combine(combineunitname, true);
 
-            //        if (localFeature() == "合体" & (localLLength() > 3 | string.IsNullOrEmpty(Map.MapFileName)))
-            //        {
-            //            string localFeatureData() { object argIndex1 = i; var ret = withBlock.FeatureData(argIndex1); return ret; }
+                // ハイパーモード・ノーマルモードの自動発動をチェック
+                SRC.UList.CheckAutoHyperMode();
+                SRC.UList.CheckAutoNormalMode();
 
-            //            string localLIndex() { string arglist = hs8ad4cb28843f4cd79e5881037333d438(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+                // TODO Impl
+                //// ユニットリストの表示を更新
+                //string argsmode1 = "";
+                //Event.MakeUnitList(smode: argsmode1);
 
-            //            bool localIsDefined() { object argIndex1 = (object)hs340135fe58cf47dbaf5b402aedf48d4a(); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
+                // コマンドを終了
+                CommandState = "ユニット選択";
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //            if (!localIsDefined())
-            //            {
-            //                goto NextLoop;
-            //            }
+            // 合体！
+            SelectedUnit.Combine(combineunitname);
 
-            //            string localFeatureData2() { object argIndex1 = i; var ret = withBlock.FeatureData(argIndex1); return ret; }
+            // ハイパーモード＆ノーマルモードの自動発動
+            SRC.UList.CheckAutoHyperMode();
+            SRC.UList.CheckAutoNormalMode();
 
-            //            string arglist = localFeatureData2();
-            //            var loopTo1 = GeneralLib.LLength(arglist);
-            //            for (j = 3; j <= loopTo1; j++)
-            //            {
-            //                string localFeatureData1() { object argIndex1 = i; var ret = withBlock.FeatureData(argIndex1); return ret; }
+            // 合体後のユニットを選択しておく
+            SelectedUnit = Map.MapDataForUnit[SelectedUnit.x, SelectedUnit.y];
 
-            //                string localLIndex1() { string arglist = hs751afdc814f14f178b9bc1e2c197a85c(); var ret = GeneralLib.LIndex(arglist, j); return ret; }
+            // 行動数消費
+            SelectedUnit.UseAction();
 
-            //                object argIndex2 = localLIndex1();
-            //                u = SRC.UList.Item(argIndex2);
-            //                if (u is null)
-            //                {
-            //                    goto NextLoop;
-            //                }
+            // カーソル自動移動
+            if (SRC.AutoMoveCursor)
+            {
+                GUI.MoveCursorPos("ユニット選択", SelectedUnit);
+            }
 
-            //                if (!u.IsOperational())
-            //                {
-            //                    goto NextLoop;
-            //                }
+            Status.DisplayUnitStatus(SelectedUnit);
 
-            //                string argfname1 = "合体制限";
-            //                if (u.Status != "出撃" & u.CurrentForm().IsFeatureAvailable(argfname1))
-            //                {
-            //                    goto NextLoop;
-            //                }
+            // 合体イベント
+            Event.HandleEvent("合体", SelectedUnit.MainPilot().ID, SelectedUnit.Name);
+            if (SRC.IsScenarioFinished)
+            {
+                SRC.IsScenarioFinished = false;
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //                if (!string.IsNullOrEmpty(Map.MapFileName))
-            //                {
-            //                    if (Math.Abs((withBlock.x - u.CurrentForm().x)) > 2 | Math.Abs((withBlock.y - u.CurrentForm().y)) > 2)
-            //                    {
-            //                        goto NextLoop;
-            //                    }
-            //                }
-            //            }
+            if (SRC.IsCanceled)
+            {
+                SRC.IsCanceled = false;
+                Status.ClearUnitStatus();
+                GUI.RedrawScreen();
+                CommandState = "ユニット選択";
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //            Array.Resize(list, Information.UBound(list) + 1 + 1);
-            //            GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
-            //            string localFeatureData3() { object argIndex1 = i; var ret = withBlock.FeatureData(argIndex1); return ret; }
-
-            //            string arglist1 = localFeatureData3();
-            //            list[Information.UBound(list)] = GeneralLib.LIndex(arglist1, 2);
-            //            GUI.ListItemFlag[Information.UBound(list)] = false;
-            //        }
-
-            //    NextLoop:
-            //        ;
-            //    }
-
-            //    // どの合体を行うかを選択
-            //    if (Information.UBound(list) == 1)
-            //    {
-            //        i = 1;
-            //    }
-            //    else
-            //    {
-            //        GUI.TopItem = 1;
-            //        string arglb_caption = "合体後の形態";
-            //        string arglb_info = "名前";
-            //        string arglb_mode = "";
-            //        i = GUI.ListBox(arglb_caption, list, arglb_info, lb_mode: arglb_mode);
-            //        if (i == 0)
-            //        {
-            //            CancelCommand();
-            //            GUI.UnlockGUI();
-            //            return;
-            //        }
-            //    }
-            //}
-
-            //if (string.IsNullOrEmpty(Map.MapFileName))
-            //{
-            //    // ユニットステータスコマンドの時
-            //    SelectedUnit.Combine(list[i], true);
-
-            //    // ハイパーモード・ノーマルモードの自動発動をチェック
-            //    SRC.UList.CheckAutoHyperMode();
-            //    SRC.UList.CheckAutoNormalMode();
-
-            //    // ユニットリストの表示を更新
-            //    string argsmode1 = "";
-            //    Event.MakeUnitList(smode: argsmode1);
-
-            //    // コマンドを終了
-            //    CommandState = "ユニット選択";
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
-
-            //// 合体！
-            //SelectedUnit.Combine(list[i]);
-
-            //// ハイパーモード＆ノーマルモードの自動発動
-            //SRC.UList.CheckAutoHyperMode();
-            //SRC.UList.CheckAutoNormalMode();
-
-            //// 合体後のユニットを選択しておく
-            //SelectedUnit = Map.MapDataForUnit[SelectedUnit.x, SelectedUnit.y];
-
-            //// 行動数消費
-            //SelectedUnit.UseAction();
-
-            //// カーソル自動移動
-            //if (SRC.AutoMoveCursor)
-            //{
-            //    string argcursor_mode = "ユニット選択";
-            //    GUI.MoveCursorPos(argcursor_mode, SelectedUnit);
-            //}
-
-            //Status.DisplayUnitStatus(SelectedUnit);
-
-            //// 合体イベント
-            //Event.HandleEvent("合体", SelectedUnit.MainPilot().ID, SelectedUnit.Name);
-            //if (SRC.IsScenarioFinished)
-            //{
-            //    SRC.IsScenarioFinished = false;
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
-
-            //if (SRC.IsCanceled)
-            //{
-            //    SRC.IsCanceled = false;
-            //    Status.ClearUnitStatus();
-            //    GUI.RedrawScreen();
-            //    CommandState = "ユニット選択";
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
-
-            //// 行動終了
-            //WaitCommand(true);
+            // 行動終了
+            WaitCommand(true);
         }
 
         // 「換装」コマンド

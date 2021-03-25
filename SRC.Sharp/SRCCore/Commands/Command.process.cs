@@ -2,6 +2,7 @@
 using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.Maps;
+using SRCCore.Models;
 using SRCCore.Units;
 using SRCCore.VB;
 using System;
@@ -1588,64 +1589,10 @@ namespace SRCCore.Commands
                         && !currentUnit.IsConditionSatisfied("形態固定")
                         && !currentUnit.IsConditionSatisfied("機体固定"))
                     {
-                        foreach (var fd in currentUnit.Features)
+                        var combines = currentUnit.CombineFeatures(SRC);
+                        foreach (var fd in combines)
                         {
-                            // 3体以上からなる合体能力を持っているか？
-                            var opts = GeneralLib.ToL(fd.StrData);
-                            var conbinename = opts.First();
-                            var unitnames = opts.Skip(1).ToList();
-                            var conbineunitname = unitnames.First();
-                            var partunitnames = unitnames.Skip(1).ToList();
-                            if (fd.Name == "合体"
-                                && !string.IsNullOrEmpty(currentUnit.FeatureName(fd.Name))
-                                && partunitnames.Count >= 2)
-                            {
-                                var n = 0;
-                                // パートナーは隣接しているか？
-                                foreach (var uname in partunitnames)
-                                {
-                                    var partu = SRC.UList.Item(uname);
-                                    if (partu is null)
-                                    {
-                                        break;
-                                    }
-
-                                    if (!partu.IsOperational())
-                                    {
-                                        break;
-                                    }
-
-                                    if (partu.Status != "出撃" & partu.CurrentForm().IsFeatureAvailable("合体制限"))
-                                    {
-                                        break;
-                                    }
-
-                                    if (Math.Abs((currentUnit.x - partu.CurrentForm().x)) + Math.Abs((currentUnit.y - partu.CurrentForm().y)) > 2)
-                                    {
-                                        break;
-                                    }
-
-                                    n = (n + 1);
-                                }
-
-                                // 合体先のユニットが作成され、かつ合体可能な状態にあるか？
-                                var u = SRC.UList.Item(conbineunitname);
-                                if (u is null)
-                                {
-                                    n = 0;
-                                }
-                                else if (u.IsConditionSatisfied("行動不能"))
-                                {
-                                    n = 0;
-                                }
-
-                                // すべての条件を満たしている場合
-                                if (n == partunitnames.Count)
-                                {
-                                    unitCommands.Add(new UiCommand(CombineCmdID, conbinename));
-                                    break;
-                                }
-                            }
+                            unitCommands.Add(new UiCommand(CombineCmdID, fd.FeatureName(currentUnit)));
                         }
                     }
 
@@ -1921,6 +1868,7 @@ namespace SRCCore.Commands
             //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY - 6f);
             //}
         }
+
 
         private void ProceedAfterMoveCommandSelect(
             bool by_cancel = false,

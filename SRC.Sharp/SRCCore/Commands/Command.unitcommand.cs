@@ -108,7 +108,7 @@ namespace SRCCore.Commands
                     break;
 
                 case CombineCmdID: // 合体
-                    CombineCommand();
+                    CombineCommand(command);
                     break;
 
                 //        case HyperModeCmdID: // ハイパーモード・変身解除
