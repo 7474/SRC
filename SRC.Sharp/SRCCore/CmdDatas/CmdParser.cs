@@ -33,35 +33,23 @@ namespace SRCCore.CmdDatas
                 // コマンドの種類を判定
                 switch (Strings.LCase(list[0]) ?? "")
                 {
-                    //case "arc":
-                    //    {
-                    //        CmdName = CmdType.ArcCmd;
-                    //        break;
-                    //    }
+                    case "arc":
+                        return new NotImplementedCmd(src, data);
 
-                    //case "array":
-                    //    {
-                    //        CmdName = CmdType.ArrayCmd;
-                    //        break;
-                    //    }
-
+                    case "array":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "ask":
                         return new AskCmd(src, data);
 
-                    //case "attack":
-                    //    {
-                    //        CmdName = CmdType.AttackCmd;
-                    //        break;
-                    //    }
-
+                    case "attack":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "autotalk":
                         return new AutoTalkCmd(src, data);
 
-                    //case "bossrank":
-                    //    {
-                    //        CmdName = CmdType.BossRankCmd;
-                    //        break;
-                    //    }
+                    case "bossrank":
+                        return new NotImplementedCmd(src, data);
 
                     case "break":
                         return new BreakCmd(src, data);
@@ -72,11 +60,8 @@ namespace SRCCore.CmdDatas
                     case "return":
                         return new ReturnCmd(src, data);
 
-                    //case "callintermissioncommand":
-                    //    {
-                    //        CmdName = CmdType.CallInterMissionCommandCmd;
-                    //        break;
-                    //    }
+                    case "callintermissioncommand":
+                        return new NotImplementedCmd(src, data);
 
                     case "cancel":
                         return new CancelCmd(src, data);
@@ -84,18 +69,12 @@ namespace SRCCore.CmdDatas
                     case "center":
                         return new CenterCmd(src, data);
 
-                    //case "changearea":
-                    //    {
-                    //        CmdName = CmdType.ChangeAreaCmd;
-                    //        break;
-                    //    }
-                    //// ADD START 240a
-                    //case "changelayer":
-                    //    {
-                    //        CmdName = CmdType.ChangeLayerCmd;
-                    //        break;
-                    //    }
-                    //// ADD  END  240a
+                    case "changearea":
+                        return new NotImplementedCmd(src, data);
+
+                    case "changelayer":
+                        return new NotImplementedCmd(src, data);
+
                     case "changemap":
                         return new ChangeMapCmd(src, data);
 
@@ -105,103 +84,62 @@ namespace SRCCore.CmdDatas
                     case "changeparty":
                         return new ChangePartyCmd(src, data);
 
-                    //case "changeterrain":
-                    //    {
-                    //        CmdName = CmdType.ChangeTerrainCmd;
-                    //        break;
-                    //    }
+                    case "changeterrain":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "changeunitbitmap":
+                        return new NotImplementedCmd(src, data);
 
-                    //case "changeunitbitmap":
-                    //    {
-                    //        CmdName = CmdType.ChangeUnitBitmapCmd;
-                    //        break;
-                    //    }
+                    case "charge":
+                        return new NotImplementedCmd(src, data);
 
-                    //case "charge":
-                    //    {
-                    //        CmdName = CmdType.ChargeCmd;
-                    //        break;
-                    //    }
-
-                    //case "circle":
-                    //    {
-                    //        CmdName = CmdType.CircleCmd;
-                    //        break;
-                    //    }
+                    case "circle":
+                        return new NotImplementedCmd(src, data);
 
                     case "clearevent":
                         return new ClearEventCmd(src, data);
 
-                    //case "clearimage":
-                    //    {
-                    //        CmdName = CmdType.ClearImageCmd;
-                    //        break;
-                    //    }
-                    //// ADD START 240a
-                    //case "clearlayer":
-                    //    {
-                    //        CmdName = CmdType.ClearLayerCmd;
-                    //        break;
-                    //    }
-                    //// ADD  END  240a
-                    //case "clearobj":
-                    //    {
-                    //        CmdName = CmdType.ClearObjCmd;
-                    //        break;
-                    //    }
+                    case "clearimage":
+                        return new NotImplementedCmd(src, data);
+
+                    case "clearlayer":
+                        return new NotImplementedCmd(src, data);
+
+                    case "clearobj":
+                        return new NotImplementedCmd(src, data);
 
                     case "clearpicture":
                         return new ClearPictureCmd(src, data);
 
-                    //case "clearskill":
-                    //case "clearability":
-                    //    {
-                    //        CmdName = CmdType.ClearSkillCmd;
-                    //        break;
-                    //    }
+                    case "clearskill":
+                        return new NotImplementedCmd(src, data);
 
-                    //case "clearspecialpower":
-                    //case "clearmind":
-                    //    {
-                    //        CmdName = CmdType.ClearSpecialPowerCmd;
-                    //        break;
-                    //    }
+                    case "clearability":
+                        return new NotImplementedCmd(src, data);
 
-                    //case "clearstatus":
-                    //    {
-                    //        CmdName = CmdType.ClearStatusCmd;
-                    //        break;
-                    //    }
+                    case "clearspecialpower":
+                        return new NotImplementedCmd(src, data);
 
-                    //case "cls":
-                    //    {
-                    //        CmdName = CmdType.ClsCmd;
-                    //        break;
-                    //    }
+                    case "clearmind":
+                        return new NotImplementedCmd(src, data);
 
-                    //case "close":
-                    //    {
-                    //        CmdName = CmdType.CloseCmd;
-                    //        break;
-                    //    }
+                    case "clearstatus":
+                        return new NotImplementedCmd(src, data);
 
-                    //case "color":
-                    //    {
-                    //        CmdName = CmdType.ColorCmd;
-                    //        break;
-                    //    }
+                    case "cls":
+                        return new NotImplementedCmd(src, data);
 
-                    //case "colorfilter":
-                    //    {
-                    //        CmdName = CmdType.ColorFilterCmd;
-                    //        break;
-                    //    }
+                    case "close":
+                        return new NotImplementedCmd(src, data);
 
-                    //case "combine":
-                    //    {
-                    //        CmdName = CmdType.CombineCmd;
-                    //        break;
-                    //    }
+                    case "color":
+                        return new NotImplementedCmd(src, data);
+
+                    case "colorfilter":
+                        return new NotImplementedCmd(src, data);
+
+                    case "combine":
+                        return new NotImplementedCmd(src, data);
 
                     case "confirm":
                         return new ConfirmCmd(src, data);
@@ -209,44 +147,26 @@ namespace SRCCore.CmdDatas
                     case "continue":
                         return new ContinueCmd(src, data);
 
-                    //case "copyarray":
-                    //    {
-                    //        CmdName = CmdType.CopyArrayCmd;
-                    //        break;
-                    //    }
+                    case "copyarray":
+                        return new NotImplementedCmd(src, data);
 
-                    //case "copyfile":
-                    //    {
-                    //        CmdName = CmdType.CopyFileCmd;
-                    //        break;
-                    //    }
+                    case "copyfile":
+                        return new NotImplementedCmd(src, data);
 
                     case "create":
                         return new CreateCmd(src, data);
 
-                    //case "createfolder":
-                    //    {
-                    //        CmdName = CmdType.CreateFolderCmd;
-                    //        break;
-                    //    }
+                    case "createfolder":
+                        return new NotImplementedCmd(src, data);
 
-                    //case "debug":
-                    //    {
-                    //        CmdName = CmdType.DebugCmd;
-                    //        break;
-                    //    }
+                    case "debug":
+                        return new NotImplementedCmd(src, data);
 
-                    //case "destroy":
-                    //    {
-                    //        CmdName = CmdType.DestroyCmd;
-                    //        break;
-                    //    }
+                    case "destroy":
+                        return new NotImplementedCmd(src, data);
 
-                    //case "disable":
-                    //    {
-                    //        CmdName = CmdType.DisableCmd;
-                    //        break;
-                    //    }
+                    case "disable":
+                        return new NotImplementedCmd(src, data);
 
                     case "do":
                         return new DoCmd(src, data);
@@ -254,168 +174,93 @@ namespace SRCCore.CmdDatas
                     case "loop":
                         return new LoopCmd(src, data);
 
-                    //case "drawoption":
-                    //    {
-                    //        CmdName = CmdType.DrawOptionCmd;
-                    //        break;
-                    //    }
-
-                    //case "drawwidth":
-                    //    {
-                    //        CmdName = CmdType.DrawWidthCmd;
-                    //        break;
-                    //    }
-
-                    //case "enable":
-                    //    {
-                    //        CmdName = CmdType.EnableCmd;
-                    //        break;
-                    //    }
-
-                    //case "equip":
-                    //    {
-                    //        CmdName = CmdType.EquipCmd;
-                    //        break;
-                    //    }
-
-                    //case "escape":
-                    //    {
-                    //        CmdName = CmdType.EscapeCmd;
-                    //        break;
-                    //    }
-
-                    //case "exchangeitem":
-                    //    {
-                    //        CmdName = CmdType.ExchangeItemCmd;
-                    //        break;
-                    //    }
-
-                    //case "exec":
-                    //    {
-                    //        CmdName = CmdType.ExecCmd;
-                    //        break;
-                    //    }
-
+                    case "drawoption":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "drawwidth":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "enable":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "equip":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "escape":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "exchangeitem":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "exec":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "exit":
                         return new ExitCmd(src, data);
 
-                    //case "explode":
-                    //    {
-                    //        CmdName = CmdType.ExplodeCmd;
-                    //        break;
-                    //    }
-
-                    //case "expup":
-                    //    {
-                    //        CmdName = CmdType.ExpUpCmd;
-                    //        break;
-                    //    }
-
-                    //case "fadein":
-                    //    {
-                    //        CmdName = CmdType.FadeInCmd;
-                    //        break;
-                    //    }
-
-                    //case "fadeout":
-                    //    {
-                    //        CmdName = CmdType.FadeOutCmd;
-                    //        break;
-                    //    }
-
-                    //case "fillcolor":
-                    //    {
-                    //        CmdName = CmdType.FillColorCmd;
-                    //        break;
-                    //    }
-
-                    //case "fillstyle":
-                    //    {
-                    //        CmdName = CmdType.FillStyleCmd;
-                    //        break;
-                    //    }
-
+                    case "explode":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "expup":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "fadein":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "fadeout":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "fillcolor":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "fillstyle":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "finish":
                         return new FinishCmd(src, data);
 
-                    //case "fix":
-                    //    {
-                    //        CmdName = CmdType.FixCmd;
-                    //        break;
-                    //    }
-
-                    //case "for":
-                    //    {
-                    //        CmdName = CmdType.ForCmd;
-                    //        break;
-                    //    }
-
-                    //case "foreach":
-                    //    {
-                    //        CmdName = CmdType.ForEachCmd;
-                    //        break;
-                    //    }
-
-                    //case "next":
-                    //    {
-                    //        CmdName = CmdType.NextCmd;
-                    //        break;
-                    //    }
-
-                    //case "font":
-                    //    {
-                    //        CmdName = CmdType.FontCmd;
-                    //        break;
-                    //    }
-
-                    //case "forget":
-                    //    {
-                    //        CmdName = CmdType.ForgetCmd;
-                    //        break;
-                    //    }
-
+                    case "fix":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "for":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "foreach":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "next":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "font":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "forget":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "gameclear":
                         return new GameClearCmd(src, data);
 
                     case "gameover":
                         return new GameOverCmd(src, data);
 
-                    //case "freememory":
-                    //    {
-                    //        CmdName = CmdType.FreeMemoryCmd;
-                    //        break;
-                    //    }
-
-                    //case "getoff":
-                    //    {
-                    //        CmdName = CmdType.GetOffCmd;
-                    //        break;
-                    //    }
-
-                    //case "global":
-                    //    {
-                    //        CmdName = CmdType.GlobalCmd;
-                    //        break;
-                    //    }
-
-                    //case "goto":
-                    //    {
-                    //        CmdName = CmdType.GotoCmd;
-                    //        break;
-                    //    }
-
-                    //case "hide":
-                    //    {
-                    //        CmdName = CmdType.HideCmd;
-                    //        break;
-                    //    }
-
-                    //case "hotpoint":
-                    //    {
-                    //        CmdName = CmdType.HotPointCmd;
-                    //        break;
-                    //    }
-
+                    case "freememory":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "getoff":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "global":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "goto":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "hide":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "hotpoint":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "if":
                         return new IfCmd(src, data);
 
@@ -428,175 +273,101 @@ namespace SRCCore.CmdDatas
                     case "endif":
                         return new EndIfCmd(src, data);
 
-                    //case "incr":
-                    //    {
-                    //        CmdName = CmdType.IncrCmd;
-                    //        break;
-                    //    }
-
-                    //case "increasemorale":
-                    //    {
-                    //        CmdName = CmdType.IncreaseMoraleCmd;
-                    //        break;
-                    //    }
-
+                    case "incr":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "increasemorale":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "input":
                         return new InputCmd(src, data);
 
-                    //case "intermissioncommand":
-                    //    {
-                    //        CmdName = CmdType.IntermissionCommandCmd;
-                    //        break;
-                    //    }
-
-                    //case "item":
-                    //    {
-                    //        CmdName = CmdType.ItemCmd;
-                    //        break;
-                    //    }
-
-                    //case "join":
-                    //    {
-                    //        CmdName = CmdType.JoinCmd;
-                    //        break;
-                    //    }
-
+                    case "intermissioncommand":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "item":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "join":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "keepbgm":
                         return new KeepBGMCmd(src, data);
 
-                    //case "land":
-                    //    {
-                    //        CmdName = CmdType.LandCmd;
-                    //        break;
-                    //    }
-
+                    case "land":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "launch":
                         return new LaunchCmd(src, data);
 
-                    //case "leave":
-                    //    {
-                    //        CmdName = CmdType.LeaveCmd;
-                    //        break;
-                    //    }
-
-                    //case "levelup":
-                    //    {
-                    //        CmdName = CmdType.LevelUpCmd;
-                    //        break;
-                    //    }
-
-                    //case "line":
-                    //    {
-                    //        CmdName = CmdType.LineCmd;
-                    //        break;
-                    //    }
-
-                    //case "lineread":
-                    //    {
-                    //        CmdName = CmdType.LineReadCmd;
-                    //        break;
-                    //    }
-
-                    //case "load":
-                    //    {
-                    //        CmdName = CmdType.LoadCmd;
-                    //        break;
-                    //    }
-
-                    //case "local":
-                    //    {
-                    //        CmdName = CmdType.LocalCmd;
-                    //        break;
-                    //    }
-
-                    //case "makepilotlist":
-                    //    {
-                    //        CmdName = CmdType.MakePilotListCmd;
-                    //        break;
-                    //    }
-
-                    //case "makeunitlist":
-                    //    {
-                    //        CmdName = CmdType.MakeUnitListCmd;
-                    //        break;
-                    //    }
-
-                    //case "mapability":
-                    //    {
-                    //        CmdName = CmdType.MapAbilityCmd;
-                    //        break;
-                    //    }
-
-                    //case "mapattack":
-                    //case "mapweapon":
-                    //    {
-                    //        CmdName = CmdType.MapAttackCmd;
-                    //        break;
-                    //    }
-
-                    //case "money":
-                    //    {
-                    //        CmdName = CmdType.MoneyCmd;
-                    //        break;
-                    //    }
-
-                    //case "monotone":
-                    //    {
-                    //        CmdName = CmdType.MonotoneCmd;
-                    //        break;
-                    //    }
-
+                    case "leave":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "levelup":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "line":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "lineread":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "load":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "local":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "makepilotlist":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "makeunitlist":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "mapability":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "mapattack":
+                        return new NotImplementedCmd(src, data);
+                    case "mapweapon":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "money":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "monotone":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "move":
                         return new MoveCmd(src, data);
 
-                    //case "night":
-                    //    {
-                    //        CmdName = CmdType.NightCmd;
-                    //        break;
-                    //    }
-
-                    //case "noon":
-                    //    {
-                    //        CmdName = CmdType.NoonCmd;
-                    //        break;
-                    //    }
-
-                    //case "open":
-                    //    {
-                    //        CmdName = CmdType.OpenCmd;
-                    //        break;
-                    //    }
-
-                    //case "option":
-                    //    {
-                    //        CmdName = CmdType.OptionCmd;
-                    //        break;
-                    //    }
-
-                    //case "organize":
-                    //    {
-                    //        CmdName = CmdType.OrganizeCmd;
-                    //        break;
-                    //    }
-
-                    //case "oval":
-                    //    {
-                    //        CmdName = CmdType.OvalCmd;
-                    //        break;
-                    //    }
-
+                    case "night":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "noon":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "open":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "option":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "organize":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "oval":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "paintpicture":
                         return new PaintPictureCmd(src, data);
 
                     case "paintstring":
                         return new PaintStringCmd(src, data);
 
-                    //case "paintsysstring":
-                    //    {
-                    //        CmdName = CmdType.PaintSysStringCmd;
-                    //        break;
-                    //    }
-
+                    case "paintsysstring":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "pilot":
                         return new PilotCmd(src, data);
 
@@ -606,317 +377,181 @@ namespace SRCCore.CmdDatas
                     case "playsound":
                         return new PlaySoundCmd(src, data);
 
-                    //case "polygon":
-                    //    {
-                    //        CmdName = CmdType.PolygonCmd;
-                    //        break;
-                    //    }
-
-                    //case "print":
-                    //    {
-                    //        CmdName = CmdType.PrintCmd;
-                    //        break;
-                    //    }
-
-                    //case "pset":
-                    //    {
-                    //        CmdName = CmdType.PSetCmd;
-                    //        break;
-                    //    }
-
+                    case "polygon":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "print":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "pset":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "question":
                         return new QuestionCmd(src, data);
 
-                    //case "quickload":
-                    //    {
-                    //        CmdName = CmdType.QuickLoadCmd;
-                    //        break;
-                    //    }
-
+                    case "quickload":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "quit":
                         return new QuitCmd(src, data);
 
-                    //case "rankup":
-                    //    {
-                    //        CmdName = CmdType.RankUpCmd;
-                    //        break;
-                    //    }
-
-                    //case "read":
-                    //    {
-                    //        CmdName = CmdType.ReadCmd;
-                    //        break;
-                    //    }
-
-                    //case "recoveren":
-                    //    {
-                    //        CmdName = CmdType.RecoverENCmd;
-                    //        break;
-                    //    }
-
-                    //case "recoverhp":
-                    //    {
-                    //        CmdName = CmdType.RecoverHPCmd;
-                    //        break;
-                    //    }
-
-                    //case "recoverplana":
-                    //    {
-                    //        CmdName = CmdType.RecoverPlanaCmd;
-                    //        break;
-                    //    }
-
-                    //case "recoversp":
-                    //    {
-                    //        CmdName = CmdType.RecoverSPCmd;
-                    //        break;
-                    //    }
-
+                    case "rankup":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "read":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "recoveren":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "recoverhp":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "recoverplana":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "recoversp":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "redraw":
                         return new RedrawCmd(src, data);
 
                     case "refresh":
                         return new RefreshCmd(src, data);
 
-                    //case "release":
-                    //    {
-                    //        CmdName = CmdType.ReleaseCmd;
-                    //        break;
-                    //    }
-
-                    //case "removefile":
-                    //    {
-                    //        CmdName = CmdType.RemoveFileCmd;
-                    //        break;
-                    //    }
-
-                    //case "removefolder":
-                    //    {
-                    //        CmdName = CmdType.RemoveFolderCmd;
-                    //        break;
-                    //    }
-
-                    //case "removeitem":
-                    //    {
-                    //        CmdName = CmdType.RemoveItemCmd;
-                    //        break;
-                    //    }
-
-                    //case "removepilot":
-                    //    {
-                    //        CmdName = CmdType.RemovePilotCmd;
-                    //        break;
-                    //    }
-
-                    //case "removeunit":
-                    //    {
-                    //        CmdName = CmdType.RemoveUnitCmd;
-                    //        break;
-                    //    }
-
-                    //case "renamebgm":
-                    //    {
-                    //        CmdName = CmdType.RenameBGMCmd;
-                    //        break;
-                    //    }
-
-                    //case "renamefile":
-                    //    {
-                    //        CmdName = CmdType.RenameFileCmd;
-                    //        break;
-                    //    }
-
-                    //case "renameterm":
-                    //    {
-                    //        CmdName = CmdType.RenameTermCmd;
-                    //        break;
-                    //    }
-
-                    //case "replacepilot":
-                    //    {
-                    //        CmdName = CmdType.ReplacePilotCmd;
-                    //        break;
-                    //    }
-
-                    //case "require":
-                    //    {
-                    //        CmdName = CmdType.RequireCmd;
-                    //        break;
-                    //    }
-
+                    case "release":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "removefile":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "removefolder":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "removeitem":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "removepilot":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "removeunit":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "renamebgm":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "renamefile":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "renameterm":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "replacepilot":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "require":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "restoreevent":
                         return new RestoreEventCmd(src, data);
 
                     case "ride":
                         return new RideCmd(src, data);
 
-                    //case "select":
-                    //    {
-                    //        CmdName = CmdType.SelectCmd;
-                    //        break;
-                    //    }
-
-                    //case "savedata":
-                    //    {
-                    //        CmdName = CmdType.SaveDataCmd;
-                    //        break;
-                    //    }
-
-                    //case "selecttarget":
-                    //    {
-                    //        CmdName = CmdType.SelectTargetCmd;
-                    //        break;
-                    //    }
-
-                    //case "sepia":
-                    //    {
-                    //        CmdName = CmdType.SepiaCmd;
-                    //        break;
-                    //    }
-
+                    case "select":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "savedata":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "selecttarget":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "sepia":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "set":
                         return new SetCmd(src, data);
 
-                    //case "setbullet":
-                    //    {
-                    //        CmdName = CmdType.SetBulletCmd;
-                    //        break;
-                    //    }
-
-                    //case "setmessage":
-                    //    {
-                    //        CmdName = CmdType.SetMessageCmd;
-                    //        break;
-                    //    }
-
-                    //case "setrelation":
-                    //    {
-                    //        CmdName = CmdType.SetRelationCmd;
-                    //        break;
-                    //    }
-
-                    //case "setskill":
-                    //case "setability":
-                    //    {
-                    //        CmdName = CmdType.SetSkillCmd;
-                    //        break;
-                    //    }
-
-                    //case "setstatus":
-                    //    {
-                    //        CmdName = CmdType.SetStatusCmd;
-                    //        break;
-                    //    }
-                    //// ADD START 240a
-                    //case "setstatusstringcolor":
-                    //    {
-                    //        CmdName = CmdType.SetStatusStringColorCmd;
-                    //        break;
-                    //    }
-                    //// ADD  END
-                    //case "setstock":
-                    //    {
-                    //        CmdName = CmdType.SetStockCmd;
-                    //        break;
-                    //    }
-                    //// ADD START 240a
-                    //case "setwindowcolor":
-                    //    {
-                    //        CmdName = CmdType.SetWindowColorCmd;
-                    //        break;
-                    //    }
-
-                    //case "setwindowframewidth":
-                    //    {
-                    //        CmdName = CmdType.SetWindowFrameWidthCmd;
-                    //        break;
-                    //    }
-                    //// ADD  END
-                    //case "show":
-                    //    {
-                    //        CmdName = CmdType.ShowCmd;
-                    //        break;
-                    //    }
-
-                    //case "showimage":
-                    //    {
-                    //        CmdName = CmdType.ShowImageCmd;
-                    //        break;
-                    //    }
-
-                    //case "showunitstatus":
-                    //    {
-                    //        CmdName = CmdType.ShowUnitStatusCmd;
-                    //        break;
-                    //    }
-
+                    case "setbullet":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "setmessage":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "setrelation":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "setskill":
+                        return new NotImplementedCmd(src, data);
+                    case "setability":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "setstatus":
+                        return new NotImplementedCmd(src, data);
+                                        //// ADD START 240a
+                    case "setstatusstringcolor":
+                        return new NotImplementedCmd(src, data);
+                                        //// ADD  END
+                    case "setstock":
+                        return new NotImplementedCmd(src, data);
+                                        //// ADD START 240a
+                    case "setwindowcolor":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "setwindowframewidth":
+                        return new NotImplementedCmd(src, data);
+                                        //// ADD  END
+                    case "show":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "showimage":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "showunitstatus":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "skip":
                         return new SkipCmd(src, data);
 
-                    //case "sort":
-                    //    {
-                    //        CmdName = CmdType.SortCmd;
-                    //        break;
-                    //    }
-
-                    //case "specialpower":
-                    //case "mind":
-                    //    {
-                    //        CmdName = CmdType.SpecialPowerCmd;
-                    //        break;
-                    //    }
-
-                    //case "split":
-                    //    {
-                    //        CmdName = CmdType.SplitCmd;
-                    //        break;
-                    //    }
-
+                    case "sort":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "specialpower":
+                        return new NotImplementedCmd(src, data);
+                    case "mind":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "split":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "startbgm":
                         return new StartBGMCmd(src, data);
 
                     case "stopbgm":
                         return new StopBGMCmd(src, data);
 
-                    //case "stopsummoning":
-                    //    {
-                    //        CmdName = CmdType.StopSummoningCmd;
-                    //        break;
-                    //    }
-
-                    //case "supply":
-                    //    {
-                    //        CmdName = CmdType.SupplyCmd;
-                    //        break;
-                    //    }
-
-                    //case "sunset":
-                    //    {
-                    //        CmdName = CmdType.SunsetCmd;
-                    //        break;
-                    //    }
-
-                    //case "swap":
-                    //    {
-                    //        CmdName = CmdType.SwapCmd;
-                    //        break;
-                    //    }
-
+                    case "stopsummoning":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "supply":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "sunset":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "swap":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "switch":
                         return new SwitchCmd(src, data);
 
-                    //case "playflash":
-                    //    {
-                    //        CmdName = CmdType.PlayFlashCmd;
-                    //        break;
-                    //    }
-
-                    //case "clearflash":
-                    //    {
-                    //        CmdName = CmdType.ClearFlashCmd;
-                    //        break;
-                    //    }
-
+                    case "playflash":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "clearflash":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "case":
                         if (list.Length == 2)
                         {
@@ -939,78 +574,42 @@ namespace SRCCore.CmdDatas
                     case "suspend":
                         return new SuspendCmd(src, data);
 
-                    //case "suspend":
-                    //    {
-                    //        CmdName = CmdType.SuspendCmd;
-                    //        break;
-                    //    }
-
-                    //case "telop":
-                    //    {
-                    //        CmdName = CmdType.TelopCmd;
-                    //        break;
-                    //    }
-
-                    //case "transform":
-                    //    {
-                    //        CmdName = CmdType.TransformCmd;
-                    //        break;
-                    //    }
-
+                    case "telop":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "transform":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "unit":
                         return new UnitCmd(src, data);
 
-                    //case "unset":
-                    //    {
-                    //        CmdName = CmdType.UnsetCmd;
-                    //        break;
-                    //    }
-
-                    //case "upgrade":
-                    //    {
-                    //        CmdName = CmdType.UpgradeCmd;
-                    //        break;
-                    //    }
-
-                    //case "upvar":
-                    //    {
-                    //        CmdName = CmdType.UpVarCmd;
-                    //        break;
-                    //    }
-
-                    //case "useability":
-                    //    {
-                    //        CmdName = CmdType.UseAbilityCmd;
-                    //        break;
-                    //    }
-
+                    case "unset":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "upgrade":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "upvar":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "useability":
+                        return new NotImplementedCmd(src, data);
+                    
                     case "wait":
                         return new WaitCmd(src, data);
 
-                    //case "water":
-                    //    {
-                    //        CmdName = CmdType.WaterCmd;
-                    //        break;
-                    //    }
-
-                    //case "whitein":
-                    //    {
-                    //        CmdName = CmdType.WhiteInCmd;
-                    //        break;
-                    //    }
-
-                    //case "whiteout":
-                    //    {
-                    //        CmdName = CmdType.WhiteOutCmd;
-                    //        break;
-                    //    }
-
-                    //case "write":
-                    //    {
-                    //        CmdName = CmdType.WriteCmd;
-                    //        break;
-                    //    }
-
+                    case "water":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "whitein":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "whiteout":
+                        return new NotImplementedCmd(src, data);
+                    
+                    case "write":
+                        return new NotImplementedCmd(src, data);
+                    
                     default:
                         {
                             // TODO Impl
@@ -1062,20 +661,7 @@ namespace SRCCore.CmdDatas
                             ));
                         }
                 }
-
-                //if (CmdName == CmdType.CallCmd)
-                //{
-                //    // Callコマンドのサブルーチン指定が式かどうか調べておく
-                //    if (Event_Renamed.FindNormalLabel(strArgs[2]) > 0)
-                //    {
-                //        ArgsType[2] = Expressions.ValueType.StringType;
-                //    }
-                //    else
-                //    {
-                //        ArgsType[2] = Expressions.ValueType.UndefinedType;
-                //    }
-                //}
-
+                
                 //if (CmdName == CmdType.LocalCmd)
                 //{
                 //    if (ArgNum > 4)
@@ -1109,7 +695,5 @@ namespace SRCCore.CmdDatas
                 return new NopCmd(src, data);
             }
         }
-
-
     }
 }
