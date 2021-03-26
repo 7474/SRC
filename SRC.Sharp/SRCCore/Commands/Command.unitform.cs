@@ -1061,6 +1061,8 @@ namespace SRCCore.Commands
             SRC.UList.CheckAutoNormalMode();
             CommandState = "ユニット選択";
             GUI.UnlockGUI();
+            // XXX RedrawScreen 元はしてなかった気がする
+            GUI.RedrawScreen();
         }
 
         // 「合体」コマンド
@@ -1125,7 +1127,10 @@ namespace SRCCore.Commands
                     lb_info = "名前",
                     lb_mode = "",
                     HasFlag = false,
-                    Items = combines.Select(x => new ListBoxItem { }).ToList(),
+                    Items = combines.Select(x => new ListBoxItem
+                    {
+                        Text = x.CombineName,
+                    }).ToList(),
                 });
                 if (i == 0)
                 {
@@ -1134,7 +1139,7 @@ namespace SRCCore.Commands
                     return;
                 }
             }
-            var combineunitname = GeneralLib.ToL(combines[i - 1].Data).Skip(1).First();
+            var combineunitname = combines[i - 1].ConbineUnitName;
 
             if (Map.IsStatusView)
             {

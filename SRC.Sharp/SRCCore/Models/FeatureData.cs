@@ -7,6 +7,7 @@ using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
 using System;
+using System.Collections.Generic;
 
 namespace SRCCore.Models
 {
@@ -28,6 +29,7 @@ namespace SRCCore.Models
 
         public double FeatureLevel => HasLevel ? Level : 0d;
         public string Data => StrData ?? "";
+        public IList<string> DataL => GeneralLib.ToL(Data);
 
         // 特殊能力の名称
         public string FeatureName(Unit unit)

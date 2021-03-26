@@ -8,26 +8,43 @@ using System.Linq;
 
 namespace SRCCore.Extensions
 {
+    public class CombineFeature
+    {
+        public FeatureData FeatureData { get; private set; }
+
+        public string CombineName { get; private set; }
+        public string ConbineUnitName { get; private set; }
+        public IList<string> PartUnitNames { get; private set; }
+
+        public CombineFeature(FeatureData fd)
+        {
+            FeatureData = fd;
+
+            var opts = GeneralLib.ToL(fd.StrData);
+            CombineName = opts.First();
+            var unitnames = opts.Skip(1).ToList();
+            ConbineUnitName = unitnames.First();
+            PartUnitNames = unitnames.Skip(1).ToList();
+        }
+    }
+
     public static class UnitExtension
     {
-        public static List<FeatureData> CombineFeatures(this Unit currentUnit, SRC SRC)
+        public static List<CombineFeature> CombineFeatures(this Unit currentUnit, SRC SRC)
         {
-            var combines = new List<FeatureData>();
-            foreach (var fd in currentUnit.Features)
+            // TODO ステータス表示の時をガン無視しているはず
+            var combines = new List<CombineFeature>();
+            foreach (var fd in currentUnit.Features
+                .Where(x => x.Name == "合体")
+                .Where(x => !string.IsNullOrEmpty(currentUnit.FeatureName(x.Name))))
             {
                 // 3体以上からなる合体能力を持っているか？
-                var opts = GeneralLib.ToL(fd.StrData);
-                var combinename = opts.First();
-                var unitnames = opts.Skip(1).ToList();
-                var conbineunitname = unitnames.First();
-                var partunitnames = unitnames.Skip(1).ToList();
-                if (fd.Name == "合体"
-                    && !string.IsNullOrEmpty(currentUnit.FeatureName(fd.Name))
-                    && partunitnames.Count >= 2)
+                var combineData = new CombineFeature(fd);
+                if (combineData.PartUnitNames.Count >= 2)
                 {
                     var n = 0;
                     // パートナーは隣接しているか？
-                    foreach (var uname in partunitnames)
+                    foreach (var uname in combineData.PartUnitNames)
                     {
                         var partu = SRC.UList.Item(uname);
                         if (partu is null)
@@ -54,7 +71,7 @@ namespace SRCCore.Extensions
                     }
 
                     // 合体先のユニットが作成され、かつ合体可能な状態にあるか？
-                    var u = SRC.UList.Item(conbineunitname);
+                    var u = SRC.UList.Item(combineData.ConbineUnitName);
                     if (u is null)
                     {
                         n = 0;
@@ -65,9 +82,9 @@ namespace SRCCore.Extensions
                     }
 
                     // すべての条件を満たしている場合
-                    if (n == partunitnames.Count)
+                    if (n == combineData.PartUnitNames.Count)
                     {
-                        combines.Add(fd);
+                        combines.Add(combineData);
                     }
                 }
             }

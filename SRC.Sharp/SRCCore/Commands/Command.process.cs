@@ -1592,7 +1592,7 @@ namespace SRCCore.Commands
                         var combines = currentUnit.CombineFeatures(SRC);
                         foreach (var fd in combines)
                         {
-                            unitCommands.Add(new UiCommand(CombineCmdID, fd.FeatureName(currentUnit)));
+                            unitCommands.Add(new UiCommand(CombineCmdID, fd.CombineName));
                         }
                     }
 

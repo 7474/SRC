@@ -1,5 +1,6 @@
 ﻿using SRCCore.Extensions;
 using SRCCore.Lib;
+using SRCCore.Models;
 using SRCCore.Pilots;
 using SRCCore.VB;
 using System;
@@ -1604,763 +1605,569 @@ namespace SRCCore.Units
         // 合体
         public void Combine(string uname = "", bool is_event = false)
         {
-            //    int k, i, j, l;
-            //    Unit u;
-            //    Unit[] rarray;
-            //    string prev_status;
-            //    double hp_ratio = default, en_ratio = default;
-            //    string fdata;
-            //    prev_status = Status;
-            //    if (string.IsNullOrEmpty(uname))
+            Unit u;
+            var prev_status = Status;
+            FeatureData splitFeature = null;
+            if (string.IsNullOrEmpty(uname))
+            {
+                // 合体形態が指定されてなければその場所にいるユニットと２体合体
+                u = null;
+                foreach (var fd in Features.Where(x => x.Name == "合体"))
+                {
+                    var combineData = new CombineFeature(fd);
+                    if (combineData.PartUnitNames.Count == 1
+                        && (Map.MapDataForUnit[x, y]?.IsEqual(combineData.PartUnitNames.First()) ?? false)
+                        && SRC.UList.IsDefined(combineData.ConbineUnitName))
+                    {
+                        u = SRC.UList.Item(combineData.ConbineUnitName).CurrentForm();
+                        break;
+                    }
+                }
+
+                // 合体のパートナーを調べる
+                foreach (var fd in u.Features.Where(x => x.Name == "分離"))
+                {
+                    if (fd.DataL.Count == 3
+                        && (IsEqual(fd.DataL[1]) && Map.MapDataForUnit[x, y].IsEqual(fd.DataL[2])
+                            || IsEqual(fd.DataL[2]) && Map.MapDataForUnit[x, y].IsEqual(fd.DataL[1])))
+                    {
+                        splitFeature = fd;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                // 合体ユニットが作成されていない
+                if (!SRC.UList.IsDefined(uname))
+                {
+                    GUI.ErrorMessage(uname + "が作成されていません");
+                    SRC.ExitGame();
+                }
+                u = SRC.UList.Item(uname).CurrentForm();
+
+                // 合体のパートナーを調べる
+                foreach (var fd in u.Features.Where(x => x.Name == "分離"))
+                {
+                    if (fd.DataL.Count > 2)
+                    {
+                        splitFeature = fd;
+                        break;
+                    }
+                }
+            }
+
+            // 合体するユニットの配列を作成
+            if (splitFeature == null)
+            {
+                string argmsg1 = u.Name + "のデータに" + Name + "に対する分離指定がみつかりません。" + "書式を確認してください。";
+                GUI.ErrorMessage(argmsg1);
+                return;
+            }
+            var runits = new List<Unit>();
+            foreach (var partuname in splitFeature.DataL.Skip(1))
+            {
+                if (!SRC.UList.IsDefined(partuname))
+                {
+                    string argmsg2 = partuname + "が作成されていません";
+                    GUI.ErrorMessage(argmsg2);
+                    return;
+                }
+                runits.Add(SRC.UList.Item(partuname));
+            }
+
+            string BGM;
+            if (!is_event)
+            {
+                if (Status == "出撃")
+                {
+                    // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
+                    if (u.IsFeatureAvailable("追加パイロット"))
+                    {
+                        var pname = u.FeatureData("追加パイロット");
+
+                        if (!SRC.PList.IsDefined(pname))
+                        {
+                            if (!SRC.PDList.IsDefined(pname))
+                            {
+                                GUI.ErrorMessage(u.Name + "の追加パイロット「" + pname + "」のデータが見つかりません");
+                                SRC.TerminateSRC();
+                            }
+                            SRC.PList.Add(pname, MainPilot().Level, Party0, gid: "");
+                        }
+                    }
+
+                    // TODO Impl
+                    //bool localIsMessageDefined1() { string argmain_situation = "合体(" + u.Name + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
+
+                    //bool localIsMessageDefined2() { object argIndex1 = "合体"; string argmain_situation = "合体(" + FeatureName(argIndex1) + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
+
+                    //string argmain_situation1 = "合体";
+                    //if (localIsMessageDefined1() | localIsMessageDefined2() | IsMessageDefined(argmain_situation1))
+                    //{
+                    //    string argfname1 = "合体ＢＧＭ";
+                    //    if (IsFeatureAvailable(argfname1))
+                    //    {
+                    //        var loopTo5 = CountFeature();
+                    //        for (i = 1; i <= loopTo5; i++)
+                    //        {
+                    //            string localFeature2() { object argIndex1 = i; var ret = Feature(argIndex1); return ret; }
+
+                    //            string localFeatureData13() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
+
+                    //            string localLIndex8() { string arglist = hs8b8df815445f4c329f8d70f276cd46e5(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
+
+                    //            if (localFeature2() == "合体ＢＧＭ" & (localLIndex8() ?? "") == (u.Name ?? ""))
+                    //            {
+                    //                string localFeatureData11() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
+
+                    //                string localFeatureData12() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
+
+                    //                string argmidi_name = Strings.Mid(localFeatureData11(), Strings.InStr(localFeatureData12(), " ") + 1);
+                    //                BGM = Sound.SearchMidiFile(argmidi_name);
+                    //                if (Strings.Len(BGM) > 0)
+                    //                {
+                    //                    Sound.ChangeBGM(BGM);
+                    //                    GUI.Sleep(500);
+                    //                }
+
+                    //                break;
+                    //            }
+                    //        }
+                    //    }
+
+                    //    Unit argu1 = null;
+                    //    Unit argu2 = null;
+                    //    GUI.OpenMessageForm(u1: argu1, u2: argu2);
+                    //    bool localIsMessageDefined() { object argIndex1 = "合体"; string argmain_situation = "合体(" + FeatureName(argIndex1) + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
+
+                    //    string argmain_situation = "合体(" + u.Name + ")";
+                    //    if (IsMessageDefined(argmain_situation))
+                    //    {
+                    //        string argSituation = "合体(" + u.Name + ")";
+                    //        string argmsg_mode = "";
+                    //        PilotMessage(argSituation, msg_mode: argmsg_mode);
+                    //    }
+                    //    else if (localIsMessageDefined())
+                    //    {
+                    //        object argIndex8 = "合体";
+                    //        string argSituation2 = "合体(" + FeatureName(argIndex8) + ")";
+                    //        string argmsg_mode2 = "";
+                    //        PilotMessage(argSituation2, msg_mode: argmsg_mode2);
+                    //    }
+                    //    else
+                    //    {
+                    //        string argSituation1 = "合体";
+                    //        string argmsg_mode1 = "";
+                    //        PilotMessage(argSituation1, msg_mode: argmsg_mode1);
+                    //    }
+
+                    //    GUI.CloseMessageForm();
+                }
+            }
+
+            //// 分離ユニットと合体ユニットが同名の武器を持つ場合は弾数を累積するため
+            //// このような武器の弾数を0にする
+            //var loopTo6 = u.CountWeapon();
+            //for (i = 1; i <= loopTo6; i++)
+            //{
+            //    var loopTo7 = Information.UBound(rarray);
+            //    for (j = 1; j <= loopTo7; j++)
             //    {
-            //        // 合体形態が指定されてなければその場所にいるユニットと２体合体
-            //        // UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        u = null;
-            //        var loopTo = CountFeature();
-            //        for (i = 1; i <= loopTo; i++)
             //        {
-            //            object argIndex2 = i;
-            //            if (Feature(argIndex2) == "合体")
+            //            var withBlock = rarray[j].CurrentForm();
+            //            var loopTo8 = withBlock.CountWeapon();
+            //            for (k = 1; k <= loopTo8; k++)
             //            {
-            //                object argIndex1 = i;
-            //                fdata = FeatureData(argIndex1);
-            //                bool localIsDefined() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-            //                if (GeneralLib.LLength(fdata) == 3 & Map.MapDataForUnit[x, y].Name == GeneralLib.LIndex(fdata, 3) & localIsDefined())
+            //                if ((u.Weapon(i).Name ?? "") == (withBlock.Weapon(k).Name ?? ""))
             //                {
-            //                    string localFeatureData() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
-
-            //                    string localLIndex() { string arglist = hs81b489053b0047fb8fab2715d76f0b3f(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                    Unit localItem() { object argIndex1 = (object)hse7677c879f2b418e8dbb67c5dad5db85(); var ret = SRC.UList.Item(argIndex1); return ret; }
-
-            //                    u = localItem().CurrentForm();
+            //                    u.SetBullet(i, 0);
             //                    break;
             //                }
             //            }
             //        }
-
-            //        if (u is null)
+            //    }
+            //}
+            //// 使用回数を合わせる
+            //var loopTo9 = u.CountAbility();
+            //for (i = 1; i <= loopTo9; i++)
+            //{
+            //    var loopTo10 = Information.UBound(rarray);
+            //    for (j = 1; j <= loopTo10; j++)
+            //    {
             //        {
-            //            var loopTo1 = CountFeature();
-            //            for (i = 1; i <= loopTo1; i++)
+            //            var withBlock1 = rarray[j].CurrentForm();
+            //            var loopTo11 = withBlock1.CountAbility();
+            //            for (k = 1; k <= loopTo11; k++)
             //            {
-            //                object argIndex4 = i;
-            //                if (Feature(argIndex4) == "合体")
+            //                if ((u.Ability(i).Name ?? "") == (withBlock1.Ability(k).Name ?? ""))
             //                {
-            //                    object argIndex3 = i;
-            //                    fdata = FeatureData(argIndex3);
-            //                    bool localIsDefined1() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-            //                    if (GeneralLib.LLength(fdata) == 3 & Map.MapDataForUnit[x, y].IsEqual(GeneralLib.LIndex(fdata, 3)) & localIsDefined1())
-            //                    {
-            //                        Unit localItem1() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UList.Item(argIndex1); return ret; }
-
-            //                        u = localItem1().CurrentForm();
-            //                        break;
-            //                    }
+            //                    u.SetStock(i, 0);
+            //                    break;
             //                }
             //            }
             //        }
+            //    }
+            //}
 
-            //        // 合体のパートナーを調べる
-            //        var loopTo2 = u.CountFeature();
-            //        for (i = 1; i <= loopTo2; i++)
+            // １番目のユニットのステータスを合体後のユニットに継承
+            {
+                var ru = runits.First().CurrentForm();
+                ru.CopySpecialPowerInEffect(u);
+                ru.RemoveAllSpecialPowerInEffect();
+                //var loopTo12 = ru.CountItem();
+                //for (i = 1; i <= loopTo12; i++)
+                //{
+                //    Item localItem3() { object argIndex1 = i; var ret = ru.Item(argIndex1); return ret; }
+
+                //    var argitm = localItem3();
+                //    u.AddItem(argitm);
+                //}
+
+                u.Master = ru.Master;
+                ru.Master = null;
+                u.Summoner = ru.Summoner;
+                ru.Summoner = null;
+                u.UsedSupportAttack = ru.UsedSupportAttack;
+                u.UsedSupportGuard = ru.UsedSupportGuard;
+                u.UsedSyncAttack = ru.UsedSyncAttack;
+                u.UsedCounterAttack = ru.UsedCounterAttack;
+                //var loopTo13 = withBlock2.CountServant();
+                //for (i = 1; i <= loopTo13; i++)
+                //{
+                //    Unit localServant() { object argIndex1 = i; var ret = withBlock2.Servant(argIndex1); return ret; }
+
+                //    var argu = localServant();
+                //    u.AddServant(argu);
+                //}
+
+                //var loopTo14 = withBlock2.CountServant();
+                //for (i = 1; i <= loopTo14; i++)
+                //{
+                //    object argIndex9 = 1;
+                //    withBlock2.DeleteServant(argIndex9);
+                //}
+
+                //var loopTo15 = withBlock2.CountSlave();
+                //for (i = 1; i <= loopTo15; i++)
+                //{
+                //    Unit localSlave() { object argIndex1 = i; var ret = withBlock2.Slave(argIndex1); return ret; }
+
+                //    var argu3 = localSlave();
+                //    u.AddSlave(argu3);
+                //}
+
+                //var loopTo16 = withBlock2.CountSlave();
+                //for (i = 1; i <= loopTo16; i++)
+                //{
+                //    object argIndex10 = 1;
+                //    withBlock2.DeleteSlave(argIndex10);
+                //}
+            }
+
+            // 合体する各ユニットに対しての処理を行う
+            var i = 0;
+            var hp_ratio = 0d;
+            var en_ratio = 0d;
+            foreach (var ru in runits)
+            {
+                i++;
+                // マップ上から撤退させる
+                var currentForm = ru.CurrentForm();
+                switch (currentForm.Status ?? "")
+                {
+                    case "出撃":
+                        currentForm.Status = "待機";
+                        Map.MapDataForUnit[currentForm.x, currentForm.y] = null;
+                        GUI.EraseUnitBitmap(currentForm.x, currentForm.y);
+                        break;
+
+                    case "格納":
+                        currentForm.Status = "待機";
+                        SRC.UList.Unload(ru);
+                        break;
+                }
+
+                // デフォルトの形態に変形させておく
+                if (!ReferenceEquals(currentForm, ru))
+                {
+                    ru.CurrentForm().Transform(ru.Name);
+                }
+
+                if (i == 1)
+                {
+                    ru.Status = "旧主形態";
+                }
+                else
+                {
+                    ru.Status = "旧形態";
+                }
+
+                hp_ratio = hp_ratio + 100 * ru.HP / (double)ru.MaxHP;
+                en_ratio = en_ratio + 100 * ru.EN / (double)ru.MaxEN;
+                if (ru.Rank > u.Rank)
+                {
+                    u.Rank = ru.Rank;
+                }
+
+                if (ru.BossRank > u.BossRank)
+                {
+                    u.BossRank = ru.BossRank;
+                    u.FullRecover();
+                }
+
+                if (ru.IsFeatureAvailable("召喚ユニット"))
+                {
+                    // 召喚ユニットの場合はパイロットの乗せ換えは行わない
+                    if (Strings.InStr(ru.MainPilot().Name, "(ザコ)") > 0 | Strings.InStr(ru.MainPilot().Name, "(汎用)") > 0)
+                    {
+                        // 汎用パイロットの場合は削除
+                        ru.MainPilot().Alive = false;
+                    }
+                }
+                else
+                {
+                    // パイロットの乗せ換え
+                    foreach (var p in ru.Pilots)
+                    {
+                        p.Ride(u);
+                    }
+                    ru.colPilot.Clear();
+
+                    // サポートの乗せ換え
+                    foreach (var p in ru.Supports)
+                    {
+                        p.Ride(u, true);
+                        p.SupportIndex = i;
+                    }
+                    ru.colSupport.Clear();
+                }
+
+                // 搭載ユニットの乗せ換え
+                foreach (var lu in UnitOnBoards.AsEnumerable().ToList())
+                {
+                    u.LoadUnit(lu);
+                    UnloadUnit(lu.ID);
+                }
+
+                //// 分離ユニットと共通する武装の弾数は一旦0にクリア
+                //var loopTo25 = u.CountWeapon();
+                //for (j = 1; j <= loopTo25; j++)
+                //{
+                //    var loopTo26 = ru.CountWeapon();
+                //    for (k = 1; k <= loopTo26; k++)
+                //    {
+                //        if ((u.Weapon(j).Name ?? "") == (ru.Weapon(k).Name ?? ""))
+                //        {
+                //            u.SetBullet(j, 0);
+                //            break;
+                //        }
+                //    }
+
+                //    var loopTo27 = ru.CountOtherForm();
+                //    for (k = 1; k <= loopTo27; k++)
+                //    {
+                //        object argIndex15 = k;
+                //        {
+                //            var withBlock5 = ru.OtherForm(argIndex15);
+                //            var loopTo28 = withBlock5.CountWeapon();
+                //            for (l = 1; l <= loopTo28; l++)
+                //            {
+                //                if ((u.Weapon(j).Name ?? "") == (withBlock5.Weapon(l).Name ?? ""))
+                //                {
+                //                    u.SetBullet(j, 0);
+                //                    break;
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+
+                //// アビリティの使用回数も同様の処理を行う
+                //var loopTo29 = u.CountAbility();
+                //for (j = 1; j <= loopTo29; j++)
+                //{
+                //    var loopTo30 = ru.CountAbility();
+                //    for (k = 1; k <= loopTo30; k++)
+                //    {
+                //        if ((u.Ability(j).Name ?? "") == (ru.Ability(k).Name ?? ""))
+                //        {
+                //            u.SetStock(j, 0);
+                //            break;
+                //        }
+                //    }
+
+                //    var loopTo31 = ru.CountOtherForm();
+                //    for (k = 1; k <= loopTo31; k++)
+                //    {
+                //        object argIndex16 = k;
+                //        {
+                //            var withBlock6 = ru.OtherForm(argIndex16);
+                //            var loopTo32 = withBlock6.CountAbility();
+                //            for (l = 1; l <= loopTo32; l++)
+                //            {
+                //                if ((u.Ability(j).Name ?? "") == (withBlock6.Ability(l).Name ?? ""))
+                //                {
+                //                    u.SetStock(j, 0);
+                //                    break;
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+
+                // スペシャルパワーの効果を消去
+                ru.RemoveAllSpecialPowerInEffect();
+            }
+
+            //// 合体後のユニットの武装の弾数及びアビリティの使用回数は分離ユニットの
+            //// 弾数及び使用回数の合計に設定する
+            //var loopTo33 = Information.UBound(rarray);
+            //for (i = 1; i <= loopTo33; i++)
+            //{
+            //    {
+            //        var withBlock7 = rarray[i];
+            //        // 武装の弾数の処理
+            //        var loopTo34 = u.CountWeapon();
+            //        for (j = 1; j <= loopTo34; j++)
             //        {
-            //            string localFeature() { object argIndex1 = i; var ret = u.Feature(argIndex1); return ret; }
-
-            //            string localFeatureData1() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
-
-            //            int localLLength() { string arglist = hs51faf446da8e4981a1c2f1fe759168f4(); var ret = GeneralLib.LLength(arglist); return ret; }
-
-            //            string localFeatureData2() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
-
-            //            string localLIndex1() { string arglist = hsb077af4743da47379ef57233cdc6fa2e(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //            string localFeatureData3() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
-
-            //            string localLIndex2() { string arglist = hs35a57c94693d489ca95b1b6c02b7f584(); var ret = GeneralLib.LIndex(arglist, 3); return ret; }
-
-            //            string localFeatureData4() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
-
-            //            string localLIndex3() { string arglist = hscc5ae77b155c4db6b72a8ff201c4d383(); var ret = GeneralLib.LIndex(arglist, 3); return ret; }
-
-            //            string localFeatureData5() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
-
-            //            string localLIndex4() { string arglist = hs55605004ddf144379941d1bb4dbdc993(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //            if (localFeature() == "分離" & localLLength() == 3 & (IsEqual(localLIndex1()) & Map.MapDataForUnit[x, y].IsEqual(localLIndex2()) | IsEqual(localLIndex3()) & Map.MapDataForUnit[x, y].IsEqual(localLIndex4())))
+            //            var loopTo35 = withBlock7.CountWeapon();
+            //            for (k = 1; k <= loopTo35; k++)
             //            {
-            //                break;
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        // 合体ユニットが作成されていない
-            //        bool localIsDefined2() { object argIndex1 = uname; var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-            //        if (!localIsDefined2())
-            //        {
-            //            string argmsg = uname + "が作成されていません";
-            //            GUI.ErrorMessage(argmsg);
-            //            SRC.ExitGame();
-            //        }
-
-            //        Unit localItem2() { object argIndex1 = uname; var ret = SRC.UList.Item(argIndex1); return ret; }
-
-            //        u = localItem2().CurrentForm();
-
-            //        // 合体のパートナーを調べる
-            //        var loopTo3 = u.CountFeature();
-            //        for (i = 1; i <= loopTo3; i++)
-            //        {
-            //            string localFeature1() { object argIndex1 = i; var ret = u.Feature(argIndex1); return ret; }
-
-            //            string localFeatureData6() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
-
-            //            int localLLength1() { string arglist = hs19d13409c3c14abeb6633b778b53f517(); var ret = GeneralLib.LLength(arglist); return ret; }
-
-            //            if (localFeature1() == "分離" & localLLength1() > 2)
-            //            {
-            //                break;
-            //            }
-            //        }
-            //    }
-
-            //    // 合体するユニットの配列を作成
-            //    if (i > u.CountFeature())
-            //    {
-            //        string argmsg1 = u.Name + "のデータに" + Name + "に対する分離指定がみつかりません。" + "書式を確認してください。";
-            //        GUI.ErrorMessage(argmsg1);
-            //        return;
-            //    }
-
-            //    string localFeatureData7() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
-
-            //    int localLLength2() { string arglist = hs7e9583a3d5b64b0e89ed2b453203ed96(); var ret = GeneralLib.LLength(arglist); return ret; }
-
-            //    rarray = new Unit[(localLLength2())];
-            //    var loopTo4 = Information.UBound(rarray);
-            //    for (j = 1; j <= loopTo4; j++)
-            //    {
-            //        string localFeatureData9() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
-
-            //        string localLIndex6() { string arglist = hsdde5a2bab5114fb984e607877f33a598(); var ret = GeneralLib.LIndex(arglist, (j + 1)); return ret; }
-
-            //        bool localIsDefined3() { object argIndex1 = (object)hs864ff7ed86044dd6afb3abdbc02521a4(); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-            //        if (!localIsDefined3())
-            //        {
-            //            string localFeatureData8() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
-
-            //            string localLIndex5() { string arglist = hsd9f70e51b07d4e9fa7669aca81ec510a(); var ret = GeneralLib.LIndex(arglist, (j + 1)); return ret; }
-
-            //            string argmsg2 = localLIndex5() + "が作成されていません";
-            //            GUI.ErrorMessage(argmsg2);
-            //            return;
-            //        }
-
-            //        string localFeatureData10() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
-
-            //        string localLIndex7() { string arglist = hs00e33e973a4149d388ddb705e43ffed7(); var ret = GeneralLib.LIndex(arglist, (j + 1)); return ret; }
-
-            //        object argIndex5 = localLIndex7();
-            //        rarray[j] = SRC.UList.Item(argIndex5);
-            //    }
-
-            //    string BGM;
-            //    if (!is_event)
-            //    {
-            //        if (Status == "出撃")
-            //        {
-            //            // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
-            //            string argfname = "追加パイロット";
-            //            if (u.IsFeatureAvailable(argfname))
-            //            {
-            //                bool localIsDefined5() { object argIndex1 = "追加パイロット"; object argIndex2 = u.FeatureData(argIndex1); var ret = SRC.PList.IsDefined(argIndex2); return ret; }
-
-            //                if (!localIsDefined5())
+            //                if ((u.Weapon(j).Name ?? "") == (withBlock7.Weapon(k).Name ?? ""))
             //                {
-            //                    bool localIsDefined4() { object argIndex1 = "追加パイロット"; object argIndex2 = u.FeatureData(argIndex1); var ret = SRC.PDList.IsDefined(argIndex2); return ret; }
-
-            //                    if (!localIsDefined4())
-            //                    {
-            //                        object argIndex6 = "追加パイロット";
-            //                        string argmsg3 = u.Name + "の追加パイロット「" + u.FeatureData(argIndex6) + "」のデータが見つかりません";
-            //                        GUI.ErrorMessage(argmsg3);
-            //                        SRC.TerminateSRC();
-            //                    }
-
-            //                    object argIndex7 = "追加パイロット";
-            //                    string argpname = u.FeatureData(argIndex7);
-            //                    string argpparty = Party0;
-            //                    string arggid = "";
-            //                    SRC.PList.Add(argpname, MainPilot().Level, argpparty, gid: arggid);
-            //                    this.Party0 = argpparty;
+            //                    u.SetBullet(j, (u.Bullet(j) + withBlock7.Bullet(k)));
+            //                    goto NextWeapon;
             //                }
             //            }
 
-            //            bool localIsMessageDefined1() { string argmain_situation = "合体(" + u.Name + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
-
-            //            bool localIsMessageDefined2() { object argIndex1 = "合体"; string argmain_situation = "合体(" + FeatureName(argIndex1) + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
-
-            //            string argmain_situation1 = "合体";
-            //            if (localIsMessageDefined1() | localIsMessageDefined2() | IsMessageDefined(argmain_situation1))
+            //            var loopTo36 = withBlock7.CountOtherForm();
+            //            for (k = 1; k <= loopTo36; k++)
             //            {
-            //                string argfname1 = "合体ＢＧＭ";
-            //                if (IsFeatureAvailable(argfname1))
+            //                object argIndex17 = k;
             //                {
-            //                    var loopTo5 = CountFeature();
-            //                    for (i = 1; i <= loopTo5; i++)
+            //                    var withBlock8 = withBlock7.OtherForm(argIndex17);
+            //                    var loopTo37 = withBlock8.CountWeapon();
+            //                    for (l = 1; l <= loopTo37; l++)
             //                    {
-            //                        string localFeature2() { object argIndex1 = i; var ret = Feature(argIndex1); return ret; }
-
-            //                        string localFeatureData13() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
-
-            //                        string localLIndex8() { string arglist = hs8b8df815445f4c329f8d70f276cd46e5(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
-
-            //                        if (localFeature2() == "合体ＢＧＭ" & (localLIndex8() ?? "") == (u.Name ?? ""))
+            //                        if ((u.Weapon(j).Name ?? "") == (withBlock8.Weapon(l).Name ?? ""))
             //                        {
-            //                            string localFeatureData11() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
-
-            //                            string localFeatureData12() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
-
-            //                            string argmidi_name = Strings.Mid(localFeatureData11(), Strings.InStr(localFeatureData12(), " ") + 1);
-            //                            BGM = Sound.SearchMidiFile(argmidi_name);
-            //                            if (Strings.Len(BGM) > 0)
-            //                            {
-            //                                Sound.ChangeBGM(BGM);
-            //                                GUI.Sleep(500);
-            //                            }
-
-            //                            break;
-            //                        }
-            //                    }
-            //                }
-
-            //                Unit argu1 = null;
-            //                Unit argu2 = null;
-            //                GUI.OpenMessageForm(u1: argu1, u2: argu2);
-            //                bool localIsMessageDefined() { object argIndex1 = "合体"; string argmain_situation = "合体(" + FeatureName(argIndex1) + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
-
-            //                string argmain_situation = "合体(" + u.Name + ")";
-            //                if (IsMessageDefined(argmain_situation))
-            //                {
-            //                    string argSituation = "合体(" + u.Name + ")";
-            //                    string argmsg_mode = "";
-            //                    PilotMessage(argSituation, msg_mode: argmsg_mode);
-            //                }
-            //                else if (localIsMessageDefined())
-            //                {
-            //                    object argIndex8 = "合体";
-            //                    string argSituation2 = "合体(" + FeatureName(argIndex8) + ")";
-            //                    string argmsg_mode2 = "";
-            //                    PilotMessage(argSituation2, msg_mode: argmsg_mode2);
-            //                }
-            //                else
-            //                {
-            //                    string argSituation1 = "合体";
-            //                    string argmsg_mode1 = "";
-            //                    PilotMessage(argSituation1, msg_mode: argmsg_mode1);
-            //                }
-
-            //                GUI.CloseMessageForm();
-            //            }
-            //        }
-            //    }
-
-            //    // 分離ユニットと合体ユニットが同名の武器を持つ場合は弾数を累積するため
-            //    // このような武器の弾数を0にする
-            //    var loopTo6 = u.CountWeapon();
-            //    for (i = 1; i <= loopTo6; i++)
-            //    {
-            //        var loopTo7 = Information.UBound(rarray);
-            //        for (j = 1; j <= loopTo7; j++)
-            //        {
-            //            {
-            //                var withBlock = rarray[j].CurrentForm();
-            //                var loopTo8 = withBlock.CountWeapon();
-            //                for (k = 1; k <= loopTo8; k++)
-            //                {
-            //                    if ((u.Weapon(i).Name ?? "") == (withBlock.Weapon(k).Name ?? ""))
-            //                    {
-            //                        u.SetBullet(i, 0);
-            //                        break;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //    // 使用回数を合わせる
-            //    var loopTo9 = u.CountAbility();
-            //    for (i = 1; i <= loopTo9; i++)
-            //    {
-            //        var loopTo10 = Information.UBound(rarray);
-            //        for (j = 1; j <= loopTo10; j++)
-            //        {
-            //            {
-            //                var withBlock1 = rarray[j].CurrentForm();
-            //                var loopTo11 = withBlock1.CountAbility();
-            //                for (k = 1; k <= loopTo11; k++)
-            //                {
-            //                    if ((u.Ability(i).Name ?? "") == (withBlock1.Ability(k).Name ?? ""))
-            //                    {
-            //                        u.SetStock(i, 0);
-            //                        break;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    // １番目のユニットのステータスを合体後のユニットに継承
-            //    {
-            //        var withBlock2 = rarray[1].CurrentForm();
-            //        withBlock2.CopySpecialPowerInEffect(u);
-            //        withBlock2.RemoveAllSpecialPowerInEffect();
-            //        var loopTo12 = withBlock2.CountItem();
-            //        for (i = 1; i <= loopTo12; i++)
-            //        {
-            //            Item localItem3() { object argIndex1 = i; var ret = withBlock2.Item(argIndex1); return ret; }
-
-            //            var argitm = localItem3();
-            //            u.AddItem(argitm);
-            //        }
-
-            //        u.Master = withBlock2.Master;
-            //        // UPGRADE_NOTE: オブジェクト rarray().CurrentForm.Master をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        withBlock2.Master = null;
-            //        u.Summoner = withBlock2.Summoner;
-            //        // UPGRADE_NOTE: オブジェクト rarray().CurrentForm.Summoner をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        withBlock2.Summoner = null;
-            //        u.UsedSupportAttack = withBlock2.UsedSupportAttack;
-            //        u.UsedSupportGuard = withBlock2.UsedSupportGuard;
-            //        u.UsedSyncAttack = withBlock2.UsedSyncAttack;
-            //        u.UsedCounterAttack = withBlock2.UsedCounterAttack;
-            //        var loopTo13 = withBlock2.CountServant();
-            //        for (i = 1; i <= loopTo13; i++)
-            //        {
-            //            Unit localServant() { object argIndex1 = i; var ret = withBlock2.Servant(argIndex1); return ret; }
-
-            //            var argu = localServant();
-            //            u.AddServant(argu);
-            //        }
-
-            //        var loopTo14 = withBlock2.CountServant();
-            //        for (i = 1; i <= loopTo14; i++)
-            //        {
-            //            object argIndex9 = 1;
-            //            withBlock2.DeleteServant(argIndex9);
-            //        }
-
-            //        var loopTo15 = withBlock2.CountSlave();
-            //        for (i = 1; i <= loopTo15; i++)
-            //        {
-            //            Unit localSlave() { object argIndex1 = i; var ret = withBlock2.Slave(argIndex1); return ret; }
-
-            //            var argu3 = localSlave();
-            //            u.AddSlave(argu3);
-            //        }
-
-            //        var loopTo16 = withBlock2.CountSlave();
-            //        for (i = 1; i <= loopTo16; i++)
-            //        {
-            //            object argIndex10 = 1;
-            //            withBlock2.DeleteSlave(argIndex10);
-            //        }
-
-            //        // 合体する各ユニットに対しての処理を行う
-            //    }
-
-            //    var loopTo17 = Information.UBound(rarray);
-            //    for (i = 1; i <= loopTo17; i++)
-            //    {
-            //        // マップ上から撤退させる
-            //        {
-            //            var withBlock3 = rarray[i].CurrentForm();
-            //            switch (withBlock3.Status ?? "")
-            //            {
-            //                case "出撃":
-            //                    {
-            //                        withBlock3.Status = "待機";
-            //                        // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //                        Map.MapDataForUnit[withBlock3.x, withBlock3.y] = null;
-            //                        GUI.EraseUnitBitmap(withBlock3.x, withBlock3.y);
-            //                        break;
-            //                    }
-
-            //                case "格納":
-            //                    {
-            //                        withBlock3.Status = "待機";
-            //                        foreach (Unit eu in SRC.UList)
-            //                        {
-            //                            var loopTo18 = eu.CountUnitOnBoard();
-            //                            for (j = 1; j <= loopTo18; j++)
-            //                            {
-            //                                Unit localUnitOnBoard() { object argIndex1 = j; var ret = eu.UnitOnBoard(argIndex1); return ret; }
-
-            //                                if ((withBlock3.ID ?? "") == (localUnitOnBoard().ID ?? ""))
-            //                                {
-            //                                    object argIndex11 = withBlock3.ID;
-            //                                    eu.UnloadUnit(argIndex11);
-            //                                    goto EndLoop;
-            //                                }
-            //                            }
-            //                        }
-
-            //                    EndLoop:
-            //                        ;
-            //                        break;
-            //                    }
-            //            }
-            //        }
-
-            //        // デフォルトの形態に変形させておく
-            //        if (!ReferenceEquals(rarray[i].CurrentForm(), rarray[i]))
-            //        {
-            //            string argnew_form = rarray[i].Name;
-            //            rarray[i].CurrentForm().Transform(argnew_form);
-            //            rarray[i].Name = argnew_form;
-            //        }
-
-            //        {
-            //            var withBlock4 = rarray[i];
-            //            if (i == 1)
-            //            {
-            //                withBlock4.Status = "旧主形態";
-            //            }
-            //            else
-            //            {
-            //                withBlock4.Status = "旧形態";
-            //            }
-
-            //            hp_ratio = hp_ratio + 100 * withBlock4.HP / (double)withBlock4.MaxHP;
-            //            en_ratio = en_ratio + 100 * withBlock4.EN / (double)withBlock4.MaxEN;
-            //            if (withBlock4.Rank > u.Rank)
-            //            {
-            //                u.Rank = withBlock4.Rank;
-            //            }
-
-            //            if (withBlock4.BossRank > u.BossRank)
-            //            {
-            //                u.BossRank = withBlock4.BossRank;
-            //                u.FullRecover();
-            //            }
-
-            //            string argfname2 = "召喚ユニット";
-            //            if (withBlock4.IsFeatureAvailable(argfname2))
-            //            {
-            //                // 召喚ユニットの場合はパイロットの乗せ換えは行わない
-            //                if (Strings.InStr(withBlock4.MainPilot().Name, "(ザコ)") > 0 | Strings.InStr(withBlock4.MainPilot().Name, "(汎用)") > 0)
-            //                {
-            //                    // 汎用パイロットの場合は削除
-            //                    withBlock4.MainPilot().Alive = false;
-            //                }
-            //            }
-            //            else
-            //            {
-            //                // パイロットの乗せ換え
-            //                var loopTo19 = withBlock4.CountPilot();
-            //                for (j = 1; j <= loopTo19; j++)
-            //                {
-            //                    Pilot localPilot() { object argIndex1 = j; var ret = withBlock4.Pilot(argIndex1); return ret; }
-
-            //                    localPilot().Ride(u);
-            //                }
-
-            //                var loopTo20 = withBlock4.CountPilot();
-            //                for (j = 1; j <= loopTo20; j++)
-            //                {
-            //                    object argIndex12 = 1;
-            //                    withBlock4.DeletePilot(argIndex12);
-            //                }
-
-            //                // サポートの乗せ換え
-            //                var loopTo21 = withBlock4.CountSupport();
-            //                for (j = 1; j <= loopTo21; j++)
-            //                {
-            //                    Pilot localSupport() { object argIndex1 = j; var ret = withBlock4.Support(argIndex1); return ret; }
-
-            //                    localSupport().Ride(u, true);
-            //                    Pilot localSupport1() { object argIndex1 = j; var ret = withBlock4.Support(argIndex1); return ret; }
-
-            //                    localSupport1().SupportIndex = i;
-            //                }
-
-            //                var loopTo22 = withBlock4.CountSupport();
-            //                for (j = 1; j <= loopTo22; j++)
-            //                {
-            //                    object argIndex13 = 1;
-            //                    withBlock4.DeleteSupport(argIndex13);
-            //                }
-            //            }
-
-            //            // 搭載ユニットの乗せ換え
-            //            var loopTo23 = withBlock4.CountUnitOnBoard();
-            //            for (j = 1; j <= loopTo23; j++)
-            //            {
-            //                Unit localUnitOnBoard1() { object argIndex1 = j; var ret = withBlock4.UnitOnBoard(argIndex1); return ret; }
-
-            //                var argu4 = localUnitOnBoard1();
-            //                u.LoadUnit(argu4);
-            //            }
-
-            //            var loopTo24 = u.CountUnitOnBoard();
-            //            for (j = 1; j <= loopTo24; j++)
-            //            {
-            //                object argIndex14 = 1;
-            //                withBlock4.UnloadUnit(argIndex14);
-            //            }
-
-            //            // 分離ユニットと共通する武装の弾数は一旦0にクリア
-            //            var loopTo25 = u.CountWeapon();
-            //            for (j = 1; j <= loopTo25; j++)
-            //            {
-            //                var loopTo26 = withBlock4.CountWeapon();
-            //                for (k = 1; k <= loopTo26; k++)
-            //                {
-            //                    if ((u.Weapon(j).Name ?? "") == (withBlock4.Weapon(k).Name ?? ""))
-            //                    {
-            //                        u.SetBullet(j, 0);
-            //                        break;
-            //                    }
-            //                }
-
-            //                var loopTo27 = withBlock4.CountOtherForm();
-            //                for (k = 1; k <= loopTo27; k++)
-            //                {
-            //                    object argIndex15 = k;
-            //                    {
-            //                        var withBlock5 = withBlock4.OtherForm(argIndex15);
-            //                        var loopTo28 = withBlock5.CountWeapon();
-            //                        for (l = 1; l <= loopTo28; l++)
-            //                        {
-            //                            if ((u.Weapon(j).Name ?? "") == (withBlock5.Weapon(l).Name ?? ""))
-            //                            {
-            //                                u.SetBullet(j, 0);
-            //                                break;
-            //                            }
+            //                            u.SetBullet(j, (u.Bullet(j) + withBlock8.Bullet(l)));
+            //                            goto NextWeapon;
             //                        }
             //                    }
             //                }
             //            }
 
-            //            // アビリティの使用回数も同様の処理を行う
-            //            var loopTo29 = u.CountAbility();
-            //            for (j = 1; j <= loopTo29; j++)
-            //            {
-            //                var loopTo30 = withBlock4.CountAbility();
-            //                for (k = 1; k <= loopTo30; k++)
-            //                {
-            //                    if ((u.Ability(j).Name ?? "") == (withBlock4.Ability(k).Name ?? ""))
-            //                    {
-            //                        u.SetStock(j, 0);
-            //                        break;
-            //                    }
-            //                }
+            //        NextWeapon:
+            //            ;
+            //        }
 
-            //                var loopTo31 = withBlock4.CountOtherForm();
-            //                for (k = 1; k <= loopTo31; k++)
+            //        // アビリティの使用回数の処理
+            //        var loopTo38 = u.CountAbility();
+            //        for (j = 1; j <= loopTo38; j++)
+            //        {
+            //            var loopTo39 = withBlock7.CountAbility();
+            //            for (k = 1; k <= loopTo39; k++)
+            //            {
+            //                if ((u.Ability(j).Name ?? "") == (withBlock7.Ability(k).Name ?? ""))
             //                {
-            //                    object argIndex16 = k;
+            //                    u.SetStock(j, (u.Stock(j) + withBlock7.Stock(k)));
+            //                    goto NextAbility;
+            //                }
+            //            }
+
+            //            var loopTo40 = withBlock7.CountOtherForm();
+            //            for (k = 1; k <= loopTo40; k++)
+            //            {
+            //                object argIndex18 = k;
+            //                {
+            //                    var withBlock9 = withBlock7.OtherForm(argIndex18);
+            //                    var loopTo41 = withBlock9.CountAbility();
+            //                    for (l = 1; l <= loopTo41; l++)
             //                    {
-            //                        var withBlock6 = withBlock4.OtherForm(argIndex16);
-            //                        var loopTo32 = withBlock6.CountAbility();
-            //                        for (l = 1; l <= loopTo32; l++)
+            //                        if ((u.Ability(j).Name ?? "") == (withBlock9.Ability(l).Name ?? ""))
             //                        {
-            //                            if ((u.Ability(j).Name ?? "") == (withBlock6.Ability(l).Name ?? ""))
-            //                            {
-            //                                u.SetStock(j, 0);
-            //                                break;
-            //                            }
+            //                            u.SetStock(j, (u.Stock(j) + withBlock9.Stock(l)));
+            //                            goto NextAbility;
             //                        }
             //                    }
             //                }
             //            }
 
-            //            // スペシャルパワーの効果を消去
-            //            withBlock4.RemoveAllSpecialPowerInEffect();
+            //        NextAbility:
+            //            ;
             //        }
             //    }
+            //}
 
-            //    // 合体後のユニットの武装の弾数及びアビリティの使用回数は分離ユニットの
-            //    // 弾数及び使用回数の合計に設定する
-            //    var loopTo33 = Information.UBound(rarray);
-            //    for (i = 1; i <= loopTo33; i++)
+            //// １番目のユニットのアイテムを外す
+            //{
+            //    var withBlock10 = rarray[1];
+            //    var loopTo42 = withBlock10.CountItem();
+            //    for (i = 1; i <= loopTo42; i++)
             //    {
-            //        {
-            //            var withBlock7 = rarray[i];
-            //            // 武装の弾数の処理
-            //            var loopTo34 = u.CountWeapon();
-            //            for (j = 1; j <= loopTo34; j++)
-            //            {
-            //                var loopTo35 = withBlock7.CountWeapon();
-            //                for (k = 1; k <= loopTo35; k++)
-            //                {
-            //                    if ((u.Weapon(j).Name ?? "") == (withBlock7.Weapon(k).Name ?? ""))
-            //                    {
-            //                        u.SetBullet(j, (u.Bullet(j) + withBlock7.Bullet(k)));
-            //                        goto NextWeapon;
-            //                    }
-            //                }
-
-            //                var loopTo36 = withBlock7.CountOtherForm();
-            //                for (k = 1; k <= loopTo36; k++)
-            //                {
-            //                    object argIndex17 = k;
-            //                    {
-            //                        var withBlock8 = withBlock7.OtherForm(argIndex17);
-            //                        var loopTo37 = withBlock8.CountWeapon();
-            //                        for (l = 1; l <= loopTo37; l++)
-            //                        {
-            //                            if ((u.Weapon(j).Name ?? "") == (withBlock8.Weapon(l).Name ?? ""))
-            //                            {
-            //                                u.SetBullet(j, (u.Bullet(j) + withBlock8.Bullet(l)));
-            //                                goto NextWeapon;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-
-            //            NextWeapon:
-            //                ;
-            //            }
-
-            //            // アビリティの使用回数の処理
-            //            var loopTo38 = u.CountAbility();
-            //            for (j = 1; j <= loopTo38; j++)
-            //            {
-            //                var loopTo39 = withBlock7.CountAbility();
-            //                for (k = 1; k <= loopTo39; k++)
-            //                {
-            //                    if ((u.Ability(j).Name ?? "") == (withBlock7.Ability(k).Name ?? ""))
-            //                    {
-            //                        u.SetStock(j, (u.Stock(j) + withBlock7.Stock(k)));
-            //                        goto NextAbility;
-            //                    }
-            //                }
-
-            //                var loopTo40 = withBlock7.CountOtherForm();
-            //                for (k = 1; k <= loopTo40; k++)
-            //                {
-            //                    object argIndex18 = k;
-            //                    {
-            //                        var withBlock9 = withBlock7.OtherForm(argIndex18);
-            //                        var loopTo41 = withBlock9.CountAbility();
-            //                        for (l = 1; l <= loopTo41; l++)
-            //                        {
-            //                            if ((u.Ability(j).Name ?? "") == (withBlock9.Ability(l).Name ?? ""))
-            //                            {
-            //                                u.SetStock(j, (u.Stock(j) + withBlock9.Stock(l)));
-            //                                goto NextAbility;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-
-            //            NextAbility:
-            //                ;
-            //            }
-            //        }
+            //        object argIndex19 = 1;
+            //        withBlock10.DeleteItem(argIndex19);
             //    }
+            //}
 
-            //    // １番目のユニットのアイテムを外す
-            //    {
-            //        var withBlock10 = rarray[1];
-            //        var loopTo42 = withBlock10.CountItem();
-            //        for (i = 1; i <= loopTo42; i++)
-            //        {
-            //            object argIndex19 = 1;
-            //            withBlock10.DeleteItem(argIndex19);
-            //        }
-            //    }
+            // 合体後のユニットに関する処理
+            u.Update();
+            u.Party = Party0;
+            foreach (var of in u.OtherForms)
+            {
+                of.Party = Party0;
+            }
+            foreach (var p in u.Pilots)
+            {
+                p.Party = Party0;
+            }
+            foreach (var p in u.Supports)
+            {
+                p.Party = Party0;
+            }
 
-            //    // 合体後のユニットに関する処理
-            //    u.Update();
-            //    u.Party = Party0;
-            //    var loopTo43 = u.CountOtherForm();
-            //    for (i = 1; i <= loopTo43; i++)
-            //    {
-            //        Unit localOtherForm() { object argIndex1 = i; var ret = u.OtherForm(argIndex1); return ret; }
+            //u.HP = (int)(u.MaxHP * hp_ratio / 100d / Information.UBound(rarray));
+            //u.EN = (int)(1 * u.MaxEN * en_ratio / 100d / Information.UBound(rarray));
 
-            //        localOtherForm().Party = Party0;
-            //    }
+            //// 弾数・使用回数共有の実現
+            //u.SyncBullet();
+            if (prev_status == "出撃")
+            {
+                u.StandBy(x, y);
 
-            //    var loopTo44 = u.CountPilot();
-            //    for (i = 1; i <= loopTo44; i++)
-            //    {
-            //        Pilot localPilot1() { object argIndex1 = i; var ret = u.Pilot(argIndex1); return ret; }
+                // ノーマルモードや制限時間つきの形態の場合は残り時間を付加
+                if (u.IsFeatureAvailable("ノーマルモード"))
+                {
+                    var lastTime = GeneralLib.LIndex(u.FeatureData("ノーマルモード"), 2);
+                    if (Information.IsNumeric(lastTime))
+                    {
+                        if (u.IsConditionSatisfied("残り時間"))
+                        {
+                            u.DeleteCondition("残り時間");
+                        }
+                        u.AddCondition("残り時間", Conversions.ToInteger(lastTime), cdata: "");
+                    }
+                }
+                else if (u.IsFeatureAvailable("制限時間"))
+                {
+                    u.AddCondition("残り時間", Conversions.ToInteger(u.FeatureData("制限時間")), cdata: "");
+                }
+            }
+            else
+            {
+                u.Status = prev_status;
+            }
 
-            //        localPilot1().Party = Party0;
-            //    }
+            // 分離ユニットの座標を合体後のユニットの座標に合わせる
+            foreach (var pu in runits)
+            {
 
-            //    var loopTo45 = u.CountSupport();
-            //    for (i = 1; i <= loopTo45; i++)
-            //    {
-            //        Pilot localSupport2() { object argIndex1 = i; var ret = u.Support(argIndex1); return ret; }
-
-            //        localSupport2().Party = Party0;
-            //    }
-
-            //    u.HP = (int)(u.MaxHP * hp_ratio / 100d / Information.UBound(rarray));
-            //    u.EN = (int)(1 * u.MaxEN * en_ratio / 100d / Information.UBound(rarray));
-
-            //    // 弾数・使用回数共有の実現
-            //    u.SyncBullet();
-            //    if (prev_status == "出撃")
-            //    {
-            //        u.StandBy(x, y);
-
-            //        // ノーマルモードや制限時間つきの形態の場合は残り時間を付加
-            //        string argfname3 = "ノーマルモード";
-            //        string argfname4 = "制限時間";
-            //        if (u.IsFeatureAvailable(argfname3))
-            //        {
-            //            string localLIndex11() { object argIndex1 = "ノーマルモード"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //            if (Information.IsNumeric(localLIndex11()))
-            //            {
-            //                object argIndex21 = "残り時間";
-            //                if (u.IsConditionSatisfied(argIndex21))
-            //                {
-            //                    object argIndex20 = "残り時間";
-            //                    u.DeleteCondition(argIndex20);
-            //                }
-
-            //                string localLIndex9() { object argIndex1 = "ノーマルモード"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                string localLIndex10() { object argIndex1 = "ノーマルモード"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                string argcname = "残り時間";
-            //                string argcdata = "";
-            //                u.AddCondition(argcname, Conversions.Toint(localLIndex10()), cdata: argcdata);
-            //            }
-            //        }
-            //        else if (u.IsFeatureAvailable(argfname4))
-            //        {
-            //            string argcname1 = "残り時間";
-            //            object argIndex22 = "制限時間";
-            //            object argIndex23 = "制限時間";
-            //            string argcdata1 = "";
-            //            u.AddCondition(argcname1, Conversions.Toint(u.FeatureData(argIndex23)), cdata: argcdata1);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        u.Status = prev_status;
-            //    }
-
-            //    // 分離ユニットの座標を合体後のユニットの座標に合わせる
-            //    var loopTo46 = Information.UBound(rarray);
-            //    for (i = 1; i <= loopTo46; i++)
-            //    {
-            //        {
-            //            var withBlock11 = rarray[i].CurrentForm();
-            //            withBlock11.x = u.x;
-            //            withBlock11.y = u.y;
-            //        }
-            //    }
+                var cf = pu.CurrentForm();
+                cf.x = u.x;
+                cf.y = u.y;
+            }
         }
 
         // 分離
