@@ -33,17 +33,8 @@ namespace SRCCore.Commands
         public const int FeatureListCmdID = 22;
         public const int WeaponListCmdID = 23;
         public const int AbilityListCmdID = 24;
-        public const int UnitCommand1CmdID = 25;
-        public const int UnitCommand2CmdID = 26;
-        public const int UnitCommand3CmdID = 27;
-        public const int UnitCommand4CmdID = 28;
-        public const int UnitCommand5CmdID = 29;
-        public const int UnitCommand6CmdID = 30;
-        public const int UnitCommand7CmdID = 31;
-        public const int UnitCommand8CmdID = 32;
-        public const int UnitCommand9CmdID = 33;
-        public const int UnitCommand10CmdID = 34;
-        public const int WaitCmdID = 35;
+        public const int UnitCommandCmdID = 25;
+        public const int WaitCmdID = 127;
 
         // マップコマンドのメニュー番号
         public const int EndTurnCmdID = 0;
