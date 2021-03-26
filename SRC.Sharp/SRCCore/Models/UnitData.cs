@@ -392,88 +392,29 @@ namespace SRCCore.Models
         }
 
         // 特殊能力
-        public string Feature(int Index)
+        public FeatureData Feature(string Index)
         {
-            return colFeature[Index].Name;
+            // XXX 元は Name を返却
+            return colFeature[Index];
         }
 
-        // 特殊能力の名称
-        public string FeatureName(int Index)
-        {
-            FeatureData fd = colFeature[Index];
-            if (Strings.Len(fd.StrData) > 0)
-            {
-                throw new NotImplementedException();
-                // TODO
-                //FeatureNameRet = GeneralLib.ListIndex(ref fd.StrData, 1);
-            }
-            else if (fd.Level > 0d)
-            {
-                return fd.Name + "Lv" + SrcFormatter.Format(fd.Level);
-            }
-            else
-            {
-                return fd.Name;
-            }
-        }
-
-        // 特殊能力のレベル
-        public double FeatureLevel(int Index)
-        {
-            try
-            {
-                var level = colFeature[Index]?.Level ?? 0;
-                return level == Constants.DEFAULT_LEVEL ? 0 : level;
-            }
-            catch
-            {
-                return 0;
-            }
-        }
-
-        // 特殊能力のデータ
-        public string FeatureData(int Index)
-        {
-            try
-            {
-                return colFeature[Index]?.StrData ?? "";
-            }
-            catch
-            {
-                return "";
-            }
-        }
-
-        // 特殊能力の必要技能
-        public string FeatureNecessarySkill(int Index)
-        {
-            try
-            {
-                return colFeature[Index]?.NecessarySkill ?? "";
-            }
-            catch
-            {
-                return "";
-            }
-        }
+        //// 特殊能力のデータ
+        //public string FeatureData(int Index)
+        //{
+        //    try
+        //    {
+        //        return colFeature[Index]?.StrData ?? "";
+        //    }
+        //    catch
+        //    {
+        //        return "";
+        //    }
+        //}
 
         // 指定した特殊能力を持っているか？
         public bool IsFeatureAvailable(string fname)
         {
             return colFeature.ContainsKey(fname);
-        }
-
-        // 指定した特殊能力がレベル指定されているか？
-        public bool IsFeatureLevelSpecified(int Index)
-        {
-            try
-            {
-                return colFeature[Index]?.Level != Constants.DEFAULT_LEVEL;
-            }
-            catch
-            {
-                return false;
-            }
         }
 
         // 武器を追加
