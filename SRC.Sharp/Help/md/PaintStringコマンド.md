@@ -46,42 +46,26 @@
 **PaintString**コマンドと**Font**コマンドを組みあわせて文字が徐々に表示、あるいは消えていくような処理を行う場合は必ず[**FadeIn**コマンド](FadeInコマンド.md)、[**FadeOut**コマンド](FadeOutコマンド.md)、[**WhiteIn**コマンド](WhiteInコマンド.md)、[**WhiteOut**コマンド](WhiteOutコマンド.md)を使うか、下の例のように[**Wait**コマンド](Waitコマンド.md)を使ってウェイト処理を行ってください。**PaintString**コマンドで文字を表示するだけではウェイト処理が行われないため、環境によって表示時間が変わってしまう等の問題が発生してしまいます。
 
 **例**
-
+```sh
 #フォントサイズ・種類を変更
-
 Font 24pt Ｐゴシック Regular
-
 #フェードインしながら１秒間かけてメッセージを表示
-
 #ウェイトの同期処理を開始
-
 Wait Start
-
 For i = 1 To 20
-
 #色を変更
-
 Font RGB(4 \* i, 8 \* i, 12.5 \* i)
-
 #メッセージを表示
-
 PaintString - 200 "A long time ago in a galaxy far,"
-
 PaintString "far away ...."
-
 #画面を更新
-
 Refresh
-
 #ウェイト処理
-
 Wait Until (0.5 \* i)
-
 Next
-
 #デフォルトのフォントに戻しておく
-
 Font
+```
 
 **例２**
 

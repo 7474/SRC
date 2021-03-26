@@ -36,101 +36,68 @@
 **Wait**コマンドの待ち処理の副作用として画面更新が行われ、[**Refresh**コマンド](Refreshコマンド.md)を用いなくても直前の[**PaintString**コマンド](PaintStringコマンド.md)実行まで([**PaintPicture**コマンド](PaintPictureコマンド.md)実行までではありません！)の描画内容が画面に表示されます。これを利用すると通常は段階的にメッセージを表示し、マウスの右ボタンが押されている時には一度にメッセージを表示する、といった処理が可能です(例３)。用途に応じて使い分けるといいでしょう。
 
 **例１**
-
+```sh
 #一秒待つ
-
 Wait 10
+```
 
 **例２**
-
+```sh
 #MIDIファイルDream Goes By.midの演奏を開始
-
 StartBGM Dream Goes By.mid
 
 #同期処理を開始
-
 Wait Start
 
 #10秒経過時まで待つ
-
 Wait Until 100
 
 #フォントサイズを22ptにして文字列「キャスト」を画面中央に表示
-
 Font 22pt
-
 PaintString - - キャスト
-
 Font
 
 #画面を更新
-
 Refresh
 
 #17.6秒経過時まで待つ
-
 Wait Until 176
 
 #さくらの絵とメッセージを表示
-
 PaintPicture ShinguSakura.bmp ((32 \* 15 - 128) \ 2 + 100) 100 128 128
-
 PaintString 新宮さくら 50 100
-
 Font 14pt
-
 PaintString 横井祥子 50 130
-
 Font
 
 #画面を更新
-
 Refresh
+```
 
 **例３**
-
+```sh
 プロローグ:
-
 Show
-
 Do While 1
-
 Call 文字表示 100 100 ＡＢＣＤＥＦＧ
-
 Call 文字表示 100 120 ＨＩＪＫＬＭＮ
-
 Call 文字表示 100 140 ＯＰＱＲＳＴＵ
-
 Call 文字表示 100 160 ＶＷＸＹＺ．
-
 Wait Click
-
 Cls
-
 Refresh
-
 Loop
-
 Exit
-
 メッセージ表示:
-
 Local i
-
 #表示位置を設定
-
 PaintString Args(1) Args(2) "";
-
 #メッセージを１文字づつ表示
-
 For i = 1 To Len(Args(3))
-
 PaintString Mid(Args(3),i,1);
-
 #ウェイトと同時に画面を更新
-
 Wait 0.25
-
 Next
-
 Return
+```
+

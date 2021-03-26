@@ -32,51 +32,30 @@
 *X Y* で指定された座標は描き込み先画面の左上隅が(0,0)になるように計算されますが、システム変数BaseX,BaseYの値を変更することで基準位置を変更することが可能です。詳しくは[変数](変数.md)のページを参照してください。
 
 **例**
-
+```sh
 Talk システム
-
 主人公を選んでください
-
 End
-
 #画像の描画とホットポイントの作成
-
 HotPoint     ジェイ     64  128 64 64
-
 PaintPicture ジェイ     64  128 64 64
-
 HotPoint     ミリア     160 128 64 64
-
 PaintPicture ミリア     160 128 64 64
-
 HotPoint     イアン     256 128 64 64
-
 PaintPicture イアン     256 128 64 64
-
 HotPoint     リィ       352 128 64 64
-
 PaintPicture リィ       352 128 64 64
-
 #画面の更新
-
 Refresh
-
 #ホットポイントがクリックされるのを待つ
-
 Do
-
 Wait Click
-
 Loop While (選択 = "")
-
 #画像とホットポイントを削除
-
 ClearObj
-
 ClearPicture
-
 Talk システム
-
 $(選択)が主人公に設定されました
-
 End
+```
+

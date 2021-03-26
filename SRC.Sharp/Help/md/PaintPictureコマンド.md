@@ -246,50 +246,30 @@ PaintPicture alice.bmp - - 128 128 透過 RGB(0,0,0)
 SRCは表示した画像をバッファに保存しておき、同じ画像の描画の際に流用することで描画の高速化を行っています。*dx dy* に「480 480」を指定するとこの機能を利用して画像を描画する前にあらかじめ画像を画像バッファにロードしておき、ロードが完了した時点で一度に表示する事で見た目の表示速度を向上させる事が出来ます(**例２**)。この際、*dx dy* 以外の引数は後で実際に画像表示する際の引数と一致させてください。なお、本手法は画像がバッファリングされることが前提であるため、[Src.ini](設定変更.md)のImageBufferNum及びMaxImageBufferSizeによる画像バッファのサイズ設定によっては画像がバッファリングされず、描画の高速化が行われない事があるので注意して下さい。
 
 **例**
-
+```sh
 #MIDIファイルDream Goes On.midの演奏を開始
-
 StartBGM Dream Goes On.mid
-
 #同期処理を開始
-
 Wait Start
-
 #10秒経過時まで待つ
-
 Wait Until 100
-
 #フォントサイズを22ptにして文字列「キャスト」を画面中央に表示
-
 Font 22pt
-
 PaintString - - キャスト
-
 Font
-
 #画面を更新
-
 Refresh
-
 #17.6秒経過時まで待つ
-
 Wait Until 176
-
 #さくらの絵とメッセージを表示
-
 PaintPicture ShinguSakura.bmp ((32 \* 15 - 128) \ 2 + 100) 100 128 128
-
 PaintString 新宮さくら 50 100
-
 Font 14pt
-
 PaintString 横井祥子 50 130
-
 Font
-
 #画面を更新
-
 Refresh
+```
 
 **例２**
 

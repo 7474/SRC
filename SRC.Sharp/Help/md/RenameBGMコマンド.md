@@ -46,5 +46,7 @@ SRCでは起動時や味方フェイズ開始時など、いくつかの場面�
 **RenameBGMコマンドによる設定はセーブデータに記録され、RenameBGMコマンドを実行した後のステージにも継続して使用されます。**
 
 **例**
+```sh
+```
 
 **RenameBGM Intermission intermission2.mid**

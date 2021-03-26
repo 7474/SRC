@@ -20,5 +20,7 @@
 (SRC Ver.1.6までのClearMindコマンドに相当するコマンドです。)
 
 **例**
-
+```sh
 ClearSpecialPower ジェイ 必中
+```
+

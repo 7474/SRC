@@ -20,7 +20,8 @@
 存在しないフォルダにファイルをコピーすることは出来ません。新規のフォルダにファイルをコピーする場合はあらかじめ[CreateFolderコマンド](CreateFolderコマンド.md)でフォルダを作成してください。
 
 **例**
-
+```sh
 #インターミッションのＢＧＭを変更
-
 CopyFile Midi\テーマ曲後編.mid Midi\Intermission.mid
+```
+

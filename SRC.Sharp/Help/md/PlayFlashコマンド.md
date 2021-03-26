@@ -38,9 +38,9 @@ Flashファイルの「GetURL」アクションにおいて、URLに「*FSComman
 SRC側で処理を実行している間、Flashファイルの再生は一時停止されます。
 
 **例**
-
+```sh
 #シナリオフォルダに置いてある「Opening.swf」を
-
 #幅240・高さ240で画面中央に再生。
-
 PlayFlash Opening.swf - - 240 240
+```
+

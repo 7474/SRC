@@ -36,49 +36,29 @@ UpVarコマンドは同じサブルーチン内で複数回実行可能です。
 UpVarコマンドを実行して上の階層のサブルーチンの引数を参照可能にした際にその階層のサブルーチンでもUpVarコマンドが実行されていた場合、UpVarコマンドの効果は累計されます。例えばサブルーチン１からサブルーチン２を呼び出し、サブルーチン２からサブルーチン３を呼び出した際にサブルーチン２、３においてそれぞれUpVarコマンドが１回ずつ実行されていたとすると、サブルーチン３からはサブルーチン１～３の引数全てが参照できるようになります。
 
 **例**
-
+```sh
 サブルーチンＡ:
-
 Local wname
-
 #引数からWAVファイル名を検索
-
 wname = GetWavFromArgs()
-
 #WAVファイル名が指定されていればそれを再生
-
 If wname &lt;&gt; "" Then
-
 PlaySound wname
-
 EndIf
-
 #サブルーチンＢを呼び出す
-
 Call サブルーチンＢ
-
 Return
-
 #GetWavFromArgsを実行したサブルーチンの引数からWAVファイル名を検索
-
 GetWavFromArgs:
-
 Local i
-
 #GetWavFromArgsを実行したサブルーチンの引数への参照を可能にする
-
 UpVar
-
 #引数の中から末尾が「.wav」になっている引数を探す
-
 For i = 1 To ArgNum
-
 If LCase(Right(Args(i),4)) = ".wav" Then
-
 Return Args(i)
-
 EndIf
-
 Next
-
 Return
+```
+

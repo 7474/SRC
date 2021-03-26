@@ -80,31 +80,20 @@ RGB関数を使えばＲＧＢ値からＲＧＢ16進を計算することがで
 **Font**コマンドで設定したフォントに関する情報はFont関数で参照することが出来ます。
 
 **例**
-
+```sh
 #フォントサイズ・種類を変更
-
 Font 24pt Ｐゴシック Regular
-
 #フェードインしながらメッセージを表示
-
 For i = 1 To 20
-
 #色を変更
-
 Font RGB(4 \* i, 8 \* i, 12.5 \* i)
-
 #メッセージを表示
-
 PaintString - 200 A long time ago in a galaxy far,
-
 PaintString far away ....
-
 #画面を更新
-
 Refresh
-
 Next
-
 #デフォルトのフォントに戻しておく
-
 Font
+```
+

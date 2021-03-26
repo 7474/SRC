@@ -14,5 +14,7 @@ BGMを固定し、ターン開始時や戦闘開始時に変わらないよう�
 BGMの固定は[**StartBGM**コマンド](StartBGMコマンド.md)、[**StopBGM**コマンド](StopBGMコマンド.md)、[**PlayMIDI**コマンド](PlayMIDIコマンド.md)のいずれかを使うか、インターミッションに移行した時に解除されます。
 
 **例**
-
+```sh
 KeepBGM
+```
+

@@ -22,5 +22,7 @@
 (SRC Ver.1.6までのClearAbilityコマンドに相当するコマンドです。)
 
 **例**
-
+```sh
 ClearSkill カイン 悟り
+```
+

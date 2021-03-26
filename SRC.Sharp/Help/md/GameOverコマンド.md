@@ -20,17 +20,13 @@ Src.exeのあるフォルダ\Data\System\GameOver.eve
 GameOver.eveを自作する場合にはGameOver.eve終了時に**Quit**コマンドを実行するよう注意してください。
 
 **例**
-
+```sh
 #味方ユニットの全滅時
-
 全滅 味方:
-
 Talk ライト
-
 くっ、敵の戦力がこれほどとは……
-
 End
-
 #ゲームオーバー
-
 GameOver
+```
+

@@ -38,19 +38,14 @@
 **FillStyle**コマンドで行った設定はイベント終了時に自動的に解除されます。
 
 **例**
-
+```sh
 #色を変えながらランダムに円を描画
-
 FillStyle 塗りつぶし
-
 #色を変えながらランダムに円を描画
-
 For i = 1 To 100
-
 Color RGB(i, 0, 255 - i)
-
 FillColor RGB(i, 0, 255 - i)
-
 Circle (80 + Random(400)) (80 + Random(400)) 25
-
 Next
+```
+
