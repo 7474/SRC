@@ -1,3 +1,3 @@
 # SRC#Help
 
--> [Index](./index.md)
+-> [Index](./md/index.md)
