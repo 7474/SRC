@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using Microsoft.Extensions.Logging;
 using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Lib;
@@ -58,8 +59,9 @@ namespace SRCCore.CmdDatas
                 Event.DisplayEventErrorMessage(ex?.EventData.ID ?? EventData.ID, ex.Message);
                 return -1;
             }
-            catch
+            catch(Exception ex)
             {
+                SRC.Log.LogError(ex.Message, ex);
                 // TODO Impl
                 if (Strings.LCase(GeneralLib.ListIndex(EventData.Data, 1)) == "talk")
                 {

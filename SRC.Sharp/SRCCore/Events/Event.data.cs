@@ -1,4 +1,5 @@
-﻿using SRCCore.CmdDatas;
+﻿using Microsoft.Extensions.Logging;
+using SRCCore.CmdDatas;
 using SRCCore.CmdDatas.Commands;
 using SRCCore.Expressions;
 using SRCCore.Lib;
@@ -1300,8 +1301,9 @@ namespace SRCCore.Events
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                SRC.Log.LogError(ex.Message, ex);
                 // XXX
                 string argmsg1 = fname + "のロード中にエラーが発生しました" + Constants.vbCr + SrcFormatter.Format(lineNumber) + "行目のイベントデータが不正です";
                 GUI.ErrorMessage(argmsg1);

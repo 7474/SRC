@@ -451,14 +451,7 @@ namespace SRCCore.Events
         // ラベルが定義されているか
         public bool IsLabelDefined(string Index)
         {
-            try
-            {
-                return colEventLabelList.ContainsKey(Index);
-            }
-            catch
-            {
-                return false;
-            }
+            return colEventLabelList.ContainsKey(Index);
         }
 
         // ラベルを追加
@@ -613,15 +606,8 @@ namespace SRCCore.Events
         // イベントラベルを探す
         public int FindEventLabel(string lname)
         {
-            try
-            {
-                return colEventLabelList[lname]?.EventDataId ?? -1;
-            }
-            catch
-            {
-                // オフセットは1->0になっている
-                return -1;
-            }
+            // オフセットは1->0になっている
+            return colEventLabelList[lname]?.EventDataId ?? -1;
         }
 
         // 通常ラベルを探す
@@ -639,29 +625,15 @@ namespace SRCCore.Events
         // シナリオ側の通常ラベルを探す
         private int FindNormalLabel0(string lname)
         {
-            try
-            {
-                return colNormalLabelList[lname]?.EventDataId ?? -1;
-            }
-            catch
-            {
-                // オフセットは1->0になっている
-                return -1;
-            }
+            // オフセットは1->0になっている
+            return colNormalLabelList[lname]?.EventDataId ?? -1;
         }
 
         // システム側の通常ラベルを探す
         private int FindSysNormalLabel(string lname)
         {
-            try
-            {
-                return colSysNormalLabelList[lname]?.EventDataId ?? -1;
-            }
-            catch
-            {
-                // オフセットは1->0になっている
-                return -1;
-            }
+            // オフセットは1->0になっている
+            return colSysNormalLabelList[lname]?.EventDataId ?? -1;
         }
     }
 }
