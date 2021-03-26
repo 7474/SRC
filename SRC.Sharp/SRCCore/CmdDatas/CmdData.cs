@@ -5,6 +5,7 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Lib;
+using SRCCore.Pilots;
 using SRCCore.Units;
 using SRCCore.VB;
 using System;
@@ -178,6 +179,19 @@ namespace SRCCore.CmdDatas
             }
 
             return GetArgAsUnitRet;
+        }
+
+        // idx番目の引数が示すパイロットを返す
+        public Pilot GetArgAsPilot(int idx)
+        {
+            string pname = GetArgAsString(idx);
+
+            if (!SRC.PList.IsDefined(pname))
+            {
+                throw new EventErrorException(this, "「" + pname + "」というパイロットが見つかりません");
+            }
+
+            return SRC.PList.Item(pname);
         }
 
         private void ParseArgs(string list)

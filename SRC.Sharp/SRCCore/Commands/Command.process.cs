@@ -2,8 +2,10 @@
 using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.Maps;
+using SRCCore.Models;
 using SRCCore.Units;
 using SRCCore.VB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -1554,57 +1556,24 @@ namespace SRCCore.Commands
                         }
                     }
 
-                    //// 分離コマンド
-                    //string argfname22 = "分離";
-                    //object argIndex66 = "分離";
-                    //object argIndex67 = "形態固定";
-                    //object argIndex68 = "機体固定";
-                    //if (currentUnit.IsFeatureAvailable(argfname22) & !string.IsNullOrEmpty(currentUnit.FeatureName(argIndex66)) & !currentUnit.IsConditionSatisfied(argIndex67) & !currentUnit.IsConditionSatisfied(argIndex68))
-                    //{
-                    //    GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible = true;
-                    //    object argIndex64 = "分離";
-                    //    GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Caption = currentUnit.FeatureName(argIndex64);
-                    //    object argIndex65 = "分離";
-                    //    buf = currentUnit.FeatureData(argIndex65);
+                    // 分離コマンド
+                    if (currentUnit.IsFeatureAvailable("分離")
+                        && !string.IsNullOrEmpty(currentUnit.FeatureName("分離"))
+                        && !currentUnit.IsConditionSatisfied("形態固定")
+                        && !currentUnit.IsConditionSatisfied("機体固定"))
+                    {
+                        var splitForms = GeneralLib.ToL(currentUnit.FeatureData("分離")).Skip(1).ToList();
 
-                    //    // 分離形態が利用出来ない場合は分離を行わない
-                    //    var loopTo21 = GeneralLib.LLength(buf);
-                    //    for (i = 2; i <= loopTo21; i++)
-                    //    {
-                    //        bool localIsDefined2() { object argIndex1 = GeneralLib.LIndex(buf, i); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-                    //        if (!localIsDefined2())
-                    //        {
-                    //            GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible = false;
-                    //            break;
-                    //        }
-                    //    }
-
-                    //    // パイロットが足らない場合も分離を行わない
-                    //    if (GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible)
-                    //    {
-                    //        n = 0;
-                    //        var loopTo22 = GeneralLib.LLength(buf);
-                    //        for (i = 2; i <= loopTo22; i++)
-                    //        {
-                    //            Unit localItem1() { object argIndex1 = GeneralLib.LIndex(buf, i); var ret = SRC.UList.Item(argIndex1); return ret; }
-
-                    //            {
-                    //                var withBlock11 = localItem1().Data;
-                    //                string argfname21 = "召喚ユニット";
-                    //                if (!withBlock11.IsFeatureAvailable(argfname21))
-                    //                {
-                    //                    n = (n + Math.Abs(withBlock11.PilotNum));
-                    //                }
-                    //            }
-                    //        }
-
-                    //        if (currentUnit.CountPilot() < n)
-                    //        {
-                    //            GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible = false;
-                    //        }
-                    //    }
-                    //}
+                        // 分離形態が利用出来ない場合は分離を行わない
+                        // パイロットが足らない場合も分離を行わない
+                        if (splitForms.All(x => SRC.UList.IsDefined(x))
+                            && currentUnit.CountPilot() >= splitForms.Select(x => SRC.UList.Item(x))
+                                .Where(x => !x.IsFeatureAvailable("召喚ユニット"))
+                                .Count())
+                        {
+                            unitCommands.Add(new UiCommand(SplitCmdID, currentUnit.FeatureName("分離")));
+                        }
+                    }
 
                     //string argfname23 = "パーツ分離";
                     //object argIndex70 = "パーツ分離";
@@ -1615,98 +1584,17 @@ namespace SRCCore.Commands
                     //    GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible = true;
                     //}
 
-                    //// 合体コマンド
-                    //string argfname25 = "合体";
-                    //object argIndex74 = "形態固定";
-                    //object argIndex75 = "機体固定";
-                    //if (currentUnit.IsFeatureAvailable(argfname25) & !currentUnit.IsConditionSatisfied(argIndex74) & !currentUnit.IsConditionSatisfied(argIndex75))
-                    //{
-                    //    var loopTo23 = currentUnit.CountFeature();
-                    //    for (i = 1; i <= loopTo23; i++)
-                    //    {
-                    //        // 3体以上からなる合体能力を持っているか？
-                    //        string localFeature() { object argIndex1 = i; var ret = currentUnit.Feature(argIndex1); return ret; }
-
-                    //        string localFeatureName() { object argIndex1 = i; var ret = currentUnit.FeatureName(argIndex1); return ret; }
-
-                    //        string localFeatureData10() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                    //        int localLLength2() { string arglist = hsc81ad842db7849b2b1585eed09bb5348(); var ret = GeneralLib.LLength(arglist); return ret; }
-
-                    //        if (localFeature() == "合体" & !string.IsNullOrEmpty(localFeatureName()) & localLLength2() > 3)
-                    //        {
-                    //            n = 0;
-                    //            // パートナーは隣接しているか？
-                    //            string localFeatureData6() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                    //            string arglist17 = localFeatureData6();
-                    //            var loopTo24 = GeneralLib.LLength(arglist17);
-                    //            for (j = 3; j <= loopTo24; j++)
-                    //            {
-                    //                string localFeatureData5() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                    //                string localLIndex16() { string arglist = hsd2010d4d78e3489683c8d110139f0dc7(); var ret = GeneralLib.LIndex(arglist, j); return ret; }
-
-                    //                object argIndex71 = localLIndex16();
-                    //                u = SRC.UList.Item(argIndex71);
-                    //                if (u is null)
-                    //                {
-                    //                    break;
-                    //                }
-
-                    //                if (!u.IsOperational())
-                    //                {
-                    //                    break;
-                    //                }
-
-                    //                string argfname24 = "合体制限";
-                    //                if (u.Status_Renamed != "出撃" & u.CurrentForm().IsFeatureAvailable(argfname24))
-                    //                {
-                    //                    break;
-                    //                }
-
-                    //                if (Math.Abs((currentUnit.x - u.CurrentForm().x)) + Math.Abs((currentUnit.y - u.CurrentForm().y)) > 2)
-                    //                {
-                    //                    break;
-                    //                }
-
-                    //                n = (n + 1);
-                    //            }
-
-                    //            // 合体先のユニットが作成され、かつ合体可能な状態にあるか？
-                    //            string localFeatureData7() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                    //            string arglist18 = localFeatureData7();
-                    //            uname = GeneralLib.LIndex(arglist18, 2);
-                    //            object argIndex72 = uname;
-                    //            u = SRC.UList.Item(argIndex72);
-                    //            object argIndex73 = "行動不能";
-                    //            if (u is null)
-                    //            {
-                    //                n = 0;
-                    //            }
-                    //            else if (u.IsConditionSatisfied(argIndex73))
-                    //            {
-                    //                n = 0;
-                    //            }
-
-                    //            // すべての条件を満たしている場合
-                    //            string localFeatureData9() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                    //            int localLLength1() { string arglist = hs7cff35930ba14e62b7ee40e2d0172e97(); var ret = GeneralLib.LLength(arglist); return ret; }
-
-                    //            if (n == localLLength1() - 2)
-                    //            {
-                    //                GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Visible = true;
-                    //                string localFeatureData8() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                    //                string arglist19 = localFeatureData8();
-                    //                GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Caption = GeneralLib.LIndex(arglist19, 1);
-                    //                break;
-                    //            }
-                    //        }
-                    //    }
-                    //}
+                    // 合体コマンド
+                    if (currentUnit.IsFeatureAvailable("合体")
+                        && !currentUnit.IsConditionSatisfied("形態固定")
+                        && !currentUnit.IsConditionSatisfied("機体固定"))
+                    {
+                        var combines = currentUnit.CombineFeatures(SRC);
+                        foreach (var fd in combines)
+                        {
+                            unitCommands.Add(new UiCommand(CombineCmdID, fd.CombineName));
+                        }
+                    }
 
                     //object argIndex88 = "ノーマルモード付加";
                     //if (!currentUnit.IsConditionSatisfied(argIndex88))
@@ -1980,6 +1868,7 @@ namespace SRCCore.Commands
             //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY - 6f);
             //}
         }
+
 
         private void ProceedAfterMoveCommandSelect(
             bool by_cancel = false,

@@ -526,7 +526,7 @@ namespace SRCCore
                 {
                     foreach (Unit currentUnit in UList.Items)
                     {
-                        if (currentUnit.Party == "味方" & currentUnit.Status == "出撃" & currentUnit.Action > 0)
+                        if (currentUnit.Party == "味方" && currentUnit.Status == "出撃" && currentUnit.Action > 0)
                         {
                             if (currentUnit.IsFeatureAvailable("母艦"))
                             {

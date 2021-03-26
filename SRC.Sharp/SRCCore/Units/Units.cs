@@ -50,318 +50,202 @@ namespace SRCCore.Units
 
             colUnits.Add(new_unit, new_unit.ID);
 
-            //// これ以降は本体以外の形態の追加
-            //other_forms = new string[1];
+            // これ以降は本体以外の形態の追加
+            var other_forms = new List<string>();
 
-            //// 変形先の形態
-            //object argIndex2 = "変形";
-            //list = ud.FeatureData(argIndex2);
-            //var loopTo = GeneralLib.LLength(list);
-            //for (i = 2; i <= loopTo; i++)
-            //{
-            //    uname2 = GeneralLib.LIndex(list, i);
-            //    bool localIsDefined1() { object argIndex1 = uname2; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
+            // 変形先の形態
+            {
+                var fd = ud.Feature("変形");
+                if (fd != null)
+                {
+                    foreach (var uname2 in fd.DataL.Skip(1))
+                    {
+                        if (!SRC.UDList.IsDefined(uname2))
+                        {
+                            GUI.ErrorMessage("ユニットデータ「" + uname + "」の変形先形態「" + uname2 + "」が見つかりません");
+                            return null;
+                        }
+                        other_forms.Add(uname2);
+                    }
+                }
+            }
 
-            //    if (!localIsDefined1())
-            //    {
-            //        string argmsg = "ユニットデータ「" + uname + "」の変形先形態「" + uname2 + "」が見つかりません";
-            //        GUI.ErrorMessage(argmsg);
-            //        // UPGRADE_NOTE: オブジェクト Add をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        AddRet = null;
-            //        return AddRet;
-            //    }
+            // ハイパーモード先の形態
+            if (ud.IsFeatureAvailable("ハイパーモード"))
+            {
+                var fd = ud.Feature("ハイパーモード");
+                var uname2 = fd.DataL.Skip(1).FirstOrDefault();
+                if (string.IsNullOrEmpty(uname2))
+                {
+                    GUI.ErrorMessage("ユニットデータ「" + uname + "」のハイパーモード先形態が指定されていません");
+                    return null;
+                }
+                else if (!SRC.UDList.IsDefined(uname2))
+                {
+                    GUI.ErrorMessage("ユニットデータ「" + uname + "」のハイパーモード先形態「" + uname2 + "」が見つかりません");
+                    return null;
+                }
+                other_forms.Add(uname2);
+            }
 
-            //    Array.Resize(other_forms, Information.UBound(other_forms) + 1 + 1);
-            //    other_forms[Information.UBound(other_forms)] = uname2;
-            //}
+            // ノーマルモード先の形態
+            if (ud.IsFeatureAvailable("ノーマルモード"))
+            {
+                var fd = ud.Feature("ノーマルモード");
+                var uname2 = fd.DataL.Skip(1).FirstOrDefault();
+                if (string.IsNullOrEmpty(uname2))
+                {
+                    GUI.ErrorMessage("ユニットデータ「" + uname + "」のノーマルモード先形態が指定されていません");
+                    return null;
+                }
+                else if (!SRC.UDList.IsDefined(uname2))
+                {
+                    GUI.ErrorMessage("ユニットデータ「" + uname + "」のノーマルモード先形態「" + uname2 + "」が見つかりません");
+                    return null;
+                }
+                other_forms.Add(uname2);
+            }
 
-            //// ハイパーモード先の形態
-            //string argfname = "ハイパーモード";
-            //if (ud.IsFeatureAvailable(argfname))
-            //{
-            //    object argIndex3 = "ハイパーモード";
-            //    list = ud.FeatureData(argIndex3);
-            //    uname2 = GeneralLib.LIndex(list, 2);
-            //    bool localIsDefined2() { object argIndex1 = uname2; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
+            // パーツ分離先の形態
+            if (ud.IsFeatureAvailable("パーツ分離"))
+            {
+                var fd = ud.Feature("パーツ分離");
+                var uname2 = fd.DataL.Skip(1).FirstOrDefault();
+                if (string.IsNullOrEmpty(uname2))
+                {
+                    GUI.ErrorMessage("ユニットデータ「" + uname + "」のパーツ分離先形態が指定されていません");
+                    return null;
+                }
+                else if (!SRC.UDList.IsDefined(uname2))
+                {
+                    GUI.ErrorMessage("ユニットデータ「" + uname + "」のパーツ分離先形態「" + uname2 + "」が見つかりません");
+                    return null;
+                }
+                other_forms.Add(uname2);
+            }
 
-            //    if (!localIsDefined2())
-            //    {
-            //        if (string.IsNullOrEmpty(uname))
-            //        {
-            //            string argmsg1 = "ユニットデータ「" + uname + "」のハイパーモード先形態が指定されていません";
-            //            GUI.ErrorMessage(argmsg1);
-            //        }
-            //        else
-            //        {
-            //            string argmsg2 = "ユニットデータ「" + uname + "」のハイパーモード先形態「" + uname2 + "」が見つかりません";
-            //            GUI.ErrorMessage(argmsg2);
-            //        }
-            //        // UPGRADE_NOTE: オブジェクト Add をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        AddRet = null;
-            //        return AddRet;
-            //    }
+            // パーツ合体先の形態
+            if (ud.IsFeatureAvailable("パーツ合体"))
+            {
+                var fd = ud.Feature("パーツ合体");
+                var uname2 = fd.DataL.Skip(1).FirstOrDefault();
+                if (string.IsNullOrEmpty(uname2))
+                {
+                    GUI.ErrorMessage("ユニットデータ「" + uname + "」のパーツ合体先形態が指定されていません");
+                    return null;
+                }
+                else if (!SRC.UDList.IsDefined(uname2))
+                {
+                    GUI.ErrorMessage("ユニットデータ「" + uname + "」のパーツ合体先形態「" + uname2 + "」が見つかりません");
+                    return null;
+                }
+                other_forms.Add(uname2);
+            }
 
-            //    Array.Resize(other_forms, Information.UBound(other_forms) + 1 + 1);
-            //    other_forms[Information.UBound(other_forms)] = uname2;
-            //}
+            // 変形技の変形先の形態
+            foreach (var fd in ud.Features.Where(x => x.Name == "変形技"))
+            {
+                var uname2 = fd.DataL.Skip(1).FirstOrDefault();
+                if (string.IsNullOrEmpty(uname2))
+                {
+                    GUI.ErrorMessage("ユニットデータ「" + uname + "」の変形技使用後形態が指定されていません");
+                    return null;
+                }
+                else if (!SRC.UDList.IsDefined(uname2))
+                {
+                    GUI.ErrorMessage("ユニットデータ「" + uname + "」の変形技使用後形態「" + uname2 + "」が見つかりません");
+                    return null;
+                }
+                other_forms.Add(uname2);
+            }
 
-            //// ノーマルモード先の形態
-            //string argfname1 = "ノーマルモード";
-            //if (ud.IsFeatureAvailable(argfname1))
-            //{
-            //    object argIndex4 = "ノーマルモード";
-            //    list = ud.FeatureData(argIndex4);
-            //    uname2 = GeneralLib.LIndex(list, 1);
-            //    bool localIsDefined3() { object argIndex1 = uname2; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
+            // 換装先の形態
+            {
+                var fd = ud.Feature("換装");
+                if (fd != null)
+                {
+                    foreach (var uname2 in fd.DataL.Skip(1))
+                    {
+                        if (!SRC.UDList.IsDefined(uname2))
+                        {
+                            GUI.ErrorMessage("ユニットデータ「" + uname + "」の換装先形態「" + uname2 + "」が見つかりません");
+                            return null;
+                        }
+                        other_forms.Add(uname2);
+                    }
+                }
+            }
 
-            //    if (!localIsDefined3())
-            //    {
-            //        if (string.IsNullOrEmpty(uname2))
-            //        {
-            //            string argmsg3 = "ユニットデータ「" + uname + "」のノーマルモード先形態が指定されていません";
-            //            GUI.ErrorMessage(argmsg3);
-            //        }
-            //        else
-            //        {
-            //            string argmsg4 = "ユニットデータ「" + uname + "」のノーマルモード先形態「" + uname2 + "」が見つかりません";
-            //            GUI.ErrorMessage(argmsg4);
-            //        }
-            //        // UPGRADE_NOTE: オブジェクト Add をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        AddRet = null;
-            //        return AddRet;
-            //    }
+            // 他形態で指定された形態
+            {
+                var fd = ud.Feature("他形態");
+                if (fd != null)
+                {
+                    foreach (var uname2 in fd.DataL.Skip(1))
+                    {
+                        if (!SRC.UDList.IsDefined(uname2))
+                        {
+                            GUI.ErrorMessage("ユニットデータ「" + uname + "」の他形態「" + uname2 + "」が見つかりません");
+                            return null;
+                        }
+                        other_forms.Add(uname2);
+                    }
+                }
+            }
 
-            //    Array.Resize(other_forms, Information.UBound(other_forms) + 1 + 1);
-            //    other_forms[Information.UBound(other_forms)] = uname2;
-            //}
+            // 形態を追加
+            foreach (var other_form in other_forms)
+            {
+                if (!new_unit.IsOtherFormDefined(other_form))
+                {
+                    var new_form = new Unit(SRC);
+                    new_form.Name = other_form;
+                    new_form.Rank = urank;
+                    new_form.Party = uparty;
+                    new_form.ID = CreateID(ud.Name);
+                    new_form.FullRecover();
+                    new_form.Status = "他形態";
 
-            //// パーツ分離先の形態
-            //string argfname2 = "パーツ分離";
-            //if (ud.IsFeatureAvailable(argfname2))
-            //{
-            //    object argIndex5 = "パーツ分離";
-            //    string arglist = ud.FeatureData(argIndex5);
-            //    uname2 = GeneralLib.LIndex(arglist, 2);
-            //    bool localIsDefined4() { object argIndex1 = uname2; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
+                    colUnits.Add(new_form, new_form.ID);
+                    new_unit.AddOtherForm(new_form);
+                }
+            }
 
-            //    if (!localIsDefined4())
-            //    {
-            //        if (string.IsNullOrEmpty(uname2))
-            //        {
-            //            string argmsg5 = "ユニットデータ「" + uname + "」のパーツ分離先形態が指定されていません";
-            //            GUI.ErrorMessage(argmsg5);
-            //        }
-            //        else
-            //        {
-            //            string argmsg6 = "ユニットデータ「" + uname + "」のパーツ分離先形態「" + uname2 + "」が見つかりません";
-            //            GUI.ErrorMessage(argmsg6);
-            //        }
-            //        // UPGRADE_NOTE: オブジェクト Add をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        AddRet = null;
-            //        return AddRet;
-            //    }
+            // 追加した形態に対して自分自身を追加しておく
+            foreach (var of1 in new_unit.OtherForms)
+            {
+                of1.AddOtherForm(new_unit);
 
-            //    Array.Resize(other_forms, Information.UBound(other_forms) + 1 + 1);
-            //    other_forms[Information.UBound(other_forms)] = uname2;
-            //}
+                foreach (var of2 in new_unit.OtherForms.Where(x => x != of1))
+                {
+                    of1.AddOtherForm(of2);
+                }
+            }
 
-            //// パーツ合体先の形態
-            //string argfname3 = "パーツ合体";
-            //if (ud.IsFeatureAvailable(argfname3))
-            //{
-            //    object argIndex6 = "パーツ合体";
-            //    uname2 = ud.FeatureData(argIndex6);
-            //    bool localIsDefined5() { object argIndex1 = uname2; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
+            // 既に合体先 or 分離先のユニットが作成されていれば自分は他形態
+            foreach (var fd in ud.Features)
+            {
+                if (fd.Name == "合体")
+                {
+                    if (SRC.UList.IsDefined(fd.DataL.Skip(1).FirstOrDefault() ?? ""))
+                    {
+                        new_unit.Status = "他形態";
+                        break;
+                    }
+                }
 
-            //    if (!localIsDefined5())
-            //    {
-            //        if (string.IsNullOrEmpty(uname))
-            //        {
-            //            string argmsg7 = "ユニットデータ「" + uname + "」のパーツ合体先形態が指定されていません";
-            //            GUI.ErrorMessage(argmsg7);
-            //        }
-            //        else
-            //        {
-            //            string argmsg8 = "ユニットデータ「" + uname + "」のパーツ合体先形態「" + uname2 + "」が見つかりません";
-            //            GUI.ErrorMessage(argmsg8);
-            //        }
-            //        // UPGRADE_NOTE: オブジェクト Add をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        AddRet = null;
-            //        return AddRet;
-            //    }
-
-            //    Array.Resize(other_forms, Information.UBound(other_forms) + 1 + 1);
-            //    other_forms[Information.UBound(other_forms)] = uname2;
-            //}
-
-            //// 変形技の変形先の形態
-            //string argfname4 = "変形技";
-            //if (ud.IsFeatureAvailable(argfname4))
-            //{
-            //    var loopTo1 = ud.CountFeature();
-            //    for (i = 1; i <= loopTo1; i++)
-            //    {
-            //        object argIndex7 = i;
-            //        if (ud.Feature(argIndex7) == "変形技")
-            //        {
-            //            string localFeatureData() { object argIndex1 = i; var ret = ud.FeatureData(argIndex1); return ret; }
-
-            //            string arglist1 = localFeatureData();
-            //            uname2 = GeneralLib.LIndex(arglist1, 2);
-            //            bool localIsDefined6() { object argIndex1 = uname2; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
-
-            //            if (!localIsDefined6())
-            //            {
-            //                if (string.IsNullOrEmpty(uname2))
-            //                {
-            //                    string argmsg9 = "ユニットデータ「" + uname + "」の変形技使用後形態が指定されていません";
-            //                    GUI.ErrorMessage(argmsg9);
-            //                }
-            //                else
-            //                {
-            //                    string argmsg10 = "ユニットデータ「" + uname + "」の変形技使用後形態「" + uname2 + "」が見つかりません";
-            //                    GUI.ErrorMessage(argmsg10);
-            //                }
-            //                // UPGRADE_NOTE: オブジェクト Add をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //                AddRet = null;
-            //                return AddRet;
-            //            }
-
-            //            Array.Resize(other_forms, Information.UBound(other_forms) + 1 + 1);
-            //            other_forms[Information.UBound(other_forms)] = uname2;
-            //        }
-            //    }
-            //}
-
-            //// 換装先の形態
-            //object argIndex8 = "換装";
-            //list = ud.FeatureData(argIndex8);
-            //var loopTo2 = GeneralLib.LLength(list);
-            //for (i = 1; i <= loopTo2; i++)
-            //{
-            //    uname2 = GeneralLib.LIndex(list, i);
-            //    bool localIsDefined7() { object argIndex1 = uname2; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
-
-            //    if (!localIsDefined7())
-            //    {
-            //        string argmsg11 = "ユニットデータ「" + uname + "」の換装先形態「" + uname2 + "」が見つかりません";
-            //        GUI.ErrorMessage(argmsg11);
-            //        // UPGRADE_NOTE: オブジェクト Add をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        AddRet = null;
-            //        return AddRet;
-            //    }
-
-            //    Array.Resize(other_forms, Information.UBound(other_forms) + 1 + 1);
-            //    other_forms[Information.UBound(other_forms)] = uname2;
-            //}
-
-            //// 他形態で指定された形態
-            //object argIndex9 = "他形態";
-            //list = ud.FeatureData(argIndex9);
-            //var loopTo3 = GeneralLib.LLength(list);
-            //for (i = 1; i <= loopTo3; i++)
-            //{
-            //    uname2 = GeneralLib.LIndex(list, i);
-            //    bool localIsDefined8() { object argIndex1 = uname2; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
-
-            //    if (!localIsDefined8())
-            //    {
-            //        string argmsg12 = "ユニットデータ「" + uname + "」の他形態「" + uname2 + "」が見つかりません";
-            //        GUI.ErrorMessage(argmsg12);
-            //        // UPGRADE_NOTE: オブジェクト Add をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        AddRet = null;
-            //        return AddRet;
-            //    }
-
-            //    Array.Resize(other_forms, Information.UBound(other_forms) + 1 + 1);
-            //    other_forms[Information.UBound(other_forms)] = uname2;
-            //}
-
-            //// 形態を追加
-            //var loopTo4 = Information.UBound(other_forms);
-            //for (i = 1; i <= loopTo4; i++)
-            //{
-            //    if (!new_unit.IsOtherFormDefined(other_forms[i]))
-            //    {
-            //        new_form = new Unit();
-            //        {
-            //            var withBlock1 = new_form;
-            //            withBlock1.Name = other_forms[i];
-            //            withBlock1.Rank = urank;
-            //            withBlock1.Party = uparty;
-            //            withBlock1.ID = CreateID(ud.Name);
-            //            withBlock1.FullRecover();
-            //            withBlock1.Status_Renamed = "他形態";
-            //        }
-
-            //        colUnits.Add(new_form, new_form.ID);
-            //        new_unit.AddOtherForm(new_form);
-            //    }
-            //}
-
-            //// 追加した形態に対して自分自身を追加しておく
-            //var loopTo5 = new_unit.CountOtherForm();
-            //for (i = 1; i <= loopTo5; i++)
-            //{
-            //    Unit localOtherForm() { object argIndex1 = i; var ret = new_unit.OtherForm(argIndex1); return ret; }
-
-            //    localOtherForm().AddOtherForm(new_unit);
-            //    var loopTo6 = new_unit.CountOtherForm();
-            //    for (j = 1; j <= loopTo6; j++)
-            //    {
-            //        if (!(i == j))
-            //        {
-            //            Unit localOtherForm1() { object argIndex1 = i; var ret = new_unit.OtherForm(argIndex1); return ret; }
-
-            //            Unit localOtherForm2() { object argIndex1 = j; var ret = new_unit.OtherForm(argIndex1); return ret; }
-
-            //            var argu = localOtherForm2();
-            //            localOtherForm1().AddOtherForm(argu);
-            //        }
-            //    }
-            //}
-
-            //// 既に合体先 or 分離先のユニットが作成されていれば自分は他形態
-            //var loopTo7 = ud.CountFeature();
-            //for (i = 1; i <= loopTo7; i++)
-            //{
-            //    object argIndex11 = i;
-            //    if (ud.Feature(argIndex11) == "合体")
-            //    {
-            //        string localFeatureData1() { object argIndex1 = i; var ret = ud.FeatureData(argIndex1); return ret; }
-
-            //        string localLIndex() { string arglist = hsac6574ea324b48e3a31bae276fa1258d(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //        object argIndex10 = localLIndex();
-            //        if (SRC.UList.IsDefined(argIndex10))
-            //        {
-            //            new_unit.Status_Renamed = "他形態";
-            //            return AddRet;
-            //        }
-            //    }
-
-            //    object argIndex13 = i;
-            //    if (ud.Feature(argIndex13) == "分離")
-            //    {
-            //        string localFeatureData3() { object argIndex1 = i; var ret = ud.FeatureData(argIndex1); return ret; }
-
-            //        string arglist2 = localFeatureData3();
-            //        var loopTo8 = GeneralLib.LLength(arglist2);
-            //        for (j = 2; j <= loopTo8; j++)
-            //        {
-            //            string localFeatureData2() { object argIndex1 = i; var ret = ud.FeatureData(argIndex1); return ret; }
-
-            //            string localLIndex1() { string arglist = hs68135e533f0745c1aa8b425ec504a876(); var ret = GeneralLib.LIndex(arglist, j); return ret; }
-
-            //            object argIndex12 = localLIndex1();
-            //            if (SRC.UList.IsDefined(argIndex12))
-            //            {
-            //                new_unit.Status_Renamed = "他形態";
-            //                return AddRet;
-            //            }
-            //        }
-            //    }
-            //}
+                if (fd.Name == "分離")
+                {
+                    foreach (var ofname in fd.DataL.Skip(1))
+                    {
+                        if (SRC.UList.IsDefined(ofname))
+                        {
+                            new_unit.Status = "他形態";
+                            break;
+                        }
+                    }
+                }
+            }
 
             return new_unit;
         }

@@ -89,7 +89,7 @@ namespace SRCCore.Events
 
         // Rideコマンド用パイロット搭乗履歴
         public string LastUnitName;
-        public IList<string> LastPilotID;
+        public IList<string> LastPilotID = new List<string>();
 
         // Wait開始時刻
         public int WaitStartTime;

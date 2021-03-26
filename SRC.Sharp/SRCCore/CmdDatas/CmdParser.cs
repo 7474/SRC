@@ -470,11 +470,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "launch":
-                    //    {
-                    //        CmdName = CmdType.LaunchCmd;
-                    //        break;
-                    //    }
+                    case "launch":
+                        return new LaunchCmd(src, data);
 
                     //case "leave":
                     //    {
@@ -600,11 +597,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "pilot":
-                    //    {
-                    //        CmdName = CmdType.PilotCmd;
-                    //        break;
-                    //    }
+                    case "pilot":
+                        return new PilotCmd(src, data);
 
                     case "playmidi":
                         return new PlayMIDICmd(src, data);
@@ -753,11 +747,8 @@ namespace SRCCore.CmdDatas
                     case "restoreevent":
                         return new RestoreEventCmd(src, data);
 
-                    //case "ride":
-                    //    {
-                    //        CmdName = CmdType.RideCmd;
-                    //        break;
-                    //    }
+                    case "ride":
+                        return new RideCmd(src, data);
 
                     //case "select":
                     //    {
@@ -966,11 +957,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "unit":
-                    //    {
-                    //        CmdName = CmdType.UnitCmd;
-                    //        break;
-                    //    }
+                    case "unit":
+                        return new UnitCmd(src, data);
 
                     //case "unset":
                     //    {

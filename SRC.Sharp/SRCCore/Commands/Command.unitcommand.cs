@@ -103,17 +103,13 @@ namespace SRCCore.Commands
                     TransformCommand();
                     break;
 
-                //        case SplitCmdID: // 分離
-                //            {
-                //                SplitCommand();
-                //                break;
-                //            }
+                case SplitCmdID: // 分離
+                    SplitCommand();
+                    break;
 
-                //        case CombineCmdID: // 合体
-                //            {
-                //                CombineCommand();
-                //                break;
-                //            }
+                case CombineCmdID: // 合体
+                    CombineCommand(command);
+                    break;
 
                 //        case HyperModeCmdID: // ハイパーモード・変身解除
                 //            {
