@@ -80,16 +80,14 @@ namespace SRCCore.CmdDatas.Commands
                 throw new EventErrorException(this, "パイロットのレベルが不正です");
             }
             var plevel = Conversions.ToInteger(buf);
-            // TODO Impl
-            //if (Expression.IsOptionDefined("レベル限界突破"))
-            //{
-            //    if (plevel > 999)
-            //    {
-            //        plevel = 999;
-            //    }
-            //}
-            //else
-            if (plevel > 99)
+            if (Expression.IsOptionDefined("レベル限界突破"))
+            {
+                if (plevel > 999)
+                {
+                    plevel = 999;
+                }
+            }
+            else if (plevel > 99)
             {
                 plevel = 99;
             }
@@ -157,7 +155,7 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             u.FullRecover();
-            foreach(var of in u.OtherForms)
+            foreach (var of in u.OtherForms)
             {
                 of.FullSupply();
             }
