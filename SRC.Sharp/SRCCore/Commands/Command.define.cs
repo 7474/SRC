@@ -33,17 +33,8 @@ namespace SRCCore.Commands
         public const int FeatureListCmdID = 22;
         public const int WeaponListCmdID = 23;
         public const int AbilityListCmdID = 24;
-        public const int UnitCommand1CmdID = 25;
-        public const int UnitCommand2CmdID = 26;
-        public const int UnitCommand3CmdID = 27;
-        public const int UnitCommand4CmdID = 28;
-        public const int UnitCommand5CmdID = 29;
-        public const int UnitCommand6CmdID = 30;
-        public const int UnitCommand7CmdID = 31;
-        public const int UnitCommand8CmdID = 32;
-        public const int UnitCommand9CmdID = 33;
-        public const int UnitCommand10CmdID = 34;
-        public const int WaitCmdID = 35;
+        public const int UnitCommandCmdID = 25;
+        public const int WaitCmdID = 127;
 
         // マップコマンドのメニュー番号
         public const int EndTurnCmdID = 0;
@@ -52,16 +43,7 @@ namespace SRCCore.Commands
         public const int SearchSpecialPowerCmdID = 3;
         public const int GlobalMapCmdID = 4;
         public const int OperationObjectCmdID = 5;
-        public const int MapCommand1CmdID = 6;
-        public const int MapCommand2CmdID = 7;
-        public const int MapCommand3CmdID = 8;
-        public const int MapCommand4CmdID = 9;
-        public const int MapCommand5CmdID = 10;
-        public const int MapCommand6CmdID = 11;
-        public const int MapCommand7CmdID = 12;
-        public const int MapCommand8CmdID = 13;
-        public const int MapCommand9CmdID = 14;
-        public const int MapCommand10CmdID = 15;
+        public const int MapCommandCmdID = 6;
         public const int AutoDefenseCmdID = 16;
         public const int ConfigurationCmdID = 17;
         public const int RestartCmdID = 18;

@@ -15,11 +15,6 @@ namespace SRCCore.Commands
         // 閲覧モード
         public bool ViewMode;
 
-        // マップコマンドラベルのリスト
-        private IDictionary<int, LabelData> MapCommandLabelList = new Dictionary<int, LabelData>();
-        // ユニットコマンドラベルのリスト
-        private IDictionary<int, LabelData> UnitCommandLabelList = new Dictionary<int, LabelData>();
-
         // 現在選択されているもの
         private SelectedState SelectedState = new SelectedState();
         public Unit SelectedUnit { get => SelectedState.SelectedUnit; set { SelectedState.SelectedUnit = value; } } // ユニット

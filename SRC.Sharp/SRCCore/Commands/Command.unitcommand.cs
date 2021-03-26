@@ -39,23 +39,17 @@ namespace SRCCore.Commands
                     }
                     break;
 
-                //        case TeleportCmdID: // テレポート
-                //            {
-                //                StartTeleportCommand();
-                //                break;
-                //            }
+                case TeleportCmdID: // テレポート
+                    StartTeleportCommand();
+                    break;
 
-                //        case JumpCmdID: // ジャンプ
-                //            {
-                //                StartJumpCommand();
-                //                break;
-                //            }
+                case JumpCmdID: // ジャンプ
+                    StartJumpCommand();
+                    break;
 
-                //        case TalkCmdID: // 会話
-                //            {
-                //                StartTalkCommand();
-                //                break;
-                //            }
+                case TalkCmdID: // 会話
+                    StartTalkCommand();
+                    break;
 
                 case AttackCmdID: // 攻撃
                     if (command.Label == "攻撃")
@@ -69,35 +63,25 @@ namespace SRCCore.Commands
                     break;
 
 
-                //        case FixCmdID: // 修理
-                //            {
-                //                StartFixCommand();
-                //                break;
-                //            }
+                case FixCmdID: // 修理
+                    StartFixCommand();
+                    break;
 
-                //        case SupplyCmdID: // 補給
-                //            {
-                //                StartSupplyCommand();
-                //                break;
-                //            }
+                case SupplyCmdID: // 補給
+                    StartSupplyCommand();
+                    break;
 
-                //        case AbilityCmdID: // アビリティ
-                //            {
-                //                StartAbilityCommand();
-                //                break;
-                //            }
+                case AbilityCmdID: // アビリティ
+                    StartAbilityCommand();
+                    break;
 
-                //        case ChargeCmdID: // チャージ
-                //            {
-                //                ChargeCommand();
-                //                break;
-                //            }
+                case ChargeCmdID: // チャージ
+                    ChargeCommand();
+                    break;
 
-                //        case SpecialPowerCmdID: // 精神
-                //            {
-                //                StartSpecialPowerCommand();
-                //                break;
-                //            }
+                case SpecialPowerCmdID: // 精神
+                    StartSpecialPowerCommand();
+                    break;
 
                 case TransformCmdID: // 変形
                     TransformCommand();
@@ -111,20 +95,16 @@ namespace SRCCore.Commands
                     CombineCommand(command);
                     break;
 
-                //        case HyperModeCmdID: // ハイパーモード・変身解除
-                //            {
-                //                object argIndex1 = "ノーマルモード";
-                //                if (Strings.InStr(unit.FeatureData(argIndex1), "手動解除") > 0)
-                //                {
-                //                    CancelTransformationCommand();
-                //                }
-                //                else
-                //                {
-                //                    HyperModeCommand();
-                //                }
-
-                //                break;
-                //            }
+                case HyperModeCmdID: // ハイパーモード・変身解除
+                    if (Strings.InStr(unit.FeatureData("ノーマルモード"), "手動解除") > 0)
+                    {
+                        CancelTransformationCommand();
+                    }
+                    else
+                    {
+                        HyperModeCommand();
+                    }
+                    break;
 
                 case GroundCmdID: // 地上
                     {
@@ -231,159 +211,44 @@ namespace SRCCore.Commands
                     }
 
                 case LaunchCmdID: // 発進
+                    StartLaunchCommand();
+                    break;
+
+                case ItemCmdID: // アイテム
+                    StartAbilityCommand(true);
+                    break;
+
+                case DismissCmdID: // 召喚解除
+                    DismissCommand();
+                    break;
+
+                case OrderCmdID: // 命令/換装
+                    // XXX 何で換装と共有してるんだ？
+                    if (command.Label == "命令")
                     {
-                        StartLaunchCommand();
-                        break;
+                        StartOrderCommand();
                     }
+                    else
+                    {
+                        ExchangeFormCommand();
+                    }
+                    break;
 
-                //        case ItemCmdID: // アイテム
-                //            {
-                //                StartAbilityCommand(true);
-                //                break;
-                //            }
+                case FeatureListCmdID: // 特殊能力一覧
+                    FeatureListCommand();
+                    break;
 
-                //        case DismissCmdID: // 召喚解除
-                //            {
-                //                GUI.LockGUI();
+                case WeaponListCmdID: // 武器一覧
+                    WeaponListCommand();
+                    break;
 
-                //                // 召喚解除の使用イベント
-                //                Event.HandleEvent("使用", unit.MainPilot().ID, "召喚解除");
-                //                if (SRC.IsScenarioFinished)
-                //                {
-                //                    SRC.IsScenarioFinished = false;
-                //                    GUI.UnlockGUI();
-                //                    return;
-                //                }
+                case AbilityListCmdID: // アビリティ一覧
+                    AbilityListCommand();
+                    break;
 
-                //                if (SRC.IsCanceled)
-                //                {
-                //                    SRC.IsCanceled = false;
-                //                    return;
-                //                }
-
-                //                // 召喚ユニットを解放
-                //                unit.DismissServant();
-
-                //                // 召喚解除の使用後イベント
-                //                Event.HandleEvent("使用後", unit.CurrentForm().MainPilot().ID, "召喚解除");
-                //                if (SRC.IsScenarioFinished)
-                //                {
-                //                    SRC.IsScenarioFinished = false;
-                //                }
-
-                //                if (SRC.IsCanceled)
-                //                {
-                //                    SRC.IsCanceled = false;
-                //                }
-
-                //                GUI.UnlockGUI();
-                //                break;
-                //            }
-
-                //        case OrderCmdID: // 命令/換装
-                //            {
-                //                if (GUI.MainForm.mnuUnitCommandItem.Item(OrderCmdID).Caption == "命令")
-                //                {
-                //                    StartOrderCommand();
-                //                }
-                //                else
-                //                {
-                //                    ExchangeFormCommand();
-                //                }
-
-                //                break;
-                //            }
-
-                //        case FeatureListCmdID: // 特殊能力一覧
-                //            {
-                //                FeatureListCommand();
-                //                break;
-                //            }
-
-                //        case WeaponListCmdID: // 武器一覧
-                //            {
-                //                WeaponListCommand();
-                //                break;
-                //            }
-
-                //        case AbilityListCmdID: // アビリティ一覧
-                //            {
-                //                AbilityListCommand();
-                //                break;
-                //            }
-
-                //        case var @case when UnitCommand1CmdID <= @case && @case <= UnitCommand10CmdID: // ユニットコマンド
-                //            {
-                //                GUI.LockGUI();
-
-                //                // ユニットコマンドの使用イベント
-                //                Event.HandleEvent("使用", unit.MainPilot().ID, GUI.MainForm.mnuUnitCommandItem.Item(idx).Caption);
-                //                if (SRC.IsScenarioFinished)
-                //                {
-                //                    SRC.IsScenarioFinished = false;
-                //                    GUI.UnlockGUI();
-                //                    return;
-                //                }
-
-                //                if (SRC.IsCanceled)
-                //                {
-                //                    SRC.IsCanceled = false;
-                //                    WaitCommand();
-                //                    return;
-                //                }
-
-                //                // ユニットコマンドを実行
-                //                Event.HandleEvent(UnitCommandLabelList[idx - UnitCommand1CmdID + 1]);
-                //                if (SRC.IsCanceled)
-                //                {
-                //                    SRC.IsCanceled = false;
-                //                    CancelCommand();
-                //                    GUI.UnlockGUI();
-                //                    return;
-                //                }
-
-                //                // ユニットコマンドの使用後イベント
-                //                if (unit.CurrentForm().CountPilot() > 0)
-                //                {
-                //                    Event.HandleEvent("使用後", unit.CurrentForm().MainPilot().ID, GUI.MainForm.mnuUnitCommandItem.Item(idx).Caption);
-                //                    if (SRC.IsScenarioFinished)
-                //                    {
-                //                        SRC.IsScenarioFinished = false;
-                //                        GUI.UnlockGUI();
-                //                        return;
-                //                    }
-                //                }
-
-                //                // ステータスウィンドウを更新
-                //                if (unit.CurrentForm().CountPilot() > 0)
-                //                {
-                //                    Status.DisplayUnitStatus(unit.CurrentForm());
-                //                }
-
-                //                // 行動終了
-                //                if (unit.CurrentForm().UsedAction <= prev_used_action)
-                //                {
-                //                    if (CommandState == "移動後コマンド選択")
-                //                    {
-                //                        WaitCommand();
-                //                    }
-                //                    else
-                //                    {
-                //                        CommandState = "ユニット選択";
-                //                        GUI.UnlockGUI();
-                //                    }
-                //                }
-                //                else if (SRC.IsCanceled)
-                //                {
-                //                    SRC.IsCanceled = false;
-                //                }
-                //                else
-                //                {
-                //                    WaitCommand(true);
-                //                }
-
-                //                break;
-                //            }
+                case UnitCommandCmdID: // ユニットコマンド
+                    UserDefineUnitCommand(command);
+                    break;
 
                 case WaitCmdID: // 待機
                     WaitCommand();
@@ -400,6 +265,118 @@ namespace SRCCore.Commands
                     }
                     break;
             }
+        }
+
+        private void UserDefineUnitCommand(UiCommand command)
+        {
+            var unit = SelectedUnit;
+            var prev_used_action = unit.UsedAction;
+
+            GUI.LockGUI();
+
+            // ユニットコマンドの使用イベント
+            Event.HandleEvent("使用", unit.MainPilot().ID, command.Label);
+            if (SRC.IsScenarioFinished)
+            {
+                SRC.IsScenarioFinished = false;
+                GUI.UnlockGUI();
+                return;
+            }
+
+            if (SRC.IsCanceled)
+            {
+                SRC.IsCanceled = false;
+                WaitCommand();
+                return;
+            }
+
+            // ユニットコマンドを実行
+            Event.HandleEvent("" + command.LabelData.EventDataId);
+            if (SRC.IsCanceled)
+            {
+                SRC.IsCanceled = false;
+                CancelCommand();
+                GUI.UnlockGUI();
+                return;
+            }
+
+            // ユニットコマンドの使用後イベント
+            if (unit.CurrentForm().CountPilot() > 0)
+            {
+                Event.HandleEvent("使用後", unit.CurrentForm().MainPilot().ID, command.Label);
+                if (SRC.IsScenarioFinished)
+                {
+                    SRC.IsScenarioFinished = false;
+                    GUI.UnlockGUI();
+                    return;
+                }
+            }
+
+            // ステータスウィンドウを更新
+            if (unit.CurrentForm().CountPilot() > 0)
+            {
+                Status.DisplayUnitStatus(unit.CurrentForm());
+            }
+
+            // 行動終了
+            if (unit.CurrentForm().UsedAction <= prev_used_action)
+            {
+                if (CommandState == "移動後コマンド選択")
+                {
+                    WaitCommand();
+                }
+                else
+                {
+                    CommandState = "ユニット選択";
+                    GUI.UnlockGUI();
+                }
+            }
+            else if (SRC.IsCanceled)
+            {
+                SRC.IsCanceled = false;
+            }
+            else
+            {
+                WaitCommand(true);
+            }
+        }
+
+        private void DismissCommand()
+        {
+            var unit = SelectedUnit;
+            GUI.LockGUI();
+
+            // 召喚解除の使用イベント
+            Event.HandleEvent("使用", unit.MainPilot().ID, "召喚解除");
+            if (SRC.IsScenarioFinished)
+            {
+                SRC.IsScenarioFinished = false;
+                GUI.UnlockGUI();
+                return;
+            }
+
+            if (SRC.IsCanceled)
+            {
+                SRC.IsCanceled = false;
+                return;
+            }
+
+            // 召喚ユニットを解放
+            unit.DismissServant();
+
+            // 召喚解除の使用後イベント
+            Event.HandleEvent("使用後", unit.CurrentForm().MainPilot().ID, "召喚解除");
+            if (SRC.IsScenarioFinished)
+            {
+                SRC.IsScenarioFinished = false;
+            }
+
+            if (SRC.IsCanceled)
+            {
+                SRC.IsCanceled = false;
+            }
+
+            GUI.UnlockGUI();
         }
 
         // 「待機」コマンド

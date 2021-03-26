@@ -158,11 +158,11 @@ namespace SRCCore.Units
         // 選択したマップ攻撃の攻撃力
         private bool IsMapAttackCanceled;
 
-        //// 召喚したユニット
-        //private Collection colServant = new Collection();
+        // 召喚したユニット
+        private SrcCollection<Unit> colServant = new SrcCollection<Unit>();
 
-        //// 魅了・憑依したユニット
-        //private Collection colSlave = new Collection();
+        // 魅了・憑依したユニット
+        private SrcCollection<Unit> colSlave = new SrcCollection<Unit>();
 
         // 召喚主
         public Unit Summoner;

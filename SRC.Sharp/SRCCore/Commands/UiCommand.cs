@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SRCCore.Events;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,8 +12,15 @@ namespace SRCCore.Commands
             Id = id;
             Label = label;
         }
+        public UiCommand(int id, string label, LabelData labelData)
+        {
+            Id = id;
+            Label = label;
+            LabelData = labelData;
+        }
 
         public int Id { get; }
         public string Label { get; }
+        public LabelData LabelData { get; }
     }
 }

@@ -151,29 +151,28 @@ namespace SRCCore.Commands
             ProceedCommand();
         }
 
-        //// 「テレポート」コマンドを開始
-        //private void StartTeleportCommand()
-        //{
-        //    SelectedCommand = "テレポート";
-        //    Map.AreaInTeleport(SelectedUnit);
-        //    string argoname = "大型マップ";
-        //    if (!Expression.IsOptionDefined(argoname))
-        //    {
-        //        GUI.Center(SelectedUnit.x, SelectedUnit.y);
-        //    }
+        // 「テレポート」コマンドを開始
+        private void StartTeleportCommand()
+        {
+            SelectedCommand = "テレポート";
+            Map.AreaInTeleport(SelectedUnit);
+            if (!Expression.IsOptionDefined("大型マップ"))
+            {
+                GUI.Center(SelectedUnit.x, SelectedUnit.y);
+            }
 
-        //    GUI.MaskScreen();
-        //    // MOD START MARGE
-        //    // If MainWidth <> 15 Then
-        //    if (GUI.NewGUIMode)
-        //    {
-        //        // MOD END MARGE
-        //        Application.DoEvents();
-        //        Status.ClearUnitStatus();
-        //    }
+            GUI.MaskScreen();
+            //// MOD START MARGE
+            //// If MainWidth <> 15 Then
+            //if (GUI.NewGUIMode)
+            //{
+            //    // MOD END MARGE
+            //    Application.DoEvents();
+            //    Status.ClearUnitStatus();
+            //}
 
-        //    CommandState = "ターゲット選択";
-        //}
+            CommandState = "ターゲット選択";
+        }
 
         //// 「テレポート」コマンドを終了
         //private void FinishTeleportCommand()
@@ -376,29 +375,28 @@ namespace SRCCore.Commands
         //}
 
 
-        //// 「ジャンプ」コマンドを開始
-        //private void StartJumpCommand()
-        //{
-        //    SelectedCommand = "ジャンプ";
-        //    Map.AreaInSpeed(SelectedUnit, true);
-        //    string argoname = "大型マップ";
-        //    if (!Expression.IsOptionDefined(argoname))
-        //    {
-        //        GUI.Center(SelectedUnit.x, SelectedUnit.y);
-        //    }
+        // 「ジャンプ」コマンドを開始
+        private void StartJumpCommand()
+        {
+            SelectedCommand = "ジャンプ";
+            Map.AreaInSpeed(SelectedUnit, true);
+            if (!Expression.IsOptionDefined("大型マップ"))
+            {
+                GUI.Center(SelectedUnit.x, SelectedUnit.y);
+            }
 
-        //    GUI.MaskScreen();
-        //    // MOD START MARGE
-        //    // If MainWidth <> 15 Then
-        //    if (GUI.NewGUIMode)
-        //    {
-        //        // MOD END MARGE
-        //        Application.DoEvents();
-        //        Status.ClearUnitStatus();
-        //    }
+            GUI.MaskScreen();
+            //// MOD START MARGE
+            //// If MainWidth <> 15 Then
+            //if (GUI.NewGUIMode)
+            //{
+            //    // MOD END MARGE
+            //    Application.DoEvents();
+            //    Status.ClearUnitStatus();
+            //}
 
-        //    CommandState = "ターゲット選択";
-        //}
+            CommandState = "ターゲット選択";
+        }
 
         //// 「ジャンプ」コマンドを終了
         //// MOD START MARGE

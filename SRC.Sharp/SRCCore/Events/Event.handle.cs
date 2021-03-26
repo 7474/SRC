@@ -183,19 +183,18 @@ namespace SRCCore.Events
                     EventQue.Enqueue(string.Join(" ", "行動終了", Args[1]));
                     break;
 
-                //case "ユニットコマンド":
-                //    {
-                //        // UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("ユニットコマンド ", Args[1]), " "), Args[2]));
-                //        if (!IsEventDefined(EventQue[Information.UBound(EventQue)]))
-                //        {
-                //            // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //            EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("ユニットコマンド ", Args[1]), " "), SRC.PList.Item(Args[2]).Unit.Name));
-                //        }
-
-                //        break;
-                //    }
+                case "ユニットコマンド":
+                    var cmd1 = string.Join(" ", "ユニットコマンド", Args[1], Args[2]);
+                    if (IsEventDefined(cmd1))
+                    {
+                        EventQue.Enqueue(cmd1);
+                    }
+                    else
+                    {
+                        var cmd2 = string.Join(" ", "ユニットコマンド", Args[1], SRC.PList.Item(Args[2]).Unit.Name);    
+                        EventQue.Enqueue(cmd2);
+                    }
+                    break;
 
                 default:
                     EventQue.Enqueue(string.Join(" ", Args));
@@ -276,6 +275,8 @@ namespace SRCCore.Events
                     {
                         if (Information.IsNumeric(eventItem))
                         {
+                            // 数値の場合はラベルの示す位置が指定されたとみなす
+                            // （マップコマンド、ユニットコマンド）
                             if (CurrentLabel < 0)
                             {
                                 ret = Conversions.ToInteger(eventItem);
@@ -287,6 +288,7 @@ namespace SRCCore.Events
                         }
                         else
                         {
+                            // 数値以外はラベルを探す
                             ret = SearchLabel(eventItem, CurrentLabel + 1);
                         }
 

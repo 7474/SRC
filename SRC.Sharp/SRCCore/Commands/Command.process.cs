@@ -249,30 +249,19 @@ namespace SRCCore.Commands
                 // イベントで定義されたマップコマンド
                 if (!ViewMode)
                 {
-                    var i = MapCommand1CmdID;
-                    var mapCommandLabels = Event.colEventLabelList.Values
-                        .Where(x => x.Name == LabelType.MapCommandEventLabel && x.Enable);
-                    foreach (LabelData lab in mapCommandLabels)
+                    foreach (LabelData lab in Event.colEventLabelList.Values
+                        .Where(x => x.Name == LabelType.MapCommandEventLabel && x.Enable))
                     {
-                        int localStrToLng()
-                        {
-                            string argexpr = lab.Para(3);
-                            var ret = GeneralLib.StrToLng(argexpr);
-                            return ret;
-                        }
-
-                        // TODO ラベルの表示名にする
                         if (lab.CountPara() == 2)
                         {
-                            // XXX  lab.Para(2)
-                            mapCommands.Add(new UiCommand(i, lab.Data));
+                            // 無条件で実行できるコマンド
+                            mapCommands.Add(new UiCommand(MapCommandCmdID, lab.Para(2), lab));
                         }
-                        else if (localStrToLng() != 0)
+                        else if (GeneralLib.StrToLng(lab.Para(3)) != 0)
                         {
-                            mapCommands.Add(new UiCommand(i, lab.Data));
+                            // 条件を満たした場合のみ実行できるコマンド
+                            mapCommands.Add(new UiCommand(MapCommandCmdID, lab.Para(2), lab));
                         }
-                        // 実行用にインデックス作っとく
-                        MapCommandLabelList[i] = lab;
                         // TODO 上限儲けるなら適当に打ち切る
                         //GUI.MainForm.mnuMapCommandItem(i).Caption = lab.Para(2);
                         //MapCommandLabelList[i - MapCommand1CmdID + 1] = lab.LineNum.ToString();
@@ -1805,43 +1794,33 @@ namespace SRCCore.Commands
                     //    GUI.MainForm.mnuUnitCommandItem(DismissCmdID).Caption = "召喚解除";
                     //}
 
-                    //// ユニットコマンド
-                    //i = UnitCommand1CmdID;
-                    //foreach (LabelData currentLab3 in Event.colEventLabelList)
-                    //{
-                    //    lab = currentLab3;
-                    //    if (lab.Name == Event.LabelType.UnitCommandEventLabel)
-                    //    {
-                    //        if (lab.Enable)
-                    //        {
-                    //            buf = lab.Para(3);
-                    //            if (SelectedUnit.Party == "味方" & ((buf ?? "") == (SelectedUnit.MainPilot().Name ?? "") | (buf ?? "") == (SelectedUnit.MainPilot().get_Nickname(false) ?? "") | (buf ?? "") == (SelectedUnit.Name ?? "")) | (buf ?? "") == (SelectedUnit.Party ?? "") | buf == "全")
-                    //            {
-                    //                int localStrToLng2() { string argexpr = lab.Para(4); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-                    //                if (lab.CountPara() <= 3)
-                    //                {
-                    //                    GUI.MainForm.mnuUnitCommandItem(i).Visible = true;
-                    //                }
-                    //                else if (localStrToLng2() != 0)
-                    //                {
-                    //                    GUI.MainForm.mnuUnitCommandItem(i).Visible = true;
-                    //                }
-                    //            }
-                    //        }
-
-                    //        if (GUI.MainForm.mnuUnitCommandItem(i).Visible)
-                    //        {
-                    //            GUI.MainForm.mnuUnitCommandItem(i).Caption = lab.Para(2);
-                    //            UnitCommandLabelList[i - UnitCommand1CmdID + 1] = lab.LineNum.ToString();
-                    //            i = (i + 1);
-                    //            if (i > UnitCommand10CmdID)
-                    //            {
-                    //                break;
-                    //            }
-                    //        }
-                    //    }
-                    //}
+                    // ユニットコマンド
+                    foreach (LabelData lab in Event.colEventLabelList.Values
+                        .Where(x => x.Name == LabelType.UnitCommandEventLabel && x.Enable))
+                    {
+                        var label = lab.Para(2);
+                        var target = lab.Para(3);
+                        if (SelectedUnit.Party == "味方" && (
+                                (target ?? "") == (SelectedUnit.MainPilot().Name ?? "")
+                                || (target ?? "") == (SelectedUnit.MainPilot().get_Nickname(false) ?? "")
+                                || (target ?? "") == (SelectedUnit.Name ?? "")
+                            )
+                            || (target ?? "") == (SelectedUnit.Party ?? "")
+                            || target == "全")
+                        {
+                            if (lab.CountPara() <= 3)
+                            {
+                                // 無条件で実行できるコマンド
+                                unitCommands.Add(new UiCommand(UnitCommandCmdID, lab.Para(2), lab));
+                            }
+                            else if (GeneralLib.StrToLng(lab.Para(4)) != 0)
+                            {
+                                // 条件を満たした場合のみ実行できるコマンド
+                                unitCommands.Add(new UiCommand(UnitCommandCmdID, lab.Para(2), lab));
+                            }
+                        }
+                        // TODO 上限儲けるなら適当に打ち切る
+                    }
                 }
             }
 
