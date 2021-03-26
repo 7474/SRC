@@ -26,103 +26,77 @@ namespace SRCCore.Commands
                         ViewMode = false;
                         return;
                     }
-
                     EndTurnCommand();
                     break;
-                //            }
 
-                //        case DumpCmdID: // 中断
-                //            {
-                //                DumpCommand();
-                //                break;
-                //            }
+                //case DumpCmdID: // 中断
+                //    DumpCommand();
+                //    break;
 
-                //        case UnitListCmdID: // 部隊表
-                //            {
-                //                UnitListCommand();
-                //                break;
-                //            }
+                //case UnitListCmdID: // 部隊表
+                //    UnitListCommand();
+                //    break;
 
-                //        case SearchSpecialPowerCmdID: // スペシャルパワー検索
-                //            {
-                //                SearchSpecialPowerCommand();
-                //                break;
-                //            }
+                //case SearchSpecialPowerCmdID: // スペシャルパワー検索
+                //    SearchSpecialPowerCommand();
+                //    break;
 
-                //        case GlobalMapCmdID: // 全体マップ
-                //            {
-                //                GlobalMapCommand();
-                //                break;
-                //            }
+                //case GlobalMapCmdID: // 全体マップ
+                //    GlobalMapCommand();
+                //    break;
 
-                //        case OperationObjectCmdID: // 作戦目的
-                //            {
-                //                GUI.LockGUI();
-                //                Event_Renamed.HandleEvent("勝利条件");
-                //                GUI.RedrawScreen();
-                //                GUI.UnlockGUI();
-                //                break;
-                //            }
+                case OperationObjectCmdID: // 作戦目的
+                    GUI.LockGUI();
+                    Event.HandleEvent("勝利条件");
+                    GUI.RedrawScreen();
+                    GUI.UnlockGUI();
+                    break;
 
-                //        case var @case when MapCommand1CmdID <= @case && @case <= MapCommand10CmdID: // マップコマンド
-                //            {
-                //                GUI.LockGUI();
-                //                Event_Renamed.HandleEvent(MapCommandLabelList[idx - MapCommand1CmdID + 1]);
-                //                GUI.UnlockGUI();
-                //                break;
-                //            }
+                case MapCommandCmdID: // マップコマンド
+                    GUI.LockGUI();
+                    Event.HandleEvent(command.Label);
+                    GUI.UnlockGUI();
+                    break;
 
-                //        case AutoDefenseCmdID: // 自動反撃モード
-                //            {
-                //                GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked = !GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked;
-                //                if (GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked)
-                //                {
-                //                    string argini_section = "Option";
-                //                    string argini_entry = "AutoDefense";
-                //                    string argini_data = "On";
-                //                    GeneralLib.WriteIni(argini_section, argini_entry, argini_data);
-                //                }
-                //                else
-                //                {
-                //                    string argini_section1 = "Option";
-                //                    string argini_entry1 = "AutoDefense";
-                //                    string argini_data1 = "Off";
-                //                    GeneralLib.WriteIni(argini_section1, argini_entry1, argini_data1);
-                //                }
+                //case AutoDefenseCmdID: // 自動反撃モード
+                //GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked = !GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked;
+                //if (GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked)
+                //{
+                //    string argini_section = "Option";
+                //    string argini_entry = "AutoDefense";
+                //    string argini_data = "On";
+                //    GeneralLib.WriteIni(argini_section, argini_entry, argini_data);
+                //}
+                //else
+                //{
+                //    string argini_section1 = "Option";
+                //    string argini_entry1 = "AutoDefense";
+                //    string argini_data1 = "Off";
+                //    GeneralLib.WriteIni(argini_section1, argini_entry1, argini_data1);
+                //}
+                //break;
 
-                //                break;
-                //            }
+                //case ConfigurationCmdID: // 設定変更
+                //    Load(My.MyProject.Forms.frmConfiguration);
+                //    My.MyProject.Forms.frmConfiguration.Left = SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(My.MyProject.Forms.frmConfiguration.Width)) / 2d);
+                //    My.MyProject.Forms.frmConfiguration.Top = SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(My.MyProject.Forms.frmConfiguration.Height)) / 3d);
+                //    My.MyProject.Forms.frmConfiguration.ShowDialog();
+                //    My.MyProject.Forms.frmConfiguration.Close();
+                //    My.MyProject.Forms.frmConfiguration = null;
+                //    break;
 
-                //        case ConfigurationCmdID: // 設定変更
-                //            {
-                //                Load(My.MyProject.Forms.frmConfiguration);
-                //                My.MyProject.Forms.frmConfiguration.Left = SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(My.MyProject.Forms.frmConfiguration.Width)) / 2d);
-                //                My.MyProject.Forms.frmConfiguration.Top = SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(My.MyProject.Forms.frmConfiguration.Height)) / 3d);
-                //                My.MyProject.Forms.frmConfiguration.ShowDialog();
-                //                My.MyProject.Forms.frmConfiguration.Close();
-                //                // UPGRADE_NOTE: オブジェクト frmConfiguration をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                //                My.MyProject.Forms.frmConfiguration = null;
-                //                break;
-                //            }
+                //case RestartCmdID: // リスタート
+                //    RestartCommand();
+                //    break;
 
-                //        case RestartCmdID: // リスタート
-                //            {
-                //                RestartCommand();
-                //                break;
-                //            }
+                //case QuickLoadCmdID: // クイックロード
+                //    QuickLoadCommand();
+                //    break;
 
-                //        case QuickLoadCmdID: // クイックロード
-                //            {
-                //                QuickLoadCommand();
-                //                break;
-                //            }
+                //case QuickSaveCmdID: // クイックセーブ
+                //    QuickSaveCommand();
+                //    break;
 
-                //        case QuickSaveCmdID: // クイックセーブ
-                //            {
-                //                QuickSaveCommand();
-                //                break;
-                //            }
-                //    }
                 default:
                     throw new NotSupportedException(JsonConvert.SerializeObject(command));
             }

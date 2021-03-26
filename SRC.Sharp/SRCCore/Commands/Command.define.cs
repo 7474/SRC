@@ -43,16 +43,7 @@ namespace SRCCore.Commands
         public const int SearchSpecialPowerCmdID = 3;
         public const int GlobalMapCmdID = 4;
         public const int OperationObjectCmdID = 5;
-        public const int MapCommand1CmdID = 6;
-        public const int MapCommand2CmdID = 7;
-        public const int MapCommand3CmdID = 8;
-        public const int MapCommand4CmdID = 9;
-        public const int MapCommand5CmdID = 10;
-        public const int MapCommand6CmdID = 11;
-        public const int MapCommand7CmdID = 12;
-        public const int MapCommand8CmdID = 13;
-        public const int MapCommand9CmdID = 14;
-        public const int MapCommand10CmdID = 15;
+        public const int MapCommandCmdID = 6;
         public const int AutoDefenseCmdID = 16;
         public const int ConfigurationCmdID = 17;
         public const int RestartCmdID = 18;
