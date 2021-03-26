@@ -291,7 +291,7 @@ namespace SRCCore.Commands
             }
 
             // ユニットコマンドを実行
-            Event.HandleEvent(command.Label);
+            Event.HandleEvent("" + command.LabelData.EventDataId);
             if (SRC.IsCanceled)
             {
                 SRC.IsCanceled = false;

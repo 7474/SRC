@@ -249,30 +249,19 @@ namespace SRCCore.Commands
                 // イベントで定義されたマップコマンド
                 if (!ViewMode)
                 {
-                    var i = MapCommand1CmdID;
-                    var mapCommandLabels = Event.colEventLabelList.Values
-                        .Where(x => x.Name == LabelType.MapCommandEventLabel && x.Enable);
-                    foreach (LabelData lab in mapCommandLabels)
+                    foreach (LabelData lab in Event.colEventLabelList.Values
+                        .Where(x => x.Name == LabelType.MapCommandEventLabel && x.Enable))
                     {
-                        int localStrToLng()
-                        {
-                            string argexpr = lab.Para(3);
-                            var ret = GeneralLib.StrToLng(argexpr);
-                            return ret;
-                        }
-
-                        // TODO ラベルの表示名にする
                         if (lab.CountPara() == 2)
                         {
-                            // XXX  lab.Para(2)
-                            mapCommands.Add(new UiCommand(i, lab.Data));
+                            // 無条件で実行できるコマンド
+                            mapCommands.Add(new UiCommand(MapCommandCmdID, lab.Para(2), lab));
                         }
-                        else if (localStrToLng() != 0)
+                        else if (GeneralLib.StrToLng(lab.Para(3)) != 0)
                         {
-                            mapCommands.Add(new UiCommand(i, lab.Data));
+                            // 条件を満たした場合のみ実行できるコマンド
+                            mapCommands.Add(new UiCommand(MapCommandCmdID, lab.Para(2), lab));
                         }
-                        // 実行用にインデックス作っとく
-                        MapCommandLabelList[i] = lab;
                         // TODO 上限儲けるなら適当に打ち切る
                         //GUI.MainForm.mnuMapCommandItem(i).Caption = lab.Para(2);
                         //MapCommandLabelList[i - MapCommand1CmdID + 1] = lab.LineNum.ToString();

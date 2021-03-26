@@ -54,7 +54,7 @@ namespace SRCCore.Commands
 
                 case MapCommandCmdID: // マップコマンド
                     GUI.LockGUI();
-                    Event.HandleEvent(command.Label);
+                    Event.HandleEvent("" + command.LabelData.EventDataId);
                     GUI.UnlockGUI();
                     break;
 
