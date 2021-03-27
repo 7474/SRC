@@ -17,7 +17,6 @@
         <InputFile OnChange="OnInputFileChange" multiple />
         <p>現在対応しているデータファイルは<code>robot.txt, unit.txt, pilot.txt, pilot_message.txt, pilot_dialog.txt, item.txt</code>の一部分です。</p>
         <p>データフォルダ内のファイルを全選択するなど、複数のファイルを一括読み込みできます。対応していないファイルは無視されます。</p>
-        <p>文字コードは<code>UTF-8</code>にしてください。<code>Shift_JIS</code>は読み込めません。</p>
     </div>
 </section>
 
@@ -32,25 +31,25 @@
     {
         var sw = new Stopwatch();
         sw.Start();
-        foreach (var file in e.GetMultipleFiles())
+        foreach (var file in e.GetMultipleFiles(20))
         {
             switch (file.Name.ToLower())
             {
                 case "unit.txt":
                 case "robot.txt":
-                    SRC.UDList.Load(file.Name, await file.OpenReadStream().ToSyncStreamAsync());
+                    SRC.UDList.Load(file.Name, await file.OpenReadStream().ToUTF8Async());
                     break;
                 case "pilot.txt":
-                    SRC.PDList.Load(file.Name, await file.OpenReadStream().ToSyncStreamAsync());
+                    SRC.PDList.Load(file.Name, await file.OpenReadStream().ToUTF8Async());
                     break;
                 case "pilot_message.txt":
-                    SRC.MDList.Load(file.Name, false, await file.OpenReadStream().ToSyncStreamAsync());
+                    SRC.MDList.Load(file.Name, false, await file.OpenReadStream().ToUTF8Async());
                     break;
                 case "pilot_dialog.txt":
-                    SRC.DDList.Load(file.Name, await file.OpenReadStream().ToSyncStreamAsync());
+                    SRC.DDList.Load(file.Name, await file.OpenReadStream().ToUTF8Async());
                     break;
                 case "item.txt":
-                    SRC.IDList.Load(file.Name, await file.OpenReadStream().ToSyncStreamAsync());
+                    SRC.IDList.Load(file.Name, await file.OpenReadStream().ToUTF8Async());
                     break;
                 default:
                     Console.WriteLine($"Not supported file [{file.Name}]");
