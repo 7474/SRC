@@ -1,18 +1,23 @@
-﻿using SRCCore.Exceptions;
+﻿using ShiftJISExtension;
+using SRCCore.Exceptions;
 using SRCCore.Filesystem;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SRCDataLinter
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var sw = new Stopwatch();
             sw.Start();
+
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
             var SRC = new SRCCore.SRC();
             SRC.AppPath = AppContext.BaseDirectory;
@@ -33,7 +38,7 @@ namespace SRCDataLinter
             foreach (var file in files)
             {
                 var fileInfo = new FileInfo(file);
-                hasError |= ValidateFile(hasError, SRC, fileInfo);
+                hasError |= await ValidateFileAsync(hasError, SRC, fileInfo);
             }
 
             sw.Stop();
@@ -44,7 +49,24 @@ namespace SRCDataLinter
             }
         }
 
-        private static bool ValidateFile(bool hasError, SRCCore.SRC SRC, FileInfo file)
+        private static async Task<Stream> OpenUtf8Async(SRCCore.SRC SRC, FileInfo file)
+        {
+            var fromEnc = Encoding.GetEncoding(932);
+
+            var stream = new MemoryStream();
+            using (var fs = file.OpenRead())
+            {
+                var wasConverted = await fs.ConvertEncodingAsync(stream, fromEnc, Encoding.UTF8);
+                if (wasConverted)
+                {
+                    SRC.AddDataError(new InvalidSrcData("Encoding is not UTF-8.", file.Name, 1, "", ""));
+                }
+                stream.Position = 0;
+                return stream;
+            }
+        }
+
+        private static async Task<bool> ValidateFileAsync(bool hasError, SRCCore.SRC SRC, FileInfo file)
         {
             try
             {
@@ -52,19 +74,19 @@ namespace SRCDataLinter
                 {
                     case "unit.txt":
                     case "robot.txt":
-                        SRC.UDList.Load(file.Name, file.OpenRead());
+                        SRC.UDList.Load(file.Name, await OpenUtf8Async(SRC, file));
                         break;
                     case "pilot.txt":
-                        SRC.PDList.Load(file.Name, file.OpenRead());
+                        SRC.PDList.Load(file.Name, await OpenUtf8Async(SRC, file));
                         break;
                     case "pilot_message.txt":
-                        SRC.MDList.Load(file.Name, false, file.OpenRead());
+                        SRC.MDList.Load(file.Name, false, await OpenUtf8Async(SRC, file));
                         break;
                     case "pilot_dialog.txt":
-                        SRC.DDList.Load(file.Name, file.OpenRead());
+                        SRC.DDList.Load(file.Name, await OpenUtf8Async(SRC, file));
                         break;
                     case "item.txt":
-                        SRC.IDList.Load(file.Name, file.OpenRead());
+                        SRC.IDList.Load(file.Name, await OpenUtf8Async(SRC, file));
                         break;
                     default:
                         if (file.Name.ToLower().EndsWith(".eve"))
