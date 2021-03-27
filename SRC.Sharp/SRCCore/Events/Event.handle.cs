@@ -1,4 +1,5 @@
 ﻿
+using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
 using System.Linq;
@@ -191,7 +192,7 @@ namespace SRCCore.Events
                     }
                     else
                     {
-                        var cmd2 = string.Join(" ", "ユニットコマンド", Args[1], SRC.PList.Item(Args[2]).Unit.Name);    
+                        var cmd2 = string.Join(" ", "ユニットコマンド", Args[1], SRC.PList.Item(Args[2]).Unit.Name);
                         EventQue.Enqueue(cmd2);
                     }
                     break;
@@ -229,21 +230,18 @@ namespace SRCCore.Events
 
                 // Debug.Print "HandleEvent (" & EventQue(i) & ")"
 
-                //// 前のイベントで他のユニットが出現している可能性があるので
-                //// 本当に全滅したのか判定
-                //if (GeneralLib.LIndex(EventQue[i], 1) == "全滅")
-                //{
-                //    uparty = GeneralLib.LIndex(EventQue[i], 2);
-                //    foreach (Unit currentU1 in SRC.UList)
-                //    {
-                //        u = currentU1;
-                //        object argIndex4 = "憑依";
-                //        if ((u.Party0 ?? "") == (uparty ?? "") & u.Status_Renamed == "出撃" & !u.IsConditionSatisfied(argIndex4))
-                //        {
-                //            continue;
-                //        }
-                //    }
-                //}
+                // 前のイベントで他のユニットが出現している可能性があるので
+                // 本当に全滅したのか判定
+                if (GeneralLib.LIndex(eventItem, 1) == "全滅")
+                {
+                    var uparty = GeneralLib.LIndex(eventItem, 2);
+                    if (SRC.UList.Items.Any(u => u.Party0 == uparty
+                        && u.Status == "出撃" 
+                        && !u.IsConditionSatisfied("憑依")))
+                    {
+                        continue; 
+                    }
+                }
 
                 CurrentLabel = -1;
                 var ret = -1;

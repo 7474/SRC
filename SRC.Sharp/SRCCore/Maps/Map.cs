@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using Microsoft.Extensions.Logging;
 using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.Models;
@@ -523,8 +524,9 @@ namespace SRCCore.Maps
                     LoadMapData(fname, stream);
                 }
             }
-            catch (FileNotFoundException)
+            catch (FileNotFoundException ex)
             {
+                SRC.Log.LogError(ex.Message, ex);
                 // TODO Impl
                 //    // ファイルが存在しない場合
                 //    if (string.IsNullOrEmpty(fname) | !GeneralLib.FileExists(fname))
