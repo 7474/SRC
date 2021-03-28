@@ -432,7 +432,7 @@ namespace SRCCoreTests.TestLib
             throw new NotImplementedException();
         }
 
-        public int WeaponListBox(Unit u, IList<UnitWeapon> weapons, string caption_msg, string lb_mode, string BGM = "")
+        public int WeaponListBox(Unit u, UnitWeaponList weapons, string caption_msg, string lb_mode, string BGM = "")
         {
             throw new NotImplementedException();
         }
