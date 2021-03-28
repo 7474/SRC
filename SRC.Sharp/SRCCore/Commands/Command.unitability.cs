@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Units;
 using SRCCore.VB;
 using System;
 
@@ -14,47 +15,45 @@ namespace SRCCore.Commands
         // is_item=True の場合は「アイテム」コマンドによる使い捨てアイテムのアビリティ
         private void StartAbilityCommand(bool is_item = false)
         {
+            string cap;
+            GUI.LockGUI();
+
+            // 使用するアビリティを選択
+            if (is_item)
+            {
+                cap = "アイテム選択";
+            }
+            else
+            {
+                cap = Expression.Term("アビリティ", SelectedUnit) + "選択";
+            }
+
+            if (CommandState == "コマンド選択")
+            {
+                SelectedAbility = GUI.AbilityListBox(SelectedUnit, new UnitAbilityList(AbilityListMode.BeforeMove, SelectedUnit), cap, "移動前", is_item);
+            }
+            else
+            {
+                SelectedAbility = GUI.AbilityListBox(SelectedUnit, new UnitAbilityList(AbilityListMode.AfterMove, SelectedUnit), cap, "移動後", is_item);
+            }
+
+            // キャンセル
+            if (SelectedAbility == 0)
+            {
+                if (SRC.AutoMoveCursor)
+                {
+                    GUI.RestoreCursorPos();
+                }
+
+                CancelCommand();
+                GUI.UnlockGUI();
+                return;
+            }
+
             throw new NotImplementedException();
             //int i, j;
             //Unit t;
             //int min_range, max_range;
-            //string cap;
-            //GUI.LockGUI();
-
-            //// 使用するアビリティを選択
-            //if (is_item)
-            //{
-            //    cap = "アイテム選択";
-            //}
-            //else
-            //{
-            //    string argtname = "アビリティ";
-            //    cap = Expression.Term(argtname, SelectedUnit) + "選択";
-            //}
-
-            //if (CommandState == "コマンド選択")
-            //{
-            //    string arglb_mode = "移動前";
-            //    SelectedAbility = GUI.AbilityListBox(SelectedUnit, cap, arglb_mode, is_item);
-            //}
-            //else
-            //{
-            //    string arglb_mode1 = "移動後";
-            //    SelectedAbility = GUI.AbilityListBox(SelectedUnit, cap, arglb_mode1, is_item);
-            //}
-
-            //// キャンセル
-            //if (SelectedAbility == 0)
-            //{
-            //    if (SRC.AutoMoveCursor)
-            //    {
-            //        GUI.RestoreCursorPos();
-            //    }
-
-            //    CancelCommand();
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
 
             //// アビリティ専用ＢＧＭがあればそれを演奏
             //string BGM;

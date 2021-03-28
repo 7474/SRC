@@ -52,7 +52,7 @@ namespace SRCDataLinter
 
         public bool MainFormVisible => throw new NotImplementedException();
 
-        public int AbilityListBox(Unit u, string caption_msg, string lb_mode, bool is_item = false)
+        public int AbilityListBox(Unit u, UnitAbilityList abilities, string caption_msg, string lb_mode, bool is_item = false)
         {
             throw new NotImplementedException();
         }

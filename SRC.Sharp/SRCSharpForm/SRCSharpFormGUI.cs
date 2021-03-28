@@ -1926,9 +1926,27 @@ namespace SRCSharpForm
             return WeaponListBoxRet;
         }
 
-        public int AbilityListBox(Unit u, string caption_msg, string lb_mode, bool is_item)
+        public int AbilityListBox(Unit u, UnitAbilityList abilities, string caption_msg, string lb_mode, bool is_item = false)
         {
-            throw new NotImplementedException();
+            // TODO Impl
+            TopItem = -1;
+            var list = abilities.Items.Select(x => new ListBoxItem()
+            {
+                Text = $"{x.Ability.Data.Name}",
+                ListItemComment = "",
+                ListItemFlag = !x.CanUse,
+                ListItemID = "",
+            }).ToList();
+            var ret = ListBox(new ListBoxArgs
+            {
+                Items = list,
+                HasFlag = true,
+                lb_caption = caption_msg,
+                lb_info = "名称",
+                lb_mode = "",
+            });
+            Application.DoEvents();
+            return ret;
         }
 
         public int LIPS(string lb_caption, string[] list, string lb_info, int time_limit)

@@ -1981,5 +1981,42 @@ namespace SRCCore.Units
             //return IsCombinationAbilityAvailableRet;
         }
 
+        public bool IdDisplayFor(AbilityListMode mode)
+        {
+            // Disableコマンドで使用不可にされた武器と使用できない合体技は表示しない
+            // 必要技能を満たさない武器は表示しない
+            var baseCondition = !Unit.IsDisabled(Data.Name)
+                && IsAbilityMastered()
+                // XXX 条件によって check_formation 見直す
+                && !(IsAbilityClassifiedAs("合") && IsCombinationAbilityAvailable(true))
+                ;
+            return baseCondition;
+        }
+
+        public bool CanUseFor(AbilityListMode mode, Unit targetUnit)
+        {
+            var display = IdDisplayFor(mode);
+            switch (mode)
+            {
+                case AbilityListMode.List:
+                    return display;
+
+                case AbilityListMode.BeforeMove:
+                    return display && IsAbilityUseful("移動前");
+
+                case AbilityListMode.AfterMove:
+                    return display && IsAbilityUseful("移動後");
+
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+    }
+
+    public enum AbilityListMode
+    {
+        List,
+        BeforeMove,
+        AfterMove,
     }
 }

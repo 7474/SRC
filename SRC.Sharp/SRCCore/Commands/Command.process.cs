@@ -1420,7 +1420,7 @@ namespace SRCCore.Commands
                             var caption = Expression.Term("アビリティ", SelectedUnit);
                             var unitAbilities = currentUnit.Abilities.Where(x => !x.Data.IsItem()).ToList();
                             unitCommands.Add(new UiCommand(
-                                AbilityListCmdID,
+                                AbilityCmdID,
                                 unitAbilities.Count == 1 ? unitAbilities.First().AbilityNickname() : caption));
                         }
                     }
@@ -2160,7 +2160,7 @@ namespace SRCCore.Commands
                         var caption = Expression.Term("アビリティ", SelectedUnit);
                         var unitAbilities = currentUnit.Abilities.Where(x => !x.Data.IsItem()).ToList();
                         unitCommands.Add(new UiCommand(
-                            AbilityListCmdID,
+                            AbilityCmdID,
                             unitAbilities.Count == 1 ? unitAbilities.First().AbilityNickname() : caption));
                     }
                 }
