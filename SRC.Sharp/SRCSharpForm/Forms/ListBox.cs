@@ -209,7 +209,7 @@ namespace SRCSharpForm
                 {
                     lstItems.TopIndex = GeneralLib.MaxLng(GeneralLib.MinLng(GUI.TopItem - 1, lstItems.Items.Count - 1), 0);
                 }
-                lstItems.SelectedIndex = GUI.TopItem - 1;
+                lstItems.SelectedIndex = Math.Min(lstItems.Items.Count, GUI.TopItem) - 1;
             }
             else if (lstItems.Items.Count > 0)
             {
