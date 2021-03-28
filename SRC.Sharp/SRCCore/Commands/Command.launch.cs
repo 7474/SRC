@@ -54,6 +54,7 @@ namespace SRCCore.Commands
             SelectedCommand = "発進";
 
             // ユニットの発進処理
+            // XXX 発進後の合体がなんか変だった（バウ(ＭＡ)）
             SelectedTarget = SRC.UList.Item(list[ret - 1].ListItemID);
             {
                 var launchUnit = SelectedTarget;
