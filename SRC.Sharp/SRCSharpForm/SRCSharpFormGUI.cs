@@ -1378,7 +1378,7 @@ namespace SRCSharpForm
             throw new NotImplementedException();
         }
 
-        public int WeaponListBox(Unit u, IList<UnitWeapon> weapons, string caption_msg, string lb_mode, string BGM)
+        public int WeaponListBox(Unit u, UnitWeaponList weapons, string caption_msg, string lb_mode, string BGM)
         {
             // TODO Impl
             //short WeaponListBoxRet = default;
@@ -1898,11 +1898,11 @@ namespace SRCSharpForm
             //}
 
             TopItem = -1;
-            var list = weapons.Select(x => new ListBoxItem()
+            var list = weapons.Items.Select(x => new ListBoxItem()
             {
-                Text = $"{x.Name}",
+                Text = $"{x.Weapon.Name}",
                 ListItemComment = "",
-                ListItemFlag = !x.IsWeaponAvailable(lb_mode),
+                ListItemFlag = !x.CanUse,
                 ListItemID = "",
             }).ToList();
             var ret = ListBox(new ListBoxArgs

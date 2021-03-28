@@ -444,8 +444,7 @@ namespace SRCCore.Commands
             GUI.LockGUI();
             while (true)
             {
-                // TODO Weaponsをフィルタ
-                var w = GUI.WeaponListBox(SelectedUnit, SelectedUnit.Weapons, "武装一覧", "一覧", "");
+                var w = GUI.WeaponListBox(SelectedUnit, new Units.UnitWeaponList(Units.WeaponListMode.List, SelectedUnit), "武装一覧", "一覧", "");
                 SelectedWeapon = w;
                 if (SelectedWeapon <= 0)
                 {
