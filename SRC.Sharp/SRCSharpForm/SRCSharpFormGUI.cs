@@ -1900,7 +1900,13 @@ namespace SRCSharpForm
             TopItem = -1;
             var list = weapons.Items.Select(x => new ListBoxItem()
             {
-                Text = $"{x.Weapon.Name}",
+                Text = $"{x.Weapon.Name}" +
+                    $" {x.Weapon.WeaponPower("")}" +
+                    $" {x.Weapon.WeaponPrecision()}" +
+                    $" {x.Weapon.WeaponCritical()}" +
+                    $" {x.Weapon.WeaponENConsumption()}" +
+                    $" {x.Weapon.UpdatedWeaponData.Adaption}" +
+                    $" {x.Weapon.WeaponClass()}",
                 ListItemComment = "",
                 ListItemFlag = !x.CanUse,
                 ListItemID = "",
