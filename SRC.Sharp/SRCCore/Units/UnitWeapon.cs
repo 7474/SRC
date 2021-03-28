@@ -5,9 +5,9 @@
 using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.Models;
-using SRCCore.Pilots;
 using SRCCore.VB;
 using System;
+using System.Linq;
 
 namespace SRCCore.Units
 {
@@ -22,6 +22,7 @@ namespace SRCCore.Units
         private Events.Event Event => SRC.Event;
         private Map Map => SRC.Map;
         private Expressions.Expression Expression => SRC.Expression;
+        private Commands.Command Commands => SRC.Commands;
 
         // 近接武器か
         private bool IsCrossRange()
@@ -981,7 +982,7 @@ namespace SRCCore.Units
             // 属性が２文字以下ならそのまま判定
             if (Strings.Len(attr) <= 2)
             {
-                if (GeneralLib.InStrNotNest(wclass, attr) > 0)
+                if (GeneralLib.InStrNotNest(WeaponClass(), attr) > 0)
                 {
                     IsWeaponClassifiedAsRet = true;
                 }
@@ -996,7 +997,7 @@ namespace SRCCore.Units
             // 属性の頭文字が弱攻剋ならそのまま判定
             if (Strings.InStr("弱効剋", Strings.Left(attr, 1)) > 0)
             {
-                if (GeneralLib.InStrNotNest(wclass, attr) > 0)
+                if (GeneralLib.InStrNotNest(WeaponClass(), attr) > 0)
                 {
                     IsWeaponClassifiedAsRet = true;
                 }
@@ -1013,11 +1014,11 @@ namespace SRCCore.Units
             {
                 case "格闘系":
                     {
-                        if (GeneralLib.InStrNotNest(wclass, "格") > 0)
+                        if (GeneralLib.InStrNotNest(WeaponClass(), "格") > 0)
                         {
                             IsWeaponClassifiedAsRet = true;
                         }
-                        else if (GeneralLib.InStrNotNest(wclass, "射") > 0)
+                        else if (GeneralLib.InStrNotNest(WeaponClass(), "射") > 0)
                         {
                             IsWeaponClassifiedAsRet = false;
                         }
@@ -1035,11 +1036,11 @@ namespace SRCCore.Units
 
                 case "射撃系":
                     {
-                        if (GeneralLib.InStrNotNest(wclass, "格") > 0)
+                        if (GeneralLib.InStrNotNest(WeaponClass(), "格") > 0)
                         {
                             IsWeaponClassifiedAsRet = false;
                         }
-                        else if (GeneralLib.InStrNotNest(wclass, "射") > 0)
+                        else if (GeneralLib.InStrNotNest(WeaponClass(), "射") > 0)
                         {
                             IsWeaponClassifiedAsRet = true;
                         }
@@ -1058,14 +1059,14 @@ namespace SRCCore.Units
                 case "移動後攻撃可":
                     {
                         if (Unit.IsUnderSpecialPowerEffect("全武器移動後使用可能")
-                            && GeneralLib.InStrNotNest(wclass, "Ｍ") == 0
-                            && GeneralLib.InStrNotNest(wclass, "Ｑ") == 0)
+                            && GeneralLib.InStrNotNest(WeaponClass(), "Ｍ") == 0
+                            && GeneralLib.InStrNotNest(WeaponClass(), "Ｑ") == 0)
                         {
                             IsWeaponClassifiedAsRet = true;
                         }
                         else if (WeaponMaxRange() == 1)
                         {
-                            if (GeneralLib.InStrNotNest(wclass, "Ｑ") == 0)
+                            if (GeneralLib.InStrNotNest(WeaponClass(), "Ｑ") == 0)
                             {
                                 IsWeaponClassifiedAsRet = true;
                             }
@@ -1074,7 +1075,7 @@ namespace SRCCore.Units
                                 IsWeaponClassifiedAsRet = false;
                             }
                         }
-                        else if (GeneralLib.InStrNotNest(wclass, "Ｐ") > 0)
+                        else if (GeneralLib.InStrNotNest(WeaponClass(), "Ｐ") > 0)
                         {
                             IsWeaponClassifiedAsRet = true;
                         }
@@ -1105,7 +1106,7 @@ namespace SRCCore.Units
             //wclass = strWeaponClass[w];
 
             //// レベル指定があるか？
-            //start_idx = GeneralLib.InStrNotNest(wclass, attrlv);
+            //start_idx = GeneralLib.InStrNotNest(WeaponClass(), attrlv);
             //if (start_idx == 0)
             //{
             //    return WeaponLevelRet;
@@ -1116,7 +1117,7 @@ namespace SRCCore.Units
             //i = start_idx;
             //while (true)
             //{
-            //    c = Strings.Mid(wclass, i, 1);
+            //    c = Strings.Mid(WeaponClass(), i, 1);
             //    if (string.IsNullOrEmpty(c))
             //    {
             //        break;
@@ -1139,7 +1140,7 @@ namespace SRCCore.Units
             //    i = (i + 1);
             //}
 
-            //WeaponLevelRet = Conversions.ToDouble(Strings.Mid(wclass, start_idx, i - start_idx));
+            //WeaponLevelRet = Conversions.ToDouble(Strings.Mid(WeaponClass(), start_idx, i - start_idx));
             //return WeaponLevelRet;
             //ErrorHandler:
             //;
@@ -1181,7 +1182,7 @@ namespace SRCCore.Units
             //for (i = 1; i <= loopTo; i++)
             //{
             //    // 弱Ｓのような入れ子があれば、入れ子の分カウントを進める
-            //    wattr = GeneralLib.GetClassBundle(wclass, i, 1);
+            //    wattr = GeneralLib.GetClassBundle(WeaponClass(), i, 1);
 
             //    // 非表示部分は無視
             //    if (wattr == "|")
@@ -1284,521 +1285,397 @@ namespace SRCCore.Units
         // ref_mode はユニットの状態（移動前、移動後）を示す
         public bool IsWeaponAvailable(string ref_mode)
         {
-            return true;
-            // TODO Impl
-            //bool IsWeaponAvailableRet = default;
-            //int i;
-            //WeaponData wd;
-            //string wclass;
-            //IsWeaponAvailableRet = false;
+            // イベントコマンド「Disable」で封印されている？
+            if (Unit.IsDisabled(Name))
+            {
+                return false;
+            }
 
-            //// ADD START MARGE
-            //// 武器が取得できない場合はFalse（防御や無抵抗の場合、wが0や-1になる）
-            //if (!(w > 0))
-            //{
-            //    return IsWeaponAvailableRet;
-            //}
-            //// ADD END MARGE
+            // パイロットが乗っていなければ常に使用可能と判定
+            if (Unit.CountPilot() == 0)
+            {
+                return true;
+            }
 
-            //wd = Weapon(w);
-            //wclass = WeaponClass(w);
+            // 必要技能＆必要条件
+            if (ref_mode != "必要技能無視")
+            {
+                if (!IsWeaponMastered())
+                {
+                    return false;
+                }
 
-            //// イベントコマンド「Disable」で封印されている？
-            //if (IsDisabled(wd.Name))
-            //{
-            //    return IsWeaponAvailableRet;
-            //}
+                if (!IsWeaponEnabled())
+                {
+                    return false;
+                }
+            }
 
-            //// パイロットが乗っていなければ常に使用可能と判定
-            //if (CountPilot() == 0)
-            //{
-            //    IsWeaponAvailableRet = true;
-            //    return IsWeaponAvailableRet;
-            //}
+            // ステータス表示では必要技能だけ満たしていればＯＫ
+            if (ref_mode == "インターミッション" || string.IsNullOrEmpty(ref_mode))
+            {
+                return true;
+            }
 
-            //// 必要技能＆必要条件
-            //if (ref_mode != "必要技能無視")
-            //{
-            //    if (!IsWeaponMastered(w))
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
+            {
+                var p = Unit.MainPilot();
+                // 必要気力
+                if (UpdatedWeaponData.NecessaryMorale > 0)
+                {
+                    if (p.Morale < UpdatedWeaponData.NecessaryMorale)
+                    {
+                        return false;
+                    }
+                }
 
-            //    if (!IsWeaponEnabled(w))
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
+                // 霊力消費攻撃
+                if (GeneralLib.InStrNotNest(WeaponClass(), "霊") > 0)
+                {
+                    if (p.Plana < WeaponLevel("霊") * 5d)
+                    {
+                        return false;
+                    }
+                }
+                else if (GeneralLib.InStrNotNest(WeaponClass(), "プ") > 0)
+                {
+                    if (p.Plana < WeaponLevel("プ") * 5d)
+                    {
+                        return false;
+                    }
+                }
+            }
 
-            //// ステータス表示では必要技能だけ満たしていればＯＫ
-            //if (ref_mode == "インターミッション" | string.IsNullOrEmpty(ref_mode))
-            //{
-            //    IsWeaponAvailableRet = true;
-            //    return IsWeaponAvailableRet;
-            //}
+            // 属性使用不能状態
+            if (Unit.ConditionLifetime("オーラ使用不能") > 0)
+            {
+                if (IsWeaponClassifiedAs("オ"))
+                {
+                    return false;
+                }
+            }
 
-            //{
-            //    var withBlock = MainPilot();
-            //    // 必要気力
-            //    if (wd.NecessaryMorale > 0)
-            //    {
-            //        if (withBlock.Morale < wd.NecessaryMorale)
-            //        {
-            //            return IsWeaponAvailableRet;
-            //        }
-            //    }
+            if (Unit.ConditionLifetime("超能力使用不能") > 0)
+            {
+                if (IsWeaponClassifiedAs("超"))
+                {
+                    return false;
+                }
+            }
 
-            //    // 霊力消費攻撃
-            //    string argstring2 = "霊";
-            //    string argstring21 = "プ";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring2) > 0)
-            //    {
-            //        string argattr = "霊";
-            //        if (withBlock.Plana < WeaponLevel(argattr) * 5d)
-            //        {
-            //            return IsWeaponAvailableRet;
-            //        }
-            //    }
-            //    else if (GeneralLib.InStrNotNest(wclass, argstring21) > 0)
-            //    {
-            //        string argattr1 = "プ";
-            //        if (withBlock.Plana < WeaponLevel(argattr1) * 5d)
-            //        {
-            //            return IsWeaponAvailableRet;
-            //        }
-            //    }
-            //}
+            if (Unit.ConditionLifetime("同調率使用不能") > 0)
+            {
+                if (IsWeaponClassifiedAs("シ"))
+                {
+                    return false;
+                }
+            }
 
-            //// 属性使用不能状態
-            //object argIndex1 = "オーラ使用不能";
-            //if (ConditionLifetime(argIndex1) > 0)
-            //{
-            //    string argattr2 = "オ";
-            //    if (IsWeaponClassifiedAs(argattr2))
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
+            if (Unit.ConditionLifetime("超感覚使用不能") > 0)
+            {
+                if (IsWeaponClassifiedAs("サ"))
+                {
+                    return false;
+                }
+            }
 
-            //object argIndex2 = "超能力使用不能";
-            //if (ConditionLifetime(argIndex2) > 0)
-            //{
-            //    string argattr3 = "超";
-            //    if (IsWeaponClassifiedAs(argattr3))
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
+            if (Unit.ConditionLifetime("知覚強化使用不能") > 0)
+            {
+                if (IsWeaponClassifiedAs("サ"))
+                {
+                    return false;
+                }
+            }
 
-            //object argIndex3 = "同調率使用不能";
-            //if (ConditionLifetime(argIndex3) > 0)
-            //{
-            //    string argattr4 = "シ";
-            //    if (IsWeaponClassifiedAs(argattr4))
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
+            if (Unit.ConditionLifetime("霊力使用不能") > 0)
+            {
+                if (IsWeaponClassifiedAs("霊"))
+                {
+                    return false;
+                }
+            }
 
-            //object argIndex4 = "超感覚使用不能";
-            //if (ConditionLifetime(argIndex4) > 0)
-            //{
-            //    string argattr5 = "サ";
-            //    if (IsWeaponClassifiedAs(argattr5))
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
+            if (Unit.ConditionLifetime("術使用不能") > 0)
+            {
+                if (IsWeaponClassifiedAs("術"))
+                {
+                    return false;
+                }
+            }
 
-            //object argIndex5 = "知覚強化使用不能";
-            //if (ConditionLifetime(argIndex5) > 0)
-            //{
-            //    string argattr6 = "サ";
-            //    if (IsWeaponClassifiedAs(argattr6))
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
+            if (Unit.ConditionLifetime("技使用不能") > 0)
+            {
+                if (IsWeaponClassifiedAs("技"))
+                {
+                    return false;
+                }
+            }
 
-            //object argIndex6 = "霊力使用不能";
-            //if (ConditionLifetime(argIndex6) > 0)
-            //{
-            //    string argattr7 = "霊";
-            //    if (IsWeaponClassifiedAs(argattr7))
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
+            foreach (var condition in Unit.Conditions.Where(x => x.Name.EndsWith("属性使用不能")))
+            {
+                if (GeneralLib.InStrNotNest(WeaponClass(), condition.Name.Replace("属性使用不能", "")) > 0)
+                {
+                    return false;
+                }
+            }
 
-            //object argIndex7 = "術使用不能";
-            //if (ConditionLifetime(argIndex7) > 0)
-            //{
-            //    string argattr8 = "術";
-            //    if (IsWeaponClassifiedAs(argattr8))
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
+            // 弾数が足りるか
+            if (UpdatedWeaponData.Bullet > 0)
+            {
+                if (Bullet() < 1)
+                {
+                    return false;
+                }
+            }
 
-            //object argIndex8 = "技使用不能";
-            //if (ConditionLifetime(argIndex8) > 0)
-            //{
-            //    string argattr9 = "技";
-            //    if (IsWeaponClassifiedAs(argattr9))
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
+            // ＥＮが足りるか
+            if (UpdatedWeaponData.ENConsumption > 0)
+            {
+                if (Unit.EN < WeaponENConsumption())
+                {
+                    return false;
+                }
+            }
 
-            //var loopTo = CountCondition();
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    string localCondition3() { object argIndex1 = i; var ret = Condition(argIndex1); return ret; }
+            // お金が足りるか……
+            if (Unit.Party == "味方")
+            {
+                if (GeneralLib.InStrNotNest(WeaponClass(), "銭") > 0)
+                {
+                    if (SRC.Money < GeneralLib.MaxLng((int)WeaponLevel("銭"), 1) * Unit.Value / 10)
+                    {
+                        return false;
+                    }
+                }
+            }
 
-            //    if (Strings.Len(localCondition3()) > 6)
-            //    {
-            //        string localCondition2() { object argIndex1 = i; var ret = Condition(argIndex1); return ret; }
+            // 攻撃不能？
+            if (ref_mode != "ステータス")
+            {
+                if (Unit.IsConditionSatisfied("攻撃不能"))
+                {
+                    return false;
+                }
+            }
 
-            //        if (Strings.Right(localCondition2(), 6) == "属性使用不能")
-            //        {
-            //            string localCondition() { object argIndex1 = i; var ret = Condition(argIndex1); return ret; }
+            if (Unit.Area == "地中")
+            {
+                return false;
+            }
 
-            //            string localCondition1() { object argIndex1 = i; var ret = Condition(argIndex1); return ret; }
+            // 移動不能時には移動型マップ攻撃は使用不能
+            if (Unit.IsConditionSatisfied("移動不能"))
+            {
+                if (GeneralLib.InStrNotNest(WeaponClass(), "Ｍ移") > 0)
+                {
+                    return false;
+                }
+            }
 
-            //            string argstring1 = WeaponClass(w);
-            //            string argstring22 = Strings.Left(localCondition(), Strings.Len(localCondition1()) - 6);
-            //            if (GeneralLib.InStrNotNest(argstring1, argstring22) > 0)
-            //            {
-            //                return IsWeaponAvailableRet;
-            //            }
-            //        }
-            //    }
-            //}
+            // 術および音は沈黙状態では使用不能
+            if (Unit.IsConditionSatisfied("沈黙"))
+            {
+                if (IsSpellWeapon() || GeneralLib.InStrNotNest(WeaponClass(), "音") > 0)
+                {
+                    return false;
+                }
+            }
 
-            //// 弾数が足りるか
-            //if (wd.Bullet > 0)
-            //{
-            //    if (Bullet(w) < 1)
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
+            // 合体技の処理
+            if (GeneralLib.InStrNotNest(WeaponClass(), "合") > 0)
+            {
+                if (!IsCombinationAttackAvailable())
+                {
+                    return false;
+                }
+            }
 
-            //// ＥＮが足りるか
-            //if (wd.ENConsumption > 0)
-            //{
-            //    if (EN < WeaponENConsumption(w))
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
+            // 変形技の場合は今いる地形で変形できる必要あり
+            if (GeneralLib.InStrNotNest(WeaponClass(), "変") > 0)
+            {
+                if (Unit.IsConditionSatisfied("形態固定"))
+                {
+                    return false;
+                }
 
-            //// お金が足りるか……
-            //if (Party == "味方")
-            //{
-            //    string argstring23 = "銭";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring23) > 0)
-            //    {
-            //        string argattr10 = "銭";
-            //        if (SRC.Money < GeneralLib.MaxLng(WeaponLevel(argattr10), 1) * Value / 10)
-            //        {
-            //            return IsWeaponAvailableRet;
-            //        }
-            //    }
-            //}
+                if (Unit.IsConditionSatisfied("機体固定"))
+                {
+                    return false;
+                }
 
-            //// 攻撃不能？
-            //if (ref_mode != "ステータス")
-            //{
-            //    object argIndex9 = "攻撃不能";
-            //    if (IsConditionSatisfied(argIndex9))
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
+                // XXX 変形技が妥当に定義されていなかった場合
+                if (Unit.IsFeatureAvailable("変形技"))
+                {
+                    foreach (var feature in Unit.Features
+                        .Where(x => x.Name == "変形技")
+                        .Where(x => x.DataL.FirstOrDefault() == UpdatedWeaponData.Name))
+                    {
+                        if (!Unit.OtherForm(feature.DataL.Skip(1).FirstOrDefault()).IsAbleToEnter(Unit.x, Unit.y))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else if (Unit.IsFeatureAvailable("ノーマルモード"))
+                {
+                    if (!Unit.OtherForm(GeneralLib.LIndex(Unit.FeatureData("ノーマルモード"), 1)).IsAbleToEnter(Unit.x, Unit.y))
+                    {
+                        return false;
+                    }
+                }
+            }
 
-            //if (Area == "地中")
-            //{
-            //    return IsWeaponAvailableRet;
-            //}
+            // 瀕死時限定
+            if (GeneralLib.InStrNotNest(WeaponClass(), "瀕") > 0)
+            {
+                if (Unit.HP > Unit.MaxHP / 4)
+                {
+                    return false;
+                }
+            }
 
-            //// 移動不能時には移動型マップ攻撃は使用不能
-            //object argIndex10 = "移動不能";
-            //if (IsConditionSatisfied(argIndex10))
-            //{
-            //    string argstring24 = "Ｍ移";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring24) > 0)
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
+            // 自動チャージ攻撃を再充填中
+            if (Unit.IsConditionSatisfied(WeaponNickname() + "充填中"))
+            {
+                return false;
+            }
+            // 共有武器＆アビリティが充填中の場合も使用不可
+            if (GeneralLib.InStrNotNest(WeaponClass(), "共") > 0)
+            {
+                int lv = (int)WeaponLevel("共");
+                if (Unit.Weapons
+                    .Where(x => x.IsWeaponClassifiedAs("共"))
+                    .Where(x => x.WeaponLevel("共") == lv)
+                    .Where(x => Unit.IsConditionSatisfied(x.WeaponNickname() + "充填中"))
+                    .Any())
+                {
+                    return false;
+                }
 
-            //// 術および音は沈黙状態では使用不能
-            //object argIndex11 = "沈黙";
-            //if (IsConditionSatisfied(argIndex11))
-            //{
-            //    string argstring25 = "音";
-            //    if (IsSpellWeapon(w) | GeneralLib.InStrNotNest(wclass, argstring25) > 0)
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
+                // TODO Impl アビリティ
+                //if (Unit.AbilityDatas
+                //    .Where(x => x.IsAbilityClassifiedAs("共"))
+                //    .Where(x => x.AbilityLevel("共") == lv)
+                //    .Where(x => Unit.IsConditionSatisfied(x.AbilityNickname() + "充填中"))
+                //    .Any())
+                //{
+                //    return false;
+                //}
+            }
 
-            //// 合体技の処理
-            //string argstring26 = "合";
-            //if (GeneralLib.InStrNotNest(wclass, argstring26) > 0)
-            //{
-            //    if (!IsCombinationAttackAvailable(w))
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
+            // 能力コピー
+            if (GeneralLib.InStrNotNest(WeaponClass(), "写") > 0
+                || GeneralLib.InStrNotNest(WeaponClass(), "化") > 0)
+            {
+                if (Unit.IsFeatureAvailable("ノーマルモード"))
+                {
+                    // 既に変身済みの場合はコピー出来ない
+                    return false;
+                }
+            }
 
-            //// 変形技の場合は今いる地形で変形できる必要あり
-            //string argstring27 = "変";
-            //if (GeneralLib.InStrNotNest(wclass, argstring27) > 0)
-            //{
-            //    string argfname = "変形技";
-            //    string argfname1 = "ノーマルモード";
-            //    if (IsFeatureAvailable(argfname))
-            //    {
-            //        var loopTo1 = CountFeature();
-            //        for (i = 1; i <= loopTo1; i++)
-            //        {
-            //            string localFeature() { object argIndex1 = i; var ret = Feature(argIndex1); return ret; }
+            // 使用禁止
+            if (GeneralLib.InStrNotNest(WeaponClass(), "禁") > 0)
+            {
+                return false;
+            }
 
-            //            string localFeatureData1() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
+            // チャージ判定であればここまででＯＫ
+            if (ref_mode == "チャージ")
+            {
+                return true;
+            }
 
-            //            string localLIndex1() { string arglist = hs333745e4b9954fad9f002aac9fe60516(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
+            // チャージ式攻撃
+            if (GeneralLib.InStrNotNest(WeaponClass(), "Ｃ") > 0)
+            {
+                if (!Unit.IsConditionSatisfied("チャージ完了"))
+                {
+                    return false;
+                }
+            }
 
-            //            if (localFeature() == "変形技" & (localLIndex1() ?? "") == (wd.Name ?? ""))
-            //            {
-            //                string localFeatureData() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
+            if (ref_mode == "ステータス")
+            {
+                return true;
+            }
 
-            //                string localLIndex() { string arglist = hsabc0da5e677a47f9bc7fb2c4e22fffab(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+            // 反撃かどうかの判定
+            // 自軍のフェイズでなければ反撃時である
+            if ((Unit.Party ?? "") != (SRC.Stage ?? ""))
+            {
+                // 反撃ではマップ攻撃、合体技は使用できない
+                if (GeneralLib.InStrNotNest(WeaponClass(), "Ｍ") > 0
+                    || GeneralLib.InStrNotNest(WeaponClass(), "合") > 0)
+                {
+                    return false;
+                }
 
-            //                Unit localOtherForm() { object argIndex1 = (object)hs70465cd27baa4b1bac8f45eec4036bb3(); var ret = OtherForm(argIndex1); return ret; }
+                // 攻撃専用武器
+                if (GeneralLib.InStrNotNest(WeaponClass(), "攻") > 0)
+                {
+                    var loopTo4 = Strings.Len(WeaponClass());
+                    for (var i = 1; i <= loopTo4; i++)
+                    {
+                        if (Strings.Mid(WeaponClass(), i, 1) == "攻")
+                        {
+                            if (i == 1)
+                            {
+                                return false;
+                            }
 
-            //                if (!localOtherForm().IsAbleToEnter(x, y))
-            //                {
-            //                    return IsWeaponAvailableRet;
-            //                }
-            //            }
-            //        }
-            //    }
-            //    else if (IsFeatureAvailable(argfname1))
-            //    {
-            //        string localLIndex2() { object argIndex1 = "ノーマルモード"; string arglist = FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
+                            if (Strings.Mid(WeaponClass(), i - 1, 1) != "低")
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // 反撃専用攻撃
+                if (GeneralLib.InStrNotNest(WeaponClass(), "反") > 0)
+                {
+                    return false;
+                }
+            }
 
-            //        Unit localOtherForm1() { object argIndex1 = (object)hs8f54e202dcbe4b6290740ebc209beb99(); var ret = OtherForm(argIndex1); return ret; }
+            // 移動前か後か……
+            if (ref_mode == "移動前"
+                || ref_mode == "必要技能無視"
+                || !ReferenceEquals(Commands.SelectedUnit, Unit))
+            {
+                return true;
+            }
 
-            //        if (!localOtherForm1().IsAbleToEnter(x, y))
-            //        {
-            //            return IsWeaponAvailableRet;
-            //        }
-            //    }
-
-            //    object argIndex12 = "形態固定";
-            //    if (IsConditionSatisfied(argIndex12))
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-
-            //    object argIndex13 = "機体固定";
-            //    if (IsConditionSatisfied(argIndex13))
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
-
-            //// 瀕死時限定
-            //string argstring28 = "瀕";
-            //if (GeneralLib.InStrNotNest(wclass, argstring28) > 0)
-            //{
-            //    if (HP > MaxHP / 4)
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
-
-            //// 自動チャージ攻撃を再充填中
-            //object argIndex14 = WeaponNickname(w) + "充填中";
-            //if (IsConditionSatisfied(argIndex14))
-            //{
-            //    return IsWeaponAvailableRet;
-            //}
-            //// 共有武器＆アビリティが充填中の場合も使用不可
-            //int lv;
-            //string argstring29 = "共";
-            //if (GeneralLib.InStrNotNest(wclass, argstring29) > 0)
-            //{
-            //    string argattr11 = "共";
-            //    lv = WeaponLevel(argattr11);
-            //    var loopTo2 = CountWeapon();
-            //    for (i = 1; i <= loopTo2; i++)
-            //    {
-            //        string argattr13 = "共";
-            //        if (IsWeaponClassifiedAs(i, argattr13))
-            //        {
-            //            string argattr12 = "共";
-            //            if (lv == WeaponLevel(i, argattr12))
-            //            {
-            //                object argIndex15 = WeaponNickname(i) + "充填中";
-            //                if (IsConditionSatisfied(argIndex15))
-            //                {
-            //                    return IsWeaponAvailableRet;
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    var loopTo3 = CountAbility();
-            //    for (i = 1; i <= loopTo3; i++)
-            //    {
-            //        string argattr15 = "共";
-            //        if (IsAbilityClassifiedAs(i, argattr15))
-            //        {
-            //            string argattr14 = "共";
-            //            if (lv == AbilityLevel(i, argattr14))
-            //            {
-            //                object argIndex16 = AbilityNickname(i) + "充填中";
-            //                if (IsConditionSatisfied(argIndex16))
-            //                {
-            //                    return IsWeaponAvailableRet;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// 能力コピー
-            //string argstring210 = "写";
-            //string argstring211 = "化";
-            //if (GeneralLib.InStrNotNest(wclass, argstring210) > 0 | GeneralLib.InStrNotNest(wclass, argstring211) > 0)
-            //{
-            //    string argfname2 = "ノーマルモード";
-            //    if (IsFeatureAvailable(argfname2))
-            //    {
-            //        // 既に変身済みの場合はコピー出来ない
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
-
-            //// 使用禁止
-            //string argstring212 = "禁";
-            //if (GeneralLib.InStrNotNest(wclass, argstring212) > 0)
-            //{
-            //    return IsWeaponAvailableRet;
-            //}
-
-            //// チャージ判定であればここまででＯＫ
-            //if (ref_mode == "チャージ")
-            //{
-            //    IsWeaponAvailableRet = true;
-            //    return IsWeaponAvailableRet;
-            //}
-
-            //// チャージ式攻撃
-            //string argstring213 = "Ｃ";
-            //if (GeneralLib.InStrNotNest(wclass, argstring213) > 0)
-            //{
-            //    object argIndex17 = "チャージ完了";
-            //    if (!IsConditionSatisfied(argIndex17))
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
-
-            //if (ref_mode == "ステータス")
-            //{
-            //    IsWeaponAvailableRet = true;
-            //    return IsWeaponAvailableRet;
-            //}
-
-            //// 反撃かどうかの判定
-            //// 自軍のフェイズでなければ反撃時である
-            //if ((Party ?? "") != (SRC.Stage ?? ""))
-            //{
-            //    // 反撃ではマップ攻撃、合体技は使用できない
-            //    string argstring214 = "Ｍ";
-            //    string argstring215 = "合";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring214) > 0 | GeneralLib.InStrNotNest(wclass, argstring215) > 0)
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-
-            //    // 攻撃専用武器
-            //    string argstring216 = "攻";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring216) > 0)
-            //    {
-            //        var loopTo4 = Strings.Len(wclass);
-            //        for (i = 1; i <= loopTo4; i++)
-            //        {
-            //            if (Strings.Mid(wclass, i, 1) == "攻")
-            //            {
-            //                if (i == 1)
-            //                {
-            //                    return IsWeaponAvailableRet;
-            //                }
-
-            //                if (Strings.Mid(wclass, i - 1, 1) != "低")
-            //                {
-            //                    return IsWeaponAvailableRet;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    // 反撃専用攻撃
-            //    string argstring217 = "反";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring217) > 0)
-            //    {
-            //        return IsWeaponAvailableRet;
-            //    }
-            //}
-
-            //// 移動前か後か……
-            //if (ref_mode == "移動前" | ref_mode == "必要技能無視" | !ReferenceEquals(Commands.SelectedUnit, this))
-            //{
-            //    IsWeaponAvailableRet = true;
-            //    return IsWeaponAvailableRet;
-            //}
-
-            //// 移動後の場合
-            //string argsptype = "全武器移動後使用可能";
-            //string argstring220 = "Ｍ";
-            //if (IsUnderSpecialPowerEffect(argsptype) & !(GeneralLib.InStrNotNest(wclass, argstring220) > 0))
-            //{
-            //    IsWeaponAvailableRet = true;
-            //}
-            //else if (WeaponMaxRange(w) > 1)
-            //{
-            //    string argstring219 = "Ｐ";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring219) > 0)
-            //    {
-            //        IsWeaponAvailableRet = true;
-            //    }
-            //    else
-            //    {
-            //        IsWeaponAvailableRet = false;
-            //    }
-            //}
-            //else
-            //{
-            //    string argstring218 = "Ｑ";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring218) > 0)
-            //    {
-            //        IsWeaponAvailableRet = false;
-            //    }
-            //    else
-            //    {
-            //        IsWeaponAvailableRet = true;
-            //    }
-            //}
-
-            //return IsWeaponAvailableRet;
+            // 移動後の場合
+            if (Unit.IsUnderSpecialPowerEffect("全武器移動後使用可能")
+                && !(GeneralLib.InStrNotNest(WeaponClass(), "Ｍ") > 0))
+            {
+                return true;
+            }
+            else if (WeaponMaxRange() > 1)
+            {
+                if (GeneralLib.InStrNotNest(WeaponClass(), "Ｐ") > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (GeneralLib.InStrNotNest(WeaponClass(), "Ｑ") > 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
         }
 
         // 武器 w の使用技能を満たしているか。
@@ -2239,7 +2116,7 @@ namespace SRCCore.Units
             //                        string argstring2 = "武";
             //                        string argstring21 = "突";
             //                        string argstring22 = "接";
-            //                        if (Conversions.ToBoolean(GeneralLib.InStrNotNest(wclass, argstring2) | GeneralLib.InStrNotNest(wclass, argstring21) | GeneralLib.InStrNotNest(wclass, argstring22)))
+            //                        if (Conversions.ToBoolean(GeneralLib.InStrNotNest(WeaponClass(), argstring2) | GeneralLib.InStrNotNest(WeaponClass(), argstring21) | GeneralLib.InStrNotNest(WeaponClass(), argstring22)))
             //                        {
             //                            string argattr3 = "Ｊ";
             //                            uadaption = get_AdaptionMod(1, WeaponLevel(argattr3));
@@ -2374,7 +2251,7 @@ namespace SRCCore.Units
             //    var withBlock3 = t;
             //    // 散属性武器は指定したレベル以上離れるほど命中がアップ
             //    string argstring23 = "散";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring23) > 0)
+            //    if (GeneralLib.InStrNotNest(WeaponClass(), argstring23) > 0)
             //    {
             //        switch ((Math.Abs((x - withBlock3.x)) + Math.Abs((y - withBlock3.y))))
             //        {
@@ -2416,7 +2293,7 @@ namespace SRCCore.Units
             //    string argstring211 = "武";
             //    string argstring212 = "突";
             //    string argstring213 = "接";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring27) == 0 & GeneralLib.InStrNotNest(wclass, argstring28) == 0 & GeneralLib.InStrNotNest(wclass, argstring29) == 0 & GeneralLib.InStrNotNest(wclass, argstring210) == 0 & GeneralLib.InStrNotNest(wclass, argstring211) == 0 & GeneralLib.InStrNotNest(wclass, argstring212) == 0 & GeneralLib.InStrNotNest(wclass, argstring213) == 0)
+            //    if (GeneralLib.InStrNotNest(WeaponClass(), argstring27) == 0 & GeneralLib.InStrNotNest(WeaponClass(), argstring28) == 0 & GeneralLib.InStrNotNest(WeaponClass(), argstring29) == 0 & GeneralLib.InStrNotNest(WeaponClass(), argstring210) == 0 & GeneralLib.InStrNotNest(WeaponClass(), argstring211) == 0 & GeneralLib.InStrNotNest(WeaponClass(), argstring212) == 0 & GeneralLib.InStrNotNest(WeaponClass(), argstring213) == 0)
             //    {
             //        // 距離修正
             //        string argoname3 = "距離修正";
@@ -2424,7 +2301,7 @@ namespace SRCCore.Units
             //        {
             //            string argstring24 = "Ｈ";
             //            string argstring25 = "Ｍ";
-            //            if (GeneralLib.InStrNotNest(wclass, argstring24) == 0 & GeneralLib.InStrNotNest(wclass, argstring25) == 0)
+            //            if (GeneralLib.InStrNotNest(WeaponClass(), argstring24) == 0 & GeneralLib.InStrNotNest(WeaponClass(), argstring25) == 0)
             //            {
             //                string argoname1 = "大型マップ";
             //                string argoname2 = "小型マップ";
@@ -2577,7 +2454,7 @@ namespace SRCCore.Units
             //        }
             //        // ホーミング攻撃はＥＣＭの影響を強く受ける
             //        string argstring26 = "Ｈ";
-            //        if (GeneralLib.InStrNotNest(wclass, argstring26) > 0)
+            //        if (GeneralLib.InStrNotNest(WeaponClass(), argstring26) > 0)
             //        {
             //            prob = ((long)(prob * (100d - 10d * GeneralLib.MaxDbl(ecm_lv - eccm_lv, 0d))) / 100L);
             //        }
@@ -2613,7 +2490,7 @@ namespace SRCCore.Units
             //        string argstring216 = "武";
             //        string argstring217 = "突";
             //        string argstring218 = "接";
-            //        if (Conversions.ToBoolean(GeneralLib.InStrNotNest(wclass, argstring216) | GeneralLib.InStrNotNest(wclass, argstring217) | GeneralLib.InStrNotNest(wclass, argstring218)))
+            //        if (Conversions.ToBoolean(GeneralLib.InStrNotNest(WeaponClass(), argstring216) | GeneralLib.InStrNotNest(WeaponClass(), argstring217) | GeneralLib.InStrNotNest(WeaponClass(), argstring218)))
             //        {
             //            // ジャンプ攻撃
             //            string argoname4 = "地形適応命中率修正";
@@ -2624,7 +2501,7 @@ namespace SRCCore.Units
             //                {
             //                    uad = get_Adaption(1);
             //                    string argstring214 = "Ｊ";
-            //                    if (GeneralLib.InStrNotNest(wclass, argstring214) > 0)
+            //                    if (GeneralLib.InStrNotNest(WeaponClass(), argstring214) > 0)
             //                    {
             //                        string argattr4 = "Ｊ";
             //                        uad = GeneralLib.MinLng((uad + WeaponLevel(argattr4)), 4);
@@ -2642,7 +2519,7 @@ namespace SRCCore.Units
             //            if (Expression.IsOptionDefined(argoname5))
             //            {
             //                string argstring215 = "空";
-            //                if (GeneralLib.InStrNotNest(wclass, argstring215) == 0)
+            //                if (GeneralLib.InStrNotNest(WeaponClass(), argstring215) == 0)
             //                {
             //                    prob = (0.7d * prob);
             //                }
@@ -2731,7 +2608,7 @@ namespace SRCCore.Units
             //    // ステータス異常による修正
             //    string argstring219 = "Ｈ";
             //    string argstring220 = "追";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring219) == 0 & GeneralLib.InStrNotNest(wclass, argstring220) == 0)
+            //    if (GeneralLib.InStrNotNest(WeaponClass(), argstring219) == 0 & GeneralLib.InStrNotNest(WeaponClass(), argstring220) == 0)
             //    {
             //        object argIndex22 = "撹乱";
             //        if (IsConditionSatisfied(argIndex22))
@@ -3367,7 +3244,7 @@ namespace SRCCore.Units
 
             //    // ダメージ固定武器の場合は装甲と地形＆距離修正を無視
             //    string argstring2 = "固";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring2) > 0)
+            //    if (GeneralLib.InStrNotNest(WeaponClass(), argstring2) > 0)
             //    {
             //        goto SkipDamageMod;
             //    }
@@ -3429,7 +3306,7 @@ namespace SRCCore.Units
 
             //    // 散属性武器は離れるほどダメージダウン
             //    string argstring21 = "散";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring21) > 0)
+            //    if (GeneralLib.InStrNotNest(WeaponClass(), argstring21) > 0)
             //    {
             //        switch ((Math.Abs((x - t.x)) + Math.Abs((y - t.y))))
             //        {
@@ -3473,7 +3350,7 @@ namespace SRCCore.Units
             //        string argstring24 = "突";
             //        string argstring25 = "接";
             //        string argstring26 = "爆";
-            //        if (GeneralLib.InStrNotNest(wclass, argstring22) == 0 & GeneralLib.InStrNotNest(wclass, argstring23) == 0 & GeneralLib.InStrNotNest(wclass, argstring24) == 0 & GeneralLib.InStrNotNest(wclass, argstring25) == 0 & GeneralLib.InStrNotNest(wclass, argstring26) == 0)
+            //        if (GeneralLib.InStrNotNest(WeaponClass(), argstring22) == 0 & GeneralLib.InStrNotNest(WeaponClass(), argstring23) == 0 & GeneralLib.InStrNotNest(WeaponClass(), argstring24) == 0 & GeneralLib.InStrNotNest(WeaponClass(), argstring25) == 0 & GeneralLib.InStrNotNest(WeaponClass(), argstring26) == 0)
             //        {
             //            string argoname4 = "大型マップ";
             //            string argoname5 = "小型マップ";
@@ -3603,7 +3480,7 @@ namespace SRCCore.Units
 
             //    // 封印攻撃は弱点もしくは有効を持つユニット以外には効かない
             //    string argstring27 = "封";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring27) > 0)
+            //    if (GeneralLib.InStrNotNest(WeaponClass(), argstring27) > 0)
             //    {
             //        buf = t.strWeakness + t.strEffective;
             //        var loopTo2 = Strings.Len(buf);
@@ -3613,7 +3490,7 @@ namespace SRCCore.Units
             //            ch = GeneralLib.GetClassBundle(buf, i);
             //            if (ch != "物" & ch != "魔")
             //            {
-            //                if (GeneralLib.InStrNotNest(wclass, ch) > 0)
+            //                if (GeneralLib.InStrNotNest(WeaponClass(), ch) > 0)
             //                {
             //                    break;
             //                }
@@ -3629,7 +3506,7 @@ namespace SRCCore.Units
 
             //    // 限定攻撃は指定属性に対して弱点もしくは有効を持つユニット以外には効かない
             //    string argstring28 = "限";
-            //    idx = GeneralLib.InStrNotNest(wclass, argstring28);
+            //    idx = GeneralLib.InStrNotNest(WeaponClass(), argstring28);
             //    if (idx > 0)
             //    {
             //        buf = t.strWeakness + t.strEffective;
@@ -3640,7 +3517,7 @@ namespace SRCCore.Units
             //            ch = GeneralLib.GetClassBundle(buf, i);
             //            if (ch != "物" & ch != "魔")
             //            {
-            //                if (GeneralLib.InStrNotNest(wclass, ch) > idx)
+            //                if (GeneralLib.InStrNotNest(WeaponClass(), ch) > idx)
             //                {
             //                    break;
             //                }
@@ -3690,7 +3567,7 @@ namespace SRCCore.Units
             //    if (is_true_value | mpskill >= 140)
             //    {
             //        string argstring29 = "視";
-            //        if (GeneralLib.InStrNotNest(wclass, argstring29) > 0)
+            //        if (GeneralLib.InStrNotNest(WeaponClass(), argstring29) > 0)
             //        {
             //            object argIndex14 = "盲目";
             //            if (t.IsConditionSatisfied(argIndex14))
@@ -3705,7 +3582,7 @@ namespace SRCCore.Units
             //    if (is_true_value | mpskill >= 140)
             //    {
             //        string argstring210 = "精";
-            //        if (GeneralLib.InStrNotNest(wclass, argstring210) > 0)
+            //        if (GeneralLib.InStrNotNest(WeaponClass(), argstring210) > 0)
             //        {
             //            if (t.MainPilot().Personality == "機械")
             //            {
@@ -3717,7 +3594,7 @@ namespace SRCCore.Units
 
             //    // 性別限定武器
             //    string argstring211 = "♂";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring211) > 0)
+            //    if (GeneralLib.InStrNotNest(WeaponClass(), argstring211) > 0)
             //    {
             //        if (t.MainPilot().Sex != "男性")
             //        {
@@ -3727,7 +3604,7 @@ namespace SRCCore.Units
             //    }
 
             //    string argstring212 = "♀";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring212) > 0)
+            //    if (GeneralLib.InStrNotNest(WeaponClass(), argstring212) > 0)
             //    {
             //        if (t.MainPilot().Sex != "女性")
             //        {
@@ -3789,7 +3666,7 @@ namespace SRCCore.Units
             //            for (i = 1; i <= loopTo4; i++)
             //            {
             //                string argstring213 = Strings.Mid(sdata, i, 1);
-            //                if (GeneralLib.InStrNotNest(wclass, argstring213) > 0)
+            //                if (GeneralLib.InStrNotNest(WeaponClass(), argstring213) > 0)
             //                {
             //                    DamageRet = (1.2d * DamageRet);
             //                    break;
@@ -3807,7 +3684,7 @@ namespace SRCCore.Units
             //            for (i = 1; i <= loopTo5; i++)
             //            {
             //                string argstring214 = Strings.Mid(sdata, i, 1);
-            //                if (GeneralLib.InStrNotNest(wclass, argstring214) > 0)
+            //                if (GeneralLib.InStrNotNest(WeaponClass(), argstring214) > 0)
             //                {
             //                    DamageRet = (0.8d * DamageRet);
             //                    break;
@@ -4422,7 +4299,7 @@ namespace SRCCore.Units
 
             //    // 封印攻撃は弱点、有効を持つユニット以外には効かない
             //    string argstring2 = "封";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring2) > 0)
+            //    if (GeneralLib.InStrNotNest(WeaponClass(), argstring2) > 0)
             //    {
             //        buf = t.strWeakness + t.strEffective;
             //        var loopTo = Strings.Len(buf);
@@ -4432,7 +4309,7 @@ namespace SRCCore.Units
             //            c = GeneralLib.GetClassBundle(buf, i);
             //            if (c != "物" & c != "魔")
             //            {
-            //                if (GeneralLib.InStrNotNest(wclass, c) > 0)
+            //                if (GeneralLib.InStrNotNest(WeaponClass(), c) > 0)
             //                {
             //                    break;
             //                }
@@ -4448,7 +4325,7 @@ namespace SRCCore.Units
 
             //    // 限定攻撃は弱点、有効を持つユニット以外には効かない
             //    string argstring21 = "限";
-            //    idx = GeneralLib.InStrNotNest(wclass, argstring21);
+            //    idx = GeneralLib.InStrNotNest(WeaponClass(), argstring21);
             //    if (idx > 0)
             //    {
             //        buf = t.strWeakness + t.strEffective;
@@ -4459,7 +4336,7 @@ namespace SRCCore.Units
             //            c = GeneralLib.GetClassBundle(buf, i);
             //            if (c != "物" & c != "魔")
             //            {
-            //                if (GeneralLib.InStrNotNest(wclass, c) > idx)
+            //                if (GeneralLib.InStrNotNest(WeaponClass(), c) > idx)
             //                {
             //                    break;
             //                }
@@ -4475,7 +4352,7 @@ namespace SRCCore.Units
 
             //    // 特定レベル限定攻撃
             //    string argstring22 = "対";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring22) > 0)
+            //    if (GeneralLib.InStrNotNest(WeaponClass(), argstring22) > 0)
             //    {
             //        // UPGRADE_WARNING: Mod に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //        string argattr1 = "対";
@@ -4490,21 +4367,21 @@ namespace SRCCore.Units
             //    // 弱、効属性の指定属性に対しての防御特性を考慮する。
             //    buf = "";
             //    string argstring23 = "弱";
-            //    i = GeneralLib.InStrNotNest(wclass, argstring23);
+            //    i = GeneralLib.InStrNotNest(WeaponClass(), argstring23);
             //    while (i > 0)
             //    {
-            //        buf = buf + Strings.Mid(GeneralLib.GetClassBundle(wclass, i), 2);
+            //        buf = buf + Strings.Mid(GeneralLib.GetClassBundle(WeaponClass(), i), 2);
             //        string argstring24 = "弱";
-            //        i = GeneralLib.InStrNotNest(wclass, argstring24, (i + 1));
+            //        i = GeneralLib.InStrNotNest(WeaponClass(), argstring24, (i + 1));
             //    }
 
             //    string argstring25 = "効";
-            //    i = GeneralLib.InStrNotNest(wclass, argstring25);
+            //    i = GeneralLib.InStrNotNest(WeaponClass(), argstring25);
             //    while (i > 0)
             //    {
-            //        buf = buf + Strings.Mid(GeneralLib.GetClassBundle(wclass, i), 2);
+            //        buf = buf + Strings.Mid(GeneralLib.GetClassBundle(WeaponClass(), i), 2);
             //        string argstring26 = "効";
-            //        i = GeneralLib.InStrNotNest(wclass, argstring26, (i + 1));
+            //        i = GeneralLib.InStrNotNest(WeaponClass(), argstring26, (i + 1));
             //    }
 
             //    buf = buf + wclass;
@@ -4523,12 +4400,12 @@ namespace SRCCore.Units
             //    else if (t.Effective(buf))
             //    {
             //    }
-            //    else if (GeneralLib.InStrNotNest(wclass, argstring27) > 0)
+            //    else if (GeneralLib.InStrNotNest(WeaponClass(), argstring27) > 0)
             //    {
             //        CriticalProbabilityRet = 0;
             //        return CriticalProbabilityRet;
             //    }
-            //    else if (GeneralLib.InStrNotNest(wclass, argstring28) > 0)
+            //    else if (GeneralLib.InStrNotNest(WeaponClass(), argstring28) > 0)
             //    {
             //        CriticalProbabilityRet = 0;
             //        return CriticalProbabilityRet;
@@ -4553,7 +4430,7 @@ namespace SRCCore.Units
 
             //    // 盲目状態には視覚攻撃は効かない
             //    string argstring29 = "視";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring29) > 0)
+            //    if (GeneralLib.InStrNotNest(WeaponClass(), argstring29) > 0)
             //    {
             //        object argIndex22 = "盲目";
             //        if (t.IsConditionSatisfied(argIndex22))
@@ -4565,7 +4442,7 @@ namespace SRCCore.Units
 
             //    // 機械には精神攻撃は効かない
             //    string argstring210 = "精";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring210) > 0)
+            //    if (GeneralLib.InStrNotNest(WeaponClass(), argstring210) > 0)
             //    {
             //        if (t.MainPilot().Personality == "機械")
             //        {
@@ -4576,7 +4453,7 @@ namespace SRCCore.Units
 
             //    // 性別限定武器
             //    string argstring211 = "♂";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring211) > 0)
+            //    if (GeneralLib.InStrNotNest(WeaponClass(), argstring211) > 0)
             //    {
             //        if (t.MainPilot().Sex != "男性")
             //        {
@@ -4586,7 +4463,7 @@ namespace SRCCore.Units
             //    }
 
             //    string argstring212 = "♀";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring212) > 0)
+            //    if (GeneralLib.InStrNotNest(WeaponClass(), argstring212) > 0)
             //    {
             //        if (t.MainPilot().Sex != "女性")
             //        {
@@ -4683,14 +4560,14 @@ namespace SRCCore.Units
             // ダメージに修正を加える場合
             if (dmg_mod > 0d)
             {
-                if (GeneralLib.InStrNotNest(wclass, "殺") == 0)
+                if (GeneralLib.InStrNotNest(WeaponClass(), "殺") == 0)
                 {
                     dmg = (int)(dmg * dmg_mod);
                 }
             }
 
             // 抹殺攻撃は一撃で相手を倒せない限り効果がない
-            if (GeneralLib.InStrNotNest(wclass, "殺") > 0)
+            if (GeneralLib.InStrNotNest(WeaponClass(), "殺") > 0)
             {
                 if (t.HP > dmg)
                 {
@@ -4702,11 +4579,11 @@ namespace SRCCore.Units
             if (dmg <= 0)
             {
                 // 地形適応や封印武器、限定武器、性別限定武器、無効化、吸収が原因であれば期待値は0
-                if (WeaponAdaption(t.Area) == 0d 
-                    || GeneralLib.InStrNotNest(wclass, "封") > 0 
-                    || GeneralLib.InStrNotNest(wclass, "限") > 0 
-                    || GeneralLib.InStrNotNest(wclass, "♂") > 0 
-                    || GeneralLib.InStrNotNest(wclass, "♀") > 0 
+                if (WeaponAdaption(t.Area) == 0d
+                    || GeneralLib.InStrNotNest(WeaponClass(), "封") > 0
+                    || GeneralLib.InStrNotNest(WeaponClass(), "限") > 0
+                    || GeneralLib.InStrNotNest(WeaponClass(), "♂") > 0
+                    || GeneralLib.InStrNotNest(WeaponClass(), "♀") > 0
                     || t.Immune(wclass) | t.Absorb(wclass))
                 {
                     return ExpDamageRet;
@@ -4726,11 +4603,11 @@ namespace SRCCore.Units
             //// バリア無効化
             //string argstring27 = "無";
             //string argsptype = "防御能力無効化";
-            //if (GeneralLib.InStrNotNest(wclass, argstring27) > 0 | IsUnderSpecialPowerEffect(argsptype))
+            //if (GeneralLib.InStrNotNest(WeaponClass(), argstring27) > 0 | IsUnderSpecialPowerEffect(argsptype))
             //{
             //    // 抹殺攻撃は一撃で相手を倒せない限り効果がない
             //    string argstring26 = "殺";
-            //    if (GeneralLib.InStrNotNest(wclass, argstring26) > 0)
+            //    if (GeneralLib.InStrNotNest(WeaponClass(), argstring26) > 0)
             //    {
             //        if (t.HP > dmg)
             //        {
@@ -4748,7 +4625,7 @@ namespace SRCCore.Units
             //    if (!is_true_value & withBlock.TacticalTechnique() < 150)
             //    {
             //        // 抹殺攻撃は一撃で相手を倒せない限り効果がない
-            //        if (GeneralLib.InStrNotNest(wclass, "殺") > 0)
+            //        if (GeneralLib.InStrNotNest(WeaponClass(), "殺") > 0)
             //        {
             //            if (t.HP > dmg)
             //            {
@@ -4848,7 +4725,7 @@ namespace SRCCore.Units
             //                        string argstring29 = "武";
             //                        string argstring210 = "突";
             //                        string argstring211 = "接";
-            //                        if (GeneralLib.InStrNotNest(wclass, argstring29) > 0 | GeneralLib.InStrNotNest(wclass, argstring210) > 0 | GeneralLib.InStrNotNest(wclass, argstring211) > 0)
+            //                        if (GeneralLib.InStrNotNest(WeaponClass(), argstring29) > 0 | GeneralLib.InStrNotNest(WeaponClass(), argstring210) > 0 | GeneralLib.InStrNotNest(WeaponClass(), argstring211) > 0)
             //                        {
             //                            neautralize = true;
             //                        }
@@ -5081,7 +4958,7 @@ namespace SRCCore.Units
             //                        string argstring212 = "武";
             //                        string argstring213 = "突";
             //                        string argstring214 = "接";
-            //                        if (GeneralLib.InStrNotNest(wclass, argstring212) > 0 | GeneralLib.InStrNotNest(wclass, argstring213) > 0 | GeneralLib.InStrNotNest(wclass, argstring214) > 0)
+            //                        if (GeneralLib.InStrNotNest(WeaponClass(), argstring212) > 0 | GeneralLib.InStrNotNest(WeaponClass(), argstring213) > 0 | GeneralLib.InStrNotNest(WeaponClass(), argstring214) > 0)
             //                        {
             //                            neautralize = true;
             //                        }
@@ -5318,7 +5195,7 @@ namespace SRCCore.Units
             //                        string argstring215 = "武";
             //                        string argstring216 = "突";
             //                        string argstring217 = "接";
-            //                        if (GeneralLib.InStrNotNest(wclass, argstring215) > 0 | GeneralLib.InStrNotNest(wclass, argstring216) > 0 | GeneralLib.InStrNotNest(wclass, argstring217) > 0)
+            //                        if (GeneralLib.InStrNotNest(WeaponClass(), argstring215) > 0 | GeneralLib.InStrNotNest(WeaponClass(), argstring216) > 0 | GeneralLib.InStrNotNest(WeaponClass(), argstring217) > 0)
             //                        {
             //                            neautralize = true;
             //                        }
@@ -5466,7 +5343,7 @@ namespace SRCCore.Units
 
             //// 対ビーム用防御能力
             //string argstring218 = "Ｂ";
-            //if (GeneralLib.InStrNotNest(wclass, argstring218) > 0)
+            //if (GeneralLib.InStrNotNest(WeaponClass(), argstring218) > 0)
             //{
             //    // ビーム吸収
             //    string argfname = "ビーム吸収";
@@ -5479,7 +5356,7 @@ namespace SRCCore.Units
 
             //// 抹殺攻撃は一撃で相手を倒せる場合にのみ有効
             //string argstring219 = "殺";
-            //if (GeneralLib.InStrNotNest(wclass, argstring219) > 0)
+            //if (GeneralLib.InStrNotNest(WeaponClass(), argstring219) > 0)
             //{
             //    if (dmg < t.HP)
             //    {
@@ -5570,5 +5447,809 @@ namespace SRCCore.Units
             //}
         }
 
+        // 合体技のパートナーを探す
+        public void CombinationPartner(string ctype_Renamed, Unit[] partners, int tx = 0, int ty = 0, bool check_formation = false)
+        {
+            throw new NotImplementedException();
+            //Unit u;
+            //string uname;
+            //int j, i, k;
+            //int clevel = default, cnum = default;
+            //var clist = default(string);
+            //string cname;
+            //int cmorale, cen, cplana = default;
+            //int crange, loop_limit;
+
+            //// 正常な判断が可能？
+            //string argIndex1 = "混乱";
+            //if (IsConditionSatisfied(argIndex1))
+            //{
+            //    partners = new Unit[1];
+            //    return;
+            //}
+
+            //// 合体技のデータを調べておく
+            //if (ctype_Renamed == "武装")
+            //{
+            //    cname = Weapon(w).Name;
+            //    cen = WeaponENConsumption(w);
+            //    cmorale = Weapon(w).NecessaryMorale;
+            //    string argattr2 = "霊";
+            //    string argattr3 = "プ";
+            //    if (IsWeaponClassifiedAs(w, argattr2))
+            //    {
+            //        string argattr = "霊";
+            //        cplana = (5d * WeaponLevel(w, argattr));
+            //    }
+            //    else if (IsWeaponClassifiedAs(w, argattr3))
+            //    {
+            //        string argattr1 = "プ";
+            //        cplana = (5d * WeaponLevel(w, argattr1));
+            //    }
+
+            //    crange = WeaponMaxRange(w);
+            //}
+            //else
+            //{
+            //    cname = Ability(w).Name;
+            //    cen = AbilityENConsumption(w);
+            //    cmorale = Ability(w).NecessaryMorale;
+            //    string argattr6 = "霊";
+            //    string argattr7 = "プ";
+            //    if (IsAbilityClassifiedAs(w, argattr6))
+            //    {
+            //        string argattr4 = "霊";
+            //        cplana = (5d * AbilityLevel(w, argattr4));
+            //    }
+            //    else if (IsAbilityClassifiedAs(w, argattr7))
+            //    {
+            //        string argattr5 = "プ";
+            //        cplana = (5d * AbilityLevel(w, argattr5));
+            //    }
+
+            //    crange = AbilityMaxRange(w);
+            //}
+
+            //// ユニットの特殊能力「合体技」の検索
+            //var loopTo = CountFeature();
+            //for (i = 1; i <= loopTo; i++)
+            //{
+            //    string argIndex4 = i;
+            //    if (Feature(argIndex4) == "合体技")
+            //    {
+            //        string localFeatureData1() { string argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
+
+            //        string arglist1 = localFeatureData1();
+            //        if ((GeneralLib.LIndex(arglist1, 1) ?? "") == (cname ?? ""))
+            //        {
+            //            string argIndex3 = i;
+            //            if (IsFeatureLevelSpecified(argIndex3))
+            //            {
+            //                string argIndex2 = i;
+            //                clevel = FeatureLevel(argIndex2);
+            //            }
+            //            else
+            //            {
+            //                clevel = 0;
+            //            }
+
+            //            string localFeatureData() { string argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
+
+            //            string arglist = localFeatureData();
+            //            clist = GeneralLib.ListTail(arglist, 2);
+            //            cnum = GeneralLib.LLength(clist);
+            //            break;
+            //        }
+            //    }
+            //}
+
+            //if (i > CountFeature())
+            //{
+            //    partners = new Unit[1];
+            //    return;
+            //}
+
+            //// 出撃していない場合
+            //if (Status != "出撃" | string.IsNullOrEmpty(Map.MapFileName))
+            //{
+            //    // パートナーが仲間にいるだけでよい
+            //    var loopTo1 = cnum;
+            //    for (i = 1; i <= loopTo1; i++)
+            //    {
+            //        uname = GeneralLib.LIndex(clist, i);
+
+            //        // パートナーがユニット名で指定されている場合
+            //        string argIndex6 = uname;
+            //        if (SRC.UList.IsDefined(argIndex6))
+            //        {
+            //            string argIndex5 = uname;
+            //            {
+            //                var withBlock = SRC.UList.Item(argIndex5);
+            //                if (withBlock.Status == "出撃" | withBlock.Status == "待機")
+            //                {
+            //                    goto NextPartner;
+            //                }
+            //            }
+            //        }
+
+            //        // パートナーがパイロット名で指定されている場合
+            //        string argIndex7 = uname;
+            //        if (SRC.PList.IsDefined(argIndex7))
+            //        {
+            //            Pilot localItem1() { string argIndex1 = uname; var ret = SRC.PList.Item(argIndex1); return ret; }
+
+            //            Pilot localItem2() { string argIndex1 = uname; var ret = SRC.PList.Item(argIndex1); return ret; }
+
+            //            if (localItem2().Unit_Renamed is object)
+            //            {
+            //                Pilot localItem() { string argIndex1 = uname; var ret = SRC.PList.Item(argIndex1); return ret; }
+
+            //                {
+            //                    var withBlock1 = localItem().Unit_Renamed;
+            //                    if (withBlock1.Status == "出撃" | withBlock1.Status == "待機")
+            //                    {
+            //                        goto NextPartner;
+            //                    }
+            //                }
+            //            }
+            //        }
+
+            //        // パートナーが見つからなかった
+            //        partners = new Unit[1];
+            //        return;
+            //    NextPartner:
+            //        ;
+            //    }
+            //    // パートナーが全員仲間にいる
+            //    partners = new Unit[(cnum + 1)];
+            //    return;
+            //}
+
+            //// 合体技の基点の設定
+            //if (tx == 0)
+            //{
+            //    tx = x;
+            //}
+
+            //if (ty == 0)
+            //{
+            //    ty = y;
+            //}
+
+            //// パートナーの検索範囲を設定
+
+            //if (crange == 1)
+            //{
+            //    if (cnum >= 8)
+            //    {
+            //        // 射程１で８体合体以上の場合は２マス以内
+            //        loop_limit = 12;
+            //    }
+            //    else if (cnum >= 4)
+            //    {
+            //        // 射程１で４体合体以上の場合は斜め隣接可
+            //        loop_limit = 8;
+            //    }
+            //    else
+            //    {
+            //        // どれにも該当していなければ隣接のみ
+            //        loop_limit = 4;
+            //    }
+            //}
+            //else if (cnum >= 9)
+            //{
+            //    // 射程２以上で９体合体以上の場合は２マス以内
+            //    loop_limit = 12;
+            //}
+            //else if (cnum >= 5)
+            //{
+            //    // 射程２以上で５体合体以上の場合は斜め隣接可
+            //    loop_limit = 8;
+            //}
+            //else
+            //{
+            //    // どれにも該当していなければ隣接のみ
+            //    loop_limit = 4;
+            //}
+
+            //// 合体技斜め隣接可オプション
+            //string argoname = "合体技斜め隣接可";
+            //if (Expression.IsOptionDefined(argoname))
+            //{
+            //    if (loop_limit == 4)
+            //    {
+            //        loop_limit = 8;
+            //    }
+            //}
+
+            //partners = new Unit[1];
+            //var loopTo2 = cnum;
+            //for (i = 1; i <= loopTo2; i++)
+            //{
+            //    // パートナーの名称
+            //    uname = GeneralLib.LIndex(clist, i);
+            //    var loopTo3 = loop_limit;
+            //    for (j = 1; j <= loopTo3; j++)
+            //    {
+            //        // パートナーの検索位置設定
+            //        // UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+            //        u = null;
+            //        switch (j)
+            //        {
+            //            case 1:
+            //                {
+            //                    if (tx > 1)
+            //                    {
+            //                        u = Map.MapDataForUnit[tx - 1, ty];
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case 2:
+            //                {
+            //                    if (tx < Map.MapWidth)
+            //                    {
+            //                        u = Map.MapDataForUnit[tx + 1, ty];
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case 3:
+            //                {
+            //                    if (ty > 1)
+            //                    {
+            //                        u = Map.MapDataForUnit[tx, ty - 1];
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case 4:
+            //                {
+            //                    if (ty < Map.MapHeight)
+            //                    {
+            //                        u = Map.MapDataForUnit[tx, ty + 1];
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case 5:
+            //                {
+            //                    if (tx > 1 & ty > 1)
+            //                    {
+            //                        u = Map.MapDataForUnit[tx - 1, ty - 1];
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case 6:
+            //                {
+            //                    if (tx < Map.MapWidth & ty < Map.MapHeight)
+            //                    {
+            //                        u = Map.MapDataForUnit[tx + 1, ty + 1];
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case 7:
+            //                {
+            //                    if (tx > 1 & ty < Map.MapHeight)
+            //                    {
+            //                        u = Map.MapDataForUnit[tx - 1, ty + 1];
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case 8:
+            //                {
+            //                    if (tx < Map.MapWidth & ty > 1)
+            //                    {
+            //                        u = Map.MapDataForUnit[tx + 1, ty - 1];
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case 9:
+            //                {
+            //                    if (tx > 2)
+            //                    {
+            //                        u = Map.MapDataForUnit[tx - 2, ty];
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case 10:
+            //                {
+            //                    if (tx < Map.MapWidth - 1)
+            //                    {
+            //                        u = Map.MapDataForUnit[tx + 2, ty];
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case 11:
+            //                {
+            //                    if (ty > 2)
+            //                    {
+            //                        u = Map.MapDataForUnit[tx, ty - 2];
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case 12:
+            //                {
+            //                    if (ty < Map.MapHeight - 1)
+            //                    {
+            //                        u = Map.MapDataForUnit[tx, ty + 2];
+            //                    }
+
+            //                    break;
+            //                }
+            //        }
+
+            //        // ユニットが存在する？
+            //        if (u is null)
+            //        {
+            //            goto NextNeighbor;
+            //        }
+
+            //        {
+            //            var withBlock2 = u;
+            //            // 合体技のパートナーに該当する？
+            //            if ((withBlock2.Name ?? "") != (uname ?? ""))
+            //            {
+            //                // パイロット名でも確認
+            //                if ((withBlock2.MainPilot().Name ?? "") != (uname ?? ""))
+            //                {
+            //                    goto NextNeighbor;
+            //                }
+            //            }
+
+            //            // ユニットが自分？
+            //            if (ReferenceEquals(u, this))
+            //            {
+            //                goto NextNeighbor;
+            //            }
+
+            //            // 既に選択済み？
+            //            var loopTo4 = Information.UBound(partners);
+            //            for (k = 1; k <= loopTo4; k++)
+            //            {
+            //                if (ReferenceEquals(u, partners[k]))
+            //                {
+            //                    goto NextNeighbor;
+            //                }
+            //            }
+
+            //            // ユニットが敵？
+            //            if (IsEnemy(u))
+            //            {
+            //                goto NextNeighbor;
+            //            }
+
+            //            // 行動出来なければだめ
+            //            string argIndex8 = "混乱";
+            //            string argIndex9 = "恐怖";
+            //            string argIndex10 = "憑依";
+            //            if (withBlock2.MaxAction() == 0 | withBlock2.IsConditionSatisfied(argIndex8) | withBlock2.IsConditionSatisfied(argIndex9) | withBlock2.IsConditionSatisfied(argIndex10))
+            //            {
+            //                goto NextNeighbor;
+            //            }
+
+            //            // 合体技にレベルが設定されていればパイロット間の信頼度をチェック
+            //            if (clevel > 0)
+            //            {
+            //                if (MainPilot().Relation(withBlock2.MainPilot()) < clevel | withBlock2.MainPilot().Relation(MainPilot()) < clevel)
+            //                {
+            //                    goto NextNeighbor;
+            //                }
+            //            }
+
+            //            // パートナーが武器を使うための条件を満たしているかを判定
+            //            if (!check_formation)
+            //            {
+            //                if (ctype_Renamed == "武装")
+            //                {
+            //                    // 合体技と同名の武器を検索
+            //                    var loopTo5 = withBlock2.CountWeapon();
+            //                    for (k = 1; k <= loopTo5; k++)
+            //                    {
+            //                        if ((withBlock2.Weapon(k).Name ?? "") == (cname ?? ""))
+            //                        {
+            //                            break;
+            //                        }
+            //                    }
+
+            //                    if (k <= withBlock2.CountWeapon())
+            //                    {
+            //                        // 武器が使える？
+            //                        if (!withBlock2.IsWeaponMastered(k))
+            //                        {
+            //                            goto NextNeighbor;
+            //                        }
+
+            //                        if (withBlock2.Weapon(k).NecessaryMorale > 0)
+            //                        {
+            //                            if (withBlock2.MainPilot().Morale < withBlock2.Weapon(k).NecessaryMorale)
+            //                            {
+            //                                goto NextNeighbor;
+            //                            }
+            //                        }
+
+            //                        if (withBlock2.WeaponENConsumption(k) > 0)
+            //                        {
+            //                            if (withBlock2.EN < withBlock2.WeaponENConsumption(k))
+            //                            {
+            //                                goto NextNeighbor;
+            //                            }
+            //                        }
+
+            //                        if (withBlock2.Weapon(k).Bullet > 0)
+            //                        {
+            //                            if (withBlock2.Bullet(k) == 0)
+            //                            {
+            //                                goto NextNeighbor;
+            //                            }
+            //                        }
+
+            //                        string argattr10 = "霊";
+            //                        string argattr11 = "プ";
+            //                        if (withBlock2.WeaponLevel(k, argattr10) > 0d)
+            //                        {
+            //                            string argattr8 = "霊";
+            //                            if (withBlock2.MainPilot().Plana < 5d * withBlock2.WeaponLevel(k, argattr8))
+            //                            {
+            //                                goto NextNeighbor;
+            //                            }
+            //                        }
+            //                        else if (withBlock2.WeaponLevel(k, argattr11) > 0d)
+            //                        {
+            //                            string argattr9 = "プ";
+            //                            if (withBlock2.MainPilot().Plana < 5d * withBlock2.WeaponLevel(k, argattr9))
+            //                            {
+            //                                goto NextNeighbor;
+            //                            }
+            //                        }
+            //                    }
+            //                    else
+            //                    {
+            //                        // 同名の武器を持っていなかった場合はチェック項目を限定
+            //                        if (cmorale > 0)
+            //                        {
+            //                            if (withBlock2.MainPilot().Morale < cmorale)
+            //                            {
+            //                                goto NextNeighbor;
+            //                            }
+            //                        }
+
+            //                        if (cen > 0)
+            //                        {
+            //                            if (withBlock2.EN < cen)
+            //                            {
+            //                                goto NextNeighbor;
+            //                            }
+            //                        }
+
+            //                        if (cplana > 0)
+            //                        {
+            //                            if (withBlock2.MainPilot().Plana < cplana)
+            //                            {
+            //                                goto NextNeighbor;
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //                else
+            //                {
+            //                    // 合体技と同名のアビリティを検索
+            //                    var loopTo6 = withBlock2.CountAbility();
+            //                    for (k = 1; k <= loopTo6; k++)
+            //                    {
+            //                        if ((withBlock2.Ability(k).Name ?? "") == (cname ?? ""))
+            //                        {
+            //                            break;
+            //                        }
+            //                    }
+
+            //                    if (k <= withBlock2.CountAbility())
+            //                    {
+            //                        // アビリティが使える？
+            //                        if (!withBlock2.IsAbilityMastered(k))
+            //                        {
+            //                            goto NextNeighbor;
+            //                        }
+
+            //                        if (withBlock2.Ability(k).NecessaryMorale > 0)
+            //                        {
+            //                            if (withBlock2.MainPilot().Morale < withBlock2.Ability(k).NecessaryMorale)
+            //                            {
+            //                                goto NextNeighbor;
+            //                            }
+            //                        }
+
+            //                        if (withBlock2.AbilityENConsumption(k) > 0)
+            //                        {
+            //                            if (withBlock2.EN < withBlock2.AbilityENConsumption(k))
+            //                            {
+            //                                goto NextNeighbor;
+            //                            }
+            //                        }
+
+            //                        if (withBlock2.Ability(k).Stock > 0)
+            //                        {
+            //                            if (withBlock2.Stock(k) == 0)
+            //                            {
+            //                                goto NextNeighbor;
+            //                            }
+            //                        }
+
+            //                        string argattr14 = "霊";
+            //                        string argattr15 = "プ";
+            //                        if (withBlock2.AbilityLevel(k, argattr14) > 0d)
+            //                        {
+            //                            string argattr12 = "霊";
+            //                            if (withBlock2.MainPilot().Plana < 5d * withBlock2.AbilityLevel(k, argattr12))
+            //                            {
+            //                                goto NextNeighbor;
+            //                            }
+            //                        }
+            //                        else if (withBlock2.AbilityLevel(k, argattr15) > 0d)
+            //                        {
+            //                            string argattr13 = "プ";
+            //                            if (withBlock2.MainPilot().Plana < 5d * withBlock2.AbilityLevel(k, argattr13))
+            //                            {
+            //                                goto NextNeighbor;
+            //                            }
+            //                        }
+            //                    }
+            //                    else
+            //                    {
+            //                        // 同名のアビリティを持っていなかった場合はチェック項目を限定
+            //                        if (cmorale > 0)
+            //                        {
+            //                            if (withBlock2.MainPilot().Morale < cmorale)
+            //                            {
+            //                                goto NextNeighbor;
+            //                            }
+            //                        }
+
+            //                        if (cen > 0)
+            //                        {
+            //                            if (withBlock2.EN < cen)
+            //                            {
+            //                                goto NextNeighbor;
+            //                            }
+            //                        }
+
+            //                        if (cplana > 0)
+            //                        {
+            //                            if (withBlock2.MainPilot().Plana < cplana)
+            //                            {
+            //                                goto NextNeighbor;
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            // フォーメーションのチェックだけの時も必要技能は調べておく
+            //            else if (ctype_Renamed == "武装")
+            //            {
+            //                var loopTo7 = withBlock2.CountWeapon();
+            //                for (k = 1; k <= loopTo7; k++)
+            //                {
+            //                    if ((withBlock2.Weapon(k).Name ?? "") == (cname ?? ""))
+            //                    {
+            //                        break;
+            //                    }
+            //                }
+
+            //                if (k <= withBlock2.CountWeapon())
+            //                {
+            //                    if (!withBlock2.IsWeaponMastered(k))
+            //                    {
+            //                        goto NextNeighbor;
+            //                    }
+            //                }
+            //            }
+            //            else
+            //            {
+            //                var loopTo8 = withBlock2.CountAbility();
+            //                for (k = 1; k <= loopTo8; k++)
+            //                {
+            //                    if ((withBlock2.Ability(k).Name ?? "") == (cname ?? ""))
+            //                    {
+            //                        break;
+            //                    }
+            //                }
+
+            //                if (k <= withBlock2.CountAbility())
+            //                {
+            //                    if (!withBlock2.IsAbilityMastered(k))
+            //                    {
+            //                        goto NextNeighbor;
+            //                    }
+            //                }
+            //            }
+            //        }
+
+            //        // 見つかったパートナーを記録
+            //        Array.Resize(partners, i + 1);
+            //        partners[i] = u;
+            //        break;
+            //    NextNeighbor:
+            //        ;
+            //    }
+
+            //    // パートナーが見つからなかった？
+            //    if (j > loop_limit)
+            //    {
+            //        partners = new Unit[1];
+            //        return;
+            //    }
+            //}
+
+            //// 合体技メッセージ判定用にパートナー一覧を記録
+            //Commands.SelectedPartners = new Unit[Information.UBound(partners) + 1];
+            //var loopTo9 = Information.UBound(partners);
+            //for (i = 1; i <= loopTo9; i++)
+            //    Commands.SelectedPartners[i] = partners[i];
+        }
+
+        // 合体技攻撃に必要なパートナーが見つかるか？
+        public bool IsCombinationAttackAvailable(bool check_formation = false)
+        {
+            throw new NotImplementedException();
+            //bool IsCombinationAttackAvailableRet = default;
+            //Unit[] partners;
+            //partners = new Unit[1];
+            //string argattr = "Ｍ";
+            //if (Status == "待機" | string.IsNullOrEmpty(Map.MapFileName))
+            //{
+            //    // 出撃時以外は相手が仲間にいるだけでＯＫ
+            //    string argctype_Renamed = "武装";
+            //    CombinationPartner(argctype_Renamed, w, partners, x, y);
+            //}
+            //else if (WeaponMaxRange(w) == 1 & !IsWeaponClassifiedAs(w, argattr))
+            //{
+            //    // 射程１の場合は自分の周りのいずれかの敵ユニットに対して合体技が使えればＯＫ
+            //    if (x > 1)
+            //    {
+            //        if (Map.MapDataForUnit[x - 1, y] is object)
+            //        {
+            //            if (IsEnemy(Map.MapDataForUnit[x - 1, y]))
+            //            {
+            //                string argctype_Renamed2 = "武装";
+            //                CombinationPartner(argctype_Renamed2, w, partners, (x - 1), y, check_formation);
+            //            }
+            //        }
+            //    }
+
+            //    if (Information.UBound(partners) == 0)
+            //    {
+            //        if (x < Map.MapWidth)
+            //        {
+            //            if (Map.MapDataForUnit[x + 1, y] is object)
+            //            {
+            //                if (IsEnemy(Map.MapDataForUnit[x + 1, y]))
+            //                {
+            //                    string argctype_Renamed3 = "武装";
+            //                    CombinationPartner(argctype_Renamed3, w, partners, (x + 1), y, check_formation);
+            //                }
+            //            }
+            //        }
+            //    }
+
+            //    if (Information.UBound(partners) == 0)
+            //    {
+            //        if (y > 1)
+            //        {
+            //            if (Map.MapDataForUnit[x, y - 1] is object)
+            //            {
+            //                if (IsEnemy(Map.MapDataForUnit[x, y - 1]))
+            //                {
+            //                    string argctype_Renamed4 = "武装";
+            //                    CombinationPartner(argctype_Renamed4, w, partners, x, (y - 1), check_formation);
+            //                }
+            //            }
+            //        }
+            //    }
+
+            //    if (Information.UBound(partners) == 0)
+            //    {
+            //        if (y < Map.MapHeight)
+            //        {
+            //            if (Map.MapDataForUnit[x, y + 1] is object)
+            //            {
+            //                if (IsEnemy(Map.MapDataForUnit[x, y + 1]))
+            //                {
+            //                    string argctype_Renamed5 = "武装";
+            //                    CombinationPartner(argctype_Renamed5, w, partners, x, (y + 1), check_formation);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    // 射程２以上の場合は自分の周りにパートナーがいればＯＫ
+            //    string argctype_Renamed1 = "武装";
+            //    CombinationPartner(argctype_Renamed1, w, partners, x, y, check_formation);
+            //}
+
+            //// 条件を満たすパートナーの組が見つかったか判定
+            //if (Information.UBound(partners) > 0)
+            //{
+            //    IsCombinationAttackAvailableRet = true;
+            //}
+            //else
+            //{
+            //    IsCombinationAttackAvailableRet = false;
+            //}
+
+            //return IsCombinationAttackAvailableRet;
+        }
+
+        public bool IdDisplayFor(WeaponListMode mode)
+        {
+            // Disableコマンドで使用不可にされた武器と使用できない合体技は表示しない
+            // 必要技能を満たさない武器は表示しない
+            var baseCondition = !Unit.IsDisabled(Name)
+                && IsWeaponMastered()
+                // XXX 条件によって check_formation 見直す
+                && !(IsWeaponClassifiedAs("合") && IsCombinationAttackAvailable(true))
+                ;
+            return baseCondition;
+        }
+
+        public bool CanUseFor(WeaponListMode mode, Unit targetUnit)
+        {
+            var display = IdDisplayFor(mode);
+            switch (mode)
+            {
+                case WeaponListMode.List:
+                    return display;
+
+                case WeaponListMode.BeforeMove:
+                    return display && IsWeaponUseful("移動前");
+
+                case WeaponListMode.AfterMove:
+                    return display && IsWeaponUseful("移動後");
+
+                case WeaponListMode.Counter:
+                    return display && IsWeaponAvailable("移動前")
+                        // ターゲットが射程外
+                        && IsTargetWithinRange(targetUnit)
+                        // マップ攻撃は武器選定外
+                        && !IsWeaponClassifiedAs("Ｍ")
+                        // 合体技は自分から攻撃をかける場合にのみ使用
+                        && !IsWeaponClassifiedAs("合")
+                        // ダメージを与えられる
+                        && !(Damage(targetUnit, true) > 0)
+                        // 特殊効果を与えられる
+                        && !(IsNormalWeapon() && CriticalProbability(targetUnit) > 0)
+                        ;
+
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+    }
+
+    public enum WeaponListMode
+    {
+        List,
+        BeforeMove,
+        AfterMove,
+        Counter,
     }
 }

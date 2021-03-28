@@ -1,4 +1,5 @@
-﻿using SRCCore.VB;
+﻿using SRCCore.Lib;
+using SRCCore.VB;
 using System;
 
 namespace SRCCore.Units
@@ -1057,55 +1058,49 @@ namespace SRCCore.Units
         //    return BitmapRet;
         //}
 
-        //// 修理費(獲得資金)
-        //public int Value
-        //{
-        //    get
-        //    {
-        //        int ValueRet = default;
-        //        ValueRet = Data.Value;
-        //        string argfname = "修理費修正";
-        //        if (IsFeatureAvailable(argfname))
-        //        {
-        //            object argIndex1 = "修理費修正";
-        //            ValueRet = GeneralLib.MaxLng((int)(ValueRet + 1000d * FeatureLevel(argIndex1)), 0);
-        //        }
+        // 修理費(獲得資金)
+        public int Value
+        {
+            get
+            {
+                int ValueRet = Data.Value;
+                if (IsFeatureAvailable("修理費修正"))
+                {
+                    ValueRet = GeneralLib.MaxLng((int)(ValueRet + 1000d * FeatureLevel("修理費修正")), 0);
+                }
 
-        //        if (BossRank > 0)
-        //        {
-        //            ValueRet = (int)(ValueRet * (1d + 0.5d * BossRank + 0.05d * Rank));
-        //        }
-        //        else
-        //        {
-        //            ValueRet = (int)(ValueRet * (1d + 0.05d * Rank));
-        //        }
+                if (BossRank > 0)
+                {
+                    ValueRet = (int)(ValueRet * (1d + 0.5d * BossRank + 0.05d * Rank));
+                }
+                else
+                {
+                    ValueRet = (int)(ValueRet * (1d + 0.05d * Rank));
+                }
 
-        //        return ValueRet;
-        //    }
-        //}
+                return ValueRet;
+            }
+        }
 
-        //// 経験値
-        //public int ExpValue
-        //{
-        //    get
-        //    {
-        //        int ExpValueRet = default;
-        //        ExpValueRet = Data.ExpValue;
-        //        string argfname = "経験値修正";
-        //        if (IsFeatureAvailable(argfname))
-        //        {
-        //            object argIndex1 = "経験値修正";
-        //            ExpValueRet = GeneralLib.MaxLng((int)(ExpValueRet + 10d * FeatureLevel(argIndex1)), 0);
-        //        }
+        // 経験値
+        public int ExpValue
+        {
+            get
+            {
+                int ExpValueRet = Data.ExpValue;
+                if (IsFeatureAvailable("経験値修正"))
+                {
+                    ExpValueRet = GeneralLib.MaxLng((int)(ExpValueRet + 10d * FeatureLevel("経験値修正")), 0);
+                }
 
-        //        if (BossRank > 0)
-        //        {
-        //            ExpValueRet = ExpValueRet + 20 * BossRank;
-        //        }
+                if (BossRank > 0)
+                {
+                    ExpValueRet = ExpValueRet + 20 * BossRank;
+                }
 
-        //        return ExpValueRet;
-        //    }
-        //}
+                return ExpValueRet;
+            }
+        }
 
         // 残り行動数
         public int Action => Math.Max(MaxAction() - UsedAction, 0);

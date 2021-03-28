@@ -211,7 +211,7 @@ namespace SRCSharpForm
                 }
                 lstItems.SelectedIndex = GUI.TopItem - 1;
             }
-            else
+            else if (lstItems.Items.Count > 0)
             {
                 lstItems.SelectedIndex = 0;
             }

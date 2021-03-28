@@ -92,7 +92,7 @@ namespace SRCCore.Units
             if (ud.IsFeatureAvailable("ノーマルモード"))
             {
                 var fd = ud.Feature("ノーマルモード");
-                var uname2 = fd.DataL.Skip(1).FirstOrDefault();
+                var uname2 = fd.DataL.FirstOrDefault();
                 if (string.IsNullOrEmpty(uname2))
                 {
                     GUI.ErrorMessage("ユニットデータ「" + uname + "」のノーマルモード先形態が指定されていません");
@@ -128,7 +128,7 @@ namespace SRCCore.Units
             if (ud.IsFeatureAvailable("パーツ合体"))
             {
                 var fd = ud.Feature("パーツ合体");
-                var uname2 = fd.DataL.Skip(1).FirstOrDefault();
+                var uname2 = fd.DataL.FirstOrDefault();
                 if (string.IsNullOrEmpty(uname2))
                 {
                     GUI.ErrorMessage("ユニットデータ「" + uname + "」のパーツ合体先形態が指定されていません");

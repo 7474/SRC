@@ -45,17 +45,17 @@ namespace SRCCore.Commands
             UseSupportAttack = true;
             if (CommandState == "コマンド選択")
             {
-                string argcaption_msg = "武器選択";
-                string arglb_mode = "移動前";
-                // TODO SelectedUnit.Weapons のフィルタ
-                SelectedWeapon = GUI.WeaponListBox(SelectedUnit, SelectedUnit.Weapons, argcaption_msg, arglb_mode, BGM);
+                SelectedWeapon = GUI.WeaponListBox(
+                    SelectedUnit,
+                    new UnitWeaponList(WeaponListMode.BeforeMove, SelectedUnit),
+                     "武器選択", "移動前", BGM);
             }
             else
             {
-                string argcaption_msg1 = "武器選択";
-                string arglb_mode1 = "移動後";
-                // TODO SelectedUnit.Weapons のフィルタ
-                SelectedWeapon = GUI.WeaponListBox(SelectedUnit, SelectedUnit.Weapons, argcaption_msg1, arglb_mode1, BGM);
+                SelectedWeapon = GUI.WeaponListBox(
+                    SelectedUnit,
+                    new UnitWeaponList(WeaponListMode.AfterMove, SelectedUnit),
+                     "武器選択", "移動後", BGM);
             }
 
             // キャンセル
@@ -643,8 +643,8 @@ namespace SRCCore.Commands
             {
                 var targetUnit = SelectedTarget;
                 var targetWeapon = targetUnit.Weapon(SelectedTWeapon);
-                if (targetWeapon != null 
-                    &&targetUnit.MaxAction() > 0 
+                if (targetWeapon != null
+                    && targetUnit.MaxAction() > 0
                     && targetWeapon.IsWeaponAvailable("移動前"))
                 {
                     if (!targetWeapon.IsWeaponClassifiedAs("後"))
@@ -653,7 +653,7 @@ namespace SRCCore.Commands
                         if (selectedWeapon.IsWeaponClassifiedAs("後"))
                         {
                             def_mode = "先制攻撃";
-                            if (targetWeapon.IsWeaponClassifiedAs( "自"))
+                            if (targetWeapon.IsWeaponClassifiedAs("自"))
                             {
                                 is_suiside = true;
                             }
@@ -662,12 +662,12 @@ namespace SRCCore.Commands
                             targetUnit.Attack(targetWeapon, SelectedUnit, "先制攻撃", "");
                             SelectedTarget = targetUnit.CurrentForm();
                         }
-                        else if (targetWeapon.IsWeaponClassifiedAs("先") 
-                            || targetUnit.MainPilot().SkillLevel("先読み", "") >= GeneralLib.Dice(16) 
+                        else if (targetWeapon.IsWeaponClassifiedAs("先")
+                            || targetUnit.MainPilot().SkillLevel("先読み", "") >= GeneralLib.Dice(16)
                             || targetUnit.IsUnderSpecialPowerEffect("カウンター"))
                         {
                             def_mode = "先制攻撃";
-                            if (targetWeapon.IsWeaponClassifiedAs( "自"))
+                            if (targetWeapon.IsWeaponClassifiedAs("自"))
                             {
                                 is_suiside = true;
                             }
@@ -679,7 +679,7 @@ namespace SRCCore.Commands
                         else if (targetUnit.MaxCounterAttack() > targetUnit.UsedCounterAttack)
                         {
                             def_mode = "先制攻撃";
-                            if (targetWeapon.IsWeaponClassifiedAs( "自"))
+                            if (targetWeapon.IsWeaponClassifiedAs("自"))
                             {
                                 is_suiside = true;
                             }

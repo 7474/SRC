@@ -203,7 +203,7 @@ namespace SRCCore
         // 武器選択用リストボックスを通常のものに切り替え
         void RemovePartsOnListBox();
         // 武器選択用リストボックス
-        int WeaponListBox(Unit u, IList<UnitWeapon> weapons, string caption_msg, string lb_mode, string BGM = "");
+        int WeaponListBox(Unit u, UnitWeaponList weapons, string caption_msg, string lb_mode, string BGM = "");
         // アビリティ選択用リストボックス
         int AbilityListBox(Unit u, string caption_msg, string lb_mode, bool is_item = false);
         // 入力時間制限付きのリストボックスを表示
