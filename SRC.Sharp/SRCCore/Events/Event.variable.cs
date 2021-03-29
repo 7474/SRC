@@ -16,8 +16,15 @@ namespace SRCCore.Events
     {
         public IEnumerable<VarData> SubLocalVars()
         {
-            int i = VarIndexStack[CallDepth - 1];
-            return VarStack.Skip(i).Take(VarIndex - i);
+            if (CallDepth > 0)
+            {
+                int i = VarIndexStack[CallDepth - 1];
+                return VarStack.Skip(i).Take(VarIndex - i);
+            }
+            else
+            {
+                return Enumerable.Empty<VarData>();
+            }
         }
 
         public VarData SubLocalVar(string vname)
