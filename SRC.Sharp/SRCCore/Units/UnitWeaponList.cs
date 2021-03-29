@@ -16,7 +16,7 @@ namespace SRCCore.Units
         public UnitWeaponList(WeaponListMode mode, Unit unit, Unit targetUnit = null)
         {
             Mode = mode;
-            Items = unit.Weapons.Where(x => x.IdDisplayFor(Mode))
+            Items = unit.Weapons.Where(x => x.IsDisplayFor(Mode))
                 .Select(x => new UnitWeaponListItem
                 {
                     Weapon = x,

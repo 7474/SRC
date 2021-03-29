@@ -6199,12 +6199,18 @@ namespace SRCCore.Units
             //return IsCombinationAttackAvailableRet;
         }
 
-        public bool IdDisplayFor(WeaponListMode mode)
+        public bool IsEnable()
+        {
+            // Disableコマンドで使用不可にされた武器以外が有効
+            return !Unit.IsDisabled(Name)
+                && IsWeaponMastered();
+        }
+
+        public bool IsDisplayFor(WeaponListMode mode)
         {
             // Disableコマンドで使用不可にされた武器と使用できない合体技は表示しない
             // 必要技能を満たさない武器は表示しない
-            var baseCondition = !Unit.IsDisabled(Name)
-                && IsWeaponMastered()
+            var baseCondition = IsEnable()
                 // XXX 条件によって check_formation 見直す
                 && !(IsWeaponClassifiedAs("合") && IsCombinationAttackAvailable(true))
                 ;
@@ -6213,7 +6219,7 @@ namespace SRCCore.Units
 
         public bool CanUseFor(WeaponListMode mode, Unit targetUnit)
         {
-            var display = IdDisplayFor(mode);
+            var display = IsDisplayFor(mode);
             switch (mode)
             {
                 case WeaponListMode.List:
