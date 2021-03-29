@@ -19,5 +19,14 @@ namespace SRCCore.Extensions.Tests
             Assert.AreEqual("abc", "hoge[abc]".ArrayIndexByName());
             Assert.AreEqual("fuga[abc]", "hoge[fuga[abc]]".ArrayIndexByName());
         }
+
+        [TestMethod()]
+        public void InsideKakkoTest()
+        {
+            Assert.AreEqual("", "hoge".InsideKakko());
+            Assert.AreEqual("1", "hoge(1)".InsideKakko());
+            Assert.AreEqual("abc", "ho(abc)ge".InsideKakko());
+            Assert.AreEqual("fuga(abc)", "(fuga(abc))".InsideKakko());
+        }
     }
 }
