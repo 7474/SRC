@@ -224,13 +224,13 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "for":
-                        return new NotImplementedCmd(src, data);
+                        return new ForCmd(src, data);
 
                     case "foreach":
                         return new NotImplementedCmd(src, data);
 
                     case "next":
-                        return new NotImplementedCmd(src, data);
+                        return new NextCmd(src, data);
 
                     case "font":
                         return new NotImplementedCmd(src, data);
