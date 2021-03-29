@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Lib;
 using SRCCore.VB;
 using System.Collections.Generic;
 
@@ -24,11 +25,11 @@ namespace SRCCore.Models
         // 最大射程
         public int MaxRange;
         // 属性
-        public string Class;
+        public string Class = "";
         // 必要技能
-        public string NecessarySkill;
+        public string NecessarySkill = "";
         // 必要条件
-        public string NecessaryCondition;
+        public string NecessaryCondition = "";
 
         // 効果
         private SrcCollection<AbilityEffect> colEffects = new SrcCollection<AbilityEffect>();
@@ -40,7 +41,7 @@ namespace SRCCore.Models
             string NicknameRet = default;
             NicknameRet = Name;
             // TODO Impl
-            //Expression.ReplaceSubExpression(ref NicknameRet);
+            //Expression.ReplaceSubExpression(NicknameRet);
             //if (Strings.InStr(NicknameRet, "(") > 0)
             //{
             //    NicknameRet = Strings.Left(NicknameRet, Strings.InStr(NicknameRet, "(") - 1);
@@ -57,12 +58,12 @@ namespace SRCCore.Models
             //    string buf;
             //    AbilityEffect dat;
             //    string elevel, etype, edata;
-            //    GeneralLib.TrimString(ref elist);
-            //    var loopTo = GeneralLib.ListLength(ref elist);
+            //    GeneralLib.TrimString(elist);
+            //    var loopTo = GeneralLib.ListLength(elist);
             //    for (i = 1; i <= loopTo; i++)
             //    {
             //        dat = NewAbilityEffect();
-            //        buf = GeneralLib.ListIndex(ref elist, i);
+            //        buf = GeneralLib.ListIndex(elist, i);
             //        j = Strings.InStr(buf, "Lv");
             //        k = Strings.InStr(buf, "=");
             //        if (j > 0 & (k == 0 | j < k))
@@ -223,7 +224,7 @@ namespace SRCCore.Models
         //}
 
         //// 効果の種類
-        //public string EffectType(ref object Index)
+        //public string EffectType(object Index)
         //{
         //    string EffectTypeRet = default;
         //    // UPGRADE_WARNING: オブジェクト colEffects.Item().Name の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
@@ -232,7 +233,7 @@ namespace SRCCore.Models
         //}
 
         //// 効果のレベル
-        //public double EffectLevel(ref object Index)
+        //public double EffectLevel(object Index)
         //{
         //    double EffectLevelRet = default;
         //    // UPGRADE_WARNING: オブジェクト colEffects.Item().Level の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
@@ -241,7 +242,7 @@ namespace SRCCore.Models
         //}
 
         //// 効果のデータ
-        //public string EffectData(ref object Index)
+        //public string EffectData(object Index)
         //{
         //    string EffectDataRet = default;
         //    // UPGRADE_WARNING: オブジェクト colEffects.Item().Data の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
@@ -250,7 +251,7 @@ namespace SRCCore.Models
         //}
 
         //// 効果内容の解説
-        //public string EffectName(ref object Index)
+        //public string EffectName(object Index)
         //{
         //    string EffectNameRet = default;
         //    AbilityEffect ae;
@@ -272,15 +273,15 @@ namespace SRCCore.Models
         //            var withBlock = Commands.SelectedUnit.MainPilot();
         //            // 得意技
         //            string argsname = "得意技";
-        //            if (withBlock.IsSkillAvailable(ref argsname))
+        //            if (withBlock.IsSkillAvailable(argsname))
         //            {
         //                object argIndex1 = "得意技";
-        //                buf = withBlock.SkillData(ref argIndex1);
+        //                buf = withBlock.SkillData(argIndex1);
         //                var loopTo = Strings.Len(buf);
         //                for (i = 1; i <= loopTo; i++)
         //                {
-        //                    string argstring2 = GeneralLib.GetClassBundle(ref buf, ref i);
-        //                    if (GeneralLib.InStrNotNest(ref Class, ref argstring2) > 0)
+        //                    string argstring2 = GeneralLib.GetClassBundle(buf, i);
+        //                    if (GeneralLib.InStrNotNest(Class, argstring2) > 0)
         //                    {
         //                        elevel = 1.2d * elevel;
         //                        elevel2 = 1.4d * elevel2;
@@ -291,15 +292,15 @@ namespace SRCCore.Models
 
         //            // 不得手
         //            string argsname1 = "不得手";
-        //            if (withBlock.IsSkillAvailable(ref argsname1))
+        //            if (withBlock.IsSkillAvailable(argsname1))
         //            {
         //                object argIndex2 = "不得手";
-        //                buf = withBlock.SkillData(ref argIndex2);
+        //                buf = withBlock.SkillData(argIndex2);
         //                var loopTo1 = Strings.Len(buf);
         //                for (i = 1; i <= loopTo1; i++)
         //                {
-        //                    string argstring21 = GeneralLib.GetClassBundle(ref buf, ref i);
-        //                    if (GeneralLib.InStrNotNest(ref Class, ref argstring21) > 0)
+        //                    string argstring21 = GeneralLib.GetClassBundle(buf, i);
+        //                    if (GeneralLib.InStrNotNest(Class, argstring21) > 0)
         //                    {
         //                        elevel = 0.8d * elevel;
         //                        elevel2 = 0.6d * elevel2;
@@ -310,17 +311,17 @@ namespace SRCCore.Models
 
         //            // 術アビリティの場合は魔力によって効果レベルが修正を受ける
         //            string argstring22 = "術";
-        //            if (GeneralLib.InStrNotNest(ref Class, ref argstring22) > 0)
+        //            if (GeneralLib.InStrNotNest(Class, argstring22) > 0)
         //            {
         //                elevel = elevel * withBlock.Shooting / 100d;
         //            }
         //            else
         //            {
-        //                var loopTo2 = GeneralLib.LLength(ref NecessarySkill);
+        //                var loopTo2 = GeneralLib.LLength(NecessarySkill);
         //                for (i = 1; i <= loopTo2; i++)
         //                {
-        //                    string argsname2 = GeneralLib.LIndex(ref NecessarySkill, i);
-        //                    if (withBlock.SkillType(ref argsname2) == "術")
+        //                    string argsname2 = GeneralLib.LIndex(NecessarySkill, i);
+        //                    if (withBlock.SkillType(argsname2) == "術")
         //                    {
         //                        elevel = elevel * withBlock.Shooting / 100d;
         //                        break;
@@ -331,10 +332,10 @@ namespace SRCCore.Models
         //            // 修理＆補給技能
         //            object argIndex3 = "修理";
         //            string argref_mode = "";
-        //            heal_lv = withBlock.SkillLevel(ref argIndex3, ref_mode: ref argref_mode);
+        //            heal_lv = withBlock.SkillLevel(argIndex3, ref_mode: argref_mode);
         //            object argIndex4 = "補給";
         //            string argref_mode1 = "";
-        //            supply_lv = withBlock.SkillLevel(ref argIndex4, ref_mode: ref argref_mode1);
+        //            supply_lv = withBlock.SkillLevel(argIndex4, ref_mode: argref_mode1);
         //        }
         //    }
 
@@ -350,7 +351,7 @@ namespace SRCCore.Models
         //            {
         //                string argtname = "ＨＰ";
         //                Unit argu = null;
-        //                EffectNameRet = Expression.Term(ref argtname, u: ref argu) + "を";
+        //                EffectNameRet = Expression.Term(argtname, u: argu) + "を";
         //                if (elevel > 0d)
         //                {
         //                    EffectNameRet = EffectNameRet + SrcFormatter.Format(((long)(500d * elevel * (10d + heal_lv)) / 10L)) + "回復";
@@ -367,7 +368,7 @@ namespace SRCCore.Models
         //            {
         //                string argtname1 = "ＥＮ";
         //                Unit argu1 = null;
-        //                EffectNameRet = Expression.Term(ref argtname1, u: ref argu1) + "を";
+        //                EffectNameRet = Expression.Term(argtname1, u: argu1) + "を";
         //                if (elevel > 0d)
         //                {
         //                    EffectNameRet = EffectNameRet + SrcFormatter.Format((50d * elevel * (10d + supply_lv)) / 10) + "回復";
@@ -386,7 +387,7 @@ namespace SRCCore.Models
         //                if (Commands.SelectedUnit.CountPilot() > 0)
         //                {
         //                    object argIndex5 = "霊力";
-        //                    EffectNameRet = Commands.SelectedUnit.MainPilot().SkillName0(ref argIndex5);
+        //                    EffectNameRet = Commands.SelectedUnit.MainPilot().SkillName0(argIndex5);
         //                }
         //                else
         //                {
@@ -409,7 +410,7 @@ namespace SRCCore.Models
         //            {
         //                string argtname2 = "ＳＰ";
         //                Unit argu2 = null;
-        //                EffectNameRet = Expression.Term(ref argtname2, u: ref argu2) + "を";
+        //                EffectNameRet = Expression.Term(argtname2, u: argu2) + "を";
         //                if (elevel > 0d)
         //                {
         //                    EffectNameRet = EffectNameRet + SrcFormatter.Format((10d * elevel)) + "回復";
@@ -426,7 +427,7 @@ namespace SRCCore.Models
         //            {
         //                string argtname3 = "気力";
         //                Unit argu3 = null;
-        //                EffectNameRet = Expression.Term(ref argtname3, u: ref argu3) + "を";
+        //                EffectNameRet = Expression.Term(argtname3, u: argu3) + "を";
         //                if (elevel > 0d)
         //                {
         //                    EffectNameRet = EffectNameRet + SrcFormatter.Format((10d * elevel)) + "増加";
@@ -465,17 +466,17 @@ namespace SRCCore.Models
 
         //        case "治癒":
         //            {
-        //                var loopTo4 = GeneralLib.LLength(ref ae.Data);
+        //                var loopTo4 = GeneralLib.LLength(ae.Data);
         //                for (i = 1; i <= loopTo4; i++)
         //                {
-        //                    cname = GeneralLib.LIndex(ref ae.Data, i);
+        //                    cname = GeneralLib.LIndex(ae.Data, i);
         //                    switch (cname ?? "")
         //                    {
         //                        case "装甲劣化":
         //                            {
         //                                string argtname4 = "装甲";
         //                                Unit argu4 = null;
-        //                                cname = Expression.Term(ref argtname4, u: ref argu4) + "劣化";
+        //                                cname = Expression.Term(argtname4, u: argu4) + "劣化";
         //                                break;
         //                            }
 
@@ -483,7 +484,7 @@ namespace SRCCore.Models
         //                            {
         //                                string argtname5 = "運動性";
         //                                Unit argu5 = null;
-        //                                cname = Expression.Term(ref argtname5, u: ref argu5) + "ＵＰ";
+        //                                cname = Expression.Term(argtname5, u: argu5) + "ＵＰ";
         //                                break;
         //                            }
 
@@ -491,7 +492,7 @@ namespace SRCCore.Models
         //                            {
         //                                string argtname6 = "運動性";
         //                                Unit argu6 = null;
-        //                                cname = Expression.Term(ref argtname6, u: ref argu6) + "ＤＯＷＮ";
+        //                                cname = Expression.Term(argtname6, u: argu6) + "ＤＯＷＮ";
         //                                break;
         //                            }
 
@@ -499,7 +500,7 @@ namespace SRCCore.Models
         //                            {
         //                                string argtname7 = "移動力";
         //                                Unit argu7 = null;
-        //                                cname = Expression.Term(ref argtname7, u: ref argu7) + "ＵＰ";
+        //                                cname = Expression.Term(argtname7, u: argu7) + "ＵＰ";
         //                                break;
         //                            }
 
@@ -507,7 +508,7 @@ namespace SRCCore.Models
         //                            {
         //                                string argtname8 = "移動力";
         //                                Unit argu8 = null;
-        //                                cname = Expression.Term(ref argtname8, u: ref argu8) + "ＤＯＷＮ";
+        //                                cname = Expression.Term(argtname8, u: argu8) + "ＤＯＷＮ";
         //                                break;
         //                            }
         //                    }
@@ -530,14 +531,14 @@ namespace SRCCore.Models
 
         //        case "状態":
         //            {
-        //                cname = GeneralLib.LIndex(ref ae.Data, 1);
+        //                cname = GeneralLib.LIndex(ae.Data, 1);
         //                switch (cname ?? "")
         //                {
         //                    case "装甲劣化":
         //                        {
         //                            string argtname9 = "装甲";
         //                            Unit argu9 = null;
-        //                            cname = Expression.Term(ref argtname9, u: ref argu9) + "劣化";
+        //                            cname = Expression.Term(argtname9, u: argu9) + "劣化";
         //                            break;
         //                        }
 
@@ -545,7 +546,7 @@ namespace SRCCore.Models
         //                        {
         //                            string argtname10 = "運動性";
         //                            Unit argu10 = null;
-        //                            cname = Expression.Term(ref argtname10, u: ref argu10) + "ＵＰ";
+        //                            cname = Expression.Term(argtname10, u: argu10) + "ＵＰ";
         //                            break;
         //                        }
 
@@ -553,7 +554,7 @@ namespace SRCCore.Models
         //                        {
         //                            string argtname11 = "運動性";
         //                            Unit argu11 = null;
-        //                            cname = Expression.Term(ref argtname11, u: ref argu11) + "ＤＯＷＮ";
+        //                            cname = Expression.Term(argtname11, u: argu11) + "ＤＯＷＮ";
         //                            break;
         //                        }
 
@@ -561,7 +562,7 @@ namespace SRCCore.Models
         //                        {
         //                            string argtname12 = "移動力";
         //                            Unit argu12 = null;
-        //                            cname = Expression.Term(ref argtname12, u: ref argu12) + "ＵＰ";
+        //                            cname = Expression.Term(argtname12, u: argu12) + "ＵＰ";
         //                            break;
         //                        }
 
@@ -569,7 +570,7 @@ namespace SRCCore.Models
         //                        {
         //                            string argtname13 = "移動力";
         //                            Unit argu13 = null;
-        //                            cname = Expression.Term(ref argtname13, u: ref argu13) + "ＤＯＷＮ";
+        //                            cname = Expression.Term(argtname13, u: argu13) + "ＤＯＷＮ";
         //                            break;
         //                        }
         //                }
@@ -588,15 +589,15 @@ namespace SRCCore.Models
 
         //        case "付加":
         //            {
-        //                switch (GeneralLib.LIndex(ref ae.Data, 1) ?? "")
+        //                switch (GeneralLib.LIndex(ae.Data, 1) ?? "")
         //                {
         //                    case "耐性":
         //                        {
-        //                            string argatr = GeneralLib.LIndex(ref ae.Data, 3);
-        //                            aname = Help.AttributeName(ref Commands.SelectedUnit, ref argatr);
+        //                            string argatr = GeneralLib.LIndex(ae.Data, 3);
+        //                            aname = Help.AttributeName(Commands.SelectedUnit, argatr);
         //                            if (string.IsNullOrEmpty(aname))
         //                            {
-        //                                aname = GeneralLib.LIndex(ref ae.Data, 3) + "攻撃";
+        //                                aname = GeneralLib.LIndex(ae.Data, 3) + "攻撃";
         //                            }
 
         //                            EffectNameRet = aname + "のダメージを半減";
@@ -605,11 +606,11 @@ namespace SRCCore.Models
 
         //                    case "無効化":
         //                        {
-        //                            string argatr1 = GeneralLib.LIndex(ref ae.Data, 3);
-        //                            aname = Help.AttributeName(ref Commands.SelectedUnit, ref argatr1);
+        //                            string argatr1 = GeneralLib.LIndex(ae.Data, 3);
+        //                            aname = Help.AttributeName(Commands.SelectedUnit, argatr1);
         //                            if (string.IsNullOrEmpty(aname))
         //                            {
-        //                                aname = GeneralLib.LIndex(ref ae.Data, 3) + "攻撃";
+        //                                aname = GeneralLib.LIndex(ae.Data, 3) + "攻撃";
         //                            }
 
         //                            EffectNameRet = aname + "を無効化";
@@ -618,11 +619,11 @@ namespace SRCCore.Models
 
         //                    case "特殊効果無効化":
         //                        {
-        //                            string argatr2 = GeneralLib.LIndex(ref ae.Data, 3);
-        //                            aname = Help.AttributeName(ref Commands.SelectedUnit, ref argatr2);
+        //                            string argatr2 = GeneralLib.LIndex(ae.Data, 3);
+        //                            aname = Help.AttributeName(Commands.SelectedUnit, argatr2);
         //                            if (string.IsNullOrEmpty(aname))
         //                            {
-        //                                aname = GeneralLib.LIndex(ref ae.Data, 3) + "攻撃";
+        //                                aname = GeneralLib.LIndex(ae.Data, 3) + "攻撃";
         //                            }
 
         //                            EffectNameRet = aname + "の特殊効果を無効化";
@@ -631,11 +632,11 @@ namespace SRCCore.Models
 
         //                    case "吸収":
         //                        {
-        //                            string argatr3 = GeneralLib.LIndex(ref ae.Data, 3);
-        //                            aname = Help.AttributeName(ref Commands.SelectedUnit, ref argatr3);
+        //                            string argatr3 = GeneralLib.LIndex(ae.Data, 3);
+        //                            aname = Help.AttributeName(Commands.SelectedUnit, argatr3);
         //                            if (string.IsNullOrEmpty(aname))
         //                            {
-        //                                aname = GeneralLib.LIndex(ref ae.Data, 3) + "攻撃";
+        //                                aname = GeneralLib.LIndex(ae.Data, 3) + "攻撃";
         //                            }
 
         //                            EffectNameRet = aname + "を吸収";
@@ -656,7 +657,7 @@ namespace SRCCore.Models
 
         //                    case "性格変更":
         //                        {
-        //                            EffectNameRet = "パイロットの性格を" + GeneralLib.LIndex(ref ae.Data, 3) + "に変更";
+        //                            EffectNameRet = "パイロットの性格を" + GeneralLib.LIndex(ae.Data, 3) + "に変更";
         //                            break;
         //                        }
 
@@ -668,39 +669,39 @@ namespace SRCCore.Models
 
         //                    case "攻撃属性":
         //                        {
-        //                            var loopTo5 = GeneralLib.LLength(ref ae.Data);
+        //                            var loopTo5 = GeneralLib.LLength(ae.Data);
         //                            for (i = 4; i <= loopTo5; i++)
         //                            {
-        //                                if (Strings.InStr(GeneralLib.LIndex(ref ae.Data, i), "!") == 0)
+        //                                if (Strings.InStr(GeneralLib.LIndex(ae.Data, i), "!") == 0)
         //                                {
-        //                                    wclass = wclass + GeneralLib.LIndex(ref ae.Data, i);
+        //                                    wclass = wclass + GeneralLib.LIndex(ae.Data, i);
         //                                }
         //                            }
 
-        //                            EffectNameRet = WeaponType(ref wclass) + "の属性に" + GeneralLib.LIndex(ref ae.Data, 3) + "を追加";
+        //                            EffectNameRet = WeaponType(wclass) + "の属性に" + GeneralLib.LIndex(ae.Data, 3) + "を追加";
         //                            break;
         //                        }
 
         //                    case "武器強化":
         //                        {
-        //                            var loopTo6 = GeneralLib.LLength(ref ae.Data);
+        //                            var loopTo6 = GeneralLib.LLength(ae.Data);
         //                            for (i = 3; i <= loopTo6; i++)
         //                            {
-        //                                if (Strings.InStr(GeneralLib.LIndex(ref ae.Data, i), "!") == 0)
+        //                                if (Strings.InStr(GeneralLib.LIndex(ae.Data, i), "!") == 0)
         //                                {
-        //                                    wclass = wclass + GeneralLib.LIndex(ref ae.Data, i);
+        //                                    wclass = wclass + GeneralLib.LIndex(ae.Data, i);
         //                                }
         //                            }
 
-        //                            string argexpr = GeneralLib.LIndex(ref ae.Data, 2);
-        //                            flevel = GeneralLib.StrToDbl(ref argexpr);
+        //                            string argexpr = GeneralLib.LIndex(ae.Data, 2);
+        //                            flevel = GeneralLib.StrToDbl(argexpr);
         //                            if (flevel >= 0d)
         //                            {
-        //                                EffectNameRet = WeaponType(ref wclass) + "の攻撃力を+" + SrcFormatter.Format(100d * flevel);
+        //                                EffectNameRet = WeaponType(wclass) + "の攻撃力を+" + SrcFormatter.Format(100d * flevel);
         //                            }
         //                            else
         //                            {
-        //                                EffectNameRet = WeaponType(ref wclass) + "の攻撃力を" + SrcFormatter.Format(100d * flevel);
+        //                                EffectNameRet = WeaponType(wclass) + "の攻撃力を" + SrcFormatter.Format(100d * flevel);
         //                            }
 
         //                            break;
@@ -708,24 +709,24 @@ namespace SRCCore.Models
 
         //                    case "命中率強化":
         //                        {
-        //                            var loopTo7 = GeneralLib.LLength(ref ae.Data);
+        //                            var loopTo7 = GeneralLib.LLength(ae.Data);
         //                            for (i = 3; i <= loopTo7; i++)
         //                            {
-        //                                if (Strings.InStr(GeneralLib.LIndex(ref ae.Data, i), "!") == 0)
+        //                                if (Strings.InStr(GeneralLib.LIndex(ae.Data, i), "!") == 0)
         //                                {
-        //                                    wclass = wclass + GeneralLib.LIndex(ref ae.Data, i);
+        //                                    wclass = wclass + GeneralLib.LIndex(ae.Data, i);
         //                                }
         //                            }
 
-        //                            string argexpr1 = GeneralLib.LIndex(ref ae.Data, 2);
-        //                            flevel = GeneralLib.StrToDbl(ref argexpr1);
+        //                            string argexpr1 = GeneralLib.LIndex(ae.Data, 2);
+        //                            flevel = GeneralLib.StrToDbl(argexpr1);
         //                            if (flevel >= 0d)
         //                            {
-        //                                EffectNameRet = WeaponType(ref wclass) + "の命中率を+" + SrcFormatter.Format(5d * flevel);
+        //                                EffectNameRet = WeaponType(wclass) + "の命中率を+" + SrcFormatter.Format(5d * flevel);
         //                            }
         //                            else
         //                            {
-        //                                EffectNameRet = WeaponType(ref wclass) + "の命中率を" + SrcFormatter.Format(5d * flevel);
+        //                                EffectNameRet = WeaponType(wclass) + "の命中率を" + SrcFormatter.Format(5d * flevel);
         //                            }
 
         //                            break;
@@ -734,24 +735,24 @@ namespace SRCCore.Models
         //                    case "ＣＴ率強化":
         //                    case "特殊効果発動率強化":
         //                        {
-        //                            var loopTo8 = GeneralLib.LLength(ref ae.Data);
+        //                            var loopTo8 = GeneralLib.LLength(ae.Data);
         //                            for (i = 3; i <= loopTo8; i++)
         //                            {
-        //                                if (Strings.InStr(GeneralLib.LIndex(ref ae.Data, i), "!") == 0)
+        //                                if (Strings.InStr(GeneralLib.LIndex(ae.Data, i), "!") == 0)
         //                                {
-        //                                    wclass = wclass + GeneralLib.LIndex(ref ae.Data, i);
+        //                                    wclass = wclass + GeneralLib.LIndex(ae.Data, i);
         //                                }
         //                            }
 
-        //                            string argexpr2 = GeneralLib.LIndex(ref ae.Data, 2);
-        //                            flevel = GeneralLib.StrToDbl(ref argexpr2);
+        //                            string argexpr2 = GeneralLib.LIndex(ae.Data, 2);
+        //                            flevel = GeneralLib.StrToDbl(argexpr2);
         //                            if (flevel >= 0d)
         //                            {
-        //                                EffectNameRet = WeaponType(ref wclass) + "のＣＴ率を+" + SrcFormatter.Format(5d * flevel);
+        //                                EffectNameRet = WeaponType(wclass) + "のＣＴ率を+" + SrcFormatter.Format(5d * flevel);
         //                            }
         //                            else
         //                            {
-        //                                EffectNameRet = WeaponType(ref wclass) + "のＣＴ率を" + SrcFormatter.Format(5d * flevel);
+        //                                EffectNameRet = WeaponType(wclass) + "のＣＴ率を" + SrcFormatter.Format(5d * flevel);
         //                            }
 
         //                            break;
@@ -759,24 +760,24 @@ namespace SRCCore.Models
 
         //                    case "射程延長":
         //                        {
-        //                            var loopTo9 = GeneralLib.LLength(ref ae.Data);
+        //                            var loopTo9 = GeneralLib.LLength(ae.Data);
         //                            for (i = 3; i <= loopTo9; i++)
         //                            {
-        //                                if (Strings.InStr(GeneralLib.LIndex(ref ae.Data, i), "!") == 0)
+        //                                if (Strings.InStr(GeneralLib.LIndex(ae.Data, i), "!") == 0)
         //                                {
-        //                                    wclass = wclass + GeneralLib.LIndex(ref ae.Data, i);
+        //                                    wclass = wclass + GeneralLib.LIndex(ae.Data, i);
         //                                }
         //                            }
 
-        //                            string argexpr3 = GeneralLib.LIndex(ref ae.Data, 2);
-        //                            flevel = GeneralLib.StrToLng(ref argexpr3);
+        //                            string argexpr3 = GeneralLib.LIndex(ae.Data, 2);
+        //                            flevel = GeneralLib.StrToLng(argexpr3);
         //                            if (flevel >= 0d)
         //                            {
-        //                                EffectNameRet = WeaponType(ref wclass) + "の射程を+" + SrcFormatter.Format(flevel);
+        //                                EffectNameRet = WeaponType(wclass) + "の射程を+" + SrcFormatter.Format(flevel);
         //                            }
         //                            else
         //                            {
-        //                                EffectNameRet = WeaponType(ref wclass) + "の射程を" + SrcFormatter.Format(flevel);
+        //                                EffectNameRet = WeaponType(wclass) + "の射程を" + SrcFormatter.Format(flevel);
         //                            }
 
         //                            break;
@@ -784,20 +785,20 @@ namespace SRCCore.Models
 
         //                    case "サイズ変更":
         //                        {
-        //                            EffectNameRet = "サイズが" + GeneralLib.LIndex(ref ae.Data, 3) + "に変化";
+        //                            EffectNameRet = "サイズが" + GeneralLib.LIndex(ae.Data, 3) + "に変化";
         //                            break;
         //                        }
 
         //                    case "地形適応変更":
         //                        {
-        //                            int localStrToLng() { string argexpr = GeneralLib.LIndex(ref ae.Data, 4); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
+        //                            int localStrToLng() { string argexpr = GeneralLib.LIndex(ae.Data, 4); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-        //                            int localStrToLng1() { string argexpr = GeneralLib.LIndex(ref ae.Data, 5); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
+        //                            int localStrToLng1() { string argexpr = GeneralLib.LIndex(ae.Data, 5); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-        //                            int localStrToLng2() { string argexpr = GeneralLib.LIndex(ref ae.Data, 6); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
+        //                            int localStrToLng2() { string argexpr = GeneralLib.LIndex(ae.Data, 6); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-        //                            string argexpr4 = GeneralLib.LIndex(ref ae.Data, 3);
-        //                            if (GeneralLib.StrToLng(ref argexpr4) > 0)
+        //                            string argexpr4 = GeneralLib.LIndex(ae.Data, 3);
+        //                            if (GeneralLib.StrToLng(argexpr4) > 0)
         //                            {
         //                                EffectNameRet = "空への適応を強化";
         //                            }
@@ -819,25 +820,25 @@ namespace SRCCore.Models
 
         //                    case "地形適応固定変更":
         //                        {
-        //                            int localStrToLng3() { string argexpr = GeneralLib.LIndex(ref ae.Data, 3); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
+        //                            int localStrToLng3() { string argexpr = GeneralLib.LIndex(ae.Data, 3); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-        //                            int localStrToLng4() { string argexpr = GeneralLib.LIndex(ref ae.Data, 3); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
+        //                            int localStrToLng4() { string argexpr = GeneralLib.LIndex(ae.Data, 3); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-        //                            int localStrToLng5() { string argexpr = GeneralLib.LIndex(ref ae.Data, 4); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
+        //                            int localStrToLng5() { string argexpr = GeneralLib.LIndex(ae.Data, 4); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-        //                            int localStrToLng6() { string argexpr = GeneralLib.LIndex(ref ae.Data, 4); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
+        //                            int localStrToLng6() { string argexpr = GeneralLib.LIndex(ae.Data, 4); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-        //                            int localStrToLng7() { string argexpr = GeneralLib.LIndex(ref ae.Data, 5); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
+        //                            int localStrToLng7() { string argexpr = GeneralLib.LIndex(ae.Data, 5); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-        //                            int localStrToLng8() { string argexpr = GeneralLib.LIndex(ref ae.Data, 5); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
+        //                            int localStrToLng8() { string argexpr = GeneralLib.LIndex(ae.Data, 5); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-        //                            int localStrToLng9() { string argexpr = GeneralLib.LIndex(ref ae.Data, 6); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
+        //                            int localStrToLng9() { string argexpr = GeneralLib.LIndex(ae.Data, 6); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-        //                            int localStrToLng10() { string argexpr = GeneralLib.LIndex(ref ae.Data, 6); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
+        //                            int localStrToLng10() { string argexpr = GeneralLib.LIndex(ae.Data, 6); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
         //                            if (localStrToLng3() <= 5 & localStrToLng4() >= 0)
         //                            {
-        //                                if (GeneralLib.LIndex(ref ae.Data, 6) == "強制")
+        //                                if (GeneralLib.LIndex(ae.Data, 6) == "強制")
         //                                {
         //                                    EffectNameRet = "空への適応を強制的に変化";
         //                                }
@@ -848,7 +849,7 @@ namespace SRCCore.Models
         //                            }
         //                            else if (localStrToLng5() <= 5 & localStrToLng6() >= 0)
         //                            {
-        //                                if (GeneralLib.LIndex(ref ae.Data, 6) == "強制")
+        //                                if (GeneralLib.LIndex(ae.Data, 6) == "強制")
         //                                {
         //                                    EffectNameRet = "陸への適応を強制的に変化";
         //                                }
@@ -859,7 +860,7 @@ namespace SRCCore.Models
         //                            }
         //                            else if (localStrToLng7() <= 5 & localStrToLng8() >= 0)
         //                            {
-        //                                if (GeneralLib.LIndex(ref ae.Data, 6) == "強制")
+        //                                if (GeneralLib.LIndex(ae.Data, 6) == "強制")
         //                                {
         //                                    EffectNameRet = "水中への適応を強制的に変化";
         //                                }
@@ -870,7 +871,7 @@ namespace SRCCore.Models
         //                            }
         //                            else if (localStrToLng9() <= 5 & localStrToLng10() >= 0)
         //                            {
-        //                                if (GeneralLib.LIndex(ref ae.Data, 6) == "強制")
+        //                                if (GeneralLib.LIndex(ae.Data, 6) == "強制")
         //                                {
         //                                    EffectNameRet = "宇宙への適応を強制的に変化";
         //                                }
@@ -885,7 +886,7 @@ namespace SRCCore.Models
 
         //                    case "Ｖ－ＵＰ":
         //                        {
-        //                            switch (GeneralLib.LIndex(ref ae.Data, 3) ?? "")
+        //                            switch (GeneralLib.LIndex(ae.Data, 3) ?? "")
         //                            {
         //                                case "武器":
         //                                    {
@@ -928,29 +929,29 @@ namespace SRCCore.Models
 
         //                    default:
         //                        {
-        //                            EffectNameRet = GeneralLib.ListIndex(ref ae.Data, 3);
+        //                            EffectNameRet = GeneralLib.ListIndex(ae.Data, 3);
         //                            if (Strings.Left(EffectNameRet, 1) == "\"")
         //                            {
         //                                string arglist = Strings.Mid(EffectNameRet, 2, Strings.Len(EffectNameRet) - 2);
-        //                                EffectNameRet = GeneralLib.ListIndex(ref arglist, 1);
+        //                                EffectNameRet = GeneralLib.ListIndex(arglist, 1);
         //                            }
 
         //                            if (string.IsNullOrEmpty(EffectNameRet) | EffectNameRet == "非表示")
         //                            {
-        //                                if ((GeneralLib.LIndex(ref ae.Data, 2) ?? "") != (SrcFormatter.Format(SRC.DEFAULT_LEVEL) ?? "") & GeneralLib.LLength(ref ae.Data) <= 3)
+        //                                if ((GeneralLib.LIndex(ae.Data, 2) ?? "") != (SrcFormatter.Format(SRC.DEFAULT_LEVEL) ?? "") & GeneralLib.LLength(ae.Data) <= 3)
         //                                {
-        //                                    EffectNameRet = GeneralLib.LIndex(ref ae.Data, 1) + "Lv" + GeneralLib.LIndex(ref ae.Data, 2) + "付加";
+        //                                    EffectNameRet = GeneralLib.LIndex(ae.Data, 1) + "Lv" + GeneralLib.LIndex(ae.Data, 2) + "付加";
         //                                }
         //                                else
         //                                {
-        //                                    EffectNameRet = GeneralLib.LIndex(ref ae.Data, 1) + "付加";
+        //                                    EffectNameRet = GeneralLib.LIndex(ae.Data, 1) + "付加";
         //                                }
         //                            }
         //                            else
         //                            {
-        //                                if ((GeneralLib.LIndex(ref ae.Data, 2) ?? "") != (SrcFormatter.Format(SRC.DEFAULT_LEVEL) ?? "") & GeneralLib.LLength(ref ae.Data) <= 3)
+        //                                if ((GeneralLib.LIndex(ae.Data, 2) ?? "") != (SrcFormatter.Format(SRC.DEFAULT_LEVEL) ?? "") & GeneralLib.LLength(ae.Data) <= 3)
         //                                {
-        //                                    EffectNameRet = EffectNameRet + "Lv" + GeneralLib.LIndex(ref ae.Data, 2);
+        //                                    EffectNameRet = EffectNameRet + "Lv" + GeneralLib.LIndex(ae.Data, 2);
         //                                }
 
         //                                EffectNameRet = EffectNameRet + "付加";
@@ -973,17 +974,17 @@ namespace SRCCore.Models
 
         //        case "強化":
         //            {
-        //                EffectNameRet = GeneralLib.ListIndex(ref ae.Data, 3);
+        //                EffectNameRet = GeneralLib.ListIndex(ae.Data, 3);
         //                if (string.IsNullOrEmpty(EffectNameRet) | EffectNameRet == "非表示")
         //                {
-        //                    string argexpr5 = GeneralLib.LIndex(ref ae.Data, 2);
-        //                    if (GeneralLib.StrToLng(ref argexpr5) > 0)
+        //                    string argexpr5 = GeneralLib.LIndex(ae.Data, 2);
+        //                    if (GeneralLib.StrToLng(argexpr5) > 0)
         //                    {
-        //                        EffectNameRet = GeneralLib.LIndex(ref ae.Data, 1) + "Lv" + GeneralLib.LIndex(ref ae.Data, 2);
+        //                        EffectNameRet = GeneralLib.LIndex(ae.Data, 1) + "Lv" + GeneralLib.LIndex(ae.Data, 2);
         //                    }
         //                    else
         //                    {
-        //                        EffectNameRet = GeneralLib.LIndex(ref ae.Data, 1);
+        //                        EffectNameRet = GeneralLib.LIndex(ae.Data, 1);
         //                    }
         //                }
 
@@ -997,24 +998,24 @@ namespace SRCCore.Models
 
         //        case "召喚":
         //            {
-        //                bool localIsDefined() { object argIndex1 = ae.Data; var ret = SRC.UDList.IsDefined(ref argIndex1); return ret; }
+        //                bool localIsDefined() { object argIndex1 = ae.Data; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
 
         //                if (!localIsDefined())
         //                {
         //                    string argmsg = "召喚ユニット「" + ae.Data + "」が定義されていません";
-        //                    GUI.ErrorMessage(ref argmsg);
+        //                    GUI.ErrorMessage(argmsg);
         //                    return EffectNameRet;
         //                }
 
         //                if (elevel2 > 1d)
         //                {
-        //                    UnitData localItem() { object argIndex1 = ae.Data; var ret = SRC.UDList.Item(ref argIndex1); return ret; }
+        //                    UnitData localItem() { object argIndex1 = ae.Data; var ret = SRC.UDList.Item(argIndex1); return ret; }
 
         //                    EffectNameRet = localItem().Nickname + "を" + Strings.StrConv(SrcFormatter.Format(elevel2), VbStrConv.Wide) + "体召喚";
         //                }
         //                else
         //                {
-        //                    UnitData localItem1() { object argIndex1 = ae.Data; var ret = SRC.UDList.Item(ref argIndex1); return ret; }
+        //                    UnitData localItem1() { object argIndex1 = ae.Data; var ret = SRC.UDList.Item(argIndex1); return ret; }
 
         //                    EffectNameRet = localItem1().Nickname + "を召喚";
         //                }
@@ -1024,25 +1025,25 @@ namespace SRCCore.Models
 
         //        case "変身":
         //            {
-        //                uname = GeneralLib.LIndex(ref ae.Data, 1);
-        //                bool localIsDefined1() { object argIndex1 = uname; var ret = SRC.UDList.IsDefined(ref argIndex1); return ret; }
+        //                uname = GeneralLib.LIndex(ae.Data, 1);
+        //                bool localIsDefined1() { object argIndex1 = uname; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
 
         //                if (!localIsDefined1())
         //                {
         //                    string argmsg1 = "変身先のデータ「" + uname + "」が定義されていません";
-        //                    GUI.ErrorMessage(ref argmsg1);
+        //                    GUI.ErrorMessage(argmsg1);
         //                    return EffectNameRet;
         //                }
 
         //                if (0d < elevel2 & elevel2 <= 10d)
         //                {
-        //                    UnitData localItem2() { object argIndex1 = uname; var ret = SRC.UDList.Item(ref argIndex1); return ret; }
+        //                    UnitData localItem2() { object argIndex1 = uname; var ret = SRC.UDList.Item(argIndex1); return ret; }
 
         //                    EffectNameRet = localItem2().Nickname + "に変身" + "(" + SrcFormatter.Format(elevel2) + "ターン)";
         //                }
         //                else
         //                {
-        //                    UnitData localItem3() { object argIndex1 = uname; var ret = SRC.UDList.Item(ref argIndex1); return ret; }
+        //                    UnitData localItem3() { object argIndex1 = uname; var ret = SRC.UDList.Item(argIndex1); return ret; }
 
         //                    EffectNameRet = localItem3().Nickname + "に変身";
         //                }
@@ -1089,7 +1090,7 @@ namespace SRCCore.Models
         //}
 
         //// 付加する武器強化系能力の対象表示用に武器の種類を判定
-        //private string WeaponType(ref string wclass)
+        //private string WeaponType(string wclass)
         //{
         //    string WeaponTypeRet = default;
         //    if (wclass == "全" | string.IsNullOrEmpty(wclass))
@@ -1099,7 +1100,7 @@ namespace SRCCore.Models
         //    else if (Strings.Len(wclass) == 1)
         //    {
         //        Unit argu = null;
-        //        WeaponTypeRet = Help.AttributeName(ref argu, ref wclass);
+        //        WeaponTypeRet = Help.AttributeName(argu, wclass);
         //    }
         //    else if (Strings.Right(wclass, 2) == "装備")
         //    {
@@ -1113,22 +1114,22 @@ namespace SRCCore.Models
         //    return WeaponTypeRet;
         //}
 
-        //// 使い捨てアイテムによるアビリティかどうかを返す
-        //public bool IsItem()
-        //{
-        //    bool IsItemRet = default;
-        //    int i;
-        //    var loopTo = GeneralLib.LLength(ref NecessarySkill);
-        //    for (i = 1; i <= loopTo; i++)
-        //    {
-        //        if (GeneralLib.LIndex(ref NecessarySkill, i) == "アイテム")
-        //        {
-        //            IsItemRet = true;
-        //            return IsItemRet;
-        //        }
-        //    }
+        // 使い捨てアイテムによるアビリティかどうかを返す
+        public bool IsItem()
+        {
+            bool IsItemRet = default;
+            int i;
+            var loopTo = GeneralLib.LLength(NecessarySkill);
+            for (i = 1; i <= loopTo; i++)
+            {
+                if (GeneralLib.LIndex(NecessarySkill, i) == "アイテム")
+                {
+                    IsItemRet = true;
+                    return IsItemRet;
+                }
+            }
 
-        //    return IsItemRet;
-        //}
+            return IsItemRet;
+        }
     }
 }

@@ -494,19 +494,19 @@ namespace SRCCore.Commands
                 //    }
                 //}
 
-                //// アビリティ一覧コマンド
-                //var loopTo2 = currentUnit.CountAbility();
-                //for (i = 1; i <= loopTo2; i++)
-                //{
-                //    string argattr = "合";
-                //    if (currentUnit.IsAbilityMastered(i) & !currentUnit.IsDisabled(currentUnit.Ability(i).Name) & (!currentUnit.IsAbilityClassifiedAs(i, argattr) | currentUnit.IsCombinationAbilityAvailable(i, true)) & !currentUnit.Ability(i).IsItem())
-                //    {
-                //        string argtname1 = "アビリティ";
-                //        GUI.MainForm.mnuUnitCommandItem(AbilityListCmdID).Caption = Expression.Term(argtname1, SelectedUnit) + "一覧";
-                //        GUI.MainForm.mnuUnitCommandItem(AbilityListCmdID).Visible = true;
-                //        break;
-                //    }
-                //}
+                // アビリティ一覧コマンド
+                if (currentUnit.Abilities.Any(x => x.IsAbilityMastered()
+                     && currentUnit.IsDisabled(x.Data.Name)
+                     && (!x.IsAbilityClassifiedAs("合") || x.IsCombinationAbilityAvailable(true))
+                     && !x.Data.IsItem()
+                     ))
+                {
+                    var caption = Expression.Term("アビリティ", SelectedUnit);
+                    var unitAbilities = currentUnit.Abilities.Where(x => !x.Data.IsItem()).ToList();
+                    unitCommands.Add(new UiCommand(
+                        AbilityListCmdID,
+                        unitAbilities.Count == 1 ? unitAbilities.First().AbilityNickname() : caption));
+                }
 
                 //// 味方じゃない場合
                 //object argIndex36 = "非操作";
@@ -1408,40 +1408,22 @@ namespace SRCCore.Commands
                     //    }
                     //}
 
-                    //// アビリティコマンド
-                    //n = 0;
-                    //var loopTo14 = currentUnit.CountAbility();
-                    //for (i = 1; i <= loopTo14; i++)
-                    //{
-                    //    if (!currentUnit.Ability(i).IsItem() & currentUnit.IsAbilityMastered(i))
-                    //    {
-                    //        n = (n + 1);
-                    //        string argref_mode2 = "移動前";
-                    //        if (currentUnit.IsAbilityUseful(i, argref_mode2))
-                    //        {
-                    //            GUI.MainForm.mnuUnitCommandItem(AbilityCmdID).Visible = true;
-                    //        }
-                    //    }
-                    //}
-
-                    if (currentUnit.Area == "地中")
+                    // アビリティコマンド
+                    if (currentUnit.Area != "地中")
                     {
-                        unitCommands.RemoveItem(x => x.Id == AbilityCmdID);
+                        var displayAbilities = currentUnit.Abilities.Where(x => x.IsAbilityMastered()
+                          && !x.Data.IsItem()
+                          && x.IsAbilityUseful("移動前")
+                          ).ToList();
+                        if (displayAbilities.Count > 0)
+                        {
+                            var caption = Expression.Term("アビリティ", SelectedUnit);
+                            var unitAbilities = currentUnit.Abilities.Where(x => !x.Data.IsItem()).ToList();
+                            unitCommands.Add(new UiCommand(
+                                AbilityCmdID,
+                                unitAbilities.Count == 1 ? unitAbilities.First().AbilityNickname() : caption));
+                        }
                     }
-                    //string argtname2 = "アビリティ";
-                    //GUI.MainForm.mnuUnitCommandItem(AbilityCmdID).Caption = Expression.Term(argtname2, SelectedUnit);
-                    //if (n == 1)
-                    //{
-                    //    var loopTo15 = currentUnit.CountAbility();
-                    //    for (i = 1; i <= loopTo15; i++)
-                    //    {
-                    //        if (!currentUnit.Ability(i).IsItem() & currentUnit.IsAbilityMastered(i))
-                    //        {
-                    //            GUI.MainForm.mnuUnitCommandItem(AbilityCmdID).Caption = currentUnit.AbilityNickname(i);
-                    //            break;
-                    //        }
-                    //    }
-                    //}
 
                     //// チャージコマンド
                     //object argIndex55 = "チャージ完了";
@@ -2166,41 +2148,22 @@ namespace SRCCore.Commands
                 //    }
                 //}
 
-                //// アビリティコマンド
-                //GUI.MainForm.mnuUnitCommandItem(AbilityCmdID).Visible = false;
-                //n = 0;
-                //var loopTo31 = currentUnit.CountAbility();
-                //for (i = 1; i <= loopTo31; i++)
-                //{
-                //    if (!currentUnit.Ability(i).IsItem())
-                //    {
-                //        n = (n + 1);
-                //        string argref_mode7 = "移動後";
-                //        if (currentUnit.IsAbilityUseful(i, argref_mode7))
-                //        {
-                //            GUI.MainForm.mnuUnitCommandItem(AbilityCmdID).Visible = true;
-                //        }
-                //    }
-                //}
-
-                //if (currentUnit.Area == "地中")
-                //{
-                //    GUI.MainForm.mnuUnitCommandItem(AbilityCmdID).Visible = false;
-                //}
-                //string argtname4 = "アビリティ";
-                //GUI.MainForm.mnuUnitCommandItem(AbilityCmdID).Caption = Expression.Term(argtname4, SelectedUnit);
-                //if (n == 1)
-                //{
-                //    var loopTo32 = currentUnit.CountAbility();
-                //    for (i = 1; i <= loopTo32; i++)
-                //    {
-                //        if (!currentUnit.Ability(i).IsItem())
-                //        {
-                //            GUI.MainForm.mnuUnitCommandItem(AbilityCmdID).Caption = currentUnit.AbilityNickname(i);
-                //            break;
-                //        }
-                //    }
-                //}
+                // アビリティコマンド
+                if (currentUnit.Area != "地中")
+                {
+                    var displayAbilities = currentUnit.Abilities.Where(x => x.IsAbilityMastered()
+                      && !x.Data.IsItem()
+                      && x.IsAbilityUseful("移動後")
+                      ).ToList();
+                    if (displayAbilities.Count > 0)
+                    {
+                        var caption = Expression.Term("アビリティ", SelectedUnit);
+                        var unitAbilities = currentUnit.Abilities.Where(x => !x.Data.IsItem()).ToList();
+                        unitCommands.Add(new UiCommand(
+                            AbilityCmdID,
+                            unitAbilities.Count == 1 ? unitAbilities.First().AbilityNickname() : caption));
+                    }
+                }
 
                 //{
                 //    var withBlock18 = GUI.MainForm;

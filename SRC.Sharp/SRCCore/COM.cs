@@ -559,11 +559,11 @@ namespace SRCCore
                             else
                             {
                                 // 回復アビリティを持っている？
-                                foreach (var adata in u.AbilityDatas)
+                                foreach (var adata in u.Abilities)
                                 {
-                                    if (adata.MaxRange > 0)
+                                    if (adata.Data.MaxRange > 0)
                                     {
-                                        if (adata.Effects.Any(x => x.EffectType == "回復"))
+                                        if (adata.Data.Effects.Any(x => x.EffectType == "回復"))
                                         {
                                             prob = (int)(1.5d * prob);
                                             break;
@@ -640,11 +640,11 @@ namespace SRCCore
                             else
                             {
                                 // 回復アビリティを持っている場合も重要ユニットと認定
-                                foreach (var adata in u.AbilityDatas)
+                                foreach (var adata in u.Abilities)
                                 {
-                                    if (adata.MaxRange > 0)
+                                    if (adata.Data.MaxRange > 0)
                                     {
-                                        if (adata.Effects.Any(x => x.EffectType == "回復"))
+                                        if (adata.Data.Effects.Any(x => x.EffectType == "回復"))
                                         {
                                             dmg = (int)(1.5d * dmg);
                                             break;

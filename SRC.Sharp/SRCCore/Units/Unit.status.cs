@@ -3232,7 +3232,8 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    // アビリティデータを更新
+            // アビリティデータを更新
+            AData = Data.Abilities.Select(x => new UnitAbility(SRC, this, x)).ToList();
             //    prev_adata = new AbilityData[Information.UBound(adata) + 1];
             //    prev_astocks = new double[Information.UBound(adata) + 1];
             //    var loopTo57 = (short)Information.UBound(adata);
