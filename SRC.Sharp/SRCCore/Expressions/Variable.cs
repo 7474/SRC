@@ -10,6 +10,7 @@ using SRCCore.Units;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SRCCore.Expressions
@@ -1407,17 +1408,9 @@ namespace SRCCore.Expressions
             // ここから配列と通常変数の共通処理
 
             // サブルーチンローカル変数
-            if (Event.CallDepth > 0)
+            if (IsSubLocalVariableDefined(vname))
             {
-                var loopTo1 = Event.VarIndex;
-                for (int i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo1; i++)
-                {
-                    if ((vname ?? "") == (Event.VarStack[i].Name ?? ""))
-                    {
-                        IsVariableDefinedRet = true;
-                        return IsVariableDefinedRet;
-                    }
-                }
+                return true;
             }
 
             // ローカル変数
@@ -1440,22 +1433,7 @@ namespace SRCCore.Expressions
         // 指定した名前のサブルーチンローカル変数が定義されているか？
         public bool IsSubLocalVariableDefined(string vname)
         {
-            bool IsSubLocalVariableDefinedRet = default;
-            int i;
-            if (Event.CallDepth > 0)
-            {
-                var loopTo = Event.VarIndex;
-                for (i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo; i++)
-                {
-                    if ((vname ?? "") == (Event.VarStack[i].Name ?? ""))
-                    {
-                        IsSubLocalVariableDefinedRet = true;
-                        return IsSubLocalVariableDefinedRet;
-                    }
-                }
-            }
-
-            return IsSubLocalVariableDefinedRet;
+            return Event.SubLocalVar(vname) != null;
         }
 
         // 指定した名前のローカル変数が定義されているか？
@@ -1724,18 +1702,15 @@ namespace SRCCore.Expressions
             // ここから配列と通常変数の共通処理
 
             // サブルーチンローカル変数として定義済み？
-            if (Event.CallDepth > 0)
+            if (IsSubLocalVariableDefined(vname))
             {
-                for (i = Event.VarIndexStack[Event.CallDepth - 1]; i <= Event.VarIndex; i++)
+                var v = Event.SubLocalVar(vname);
+                if (v != null)
                 {
-                    var v = Event.VarStack[i];
-                    if ((vname ?? "") == (v.Name ?? ""))
-                    {
-                        v.VariableType = etype;
-                        v.StringValue = str_value;
-                        v.NumericValue = num_value;
-                        return;
-                    }
+                    v.VariableType = etype;
+                    v.StringValue = str_value;
+                    v.NumericValue = num_value;
+                    return;
                 }
             }
 
@@ -2105,17 +2080,12 @@ namespace SRCCore.Expressions
             // サブルーチンローカル変数？
             if (IsSubLocalVariableDefined(vname))
             {
-                var loopTo1 = Event.VarIndex;
-                for (i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo1; i++)
+                // XXX 名前消すだけでいいの？
+                var v = Event.SubLocalVar(vname);
+                if (v != null)
                 {
-                    {
-                        var withBlock = Event.VarStack[i];
-                        if ((vname ?? "") == (withBlock.Name ?? ""))
-                        {
-                            withBlock.Name = "";
-                            return;
-                        }
-                    }
+                    v.Name = "";
+                    return;
                 }
             }
 
@@ -2146,18 +2116,15 @@ namespace SRCCore.Expressions
             // サブルーチンローカル変数？
             if (IsSubLocalVariableDefined(vname))
             {
-                var loopTo2 = Event.VarIndex;
-                for (i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo2; i++)
+                // XXX 配列の取得
+                foreach (var v in Event.SubLocalVars())
                 {
+
+                    if ((vname ?? "") == (v.Name ?? "") | Strings.InStr(v.Name, vname2) == 1)
                     {
-                        var withBlock1 = Event.VarStack[i];
-                        if ((vname ?? "") == (withBlock1.Name ?? "") | Strings.InStr(withBlock1.Name, vname2) == 1)
-                        {
-                            withBlock1.Name = "";
-                        }
+                        v.Name = "";
                     }
                 }
-
                 return;
             }
 

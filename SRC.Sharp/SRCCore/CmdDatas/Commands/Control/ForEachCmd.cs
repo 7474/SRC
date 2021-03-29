@@ -4,6 +4,7 @@ using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -516,118 +517,89 @@ namespace SRCCore.CmdDatas.Commands
                         //        }
                         //    }
                         //}
-                        //else if (Expression.IsSubLocalVariableDefined(aname))
-                        //{
-                        //    // サブルーチンローカルな配列に対するForEach
-                        //    var loopTo10 = Event.VarIndex;
-                        //    for (i = Event.VarIndexStack[Event.CallDepth - 1] + 1; i <= loopTo10; i++)
-                        //    {
-                        //        {
-                        //            var withBlock2 = Event.VarStack[i];
-                        //            if (Strings.InStr(withBlock2.Name, aname + "[") == 1)
-                        //            {
-                        //                Array.Resize(Event.ForEachSet, Information.UBound(Event.ForEachSet) + 1 + 1);
-                        //                buf = withBlock2.Name;
-                        //                var loopTo11 = Strings.Len(buf);
-                        //                for (j = 1; j <= loopTo11; j++)
-                        //                {
-                        //                    if (Strings.Mid(buf, Strings.Len(buf) - j + 1, 1) == "]")
-                        //                    {
-                        //                        break;
-                        //                    }
-                        //                }
-
-                        //                buf = Strings.Mid(buf, Strings.InStr(buf, "[") + 1);
-                        //                buf = Strings.Left(buf, Strings.Len(buf) - j);
-                        //                Event.ForEachSet[Information.UBound(Event.ForEachSet)] = buf;
-                        //            }
-                        //        }
-                        //    }
-
-                        //    if (Information.UBound(Event.ForEachSet) == 0)
-                        //    {
-                        //        buf = Expression.GetValueAsString(aname);
-                        //        Event.ForEachSet = new string[(GeneralLib.ListLength(buf) + 1)];
-                        //        var loopTo12 = GeneralLib.ListLength(buf);
-                        //        for (i = 1; i <= loopTo12; i++)
-                        //            Event.ForEachSet[i] = GeneralLib.ListIndex(buf, i);
-                        //    }
-                        //}
-                        //else if (Expression.IsLocalVariableDefined(aname))
-                        //{
-                        //    // ローカルな配列に対するForEach
-                        //    foreach (VarData currentVar in Event.LocalVariableList)
-                        //    {
-                        //        var = currentVar;
-                        //        if (Strings.InStr(var.Name, aname + "[") == 1)
-                        //        {
-                        //            Array.Resize(Event.ForEachSet, Information.UBound(Event.ForEachSet) + 1 + 1);
-                        //            buf = var.Name;
-                        //            var loopTo13 = Strings.Len(buf);
-                        //            for (i = 1; i <= loopTo13; i++)
-                        //            {
-                        //                if (Strings.Mid(buf, Strings.Len(buf) - i + 1, 1) == "]")
-                        //                {
-                        //                    break;
-                        //                }
-                        //            }
-
-                        //            buf = Strings.Mid(buf, Strings.InStr(buf, "[") + 1);
-                        //            buf = Strings.Left(buf, Strings.Len(buf) - i);
-                        //            Event.ForEachSet[Information.UBound(Event.ForEachSet)] = buf;
-                        //        }
-                        //    }
-
-                        //    if (Information.UBound(Event.ForEachSet) == 0)
-                        //    {
-                        //        buf = Expression.GetValueAsString(aname);
-                        //        Event.ForEachSet = new string[(GeneralLib.ListLength(buf) + 1)];
-                        //        var loopTo14 = GeneralLib.ListLength(buf);
-                        //        for (i = 1; i <= loopTo14; i++)
-                        //            Event.ForEachSet[i] = GeneralLib.ListIndex(buf, i);
-                        //    }
-                        //}
-                        //else if (Expression.IsGlobalVariableDefined(aname))
-                        //{
-                        //    // グローバルな配列に対するForEach
-                        //    foreach (VarData currentVar1 in Event.GlobalVariableList)
-                        //    {
-                        //        var = currentVar1;
-                        //        if (Strings.InStr(var.Name, aname + "[") == 1)
-                        //        {
-                        //            Array.Resize(Event.ForEachSet, Information.UBound(Event.ForEachSet) + 1 + 1);
-                        //            buf = var.Name;
-                        //            var loopTo15 = Strings.Len(buf);
-                        //            for (i = 1; i <= loopTo15; i++)
-                        //            {
-                        //                if (Strings.Mid(buf, Strings.Len(buf) - i + 1, 1) == "]")
-                        //                {
-                        //                    break;
-                        //                }
-                        //            }
-
-                        //            buf = Strings.Mid(buf, Strings.InStr(buf, "[") + 1);
-                        //            buf = Strings.Left(buf, Strings.Len(buf) - i);
-                        //            Event.ForEachSet[Information.UBound(Event.ForEachSet)] = buf;
-                        //        }
-                        //    }
-
-                        //    if (Information.UBound(Event.ForEachSet) == 0)
-                        //    {
-                        //        buf = Expression.GetValueAsString(aname);
-                        //        Event.ForEachSet = new string[(GeneralLib.ListLength(buf) + 1)];
-                        //        var loopTo16 = GeneralLib.ListLength(buf);
-                        //        for (i = 1; i <= loopTo16; i++)
-                        //            Event.ForEachSet[i] = GeneralLib.ListIndex(buf, i);
-                        //    }
-                        //}
-                        //else
-                        if (Strings.Left(aname, 1) == "("
-                            && Strings.Right(aname, 1) == ")" || Strings.Left(aname, 1) == "\"" && Strings.Right(aname, 1) == "\"" || Strings.Left(aname, 1) == "`" && Strings.Right(aname, 1) == "`" || Strings.InStr(Strings.LCase(aname), "list(") == 1 && Strings.Right(aname, 1) == ")")
+                        //else 
                         {
+                            if (Expression.IsSubLocalVariableDefined(aname))
+                            {
+                                // サブルーチンローカルな配列に対するForEach
+                                Event.SubLocalArrayIndexes(aname).ToList().ForEach(x => Event.ForEachSet.Add(x));
+                            }
+                            else if (Expression.IsLocalVariableDefined(aname))
+                            {
+                                Event.SubLocalArrayIndexes(aname).ToList().ForEach(x => Event.ForEachSet.Add(x));
+                                // ローカルな配列に対するForEach
+                                foreach (VarData currentVar in Event.LocalVariableList)
+                                {
+                                    var = currentVar;
+                                    if (Strings.InStr(var.Name, aname + "[") == 1)
+                                    {
+                                        Array.Resize(Event.ForEachSet, Information.UBound(Event.ForEachSet) + 1 + 1);
+                                        buf = var.Name;
+                                        var loopTo13 = Strings.Len(buf);
+                                        for (i = 1; i <= loopTo13; i++)
+                                        {
+                                            if (Strings.Mid(buf, Strings.Len(buf) - i + 1, 1) == "]")
+                                            {
+                                                break;
+                                            }
+                                        }
+
+                                        buf = Strings.Mid(buf, Strings.InStr(buf, "[") + 1);
+                                        buf = Strings.Left(buf, Strings.Len(buf) - i);
+                                        Event.ForEachSet[Information.UBound(Event.ForEachSet)] = buf;
+                                    }
+                                }
+
+                                if (Information.UBound(Event.ForEachSet) == 0)
+                                {
+                                    buf = Expression.GetValueAsString(aname);
+                                    Event.ForEachSet = new string[(GeneralLib.ListLength(buf) + 1)];
+                                    var loopTo14 = GeneralLib.ListLength(buf);
+                                    for (i = 1; i <= loopTo14; i++)
+                                        Event.ForEachSet[i] = GeneralLib.ListIndex(buf, i);
+                                }
+                            }
+                            else if (Expression.IsGlobalVariableDefined(aname))
+                            {
+                                // グローバルな配列に対するForEach
+                                foreach (VarData currentVar1 in Event.GlobalVariableList)
+                                {
+                                    var = currentVar1;
+                                    if (Strings.InStr(var.Name, aname + "[") == 1)
+                                    {
+                                        Array.Resize(Event.ForEachSet, Information.UBound(Event.ForEachSet) + 1 + 1);
+                                        buf = var.Name;
+                                        var loopTo15 = Strings.Len(buf);
+                                        for (i = 1; i <= loopTo15; i++)
+                                        {
+                                            if (Strings.Mid(buf, Strings.Len(buf) - i + 1, 1) == "]")
+                                            {
+                                                break;
+                                            }
+                                        }
+
+                                        buf = Strings.Mid(buf, Strings.InStr(buf, "[") + 1);
+                                        buf = Strings.Left(buf, Strings.Len(buf) - i);
+                                        Event.ForEachSet[Information.UBound(Event.ForEachSet)] = buf;
+                                    }
+                                }
+
+                                if (Information.UBound(Event.ForEachSet) == 0)
+                                {
+                                    buf = Expression.GetValueAsString(aname);
+                                    Event.ForEachSet = new string[(GeneralLib.ListLength(buf) + 1)];
+                                    var loopTo16 = GeneralLib.ListLength(buf);
+                                    for (i = 1; i <= loopTo16; i++)
+                                        Event.ForEachSet[i] = GeneralLib.ListIndex(buf, i);
+                                }
+                            }
+
                             // リストに対するForEach
-                            var buf = Expression.GetValueAsString(aname);
-                            Event.ForEachSet = GeneralLib.ToList(buf);
+                            if (Event.ForEachSet.Count == 0)
+                            {
+                                var buf = Expression.GetValueAsString(aname);
+                                Event.ForEachSet = GeneralLib.ToList(buf);
+                            }
                         }
 
                         break;
@@ -648,7 +620,7 @@ namespace SRCCore.CmdDatas.Commands
                 }
                 else
                 {
-                    Expression.SetVariableAsString(GetArg(2), Event.ForEachSet[0]);
+                    Expression.SetVariableAsString(GetArg(2), Event.ForEachSet[1]);
                 }
 
                 return EventData.NextID;
