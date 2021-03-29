@@ -1,5 +1,6 @@
 ﻿using SRCCore.Events;
 using SRCCore.Exceptions;
+using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
@@ -522,76 +523,17 @@ namespace SRCCore.CmdDatas.Commands
                             if (Expression.IsSubLocalVariableDefined(aname))
                             {
                                 // サブルーチンローカルな配列に対するForEach
-                                Event.SubLocalArrayIndexes(aname).ToList().ForEach(x => Event.ForEachSet.Add(x));
+                                Event.SubLocalVars().ArrayIndexesByName(aname).ToList().ForEach(x => Event.ForEachSet.Add(x));
                             }
                             else if (Expression.IsLocalVariableDefined(aname))
                             {
-                                Event.SubLocalArrayIndexes(aname).ToList().ForEach(x => Event.ForEachSet.Add(x));
                                 // ローカルな配列に対するForEach
-                                foreach (VarData currentVar in Event.LocalVariableList)
-                                {
-                                    var = currentVar;
-                                    if (Strings.InStr(var.Name, aname + "[") == 1)
-                                    {
-                                        Array.Resize(Event.ForEachSet, Information.UBound(Event.ForEachSet) + 1 + 1);
-                                        buf = var.Name;
-                                        var loopTo13 = Strings.Len(buf);
-                                        for (i = 1; i <= loopTo13; i++)
-                                        {
-                                            if (Strings.Mid(buf, Strings.Len(buf) - i + 1, 1) == "]")
-                                            {
-                                                break;
-                                            }
-                                        }
-
-                                        buf = Strings.Mid(buf, Strings.InStr(buf, "[") + 1);
-                                        buf = Strings.Left(buf, Strings.Len(buf) - i);
-                                        Event.ForEachSet[Information.UBound(Event.ForEachSet)] = buf;
-                                    }
-                                }
-
-                                if (Information.UBound(Event.ForEachSet) == 0)
-                                {
-                                    buf = Expression.GetValueAsString(aname);
-                                    Event.ForEachSet = new string[(GeneralLib.ListLength(buf) + 1)];
-                                    var loopTo14 = GeneralLib.ListLength(buf);
-                                    for (i = 1; i <= loopTo14; i++)
-                                        Event.ForEachSet[i] = GeneralLib.ListIndex(buf, i);
-                                }
+                                Event.LocalVariableList.Values.ArrayIndexesByName(aname).ToList().ForEach(x => Event.ForEachSet.Add(x));
                             }
                             else if (Expression.IsGlobalVariableDefined(aname))
                             {
                                 // グローバルな配列に対するForEach
-                                foreach (VarData currentVar1 in Event.GlobalVariableList)
-                                {
-                                    var = currentVar1;
-                                    if (Strings.InStr(var.Name, aname + "[") == 1)
-                                    {
-                                        Array.Resize(Event.ForEachSet, Information.UBound(Event.ForEachSet) + 1 + 1);
-                                        buf = var.Name;
-                                        var loopTo15 = Strings.Len(buf);
-                                        for (i = 1; i <= loopTo15; i++)
-                                        {
-                                            if (Strings.Mid(buf, Strings.Len(buf) - i + 1, 1) == "]")
-                                            {
-                                                break;
-                                            }
-                                        }
-
-                                        buf = Strings.Mid(buf, Strings.InStr(buf, "[") + 1);
-                                        buf = Strings.Left(buf, Strings.Len(buf) - i);
-                                        Event.ForEachSet[Information.UBound(Event.ForEachSet)] = buf;
-                                    }
-                                }
-
-                                if (Information.UBound(Event.ForEachSet) == 0)
-                                {
-                                    buf = Expression.GetValueAsString(aname);
-                                    Event.ForEachSet = new string[(GeneralLib.ListLength(buf) + 1)];
-                                    var loopTo16 = GeneralLib.ListLength(buf);
-                                    for (i = 1; i <= loopTo16; i++)
-                                        Event.ForEachSet[i] = GeneralLib.ListIndex(buf, i);
-                                }
+                                Event.GlobalVariableList.Values.ArrayIndexesByName(aname).ToList().ForEach(x => Event.ForEachSet.Add(x));
                             }
 
                             // リストに対するForEach
@@ -620,7 +562,7 @@ namespace SRCCore.CmdDatas.Commands
                 }
                 else
                 {
-                    Expression.SetVariableAsString(GetArg(2), Event.ForEachSet[1]);
+                    Expression.SetVariableAsString(GetArg(2), Event.ForEachSet[0]);
                 }
 
                 return EventData.NextID;

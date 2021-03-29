@@ -24,17 +24,5 @@ namespace SRCCore.Events
         {
             return SubLocalVars().FirstOrDefault(x => x.Name == vname);
         }
-
-        public IEnumerable<VarData> SubLocalArray(string vname)
-        {
-            return SubLocalVars().Where(x => x.Name.StartsWith(vname + "["));
-        }
-
-        public IEnumerable<string> SubLocalArrayIndexes(string vname)
-        {
-            return SubLocalArray(vname)
-                .Select(x => x.Name.ArrayIndexByName())
-                .Where(x => !string.IsNullOrEmpty(x));
-        }
     }
 }
