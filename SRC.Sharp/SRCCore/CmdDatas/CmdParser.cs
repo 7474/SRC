@@ -254,7 +254,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "goto":
-                        return new NotImplementedCmd(src, data);
+                        return new GotoCmd(src, data);
 
                     case "hide":
                         return new NotImplementedCmd(src, data);
