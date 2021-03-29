@@ -227,7 +227,7 @@ namespace SRCCore.CmdDatas
                         return new ForCmd(src, data);
 
                     case "foreach":
-                        return new NotImplementedCmd(src, data);
+                        return new ForEachCmd(src, data);
 
                     case "next":
                         return new NextCmd(src, data);
