@@ -32,6 +32,12 @@ namespace SRCCore.Units
             Data = data;
         }
 
+        // ユニットの何番目のアビリティか
+        public int AbilityNo()
+        {
+            return Unit.Abilities.IndexOf(this) + 1;
+        }
+
         // アビリティの愛称
         public string AbilityNickname()
         {

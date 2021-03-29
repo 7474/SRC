@@ -1378,7 +1378,7 @@ namespace SRCSharpForm
             throw new NotImplementedException();
         }
 
-        public int WeaponListBox(Unit u, UnitWeaponList weapons, string caption_msg, string lb_mode, string BGM)
+        public UnitWeapon WeaponListBox(Unit u, UnitWeaponList weapons, string caption_msg, string lb_mode, string BGM)
         {
             // TODO Impl
             //short WeaponListBoxRet = default;
@@ -1921,12 +1921,11 @@ namespace SRCSharpForm
                 lb_mode = "",
             });
             //var WeaponListBoxRet = wlist[ret];
-            var WeaponListBoxRet = ret;
             Application.DoEvents();
-            return WeaponListBoxRet;
+            return ret > 0 ? weapons.Items[ret - 1].Weapon : null;
         }
 
-        public int AbilityListBox(Unit u, UnitAbilityList abilities, string caption_msg, string lb_mode, bool is_item = false)
+        public UnitAbility AbilityListBox(Unit u, UnitAbilityList abilities, string caption_msg, string lb_mode, bool is_item = false)
         {
             // TODO Impl
             TopItem = -1;
@@ -1946,7 +1945,7 @@ namespace SRCSharpForm
                 lb_mode = "",
             });
             Application.DoEvents();
-            return ret;
+            return ret > 0 ? abilities.Items[ret - 1].Ability : null;
         }
 
         public int LIPS(string lb_caption, string[] list, string lb_info, int time_limit)

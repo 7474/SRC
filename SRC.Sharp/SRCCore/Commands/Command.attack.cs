@@ -42,25 +42,27 @@ namespace SRCCore.Commands
             }
 
             // 武器の選択
+            UnitWeapon currentWeapon;
             UseSupportAttack = true;
             if (CommandState == "コマンド選択")
             {
-                SelectedWeapon = GUI.WeaponListBox(
+                currentWeapon = GUI.WeaponListBox(
                     SelectedUnit,
                     new UnitWeaponList(WeaponListMode.BeforeMove, SelectedUnit),
                      "武器選択", "移動前", BGM);
             }
             else
             {
-                SelectedWeapon = GUI.WeaponListBox(
+                currentWeapon = GUI.WeaponListBox(
                     SelectedUnit,
                     new UnitWeaponList(WeaponListMode.AfterMove, SelectedUnit),
                      "武器選択", "移動後", BGM);
             }
 
             // キャンセル
-            if (SelectedWeapon == 0)
+            if (currentWeapon == null)
             {
+                SelectedWeapon = 0;
                 if (SRC.AutoMoveCursor)
                 {
                     GUI.RestoreCursorPos();
@@ -71,7 +73,7 @@ namespace SRCCore.Commands
                 return;
             }
 
-            var currentWeapon = currentUnit.Weapon(SelectedWeapon);
+            SelectedWeapon = currentWeapon.WeaponNo();
 
             //// 武器ＢＧＭの演奏
             //if (currentUnit.IsFeatureAvailable("武器ＢＧＭ"))

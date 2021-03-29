@@ -31,7 +31,7 @@ namespace SRCCore.Units
         }
 
         // ユニットの何番目の武器か
-        private int WeaponNo()
+        public int WeaponNo()
         {
             return Unit.Weapons.IndexOf(this) + 1;
         }

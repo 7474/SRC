@@ -28,18 +28,20 @@ namespace SRCCore.Commands
                 cap = Expression.Term("アビリティ", SelectedUnit) + "選択";
             }
 
+            UnitAbility unitAbility;
             if (CommandState == "コマンド選択")
             {
-                SelectedAbility = GUI.AbilityListBox(SelectedUnit, new UnitAbilityList(AbilityListMode.BeforeMove, SelectedUnit), cap, "移動前", is_item);
+                unitAbility = GUI.AbilityListBox(SelectedUnit, new UnitAbilityList(AbilityListMode.BeforeMove, SelectedUnit), cap, "移動前", is_item);
             }
             else
             {
-                SelectedAbility = GUI.AbilityListBox(SelectedUnit, new UnitAbilityList(AbilityListMode.AfterMove, SelectedUnit), cap, "移動後", is_item);
+                unitAbility = GUI.AbilityListBox(SelectedUnit, new UnitAbilityList(AbilityListMode.AfterMove, SelectedUnit), cap, "移動後", is_item);
             }
 
             // キャンセル
-            if (SelectedAbility == 0)
+            if (unitAbility == null)
             {
+                SelectedAbility = 0;
                 if (SRC.AutoMoveCursor)
                 {
                     GUI.RestoreCursorPos();
@@ -49,6 +51,7 @@ namespace SRCCore.Commands
                 GUI.UnlockGUI();
                 return;
             }
+            SelectedAbility = unitAbility.AbilityNo();
 
             throw new NotImplementedException();
             //int i, j;
@@ -111,7 +114,7 @@ namespace SRCCore.Commands
             //    SelectedAbilityName = SelectedUnit.Ability(SelectedAbility).Name;
 
             //    // 使用イベント
-            //    Event_Renamed.HandleEvent("使用", SelectedUnit.MainPilot().ID, SelectedAbilityName);
+            //    Event.HandleEvent("使用", SelectedUnit.MainPilot().ID, SelectedAbilityName);
             //    if (SRC.IsScenarioFinished)
             //    {
             //        SRC.IsScenarioFinished = false;
@@ -134,11 +137,11 @@ namespace SRCCore.Commands
             //    // 破壊イベント
             //    {
             //        var withBlock1 = SelectedUnit;
-            //        if (withBlock1.Status_Renamed == "破壊")
+            //        if (withBlock1.Status == "破壊")
             //        {
             //            if (withBlock1.CountPilot() > 0)
             //            {
-            //                Event_Renamed.HandleEvent("破壊", withBlock1.MainPilot().ID);
+            //                Event.HandleEvent("破壊", withBlock1.MainPilot().ID);
             //                if (SRC.IsScenarioFinished)
             //                {
             //                    SRC.IsScenarioFinished = false;
@@ -164,7 +167,7 @@ namespace SRCCore.Commands
             //        var withBlock2 = SelectedUnit;
             //        if (withBlock2.CountPilot() > 0)
             //        {
-            //            Event_Renamed.HandleEvent("使用後", withBlock2.MainPilot().ID, SelectedAbilityName);
+            //            Event.HandleEvent("使用後", withBlock2.MainPilot().ID, SelectedAbilityName);
             //            if (SRC.IsScenarioFinished)
             //            {
             //                SRC.IsScenarioFinished = false;
@@ -188,7 +191,7 @@ namespace SRCCore.Commands
             //    }
             //    else
             //    {
-            //        if (SelectedUnit.Status_Renamed == "出撃")
+            //        if (SelectedUnit.Status == "出撃")
             //        {
             //            // カーソル自動移動
             //            if (SRC.AutoMoveCursor)
@@ -411,7 +414,7 @@ namespace SRCCore.Commands
             //t = null;
             //foreach (Unit u in SRC.UList)
             //{
-            //    if (u.Status_Renamed == "出撃" & u.Party == "味方")
+            //    if (u.Status == "出撃" & u.Party == "味方")
             //    {
             //        if (Map.MaskData[u.x, u.y] == false & !ReferenceEquals(u, SelectedUnit))
             //        {
@@ -434,8 +437,7 @@ namespace SRCCore.Commands
             //}
 
             //// カーソルを移動
-            //string argcursor_mode1 = "ユニット選択";
-            //GUI.MoveCursorPos(argcursor_mode1, t);
+            //GUI.MoveCursorPos("ユニット選択", t);
 
             //// ターゲットのステータスを表示
             //if (!ReferenceEquals(SelectedUnit, t))
@@ -502,7 +504,7 @@ namespace SRCCore.Commands
             //// ADD END MARGE
 
             //// 使用イベント
-            //Event_Renamed.HandleEvent("使用", SelectedUnit.MainPilot().ID, aname);
+            //Event.HandleEvent("使用", SelectedUnit.MainPilot().ID, aname);
             //if (SRC.IsScenarioFinished)
             //{
             //    SRC.IsScenarioFinished = false;
@@ -523,7 +525,7 @@ namespace SRCCore.Commands
             //    var withBlock1 = SelectedUnit;
             //    foreach (Unit u in SRC.UList)
             //    {
-            //        if (u.Status_Renamed == "出撃")
+            //        if (u.Status == "出撃")
             //        {
             //            Map.MaskData[u.x, u.y] = true;
             //        }
@@ -560,11 +562,11 @@ namespace SRCCore.Commands
             //// 破壊イベント
             //{
             //    var withBlock3 = SelectedUnit;
-            //    if (withBlock3.Status_Renamed == "破壊")
+            //    if (withBlock3.Status == "破壊")
             //    {
             //        if (withBlock3.CountPilot() > 0)
             //        {
-            //            Event_Renamed.HandleEvent("破壊", withBlock3.MainPilot().ID);
+            //            Event.HandleEvent("破壊", withBlock3.MainPilot().ID);
             //            if (SRC.IsScenarioFinished)
             //            {
             //                SRC.IsScenarioFinished = false;
@@ -592,7 +594,7 @@ namespace SRCCore.Commands
             //    var withBlock4 = SelectedUnit;
             //    if (withBlock4.CountPilot() > 0)
             //    {
-            //        Event_Renamed.HandleEvent("使用後", withBlock4.MainPilot().ID, aname);
+            //        Event.HandleEvent("使用後", withBlock4.MainPilot().ID, aname);
             //        if (SRC.IsScenarioFinished)
             //        {
             //            SRC.IsScenarioFinished = false;
@@ -624,7 +626,7 @@ namespace SRCCore.Commands
 
             //// ADD START MARGE
             //// 再移動
-            //if (is_p_ability & SelectedUnit.Status_Renamed == "出撃")
+            //if (is_p_ability & SelectedUnit.Status == "出撃")
             //{
             //    string argsname = "遊撃";
             //    if (SelectedUnit.MainPilot().IsSkillAvailable(argsname) & SelectedUnit.Speed * 2 > SelectedUnitMoveCost)
@@ -632,7 +634,7 @@ namespace SRCCore.Commands
             //        // 進入イベント
             //        if (SelectedUnitMoveCost > 0)
             //        {
-            //            Event_Renamed.HandleEvent("進入", SelectedUnit.MainPilot().ID, SelectedUnit.x, SelectedUnit.y);
+            //            Event.HandleEvent("進入", SelectedUnit.MainPilot().ID, SelectedUnit.x, SelectedUnit.y);
             //            if (SRC.IsScenarioFinished)
             //            {
             //                SRC.IsScenarioFinished = false;
@@ -641,7 +643,7 @@ namespace SRCCore.Commands
             //        }
 
             //        // ユニットが既に出撃していない？
-            //        if (SelectedUnit.Status_Renamed != "出撃")
+            //        if (SelectedUnit.Status != "出撃")
             //        {
             //            GUI.RedrawScreen();
             //            Status.ClearUnitStatus();
@@ -827,7 +829,7 @@ namespace SRCCore.Commands
 
             //// ADD START MARGE
             //// 再移動
-            //if (is_p_ability & SelectedUnit.Status_Renamed == "出撃")
+            //if (is_p_ability & SelectedUnit.Status == "出撃")
             //{
             //    string argsname = "遊撃";
             //    if (SelectedUnit.MainPilot().IsSkillAvailable(argsname) & SelectedUnit.Speed * 2 > SelectedUnitMoveCost)
@@ -835,7 +837,7 @@ namespace SRCCore.Commands
             //        // 進入イベント
             //        if (SelectedUnitMoveCost > 0)
             //        {
-            //            Event_Renamed.HandleEvent("進入", SelectedUnit.MainPilot().ID, SelectedUnit.x, SelectedUnit.y);
+            //            Event.HandleEvent("進入", SelectedUnit.MainPilot().ID, SelectedUnit.x, SelectedUnit.y);
             //            if (SRC.IsScenarioFinished)
             //            {
             //                SRC.IsScenarioFinished = false;
@@ -844,7 +846,7 @@ namespace SRCCore.Commands
             //        }
 
             //        // ユニットが既に出撃していない？
-            //        if (SelectedUnit.Status_Renamed != "出撃")
+            //        if (SelectedUnit.Status != "出撃")
             //        {
             //            GUI.RedrawScreen();
             //            Status.ClearUnitStatus();

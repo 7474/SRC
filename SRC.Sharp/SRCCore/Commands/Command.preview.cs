@@ -446,9 +446,8 @@ namespace SRCCore.Commands
             GUI.LockGUI();
             while (true)
             {
-                var w = GUI.WeaponListBox(SelectedUnit, new Units.UnitWeaponList(Units.WeaponListMode.List, SelectedUnit), "武装一覧", "一覧", "");
-                SelectedWeapon = w;
-                if (SelectedWeapon <= 0)
+                var selectedWeapon = GUI.WeaponListBox(SelectedUnit, new Units.UnitWeaponList(Units.WeaponListMode.List, SelectedUnit), "武装一覧", "一覧", "");
+                if (selectedWeapon == null)
                 {
                     // キャンセル
                     if (SRC.AutoMoveCursor)
@@ -462,10 +461,10 @@ namespace SRCCore.Commands
                     CommandState = "ユニット選択";
                     return;
                 }
+                SelectedWeapon = selectedWeapon.WeaponNo();
 
                 // TODO 選択した武器の情報を表示
                 // 指定された武器の属性一覧を作成
-                var selectedWeapon = SelectedUnit.Weapon(w);
                 //list = new string[1];
                 //i = 0;
                 {
@@ -670,10 +669,10 @@ namespace SRCCore.Commands
                 string argcaption_msg = Expression.Term("アビリティ", SelectedUnit) + "一覧";
                 string arglb_mode = "一覧";
                 var list = new UnitAbilityList(AbilityListMode.List, SelectedUnit);
-                var a = GUI.AbilityListBox(SelectedUnit, list, argcaption_msg, arglb_mode);
-                SelectedAbility = a;
-                if (SelectedAbility <= 0)
+                var currentAbility = GUI.AbilityListBox(SelectedUnit, list, argcaption_msg, arglb_mode);
+                if (currentAbility == null)
                 {
+                    SelectedAbility = 0;
                     // キャンセル
                     if (SRC.AutoMoveCursor)
                     {
@@ -686,6 +685,8 @@ namespace SRCCore.Commands
                     CommandState = "ユニット選択";
                     return;
                 }
+
+                SelectedAbility = currentAbility.AbilityNo();
                 // TODO Impl
                 // 指定されたアビリティの属性一覧を作成
                 {
