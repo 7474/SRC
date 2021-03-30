@@ -24,7 +24,7 @@ namespace SRCCore.Events
             EventQue.Clear();
             CallDepth = 0;
             ArgIndex = 0;
-            VarIndex = 0;
+            VarIndex = -1;
             ForIndex = 0;
             UpVarLevel = 0;
             HotPointList = new HotPoint[1];

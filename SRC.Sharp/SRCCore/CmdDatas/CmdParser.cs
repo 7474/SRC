@@ -4,6 +4,7 @@ using SRCCore.Events;
 using SRCCore.Lib;
 using SRCCore.VB;
 using System;
+using System.Linq;
 
 namespace SRCCore.CmdDatas
 {
@@ -317,7 +318,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "local":
-                        return new NotImplementedCmd(src, data);
+                        return new LocalCmd(src, data);
 
                     case "makepilotlist":
                         return new NotImplementedCmd(src, data);
@@ -591,7 +592,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "upvar":
-                        return new NotImplementedCmd(src, data);
+                        return new UpVarCmd(src, data);
 
                     case "useability":
                         return new NotImplementedCmd(src, data);
@@ -613,42 +614,20 @@ namespace SRCCore.CmdDatas
 
                     default:
                         {
-                            // TODO Impl
-                            //// 定義済みのイベントコマンドではない
-                            //if (ArgNum >= 3)
-                            //{
-                            //    if (list[2] == "=")
-                            //    {
-                            //        // 代入式
-
-                            //        CmdName = CmdType.SetCmd;
-                            //        // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                            //        Array.Resize(strArgs, 4);
-                            //        // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                            //        Array.Resize(lngArgs, 4);
-                            //        // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                            //        Array.Resize(dblArgs, 4);
-                            //        // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                            //        Array.Resize(ArgsType, 4);
-
-                            //        // 代入先の変数名
-                            //        strArgs[2] = list[1];
-                            //        ArgsType[2] = Expressions.ValueType.StringType;
-
-                            //        // 代入する値
-                            //        // (値が項の場合は既に引数の処理が済んでいるのでなにもしなくてよい)
-                            //        if (ArgNum > 3)
-                            //        {
-                            //            ArgsType[3] = Expressions.ValueType.UndefinedType;
-                            //            // GetValueAsStringの呼び出しの際に、Argsの内容は必ず項と仮定
-                            //            // されているので、わざと項にしておく
-                            //            strArgs[3] = "(" + GeneralLib.ListTail(edata, 3) + ")";
-                            //        }
-
-                            //        ArgNum = 3;
-                            //        return ParseRet;
-                            //    }
-                            //}
+                            // 定義済みのイベントコマンドではない
+                            if (list.Length >= 3)
+                            {
+                                if (list[1] == "=")
+                                {
+                                    // 代入式
+                                    // GetValueAsStringの呼び出しの際に、Argsの内容は必ず項と仮定
+                                    // されているので、わざと項にしておく
+                                    return new SetCmd(src, new EventDataLine(
+                                        data.ID, data.Source, data.File, data.LineNum,
+                                        "Set " + list[0] + " " + "(" + string.Join(" ", list.Skip(2)) + ")"
+                                    ));
+                                }
+                            }
 
                             if (llength == -1)
                             {
@@ -662,32 +641,6 @@ namespace SRCCore.CmdDatas
                             ));
                         }
                 }
-
-                //if (CmdName == CmdType.LocalCmd)
-                //{
-                //    if (ArgNum > 4)
-                //    {
-                //        if (list[3] == "=")
-                //        {
-                //            // Localコマンドが複数項から成る代入式を伴う場合
-
-                //            // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                //            Array.Resize(strArgs, 5);
-                //            // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                //            Array.Resize(lngArgs, 5);
-                //            // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                //            Array.Resize(dblArgs, 5);
-                //            // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                //            Array.Resize(ArgsType, 5);
-
-                //            // 代入する値
-                //            ArgsType[4] = Expressions.ValueType.UndefinedType;
-                //            strArgs[4] = "(" + GeneralLib.ListTail(edata, 4) + ")";
-                //            ArgNum = 4;
-                //            return ParseRet;
-                //        }
-                //    }
-                //}
             }
             catch (Exception ex)
             {

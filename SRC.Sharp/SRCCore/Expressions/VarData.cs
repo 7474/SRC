@@ -20,6 +20,11 @@ namespace SRCCore.Expressions
         // 数値
         public double NumericValue;
 
+        public override string ToString()
+        {
+            return $"{Name}:{StringValue}({NumericValue})";
+        }
+
         public ValueType ReferenceValue(ValueType etype, out string str_result, out double num_result)
         {
             str_result = "";

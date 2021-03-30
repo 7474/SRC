@@ -51,12 +51,16 @@ namespace SRCCore.Events
             //ArgStack.Clear();
             UpVarLevel = 0;
             //UpVarLevelStack.Clear();
-            VarIndex = 0;
+            VarIndex = -1;
             //VarIndexStack.Clear();
             //VarStack.Clear();
             ForIndex = 0;
             //ForIndexStack.Clear();
             //ForLimitStack.Clear();
+            CallStack[CallDepth] = 0;
+            ArgIndexStack[CallDepth] = ArgIndex;
+            VarIndexStack[CallDepth] = VarIndex;
+            ForIndexStack[CallDepth] = ForIndex;
 
             HotPointList = new List<HotPoint>();
             ObjColor = Color.White;

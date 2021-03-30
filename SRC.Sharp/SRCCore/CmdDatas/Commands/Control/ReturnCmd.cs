@@ -19,13 +19,13 @@ namespace SRCCore.CmdDatas.Commands
             {
                 throw new EventErrorException(this, "CallコマンドとReturnコマンドが対応していません");
             }
-            else if (Event.CallDepth == 1 & Event.CallStack[Event.CallDepth] == 0)
+            else if (Event.CallDepth == 1 && Event.CallStack[Event.CallDepth] == 0)
             {
                 throw new EventErrorException(this, "CallコマンドとReturnコマンドが対応していません");
             }
 
             // 呼び出し階層数をデクリメント
-            Event.CallDepth = (Event.CallDepth - 1);
+            Event.CallDepth = Event.CallDepth - 1;
 
             // サブルーチン実行前の状態に復帰
             Event.ArgIndex = Event.ArgIndexStack[Event.CallDepth];
