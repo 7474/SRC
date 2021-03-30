@@ -641,32 +641,6 @@ namespace SRCCore.CmdDatas
                             ));
                         }
                 }
-
-                //if (CmdName == CmdType.LocalCmd)
-                //{
-                //    if (ArgNum > 4)
-                //    {
-                //        if (list[3] == "=")
-                //        {
-                //            // Localコマンドが複数項から成る代入式を伴う場合
-
-                //            // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                //            Array.Resize(strArgs, 5);
-                //            // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                //            Array.Resize(lngArgs, 5);
-                //            // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                //            Array.Resize(dblArgs, 5);
-                //            // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                //            Array.Resize(ArgsType, 5);
-
-                //            // 代入する値
-                //            ArgsType[4] = Expressions.ValueType.UndefinedType;
-                //            strArgs[4] = "(" + GeneralLib.ListTail(edata, 4) + ")";
-                //            ArgNum = 4;
-                //            return ParseRet;
-                //        }
-                //    }
-                //}
             }
             catch (Exception ex)
             {

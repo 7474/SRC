@@ -3,6 +3,7 @@ using SRCCore.Exceptions;
 using SRCCore.Expressions;
 using SRCCore.Lib;
 using SRCCore.VB;
+using System.Linq;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -18,6 +19,8 @@ namespace SRCCore.CmdDatas.Commands
             ValueType etype;
             string str_result = "";
             double num_result = 0d;
+
+            // XXX 定義済を再定義した時
 
             // 代入式付きの変数定義？
             if (ArgNum >= 4)
@@ -92,15 +95,15 @@ namespace SRCCore.CmdDatas.Commands
                     }
                     else
                     {
-                        var arg = GetArgRaw(4);
-                        etype = Expression.EvalTerm(arg.strArg, ValueType.UndefinedType, out str_result, out num_result);
+                        var arg = "(" + string.Join(" ", Enumerable.Range(4, ArgNum - 3).Select(x => GetArg(x))) + ")";
+                        etype = Expression.EvalTerm(arg, ValueType.UndefinedType, out str_result, out num_result);
                         Event.VarIndex = (Event.VarIndex + 1);
                         {
                             var v = Event.VarStack[Event.VarIndex];
                             v.Name = vname;
                             v.VariableType = ValueType.NumericType;
                             v.StringValue = str_result;
-                            v.NumericValue = arg.dblArg;
+                            v.NumericValue = num_result;
                         }
                     }
 
