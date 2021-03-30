@@ -210,10 +210,11 @@ namespace SRCCore.Events
             //    return;
             //}
 
-            //// 現在の状態を保存
-            //ArgIndexStack[CallDepth] = ArgIndex;
-            //VarIndexStack[CallDepth] = VarIndex;
-            //ForIndexStack[CallDepth] = ForIndex;
+            // 現在の状態を保存
+            ArgIndexStack[CallDepth] = ArgIndex;
+            VarIndexStack[CallDepth] = VarIndex;
+            ForIndexStack[CallDepth] = ForIndex;
+            // TODO Impl
             //SaveBasePoint();
 
             // 呼び出し階層数をインクリメント

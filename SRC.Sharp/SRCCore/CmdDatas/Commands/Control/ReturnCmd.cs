@@ -19,7 +19,7 @@ namespace SRCCore.CmdDatas.Commands
             {
                 throw new EventErrorException(this, "CallコマンドとReturnコマンドが対応していません");
             }
-            else if (Event.CallDepth == 1 & Event.CallStack[Event.CallDepth] == 0)
+            else if (Event.CallDepth == 1 && Event.CallStack[Event.CallDepth] == 0)
             {
                 throw new EventErrorException(this, "CallコマンドとReturnコマンドが対応していません");
             }
