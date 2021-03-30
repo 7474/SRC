@@ -36,6 +36,7 @@ namespace SRCCore.Events
         private SrcCollection<LabelData> colNormalLabelList = new SrcCollection<LabelData>();
 
         // 変数用のコレクション
+        // XXX 列挙時の順番がDictionaryだと問題になるかも
         public IDictionary<string, VarData> GlobalVariableList = new Dictionary<string, VarData>();
         public IDictionary<string, VarData> LocalVariableList = new Dictionary<string, VarData>();
         public BCVariable BCVariable = new BCVariable();

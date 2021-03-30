@@ -92,11 +92,12 @@ namespace SRCCore.Units
             }
         }
 
-        //// 読み仮名
-        //public string KanaName
-        //{
-        //    get
-        //    {
+        // 読み仮名
+        // TODO Impl
+        public string KanaName
+        {
+            get { return Nickname0; }
+        }
         //        string KanaNameRet = default;
         //        int idx;
         //        Unit u;

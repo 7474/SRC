@@ -126,12 +126,13 @@ namespace SRCCore.Pilots
         //    return NicknameRet;
         //}
 
-        //// 読み仮名
-        //public string KanaName
-        //{
-        //    get
-        //    {
-        //        string KanaNameRet = default;
+        // 読み仮名
+        // TODO Impl
+        public string KanaName
+        {
+            get { return Nickname0; }
+        }
+        //string KanaNameRet = default;
         //        short idx;
         //        Unit u;
         //        string uname = default, vname;

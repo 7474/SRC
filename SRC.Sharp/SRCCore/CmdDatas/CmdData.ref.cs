@@ -8,9 +8,9 @@
 //            string cname;
 //            int clr;
 //            short i;
-//            if ((int)ArgNum < 6)
+//            if (ArgNum < 6)
 //            {
-//                Event_Renamed.EventErrorMessage = "Arcコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Arcコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 64979
@@ -22,14 +22,14 @@
 //                 */
 //            }
 
-//            x1 = (short)(GetArgAsLong(2) + Event_Renamed.BaseX);
-//            y1 = (short)(GetArgAsLong(3) + Event_Renamed.BaseY);
-//            rad = (short)GetArgAsLong(4);
+//            x1 = (GetArgAsLong(2) + Event.BaseX);
+//            y1 = (GetArgAsLong(3) + Event.BaseY);
+//            rad = GetArgAsLong(4);
 //            start_angle = 3.1415926535d * GetArgAsDouble(5) / 180d;
 //            end_angle = 3.1415926535d * GetArgAsDouble(6) / 180d;
 
 //            // 塗りつぶしの際は角度を負の値にする必要がある
-//            if (Event_Renamed.ObjFillStyle != vbFSTransparent)
+//            if (Event.ObjFillStyle != vbFSTransparent)
 //            {
 //                start_angle = -start_angle;
 //                if (start_angle == 0d)
@@ -47,7 +47,7 @@
 //            GUI.SaveScreen();
 
 //            // 描画先
-//            switch (Event_Renamed.ObjDrawOption ?? "")
+//            switch (Event.ObjDrawOption ?? "")
 //            {
 //                case "背景":
 //                    {
@@ -73,26 +73,26 @@
 
 //            // 描画領域
 //            short tmp;
-//            if (Event_Renamed.ObjDrawOption != "背景")
+//            if (Event.ObjDrawOption != "背景")
 //            {
 //                GUI.IsPictureVisible = true;
-//                tmp = (short)(rad + Event_Renamed.ObjDrawWidth - 1);
-//                GUI.PaintedAreaX1 = (short)GeneralLib.MinLng(GUI.PaintedAreaX1, GeneralLib.MaxLng(x1 - tmp, 0));
-//                GUI.PaintedAreaY1 = (short)GeneralLib.MinLng(GUI.PaintedAreaY1, GeneralLib.MaxLng(y1 - tmp, 0));
-//                GUI.PaintedAreaX2 = (short)GeneralLib.MaxLng(GUI.PaintedAreaX2, GeneralLib.MinLng(x1 + tmp, GUI.MainPWidth - 1));
-//                GUI.PaintedAreaY2 = (short)GeneralLib.MaxLng(GUI.PaintedAreaY2, GeneralLib.MinLng(y1 + tmp, GUI.MainPHeight - 1));
+//                tmp = (rad + Event.ObjDrawWidth - 1);
+//                GUI.PaintedAreaX1 = GeneralLib.MinLng(GUI.PaintedAreaX1, GeneralLib.MaxLng(x1 - tmp, 0));
+//                GUI.PaintedAreaY1 = GeneralLib.MinLng(GUI.PaintedAreaY1, GeneralLib.MaxLng(y1 - tmp, 0));
+//                GUI.PaintedAreaX2 = GeneralLib.MaxLng(GUI.PaintedAreaX2, GeneralLib.MinLng(x1 + tmp, GUI.MainPWidth - 1));
+//                GUI.PaintedAreaY2 = GeneralLib.MaxLng(GUI.PaintedAreaY2, GeneralLib.MinLng(y1 + tmp, GUI.MainPHeight - 1));
 //            }
 
-//            clr = Event_Renamed.ObjColor;
+//            clr = Event.ObjColor;
 //            var loopTo = ArgNum;
-//            for (i = (short)7; i <= loopTo; i++)
+//            for (i = 7; i <= loopTo; i++)
 //            {
 //                opt = GetArgAsString(i);
 //                if (Strings.Asc(opt) == 35) // #
 //                {
 //                    if (Strings.Len(opt) != 7)
 //                    {
-//                        Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                        Event.EventErrorMessage = "色指定が不正です";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 68421
@@ -105,16 +105,16 @@
 //                    }
 
 //                    cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-//                    StringType.MidStmtStr(ref cname, 1, 2, "&H");
+//                    StringType.MidStmtStr(cname, 1, 2, "&H");
 //                    var midTmp = Strings.Mid(opt, 6, 2);
-//                    StringType.MidStmtStr(ref cname, 3, 2, midTmp);
+//                    StringType.MidStmtStr(cname, 3, 2, midTmp);
 //                    var midTmp1 = Strings.Mid(opt, 4, 2);
-//                    StringType.MidStmtStr(ref cname, 5, 2, midTmp1);
+//                    StringType.MidStmtStr(cname, 5, 2, midTmp1);
 //                    var midTmp2 = Strings.Mid(opt, 2, 2);
-//                    StringType.MidStmtStr(ref cname, 7, 2, midTmp2);
+//                    StringType.MidStmtStr(cname, 7, 2, midTmp2);
 //                    if (!Information.IsNumeric(cname))
 //                    {
-//                        Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                        Event.EventErrorMessage = "色指定が不正です";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 68931
@@ -130,7 +130,7 @@
 //                }
 //                else
 //                {
-//                    Event_Renamed.EventErrorMessage = "Arcコマンドに不正なオプション「" + opt + "」が使われています";
+//                    Event.EventErrorMessage = "Arcコマンドに不正なオプション「" + opt + "」が使われています";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 69084
@@ -142,9 +142,9 @@
 //                     */
 //                }
 //            }
-//            pic.DrawWidth = Event_Renamed.ObjDrawWidth;
-//            pic.FillColor = Event_Renamed.ObjFillColor;
-//            pic.FillStyle = Event_Renamed.ObjFillStyle;
+//            pic.DrawWidth = Event.ObjDrawWidth;
+//            pic.FillColor = Event.ObjFillColor;
+//            pic.FillStyle = Event.ObjFillStyle;
 
 //            pic.Circle(x1, y1);/* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 //            pic.DrawWidth = 1;
@@ -152,9 +152,9 @@
 //            pic.FillStyle = vbFSTransparent;
 //            if (pic2 is object)
 //            {
-//                pic2.DrawWidth = Event_Renamed.ObjDrawWidth;
-//                pic2.FillColor = Event_Renamed.ObjFillColor;
-//                pic2.FillStyle = Event_Renamed.ObjFillStyle;
+//                pic2.DrawWidth = Event.ObjDrawWidth;
+//                pic2.FillColor = Event.ObjFillColor;
+//                pic2.FillStyle = Event.ObjFillStyle;
 
 //                pic2.Circle(x1, y1);/* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 //                pic2.DrawWidth = 1;
@@ -180,9 +180,9 @@
 //            string str_value;
 //            double num_value;
 //            string sep;
-//            if ((int)ArgNum != 4)
+//            if (ArgNum != 4)
 //            {
-//                Event_Renamed.EventErrorMessage = "Arrayコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Arrayコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 73625
@@ -193,7 +193,7 @@
 
 //                 */
 //            }
-//            else if (GetArgAsString((short)4) == "リスト")
+//            else if (GetArgAsString(4) == "リスト")
 //            {
 //                IsList = true;
 //            }
@@ -214,18 +214,18 @@
 //                if (Strings.Right(var_name, 1) == ")")
 //                {
 //                    var_name = Strings.Mid(var_name, 6, Strings.Len(var_name) - 6);
-//                    var_name = Expression.GetValueAsString(ref var_name);
+//                    var_name = Expression.GetValueAsString(var_name);
 //                }
 //            }
 
 //            // 代入先の変数を初期化した上で再設定
 //            // サブルーチンローカル変数の場合
-//            if (Expression.IsSubLocalVariableDefined(ref var_name))
+//            if (Expression.IsSubLocalVariableDefined(var_name))
 //            {
-//                Expression.UndefineVariable(ref var_name);
-//                Event_Renamed.VarIndex = (short)(Event_Renamed.VarIndex + 1);
+//                Expression.UndefineVariable(var_name);
+//                Event.VarIndex = (Event.VarIndex + 1);
 //                {
-//                    var withBlock = Event_Renamed.VarStack[Event_Renamed.VarIndex];
+//                    var withBlock = Event.VarStack[Event.VarIndex];
 //                    withBlock.Name = var_name;
 //                    withBlock.VariableType = Expression.ValueType.NumericType;
 //                    withBlock.StringValue = "";
@@ -233,23 +233,23 @@
 //                }
 //            }
 //            // ローカル変数の場合
-//            else if (Expression.IsLocalVariableDefined(ref var_name))
+//            else if (Expression.IsLocalVariableDefined(var_name))
 //            {
-//                Expression.UndefineVariable(ref var_name);
-//                Expression.DefineLocalVariable(ref var_name);
+//                Expression.UndefineVariable(var_name);
+//                Expression.DefineLocalVariable(var_name);
 //            }
 //            // グローバル変数の場合
-//            else if (Expression.IsGlobalVariableDefined(ref var_name))
+//            else if (Expression.IsGlobalVariableDefined(var_name))
 //            {
-//                Expression.UndefineVariable(ref var_name);
-//                Expression.DefineGlobalVariable(ref var_name);
+//                Expression.UndefineVariable(var_name);
+//                Expression.DefineGlobalVariable(var_name);
 //            }
 
 //            if (IsList)
 //            {
 //                // リストを配列に変換
-//                string arglist = GetArgAsString((short)3);
-//                num = GeneralLib.ListSplit(ref arglist, ref array_buf2);
+//                string arglist = GetArgAsString(3);
+//                num = GeneralLib.ListSplit(arglist, array_buf2);
 //                // UPGRADE_WARNING: オブジェクト array_buf の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 //                array_buf = SrcFormatter.CopyArray(array_buf2);
 //            }
@@ -279,19 +279,19 @@
 //                            ReDim array_buf(0)
 
 //                 */
-//                buf = GetArgAsString((short)3);
-//                sep = GetArgAsString((short)4);
+//                buf = GetArgAsString(3);
+//                sep = GetArgAsString(4);
 //                i = Strings.InStr(buf, sep);
 //                while (i > 0)
 //                {
-//                    Array.Resize(ref array_buf, Information.UBound((Array)array_buf) + 1 + 1);
+//                    Array.Resize(array_buf, Information.UBound((Array)array_buf) + 1 + 1);
 //                    // UPGRADE_WARNING: オブジェクト array_buf() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 //                    array_buf((object)Information.UBound((Array)array_buf)) = Strings.Left(buf, i - 1);
 //                    buf = Strings.Mid(buf, i + Strings.Len(sep));
 //                    i = Strings.InStr(buf, sep);
 //                }
 
-//                Array.Resize(ref array_buf, Information.UBound((Array)array_buf) + 1 + 1);
+//                Array.Resize(array_buf, Information.UBound((Array)array_buf) + 1 + 1);
 //                // UPGRADE_WARNING: オブジェクト array_buf() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 //                array_buf((object)Information.UBound((Array)array_buf)) = buf;
 //            }
@@ -301,12 +301,12 @@
 //            {
 //                // UPGRADE_WARNING: オブジェクト array_buf() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 //                buf = Conversions.ToString(array_buf((object)i));
-//                GeneralLib.TrimString(ref buf);
+//                GeneralLib.TrimString(buf);
 //                if (Information.IsNumeric(buf))
 //                {
 //                    etype = Expression.ValueType.NumericType;
 //                    str_value = "";
-//                    num_value = GeneralLib.StrToDbl(ref buf);
+//                    num_value = GeneralLib.StrToDbl(buf);
 //                }
 //                else
 //                {
@@ -316,7 +316,7 @@
 //                }
 
 //                vname = var_name + "[" + i.ToString() + "]";
-//                Expression.SetVariable(ref vname, ref etype, ref str_value, ref num_value);
+//                Expression.SetVariable(vname, etype, str_value, num_value);
 //            }
 
 //            ExecArrayCmdRet = LineNum + 1;
@@ -344,7 +344,7 @@
 //            i = ArgNum;
 //            while (i > 1)
 //            {
-//                switch (GetArg((short)i) ?? "")
+//                switch (GetArg(i) ?? "")
 //                {
 //                    case "通常":
 //                        {
@@ -399,42 +399,42 @@
 //                case 1:
 //                case 2:
 //                    {
-//                        if ((int)ArgNum == 1)
+//                        if (ArgNum == 1)
 //                        {
 //                            msg = "いずれかを選んでください";
 //                        }
 //                        else
 //                        {
-//                            msg = GetArgAsString((short)2);
+//                            msg = GetArgAsString(2);
 //                        }
 
 //                        GUI.ListItemID[0] = "0";
 
 //                        // 選択肢の読みこみ
-//                        var loopTo = Information.UBound(Event_Renamed.EventData);
+//                        var loopTo = Information.UBound(Event.EventData);
 //                        for (i = LineNum + 1; i <= loopTo; i++)
 //                        {
-//                            buf = Event_Renamed.EventData[i];
-//                            Expression.FormatMessage(ref buf);
+//                            buf = Event.EventData[i];
+//                            Expression.FormatMessage(buf);
 //                            if (Strings.Len(buf) > 0)
 //                            {
-//                                if (Event_Renamed.EventCmd[i].Name == Event_Renamed.CmdType.EndCmd)
+//                                if (Event.EventCmd[i].Name == Event.CmdType.EndCmd)
 //                                {
 //                                    break;
 //                                }
 
-//                                Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-//                                Array.Resize(ref GUI.ListItemID, Information.UBound(list) + 1);
-//                                Array.Resize(ref GUI.ListItemFlag, Information.UBound(list) + 1);
+//                                Array.Resize(list, Information.UBound(list) + 1 + 1);
+//                                Array.Resize(GUI.ListItemID, Information.UBound(list) + 1);
+//                                Array.Resize(GUI.ListItemFlag, Information.UBound(list) + 1);
 //                                list[Information.UBound(list)] = buf;
 //                                GUI.ListItemID[Information.UBound(list)] = SrcFormatter.Format((object)(i - LineNum));
 //                                GUI.ListItemFlag[Information.UBound(list)] = false;
 //                            }
 //                        }
 
-//                        if (i > Information.UBound(Event_Renamed.EventData))
+//                        if (i > Information.UBound(Event.EventData))
 //                        {
-//                            Event_Renamed.EventErrorMessage = "AskとEndが対応していません";
+//                            Event.EventErrorMessage = "AskとEndが対応していません";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 80314
@@ -453,12 +453,12 @@
 //                // 選択肢を配列で指定する場合
 //                case 3:
 //                    {
-//                        vname = GetArg((short)2);
-//                        msg = GetArgAsString((short)3);
+//                        vname = GetArg(2);
+//                        msg = GetArgAsString(3);
 //                        GUI.ListItemID[0] = "";
 
 //                        // 配列の検索
-//                        if (Expression.IsSubLocalVariableDefined(ref vname))
+//                        if (Expression.IsSubLocalVariableDefined(vname))
 //                        {
 //                            if (Strings.Left(vname, 1) == "$")
 //                            {
@@ -469,11 +469,11 @@
 //                                vname = vname + "[";
 //                            }
 
-//                            var loopTo1 = (int)Event_Renamed.VarIndex;
-//                            for (i = (int)Event_Renamed.VarIndexStack[(int)Event_Renamed.CallDepth - 1] + 1; i <= loopTo1; i++)
+//                            var loopTo1 = Event.VarIndex;
+//                            for (i = Event.VarIndexStack[Event.CallDepth - 1] + 1; i <= loopTo1; i++)
 //                            {
 //                                {
-//                                    var withBlock = Event_Renamed.VarStack[i];
+//                                    var withBlock = Event.VarStack[i];
 //                                    if (Strings.InStr(withBlock.Name, vname) == 1)
 //                                    {
 //                                        if (withBlock.VariableType == Expression.ValueType.StringType)
@@ -487,10 +487,10 @@
 
 //                                        if (Strings.Len(buf) > 0)
 //                                        {
-//                                            Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-//                                            Array.Resize(ref GUI.ListItemID, Information.UBound(list) + 1);
-//                                            Array.Resize(ref GUI.ListItemFlag, Information.UBound(list) + 1);
-//                                            Expression.FormatMessage(ref buf);
+//                                            Array.Resize(list, Information.UBound(list) + 1 + 1);
+//                                            Array.Resize(GUI.ListItemID, Information.UBound(list) + 1);
+//                                            Array.Resize(GUI.ListItemFlag, Information.UBound(list) + 1);
+//                                            Expression.FormatMessage(buf);
 //                                            list[Information.UBound(list)] = buf;
 //                                            GUI.ListItemID[Information.UBound(list)] = Strings.Mid(withBlock.Name, Strings.Len(vname) + 1, Strings.Len(withBlock.Name) - Strings.Len(vname) - 1);
 //                                            GUI.ListItemFlag[Information.UBound(list)] = false;
@@ -499,7 +499,7 @@
 //                                }
 //                            }
 //                        }
-//                        else if (Expression.IsLocalVariableDefined(ref vname))
+//                        else if (Expression.IsLocalVariableDefined(vname))
 //                        {
 //                            if (Strings.Left(vname, 1) == "$")
 //                            {
@@ -510,7 +510,7 @@
 //                                vname = vname + "[";
 //                            }
 
-//                            foreach (VarData currentVar in Event_Renamed.LocalVariableList)
+//                            foreach (VarData currentVar in Event.LocalVariableList)
 //                            {
 //                                var = currentVar;
 //                                if (Strings.InStr(var.Name, vname) == 1)
@@ -526,10 +526,10 @@
 
 //                                    if (Strings.Len(buf) > 0)
 //                                    {
-//                                        Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-//                                        Array.Resize(ref GUI.ListItemID, Information.UBound(list) + 1);
-//                                        Array.Resize(ref GUI.ListItemFlag, Information.UBound(list) + 1);
-//                                        Expression.FormatMessage(ref buf);
+//                                        Array.Resize(list, Information.UBound(list) + 1 + 1);
+//                                        Array.Resize(GUI.ListItemID, Information.UBound(list) + 1);
+//                                        Array.Resize(GUI.ListItemFlag, Information.UBound(list) + 1);
+//                                        Expression.FormatMessage(buf);
 //                                        list[Information.UBound(list)] = buf;
 //                                        GUI.ListItemID[Information.UBound(list)] = Strings.Mid(var.Name, Strings.Len(vname) + 1, Strings.Len(var.Name) - Strings.Len(vname) - 1);
 //                                        GUI.ListItemFlag[Information.UBound(list)] = false;
@@ -537,7 +537,7 @@
 //                                }
 //                            }
 //                        }
-//                        else if (Expression.IsGlobalVariableDefined(ref vname))
+//                        else if (Expression.IsGlobalVariableDefined(vname))
 //                        {
 //                            if (Strings.Left(vname, 1) == "$")
 //                            {
@@ -548,7 +548,7 @@
 //                                vname = vname + "[";
 //                            }
 
-//                            foreach (VarData currentVar1 in Event_Renamed.GlobalVariableList)
+//                            foreach (VarData currentVar1 in Event.GlobalVariableList)
 //                            {
 //                                var = currentVar1;
 //                                if (Strings.InStr(var.Name, vname) == 1)
@@ -564,10 +564,10 @@
 
 //                                    if (Strings.Len(buf) > 0)
 //                                    {
-//                                        Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-//                                        Array.Resize(ref GUI.ListItemID, Information.UBound(list) + 1);
-//                                        Array.Resize(ref GUI.ListItemFlag, Information.UBound(list) + 1);
-//                                        Expression.FormatMessage(ref buf);
+//                                        Array.Resize(list, Information.UBound(list) + 1 + 1);
+//                                        Array.Resize(GUI.ListItemID, Information.UBound(list) + 1);
+//                                        Array.Resize(GUI.ListItemFlag, Information.UBound(list) + 1);
+//                                        Expression.FormatMessage(buf);
 //                                        list[Information.UBound(list)] = buf;
 //                                        GUI.ListItemID[Information.UBound(list)] = Strings.Mid(var.Name, Strings.Len(vname) + 1, Strings.Len(var.Name) - Strings.Len(vname) - 1);
 //                                        GUI.ListItemFlag[Information.UBound(list)] = false;
@@ -582,7 +582,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Askコマンドのオプションが不正です";
+//                        Event.EventErrorMessage = "Askコマンドのオプションが不正です";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 85714
@@ -599,12 +599,12 @@
 //            // 選択肢がなければそのまま終了
 //            if (Information.UBound(list) == 0)
 //            {
-//                Event_Renamed.SelectedAlternative = 0.ToString();
+//                Event.SelectedAlternative = 0.ToString();
 //                return ExecAskCmdRet;
 //            }
 
 //            // ダイアログを拡大するか
-//            if (!use_normal_list & (Information.UBound(list) > 6 | use_large_list))
+//            if (!use_normal_list && (Information.UBound(list) > 6 || use_large_list))
 //            {
 //                GUI.EnlargeListBoxHeight();
 //            }
@@ -618,9 +618,9 @@
 //                GUI.TopItem = 1;
 //                string arglb_caption = "選択";
 //                string arglb_mode = "表示のみ";
-//                Commands.SelectedItem = GUI.ListBox(ref arglb_caption, ref list, ref msg, ref arglb_mode);
+//                Commands.SelectedItem = GUI.ListBox(arglb_caption, list, msg, arglb_mode);
 //                string argcursor_mode = "ダイアログ";
-//                GUI.MoveCursorPos(ref argcursor_mode);
+//                GUI.MoveCursorPos(argcursor_mode);
 //            }
 
 //            // 選択肢の入力
@@ -631,13 +631,13 @@
 //                {
 //                    string arglb_caption1 = "選択";
 //                    string arglb_mode1 = "連続表示";
-//                    Commands.SelectedItem = GUI.ListBox(ref arglb_caption1, ref list, ref msg, ref arglb_mode1);
+//                    Commands.SelectedItem = GUI.ListBox(arglb_caption1, list, msg, arglb_mode1);
 //                }
 //                else
 //                {
 //                    string arglb_caption2 = "選択";
 //                    string arglb_mode2 = "";
-//                    Commands.SelectedItem = GUI.ListBox(ref arglb_caption2, ref list, ref msg, lb_mode: ref arglb_mode2);
+//                    Commands.SelectedItem = GUI.ListBox(arglb_caption2, list, msg, lb_mode: arglb_mode2);
 //                }
 
 //                if (enable_rbutton_cancel)
@@ -649,7 +649,7 @@
 //                }
 //            }
 //            while (Commands.SelectedItem == 0);
-//            Event_Renamed.SelectedAlternative = GUI.ListItemID[Commands.SelectedItem];
+//            Event.SelectedAlternative = GUI.ListItemID[Commands.SelectedItem];
 //            GUI.ListItemID = new string[1];
 //            if (!use_continuous_mode)
 //            {
@@ -660,7 +660,7 @@
 //            }
 
 //            // ダイアログを標準の大きさに戻す
-//            if (!use_normal_list & !use_continuous_mode & (Information.UBound(list) > 6 | use_large_list))
+//            if (!use_normal_list && !use_continuous_mode && (Information.UBound(list) > 6 || use_large_list))
 //            {
 //                GUI.ReduceListBoxHeight();
 //            }
@@ -688,13 +688,13 @@
 //                // ＯＫ
 //                case 6:
 //                    {
-//                        if (GetArgAsString((short)6) == "通常戦闘")
+//                        if (GetArgAsString(6) == "通常戦闘")
 //                        {
 //                            is_event = false;
 //                        }
 //                        else
 //                        {
-//                            Event_Renamed.EventErrorMessage = "Attackコマンドのオプションが不正です";
+//                            Event.EventErrorMessage = "Attackコマンドのオプションが不正です";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 87971
@@ -711,7 +711,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Attackコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Attackコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 88089
@@ -727,22 +727,22 @@
 
 //            u1 = GetArgAsUnit(2);
 //            u2 = GetArgAsUnit(4);
-//            if (u1.Status_Renamed == "出撃" & u2.Status_Renamed == "出撃")
+//            if (u1.Status_Renamed == "出撃" && u2.Status_Renamed == "出撃")
 //            {
-//                if (GetArgAsString((short)3) == "自動")
+//                if (GetArgAsString(3) == "自動")
 //                {
 //                    string argamode = "イベント";
 //                    int argmax_prob = 0;
 //                    int argmax_dmg = 0;
-//                    w1 = COM.SelectWeapon(ref u1, ref u2, ref argamode, max_prob: ref argmax_prob, max_dmg: ref argmax_dmg);
+//                    w1 = COM.SelectWeapon(u1, u2, argamode, max_prob: argmax_prob, max_dmg: argmax_dmg);
 //                }
 //                else
 //                {
 //                    var loopTo = u1.CountWeapon();
-//                    for (w1 = (short)1; w1 <= loopTo; w1++)
+//                    for (w1 = 1; w1 <= loopTo; w1++)
 //                    {
 //                        string argattr = "マップ攻撃";
-//                        if ((GetArgAsString((short)3) ?? "") == (u1.Weapon(w1).Name ?? "") & !u1.IsWeaponClassifiedAs(w1, ref argattr))
+//                        if ((GetArgAsString(3) ?? "") == (u1.Weapon(w1).Name ?? "") && !u1.IsWeaponClassifiedAs(w1, argattr))
 //                        {
 //                            break;
 //                        }
@@ -750,7 +750,7 @@
 
 //                    if (w1 > u1.CountWeapon())
 //                    {
-//                        Event_Renamed.EventErrorMessage = "ユニット「" + u1.Name + "」には武装「" + GetArgAsString((short)3) + "」は存在しません";
+//                        Event.EventErrorMessage = "ユニット「" + u1.Name + "」には武装「" + GetArgAsString(3) + "」は存在しません";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 88682
@@ -763,21 +763,21 @@
 //                    }
 //                }
 
-//                def_option = GetArgAsString((short)5);
+//                def_option = GetArgAsString(5);
 //                switch (def_option ?? "")
 //                {
 //                    case "防御":
 //                    case "回避":
 //                    case "無抵抗":
 //                        {
-//                            def_mode = GetArgAsString((short)5);
+//                            def_mode = GetArgAsString(5);
 //                            break;
 //                        }
 
 //                    case "反撃不能":
 //                        {
 //                            def_mode = "反撃";
-//                            w2 = (short)0;
+//                            w2 = 0;
 //                            break;
 //                        }
 
@@ -787,7 +787,7 @@
 //                            string argamode1 = "反撃 イベント";
 //                            int argmax_prob1 = 0;
 //                            int argmax_dmg1 = 0;
-//                            w2 = COM.SelectWeapon(ref u2, ref u1, ref argamode1, max_prob: ref argmax_prob1, max_dmg: ref argmax_dmg1);
+//                            w2 = COM.SelectWeapon(u2, u1, argamode1, max_prob: argmax_prob1, max_dmg: argmax_dmg1);
 //                            break;
 //                        }
 
@@ -795,10 +795,10 @@
 //                        {
 //                            def_mode = "反撃";
 //                            var loopTo1 = u2.CountWeapon();
-//                            for (w2 = (short)1; w2 <= loopTo1; w2++)
+//                            for (w2 = 1; w2 <= loopTo1; w2++)
 //                            {
 //                                string argattr1 = "マップ攻撃";
-//                                if ((GetArgAsString((short)5) ?? "") == (u2.Weapon(w2).Name ?? "") & !u2.IsWeaponClassifiedAs(w2, ref argattr1))
+//                                if ((GetArgAsString(5) ?? "") == (u2.Weapon(w2).Name ?? "") && !u2.IsWeaponClassifiedAs(w2, argattr1))
 //                                {
 //                                    break;
 //                                }
@@ -806,7 +806,7 @@
 
 //                            if (w2 > u2.CountWeapon())
 //                            {
-//                                Event_Renamed.EventErrorMessage = "ユニット「" + u2.Name + "」には武装「" + GetArgAsString((short)5) + "」は存在しません";
+//                                Event.EventErrorMessage = "ユニット「" + u2.Name + "」には武装「" + GetArgAsString(5) + "」は存在しません";
 //                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 89382
@@ -822,7 +822,7 @@
 //                        }
 //                }
 
-//                if ((int)w1 > 0)
+//                if (w1 > 0)
 //                {
 //                    prev_su = Commands.SelectedUnit;
 //                    prev_st = Commands.SelectedTarget;
@@ -832,13 +832,13 @@
 //                    Commands.SelectedTarget = u2;
 //                    Commands.SelectedWeapon = w1;
 //                    Commands.SelectedTWeapon = w2;
-//                    if (u1.Party0 == "味方" | u1.Party0 == "ＮＰＣ")
+//                    if (u1.Party0 == "味方" || u1.Party0 == "ＮＰＣ")
 //                    {
-//                        GUI.OpenMessageForm(ref u2, ref u1);
+//                        GUI.OpenMessageForm(u2, u1);
 //                    }
 //                    else
 //                    {
-//                        GUI.OpenMessageForm(ref u1, ref u2);
+//                        GUI.OpenMessageForm(u1, u2);
 //                    }
 
 //                    // 攻撃を実行
@@ -855,15 +855,15 @@
 //                    // SelectedTWeapon = w2
 //                    // End If
 //                    // End If
-//                    if (def_option == "自動" & u2.Status_Renamed == "出撃")
+//                    if (def_option == "自動" && u2.Status_Renamed == "出撃")
 //                    {
 //                        string argref_mode = "移動前";
-//                        if (!u2.IsTargetWithinRange(w2, ref u1) | !u2.IsWeaponAvailable(w2, ref argref_mode))
+//                        if (!u2.IsTargetWithinRange(w2, u1) || !u2.IsWeaponAvailable(w2, argref_mode))
 //                        {
 //                            string argamode2 = "反撃 イベント";
 //                            int argmax_prob2 = 0;
 //                            int argmax_dmg2 = 0;
-//                            w2 = COM.SelectWeapon(ref u2, ref u1, ref argamode2, max_prob: ref argmax_prob2, max_dmg: ref argmax_dmg2);
+//                            w2 = COM.SelectWeapon(u2, u1, argamode2, max_prob: argmax_prob2, max_dmg: argmax_dmg2);
 //                            Commands.SelectedTWeapon = w2;
 //                        }
 //                    }
@@ -876,10 +876,10 @@
 //                    // '                And Not u2.IsConditionSatisfied("行動不能") _
 //                    // '            Then
 //                    object argIndex1 = (object)"攻撃不能";
-//                    if (def_mode == "反撃" & u2.Status_Renamed == "出撃" & (int)u2.MaxAction() > 0 & !u2.IsConditionSatisfied(ref argIndex1))
+//                    if (def_mode == "反撃" && u2.Status_Renamed == "出撃" && u2.MaxAction() > 0 && !u2.IsConditionSatisfied(argIndex1))
 //                    {
 //                        // MOD END マージ
-//                        if ((int)w2 > 0)
+//                        if (w2 > 0)
 //                        {
 //                            u2.Attack(w2, u1, "", "", is_event);
 //                        }
@@ -887,7 +887,7 @@
 //                        {
 //                            string argSituation = "射程外";
 //                            string argmsg_mode = "";
-//                            u2.PilotMessage(ref argSituation, msg_mode: ref argmsg_mode);
+//                            u2.PilotMessage(argSituation, msg_mode: argmsg_mode);
 //                        }
 //                    }
 
@@ -929,21 +929,21 @@
 //            prev_msg_wait = GUI.MessageWait;
 //            GUI.MessageWait = 700;
 //            short counter;
-//            counter = (short)LineNum;
+//            counter = LineNum;
 //            string cname;
 //            int tcolor;
-//            var loopTo = Information.UBound(Event_Renamed.EventData);
-//            for (i = (int)counter; i <= loopTo; i++)
+//            var loopTo = Information.UBound(Event.EventData);
+//            for (i = counter; i <= loopTo; i++)
 //            {
 //                {
-//                    var withBlock = Event_Renamed.EventCmd[i];
+//                    var withBlock = Event.EventCmd[i];
 //                    switch (withBlock.Name)
 //                    {
-//                        case Event_Renamed.CmdType.AutoTalkCmd:
+//                        case Event.CmdType.AutoTalkCmd:
 //                            {
-//                                if ((int)withBlock.ArgNum > 1)
+//                                if (withBlock.ArgNum > 1)
 //                                {
-//                                    pname = withBlock.GetArgAsString((short)2);
+//                                    pname = withBlock.GetArgAsString(2);
 //                                }
 //                                else
 //                                {
@@ -955,11 +955,11 @@
 //                                    // メインパイロットの強制指定
 //                                    pname = Strings.Mid(pname, 2);
 //                                    object argIndex2 = (object)pname;
-//                                    if (SRC.PList.IsDefined(ref argIndex2))
+//                                    if (SRC.PList.IsDefined(argIndex2))
 //                                    {
 //                                        object argIndex1 = (object)pname;
 //                                        {
-//                                            var withBlock1 = SRC.PList.Item(ref argIndex1);
+//                                            var withBlock1 = SRC.PList.Item(argIndex1);
 //                                            if (withBlock1.Unit_Renamed is object)
 //                                            {
 //                                                pname = withBlock1.Unit_Renamed.MainPilot().Name;
@@ -969,15 +969,15 @@
 //                                }
 
 //                                // 話者名チェック
-//                                bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(ref argIndex1); return ret; }
+//                                bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-//                                bool localIsDefined1() { object argIndex1 = (object)pname; var ret = SRC.PDList.IsDefined(ref argIndex1); return ret; }
+//                                bool localIsDefined1() { object argIndex1 = (object)pname; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
 
-//                                bool localIsDefined2() { object argIndex1 = (object)pname; var ret = SRC.NPDList.IsDefined(ref argIndex1); return ret; }
+//                                bool localIsDefined2() { object argIndex1 = (object)pname; var ret = SRC.NPDList.IsDefined(argIndex1); return ret; }
 
-//                                if (!localIsDefined() & !localIsDefined1() & !localIsDefined2() & !(pname == "システム") & !string.IsNullOrEmpty(pname))
+//                                if (!localIsDefined() && !localIsDefined1() && !localIsDefined2() && !(pname == "システム") && !string.IsNullOrEmpty(pname))
 //                                {
-//                                    Event_Renamed.EventErrorMessage = "「" + pname + "」というパイロットが定義されていません";
+//                                    Event.EventErrorMessage = "「" + pname + "」というパイロットが定義されていません";
 //                                    LineNum = i;
 //                                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
@@ -990,12 +990,12 @@
 //                                     */
 //                                }
 
-//                                if ((int)withBlock.ArgNum > 1)
+//                                if (withBlock.ArgNum > 1)
 //                                {
 //                                    options = "";
 //                                    without_cursor = false;
-//                                    j = (short)2;
-//                                    lnum = (short)1;
+//                                    j = 2;
+//                                    lnum = 1;
 //                                    while (j <= withBlock.ArgNum)
 //                                    {
 //                                        opt = withBlock.GetArgAsString(j);
@@ -1033,7 +1033,7 @@
 //                                            case "水中":
 //                                            case "通常":
 //                                                {
-//                                                    if ((int)j > 2)
+//                                                    if (j > 2)
 //                                                    {
 //                                                        // これらのパイロット画像描画に関するオプションは
 //                                                        // パイロット名が指定されている場合にのみ有効
@@ -1049,32 +1049,32 @@
 
 //                                            case "右回転":
 //                                                {
-//                                                    j = (short)((int)j + 1);
+//                                                    j = (j + 1);
 //                                                    options = options + "右回転 " + withBlock.GetArgAsString(j) + " ";
 //                                                    break;
 //                                                }
 
 //                                            case "左回転":
 //                                                {
-//                                                    j = (short)((int)j + 1);
+//                                                    j = (j + 1);
 //                                                    options = options + "左回転 " + withBlock.GetArgAsString(j) + " ";
 //                                                    break;
 //                                                }
 
 //                                            case "フィルタ":
 //                                                {
-//                                                    j = (short)((int)j + 1);
+//                                                    j = (j + 1);
 //                                                    buf = withBlock.GetArgAsString(j);
 //                                                    cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-//                                                    StringType.MidStmtStr(ref cname, 1, 2, "&H");
+//                                                    StringType.MidStmtStr(cname, 1, 2, "&H");
 //                                                    var midTmp = Strings.Mid(buf, 6, 2);
-//                                                    StringType.MidStmtStr(ref cname, 3, 2, midTmp);
+//                                                    StringType.MidStmtStr(cname, 3, 2, midTmp);
 //                                                    var midTmp1 = Strings.Mid(buf, 4, 2);
-//                                                    StringType.MidStmtStr(ref cname, 5, 2, midTmp1);
+//                                                    StringType.MidStmtStr(cname, 5, 2, midTmp1);
 //                                                    var midTmp2 = Strings.Mid(buf, 2, 2);
-//                                                    StringType.MidStmtStr(ref cname, 7, 2, midTmp2);
+//                                                    StringType.MidStmtStr(cname, 7, 2, midTmp2);
 //                                                    tcolor = Conversions.ToInteger(cname);
-//                                                    j = (short)((int)j + 1);
+//                                                    j = (j + 1);
 //                                                    // 空白のオプションをスキップ
 //                                                    options = options + "フィルタ " + SrcFormatter.Format((object)tcolor) + " " + withBlock.GetArgAsString(j) + " ";
 //                                                    break;
@@ -1093,12 +1093,12 @@
 //                                                }
 //                                        }
 
-//                                        j = (short)((int)j + 1);
+//                                        j = (j + 1);
 //                                    }
 //                                }
 //                                else
 //                                {
-//                                    lnum = (short)1;
+//                                    lnum = 1;
 //                                }
 
 //                                switch (lnum)
@@ -1112,14 +1112,14 @@
 //                                            {
 //                                                Unit argu1 = null;
 //                                                Unit argu2 = null;
-//                                                GUI.OpenMessageForm(u1: ref argu1, u2: ref argu2);
+//                                                GUI.OpenMessageForm(u1: argu1, u2: argu2);
 //                                            }
 
 //                                            // メッセージウィンドウのパイロット画像を以前指定された
 //                                            // ものに確定させる
 //                                            if (!string.IsNullOrEmpty(current_pname))
 //                                            {
-//                                                GUI.DisplayBattleMessage(ref current_pname, "", ref options);
+//                                                GUI.DisplayBattleMessage(current_pname, "", options);
 //                                            }
 
 //                                            current_pname = "";
@@ -1134,7 +1134,7 @@
 //                                            // 話者中心に画面位置を変更
 
 //                                            // プロローグイベントやエピローグイベント時はキャンセル
-//                                            if (SRC.Stage == "プロローグ" | SRC.Stage == "エピローグ")
+//                                            if (SRC.Stage == "プロローグ" || SRC.Stage == "エピローグ")
 //                                            {
 //                                                goto NextLoop;
 //                                            }
@@ -1163,7 +1163,7 @@
 //                                    case 3:
 //                                        {
 //                                            current_pname = pname;
-//                                            switch (withBlock.GetArgAsString((short)3) ?? "")
+//                                            switch (withBlock.GetArgAsString(3) ?? "")
 //                                            {
 //                                                case "母艦":
 //                                                    {
@@ -1193,13 +1193,13 @@
 //                                        {
 //                                            // 表示の座標指定あり
 //                                            current_pname = pname;
-//                                            CenterUnit("", without_cursor, (short)withBlock.GetArgAsLong((short)3), (short)withBlock.GetArgAsLong((short)4));
+//                                            CenterUnit("", without_cursor, withBlock.GetArgAsLong(3), withBlock.GetArgAsLong(4));
 //                                            break;
 //                                        }
 
 //                                    case -1:
 //                                        {
-//                                            Event_Renamed.EventErrorMessage = "AutoTalkコマンドのパラメータの括弧の対応が取れていません";
+//                                            Event.EventErrorMessage = "AutoTalkコマンドのパラメータの括弧の対応が取れていません";
 //                                            LineNum = i;
 //                                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
@@ -1215,7 +1215,7 @@
 
 //                                    default:
 //                                        {
-//                                            Event_Renamed.EventErrorMessage = "AutoTalkコマンドの引数の数が違います";
+//                                            Event.EventErrorMessage = "AutoTalkコマンドの引数の数が違います";
 //                                            LineNum = i;
 //                                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
@@ -1234,18 +1234,18 @@
 //                                {
 //                                    Unit argu11 = null;
 //                                    Unit argu21 = null;
-//                                    GUI.OpenMessageForm(u1: ref argu11, u2: ref argu21);
+//                                    GUI.OpenMessageForm(u1: argu11, u2: argu21);
 //                                }
 
 //                                break;
 //                            }
 
-//                        case Event_Renamed.CmdType.EndCmd:
+//                        case Event.CmdType.EndCmd:
 //                            {
 //                                GUI.CloseMessageForm();
-//                                if ((int)withBlock.ArgNum != 1)
+//                                if (withBlock.ArgNum != 1)
 //                                {
-//                                    Event_Renamed.EventErrorMessage = "End部分の引数の数が違います";
+//                                    Event.EventErrorMessage = "End部分の引数の数が違います";
 //                                    LineNum = i;
 //                                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
@@ -1261,11 +1261,11 @@
 //                                break;
 //                            }
 
-//                        case Event_Renamed.CmdType.SuspendCmd:
+//                        case Event.CmdType.SuspendCmd:
 //                            {
-//                                if ((int)withBlock.ArgNum != 1)
+//                                if (withBlock.ArgNum != 1)
 //                                {
-//                                    Event_Renamed.EventErrorMessage = "Suspend部分の引数の数が違います";
+//                                    Event.EventErrorMessage = "Suspend部分の引数の数が違います";
 //                                    LineNum = i;
 //                                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
@@ -1287,10 +1287,10 @@
 //                                {
 //                                    Unit argu12 = null;
 //                                    Unit argu22 = null;
-//                                    GUI.OpenMessageForm(u1: ref argu12, u2: ref argu22);
+//                                    GUI.OpenMessageForm(u1: argu12, u2: argu22);
 //                                }
 
-//                                GUI.DisplayBattleMessage(ref current_pname, Event_Renamed.EventData[i], ref options);
+//                                GUI.DisplayBattleMessage(current_pname, Event.EventData[i], options);
 //                                break;
 //                            }
 //                    }
@@ -1302,10 +1302,10 @@
 
 //            // メッセージ表示速度を元に戻す
 //            GUI.MessageWait = prev_msg_wait;
-//            if (i > Information.UBound(Event_Renamed.EventData))
+//            if (i > Information.UBound(Event.EventData))
 //            {
 //                GUI.CloseMessageForm();
-//                Event_Renamed.EventErrorMessage = "AutoTalkとEndが対応していません";
+//                Event.EventErrorMessage = "AutoTalkとEndが対応していません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 98673
@@ -1327,9 +1327,9 @@
 //            short xx, yy;
 
 //            // 座標が指定されている場合
-//            if (X != 0 & Y != 0)
+//            if (X != 0 && Y != 0)
 //            {
-//                if (X < 1 | Map.MapWidth < X | Y < 1 | Map.MapHeight < Y)
+//                if (X < 1 || Map.MapWidth < X || Y < 1 || Map.MapHeight < Y)
 //                {
 //                    // マップ外
 //                    return;
@@ -1345,10 +1345,10 @@
 //                // 母艦を中央表示
 //                foreach (Unit u in SRC.UList)
 //                {
-//                    if (u.Party0 == "味方" & u.Status_Renamed == "出撃")
+//                    if (u.Party0 == "味方" && u.Status_Renamed == "出撃")
 //                    {
 //                        string argfname = "母艦";
-//                        if (u.IsFeatureAvailable(ref argfname))
+//                        if (u.IsFeatureAvailable(argfname))
 //                        {
 //                            xx = u.x;
 //                            yy = u.y;
@@ -1361,30 +1361,30 @@
 //            }
 
 //            // 表情パターン名での指定はパイロット名に変換しておく
-//            bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PList.IsDefined(ref argIndex1); return ret; }
+//            bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-//            if (!localIsDefined() & Strings.InStr(pname, "(") > 0)
+//            if (!localIsDefined() && Strings.InStr(pname, "(") > 0)
 //            {
 //                object argIndex1 = Strings.Left(pname, Strings.InStr(pname, "(") - 1);
-//                if (SRC.PList.IsDefined(ref argIndex1))
+//                if (SRC.PList.IsDefined(argIndex1))
 //                {
 //                    pname = Strings.Left(pname, Strings.InStr(pname, "(") - 1);
 //                }
 //            }
 
-//            bool localIsDefined1() { object argIndex1 = pname; var ret = SRC.PList.IsDefined(ref argIndex1); return ret; }
+//            bool localIsDefined1() { object argIndex1 = pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-//            bool localIsDefined2() { object argIndex1 = pname; var ret = SRC.NPDList.IsDefined(ref argIndex1); return ret; }
+//            bool localIsDefined2() { object argIndex1 = pname; var ret = SRC.NPDList.IsDefined(argIndex1); return ret; }
 
-//            if (!localIsDefined1() & localIsDefined2())
+//            if (!localIsDefined1() && localIsDefined2())
 //            {
-//                NonPilotData localItem() { object argIndex1 = pname; var ret = SRC.NPDList.Item(ref argIndex1); return ret; }
+//                NonPilotData localItem() { object argIndex1 = pname; var ret = SRC.NPDList.Item(argIndex1); return ret; }
 
 //                pname = localItem().Nickname;
 //            }
 
 //            // 話者はパイロット？
-//            bool localIsDefined3() { object argIndex1 = pname; var ret = SRC.PList.IsDefined(ref argIndex1); return ret; }
+//            bool localIsDefined3() { object argIndex1 = pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
 //            if (!localIsDefined3())
 //            {
@@ -1393,13 +1393,13 @@
 
 //            object argIndex2 = pname;
 //            {
-//                var withBlock = SRC.PList.Item(ref argIndex2);
+//                var withBlock = SRC.PList.Item(argIndex2);
 //                if (withBlock.Unit_Renamed is object)
 //                {
 //                    // パイロットが乗っているユニットを中央表示
 //                    {
 //                        var withBlock1 = withBlock.Unit_Renamed;
-//                        if (withBlock1.Status_Renamed == "出撃" | withBlock1.Status_Renamed == "格納")
+//                        if (withBlock1.Status_Renamed == "出撃" || withBlock1.Status_Renamed == "格納")
 //                        {
 //                            xx = withBlock1.x;
 //                            yy = withBlock1.y;
@@ -1418,19 +1418,19 @@
 //            return;
 //            FoundPoint:
 //            ;
-//            if (GUI.MapX != xx | GUI.MapY != yy)
+//            if (GUI.MapX != xx || GUI.MapY != yy)
 //            {
 //                GUI.Center(xx, yy);
 //                GUI.RefreshScreen(false, true);
 //            }
 
 //            bool tmp;
-//            if (!GUI.IsCursorVisible & !without_cursor)
+//            if (!GUI.IsCursorVisible && !without_cursor)
 //            {
 //                tmp = GUI.IsPictureVisible;
 //                string argfname1 = @"Event\cursor.bmp";
 //                string argdraw_option = "透過";
-//                GUI.DrawPicture(ref argfname1, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, 0, 0, 0, 0, ref argdraw_option);
+//                GUI.DrawPicture(argfname1, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, 0, 0, 0, 0, argdraw_option);
 //                GUI.IsPictureVisible = tmp;
 //                GUI.IsCursorVisible = true;
 //            }
@@ -1447,11 +1447,11 @@
 //            {
 //                case 3:
 //                    {
-//                        u = GetArgAsUnit((short)2);
-//                        buf = GetArgAsString((short)3);
+//                        u = GetArgAsUnit(2);
+//                        buf = GetArgAsString(3);
 //                        if (!Information.IsNumeric(buf))
 //                        {
-//                            Event_Renamed.EventErrorMessage = "ボスランクが不正です";
+//                            Event.EventErrorMessage = "ボスランクが不正です";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 101976
@@ -1468,11 +1468,11 @@
 
 //                case 2:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
-//                        buf = GetArgAsString((short)2);
+//                        u = Event.SelectedUnitForEvent;
+//                        buf = GetArgAsString(2);
 //                        if (!Information.IsNumeric(buf))
 //                        {
-//                            Event_Renamed.EventErrorMessage = "ボスランクが不正です";
+//                            Event.EventErrorMessage = "ボスランクが不正です";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 102254
@@ -1489,7 +1489,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "BossRankコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "BossRankコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 102374
@@ -1522,22 +1522,22 @@
 
 //            // 対応するLoopもしくはNextコマンドを探す
 //            depth = 1;
-//            var loopTo = Information.UBound(Event_Renamed.EventCmd);
+//            var loopTo = Information.UBound(Event.EventCmd);
 //            for (i = LineNum + 1; i <= loopTo; i++)
 //            {
-//                switch (Event_Renamed.EventCmd[i].Name)
+//                switch (Event.EventCmd[i].Name)
 //                {
-//                    case Event_Renamed.CmdType.DoCmd:
-//                    case Event_Renamed.CmdType.ForCmd:
-//                    case Event_Renamed.CmdType.ForEachCmd:
+//                    case Event.CmdType.DoCmd:
+//                    case Event.CmdType.ForCmd:
+//                    case Event.CmdType.ForEachCmd:
 //                        {
-//                            depth = (short)(depth + 1);
+//                            depth = (depth + 1);
 //                            break;
 //                        }
 
-//                    case Event_Renamed.CmdType.LoopCmd:
+//                    case Event.CmdType.LoopCmd:
 //                        {
-//                            depth = (short)(depth - 1);
+//                            depth = (depth - 1);
 //                            if (depth == 0)
 //                            {
 //                                break;
@@ -1546,12 +1546,12 @@
 //                            break;
 //                        }
 
-//                    case Event_Renamed.CmdType.NextCmd:
+//                    case Event.CmdType.NextCmd:
 //                        {
-//                            depth = (short)(depth - 1);
+//                            depth = (depth - 1);
 //                            if (depth == 0)
 //                            {
-//                                Event_Renamed.ForIndex = (short)(Event_Renamed.ForIndex - 1);
+//                                Event.ForIndex = (Event.ForIndex - 1);
 //                                break;
 //                            }
 
@@ -1560,9 +1560,9 @@
 //                }
 //            }
 
-//            if (i > Information.UBound(Event_Renamed.EventCmd))
+//            if (i > Information.UBound(Event.EventCmd))
 //            {
-//                Event_Renamed.EventErrorMessage = "Breakコマンドがループの外で使われています";
+//                Event.EventErrorMessage = "Breakコマンドがループの外で使われています";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 103645
@@ -1583,16 +1583,16 @@
 //            int ExecCallCmdRet = default;
 //            int ret;
 //            short i;
-//            var @params = new string[(Event_Renamed.MaxArgIndex + 1)];
+//            var @params = new string[(Event.MaxArgIndex + 1)];
 
 //            // サブルーチンを探す
 //            string arglname = GetArgAsString(2);
-//            ret = Event_Renamed.FindNormalLabel(ref arglname);
+//            ret = Event.FindNormalLabel(arglname);
 
 //            // 見つかった？
 //            if (ret == 0)
 //            {
-//                Event_Renamed.EventErrorMessage = "サブルーチンの呼び出し先ラベルである「" + GetArgAsString((short)2) + "」がみつかりません";
+//                Event.EventErrorMessage = "サブルーチンの呼び出し先ラベルである「" + GetArgAsString(2) + "」がみつかりません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 104107
@@ -1605,10 +1605,10 @@
 //            }
 
 //            // 呼び出し階層をチェック
-//            if (Event_Renamed.CallDepth > Event_Renamed.MaxCallDepth)
+//            if (Event.CallDepth > Event.MaxCallDepth)
 //            {
-//                Event_Renamed.CallDepth = Event_Renamed.MaxCallDepth;
-//                Event_Renamed.EventErrorMessage = SrcFormatter.Format((object)Event_Renamed.MaxCallDepth) + "階層を越えるサブルーチンの呼び出しは出来ません";
+//                Event.CallDepth = Event.MaxCallDepth;
+//                Event.EventErrorMessage = SrcFormatter.Format((object)Event.MaxCallDepth) + "階層を越えるサブルーチンの呼び出しは出来ません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 104515
@@ -1621,9 +1621,9 @@
 //            }
 
 //            // 引数用スタックが溢れないかチェック
-//            if (Event_Renamed.ArgIndex + ArgNum - 2 > (int)Event_Renamed.MaxArgIndex)
+//            if (Event.ArgIndex + ArgNum - 2 > Event.MaxArgIndex)
 //            {
-//                Event_Renamed.EventErrorMessage = "サブルーチンの引数の総数が" + SrcFormatter.Format((object)Event_Renamed.MaxArgIndex) + "個を超えています";
+//                Event.EventErrorMessage = "サブルーチンの引数の総数が" + SrcFormatter.Format((object)Event.MaxArgIndex) + "個を超えています";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 104856
@@ -1642,32 +1642,32 @@
 //                @params[i] = GetArgAsString(i);
 
 //            // 現在の状態を保存
-//            Event_Renamed.CallStack[Event_Renamed.CallDepth] = LineNum;
-//            Event_Renamed.ArgIndexStack[Event_Renamed.CallDepth] = Event_Renamed.ArgIndex;
-//            Event_Renamed.VarIndexStack[Event_Renamed.CallDepth] = Event_Renamed.VarIndex;
-//            Event_Renamed.ForIndexStack[Event_Renamed.CallDepth] = Event_Renamed.ForIndex;
+//            Event.CallStack[Event.CallDepth] = LineNum;
+//            Event.ArgIndexStack[Event.CallDepth] = Event.ArgIndex;
+//            Event.VarIndexStack[Event.CallDepth] = Event.VarIndex;
+//            Event.ForIndexStack[Event.CallDepth] = Event.ForIndex;
 
 //            // UpVarが実行された場合、UpVar実行数は累計する
-//            if (Event_Renamed.UpVarLevel > 0)
+//            if (Event.UpVarLevel > 0)
 //            {
-//                Event_Renamed.UpVarLevelStack[Event_Renamed.CallDepth] = (short)(Event_Renamed.UpVarLevel + Event_Renamed.UpVarLevelStack[Event_Renamed.CallDepth - 1]);
+//                Event.UpVarLevelStack[Event.CallDepth] = (Event.UpVarLevel + Event.UpVarLevelStack[Event.CallDepth - 1]);
 //            }
 //            else
 //            {
-//                Event_Renamed.UpVarLevelStack[Event_Renamed.CallDepth] = 0;
+//                Event.UpVarLevelStack[Event.CallDepth] = 0;
 //            }
 
 //            // UpVarの階層数を初期化
-//            Event_Renamed.UpVarLevel = 0;
+//            Event.UpVarLevel = 0;
 
 //            // 引数をスタックに積む
 //            var loopTo1 = ArgNum;
 //            for (i = 3; i <= loopTo1; i++)
-//                Event_Renamed.ArgStack[(short)(Event_Renamed.ArgIndex + ArgNum) - i + 1] = @params[i];
-//            Event_Renamed.ArgIndex = (short)(Event_Renamed.ArgIndex + ArgNum - 2);
+//                Event.ArgStack[(Event.ArgIndex + ArgNum) - i + 1] = @params[i];
+//            Event.ArgIndex = (Event.ArgIndex + ArgNum - 2);
 
 //            // 呼び出し階層数をインクリメント
-//            Event_Renamed.CallDepth = (short)(Event_Renamed.CallDepth + 1);
+//            Event.CallDepth = (Event.CallDepth + 1);
 //            ExecCallCmdRet = ret + 1;
 //            return ExecCallCmdRet;
 //        }
@@ -1675,9 +1675,9 @@
 //        private int ExecReturnCmd()
 //        {
 //            int ExecReturnCmdRet = default;
-//            if ((int)Event_Renamed.CallDepth <= 0)
+//            if (Event.CallDepth <= 0)
 //            {
-//                Event_Renamed.EventErrorMessage = "CallコマンドとReturnコマンドが対応していません";
+//                Event.EventErrorMessage = "CallコマンドとReturnコマンドが対応していません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 106629
@@ -1688,9 +1688,9 @@
 
 //                 */
 //            }
-//            else if ((int)Event_Renamed.CallDepth == 1 & Event_Renamed.CallStack[(int)Event_Renamed.CallDepth] == 0)
+//            else if (Event.CallDepth == 1 && Event.CallStack[Event.CallDepth] == 0)
 //            {
-//                Event_Renamed.EventErrorMessage = "CallコマンドとReturnコマンドが対応していません";
+//                Event.EventErrorMessage = "CallコマンドとReturnコマンドが対応していません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 106876
@@ -1703,14 +1703,14 @@
 //            }
 
 //            // 呼び出し階層数をデクリメント
-//            Event_Renamed.CallDepth = (short)(Event_Renamed.CallDepth - 1);
+//            Event.CallDepth = (Event.CallDepth - 1);
 
 //            // サブルーチン実行前の状態に復帰
-//            Event_Renamed.ArgIndex = Event_Renamed.ArgIndexStack[Event_Renamed.CallDepth];
-//            Event_Renamed.VarIndex = Event_Renamed.VarIndexStack[Event_Renamed.CallDepth];
-//            Event_Renamed.ForIndex = Event_Renamed.ForIndexStack[Event_Renamed.CallDepth];
-//            Event_Renamed.UpVarLevel = Event_Renamed.UpVarLevelStack[Event_Renamed.CallDepth];
-//            ExecReturnCmdRet = Event_Renamed.CallStack[Event_Renamed.CallDepth] + 1;
+//            Event.ArgIndex = Event.ArgIndexStack[Event.CallDepth];
+//            Event.VarIndex = Event.VarIndexStack[Event.CallDepth];
+//            Event.ForIndex = Event.ForIndexStack[Event.CallDepth];
+//            Event.UpVarLevel = Event.UpVarLevelStack[Event.CallDepth];
+//            ExecReturnCmdRet = Event.CallStack[Event.CallDepth] + 1;
 //            return ExecReturnCmdRet;
 //        }
 
@@ -1719,9 +1719,9 @@
 //            int ExecCallInterMissionCommandCmdRet = default;
 //            string fname, save_path = default;
 //            short ret;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "CallInterMissionCommandコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "CallInterMissionCommandコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 107922
@@ -1741,24 +1741,24 @@
 //                        // 一旦「常に手前に表示」を解除
 //                        if (My.MyProject.Forms.frmListBox.Visible)
 //                        {
-//                            ret = (short)GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -2, 0, 0, 0, 0, 0x3);
+//                            ret = GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -2, 0, 0, 0, 0, 0x3);
 //                        }
 
 //                        string argdtitle = "データセーブ";
 //                        string argexpr = "セーブデータファイル名";
-//                        string argdefault_file = Expression.GetValueAsString(ref argexpr);
+//                        string argdefault_file = Expression.GetValueAsString(argexpr);
 //                        string argftype = "ｾｰﾌﾞﾃﾞｰﾀ";
 //                        string argfsuffix = "src";
 //                        string argftype2 = "";
 //                        string argfsuffix2 = "";
 //                        string argftype3 = "";
 //                        string argfsuffix3 = "";
-//                        fname = FileDialog.SaveFileDialog(ref argdtitle, ref SRC.ScenarioPath, ref argdefault_file, 2, ref argftype, ref argfsuffix, ftype2: ref argftype2, fsuffix2: ref argfsuffix2, ftype3: ref argftype3, fsuffix3: ref argfsuffix3);
+//                        fname = FileDialog.SaveFileDialog(argdtitle, SRC.ScenarioPath, argdefault_file, 2, argftype, argfsuffix, ftype2: argftype2, fsuffix2: argfsuffix2, ftype3: argftype3, fsuffix3: argfsuffix3);
 
 //                        // 再び「常に手前に表示」
 //                        if (My.MyProject.Forms.frmListBox.Visible)
 //                        {
-//                            ret = (short)GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -1, 0, 0, 0, 0, 0x3);
+//                            ret = GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -1, 0, 0, 0, 0, 0x3);
 //                        }
 
 //                        // キャンセル？
@@ -1772,12 +1772,12 @@
 //                        if (Strings.InStr(fname, @"\") > 0)
 //                        {
 //                            string argstr2 = @"\";
-//                            save_path = Strings.Left(fname, GeneralLib.InStr2(ref fname, ref argstr2));
+//                            save_path = Strings.Left(fname, GeneralLib.InStr2(fname, argstr2));
 //                        }
 //                        // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
 //                        if ((FileSystem.Dir(save_path) ?? "") != (FileSystem.Dir(SRC.ScenarioPath) ?? ""))
 //                        {
-//                            if ((int)Interaction.MsgBox("セーブファイルはシナリオフォルダにないと読み込めません。" + Constants.vbCr + Constants.vbLf + "このままセーブしますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question)) != 1)
+//                            if (Interaction.MsgBox("セーブファイルはシナリオフォルダにないと読み込めません。" + Constants.vbCr + Constants.vbLf + "このままセーブしますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question)) != 1)
 //                            {
 //                                ExecCallInterMissionCommandCmdRet = LineNum + 1;
 //                                return ExecCallInterMissionCommandCmdRet;
@@ -1787,7 +1787,7 @@
 //                        if (!string.IsNullOrEmpty(fname))
 //                        {
 //                            SRC.UList.Update(); // 追加パイロットを消去
-//                            SRC.SaveData(ref fname);
+//                            SRC.SaveData(fname);
 //                        }
 
 //                        break;
@@ -1822,7 +1822,7 @@
 //                        GUI.EnlargeListBoxHeight();
 //                        Unit argselected_unit = null;
 //                        string argselected_part = "";
-//                        InterMission.ExchangeItemCommand(selected_unit: ref argselected_unit, selected_part: ref argselected_part);
+//                        InterMission.ExchangeItemCommand(selected_unit: argselected_unit, selected_part: argselected_part);
 
 //                        // 選択用リストボックスを元に戻す
 //                        GUI.ReduceListBoxHeight();
@@ -1845,12 +1845,12 @@
 //                        My.MyProject.Forms.frmListBox.Hide();
 //                        GUI.ReduceListBoxHeight();
 //                        SRC.IsSubStage = true;
-//                        bool localFileExists() { string argfname = SRC.ExtDataPath + @"Lib\パイロットステータス表示.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+//                        bool localFileExists() { string argfname = SRC.ExtDataPath + @"Lib\パイロットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-//                        bool localFileExists1() { string argfname = SRC.ExtDataPath2 + @"Lib\パイロットステータス表示.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+//                        bool localFileExists1() { string argfname = SRC.ExtDataPath2 + @"Lib\パイロットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
 //                        string argfname = SRC.ScenarioPath + @"Lib\パイロットステータス表示.eve";
-//                        if (GeneralLib.FileExists(ref argfname))
+//                        if (GeneralLib.FileExists(argfname))
 //                        {
 //                            SRC.StartScenario(SRC.ScenarioPath + @"Lib\パイロットステータス表示.eve");
 //                        }
@@ -1876,12 +1876,12 @@
 //                        My.MyProject.Forms.frmListBox.Hide();
 //                        GUI.ReduceListBoxHeight();
 //                        SRC.IsSubStage = true;
-//                        bool localFileExists2() { string argfname = SRC.ExtDataPath + @"Lib\ユニットステータス表示.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+//                        bool localFileExists2() { string argfname = SRC.ExtDataPath + @"Lib\ユニットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-//                        bool localFileExists3() { string argfname = SRC.ExtDataPath2 + @"Lib\ユニットステータス表示.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+//                        bool localFileExists3() { string argfname = SRC.ExtDataPath2 + @"Lib\ユニットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
 //                        string argfname1 = SRC.ScenarioPath + @"Lib\ユニットステータス表示.eve";
-//                        if (GeneralLib.FileExists(ref argfname1))
+//                        if (GeneralLib.FileExists(argfname1))
 //                        {
 //                            SRC.StartScenario(SRC.ScenarioPath + @"Lib\ユニットステータス表示.eve");
 //                        }
@@ -1928,7 +1928,7 @@
 //                if (GetArgAsString(num) == "非同期")
 //                {
 //                    late_refresh = true;
-//                    num = (short)(num - 1);
+//                    num = (num - 1);
 //                }
 //            }
 
@@ -1936,20 +1936,20 @@
 //            {
 //                case 3:
 //                    {
-//                        ux = (short)GetArgAsLong((short)2);
-//                        if ((int)ux < 1)
+//                        ux = GetArgAsLong(2);
+//                        if (ux < 1)
 //                        {
-//                            ux = (short)1;
+//                            ux = 1;
 //                        }
 //                        else if (ux > Map.MapWidth)
 //                        {
 //                            ux = Map.MapWidth;
 //                        }
 
-//                        uy = (short)GetArgAsLong((short)3);
-//                        if ((int)uy < 1)
+//                        uy = GetArgAsLong(3);
+//                        if (uy < 1)
 //                        {
-//                            uy = (short)1;
+//                            uy = 1;
 //                        }
 //                        else if (uy > Map.MapHeight)
 //                        {
@@ -1962,13 +1962,13 @@
 
 //                case 2:
 //                    {
-//                        u = GetArgAsUnit((short)2, true);
+//                        u = GetArgAsUnit(2, true);
 //                        if (u is object)
 //                        {
 //                            if (u.Status_Renamed == "出撃")
 //                            {
 //                                GUI.Center(u.x, u.y);
-//                                Event_Renamed.IsUnitCenter = true;
+//                                Event.IsUnitCenter = true;
 //                            }
 //                        }
 
@@ -1977,7 +1977,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Centerコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Centerコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 114024
@@ -2005,21 +2005,21 @@
 //            {
 //                case 2:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
-//                        new_area = GetArgAsString((short)2);
+//                        u = Event.SelectedUnitForEvent;
+//                        new_area = GetArgAsString(2);
 //                        break;
 //                    }
 
 //                case 3:
 //                    {
-//                        u = GetArgAsUnit((short)2);
-//                        new_area = GetArgAsString((short)3);
+//                        u = GetArgAsUnit(2);
+//                        new_area = GetArgAsString(3);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "ChangeAreaコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "ChangeAreaコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 114580
@@ -2039,9 +2039,9 @@
 //                {
 //                    case "陸":
 //                        {
-//                            if (new_area != "地上" & new_area != "空中" & new_area != "地中")
+//                            if (new_area != "地上" && new_area != "空中" && new_area != "地中")
 //                            {
-//                                Event_Renamed.EventErrorMessage = "場所の種類が不正です";
+//                                Event.EventErrorMessage = "場所の種類が不正です";
 //                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 114838
@@ -2058,9 +2058,9 @@
 
 //                    case "屋内":
 //                        {
-//                            if (new_area != "地上" & new_area != "空中")
+//                            if (new_area != "地上" && new_area != "空中")
 //                            {
-//                                Event_Renamed.EventErrorMessage = "場所の種類が不正です";
+//                                Event.EventErrorMessage = "場所の種類が不正です";
 //                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 115004
@@ -2077,9 +2077,9 @@
 
 //                    case "月面":
 //                        {
-//                            if (new_area != "地上" & new_area != "宇宙" & new_area != "地中")
+//                            if (new_area != "地上" && new_area != "宇宙" && new_area != "地中")
 //                            {
-//                                Event_Renamed.EventErrorMessage = "場所の種類が不正です";
+//                                Event.EventErrorMessage = "場所の種類が不正です";
 //                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 115191
@@ -2097,9 +2097,9 @@
 //                    case "水":
 //                    case "深水":
 //                        {
-//                            if (new_area != "水中" & new_area != "水上" & new_area != "空中")
+//                            if (new_area != "水中" && new_area != "水上" && new_area != "空中")
 //                            {
-//                                Event_Renamed.EventErrorMessage = "場所の種類が不正です";
+//                                Event.EventErrorMessage = "場所の種類が不正です";
 //                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 115383
@@ -2118,7 +2118,7 @@
 //                        {
 //                            if (new_area != "空中")
 //                            {
-//                                Event_Renamed.EventErrorMessage = "場所の種類が不正です";
+//                                Event.EventErrorMessage = "場所の種類が不正です";
 //                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 115528
@@ -2137,7 +2137,7 @@
 //                        {
 //                            if (new_area != "宇宙")
 //                            {
-//                                Event_Renamed.EventErrorMessage = "場所の種類が不正です";
+//                                Event.EventErrorMessage = "場所の種類が不正です";
 //                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 115673
@@ -2157,7 +2157,7 @@
 //                withBlock.Update();
 //                if (withBlock.Status_Renamed == "出撃")
 //                {
-//                    GUI.PaintUnitBitmap(ref u);
+//                    GUI.PaintUnitBitmap(u);
 //                }
 //            }
 
@@ -2182,9 +2182,9 @@
 //            int ret;
 //            short i;
 //            bool isPaintBmp;
-//            if ((int)ArgNum != 5 & (int)ArgNum != 6)
+//            if (ArgNum != 5 && ArgNum != 6)
 //            {
-//                Event_Renamed.EventErrorMessage = "ChangeTerrainコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "ChangeTerrainコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 116506
@@ -2197,11 +2197,11 @@
 //            }
 
 //            // 対象座標を取得
-//            X = (short)GetArgAsLong(2);
-//            Y = (short)GetArgAsLong(3);
-//            if ((int)X < 1 | X > Map.MapWidth)
+//            X = GetArgAsLong(2);
+//            Y = GetArgAsLong(3);
+//            if (X < 1 || X > Map.MapWidth)
 //            {
-//                Event_Renamed.EventErrorMessage = "Ｘ座標の値は1～" + Map.MapWidth + "で指定してください";
+//                Event.EventErrorMessage = "Ｘ座標の値は1～" + Map.MapWidth + "で指定してください";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 116760
@@ -2213,9 +2213,9 @@
 //                 */
 //            }
 
-//            if ((int)Y < 1 | Y > Map.MapHeight)
+//            if (Y < 1 || Y > Map.MapHeight)
 //            {
-//                Event_Renamed.EventErrorMessage = "Ｙ座標の値は1～" + Map.MapHeight + "で指定してください";
+//                Event.EventErrorMessage = "Ｙ座標の値は1～" + Map.MapHeight + "で指定してください";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 116948
@@ -2229,7 +2229,7 @@
 
 //            // レイヤー情報・画像を取得
 //            lname = GetArgAsString(4);
-//            lbitmap = (short)GetArgAsLong(5);
+//            lbitmap = GetArgAsLong(5);
 //            if (Strings.Right(lname, 6) == "(ローカル)")
 //            {
 //                lname = Strings.Left(lname, Strings.Len(lname) - 6);
@@ -2249,7 +2249,7 @@
 
 //                if (i > withBlock.Count)
 //                {
-//                    Event_Renamed.EventErrorMessage = "「" + lname + "」という地形は存在しません";
+//                    Event.EventErrorMessage = "「" + lname + "」という地形は存在しません";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 117517
@@ -2267,9 +2267,9 @@
 
 //            // マス情報を取得
 //            isPaintBmp = true;
-//            if ((int)ArgNum == 6)
+//            if (ArgNum == 6)
 //            {
-//                ltypename = GetArgAsString((short)6);
+//                ltypename = GetArgAsString(6);
 //                if ("通常" == ltypename)
 //                {
 //                    ltype = Map.BoxTypes.Upper;
@@ -2285,7 +2285,7 @@
 //                }
 //                else
 //                {
-//                    Event_Renamed.EventErrorMessage = "ChangeLayerコマンドのOptionが不正です";
+//                    Event.EventErrorMessage = "ChangeLayerコマンドのOptionが不正です";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 118213
@@ -2310,7 +2310,7 @@
 //                fname = Map.SearchTerrainImageFile(lid, lbitmap, X, Y);
 //                if (string.IsNullOrEmpty(fname))
 //                {
-//                    Event_Renamed.EventErrorMessage = "マップビットマップ「" + SRC.TDList.Bitmap(lid) + SrcFormatter.Format((object)lbitmap) + ".bmp" + "」が見つかりません";
+//                    Event.EventErrorMessage = "マップビットマップ「" + SRC.TDList.Bitmap(lid) + SrcFormatter.Format((object)lbitmap) + ".bmp" + "」が見つかりません";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 118934
@@ -2331,64 +2331,64 @@
 //                        case "夜":
 //                            {
 //                                var argpic = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(ref argpic);
+//                                Graphics.GetImage(argpic);
 //                                Graphics.Dark();
 //                                var argpic1 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(ref argpic1);
+//                                Graphics.SetImage(argpic1);
 //                                break;
 //                            }
 
 //                        case "セピア":
 //                            {
 //                                var argpic2 = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(ref argpic2);
+//                                Graphics.GetImage(argpic2);
 //                                Graphics.Sepia();
 //                                var argpic3 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(ref argpic3);
+//                                Graphics.SetImage(argpic3);
 //                                break;
 //                            }
 
 //                        case "白黒":
 //                            {
 //                                var argpic4 = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(ref argpic4);
+//                                Graphics.GetImage(argpic4);
 //                                Graphics.Monotone();
 //                                var argpic5 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(ref argpic5);
+//                                Graphics.SetImage(argpic5);
 //                                break;
 //                            }
 
 //                        case "夕焼け":
 //                            {
 //                                var argpic6 = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(ref argpic6);
+//                                Graphics.GetImage(argpic6);
 //                                Graphics.Sunset();
 //                                var argpic7 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(ref argpic7);
+//                                Graphics.SetImage(argpic7);
 //                                break;
 //                            }
 
 //                        case "水中":
 //                            {
 //                                var argpic8 = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(ref argpic8);
+//                                Graphics.GetImage(argpic8);
 //                                Graphics.Water();
 //                                var argpic9 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(ref argpic9);
+//                                Graphics.SetImage(argpic9);
 //                                break;
 //                            }
 
 //                        case "フィルタ":
 //                            {
 //                                var argpic10 = withBlock1.picTmp32(0);
-//                                Graphics.GetImage(ref argpic10);
-//                                Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent);
+//                                Graphics.GetImage(argpic10);
+//                                Graphics.ColorFilter(Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent);
 //                                var argpic11 = withBlock1.picTmp32(0);
-//                                Graphics.SetImage(ref argpic11);
+//                                Graphics.SetImage(argpic11);
 //                                break;
 //                            }
 //                    }
-//                    ret = GUI.BitBlt(withBlock1.picBack.hDC, 32 * ((int)X - 1), 32 * ((int)Y - 1), 32, 32, withBlock1.picTmp32(0).hDC, 0, 0, GUI.SRCCOPY);
+//                    ret = GUI.BitBlt(withBlock1.picBack.hDC, 32 * (X - 1), 32 * (Y - 1), 32, 32, withBlock1.picTmp32(0).hDC, 0, 0, GUI.SRCCOPY);
 
 //                    // レイヤー画像を背景へ書き込み
 //                    withBlock1.picTmp32(0) = Image.FromFile(fname);
@@ -2398,77 +2398,77 @@
 //                        case "夜":
 //                            {
 //                                var argpic12 = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(ref argpic12);
+//                                Graphics.GetImage(argpic12);
 //                                Graphics.Dark(true);
 //                                var argpic13 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(ref argpic13);
+//                                Graphics.SetImage(argpic13);
 //                                break;
 //                            }
 
 //                        case "セピア":
 //                            {
 //                                var argpic14 = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(ref argpic14);
+//                                Graphics.GetImage(argpic14);
 //                                Graphics.Sepia(true);
 //                                var argpic15 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(ref argpic15);
+//                                Graphics.SetImage(argpic15);
 //                                break;
 //                            }
 
 //                        case "白黒":
 //                            {
 //                                var argpic16 = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(ref argpic16);
+//                                Graphics.GetImage(argpic16);
 //                                Graphics.Monotone(true);
 //                                var argpic17 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(ref argpic17);
+//                                Graphics.SetImage(argpic17);
 //                                break;
 //                            }
 
 //                        case "夕焼け":
 //                            {
 //                                var argpic18 = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(ref argpic18);
+//                                Graphics.GetImage(argpic18);
 //                                Graphics.Sunset(true);
 //                                var argpic19 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(ref argpic19);
+//                                Graphics.SetImage(argpic19);
 //                                break;
 //                            }
 
 //                        case "水中":
 //                            {
 //                                var argpic20 = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(ref argpic20);
+//                                Graphics.GetImage(argpic20);
 //                                Graphics.Water(true);
 //                                var argpic21 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(ref argpic21);
+//                                Graphics.SetImage(argpic21);
 //                                break;
 //                            }
 
 //                        case "フィルタ":
 //                            {
 //                                var argpic22 = withBlock1.picTmp32(0);
-//                                Graphics.GetImage(ref argpic22);
-//                                Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent, true);
+//                                Graphics.GetImage(argpic22);
+//                                Graphics.ColorFilter(Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent, true);
 //                                var argpic23 = withBlock1.picTmp32(0);
-//                                Graphics.SetImage(ref argpic23);
+//                                Graphics.SetImage(argpic23);
 //                                break;
 //                            }
 //                    }
 //                    // レイヤーは透過処理をする
-//                    ret = GUI.TransparentBlt(withBlock1.picBack.hDC, 32 * ((int)X - 1), 32 * ((int)Y - 1), 32, 32, withBlock1.picTmp32(0).hDC, 0, 0, 32, 32, GUI.BGColor);
+//                    ret = GUI.TransparentBlt(withBlock1.picBack.hDC, 32 * (X - 1), 32 * (Y - 1), 32, 32, withBlock1.picTmp32(0).hDC, 0, 0, 32, 32, GUI.BGColor);
 
 //                    // マス目の表示
 //                    if (SRC.ShowSquareLine)
 //                    {
-//                        withBlock1.picBack.Line((32 * ((int)X - 1), 32 * ((int)Y - 1)) - (32 * (int)X, 32 * ((int)Y - 1)), Information.RGB(100, 100, 100), B);
-//                        withBlock1.picBack.Line((32 * ((int)X - 1), 32 * ((int)Y - 1)) - (32 * ((int)X - 1), 32 * (int)Y), Information.RGB(100, 100, 100), B);
+//                        withBlock1.picBack.Line((32 * (X - 1), 32 * (Y - 1)) - (32 * X, 32 * (Y - 1)), Information.RGB(100, 100, 100), B);
+//                        withBlock1.picBack.Line((32 * (X - 1), 32 * (Y - 1)) - (32 * (X - 1), 32 * Y), Information.RGB(100, 100, 100), B);
 //                    }
 
 //                    // マスク入り背景画面を作成しておく
-//                    ret = GUI.BitBlt(withBlock1.picMaskedBack.hDC, 32 * ((int)X - 1), 32 * ((int)Y - 1), 32, 32, withBlock1.picBack.hDC, 32 * ((int)X - 1), 32 * ((int)Y - 1), GUI.SRCCOPY);
-//                    ret = GUI.BitBlt(withBlock1.picMaskedBack.hDC, 32 * ((int)X - 1), 32 * ((int)Y - 1), 32, 32, withBlock1.picMask.hDC, 0, 0, GUI.SRCAND);
-//                    ret = GUI.BitBlt(withBlock1.picMaskedBack.hDC, 32 * ((int)X - 1), 32 * ((int)Y - 1), 32, 32, withBlock1.picMask2.hDC, 0, 0, GUI.SRCINVERT);
+//                    ret = GUI.BitBlt(withBlock1.picMaskedBack.hDC, 32 * (X - 1), 32 * (Y - 1), 32, 32, withBlock1.picBack.hDC, 32 * (X - 1), 32 * (Y - 1), GUI.SRCCOPY);
+//                    ret = GUI.BitBlt(withBlock1.picMaskedBack.hDC, 32 * (X - 1), 32 * (Y - 1), 32, 32, withBlock1.picMask.hDC, 0, 0, GUI.SRCAND);
+//                    ret = GUI.BitBlt(withBlock1.picMaskedBack.hDC, 32 * (X - 1), 32 * (Y - 1), 32, 32, withBlock1.picMask2.hDC, 0, 0, GUI.SRCINVERT);
 //                }
 
 //                // 変更された地形にいたユニットを再表示（ついでにバックバッファからフロントに描画）
@@ -2510,13 +2510,13 @@
 //                // ＯＫ
 //                case 3:
 //                    {
-//                        if (GetArgAsString((short)3) == "非同期")
+//                        if (GetArgAsString(3) == "非同期")
 //                        {
 //                            late_refresh = true;
 //                        }
 //                        else
 //                        {
-//                            Event_Renamed.EventErrorMessage = "ChangeMapコマンドのオプションが不正です";
+//                            Event.EventErrorMessage = "ChangeMapコマンドのオプションが不正です";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 131856
@@ -2533,7 +2533,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "ChangeMapコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "ChangeMapコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 131977
@@ -2554,7 +2554,7 @@
 //            // 出撃中のユニットを撤退させる
 //            foreach (Unit u in SRC.UList)
 //            {
-//                if (u.Status_Renamed == "出撃" | u.Status_Renamed == "格納")
+//                if (u.Status_Renamed == "出撃" || u.Status_Renamed == "格納")
 //                {
 //                    if (late_refresh)
 //                    {
@@ -2571,12 +2571,12 @@
 //            if (Strings.Len(fname) > 0)
 //            {
 //                string argfname = SRC.ScenarioPath + fname;
-//                Map.LoadMapData(ref argfname);
+//                Map.LoadMapData(argfname);
 //            }
 //            else
 //            {
 //                string argfname1 = "";
-//                Map.LoadMapData(ref argfname1);
+//                Map.LoadMapData(argfname1);
 //            }
 
 //            if (late_refresh)
@@ -2585,7 +2585,7 @@
 //                string argdraw_option = "非同期";
 //                int argfilter_color = 0;
 //                double argfilter_trans_par = 0d;
-//                GUI.SetupBackground(ref argdraw_mode, ref argdraw_option, filter_color: ref argfilter_color, filter_trans_par: ref argfilter_trans_par);
+//                GUI.SetupBackground(argdraw_mode, argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
 //                GUI.RedrawScreen(true);
 //            }
 //            else
@@ -2594,7 +2594,7 @@
 //                string argdraw_option1 = "";
 //                int argfilter_color1 = 0;
 //                double argfilter_trans_par1 = 0d;
-//                GUI.SetupBackground(draw_mode: ref argdraw_mode1, draw_option: ref argdraw_option1, filter_color: ref argfilter_color1, filter_trans_par: ref argfilter_trans_par1);
+//                GUI.SetupBackground(draw_mode: argdraw_mode1, draw_option: argdraw_option1, filter_color: argfilter_color1, filter_trans_par: argfilter_trans_par1);
 //                GUI.RedrawScreen();
 //            }
 
@@ -2619,21 +2619,21 @@
 //            {
 //                case 2:
 //                    {
-//                        uarray[1] = Event_Renamed.SelectedUnitForEvent;
-//                        new_mode = GetArgAsString((short)2);
+//                        uarray[1] = Event.SelectedUnitForEvent;
+//                        new_mode = GetArgAsString(2);
 //                        break;
 //                    }
 
 //                case 3:
 //                    {
-//                        if (GetArgAsLong((short)2) > 0 & GetArgAsLong((short)3) > 0)
+//                        if (GetArgAsLong(2) > 0 && GetArgAsLong(3) > 0)
 //                        {
-//                            uarray[1] = Event_Renamed.SelectedUnitForEvent;
-//                            dst_x = (short)GetArgAsLong((short)2);
-//                            dst_y = (short)GetArgAsLong((short)3);
-//                            if ((int)dst_x < 1 | Map.MapWidth < dst_x | (int)dst_y < 1 | Map.MapHeight < dst_y)
+//                            uarray[1] = Event.SelectedUnitForEvent;
+//                            dst_x = GetArgAsLong(2);
+//                            dst_y = GetArgAsLong(3);
+//                            if (dst_x < 1 || Map.MapWidth < dst_x || dst_y < 1 || Map.MapHeight < dst_y)
 //                            {
-//                                Event_Renamed.EventErrorMessage = "ChangeModeコマンドの目的地の座標が不正です";
+//                                Event.EventErrorMessage = "ChangeModeコマンドの目的地の座標が不正です";
 //                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 134202
@@ -2649,7 +2649,7 @@
 //                        }
 //                        else
 //                        {
-//                            pname = GetArgAsString((short)2);
+//                            pname = GetArgAsString(2);
 //                            switch (pname ?? "")
 //                            {
 //                                case "味方":
@@ -2663,7 +2663,7 @@
 //                                            u = currentU;
 //                                            if ((u.Party0 ?? "") == (pname ?? ""))
 //                                            {
-//                                                Array.Resize(ref uarray, Information.UBound(uarray) + 1 + 1);
+//                                                Array.Resize(uarray, Information.UBound(uarray) + 1 + 1);
 //                                                uarray[Information.UBound(uarray)] = u;
 //                                            }
 //                                        }
@@ -2674,16 +2674,16 @@
 //                                default:
 //                                    {
 //                                        object argIndex1 = (object)pname;
-//                                        uarray[1] = SRC.UList.Item2(ref argIndex1);
+//                                        uarray[1] = SRC.UList.Item2(argIndex1);
 //                                        if (uarray[1] is null)
 //                                        {
 //                                            {
 //                                                var withBlock = SRC.PList;
-//                                                bool localIsDefined() { object argIndex1 = (object)pname; var ret = withBlock.IsDefined(ref argIndex1); return ret; }
+//                                                bool localIsDefined() { object argIndex1 = (object)pname; var ret = withBlock.IsDefined(argIndex1); return ret; }
 
 //                                                if (!localIsDefined())
 //                                                {
-//                                                    Event_Renamed.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
+//                                                    Event.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
 //                                                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 135082
@@ -2695,18 +2695,18 @@
 //                                                     */
 //                                                }
 
-//                                                Pilot localItem() { object argIndex1 = (object)pname; var ret = withBlock.Item(ref argIndex1); return ret; }
+//                                                Pilot localItem() { object argIndex1 = (object)pname; var ret = withBlock.Item(argIndex1); return ret; }
 
 //                                                uarray[1] = localItem().Unit_Renamed;
-//                                                i = (short)2;
+//                                                i = 2;
 //                                                object argIndex2 = (object)(pname + ":" + SrcFormatter.Format((object)i));
-//                                                while (withBlock.IsDefined(ref argIndex2))
+//                                                while (withBlock.IsDefined(argIndex2))
 //                                                {
-//                                                    Array.Resize(ref uarray, Information.UBound(uarray) + 1 + 1);
-//                                                    Pilot localItem1() { object argIndex1 = (object)(pname + ":" + SrcFormatter.Format((object)i)); var ret = withBlock.Item(ref argIndex1); return ret; }
+//                                                    Array.Resize(uarray, Information.UBound(uarray) + 1 + 1);
+//                                                    Pilot localItem1() { object argIndex1 = (object)(pname + ":" + SrcFormatter.Format((object)i)); var ret = withBlock.Item(argIndex1); return ret; }
 
 //                                                    uarray[Information.UBound(uarray)] = localItem1().Unit_Renamed;
-//                                                    i = (short)((int)i + 1);
+//                                                    i = (i + 1);
 //                                                }
 //                                            }
 //                                        }
@@ -2715,7 +2715,7 @@
 //                                    }
 //                            }
 
-//                            new_mode = GetArgAsString((short)3);
+//                            new_mode = GetArgAsString(3);
 //                        }
 
 //                        break;
@@ -2723,7 +2723,7 @@
 
 //                case 4:
 //                    {
-//                        pname = GetArgAsString((short)2);
+//                        pname = GetArgAsString(2);
 //                        switch (pname ?? "")
 //                        {
 //                            case "味方":
@@ -2737,7 +2737,7 @@
 //                                        u = currentU1;
 //                                        if ((u.Party0 ?? "") == (pname ?? ""))
 //                                        {
-//                                            Array.Resize(ref uarray, Information.UBound(uarray) + 1 + 1);
+//                                            Array.Resize(uarray, Information.UBound(uarray) + 1 + 1);
 //                                            uarray[Information.UBound(uarray)] = u;
 //                                        }
 //                                    }
@@ -2748,16 +2748,16 @@
 //                            default:
 //                                {
 //                                    object argIndex3 = (object)pname;
-//                                    uarray[1] = SRC.UList.Item2(ref argIndex3);
+//                                    uarray[1] = SRC.UList.Item2(argIndex3);
 //                                    if (uarray[1] is null)
 //                                    {
 //                                        {
 //                                            var withBlock1 = SRC.PList;
-//                                            bool localIsDefined1() { object argIndex1 = (object)pname; var ret = withBlock1.IsDefined(ref argIndex1); return ret; }
+//                                            bool localIsDefined1() { object argIndex1 = (object)pname; var ret = withBlock1.IsDefined(argIndex1); return ret; }
 
 //                                            if (!localIsDefined1())
 //                                            {
-//                                                Event_Renamed.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
+//                                                Event.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
 //                                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 136368
@@ -2769,18 +2769,18 @@
 //                                                 */
 //                                            }
 
-//                                            Pilot localItem2() { object argIndex1 = (object)pname; var ret = withBlock1.Item(ref argIndex1); return ret; }
+//                                            Pilot localItem2() { object argIndex1 = (object)pname; var ret = withBlock1.Item(argIndex1); return ret; }
 
 //                                            uarray[1] = localItem2().Unit_Renamed;
-//                                            i = (short)2;
+//                                            i = 2;
 //                                            object argIndex4 = (object)(pname + ":" + SrcFormatter.Format((object)i));
-//                                            while (withBlock1.IsDefined(ref argIndex4))
+//                                            while (withBlock1.IsDefined(argIndex4))
 //                                            {
-//                                                Array.Resize(ref uarray, Information.UBound(uarray) + 1 + 1);
-//                                                Pilot localItem3() { object argIndex1 = (object)(pname + ":" + SrcFormatter.Format((object)i)); var ret = withBlock1.Item(ref argIndex1); return ret; }
+//                                                Array.Resize(uarray, Information.UBound(uarray) + 1 + 1);
+//                                                Pilot localItem3() { object argIndex1 = (object)(pname + ":" + SrcFormatter.Format((object)i)); var ret = withBlock1.Item(argIndex1); return ret; }
 
 //                                                uarray[Information.UBound(uarray)] = localItem3().Unit_Renamed;
-//                                                i = (short)((int)i + 1);
+//                                                i = (i + 1);
 //                                            }
 //                                        }
 //                                    }
@@ -2789,11 +2789,11 @@
 //                                }
 //                        }
 
-//                        dst_x = (short)GetArgAsLong((short)3);
-//                        dst_y = (short)GetArgAsLong((short)4);
-//                        if ((int)dst_x < 1 | Map.MapWidth < dst_x | (int)dst_y < 1 | Map.MapHeight < dst_y)
+//                        dst_x = GetArgAsLong(3);
+//                        dst_y = GetArgAsLong(4);
+//                        if (dst_x < 1 || Map.MapWidth < dst_x || dst_y < 1 || Map.MapHeight < dst_y)
 //                        {
-//                            Event_Renamed.EventErrorMessage = "ChangeModeコマンドの目的地の座標が不正です";
+//                            Event.EventErrorMessage = "ChangeModeコマンドの目的地の座標が不正です";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 137170
@@ -2811,7 +2811,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "ChangeModeコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "ChangeModeコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 137438
@@ -2825,7 +2825,7 @@
 //                    }
 //            }
 
-//            var loopTo = (short)Information.UBound(uarray);
+//            var loopTo = Information.UBound(uarray);
 //            for (i = 1; i <= loopTo; i++)
 //            {
 //                if (uarray[i] is object)
@@ -2849,10 +2849,10 @@
 //            {
 //                case 2:
 //                    {
-//                        new_party = GetArgAsString((short)2);
-//                        if (new_party != "味方" & new_party != "ＮＰＣ" & new_party != "敵" & new_party != "中立")
+//                        new_party = GetArgAsString(2);
+//                        if (new_party != "味方" && new_party != "ＮＰＣ" && new_party != "敵" && new_party != "中立")
 //                        {
-//                            Event_Renamed.EventErrorMessage = "陣営の指定が間違っています";
+//                            Event.EventErrorMessage = "陣営の指定が間違っています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 138260
@@ -2864,16 +2864,16 @@
 //                             */
 //                        }
 
-//                        Event_Renamed.SelectedUnitForEvent.ChangeParty(ref new_party);
+//                        Event.SelectedUnitForEvent.ChangeParty(new_party);
 //                        break;
 //                    }
 
 //                case 3:
 //                    {
-//                        new_party = GetArgAsString((short)3);
-//                        if (new_party != "味方" & new_party != "ＮＰＣ" & new_party != "敵" & new_party != "中立")
+//                        new_party = GetArgAsString(3);
+//                        if (new_party != "味方" && new_party != "ＮＰＣ" && new_party != "敵" && new_party != "中立")
 //                        {
-//                            Event_Renamed.EventErrorMessage = "陣営の指定が間違っています";
+//                            Event.EventErrorMessage = "陣営の指定が間違っています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 138590
@@ -2885,16 +2885,16 @@
 //                             */
 //                        }
 
-//                        pname = GetArgAsString((short)2);
+//                        pname = GetArgAsString(2);
 //                        object argIndex1 = (object)pname;
-//                        u = SRC.UList.Item2(ref argIndex1);
+//                        u = SRC.UList.Item2(argIndex1);
 //                        if (u is null)
 //                        {
-//                            bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(ref argIndex1); return ret; }
+//                            bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
 //                            if (!localIsDefined())
 //                            {
-//                                Event_Renamed.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
+//                                Event.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
 //                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 138884
@@ -2908,20 +2908,20 @@
 
 //                            object argIndex2 = (object)pname;
 //                            {
-//                                var withBlock = SRC.PList.Item(ref argIndex2);
+//                                var withBlock = SRC.PList.Item(argIndex2);
 //                                if (withBlock.Unit_Renamed is null)
 //                                {
 //                                    withBlock.Party = new_party;
 //                                }
 //                                else
 //                                {
-//                                    withBlock.Unit_Renamed.ChangeParty(ref new_party);
+//                                    withBlock.Unit_Renamed.ChangeParty(new_party);
 //                                }
 //                            }
 //                        }
 //                        else
 //                        {
-//                            u.ChangeParty(ref new_party);
+//                            u.ChangeParty(new_party);
 //                        }
 
 //                        break;
@@ -2929,7 +2929,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "ChangePartyコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "ChangePartyコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 139270
@@ -2959,9 +2959,9 @@
 //            string fname2, fname, fname1, fname3;
 //            int ret;
 //            short i;
-//            if ((int)ArgNum != 5)
+//            if (ArgNum != 5)
 //            {
-//                Event_Renamed.EventErrorMessage = "ChangeTerrainコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "ChangeTerrainコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 139795
@@ -2973,10 +2973,10 @@
 //                 */
 //            }
 
-//            tx = (short)GetArgAsLong(2);
-//            if ((int)tx < 1 | tx > Map.MapWidth)
+//            tx = GetArgAsLong(2);
+//            if (tx < 1 || tx > Map.MapWidth)
 //            {
-//                Event_Renamed.EventErrorMessage = "Ｘ座標の値は1～" + Map.MapWidth + "で指定してください";
+//                Event.EventErrorMessage = "Ｘ座標の値は1～" + Map.MapWidth + "で指定してください";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 140014
@@ -2988,10 +2988,10 @@
 //                 */
 //            }
 
-//            ty = (short)GetArgAsLong(3);
-//            if ((int)ty < 1 | ty > Map.MapHeight)
+//            ty = GetArgAsLong(3);
+//            if (ty < 1 || ty > Map.MapHeight)
 //            {
-//                Event_Renamed.EventErrorMessage = "Ｙ座標の値は1～" + Map.MapHeight + "で指定してください";
+//                Event.EventErrorMessage = "Ｙ座標の値は1～" + Map.MapHeight + "で指定してください";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 140235
@@ -3009,7 +3009,7 @@
 //                {
 //                    var withBlock = SRC.TDList;
 //                    var loopTo = withBlock.Count;
-//                    for (i = (short)1; i <= loopTo; i++)
+//                    for (i = 1; i <= loopTo; i++)
 //                    {
 //                        tid = withBlock.OrderedID(i);
 //                        if ((tname ?? "") == (withBlock.Name(tid) ?? ""))
@@ -3020,7 +3020,7 @@
 
 //                    if (i > withBlock.Count)
 //                    {
-//                        Event_Renamed.EventErrorMessage = "「" + tname + "」という地形は存在しません";
+//                        Event.EventErrorMessage = "「" + tname + "」という地形は存在しません";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 140642
@@ -3038,7 +3038,7 @@
 //                Map.MapData[tx, ty, Map.MapDataIndex.TerrainType] = tid;
 //                // MOD  END  240a
 
-//                tbitmap = (short)GetArgAsLong((short)5);
+//                tbitmap = GetArgAsLong(5);
 //                // MOD START 240a
 //                // MapData(tx, ty, 1) = tbitmap
 //                Map.MapData[tx, ty, Map.MapDataIndex.BitmapNo] = tbitmap;
@@ -3050,7 +3050,7 @@
 //                {
 //                    var withBlock1 = SRC.TDList;
 //                    var loopTo1 = withBlock1.Count;
-//                    for (i = (short)1; i <= loopTo1; i++)
+//                    for (i = 1; i <= loopTo1; i++)
 //                    {
 //                        tid = withBlock1.OrderedID(i);
 //                        if ((tname ?? "") == (withBlock1.Name(tid) ?? ""))
@@ -3061,7 +3061,7 @@
 
 //                    if (i > withBlock1.Count)
 //                    {
-//                        Event_Renamed.EventErrorMessage = "「" + tname + "」という地形は存在しません";
+//                        Event.EventErrorMessage = "「" + tname + "」という地形は存在しません";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 141467
@@ -3079,7 +3079,7 @@
 //                Map.MapData[tx, ty, Map.MapDataIndex.TerrainType] = tid;
 //                // MOD  END  240a
 
-//                tbitmap = (short)-GetArgAsLong((short)5);
+//                tbitmap = -GetArgAsLong(5);
 //                // MOD START 240a
 //                // MapData(tx, ty, 1) = tbitmap
 //                Map.MapData[tx, ty, Map.MapDataIndex.BitmapNo] = tbitmap;
@@ -3090,7 +3090,7 @@
 //            fname = Map.SearchTerrainImageFile(tid, tbitmap, tx, ty);
 //            if (string.IsNullOrEmpty(fname))
 //            {
-//                Event_Renamed.EventErrorMessage = "マップビットマップ「" + SRC.TDList.Bitmap(tid) + SrcFormatter.Format((object)tbitmap) + ".bmp" + "」が見つかりません";
+//                Event.EventErrorMessage = "マップビットマップ「" + SRC.TDList.Bitmap(tid) + SrcFormatter.Format((object)tbitmap) + ".bmp" + "」が見つかりません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 142219
@@ -3110,60 +3110,60 @@
 //                    case "夜":
 //                        {
 //                            var argpic = GUI.MainForm.picTmp32(0);
-//                            Graphics.GetImage(ref argpic);
+//                            Graphics.GetImage(argpic);
 //                            Graphics.Dark();
 //                            var argpic1 = GUI.MainForm.picTmp32(0);
-//                            Graphics.SetImage(ref argpic1);
+//                            Graphics.SetImage(argpic1);
 //                            break;
 //                        }
 
 //                    case "セピア":
 //                        {
 //                            var argpic2 = GUI.MainForm.picTmp32(0);
-//                            Graphics.GetImage(ref argpic2);
+//                            Graphics.GetImage(argpic2);
 //                            Graphics.Sepia();
 //                            var argpic3 = GUI.MainForm.picTmp32(0);
-//                            Graphics.SetImage(ref argpic3);
+//                            Graphics.SetImage(argpic3);
 //                            break;
 //                        }
 
 //                    case "白黒":
 //                        {
 //                            var argpic4 = GUI.MainForm.picTmp32(0);
-//                            Graphics.GetImage(ref argpic4);
+//                            Graphics.GetImage(argpic4);
 //                            Graphics.Monotone();
 //                            var argpic5 = GUI.MainForm.picTmp32(0);
-//                            Graphics.SetImage(ref argpic5);
+//                            Graphics.SetImage(argpic5);
 //                            break;
 //                        }
 
 //                    case "夕焼け":
 //                        {
 //                            var argpic6 = GUI.MainForm.picTmp32(0);
-//                            Graphics.GetImage(ref argpic6);
+//                            Graphics.GetImage(argpic6);
 //                            Graphics.Sunset();
 //                            var argpic7 = GUI.MainForm.picTmp32(0);
-//                            Graphics.SetImage(ref argpic7);
+//                            Graphics.SetImage(argpic7);
 //                            break;
 //                        }
 
 //                    case "水中":
 //                        {
 //                            var argpic8 = GUI.MainForm.picTmp32(0);
-//                            Graphics.GetImage(ref argpic8);
+//                            Graphics.GetImage(argpic8);
 //                            Graphics.Water();
 //                            var argpic9 = GUI.MainForm.picTmp32(0);
-//                            Graphics.SetImage(ref argpic9);
+//                            Graphics.SetImage(argpic9);
 //                            break;
 //                        }
 
 //                    case "フィルタ":
 //                        {
 //                            var argpic10 = withBlock2.picTmp32(0);
-//                            Graphics.GetImage(ref argpic10);
-//                            Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent);
+//                            Graphics.GetImage(argpic10);
+//                            Graphics.ColorFilter(Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent);
 //                            var argpic11 = withBlock2.picTmp32(0);
-//                            Graphics.SetImage(ref argpic11);
+//                            Graphics.SetImage(argpic11);
 //                            break;
 //                        }
 //                }
@@ -3216,21 +3216,21 @@
 //            {
 //                case 2:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
-//                        new_bmp = GetArgAsString((short)2);
+//                        u = Event.SelectedUnitForEvent;
+//                        new_bmp = GetArgAsString(2);
 //                        break;
 //                    }
 
 //                case 3:
 //                    {
-//                        u = GetArgAsUnit((short)2);
-//                        new_bmp = GetArgAsString((short)3);
+//                        u = GetArgAsUnit(2);
+//                        new_bmp = GetArgAsString(3);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "ChangeUnitBitmapコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "ChangeUnitBitmapコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 150606
@@ -3251,39 +3251,39 @@
 //                {
 //                    string argcname = "ユニット画像";
 //                    string argcdata = "非表示 " + new_bmp;
-//                    withBlock.AddCondition(ref argcname, (short)-1, 0d, ref argcdata);
+//                    withBlock.AddCondition(argcname, -1, 0d, argcdata);
 //                }
 //                else if (new_bmp == "-")
 //                {
 //                    object argIndex2 = (object)"ユニット画像";
-//                    if (withBlock.IsConditionSatisfied(ref argIndex2))
+//                    if (withBlock.IsConditionSatisfied(argIndex2))
 //                    {
 //                        object argIndex1 = (object)"ユニット画像";
-//                        withBlock.DeleteCondition(ref argIndex1);
+//                        withBlock.DeleteCondition(argIndex1);
 //                    }
 //                }
 //                else if (new_bmp == "非表示")
 //                {
 //                    string argcname1 = "非表示付加";
 //                    string argcdata1 = "非表示";
-//                    withBlock.AddCondition(ref argcname1, (short)-1, 0d, ref argcdata1);
-//                    withBlock.BitmapID = (short)-1;
+//                    withBlock.AddCondition(argcname1, -1, 0d, argcdata1);
+//                    withBlock.BitmapID = -1;
 //                    GUI.EraseUnitBitmap(withBlock.x, withBlock.y, false);
 //                }
 //                else if (new_bmp == "非表示解除")
 //                {
 //                    object argIndex4 = (object)"非表示付加";
-//                    if (withBlock.IsConditionSatisfied(ref argIndex4))
+//                    if (withBlock.IsConditionSatisfied(argIndex4))
 //                    {
 //                        object argIndex3 = (object)"非表示付加";
-//                        withBlock.DeleteCondition(ref argIndex3);
+//                        withBlock.DeleteCondition(argIndex3);
 //                    }
 
-//                    withBlock.BitmapID = GUI.MakeUnitBitmap(ref u);
+//                    withBlock.BitmapID = GUI.MakeUnitBitmap(u);
 //                }
 //                else
 //                {
-//                    Event_Renamed.EventErrorMessage = "ビットマップファイル名が不正です";
+//                    Event.EventErrorMessage = "ビットマップファイル名が不正です";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 151378
@@ -3297,10 +3297,10 @@
 
 //                if ((withBlock.get_Bitmap(false) ?? "") != (prev_bmp ?? ""))
 //                {
-//                    withBlock.BitmapID = GUI.MakeUnitBitmap(ref u);
+//                    withBlock.BitmapID = GUI.MakeUnitBitmap(u);
 //                }
 
-//                GUI.PaintUnitBitmap(ref u, "リフレッシュ無し");
+//                GUI.PaintUnitBitmap(u, "リフレッシュ無し");
 //            }
 
 //            ExecChangeUnitBitmapCmdRet = LineNum + 1;
@@ -3315,19 +3315,19 @@
 //            {
 //                case 2:
 //                    {
-//                        u = GetArgAsUnit((short)2);
+//                        u = GetArgAsUnit(2);
 //                        break;
 //                    }
 
 //                case 1:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
+//                        u = Event.SelectedUnitForEvent;
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Chargeコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Chargeコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 151949
@@ -3343,7 +3343,7 @@
 
 //            string argcname = "チャージ";
 //            string argcdata = "";
-//            u.AddCondition(ref argcname, 1, cdata: ref argcdata);
+//            u.AddCondition(argcname, 1, cdata: argcdata);
 //            ExecChargeCmdRet = LineNum + 1;
 //            return ExecChargeCmdRet;
 //        }
@@ -3357,9 +3357,9 @@
 //            string cname;
 //            int clr;
 //            short i;
-//            if ((int)ArgNum < 4)
+//            if (ArgNum < 4)
 //            {
-//                Event_Renamed.EventErrorMessage = "Circleコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Circleコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 152388
@@ -3371,13 +3371,13 @@
 //                 */
 //            }
 
-//            x1 = (short)(GetArgAsLong(2) + Event_Renamed.BaseX);
-//            y1 = (short)(GetArgAsLong(3) + Event_Renamed.BaseY);
-//            rad = (short)GetArgAsLong(4);
+//            x1 = (GetArgAsLong(2) + Event.BaseX);
+//            y1 = (GetArgAsLong(3) + Event.BaseY);
+//            rad = GetArgAsLong(4);
 //            GUI.SaveScreen();
 
 //            // 描画先
-//            switch (Event_Renamed.ObjDrawOption ?? "")
+//            switch (Event.ObjDrawOption ?? "")
 //            {
 //                case "背景":
 //                    {
@@ -3403,26 +3403,26 @@
 
 //            // 描画領域
 //            short tmp;
-//            if (Event_Renamed.ObjDrawOption != "背景")
+//            if (Event.ObjDrawOption != "背景")
 //            {
 //                GUI.IsPictureVisible = true;
-//                tmp = (short)(rad + Event_Renamed.ObjDrawWidth - 1);
-//                GUI.PaintedAreaX1 = (short)GeneralLib.MinLng(GUI.PaintedAreaX1, GeneralLib.MaxLng(x1 - tmp, 0));
-//                GUI.PaintedAreaY1 = (short)GeneralLib.MinLng(GUI.PaintedAreaY1, GeneralLib.MaxLng(y1 - tmp, 0));
-//                GUI.PaintedAreaX2 = (short)GeneralLib.MaxLng(GUI.PaintedAreaX2, GeneralLib.MinLng(x1 + tmp, GUI.MapPWidth - 1));
-//                GUI.PaintedAreaY2 = (short)GeneralLib.MaxLng(GUI.PaintedAreaY2, GeneralLib.MinLng(y1 + tmp, GUI.MapPHeight - 1));
+//                tmp = (rad + Event.ObjDrawWidth - 1);
+//                GUI.PaintedAreaX1 = GeneralLib.MinLng(GUI.PaintedAreaX1, GeneralLib.MaxLng(x1 - tmp, 0));
+//                GUI.PaintedAreaY1 = GeneralLib.MinLng(GUI.PaintedAreaY1, GeneralLib.MaxLng(y1 - tmp, 0));
+//                GUI.PaintedAreaX2 = GeneralLib.MaxLng(GUI.PaintedAreaX2, GeneralLib.MinLng(x1 + tmp, GUI.MapPWidth - 1));
+//                GUI.PaintedAreaY2 = GeneralLib.MaxLng(GUI.PaintedAreaY2, GeneralLib.MinLng(y1 + tmp, GUI.MapPHeight - 1));
 //            }
 
-//            clr = Event_Renamed.ObjColor;
+//            clr = Event.ObjColor;
 //            var loopTo = ArgNum;
-//            for (i = (short)5; i <= loopTo; i++)
+//            for (i = 5; i <= loopTo; i++)
 //            {
 //                opt = GetArgAsString(i);
 //                if (Strings.Asc(opt) == 35) // #
 //                {
 //                    if (Strings.Len(opt) != 7)
 //                    {
-//                        Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                        Event.EventErrorMessage = "色指定が不正です";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 155229
@@ -3435,16 +3435,16 @@
 //                    }
 
 //                    cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-//                    StringType.MidStmtStr(ref cname, 1, 2, "&H");
+//                    StringType.MidStmtStr(cname, 1, 2, "&H");
 //                    var midTmp = Strings.Mid(opt, 6, 2);
-//                    StringType.MidStmtStr(ref cname, 3, 2, midTmp);
+//                    StringType.MidStmtStr(cname, 3, 2, midTmp);
 //                    var midTmp1 = Strings.Mid(opt, 4, 2);
-//                    StringType.MidStmtStr(ref cname, 5, 2, midTmp1);
+//                    StringType.MidStmtStr(cname, 5, 2, midTmp1);
 //                    var midTmp2 = Strings.Mid(opt, 2, 2);
-//                    StringType.MidStmtStr(ref cname, 7, 2, midTmp2);
+//                    StringType.MidStmtStr(cname, 7, 2, midTmp2);
 //                    if (!Information.IsNumeric(cname))
 //                    {
-//                        Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                        Event.EventErrorMessage = "色指定が不正です";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 155739
@@ -3460,7 +3460,7 @@
 //                }
 //                else
 //                {
-//                    Event_Renamed.EventErrorMessage = "Circleコマンドに不正なオプション「" + opt + "」が使われています";
+//                    Event.EventErrorMessage = "Circleコマンドに不正なオプション「" + opt + "」が使われています";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 155895
@@ -3472,9 +3472,9 @@
 //                     */
 //                }
 //            }
-//            pic.DrawWidth = Event_Renamed.ObjDrawWidth;
-//            pic.FillColor = Event_Renamed.ObjFillColor;
-//            pic.FillStyle = Event_Renamed.ObjFillStyle;
+//            pic.DrawWidth = Event.ObjDrawWidth;
+//            pic.FillColor = Event.ObjFillColor;
+//            pic.FillStyle = Event.ObjFillStyle;
 
 //            pic.Circle(x1, y1);/* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 //            pic.DrawWidth = 1;
@@ -3482,9 +3482,9 @@
 //            pic.FillStyle = vbFSTransparent;
 //            if (pic2 is object)
 //            {
-//                pic2.DrawWidth = Event_Renamed.ObjDrawWidth;
-//                pic2.FillColor = Event_Renamed.ObjFillColor;
-//                pic2.FillStyle = Event_Renamed.ObjFillStyle;
+//                pic2.DrawWidth = Event.ObjDrawWidth;
+//                pic2.FillColor = Event.ObjFillColor;
+//                pic2.FillStyle = Event.ObjFillStyle;
 
 //                pic2.Circle(x1, y1);/* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 //                pic2.DrawWidth = 1;
@@ -3504,11 +3504,11 @@
 //            {
 //                case 2:
 //                    {
-//                        string arglname = GetArgAsString((short)2);
-//                        ret = Event_Renamed.FindLabel(ref arglname);
+//                        string arglname = GetArgAsString(2);
+//                        ret = Event.FindLabel(arglname);
 //                        if (ret > 0)
 //                        {
-//                            Event_Renamed.ClearLabel(ret);
+//                            Event.ClearLabel(ret);
 //                        }
 
 //                        break;
@@ -3516,9 +3516,9 @@
 
 //                case 1:
 //                    {
-//                        if (Event_Renamed.CurrentLabel > 0)
+//                        if (Event.CurrentLabel > 0)
 //                        {
-//                            Event_Renamed.ClearLabel(Event_Renamed.CurrentLabel);
+//                            Event.ClearLabel(Event.CurrentLabel);
 //                        }
 
 //                        break;
@@ -3526,7 +3526,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "ClearEventコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "ClearEventコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 160477
@@ -3570,9 +3570,9 @@
 //            string fname, loption;
 //            int ret;
 //            // 引数チェック
-//            if (4 < (int)ArgNum)
+//            if (4 < ArgNum)
 //            {
-//                Event_Renamed.EventErrorMessage = "ClearLayerコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "ClearLayerコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 161481
@@ -3617,7 +3617,7 @@
 //                }
 //                else if ("通常" != loption)
 //                {
-//                    Event_Renamed.EventErrorMessage = "ClearLayerコマンドの引数Optionが不正です";
+//                    Event.EventErrorMessage = "ClearLayerコマンドの引数Optionが不正です";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 162072
@@ -3632,11 +3632,11 @@
 //            // 座標取得
 //            if (!isAllClear)
 //            {
-//                X = (short)GetArgAsLong((short)2);
-//                Y = (short)GetArgAsLong((short)3);
-//                if ((int)X < 1 | X > Map.MapWidth)
+//                X = GetArgAsLong(2);
+//                Y = GetArgAsLong(3);
+//                if (X < 1 || X > Map.MapWidth)
 //                {
-//                    Event_Renamed.EventErrorMessage = "Ｘ座標の値は1～" + Map.MapWidth + "で指定してください";
+//                    Event.EventErrorMessage = "Ｘ座標の値は1～" + Map.MapWidth + "で指定してください";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 162361
@@ -3648,9 +3648,9 @@
 //                     */
 //                }
 
-//                if ((int)Y < 1 | Y > Map.MapHeight)
+//                if (Y < 1 || Y > Map.MapHeight)
 //                {
-//                    Event_Renamed.EventErrorMessage = "Ｙ座標の値は1～" + Map.MapHeight + "で指定してください";
+//                    Event.EventErrorMessage = "Ｙ座標の値は1～" + Map.MapHeight + "で指定してください";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 162553
@@ -3703,60 +3703,60 @@
 //                                    case "夜":
 //                                        {
 //                                            var argpic = GUI.MainForm.picTmp32(0);
-//                                            Graphics.GetImage(ref argpic);
+//                                            Graphics.GetImage(argpic);
 //                                            Graphics.Dark();
 //                                            var argpic1 = GUI.MainForm.picTmp32(0);
-//                                            Graphics.SetImage(ref argpic1);
+//                                            Graphics.SetImage(argpic1);
 //                                            break;
 //                                        }
 
 //                                    case "セピア":
 //                                        {
 //                                            var argpic2 = GUI.MainForm.picTmp32(0);
-//                                            Graphics.GetImage(ref argpic2);
+//                                            Graphics.GetImage(argpic2);
 //                                            Graphics.Sepia();
 //                                            var argpic3 = GUI.MainForm.picTmp32(0);
-//                                            Graphics.SetImage(ref argpic3);
+//                                            Graphics.SetImage(argpic3);
 //                                            break;
 //                                        }
 
 //                                    case "白黒":
 //                                        {
 //                                            var argpic4 = GUI.MainForm.picTmp32(0);
-//                                            Graphics.GetImage(ref argpic4);
+//                                            Graphics.GetImage(argpic4);
 //                                            Graphics.Monotone();
 //                                            var argpic5 = GUI.MainForm.picTmp32(0);
-//                                            Graphics.SetImage(ref argpic5);
+//                                            Graphics.SetImage(argpic5);
 //                                            break;
 //                                        }
 
 //                                    case "夕焼け":
 //                                        {
 //                                            var argpic6 = GUI.MainForm.picTmp32(0);
-//                                            Graphics.GetImage(ref argpic6);
+//                                            Graphics.GetImage(argpic6);
 //                                            Graphics.Sunset();
 //                                            var argpic7 = GUI.MainForm.picTmp32(0);
-//                                            Graphics.SetImage(ref argpic7);
+//                                            Graphics.SetImage(argpic7);
 //                                            break;
 //                                        }
 
 //                                    case "水中":
 //                                        {
 //                                            var argpic8 = GUI.MainForm.picTmp32(0);
-//                                            Graphics.GetImage(ref argpic8);
+//                                            Graphics.GetImage(argpic8);
 //                                            Graphics.Water();
 //                                            var argpic9 = GUI.MainForm.picTmp32(0);
-//                                            Graphics.SetImage(ref argpic9);
+//                                            Graphics.SetImage(argpic9);
 //                                            break;
 //                                        }
 
 //                                    case "フィルタ":
 //                                        {
 //                                            var argpic10 = withBlock.picTmp32(0);
-//                                            Graphics.GetImage(ref argpic10);
-//                                            Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent);
+//                                            Graphics.GetImage(argpic10);
+//                                            Graphics.ColorFilter(Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent);
 //                                            var argpic11 = withBlock.picTmp32(0);
-//                                            Graphics.SetImage(ref argpic11);
+//                                            Graphics.SetImage(argpic11);
 //                                            break;
 //                                        }
 //                                }
@@ -3824,60 +3824,60 @@
 //                            case "夜":
 //                                {
 //                                    var argpic12 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.GetImage(ref argpic12);
+//                                    Graphics.GetImage(argpic12);
 //                                    Graphics.Dark();
 //                                    var argpic13 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.SetImage(ref argpic13);
+//                                    Graphics.SetImage(argpic13);
 //                                    break;
 //                                }
 
 //                            case "セピア":
 //                                {
 //                                    var argpic14 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.GetImage(ref argpic14);
+//                                    Graphics.GetImage(argpic14);
 //                                    Graphics.Sepia();
 //                                    var argpic15 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.SetImage(ref argpic15);
+//                                    Graphics.SetImage(argpic15);
 //                                    break;
 //                                }
 
 //                            case "白黒":
 //                                {
 //                                    var argpic16 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.GetImage(ref argpic16);
+//                                    Graphics.GetImage(argpic16);
 //                                    Graphics.Monotone();
 //                                    var argpic17 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.SetImage(ref argpic17);
+//                                    Graphics.SetImage(argpic17);
 //                                    break;
 //                                }
 
 //                            case "夕焼け":
 //                                {
 //                                    var argpic18 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.GetImage(ref argpic18);
+//                                    Graphics.GetImage(argpic18);
 //                                    Graphics.Sunset();
 //                                    var argpic19 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.SetImage(ref argpic19);
+//                                    Graphics.SetImage(argpic19);
 //                                    break;
 //                                }
 
 //                            case "水中":
 //                                {
 //                                    var argpic20 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.GetImage(ref argpic20);
+//                                    Graphics.GetImage(argpic20);
 //                                    Graphics.Water();
 //                                    var argpic21 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.SetImage(ref argpic21);
+//                                    Graphics.SetImage(argpic21);
 //                                    break;
 //                                }
 
 //                            case "フィルタ":
 //                                {
 //                                    var argpic22 = withBlock2.picTmp32(0);
-//                                    Graphics.GetImage(ref argpic22);
-//                                    Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent);
+//                                    Graphics.GetImage(argpic22);
+//                                    Graphics.ColorFilter(Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent);
 //                                    var argpic23 = withBlock2.picTmp32(0);
-//                                    Graphics.SetImage(ref argpic23);
+//                                    Graphics.SetImage(argpic23);
 //                                    break;
 //                                }
 //                        }
@@ -3927,7 +3927,7 @@
 //            {
 //                if (GetArgAsString(n) == "非同期")
 //                {
-//                    n = (short)(n - 1);
+//                    n = (n - 1);
 //                    without_refresh = true;
 //                }
 //            }
@@ -3936,21 +3936,21 @@
 //            {
 //                case 2:
 //                    {
-//                        oname = GetArgAsString((short)2);
-//                        var loopTo = (short)Information.UBound(Event_Renamed.HotPointList);
-//                        for (i = (short)1; i <= loopTo; i++)
+//                        oname = GetArgAsString(2);
+//                        var loopTo = Information.UBound(Event.HotPointList);
+//                        for (i = 1; i <= loopTo; i++)
 //                        {
-//                            if ((Event_Renamed.HotPointList[(int)i].Name ?? "") == (oname ?? ""))
+//                            if ((Event.HotPointList[i].Name ?? "") == (oname ?? ""))
 //                            {
 //                                break;
 //                            }
 //                        }
 
-//                        if ((int)i <= Information.UBound(Event_Renamed.HotPointList))
+//                        if (i <= Information.UBound(Event.HotPointList))
 //                        {
 //                            {
-//                                var withBlock = Event_Renamed.HotPointList[(int)i];
-//                                if (My.MyProject.Forms.frmToolTip.Visible & (Event_Renamed.SelectedAlternative ?? "") == (withBlock.Name ?? ""))
+//                                var withBlock = Event.HotPointList[i];
+//                                if (My.MyProject.Forms.frmToolTip.Visible && (Event.SelectedAlternative ?? "") == (withBlock.Name ?? ""))
 //                                {
 //                                    // ツールチップを消す
 //                                    My.MyProject.Forms.frmToolTip.Hide();
@@ -3959,11 +3959,11 @@
 //                                }
 //                            }
 
-//                            var loopTo1 = (short)(Information.UBound(Event_Renamed.HotPointList) - 1);
+//                            var loopTo1 = (Information.UBound(Event.HotPointList) - 1);
 //                            for (j = i; j <= loopTo1; j++)
 //                                // UPGRADE_WARNING: オブジェクト HotPointList(j) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-//                                Event_Renamed.HotPointList[(int)j] = Event_Renamed.HotPointList[(int)j + 1];
-//                            Array.Resize(ref Event_Renamed.HotPointList, Information.UBound(Event_Renamed.HotPointList));
+//                                Event.HotPointList[j] = Event.HotPointList[j + 1];
+//                            Array.Resize(Event.HotPointList, Information.UBound(Event.HotPointList));
 //                        }
 
 //                        break;
@@ -3971,13 +3971,13 @@
 
 //                case 1:
 //                    {
-//                        Event_Renamed.HotPointList = new Event_Renamed.HotPoint[1];
+//                        Event.HotPointList = new Event.HotPoint[1];
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "ClearObjコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "ClearObjコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 183065
@@ -3994,12 +3994,12 @@
 //            ExecClearObjCmdRet = LineNum + 1;
 
 //            // まだマウスカーソルがホットポイント上にあるか？
-//            var loopTo2 = (short)Information.UBound(Event_Renamed.HotPointList);
+//            var loopTo2 = Information.UBound(Event.HotPointList);
 //            for (i = 1; i <= loopTo2; i++)
 //            {
 //                {
-//                    var withBlock1 = Event_Renamed.HotPointList[i];
-//                    if (withBlock1.Left_Renamed <= GUI.MouseX & GUI.MouseX < withBlock1.Left_Renamed + withBlock1.width & withBlock1.Top <= GUI.MouseY & GUI.MouseY < withBlock1.Top + withBlock1.Height)
+//                    var withBlock1 = Event.HotPointList[i];
+//                    if (withBlock1.Left_Renamed <= GUI.MouseX && GUI.MouseX < withBlock1.Left_Renamed + withBlock1.width && withBlock1.Top <= GUI.MouseY && GUI.MouseY < withBlock1.Top + withBlock1.Height)
 //                    {
 //                        return ExecClearObjCmdRet;
 //                    }
@@ -4031,13 +4031,13 @@
 
 //                case 5:
 //                    {
-//                        GUI.ClearPicture2(GetArgAsLong((short)2) + Event_Renamed.BaseX, GetArgAsLong((short)3) + Event_Renamed.BaseY, GetArgAsLong((short)4) + Event_Renamed.BaseX, GetArgAsLong((short)5) + Event_Renamed.BaseY);
+//                        GUI.ClearPicture2(GetArgAsLong(2) + Event.BaseX, GetArgAsLong(3) + Event.BaseY, GetArgAsLong(4) + Event.BaseX, GetArgAsLong(5) + Event.BaseY);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "ClearPictureコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "ClearPictureコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 184725
@@ -4064,24 +4064,24 @@
 //            string vname, vname2;
 //            short i, j;
 //            pname = GetArgAsString(2);
-//            bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(ref argIndex1); return ret; }
+//            bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
 
 //            object argIndex1 = pname;
-//            if (SRC.PList.IsDefined(ref argIndex1))
+//            if (SRC.PList.IsDefined(argIndex1))
 //            {
-//                Pilot localItem() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+//                Pilot localItem() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
 //                pname = localItem().ID;
 //            }
 //            else if (localIsDefined())
 //            {
-//                PilotData localItem1() { object argIndex1 = (object)pname; var ret = SRC.PDList.Item(ref argIndex1); return ret; }
+//                PilotData localItem1() { object argIndex1 = (object)pname; var ret = SRC.PDList.Item(argIndex1); return ret; }
 
 //                pname = localItem1().Name;
 //            }
 //            else
 //            {
-//                Event_Renamed.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
+//                Event.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 185363
@@ -4097,11 +4097,11 @@
 
 //            // エリアスが定義されている？
 //            object argIndex3 = sname;
-//            if (SRC.ALDList.IsDefined(ref argIndex3))
+//            if (SRC.ALDList.IsDefined(argIndex3))
 //            {
 //                object argIndex2 = sname;
 //                {
-//                    var withBlock = SRC.ALDList.Item(ref argIndex2);
+//                    var withBlock = SRC.ALDList.Item(argIndex2);
 //                    sarray = new string[(withBlock.Count + 1)];
 //                    var loopTo = withBlock.Count;
 //                    for (i = 1; i <= loopTo; i++)
@@ -4114,59 +4114,59 @@
 //                sarray[1] = sname;
 //            }
 
-//            var loopTo1 = (short)Information.UBound(sarray);
+//            var loopTo1 = Information.UBound(sarray);
 //            for (i = 1; i <= loopTo1; i++)
 //            {
 //                sname = sarray[i];
 //                sname2 = "";
 //                vname = "Ability(" + pname + "," + sname + ")";
-//                string arglist1 = Expression.GetValueAsString(ref vname);
-//                if (GeneralLib.LLength(ref arglist1) >= 2)
+//                string arglist1 = Expression.GetValueAsString(vname);
+//                if (GeneralLib.LLength(arglist1) >= 2)
 //                {
 //                    // 必要技能用変数を削除
-//                    string arglist = Expression.GetValueAsString(ref vname);
-//                    sname2 = GeneralLib.LIndex(ref arglist, 2);
+//                    string arglist = Expression.GetValueAsString(vname);
+//                    sname2 = GeneralLib.LIndex(arglist, 2);
 //                    vname2 = "Ability(" + pname + "," + sname2 + ")";
-//                    Expression.UndefineVariable(ref vname2);
+//                    Expression.UndefineVariable(vname2);
 //                }
 
 //                // レベル設定用変数を削除
-//                Expression.UndefineVariable(ref vname);
+//                Expression.UndefineVariable(vname);
 
 //                // 特殊能力一覧作成用変数を削除
 //                vname = "Ability(" + pname + ")";
-//                if (Expression.IsGlobalVariableDefined(ref vname))
+//                if (Expression.IsGlobalVariableDefined(vname))
 //                {
-//                    buf = Expression.GetValueAsString(ref vname);
+//                    buf = Expression.GetValueAsString(vname);
 //                    slist = "";
-//                    var loopTo2 = GeneralLib.LLength(ref buf);
+//                    var loopTo2 = GeneralLib.LLength(buf);
 //                    for (j = 1; j <= loopTo2; j++)
 //                    {
-//                        if ((GeneralLib.LIndex(ref buf, j) ?? "") != (sname ?? "") & (GeneralLib.LIndex(ref buf, j) ?? "") != (sname2 ?? ""))
+//                        if ((GeneralLib.LIndex(buf, j) ?? "") != (sname ?? "") && (GeneralLib.LIndex(buf, j) ?? "") != (sname2 ?? ""))
 //                        {
-//                            slist = slist + " " + GeneralLib.LIndex(ref buf, j);
+//                            slist = slist + " " + GeneralLib.LIndex(buf, j);
 //                        }
 //                    }
 
-//                    if (GeneralLib.LLength(ref slist) > 0)
+//                    if (GeneralLib.LLength(slist) > 0)
 //                    {
 //                        slist = Strings.Trim(slist);
-//                        Expression.SetVariableAsString(ref vname, ref slist);
+//                        Expression.SetVariableAsString(vname, slist);
 //                    }
 //                    else
 //                    {
-//                        Expression.UndefineVariable(ref vname);
+//                        Expression.UndefineVariable(vname);
 //                    }
 //                }
 //            }
 
 //            // パイロットやユニットのステータスをアップデート
 //            object argIndex5 = pname;
-//            if (SRC.PList.IsDefined(ref argIndex5))
+//            if (SRC.PList.IsDefined(argIndex5))
 //            {
 //                object argIndex4 = pname;
 //                {
-//                    var withBlock1 = SRC.PList.Item(ref argIndex4);
+//                    var withBlock1 = SRC.PList.Item(argIndex4);
 //                    withBlock1.Update();
 //                    if (withBlock1.Unit_Renamed is object)
 //                    {
@@ -4192,21 +4192,21 @@
 //            {
 //                case 3:
 //                    {
-//                        u = GetArgAsUnit((short)2);
-//                        sname = GetArgAsString((short)3);
+//                        u = GetArgAsUnit(2);
+//                        sname = GetArgAsString(3);
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
-//                        sname = GetArgAsString((short)2);
+//                        u = Event.SelectedUnitForEvent;
+//                        sname = GetArgAsString(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "ClearSpecialPowerコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "ClearSpecialPowerコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 187952
@@ -4220,10 +4220,10 @@
 //                    }
 //            }
 
-//            if (u.IsSpecialPowerInEffect(ref sname))
+//            if (u.IsSpecialPowerInEffect(sname))
 //            {
 //                object argIndex1 = sname;
-//                u.RemoveSpecialPowerInEffect2(ref argIndex1);
+//                u.RemoveSpecialPowerInEffect2(argIndex1);
 //            }
 
 //            ExecClearSpecialPowerCmdRet = LineNum + 1;
@@ -4239,21 +4239,21 @@
 //            {
 //                case 3:
 //                    {
-//                        u = GetArgAsUnit((short)2);
-//                        sname = GetArgAsString((short)3);
+//                        u = GetArgAsUnit(2);
+//                        sname = GetArgAsString(3);
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
-//                        sname = GetArgAsString((short)2);
+//                        u = Event.SelectedUnitForEvent;
+//                        sname = GetArgAsString(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "ClearStatusコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "ClearStatusコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 188579
@@ -4270,14 +4270,14 @@
 //            {
 //                var withBlock = u;
 //                object argIndex2 = sname;
-//                if (withBlock.IsConditionSatisfied(ref argIndex2))
+//                if (withBlock.IsConditionSatisfied(argIndex2))
 //                {
 //                    object argIndex1 = sname;
-//                    withBlock.DeleteCondition(ref argIndex1);
+//                    withBlock.DeleteCondition(argIndex1);
 //                    withBlock.Update();
 //                    if (withBlock.Status_Renamed == "出撃")
 //                    {
-//                        GUI.PaintUnitBitmap(ref u);
+//                        GUI.PaintUnitBitmap(u);
 //                    }
 //                }
 //            }
@@ -4289,9 +4289,9 @@
 //        private int ExecCloseCmd()
 //        {
 //            int ExecCloseCmdRet = default;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "Closeコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Closeコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 189029
@@ -4318,10 +4318,10 @@
 //            {
 //                case 2:
 //                    {
-//                        buf = GetArgAsString((short)2);
-//                        if (Strings.Asc(buf) != 35 | Strings.Len(buf) != 7)
+//                        buf = GetArgAsString(2);
+//                        if (Strings.Asc(buf) != 35 || Strings.Len(buf) != 7)
 //                        {
-//                            Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                            Event.EventErrorMessage = "色指定が不正です";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 189557
@@ -4334,16 +4334,16 @@
 //                        }
 
 //                        cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-//                        StringType.MidStmtStr(ref cname, 1, 2, "&H");
+//                        StringType.MidStmtStr(cname, 1, 2, "&H");
 //                        var midTmp = Strings.Mid(buf, 6, 2);
-//                        StringType.MidStmtStr(ref cname, 3, 2, midTmp);
+//                        StringType.MidStmtStr(cname, 3, 2, midTmp);
 //                        var midTmp1 = Strings.Mid(buf, 4, 2);
-//                        StringType.MidStmtStr(ref cname, 5, 2, midTmp1);
+//                        StringType.MidStmtStr(cname, 5, 2, midTmp1);
 //                        var midTmp2 = Strings.Mid(buf, 2, 2);
-//                        StringType.MidStmtStr(ref cname, 7, 2, midTmp2);
+//                        StringType.MidStmtStr(cname, 7, 2, midTmp2);
 //                        if (!Information.IsNumeric(cname))
 //                        {
-//                            Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                            Event.EventErrorMessage = "色指定が不正です";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 190067
@@ -4354,8 +4354,8 @@
 
 //                             */
 //                        }
-//                        GUI.MainForm.picMain(0).Line((0, 0) - ((int)GUI.MainPWidth - 1, (int)GUI.MainPHeight - 1), Conversions.ToInteger(cname), BF);
-//                        GUI.MainForm.picMain(1).Line((0, 0) - ((int)GUI.MainPWidth - 1, (int)GUI.MainPHeight - 1), Conversions.ToInteger(cname), BF);
+//                        GUI.MainForm.picMain(0).Line((0, 0) - (GUI.MainPWidth - 1, GUI.MainPHeight - 1), Conversions.ToInteger(cname), BF);
+//                        GUI.MainForm.picMain(1).Line((0, 0) - (GUI.MainPWidth - 1, GUI.MainPHeight - 1), Conversions.ToInteger(cname), BF);
 //                        GUI.ScreenIsSaved = true;
 //                        break;
 //                    }
@@ -4374,7 +4374,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Clsコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Clsコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 191690
@@ -4402,9 +4402,9 @@
 //        {
 //            int ExecColorCmdRet = default;
 //            string opt, cname;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "Colorコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Colorコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 192276
@@ -4417,9 +4417,9 @@
 //            }
 
 //            opt = GetArgAsString(2);
-//            if (Strings.Asc(opt) != 35 | Strings.Len(opt) != 7)
+//            if (Strings.Asc(opt) != 35 || Strings.Len(opt) != 7)
 //            {
-//                Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                Event.EventErrorMessage = "色指定が不正です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 192515
@@ -4432,16 +4432,16 @@
 //            }
 
 //            cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-//            StringType.MidStmtStr(ref cname, 1, 2, "&H");
+//            StringType.MidStmtStr(cname, 1, 2, "&H");
 //            var midTmp = Strings.Mid(opt, 6, 2);
-//            StringType.MidStmtStr(ref cname, 3, 2, midTmp);
+//            StringType.MidStmtStr(cname, 3, 2, midTmp);
 //            var midTmp1 = Strings.Mid(opt, 4, 2);
-//            StringType.MidStmtStr(ref cname, 5, 2, midTmp1);
+//            StringType.MidStmtStr(cname, 5, 2, midTmp1);
 //            var midTmp2 = Strings.Mid(opt, 2, 2);
-//            StringType.MidStmtStr(ref cname, 7, 2, midTmp2);
+//            StringType.MidStmtStr(cname, 7, 2, midTmp2);
 //            if (!Information.IsNumeric(cname))
 //            {
-//                Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                Event.EventErrorMessage = "色指定が不正です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 193007
@@ -4453,7 +4453,7 @@
 //                 */
 //            }
 
-//            Event_Renamed.ObjColor = Conversions.ToInteger(cname);
+//            Event.ObjColor = Conversions.ToInteger(cname);
 //            ExecColorCmdRet = LineNum + 1;
 //            return ExecColorCmdRet;
 //        }
@@ -4467,9 +4467,9 @@
 //            int fcolor;
 //            short i;
 //            double trans_par;
-//            if ((int)ArgNum < 2)
+//            if (ArgNum < 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "ColorFilterコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "ColorFilterコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 193493
@@ -4485,7 +4485,7 @@
 //            Map.MapDrawIsMapOnly = false;
 //            trans_par = 0.5d;
 //            var loopTo = ArgNum;
-//            for (i = (short)3; i <= loopTo; i++)
+//            for (i = 3; i <= loopTo; i++)
 //            {
 //                buf = GetArgAsString(i);
 //                switch (buf ?? "")
@@ -4504,13 +4504,13 @@
 
 //                    default:
 //                        {
-//                            if (Strings.Right(buf, 1) == "%" & Information.IsNumeric(Strings.Left(buf, Strings.Len(buf) - 1)))
+//                            if (Strings.Right(buf, 1) == "%" && Information.IsNumeric(Strings.Left(buf, Strings.Len(buf) - 1)))
 //                            {
 //                                trans_par = GeneralLib.MaxDbl(0d, GeneralLib.MinDbl(1d, Conversions.ToDouble(Strings.Left(buf, Strings.Len(buf) - 1)) / 100d));
 //                            }
 //                            else
 //                            {
-//                                Event_Renamed.EventErrorMessage = "ColorFilterコマンドに不正なオプション「" + buf + "」が使われています";
+//                                Event.EventErrorMessage = "ColorFilterコマンドに不正なオプション「" + buf + "」が使われています";
 //                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 194362
@@ -4535,7 +4535,7 @@
 //            }
 //            else
 //            {
-//                Event_Renamed.EventErrorMessage = "ColorFilterコマンドのカラー指定が不正です";
+//                Event.EventErrorMessage = "ColorFilterコマンドのカラー指定が不正です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 194809
@@ -4555,7 +4555,7 @@
 //            Cursor.Current = Cursors.WaitCursor;
 //            string argdraw_mode = "フィルタ";
 //            string argdraw_option = "非同期";
-//            GUI.SetupBackground(ref argdraw_mode, ref argdraw_option, ref fcolor, ref trans_par);
+//            GUI.SetupBackground(argdraw_mode, argdraw_option, fcolor, trans_par);
 //            foreach (Unit u in SRC.UList)
 //            {
 //                {
@@ -4566,15 +4566,15 @@
 //                        {
 //                            object argIndex1 = withBlock.Name;
 //                            {
-//                                var withBlock1 = SRC.UList.Item(ref argIndex1);
+//                                var withBlock1 = SRC.UList.Item(argIndex1);
 //                                string argfname = "ダミーユニット";
-//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") & withBlock1.BitmapID != 0 & (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") & !withBlock1.IsFeatureAvailable(ref argfname))
+//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable(argfname))
 //                                {
 //                                    u.BitmapID = withBlock1.BitmapID;
 //                                }
 //                                else
 //                                {
-//                                    u.BitmapID = GUI.MakeUnitBitmap(ref u);
+//                                    u.BitmapID = GUI.MakeUnitBitmap(u);
 //                                }
 //                            }
 
@@ -4604,21 +4604,21 @@
 //            {
 //                case 2:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
-//                        uname = GetArgAsString((short)2);
+//                        u = Event.SelectedUnitForEvent;
+//                        uname = GetArgAsString(2);
 //                        break;
 //                    }
 
 //                case 3:
 //                    {
-//                        u = GetArgAsUnit((short)2);
-//                        uname = GetArgAsString((short)3);
+//                        u = GetArgAsUnit(2);
+//                        uname = GetArgAsString(3);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Combineコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Combineコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 196660
@@ -4632,11 +4632,11 @@
 //                    }
 //            }
 
-//            bool localIsDefined() { object argIndex1 = uname; var ret = SRC.UList.IsDefined(ref argIndex1); return ret; }
+//            bool localIsDefined() { object argIndex1 = uname; var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
 //            if (!localIsDefined())
 //            {
-//                Event_Renamed.EventErrorMessage = "「" + uname + "」というユニットが見つかりません";
+//                Event.EventErrorMessage = "「" + uname + "」というユニットが見つかりません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 196836
@@ -4648,27 +4648,27 @@
 //                 */
 //            }
 
-//            Unit localItem() { object argIndex1 = uname; var ret = SRC.UList.Item(ref argIndex1); return ret; }
+//            Unit localItem() { object argIndex1 = uname; var ret = SRC.UList.Item(argIndex1); return ret; }
 
 //            if ((u.CurrentForm().ID ?? "") != (localItem().CurrentForm().ID ?? ""))
 //            {
 //                anum = u.UsedAction;
-//                u.Combine(ref uname, true);
+//                u.Combine(uname, true);
 //                if (Commands.SelectedUnit is object)
 //                {
 //                    if ((u.ID ?? "") == (Commands.SelectedUnit.ID ?? ""))
 //                    {
 //                        object argIndex1 = uname;
-//                        Commands.SelectedUnit = SRC.UList.Item(ref argIndex1);
+//                        Commands.SelectedUnit = SRC.UList.Item(argIndex1);
 //                    }
 //                }
 
-//                if (Event_Renamed.SelectedUnitForEvent is object)
+//                if (Event.SelectedUnitForEvent is object)
 //                {
-//                    if ((u.ID ?? "") == (Event_Renamed.SelectedUnitForEvent.ID ?? ""))
+//                    if ((u.ID ?? "") == (Event.SelectedUnitForEvent.ID ?? ""))
 //                    {
 //                        object argIndex2 = uname;
-//                        Event_Renamed.SelectedUnitForEvent = SRC.UList.Item(ref argIndex2);
+//                        Event.SelectedUnitForEvent = SRC.UList.Item(argIndex2);
 //                    }
 //                }
 
@@ -4677,22 +4677,22 @@
 //                    if ((u.ID ?? "") == (Commands.SelectedTarget.ID ?? ""))
 //                    {
 //                        object argIndex3 = uname;
-//                        Commands.SelectedTarget = SRC.UList.Item(ref argIndex3);
+//                        Commands.SelectedTarget = SRC.UList.Item(argIndex3);
 //                    }
 //                }
 
-//                if (Event_Renamed.SelectedTargetForEvent is object)
+//                if (Event.SelectedTargetForEvent is object)
 //                {
-//                    if ((u.ID ?? "") == (Event_Renamed.SelectedTargetForEvent.ID ?? ""))
+//                    if ((u.ID ?? "") == (Event.SelectedTargetForEvent.ID ?? ""))
 //                    {
 //                        object argIndex4 = uname;
-//                        Event_Renamed.SelectedTargetForEvent = SRC.UList.Item(ref argIndex4);
+//                        Event.SelectedTargetForEvent = SRC.UList.Item(argIndex4);
 //                    }
 //                }
 
 //                object argIndex5 = uname;
 //                {
-//                    var withBlock = SRC.UList.Item(ref argIndex5);
+//                    var withBlock = SRC.UList.Item(argIndex5);
 //                    withBlock.UsedAction = anum;
 //                    if (withBlock.Status_Renamed == "出撃")
 //                    {
@@ -4709,9 +4709,9 @@
 //        {
 //            int ExecConfirmCmdRet = default;
 //            short ret;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "Confirmコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Confirmコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 198480
@@ -4726,14 +4726,14 @@
 //            // 一度イベントを解消しておかないとMsgBoxを連続で使用したときに
 //            // 動作がおかしくなる（ＶＢのバグ？）
 //            Application.DoEvents();
-//            ret = (short)Interaction.MsgBox(GetArgAsString(2), (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "選択");
+//            ret = Interaction.MsgBox(GetArgAsString(2), (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "選択");
 //            if (ret == 1)
 //            {
-//                Event_Renamed.SelectedAlternative = 1.ToString();
+//                Event.SelectedAlternative = 1.ToString();
 //            }
 //            else
 //            {
-//                Event_Renamed.SelectedAlternative = 0.ToString();
+//                Event.SelectedAlternative = 0.ToString();
 //            }
 
 //            ExecConfirmCmdRet = LineNum + 1;
@@ -4752,15 +4752,15 @@
 //                case 2:
 //                    {
 //                        string argvname1 = "次ステージ";
-//                        if (!Expression.IsGlobalVariableDefined(ref argvname1))
+//                        if (!Expression.IsGlobalVariableDefined(argvname1))
 //                        {
 //                            string argvname = "次ステージ";
-//                            Expression.DefineGlobalVariable(ref argvname);
+//                            Expression.DefineGlobalVariable(argvname);
 //                        }
 
 //                        string argvname2 = "次ステージ";
-//                        string argnew_value = GetArgAsString((short)2);
-//                        Expression.SetVariableAsString(ref argvname2, ref argnew_value);
+//                        string argnew_value = GetArgAsString(2);
+//                        Expression.SetVariableAsString(argvname2, argnew_value);
 //                        break;
 //                    }
 
@@ -4771,7 +4771,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Continueコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Continueコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 199596
@@ -4794,7 +4794,7 @@
 //                u = currentU;
 //                if (u.Party0 == "味方")
 //                {
-//                    if (u.Status_Renamed == "出撃" | u.Status_Renamed == "格納" | u.Status_Renamed == "破壊")
+//                    if (u.Status_Renamed == "出撃" || u.Status_Renamed == "格納" || u.Status_Renamed == "破壊")
 //                    {
 //                        n = 1;
 //                        break;
@@ -4809,11 +4809,11 @@
 
 //            // 追加経験値を収得
 //            string argoname = "追加経験値無効";
-//            if (SRC.Turn > 0 & !Expression.IsOptionDefined(ref argoname))
+//            if (SRC.Turn > 0 && !Expression.IsOptionDefined(argoname))
 //            {
 //                Unit argu1 = null;
 //                Unit argu2 = null;
-//                GUI.OpenMessageForm(u1: ref argu1, u2: ref argu2);
+//                GUI.OpenMessageForm(u1: argu1, u2: argu2);
 //                n = 0;
 //                msg = "";
 //                foreach (Pilot p in SRC.PList)
@@ -4833,7 +4833,7 @@
 //                        goto NextPilot;
 //                    }
 
-//                    if (p.Unit_Renamed.Status_Renamed != "出撃" & p.Unit_Renamed.Status_Renamed != "格納")
+//                    if (p.Unit_Renamed.Status_Renamed != "出撃" && p.Unit_Renamed.Status_Renamed != "格納")
 //                    {
 //                        goto NextPilot;
 //                    }
@@ -4842,11 +4842,11 @@
 //                    p.Exp = p.Exp + 2 * p.SP;
 
 //                    // 追加パイロットや暴走時パイロットに関する処理
-//                    if (p.Unit_Renamed.CountPilot() > 0 & !p.IsSupport(ref p.Unit_Renamed))
+//                    if (p.Unit_Renamed.CountPilot() > 0 && !p.IsSupport(p.Unit_Renamed))
 //                    {
 //                        // 追加パイロットがメインパイロットの場合
 //                        object argIndex1 = 1;
-//                        if (ReferenceEquals(p, p.Unit_Renamed.Pilot(ref argIndex1)) & !ReferenceEquals(p, p.Unit_Renamed.MainPilot()) & p.Unit_Renamed.MainPilot().MaxSP > 0)
+//                        if (ReferenceEquals(p, p.Unit_Renamed.Pilot(argIndex1)) && !ReferenceEquals(p, p.Unit_Renamed.MainPilot()) && p.Unit_Renamed.MainPilot().MaxSP > 0)
 //                        {
 //                            goto NextPilot;
 //                        }
@@ -4858,7 +4858,7 @@
 //                            var loopTo = p.Unit_Renamed.CountPilot();
 //                            for (i = 1; i <= loopTo; i++)
 //                            {
-//                                Pilot localPilot() { object argIndex1 = i; var ret = p.Unit_Renamed.Pilot(ref argIndex1); return ret; }
+//                                Pilot localPilot() { object argIndex1 = i; var ret = p.Unit_Renamed.Pilot(argIndex1); return ret; }
 
 //                                if (ReferenceEquals(p, localPilot()))
 //                                {
@@ -4882,11 +4882,11 @@
 //                        msg = msg + ";" + p.get_Nickname(false) + " 経験値 +" + SrcFormatter.Format(2 * p.SP) + " レベルアップ！（Lv" + SrcFormatter.Format(p.Level) + "）";
 //                    }
 
-//                    n = (short)(n + 1);
+//                    n = (n + 1);
 //                    if (n == 4)
 //                    {
 //                        string argpname = "システム";
-//                        GUI.DisplayMessage(ref argpname, Strings.Mid(msg, 2));
+//                        GUI.DisplayMessage(argpname, Strings.Mid(msg, 2));
 //                        msg = "";
 //                        n = 0;
 //                    }
@@ -4898,7 +4898,7 @@
 //                if (n > 0)
 //                {
 //                    string argpname1 = "システム";
-//                    GUI.DisplayMessage(ref argpname1, Strings.Mid(msg, 2));
+//                    GUI.DisplayMessage(argpname1, Strings.Mid(msg, 2));
 //                }
 
 //                GUI.CloseMessageForm();
@@ -4908,36 +4908,36 @@
 
 //            // エピローグイベントを実行
 //            string arglname1 = "エピローグ";
-//            if (Event_Renamed.IsEventDefined(ref arglname1))
+//            if (Event.IsEventDefined(arglname1))
 //            {
 //                // ハイパーモードや変身、能力コピーを解除
 //                foreach (Unit currentU1 in SRC.UList)
 //                {
 //                    u = currentU1;
-//                    if (u.Status_Renamed != "他形態" & u.Status_Renamed != "旧主形態" & u.Status_Renamed != "旧形態")
+//                    if (u.Status_Renamed != "他形態" && u.Status_Renamed != "旧主形態" && u.Status_Renamed != "旧形態")
 //                    {
 //                        string argfname = "ノーマルモード";
-//                        if (u.IsFeatureAvailable(ref argfname))
+//                        if (u.IsFeatureAvailable(argfname))
 //                        {
-//                            string localLIndex() { object argIndex1 = "ノーマルモード"; string arglist = u.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 1); return ret; }
+//                            string localLIndex() { object argIndex1 = "ノーマルモード"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
 //                            string argnew_form = localLIndex();
-//                            u.Transform(ref argnew_form);
+//                            u.Transform(argnew_form);
 //                        }
 //                    }
 //                }
 
 //                string arglname = "エピローグ";
-//                if (Event_Renamed.IsEventDefined(ref arglname, true))
+//                if (Event.IsEventDefined(arglname, true))
 //                {
 //                    Sound.StopBGM();
 //                    string argbgm_name = "Briefing";
-//                    string argbgm_name1 = Sound.BGMName(ref argbgm_name);
-//                    Sound.StartBGM(ref argbgm_name1);
+//                    string argbgm_name1 = Sound.BGMName(argbgm_name);
+//                    Sound.StartBGM(argbgm_name1);
 //                }
 
 //                SRC.Stage = "エピローグ";
-//                Event_Renamed.HandleEvent("エピローグ");
+//                Event.HandleEvent("エピローグ");
 //            }
 
 //            GUI.MainForm.Hide();
@@ -4950,9 +4950,9 @@
 //                if (!SRC.IsSubStage)
 //                {
 //                    string argexpr = "次ステージ";
-//                    if (string.IsNullOrEmpty(Expression.GetValueAsString(ref argexpr)))
+//                    if (string.IsNullOrEmpty(Expression.GetValueAsString(argexpr)))
 //                    {
-//                        Event_Renamed.EventErrorMessage = "次のステージのファイル名が設定されていません";
+//                        Event.EventErrorMessage = "次のステージのファイル名が設定されていません";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 203307
@@ -4965,7 +4965,7 @@
 //                    }
 
 //                    string argexpr1 = "次ステージ";
-//                    SRC.StartScenario(Expression.GetValueAsString(ref argexpr1));
+//                    SRC.StartScenario(Expression.GetValueAsString(argexpr1));
 //                }
 //                else
 //                {
@@ -4986,9 +4986,9 @@
 //            string buf;
 //            VarData var;
 //            string name1, name2;
-//            if ((int)ArgNum != 3)
+//            if (ArgNum != 3)
 //            {
-//                Event_Renamed.EventErrorMessage = "CopyArrayコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "CopyArrayコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 203889
@@ -5012,7 +5012,7 @@
 //                if (Strings.Right(name1, 1) == ")")
 //                {
 //                    name1 = Strings.Mid(name1, 6, Strings.Len(name1) - 6);
-//                    name1 = Expression.GetValueAsString(ref name1);
+//                    name1 = Expression.GetValueAsString(name1);
 //                }
 //            }
 
@@ -5028,67 +5028,67 @@
 //                if (Strings.Right(name2, 1) == ")")
 //                {
 //                    name2 = Strings.Mid(name2, 6, Strings.Len(name2) - 6);
-//                    name2 = Expression.GetValueAsString(ref name2);
+//                    name2 = Expression.GetValueAsString(name2);
 //                }
 //            }
 
 //            // コピー先の変数を初期化
 //            // サブルーチンローカル変数の場合
-//            if (Expression.IsSubLocalVariableDefined(ref name2))
+//            if (Expression.IsSubLocalVariableDefined(name2))
 //            {
-//                Expression.UndefineVariable(ref name2);
-//                Event_Renamed.VarIndex = (short)(Event_Renamed.VarIndex + 1);
+//                Expression.UndefineVariable(name2);
+//                Event.VarIndex = (Event.VarIndex + 1);
 //                {
-//                    var withBlock = Event_Renamed.VarStack[Event_Renamed.VarIndex];
+//                    var withBlock = Event.VarStack[Event.VarIndex];
 //                    withBlock.Name = name2;
 //                    withBlock.VariableType = Expression.ValueType.StringType;
 //                    withBlock.StringValue = "";
 //                }
 //            }
 //            // ローカル変数の場合
-//            else if (Expression.IsLocalVariableDefined(ref name2))
+//            else if (Expression.IsLocalVariableDefined(name2))
 //            {
-//                Expression.UndefineVariable(ref name2);
-//                Expression.DefineLocalVariable(ref name2);
+//                Expression.UndefineVariable(name2);
+//                Expression.DefineLocalVariable(name2);
 //            }
 //            // グローバル変数の場合
-//            else if (Expression.IsGlobalVariableDefined(ref name2))
+//            else if (Expression.IsGlobalVariableDefined(name2))
 //            {
-//                Expression.UndefineVariable(ref name2);
-//                Expression.DefineGlobalVariable(ref name2);
+//                Expression.UndefineVariable(name2);
+//                Expression.DefineGlobalVariable(name2);
 //            }
 
 //            // 配列を検索し、配列要素を見つける
 //            buf = "";
-//            if (Expression.IsSubLocalVariableDefined(ref name1))
+//            if (Expression.IsSubLocalVariableDefined(name1))
 //            {
 //                // サブルーチンローカルな配列に対するCopyArray
-//                var loopTo = (int)Event_Renamed.VarIndex;
-//                for (i = Event_Renamed.VarIndexStack[Event_Renamed.CallDepth - 1] + 1; i <= loopTo; i++)
+//                var loopTo = Event.VarIndex;
+//                for (i = Event.VarIndexStack[Event.CallDepth - 1] + 1; i <= loopTo; i++)
 //                {
 //                    {
-//                        var withBlock1 = Event_Renamed.VarStack[i];
+//                        var withBlock1 = Event.VarStack[i];
 //                        if (Strings.InStr(withBlock1.Name, name1 + "[") == 1)
 //                        {
 //                            buf = name2 + Strings.Mid(withBlock1.Name, Strings.InStr(withBlock1.Name, "["));
-//                            Expression.SetVariable(ref buf, ref withBlock1.VariableType, ref withBlock1.StringValue, ref withBlock1.NumericValue);
+//                            Expression.SetVariable(buf, withBlock1.VariableType, withBlock1.StringValue, withBlock1.NumericValue);
 //                        }
 //                    }
 //                }
 
 //                if (string.IsNullOrEmpty(buf))
 //                {
-//                    var = Expression.GetVariableObject(ref name1);
+//                    var = Expression.GetVariableObject(name1);
 //                    {
 //                        var withBlock2 = var;
-//                        Expression.SetVariable(ref name2, ref withBlock2.VariableType, ref withBlock2.StringValue, ref withBlock2.NumericValue);
+//                        Expression.SetVariable(name2, withBlock2.VariableType, withBlock2.StringValue, withBlock2.NumericValue);
 //                    }
 //                }
 //            }
-//            else if (Expression.IsLocalVariableDefined(ref name1))
+//            else if (Expression.IsLocalVariableDefined(name1))
 //            {
 //                // ローカルな配列に対するCopyArray
-//                foreach (VarData currentVar in Event_Renamed.LocalVariableList)
+//                foreach (VarData currentVar in Event.LocalVariableList)
 //                {
 //                    var = currentVar;
 //                    {
@@ -5096,24 +5096,24 @@
 //                        if (Strings.InStr(withBlock3.Name, name1 + "[") == 1)
 //                        {
 //                            buf = name2 + Strings.Mid(withBlock3.Name, Strings.InStr(withBlock3.Name, "["));
-//                            Expression.SetVariable(ref buf, ref withBlock3.VariableType, ref withBlock3.StringValue, ref withBlock3.NumericValue);
+//                            Expression.SetVariable(buf, withBlock3.VariableType, withBlock3.StringValue, withBlock3.NumericValue);
 //                        }
 //                    }
 //                }
 
 //                if (string.IsNullOrEmpty(buf))
 //                {
-//                    var = Expression.GetVariableObject(ref name1);
+//                    var = Expression.GetVariableObject(name1);
 //                    {
 //                        var withBlock4 = var;
-//                        Expression.SetVariable(ref name2, ref withBlock4.VariableType, ref withBlock4.StringValue, ref withBlock4.NumericValue);
+//                        Expression.SetVariable(name2, withBlock4.VariableType, withBlock4.StringValue, withBlock4.NumericValue);
 //                    }
 //                }
 //            }
-//            else if (Expression.IsGlobalVariableDefined(ref name1))
+//            else if (Expression.IsGlobalVariableDefined(name1))
 //            {
 //                // グローバルな配列に対するCopyArray
-//                foreach (VarData currentVar1 in Event_Renamed.GlobalVariableList)
+//                foreach (VarData currentVar1 in Event.GlobalVariableList)
 //                {
 //                    var = currentVar1;
 //                    {
@@ -5121,17 +5121,17 @@
 //                        if (Strings.InStr(withBlock5.Name, name1 + "[") == 1)
 //                        {
 //                            buf = name2 + Strings.Mid(withBlock5.Name, Strings.InStr(withBlock5.Name, "["));
-//                            Expression.SetVariable(ref buf, ref withBlock5.VariableType, ref withBlock5.StringValue, ref withBlock5.NumericValue);
+//                            Expression.SetVariable(buf, withBlock5.VariableType, withBlock5.StringValue, withBlock5.NumericValue);
 //                        }
 //                    }
 //                }
 
 //                if (string.IsNullOrEmpty(buf))
 //                {
-//                    var = Expression.GetVariableObject(ref name1);
+//                    var = Expression.GetVariableObject(name1);
 //                    {
 //                        var withBlock6 = var;
-//                        Expression.SetVariable(ref name2, ref withBlock6.VariableType, ref withBlock6.StringValue, ref withBlock6.NumericValue);
+//                        Expression.SetVariable(name2, withBlock6.VariableType, withBlock6.StringValue, withBlock6.NumericValue);
 //                    }
 //                }
 //            }
@@ -5146,9 +5146,9 @@
 //        {
 //            int ExecCopyFileCmdRet = default;
 //            string fname1, fname2;
-//            if ((int)ArgNum != 3)
+//            if (ArgNum != 3)
 //            {
-//                Event_Renamed.EventErrorMessage = "CopyFileコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "CopyFileコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 208824
@@ -5161,14 +5161,14 @@
 //            }
 
 //            fname1 = GetArgAsString(2);
-//            bool localFileExists() { string argfname = SRC.ExtDataPath + fname1; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+//            bool localFileExists() { string argfname = SRC.ExtDataPath + fname1; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-//            bool localFileExists1() { string argfname = SRC.ExtDataPath2 + fname1; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+//            bool localFileExists1() { string argfname = SRC.ExtDataPath2 + fname1; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-//            bool localFileExists2() { string argfname = SRC.AppPath + fname1; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+//            bool localFileExists2() { string argfname = SRC.AppPath + fname1; var ret = GeneralLib.FileExists(argfname); return ret; }
 
 //            string argfname = SRC.ScenarioPath + fname1;
-//            if (GeneralLib.FileExists(ref argfname))
+//            if (GeneralLib.FileExists(argfname))
 //            {
 //                fname1 = SRC.ScenarioPath + fname1;
 //            }
@@ -5192,7 +5192,7 @@
 
 //            if (Strings.InStr(fname1, @"..\") > 0)
 //            {
-//                Event_Renamed.EventErrorMessage = @"ファイル指定に「..\」は使えません";
+//                Event.EventErrorMessage = @"ファイル指定に「..\」は使えません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 209700
@@ -5206,7 +5206,7 @@
 
 //            if (Strings.InStr(fname1, "../") > 0)
 //            {
-//                Event_Renamed.EventErrorMessage = "ファイル指定に「../」は使えません";
+//                Event.EventErrorMessage = "ファイル指定に「../」は使えません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 209871
@@ -5221,7 +5221,7 @@
 //            fname2 = SRC.ScenarioPath + GetArgAsString(3);
 //            if (Strings.InStr(fname2, @"..\") > 0)
 //            {
-//                Event_Renamed.EventErrorMessage = @"ファイル指定に「..\」は使えません";
+//                Event.EventErrorMessage = @"ファイル指定に「..\」は使えません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 210118
@@ -5235,7 +5235,7 @@
 
 //            if (Strings.InStr(fname2, "../") > 0)
 //            {
-//                Event_Renamed.EventErrorMessage = "ファイル指定に「../」は使えません";
+//                Event.EventErrorMessage = "ファイル指定に「../」は使えません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 210289
@@ -5271,14 +5271,14 @@
 //                case "非同期":
 //                    {
 //                        opt = "非同期";
-//                        num = (short)(num - 1);
+//                        num = (num - 1);
 //                        break;
 //                    }
 
 //                case "アニメ非表示":
 //                    {
 //                        opt = "";
-//                        num = (short)(num - 1);
+//                        num = (num - 1);
 //                        break;
 //                    }
 
@@ -5289,9 +5289,9 @@
 //                    }
 //            }
 
-//            if ((int)num < 0)
+//            if (num < 0)
 //            {
-//                Event_Renamed.EventErrorMessage = "Createコマンドのパラメータの括弧の対応が取れていません";
+//                Event.EventErrorMessage = "Createコマンドのパラメータの括弧の対応が取れていません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 211063
@@ -5302,9 +5302,9 @@
 
 //                 */
 //            }
-//            else if ((int)num != 8 & (int)num != 9)
+//            else if (num != 8 && num != 9)
 //            {
-//                Event_Renamed.EventErrorMessage = "Createコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Createコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 211191
@@ -5317,9 +5317,9 @@
 //            }
 
 //            uparty = GetArgAsString(2);
-//            if (!(uparty == "味方" | uparty == "ＮＰＣ" | uparty == "敵" | uparty == "中立"))
+//            if (!(uparty == "味方" || uparty == "ＮＰＣ" || uparty == "敵" || uparty == "中立"))
 //            {
-//                Event_Renamed.EventErrorMessage = "所属の指定「" + uparty + "」が間違っています";
+//                Event.EventErrorMessage = "所属の指定「" + uparty + "」が間違っています";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 211419
@@ -5332,11 +5332,11 @@
 //            }
 
 //            uname = GetArgAsString(3);
-//            bool localIsDefined() { object argIndex1 = uname; var ret = SRC.UDList.IsDefined(ref argIndex1); return ret; }
+//            bool localIsDefined() { object argIndex1 = uname; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
 
 //            if (!localIsDefined())
 //            {
-//                Event_Renamed.EventErrorMessage = "指定したユニット「" + uname + "」のデータが見つかりません";
+//                Event.EventErrorMessage = "指定したユニット「" + uname + "」のデータが見つかりません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 211629
@@ -5351,7 +5351,7 @@
 //            buf = GetArgAsString(4);
 //            if (!Information.IsNumeric(buf))
 //            {
-//                Event_Renamed.EventErrorMessage = "ユニットのランクが不正です";
+//                Event.EventErrorMessage = "ユニットのランクが不正です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 211827
@@ -5365,11 +5365,11 @@
 
 //            urank = Conversions.ToShort(buf);
 //            pname = GetArgAsString(5);
-//            bool localIsDefined1() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(ref argIndex1); return ret; }
+//            bool localIsDefined1() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
 
 //            if (!localIsDefined1())
 //            {
-//                Event_Renamed.EventErrorMessage = "指定したパイロット「" + pname + "」のデータが見つかりません";
+//                Event.EventErrorMessage = "指定したパイロット「" + pname + "」のデータが見つかりません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 212061
@@ -5384,7 +5384,7 @@
 //            buf = GetArgAsString(6);
 //            if (!Information.IsNumeric(buf))
 //            {
-//                Event_Renamed.EventErrorMessage = "パイロットのレベルが不正です";
+//                Event.EventErrorMessage = "パイロットのレベルが不正です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 212260
@@ -5398,7 +5398,7 @@
 
 //            plevel = Conversions.ToShort(buf);
 //            string argoname = "レベル限界突破";
-//            if (Expression.IsOptionDefined(ref argoname))
+//            if (Expression.IsOptionDefined(argoname))
 //            {
 //                if (plevel > 999)
 //                {
@@ -5418,7 +5418,7 @@
 //            buf = GetArgAsString(7);
 //            if (!Information.IsNumeric(buf))
 //            {
-//                Event_Renamed.EventErrorMessage = "Ｘ座標の値が不正です";
+//                Event.EventErrorMessage = "Ｘ座標の値が不正です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 212715
@@ -5443,7 +5443,7 @@
 //            buf = GetArgAsString(8);
 //            if (!Information.IsNumeric(buf))
 //            {
-//                Event_Renamed.EventErrorMessage = "Ｙ座標の値が不正です";
+//                Event.EventErrorMessage = "Ｙ座標の値が不正です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 213057
@@ -5465,10 +5465,10 @@
 //                uy = Map.MapHeight;
 //            }
 
-//            u = SRC.UList.Add(ref uname, urank, ref uparty);
+//            u = SRC.UList.Add(uname, urank, uparty);
 //            if (u is null)
 //            {
-//                Event_Renamed.EventErrorMessage = uname + "のデータが不正です";
+//                Event.EventErrorMessage = uname + "のデータが不正です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 213390
@@ -5483,16 +5483,16 @@
 //            if (num == 9)
 //            {
 //                string arggid = GetArgAsString(9);
-//                p = SRC.PList.Add(ref pname, plevel, ref uparty, ref arggid);
+//                p = SRC.PList.Add(pname, plevel, uparty, arggid);
 //            }
 //            else
 //            {
 //                string arggid1 = "";
-//                p = SRC.PList.Add(ref pname, plevel, ref uparty, gid: ref arggid1);
+//                p = SRC.PList.Add(pname, plevel, uparty, gid: arggid1);
 //            }
 
-//            p.Ride(ref u);
-//            if (opt != "非同期" & GUI.MainForm.Visible & !GUI.IsPictureVisible)
+//            p.Ride(u);
+//            if (opt != "非同期" && GUI.MainForm.Visible && !GUI.IsPictureVisible)
 //            {
 //                GUI.Center(ux, uy);
 //                GUI.RefreshScreen();
@@ -5502,7 +5502,7 @@
 //            var loopTo = u.CountOtherForm();
 //            for (i = 1; i <= loopTo; i++)
 //            {
-//                Unit localOtherForm() { object argIndex1 = i; var ret = u.OtherForm(ref argIndex1); return ret; }
+//                Unit localOtherForm() { object argIndex1 = i; var ret = u.OtherForm(argIndex1); return ret; }
 
 //                localOtherForm().FullSupply();
 //            }
@@ -5510,7 +5510,7 @@
 //            u.UsedAction = 0;
 //            u.StandBy(ux, uy, opt);
 //            u.CheckAutoHyperMode();
-//            Event_Renamed.SelectedUnitForEvent = u.CurrentForm();
+//            Event.SelectedUnitForEvent = u.CurrentForm();
 //            ExecCreateCmdRet = LineNum + 1;
 //            return ExecCreateCmdRet;
 //        }
@@ -5519,9 +5519,9 @@
 //        {
 //            int ExecCreateFolderCmdRet = default;
 //            string fname;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "CreateFolderコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "CreateFolderコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 214334
@@ -5536,7 +5536,7 @@
 //            fname = SRC.ScenarioPath + GetArgAsString(2);
 //            if (Strings.InStr(fname, @"..\") > 0)
 //            {
-//                Event_Renamed.EventErrorMessage = @"フォルダ指定に「..\」は使えません";
+//                Event.EventErrorMessage = @"フォルダ指定に「..\」は使えません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 214579
@@ -5550,7 +5550,7 @@
 
 //            if (Strings.InStr(fname, "../") > 0)
 //            {
-//                Event_Renamed.EventErrorMessage = "フォルダ指定に「../」は使えません";
+//                Event.EventErrorMessage = "フォルダ指定に「../」は使えません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 214749
@@ -5567,7 +5567,7 @@
 //                fname = Strings.Left(fname, Strings.Len(fname) - 1);
 //            }
 
-//            if (!GeneralLib.FileExists(ref fname))
+//            if (!GeneralLib.FileExists(fname))
 //            {
 //                FileSystem.MkDir(fname);
 //            }
@@ -5606,19 +5606,19 @@
 //            {
 //                case 2:
 //                    {
-//                        u = GetArgAsUnit((short)2);
+//                        u = GetArgAsUnit(2);
 //                        break;
 //                    }
 
 //                case 1:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
+//                        u = Event.SelectedUnitForEvent;
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Destroyコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Destroyコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 215862
@@ -5634,10 +5634,10 @@
 
 //            // 破壊キャンセル状態にある場合は解除しておく
 //            object argIndex2 = "破壊キャンセル";
-//            if (u.IsConditionSatisfied(ref argIndex2))
+//            if (u.IsConditionSatisfied(argIndex2))
 //            {
 //                object argIndex1 = "破壊キャンセル";
-//                u.DeleteCondition(ref argIndex1);
+//                u.DeleteCondition(argIndex1);
 //            }
 
 //            switch (u.Status_Renamed ?? "")
@@ -5687,7 +5687,7 @@
 //            {
 //                u = currentU;
 //                object argIndex3 = "憑依";
-//                if ((u.Party0 ?? "") == (uparty ?? "") & (u.Status_Renamed == "出撃" | u.Status_Renamed == "格納") & !u.IsConditionSatisfied(ref argIndex3))
+//                if ((u.Party0 ?? "") == (uparty ?? "") && (u.Status_Renamed == "出撃" || u.Status_Renamed == "格納") && !u.IsConditionSatisfied(argIndex3))
 //                {
 //                    ExecDestroyCmdRet = LineNum + 1;
 //                    return ExecDestroyCmdRet;
@@ -5695,10 +5695,10 @@
 //            }
 
 //            // 戦闘時以外のイベント中の破壊は無視
-//            var loopTo = (short)Information.UBound(Event_Renamed.EventQue);
+//            var loopTo = Information.UBound(Event.EventQue);
 //            for (i = 1; i <= loopTo; i++)
 //            {
-//                if (Event_Renamed.EventQue[i] == "プロローグ" | Event_Renamed.EventQue[i] == "エピローグ" | Event_Renamed.EventQue[i] == "スタート" | Event_Renamed.EventQue[i] == "全滅")
+//                if (Event.EventQue[i] == "プロローグ" || Event.EventQue[i] == "エピローグ" || Event.EventQue[i] == "スタート" || Event.EventQue[i] == "全滅")
 //                {
 //                    ExecDestroyCmdRet = LineNum + 1;
 //                    return ExecDestroyCmdRet;
@@ -5706,7 +5706,7 @@
 //            }
 
 //            // 後で全滅イベントを実行
-//            Event_Renamed.RegisterEvent("全滅", uparty);
+//            Event.RegisterEvent("全滅", uparty);
 //            ExecDestroyCmdRet = LineNum + 1;
 //            return ExecDestroyCmdRet;
 //        }
@@ -5721,20 +5721,20 @@
 //            {
 //                case 2:
 //                    {
-//                        aname = GetArgAsString((short)2);
+//                        aname = GetArgAsString(2);
 //                        break;
 //                    }
 
 //                case 3:
 //                    {
-//                        uname = GetArgAsString((short)2);
-//                        aname = GetArgAsString((short)3);
+//                        uname = GetArgAsString(2);
+//                        aname = GetArgAsString(3);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Disableコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Disableコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 217817
@@ -5750,7 +5750,7 @@
 
 //            if (string.IsNullOrEmpty(aname))
 //            {
-//                Event_Renamed.EventErrorMessage = "Disableコマンドに指定された能力名が空文字列です";
+//                Event.EventErrorMessage = "Disableコマンドに指定された能力名が空文字列です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 217954
@@ -5772,10 +5772,10 @@
 //            }
 
 //            // Disable用変数を設定
-//            if (!Expression.IsGlobalVariableDefined(ref vname))
+//            if (!Expression.IsGlobalVariableDefined(vname))
 //            {
-//                Expression.DefineGlobalVariable(ref vname);
-//                Expression.SetVariableAsLong(ref vname, 1);
+//                Expression.DefineGlobalVariable(vname);
+//                Expression.SetVariableAsLong(vname, 1);
 //            }
 //            else
 //            {
@@ -5790,9 +5790,9 @@
 //                {
 //                    var withBlock = SRC.UList;
 //                    object argIndex1 = uname;
-//                    if (withBlock.IsDefined(ref argIndex1))
+//                    if (withBlock.IsDefined(argIndex1))
 //                    {
-//                        Unit localItem() { object argIndex1 = uname; var ret = withBlock.Item(ref argIndex1); return ret; }
+//                        Unit localItem() { object argIndex1 = uname; var ret = withBlock.Item(argIndex1); return ret; }
 
 //                        localItem().CurrentForm().Update();
 //                    }
@@ -5806,7 +5806,7 @@
 //                    {
 //                        // ステータスを更新する必要があるかどうかチェックする
 //                        need_update = false;
-//                        if (u.IsFeatureAvailable(ref aname))
+//                        if (u.IsFeatureAvailable(aname))
 //                        {
 //                            need_update = true;
 //                        }
@@ -5815,7 +5815,7 @@
 //                            var loopTo = u.CountItem();
 //                            for (i = 1; i <= loopTo; i++)
 //                            {
-//                                Item localItem1() { object argIndex1 = i; var ret = u.Item(ref argIndex1); return ret; }
+//                                Item localItem1() { object argIndex1 = i; var ret = u.Item(argIndex1); return ret; }
 
 //                                if ((localItem1().Name ?? "") == (aname ?? ""))
 //                                {
@@ -5853,11 +5853,11 @@
 
 //                case 3:
 //                    {
-//                        switch (GetArg((short)2) ?? "")
+//                        switch (GetArg(2) ?? "")
 //                        {
 //                            case "while":
 //                                {
-//                                    if (GetArgAsLong((short)3) != 0)
+//                                    if (GetArgAsLong(3) != 0)
 //                                    {
 //                                        ExecDoCmdRet = LineNum + 1;
 //                                        return ExecDoCmdRet;
@@ -5868,7 +5868,7 @@
 
 //                            case "until":
 //                                {
-//                                    if (GetArgAsLong((short)3) == 0)
+//                                    if (GetArgAsLong(3) == 0)
 //                                    {
 //                                        ExecDoCmdRet = LineNum + 1;
 //                                        return ExecDoCmdRet;
@@ -5879,7 +5879,7 @@
 
 //                            default:
 //                                {
-//                                    Event_Renamed.EventErrorMessage = "Doコマンドの書式が間違っています";
+//                                    Event.EventErrorMessage = "Doコマンドの書式が間違っています";
 //                                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 219765
@@ -5898,7 +5898,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Doコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Doコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 219883
@@ -5914,20 +5914,20 @@
 
 //            // 条件式がFalseのため本体をスキップ
 //            depth = 1;
-//            var loopTo = Information.UBound(Event_Renamed.EventCmd);
+//            var loopTo = Information.UBound(Event.EventCmd);
 //            for (i = LineNum + 1; i <= loopTo; i++)
 //            {
-//                switch (Event_Renamed.EventCmd[i].Name)
+//                switch (Event.EventCmd[i].Name)
 //                {
-//                    case Event_Renamed.CmdType.DoCmd:
+//                    case Event.CmdType.DoCmd:
 //                        {
-//                            depth = (short)(depth + 1);
+//                            depth = (depth + 1);
 //                            break;
 //                        }
 
-//                    case Event_Renamed.CmdType.LoopCmd:
+//                    case Event.CmdType.LoopCmd:
 //                        {
-//                            depth = (short)(depth - 1);
+//                            depth = (depth - 1);
 //                            if (depth == 0)
 //                            {
 //                                ExecDoCmdRet = i + 1;
@@ -5939,7 +5939,7 @@
 //                }
 //            }
 
-//            Event_Renamed.EventErrorMessage = "DoとLoopが対応していません";
+//            Event.EventErrorMessage = "DoとLoopが対応していません";
 //            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 220471
@@ -5965,11 +5965,11 @@
 
 //                case 3:
 //                    {
-//                        switch (GetArg((short)2) ?? "")
+//                        switch (GetArg(2) ?? "")
 //                        {
 //                            case "while":
 //                                {
-//                                    if (GetArgAsLong((short)3) == 0)
+//                                    if (GetArgAsLong(3) == 0)
 //                                    {
 //                                        ExecLoopCmdRet = LineNum + 1;
 //                                        return ExecLoopCmdRet;
@@ -5980,7 +5980,7 @@
 
 //                            case "until":
 //                                {
-//                                    if (GetArgAsLong((short)3) != 0)
+//                                    if (GetArgAsLong(3) != 0)
 //                                    {
 //                                        ExecLoopCmdRet = LineNum + 1;
 //                                        return ExecLoopCmdRet;
@@ -5991,7 +5991,7 @@
 
 //                            default:
 //                                {
-//                                    Event_Renamed.EventErrorMessage = "Loop文の書式が間違っています";
+//                                    Event.EventErrorMessage = "Loop文の書式が間違っています";
 //                                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 221025
@@ -6010,7 +6010,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Loop文の引数の数が違います";
+//                        Event.EventErrorMessage = "Loop文の引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 221142
@@ -6030,11 +6030,11 @@
 //            while (i > 1)
 //            {
 //                i = i - 1;
-//                switch (Event_Renamed.EventCmd[i].Name)
+//                switch (Event.EventCmd[i].Name)
 //                {
-//                    case Event_Renamed.CmdType.DoCmd:
+//                    case Event.CmdType.DoCmd:
 //                        {
-//                            depth = (short)(depth - 1);
+//                            depth = (depth - 1);
 //                            if (depth == 0)
 //                            {
 //                                ExecLoopCmdRet = i;
@@ -6044,15 +6044,15 @@
 //                            break;
 //                        }
 
-//                    case Event_Renamed.CmdType.LoopCmd:
+//                    case Event.CmdType.LoopCmd:
 //                        {
-//                            depth = (short)(depth + 1);
+//                            depth = (depth + 1);
 //                            break;
 //                        }
 //                }
 //            }
 
-//            Event_Renamed.EventErrorMessage = "DoとLoopが対応していません";
+//            Event.EventErrorMessage = "DoとLoopが対応していません";
 //            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 221658
@@ -6067,9 +6067,9 @@
 //        private int ExecDrawOptionCmd()
 //        {
 //            int ExecDrawOptionCmdRet = default;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "DrawOptionコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "DrawOptionコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 221846
@@ -6081,7 +6081,7 @@
 //                 */
 //            }
 
-//            Event_Renamed.ObjDrawOption = GetArgAsString(2);
+//            Event.ObjDrawOption = GetArgAsString(2);
 //            ExecDrawOptionCmdRet = LineNum + 1;
 //            return ExecDrawOptionCmdRet;
 //        }
@@ -6089,9 +6089,9 @@
 //        private int ExecDrawWidthCmd()
 //        {
 //            int ExecDrawWidthCmdRet = default;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "DrawWidthコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "DrawWidthコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 222158
@@ -6103,7 +6103,7 @@
 //                 */
 //            }
 
-//            Event_Renamed.ObjDrawWidth = GetArgAsLong(2);
+//            Event.ObjDrawWidth = GetArgAsLong(2);
 //            ExecDrawWidthCmdRet = LineNum + 1;
 //            return ExecDrawWidthCmdRet;
 //        }
@@ -6116,20 +6116,20 @@
 //            {
 //                case 2:
 //                    {
-//                        aname = GetArgAsString((short)2);
+//                        aname = GetArgAsString(2);
 //                        break;
 //                    }
 
 //                case 3:
 //                    {
-//                        uname = GetArgAsString((short)2);
-//                        aname = GetArgAsString((short)3);
+//                        uname = GetArgAsString(2);
+//                        aname = GetArgAsString(3);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Enableコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Enableコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 222673
@@ -6153,9 +6153,9 @@
 //            }
 
 //            // Disable用変数を削除
-//            if (Expression.IsGlobalVariableDefined(ref vname))
+//            if (Expression.IsGlobalVariableDefined(vname))
 //            {
-//                Expression.UndefineVariable(ref vname);
+//                Expression.UndefineVariable(vname);
 //            }
 //            else
 //            {
@@ -6170,9 +6170,9 @@
 //                {
 //                    var withBlock = SRC.UList;
 //                    object argIndex1 = uname;
-//                    if (withBlock.IsDefined(ref argIndex1))
+//                    if (withBlock.IsDefined(argIndex1))
 //                    {
-//                        Unit localItem() { object argIndex1 = uname; var ret = withBlock.Item(ref argIndex1); return ret; }
+//                        Unit localItem() { object argIndex1 = uname; var ret = withBlock.Item(argIndex1); return ret; }
 
 //                        localItem().CurrentForm().Update();
 //                    }
@@ -6204,21 +6204,21 @@
 //            {
 //                case 3:
 //                    {
-//                        u = GetArgAsUnit((short)2);
-//                        iname = GetArgAsString((short)3);
+//                        u = GetArgAsUnit(2);
+//                        iname = GetArgAsString(3);
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
-//                        iname = GetArgAsString((short)2);
+//                        u = Event.SelectedUnitForEvent;
+//                        iname = GetArgAsString(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Equipコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Equipコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 223923
@@ -6235,20 +6235,20 @@
 //            // 大文字・小文字、ひらがな・かたかなの違いを正しく判定できるように、
 //            // 名前をデータのそれとあわせる
 //            object argIndex1 = iname;
-//            if (SRC.IDList.IsDefined(ref argIndex1))
+//            if (SRC.IDList.IsDefined(argIndex1))
 //            {
-//                ItemData localItem() { object argIndex1 = iname; var ret = SRC.IDList.Item(ref argIndex1); return ret; }
+//                ItemData localItem() { object argIndex1 = iname; var ret = SRC.IDList.Item(argIndex1); return ret; }
 
 //                iname = localItem().Name;
 //            }
 
 //            // 装備するアイテムを検索 or 作成
-//            bool localIsDefined() { object argIndex1 = iname; var ret = SRC.IDList.IsDefined(ref argIndex1); return ret; }
+//            bool localIsDefined() { object argIndex1 = iname; var ret = SRC.IDList.IsDefined(argIndex1); return ret; }
 
 //            object argIndex3 = iname;
-//            if (SRC.IList.IsDefined(ref argIndex3))
+//            if (SRC.IList.IsDefined(argIndex3))
 //            {
-//                Item localItem1() { object argIndex1 = (object)iname; var ret = SRC.IList.Item(ref argIndex1); return ret; }
+//                Item localItem1() { object argIndex1 = (object)iname; var ret = SRC.IList.Item(argIndex1); return ret; }
 
 //                if ((iname ?? "") == (localItem1().Name ?? ""))
 //                {
@@ -6261,7 +6261,7 @@
 //                            itm = currentItm;
 //                            {
 //                                var withBlock = itm;
-//                                if ((withBlock.Name ?? "") == (iname ?? "") & withBlock.Unit_Renamed is null & withBlock.Exist)
+//                                if ((withBlock.Name ?? "") == (iname ?? "") && withBlock.Unit_Renamed is null && withBlock.Exist)
 //                                {
 //                                    goto EquipItem;
 //                                }
@@ -6273,7 +6273,7 @@
 //                            itm = currentItm1;
 //                            {
 //                                var withBlock1 = itm;
-//                                if ((withBlock1.Name ?? "") == (iname ?? "") & withBlock1.Unit_Renamed is object & withBlock1.Exist)
+//                                if ((withBlock1.Name ?? "") == (iname ?? "") && withBlock1.Unit_Renamed is object && withBlock1.Exist)
 //                                {
 //                                    if (withBlock1.Unit_Renamed.Party0 == "味方")
 //                                    {
@@ -6283,27 +6283,27 @@
 //                            }
 //                        }
 //                        // それでもなければ新たに作成
-//                        itm = SRC.IList.Add(ref iname);
+//                        itm = SRC.IList.Add(iname);
 //                    }
 //                    else
 //                    {
-//                        itm = SRC.IList.Add(ref iname);
+//                        itm = SRC.IList.Add(iname);
 //                    }
 //                }
 //                else
 //                {
 //                    // アイテムＩＤで指定した場合
 //                    object argIndex2 = (object)iname;
-//                    itm = SRC.IList.Item(ref argIndex2);
+//                    itm = SRC.IList.Item(argIndex2);
 //                }
 //            }
 //            else if (localIsDefined())
 //            {
-//                itm = SRC.IList.Add(ref iname);
+//                itm = SRC.IList.Add(iname);
 //            }
 //            else
 //            {
-//                Event_Renamed.EventErrorMessage = "「" + iname + "」というアイテムは存在しません";
+//                Event.EventErrorMessage = "「" + iname + "」というアイテムは存在しません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 225275
@@ -6330,7 +6330,7 @@
 //                        if (withBlock2.Unit_Renamed is object)
 //                        {
 //                            object argIndex4 = withBlock2.ID;
-//                            withBlock2.Unit_Renamed.DeleteItem(ref argIndex4);
+//                            withBlock2.Unit_Renamed.DeleteItem(argIndex4);
 //                        }
 
 //                        {
@@ -6342,35 +6342,35 @@
 //                                    var withBlock4 = withBlock3.MainPilot();
 //                                    object argIndex5 = "指揮";
 //                                    string argref_mode = "";
-//                                    cmd_lv = (short)withBlock4.SkillLevel(ref argIndex5, ref_mode: ref argref_mode);
+//                                    cmd_lv = withBlock4.SkillLevel(argIndex5, ref_mode: argref_mode);
 //                                    object argIndex6 = "階級";
 //                                    string argref_mode1 = "";
-//                                    rank_lv = (short)withBlock4.SkillLevel(ref argIndex6, ref_mode: ref argref_mode1);
+//                                    rank_lv = withBlock4.SkillLevel(argIndex6, ref_mode: argref_mode1);
 //                                    object argIndex7 = "広域サポート";
 //                                    string argref_mode2 = "";
-//                                    support_lv = (short)withBlock4.SkillLevel(ref argIndex7, ref_mode: ref argref_mode2);
+//                                    support_lv = withBlock4.SkillLevel(argIndex7, ref_mode: argref_mode2);
 //                                }
 //                            }
 
-//                            withBlock3.AddItem(ref itm);
+//                            withBlock3.AddItem(itm);
 
 //                            // ユニット画像が変化した？
 //                            if ((ubitmap ?? "") != (withBlock3.get_Bitmap(false) ?? ""))
 //                            {
-//                                withBlock3.BitmapID = GUI.MakeUnitBitmap(ref u);
+//                                withBlock3.BitmapID = GUI.MakeUnitBitmap(u);
 //                                var loopTo = withBlock3.CountOtherForm();
 //                                for (i = 1; i <= loopTo; i++)
 //                                {
-//                                    Unit localOtherForm() { object argIndex1 = i; var ret = withBlock3.OtherForm(ref argIndex1); return ret; }
+//                                    Unit localOtherForm() { object argIndex1 = i; var ret = withBlock3.OtherForm(argIndex1); return ret; }
 
 //                                    localOtherForm().BitmapID = 0;
 //                                }
 
 //                                if (withBlock3.Status_Renamed == "出撃")
 //                                {
-//                                    if (!GUI.IsPictureVisible & !string.IsNullOrEmpty(Map.MapFileName))
+//                                    if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
 //                                    {
-//                                        GUI.PaintUnitBitmap(ref u);
+//                                        GUI.PaintUnitBitmap(u);
 //                                    }
 //                                }
 //                            }
@@ -6386,7 +6386,7 @@
 //                                    string argref_mode4 = "";
 //                                    object argIndex10 = "広域サポート";
 //                                    string argref_mode5 = "";
-//                                    if (cmd_lv != withBlock5.SkillLevel(ref argIndex8, ref_mode: ref argref_mode3) | rank_lv != withBlock5.SkillLevel(ref argIndex9, ref_mode: ref argref_mode4) | support_lv != withBlock5.SkillLevel(ref argIndex10, ref_mode: ref argref_mode5))
+//                                    if (cmd_lv != withBlock5.SkillLevel(argIndex8, ref_mode: argref_mode3) || rank_lv != withBlock5.SkillLevel(argIndex9, ref_mode: argref_mode4) || support_lv != withBlock5.SkillLevel(argIndex10, ref_mode: argref_mode5))
 //                                    {
 //                                        if (u.Status_Renamed == "出撃")
 //                                        {
@@ -6398,7 +6398,7 @@
 
 //                            // 最大弾数が変化した？
 //                            string argfname = "最大弾数増加";
-//                            if (itm.IsFeatureAvailable(ref argfname))
+//                            if (itm.IsFeatureAvailable(argfname))
 //                            {
 //                                withBlock3.FullSupply();
 //                            }
@@ -6418,14 +6418,14 @@
 //            Unit u;
 //            short i, num;
 //            var opt = default(string);
-//            var ucount = default(short);
+//            var ucount = default;
 //            num = ArgNum;
 //            if (num > 1)
 //            {
 //                if (GetArgAsString(num) == "非同期")
 //                {
 //                    opt = "非同期";
-//                    num = (short)(num - 1);
+//                    num = (num - 1);
 //                }
 //            }
 
@@ -6433,8 +6433,8 @@
 //            {
 //                case 2:
 //                    {
-//                        pname = GetArgAsString((short)2);
-//                        if (pname == "味方" | pname == "ＮＰＣ" | pname == "敵" | pname == "中立")
+//                        pname = GetArgAsString(2);
+//                        if (pname == "味方" || pname == "ＮＰＣ" || pname == "敵" || pname == "中立")
 //                        {
 //                            uparty = pname;
 //                            foreach (Unit currentU in SRC.UList)
@@ -6447,11 +6447,11 @@
 //                                        if (withBlock.Status_Renamed == "出撃")
 //                                        {
 //                                            withBlock.Escape(opt);
-//                                            ucount = (short)((int)ucount + 1);
+//                                            ucount = (ucount + 1);
 //                                        }
 //                                        else if (withBlock.Status_Renamed == "破壊")
 //                                        {
-//                                            if (1 <= (int)withBlock.x & withBlock.x <= Map.MapWidth & 1 <= (int)withBlock.y & withBlock.y <= Map.MapHeight)
+//                                            if (1 <= withBlock.x && withBlock.x <= Map.MapWidth && 1 <= withBlock.y && withBlock.y <= Map.MapHeight)
 //                                            {
 //                                                if (ReferenceEquals(u, Map.MapDataForUnit[withBlock.x, withBlock.y]))
 //                                                {
@@ -6467,16 +6467,16 @@
 //                        else
 //                        {
 //                            object argIndex1 = (object)pname;
-//                            u = SRC.UList.Item2(ref argIndex1);
+//                            u = SRC.UList.Item2(argIndex1);
 //                            if (u is null)
 //                            {
 //                                {
 //                                    var withBlock1 = SRC.PList;
-//                                    bool localIsDefined() { object argIndex1 = (object)pname; var ret = withBlock1.IsDefined(ref argIndex1); return ret; }
+//                                    bool localIsDefined() { object argIndex1 = (object)pname; var ret = withBlock1.IsDefined(argIndex1); return ret; }
 
 //                                    if (!localIsDefined())
 //                                    {
-//                                        Event_Renamed.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
+//                                        Event.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
 //                                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 228167
@@ -6488,7 +6488,7 @@
 //                                         */
 //                                    }
 
-//                                    Pilot localItem() { object argIndex1 = (object)pname; var ret = withBlock1.Item(ref argIndex1); return ret; }
+//                                    Pilot localItem() { object argIndex1 = (object)pname; var ret = withBlock1.Item(argIndex1); return ret; }
 
 //                                    u = localItem().Unit_Renamed;
 //                                }
@@ -6498,7 +6498,7 @@
 //                            {
 //                                if (u.Status_Renamed == "出撃")
 //                                {
-//                                    ucount = (short)1;
+//                                    ucount = 1;
 //                                }
 
 //                                u.Escape(opt);
@@ -6512,10 +6512,10 @@
 //                case 1:
 //                    {
 //                        {
-//                            var withBlock2 = Event_Renamed.SelectedUnitForEvent;
+//                            var withBlock2 = Event.SelectedUnitForEvent;
 //                            if (withBlock2.Status_Renamed == "出撃")
 //                            {
-//                                ucount = (short)1;
+//                                ucount = 1;
 //                            }
 
 //                            withBlock2.Escape(opt);
@@ -6527,7 +6527,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Escapeコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Escapeコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 228757
@@ -6542,13 +6542,13 @@
 //            }
 
 //            // Escapeコマンドによって全滅したかを判定
-//            if (uparty != "ＮＰＣ" & uparty != "味方" & ucount > 0)
+//            if (uparty != "ＮＰＣ" && uparty != "味方" && ucount > 0)
 //            {
 //                foreach (Unit currentU1 in SRC.UList)
 //                {
 //                    u = currentU1;
 //                    object argIndex2 = "憑依";
-//                    if ((u.Party0 ?? "") == (uparty ?? "") & (u.Status_Renamed == "出撃" | u.Status_Renamed == "格納") & !u.IsConditionSatisfied(ref argIndex2))
+//                    if ((u.Party0 ?? "") == (uparty ?? "") && (u.Status_Renamed == "出撃" || u.Status_Renamed == "格納") && !u.IsConditionSatisfied(argIndex2))
 //                    {
 //                        ExecEscapeCmdRet = LineNum + 1;
 //                        return ExecEscapeCmdRet;
@@ -6556,10 +6556,10 @@
 //                }
 
 //                // 戦闘時以外のイベント中の撤退は無視
-//                var loopTo = (short)Information.UBound(Event_Renamed.EventQue);
+//                var loopTo = Information.UBound(Event.EventQue);
 //                for (i = 1; i <= loopTo; i++)
 //                {
-//                    if (Event_Renamed.EventQue[i] == "プロローグ" | Event_Renamed.EventQue[i] == "エピローグ" | Event_Renamed.EventQue[i] == "スタート" | GeneralLib.LIndex(ref Event_Renamed.EventQue[i], 1) == "マップ攻撃破壊")
+//                    if (Event.EventQue[i] == "プロローグ" || Event.EventQue[i] == "エピローグ" || Event.EventQue[i] == "スタート" || GeneralLib.LIndex(Event.EventQue[i], 1) == "マップ攻撃破壊")
 //                    {
 //                        ExecEscapeCmdRet = LineNum + 1;
 //                        return ExecEscapeCmdRet;
@@ -6567,7 +6567,7 @@
 //                }
 
 //                // 後で全滅イベントを実行
-//                Event_Renamed.RegisterEvent("全滅", uparty);
+//                Event.RegisterEvent("全滅", uparty);
 //            }
 
 //            ExecEscapeCmdRet = LineNum + 1;
@@ -6586,20 +6586,20 @@
 //            {
 //                case 2:
 //                    {
-//                        fname = GetArgAsString((short)2);
+//                        fname = GetArgAsString(2);
 //                        break;
 //                    }
 
 //                case 3:
 //                    {
-//                        fname = GetArgAsString((short)2);
-//                        opt = GetArgAsString((short)3);
+//                        fname = GetArgAsString(2);
+//                        opt = GetArgAsString(3);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Execコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Execコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 230231
@@ -6622,7 +6622,7 @@
 //                u = currentU;
 //                if (u.Party0 == "味方")
 //                {
-//                    if (u.Status_Renamed == "出撃" | u.Status_Renamed == "格納" | u.Status_Renamed == "破壊")
+//                    if (u.Status_Renamed == "出撃" || u.Status_Renamed == "格納" || u.Status_Renamed == "破壊")
 //                    {
 //                        n = 1;
 //                        break;
@@ -6637,11 +6637,11 @@
 
 //            // 追加経験値を収得
 //            string argoname = "追加経験値無効";
-//            if (SRC.Turn > 0 & !Expression.IsOptionDefined(ref argoname))
+//            if (SRC.Turn > 0 && !Expression.IsOptionDefined(argoname))
 //            {
 //                Unit argu1 = null;
 //                Unit argu2 = null;
-//                GUI.OpenMessageForm(u1: ref argu1, u2: ref argu2);
+//                GUI.OpenMessageForm(u1: argu1, u2: argu2);
 //                n = 0;
 //                msg = "";
 //                foreach (Pilot p in SRC.PList)
@@ -6661,7 +6661,7 @@
 //                        goto NextPilot;
 //                    }
 
-//                    if (p.Unit_Renamed.Status_Renamed != "出撃" & p.Unit_Renamed.Status_Renamed != "格納")
+//                    if (p.Unit_Renamed.Status_Renamed != "出撃" && p.Unit_Renamed.Status_Renamed != "格納")
 //                    {
 //                        goto NextPilot;
 //                    }
@@ -6670,11 +6670,11 @@
 //                    p.Exp = p.Exp + 2 * p.SP;
 
 //                    // 追加パイロットや暴走時パイロットに関する処理
-//                    if (p.Unit_Renamed.CountPilot() > 0 & !p.IsSupport(ref p.Unit_Renamed))
+//                    if (p.Unit_Renamed.CountPilot() > 0 && !p.IsSupport(p.Unit_Renamed))
 //                    {
 //                        // 追加パイロットがメインパイロットの場合
 //                        object argIndex1 = 1;
-//                        if (ReferenceEquals(p, p.Unit_Renamed.Pilot(ref argIndex1)) & !ReferenceEquals(p, p.Unit_Renamed.MainPilot()) & p.Unit_Renamed.MainPilot().MaxSP > 0)
+//                        if (ReferenceEquals(p, p.Unit_Renamed.Pilot(argIndex1)) && !ReferenceEquals(p, p.Unit_Renamed.MainPilot()) && p.Unit_Renamed.MainPilot().MaxSP > 0)
 //                        {
 //                            goto NextPilot;
 //                        }
@@ -6686,7 +6686,7 @@
 //                            var loopTo = p.Unit_Renamed.CountPilot();
 //                            for (i = 1; i <= loopTo; i++)
 //                            {
-//                                Pilot localPilot() { object argIndex1 = i; var ret = p.Unit_Renamed.Pilot(ref argIndex1); return ret; }
+//                                Pilot localPilot() { object argIndex1 = i; var ret = p.Unit_Renamed.Pilot(argIndex1); return ret; }
 
 //                                if (ReferenceEquals(p, localPilot()))
 //                                {
@@ -6710,11 +6710,11 @@
 //                        msg = msg + ";" + p.get_Nickname(false) + " 経験値 +" + SrcFormatter.Format(2 * p.SP) + " レベルアップ！（Lv" + SrcFormatter.Format(p.Level) + "）";
 //                    }
 
-//                    n = (short)(n + 1);
+//                    n = (n + 1);
 //                    if (n == 4)
 //                    {
 //                        string argpname = "システム";
-//                        GUI.DisplayMessage(ref argpname, Strings.Mid(msg, 2));
+//                        GUI.DisplayMessage(argpname, Strings.Mid(msg, 2));
 //                        msg = "";
 //                        n = 0;
 //                    }
@@ -6726,7 +6726,7 @@
 //                if (n > 0)
 //                {
 //                    string argpname1 = "システム";
-//                    GUI.DisplayMessage(ref argpname1, Strings.Mid(msg, 2));
+//                    GUI.DisplayMessage(argpname1, Strings.Mid(msg, 2));
 //                }
 
 //                GUI.CloseMessageForm();
@@ -6736,36 +6736,36 @@
 
 //            // エピローグイベントを実行
 //            string arglname1 = "エピローグ";
-//            if (Event_Renamed.IsEventDefined(ref arglname1))
+//            if (Event.IsEventDefined(arglname1))
 //            {
 //                // ハイパーモードや変身、能力コピーを解除
 //                foreach (Unit currentU1 in SRC.UList)
 //                {
 //                    u = currentU1;
-//                    if (u.Status_Renamed != "他形態" & u.Status_Renamed != "旧主形態" & u.Status_Renamed != "旧形態")
+//                    if (u.Status_Renamed != "他形態" && u.Status_Renamed != "旧主形態" && u.Status_Renamed != "旧形態")
 //                    {
 //                        string argfname = "ノーマルモード";
-//                        if (u.IsFeatureAvailable(ref argfname))
+//                        if (u.IsFeatureAvailable(argfname))
 //                        {
-//                            string localLIndex() { object argIndex1 = "ノーマルモード"; string arglist = u.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 1); return ret; }
+//                            string localLIndex() { object argIndex1 = "ノーマルモード"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
 //                            string argnew_form = localLIndex();
-//                            u.Transform(ref argnew_form);
+//                            u.Transform(argnew_form);
 //                        }
 //                    }
 //                }
 
 //                string arglname = "エピローグ";
-//                if (Event_Renamed.IsEventDefined(ref arglname, true))
+//                if (Event.IsEventDefined(arglname, true))
 //                {
 //                    Sound.StopBGM();
 //                    string argbgm_name = "Briefing";
-//                    string argbgm_name1 = Sound.BGMName(ref argbgm_name);
-//                    Sound.StartBGM(ref argbgm_name1);
+//                    string argbgm_name1 = Sound.BGMName(argbgm_name);
+//                    Sound.StartBGM(argbgm_name1);
 //                }
 
 //                SRC.Stage = "エピローグ";
-//                Event_Renamed.HandleEvent("エピローグ");
+//                Event.HandleEvent("エピローグ");
 //            }
 
 //            GUI.MainForm.Hide();
@@ -6784,7 +6784,7 @@
 //            SRC.UList.Update();
 //            SRC.PList.Update();
 //            SRC.IList.Update();
-//            Event_Renamed.ClearEventData();
+//            Event.ClearEventData();
 //            Map.ClearMap();
 
 //            // 通常ステージとして実行する？
@@ -6820,26 +6820,26 @@
 //            {
 //                case 1:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
+//                        u = Event.SelectedUnitForEvent;
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        u = GetArgAsUnit((short)2);
+//                        u = GetArgAsUnit(2);
 //                        break;
 //                    }
 
 //                case 3:
 //                    {
-//                        u = GetArgAsUnit((short)2);
-//                        ipart = GetArgAsString((short)3);
+//                        u = GetArgAsUnit(2);
+//                        ipart = GetArgAsString(3);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "ExchangeItemコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "ExchangeItemコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 235024
@@ -6853,7 +6853,7 @@
 //                    }
 //            }
 
-//            InterMission.ExchangeItemCommand(ref u, ref ipart);
+//            InterMission.ExchangeItemCommand(u, ipart);
 //            ExecExchangeItemCmdRet = LineNum + 1;
 //            return ExecExchangeItemCmdRet;
 //        }
@@ -6867,7 +6867,7 @@
 //            {
 //                case 2:
 //                    {
-//                        esize = GetArgAsString((short)2);
+//                        esize = GetArgAsString(2);
 //                        tx = GUI.MapX;
 //                        ty = GUI.MapY;
 //                        break;
@@ -6875,15 +6875,15 @@
 
 //                case 4:
 //                    {
-//                        esize = GetArgAsString((short)2);
-//                        tx = (short)GetArgAsLong((short)3);
-//                        ty = (short)GetArgAsLong((short)4);
+//                        esize = GetArgAsString(2);
+//                        tx = GetArgAsLong(3);
+//                        ty = GetArgAsLong(4);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Explodeコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Explodeコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 235613
@@ -6898,7 +6898,7 @@
 //            }
 
 //            // 爆発の表示
-//            Effect.ExplodeAnimation(ref esize, tx, ty);
+//            Effect.ExplodeAnimation(esize, tx, ty);
 //            ExecExplodeCmdRet = LineNum + 1;
 //            return ExecExplodeCmdRet;
 //        }
@@ -6915,19 +6915,19 @@
 //            {
 //                case 3:
 //                    {
-//                        p = GetArgAsPilot((short)2);
-//                        num = (short)GetArgAsLong((short)3);
+//                        p = GetArgAsPilot(2);
+//                        num = GetArgAsLong(3);
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
 //                        {
-//                            var withBlock = Event_Renamed.SelectedUnitForEvent;
-//                            if ((int)withBlock.CountPilot() > 0)
+//                            var withBlock = Event.SelectedUnitForEvent;
+//                            if (withBlock.CountPilot() > 0)
 //                            {
 //                                object argIndex1 = (object)1;
-//                                p = withBlock.Pilot(ref argIndex1);
+//                                p = withBlock.Pilot(argIndex1);
 //                            }
 //                            else
 //                            {
@@ -6936,13 +6936,13 @@
 //                            }
 //                        }
 
-//                        num = (short)GetArgAsLong((short)2);
+//                        num = GetArgAsLong(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "ExpUpコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "ExpUpコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 236403
@@ -6983,8 +6983,8 @@
 //                {
 //                    var withBlock2 = p.Unit_Renamed;
 //                    withBlock2.Update();
-//                    withBlock2.HP = (int)(withBlock2.MaxHP * hp_ratio / 100d);
-//                    withBlock2.EN = (int)(withBlock2.MaxEN * en_ratio / 100d);
+//                    withBlock2.HP = (withBlock2.MaxHP * hp_ratio / 100d);
+//                    withBlock2.EN = (withBlock2.MaxEN * en_ratio / 100d);
 //                }
 
 //                SRC.PList.UpdateSupportMod(p.Unit_Renamed);
@@ -7011,19 +7011,19 @@
 //            {
 //                case 1:
 //                    {
-//                        num = (short)10;
+//                        num = 10;
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        num = (short)GetArgAsLong((short)2);
+//                        num = GetArgAsLong(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "FadeInコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "FadeInコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 237839
@@ -7055,10 +7055,10 @@
 //                // MOD END マージ
 
 //                var argpic = withBlock.picMain(0);
-//                Graphics.InitFade(ref argpic, num);
+//                Graphics.InitFade(argpic, num);
 //                start_time = GeneralLib.timeGetTime();
 //                wait_time = 50;
-//                var loopTo = (int)num;
+//                var loopTo = num;
 //                for (i = 0; i <= loopTo; i++)
 //                {
 //                    if (i % 4 == 0)
@@ -7070,7 +7070,7 @@
 //                    }
 
 //                    var argpic1 = withBlock.picMain(0);
-//                    Graphics.DoFade(ref argpic1, i);
+//                    Graphics.DoFade(argpic1, i);
 //                    withBlock.picMain(0).Refresh();
 //                    cur_time = GeneralLib.timeGetTime();
 //                    while (cur_time < start_time + wait_time * (i + 1))
@@ -7107,19 +7107,19 @@
 //            {
 //                case 1:
 //                    {
-//                        num = (short)10;
+//                        num = 10;
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        num = (short)GetArgAsLong((short)2);
+//                        num = GetArgAsLong(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "FadeOutコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "FadeOutコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 242903
@@ -7137,10 +7137,10 @@
 //            {
 //                var withBlock = GUI.MainForm;
 //                var argpic = withBlock.picMain(0);
-//                Graphics.InitFade(ref argpic, num);
+//                Graphics.InitFade(argpic, num);
 //                start_time = GeneralLib.timeGetTime();
 //                wait_time = 50;
-//                var loopTo = (int)num;
+//                var loopTo = num;
 //                for (i = 0; i <= loopTo; i++)
 //                {
 //                    if (i % 4 == 0)
@@ -7158,7 +7158,7 @@
 //                    }
 
 //                    var argpic1 = withBlock.picMain(0);
-//                    Graphics.DoFade(ref argpic1, (int)num - i);
+//                    Graphics.DoFade(argpic1, num - i);
 //                    withBlock.picMain(0).Refresh();
 //                    cur_time = GeneralLib.timeGetTime();
 //                    while (cur_time < start_time + wait_time * (i + 1))
@@ -7184,9 +7184,9 @@
 //        {
 //            int ExecFillColorCmdRet = default;
 //            string opt, cname;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "FillColorコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "FillColorコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 245472
@@ -7199,9 +7199,9 @@
 //            }
 
 //            opt = GetArgAsString(2);
-//            if (Strings.Asc(opt) != 35 | Strings.Len(opt) != 7)
+//            if (Strings.Asc(opt) != 35 || Strings.Len(opt) != 7)
 //            {
-//                Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                Event.EventErrorMessage = "色指定が不正です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 245711
@@ -7214,16 +7214,16 @@
 //            }
 
 //            cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-//            StringType.MidStmtStr(ref cname, 1, 2, "&H");
+//            StringType.MidStmtStr(cname, 1, 2, "&H");
 //            var midTmp = Strings.Mid(opt, 6, 2);
-//            StringType.MidStmtStr(ref cname, 3, 2, midTmp);
+//            StringType.MidStmtStr(cname, 3, 2, midTmp);
 //            var midTmp1 = Strings.Mid(opt, 4, 2);
-//            StringType.MidStmtStr(ref cname, 5, 2, midTmp1);
+//            StringType.MidStmtStr(cname, 5, 2, midTmp1);
 //            var midTmp2 = Strings.Mid(opt, 2, 2);
-//            StringType.MidStmtStr(ref cname, 7, 2, midTmp2);
+//            StringType.MidStmtStr(cname, 7, 2, midTmp2);
 //            if (!Information.IsNumeric(cname))
 //            {
-//                Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                Event.EventErrorMessage = "色指定が不正です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 246203
@@ -7235,7 +7235,7 @@
 //                 */
 //            }
 
-//            Event_Renamed.ObjFillColor = Conversions.ToInteger(cname);
+//            Event.ObjFillColor = Conversions.ToInteger(cname);
 //            ExecFillColorCmdRet = LineNum + 1;
 //            return ExecFillColorCmdRet;
 //        }
@@ -7243,9 +7243,9 @@
 //        private int ExecFillStyleCmd()
 //        {
 //            int ExecFillStyleCmdRet = default;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "FillStyleコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "FillStyleコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 246504
@@ -7257,59 +7257,59 @@
 //                 */
 //            }
 
-//            switch (GetArgAsString((short)2) ?? "")
+//            switch (GetArgAsString(2) ?? "")
 //            {
 //                case "塗りつぶし":
 //                    {
-//                        Event_Renamed.ObjFillStyle = vbFSSolid;
+//                        Event.ObjFillStyle = vbFSSolid;
 //                        break;
 //                    }
 
 //                case "透明":
 //                    {
-//                        Event_Renamed.ObjFillStyle = vbFSTransparent;
+//                        Event.ObjFillStyle = vbFSTransparent;
 //                        break;
 //                    }
 
 //                case "横線":
 //                    {
-//                        Event_Renamed.ObjFillStyle = vbHorizontalLine;
+//                        Event.ObjFillStyle = vbHorizontalLine;
 //                        break;
 //                    }
 
 //                case "縦線":
 //                    {
-//                        Event_Renamed.ObjFillStyle = vbVerticalLine;
+//                        Event.ObjFillStyle = vbVerticalLine;
 //                        break;
 //                    }
 
 //                case "斜線":
 //                    {
-//                        Event_Renamed.ObjFillStyle = vbUpwardDiagonal;
+//                        Event.ObjFillStyle = vbUpwardDiagonal;
 //                        break;
 //                    }
 
 //                case "斜線２":
 //                    {
-//                        Event_Renamed.ObjFillStyle = vbDownwardDiagonal;
+//                        Event.ObjFillStyle = vbDownwardDiagonal;
 //                        break;
 //                    }
 
 //                case "クロス":
 //                    {
-//                        Event_Renamed.ObjFillStyle = vbCross;
+//                        Event.ObjFillStyle = vbCross;
 //                        break;
 //                    }
 
 //                case "網かけ":
 //                    {
-//                        Event_Renamed.ObjFillStyle = vbDiagonalCross;
+//                        Event.ObjFillStyle = vbDiagonalCross;
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "背景描画方法の指定が不正です";
+//                        Event.EventErrorMessage = "背景描画方法の指定が不正です";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 248728
@@ -7335,19 +7335,19 @@
 //            {
 //                case 2:
 //                    {
-//                        u = GetArgAsUnit((short)2, true);
+//                        u = GetArgAsUnit(2, true);
 //                        break;
 //                    }
 
 //                case 1:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
+//                        u = Event.SelectedUnitForEvent;
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Finishコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Finishコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 249131
@@ -7372,7 +7372,7 @@
 //                                withBlock.UseAction();
 //                                if (withBlock.Status_Renamed == "出撃")
 //                                {
-//                                    GUI.PaintUnitBitmap(ref u);
+//                                    GUI.PaintUnitBitmap(u);
 //                                }
 
 //                                break;
@@ -7405,20 +7405,20 @@
 //                case 1:
 //                    {
 //                        object argIndex1 = (object)1;
-//                        buf = Event_Renamed.SelectedUnitForEvent.Pilot(ref argIndex1).Name;
+//                        buf = Event.SelectedUnitForEvent.Pilot(argIndex1).Name;
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        buf = GetArgAsString((short)2);
-//                        bool localIsDefined() { object argIndex1 = (object)buf; var ret = SRC.PList.IsDefined(ref argIndex1); return ret; }
+//                        buf = GetArgAsString(2);
+//                        bool localIsDefined() { object argIndex1 = (object)buf; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-//                        bool localIsDefined1() { object argIndex1 = (object)buf; var ret = SRC.IList.IsDefined(ref argIndex1); return ret; }
+//                        bool localIsDefined1() { object argIndex1 = (object)buf; var ret = SRC.IList.IsDefined(argIndex1); return ret; }
 
-//                        if (!localIsDefined() & !localIsDefined1())
+//                        if (!localIsDefined() && !localIsDefined1())
 //                        {
-//                            Event_Renamed.EventErrorMessage = "パイロット名またはアイテム名" + buf + "が間違っています";
+//                            Event.EventErrorMessage = "パイロット名またはアイテム名" + buf + "が間違っています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 249941
@@ -7431,15 +7431,15 @@
 //                        }
 
 //                        object argIndex2 = (object)buf;
-//                        if (SRC.PList.IsDefined(ref argIndex2))
+//                        if (SRC.PList.IsDefined(argIndex2))
 //                        {
-//                            Pilot localItem() { object argIndex1 = (object)buf; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+//                            Pilot localItem() { object argIndex1 = (object)buf; var ret = SRC.PList.Item(argIndex1); return ret; }
 
 //                            buf = localItem().Name;
 //                        }
 //                        else
 //                        {
-//                            Item localItem1() { object argIndex1 = (object)buf; var ret = SRC.IList.Item(ref argIndex1); return ret; }
+//                            Item localItem1() { object argIndex1 = (object)buf; var ret = SRC.IList.Item(argIndex1); return ret; }
 
 //                            buf = localItem1().Name;
 //                        }
@@ -7449,7 +7449,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Fixコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Fixコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 250238
@@ -7464,12 +7464,12 @@
 //            }
 
 //            buf = "Fix(" + buf + ")";
-//            if (!Expression.IsGlobalVariableDefined(ref buf))
+//            if (!Expression.IsGlobalVariableDefined(buf))
 //            {
-//                Expression.DefineGlobalVariable(ref buf);
+//                Expression.DefineGlobalVariable(buf);
 //            }
 
-//            Expression.SetVariableAsLong(ref buf, 1);
+//            Expression.SetVariableAsLong(buf, 1);
 //            ExecFixCmdRet = LineNum + 1;
 //            return ExecFixCmdRet;
 //        }
@@ -7585,17 +7585,17 @@
 //                                        opt = Strings.Left(opt, Strings.Len(opt) - 2);
 //                                        withBlock.Font.Size = Conversions.ToShort(opt);
 //                                    }
-//                                    else if (Strings.Asc(opt) == 35 & Strings.Len(opt) == 7)
+//                                    else if (Strings.Asc(opt) == 35 && Strings.Len(opt) == 7)
 //                                    {
 //                                        // 文字色
 //                                        cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-//                                        StringType.MidStmtStr(ref cname, 1, 2, "&H");
+//                                        StringType.MidStmtStr(cname, 1, 2, "&H");
 //                                        var midTmp = Strings.Mid(opt, 6, 2);
-//                                        StringType.MidStmtStr(ref cname, 3, 2, midTmp);
+//                                        StringType.MidStmtStr(cname, 3, 2, midTmp);
 //                                        var midTmp1 = Strings.Mid(opt, 4, 2);
-//                                        StringType.MidStmtStr(ref cname, 5, 2, midTmp1);
+//                                        StringType.MidStmtStr(cname, 5, 2, midTmp1);
 //                                        var midTmp2 = Strings.Mid(opt, 2, 2);
-//                                        StringType.MidStmtStr(ref cname, 7, 2, midTmp2);
+//                                        StringType.MidStmtStr(cname, 7, 2, midTmp2);
 //                                        if (Information.IsNumeric(cname))
 //                                        {
 //                                            withBlock.ForeColor = Conversions.ToInteger(cname);
@@ -7638,9 +7638,9 @@
 //            int idx, i, limit;
 //            short depth;
 //            short isincr;
-//            if ((int)ArgNum != 6 & (int)ArgNum != 8)
+//            if (ArgNum != 6 && ArgNum != 8)
 //            {
-//                Event_Renamed.EventErrorMessage = "Forコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Forコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 257375
@@ -7655,7 +7655,7 @@
 //            // インデックス変数に初期値を設定
 //            vname = GetArg(2);
 //            idx = GetArgAsLong(4);
-//            Expression.SetVariableAsLong(ref vname, idx);
+//            Expression.SetVariableAsLong(vname, idx);
 
 //            // ループの終端値
 //            limit = GetArgAsLong(6);
@@ -7673,11 +7673,11 @@
 //                }
 //            }
 
-//            if (idx * (int)isincr <= limit * (int)isincr)
+//            if (idx * isincr <= limit * isincr)
 //            {
 //                // 終端値をスタックに格納
-//                Event_Renamed.ForIndex = (short)((int)Event_Renamed.ForIndex + 1);
-//                Event_Renamed.ForLimitStack[(int)Event_Renamed.ForIndex] = limit;
+//                Event.ForIndex = (Event.ForIndex + 1);
+//                Event.ForLimitStack[Event.ForIndex] = limit;
 //                // 初回のループを実行
 //                ExecForCmdRet = LineNum + 1;
 //            }
@@ -7686,23 +7686,23 @@
 //                // 最初から条件式を満たしていない場合
 
 //                // 対応するNextコマンドを探す
-//                depth = (short)1;
-//                var loopTo = Information.UBound(Event_Renamed.EventCmd);
+//                depth = 1;
+//                var loopTo = Information.UBound(Event.EventCmd);
 //                for (i = LineNum + 1; i <= loopTo; i++)
 //                {
-//                    switch (Event_Renamed.EventCmd[i].Name)
+//                    switch (Event.EventCmd[i].Name)
 //                    {
-//                        case Event_Renamed.CmdType.ForCmd:
-//                        case Event_Renamed.CmdType.ForEachCmd:
+//                        case Event.CmdType.ForCmd:
+//                        case Event.CmdType.ForEachCmd:
 //                            {
-//                                depth = (short)((int)depth + 1);
+//                                depth = (depth + 1);
 //                                break;
 //                            }
 
-//                        case Event_Renamed.CmdType.NextCmd:
+//                        case Event.CmdType.NextCmd:
 //                            {
-//                                depth = (short)((int)depth - 1);
-//                                if ((int)depth == 0)
+//                                depth = (depth - 1);
+//                                if (depth == 0)
 //                                {
 //                                    ExecForCmdRet = i + 1;
 //                                    return ExecForCmdRet;
@@ -7713,7 +7713,7 @@
 //                    }
 //                }
 
-//                Event_Renamed.EventErrorMessage = "ForまたはForEachとNextが対応していません";
+//                Event.EventErrorMessage = "ForまたはForEachとNextが対応していません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 258803
@@ -7747,27 +7747,27 @@
 //            int max_value;
 //            string max_str;
 //            short max_item;
-//            Event_Renamed.ForEachSet = new string[1];
+//            Event.ForEachSet = new string[1];
 //            switch (ArgNum)
 //            {
 //                // ユニットに対するForEach
 //                case 2:
 //                case 3:
 //                    {
-//                        if ((int)ArgNum == 2)
+//                        if (ArgNum == 2)
 //                        {
 //                            ustatus = "出撃 格納";
 //                        }
 //                        else
 //                        {
-//                            ustatus = GetArgAsString((short)3);
+//                            ustatus = GetArgAsString(3);
 //                            if (ustatus == "全て")
 //                            {
 //                                ustatus = "全";
 //                            }
 //                        }
 
-//                        switch (GetArgAsString((short)2) ?? "")
+//                        switch (GetArgAsString(2) ?? "")
 //                        {
 //                            case "全":
 //                                {
@@ -7776,10 +7776,10 @@
 //                                        foreach (Unit currentU in SRC.UList)
 //                                        {
 //                                            u = currentU;
-//                                            if (u.Status_Renamed != "他形態" & u.Status_Renamed != "旧主形態" & u.Status_Renamed != "旧形態" & u.Status_Renamed != "破棄")
+//                                            if (u.Status_Renamed != "他形態" && u.Status_Renamed != "旧主形態" && u.Status_Renamed != "旧形態" && u.Status_Renamed != "破棄")
 //                                            {
-//                                                Array.Resize(ref Event_Renamed.ForEachSet, Information.UBound(Event_Renamed.ForEachSet) + 1 + 1);
-//                                                Event_Renamed.ForEachSet[Information.UBound(Event_Renamed.ForEachSet)] = u.ID;
+//                                                Array.Resize(Event.ForEachSet, Information.UBound(Event.ForEachSet) + 1 + 1);
+//                                                Event.ForEachSet[Information.UBound(Event.ForEachSet)] = u.ID;
 //                                            }
 //                                        }
 //                                    }
@@ -7790,8 +7790,8 @@
 //                                            u = currentU1;
 //                                            if (Strings.InStr(ustatus, u.Status_Renamed) > 0)
 //                                            {
-//                                                Array.Resize(ref Event_Renamed.ForEachSet, Information.UBound(Event_Renamed.ForEachSet) + 1 + 1);
-//                                                Event_Renamed.ForEachSet[Information.UBound(Event_Renamed.ForEachSet)] = u.ID;
+//                                                Array.Resize(Event.ForEachSet, Information.UBound(Event.ForEachSet) + 1 + 1);
+//                                                Event.ForEachSet[Information.UBound(Event.ForEachSet)] = u.ID;
 //                                            }
 //                                        }
 //                                    }
@@ -7804,7 +7804,7 @@
 //                            case "敵":
 //                            case "中立":
 //                                {
-//                                    uparty = GetArgAsString((short)2);
+//                                    uparty = GetArgAsString(2);
 //                                    if (ustatus == "全")
 //                                    {
 //                                        foreach (Unit currentU2 in SRC.UList)
@@ -7812,10 +7812,10 @@
 //                                            u = currentU2;
 //                                            if ((u.Party0 ?? "") == (uparty ?? ""))
 //                                            {
-//                                                if (u.Status_Renamed != "他形態" & u.Status_Renamed != "旧主形態" & u.Status_Renamed != "旧形態" & u.Status_Renamed != "破棄")
+//                                                if (u.Status_Renamed != "他形態" && u.Status_Renamed != "旧主形態" && u.Status_Renamed != "旧形態" && u.Status_Renamed != "破棄")
 //                                                {
-//                                                    Array.Resize(ref Event_Renamed.ForEachSet, Information.UBound(Event_Renamed.ForEachSet) + 1 + 1);
-//                                                    Event_Renamed.ForEachSet[Information.UBound(Event_Renamed.ForEachSet)] = u.ID;
+//                                                    Array.Resize(Event.ForEachSet, Information.UBound(Event.ForEachSet) + 1 + 1);
+//                                                    Event.ForEachSet[Information.UBound(Event.ForEachSet)] = u.ID;
 //                                                }
 //                                            }
 //                                        }
@@ -7829,8 +7829,8 @@
 //                                            {
 //                                                if (Strings.InStr(ustatus, u.Status_Renamed) > 0)
 //                                                {
-//                                                    Array.Resize(ref Event_Renamed.ForEachSet, Information.UBound(Event_Renamed.ForEachSet) + 1 + 1);
-//                                                    Event_Renamed.ForEachSet[Information.UBound(Event_Renamed.ForEachSet)] = u.ID;
+//                                                    Array.Resize(Event.ForEachSet, Information.UBound(Event.ForEachSet) + 1 + 1);
+//                                                    Event.ForEachSet[Information.UBound(Event.ForEachSet)] = u.ID;
 //                                                }
 //                                            }
 //                                        }
@@ -7841,7 +7841,7 @@
 
 //                            default:
 //                                {
-//                                    ugroup = GetArgAsString((short)2);
+//                                    ugroup = GetArgAsString(2);
 //                                    if (ustatus == "全て")
 //                                    {
 //                                        ustatus = "全";
@@ -7850,22 +7850,22 @@
 //                                    foreach (Unit currentU4 in SRC.UList)
 //                                    {
 //                                        u = currentU4;
-//                                        if ((int)u.CountPilot() > 0)
+//                                        if (u.CountPilot() > 0)
 //                                        {
-//                                            if ((u.MainPilot().ID ?? "") == (ugroup ?? "") | Strings.InStr(u.MainPilot().ID, ugroup + ":") == 1)
+//                                            if ((u.MainPilot().ID ?? "") == (ugroup ?? "") || Strings.InStr(u.MainPilot().ID, ugroup + ":") == 1)
 //                                            {
 //                                                if (ustatus == "全")
 //                                                {
-//                                                    if (u.Status_Renamed != "他形態" & u.Status_Renamed != "旧主形態" & u.Status_Renamed != "旧形態" & u.Status_Renamed != "破棄")
+//                                                    if (u.Status_Renamed != "他形態" && u.Status_Renamed != "旧主形態" && u.Status_Renamed != "旧形態" && u.Status_Renamed != "破棄")
 //                                                    {
-//                                                        Array.Resize(ref Event_Renamed.ForEachSet, Information.UBound(Event_Renamed.ForEachSet) + 1 + 1);
-//                                                        Event_Renamed.ForEachSet[Information.UBound(Event_Renamed.ForEachSet)] = u.ID;
+//                                                        Array.Resize(Event.ForEachSet, Information.UBound(Event.ForEachSet) + 1 + 1);
+//                                                        Event.ForEachSet[Information.UBound(Event.ForEachSet)] = u.ID;
 //                                                    }
 //                                                }
 //                                                else if (Strings.InStr(ustatus, u.Status_Renamed) > 0)
 //                                                {
-//                                                    Array.Resize(ref Event_Renamed.ForEachSet, Information.UBound(Event_Renamed.ForEachSet) + 1 + 1);
-//                                                    Event_Renamed.ForEachSet[Information.UBound(Event_Renamed.ForEachSet)] = u.ID;
+//                                                    Array.Resize(Event.ForEachSet, Information.UBound(Event.ForEachSet) + 1 + 1);
+//                                                    Event.ForEachSet[Information.UBound(Event.ForEachSet)] = u.ID;
 //                                                }
 //                                            }
 //                                        }
@@ -7882,14 +7882,14 @@
 //                case 4:
 //                    {
 //                        // インデックス用変数名
-//                        vname = GetArg((short)2);
+//                        vname = GetArg(2);
 //                        if (Strings.Left(vname, 1) == "$")
 //                        {
 //                            vname = Strings.Mid(vname, 2);
 //                        }
 
 //                        // 配列の変数名
-//                        aname = GetArg((short)4);
+//                        aname = GetArg(4);
 //                        if (Strings.Left(aname, 1) == "$")
 //                        {
 //                            aname = Strings.Mid(aname, 2);
@@ -7900,29 +7900,29 @@
 //                            if (Strings.Right(aname, 1) == ")")
 //                            {
 //                                aname = Strings.Mid(aname, 6, Strings.Len(aname) - 6);
-//                                aname = Expression.GetValueAsString(ref aname);
+//                                aname = Expression.GetValueAsString(aname);
 //                            }
 //                        }
 
 //                        // 配列を検索し、配列要素を見つける
 //                        string argstring24 = "パイロット一覧(";
 //                        string argstring25 = "ユニット一覧(";
-//                        if ((int)GeneralLib.InStrNotNest(ref aname, ref argstring24) == 1)
+//                        if (GeneralLib.InStrNotNest(aname, argstring24) == 1)
 //                        {
 //                            string argstring2 = "(";
 //                            string argstring21 = "(";
-//                            key_type = Strings.Mid(aname, (int)GeneralLib.InStrNotNest(ref aname, ref argstring2) + 1, Strings.Len(aname) - (int)GeneralLib.InStrNotNest(ref aname, ref argstring21) - 1);
-//                            key_type = Expression.GetValueAsString(ref key_type);
+//                            key_type = Strings.Mid(aname, GeneralLib.InStrNotNest(aname, argstring2) + 1, Strings.Len(aname) - GeneralLib.InStrNotNest(aname, argstring21) - 1);
+//                            key_type = Expression.GetValueAsString(key_type);
 //                            if (key_type != "名称")
 //                            {
 //                                // 配列作成
-//                                Event_Renamed.ForEachSet = new string[(int)(SRC.PList.Count() + 1)];
-//                                key_list = new int[(int)(SRC.PList.Count() + 1)];
+//                                Event.ForEachSet = new string[(SRC.PList.Count() + 1)];
+//                                key_list = new int[(SRC.PList.Count() + 1)];
 //                                i = 0;
 //                                foreach (Pilot currentP in SRC.PList)
 //                                {
 //                                    p = currentP;
-//                                    if (!p.Alive | p.Away)
+//                                    if (!p.Alive || p.Away)
 //                                    {
 //                                        goto NextPilot1;
 //                                    }
@@ -7931,11 +7931,11 @@
 //                                    {
 //                                        {
 //                                            var withBlock = p.Unit_Renamed;
-//                                            if ((int)withBlock.CountPilot() > 0)
+//                                            if (withBlock.CountPilot() > 0)
 //                                            {
 //                                                object argIndex1 = (object)1;
 //                                                object argIndex2 = (object)1;
-//                                                if (ReferenceEquals(p, withBlock.MainPilot()) & !ReferenceEquals(p, withBlock.Pilot(ref argIndex2)))
+//                                                if (ReferenceEquals(p, withBlock.MainPilot()) && !ReferenceEquals(p, withBlock.Pilot(argIndex2)))
 //                                                {
 //                                                    goto NextPilot1;
 //                                                }
@@ -7944,12 +7944,12 @@
 //                                    }
 
 //                                    i = i + 1;
-//                                    Event_Renamed.ForEachSet[i] = p.ID;
+//                                    Event.ForEachSet[i] = p.ID;
 //                                    switch (key_type ?? "")
 //                                    {
 //                                        case "レベル":
 //                                            {
-//                                                key_list[i] = 500 * (int)p.Level + p.Exp;
+//                                                key_list[i] = 500 * p.Level + p.Exp;
 //                                                break;
 //                                            }
 
@@ -7961,37 +7961,37 @@
 
 //                                        case "格闘":
 //                                            {
-//                                                key_list[i] = (int)p.Infight;
+//                                                key_list[i] = p.Infight;
 //                                                break;
 //                                            }
 
 //                                        case "射撃":
 //                                            {
-//                                                key_list[i] = (int)p.Shooting;
+//                                                key_list[i] = p.Shooting;
 //                                                break;
 //                                            }
 
 //                                        case "命中":
 //                                            {
-//                                                key_list[i] = (int)p.Hit;
+//                                                key_list[i] = p.Hit;
 //                                                break;
 //                                            }
 
 //                                        case "回避":
 //                                            {
-//                                                key_list[i] = (int)p.Dodge;
+//                                                key_list[i] = p.Dodge;
 //                                                break;
 //                                            }
 
 //                                        case "技量":
 //                                            {
-//                                                key_list[i] = (int)p.Technique;
+//                                                key_list[i] = p.Technique;
 //                                                break;
 //                                            }
 
 //                                        case "反応":
 //                                            {
-//                                                key_list[i] = (int)p.Intuition;
+//                                                key_list[i] = p.Intuition;
 //                                                break;
 //                                            }
 //                                    }
@@ -8000,44 +8000,44 @@
 //                                    ;
 //                                }
 
-//                                Array.Resize(ref Event_Renamed.ForEachSet, i + 1);
-//                                Array.Resize(ref key_list, i + 1);
+//                                Array.Resize(Event.ForEachSet, i + 1);
+//                                Array.Resize(key_list, i + 1);
 
 //                                // ソート
-//                                var loopTo = Information.UBound(Event_Renamed.ForEachSet) - 1;
+//                                var loopTo = Information.UBound(Event.ForEachSet) - 1;
 //                                for (i = 1; i <= loopTo; i++)
 //                                {
-//                                    max_item = (short)i;
+//                                    max_item = i;
 //                                    max_value = key_list[i];
-//                                    var loopTo1 = (short)Information.UBound(Event_Renamed.ForEachSet);
-//                                    for (j = (short)(i + 1); j <= loopTo1; j++)
+//                                    var loopTo1 = Information.UBound(Event.ForEachSet);
+//                                    for (j = (i + 1); j <= loopTo1; j++)
 //                                    {
-//                                        if (key_list[(int)j] > max_value)
+//                                        if (key_list[j] > max_value)
 //                                        {
 //                                            max_item = j;
-//                                            max_value = key_list[(int)j];
+//                                            max_value = key_list[j];
 //                                        }
 //                                    }
 
-//                                    if ((int)max_item != i)
+//                                    if (max_item != i)
 //                                    {
-//                                        buf = Event_Renamed.ForEachSet[i];
-//                                        Event_Renamed.ForEachSet[i] = Event_Renamed.ForEachSet[(int)max_item];
-//                                        Event_Renamed.ForEachSet[(int)max_item] = buf;
-//                                        key_list[(int)max_item] = key_list[i];
+//                                        buf = Event.ForEachSet[i];
+//                                        Event.ForEachSet[i] = Event.ForEachSet[max_item];
+//                                        Event.ForEachSet[max_item] = buf;
+//                                        key_list[max_item] = key_list[i];
 //                                    }
 //                                }
 //                            }
 //                            else
 //                            {
 //                                // 配列作成
-//                                Event_Renamed.ForEachSet = new string[(int)(SRC.PList.Count() + 1)];
-//                                strkey_list = new string[(int)(SRC.PList.Count() + 1)];
+//                                Event.ForEachSet = new string[(SRC.PList.Count() + 1)];
+//                                strkey_list = new string[(SRC.PList.Count() + 1)];
 //                                i = 0;
 //                                foreach (Pilot currentP1 in SRC.PList)
 //                                {
 //                                    p = currentP1;
-//                                    if (!p.Alive | p.Away)
+//                                    if (!p.Alive || p.Away)
 //                                    {
 //                                        goto NextPilot2;
 //                                    }
@@ -8046,11 +8046,11 @@
 //                                    {
 //                                        {
 //                                            var withBlock1 = p.Unit_Renamed;
-//                                            if ((int)withBlock1.CountPilot() > 0)
+//                                            if (withBlock1.CountPilot() > 0)
 //                                            {
 //                                                object argIndex3 = (object)1;
 //                                                object argIndex4 = (object)1;
-//                                                if (ReferenceEquals(p, withBlock1.MainPilot()) & !ReferenceEquals(p, withBlock1.Pilot(ref argIndex4)))
+//                                                if (ReferenceEquals(p, withBlock1.MainPilot()) && !ReferenceEquals(p, withBlock1.Pilot(argIndex4)))
 //                                                {
 //                                                    goto NextPilot2;
 //                                                }
@@ -8059,65 +8059,65 @@
 //                                    }
 
 //                                    i = i + 1;
-//                                    Event_Renamed.ForEachSet[i] = p.ID;
+//                                    Event.ForEachSet[i] = p.ID;
 //                                    strkey_list[i] = p.KanaName;
 //                                    NextPilot2:
 //                                    ;
 //                                }
 
-//                                Array.Resize(ref Event_Renamed.ForEachSet, i + 1);
-//                                Array.Resize(ref strkey_list, i + 1);
+//                                Array.Resize(Event.ForEachSet, i + 1);
+//                                Array.Resize(strkey_list, i + 1);
 
 //                                // ソート
-//                                var loopTo2 = Information.UBound(Event_Renamed.ForEachSet) - 1;
+//                                var loopTo2 = Information.UBound(Event.ForEachSet) - 1;
 //                                for (i = 1; i <= loopTo2; i++)
 //                                {
-//                                    max_item = (short)i;
+//                                    max_item = i;
 //                                    max_str = strkey_list[i];
-//                                    var loopTo3 = (short)Information.UBound(Event_Renamed.ForEachSet);
-//                                    for (j = (short)(i + 1); j <= loopTo3; j++)
+//                                    var loopTo3 = Information.UBound(Event.ForEachSet);
+//                                    for (j = (i + 1); j <= loopTo3; j++)
 //                                    {
-//                                        if (Strings.StrComp(strkey_list[(int)j], max_str, (CompareMethod)1) == -1)
+//                                        if (Strings.StrComp(strkey_list[j], max_str, (CompareMethod)1) == -1)
 //                                        {
 //                                            max_item = j;
-//                                            max_str = strkey_list[(int)j];
+//                                            max_str = strkey_list[j];
 //                                        }
 //                                    }
 
-//                                    if ((int)max_item != i)
+//                                    if (max_item != i)
 //                                    {
-//                                        buf = Event_Renamed.ForEachSet[i];
-//                                        Event_Renamed.ForEachSet[i] = Event_Renamed.ForEachSet[(int)max_item];
-//                                        Event_Renamed.ForEachSet[(int)max_item] = buf;
-//                                        strkey_list[(int)max_item] = strkey_list[i];
+//                                        buf = Event.ForEachSet[i];
+//                                        Event.ForEachSet[i] = Event.ForEachSet[max_item];
+//                                        Event.ForEachSet[max_item] = buf;
+//                                        strkey_list[max_item] = strkey_list[i];
 //                                    }
 //                                }
 //                            }
 //                        }
-//                        else if ((int)GeneralLib.InStrNotNest(ref aname, ref argstring25) == 1)
+//                        else if (GeneralLib.InStrNotNest(aname, argstring25) == 1)
 //                        {
 //                            string argstring22 = "(";
 //                            string argstring23 = "(";
-//                            key_type = Strings.Mid(aname, (int)GeneralLib.InStrNotNest(ref aname, ref argstring22) + 1, Strings.Len(aname) - (int)GeneralLib.InStrNotNest(ref aname, ref argstring23) - 1);
-//                            key_type = Expression.GetValueAsString(ref key_type);
+//                            key_type = Strings.Mid(aname, GeneralLib.InStrNotNest(aname, argstring22) + 1, Strings.Len(aname) - GeneralLib.InStrNotNest(aname, argstring23) - 1);
+//                            key_type = Expression.GetValueAsString(key_type);
 //                            if (key_type != "名称")
 //                            {
 //                                // 配列作成
-//                                Event_Renamed.ForEachSet = new string[(int)(SRC.UList.Count() + 1)];
-//                                key_list = new int[(int)(SRC.UList.Count() + 1)];
+//                                Event.ForEachSet = new string[(SRC.UList.Count() + 1)];
+//                                key_list = new int[(SRC.UList.Count() + 1)];
 //                                i = 0;
 //                                foreach (Unit currentU5 in SRC.UList)
 //                                {
 //                                    u = currentU5;
-//                                    if (u.Status_Renamed == "出撃" | u.Status_Renamed == "格納" | u.Status_Renamed == "待機")
+//                                    if (u.Status_Renamed == "出撃" || u.Status_Renamed == "格納" || u.Status_Renamed == "待機")
 //                                    {
 //                                        i = i + 1;
-//                                        Event_Renamed.ForEachSet[i] = u.ID;
+//                                        Event.ForEachSet[i] = u.ID;
 //                                        switch (key_type ?? "")
 //                                        {
 //                                            case "ランク":
 //                                                {
-//                                                    key_list[i] = (int)u.Rank;
+//                                                    key_list[i] = u.Rank;
 //                                                    break;
 //                                                }
 
@@ -8141,29 +8141,29 @@
 
 //                                            case "運動性":
 //                                                {
-//                                                    key_list[i] = (int)u.get_Mobility("");
+//                                                    key_list[i] = u.get_Mobility("");
 //                                                    break;
 //                                                }
 
 //                                            case "移動力":
 //                                                {
-//                                                    key_list[i] = (int)u.Speed;
+//                                                    key_list[i] = u.Speed;
 //                                                    break;
 //                                                }
 
 //                                            case "最大攻撃力":
 //                                                {
 //                                                    var loopTo4 = u.CountWeapon();
-//                                                    for (j = (short)1; j <= loopTo4; j++)
+//                                                    for (j = 1; j <= loopTo4; j++)
 //                                                    {
 //                                                        string argattr = "合";
-//                                                        if (u.IsWeaponMastered(j) & !u.IsDisabled(ref u.Weapon(j).Name) & !u.IsWeaponClassifiedAs(j, ref argattr))
+//                                                        if (u.IsWeaponMastered(j) && !u.IsDisabled(u.Weapon(j).Name) && !u.IsWeaponClassifiedAs(j, argattr))
 //                                                        {
 //                                                            string argtarea1 = "";
-//                                                            if (u.WeaponPower(j, ref argtarea1) > key_list[i])
+//                                                            if (u.WeaponPower(j, argtarea1) > key_list[i])
 //                                                            {
 //                                                                string argtarea = "";
-//                                                                key_list[i] = u.WeaponPower(j, ref argtarea);
+//                                                                key_list[i] = u.WeaponPower(j, argtarea);
 //                                                            }
 //                                                        }
 //                                                    }
@@ -8174,14 +8174,14 @@
 //                                            case "最長射程":
 //                                                {
 //                                                    var loopTo5 = u.CountWeapon();
-//                                                    for (j = (short)1; j <= loopTo5; j++)
+//                                                    for (j = 1; j <= loopTo5; j++)
 //                                                    {
 //                                                        string argattr1 = "合";
-//                                                        if (u.IsWeaponMastered(j) & !u.IsDisabled(ref u.Weapon(j).Name) & !u.IsWeaponClassifiedAs(j, ref argattr1))
+//                                                        if (u.IsWeaponMastered(j) && !u.IsDisabled(u.Weapon(j).Name) && !u.IsWeaponClassifiedAs(j, argattr1))
 //                                                        {
-//                                                            if ((int)u.WeaponMaxRange(j) > key_list[i])
+//                                                            if (u.WeaponMaxRange(j) > key_list[i])
 //                                                            {
-//                                                                key_list[i] = (int)u.WeaponMaxRange(j);
+//                                                                key_list[i] = u.WeaponMaxRange(j);
 //                                                            }
 //                                                        }
 //                                                    }
@@ -8192,126 +8192,126 @@
 //                                    }
 //                                }
 
-//                                Array.Resize(ref Event_Renamed.ForEachSet, i + 1);
-//                                Array.Resize(ref key_list, i + 1);
+//                                Array.Resize(Event.ForEachSet, i + 1);
+//                                Array.Resize(key_list, i + 1);
 
 //                                // ソート
-//                                var loopTo6 = Information.UBound(Event_Renamed.ForEachSet) - 1;
+//                                var loopTo6 = Information.UBound(Event.ForEachSet) - 1;
 //                                for (i = 1; i <= loopTo6; i++)
 //                                {
-//                                    max_item = (short)i;
+//                                    max_item = i;
 //                                    max_value = key_list[i];
-//                                    var loopTo7 = (short)Information.UBound(Event_Renamed.ForEachSet);
-//                                    for (j = (short)(i + 1); j <= loopTo7; j++)
+//                                    var loopTo7 = Information.UBound(Event.ForEachSet);
+//                                    for (j = (i + 1); j <= loopTo7; j++)
 //                                    {
-//                                        if (key_list[(int)j] > max_value)
+//                                        if (key_list[j] > max_value)
 //                                        {
 //                                            max_item = j;
-//                                            max_value = key_list[(int)j];
+//                                            max_value = key_list[j];
 //                                        }
 //                                    }
 
-//                                    if ((int)max_item != i)
+//                                    if (max_item != i)
 //                                    {
-//                                        buf = Event_Renamed.ForEachSet[i];
-//                                        Event_Renamed.ForEachSet[i] = Event_Renamed.ForEachSet[(int)max_item];
-//                                        Event_Renamed.ForEachSet[(int)max_item] = buf;
-//                                        key_list[(int)max_item] = key_list[i];
+//                                        buf = Event.ForEachSet[i];
+//                                        Event.ForEachSet[i] = Event.ForEachSet[max_item];
+//                                        Event.ForEachSet[max_item] = buf;
+//                                        key_list[max_item] = key_list[i];
 //                                    }
 //                                }
 //                            }
 //                            else
 //                            {
 //                                // 配列作成
-//                                Event_Renamed.ForEachSet = new string[(int)(SRC.UList.Count() + 1)];
-//                                strkey_list = new string[(int)(SRC.UList.Count() + 1)];
+//                                Event.ForEachSet = new string[(SRC.UList.Count() + 1)];
+//                                strkey_list = new string[(SRC.UList.Count() + 1)];
 //                                i = 0;
 //                                foreach (Unit currentU6 in SRC.UList)
 //                                {
 //                                    u = currentU6;
-//                                    if (u.Status_Renamed == "出撃" | u.Status_Renamed == "格納" | u.Status_Renamed == "待機")
+//                                    if (u.Status_Renamed == "出撃" || u.Status_Renamed == "格納" || u.Status_Renamed == "待機")
 //                                    {
 //                                        i = i + 1;
-//                                        Event_Renamed.ForEachSet[i] = u.ID;
+//                                        Event.ForEachSet[i] = u.ID;
 //                                        strkey_list[i] = u.KanaName;
 //                                    }
 //                                }
 
-//                                Array.Resize(ref Event_Renamed.ForEachSet, i + 1);
-//                                Array.Resize(ref strkey_list, i + 1);
+//                                Array.Resize(Event.ForEachSet, i + 1);
+//                                Array.Resize(strkey_list, i + 1);
 
 //                                // ソート
-//                                var loopTo8 = Information.UBound(Event_Renamed.ForEachSet) - 1;
+//                                var loopTo8 = Information.UBound(Event.ForEachSet) - 1;
 //                                for (i = 1; i <= loopTo8; i++)
 //                                {
-//                                    max_item = (short)i;
+//                                    max_item = i;
 //                                    max_str = strkey_list[i];
-//                                    var loopTo9 = (short)Information.UBound(Event_Renamed.ForEachSet);
-//                                    for (j = (short)(i + 1); j <= loopTo9; j++)
+//                                    var loopTo9 = Information.UBound(Event.ForEachSet);
+//                                    for (j = (i + 1); j <= loopTo9; j++)
 //                                    {
-//                                        if (Strings.StrComp(strkey_list[(int)j], max_str, (CompareMethod)1) == -1)
+//                                        if (Strings.StrComp(strkey_list[j], max_str, (CompareMethod)1) == -1)
 //                                        {
 //                                            max_item = j;
-//                                            max_str = strkey_list[(int)j];
+//                                            max_str = strkey_list[j];
 //                                        }
 //                                    }
 
-//                                    if ((int)max_item != i)
+//                                    if (max_item != i)
 //                                    {
-//                                        buf = Event_Renamed.ForEachSet[i];
-//                                        Event_Renamed.ForEachSet[i] = Event_Renamed.ForEachSet[(int)max_item];
-//                                        Event_Renamed.ForEachSet[(int)max_item] = buf;
-//                                        strkey_list[(int)max_item] = strkey_list[i];
+//                                        buf = Event.ForEachSet[i];
+//                                        Event.ForEachSet[i] = Event.ForEachSet[max_item];
+//                                        Event.ForEachSet[max_item] = buf;
+//                                        strkey_list[max_item] = strkey_list[i];
 //                                    }
 //                                }
 //                            }
 //                        }
-//                        else if (Expression.IsSubLocalVariableDefined(ref aname))
+//                        else if (Expression.IsSubLocalVariableDefined(aname))
 //                        {
 //                            // サブルーチンローカルな配列に対するForEach
-//                            var loopTo10 = (int)Event_Renamed.VarIndex;
-//                            for (i = (int)Event_Renamed.VarIndexStack[(int)Event_Renamed.CallDepth - 1] + 1; i <= loopTo10; i++)
+//                            var loopTo10 = Event.VarIndex;
+//                            for (i = Event.VarIndexStack[Event.CallDepth - 1] + 1; i <= loopTo10; i++)
 //                            {
 //                                {
-//                                    var withBlock2 = Event_Renamed.VarStack[i];
+//                                    var withBlock2 = Event.VarStack[i];
 //                                    if (Strings.InStr(withBlock2.Name, aname + "[") == 1)
 //                                    {
-//                                        Array.Resize(ref Event_Renamed.ForEachSet, Information.UBound(Event_Renamed.ForEachSet) + 1 + 1);
+//                                        Array.Resize(Event.ForEachSet, Information.UBound(Event.ForEachSet) + 1 + 1);
 //                                        buf = withBlock2.Name;
-//                                        var loopTo11 = (short)Strings.Len(buf);
-//                                        for (j = (short)1; j <= loopTo11; j++)
+//                                        var loopTo11 = Strings.Len(buf);
+//                                        for (j = 1; j <= loopTo11; j++)
 //                                        {
-//                                            if (Strings.Mid(buf, Strings.Len(buf) - (int)j + 1, 1) == "]")
+//                                            if (Strings.Mid(buf, Strings.Len(buf) - j + 1, 1) == "]")
 //                                            {
 //                                                break;
 //                                            }
 //                                        }
 
 //                                        buf = Strings.Mid(buf, Strings.InStr(buf, "[") + 1);
-//                                        buf = Strings.Left(buf, Strings.Len(buf) - (int)j);
-//                                        Event_Renamed.ForEachSet[Information.UBound(Event_Renamed.ForEachSet)] = buf;
+//                                        buf = Strings.Left(buf, Strings.Len(buf) - j);
+//                                        Event.ForEachSet[Information.UBound(Event.ForEachSet)] = buf;
 //                                    }
 //                                }
 //                            }
 
-//                            if (Information.UBound(Event_Renamed.ForEachSet) == 0)
+//                            if (Information.UBound(Event.ForEachSet) == 0)
 //                            {
-//                                buf = Expression.GetValueAsString(ref aname);
-//                                Event_Renamed.ForEachSet = new string[(int)(GeneralLib.ListLength(ref buf) + 1)];
-//                                var loopTo12 = (int)GeneralLib.ListLength(ref buf);
+//                                buf = Expression.GetValueAsString(aname);
+//                                Event.ForEachSet = new string[(GeneralLib.ListLength(buf) + 1)];
+//                                var loopTo12 = GeneralLib.ListLength(buf);
 //                                for (i = 1; i <= loopTo12; i++)
-//                                    Event_Renamed.ForEachSet[i] = GeneralLib.ListIndex(ref buf, (short)i);
+//                                    Event.ForEachSet[i] = GeneralLib.ListIndex(buf, i);
 //                            }
 //                        }
-//                        else if (Expression.IsLocalVariableDefined(ref aname))
+//                        else if (Expression.IsLocalVariableDefined(aname))
 //                        {
 //                            // ローカルな配列に対するForEach
-//                            foreach (VarData currentVar in Event_Renamed.LocalVariableList)
+//                            foreach (VarData currentVar in Event.LocalVariableList)
 //                            {
 //                                var = currentVar;
 //                                if (Strings.InStr(var.Name, aname + "[") == 1)
 //                                {
-//                                    Array.Resize(ref Event_Renamed.ForEachSet, Information.UBound(Event_Renamed.ForEachSet) + 1 + 1);
+//                                    Array.Resize(Event.ForEachSet, Information.UBound(Event.ForEachSet) + 1 + 1);
 //                                    buf = var.Name;
 //                                    var loopTo13 = Strings.Len(buf);
 //                                    for (i = 1; i <= loopTo13; i++)
@@ -8324,28 +8324,28 @@
 
 //                                    buf = Strings.Mid(buf, Strings.InStr(buf, "[") + 1);
 //                                    buf = Strings.Left(buf, Strings.Len(buf) - i);
-//                                    Event_Renamed.ForEachSet[Information.UBound(Event_Renamed.ForEachSet)] = buf;
+//                                    Event.ForEachSet[Information.UBound(Event.ForEachSet)] = buf;
 //                                }
 //                            }
 
-//                            if (Information.UBound(Event_Renamed.ForEachSet) == 0)
+//                            if (Information.UBound(Event.ForEachSet) == 0)
 //                            {
-//                                buf = Expression.GetValueAsString(ref aname);
-//                                Event_Renamed.ForEachSet = new string[(int)(GeneralLib.ListLength(ref buf) + 1)];
-//                                var loopTo14 = (int)GeneralLib.ListLength(ref buf);
+//                                buf = Expression.GetValueAsString(aname);
+//                                Event.ForEachSet = new string[(GeneralLib.ListLength(buf) + 1)];
+//                                var loopTo14 = GeneralLib.ListLength(buf);
 //                                for (i = 1; i <= loopTo14; i++)
-//                                    Event_Renamed.ForEachSet[i] = GeneralLib.ListIndex(ref buf, (short)i);
+//                                    Event.ForEachSet[i] = GeneralLib.ListIndex(buf, i);
 //                            }
 //                        }
-//                        else if (Expression.IsGlobalVariableDefined(ref aname))
+//                        else if (Expression.IsGlobalVariableDefined(aname))
 //                        {
 //                            // グローバルな配列に対するForEach
-//                            foreach (VarData currentVar1 in Event_Renamed.GlobalVariableList)
+//                            foreach (VarData currentVar1 in Event.GlobalVariableList)
 //                            {
 //                                var = currentVar1;
 //                                if (Strings.InStr(var.Name, aname + "[") == 1)
 //                                {
-//                                    Array.Resize(ref Event_Renamed.ForEachSet, Information.UBound(Event_Renamed.ForEachSet) + 1 + 1);
+//                                    Array.Resize(Event.ForEachSet, Information.UBound(Event.ForEachSet) + 1 + 1);
 //                                    buf = var.Name;
 //                                    var loopTo15 = Strings.Len(buf);
 //                                    for (i = 1; i <= loopTo15; i++)
@@ -8358,27 +8358,27 @@
 
 //                                    buf = Strings.Mid(buf, Strings.InStr(buf, "[") + 1);
 //                                    buf = Strings.Left(buf, Strings.Len(buf) - i);
-//                                    Event_Renamed.ForEachSet[Information.UBound(Event_Renamed.ForEachSet)] = buf;
+//                                    Event.ForEachSet[Information.UBound(Event.ForEachSet)] = buf;
 //                                }
 //                            }
 
-//                            if (Information.UBound(Event_Renamed.ForEachSet) == 0)
+//                            if (Information.UBound(Event.ForEachSet) == 0)
 //                            {
-//                                buf = Expression.GetValueAsString(ref aname);
-//                                Event_Renamed.ForEachSet = new string[(int)(GeneralLib.ListLength(ref buf) + 1)];
-//                                var loopTo16 = (int)GeneralLib.ListLength(ref buf);
+//                                buf = Expression.GetValueAsString(aname);
+//                                Event.ForEachSet = new string[(GeneralLib.ListLength(buf) + 1)];
+//                                var loopTo16 = GeneralLib.ListLength(buf);
 //                                for (i = 1; i <= loopTo16; i++)
-//                                    Event_Renamed.ForEachSet[i] = GeneralLib.ListIndex(ref buf, (short)i);
+//                                    Event.ForEachSet[i] = GeneralLib.ListIndex(buf, i);
 //                            }
 //                        }
-//                        else if (Strings.Left(aname, 1) == "(" & Strings.Right(aname, 1) == ")" | Strings.Left(aname, 1) == "\"" & Strings.Right(aname, 1) == "\"" | Strings.Left(aname, 1) == "`" & Strings.Right(aname, 1) == "`" | Strings.InStr(Strings.LCase(aname), "list(") == 1 & Strings.Right(aname, 1) == ")")
+//                        else if (Strings.Left(aname, 1) == "(" && Strings.Right(aname, 1) == ")" || Strings.Left(aname, 1) == "\"" && Strings.Right(aname, 1) == "\"" || Strings.Left(aname, 1) == "`" && Strings.Right(aname, 1) == "`" || Strings.InStr(Strings.LCase(aname), "list(") == 1 && Strings.Right(aname, 1) == ")")
 //                        {
 //                            // リストに対するForEach
-//                            buf = Expression.GetValueAsString(ref aname);
-//                            Event_Renamed.ForEachSet = new string[(int)(GeneralLib.ListLength(ref buf) + 1)];
-//                            var loopTo17 = (int)GeneralLib.ListLength(ref buf);
+//                            buf = Expression.GetValueAsString(aname);
+//                            Event.ForEachSet = new string[(GeneralLib.ListLength(buf) + 1)];
+//                            var loopTo17 = GeneralLib.ListLength(buf);
 //                            for (i = 1; i <= loopTo17; i++)
-//                                Event_Renamed.ForEachSet[i] = GeneralLib.ListIndex(ref buf, (short)i);
+//                                Event.ForEachSet[i] = GeneralLib.ListIndex(buf, i);
 //                        }
 
 //                        break;
@@ -8386,7 +8386,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "ForEachコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "ForEachコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 278769
@@ -8400,22 +8400,22 @@
 //                    }
 //            }
 
-//            if (Information.UBound(Event_Renamed.ForEachSet) > 0)
+//            if (Information.UBound(Event.ForEachSet) > 0)
 //            {
 //                // ForEachの実行要素がある場合
 
-//                Event_Renamed.ForEachIndex = (short)1;
-//                Event_Renamed.ForIndex = (short)((int)Event_Renamed.ForIndex + 1);
-//                if ((int)ArgNum < 4)
+//                Event.ForEachIndex = 1;
+//                Event.ForIndex = (Event.ForIndex + 1);
+//                if (ArgNum < 4)
 //                {
-//                    var tmp = Event_Renamed.ForEachSet;
+//                    var tmp = Event.ForEachSet;
 //                    object argIndex5 = (object)tmp[1];
-//                    Event_Renamed.SelectedUnitForEvent = SRC.UList.Item(ref argIndex5);
+//                    Event.SelectedUnitForEvent = SRC.UList.Item(argIndex5);
 //                }
 //                else
 //                {
-//                    string argvname = GetArg((short)2);
-//                    Expression.SetVariableAsString(ref argvname, ref Event_Renamed.ForEachSet[1]);
+//                    string argvname = GetArg(2);
+//                    Expression.SetVariableAsString(argvname, Event.ForEachSet[1]);
 //                }
 
 //                ExecForEachCmdRet = LineNum + 1;
@@ -8425,23 +8425,23 @@
 //                // ForEachの実行要素がない場合
 
 //                // 対応するNextを探す
-//                depth = (short)1;
-//                var loopTo18 = Information.UBound(Event_Renamed.EventCmd);
+//                depth = 1;
+//                var loopTo18 = Information.UBound(Event.EventCmd);
 //                for (i = LineNum + 1; i <= loopTo18; i++)
 //                {
-//                    switch (Event_Renamed.EventCmd[i].Name)
+//                    switch (Event.EventCmd[i].Name)
 //                    {
-//                        case Event_Renamed.CmdType.ForCmd:
-//                        case Event_Renamed.CmdType.ForEachCmd:
+//                        case Event.CmdType.ForCmd:
+//                        case Event.CmdType.ForEachCmd:
 //                            {
-//                                depth = (short)((int)depth + 1);
+//                                depth = (depth + 1);
 //                                break;
 //                            }
 
-//                        case Event_Renamed.CmdType.NextCmd:
+//                        case Event.CmdType.NextCmd:
 //                            {
-//                                depth = (short)((int)depth - 1);
-//                                if ((int)depth == 0)
+//                                depth = (depth - 1);
+//                                if (depth == 0)
 //                                {
 //                                    ExecForEachCmdRet = i + 1;
 //                                    return ExecForEachCmdRet;
@@ -8452,7 +8452,7 @@
 //                    }
 //                }
 
-//                Event_Renamed.EventErrorMessage = "ForまたはForEachとNextが対応していません";
+//                Event.EventErrorMessage = "ForまたはForEachとNextが対応していません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 280073
@@ -8483,12 +8483,12 @@
 //            {
 //                i = i - 1;
 //                {
-//                    var withBlock = Event_Renamed.EventCmd[i];
+//                    var withBlock = Event.EventCmd[i];
 //                    switch (withBlock.Name)
 //                    {
-//                        case Event_Renamed.CmdType.ForCmd:
+//                        case Event.CmdType.ForCmd:
 //                            {
-//                                depth = (short)(depth - 1);
+//                                depth = (depth - 1);
 //                                if (depth == 0)
 //                                {
 //                                    // インデックス変数の値を1増やす
@@ -8497,14 +8497,14 @@
 //                                    // Step句が設定されている場合、インデックス変数に引数8の値を加算
 //                                    if (withBlock.ArgNum == 6)
 //                                    {
-//                                        idx = Expression.GetValueAsDouble(ref vname, true) + 1d;
+//                                        idx = Expression.GetValueAsDouble(vname, true) + 1d;
 //                                    }
 //                                    else
 //                                    {
-//                                        idx = Expression.GetValueAsDouble(ref vname, true) + withBlock.GetArgAsLong(8);
+//                                        idx = Expression.GetValueAsDouble(vname, true) + withBlock.GetArgAsLong(8);
 //                                    }
 
-//                                    Expression.SetVariableAsDouble(ref vname, idx);
+//                                    Expression.SetVariableAsDouble(vname, idx);
 
 //                                    // インデックス変数の値は範囲内？
 //                                    isincr = 1;
@@ -8516,11 +8516,11 @@
 //                                        }
 //                                    }
 
-//                                    if (idx * isincr > Event_Renamed.ForLimitStack[Event_Renamed.ForIndex] * isincr)
+//                                    if (idx * isincr > Event.ForLimitStack[Event.ForIndex] * isincr)
 //                                    {
 //                                        // ループ終了
 //                                        i = LineNum;
-//                                        Event_Renamed.ForIndex = (short)(Event_Renamed.ForIndex - 1);
+//                                        Event.ForIndex = (Event.ForIndex - 1);
 //                                    }
 
 //                                    ExecNextCmdRet = i + 1;
@@ -8530,30 +8530,30 @@
 //                                break;
 //                            }
 
-//                        case Event_Renamed.CmdType.ForEachCmd:
+//                        case Event.CmdType.ForEachCmd:
 //                            {
-//                                depth = (short)(depth - 1);
+//                                depth = (depth - 1);
 //                                if (depth == 0)
 //                                {
-//                                    Event_Renamed.ForEachIndex = (short)(Event_Renamed.ForEachIndex + 1);
-//                                    if (Event_Renamed.ForEachIndex > Information.UBound(Event_Renamed.ForEachSet))
+//                                    Event.ForEachIndex = (Event.ForEachIndex + 1);
+//                                    if (Event.ForEachIndex > Information.UBound(Event.ForEachSet))
 //                                    {
 //                                        // ループ終了
 //                                        i = LineNum;
-//                                        Event_Renamed.ForIndex = (short)(Event_Renamed.ForIndex - 1);
+//                                        Event.ForIndex = (Event.ForIndex - 1);
 //                                    }
 //                                    else if (withBlock.ArgNum < 4)
 //                                    {
 //                                        // ユニット＆パイロットに対するForEach
-//                                        var tmp = Event_Renamed.ForEachSet;
-//                                        object argIndex1 = tmp[Event_Renamed.ForEachIndex];
-//                                        Event_Renamed.SelectedUnitForEvent = SRC.UList.Item(ref argIndex1);
+//                                        var tmp = Event.ForEachSet;
+//                                        object argIndex1 = tmp[Event.ForEachIndex];
+//                                        Event.SelectedUnitForEvent = SRC.UList.Item(argIndex1);
 //                                    }
 //                                    else
 //                                    {
 //                                        // 配列に対するForEach
 //                                        string argvname = withBlock.GetArg(2);
-//                                        Expression.SetVariableAsString(ref argvname, ref Event_Renamed.ForEachSet[Event_Renamed.ForEachIndex]);
+//                                        Expression.SetVariableAsString(argvname, Event.ForEachSet[Event.ForEachIndex]);
 //                                    }
 
 //                                    ExecNextCmdRet = i + 1;
@@ -8563,16 +8563,16 @@
 //                                break;
 //                            }
 
-//                        case Event_Renamed.CmdType.NextCmd:
+//                        case Event.CmdType.NextCmd:
 //                            {
-//                                depth = (short)(depth + 1);
+//                                depth = (depth + 1);
 //                                break;
 //                            }
 //                    }
 //                }
 //            }
 
-//            Event_Renamed.EventErrorMessage = "ForまたはForEachとNextが対応していません";
+//            Event.EventErrorMessage = "ForまたはForEachとNextが対応していません";
 //            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 282690
@@ -8589,9 +8589,9 @@
 //            int ExecForgetCmdRet = default;
 //            string tname;
 //            short i, j;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "Forgetコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Forgetコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 282918
@@ -8604,7 +8604,7 @@
 //            }
 
 //            tname = GetArgAsString(2);
-//            var loopTo = (short)Information.UBound(SRC.Titles);
+//            var loopTo = Information.UBound(SRC.Titles);
 //            for (i = 1; i <= loopTo; i++)
 //            {
 //                if ((tname ?? "") == (SRC.Titles[i] ?? ""))
@@ -8615,10 +8615,10 @@
 
 //            if (i <= Information.UBound(SRC.Titles))
 //            {
-//                var loopTo1 = (short)Information.UBound(SRC.Titles);
-//                for (j = (short)(i + 1); j <= loopTo1; j++)
+//                var loopTo1 = Information.UBound(SRC.Titles);
+//                for (j = (i + 1); j <= loopTo1; j++)
 //                    SRC.Titles[j - 1] = SRC.Titles[j];
-//                Array.Resize(ref SRC.Titles, Information.UBound(SRC.Titles));
+//                Array.Resize(SRC.Titles, Information.UBound(SRC.Titles));
 //            }
 
 //            ExecForgetCmdRet = LineNum + 1;
@@ -8637,9 +8637,9 @@
 
 //        private int ExecGameClearCmd()
 //        {
-//            if ((int)ArgNum != 1)
+//            if (ArgNum != 1)
 //            {
-//                Event_Renamed.EventErrorMessage = "GameClearコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "GameClearコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 283989
@@ -8658,9 +8658,9 @@
 //        private int ExecGameOverCmd()
 //        {
 //            int ExecGameOverCmdRet = default;
-//            if ((int)ArgNum != 1)
+//            if (ArgNum != 1)
 //            {
-//                Event_Renamed.EventErrorMessage = "GameOverコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "GameOverコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 284222
@@ -8686,19 +8686,19 @@
 //            {
 //                case 1:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
+//                        u = Event.SelectedUnitForEvent;
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        u = GetArgAsUnit((short)2, true);
+//                        u = GetArgAsUnit(2, true);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "GetOffコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "GetOffコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 284690
@@ -8726,7 +8726,7 @@
 
 //                    // パイロットを下ろす
 //                    object argIndex1 = 1;
-//                    u.Pilot(ref argIndex1).GetOff(true);
+//                    u.Pilot(argIndex1).GetOff(true);
 //                    if (u.Status_Renamed == "出撃")
 //                    {
 //                        // ユニットをマップ上に戻す
@@ -8745,12 +8745,12 @@
 //            string vname;
 //            short i;
 //            var loopTo = ArgNum;
-//            for (i = (short)2; i <= loopTo; i++)
+//            for (i = 2; i <= loopTo; i++)
 //            {
 //                vname = GetArg(i);
 //                if (Strings.InStr(vname, "\"") > 0)
 //                {
-//                    Event_Renamed.EventErrorMessage = "変数名「" + vname + "」が不正です";
+//                    Event.EventErrorMessage = "変数名「" + vname + "」が不正です";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 285764
@@ -8767,9 +8767,9 @@
 //                    vname = Strings.Mid(vname, 2);
 //                }
 
-//                if (!Expression.IsGlobalVariableDefined(ref vname))
+//                if (!Expression.IsGlobalVariableDefined(vname))
 //                {
-//                    Expression.DefineGlobalVariable(ref vname);
+//                    Expression.DefineGlobalVariable(vname);
 //                }
 //            }
 
@@ -8780,9 +8780,9 @@
 //        private int ExecGotoCmd()
 //        {
 //            int ExecGotoCmdRet = default;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "Gotoコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Gotoコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 286293
@@ -8796,7 +8796,7 @@
 
 //            // ラベルが式でないと仮定
 //            string arglname = GetArg(2);
-//            ExecGotoCmdRet = Event_Renamed.FindLabel(ref arglname);
+//            ExecGotoCmdRet = Event.FindLabel(arglname);
 
 //            // ラベルが見つかった？
 //            if (ExecGotoCmdRet > 0)
@@ -8807,10 +8807,10 @@
 
 //            // ラベルは式？
 //            string arglname1 = GetArgAsString(2);
-//            ExecGotoCmdRet = Event_Renamed.FindLabel(ref arglname1);
+//            ExecGotoCmdRet = Event.FindLabel(arglname1);
 //            if (ExecGotoCmdRet == 0)
 //            {
-//                Event_Renamed.EventErrorMessage = "ラベル「" + GetArg((short)2) + "」がみつかりません";
+//                Event.EventErrorMessage = "ラベル「" + GetArg(2) + "」がみつかりません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 286730
@@ -8844,29 +8844,29 @@
 //            {
 //                case 6:
 //                    {
-//                        hname = GetArgAsString((short)2);
-//                        hx = (short)(GetArgAsLong((short)3) + Event_Renamed.BaseX);
-//                        hy = (short)(GetArgAsLong((short)4) + Event_Renamed.BaseY);
-//                        hw = (short)GetArgAsLong((short)5);
-//                        hh = (short)GetArgAsLong((short)6);
+//                        hname = GetArgAsString(2);
+//                        hx = (GetArgAsLong(3) + Event.BaseX);
+//                        hy = (GetArgAsLong(4) + Event.BaseY);
+//                        hw = GetArgAsLong(5);
+//                        hh = GetArgAsLong(6);
 //                        hcaption = hname;
 //                        break;
 //                    }
 
 //                case 7:
 //                    {
-//                        hname = GetArgAsString((short)2);
-//                        hx = (short)(GetArgAsLong((short)3) + Event_Renamed.BaseX);
-//                        hy = (short)(GetArgAsLong((short)4) + Event_Renamed.BaseY);
-//                        hw = (short)GetArgAsLong((short)5);
-//                        hh = (short)GetArgAsLong((short)6);
-//                        hcaption = GetArgAsString((short)7);
+//                        hname = GetArgAsString(2);
+//                        hx = (GetArgAsLong(3) + Event.BaseX);
+//                        hy = (GetArgAsLong(4) + Event.BaseY);
+//                        hw = GetArgAsLong(5);
+//                        hh = GetArgAsLong(6);
+//                        hcaption = GetArgAsString(7);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "HotPointコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "HotPointコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 287729
@@ -8880,9 +8880,9 @@
 //                    }
 //            }
 
-//            Array.Resize(ref Event_Renamed.HotPointList, Information.UBound(Event_Renamed.HotPointList) + 1 + 1);
+//            Array.Resize(Event.HotPointList, Information.UBound(Event.HotPointList) + 1 + 1);
 //            {
-//                var withBlock = Event_Renamed.HotPointList[Information.UBound(Event_Renamed.HotPointList)];
+//                var withBlock = Event.HotPointList[Information.UBound(Event.HotPointList)];
 //                withBlock.Name = hname;
 //                withBlock.Left_Renamed = hx;
 //                withBlock.Top = hy;
@@ -8913,11 +8913,11 @@
 //                case 1:
 //                    {
 //                        object argIndex2 = expr;
-//                        if (SRC.PList.IsDefined(ref argIndex2))
+//                        if (SRC.PList.IsDefined(argIndex2))
 //                        {
 //                            object argIndex1 = expr;
 //                            {
-//                                var withBlock = SRC.PList.Item(ref argIndex1);
+//                                var withBlock = SRC.PList.Item(argIndex1);
 //                                if (withBlock.Unit_Renamed is null)
 //                                {
 //                                    flag = false;
@@ -8926,7 +8926,7 @@
 //                                {
 //                                    {
 //                                        var withBlock1 = withBlock.Unit_Renamed;
-//                                        if (withBlock1.Status_Renamed == "出撃" | withBlock1.Status_Renamed == "格納")
+//                                        if (withBlock1.Status_Renamed == "出撃" || withBlock1.Status_Renamed == "格納")
 //                                        {
 //                                            flag = true;
 //                                        }
@@ -8938,7 +8938,7 @@
 //                                }
 //                            }
 //                        }
-//                        else if (Expression.GetValueAsLong(ref expr, true) != 0)
+//                        else if (Expression.GetValueAsLong(expr, true) != 0)
 //                        {
 //                            flag = true;
 //                        }
@@ -8952,13 +8952,13 @@
 
 //                case 2:
 //                    {
-//                        pname = GeneralLib.ListIndex(ref expr, 2);
+//                        pname = GeneralLib.ListIndex(expr, 2);
 //                        object argIndex4 = pname;
-//                        if (SRC.PList.IsDefined(ref argIndex4))
+//                        if (SRC.PList.IsDefined(argIndex4))
 //                        {
 //                            object argIndex3 = pname;
 //                            {
-//                                var withBlock2 = SRC.PList.Item(ref argIndex3);
+//                                var withBlock2 = SRC.PList.Item(argIndex3);
 //                                if (withBlock2.Unit_Renamed is null)
 //                                {
 //                                    flag = true;
@@ -8967,7 +8967,7 @@
 //                                {
 //                                    {
 //                                        var withBlock3 = withBlock2.Unit_Renamed;
-//                                        if (withBlock3.Status_Renamed == "出撃" | withBlock3.Status_Renamed == "格納")
+//                                        if (withBlock3.Status_Renamed == "出撃" || withBlock3.Status_Renamed == "格納")
 //                                        {
 //                                            flag = false;
 //                                        }
@@ -8979,7 +8979,7 @@
 //                                }
 //                            }
 //                        }
-//                        else if (Expression.GetValueAsLong(ref pname, true) == 0)
+//                        else if (Expression.GetValueAsLong(pname, true) == 0)
 //                        {
 //                            flag = true;
 //                        }
@@ -8993,7 +8993,7 @@
 
 //                default:
 //                    {
-//                        if (Expression.GetValueAsLong(ref expr) != 0)
+//                        if (Expression.GetValueAsLong(expr) != 0)
 //                        {
 //                            flag = true;
 //                        }
@@ -9006,7 +9006,7 @@
 //                    }
 //            }
 
-//            switch (GetArg((short)4) ?? "")
+//            switch (GetArg(4) ?? "")
 //            {
 //                case "exit":
 //                    {
@@ -9026,15 +9026,15 @@
 //                    {
 //                        if (flag)
 //                        {
-//                            string arglname = GetArg((short)5);
-//                            ret = Event_Renamed.FindLabel(ref arglname);
+//                            string arglname = GetArg(5);
+//                            ret = Event.FindLabel(arglname);
 //                            if (ret == 0)
 //                            {
-//                                string arglname1 = GetArgAsString((short)5);
-//                                ret = Event_Renamed.FindLabel(ref arglname1);
+//                                string arglname1 = GetArgAsString(5);
+//                                ret = Event.FindLabel(arglname1);
 //                                if (ret == 0)
 //                                {
-//                                    Event_Renamed.EventErrorMessage = "ラベル「" + GetArg((short)5) + "」がみつかりません";
+//                                    Event.EventErrorMessage = "ラベル「" + GetArg(5) + "」がみつかりません";
 //                                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 290328
@@ -9067,27 +9067,27 @@
 //                        }
 
 //                        // 条件式が成り立たない場合はElse節もしくはEndIfを探す
-//                        depth = (short)1;
-//                        var loopTo = Information.UBound(Event_Renamed.EventCmd);
+//                        depth = 1;
+//                        var loopTo = Information.UBound(Event.EventCmd);
 //                        for (i = LineNum + 1; i <= loopTo; i++)
 //                        {
 //                            {
-//                                var withBlock4 = Event_Renamed.EventCmd[i];
+//                                var withBlock4 = Event.EventCmd[i];
 //                                switch (withBlock4.Name)
 //                                {
-//                                    case Event_Renamed.CmdType.IfCmd:
+//                                    case Event.CmdType.IfCmd:
 //                                        {
-//                                            if (withBlock4.GetArg((short)4) == "then")
+//                                            if (withBlock4.GetArg(4) == "then")
 //                                            {
-//                                                depth = (short)((int)depth + 1);
+//                                                depth = (depth + 1);
 //                                            }
 
 //                                            break;
 //                                        }
 
-//                                    case Event_Renamed.CmdType.ElseCmd:
+//                                    case Event.CmdType.ElseCmd:
 //                                        {
-//                                            if ((int)depth == 1)
+//                                            if (depth == 1)
 //                                            {
 //                                                break;
 //                                            }
@@ -9095,24 +9095,24 @@
 //                                            break;
 //                                        }
 
-//                                    case Event_Renamed.CmdType.ElseIfCmd:
+//                                    case Event.CmdType.ElseIfCmd:
 //                                        {
-//                                            if ((int)depth != 1)
+//                                            if (depth != 1)
 //                                            {
 //                                                goto NextLoop;
 //                                            }
 //                                            // 条件式が成り立つか判定
-//                                            expr = withBlock4.GetArg((short)2);
-//                                            switch (withBlock4.GetArgAsLong((short)3))
+//                                            expr = withBlock4.GetArg(2);
+//                                            switch (withBlock4.GetArgAsLong(3))
 //                                            {
 //                                                case 1:
 //                                                    {
 //                                                        object argIndex6 = (object)expr;
-//                                                        if (SRC.PList.IsDefined(ref argIndex6))
+//                                                        if (SRC.PList.IsDefined(argIndex6))
 //                                                        {
 //                                                            object argIndex5 = (object)expr;
 //                                                            {
-//                                                                var withBlock5 = SRC.PList.Item(ref argIndex5);
+//                                                                var withBlock5 = SRC.PList.Item(argIndex5);
 //                                                                if (withBlock5.Unit_Renamed is null)
 //                                                                {
 //                                                                    flag = false;
@@ -9121,7 +9121,7 @@
 //                                                                {
 //                                                                    {
 //                                                                        var withBlock6 = withBlock5.Unit_Renamed;
-//                                                                        if (withBlock6.Status_Renamed == "出撃" | withBlock6.Status_Renamed == "格納")
+//                                                                        if (withBlock6.Status_Renamed == "出撃" || withBlock6.Status_Renamed == "格納")
 //                                                                        {
 //                                                                            flag = true;
 //                                                                        }
@@ -9133,7 +9133,7 @@
 //                                                                }
 //                                                            }
 //                                                        }
-//                                                        else if (Expression.GetValueAsLong(ref expr, true) != 0)
+//                                                        else if (Expression.GetValueAsLong(expr, true) != 0)
 //                                                        {
 //                                                            flag = true;
 //                                                        }
@@ -9147,13 +9147,13 @@
 
 //                                                case 2:
 //                                                    {
-//                                                        pname = GeneralLib.ListIndex(ref expr, (short)2);
+//                                                        pname = GeneralLib.ListIndex(expr, 2);
 //                                                        object argIndex8 = (object)pname;
-//                                                        if (SRC.PList.IsDefined(ref argIndex8))
+//                                                        if (SRC.PList.IsDefined(argIndex8))
 //                                                        {
 //                                                            object argIndex7 = (object)pname;
 //                                                            {
-//                                                                var withBlock7 = SRC.PList.Item(ref argIndex7);
+//                                                                var withBlock7 = SRC.PList.Item(argIndex7);
 //                                                                if (withBlock7.Unit_Renamed is null)
 //                                                                {
 //                                                                    flag = true;
@@ -9162,7 +9162,7 @@
 //                                                                {
 //                                                                    {
 //                                                                        var withBlock8 = withBlock7.Unit_Renamed;
-//                                                                        if (withBlock8.Status_Renamed == "出撃" | withBlock8.Status_Renamed == "格納")
+//                                                                        if (withBlock8.Status_Renamed == "出撃" || withBlock8.Status_Renamed == "格納")
 //                                                                        {
 //                                                                            flag = false;
 //                                                                        }
@@ -9174,7 +9174,7 @@
 //                                                                }
 //                                                            }
 //                                                        }
-//                                                        else if (Expression.GetValueAsLong(ref pname, true) == 0)
+//                                                        else if (Expression.GetValueAsLong(pname, true) == 0)
 //                                                        {
 //                                                            flag = true;
 //                                                        }
@@ -9188,7 +9188,7 @@
 
 //                                                default:
 //                                                    {
-//                                                        if (Expression.GetValueAsLong(ref expr) != 0)
+//                                                        if (Expression.GetValueAsLong(expr) != 0)
 //                                                        {
 //                                                            flag = true;
 //                                                        }
@@ -9209,10 +9209,10 @@
 //                                            break;
 //                                        }
 
-//                                    case Event_Renamed.CmdType.EndIfCmd:
+//                                    case Event.CmdType.EndIfCmd:
 //                                        {
-//                                            depth = (short)((int)depth - 1);
-//                                            if ((int)depth == 0)
+//                                            depth = (depth - 1);
+//                                            if (depth == 0)
 //                                            {
 //                                                break;
 //                                            }
@@ -9226,9 +9226,9 @@
 //                            ;
 //                        }
 
-//                        if (i > Information.UBound(Event_Renamed.EventData))
+//                        if (i > Information.UBound(Event.EventData))
 //                        {
-//                            Event_Renamed.EventErrorMessage = "IfとEndIfが対応していません";
+//                            Event.EventErrorMessage = "IfとEndIfが対応していません";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 293399
@@ -9246,7 +9246,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "If行には Goto, Exit, Then のいずれかを指定して下さい";
+//                        Event.EventErrorMessage = "If行には Goto, Exit, Then のいずれかを指定して下さい";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 293568
@@ -9271,26 +9271,26 @@
 
 //            // EndIfを探す
 //            depth = 1;
-//            var loopTo = Information.UBound(Event_Renamed.EventCmd);
+//            var loopTo = Information.UBound(Event.EventCmd);
 //            for (i = LineNum + 1; i <= loopTo; i++)
 //            {
 //                {
-//                    var withBlock = Event_Renamed.EventCmd[i];
+//                    var withBlock = Event.EventCmd[i];
 //                    switch (withBlock.Name)
 //                    {
-//                        case Event_Renamed.CmdType.IfCmd:
+//                        case Event.CmdType.IfCmd:
 //                            {
 //                                if (withBlock.GetArg(4) == "then")
 //                                {
-//                                    depth = (short)(depth + 1);
+//                                    depth = (depth + 1);
 //                                }
 
 //                                break;
 //                            }
 
-//                        case Event_Renamed.CmdType.EndIfCmd:
+//                        case Event.CmdType.EndIfCmd:
 //                            {
-//                                depth = (short)(depth - 1);
+//                                depth = (depth - 1);
 //                                if (depth == 0)
 //                                {
 //                                    ExecElseCmdRet = i + 1;
@@ -9303,7 +9303,7 @@
 //                }
 //            }
 
-//            Event_Renamed.EventErrorMessage = "IfとEndIfが対応していません";
+//            Event.EventErrorMessage = "IfとEndIfが対応していません";
 //            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 294336
@@ -9321,24 +9321,24 @@
 //            string vname, buf = default;
 //            var num = default(double);
 //            vname = GetArg(2);
-//            Expression.GetVariable(ref vname, ref Expression.ValueType.NumericType, ref buf, ref num);
+//            Expression.GetVariable(vname, Expression.ValueType.NumericType, buf, num);
 //            switch (ArgNum)
 //            {
 //                case 3:
 //                    {
-//                        Expression.SetVariableAsDouble(ref vname, num + GetArgAsDouble((short)3));
+//                        Expression.SetVariableAsDouble(vname, num + GetArgAsDouble(3));
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        Expression.SetVariableAsDouble(ref vname, num + 1d);
+//                        Expression.SetVariableAsDouble(vname, num + 1d);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Incrコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Incrコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 294890
@@ -9365,21 +9365,21 @@
 //            {
 //                case 3:
 //                    {
-//                        u = GetArgAsUnit((short)2, true);
-//                        num = GetArgAsLong((short)3).ToString();
+//                        u = GetArgAsUnit(2, true);
+//                        num = GetArgAsLong(3).ToString();
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
-//                        num = GetArgAsLong((short)2).ToString();
+//                        u = Event.SelectedUnitForEvent;
+//                        num = GetArgAsLong(2).ToString();
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "IncreaseMoraleコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "IncreaseMoraleコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 295397
@@ -9413,19 +9413,19 @@
 //            {
 //                case 3:
 //                    {
-//                        str_Renamed = Interaction.InputBox(GetArgAsString((short)3), "SRC");
+//                        str_Renamed = Interaction.InputBox(GetArgAsString(3), "SRC");
 //                        break;
 //                    }
 
 //                case 4:
 //                    {
-//                        str_Renamed = Interaction.InputBox(GetArgAsString((short)3), "SRC", GetArgAsString((short)4));
+//                        str_Renamed = Interaction.InputBox(GetArgAsString(3), "SRC", GetArgAsString(4));
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Inputコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Inputコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 296282
@@ -9440,7 +9440,7 @@
 //            }
 
 //            string argvname = GetArg(2);
-//            Expression.SetVariableAsString(ref argvname, ref str_Renamed);
+//            Expression.SetVariableAsString(argvname, str_Renamed);
 //            ExecInputCmdRet = LineNum + 1;
 //            return ExecInputCmdRet;
 //        }
@@ -9452,12 +9452,12 @@
 //            int ExecIntermissionCommandCmdRet = default;
 //            // MOD END マージ
 //            string vname;
-//            if ((int)ArgNum != 3)
+//            if (ArgNum != 3)
 //            {
 //                // MOD START マージ
 //                // EventErrorMessage = "InterMissionCommandコマンドの引数の数が違います"
 //                // MOD END マージ
-//                Event_Renamed.EventErrorMessage = "IntermissionCommandコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "IntermissionCommandコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 296846
@@ -9471,23 +9471,23 @@
 //            }
 
 //            // MOD START マージ
-//            // vname = "InterMissionCommand(" & GetArgAsString(2) & ")"
+//            // vname = "InterMissionCommand(" && GetArgAsString(2) && ")"
 //            vname = "IntermissionCommand(" + GetArgAsString(2) + ")";
 //            // MOD END マージ
 
 //            if (GetArg(3) == "削除")
 //            {
-//                Expression.UndefineVariable(ref vname);
+//                Expression.UndefineVariable(vname);
 //            }
 //            else
 //            {
-//                if (!Expression.IsGlobalVariableDefined(ref vname))
+//                if (!Expression.IsGlobalVariableDefined(vname))
 //                {
-//                    Expression.DefineGlobalVariable(ref vname);
+//                    Expression.DefineGlobalVariable(vname);
 //                }
 
 //                string argnew_value = GetArgAsString(3);
-//                Expression.SetVariableAsString(ref vname, ref argnew_value);
+//                Expression.SetVariableAsString(vname, argnew_value);
 //            }
 
 //            // MOD START マージ
@@ -9505,13 +9505,13 @@
 //            {
 //                case 2:
 //                    {
-//                        iname = GetArgAsString((short)2);
+//                        iname = GetArgAsString(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Itemコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Itemコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 297756
@@ -9525,11 +9525,11 @@
 //                    }
 //            }
 
-//            bool localIsDefined() { object argIndex1 = iname; var ret = SRC.IDList.IsDefined(ref argIndex1); return ret; }
+//            bool localIsDefined() { object argIndex1 = iname; var ret = SRC.IDList.IsDefined(argIndex1); return ret; }
 
 //            if (!localIsDefined())
 //            {
-//                Event_Renamed.EventErrorMessage = "「" + iname + "」というアイテムは存在しません";
+//                Event.EventErrorMessage = "「" + iname + "」というアイテムは存在しません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 297928
@@ -9541,7 +9541,7 @@
 //                 */
 //            }
 
-//            SRC.IList.Add(ref iname);
+//            SRC.IList.Add(iname);
 //            ExecItemCmdRet = LineNum + 1;
 //            return ExecItemCmdRet;
 //        }
@@ -9556,26 +9556,26 @@
 //            {
 //                case 2:
 //                    {
-//                        pname = GetArgAsString((short)2);
-//                        bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.NPDList.IsDefined(ref argIndex1); return ret; }
+//                        pname = GetArgAsString(2);
+//                        bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.NPDList.IsDefined(argIndex1); return ret; }
 
-//                        bool localIsDefined1() { object argIndex1 = (object)pname; var ret = SRC.UList.IsDefined(ref argIndex1); return ret; }
+//                        bool localIsDefined1() { object argIndex1 = (object)pname; var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
 //                        object argIndex2 = (object)pname;
-//                        if (SRC.PList.IsDefined(ref argIndex2))
+//                        if (SRC.PList.IsDefined(argIndex2))
 //                        {
-//                            Pilot localItem() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+//                            Pilot localItem() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
 //                            u = localItem().Unit_Renamed;
 //                        }
 //                        else if (localIsDefined())
 //                        {
-//                            NonPilotData localItem1() { object argIndex1 = (object)pname; var ret = SRC.NPDList.Item(ref argIndex1); return ret; }
+//                            NonPilotData localItem1() { object argIndex1 = (object)pname; var ret = SRC.NPDList.Item(argIndex1); return ret; }
 
 //                            pname = "IsAway(" + localItem1().Name + ")";
-//                            if (Expression.IsGlobalVariableDefined(ref pname))
+//                            if (Expression.IsGlobalVariableDefined(pname))
 //                            {
-//                                Expression.UndefineVariable(ref pname);
+//                                Expression.UndefineVariable(pname);
 //                            }
 
 //                            ExecJoinCmdRet = LineNum + 1;
@@ -9583,13 +9583,13 @@
 //                        }
 //                        else if (localIsDefined1())
 //                        {
-//                            Unit localItem2() { object argIndex1 = (object)pname; var ret = SRC.UList.Item(ref argIndex1); return ret; }
+//                            Unit localItem2() { object argIndex1 = (object)pname; var ret = SRC.UList.Item(argIndex1); return ret; }
 
 //                            if ((pname ?? "") == (localItem2().ID ?? ""))
 //                            {
 //                                // UPGRADE_WARNING: オブジェクト u の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 //                                object argIndex1 = (object)pname;
-//                                u = SRC.UList.Item(ref argIndex1);
+//                                u = SRC.UList.Item(argIndex1);
 //                            }
 //                            else
 //                            {
@@ -9598,7 +9598,7 @@
 //                                    u = currentU;
 //                                    {
 //                                        var withBlock = u;
-//                                        if ((withBlock.Name ?? "") == (pname ?? "") & withBlock.Party0 == "味方" & withBlock.CurrentForm().Status_Renamed == "離脱")
+//                                        if ((withBlock.Name ?? "") == (pname ?? "") && withBlock.Party0 == "味方" && withBlock.CurrentForm().Status_Renamed == "離脱")
 //                                        {
 //                                            u = withBlock.CurrentForm();
 //                                            break;
@@ -9615,7 +9615,7 @@
 //                        }
 //                        else
 //                        {
-//                            Event_Renamed.EventErrorMessage = "「" + pname + "」というパイロットまたはユニットが見つかりません";
+//                            Event.EventErrorMessage = "「" + pname + "」というパイロットまたはユニットが見つかりません";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 299677
@@ -9632,13 +9632,13 @@
 
 //                case 1:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
+//                        u = Event.SelectedUnitForEvent;
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Joinコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Joinコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 299864
@@ -9655,9 +9655,9 @@
 //            if (u is null)
 //            {
 //                object argIndex3 = pname;
-//                if (SRC.PList.IsDefined(ref argIndex3))
+//                if (SRC.PList.IsDefined(argIndex3))
 //                {
-//                    Pilot localItem3() { object argIndex1 = pname; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+//                    Pilot localItem3() { object argIndex1 = pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
 //                    localItem3().Away = false;
 //                }
@@ -9668,7 +9668,7 @@
 //                var loopTo = u.CountPilot();
 //                for (i = 1; i <= loopTo; i++)
 //                {
-//                    Pilot localPilot() { object argIndex1 = i; var ret = u.Pilot(ref argIndex1); return ret; }
+//                    Pilot localPilot() { object argIndex1 = i; var ret = u.Pilot(argIndex1); return ret; }
 
 //                    localPilot().Away = false;
 //                }
@@ -9676,7 +9676,7 @@
 //                var loopTo1 = u.CountSupport();
 //                for (i = 1; i <= loopTo1; i++)
 //                {
-//                    Pilot localSupport() { object argIndex1 = i; var ret = u.Support(ref argIndex1); return ret; }
+//                    Pilot localSupport() { object argIndex1 = i; var ret = u.Support(argIndex1); return ret; }
 
 //                    localSupport().Away = false;
 //                }
@@ -9689,9 +9689,9 @@
 //        private int ExecKeepBGMCmd()
 //        {
 //            int ExecKeepBGMCmdRet = default;
-//            if ((int)ArgNum != 1)
+//            if (ArgNum != 1)
 //            {
-//                Event_Renamed.EventErrorMessage = "KeepBGMコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "KeepBGMコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 300460
@@ -9716,21 +9716,21 @@
 //            {
 //                case 2:
 //                    {
-//                        u1 = Event_Renamed.SelectedUnitForEvent;
-//                        u2 = GetArgAsUnit((short)2);
+//                        u1 = Event.SelectedUnitForEvent;
+//                        u2 = GetArgAsUnit(2);
 //                        break;
 //                    }
 
 //                case 3:
 //                    {
-//                        u1 = GetArgAsUnit((short)2);
-//                        u2 = GetArgAsUnit((short)3);
+//                        u1 = GetArgAsUnit(2);
+//                        u2 = GetArgAsUnit(3);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Landコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Landコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 300956
@@ -9745,9 +9745,9 @@
 //            }
 
 //            string argfname = "母艦";
-//            if (u1.IsFeatureAvailable(ref argfname))
+//            if (u1.IsFeatureAvailable(argfname))
 //            {
-//                Event_Renamed.EventErrorMessage = u1.Name + "は母艦なので格納出来ません";
+//                Event.EventErrorMessage = u1.Name + "は母艦なので格納出来ません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 301106
@@ -9760,9 +9760,9 @@
 //            }
 
 //            string argfname1 = "母艦";
-//            if (!u2.IsFeatureAvailable(ref argfname1))
+//            if (!u2.IsFeatureAvailable(argfname1))
 //            {
-//                Event_Renamed.EventErrorMessage = u2.Name + "は母艦能力を持っていません";
+//                Event.EventErrorMessage = u2.Name + "は母艦能力を持っていません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 301252
@@ -9774,7 +9774,7 @@
 //                 */
 //            }
 
-//            u1.Land(ref u2, true, true);
+//            u1.Land(u2, true, true);
 //            ExecLandCmdRet = LineNum + 1;
 //            return ExecLandCmdRet;
 //        }
@@ -9791,14 +9791,14 @@
 //                case "非同期":
 //                    {
 //                        opt = "非同期";
-//                        num = (short)(num - 1);
+//                        num = (num - 1);
 //                        break;
 //                    }
 
 //                case "アニメ非表示":
 //                    {
 //                        opt = "";
-//                        num = (short)(num - 1);
+//                        num = (num - 1);
 //                        break;
 //                    }
 
@@ -9813,21 +9813,21 @@
 //            {
 //                case 3:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
-//                        ux = (short)GetArgAsLong((short)2);
-//                        if ((int)ux < 1)
+//                        u = Event.SelectedUnitForEvent;
+//                        ux = GetArgAsLong(2);
+//                        if (ux < 1)
 //                        {
-//                            ux = (short)1;
+//                            ux = 1;
 //                        }
 //                        else if (ux > Map.MapWidth)
 //                        {
 //                            ux = Map.MapWidth;
 //                        }
 
-//                        uy = (short)GetArgAsLong((short)3);
-//                        if ((int)uy < 1)
+//                        uy = GetArgAsLong(3);
+//                        if (uy < 1)
 //                        {
-//                            uy = (short)1;
+//                            uy = 1;
 //                        }
 //                        else if (uy > Map.MapHeight)
 //                        {
@@ -9839,21 +9839,21 @@
 
 //                case 4:
 //                    {
-//                        u = GetArgAsUnit((short)2);
-//                        ux = (short)GetArgAsLong((short)3);
-//                        if ((int)ux < 1)
+//                        u = GetArgAsUnit(2);
+//                        ux = GetArgAsLong(3);
+//                        if (ux < 1)
 //                        {
-//                            ux = (short)1;
+//                            ux = 1;
 //                        }
 //                        else if (ux > Map.MapWidth)
 //                        {
 //                            ux = Map.MapWidth;
 //                        }
 
-//                        uy = (short)GetArgAsLong((short)4);
-//                        if ((int)uy < 1)
+//                        uy = GetArgAsLong(4);
+//                        if (uy < 1)
 //                        {
-//                            uy = (short)1;
+//                            uy = 1;
 //                        }
 //                        else if (uy > Map.MapHeight)
 //                        {
@@ -9865,7 +9865,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Launchコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Launchコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 302617
@@ -9879,7 +9879,7 @@
 //                    }
 //            }
 
-//            if (opt != "非同期" & GUI.MainForm.Visible & !GUI.IsPictureVisible)
+//            if (opt != "非同期" && GUI.MainForm.Visible && !GUI.IsPictureVisible)
 //            {
 //                GUI.Center(ux, uy);
 //                GUI.RefreshScreen();
@@ -9889,7 +9889,7 @@
 //            {
 //                case "出撃":
 //                    {
-//                        Event_Renamed.EventErrorMessage = u.MainPilot().get_Nickname(false) + "はすでに出撃しています";
+//                        Event.EventErrorMessage = u.MainPilot().get_Nickname(false) + "はすでに出撃しています";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 303002
@@ -9904,7 +9904,7 @@
 
 //                case "離脱":
 //                    {
-//                        Event_Renamed.EventErrorMessage = u.MainPilot().get_Nickname(false) + "はまだ離脱しています";
+//                        Event.EventErrorMessage = u.MainPilot().get_Nickname(false) + "はまだ離脱しています";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 303123
@@ -9930,7 +9930,7 @@
 
 //            u.StandBy(ux, uy, opt);
 //            u.CheckAutoHyperMode();
-//            Event_Renamed.SelectedUnitForEvent = u.CurrentForm();
+//            Event.SelectedUnitForEvent = u.CurrentForm();
 //            ExecLaunchCmdRet = LineNum + 1;
 //            return ExecLaunchCmdRet;
 //        }
@@ -9948,7 +9948,7 @@
 //                if (GetArgAsString(num) == "非同期")
 //                {
 //                    opt = "非同期";
-//                    num = (short)(num - 1);
+//                    num = (num - 1);
 //                }
 //            }
 
@@ -9956,47 +9956,47 @@
 //            {
 //                case 2:
 //                    {
-//                        pname = GetArgAsString((short)2);
-//                        bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.NPDList.IsDefined(ref argIndex1); return ret; }
+//                        pname = GetArgAsString(2);
+//                        bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.NPDList.IsDefined(argIndex1); return ret; }
 
-//                        bool localIsDefined1() { object argIndex1 = (object)pname; var ret = SRC.UList.IsDefined(ref argIndex1); return ret; }
+//                        bool localIsDefined1() { object argIndex1 = (object)pname; var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
 //                        object argIndex2 = (object)pname;
-//                        if (SRC.PList.IsDefined(ref argIndex2))
+//                        if (SRC.PList.IsDefined(argIndex2))
 //                        {
-//                            Pilot localItem() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+//                            Pilot localItem() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
 //                            u = localItem().Unit_Renamed;
 //                        }
 //                        else if (localIsDefined())
 //                        {
-//                            NonPilotData localItem1() { object argIndex1 = (object)pname; var ret = SRC.NPDList.Item(ref argIndex1); return ret; }
+//                            NonPilotData localItem1() { object argIndex1 = (object)pname; var ret = SRC.NPDList.Item(argIndex1); return ret; }
 
 //                            vname = "IsAway(" + localItem1().Name + ")";
-//                            if (!Expression.IsGlobalVariableDefined(ref vname))
+//                            if (!Expression.IsGlobalVariableDefined(vname))
 //                            {
-//                                Expression.DefineGlobalVariable(ref vname);
+//                                Expression.DefineGlobalVariable(vname);
 //                            }
 
-//                            Expression.SetVariableAsLong(ref vname, 1);
+//                            Expression.SetVariableAsLong(vname, 1);
 //                            ExecLeaveCmdRet = LineNum + 1;
 //                            return ExecLeaveCmdRet;
 //                        }
 //                        else if (localIsDefined1())
 //                        {
-//                            Unit localItem2() { object argIndex1 = (object)pname; var ret = SRC.UList.Item(ref argIndex1); return ret; }
+//                            Unit localItem2() { object argIndex1 = (object)pname; var ret = SRC.UList.Item(argIndex1); return ret; }
 
 //                            if ((pname ?? "") == (localItem2().ID ?? ""))
 //                            {
 //                                object argIndex1 = (object)pname;
-//                                u = SRC.UList.Item(ref argIndex1);
+//                                u = SRC.UList.Item(argIndex1);
 //                            }
 //                            else
 //                            {
 //                                foreach (Unit currentU in SRC.UList)
 //                                {
 //                                    u = currentU;
-//                                    if ((u.Name ?? "") == (pname ?? "") & u.Party0 == "味方" & u.CurrentForm().Status_Renamed != "離脱")
+//                                    if ((u.Name ?? "") == (pname ?? "") && u.Party0 == "味方" && u.CurrentForm().Status_Renamed != "離脱")
 //                                    {
 //                                        u = u.CurrentForm();
 //                                        break;
@@ -10012,7 +10012,7 @@
 //                        }
 //                        else
 //                        {
-//                            Event_Renamed.EventErrorMessage = "「" + pname + "」というパイロットまたはユニットが見つかりません";
+//                            Event.EventErrorMessage = "「" + pname + "」というパイロットまたはユニットが見つかりません";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 305201
@@ -10029,13 +10029,13 @@
 
 //                case 1:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
+//                        u = Event.SelectedUnitForEvent;
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Leaveコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Leaveコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 305389
@@ -10051,13 +10051,13 @@
 
 //            if (u is null)
 //            {
-//                Pilot localItem3() { object argIndex1 = pname; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+//                Pilot localItem3() { object argIndex1 = pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
 //                localItem3().Away = true;
 //            }
 //            else
 //            {
-//                if (u.Status_Renamed == "出撃" | u.Status_Renamed == "格納")
+//                if (u.Status_Renamed == "出撃" || u.Status_Renamed == "格納")
 //                {
 //                    u.Escape(opt);
 //                }
@@ -10065,10 +10065,10 @@
 //                if (u.Party0 != "味方")
 //                {
 //                    string argnew_party = "味方";
-//                    u.ChangeParty(ref argnew_party);
+//                    u.ChangeParty(argnew_party);
 //                }
 
-//                if (u.Status_Renamed != "他形態" & u.Status_Renamed != "旧主形態" & u.Status_Renamed != "旧形態")
+//                if (u.Status_Renamed != "他形態" && u.Status_Renamed != "旧主形態" && u.Status_Renamed != "旧形態")
 //                {
 //                    u.Status_Renamed = "離脱";
 //                }
@@ -10076,7 +10076,7 @@
 //                var loopTo = u.CountPilot();
 //                for (i = 1; i <= loopTo; i++)
 //                {
-//                    Pilot localPilot() { object argIndex1 = i; var ret = u.Pilot(ref argIndex1); return ret; }
+//                    Pilot localPilot() { object argIndex1 = i; var ret = u.Pilot(argIndex1); return ret; }
 
 //                    localPilot().Away = true;
 //                }
@@ -10084,7 +10084,7 @@
 //                var loopTo1 = u.CountSupport();
 //                for (i = 1; i <= loopTo1; i++)
 //                {
-//                    Pilot localSupport() { object argIndex1 = i; var ret = u.Support(ref argIndex1); return ret; }
+//                    Pilot localSupport() { object argIndex1 = i; var ret = u.Support(argIndex1); return ret; }
 
 //                    localSupport().Away = true;
 //                }
@@ -10104,29 +10104,29 @@
 //            {
 //                case 3:
 //                    {
-//                        p = GetArgAsPilot((short)2);
-//                        num = (short)GetArgAsLong((short)3);
+//                        p = GetArgAsPilot(2);
+//                        num = GetArgAsLong(3);
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
 //                        {
-//                            var withBlock = Event_Renamed.SelectedUnitForEvent;
-//                            if ((int)withBlock.CountPilot() > 0)
+//                            var withBlock = Event.SelectedUnitForEvent;
+//                            if (withBlock.CountPilot() > 0)
 //                            {
 //                                object argIndex1 = (object)1;
-//                                p = withBlock.Pilot(ref argIndex1);
+//                                p = withBlock.Pilot(argIndex1);
 //                            }
 //                        }
 
-//                        num = (short)GetArgAsLong((short)2);
+//                        num = GetArgAsLong(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "LevelUpコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "LevelUpコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 306544
@@ -10152,18 +10152,18 @@
 //                }
 
 //                string argoname = "レベル限界突破";
-//                if (Expression.IsOptionDefined(ref argoname))
+//                if (Expression.IsOptionDefined(argoname))
 //                {
-//                    p.Level = (short)GeneralLib.MinLng(GeneralLib.MaxLng(p.Level + num, 1), 999);
+//                    p.Level = GeneralLib.MinLng(GeneralLib.MaxLng(p.Level + num, 1), 999);
 //                }
 //                else
 //                {
-//                    p.Level = (short)GeneralLib.MinLng(GeneralLib.MaxLng(p.Level + num, 1), 99);
+//                    p.Level = GeneralLib.MinLng(GeneralLib.MaxLng(p.Level + num, 1), 99);
 //                }
 
 //                // 闘争本能入手？
 //                string argsname = "闘争本能";
-//                if (p.IsSkillAvailable(ref argsname))
+//                if (p.IsSkillAvailable(argsname))
 //                {
 //                    if (p.MinMorale > 100)
 //                    {
@@ -10171,14 +10171,14 @@
 //                        {
 //                            object argIndex2 = "闘争本能";
 //                            string argref_mode = "";
-//                            p.Morale = (short)(p.MinMorale + 5d * p.SkillLevel(ref argIndex2, ref_mode: ref argref_mode));
+//                            p.Morale = (p.MinMorale + 5d * p.SkillLevel(argIndex2, ref_mode: argref_mode));
 //                        }
 //                    }
 //                    else if (p.Morale == 100)
 //                    {
 //                        object argIndex3 = "闘争本能";
 //                        string argref_mode1 = "";
-//                        p.Morale = (short)(100d + 5d * p.SkillLevel(ref argIndex3, ref_mode: ref argref_mode1));
+//                        p.Morale = (100d + 5d * p.SkillLevel(argIndex3, ref_mode: argref_mode1));
 //                    }
 //                }
 
@@ -10190,8 +10190,8 @@
 //                    {
 //                        var withBlock2 = p.Unit_Renamed;
 //                        withBlock2.Update();
-//                        withBlock2.HP = (int)(withBlock2.MaxHP * hp_ratio / 100d);
-//                        withBlock2.EN = (int)(withBlock2.MaxEN * en_ratio / 100d);
+//                        withBlock2.HP = (withBlock2.MaxHP * hp_ratio / 100d);
+//                        withBlock2.EN = (withBlock2.MaxEN * en_ratio / 100d);
 //                    }
 
 //                    SRC.PList.UpdateSupportMod(p.Unit_Renamed);
@@ -10212,9 +10212,9 @@
 //            string cname;
 //            int clr;
 //            short i;
-//            if ((int)ArgNum < 5)
+//            if (ArgNum < 5)
 //            {
-//                Event_Renamed.EventErrorMessage = "Lineコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Lineコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 308150
@@ -10226,14 +10226,14 @@
 //                 */
 //            }
 
-//            x1 = (short)(GetArgAsLong(2) + Event_Renamed.BaseX);
-//            y1 = (short)(GetArgAsLong(3) + Event_Renamed.BaseY);
-//            x2 = (short)(GetArgAsLong(4) + Event_Renamed.BaseX);
-//            y2 = (short)(GetArgAsLong(5) + Event_Renamed.BaseY);
+//            x1 = (GetArgAsLong(2) + Event.BaseX);
+//            y1 = (GetArgAsLong(3) + Event.BaseY);
+//            x2 = (GetArgAsLong(4) + Event.BaseX);
+//            y2 = (GetArgAsLong(5) + Event.BaseY);
 //            GUI.SaveScreen();
 
 //            // 描画先
-//            switch (Event_Renamed.ObjDrawOption ?? "")
+//            switch (Event.ObjDrawOption ?? "")
 //            {
 //                case "背景":
 //                    {
@@ -10260,26 +10260,26 @@
 
 //            // 描画領域
 //            short tmp;
-//            if (Event_Renamed.ObjDrawOption != "背景")
+//            if (Event.ObjDrawOption != "背景")
 //            {
 //                GUI.IsPictureVisible = true;
-//                tmp = (short)(Event_Renamed.ObjDrawWidth - 1);
-//                GUI.PaintedAreaX1 = (short)GeneralLib.MaxLng(GeneralLib.MinLng(GUI.PaintedAreaX1, GeneralLib.MinLng(x1 - tmp, x2 - tmp)), 0);
-//                GUI.PaintedAreaY1 = (short)GeneralLib.MaxLng(GeneralLib.MinLng(GUI.PaintedAreaY1, GeneralLib.MinLng(y1 - tmp, y2 - tmp)), 0);
-//                GUI.PaintedAreaX2 = (short)GeneralLib.MaxLng(GeneralLib.MinLng(GUI.PaintedAreaX2, GeneralLib.MinLng(x1 + tmp, x2 + tmp)), GUI.MapPWidth - 1);
-//                GUI.PaintedAreaY2 = (short)GeneralLib.MaxLng(GeneralLib.MinLng(GUI.PaintedAreaY2, GeneralLib.MinLng(y1 + tmp, y2 + tmp)), GUI.MapPHeight - 1);
+//                tmp = (Event.ObjDrawWidth - 1);
+//                GUI.PaintedAreaX1 = GeneralLib.MaxLng(GeneralLib.MinLng(GUI.PaintedAreaX1, GeneralLib.MinLng(x1 - tmp, x2 - tmp)), 0);
+//                GUI.PaintedAreaY1 = GeneralLib.MaxLng(GeneralLib.MinLng(GUI.PaintedAreaY1, GeneralLib.MinLng(y1 - tmp, y2 - tmp)), 0);
+//                GUI.PaintedAreaX2 = GeneralLib.MaxLng(GeneralLib.MinLng(GUI.PaintedAreaX2, GeneralLib.MinLng(x1 + tmp, x2 + tmp)), GUI.MapPWidth - 1);
+//                GUI.PaintedAreaY2 = GeneralLib.MaxLng(GeneralLib.MinLng(GUI.PaintedAreaY2, GeneralLib.MinLng(y1 + tmp, y2 + tmp)), GUI.MapPHeight - 1);
 //            }
 
-//            clr = Event_Renamed.ObjColor;
+//            clr = Event.ObjColor;
 //            var loopTo = ArgNum;
-//            for (i = (short)6; i <= loopTo; i++)
+//            for (i = 6; i <= loopTo; i++)
 //            {
 //                opt = GetArgAsString(i);
 //                if (Strings.Asc(opt) == 35) // #
 //                {
 //                    if (Strings.Len(opt) != 7)
 //                    {
-//                        Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                        Event.EventErrorMessage = "色指定が不正です";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 311316
@@ -10292,16 +10292,16 @@
 //                    }
 
 //                    cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-//                    StringType.MidStmtStr(ref cname, 1, 2, "&H");
+//                    StringType.MidStmtStr(cname, 1, 2, "&H");
 //                    var midTmp = Strings.Mid(opt, 6, 2);
-//                    StringType.MidStmtStr(ref cname, 3, 2, midTmp);
+//                    StringType.MidStmtStr(cname, 3, 2, midTmp);
 //                    var midTmp1 = Strings.Mid(opt, 4, 2);
-//                    StringType.MidStmtStr(ref cname, 5, 2, midTmp1);
+//                    StringType.MidStmtStr(cname, 5, 2, midTmp1);
 //                    var midTmp2 = Strings.Mid(opt, 2, 2);
-//                    StringType.MidStmtStr(ref cname, 7, 2, midTmp2);
+//                    StringType.MidStmtStr(cname, 7, 2, midTmp2);
 //                    if (!Information.IsNumeric(cname))
 //                    {
-//                        Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                        Event.EventErrorMessage = "色指定が不正です";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 311826
@@ -10317,9 +10317,9 @@
 //                }
 //                else
 //                {
-//                    if (opt != "B" & opt != "BF")
+//                    if (opt != "B" && opt != "BF")
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Lineコマンドに不正なオプション「" + opt + "」が使われています";
+//                        Event.EventErrorMessage = "Lineコマンドに不正なオプション「" + opt + "」が使われています";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 312022
@@ -10334,9 +10334,9 @@
 //                    dtype = opt;
 //                }
 //            }
-//            pic.DrawWidth = Event_Renamed.ObjDrawWidth;
-//            pic.FillColor = Event_Renamed.ObjFillColor;
-//            pic.FillStyle = Event_Renamed.ObjFillStyle;
+//            pic.DrawWidth = Event.ObjDrawWidth;
+//            pic.FillColor = Event.ObjFillColor;
+//            pic.FillStyle = Event.ObjFillStyle;
 //            switch (dtype ?? "")
 //            {
 //                case "B":
@@ -10362,9 +10362,9 @@
 //            pic.FillStyle = vbFSTransparent;
 //            if (pic2 is object)
 //            {
-//                pic2.DrawWidth = Event_Renamed.ObjDrawWidth;
-//                pic2.FillColor = Event_Renamed.ObjFillColor;
-//                pic2.FillStyle = Event_Renamed.ObjFillStyle;
+//                pic2.DrawWidth = Event.ObjDrawWidth;
+//                pic2.FillColor = Event.ObjFillColor;
+//                pic2.FillStyle = Event.ObjFillStyle;
 //                switch (dtype ?? "")
 //                {
 //                    case "B":
@@ -10398,9 +10398,9 @@
 //        {
 //            int ExecLineReadCmdRet = default;
 //            string buf;
-//            if ((int)ArgNum != 3)
+//            if (ArgNum != 3)
 //            {
-//                Event_Renamed.EventErrorMessage = "LineReadコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "LineReadコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 317363
@@ -10414,7 +10414,7 @@
 
 //            buf = FileSystem.LineInput(GetArgAsLong(2));
 //            string argvname = GetArg(3);
-//            Expression.SetVariableAsString(ref argvname, ref buf);
+//            Expression.SetVariableAsString(argvname, buf);
 //            ExecLineReadCmdRet = LineNum + 1;
 //            return ExecLineReadCmdRet;
 //        }
@@ -10429,12 +10429,12 @@
 //            int cur_data_size;
 //            bool flag;
 //            new_titles = new string[1];
-//            var loopTo = (int)ArgNum;
+//            var loopTo = ArgNum;
 //            for (i = 2; i <= loopTo; i++)
 //            {
-//                tname = GetArgAsString((short)i);
+//                tname = GetArgAsString(i);
 //                flag = false;
-//                var loopTo1 = (short)Information.UBound(SRC.Titles);
+//                var loopTo1 = Information.UBound(SRC.Titles);
 //                for (j = 1; j <= loopTo1; j++)
 //                {
 //                    if ((tname ?? "") == (SRC.Titles[j] ?? ""))
@@ -10446,8 +10446,8 @@
 
 //                if (!flag)
 //                {
-//                    Array.Resize(ref new_titles, Information.UBound(new_titles) + 1 + 1);
-//                    Array.Resize(ref SRC.Titles, Information.UBound(SRC.Titles) + 1 + 1);
+//                    Array.Resize(new_titles, Information.UBound(new_titles) + 1 + 1);
+//                    Array.Resize(SRC.Titles, Information.UBound(SRC.Titles) + 1 + 1);
 //                    new_titles[Information.UBound(new_titles)] = tname;
 //                    SRC.Titles[Information.UBound(SRC.Titles)] = tname;
 //                }
@@ -10463,137 +10463,137 @@
 //            // マウスカーソルを砂時計に
 //            // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
 //            Cursor.Current = Cursors.WaitCursor;
-//            cur_data_size = Information.UBound(Event_Renamed.EventData);
+//            cur_data_size = Information.UBound(Event.EventData);
 
 //            // 使用しているタイトルのデータをロード
 //            var loopTo2 = Information.UBound(new_titles);
 //            for (i = 1; i <= loopTo2; i++)
 //            {
-//                SRC.IncludeData(ref new_titles[i]);
-//                tfolder = SRC.SearchDataFolder(ref new_titles[i]);
+//                SRC.IncludeData(new_titles[i]);
+//                tfolder = SRC.SearchDataFolder(new_titles[i]);
 //                string argfname1 = tfolder + @"\include.eve";
-//                if (GeneralLib.FileExists(ref argfname1))
+//                if (GeneralLib.FileExists(argfname1))
 //                {
 //                    string argfname = tfolder + @"\include.eve";
-//                    Event_Renamed.LoadEventData2(ref argfname, Information.UBound(Event_Renamed.EventData));
+//                    Event.LoadEventData2(argfname, Information.UBound(Event.EventData));
 //                }
 //            }
 
 //            // ローカルデータの読みこみ
 //            string argfname3 = SRC.ScenarioPath + @"Data\alias.txt";
-//            if (GeneralLib.FileExists(ref argfname3))
+//            if (GeneralLib.FileExists(argfname3))
 //            {
 //                string argfname2 = SRC.ScenarioPath + @"Data\alias.txt";
-//                SRC.ALDList.Load(ref argfname2);
+//                SRC.ALDList.Load(argfname2);
 //            }
 
-//            bool localFileExists() { string argfname = SRC.ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+//            bool localFileExists() { string argfname = SRC.ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
 //            string argfname6 = SRC.ScenarioPath + @"Data\sp.txt";
-//            if (GeneralLib.FileExists(ref argfname6))
+//            if (GeneralLib.FileExists(argfname6))
 //            {
 //                string argfname4 = SRC.ScenarioPath + @"Data\sp.txt";
-//                SRC.SPDList.Load(ref argfname4);
+//                SRC.SPDList.Load(argfname4);
 //            }
 //            else if (localFileExists())
 //            {
 //                string argfname5 = SRC.ScenarioPath + @"Data\mind.txt";
-//                SRC.SPDList.Load(ref argfname5);
+//                SRC.SPDList.Load(argfname5);
 //            }
 
 //            string argfname8 = SRC.ScenarioPath + @"Data\pilot.txt";
-//            if (GeneralLib.FileExists(ref argfname8))
+//            if (GeneralLib.FileExists(argfname8))
 //            {
 //                string argfname7 = SRC.ScenarioPath + @"Data\pilot.txt";
-//                SRC.PDList.Load(ref argfname7);
+//                SRC.PDList.Load(argfname7);
 //            }
 
 //            string argfname10 = SRC.ScenarioPath + @"Data\non_pilot.txt";
-//            if (GeneralLib.FileExists(ref argfname10))
+//            if (GeneralLib.FileExists(argfname10))
 //            {
 //                string argfname9 = SRC.ScenarioPath + @"Data\non_pilot.txt";
-//                SRC.NPDList.Load(ref argfname9);
+//                SRC.NPDList.Load(argfname9);
 //            }
 
 //            string argfname12 = SRC.ScenarioPath + @"Data\robot.txt";
-//            if (GeneralLib.FileExists(ref argfname12))
+//            if (GeneralLib.FileExists(argfname12))
 //            {
 //                string argfname11 = SRC.ScenarioPath + @"Data\robot.txt";
-//                SRC.UDList.Load(ref argfname11);
+//                SRC.UDList.Load(argfname11);
 //            }
 
 //            string argfname14 = SRC.ScenarioPath + @"Data\unit.txt";
-//            if (GeneralLib.FileExists(ref argfname14))
+//            if (GeneralLib.FileExists(argfname14))
 //            {
 //                string argfname13 = SRC.ScenarioPath + @"Data\unit.txt";
-//                SRC.UDList.Load(ref argfname13);
+//                SRC.UDList.Load(argfname13);
 //            }
 
 //            string argfname16 = SRC.ScenarioPath + @"Data\pilot_message.txt";
-//            if (GeneralLib.FileExists(ref argfname16))
+//            if (GeneralLib.FileExists(argfname16))
 //            {
 //                string argfname15 = SRC.ScenarioPath + @"Data\pilot_message.txt";
-//                SRC.MDList.Load(ref argfname15);
+//                SRC.MDList.Load(argfname15);
 //            }
 
 //            string argfname18 = SRC.ScenarioPath + @"Data\pilot_dialog.txt";
-//            if (GeneralLib.FileExists(ref argfname18))
+//            if (GeneralLib.FileExists(argfname18))
 //            {
 //                string argfname17 = SRC.ScenarioPath + @"Data\pilot_dialog.txt";
-//                SRC.DDList.Load(ref argfname17);
+//                SRC.DDList.Load(argfname17);
 //            }
 
 //            string argfname20 = SRC.ScenarioPath + @"Data\item.txt";
-//            if (GeneralLib.FileExists(ref argfname20))
+//            if (GeneralLib.FileExists(argfname20))
 //            {
 //                string argfname19 = SRC.ScenarioPath + @"Data\item.txt";
-//                SRC.IDList.Load(ref argfname19);
+//                SRC.IDList.Load(argfname19);
 //            }
 
-//            var loopTo3 = Information.UBound(Event_Renamed.EventData);
+//            var loopTo3 = Information.UBound(Event.EventData);
 //            for (i = cur_data_size + 1; i <= loopTo3; i++)
 //            {
 //                // 複数行に分割されたコマンドを結合
-//                if (Strings.Right(Event_Renamed.EventData[i], 1) == "_")
+//                if (Strings.Right(Event.EventData[i], 1) == "_")
 //                {
-//                    if (Information.UBound(Event_Renamed.EventData) > i)
+//                    if (Information.UBound(Event.EventData) > i)
 //                    {
-//                        Event_Renamed.EventData[i + 1] = Strings.Left(Event_Renamed.EventData[i], Strings.Len(Event_Renamed.EventData[i]) - 1) + Event_Renamed.EventData[i + 1];
-//                        Event_Renamed.EventData[i] = " ";
+//                        Event.EventData[i + 1] = Strings.Left(Event.EventData[i], Strings.Len(Event.EventData[i]) - 1) + Event.EventData[i + 1];
+//                        Event.EventData[i] = " ";
 //                    }
 //                }
 //            }
 
 //            // ラベルの登録
-//            var loopTo4 = Information.UBound(Event_Renamed.EventData);
+//            var loopTo4 = Information.UBound(Event.EventData);
 //            for (i = cur_data_size + 1; i <= loopTo4; i++)
 //            {
-//                if (Strings.Right(Event_Renamed.EventData[i], 1) == ":")
+//                if (Strings.Right(Event.EventData[i], 1) == ":")
 //                {
-//                    string arglname = Strings.Left(Event_Renamed.EventData[i], Strings.Len(Event_Renamed.EventData[i]) - 1);
-//                    Event_Renamed.AddLabel(ref arglname, i);
+//                    string arglname = Strings.Left(Event.EventData[i], Strings.Len(Event.EventData[i]) - 1);
+//                    Event.AddLabel(arglname, i);
 //                }
 //            }
 
 //            // コマンドデータ配列を増やす
-//            if (Information.UBound(Event_Renamed.EventData) > Information.UBound(Event_Renamed.EventCmd))
+//            if (Information.UBound(Event.EventData) > Information.UBound(Event.EventCmd))
 //            {
-//                Array.Resize(ref Event_Renamed.EventCmd, Information.UBound(Event_Renamed.EventData) + 1);
+//                Array.Resize(Event.EventCmd, Information.UBound(Event.EventData) + 1);
 //            }
 
 //            // イベントデータの構文解析
-//            var loopTo5 = Information.UBound(Event_Renamed.EventData);
+//            var loopTo5 = Information.UBound(Event.EventData);
 //            for (i = cur_data_size + 1; i <= loopTo5; i++)
 //            {
-//                if (Event_Renamed.EventCmd[i] is null)
+//                if (Event.EventCmd[i] is null)
 //                {
-//                    Event_Renamed.EventCmd[i] = new CmdData();
+//                    Event.EventCmd[i] = new CmdData();
 //                }
 
 //                {
-//                    var withBlock = Event_Renamed.EventCmd[i];
+//                    var withBlock = Event.EventCmd[i];
 //                    withBlock.LineNum = i;
-//                    withBlock.Parse(ref Event_Renamed.EventData[i]);
+//                    withBlock.Parse(Event.EventData[i]);
 //                }
 //            }
 
@@ -10614,14 +10614,14 @@
 //            var num_result = default(double);
 
 //            // 代入式付きの変数定義？
-//            if ((int)ArgNum >= 4)
+//            if (ArgNum >= 4)
 //            {
-//                if (GetArg((short)3) == "=")
+//                if (GetArg(3) == "=")
 //                {
-//                    if (Event_Renamed.VarIndex >= Event_Renamed.MaxVarIndex)
+//                    if (Event.VarIndex >= Event.MaxVarIndex)
 //                    {
-//                        Event_Renamed.VarIndex = Event_Renamed.MaxVarIndex;
-//                        Event_Renamed.EventErrorMessage = SrcFormatter.Format((object)Event_Renamed.MaxVarIndex) + "個を超えるサブルーチンローカル変数は作成できません";
+//                        Event.VarIndex = Event.MaxVarIndex;
+//                        Event.EventErrorMessage = SrcFormatter.Format((object)Event.MaxVarIndex) + "個を超えるサブルーチンローカル変数は作成できません";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 324715
@@ -10633,10 +10633,10 @@
 //                         */
 //                    }
 
-//                    vname = GetArg((short)2);
+//                    vname = GetArg(2);
 //                    if (Strings.InStr(vname, "\"") > 0)
 //                    {
-//                        Event_Renamed.EventErrorMessage = "変数名「" + vname + "」が不正です";
+//                        Event.EventErrorMessage = "変数名「" + vname + "」が不正です";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 324929
@@ -10653,16 +10653,16 @@
 //                        vname = Strings.Mid(vname, 2);
 //                    }
 
-//                    if ((int)ArgNum == 4)
+//                    if (ArgNum == 4)
 //                    {
 //                        switch (ArgsType[4])
 //                        {
 //                            case Expression.ValueType.UndefinedType:
 //                                {
-//                                    etype = Expression.EvalTerm(ref strArgs[4], ref Expression.ValueType.UndefinedType, ref str_result, ref num_result);
-//                                    Event_Renamed.VarIndex = (short)((int)Event_Renamed.VarIndex + 1);
+//                                    etype = Expression.EvalTerm(strArgs[4], Expression.ValueType.UndefinedType, str_result, num_result);
+//                                    Event.VarIndex = (Event.VarIndex + 1);
 //                                    {
-//                                        var withBlock = Event_Renamed.VarStack[(int)Event_Renamed.VarIndex];
+//                                        var withBlock = Event.VarStack[Event.VarIndex];
 //                                        withBlock.Name = vname;
 //                                        withBlock.VariableType = etype;
 //                                        withBlock.StringValue = str_result;
@@ -10674,9 +10674,9 @@
 
 //                            case Expression.ValueType.StringType:
 //                                {
-//                                    Event_Renamed.VarIndex = (short)((int)Event_Renamed.VarIndex + 1);
+//                                    Event.VarIndex = (Event.VarIndex + 1);
 //                                    {
-//                                        var withBlock1 = Event_Renamed.VarStack[(int)Event_Renamed.VarIndex];
+//                                        var withBlock1 = Event.VarStack[Event.VarIndex];
 //                                        withBlock1.Name = vname;
 //                                        withBlock1.VariableType = Expression.ValueType.StringType;
 //                                        withBlock1.StringValue = strArgs[4];
@@ -10688,9 +10688,9 @@
 
 //                            case Expression.ValueType.NumericType:
 //                                {
-//                                    Event_Renamed.VarIndex = (short)((int)Event_Renamed.VarIndex + 1);
+//                                    Event.VarIndex = (Event.VarIndex + 1);
 //                                    {
-//                                        var withBlock2 = Event_Renamed.VarStack[(int)Event_Renamed.VarIndex];
+//                                        var withBlock2 = Event.VarStack[Event.VarIndex];
 //                                        withBlock2.Name = vname;
 //                                        withBlock2.VariableType = Expression.ValueType.NumericType;
 //                                        withBlock2.StringValue = str_result;
@@ -10703,10 +10703,10 @@
 //                    }
 //                    else
 //                    {
-//                        etype = Expression.EvalTerm(ref strArgs[4], ref Expression.ValueType.UndefinedType, ref str_result, ref num_result);
-//                        Event_Renamed.VarIndex = (short)((int)Event_Renamed.VarIndex + 1);
+//                        etype = Expression.EvalTerm(strArgs[4], Expression.ValueType.UndefinedType, str_result, num_result);
+//                        Event.VarIndex = (Event.VarIndex + 1);
 //                        {
-//                            var withBlock3 = Event_Renamed.VarStack[(int)Event_Renamed.VarIndex];
+//                            var withBlock3 = Event.VarStack[Event.VarIndex];
 //                            withBlock3.Name = vname;
 //                            withBlock3.VariableType = Expression.ValueType.NumericType;
 //                            withBlock3.StringValue = str_result;
@@ -10719,11 +10719,11 @@
 //                }
 //            }
 
-//            Event_Renamed.VarIndex = (short)(Event_Renamed.VarIndex + ArgNum - 1);
-//            if (Event_Renamed.VarIndex > Event_Renamed.MaxVarIndex)
+//            Event.VarIndex = (Event.VarIndex + ArgNum - 1);
+//            if (Event.VarIndex > Event.MaxVarIndex)
 //            {
-//                Event_Renamed.VarIndex = Event_Renamed.MaxVarIndex;
-//                Event_Renamed.EventErrorMessage = SrcFormatter.Format((object)Event_Renamed.MaxVarIndex) + "個を超えるサブルーチンローカル変数は作成できません";
+//                Event.VarIndex = Event.MaxVarIndex;
+//                Event.EventErrorMessage = SrcFormatter.Format((object)Event.MaxVarIndex) + "個を超えるサブルーチンローカル変数は作成できません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 327659
@@ -10736,14 +10736,14 @@
 //            }
 
 //            var loopTo = ArgNum;
-//            for (i = (short)2; i <= loopTo; i++)
+//            for (i = 2; i <= loopTo; i++)
 //            {
 //                {
-//                    var withBlock4 = Event_Renamed.VarStack[Event_Renamed.VarIndex - i + 2];
+//                    var withBlock4 = Event.VarStack[Event.VarIndex - i + 2];
 //                    vname = GetArg(i);
 //                    if (Strings.InStr(vname, "\"") > 0)
 //                    {
-//                        Event_Renamed.EventErrorMessage = "変数名「" + vname + "」が不正です";
+//                        Event.EventErrorMessage = "変数名「" + vname + "」が不正です";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 327991
@@ -10809,19 +10809,19 @@
 //                            var loopTo = withBlock.CountPilot();
 //                            for (i = 1; i <= loopTo; i++)
 //                            {
-//                                Pilot localPilot() { object argIndex1 = i; var ret = withBlock.Pilot(ref argIndex1); return ret; }
+//                                Pilot localPilot() { object argIndex1 = i; var ret = withBlock.Pilot(argIndex1); return ret; }
 
 //                                string argvname = "搭乗ユニット[" + localPilot().ID + "]";
-//                                Expression.SetVariableAsString(ref argvname, ref withBlock.ID);
+//                                Expression.SetVariableAsString(argvname, withBlock.ID);
 //                            }
 
 //                            var loopTo1 = withBlock.CountSupport();
 //                            for (i = 1; i <= loopTo1; i++)
 //                            {
-//                                Pilot localSupport() { object argIndex1 = i; var ret = withBlock.Support(ref argIndex1); return ret; }
+//                                Pilot localSupport() { object argIndex1 = i; var ret = withBlock.Support(argIndex1); return ret; }
 
 //                                string argvname1 = "搭乗ユニット[" + localSupport().ID + "]";
-//                                Expression.SetVariableAsString(ref argvname1, ref withBlock.ID);
+//                                Expression.SetVariableAsString(argvname1, withBlock.ID);
 //                            }
 //                        }
 //                    }
@@ -10830,12 +10830,12 @@
 
 //            // マップをクリア
 //            string argfname = "";
-//            Map.LoadMapData(ref argfname);
+//            Map.LoadMapData(argfname);
 //            string argdraw_mode = "";
 //            string argdraw_option = "ステータス";
 //            int argfilter_color = 0;
 //            double argfilter_trans_par = 0d;
-//            GUI.SetupBackground(ref argdraw_mode, ref argdraw_option, filter_color: ref argfilter_color, filter_trans_par: ref argfilter_trans_par);
+//            GUI.SetupBackground(argdraw_mode, argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
 
 //            // ユニット一覧を作成
 //            key_type = GetArgAsString(2);
@@ -10850,7 +10850,7 @@
 //                    p = currentP;
 //                    {
 //                        var withBlock1 = p;
-//                        if (!withBlock1.Alive | withBlock1.Away)
+//                        if (!withBlock1.Alive || withBlock1.Away)
 //                        {
 //                            goto NextPilot1;
 //                        }
@@ -10870,7 +10870,7 @@
 //                            }
 //                        }
 
-//                        i = (short)(i + 1);
+//                        i = (i + 1);
 //                        pilot_list[i] = p;
 //                        switch (key_type ?? "")
 //                        {
@@ -10928,17 +10928,17 @@
 //                    ;
 //                }
 
-//                Array.Resize(ref pilot_list, i + 1);
-//                Array.Resize(ref key_list, i + 1);
+//                Array.Resize(pilot_list, i + 1);
+//                Array.Resize(key_list, i + 1);
 
 //                // ソート
-//                var loopTo2 = (short)(Information.UBound(pilot_list) - 1);
+//                var loopTo2 = (Information.UBound(pilot_list) - 1);
 //                for (i = 1; i <= loopTo2; i++)
 //                {
 //                    max_item = i;
 //                    max_value = key_list[i];
-//                    var loopTo3 = (short)Information.UBound(pilot_list);
-//                    for (j = (short)(i + 1); j <= loopTo3; j++)
+//                    var loopTo3 = Information.UBound(pilot_list);
+//                    for (j = (i + 1); j <= loopTo3; j++)
 //                    {
 //                        if (key_list[j] > max_value)
 //                        {
@@ -10969,7 +10969,7 @@
 //                    p = currentP1;
 //                    {
 //                        var withBlock2 = p;
-//                        if (!withBlock2.Alive | withBlock2.Away)
+//                        if (!withBlock2.Alive || withBlock2.Away)
 //                        {
 //                            goto NextPilot2;
 //                        }
@@ -10977,14 +10977,14 @@
 //                        if (withBlock2.Unit_Renamed is object)
 //                        {
 //                            object argIndex1 = "追加パイロット";
-//                            if ((withBlock2.Name ?? "") == (withBlock2.Unit_Renamed.FeatureData(ref argIndex1) ?? ""))
+//                            if ((withBlock2.Name ?? "") == (withBlock2.Unit_Renamed.FeatureData(argIndex1) ?? ""))
 //                            {
 //                                // 追加パイロットは勘定に入れない
 //                                goto NextPilot2;
 //                            }
 //                        }
 
-//                        i = (short)(i + 1);
+//                        i = (i + 1);
 //                        pilot_list[i] = p;
 //                        strkey_list[i] = p.KanaName;
 //                    }
@@ -10993,17 +10993,17 @@
 //                    ;
 //                }
 
-//                Array.Resize(ref pilot_list, i + 1);
-//                Array.Resize(ref strkey_list, i + 1);
+//                Array.Resize(pilot_list, i + 1);
+//                Array.Resize(strkey_list, i + 1);
 
 //                // ソート
-//                var loopTo4 = (short)(Information.UBound(pilot_list) - 1);
+//                var loopTo4 = (Information.UBound(pilot_list) - 1);
 //                for (i = 1; i <= loopTo4; i++)
 //                {
 //                    max_item = i;
 //                    max_str = strkey_list[max_item];
-//                    var loopTo5 = (short)Information.UBound(pilot_list);
-//                    for (j = (short)(i + 1); j <= loopTo5; j++)
+//                    var loopTo5 = Information.UBound(pilot_list);
+//                    for (j = (i + 1); j <= loopTo5; j++)
 //                    {
 //                        if (Strings.StrComp(strkey_list[j], max_str, (CompareMethod)1) == -1)
 //                        {
@@ -11035,7 +11035,7 @@
 //            GUI.VCentering = false;
 //            xx = 1;
 //            yy = 1;
-//            var loopTo6 = (short)Information.UBound(pilot_list);
+//            var loopTo6 = Information.UBound(pilot_list);
 //            for (i = 1; i <= loopTo6; i++)
 //            {
 //                p = pilot_list[i];
@@ -11043,7 +11043,7 @@
 //                if (xx > 15)
 //                {
 //                    xx = 1;
-//                    yy = (short)(yy + 1);
+//                    yy = (yy + 1);
 //                    if (yy > 40)
 //                    {
 //                        // パイロット数が多すぎるため、一部のパイロットが表示出来ません
@@ -11056,39 +11056,39 @@
 //                if (p.Unit_Renamed is null)
 //                {
 //                    object argIndex2 = p.Name + "ステータス表示用ユニット";
-//                    if (SRC.UDList.IsDefined(ref argIndex2))
+//                    if (SRC.UDList.IsDefined(argIndex2))
 //                    {
 //                        string arguname = p.Name + "ステータス表示用ユニット";
 //                        string arguparty = "味方";
-//                        u = SRC.UList.Add(ref arguname, 0, ref arguparty);
+//                        u = SRC.UList.Add(arguname, 0, arguparty);
 //                    }
 //                    else
 //                    {
 //                        string arguname1 = "ステータス表示用ダミーユニット";
 //                        string arguparty1 = "味方";
-//                        u = SRC.UList.Add(ref arguname1, 0, ref arguparty1);
+//                        u = SRC.UList.Add(arguname1, 0, arguparty1);
 //                    }
 
-//                    p.Ride(ref u);
+//                    p.Ride(u);
 //                }
-//                else if (!p.Unit_Renamed.IsFeatureAvailable(ref argfname1))
+//                else if (!p.Unit_Renamed.IsFeatureAvailable(argfname1))
 //                {
 //                    p.GetOff();
 //                    object argIndex3 = p.Name + "ステータス表示用ユニット";
-//                    if (SRC.UDList.IsDefined(ref argIndex3))
+//                    if (SRC.UDList.IsDefined(argIndex3))
 //                    {
 //                        string arguname2 = p.Name + "ステータス表示用ユニット";
 //                        string arguparty2 = "味方";
-//                        u = SRC.UList.Add(ref arguname2, 0, ref arguparty2);
+//                        u = SRC.UList.Add(arguname2, 0, arguparty2);
 //                    }
 //                    else
 //                    {
 //                        string arguname3 = "ステータス表示用ダミーユニット";
 //                        string arguparty3 = "味方";
-//                        u = SRC.UList.Add(ref arguname3, 0, ref arguparty3);
+//                        u = SRC.UList.Add(arguname3, 0, arguparty3);
 //                    }
 
-//                    p.Ride(ref u);
+//                    p.Ride(u);
 //                }
 //                else
 //                {
@@ -11102,11 +11102,11 @@
 //                // プレイヤーが操作できないように
 //                string argcname = "非操作";
 //                string argcdata = "";
-//                u.AddCondition(ref argcname, -1, cdata: ref argcdata);
+//                u.AddCondition(argcname, -1, cdata: argcdata);
 
 //                // パイロットの愛称を表示
 //                string argmsg = p.get_Nickname(false);
-//                GUI.DrawString(ref argmsg, 32 * xx + 2, 32 * yy - 31);
+//                GUI.DrawString(argmsg, 32 * xx + 2, 32 * yy - 31);
 //                p.get_Nickname(false) = argmsg;
 //                switch (key_type ?? "")
 //                {
@@ -11114,23 +11114,23 @@
 //                    case "名称":
 //                        {
 //                            string argmsg1 = "Lv" + SrcFormatter.Format(p.Level);
-//                            GUI.DrawString(ref argmsg1, 32 * xx + 2, 32 * yy - 15);
+//                            GUI.DrawString(argmsg1, 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
 
 //                    case "ＳＰ":
 //                        {
 //                            string argtname = "SP";
-//                            string argmsg2 = Expression.Term(ref argtname, ref u) + SrcFormatter.Format(key_list[i]);
-//                            GUI.DrawString(ref argmsg2, 32 * xx + 2, 32 * yy - 15);
+//                            string argmsg2 = Expression.Term(argtname, u) + SrcFormatter.Format(key_list[i]);
+//                            GUI.DrawString(argmsg2, 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
 
 //                    case "格闘":
 //                        {
 //                            string argtname1 = "格闘";
-//                            string argmsg3 = Strings.Left(Expression.Term(ref argtname1, ref u), 1) + SrcFormatter.Format(key_list[i]);
-//                            GUI.DrawString(ref argmsg3, 32 * xx + 2, 32 * yy - 15);
+//                            string argmsg3 = Strings.Left(Expression.Term(argtname1, u), 1) + SrcFormatter.Format(key_list[i]);
+//                            GUI.DrawString(argmsg3, 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
 
@@ -11139,14 +11139,14 @@
 //                            if (p.HasMana())
 //                            {
 //                                string argtname2 = "魔力";
-//                                string argmsg4 = Strings.Left(Expression.Term(ref argtname2, ref u), 1) + SrcFormatter.Format(key_list[i]);
-//                                GUI.DrawString(ref argmsg4, 32 * xx + 2, 32 * yy - 15);
+//                                string argmsg4 = Strings.Left(Expression.Term(argtname2, u), 1) + SrcFormatter.Format(key_list[i]);
+//                                GUI.DrawString(argmsg4, 32 * xx + 2, 32 * yy - 15);
 //                            }
 //                            else
 //                            {
 //                                string argtname3 = "射撃";
-//                                string argmsg5 = Strings.Left(Expression.Term(ref argtname3, ref u), 1) + SrcFormatter.Format(key_list[i]);
-//                                GUI.DrawString(ref argmsg5, 32 * xx + 2, 32 * yy - 15);
+//                                string argmsg5 = Strings.Left(Expression.Term(argtname3, u), 1) + SrcFormatter.Format(key_list[i]);
+//                                GUI.DrawString(argmsg5, 32 * xx + 2, 32 * yy - 15);
 //                            }
 
 //                            break;
@@ -11155,38 +11155,38 @@
 //                    case "命中":
 //                        {
 //                            string argtname4 = "命中";
-//                            string argmsg6 = Strings.Left(Expression.Term(ref argtname4, ref u), 1) + SrcFormatter.Format(key_list[i]);
-//                            GUI.DrawString(ref argmsg6, 32 * xx + 2, 32 * yy - 15);
+//                            string argmsg6 = Strings.Left(Expression.Term(argtname4, u), 1) + SrcFormatter.Format(key_list[i]);
+//                            GUI.DrawString(argmsg6, 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
 
 //                    case "回避":
 //                        {
 //                            string argtname5 = "回避";
-//                            string argmsg7 = Strings.Left(Expression.Term(ref argtname5, ref u), 1) + SrcFormatter.Format(key_list[i]);
-//                            GUI.DrawString(ref argmsg7, 32 * xx + 2, 32 * yy - 15);
+//                            string argmsg7 = Strings.Left(Expression.Term(argtname5, u), 1) + SrcFormatter.Format(key_list[i]);
+//                            GUI.DrawString(argmsg7, 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
 
 //                    case "技量":
 //                        {
 //                            string argtname6 = "技量";
-//                            string argmsg8 = Strings.Left(Expression.Term(ref argtname6, ref u), 1) + SrcFormatter.Format(key_list[i]);
-//                            GUI.DrawString(ref argmsg8, 32 * xx + 2, 32 * yy - 15);
+//                            string argmsg8 = Strings.Left(Expression.Term(argtname6, u), 1) + SrcFormatter.Format(key_list[i]);
+//                            GUI.DrawString(argmsg8, 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
 
 //                    case "反応":
 //                        {
 //                            string argtname7 = "反応";
-//                            string argmsg9 = Strings.Left(Expression.Term(ref argtname7, ref u), 1) + SrcFormatter.Format(key_list[i]);
-//                            GUI.DrawString(ref argmsg9, 32 * xx + 2, 32 * yy - 15);
+//                            string argmsg9 = Strings.Left(Expression.Term(argtname7, u), 1) + SrcFormatter.Format(key_list[i]);
+//                            GUI.DrawString(argmsg9, 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
 //                }
 
 //                // 表示位置を右に3マスずらす
-//                xx = (short)(xx + 3);
+//                xx = (xx + 3);
 //            }
 
 //            // フォントの設定を戻しておく
@@ -11212,7 +11212,7 @@
 //            int ExecMakeUnitListCmdRet = default;
 //            // ユニット一覧を作成
 //            string argsmode = GetArgAsString(2);
-//            Event_Renamed.MakeUnitList(ref argsmode);
+//            Event.MakeUnitList(argsmode);
 //            ExecMakeUnitListCmdRet = LineNum + 1;
 //            return ExecMakeUnitListCmdRet;
 //        }
@@ -11227,14 +11227,14 @@
 //            {
 //                case 5:
 //                    {
-//                        u = GetArgAsUnit((short)2);
+//                        u = GetArgAsUnit(2);
 //                        {
 //                            var withBlock = u;
 //                            var loopTo = withBlock.CountAbility();
-//                            for (a = (short)1; a <= loopTo; a++)
+//                            for (a = 1; a <= loopTo; a++)
 //                            {
 //                                string argattr = "Ｍ";
-//                                if ((GetArgAsString((short)3) ?? "") == (withBlock.Ability(a).Name ?? "") & withBlock.IsAbilityClassifiedAs(a, ref argattr))
+//                                if ((GetArgAsString(3) ?? "") == (withBlock.Ability(a).Name ?? "") && withBlock.IsAbilityClassifiedAs(a, argattr))
 //                                {
 //                                    break;
 //                                }
@@ -11242,7 +11242,7 @@
 
 //                            if (a > withBlock.CountAbility())
 //                            {
-//                                Event_Renamed.EventErrorMessage = "アビリティ名が間違っています";
+//                                Event.EventErrorMessage = "アビリティ名が間違っています";
 //                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 339287
@@ -11255,20 +11255,20 @@
 //                            }
 //                        }
 
-//                        tx = (short)GetArgAsLong((short)4);
-//                        if ((int)tx < 1)
+//                        tx = GetArgAsLong(4);
+//                        if (tx < 1)
 //                        {
-//                            tx = (short)1;
+//                            tx = 1;
 //                        }
 //                        else if (tx > Map.MapWidth)
 //                        {
 //                            tx = Map.MapWidth;
 //                        }
 
-//                        ty = (short)GetArgAsLong((short)5);
-//                        if ((int)ty < 1)
+//                        ty = GetArgAsLong(5);
+//                        if (ty < 1)
 //                        {
-//                            ty = (short)1;
+//                            ty = 1;
 //                        }
 //                        else if (ty > Map.MapHeight)
 //                        {
@@ -11280,12 +11280,12 @@
 
 //                case 4:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
+//                        u = Event.SelectedUnitForEvent;
 //                        var loopTo1 = u.CountAbility();
-//                        for (a = (short)1; a <= loopTo1; a++)
+//                        for (a = 1; a <= loopTo1; a++)
 //                        {
 //                            string argattr1 = "Ｍ";
-//                            if ((GetArgAsString((short)2) ?? "") == (u.Ability(a).Name ?? "") & u.IsAbilityClassifiedAs(a, ref argattr1))
+//                            if ((GetArgAsString(2) ?? "") == (u.Ability(a).Name ?? "") && u.IsAbilityClassifiedAs(a, argattr1))
 //                            {
 //                                break;
 //                            }
@@ -11293,7 +11293,7 @@
 
 //                        if (a > u.CountAbility())
 //                        {
-//                            Event_Renamed.EventErrorMessage = "アビリティ名が間違っています";
+//                            Event.EventErrorMessage = "アビリティ名が間違っています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 340037
@@ -11305,20 +11305,20 @@
 //                             */
 //                        }
 
-//                        tx = (short)GetArgAsLong((short)3);
-//                        if ((int)tx < 1)
+//                        tx = GetArgAsLong(3);
+//                        if (tx < 1)
 //                        {
-//                            tx = (short)1;
+//                            tx = 1;
 //                        }
 //                        else if (tx > Map.MapWidth)
 //                        {
 //                            tx = Map.MapWidth;
 //                        }
 
-//                        ty = (short)GetArgAsLong((short)4);
-//                        if ((int)ty < 1)
+//                        ty = GetArgAsLong(4);
+//                        if (ty < 1)
 //                        {
-//                            ty = (short)1;
+//                            ty = 1;
 //                        }
 //                        else if (ty > Map.MapHeight)
 //                        {
@@ -11330,7 +11330,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "MapAbilityコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "MapAbilityコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 340520
@@ -11346,7 +11346,7 @@
 
 //            if (u.Status_Renamed != "出撃")
 //            {
-//                Event_Renamed.EventErrorMessage = u.Nickname + "は出撃していません";
+//                Event.EventErrorMessage = u.Nickname + "は出撃していません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 340677
@@ -11360,7 +11360,7 @@
 
 //            Unit argu1 = null;
 //            Unit argu2 = null;
-//            GUI.OpenMessageForm(u1: ref argu1, u2: ref argu2);
+//            GUI.OpenMessageForm(u1: argu1, u2: argu2);
 //            u.ExecuteMapAbility(a, tx, ty, true);
 //            GUI.CloseMessageForm();
 //            GUI.RedrawScreen();
@@ -11385,7 +11385,7 @@
 //                if (GetArgAsString(num) == "通常戦闘")
 //                {
 //                    is_event = false;
-//                    num = (short)(num - 1);
+//                    num = (num - 1);
 //                }
 //            }
 
@@ -11393,14 +11393,14 @@
 //            {
 //                case 5:
 //                    {
-//                        u = GetArgAsUnit((short)2);
+//                        u = GetArgAsUnit(2);
 //                        {
 //                            var withBlock = u;
 //                            var loopTo = withBlock.CountWeapon();
-//                            for (w = (short)1; w <= loopTo; w++)
+//                            for (w = 1; w <= loopTo; w++)
 //                            {
 //                                string argattr = "Ｍ";
-//                                if ((GetArgAsString((short)3) ?? "") == (withBlock.Weapon(w).Name ?? "") & withBlock.IsWeaponClassifiedAs(w, ref argattr))
+//                                if ((GetArgAsString(3) ?? "") == (withBlock.Weapon(w).Name ?? "") && withBlock.IsWeaponClassifiedAs(w, argattr))
 //                                {
 //                                    break;
 //                                }
@@ -11408,7 +11408,7 @@
 
 //                            if (w > withBlock.CountWeapon())
 //                            {
-//                                Event_Renamed.EventErrorMessage = "マップ攻撃名が間違っています";
+//                                Event.EventErrorMessage = "マップ攻撃名が間違っています";
 //                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 341692
@@ -11421,20 +11421,20 @@
 //                            }
 //                        }
 
-//                        tx = (short)GetArgAsLong((short)4);
-//                        if ((int)tx < 1)
+//                        tx = GetArgAsLong(4);
+//                        if (tx < 1)
 //                        {
-//                            tx = (short)1;
+//                            tx = 1;
 //                        }
 //                        else if (tx > Map.MapWidth)
 //                        {
 //                            tx = Map.MapWidth;
 //                        }
 
-//                        ty = (short)GetArgAsLong((short)5);
-//                        if ((int)ty < 1)
+//                        ty = GetArgAsLong(5);
+//                        if (ty < 1)
 //                        {
-//                            ty = (short)1;
+//                            ty = 1;
 //                        }
 //                        else if (ty > Map.MapHeight)
 //                        {
@@ -11446,12 +11446,12 @@
 
 //                case 4:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
+//                        u = Event.SelectedUnitForEvent;
 //                        var loopTo1 = u.CountWeapon();
-//                        for (w = (short)1; w <= loopTo1; w++)
+//                        for (w = 1; w <= loopTo1; w++)
 //                        {
 //                            string argattr1 = "Ｍ";
-//                            if ((GetArgAsString((short)2) ?? "") == (u.Weapon(w).Name ?? "") & u.IsWeaponClassifiedAs(w, ref argattr1))
+//                            if ((GetArgAsString(2) ?? "") == (u.Weapon(w).Name ?? "") && u.IsWeaponClassifiedAs(w, argattr1))
 //                            {
 //                                break;
 //                            }
@@ -11459,7 +11459,7 @@
 
 //                        if (w > u.CountWeapon())
 //                        {
-//                            Event_Renamed.EventErrorMessage = "マップ攻撃名が間違っています";
+//                            Event.EventErrorMessage = "マップ攻撃名が間違っています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 342439
@@ -11471,20 +11471,20 @@
 //                             */
 //                        }
 
-//                        tx = (short)GetArgAsLong((short)3);
-//                        if ((int)tx < 1)
+//                        tx = GetArgAsLong(3);
+//                        if (tx < 1)
 //                        {
-//                            tx = (short)1;
+//                            tx = 1;
 //                        }
 //                        else if (tx > Map.MapWidth)
 //                        {
 //                            tx = Map.MapWidth;
 //                        }
 
-//                        ty = (short)GetArgAsLong((short)4);
-//                        if ((int)ty < 1)
+//                        ty = GetArgAsLong(4);
+//                        if (ty < 1)
 //                        {
-//                            ty = (short)1;
+//                            ty = 1;
 //                        }
 //                        else if (ty > Map.MapHeight)
 //                        {
@@ -11496,7 +11496,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "MapAttackコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "MapAttackコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 342921
@@ -11512,7 +11512,7 @@
 
 //            if (u.Status_Renamed != "出撃")
 //            {
-//                Event_Renamed.EventErrorMessage = u.Nickname + "は出撃していません";
+//                Event.EventErrorMessage = u.Nickname + "は出撃していません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 343078
@@ -11545,9 +11545,9 @@
 //        private int ExecMoneyCmd()
 //        {
 //            int ExecMoneyCmdRet = default;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "Moneyコマンドの引数の数が間違っています";
+//                Event.EventErrorMessage = "Moneyコマンドの引数の数が間違っています";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 343971
@@ -11574,7 +11574,7 @@
 //            late_refresh = false;
 //            Map.MapDrawIsMapOnly = false;
 //            var loopTo = ArgNum;
-//            for (i = (short)2; i <= loopTo; i++)
+//            for (i = 2; i <= loopTo; i++)
 //            {
 //                buf = GetArgAsString(i);
 //                switch (buf ?? "")
@@ -11593,7 +11593,7 @@
 
 //                    default:
 //                        {
-//                            Event_Renamed.EventErrorMessage = "Monotoneコマンドに不正なオプション「" + buf + "」が使われています";
+//                            Event.EventErrorMessage = "Monotoneコマンドに不正なオプション「" + buf + "」が使われています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 344669
@@ -11618,7 +11618,7 @@
 //            string argdraw_option = "非同期";
 //            int argfilter_color = 0;
 //            double argfilter_trans_par = 0d;
-//            GUI.SetupBackground(ref argdraw_mode, ref argdraw_option, filter_color: ref argfilter_color, filter_trans_par: ref argfilter_trans_par);
+//            GUI.SetupBackground(argdraw_mode, argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
 //            foreach (Unit u in SRC.UList)
 //            {
 //                {
@@ -11629,15 +11629,15 @@
 //                        {
 //                            object argIndex1 = withBlock.Name;
 //                            {
-//                                var withBlock1 = SRC.UList.Item(ref argIndex1);
+//                                var withBlock1 = SRC.UList.Item(argIndex1);
 //                                string argfname = "ダミーユニット";
-//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") & withBlock1.BitmapID != 0 & (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") & !withBlock1.IsFeatureAvailable(ref argfname))
+//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable(argfname))
 //                                {
 //                                    u.BitmapID = withBlock1.BitmapID;
 //                                }
 //                                else
 //                                {
-//                                    u.BitmapID = GUI.MakeUnitBitmap(ref u);
+//                                    u.BitmapID = GUI.MakeUnitBitmap(u);
 //                                }
 //                            }
 
@@ -11673,10 +11673,10 @@
 //            else
 //            {
 //                idx = 2;
-//                u = Event_Renamed.SelectedUnitForEvent;
+//                u = Event.SelectedUnitForEvent;
 //            }
 
-//            tx = (short)GetArgAsLong(idx);
+//            tx = GetArgAsLong(idx);
 //            if (tx < 1)
 //            {
 //                tx = 1;
@@ -11686,8 +11686,8 @@
 //                tx = Map.MapWidth;
 //            }
 
-//            idx = (short)(idx + 1);
-//            ty = (short)GetArgAsLong(idx);
+//            idx = (idx + 1);
+//            ty = GetArgAsLong(idx);
 //            if (ty < 1)
 //            {
 //                ty = 1;
@@ -11697,7 +11697,7 @@
 //                ty = Map.MapHeight;
 //            }
 
-//            idx = (short)(idx + 1);
+//            idx = (idx + 1);
 //            if (idx <= ArgNum)
 //            {
 //                opt = GetArgAsString(idx);
@@ -11725,7 +11725,7 @@
 //                                withBlock.Jump(ux, uy, false);
 
 //                                // 移動アニメ表示
-//                                GUI.MoveUnitBitmap(ref u, ux, uy, tx, ty, 20);
+//                                GUI.MoveUnitBitmap(u, ux, uy, tx, ty, 20);
 //                            }
 
 //                            withBlock.Jump(tx, ty, false);
@@ -11740,7 +11740,7 @@
 
 //                    default:
 //                        {
-//                            Event_Renamed.EventErrorMessage = withBlock.MainPilot().get_Nickname(false) + "は出撃していません";
+//                            Event.EventErrorMessage = withBlock.MainPilot().get_Nickname(false) + "は出撃していません";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 347546
@@ -11755,9 +11755,9 @@
 //                }
 //            }
 
-//            if (string.IsNullOrEmpty(opt) | Strings.InStr(opt, "アニメ表示") == 1)
+//            if (string.IsNullOrEmpty(opt) || Strings.InStr(opt, "アニメ表示") == 1)
 //            {
-//                if (GUI.MainForm.Visible & !GUI.IsPictureVisible)
+//                if (GUI.MainForm.Visible && !GUI.IsPictureVisible)
 //                {
 //                    GUI.RedrawScreen();
 //                }
@@ -11768,7 +11768,7 @@
 //            // 画面更新しない
 //            else
 //            {
-//                Event_Renamed.EventErrorMessage = "Moveコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Moveコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 347943
@@ -11794,7 +11794,7 @@
 //            late_refresh = false;
 //            Map.MapDrawIsMapOnly = false;
 //            var loopTo = ArgNum;
-//            for (i = (short)2; i <= loopTo; i++)
+//            for (i = 2; i <= loopTo; i++)
 //            {
 //                buf = GetArgAsString(i);
 //                switch (buf ?? "")
@@ -11813,7 +11813,7 @@
 
 //                    default:
 //                        {
-//                            Event_Renamed.EventErrorMessage = "Nightコマンドに不正なオプション「" + buf + "」が使われています";
+//                            Event.EventErrorMessage = "Nightコマンドに不正なオプション「" + buf + "」が使われています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 348577
@@ -11838,7 +11838,7 @@
 //            string argdraw_option = "非同期";
 //            int argfilter_color = 0;
 //            double argfilter_trans_par = 0d;
-//            GUI.SetupBackground(ref argdraw_mode, ref argdraw_option, filter_color: ref argfilter_color, filter_trans_par: ref argfilter_trans_par);
+//            GUI.SetupBackground(argdraw_mode, argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
 //            foreach (Unit u in SRC.UList)
 //            {
 //                {
@@ -11849,15 +11849,15 @@
 //                        {
 //                            object argIndex1 = withBlock.Name;
 //                            {
-//                                var withBlock1 = SRC.UList.Item(ref argIndex1);
+//                                var withBlock1 = SRC.UList.Item(argIndex1);
 //                                string argfname = "ダミーユニット";
-//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") & withBlock1.BitmapID != 0 & (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") & !withBlock1.IsFeatureAvailable(ref argfname))
+//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable(argfname))
 //                                {
 //                                    u.BitmapID = withBlock1.BitmapID;
 //                                }
 //                                else
 //                                {
-//                                    u.BitmapID = GUI.MakeUnitBitmap(ref u);
+//                                    u.BitmapID = GUI.MakeUnitBitmap(u);
 //                                }
 //                            }
 
@@ -11891,13 +11891,13 @@
 //                // ＯＫ
 //                case 2:
 //                    {
-//                        if (GetArgAsString((short)2) == "非同期")
+//                        if (GetArgAsString(2) == "非同期")
 //                        {
 //                            late_refresh = true;
 //                        }
 //                        else
 //                        {
-//                            Event_Renamed.EventErrorMessage = "Noonコマンドのオプションが不正です";
+//                            Event.EventErrorMessage = "Noonコマンドのオプションが不正です";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 350346
@@ -11914,7 +11914,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Noonコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Noonコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 350462
@@ -11939,7 +11939,7 @@
 //            string argdraw_option = "非同期";
 //            int argfilter_color = 0;
 //            double argfilter_trans_par = 0d;
-//            GUI.SetupBackground(ref argdraw_mode, ref argdraw_option, filter_color: ref argfilter_color, filter_trans_par: ref argfilter_trans_par);
+//            GUI.SetupBackground(argdraw_mode, argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
 //            foreach (Unit u in SRC.UList)
 //            {
 //                {
@@ -11950,15 +11950,15 @@
 //                        {
 //                            object argIndex1 = withBlock.Name;
 //                            {
-//                                var withBlock1 = SRC.UList.Item(ref argIndex1);
+//                                var withBlock1 = SRC.UList.Item(argIndex1);
 //                                string argfname = "ダミーユニット";
-//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") & withBlock1.BitmapID != 0 & (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") & !withBlock1.IsFeatureAvailable(ref argfname))
+//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable(argfname))
 //                                {
 //                                    u.BitmapID = withBlock1.BitmapID;
 //                                }
 //                                else
 //                                {
-//                                    u.BitmapID = GUI.MakeUnitBitmap(ref u);
+//                                    u.BitmapID = GUI.MakeUnitBitmap(u);
 //                                }
 //                            }
 
@@ -11985,9 +11985,9 @@
 //            string vname;
 //            string opt;
 //            short f;
-//            if ((int)ArgNum != 6)
+//            if (ArgNum != 6)
 //            {
-//                Event_Renamed.EventErrorMessage = "Openコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Openコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 352148
@@ -12002,7 +12002,7 @@
 //            fname = SRC.ScenarioPath + GetArgAsString(2);
 //            if (Strings.InStr(fname, @"..\") > 0)
 //            {
-//                Event_Renamed.EventErrorMessage = @"ファイル指定に「..\」は使えません";
+//                Event.EventErrorMessage = @"ファイル指定に「..\」は使えません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 352393
@@ -12016,7 +12016,7 @@
 
 //            if (Strings.InStr(fname, "../") > 0)
 //            {
-//                Event_Renamed.EventErrorMessage = "ファイル指定に「../」は使えません";
+//                Event.EventErrorMessage = "ファイル指定に「../」は使えません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 352563
@@ -12030,27 +12030,27 @@
 
 //            opt = GetArgAsString(4);
 //            vname = GetArg(6);
-//            f = (short)FileSystem.FreeFile();
-//            Expression.SetVariableAsLong(ref vname, f);
+//            f = FileSystem.FreeFile();
+//            Expression.SetVariableAsLong(vname, f);
 //            switch (opt ?? "")
 //            {
 //                case "出力":
 //                    {
-//                        FileSystem.FileOpen((int)f, fname, OpenMode.Output, OpenAccess.Write);
+//                        FileSystem.FileOpen(f, fname, OpenMode.Output, OpenAccess.Write);
 //                        break;
 //                    }
 
 //                case "追加出力":
 //                    {
-//                        FileSystem.FileOpen((int)f, fname, OpenMode.Append, OpenAccess.Write);
+//                        FileSystem.FileOpen(f, fname, OpenMode.Append, OpenAccess.Write);
 //                        break;
 //                    }
 
 //                case "入力":
 //                    {
-//                        if (!GeneralLib.FileExists(ref fname))
+//                        if (!GeneralLib.FileExists(fname))
 //                        {
-//                            Event_Renamed.EventErrorMessage = fname + "というファイルは存在しません";
+//                            Event.EventErrorMessage = fname + "というファイルは存在しません";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 353284
@@ -12062,13 +12062,13 @@
 //                             */
 //                        }
 
-//                        FileSystem.FileOpen((int)f, fname, OpenMode.Input, OpenAccess.Read);
+//                        FileSystem.FileOpen(f, fname, OpenMode.Input, OpenAccess.Read);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "ファイルの入出力モードが不正です";
+//                        Event.EventErrorMessage = "ファイルの入出力モードが不正です";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 353553
@@ -12094,14 +12094,14 @@
 //            {
 //                case 2:
 //                    {
-//                        vname = GetArgAsString((short)2);
+//                        vname = GetArgAsString(2);
 //                        vname = "Option(" + vname + ")";
-//                        if (!Expression.IsGlobalVariableDefined(ref vname))
+//                        if (!Expression.IsGlobalVariableDefined(vname))
 //                        {
-//                            Expression.DefineGlobalVariable(ref vname);
+//                            Expression.DefineGlobalVariable(vname);
 //                        }
 
-//                        Expression.SetVariableAsLong(ref vname, 1);
+//                        Expression.SetVariableAsLong(vname, 1);
 //                        // ADD START MARGE
 //                        if (vname == "Option(新ＧＵＩ)")
 //                        {
@@ -12114,11 +12114,11 @@
 //                // ADD END MARGE
 //                case 3:
 //                    {
-//                        vname = GetArgAsString((short)2);
+//                        vname = GetArgAsString(2);
 //                        vname = "Option(" + vname + ")";
-//                        if (Expression.IsGlobalVariableDefined(ref vname))
+//                        if (Expression.IsGlobalVariableDefined(vname))
 //                        {
-//                            Expression.UndefineVariable(ref vname);
+//                            Expression.UndefineVariable(vname);
 //                        }
 
 //                        break;
@@ -12126,7 +12126,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Optionコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Optionコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 354508
@@ -12198,9 +12198,9 @@
 //                opt = opt + " 部隊配置";
 //            }
 
-//            if ((int)num < 4)
+//            if (num < 4)
 //            {
-//                Event_Renamed.EventErrorMessage = "Organizeコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Organizeコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 355755
@@ -12212,10 +12212,10 @@
 //                 */
 //            }
 
-//            unum = (short)GetArgAsLong(2);
-//            if ((int)unum < 1)
+//            unum = GetArgAsLong(2);
+//            if (unum < 1)
 //            {
-//                Event_Renamed.EventErrorMessage = "ユニット数が不正です";
+//                Event.EventErrorMessage = "ユニット数が不正です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 355898
@@ -12227,7 +12227,7 @@
 //                 */
 //            }
 
-//            ux = (short)GetArgAsLong(3);
+//            ux = GetArgAsLong(3);
 //            if (ux < 1)
 //            {
 //                ux = 1;
@@ -12237,7 +12237,7 @@
 //                ux = Map.MapWidth;
 //            }
 
-//            uy = (short)GetArgAsLong(4);
+//            uy = GetArgAsLong(4);
 //            if (uy < 1)
 //            {
 //                uy = 1;
@@ -12265,14 +12265,14 @@
 //            GUI.ListItemID = new string[1];
 //            foreach (Unit u in SRC.UList)
 //            {
-//                if (u.Party0 != "味方" | u.Status_Renamed != "待機" | u.CountPilot() == 0)
+//                if (u.Party0 != "味方" || u.Status_Renamed != "待機" || u.CountPilot() == 0)
 //                {
 //                    goto NextOrganizeLoop;
 //                }
 
 //                // パイロット数のチェック
 //                string argfname = "１人乗り可能";
-//                if ((u.Data.PilotNum == 1 | Math.Abs(u.Data.PilotNum) == 2) & u.CountPilot() < Math.Abs(u.Data.PilotNum) & !u.IsFeatureAvailable(ref argfname))
+//                if ((u.Data.PilotNum == 1 || Math.Abs(u.Data.PilotNum) == 2) && u.CountPilot() < Math.Abs(u.Data.PilotNum) && !u.IsFeatureAvailable(argfname))
 //                {
 //                    goto NextOrganizeLoop;
 //                }
@@ -12299,10 +12299,10 @@
 //                            }
 
 //                            // 空中マップか？
-//                            if (Map.TerrainName(1, 1) == "空" & Map.TerrainName((short)(Map.MapWidth / 2), (short)(Map.MapHeight / 2)) == "空" & Map.TerrainName(Map.MapWidth, Map.MapHeight) == "空")
+//                            if (Map.TerrainName(1, 1) == "空" && Map.TerrainName((Map.MapWidth / 2), (Map.MapHeight / 2)) == "空" && Map.TerrainName(Map.MapWidth, Map.MapHeight) == "空")
 //                            {
 //                                string argarea_name = "空";
-//                                if (!u.IsTransAvailable(ref argarea_name))
+//                                if (!u.IsTransAvailable(argarea_name))
 //                                {
 //                                    goto NextOrganizeLoop;
 //                                }
@@ -12323,7 +12323,7 @@
 //                    case "通常ユニット":
 //                        {
 //                            string argfname1 = "母艦";
-//                            if (u.IsFeatureAvailable(ref argfname1))
+//                            if (u.IsFeatureAvailable(argfname1))
 //                            {
 //                                goto NextOrganizeLoop;
 //                            }
@@ -12334,7 +12334,7 @@
 //                    case "母艦ユニット":
 //                        {
 //                            string argfname2 = "母艦";
-//                            if (!u.IsFeatureAvailable(ref argfname2))
+//                            if (!u.IsFeatureAvailable(argfname2))
 //                            {
 //                                goto NextOrganizeLoop;
 //                            }
@@ -12354,7 +12354,7 @@
 
 //                    case "L":
 //                        {
-//                            if (u.Size == "XL" | u.Size == "LL")
+//                            if (u.Size == "XL" || u.Size == "LL")
 //                            {
 //                                goto NextOrganizeLoop;
 //                            }
@@ -12364,7 +12364,7 @@
 
 //                    case "M":
 //                        {
-//                            if (u.Size == "XL" | u.Size == "LL" | u.Size == "L")
+//                            if (u.Size == "XL" || u.Size == "LL" || u.Size == "L")
 //                            {
 //                                goto NextOrganizeLoop;
 //                            }
@@ -12374,7 +12374,7 @@
 
 //                    case "S":
 //                        {
-//                            if (u.Size == "XL" | u.Size == "LL" | u.Size == "L" | u.Size == "M")
+//                            if (u.Size == "XL" || u.Size == "LL" || u.Size == "L" || u.Size == "M")
 //                            {
 //                                goto NextOrganizeLoop;
 //                            }
@@ -12384,7 +12384,7 @@
 
 //                    case "SS":
 //                        {
-//                            if (u.Size == "XL" | u.Size == "LL" | u.Size == "L" | u.Size == "M" | u.Size == "S")
+//                            if (u.Size == "XL" || u.Size == "LL" || u.Size == "L" || u.Size == "M" || u.Size == "S")
 //                            {
 //                                goto NextOrganizeLoop;
 //                            }
@@ -12397,16 +12397,16 @@
 //                            // ユニットクラス指定した場合
 
 //                            // 指定されたクラスに該当するか
-//                            var loopTo2 = GeneralLib.ListLength(ref uclass);
+//                            var loopTo2 = GeneralLib.ListLength(uclass);
 //                            for (i = 1; i <= loopTo2; i++)
 //                            {
-//                                if ((GeneralLib.ListIndex(ref uclass, i) ?? "") == (u.Class0 ?? ""))
+//                                if ((GeneralLib.ListIndex(uclass, i) ?? "") == (u.Class0 ?? ""))
 //                                {
 //                                    break;
 //                                }
 //                            }
 
-//                            if (i > GeneralLib.ListLength(ref uclass))
+//                            if (i > GeneralLib.ListLength(uclass))
 //                            {
 //                                goto NextOrganizeLoop;
 //                            }
@@ -12415,18 +12415,18 @@
 //                        }
 //                }
 
-//                Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-//                Array.Resize(ref GUI.ListItemID, Information.UBound(list) + 1);
+//                Array.Resize(list, Information.UBound(list) + 1 + 1);
+//                Array.Resize(GUI.ListItemID, Information.UBound(list) + 1);
 //                string argoname = "等身大基準";
-//                if (Expression.IsOptionDefined(ref argoname))
+//                if (Expression.IsOptionDefined(argoname))
 //                {
-//                    string localLeftPaddedString() { string argbuf = u.MainPilot().Level.ToString(); var ret = GeneralLib.LeftPaddedString(ref argbuf, 2); return ret; }
+//                    string localLeftPaddedString() { string argbuf = u.MainPilot().Level.ToString(); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
 
 //                    list[Information.UBound(list)] = u.Nickname0 + Strings.Space(GeneralLib.MaxLng(52 - LenB(Strings.StrConv(u.Nickname0, vbFromUnicode)), 1)) + localLeftPaddedString();
 //                }
 //                else
 //                {
-//                    string localLeftPaddedString1() { string argbuf = u.MainPilot().Level.ToString(); var ret = GeneralLib.LeftPaddedString(ref argbuf, 2); return ret; }
+//                    string localLeftPaddedString1() { string argbuf = u.MainPilot().Level.ToString(); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
 
 //                    list[Information.UBound(list)] = u.Nickname0 + Strings.Space(GeneralLib.MaxLng(36 - LenB(Strings.StrConv(u.Nickname0, vbFromUnicode)), 1)) + u.MainPilot().get_Nickname(false) + Strings.Space(GeneralLib.MaxLng(17 - LenB(Strings.StrConv(u.MainPilot().get_Nickname(false), vbFromUnicode)), 1)) + localLeftPaddedString1();
 //                }
@@ -12442,10 +12442,10 @@
 //            lv_list = new int[Information.UBound(list) + 1];
 //            min_value = 100000;
 //            max_value = 0;
-//            var loopTo3 = (short)Information.UBound(list);
+//            var loopTo3 = Information.UBound(list);
 //            for (i = 1; i <= loopTo3; i++)
 //            {
-//                Unit localItem() { var tmp1 = GUI.ListItemID; object argIndex1 = tmp1[i]; var ret = SRC.UList.Item(ref argIndex1); return ret; }
+//                Unit localItem() { var tmp1 = GUI.ListItemID; object argIndex1 = tmp1[i]; var ret = SRC.UList.Item(argIndex1); return ret; }
 
 //                {
 //                    var withBlock = localItem().MainPilot();
@@ -12466,13 +12466,13 @@
 //            // レベルにばらつきがある時にのみレベルでソート
 //            if (min_value != max_value)
 //            {
-//                var loopTo4 = (short)(Information.UBound(list) - 1);
+//                var loopTo4 = (Information.UBound(list) - 1);
 //                for (i = 1; i <= loopTo4; i++)
 //                {
 //                    max_item = i;
 //                    max_value = lv_list[i];
-//                    var loopTo5 = (short)Information.UBound(list);
-//                    for (j = (short)(i + 1); j <= loopTo5; j++)
+//                    var loopTo5 = Information.UBound(list);
+//                    for (j = (i + 1); j <= loopTo5; j++)
 //                    {
 //                        if (lv_list[j] > max_value)
 //                        {
@@ -12499,13 +12499,13 @@
 //                do
 //                {
 //                    string argoname1 = "等身大基準";
-//                    if (Expression.IsOptionDefined(ref argoname1))
+//                    if (Expression.IsOptionDefined(argoname1))
 //                    {
-//                        ret = GUI.MultiSelectListBox("出撃ユニット選択", ref list, "ユニット                                            Lv", unum);
+//                        ret = GUI.MultiSelectListBox("出撃ユニット選択", list, "ユニット                                            Lv", unum);
 //                    }
 //                    else
 //                    {
-//                        ret = GUI.MultiSelectListBox("出撃ユニット選択", ref list, "ユニット                            パイロット       Lv", unum);
+//                        ret = GUI.MultiSelectListBox("出撃ユニット選択", list, "ユニット                            パイロット       Lv", unum);
 //                    }
 
 //                    if (ret == 0)
@@ -12530,7 +12530,7 @@
 //                    GUI.RefreshScreen();
 //                }
 
-//                var loopTo6 = (short)Information.UBound(list);
+//                var loopTo6 = Information.UBound(list);
 //                for (i = 1; i <= loopTo6; i++)
 //                {
 //                    if (GUI.ListItemFlag[i])
@@ -12538,7 +12538,7 @@
 //                        var tmp1 = GUI.ListItemID;
 //                        object argIndex1 = tmp1[i];
 //                        {
-//                            var withBlock1 = SRC.UList.Item(ref argIndex1);
+//                            var withBlock1 = SRC.UList.Item(argIndex1);
 //                            withBlock1.UsedAction = 0;
 //                            withBlock1.UsedSupportAttack = 0;
 //                            withBlock1.UsedSupportGuard = 0;
@@ -12566,9 +12566,9 @@
 //            string cname;
 //            int clr;
 //            short i;
-//            if ((int)ArgNum < 5)
+//            if (ArgNum < 5)
 //            {
-//                Event_Renamed.EventErrorMessage = "Ovalコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Ovalコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 363804
@@ -12580,14 +12580,14 @@
 //                 */
 //            }
 
-//            x1 = (short)(GetArgAsLong(2) + Event_Renamed.BaseX);
-//            y1 = (short)(GetArgAsLong(3) + Event_Renamed.BaseY);
-//            rad = (short)GetArgAsLong(4);
+//            x1 = (GetArgAsLong(2) + Event.BaseX);
+//            y1 = (GetArgAsLong(3) + Event.BaseY);
+//            rad = GetArgAsLong(4);
 //            oval_ratio = GetArgAsDouble(5);
 //            GUI.SaveScreen();
 
 //            // 描画先
-//            switch (Event_Renamed.ObjDrawOption ?? "")
+//            switch (Event.ObjDrawOption ?? "")
 //            {
 //                case "背景":
 //                    {
@@ -12614,26 +12614,26 @@
 
 //            // 描画領域
 //            short tmp;
-//            if (Event_Renamed.ObjDrawOption != "背景")
+//            if (Event.ObjDrawOption != "背景")
 //            {
 //                GUI.IsPictureVisible = true;
-//                tmp = (short)(rad + Event_Renamed.ObjDrawWidth - 1);
-//                GUI.PaintedAreaX1 = (short)GeneralLib.MinLng(GUI.PaintedAreaX1, GeneralLib.MaxLng(x1 - tmp, 0));
-//                GUI.PaintedAreaY1 = (short)GeneralLib.MinLng(GUI.PaintedAreaY1, GeneralLib.MaxLng(y1 - tmp, 0));
-//                GUI.PaintedAreaX2 = (short)GeneralLib.MaxLng(GUI.PaintedAreaX2, GeneralLib.MinLng(x1 + tmp, GUI.MapPWidth - 1));
-//                GUI.PaintedAreaY2 = (short)GeneralLib.MaxLng(GUI.PaintedAreaY2, GeneralLib.MinLng(y1 + tmp, GUI.MapPHeight - 1));
+//                tmp = (rad + Event.ObjDrawWidth - 1);
+//                GUI.PaintedAreaX1 = GeneralLib.MinLng(GUI.PaintedAreaX1, GeneralLib.MaxLng(x1 - tmp, 0));
+//                GUI.PaintedAreaY1 = GeneralLib.MinLng(GUI.PaintedAreaY1, GeneralLib.MaxLng(y1 - tmp, 0));
+//                GUI.PaintedAreaX2 = GeneralLib.MaxLng(GUI.PaintedAreaX2, GeneralLib.MinLng(x1 + tmp, GUI.MapPWidth - 1));
+//                GUI.PaintedAreaY2 = GeneralLib.MaxLng(GUI.PaintedAreaY2, GeneralLib.MinLng(y1 + tmp, GUI.MapPHeight - 1));
 //            }
 
-//            clr = Event_Renamed.ObjColor;
+//            clr = Event.ObjColor;
 //            var loopTo = ArgNum;
-//            for (i = (short)6; i <= loopTo; i++)
+//            for (i = 6; i <= loopTo; i++)
 //            {
 //                opt = GetArgAsString(i);
 //                if (Strings.Asc(opt) == 35) // #
 //                {
 //                    if (Strings.Len(opt) != 7)
 //                    {
-//                        Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                        Event.EventErrorMessage = "色指定が不正です";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 366731
@@ -12646,16 +12646,16 @@
 //                    }
 
 //                    cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-//                    StringType.MidStmtStr(ref cname, 1, 2, "&H");
+//                    StringType.MidStmtStr(cname, 1, 2, "&H");
 //                    var midTmp = Strings.Mid(opt, 6, 2);
-//                    StringType.MidStmtStr(ref cname, 3, 2, midTmp);
+//                    StringType.MidStmtStr(cname, 3, 2, midTmp);
 //                    var midTmp1 = Strings.Mid(opt, 4, 2);
-//                    StringType.MidStmtStr(ref cname, 5, 2, midTmp1);
+//                    StringType.MidStmtStr(cname, 5, 2, midTmp1);
 //                    var midTmp2 = Strings.Mid(opt, 2, 2);
-//                    StringType.MidStmtStr(ref cname, 7, 2, midTmp2);
+//                    StringType.MidStmtStr(cname, 7, 2, midTmp2);
 //                    if (!Information.IsNumeric(cname))
 //                    {
-//                        Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                        Event.EventErrorMessage = "色指定が不正です";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 367241
@@ -12671,7 +12671,7 @@
 //                }
 //                else
 //                {
-//                    Event_Renamed.EventErrorMessage = "Ovalコマンドに不正なオプション「" + opt + "」が使われています";
+//                    Event.EventErrorMessage = "Ovalコマンドに不正なオプション「" + opt + "」が使われています";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 367395
@@ -12683,9 +12683,9 @@
 //                     */
 //                }
 //            }
-//            pic.DrawWidth = Event_Renamed.ObjDrawWidth;
-//            pic.FillColor = Event_Renamed.ObjFillColor;
-//            pic.FillStyle = Event_Renamed.ObjFillStyle;
+//            pic.DrawWidth = Event.ObjDrawWidth;
+//            pic.FillColor = Event.ObjFillColor;
+//            pic.FillStyle = Event.ObjFillStyle;
 
 //            pic.Circle(x1, y1);/* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 //            pic.DrawWidth = 1;
@@ -12693,9 +12693,9 @@
 //            pic.FillStyle = vbFSTransparent;
 //            if (pic2 is object)
 //            {
-//                pic.DrawWidth = Event_Renamed.ObjDrawWidth;
-//                pic.FillColor = Event_Renamed.ObjFillColor;
-//                pic.FillStyle = Event_Renamed.ObjFillStyle;
+//                pic.DrawWidth = Event.ObjDrawWidth;
+//                pic.FillColor = Event.ObjFillColor;
+//                pic.FillStyle = Event.ObjFillStyle;
 
 //                pic.Circle(x1, y1);/* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 //                pic.DrawWidth = 1;
@@ -12720,9 +12720,9 @@
 //            string buf, options = default;
 //            string cname;
 //            int tcolor;
-//            if ((int)ArgNum < 4)
+//            if (ArgNum < 4)
 //            {
-//                Event_Renamed.EventErrorMessage = "PaintPictureコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "PaintPictureコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 371870
@@ -12771,14 +12771,14 @@
 
 //                    case "右回転":
 //                        {
-//                            i = (short)((int)i + 1);
+//                            i = (i + 1);
 //                            options = options + "右回転 " + GetArgAsString(i) + " ";
 //                            break;
 //                        }
 
 //                    case "左回転":
 //                        {
-//                            i = (short)((int)i + 1);
+//                            i = (i + 1);
 //                            options = options + "左回転 " + GetArgAsString(i) + " ";
 //                            break;
 //                        }
@@ -12798,20 +12798,20 @@
 
 //                    default:
 //                        {
-//                            if (Strings.Asc(buf) == 35 & Strings.Len(buf) == 7)
+//                            if (Strings.Asc(buf) == 35 && Strings.Len(buf) == 7)
 //                            {
 //                                cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-//                                StringType.MidStmtStr(ref cname, 1, 2, "&H");
+//                                StringType.MidStmtStr(cname, 1, 2, "&H");
 //                                var midTmp = Strings.Mid(buf, 6, 2);
-//                                StringType.MidStmtStr(ref cname, 3, 2, midTmp);
+//                                StringType.MidStmtStr(cname, 3, 2, midTmp);
 //                                var midTmp1 = Strings.Mid(buf, 4, 2);
-//                                StringType.MidStmtStr(ref cname, 5, 2, midTmp1);
+//                                StringType.MidStmtStr(cname, 5, 2, midTmp1);
 //                                var midTmp2 = Strings.Mid(buf, 2, 2);
-//                                StringType.MidStmtStr(ref cname, 7, 2, midTmp2);
+//                                StringType.MidStmtStr(cname, 7, 2, midTmp2);
 //                                if (Information.IsNumeric(cname))
 //                                {
 //                                    tcolor = Conversions.ToInteger(cname);
-//                                    if (tcolor != ColorTranslator.ToOle(Color.White) | GetArgAsString((short)((int)i - 1)) == "フィルタ")
+//                                    if (tcolor != ColorTranslator.ToOle(Color.White) || GetArgAsString((i - 1)) == "フィルタ")
 //                                    {
 //                                        options = options + SrcFormatter.Format((object)tcolor) + " ";
 //                                    }
@@ -12826,13 +12826,13 @@
 //                            {
 //                                options = options + buf + " ";
 //                            }
-//                            else if (Strings.Right(buf, 1) == "%" & Information.IsNumeric(Strings.Left(buf, Strings.Len(buf) - 1)))
+//                            else if (Strings.Right(buf, 1) == "%" && Information.IsNumeric(Strings.Left(buf, Strings.Len(buf) - 1)))
 //                            {
 //                                options = options + buf + " ";
 //                            }
 //                            else
 //                            {
-//                                Event_Renamed.EventErrorMessage = "PaintPictureコマンドの" + SrcFormatter.Format((object)i) + "番目のパラメータ「" + buf + "」が不正です";
+//                                Event.EventErrorMessage = "PaintPictureコマンドの" + SrcFormatter.Format((object)i) + "番目のパラメータ「" + buf + "」が不正です";
 //                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 374062
@@ -12848,7 +12848,7 @@
 //                        }
 //                }
 
-//                i = (short)((int)i + 1);
+//                i = (i + 1);
 //            }
 
 //            fname = GetArgAsString(2);
@@ -12865,32 +12865,32 @@
 
 //                default:
 //                    {
-//                        bool localIsDefined() { object argIndex1 = (object)fname; var ret = SRC.NPDList.IsDefined(ref argIndex1); return ret; }
+//                        bool localIsDefined() { object argIndex1 = (object)fname; var ret = SRC.NPDList.IsDefined(argIndex1); return ret; }
 
-//                        bool localIsDefined1() { object argIndex1 = (object)fname; var ret = SRC.UDList.IsDefined(ref argIndex1); return ret; }
+//                        bool localIsDefined1() { object argIndex1 = (object)fname; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
 
 //                        object argIndex1 = (object)fname;
-//                        if (SRC.PDList.IsDefined(ref argIndex1))
+//                        if (SRC.PDList.IsDefined(argIndex1))
 //                        {
-//                            PilotData localItem() { object argIndex1 = (object)fname; var ret = SRC.PDList.Item(ref argIndex1); return ret; }
+//                            PilotData localItem() { object argIndex1 = (object)fname; var ret = SRC.PDList.Item(argIndex1); return ret; }
 
 //                            fname = @"Pilot\" + localItem().Bitmap;
 //                        }
 //                        else if (localIsDefined())
 //                        {
-//                            NonPilotData localItem1() { object argIndex1 = (object)fname; var ret = SRC.NPDList.Item(ref argIndex1); return ret; }
+//                            NonPilotData localItem1() { object argIndex1 = (object)fname; var ret = SRC.NPDList.Item(argIndex1); return ret; }
 
 //                            fname = @"Pilot\" + localItem1().Bitmap;
 //                        }
 //                        else if (localIsDefined1())
 //                        {
-//                            UnitData localItem2() { object argIndex1 = (object)fname; var ret = SRC.UDList.Item(ref argIndex1); return ret; }
+//                            UnitData localItem2() { object argIndex1 = (object)fname; var ret = SRC.UDList.Item(argIndex1); return ret; }
 
 //                            fname = @"Unit\" + localItem2().Bitmap;
 //                        }
 //                        else
 //                        {
-//                            Event_Renamed.EventErrorMessage = "不正な画像ファイル名「" + fname + "」が指定されています";
+//                            Event.EventErrorMessage = "不正な画像ファイル名「" + fname + "」が指定されています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 374845
@@ -12914,7 +12914,7 @@
 //            }
 //            else
 //            {
-//                dx = GeneralLib.StrToLng(ref buf) + Event_Renamed.BaseX;
+//                dx = GeneralLib.StrToLng(buf) + Event.BaseX;
 //            }
 
 //            buf = GetArgAsString(4);
@@ -12924,7 +12924,7 @@
 //            }
 //            else
 //            {
-//                dy = GeneralLib.StrToLng(ref buf) + Event_Renamed.BaseY;
+//                dy = GeneralLib.StrToLng(buf) + Event.BaseY;
 //            }
 
 //            // 描画サイズ
@@ -12937,7 +12937,7 @@
 //                }
 //                else
 //                {
-//                    dw = GeneralLib.StrToLng(ref buf);
+//                    dw = GeneralLib.StrToLng(buf);
 //                    if (dw <= 0)
 //                    {
 //                        ExecPaintPictureCmdRet = LineNum + 1;
@@ -12952,7 +12952,7 @@
 //                }
 //                else
 //                {
-//                    dh = GeneralLib.StrToLng(ref buf);
+//                    dh = GeneralLib.StrToLng(buf);
 //                    if (dh <= 0)
 //                    {
 //                        ExecPaintPictureCmdRet = LineNum + 1;
@@ -12976,7 +12976,7 @@
 //                }
 //                else
 //                {
-//                    sx = GeneralLib.StrToLng(ref buf);
+//                    sx = GeneralLib.StrToLng(buf);
 //                }
 
 //                buf = GetArgAsString(8);
@@ -12986,7 +12986,7 @@
 //                }
 //                else
 //                {
-//                    sy = GeneralLib.StrToLng(ref buf);
+//                    sy = GeneralLib.StrToLng(buf);
 //                }
 
 //                sw = GetArgAsLong(9);
@@ -13000,7 +13000,7 @@
 //                sh = 0;
 //            }
 
-//            ret = Conversions.ToShort(GUI.DrawPicture(ref fname, dx, dy, dw, dh, sx, sy, sw, sh, ref options));
+//            ret = Conversions.ToShort(GUI.DrawPicture(fname, dx, dy, dw, dh, sx, sy, sw, sh, options));
 //            ExecPaintPictureCmdRet = LineNum + 1;
 //            return ExecPaintPictureCmdRet;
 //        }
@@ -13011,7 +13011,7 @@
 //            string sx, sy;
 //            short xx, yy;
 //            var without_cr = default(bool);
-//            if (CmdName != Event_Renamed.CmdType.PaintStringCmd)
+//            if (CmdName != Event.CmdType.PaintStringCmd)
 //            {
 //                without_cr = true;
 //            }
@@ -13025,7 +13025,7 @@
 //                        // MOD START マージ
 //                        // DrawString GetArgAsString(2), -1, -1, without_cr
 //                        string argmsg = GetArgAsString(2);
-//                        GUI.DrawString(ref argmsg, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, without_cr);
+//                        GUI.DrawString(argmsg, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, without_cr);
 //                        break;
 //                    }
 //                // MOD END マージ
@@ -13042,7 +13042,7 @@
 //                        else
 //                        {
 //                            GUI.HCentering = false;
-//                            xx = (short)(Conversions.ToShort(sx) + Event_Renamed.BaseX);
+//                            xx = (Conversions.ToShort(sx) + Event.BaseX);
 //                        }
 
 //                        if (sy == "-")
@@ -13053,11 +13053,11 @@
 //                        else
 //                        {
 //                            GUI.VCentering = false;
-//                            yy = (short)(Conversions.ToShort(sy) + Event_Renamed.BaseY);
+//                            yy = (Conversions.ToShort(sy) + Event.BaseY);
 //                        }
 
 //                        string argmsg1 = GetArgAsString(4);
-//                        GUI.DrawString(ref argmsg1, xx, yy, without_cr);
+//                        GUI.DrawString(argmsg1, xx, yy, without_cr);
 //                        break;
 //                    }
 
@@ -13068,7 +13068,7 @@
 //                        sy = GetArgAsString(3);
 
 //                        // 最初の2引数が有効な座標指定かどうかで判断する
-//                        if ((Information.IsNumeric(sx) | sx == "-") & (Information.IsNumeric(sy) | sy == "-"))
+//                        if ((Information.IsNumeric(sx) || sx == "-") && (Information.IsNumeric(sy) || sy == "-"))
 //                        {
 //                            if (sx == "-")
 //                            {
@@ -13078,7 +13078,7 @@
 //                            else
 //                            {
 //                                GUI.HCentering = false;
-//                                xx = (short)(Conversions.ToShort(sx) + Event_Renamed.BaseX);
+//                                xx = (Conversions.ToShort(sx) + Event.BaseX);
 //                            }
 
 //                            if (sy == "-")
@@ -13089,16 +13089,16 @@
 //                            else
 //                            {
 //                                GUI.VCentering = false;
-//                                yy = (short)(Conversions.ToShort(sy) + Event_Renamed.BaseY);
+//                                yy = (Conversions.ToShort(sy) + Event.BaseY);
 //                            }
 
 //                            string argmsg2 = GetArgAsString(4);
-//                            GUI.DrawString(ref argmsg2, xx, yy, without_cr);
+//                            GUI.DrawString(argmsg2, xx, yy, without_cr);
 //                        }
 //                        else
 //                        {
 //                            string argmsg3 = GetArgAsString(5);
-//                            GUI.DrawString(ref argmsg3, -1, -1, without_cr);
+//                            GUI.DrawString(argmsg3, -1, -1, without_cr);
 //                        }
 
 //                        break;
@@ -13113,9 +13113,9 @@
 //        {
 //            int ExecPaintSysStringCmdRet = default;
 //            var without_refresh = default(bool);
-//            if ((int)ArgNum != 4 & (int)ArgNum != 5)
+//            if (ArgNum != 4 && ArgNum != 5)
 //            {
-//                Event_Renamed.EventErrorMessage = "PaintSysStringコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "PaintSysStringコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 378997
@@ -13136,7 +13136,7 @@
 //            }
 
 //            string argmsg = GetArgAsString(4);
-//            GUI.DrawSysString((short)GetArgAsLong(2), (short)GetArgAsLong(3), ref argmsg, without_refresh);
+//            GUI.DrawSysString(GetArgAsLong(2), GetArgAsLong(3), argmsg, without_refresh);
 //            ExecPaintSysStringCmdRet = LineNum + 1;
 //            return ExecPaintSysStringCmdRet;
 //        }
@@ -13146,9 +13146,9 @@
 //            int ExecPilotCmdRet = default;
 //            string pname;
 //            short plevel;
-//            if ((int)ArgNum < 0)
+//            if (ArgNum < 0)
 //            {
-//                Event_Renamed.EventErrorMessage = "Pilotコマンドのパラメータの括弧の対応が取れていません";
+//                Event.EventErrorMessage = "Pilotコマンドのパラメータの括弧の対応が取れていません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 379529
@@ -13159,9 +13159,9 @@
 
 //                 */
 //            }
-//            else if ((int)ArgNum != 3 & (int)ArgNum != 4)
+//            else if (ArgNum != 3 && ArgNum != 4)
 //            {
-//                Event_Renamed.EventErrorMessage = "Pilotコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Pilotコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 379668
@@ -13174,11 +13174,11 @@
 //            }
 
 //            pname = GetArgAsString(2);
-//            bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(ref argIndex1); return ret; }
+//            bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
 
 //            if (!localIsDefined())
 //            {
-//                Event_Renamed.EventErrorMessage = "指定したパイロット「" + pname + "」のデータが見つかりません";
+//                Event.EventErrorMessage = "指定したパイロット「" + pname + "」のデータが見つかりません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 379879
@@ -13190,9 +13190,9 @@
 //                 */
 //            }
 
-//            plevel = (short)GetArgAsLong(3);
+//            plevel = GetArgAsLong(3);
 //            string argoname = "レベル限界突破";
-//            if (Expression.IsOptionDefined(ref argoname))
+//            if (Expression.IsOptionDefined(argoname))
 //            {
 //                if (plevel > 999)
 //                {
@@ -13214,7 +13214,7 @@
 //                string argpparty = "味方";
 //                string arggid = "";
 //                {
-//                    var withBlock = SRC.PList.Add(ref pname, plevel, ref argpparty, gid: ref arggid);
+//                    var withBlock = SRC.PList.Add(pname, plevel, argpparty, gid: arggid);
 //                    withBlock.FullRecover();
 //                }
 //            }
@@ -13223,7 +13223,7 @@
 //                string argpparty1 = "味方";
 //                string arggid1 = GetArgAsString(4);
 //                {
-//                    var withBlock1 = SRC.PList.Add(ref pname, plevel, ref argpparty1, ref arggid1);
+//                    var withBlock1 = SRC.PList.Add(pname, plevel, argpparty1, arggid1);
 //                    withBlock1.FullRecover();
 //                }
 //            }
@@ -13240,10 +13240,10 @@
 //            int i;
 
 //            // PlayMIDIコマンドが連続してる場合、最後のPlayMIDIコマンドの位置を検索
-//            var loopTo = Information.UBound(Event_Renamed.EventCmd);
+//            var loopTo = Information.UBound(Event.EventCmd);
 //            for (i = LineNum + 1; i <= loopTo; i++)
 //            {
-//                if (Event_Renamed.EventCmd[i].Name != Event_Renamed.CmdType.PlayMIDICmd)
+//                if (Event.EventCmd[i].Name != Event.CmdType.PlayMIDICmd)
 //                {
 //                    break;
 //                }
@@ -13255,22 +13255,22 @@
 //            var loopTo1 = LineNum;
 //            for (i = play_bgm_end; i >= loopTo1; i -= 1)
 //            {
-//                fname = GeneralLib.ListTail(ref Event_Renamed.EventData[i], 2);
-//                if (GeneralLib.ListLength(ref fname) == 1)
+//                fname = GeneralLib.ListTail(Event.EventData[i], 2);
+//                if (GeneralLib.ListLength(fname) == 1)
 //                {
 //                    if (Strings.Left(fname, 2) == "$(")
 //                    {
 //                        fname = "\"" + fname + "\"";
 //                    }
 
-//                    fname = Expression.GetValueAsString(ref fname, true);
+//                    fname = Expression.GetValueAsString(fname, true);
 //                }
 //                else
 //                {
 //                    fname = "(" + fname + ")";
 //                }
 
-//                fname = Sound.SearchMidiFile(ref fname);
+//                fname = Sound.SearchMidiFile(fname);
 //                if (!string.IsNullOrEmpty(fname))
 //                {
 //                    // MIDIファイルが存在したので選択
@@ -13281,7 +13281,7 @@
 //            // MIDIファイルを再生
 //            Sound.KeepBGM = false;
 //            Sound.BossBGM = false;
-//            Sound.StartBGM(ref fname, false);
+//            Sound.StartBGM(fname, false);
 
 //            // 次のコマンド実行位置は最後のPlayMIDIコマンドの後
 //            ExecPlayMIDICmdRet = play_bgm_end + 1;
@@ -13292,13 +13292,13 @@
 //        {
 //            int ExecPlaySoundCmdRet = default;
 //            string fname;
-//            fname = GeneralLib.ListTail(ref Event_Renamed.EventData[LineNum], 2);
-//            if (GeneralLib.ListLength(ref fname) == 1)
+//            fname = GeneralLib.ListTail(Event.EventData[LineNum], 2);
+//            if (GeneralLib.ListLength(fname) == 1)
 //            {
-//                fname = Expression.GetValueAsString(ref fname);
+//                fname = Expression.GetValueAsString(fname);
 //            }
 
-//            Sound.PlayWave(ref fname);
+//            Sound.PlayWave(fname);
 //            ExecPlaySoundCmdRet = LineNum + 1;
 //            return ExecPlaySoundCmdRet;
 //        }
@@ -13320,9 +13320,9 @@
 //            pnum = 1;
 //            while (2 * pnum < ArgNum)
 //            {
-//                Array.Resize(ref points, pnum);
-//                xx = (short)(GetArgAsLong((short)(2 * pnum)) + Event_Renamed.BaseX);
-//                yy = (short)(GetArgAsLong((short)(2 * pnum + 1)) + Event_Renamed.BaseY);
+//                Array.Resize(points, pnum);
+//                xx = (GetArgAsLong((2 * pnum)) + Event.BaseX);
+//                yy = (GetArgAsLong((2 * pnum + 1)) + Event.BaseY);
 //                points[pnum - 1].X = xx;
 //                points[pnum - 1].Y = yy;
 //                if (xx < x1)
@@ -13345,12 +13345,12 @@
 //                    y2 = yy;
 //                }
 
-//                pnum = (short)(pnum + 1);
+//                pnum = (pnum + 1);
 //            }
 
-//            if ((int)pnum == 1)
+//            if (pnum == 1)
 //            {
-//                Event_Renamed.EventErrorMessage = "頂点数が少なすぎます";
+//                Event.EventErrorMessage = "頂点数が少なすぎます";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 383198
@@ -13365,7 +13365,7 @@
 //            GUI.SaveScreen();
 
 //            // 描画先
-//            switch (Event_Renamed.ObjDrawOption ?? "")
+//            switch (Event.ObjDrawOption ?? "")
 //            {
 //                case "背景":
 //                    {
@@ -13391,23 +13391,23 @@
 
 //            // 描画領域
 //            short tmp;
-//            if (Event_Renamed.ObjDrawOption != "背景")
+//            if (Event.ObjDrawOption != "背景")
 //            {
 //                GUI.IsPictureVisible = true;
-//                tmp = (short)(Event_Renamed.ObjDrawWidth - 1);
-//                GUI.PaintedAreaX1 = (short)GeneralLib.MinLng(GUI.PaintedAreaX1, GeneralLib.MaxLng(x1 - tmp, 0));
-//                GUI.PaintedAreaY1 = (short)GeneralLib.MinLng(GUI.PaintedAreaY1, GeneralLib.MaxLng(y1 - tmp, 0));
-//                GUI.PaintedAreaX2 = (short)GeneralLib.MaxLng(GUI.PaintedAreaX2, GeneralLib.MinLng(x2 + tmp, GUI.MapPWidth - 1));
-//                GUI.PaintedAreaY2 = (short)GeneralLib.MaxLng(GUI.PaintedAreaY2, GeneralLib.MinLng(y2 + tmp, GUI.MapPHeight - 1));
+//                tmp = (Event.ObjDrawWidth - 1);
+//                GUI.PaintedAreaX1 = GeneralLib.MinLng(GUI.PaintedAreaX1, GeneralLib.MaxLng(x1 - tmp, 0));
+//                GUI.PaintedAreaY1 = GeneralLib.MinLng(GUI.PaintedAreaY1, GeneralLib.MaxLng(y1 - tmp, 0));
+//                GUI.PaintedAreaX2 = GeneralLib.MaxLng(GUI.PaintedAreaX2, GeneralLib.MinLng(x2 + tmp, GUI.MapPWidth - 1));
+//                GUI.PaintedAreaY2 = GeneralLib.MaxLng(GUI.PaintedAreaY2, GeneralLib.MinLng(y2 + tmp, GUI.MapPHeight - 1));
 //            }
 
 //            prev_clr = ColorTranslator.ToOle(pic.ForeColor);
-//            pic.ForeColor = ColorTranslator.FromOle(Event_Renamed.ObjColor);
-//            pic.DrawWidth = Event_Renamed.ObjDrawWidth;
-//            pic.FillColor = Event_Renamed.ObjFillColor;
-//            pic.FillStyle = Event_Renamed.ObjFillStyle;
+//            pic.ForeColor = ColorTranslator.FromOle(Event.ObjColor);
+//            pic.DrawWidth = Event.ObjDrawWidth;
+//            pic.FillColor = Event.ObjFillColor;
+//            pic.FillStyle = Event.ObjFillStyle;
 
-//            GUI.Polygon(pic.hDC, ref points[0], (int)pnum - 1);
+//            GUI.Polygon(pic.hDC, points[0], pnum - 1);
 //            pic.ForeColor = ColorTranslator.FromOle(prev_clr);
 //            pic.DrawWidth = 1;
 //            pic.FillColor = ColorTranslator.ToOle(Color.White);
@@ -13415,12 +13415,12 @@
 //            if (pic2 is object)
 //            {
 //                prev_clr = ColorTranslator.ToOle(pic2.ForeColor);
-//                pic2.ForeColor = ColorTranslator.FromOle(Event_Renamed.ObjColor);
-//                pic2.DrawWidth = Event_Renamed.ObjDrawWidth;
-//                pic2.FillColor = Event_Renamed.ObjFillColor;
-//                pic2.FillStyle = Event_Renamed.ObjFillStyle;
+//                pic2.ForeColor = ColorTranslator.FromOle(Event.ObjColor);
+//                pic2.DrawWidth = Event.ObjDrawWidth;
+//                pic2.FillColor = Event.ObjFillColor;
+//                pic2.FillStyle = Event.ObjFillStyle;
 
-//                GUI.Polygon(pic2.hDC, ref points[0], (int)pnum - 1);
+//                GUI.Polygon(pic2.hDC, points[0], pnum - 1);
 //                pic2.ForeColor = ColorTranslator.FromOle(prev_clr);
 //                pic2.DrawWidth = 1;
 //                pic2.FillColor = ColorTranslator.ToOle(Color.White);
@@ -13436,9 +13436,9 @@
 //            int ExecPrintCmdRet = default;
 //            short f;
 //            string msg;
-//            if ((int)ArgNum == 1)
+//            if (ArgNum == 1)
 //            {
-//                Event_Renamed.EventErrorMessage = "Printコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Printコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 390280
@@ -13450,26 +13450,26 @@
 //                 */
 //            }
 
-//            f = (short)GetArgAsLong(2);
-//            msg = GeneralLib.ListTail(ref Event_Renamed.EventData[LineNum], 3);
+//            f = GetArgAsLong(2);
+//            msg = GeneralLib.ListTail(Event.EventData[LineNum], 3);
 //            if (Strings.Right(msg, 1) != ";")
 //            {
-//                if (Strings.Left(msg, 1) != "`" | Strings.Right(msg, 1) != "`")
+//                if (Strings.Left(msg, 1) != "`" || Strings.Right(msg, 1) != "`")
 //                {
 //                    if (Strings.Left(msg, 2) == "$(")
 //                    {
 //                        if (Strings.Right(msg, 1) == ")")
 //                        {
 //                            string argexpr = Strings.Mid(msg, 3, Strings.Len(msg) - 3);
-//                            msg = Expression.GetValueAsString(ref argexpr);
+//                            msg = Expression.GetValueAsString(argexpr);
 //                        }
 //                    }
-//                    else if (GeneralLib.ListLength(ref msg) == 1)
+//                    else if (GeneralLib.ListLength(msg) == 1)
 //                    {
-//                        msg = Expression.GetValueAsString(ref msg);
+//                        msg = Expression.GetValueAsString(msg);
 //                    }
 
-//                    Expression.ReplaceSubExpression(ref msg);
+//                    Expression.ReplaceSubExpression(msg);
 //                }
 //                else
 //                {
@@ -13481,22 +13481,22 @@
 //            else
 //            {
 //                msg = Strings.Left(msg, Strings.Len(msg) - 1);
-//                if (Strings.Left(msg, 1) != "`" | Strings.Right(msg, 1) != "`")
+//                if (Strings.Left(msg, 1) != "`" || Strings.Right(msg, 1) != "`")
 //                {
 //                    if (Strings.Left(msg, 2) == "$(")
 //                    {
 //                        if (Strings.Right(msg, 1) == ")")
 //                        {
 //                            string argexpr1 = Strings.Mid(msg, 3, Strings.Len(msg) - 3);
-//                            msg = Expression.GetValueAsString(ref argexpr1);
+//                            msg = Expression.GetValueAsString(argexpr1);
 //                        }
 //                    }
-//                    else if (GeneralLib.ListLength(ref msg) == 1)
+//                    else if (GeneralLib.ListLength(msg) == 1)
 //                    {
-//                        msg = Expression.GetValueAsString(ref msg);
+//                        msg = Expression.GetValueAsString(msg);
 //                    }
 
-//                    Expression.ReplaceSubExpression(ref msg);
+//                    Expression.ReplaceSubExpression(msg);
 //                }
 //                else
 //                {
@@ -13518,9 +13518,9 @@
 //            string opt;
 //            string cname;
 //            int clr;
-//            if ((int)ArgNum < 3)
+//            if (ArgNum < 3)
 //            {
-//                Event_Renamed.EventErrorMessage = "PSetコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "PSetコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 392694
@@ -13533,11 +13533,11 @@
 //            }
 
 //            // 座標
-//            xx = (short)(GetArgAsLong(2) + Event_Renamed.BaseX);
-//            yy = (short)(GetArgAsLong(3) + Event_Renamed.BaseY);
+//            xx = (GetArgAsLong(2) + Event.BaseX);
+//            yy = (GetArgAsLong(3) + Event.BaseY);
 
 //            // 座標は画面上にある？
-//            if (xx < 0 | GUI.MapPWidth <= xx | yy < 0 | GUI.MapPHeight <= yy)
+//            if (xx < 0 || GUI.MapPWidth <= xx || yy < 0 || GUI.MapPHeight <= yy)
 //            {
 //                ExecPSetCmdRet = LineNum + 1;
 //                return ExecPSetCmdRet;
@@ -13546,7 +13546,7 @@
 //            GUI.SaveScreen();
 
 //            // 描画先
-//            switch (Event_Renamed.ObjDrawOption ?? "")
+//            switch (Event.ObjDrawOption ?? "")
 //            {
 //                case "背景":
 //                    {
@@ -13572,36 +13572,36 @@
 
 //            // 描画領域
 //            short tmp;
-//            if (Event_Renamed.ObjDrawOption != "背景")
+//            if (Event.ObjDrawOption != "背景")
 //            {
 //                GUI.IsPictureVisible = true;
-//                tmp = (short)(Event_Renamed.ObjDrawWidth - 1);
-//                if ((short)(xx - tmp) < GUI.PaintedAreaX1)
+//                tmp = (Event.ObjDrawWidth - 1);
+//                if ((xx - tmp) < GUI.PaintedAreaX1)
 //                {
-//                    GUI.PaintedAreaX1 = (short)(xx - tmp);
+//                    GUI.PaintedAreaX1 = (xx - tmp);
 //                }
-//                else if ((short)(xx + tmp) > GUI.PaintedAreaX2)
+//                else if ((xx + tmp) > GUI.PaintedAreaX2)
 //                {
-//                    GUI.PaintedAreaX2 = (short)(xx + tmp);
+//                    GUI.PaintedAreaX2 = (xx + tmp);
 //                }
 
-//                if ((short)(yy - tmp) < GUI.PaintedAreaY1)
+//                if ((yy - tmp) < GUI.PaintedAreaY1)
 //                {
-//                    GUI.PaintedAreaY1 = (short)(yy - tmp);
+//                    GUI.PaintedAreaY1 = (yy - tmp);
 //                }
-//                else if ((short)(yy + tmp) > GUI.PaintedAreaY2)
+//                else if ((yy + tmp) > GUI.PaintedAreaY2)
 //                {
-//                    GUI.PaintedAreaY2 = (short)(yy + tmp);
+//                    GUI.PaintedAreaY2 = (yy + tmp);
 //                }
 //            }
 
 //            // 描画色
-//            if ((int)ArgNum == 4)
+//            if (ArgNum == 4)
 //            {
-//                opt = GetArgAsString((short)4);
-//                if (Strings.Asc(opt) != 35 | Strings.Len(opt) != 7)
+//                opt = GetArgAsString(4);
+//                if (Strings.Asc(opt) != 35 || Strings.Len(opt) != 7)
 //                {
-//                    Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                    Event.EventErrorMessage = "色指定が不正です";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 395407
@@ -13614,16 +13614,16 @@
 //                }
 
 //                cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-//                StringType.MidStmtStr(ref cname, 1, 2, "&H");
+//                StringType.MidStmtStr(cname, 1, 2, "&H");
 //                var midTmp = Strings.Mid(opt, 6, 2);
-//                StringType.MidStmtStr(ref cname, 3, 2, midTmp);
+//                StringType.MidStmtStr(cname, 3, 2, midTmp);
 //                var midTmp1 = Strings.Mid(opt, 4, 2);
-//                StringType.MidStmtStr(ref cname, 5, 2, midTmp1);
+//                StringType.MidStmtStr(cname, 5, 2, midTmp1);
 //                var midTmp2 = Strings.Mid(opt, 2, 2);
-//                StringType.MidStmtStr(ref cname, 7, 2, midTmp2);
+//                StringType.MidStmtStr(cname, 7, 2, midTmp2);
 //                if (!Information.IsNumeric(cname))
 //                {
-//                    Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                    Event.EventErrorMessage = "色指定が不正です";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 395908
@@ -13639,10 +13639,10 @@
 //            }
 //            else
 //            {
-//                clr = Event_Renamed.ObjColor;
+//                clr = Event.ObjColor;
 //            }
 
-//            pic.DrawWidth = Event_Renamed.ObjDrawWidth;
+//            pic.DrawWidth = Event.ObjDrawWidth;
 
 //            // 点を描画
 //            pic.PSet(xx, yy);/* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
@@ -13650,7 +13650,7 @@
 //            pic.DrawWidth = 1;
 //            if (pic2 is object)
 //            {
-//                pic2.DrawWidth = Event_Renamed.ObjDrawWidth;
+//                pic2.DrawWidth = Event.ObjDrawWidth;
 
 //                // 点を描画
 //                pic2.PSet(xx, yy);/* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
@@ -13672,11 +13672,11 @@
 //            GUI.ListItemID = new string[1];
 //            GUI.ListItemFlag = new bool[1];
 //            GUI.ListItemID[0] = "0";
-//            var loopTo = Information.UBound(Event_Renamed.EventData);
+//            var loopTo = Information.UBound(Event.EventData);
 //            for (i = LineNum + 1; i <= loopTo; i++)
 //            {
-//                buf = Event_Renamed.EventData[i];
-//                Expression.FormatMessage(ref buf);
+//                buf = Event.EventData[i];
+//                Expression.FormatMessage(buf);
 //                if (Strings.Len(buf) > 0)
 //                {
 //                    if (Strings.LCase(buf) == "end")
@@ -13684,18 +13684,18 @@
 //                        break;
 //                    }
 
-//                    Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-//                    Array.Resize(ref GUI.ListItemID, Information.UBound(list) + 1);
-//                    Array.Resize(ref GUI.ListItemFlag, Information.UBound(list) + 1);
+//                    Array.Resize(list, Information.UBound(list) + 1 + 1);
+//                    Array.Resize(GUI.ListItemID, Information.UBound(list) + 1);
+//                    Array.Resize(GUI.ListItemFlag, Information.UBound(list) + 1);
 //                    list[Information.UBound(list)] = buf;
 //                    GUI.ListItemID[Information.UBound(list)] = SrcFormatter.Format(i - LineNum);
 //                    GUI.ListItemFlag[Information.UBound(list)] = false;
 //                }
 //            }
 
-//            if (i == Information.UBound(Event_Renamed.EventData))
+//            if (i == Information.UBound(Event.EventData))
 //            {
-//                Event_Renamed.EventErrorMessage = "QuestionとEndが対応していません";
+//                Event.EventErrorMessage = "QuestionとEndが対応していません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 399008
@@ -13714,8 +13714,8 @@
 //                    case 3:
 //                        {
 //                            string arglb_caption = "選択";
-//                            string arglb_info = GetArgAsString((short)3);
-//                            Commands.SelectedItem = GUI.LIPS(ref arglb_caption, ref list, ref arglb_info, (short)GetArgAsLong((short)2));
+//                            string arglb_info = GetArgAsString(3);
+//                            Commands.SelectedItem = GUI.LIPS(arglb_caption, list, arglb_info, GetArgAsLong(2));
 //                            break;
 //                        }
 
@@ -13723,13 +13723,13 @@
 //                        {
 //                            string arglb_caption1 = "選択";
 //                            string arglb_info1 = "さあ、どうする？";
-//                            Commands.SelectedItem = GUI.LIPS(ref arglb_caption1, ref list, ref arglb_info1, (short)GetArgAsLong((short)2));
+//                            Commands.SelectedItem = GUI.LIPS(arglb_caption1, list, arglb_info1, GetArgAsLong(2));
 //                            break;
 //                        }
 
 //                    default:
 //                        {
-//                            Event_Renamed.EventErrorMessage = "Questionコマンドの引数の数が違います";
+//                            Event.EventErrorMessage = "Questionコマンドの引数の数が違います";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 399492
@@ -13745,10 +13745,10 @@
 //            }
 //            else
 //            {
-//                Commands.SelectedItem = (short)0;
+//                Commands.SelectedItem = 0;
 //            }
 
-//            Event_Renamed.SelectedAlternative = GUI.ListItemID[Commands.SelectedItem];
+//            Event.SelectedAlternative = GUI.ListItemID[Commands.SelectedItem];
 //            GUI.ListItemID = new string[1];
 //            ExecQuestionCmdRet = i + 1;
 //            return ExecQuestionCmdRet;
@@ -13760,17 +13760,17 @@
 //            GUI.LockGUI();
 //            Status.ClearUnitStatus();
 //            Sound.StopBGM();
-//            if (GeneralLib.FileExists(ref SRC.LastSaveDataFileName))
+//            if (GeneralLib.FileExists(SRC.LastSaveDataFileName))
 //            {
 //                // セーブしたファイルが存在すればそれをロード
 //                bool argquick_load = true;
-//                SRC.RestoreData(ref SRC.LastSaveDataFileName, ref argquick_load);
+//                SRC.RestoreData(SRC.LastSaveDataFileName, argquick_load);
 //            }
 //            else
 //            {
 //                // セーブファイルが見つからなければ強制終了
 //                string argmsg = "セーブデータが見つかりません";
-//                GUI.ErrorMessage(ref argmsg);
+//                GUI.ErrorMessage(argmsg);
 //                SRC.TerminateSRC();
 //            }
 
@@ -13779,7 +13779,7 @@
 //            GeneralLib.RndReset();
 
 //            // 再開イベントによるマップ画像の書き換え処理を行う
-//            Event_Renamed.HandleEvent("再開");
+//            Event.HandleEvent("再開");
 //            Map.IsMapDirty = false;
 
 //            // 画面を書き直してステータスを表示
@@ -13814,12 +13814,12 @@
 //            {
 //                case 3:
 //                    {
-//                        uname = GetArgAsString((short)2);
+//                        uname = GetArgAsString(2);
 //                        object argIndex1 = (object)uname;
-//                        u = SRC.UList.Item(ref argIndex1);
+//                        u = SRC.UList.Item(argIndex1);
 //                        if (u is null)
 //                        {
-//                            Event_Renamed.EventErrorMessage = uname + "というユニットは存在しません";
+//                            Event.EventErrorMessage = uname + "というユニットは存在しません";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 401470
@@ -13831,20 +13831,20 @@
 //                             */
 //                        }
 
-//                        rk = (short)GetArgAsLong((short)3);
+//                        rk = GetArgAsLong(3);
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
-//                        rk = (short)GetArgAsLong((short)2);
+//                        u = Event.SelectedUnitForEvent;
+//                        rk = GetArgAsLong(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "RankUpコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "RankUpコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 401717
@@ -13860,50 +13860,50 @@
 
 //            hp_ratio = 100 * u.HP / (double)u.MaxHP;
 //            en_ratio = 100 * u.EN / (double)u.MaxEN;
-//            u.Rank = (short)(u.Rank + rk);
-//            u.HP = (int)(u.MaxHP * hp_ratio / 100d);
-//            u.EN = (int)(u.MaxEN * en_ratio / 100d);
+//            u.Rank = (u.Rank + rk);
+//            u.HP = (u.MaxHP * hp_ratio / 100d);
+//            u.EN = (u.MaxEN * en_ratio / 100d);
 //            var loopTo = u.CountOtherForm();
 //            for (i = 1; i <= loopTo; i++)
 //            {
 //                object argIndex2 = i;
 //                {
-//                    var withBlock = u.OtherForm(ref argIndex2);
+//                    var withBlock = u.OtherForm(argIndex2);
 //                    hp_ratio = 100 * withBlock.HP / (double)withBlock.MaxHP;
 //                    en_ratio = 100 * withBlock.EN / (double)withBlock.MaxEN;
-//                    withBlock.Rank = (short)(withBlock.Rank + rk);
-//                    withBlock.HP = (int)(withBlock.MaxHP * hp_ratio / 100d);
-//                    withBlock.EN = (int)(withBlock.MaxEN * en_ratio / 100d);
+//                    withBlock.Rank = (withBlock.Rank + rk);
+//                    withBlock.HP = (withBlock.MaxHP * hp_ratio / 100d);
+//                    withBlock.EN = (withBlock.MaxEN * en_ratio / 100d);
 //                }
 //            }
 
 //            // 合体できる場合は他の分離ユニットのユニットランクを上げる
 //            string argfname2 = "合体";
-//            if (u.IsFeatureAvailable(ref argfname2))
+//            if (u.IsFeatureAvailable(argfname2))
 //            {
 //                // 合体後の形態を検索
 //                var loopTo1 = u.CountFeature();
 //                for (i = 1; i <= loopTo1; i++)
 //                {
 //                    object argIndex5 = i;
-//                    if (u.Feature(ref argIndex5) == "合体")
+//                    if (u.Feature(argIndex5) == "合体")
 //                    {
-//                        string localFeatureData() { object argIndex1 = i; var ret = u.FeatureData(ref argIndex1); return ret; }
+//                        string localFeatureData() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
 
 //                        string arglist = localFeatureData();
-//                        buf = GeneralLib.LIndex(ref arglist, 2);
-//                        string localFeatureData1() { object argIndex1 = i; var ret = u.FeatureData(ref argIndex1); return ret; }
+//                        buf = GeneralLib.LIndex(arglist, 2);
+//                        string localFeatureData1() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
 
 //                        string arglist1 = localFeatureData1();
-//                        if (GeneralLib.LLength(ref arglist1) == 3)
+//                        if (GeneralLib.LLength(arglist1) == 3)
 //                        {
 //                            object argIndex3 = buf;
-//                            if (SRC.UDList.IsDefined(ref argIndex3))
+//                            if (SRC.UDList.IsDefined(argIndex3))
 //                            {
-//                                UnitData localItem() { object argIndex1 = buf; var ret = SRC.UDList.Item(ref argIndex1); return ret; }
+//                                UnitData localItem() { object argIndex1 = buf; var ret = SRC.UDList.Item(argIndex1); return ret; }
 
 //                                string argfname = "主形態";
-//                                if (localItem().IsFeatureAvailable(ref argfname))
+//                                if (localItem().IsFeatureAvailable(argfname))
 //                                {
 //                                    break;
 //                                }
@@ -13912,12 +13912,12 @@
 //                        else
 //                        {
 //                            object argIndex4 = buf;
-//                            if (SRC.UDList.IsDefined(ref argIndex4))
+//                            if (SRC.UDList.IsDefined(argIndex4))
 //                            {
-//                                UnitData localItem1() { object argIndex1 = buf; var ret = SRC.UDList.Item(ref argIndex1); return ret; }
+//                                UnitData localItem1() { object argIndex1 = buf; var ret = SRC.UDList.Item(argIndex1); return ret; }
 
 //                                string argfname1 = "制限時間";
-//                                if (!localItem1().IsFeatureAvailable(ref argfname1))
+//                                if (!localItem1().IsFeatureAvailable(argfname1))
 //                                {
 //                                    break;
 //                                }
@@ -13928,42 +13928,42 @@
 
 //                if (i <= u.CountFeature())
 //                {
-//                    string localFeatureData2() { object argIndex1 = i; var ret = u.FeatureData(ref argIndex1); return ret; }
+//                    string localFeatureData2() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
 
-//                    string localLIndex() { string arglist = hs2a2f208e052147729d34e3cbaff37f7f(); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
+//                    string localLIndex() { string arglist = hs2a2f208e052147729d34e3cbaff37f7f(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
 
-//                    UnitData localItem2() { object argIndex1 = (object)hse505f2f9d761474e89617a2bf6851fa7(); var ret = SRC.UDList.Item(ref argIndex1); return ret; }
+//                    UnitData localItem2() { object argIndex1 = (object)hse505f2f9d761474e89617a2bf6851fa7(); var ret = SRC.UDList.Item(argIndex1); return ret; }
 
 //                    object argIndex6 = "分離";
-//                    buf = localItem2().FeatureData(ref argIndex6);
-//                    var loopTo2 = GeneralLib.LLength(ref buf);
+//                    buf = localItem2().FeatureData(argIndex6);
+//                    var loopTo2 = GeneralLib.LLength(buf);
 //                    for (i = 2; i <= loopTo2; i++)
 //                    {
-//                        object argIndex9 = GeneralLib.LIndex(ref buf, i);
-//                        if (SRC.UList.IsDefined(ref argIndex9))
+//                        object argIndex9 = GeneralLib.LIndex(buf, i);
+//                        if (SRC.UList.IsDefined(argIndex9))
 //                        {
-//                            object argIndex8 = GeneralLib.LIndex(ref buf, i);
+//                            object argIndex8 = GeneralLib.LIndex(buf, i);
 //                            {
-//                                var withBlock1 = SRC.UList.Item(ref argIndex8);
+//                                var withBlock1 = SRC.UList.Item(argIndex8);
 //                                if (!u.IsEqual(withBlock1.Name))
 //                                {
 //                                    // 他の分離形態のユニットランクを上げる
 //                                    hp_ratio = 100 * withBlock1.HP / (double)withBlock1.MaxHP;
 //                                    en_ratio = 100 * withBlock1.EN / (double)withBlock1.MaxEN;
-//                                    withBlock1.Rank = (short)(withBlock1.Rank + rk);
-//                                    withBlock1.HP = (int)(withBlock1.MaxHP * hp_ratio / 100d);
-//                                    withBlock1.EN = (int)(withBlock1.MaxEN * en_ratio / 100d);
+//                                    withBlock1.Rank = (withBlock1.Rank + rk);
+//                                    withBlock1.HP = (withBlock1.MaxHP * hp_ratio / 100d);
+//                                    withBlock1.EN = (withBlock1.MaxEN * en_ratio / 100d);
 //                                    var loopTo3 = withBlock1.CountOtherForm();
 //                                    for (j = 1; j <= loopTo3; j++)
 //                                    {
 //                                        object argIndex7 = j;
 //                                        {
-//                                            var withBlock2 = withBlock1.OtherForm(ref argIndex7);
+//                                            var withBlock2 = withBlock1.OtherForm(argIndex7);
 //                                            hp_ratio = 100 * withBlock2.HP / (double)withBlock2.MaxHP;
 //                                            en_ratio = 100 * withBlock2.EN / (double)withBlock2.MaxEN;
-//                                            withBlock2.Rank = (short)(withBlock2.Rank + rk);
-//                                            withBlock2.HP = (int)(withBlock2.MaxHP * hp_ratio / 100d);
-//                                            withBlock2.EN = (int)(withBlock2.MaxEN * en_ratio / 100d);
+//                                            withBlock2.Rank = (withBlock2.Rank + rk);
+//                                            withBlock2.HP = (withBlock2.MaxHP * hp_ratio / 100d);
+//                                            withBlock2.EN = (withBlock2.MaxEN * en_ratio / 100d);
 //                                        }
 //                                    }
 //                                }
@@ -13975,20 +13975,20 @@
 
 //            // 分離できる場合は分離ユニットのユニットランクを上げる
 //            string argfname3 = "分離";
-//            if (u.IsFeatureAvailable(ref argfname3))
+//            if (u.IsFeatureAvailable(argfname3))
 //            {
 //                object argIndex10 = "分離";
-//                buf = u.FeatureData(ref argIndex10);
-//                var loopTo4 = GeneralLib.LLength(ref buf);
+//                buf = u.FeatureData(argIndex10);
+//                var loopTo4 = GeneralLib.LLength(buf);
 //                for (i = 2; i <= loopTo4; i++)
 //                {
-//                    object argIndex13 = GeneralLib.LIndex(ref buf, i);
-//                    if (SRC.UList.IsDefined(ref argIndex13))
+//                    object argIndex13 = GeneralLib.LIndex(buf, i);
+//                    if (SRC.UList.IsDefined(argIndex13))
 //                    {
-//                        object argIndex12 = GeneralLib.LIndex(ref buf, i);
+//                        object argIndex12 = GeneralLib.LIndex(buf, i);
 //                        {
-//                            var withBlock3 = SRC.UList.Item(ref argIndex12);
-//                            withBlock3.Rank = (short)GeneralLib.MaxLng(withBlock3.Rank, u.Rank);
+//                            var withBlock3 = SRC.UList.Item(argIndex12);
+//                            withBlock3.Rank = GeneralLib.MaxLng(withBlock3.Rank, u.Rank);
 //                            withBlock3.HP = withBlock3.MaxHP;
 //                            withBlock3.EN = withBlock3.MaxEN;
 //                            var loopTo5 = withBlock3.CountOtherForm();
@@ -13996,12 +13996,12 @@
 //                            {
 //                                object argIndex11 = j;
 //                                {
-//                                    var withBlock4 = withBlock3.OtherForm(ref argIndex11);
+//                                    var withBlock4 = withBlock3.OtherForm(argIndex11);
 //                                    hp_ratio = 100 * withBlock4.HP / (double)withBlock4.MaxHP;
 //                                    en_ratio = 100 * withBlock4.EN / (double)withBlock4.MaxEN;
-//                                    withBlock4.Rank = (short)(withBlock4.Rank + rk);
-//                                    withBlock4.HP = (int)(withBlock4.MaxHP * hp_ratio / 100d);
-//                                    withBlock4.EN = (int)(withBlock4.MaxEN * en_ratio / 100d);
+//                                    withBlock4.Rank = (withBlock4.Rank + rk);
+//                                    withBlock4.HP = (withBlock4.MaxHP * hp_ratio / 100d);
+//                                    withBlock4.EN = (withBlock4.MaxEN * en_ratio / 100d);
 //                                }
 //                            }
 //                        }
@@ -14019,9 +14019,9 @@
 //            short f;
 //            short i;
 //            var buf = default(string);
-//            if ((int)ArgNum < 3)
+//            if (ArgNum < 3)
 //            {
-//                Event_Renamed.EventErrorMessage = "Readコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Readコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 405001
@@ -14033,13 +14033,13 @@
 //                 */
 //            }
 
-//            f = (short)GetArgAsLong(2);
+//            f = GetArgAsLong(2);
 //            var loopTo = ArgNum;
 //            for (i = 3; i <= loopTo; i++)
 //            {
-//                FileSystem.Input(f, ref buf);
+//                FileSystem.Input(f, buf);
 //                string argvname = GetArg(i);
-//                Expression.SetVariableAsString(ref argvname, ref buf);
+//                Expression.SetVariableAsString(argvname, buf);
 //            }
 
 //            ExecReadCmdRet = LineNum + 1;
@@ -14055,21 +14055,21 @@
 //            {
 //                case 3:
 //                    {
-//                        u = GetArgAsUnit((short)2, true);
-//                        per = GetArgAsDouble((short)3);
+//                        u = GetArgAsUnit(2, true);
+//                        per = GetArgAsDouble(3);
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
-//                        per = GetArgAsDouble((short)2);
+//                        u = Event.SelectedUnitForEvent;
+//                        per = GetArgAsDouble(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "RecoverENコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "RecoverENコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 405679
@@ -14089,9 +14089,9 @@
 //                    var withBlock = u;
 //                    withBlock.RecoverEN(per);
 //                    withBlock.Update();
-//                    if (withBlock.EN == 0 & withBlock.Status_Renamed == "出撃")
+//                    if (withBlock.EN == 0 && withBlock.Status_Renamed == "出撃")
 //                    {
-//                        GUI.PaintUnitBitmap(ref u);
+//                        GUI.PaintUnitBitmap(u);
 //                    }
 
 //                    withBlock.CheckAutoHyperMode();
@@ -14112,21 +14112,21 @@
 //            {
 //                case 3:
 //                    {
-//                        u = GetArgAsUnit((short)2, true);
-//                        per = GetArgAsDouble((short)3);
+//                        u = GetArgAsUnit(2, true);
+//                        per = GetArgAsDouble(3);
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
-//                        per = GetArgAsDouble((short)2);
+//                        u = Event.SelectedUnitForEvent;
+//                        per = GetArgAsDouble(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "RecoverHPコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "RecoverHPコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 406435
@@ -14165,28 +14165,28 @@
 //            {
 //                case 3:
 //                    {
-//                        p = GetArgAsPilot((short)2);
-//                        per = GetArgAsDouble((short)3);
+//                        p = GetArgAsPilot(2);
+//                        per = GetArgAsDouble(3);
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
 //                        {
-//                            var withBlock = Event_Renamed.SelectedUnitForEvent;
-//                            if ((int)withBlock.CountPilot() > 0)
+//                            var withBlock = Event.SelectedUnitForEvent;
+//                            if (withBlock.CountPilot() > 0)
 //                            {
 //                                p = withBlock.MainPilot();
 //                            }
 //                        }
 
-//                        per = GetArgAsDouble((short)2);
+//                        per = GetArgAsDouble(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "RecoverPlanaコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "RecoverPlanaコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 407406
@@ -14220,13 +14220,13 @@
 //                }
 //            }
 
-//            p.Plana = (int)(p.Plana + per * p.MaxPlana() / 100d);
+//            p.Plana = (p.Plana + per * p.MaxPlana() / 100d);
 //            if (p.Unit_Renamed is object)
 //            {
 //                {
 //                    var withBlock2 = p.Unit_Renamed;
-//                    withBlock2.HP = (int)(withBlock2.MaxHP * hp_ratio / 100d);
-//                    withBlock2.EN = (int)(withBlock2.MaxEN * en_ratio / 100d);
+//                    withBlock2.HP = (withBlock2.MaxHP * hp_ratio / 100d);
+//                    withBlock2.EN = (withBlock2.MaxEN * en_ratio / 100d);
 //                }
 //            }
 
@@ -14245,28 +14245,28 @@
 //            {
 //                case 3:
 //                    {
-//                        p = GetArgAsPilot((short)2);
-//                        per = GetArgAsDouble((short)3);
+//                        p = GetArgAsPilot(2);
+//                        per = GetArgAsDouble(3);
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
 //                        {
-//                            var withBlock = Event_Renamed.SelectedUnitForEvent;
-//                            if ((int)withBlock.CountPilot() > 0)
+//                            var withBlock = Event.SelectedUnitForEvent;
+//                            if (withBlock.CountPilot() > 0)
 //                            {
 //                                p = withBlock.MainPilot();
 //                            }
 //                        }
 
-//                        per = GetArgAsDouble((short)2);
+//                        per = GetArgAsDouble(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "RecoverSPコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "RecoverSPコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 408702
@@ -14284,7 +14284,7 @@
 //            {
 //                if (p.MaxSP > 0)
 //                {
-//                    p.SP = (int)(p.SP + per * p.MaxSP / 100d);
+//                    p.SP = (p.SP + per * p.MaxSP / 100d);
 //                }
 //            }
 
@@ -14325,20 +14325,20 @@
 //            {
 //                case 1:
 //                    {
-//                        buf = Event_Renamed.SelectedUnitForEvent.MainPilot().Name;
+//                        buf = Event.SelectedUnitForEvent.MainPilot().Name;
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        buf = GetArgAsString((short)2);
-//                        bool localIsDefined() { object argIndex1 = (object)buf; var ret = SRC.PList.IsDefined(ref argIndex1); return ret; }
+//                        buf = GetArgAsString(2);
+//                        bool localIsDefined() { object argIndex1 = (object)buf; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-//                        bool localIsDefined1() { object argIndex1 = (object)buf; var ret = SRC.IList.IsDefined(ref argIndex1); return ret; }
+//                        bool localIsDefined1() { object argIndex1 = (object)buf; var ret = SRC.IList.IsDefined(argIndex1); return ret; }
 
-//                        if (!localIsDefined() & !localIsDefined1())
+//                        if (!localIsDefined() && !localIsDefined1())
 //                        {
-//                            Event_Renamed.EventErrorMessage = "パイロット名またはアイテム名" + buf + "が間違っています";
+//                            Event.EventErrorMessage = "パイロット名またはアイテム名" + buf + "が間違っています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 409999
@@ -14351,15 +14351,15 @@
 //                        }
 
 //                        object argIndex1 = (object)buf;
-//                        if (SRC.PList.IsDefined(ref argIndex1))
+//                        if (SRC.PList.IsDefined(argIndex1))
 //                        {
-//                            Pilot localItem() { object argIndex1 = (object)buf; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+//                            Pilot localItem() { object argIndex1 = (object)buf; var ret = SRC.PList.Item(argIndex1); return ret; }
 
 //                            buf = localItem().Name;
 //                        }
 //                        else
 //                        {
-//                            Item localItem1() { object argIndex1 = (object)buf; var ret = SRC.IList.Item(ref argIndex1); return ret; }
+//                            Item localItem1() { object argIndex1 = (object)buf; var ret = SRC.IList.Item(argIndex1); return ret; }
 
 //                            buf = localItem1().Name;
 //                        }
@@ -14369,7 +14369,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Releaseコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Releaseコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 410300
@@ -14384,9 +14384,9 @@
 //            }
 
 //            buf = "Fix(" + buf + ")";
-//            if (Expression.IsGlobalVariableDefined(ref buf))
+//            if (Expression.IsGlobalVariableDefined(buf))
 //            {
-//                Event_Renamed.GlobalVariableList.Remove(buf);
+//                Event.GlobalVariableList.Remove(buf);
 //            }
 
 //            ExecReleaseCmdRet = LineNum + 1;
@@ -14397,9 +14397,9 @@
 //        {
 //            int ExecRemoveFileCmdRet = default;
 //            string fname;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "RemoveFileコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "RemoveFileコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 410742
@@ -14414,7 +14414,7 @@
 //            fname = SRC.ScenarioPath + GetArgAsString(2);
 //            if (Strings.InStr(fname, @"..\") > 0)
 //            {
-//                Event_Renamed.EventErrorMessage = @"ファイル指定に「..\」は使えません";
+//                Event.EventErrorMessage = @"ファイル指定に「..\」は使えません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 410987
@@ -14428,7 +14428,7 @@
 
 //            if (Strings.InStr(fname, "../") > 0)
 //            {
-//                Event_Renamed.EventErrorMessage = "ファイル指定に「../」は使えません";
+//                Event.EventErrorMessage = "ファイル指定に「../」は使えません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 411157
@@ -14440,7 +14440,7 @@
 //                 */
 //            }
 
-//            if (GeneralLib.FileExists(ref fname))
+//            if (GeneralLib.FileExists(fname))
 //            {
 //                FileSystem.Kill(fname);
 //            }
@@ -14454,9 +14454,9 @@
 //            int ExecRemoveFolderCmdRet = default;
 //            string fname;
 //            object fso;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "RemoveFolderコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "RemoveFolderコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 411575
@@ -14471,7 +14471,7 @@
 //            fname = SRC.ScenarioPath + GetArgAsString(2);
 //            if (Strings.InStr(fname, @"..\") > 0)
 //            {
-//                Event_Renamed.EventErrorMessage = @"ファイル指定に「..\」は使えません";
+//                Event.EventErrorMessage = @"ファイル指定に「..\」は使えません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 411820
@@ -14485,7 +14485,7 @@
 
 //            if (Strings.InStr(fname, "../") > 0)
 //            {
-//                Event_Renamed.EventErrorMessage = "ファイル指定に「../」は使えません";
+//                Event.EventErrorMessage = "ファイル指定に「../」は使えません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 411990
@@ -14502,7 +14502,7 @@
 //                fname = Strings.Left(fname, Strings.Len(fname) - 1);
 //            }
 
-//            if (GeneralLib.FileExists(ref fname))
+//            if (GeneralLib.FileExists(fname))
 //            {
 //                fso = Interaction.CreateObject("Scripting.FileSystemObject");
 
@@ -14533,12 +14533,12 @@
 //                    {
 //                        // 指定したユニットが装備しているアイテムすべてを外す
 //                        {
-//                            var withBlock = Event_Renamed.SelectedUnitForEvent;
-//                            while ((int)withBlock.CountItem() > 0)
+//                            var withBlock = Event.SelectedUnitForEvent;
+//                            while (withBlock.CountItem() > 0)
 //                            {
 //                                object argIndex1 = (object)1;
 //                                string argfname = "ユニット画像";
-//                                if (withBlock.Item(ref argIndex1).IsFeatureAvailable(ref argfname))
+//                                if (withBlock.Item(argIndex1).IsFeatureAvailable(argfname))
 //                                {
 //                                    item_with_image = true;
 //                                }
@@ -14546,29 +14546,29 @@
 //                                if (withBlock.Party0 != "味方")
 //                                {
 //                                    object argIndex2 = (object)1;
-//                                    withBlock.Item(ref argIndex2).Exist = false;
+//                                    withBlock.Item(argIndex2).Exist = false;
 //                                }
 
 //                                object argIndex3 = (object)1;
-//                                withBlock.DeleteItem(ref argIndex3);
+//                                withBlock.DeleteItem(argIndex3);
 //                            }
 
 //                            if (item_with_image)
 //                            {
-//                                withBlock.BitmapID = GUI.MakeUnitBitmap(ref Event_Renamed.SelectedUnitForEvent);
+//                                withBlock.BitmapID = GUI.MakeUnitBitmap(Event.SelectedUnitForEvent);
 //                                var loopTo = withBlock.CountOtherForm();
-//                                for (i = (short)1; i <= loopTo; i++)
+//                                for (i = 1; i <= loopTo; i++)
 //                                {
-//                                    Unit localOtherForm() { object argIndex1 = (object)i; var ret = withBlock.OtherForm(ref argIndex1); return ret; }
+//                                    Unit localOtherForm() { object argIndex1 = (object)i; var ret = withBlock.OtherForm(argIndex1); return ret; }
 
-//                                    localOtherForm().BitmapID = (short)0;
+//                                    localOtherForm().BitmapID = 0;
 //                                }
 
 //                                if (withBlock.Status_Renamed == "出撃")
 //                                {
-//                                    if (!GUI.IsPictureVisible & !string.IsNullOrEmpty(Map.MapFileName))
+//                                    if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
 //                                    {
-//                                        GUI.PaintUnitBitmap(ref Event_Renamed.SelectedUnitForEvent);
+//                                        GUI.PaintUnitBitmap(Event.SelectedUnitForEvent);
 //                                    }
 //                                }
 //                            }
@@ -14579,23 +14579,23 @@
 
 //                case 2:
 //                    {
-//                        pname = GetArgAsString((short)2);
-//                        bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(ref argIndex1); return ret; }
+//                        pname = GetArgAsString(2);
+//                        bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
 //                        object argIndex17 = (object)pname;
-//                        if (SRC.UList.IsDefined(ref argIndex17))
+//                        if (SRC.UList.IsDefined(argIndex17))
 //                        {
 //                            // 指定したユニットが装備しているアイテムすべてを外す
-//                            Unit localItem() { object argIndex1 = (object)pname; var ret = SRC.UList.Item(ref argIndex1); return ret; }
+//                            Unit localItem() { object argIndex1 = (object)pname; var ret = SRC.UList.Item(argIndex1); return ret; }
 
 //                            u = localItem().CurrentForm();
 //                            {
 //                                var withBlock1 = u;
-//                                while ((int)withBlock1.CountItem() > 0)
+//                                while (withBlock1.CountItem() > 0)
 //                                {
 //                                    object argIndex4 = (object)1;
 //                                    string argfname1 = "ユニット画像";
-//                                    if (withBlock1.Item(ref argIndex4).IsFeatureAvailable(ref argfname1))
+//                                    if (withBlock1.Item(argIndex4).IsFeatureAvailable(argfname1))
 //                                    {
 //                                        item_with_image = true;
 //                                    }
@@ -14603,29 +14603,29 @@
 //                                    if (withBlock1.Party0 != "味方")
 //                                    {
 //                                        object argIndex5 = (object)1;
-//                                        withBlock1.Item(ref argIndex5).Exist = false;
+//                                        withBlock1.Item(argIndex5).Exist = false;
 //                                    }
 
 //                                    object argIndex6 = (object)1;
-//                                    withBlock1.DeleteItem(ref argIndex6);
+//                                    withBlock1.DeleteItem(argIndex6);
 //                                }
 
 //                                if (item_with_image)
 //                                {
-//                                    withBlock1.BitmapID = GUI.MakeUnitBitmap(ref Event_Renamed.SelectedUnitForEvent);
+//                                    withBlock1.BitmapID = GUI.MakeUnitBitmap(Event.SelectedUnitForEvent);
 //                                    var loopTo1 = withBlock1.CountOtherForm();
-//                                    for (i = (short)1; i <= loopTo1; i++)
+//                                    for (i = 1; i <= loopTo1; i++)
 //                                    {
-//                                        Unit localOtherForm1() { object argIndex1 = (object)i; var ret = withBlock1.OtherForm(ref argIndex1); return ret; }
+//                                        Unit localOtherForm1() { object argIndex1 = (object)i; var ret = withBlock1.OtherForm(argIndex1); return ret; }
 
-//                                        localOtherForm1().BitmapID = (short)0;
+//                                        localOtherForm1().BitmapID = 0;
 //                                    }
 
 //                                    if (withBlock1.Status_Renamed == "出撃")
 //                                    {
-//                                        if (!GUI.IsPictureVisible & !string.IsNullOrEmpty(Map.MapFileName))
+//                                        if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
 //                                        {
-//                                            GUI.PaintUnitBitmap(ref Event_Renamed.SelectedUnitForEvent);
+//                                            GUI.PaintUnitBitmap(Event.SelectedUnitForEvent);
 //                                        }
 //                                    }
 //                                }
@@ -14634,18 +14634,18 @@
 //                        else if (localIsDefined())
 //                        {
 //                            // 指定したパイロットが乗るユニットが装備しているアイテムすべてを外す
-//                            Pilot localItem3() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+//                            Pilot localItem3() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
 //                            u = localItem3().Unit_Renamed;
 //                            if (u is object)
 //                            {
 //                                {
 //                                    var withBlock8 = u;
-//                                    while ((int)withBlock8.CountItem() > 0)
+//                                    while (withBlock8.CountItem() > 0)
 //                                    {
 //                                        object argIndex14 = (object)1;
 //                                        string argfname5 = "ユニット画像";
-//                                        if (withBlock8.Item(ref argIndex14).IsFeatureAvailable(ref argfname5))
+//                                        if (withBlock8.Item(argIndex14).IsFeatureAvailable(argfname5))
 //                                        {
 //                                            item_with_image = true;
 //                                        }
@@ -14653,29 +14653,29 @@
 //                                        if (withBlock8.Party0 != "味方")
 //                                        {
 //                                            object argIndex15 = (object)1;
-//                                            withBlock8.Item(ref argIndex15).Exist = false;
+//                                            withBlock8.Item(argIndex15).Exist = false;
 //                                        }
 
 //                                        object argIndex16 = (object)1;
-//                                        withBlock8.DeleteItem(ref argIndex16);
+//                                        withBlock8.DeleteItem(argIndex16);
 //                                    }
 
 //                                    if (item_with_image)
 //                                    {
-//                                        withBlock8.BitmapID = GUI.MakeUnitBitmap(ref u);
+//                                        withBlock8.BitmapID = GUI.MakeUnitBitmap(u);
 //                                        var loopTo5 = withBlock8.CountOtherForm();
-//                                        for (i = (short)1; i <= loopTo5; i++)
+//                                        for (i = 1; i <= loopTo5; i++)
 //                                        {
-//                                            Unit localOtherForm5() { object argIndex1 = (object)i; var ret = withBlock8.OtherForm(ref argIndex1); return ret; }
+//                                            Unit localOtherForm5() { object argIndex1 = (object)i; var ret = withBlock8.OtherForm(argIndex1); return ret; }
 
-//                                            localOtherForm5().BitmapID = (short)0;
+//                                            localOtherForm5().BitmapID = 0;
 //                                        }
 
 //                                        if (withBlock8.Status_Renamed == "出撃")
 //                                        {
-//                                            if (!GUI.IsPictureVisible & !string.IsNullOrEmpty(Map.MapFileName))
+//                                            if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
 //                                            {
-//                                                GUI.PaintUnitBitmap(ref u);
+//                                                GUI.PaintUnitBitmap(u);
 //                                            }
 //                                        }
 //                                    }
@@ -14689,11 +14689,11 @@
 //                            if (Information.IsNumeric(iname))
 //                            {
 //                                {
-//                                    var withBlock2 = Event_Renamed.SelectedUnitForEvent;
+//                                    var withBlock2 = Event.SelectedUnitForEvent;
 //                                    inumber = Conversions.ToShort(iname);
-//                                    if ((int)inumber < 1)
+//                                    if (inumber < 1)
 //                                    {
-//                                        Event_Renamed.EventErrorMessage = "指定されたアイテム番号「" + iname + "」が不正です";
+//                                        Event.EventErrorMessage = "指定されたアイテム番号「" + iname + "」が不正です";
 //                                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 416293
@@ -14707,7 +14707,7 @@
 
 //                                    if (inumber > withBlock2.CountItem())
 //                                    {
-//                                        Event_Renamed.EventErrorMessage = "指定されたユニットは" + SrcFormatter.Format((object)withBlock2.CountItem()) + "個のアイテムしか持っていません";
+//                                        Event.EventErrorMessage = "指定されたユニットは" + SrcFormatter.Format((object)withBlock2.CountItem()) + "個のアイテムしか持っていません";
 //                                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 416523
@@ -14721,33 +14721,33 @@
 
 //                                    object argIndex8 = (object)inumber;
 //                                    {
-//                                        var withBlock3 = withBlock2.Item(ref argIndex8);
+//                                        var withBlock3 = withBlock2.Item(argIndex8);
 //                                        string argfname2 = "ユニット画像";
-//                                        if (withBlock3.IsFeatureAvailable(ref argfname2))
+//                                        if (withBlock3.IsFeatureAvailable(argfname2))
 //                                        {
 //                                            item_with_image = true;
 //                                        }
 
 //                                        object argIndex7 = (object)withBlock3.ID;
-//                                        Event_Renamed.SelectedUnitForEvent.DeleteItem(ref argIndex7);
+//                                        Event.SelectedUnitForEvent.DeleteItem(argIndex7);
 //                                        if (item_with_image)
 //                                        {
 //                                            {
-//                                                var withBlock4 = Event_Renamed.SelectedUnitForEvent;
-//                                                withBlock4.BitmapID = GUI.MakeUnitBitmap(ref Event_Renamed.SelectedUnitForEvent);
+//                                                var withBlock4 = Event.SelectedUnitForEvent;
+//                                                withBlock4.BitmapID = GUI.MakeUnitBitmap(Event.SelectedUnitForEvent);
 //                                                var loopTo2 = withBlock4.CountOtherForm();
-//                                                for (i = (short)1; i <= loopTo2; i++)
+//                                                for (i = 1; i <= loopTo2; i++)
 //                                                {
-//                                                    Unit localOtherForm2() { object argIndex1 = (object)i; var ret = withBlock4.OtherForm(ref argIndex1); return ret; }
+//                                                    Unit localOtherForm2() { object argIndex1 = (object)i; var ret = withBlock4.OtherForm(argIndex1); return ret; }
 
-//                                                    localOtherForm2().BitmapID = (short)0;
+//                                                    localOtherForm2().BitmapID = 0;
 //                                                }
 
 //                                                if (withBlock4.Status_Renamed == "出撃")
 //                                                {
-//                                                    if (!GUI.IsPictureVisible & !string.IsNullOrEmpty(Map.MapFileName))
+//                                                    if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
 //                                                    {
-//                                                        GUI.PaintUnitBitmap(ref Event_Renamed.SelectedUnitForEvent);
+//                                                        GUI.PaintUnitBitmap(Event.SelectedUnitForEvent);
 //                                                    }
 //                                                }
 //                                            }
@@ -14764,43 +14764,43 @@
 
 //                            // アイテムＩＤが指定された場合はそのまま削除
 //                            object argIndex11 = (object)iname;
-//                            if (SRC.IList.IsDefined(ref argIndex11))
+//                            if (SRC.IList.IsDefined(argIndex11))
 //                            {
-//                                Item localItem1() { object argIndex1 = (object)iname; var ret = SRC.IList.Item(ref argIndex1); return ret; }
+//                                Item localItem1() { object argIndex1 = (object)iname; var ret = SRC.IList.Item(argIndex1); return ret; }
 
 //                                if ((localItem1().ID ?? "") == (iname ?? ""))
 //                                {
 //                                    object argIndex10 = (object)iname;
 //                                    {
-//                                        var withBlock5 = SRC.IList.Item(ref argIndex10);
+//                                        var withBlock5 = SRC.IList.Item(argIndex10);
 //                                        if (withBlock5.Unit_Renamed is object)
 //                                        {
 //                                            string argfname3 = "ユニット画像";
-//                                            if (withBlock5.IsFeatureAvailable(ref argfname3))
+//                                            if (withBlock5.IsFeatureAvailable(argfname3))
 //                                            {
 //                                                item_with_image = true;
 //                                            }
 
 //                                            object argIndex9 = (object)withBlock5.ID;
-//                                            withBlock5.Unit_Renamed.DeleteItem(ref argIndex9);
+//                                            withBlock5.Unit_Renamed.DeleteItem(argIndex9);
 //                                            if (item_with_image)
 //                                            {
-//                                                withBlock5.Unit_Renamed.BitmapID = GUI.MakeUnitBitmap(ref withBlock5.Unit_Renamed);
+//                                                withBlock5.Unit_Renamed.BitmapID = GUI.MakeUnitBitmap(withBlock5.Unit_Renamed);
 //                                                {
 //                                                    var withBlock6 = withBlock5.Unit_Renamed;
 //                                                    var loopTo3 = withBlock6.CountOtherForm();
-//                                                    for (i = (short)1; i <= loopTo3; i++)
+//                                                    for (i = 1; i <= loopTo3; i++)
 //                                                    {
-//                                                        Unit localOtherForm3() { object argIndex1 = (object)i; var ret = withBlock6.OtherForm(ref argIndex1); return ret; }
+//                                                        Unit localOtherForm3() { object argIndex1 = (object)i; var ret = withBlock6.OtherForm(argIndex1); return ret; }
 
-//                                                        localOtherForm3().BitmapID = (short)0;
+//                                                        localOtherForm3().BitmapID = 0;
 //                                                    }
 
 //                                                    if (withBlock6.Status_Renamed == "出撃")
 //                                                    {
-//                                                        if (!GUI.IsPictureVisible & !string.IsNullOrEmpty(Map.MapFileName))
+//                                                        if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
 //                                                        {
-//                                                            GUI.PaintUnitBitmap(ref Event_Renamed.SelectedUnitForEvent);
+//                                                            GUI.PaintUnitBitmap(Event.SelectedUnitForEvent);
 //                                                        }
 //                                                    }
 //                                                }
@@ -14819,9 +14819,9 @@
 //                            // 大文字・小文字、ひらがな・かたかなの違いを正しく判定できるように、
 //                            // 名前をデータのそれとあわせる
 //                            object argIndex12 = (object)iname;
-//                            if (SRC.IDList.IsDefined(ref argIndex12))
+//                            if (SRC.IDList.IsDefined(argIndex12))
 //                            {
-//                                ItemData localItem2() { object argIndex1 = (object)iname; var ret = SRC.IDList.Item(ref argIndex1); return ret; }
+//                                ItemData localItem2() { object argIndex1 = (object)iname; var ret = SRC.IDList.Item(argIndex1); return ret; }
 
 //                                iname = localItem2().Name;
 //                            }
@@ -14830,7 +14830,7 @@
 //                            foreach (Item currentItm in SRC.IList)
 //                            {
 //                                itm = currentItm;
-//                                if ((itm.Name ?? "") == (iname ?? "") & itm.Exist & itm.Unit_Renamed is null)
+//                                if ((itm.Name ?? "") == (iname ?? "") && itm.Exist && itm.Unit_Renamed is null)
 //                                {
 //                                    // 見つかった
 //                                    itm.Exist = false;
@@ -14843,35 +14843,35 @@
 //                                foreach (Item currentItm1 in SRC.IList)
 //                                {
 //                                    itm = currentItm1;
-//                                    if ((itm.Name ?? "") == (iname ?? "") & itm.Exist)
+//                                    if ((itm.Name ?? "") == (iname ?? "") && itm.Exist)
 //                                    {
 //                                        string argfname4 = "ユニット画像";
-//                                        if (itm.IsFeatureAvailable(ref argfname4))
+//                                        if (itm.IsFeatureAvailable(argfname4))
 //                                        {
 //                                            item_with_image = true;
 //                                        }
 
 //                                        u = itm.Unit_Renamed;
 //                                        object argIndex13 = (object)itm.ID;
-//                                        u.DeleteItem(ref argIndex13);
+//                                        u.DeleteItem(argIndex13);
 //                                        if (item_with_image)
 //                                        {
-//                                            u.BitmapID = GUI.MakeUnitBitmap(ref u);
+//                                            u.BitmapID = GUI.MakeUnitBitmap(u);
 //                                            {
 //                                                var withBlock7 = u;
 //                                                var loopTo4 = withBlock7.CountOtherForm();
-//                                                for (i = (short)1; i <= loopTo4; i++)
+//                                                for (i = 1; i <= loopTo4; i++)
 //                                                {
-//                                                    Unit localOtherForm4() { object argIndex1 = (object)i; var ret = withBlock7.OtherForm(ref argIndex1); return ret; }
+//                                                    Unit localOtherForm4() { object argIndex1 = (object)i; var ret = withBlock7.OtherForm(argIndex1); return ret; }
 
-//                                                    localOtherForm4().BitmapID = (short)0;
+//                                                    localOtherForm4().BitmapID = 0;
 //                                                }
 
 //                                                if (withBlock7.Status_Renamed == "出撃")
 //                                                {
-//                                                    if (!GUI.IsPictureVisible & !string.IsNullOrEmpty(Map.MapFileName))
+//                                                    if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
 //                                                    {
-//                                                        GUI.PaintUnitBitmap(ref Event_Renamed.SelectedUnitForEvent);
+//                                                        GUI.PaintUnitBitmap(Event.SelectedUnitForEvent);
 //                                                    }
 //                                                }
 //                                            }
@@ -14892,24 +14892,24 @@
 //                case 3:
 //                    {
 //                        // 指定されたアイテムを削除
-//                        pname = GetArgAsString((short)2);
-//                        bool localIsDefined1() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(ref argIndex1); return ret; }
+//                        pname = GetArgAsString(2);
+//                        bool localIsDefined1() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
 //                        object argIndex18 = (object)pname;
-//                        if (SRC.UList.IsDefined(ref argIndex18))
+//                        if (SRC.UList.IsDefined(argIndex18))
 //                        {
-//                            Unit localItem4() { object argIndex1 = (object)pname; var ret = SRC.UList.Item(ref argIndex1); return ret; }
+//                            Unit localItem4() { object argIndex1 = (object)pname; var ret = SRC.UList.Item(argIndex1); return ret; }
 
 //                            u = localItem4().CurrentForm();
 //                        }
 //                        else if (localIsDefined1())
 //                        {
-//                            Pilot localItem5() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+//                            Pilot localItem5() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
 //                            u = localItem5().Unit_Renamed;
 //                            if (u is null)
 //                            {
-//                                Event_Renamed.EventErrorMessage = "「" + pname + "」はユニットに乗っていません";
+//                                Event.EventErrorMessage = "「" + pname + "」はユニットに乗っていません";
 //                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 421350
@@ -14923,7 +14923,7 @@
 //                        }
 //                        else
 //                        {
-//                            Event_Renamed.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
+//                            Event.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 421478
@@ -14935,15 +14935,15 @@
 //                             */
 //                        }
 
-//                        iname = GetArgAsString((short)3);
+//                        iname = GetArgAsString(3);
 //                        {
 //                            var withBlock9 = u;
 //                            if (Information.IsNumeric(iname))
 //                            {
 //                                inumber = Conversions.ToShort(iname);
-//                                if ((int)inumber < 1)
+//                                if (inumber < 1)
 //                                {
-//                                    Event_Renamed.EventErrorMessage = "指定されたアイテム番号「" + iname + "」が不正です";
+//                                    Event.EventErrorMessage = "指定されたアイテム番号「" + iname + "」が不正です";
 //                                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 421787
@@ -14957,7 +14957,7 @@
 
 //                                if (inumber > withBlock9.CountItem())
 //                                {
-//                                    Event_Renamed.EventErrorMessage = "指定されたユニットは" + SrcFormatter.Format((object)withBlock9.CountItem()) + "個のアイテムしか持っていません";
+//                                    Event.EventErrorMessage = "指定されたユニットは" + SrcFormatter.Format((object)withBlock9.CountItem()) + "個のアイテムしか持っていません";
 //                                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 422013
@@ -14971,33 +14971,33 @@
 
 //                                object argIndex20 = (object)inumber;
 //                                {
-//                                    var withBlock10 = withBlock9.Item(ref argIndex20);
+//                                    var withBlock10 = withBlock9.Item(argIndex20);
 //                                    string argfname6 = "ユニット画像";
-//                                    if (withBlock10.IsFeatureAvailable(ref argfname6))
+//                                    if (withBlock10.IsFeatureAvailable(argfname6))
 //                                    {
 //                                        item_with_image = true;
 //                                    }
 
 //                                    object argIndex19 = (object)withBlock10.ID;
-//                                    u.DeleteItem(ref argIndex19);
+//                                    u.DeleteItem(argIndex19);
 //                                    if (item_with_image)
 //                                    {
 //                                        {
 //                                            var withBlock11 = u;
-//                                            withBlock11.BitmapID = GUI.MakeUnitBitmap(ref u);
+//                                            withBlock11.BitmapID = GUI.MakeUnitBitmap(u);
 //                                            var loopTo6 = withBlock11.CountOtherForm();
-//                                            for (j = (short)1; j <= loopTo6; j++)
+//                                            for (j = 1; j <= loopTo6; j++)
 //                                            {
-//                                                Unit localOtherForm6() { object argIndex1 = (object)j; var ret = withBlock11.OtherForm(ref argIndex1); return ret; }
+//                                                Unit localOtherForm6() { object argIndex1 = (object)j; var ret = withBlock11.OtherForm(argIndex1); return ret; }
 
-//                                                localOtherForm6().BitmapID = (short)0;
+//                                                localOtherForm6().BitmapID = 0;
 //                                            }
 
 //                                            if (withBlock11.Status_Renamed == "出撃")
 //                                            {
-//                                                if (!GUI.IsPictureVisible & !string.IsNullOrEmpty(Map.MapFileName))
+//                                                if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
 //                                                {
-//                                                    GUI.PaintUnitBitmap(ref u);
+//                                                    GUI.PaintUnitBitmap(u);
 //                                                }
 //                                            }
 //                                        }
@@ -15014,47 +15014,47 @@
 //                            // 大文字・小文字、ひらがな・かたかなの違いを正しく判定できるように、
 //                            // 名前をデータのそれとあわせる
 //                            object argIndex21 = (object)iname;
-//                            if (SRC.IDList.IsDefined(ref argIndex21))
+//                            if (SRC.IDList.IsDefined(argIndex21))
 //                            {
-//                                ItemData localItem6() { object argIndex1 = (object)iname; var ret = SRC.IDList.Item(ref argIndex1); return ret; }
+//                                ItemData localItem6() { object argIndex1 = (object)iname; var ret = SRC.IDList.Item(argIndex1); return ret; }
 
 //                                iname = localItem6().Name;
 //                            }
 
 //                            var loopTo7 = withBlock9.CountItem();
-//                            for (i = (short)1; i <= loopTo7; i++)
+//                            for (i = 1; i <= loopTo7; i++)
 //                            {
 //                                object argIndex23 = (object)i;
 //                                {
-//                                    var withBlock12 = withBlock9.Item(ref argIndex23);
-//                                    if (((withBlock12.Name ?? "") == (iname ?? "") | (withBlock12.ID ?? "") == (iname ?? "")) & withBlock12.Exist)
+//                                    var withBlock12 = withBlock9.Item(argIndex23);
+//                                    if (((withBlock12.Name ?? "") == (iname ?? "") || (withBlock12.ID ?? "") == (iname ?? "")) && withBlock12.Exist)
 //                                    {
 //                                        string argfname7 = "ユニット画像";
-//                                        if (withBlock12.IsFeatureAvailable(ref argfname7))
+//                                        if (withBlock12.IsFeatureAvailable(argfname7))
 //                                        {
 //                                            item_with_image = true;
 //                                        }
 
 //                                        object argIndex22 = (object)withBlock12.ID;
-//                                        u.DeleteItem(ref argIndex22);
+//                                        u.DeleteItem(argIndex22);
 //                                        if (item_with_image)
 //                                        {
 //                                            {
 //                                                var withBlock13 = u;
-//                                                withBlock13.BitmapID = GUI.MakeUnitBitmap(ref u);
+//                                                withBlock13.BitmapID = GUI.MakeUnitBitmap(u);
 //                                                var loopTo8 = withBlock13.CountOtherForm();
-//                                                for (j = (short)1; j <= loopTo8; j++)
+//                                                for (j = 1; j <= loopTo8; j++)
 //                                                {
-//                                                    Unit localOtherForm7() { object argIndex1 = (object)j; var ret = withBlock13.OtherForm(ref argIndex1); return ret; }
+//                                                    Unit localOtherForm7() { object argIndex1 = (object)j; var ret = withBlock13.OtherForm(argIndex1); return ret; }
 
-//                                                    localOtherForm7().BitmapID = (short)0;
+//                                                    localOtherForm7().BitmapID = 0;
 //                                                }
 
 //                                                if (withBlock13.Status_Renamed == "出撃")
 //                                                {
-//                                                    if (!GUI.IsPictureVisible & !string.IsNullOrEmpty(Map.MapFileName))
+//                                                    if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
 //                                                    {
-//                                                        GUI.PaintUnitBitmap(ref u);
+//                                                        GUI.PaintUnitBitmap(u);
 //                                                    }
 //                                                }
 //                                            }
@@ -15074,7 +15074,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "RemoveItemコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "RemoveItemコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 424422
@@ -15105,7 +15105,7 @@
 //                if (GetArgAsString(num) == "非同期")
 //                {
 //                    opt = "非同期";
-//                    num = (short)(num - 1);
+//                    num = (num - 1);
 //                }
 //            }
 
@@ -15115,10 +15115,10 @@
 //                case 1:
 //                    {
 //                        {
-//                            var withBlock = Event_Renamed.SelectedUnitForEvent;
-//                            if ((int)withBlock.CountPilot() == 0)
+//                            var withBlock = Event.SelectedUnitForEvent;
+//                            if (withBlock.CountPilot() == 0)
 //                            {
-//                                Event_Renamed.EventErrorMessage = "指定されたユニットにパイロットが乗っていません";
+//                                Event.EventErrorMessage = "指定されたユニットにパイロットが乗っていません";
 //                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 425061
@@ -15136,30 +15136,30 @@
 //                            }
 
 //                            var loopTo = withBlock.CountPilot();
-//                            for (i = (short)1; i <= loopTo; i++)
+//                            for (i = 1; i <= loopTo; i++)
 //                            {
-//                                Pilot localPilot() { object argIndex1 = (object)i; var ret = withBlock.Pilot(ref argIndex1); return ret; }
+//                                Pilot localPilot() { object argIndex1 = (object)i; var ret = withBlock.Pilot(argIndex1); return ret; }
 
 //                                localPilot().Alive = false;
 //                            }
 
 //                            var loopTo1 = withBlock.CountSupport();
-//                            for (i = (short)1; i <= loopTo1; i++)
+//                            for (i = 1; i <= loopTo1; i++)
 //                            {
-//                                Pilot localSupport() { object argIndex1 = (object)i; var ret = withBlock.Support(ref argIndex1); return ret; }
+//                                Pilot localSupport() { object argIndex1 = (object)i; var ret = withBlock.Support(argIndex1); return ret; }
 
 //                                localSupport().Alive = false;
 //                            }
 
 //                            withBlock.Status_Renamed = "破棄";
 //                            var loopTo2 = withBlock.CountOtherForm();
-//                            for (i = (short)1; i <= loopTo2; i++)
+//                            for (i = 1; i <= loopTo2; i++)
 //                            {
-//                                Unit localOtherForm1() { object argIndex1 = (object)i; var ret = withBlock.OtherForm(ref argIndex1); return ret; }
+//                                Unit localOtherForm1() { object argIndex1 = (object)i; var ret = withBlock.OtherForm(argIndex1); return ret; }
 
 //                                if (localOtherForm1().Status_Renamed == "他形態")
 //                                {
-//                                    Unit localOtherForm() { object argIndex1 = (object)i; var ret = withBlock.OtherForm(ref argIndex1); return ret; }
+//                                    Unit localOtherForm() { object argIndex1 = (object)i; var ret = withBlock.OtherForm(argIndex1); return ret; }
 
 //                                    localOtherForm().Status_Renamed = "破棄";
 //                                }
@@ -15171,12 +15171,12 @@
 
 //                case 2:
 //                    {
-//                        pname = GetArgAsString((short)2);
-//                        bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(ref argIndex1); return ret; }
+//                        pname = GetArgAsString(2);
+//                        bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
 //                        if (!localIsDefined())
 //                        {
-//                            Event_Renamed.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
+//                            Event.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 425712
@@ -15189,47 +15189,47 @@
 //                        }
 
 //                        object argIndex1 = (object)pname;
-//                        p = SRC.PList.Item(ref argIndex1);
+//                        p = SRC.PList.Item(argIndex1);
 //                        p.Alive = false;
 //                        if (p.Unit_Renamed is object)
 //                        {
 //                            {
 //                                var withBlock1 = p.Unit_Renamed;
 //                                object argIndex4 = (object)1;
-//                                if ((p.ID ?? "") == (withBlock1.MainPilot().ID ?? "") | (p.ID ?? "") == (withBlock1.Pilot(ref argIndex4).ID ?? ""))
+//                                if ((p.ID ?? "") == (withBlock1.MainPilot().ID ?? "") || (p.ID ?? "") == (withBlock1.Pilot(argIndex4).ID ?? ""))
 //                                {
 //                                    // メインパイロットの場合はパイロット＆サポートを全員削除
 //                                    // ユニットも削除する
-//                                    if (withBlock1.Status_Renamed == "出撃" | withBlock1.Status_Renamed == "格納")
+//                                    if (withBlock1.Status_Renamed == "出撃" || withBlock1.Status_Renamed == "格納")
 //                                    {
 //                                        withBlock1.Escape(opt);
 //                                    }
 
 //                                    var loopTo3 = withBlock1.CountPilot();
-//                                    for (i = (short)1; i <= loopTo3; i++)
+//                                    for (i = 1; i <= loopTo3; i++)
 //                                    {
-//                                        Pilot localPilot1() { object argIndex1 = (object)i; var ret = withBlock1.Pilot(ref argIndex1); return ret; }
+//                                        Pilot localPilot1() { object argIndex1 = (object)i; var ret = withBlock1.Pilot(argIndex1); return ret; }
 
 //                                        localPilot1().Alive = false;
 //                                    }
 
 //                                    var loopTo4 = withBlock1.CountSupport();
-//                                    for (i = (short)1; i <= loopTo4; i++)
+//                                    for (i = 1; i <= loopTo4; i++)
 //                                    {
-//                                        Pilot localSupport1() { object argIndex1 = (object)i; var ret = withBlock1.Support(ref argIndex1); return ret; }
+//                                        Pilot localSupport1() { object argIndex1 = (object)i; var ret = withBlock1.Support(argIndex1); return ret; }
 
 //                                        localSupport1().Alive = false;
 //                                    }
 
 //                                    withBlock1.Status_Renamed = "破棄";
 //                                    var loopTo5 = withBlock1.CountOtherForm();
-//                                    for (i = (short)1; i <= loopTo5; i++)
+//                                    for (i = 1; i <= loopTo5; i++)
 //                                    {
-//                                        Unit localOtherForm3() { object argIndex1 = (object)i; var ret = withBlock1.OtherForm(ref argIndex1); return ret; }
+//                                        Unit localOtherForm3() { object argIndex1 = (object)i; var ret = withBlock1.OtherForm(argIndex1); return ret; }
 
 //                                        if (localOtherForm3().Status_Renamed == "他形態")
 //                                        {
-//                                            Unit localOtherForm2() { object argIndex1 = (object)i; var ret = withBlock1.OtherForm(ref argIndex1); return ret; }
+//                                            Unit localOtherForm2() { object argIndex1 = (object)i; var ret = withBlock1.OtherForm(argIndex1); return ret; }
 
 //                                            localOtherForm2().Status_Renamed = "破棄";
 //                                        }
@@ -15239,14 +15239,14 @@
 //                                {
 //                                    // メインパイロットが対象でなければ指定されたパイロットのみを削除
 //                                    var loopTo6 = withBlock1.CountPilot();
-//                                    for (i = (short)1; i <= loopTo6; i++)
+//                                    for (i = 1; i <= loopTo6; i++)
 //                                    {
-//                                        Pilot localPilot2() { object argIndex1 = (object)i; var ret = withBlock1.Pilot(ref argIndex1); return ret; }
+//                                        Pilot localPilot2() { object argIndex1 = (object)i; var ret = withBlock1.Pilot(argIndex1); return ret; }
 
 //                                        if ((p.ID ?? "") == (localPilot2().ID ?? ""))
 //                                        {
 //                                            object argIndex2 = (object)i;
-//                                            withBlock1.DeletePilot(ref argIndex2);
+//                                            withBlock1.DeletePilot(argIndex2);
 //                                            // UPGRADE_NOTE: オブジェクト p.Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 //                                            p.Unit_Renamed = null;
 //                                            return ExecRemovePilotCmdRet;
@@ -15254,14 +15254,14 @@
 //                                    }
 
 //                                    var loopTo7 = withBlock1.CountSupport();
-//                                    for (i = (short)1; i <= loopTo7; i++)
+//                                    for (i = 1; i <= loopTo7; i++)
 //                                    {
-//                                        Pilot localSupport2() { object argIndex1 = (object)i; var ret = withBlock1.Support(ref argIndex1); return ret; }
+//                                        Pilot localSupport2() { object argIndex1 = (object)i; var ret = withBlock1.Support(argIndex1); return ret; }
 
 //                                        if ((p.ID ?? "") == (localSupport2().ID ?? ""))
 //                                        {
 //                                            object argIndex3 = (object)i;
-//                                            withBlock1.DeleteSupport(ref argIndex3);
+//                                            withBlock1.DeleteSupport(argIndex3);
 //                                            // UPGRADE_NOTE: オブジェクト p.Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 //                                            p.Unit_Renamed = null;
 //                                            return ExecRemovePilotCmdRet;
@@ -15276,7 +15276,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "RemovePilotの引数の数が違います";
+//                        Event.EventErrorMessage = "RemovePilotの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 427433
@@ -15306,7 +15306,7 @@
 //                if (GetArgAsString(num) == "非同期")
 //                {
 //                    opt = "非同期";
-//                    num = (short)(num - 1);
+//                    num = (num - 1);
 //                }
 //            }
 
@@ -15315,23 +15315,23 @@
 //                case 1:
 //                    {
 //                        {
-//                            var withBlock = Event_Renamed.SelectedUnitForEvent.CurrentForm();
+//                            var withBlock = Event.SelectedUnitForEvent.CurrentForm();
 //                            withBlock.Escape(opt);
-//                            if ((int)withBlock.CountPilot() > 0)
+//                            if (withBlock.CountPilot() > 0)
 //                            {
 //                                object argIndex1 = (object)1;
-//                                withBlock.Pilot(ref argIndex1).GetOff();
+//                                withBlock.Pilot(argIndex1).GetOff();
 //                            }
 
 //                            withBlock.Status_Renamed = "破棄";
 //                            var loopTo = withBlock.CountOtherForm();
-//                            for (i = (short)1; i <= loopTo; i++)
+//                            for (i = 1; i <= loopTo; i++)
 //                            {
-//                                Unit localOtherForm1() { object argIndex1 = (object)i; var ret = withBlock.OtherForm(ref argIndex1); return ret; }
+//                                Unit localOtherForm1() { object argIndex1 = (object)i; var ret = withBlock.OtherForm(argIndex1); return ret; }
 
 //                                if (localOtherForm1().Status_Renamed == "他形態")
 //                                {
-//                                    Unit localOtherForm() { object argIndex1 = (object)i; var ret = withBlock.OtherForm(ref argIndex1); return ret; }
+//                                    Unit localOtherForm() { object argIndex1 = (object)i; var ret = withBlock.OtherForm(argIndex1); return ret; }
 
 //                                    localOtherForm().Status_Renamed = "破棄";
 //                                }
@@ -15343,9 +15343,9 @@
 
 //                case 2:
 //                    {
-//                        uname = GetArgAsString((short)2);
+//                        uname = GetArgAsString(2);
 //                        object argIndex2 = (object)uname;
-//                        u = SRC.UList.Item(ref argIndex2);
+//                        u = SRC.UList.Item(argIndex2);
 
 //                        // ユニットが存在しなければそのまま終了
 //                        if (u is null)
@@ -15358,21 +15358,21 @@
 //                        if ((u.ID ?? "") == (uname ?? ""))
 //                        {
 //                            u.Escape(opt);
-//                            if ((int)u.CountPilot() > 0)
+//                            if (u.CountPilot() > 0)
 //                            {
 //                                object argIndex3 = (object)1;
-//                                u.Pilot(ref argIndex3).GetOff();
+//                                u.Pilot(argIndex3).GetOff();
 //                            }
 
 //                            u.Status_Renamed = "破棄";
 //                            var loopTo1 = u.CountOtherForm();
-//                            for (i = (short)1; i <= loopTo1; i++)
+//                            for (i = 1; i <= loopTo1; i++)
 //                            {
-//                                Unit localOtherForm3() { object argIndex1 = (object)i; var ret = u.OtherForm(ref argIndex1); return ret; }
+//                                Unit localOtherForm3() { object argIndex1 = (object)i; var ret = u.OtherForm(argIndex1); return ret; }
 
 //                                if (localOtherForm3().Status_Renamed == "他形態")
 //                                {
-//                                    Unit localOtherForm2() { object argIndex1 = (object)i; var ret = u.OtherForm(ref argIndex1); return ret; }
+//                                    Unit localOtherForm2() { object argIndex1 = (object)i; var ret = u.OtherForm(argIndex1); return ret; }
 
 //                                    localOtherForm2().Status_Renamed = "破棄";
 //                                }
@@ -15385,9 +15385,9 @@
 //                        // 大文字・小文字、ひらがな・かたかなの違いを正しく判定できるように、
 //                        // 名前をデータのそれとあわせる
 //                        object argIndex4 = (object)uname;
-//                        if (SRC.UDList.IsDefined(ref argIndex4))
+//                        if (SRC.UDList.IsDefined(argIndex4))
 //                        {
-//                            UnitData localItem() { object argIndex1 = (object)uname; var ret = SRC.UDList.Item(ref argIndex1); return ret; }
+//                            UnitData localItem() { object argIndex1 = (object)uname; var ret = SRC.UDList.Item(argIndex1); return ret; }
 
 //                            uname = localItem().Name;
 //                        }
@@ -15398,20 +15398,20 @@
 //                            u = currentU;
 //                            {
 //                                var withBlock1 = u.CurrentForm();
-//                                if ((withBlock1.Name ?? "") == (uname ?? "") & withBlock1.Status_Renamed != "破棄")
+//                                if ((withBlock1.Name ?? "") == (uname ?? "") && withBlock1.Status_Renamed != "破棄")
 //                                {
-//                                    if ((int)withBlock1.CountPilot() == 0)
+//                                    if (withBlock1.CountPilot() == 0)
 //                                    {
 //                                        withBlock1.Escape(opt);
 //                                        withBlock1.Status_Renamed = "破棄";
 //                                        var loopTo2 = withBlock1.CountOtherForm();
-//                                        for (i = (short)1; i <= loopTo2; i++)
+//                                        for (i = 1; i <= loopTo2; i++)
 //                                        {
-//                                            Unit localOtherForm5() { object argIndex1 = (object)i; var ret = withBlock1.OtherForm(ref argIndex1); return ret; }
+//                                            Unit localOtherForm5() { object argIndex1 = (object)i; var ret = withBlock1.OtherForm(argIndex1); return ret; }
 
 //                                            if (localOtherForm5().Status_Renamed == "他形態")
 //                                            {
-//                                                Unit localOtherForm4() { object argIndex1 = (object)i; var ret = withBlock1.OtherForm(ref argIndex1); return ret; }
+//                                                Unit localOtherForm4() { object argIndex1 = (object)i; var ret = withBlock1.OtherForm(argIndex1); return ret; }
 
 //                                                localOtherForm4().Status_Renamed = "破棄";
 //                                            }
@@ -15430,20 +15430,20 @@
 //                            u = currentU1;
 //                            {
 //                                var withBlock2 = u.CurrentForm();
-//                                if ((withBlock2.Name ?? "") == (uname ?? "") & withBlock2.Status_Renamed != "破棄")
+//                                if ((withBlock2.Name ?? "") == (uname ?? "") && withBlock2.Status_Renamed != "破棄")
 //                                {
 //                                    withBlock2.Escape(opt);
 //                                    object argIndex5 = (object)1;
-//                                    withBlock2.Pilot(ref argIndex5).GetOff();
+//                                    withBlock2.Pilot(argIndex5).GetOff();
 //                                    withBlock2.Status_Renamed = "破棄";
 //                                    var loopTo3 = withBlock2.CountOtherForm();
-//                                    for (i = (short)1; i <= loopTo3; i++)
+//                                    for (i = 1; i <= loopTo3; i++)
 //                                    {
-//                                        Unit localOtherForm7() { object argIndex1 = (object)i; var ret = withBlock2.OtherForm(ref argIndex1); return ret; }
+//                                        Unit localOtherForm7() { object argIndex1 = (object)i; var ret = withBlock2.OtherForm(argIndex1); return ret; }
 
 //                                        if (localOtherForm7().Status_Renamed == "他形態")
 //                                        {
-//                                            Unit localOtherForm6() { object argIndex1 = (object)i; var ret = withBlock2.OtherForm(ref argIndex1); return ret; }
+//                                            Unit localOtherForm6() { object argIndex1 = (object)i; var ret = withBlock2.OtherForm(argIndex1); return ret; }
 
 //                                            localOtherForm6().Status_Renamed = "破棄";
 //                                        }
@@ -15460,7 +15460,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "RemoveUnitの引数の数が違います";
+//                        Event.EventErrorMessage = "RemoveUnitの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 430173
@@ -15482,9 +15482,9 @@
 //        {
 //            int ExecRenameBGMCmdRet = default;
 //            string bname, vname;
-//            if ((int)ArgNum != 3)
+//            if (ArgNum != 3)
 //            {
-//                Event_Renamed.EventErrorMessage = "RenameBGMの引数の数が違います";
+//                Event.EventErrorMessage = "RenameBGMの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 430445
@@ -15517,7 +15517,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "BGM名が不正です";
+//                        Event.EventErrorMessage = "BGM名が不正です";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 430755
@@ -15531,13 +15531,13 @@
 //                    }
 //            }
 
-//            if (!Expression.IsGlobalVariableDefined(ref vname))
+//            if (!Expression.IsGlobalVariableDefined(vname))
 //            {
-//                Expression.DefineGlobalVariable(ref vname);
+//                Expression.DefineGlobalVariable(vname);
 //            }
 
 //            string argnew_value = GetArgAsString(3);
-//            Expression.SetVariableAsString(ref vname, ref argnew_value);
+//            Expression.SetVariableAsString(vname, argnew_value);
 //            ExecRenameBGMCmdRet = LineNum + 1;
 //            return ExecRenameBGMCmdRet;
 //        }
@@ -15546,9 +15546,9 @@
 //        {
 //            int ExecRenameFileCmdRet = default;
 //            string fname1, fname2;
-//            if ((int)ArgNum != 3)
+//            if (ArgNum != 3)
 //            {
-//                Event_Renamed.EventErrorMessage = "RenameFileコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "RenameFileコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 431259
@@ -15564,7 +15564,7 @@
 //            fname2 = SRC.ScenarioPath + GetArgAsString(3);
 //            if (Strings.InStr(fname1, @"..\") > 0)
 //            {
-//                Event_Renamed.EventErrorMessage = @"ファイル指定に「..\」は使えません";
+//                Event.EventErrorMessage = @"ファイル指定に「..\」は使えません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 431574
@@ -15578,7 +15578,7 @@
 
 //            if (Strings.InStr(fname1, "../") > 0)
 //            {
-//                Event_Renamed.EventErrorMessage = "ファイル指定に「../」は使えません";
+//                Event.EventErrorMessage = "ファイル指定に「../」は使えません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 431745
@@ -15592,7 +15592,7 @@
 
 //            if (Strings.InStr(fname2, @"..\") > 0)
 //            {
-//                Event_Renamed.EventErrorMessage = @"ファイル指定に「..\」は使えません";
+//                Event.EventErrorMessage = @"ファイル指定に「..\」は使えません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 431916
@@ -15606,7 +15606,7 @@
 
 //            if (Strings.InStr(fname2, "../") > 0)
 //            {
-//                Event_Renamed.EventErrorMessage = "ファイル指定に「../」は使えません";
+//                Event.EventErrorMessage = "ファイル指定に「../」は使えません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 432087
@@ -15618,9 +15618,9 @@
 //                 */
 //            }
 
-//            if (!GeneralLib.FileExists(ref fname1))
+//            if (!GeneralLib.FileExists(fname1))
 //            {
-//                Event_Renamed.EventErrorMessage = "元のファイル" + "「" + fname1 + "」が見つかりません";
+//                Event.EventErrorMessage = "元のファイル" + "「" + fname1 + "」が見つかりません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 432267
@@ -15632,9 +15632,9 @@
 //                 */
 //            }
 
-//            if (GeneralLib.FileExists(ref fname2))
+//            if (GeneralLib.FileExists(fname2))
 //            {
-//                Event_Renamed.EventErrorMessage = "既に" + "「" + fname2 + "」が存在しています";
+//                Event.EventErrorMessage = "既に" + "「" + fname2 + "」が存在しています";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 432435
@@ -15655,9 +15655,9 @@
 //        {
 //            int ExecRenameTermCmdRet = default;
 //            string tname, vname;
-//            if ((int)ArgNum != 3)
+//            if (ArgNum != 3)
 //            {
-//                Event_Renamed.EventErrorMessage = "RenameTermの引数の数が違います";
+//                Event.EventErrorMessage = "RenameTermの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 432775
@@ -15688,13 +15688,13 @@
 //                    }
 //            }
 
-//            if (!Expression.IsGlobalVariableDefined(ref vname))
+//            if (!Expression.IsGlobalVariableDefined(vname))
 //            {
-//                Expression.DefineGlobalVariable(ref vname);
+//                Expression.DefineGlobalVariable(vname);
 //            }
 
 //            string argnew_value = GetArgAsString(3);
-//            Expression.SetVariableAsString(ref vname, ref argnew_value);
+//            Expression.SetVariableAsString(vname, argnew_value);
 //            ExecRenameTermCmdRet = LineNum + 1;
 //            return ExecRenameTermCmdRet;
 //        }
@@ -15706,9 +15706,9 @@
 //            Pilot p1, p2;
 //            short i;
 //            bool is_support;
-//            if ((int)ArgNum != 3)
+//            if (ArgNum != 3)
 //            {
-//                Event_Renamed.EventErrorMessage = "ReplacePilotの引数の数が違います";
+//                Event.EventErrorMessage = "ReplacePilotの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 433545
@@ -15722,11 +15722,11 @@
 
 //            p1 = GetArgAsPilot(2);
 //            pname = GetArgAsString(3);
-//            bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(ref argIndex1); return ret; }
+//            bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
 
 //            if (!localIsDefined())
 //            {
-//                Event_Renamed.EventErrorMessage = "パイロット名が間違っています";
+//                Event.EventErrorMessage = "パイロット名が間違っています";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 433766
@@ -15739,22 +15739,22 @@
 //            }
 
 //            string arggid = "";
-//            p2 = SRC.PList.Add(ref pname, p1.Level, ref p1.Party, gid: ref arggid);
+//            p2 = SRC.PList.Add(pname, p1.Level, p1.Party, gid: arggid);
 //            {
 //                var withBlock = p2;
 //                withBlock.FullRecover();
 //                withBlock.Morale = p1.Morale;
 //                withBlock.Exp = p1.Exp;
-//                if (withBlock.Data.SP > 0 & p1.MaxSP > 0)
+//                if (withBlock.Data.SP > 0 && p1.MaxSP > 0)
 //                {
 //                    withBlock.SP = withBlock.MaxSP * p1.SP / p1.MaxSP;
 //                }
 
 //                string argsname1 = "霊力";
-//                if (withBlock.IsSkillAvailable(ref argsname1))
+//                if (withBlock.IsSkillAvailable(argsname1))
 //                {
 //                    string argsname = "霊力";
-//                    if (p1.IsSkillAvailable(ref argsname))
+//                    if (p1.IsSkillAvailable(argsname))
 //                    {
 //                        withBlock.Plana = withBlock.MaxPlana() * p1.Plana / p1.MaxPlana();
 //                    }
@@ -15772,7 +15772,7 @@
 //                    for (i = 1; i <= loopTo; i++)
 //                    {
 //                        object argIndex1 = i;
-//                        if (ReferenceEquals(withBlock1.Support(ref argIndex1), p1))
+//                        if (ReferenceEquals(withBlock1.Support(argIndex1), p1))
 //                        {
 //                            is_support = true;
 //                            break;
@@ -15780,7 +15780,7 @@
 //                    }
 
 //                    string argfname = "追加サポート";
-//                    if (withBlock1.IsFeatureAvailable(ref argfname))
+//                    if (withBlock1.IsFeatureAvailable(argfname))
 //                    {
 //                        if (ReferenceEquals(withBlock1.AdditionalSupport(), p1))
 //                        {
@@ -15790,11 +15790,11 @@
 
 //                    if (is_support)
 //                    {
-//                        withBlock1.ReplaceSupport(ref p2, ref (object)p1.ID);
+//                        withBlock1.ReplaceSupport(p2, (object)p1.ID);
 //                    }
 //                    else
 //                    {
-//                        withBlock1.ReplacePilot(ref p2, ref (object)p1.ID);
+//                        withBlock1.ReplacePilot(p2, (object)p1.ID);
 //                    }
 //                }
 
@@ -15813,9 +15813,9 @@
 //            int file_head;
 //            int i;
 //            string buf;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "Requireコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Requireコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 435110
@@ -15832,37 +15832,37 @@
 
 //            // ADD START マージ
 //            // Requireコマンドで読み込まれたことを記録済み？
-//            var loopTo = Information.UBound(Event_Renamed.AdditionalEventFileNames);
+//            var loopTo = Information.UBound(Event.AdditionalEventFileNames);
 //            for (i = 1; i <= loopTo; i++)
 //            {
-//                if ((GetArgAsString(2) ?? "") == (Event_Renamed.AdditionalEventFileNames[i] ?? ""))
+//                if ((GetArgAsString(2) ?? "") == (Event.AdditionalEventFileNames[i] ?? ""))
 //                {
 //                    return ExecRequireCmdRet;
 //                }
 //            }
 
 //            // 読み込んだイベントファイルを記録
-//            Array.Resize(ref Event_Renamed.AdditionalEventFileNames, Information.UBound(Event_Renamed.AdditionalEventFileNames) + 1 + 1);
-//            Event_Renamed.AdditionalEventFileNames[Information.UBound(Event_Renamed.AdditionalEventFileNames)] = GetArgAsString(2);
+//            Array.Resize(Event.AdditionalEventFileNames, Information.UBound(Event.AdditionalEventFileNames) + 1 + 1);
+//            Event.AdditionalEventFileNames[Information.UBound(Event.AdditionalEventFileNames)] = GetArgAsString(2);
 //            // ADD END マージ
 
 //            // 読み込むファイル名
 //            fname = SRC.ScenarioPath + GetArgAsString(2);
 
 //            // 既に読み込まれている場合はスキップ
-//            var loopTo1 = Information.UBound(Event_Renamed.EventFileNames);
+//            var loopTo1 = Information.UBound(Event.EventFileNames);
 //            for (i = 1; i <= loopTo1; i++)
 //            {
-//                if ((fname ?? "") == (Event_Renamed.EventFileNames[i] ?? ""))
+//                if ((fname ?? "") == (Event.EventFileNames[i] ?? ""))
 //                {
 //                    return ExecRequireCmdRet;
 //                }
 //            }
 
 //            // ファイルが存在する？
-//            if (!GeneralLib.FileExists(ref fname))
+//            if (!GeneralLib.FileExists(fname))
 //            {
-//                Event_Renamed.EventErrorMessage = "指定されたファイル「" + fname + "」が見つかりません。";
+//                Event.EventErrorMessage = "指定されたファイル「" + fname + "」が見つかりません。";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 436428
@@ -15875,67 +15875,67 @@
 //            }
 
 //            // ファイルをロード
-//            file_head = Information.UBound(Event_Renamed.EventData) + 1;
-//            Event_Renamed.LoadEventData2(ref fname, Information.UBound(Event_Renamed.EventData));
+//            file_head = Information.UBound(Event.EventData) + 1;
+//            Event.LoadEventData2(fname, Information.UBound(Event.EventData));
 
 //            // エラー表示用にサイズを大きく取っておく
-//            Array.Resize(ref Event_Renamed.EventData, Information.UBound(Event_Renamed.EventData) + 1 + 1);
-//            Array.Resize(ref Event_Renamed.EventLineNum, Information.UBound(Event_Renamed.EventData) + 1);
-//            Event_Renamed.EventData[Information.UBound(Event_Renamed.EventData)] = "";
-//            Event_Renamed.EventLineNum[Information.UBound(Event_Renamed.EventData)] = (short)(Event_Renamed.EventLineNum[Information.UBound(Event_Renamed.EventData) - 1] + 1);
+//            Array.Resize(Event.EventData, Information.UBound(Event.EventData) + 1 + 1);
+//            Array.Resize(Event.EventLineNum, Information.UBound(Event.EventData) + 1);
+//            Event.EventData[Information.UBound(Event.EventData)] = "";
+//            Event.EventLineNum[Information.UBound(Event.EventData)] = (Event.EventLineNum[Information.UBound(Event.EventData) - 1] + 1);
 
 //            // 複数行に分割されたコマンドを結合
-//            var loopTo2 = Information.UBound(Event_Renamed.EventData) - 1;
+//            var loopTo2 = Information.UBound(Event.EventData) - 1;
 //            for (i = file_head; i <= loopTo2; i++)
 //            {
-//                if (Strings.Right(Event_Renamed.EventData[i], 1) == "_")
+//                if (Strings.Right(Event.EventData[i], 1) == "_")
 //                {
-//                    Event_Renamed.EventData[i + 1] = Strings.Left(Event_Renamed.EventData[i], Strings.Len(Event_Renamed.EventData[i]) - 1) + Event_Renamed.EventData[i + 1];
-//                    Event_Renamed.EventData[i] = " ";
+//                    Event.EventData[i + 1] = Strings.Left(Event.EventData[i], Strings.Len(Event.EventData[i]) - 1) + Event.EventData[i + 1];
+//                    Event.EventData[i] = " ";
 //                }
 //            }
 
 //            // ラベルを登録
-//            var loopTo3 = Information.UBound(Event_Renamed.EventData);
+//            var loopTo3 = Information.UBound(Event.EventData);
 //            for (i = file_head; i <= loopTo3; i++)
 //            {
-//                buf = Event_Renamed.EventData[i];
+//                buf = Event.EventData[i];
 //                if (Strings.Right(buf, 1) == ":")
 //                {
 //                    string arglname = Strings.Left(buf, Strings.Len(buf) - 1);
-//                    Event_Renamed.AddLabel(ref arglname, i);
+//                    Event.AddLabel(arglname, i);
 //                }
 //            }
 
 //            // コマンドデータ配列を設定
-//            if (Information.UBound(Event_Renamed.EventData) > Information.UBound(Event_Renamed.EventCmd))
+//            if (Information.UBound(Event.EventData) > Information.UBound(Event.EventCmd))
 //            {
-//                Array.Resize(ref Event_Renamed.EventCmd, Information.UBound(Event_Renamed.EventData) + 1);
-//                i = Information.UBound(Event_Renamed.EventData);
-//                while (Event_Renamed.EventCmd[i] is null)
+//                Array.Resize(Event.EventCmd, Information.UBound(Event.EventData) + 1);
+//                i = Information.UBound(Event.EventData);
+//                while (Event.EventCmd[i] is null)
 //                {
-//                    Event_Renamed.EventCmd[i] = new CmdData();
-//                    Event_Renamed.EventCmd[i].LineNum = i;
+//                    Event.EventCmd[i] = new CmdData();
+//                    Event.EventCmd[i].LineNum = i;
 //                    i = i - 1;
 //                }
 //            }
 
-//            var loopTo4 = Information.UBound(Event_Renamed.EventData);
+//            var loopTo4 = Information.UBound(Event.EventData);
 //            for (i = file_head; i <= loopTo4; i++)
-//                Event_Renamed.EventCmd[i].Name = Event_Renamed.CmdType.NullCmd;
+//                Event.EventCmd[i].Name = Event.CmdType.NullCmd;
 
 //            // 読み込んだイベントファイルを記録
-//            Array.Resize(ref Event_Renamed.AdditionalEventFileNames, Information.UBound(Event_Renamed.AdditionalEventFileNames) + 1 + 1);
-//            Event_Renamed.AdditionalEventFileNames[Information.UBound(Event_Renamed.AdditionalEventFileNames)] = GetArgAsString(2);
+//            Array.Resize(Event.AdditionalEventFileNames, Information.UBound(Event.AdditionalEventFileNames) + 1 + 1);
+//            Event.AdditionalEventFileNames[Information.UBound(Event.AdditionalEventFileNames)] = GetArgAsString(2);
 //            return ExecRequireCmdRet;
 //        }
 
 //        private int ExecRestoreEventCmd()
 //        {
 //            int ExecRestoreEventCmdRet = default;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "RestoreEventコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "RestoreEventコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 439974
@@ -15948,7 +15948,7 @@
 //            }
 
 //            string arglname = GetArgAsString(2);
-//            Event_Renamed.RestoreLabel(ref arglname);
+//            Event.RestoreLabel(arglname);
 //            ExecRestoreEventCmdRet = LineNum + 1;
 //            return ExecRestoreEventCmdRet;
 //        }
@@ -15965,14 +15965,14 @@
 //            {
 //                case 3:
 //                    {
-//                        uname = GetArgAsString((short)3);
+//                        uname = GetArgAsString(3);
 
 //                        // 指定したユニットに既に乗っている場合は何もしない
 //                        if (p.Unit_Renamed is object)
 //                        {
 //                            {
 //                                var withBlock = p.Unit_Renamed;
-//                                if ((withBlock.Name ?? "") == (uname ?? "") | (withBlock.ID ?? "") == (uname ?? ""))
+//                                if ((withBlock.Name ?? "") == (uname ?? "") || (withBlock.ID ?? "") == (uname ?? ""))
 //                                {
 //                                    ExecRideCmdRet = LineNum + 1;
 //                                    return ExecRideCmdRet;
@@ -15982,10 +15982,10 @@
 
 //                        p.GetOff();
 //                        object argIndex1 = (object)uname;
-//                        u = SRC.UList.Item(ref argIndex1);
+//                        u = SRC.UList.Item(argIndex1);
 //                        if (u is null)
 //                        {
-//                            Event_Renamed.EventErrorMessage = "ユニット名が間違っています";
+//                            Event.EventErrorMessage = "ユニット名が間違っています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 440813
@@ -16000,7 +16000,7 @@
 //                        // ユニットＩＤで指定された場合
 //                        if ((u.ID ?? "") == (uname ?? ""))
 //                        {
-//                            p.Ride(ref u.CurrentForm());
+//                            p.Ride(u.CurrentForm());
 //                            ExecRideCmdRet = LineNum + 1;
 //                            return ExecRideCmdRet;
 //                        }
@@ -16008,25 +16008,25 @@
 //                        // 大文字・小文字、ひらがな・かたかなの違いを正しく判定できるように、
 //                        // 名前をデータのそれとあわせる
 //                        object argIndex2 = (object)uname;
-//                        if (SRC.UDList.IsDefined(ref argIndex2))
+//                        if (SRC.UDList.IsDefined(argIndex2))
 //                        {
-//                            UnitData localItem() { object argIndex1 = (object)uname; var ret = SRC.UDList.Item(ref argIndex1); return ret; }
+//                            UnitData localItem() { object argIndex1 = (object)uname; var ret = SRC.UDList.Item(argIndex1); return ret; }
 
 //                            uname = localItem().Name;
 //                        }
 
 //                        // Rideコマンドで乗せ換えられたユニット＆パイロットの履歴を更新
-//                        if ((uname ?? "") == (Event_Renamed.LastUnitName ?? ""))
+//                        if ((uname ?? "") == (Event.LastUnitName ?? ""))
 //                        {
-//                            Array.Resize(ref Event_Renamed.LastPilotID, Information.UBound(Event_Renamed.LastPilotID) + 1 + 1);
+//                            Array.Resize(Event.LastPilotID, Information.UBound(Event.LastPilotID) + 1 + 1);
 //                        }
 //                        else
 //                        {
-//                            Event_Renamed.LastUnitName = uname;
-//                            Event_Renamed.LastPilotID = new string[2];
+//                            Event.LastUnitName = uname;
+//                            Event.LastPilotID = new string[2];
 //                        }
 
-//                        Event_Renamed.LastPilotID[Information.UBound(Event_Renamed.LastPilotID)] = p.ID;
+//                        Event.LastPilotID[Information.UBound(Event.LastPilotID)] = p.ID;
 
 //                        // パイロットが足りていないものを優先
 //                        foreach (Unit currentU in SRC.UList)
@@ -16034,19 +16034,19 @@
 //                            u = currentU;
 //                            {
 //                                var withBlock1 = u;
-//                                if ((withBlock1.Name ?? "") == (uname ?? "") & (withBlock1.Party0 ?? "") == (p.Party ?? "") & withBlock1.Status_Renamed != "破棄")
+//                                if ((withBlock1.Name ?? "") == (uname ?? "") && (withBlock1.Party0 ?? "") == (p.Party ?? "") && withBlock1.Status_Renamed != "破棄")
 //                                {
 //                                    string argfname = "ダミーユニット";
-//                                    if (p.IsSupport(ref u) & !withBlock1.IsFeatureAvailable(ref argfname))
+//                                    if (p.IsSupport(u) && !withBlock1.IsFeatureAvailable(argfname))
 //                                    {
-//                                        p.Ride(ref withBlock1.CurrentForm());
+//                                        p.Ride(withBlock1.CurrentForm());
 //                                        ExecRideCmdRet = LineNum + 1;
 //                                        return ExecRideCmdRet;
 //                                    }
 
 //                                    if (withBlock1.CurrentForm().CountPilot() < Math.Abs(withBlock1.Data.PilotNum))
 //                                    {
-//                                        p.Ride(ref withBlock1.CurrentForm());
+//                                        p.Ride(withBlock1.CurrentForm());
 //                                        ExecRideCmdRet = LineNum + 1;
 //                                        return ExecRideCmdRet;
 //                                    }
@@ -16058,25 +16058,25 @@
 //                        foreach (Unit currentU1 in SRC.UList)
 //                        {
 //                            u = currentU1;
-//                            if ((u.Name ?? "") == (uname ?? "") & (u.Party0 ?? "") == (p.Party ?? "") & u.Status_Renamed != "破棄")
+//                            if ((u.Name ?? "") == (uname ?? "") && (u.Party0 ?? "") == (p.Party ?? "") && u.Status_Renamed != "破棄")
 //                            {
-//                                if ((int)u.CurrentForm().CountPilot() > 0)
+//                                if (u.CurrentForm().CountPilot() > 0)
 //                                {
 //                                    // 今までにRideコマンドで指定されているか判定
-//                                    var loopTo = (short)(Information.UBound(Event_Renamed.LastPilotID) - 1);
-//                                    for (i = (short)1; i <= loopTo; i++)
+//                                    var loopTo = (Information.UBound(Event.LastPilotID) - 1);
+//                                    for (i = 1; i <= loopTo; i++)
 //                                    {
-//                                        if ((u.CurrentForm().MainPilot().ID ?? "") == (Event_Renamed.LastPilotID[(int)i] ?? ""))
+//                                        if ((u.CurrentForm().MainPilot().ID ?? "") == (Event.LastPilotID[i] ?? ""))
 //                                        {
 //                                            goto NextUnit;
 //                                        }
 //                                    }
 
 //                                    object argIndex3 = (object)1;
-//                                    u.CurrentForm().Pilot(ref argIndex3).GetOff(true);
+//                                    u.CurrentForm().Pilot(argIndex3).GetOff(true);
 //                                }
 
-//                                p.Ride(ref u.CurrentForm());
+//                                p.Ride(u.CurrentForm());
 //                                ExecRideCmdRet = LineNum + 1;
 //                                return ExecRideCmdRet;
 //                            }
@@ -16089,24 +16089,24 @@
 //                        foreach (Unit currentU2 in SRC.UList)
 //                        {
 //                            u = currentU2;
-//                            if ((u.Name ?? "") == (uname ?? "") & (u.Party0 ?? "") == (p.Party ?? "") & u.Status_Renamed != "破棄")
+//                            if ((u.Name ?? "") == (uname ?? "") && (u.Party0 ?? "") == (p.Party ?? "") && u.Status_Renamed != "破棄")
 //                            {
-//                                if ((int)u.CurrentForm().CountPilot() > 0)
+//                                if (u.CurrentForm().CountPilot() > 0)
 //                                {
 //                                    object argIndex4 = (object)1;
-//                                    u.CurrentForm().Pilot(ref argIndex4).GetOff(true);
+//                                    u.CurrentForm().Pilot(argIndex4).GetOff(true);
 //                                }
 
-//                                p.Ride(ref u.CurrentForm());
+//                                p.Ride(u.CurrentForm());
 //                                // 乗り込み履歴を初期化
-//                                Event_Renamed.LastPilotID = new string[2];
-//                                Event_Renamed.LastPilotID[1] = p.ID;
+//                                Event.LastPilotID = new string[2];
+//                                Event.LastPilotID[1] = p.ID;
 //                                ExecRideCmdRet = LineNum + 1;
 //                                return ExecRideCmdRet;
 //                            }
 //                        }
 
-//                        Event_Renamed.EventErrorMessage = p.Name + "が乗り込むための" + uname + "が存在しません";
+//                        Event.EventErrorMessage = p.Name + "が乗り込むための" + uname + "が存在しません";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 443670
@@ -16122,32 +16122,32 @@
 //                case 2:
 //                    {
 //                        // 指定したユニットに既に乗っている場合は何もしない
-//                        if (ReferenceEquals(p.Unit_Renamed, Event_Renamed.SelectedUnitForEvent))
+//                        if (ReferenceEquals(p.Unit_Renamed, Event.SelectedUnitForEvent))
 //                        {
 //                            ExecRideCmdRet = LineNum + 1;
 //                            return ExecRideCmdRet;
 //                        }
 
 //                        {
-//                            var withBlock2 = Event_Renamed.SelectedUnitForEvent;
-//                            if (withBlock2.CountPilot() == Math.Abs(withBlock2.Data.PilotNum) & !p.IsSupport(ref Event_Renamed.SelectedUnitForEvent))
+//                            var withBlock2 = Event.SelectedUnitForEvent;
+//                            if (withBlock2.CountPilot() == Math.Abs(withBlock2.Data.PilotNum) && !p.IsSupport(Event.SelectedUnitForEvent))
 //                            {
 //                                // MOD START マージ
 //                                // .Pilot(1).GetOff
 //                                object argIndex5 = (object)1;
-//                                withBlock2.Pilot(ref argIndex5).GetOff(true);
+//                                withBlock2.Pilot(argIndex5).GetOff(true);
 //                                // MOD END マージ
 //                            }
 //                        }
 
 //                        p.GetOff();
-//                        p.Ride(ref Event_Renamed.SelectedUnitForEvent);
+//                        p.Ride(Event.SelectedUnitForEvent);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Rideコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Rideコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 444397
@@ -16170,33 +16170,33 @@
 //            int ExecSaveDataCmdRet = default;
 //            string fname, save_path = default;
 //            short ret;
-//            if ((int)ArgNum == 2)
+//            if (ArgNum == 2)
 //            {
-//                fname = GetArgAsString((short)2);
+//                fname = GetArgAsString(2);
 //            }
-//            else if ((int)ArgNum == 1)
+//            else if (ArgNum == 1)
 //            {
 //                // 一旦「常に手前に表示」を解除
 //                if (My.MyProject.Forms.frmListBox.Visible)
 //                {
-//                    ret = (short)GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -2, 0, 0, 0, 0, 0x3);
+//                    ret = GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -2, 0, 0, 0, 0, 0x3);
 //                }
 
 //                string argdtitle = "データセーブ";
 //                string argexpr = "セーブデータファイル名";
-//                string argdefault_file = Expression.GetValueAsString(ref argexpr);
+//                string argdefault_file = Expression.GetValueAsString(argexpr);
 //                string argftype = "ｾｰﾌﾞﾃﾞｰﾀ";
 //                string argfsuffix = "src";
 //                string argftype2 = "";
 //                string argfsuffix2 = "";
 //                string argftype3 = "";
 //                string argfsuffix3 = "";
-//                fname = FileDialog.SaveFileDialog(ref argdtitle, ref SRC.ScenarioPath, ref argdefault_file, (short)2, ref argftype, ref argfsuffix, ftype2: ref argftype2, fsuffix2: ref argfsuffix2, ftype3: ref argftype3, fsuffix3: ref argfsuffix3);
+//                fname = FileDialog.SaveFileDialog(argdtitle, SRC.ScenarioPath, argdefault_file, 2, argftype, argfsuffix, ftype2: argftype2, fsuffix2: argfsuffix2, ftype3: argftype3, fsuffix3: argfsuffix3);
 
 //                // 再び「常に手前に表示」
 //                if (My.MyProject.Forms.frmListBox.Visible)
 //                {
-//                    ret = (short)GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -1, 0, 0, 0, 0, 0x3);
+//                    ret = GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -1, 0, 0, 0, 0, 0x3);
 //                }
 
 //                // キャンセル？
@@ -16210,12 +16210,12 @@
 //                if (Strings.InStr(fname, @"\") > 0)
 //                {
 //                    string argstr2 = @"\";
-//                    save_path = Strings.Left(fname, (int)GeneralLib.InStr2(ref fname, ref argstr2));
+//                    save_path = Strings.Left(fname, GeneralLib.InStr2(fname, argstr2));
 //                }
 //                // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
 //                if ((FileSystem.Dir(save_path) ?? "") != (FileSystem.Dir(SRC.ScenarioPath) ?? ""))
 //                {
-//                    if ((int)Interaction.MsgBox("セーブファイルはシナリオフォルダにないと読み込めません。" + Constants.vbCr + Constants.vbLf + "このままセーブしますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question)) != 1)
+//                    if (Interaction.MsgBox("セーブファイルはシナリオフォルダにないと読み込めません。" + Constants.vbCr + Constants.vbLf + "このままセーブしますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question)) != 1)
 //                    {
 //                        ExecSaveDataCmdRet = LineNum + 1;
 //                        return ExecSaveDataCmdRet;
@@ -16224,7 +16224,7 @@
 //            }
 //            else
 //            {
-//                Event_Renamed.EventErrorMessage = "SaveDataコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "SaveDataコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 446364
@@ -16239,7 +16239,7 @@
 //            if (!string.IsNullOrEmpty(fname))
 //            {
 //                SRC.UList.Update(); // 追加パイロットを消去
-//                SRC.SaveData(ref fname);
+//                SRC.SaveData(fname);
 //            }
 
 //            ExecSaveDataCmdRet = LineNum + 1;
@@ -16249,9 +16249,9 @@
 //        private int ExecSelectCmd()
 //        {
 //            int ExecSelectCmdRet = default;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "Selectコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Selectコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 446722
@@ -16263,7 +16263,7 @@
 //                 */
 //            }
 
-//            Event_Renamed.SelectedUnitForEvent = GetArgAsUnit(2);
+//            Event.SelectedUnitForEvent = GetArgAsUnit(2);
 //            ExecSelectCmdRet = LineNum + 1;
 //            return ExecSelectCmdRet;
 //        }
@@ -16272,9 +16272,9 @@
 //        {
 //            int ExecSelectTargetCmdRet = default;
 //            string pname;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "SelectTargetコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "SelectTargetコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 447068
@@ -16286,7 +16286,7 @@
 //                 */
 //            }
 
-//            Event_Renamed.SelectedTargetForEvent = GetArgAsUnit(2);
+//            Event.SelectedTargetForEvent = GetArgAsUnit(2);
 //            ExecSelectTargetCmdRet = LineNum + 1;
 //            return ExecSelectTargetCmdRet;
 //        }
@@ -16301,7 +16301,7 @@
 //            late_refresh = false;
 //            Map.MapDrawIsMapOnly = false;
 //            var loopTo = ArgNum;
-//            for (i = (short)2; i <= loopTo; i++)
+//            for (i = 2; i <= loopTo; i++)
 //            {
 //                buf = GetArgAsString(i);
 //                switch (buf ?? "")
@@ -16320,7 +16320,7 @@
 
 //                    default:
 //                        {
-//                            Event_Renamed.EventErrorMessage = "Sepiaコマンドに不正なオプション「" + buf + "」が使われています";
+//                            Event.EventErrorMessage = "Sepiaコマンドに不正なオプション「" + buf + "」が使われています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 447791
@@ -16345,7 +16345,7 @@
 //            string argdraw_option = "非同期";
 //            int argfilter_color = 0;
 //            double argfilter_trans_par = 0d;
-//            GUI.SetupBackground(ref argdraw_mode, ref argdraw_option, filter_color: ref argfilter_color, filter_trans_par: ref argfilter_trans_par);
+//            GUI.SetupBackground(argdraw_mode, argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
 //            foreach (Unit u in SRC.UList)
 //            {
 //                {
@@ -16356,15 +16356,15 @@
 //                        {
 //                            object argIndex1 = withBlock.Name;
 //                            {
-//                                var withBlock1 = SRC.UList.Item(ref argIndex1);
+//                                var withBlock1 = SRC.UList.Item(argIndex1);
 //                                string argfname = "ダミーユニット";
-//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") & withBlock1.BitmapID != 0 & (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") & !withBlock1.IsFeatureAvailable(ref argfname))
+//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable(argfname))
 //                                {
 //                                    u.BitmapID = withBlock1.BitmapID;
 //                                }
 //                                else
 //                                {
-//                                    u.BitmapID = GUI.MakeUnitBitmap(ref u);
+//                                    u.BitmapID = GUI.MakeUnitBitmap(u);
 //                                }
 //                            }
 
@@ -16392,17 +16392,17 @@
 //            var num_result = default(double);
 //            short num;
 //            num = ArgNum;
-//            if ((int)num > 3)
+//            if (num > 3)
 //            {
 //                // 過去のバージョンのシナリオを読み込めるようにするため、
 //                // Setコマンドの後ろの「#」形式のコメントは無視する
-//                if (Strings.Left(GetArg((short)4), 1) == "#")
+//                if (Strings.Left(GetArg(4), 1) == "#")
 //                {
-//                    num = (short)3;
+//                    num = 3;
 //                }
 //                else
 //                {
-//                    Event_Renamed.EventErrorMessage = "Setコマンドの引数の数が違います";
+//                    Event.EventErrorMessage = "Setコマンドの引数の数が違います";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 449659
@@ -16420,7 +16420,7 @@
 //                case 2:
 //                    {
 //                        string argvname = GetArg(2);
-//                        Expression.SetVariableAsLong(ref argvname, 1);
+//                        Expression.SetVariableAsLong(argvname, 1);
 //                        break;
 //                    }
 
@@ -16430,16 +16430,16 @@
 //                        {
 //                            case Expression.ValueType.UndefinedType:
 //                                {
-//                                    etype = Expression.EvalTerm(ref strArgs[3], ref Expression.ValueType.UndefinedType, ref str_result, ref num_result);
+//                                    etype = Expression.EvalTerm(strArgs[3], Expression.ValueType.UndefinedType, str_result, num_result);
 //                                    if (etype == Expression.ValueType.NumericType)
 //                                    {
 //                                        string argvname1 = GetArg(2);
-//                                        Expression.SetVariableAsDouble(ref argvname1, num_result);
+//                                        Expression.SetVariableAsDouble(argvname1, num_result);
 //                                    }
 //                                    else
 //                                    {
 //                                        string argvname2 = GetArg(2);
-//                                        Expression.SetVariableAsString(ref argvname2, ref str_result);
+//                                        Expression.SetVariableAsString(argvname2, str_result);
 //                                    }
 
 //                                    break;
@@ -16448,14 +16448,14 @@
 //                            case Expression.ValueType.StringType:
 //                                {
 //                                    string argvname3 = GetArg(2);
-//                                    Expression.SetVariableAsString(ref argvname3, ref strArgs[3]);
+//                                    Expression.SetVariableAsString(argvname3, strArgs[3]);
 //                                    break;
 //                                }
 
 //                            case Expression.ValueType.NumericType:
 //                                {
 //                                    string argvname4 = GetArg(2);
-//                                    Expression.SetVariableAsDouble(ref argvname4, dblArgs[3]);
+//                                    Expression.SetVariableAsDouble(argvname4, dblArgs[3]);
 //                                    break;
 //                                }
 //                        }
@@ -16478,23 +16478,23 @@
 //            {
 //                case 4:
 //                    {
-//                        u = GetArgAsUnit((short)2);
-//                        wname = GetArgAsString((short)3);
-//                        num = (short)GetArgAsLong((short)4);
+//                        u = GetArgAsUnit(2);
+//                        wname = GetArgAsString(3);
+//                        num = GetArgAsLong(4);
 //                        break;
 //                    }
 
 //                case 3:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
-//                        wname = GetArgAsString((short)2);
-//                        num = (short)GetArgAsLong((short)3);
+//                        u = Event.SelectedUnitForEvent;
+//                        wname = GetArgAsString(2);
+//                        num = GetArgAsLong(3);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "SetBulletコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "SetBulletコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 451174
@@ -16510,10 +16510,10 @@
 
 //            if (Information.IsNumeric(wname))
 //            {
-//                wid = (short)GeneralLib.StrToLng(ref wname);
-//                if ((int)wid < 1 | u.CountWeapon() < wid)
+//                wid = GeneralLib.StrToLng(wname);
+//                if (wid < 1 || u.CountWeapon() < wid)
 //                {
-//                    Event_Renamed.EventErrorMessage = "武器の番号「" + wname + "」が間違っています";
+//                    Event.EventErrorMessage = "武器の番号「" + wname + "」が間違っています";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 451471
@@ -16528,7 +16528,7 @@
 //            else
 //            {
 //                var loopTo = u.CountWeapon();
-//                for (wid = (short)1; wid <= loopTo; wid++)
+//                for (wid = 1; wid <= loopTo; wid++)
 //                {
 //                    if ((u.Weapon(wid).Name ?? "") == (wname ?? ""))
 //                    {
@@ -16536,9 +16536,9 @@
 //                    }
 //                }
 
-//                if ((int)wid < 1 | u.CountWeapon() < wid)
+//                if (wid < 1 || u.CountWeapon() < wid)
 //                {
-//                    Event_Renamed.EventErrorMessage = u.Name + "は武器「" + wname + "」を持っていません";
+//                    Event.EventErrorMessage = u.Name + "は武器「" + wname + "」を持っていません";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 451756
@@ -16551,7 +16551,7 @@
 //                }
 //            }
 
-//            u.SetBullet(wid, (short)GeneralLib.MinLng(num, u.MaxBullet(wid)));
+//            u.SetBullet(wid, GeneralLib.MinLng(num, u.MaxBullet(wid)));
 //            ExecSetBulletCmdRet = LineNum + 1;
 //            return ExecSetBulletCmdRet;
 //        }
@@ -16567,14 +16567,14 @@
 //            {
 //                case 4:
 //                    {
-//                        pname = GetArgAsString((short)2);
+//                        pname = GetArgAsString(2);
 //                        object argIndex1 = (object)pname;
-//                        u = SRC.UList.Item2(ref argIndex1);
+//                        u = SRC.UList.Item2(argIndex1);
 //                        if (u is null)
 //                        {
 //                            {
 //                                var withBlock = SRC.PList;
-//                                bool localIsDefined1() { object argIndex1 = (object)pname; var ret = withBlock.IsDefined(ref argIndex1); return ret; }
+//                                bool localIsDefined1() { object argIndex1 = (object)pname; var ret = withBlock.IsDefined(argIndex1); return ret; }
 
 //                                if (!localIsDefined1())
 //                                {
@@ -16582,14 +16582,14 @@
 //                                    if (Strings.InStr(pname0, "(") > 0)
 //                                    {
 //                                        string argstr2 = "(";
-//                                        pname0 = Strings.Left(pname0, (int)GeneralLib.InStr2(ref pname0, ref argstr2) - 1);
+//                                        pname0 = Strings.Left(pname0, GeneralLib.InStr2(pname0, argstr2) - 1);
 //                                    }
 
-//                                    bool localIsDefined() { object argIndex1 = (object)pname0; var ret = withBlock.IsDefined(ref argIndex1); return ret; }
+//                                    bool localIsDefined() { object argIndex1 = (object)pname0; var ret = withBlock.IsDefined(argIndex1); return ret; }
 
 //                                    if (!localIsDefined())
 //                                    {
-//                                        Event_Renamed.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
+//                                        Event.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
 //                                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 452698
@@ -16601,13 +16601,13 @@
 //                                         */
 //                                    }
 
-//                                    Pilot localItem() { object argIndex1 = (object)pname0; var ret = withBlock.Item(ref argIndex1); return ret; }
+//                                    Pilot localItem() { object argIndex1 = (object)pname0; var ret = withBlock.Item(argIndex1); return ret; }
 
 //                                    u = localItem().Unit_Renamed;
 //                                }
 //                                else
 //                                {
-//                                    Pilot localItem1() { object argIndex1 = (object)pname; var ret = withBlock.Item(ref argIndex1); return ret; }
+//                                    Pilot localItem1() { object argIndex1 = (object)pname; var ret = withBlock.Item(argIndex1); return ret; }
 
 //                                    u = localItem1().Unit_Renamed;
 //                                }
@@ -16615,7 +16615,7 @@
 
 //                            if (u is null)
 //                            {
-//                                Event_Renamed.EventErrorMessage = "「" + pname + "」はユニットに乗っていません";
+//                                Event.EventErrorMessage = "「" + pname + "」はユニットに乗っていません";
 //                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 452962
@@ -16627,9 +16627,9 @@
 //                                 */
 //                            }
 //                        }
-//                        else if ((int)u.CountPilot() == 0)
+//                        else if (u.CountPilot() == 0)
 //                        {
-//                            Event_Renamed.EventErrorMessage = "指定されたユニットにはパイロットが乗っていません";
+//                            Event.EventErrorMessage = "指定されたユニットにはパイロットが乗っていません";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 453108
@@ -16641,17 +16641,17 @@
 //                             */
 //                        }
 
-//                        sit = GetArgAsString((short)3);
-//                        selected_msg = GetArgAsString((short)4);
+//                        sit = GetArgAsString(3);
+//                        selected_msg = GetArgAsString(4);
 //                        break;
 //                    }
 
 //                case 3:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
-//                        if ((int)u.CountPilot() == 0)
+//                        u = Event.SelectedUnitForEvent;
+//                        if (u.CountPilot() == 0)
 //                        {
-//                            Event_Renamed.EventErrorMessage = "指定されたユニットにはパイロットが乗っていません";
+//                            Event.EventErrorMessage = "指定されたユニットにはパイロットが乗っていません";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 453392
@@ -16663,14 +16663,14 @@
 //                             */
 //                        }
 
-//                        sit = GetArgAsString((short)2);
-//                        selected_msg = GetArgAsString((short)3);
+//                        sit = GetArgAsString(2);
+//                        selected_msg = GetArgAsString(3);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "SetMessageコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "SetMessageコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 453587
@@ -16688,20 +16688,20 @@
 //            {
 //                // メッセージ用変数を削除
 //                string argvar_name = "Message(" + u.MainPilot().ID + "," + sit + ")";
-//                Expression.UndefineVariable(ref argvar_name);
+//                Expression.UndefineVariable(argvar_name);
 //            }
 //            else if (!string.IsNullOrEmpty(pname0))
 //            {
 //                // 表情指定付きメッセージをローカル変数として登録する
 //                string argvname1 = "Message(" + u.MainPilot().ID + "," + sit + ")";
 //                string argnew_value = pname + "::" + selected_msg;
-//                Expression.SetVariableAsString(ref argvname1, ref argnew_value);
+//                Expression.SetVariableAsString(argvname1, argnew_value);
 //            }
 //            else
 //            {
 //                // メッセージをローカル変数として登録する
 //                string argvname = "Message(" + u.MainPilot().ID + "," + sit + ")";
-//                Expression.SetVariableAsString(ref argvname, ref selected_msg);
+//                Expression.SetVariableAsString(argvname, selected_msg);
 //            }
 
 //            ExecSetMessageCmdRet = LineNum + 1;
@@ -16718,13 +16718,13 @@
 //            {
 //                case 3:
 //                    {
-//                        pname1 = Event_Renamed.SelectedUnitForEvent.MainPilot().Name;
-//                        pname2 = GetArgAsString((short)2);
-//                        bool localIsDefined() { object argIndex1 = (object)pname2; var ret = SRC.PDList.IsDefined(ref argIndex1); return ret; }
+//                        pname1 = Event.SelectedUnitForEvent.MainPilot().Name;
+//                        pname2 = GetArgAsString(2);
+//                        bool localIsDefined() { object argIndex1 = (object)pname2; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
 
 //                        if (!localIsDefined())
 //                        {
-//                            Event_Renamed.EventErrorMessage = "キャラクター名が間違っています";
+//                            Event.EventErrorMessage = "キャラクター名が間違っています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 454582
@@ -16736,21 +16736,21 @@
 //                             */
 //                        }
 
-//                        PilotData localItem() { object argIndex1 = (object)pname2; var ret = SRC.PDList.Item(ref argIndex1); return ret; }
+//                        PilotData localItem() { object argIndex1 = (object)pname2; var ret = SRC.PDList.Item(argIndex1); return ret; }
 
 //                        pname2 = localItem().Name;
-//                        rel = (short)GetArgAsLong((short)3);
+//                        rel = GetArgAsLong(3);
 //                        break;
 //                    }
 
 //                case 4:
 //                    {
-//                        pname1 = GetArgAsString((short)2);
-//                        bool localIsDefined1() { object argIndex1 = (object)pname1; var ret = SRC.PDList.IsDefined(ref argIndex1); return ret; }
+//                        pname1 = GetArgAsString(2);
+//                        bool localIsDefined1() { object argIndex1 = (object)pname1; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
 
 //                        if (!localIsDefined1())
 //                        {
-//                            Event_Renamed.EventErrorMessage = "キャラクター名が間違っています";
+//                            Event.EventErrorMessage = "キャラクター名が間違っています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 454886
@@ -16762,15 +16762,15 @@
 //                             */
 //                        }
 
-//                        PilotData localItem1() { object argIndex1 = (object)pname1; var ret = SRC.PDList.Item(ref argIndex1); return ret; }
+//                        PilotData localItem1() { object argIndex1 = (object)pname1; var ret = SRC.PDList.Item(argIndex1); return ret; }
 
 //                        pname1 = localItem1().Name;
-//                        pname2 = GetArgAsString((short)3);
-//                        bool localIsDefined2() { object argIndex1 = (object)pname2; var ret = SRC.PDList.IsDefined(ref argIndex1); return ret; }
+//                        pname2 = GetArgAsString(3);
+//                        bool localIsDefined2() { object argIndex1 = (object)pname2; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
 
 //                        if (!localIsDefined2())
 //                        {
-//                            Event_Renamed.EventErrorMessage = "キャラクター名が間違っています";
+//                            Event.EventErrorMessage = "キャラクター名が間違っています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 455149
@@ -16782,16 +16782,16 @@
 //                             */
 //                        }
 
-//                        PilotData localItem2() { object argIndex1 = (object)pname2; var ret = SRC.PDList.Item(ref argIndex1); return ret; }
+//                        PilotData localItem2() { object argIndex1 = (object)pname2; var ret = SRC.PDList.Item(argIndex1); return ret; }
 
 //                        pname2 = localItem2().Name;
-//                        rel = (short)GetArgAsLong((short)4);
+//                        rel = GetArgAsLong(4);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "SetRelationコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "SetRelationコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 455367
@@ -16808,34 +16808,34 @@
 //            vname = "関係:" + pname1 + ":" + pname2;
 //            if (rel != 0)
 //            {
-//                if (!Expression.IsGlobalVariableDefined(ref vname))
+//                if (!Expression.IsGlobalVariableDefined(vname))
 //                {
-//                    Expression.DefineGlobalVariable(ref vname);
+//                    Expression.DefineGlobalVariable(vname);
 //                }
 
-//                Expression.SetVariableAsLong(ref vname, rel);
+//                Expression.SetVariableAsLong(vname, rel);
 //            }
-//            else if (Expression.IsGlobalVariableDefined(ref vname))
+//            else if (Expression.IsGlobalVariableDefined(vname))
 //            {
-//                Expression.UndefineVariable(ref vname);
+//                Expression.UndefineVariable(vname);
 //            }
 
 //            // 信頼度補正による気力修正を更新
 //            string argoname = "信頼度補正";
-//            if (Expression.IsOptionDefined(ref argoname))
+//            if (Expression.IsOptionDefined(argoname))
 //            {
 //                object argIndex1 = pname1;
-//                if (SRC.PList.IsDefined(ref argIndex1))
+//                if (SRC.PList.IsDefined(argIndex1))
 //                {
-//                    Pilot localItem3() { object argIndex1 = pname1; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+//                    Pilot localItem3() { object argIndex1 = pname1; var ret = SRC.PList.Item(argIndex1); return ret; }
 
 //                    localItem3().UpdateSupportMod();
 //                }
 
 //                object argIndex2 = pname2;
-//                if (SRC.PList.IsDefined(ref argIndex2))
+//                if (SRC.PList.IsDefined(argIndex2))
 //                {
-//                    Pilot localItem4() { object argIndex1 = pname2; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+//                    Pilot localItem4() { object argIndex1 = pname2; var ret = SRC.PList.Item(argIndex1); return ret; }
 
 //                    localItem4().UpdateSupportMod();
 //                }
@@ -16858,9 +16858,9 @@
 //            var sdata = default(string);
 //            string[] sdata_array;
 //            short i, j;
-//            if ((int)ArgNum != 4 & (int)ArgNum != 5)
+//            if (ArgNum != 4 && ArgNum != 5)
 //            {
-//                Event_Renamed.EventErrorMessage = "SetSkillコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "SetSkillコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 456672
@@ -16873,24 +16873,24 @@
 //            }
 
 //            pname = GetArgAsString(2);
-//            bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(ref argIndex1); return ret; }
+//            bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
 
 //            object argIndex1 = pname;
-//            if (SRC.PList.IsDefined(ref argIndex1))
+//            if (SRC.PList.IsDefined(argIndex1))
 //            {
-//                Pilot localItem() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+//                Pilot localItem() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
 //                pname = localItem().ID;
 //            }
 //            else if (localIsDefined())
 //            {
-//                PilotData localItem1() { object argIndex1 = (object)pname; var ret = SRC.PDList.Item(ref argIndex1); return ret; }
+//                PilotData localItem1() { object argIndex1 = (object)pname; var ret = SRC.PDList.Item(argIndex1); return ret; }
 
 //                pname = localItem1().Name;
 //            }
 //            else
 //            {
-//                Event_Renamed.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
+//                Event.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 457050
@@ -16911,18 +16911,18 @@
 
 //            // エリアスが定義されている？
 //            object argIndex3 = sname;
-//            if (SRC.ALDList.IsDefined(ref argIndex3))
+//            if (SRC.ALDList.IsDefined(argIndex3))
 //            {
 //                object argIndex2 = sname;
 //                {
-//                    var withBlock = SRC.ALDList.Item(ref argIndex2);
+//                    var withBlock = SRC.ALDList.Item(argIndex2);
 //                    sname_array = new string[(withBlock.Count + 1)];
 //                    slevel_array = new double[(withBlock.Count + 1)];
 //                    sdata_array = new string[(withBlock.Count + 1)];
 //                    var loopTo = withBlock.Count;
 //                    for (i = 1; i <= loopTo; i++)
 //                    {
-//                        string localLIndex() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.LIndex(ref arglist, 1); withBlock.get_AliasData(i) = arglist; return ret; }
+//                        string localLIndex() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.LIndex(arglist, 1); withBlock.get_AliasData(i) = arglist; return ret; }
 
 //                        if (localLIndex() == "解説")
 //                        {
@@ -16932,7 +16932,7 @@
 //                            }
 //                            else
 //                            {
-//                                sname_array[i] = GeneralLib.LIndex(ref sdata, 1);
+//                                sname_array[i] = GeneralLib.LIndex(sdata, 1);
 //                            }
 
 //                            if (slevel == 0d)
@@ -16972,14 +16972,14 @@
 //                            }
 //                            else
 //                            {
-//                                string localListTail() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.ListTail(ref arglist, 2); withBlock.get_AliasData(i) = arglist; return ret; }
+//                                string localListTail() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.ListTail(arglist, 2); withBlock.get_AliasData(i) = arglist; return ret; }
 
 //                                sdata_array[i] = Strings.Trim(sdata + " " + localListTail());
 //                            }
 
-//                            if (withBlock.get_AliasLevelIsPlusMod(i) | withBlock.get_AliasLevelIsMultMod(i))
+//                            if (withBlock.get_AliasLevelIsPlusMod(i) || withBlock.get_AliasLevelIsMultMod(i))
 //                            {
-//                                sdata_array[i] = GeneralLib.LIndex(ref sdata_array[i], 1) + "Lv" + SrcFormatter.Format(slevel) + " " + GeneralLib.ListTail(ref sdata_array[i], 2);
+//                                sdata_array[i] = GeneralLib.LIndex(sdata_array[i], 1) + "Lv" + SrcFormatter.Format(slevel) + " " + GeneralLib.ListTail(sdata_array[i], 2);
 //                                sdata_array[i] = Strings.Trim(sdata_array[i]);
 //                            }
 //                        }
@@ -16996,7 +16996,7 @@
 //                sdata_array[1] = sdata;
 //            }
 
-//            var loopTo1 = (short)Information.UBound(sname_array);
+//            var loopTo1 = Information.UBound(sname_array);
 //            for (i = 1; i <= loopTo1; i++)
 //            {
 //                sname = sname_array[i];
@@ -17008,66 +17008,66 @@
 //                }
 
 //                // アビリティ一覧表示用にSetSkillが適用された能力の一覧用変数を作成
-//                bool localIsGlobalVariableDefined() { string argvname = "Ability(" + pname + ")"; var ret = Expression.IsGlobalVariableDefined(ref argvname); return ret; }
+//                bool localIsGlobalVariableDefined() { string argvname = "Ability(" + pname + ")"; var ret = Expression.IsGlobalVariableDefined(argvname); return ret; }
 
 //                if (!localIsGlobalVariableDefined())
 //                {
 //                    string argvname = "Ability(" + pname + ")";
-//                    Expression.DefineGlobalVariable(ref argvname);
+//                    Expression.DefineGlobalVariable(argvname);
 //                    slist = sname;
 //                }
 //                else
 //                {
 //                    // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-//                    slist = Conversions.ToString(Event_Renamed.GlobalVariableList["Ability(" + pname + ")"].StringValue);
-//                    var loopTo2 = GeneralLib.LLength(ref slist);
+//                    slist = Conversions.ToString(Event.GlobalVariableList["Ability(" + pname + ")"].StringValue);
+//                    var loopTo2 = GeneralLib.LLength(slist);
 //                    for (j = 1; j <= loopTo2; j++)
 //                    {
-//                        if ((sname ?? "") == (GeneralLib.LIndex(ref slist, j) ?? ""))
+//                        if ((sname ?? "") == (GeneralLib.LIndex(slist, j) ?? ""))
 //                        {
 //                            break;
 //                        }
 //                    }
 
-//                    if (j > GeneralLib.LLength(ref slist))
+//                    if (j > GeneralLib.LLength(slist))
 //                    {
 //                        slist = slist + " " + sname;
 //                    }
 //                }
 
 //                string argvname1 = "Ability(" + pname + ")";
-//                Expression.SetVariableAsString(ref argvname1, ref slist);
+//                Expression.SetVariableAsString(argvname1, slist);
 
 //                // 今回SetSkillが適用された能力sname用変数を作成
 //                vname = "Ability(" + pname + "," + sname + ")";
-//                if (!Expression.IsGlobalVariableDefined(ref vname))
+//                if (!Expression.IsGlobalVariableDefined(vname))
 //                {
-//                    Expression.DefineGlobalVariable(ref vname);
+//                    Expression.DefineGlobalVariable(vname);
 //                }
 
 //                if (!string.IsNullOrEmpty(sdata))
 //                {
 //                    // 別名指定があった場合
 //                    string argnew_value = SrcFormatter.Format(slevel) + " " + sdata;
-//                    Expression.SetVariableAsString(ref vname, ref argnew_value);
+//                    Expression.SetVariableAsString(vname, argnew_value);
 
 //                    // 必要技能用
-//                    if (sdata != "非表示" & GeneralLib.LIndex(ref sdata, 1) != "解説")
+//                    if (sdata != "非表示" && GeneralLib.LIndex(sdata, 1) != "解説")
 //                    {
-//                        vname = "Ability(" + pname + "," + GeneralLib.LIndex(ref sdata, 1) + ")";
-//                        if (!Expression.IsGlobalVariableDefined(ref vname))
+//                        vname = "Ability(" + pname + "," + GeneralLib.LIndex(sdata, 1) + ")";
+//                        if (!Expression.IsGlobalVariableDefined(vname))
 //                        {
-//                            Expression.DefineGlobalVariable(ref vname);
+//                            Expression.DefineGlobalVariable(vname);
 //                        }
 
 //                        string argnew_value1 = SrcFormatter.Format(slevel);
-//                        Expression.SetVariableAsString(ref vname, ref argnew_value1);
+//                        Expression.SetVariableAsString(vname, argnew_value1);
 //                    }
 //                }
 //                else
 //                {
 //                    string argnew_value2 = SrcFormatter.Format(slevel);
-//                    Expression.SetVariableAsString(ref vname, ref argnew_value2);
+//                    Expression.SetVariableAsString(vname, argnew_value2);
 //                }
 
 //                NextSkill:
@@ -17076,11 +17076,11 @@
 
 //            // パイロットやユニットのステータスをアップデート
 //            object argIndex5 = pname;
-//            if (SRC.PList.IsDefined(ref argIndex5))
+//            if (SRC.PList.IsDefined(argIndex5))
 //            {
 //                object argIndex4 = pname;
 //                {
-//                    var withBlock1 = SRC.PList.Item(ref argIndex4);
+//                    var withBlock1 = SRC.PList.Item(argIndex4);
 //                    withBlock1.Update();
 //                    if (withBlock1.Unit_Renamed is object)
 //                    {
@@ -17106,15 +17106,15 @@
 //            {
 //                case 4:
 //                    {
-//                        u = GetArgAsUnit((short)2);
+//                        u = GetArgAsUnit(2);
 //                        {
 //                            var withBlock = u;
-//                            cname = GetArgAsString((short)3);
+//                            cname = GetArgAsString(3);
 //                            string argcdata = "";
-//                            withBlock.AddCondition(ref cname, (short)GetArgAsLong((short)4), cdata: ref argcdata);
+//                            withBlock.AddCondition(cname, GetArgAsLong(4), cdata: argcdata);
 //                            if (withBlock.Status_Renamed == "出撃")
 //                            {
-//                                GUI.PaintUnitBitmap(ref u);
+//                                GUI.PaintUnitBitmap(u);
 //                            }
 
 //                            if (cname != "非操作")
@@ -17128,16 +17128,16 @@
 
 //                case 3:
 //                    {
-//                        if (Event_Renamed.SelectedUnitForEvent is object)
+//                        if (Event.SelectedUnitForEvent is object)
 //                        {
 //                            {
-//                                var withBlock1 = Event_Renamed.SelectedUnitForEvent;
-//                                cname = GetArgAsString((short)2);
+//                                var withBlock1 = Event.SelectedUnitForEvent;
+//                                cname = GetArgAsString(2);
 //                                string argcdata1 = "";
-//                                withBlock1.AddCondition(ref cname, (short)GetArgAsLong((short)3), cdata: ref argcdata1);
+//                                withBlock1.AddCondition(cname, GetArgAsLong(3), cdata: argcdata1);
 //                                if (withBlock1.Status_Renamed == "出撃")
 //                                {
-//                                    GUI.PaintUnitBitmap(ref Event_Renamed.SelectedUnitForEvent);
+//                                    GUI.PaintUnitBitmap(Event.SelectedUnitForEvent);
 //                                }
 
 //                                if (cname != "非操作")
@@ -17152,7 +17152,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "SetStatusコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "SetStatusコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 462730
@@ -17177,9 +17177,9 @@
 //            string cname, opt, target;
 //            int color;
 //            // 引数チェック
-//            if ((int)ArgNum != 3)
+//            if (ArgNum != 3)
 //            {
-//                Event_Renamed.EventErrorMessage = "StatusStringColorコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "StatusStringColorコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 463076
@@ -17193,9 +17193,9 @@
 
 //            // 変更色を取得
 //            opt = GetArgAsString(2);
-//            if (Strings.Asc(opt) != 35 | Strings.Len(opt) != 7)
+//            if (Strings.Asc(opt) != 35 || Strings.Len(opt) != 7)
 //            {
-//                Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                Event.EventErrorMessage = "色指定が不正です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 463326
@@ -17208,16 +17208,16 @@
 //            }
 
 //            cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-//            StringType.MidStmtStr(ref cname, 1, 2, "&H");
+//            StringType.MidStmtStr(cname, 1, 2, "&H");
 //            var midTmp = Strings.Mid(opt, 6, 2);
-//            StringType.MidStmtStr(ref cname, 3, 2, midTmp);
+//            StringType.MidStmtStr(cname, 3, 2, midTmp);
 //            var midTmp1 = Strings.Mid(opt, 4, 2);
-//            StringType.MidStmtStr(ref cname, 5, 2, midTmp1);
+//            StringType.MidStmtStr(cname, 5, 2, midTmp1);
 //            var midTmp2 = Strings.Mid(opt, 2, 2);
-//            StringType.MidStmtStr(ref cname, 7, 2, midTmp2);
+//            StringType.MidStmtStr(cname, 7, 2, midTmp2);
 //            if (!Information.IsNumeric(cname))
 //            {
-//                Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                Event.EventErrorMessage = "色指定が不正です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 463818
@@ -17233,9 +17233,9 @@
 
 //            // 変更対象を取得
 //            target = GetArgAsString(3);
-//            if (target != "通常" & target != "能力名" & target != "有効" & target != "無効")
+//            if (target != "通常" && target != "能力名" && target != "有効" && target != "無効")
 //            {
-//                Event_Renamed.EventErrorMessage = "設定対象の指定が不正です";
+//                Event.EventErrorMessage = "設定対象の指定が不正です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 464066
@@ -17255,14 +17255,14 @@
 //                        Status.StatusFontColorNormalString = color;
 //                        // Global変数に保存
 //                        string argvname1 = "StatusWindow(StringColor)";
-//                        if (!Expression.IsGlobalVariableDefined(ref argvname1))
+//                        if (!Expression.IsGlobalVariableDefined(argvname1))
 //                        {
 //                            string argvname = "StatusWindow(StringColor)";
-//                            Expression.DefineGlobalVariable(ref argvname);
+//                            Expression.DefineGlobalVariable(argvname);
 //                        }
 
 //                        string argvname2 = "StatusWindow(StringColor)";
-//                        Expression.SetVariableAsLong(ref argvname2, color);
+//                        Expression.SetVariableAsLong(argvname2, color);
 //                        break;
 //                    }
 
@@ -17271,14 +17271,14 @@
 //                        Status.StatusFontColorAbilityName = color;
 //                        // Global変数に保存
 //                        string argvname4 = "StatusWindow(ANameColor)";
-//                        if (!Expression.IsGlobalVariableDefined(ref argvname4))
+//                        if (!Expression.IsGlobalVariableDefined(argvname4))
 //                        {
 //                            string argvname3 = "StatusWindow(ANameColor)";
-//                            Expression.DefineGlobalVariable(ref argvname3);
+//                            Expression.DefineGlobalVariable(argvname3);
 //                        }
 
 //                        string argvname5 = "StatusWindow(ANameColor)";
-//                        Expression.SetVariableAsLong(ref argvname5, color);
+//                        Expression.SetVariableAsLong(argvname5, color);
 //                        break;
 //                    }
 
@@ -17287,14 +17287,14 @@
 //                        Status.StatusFontColorAbilityEnable = color;
 //                        // Global変数に保存
 //                        string argvname7 = "StatusWindow(EnableColor)";
-//                        if (!Expression.IsGlobalVariableDefined(ref argvname7))
+//                        if (!Expression.IsGlobalVariableDefined(argvname7))
 //                        {
 //                            string argvname6 = "StatusWindow(EnableColor)";
-//                            Expression.DefineGlobalVariable(ref argvname6);
+//                            Expression.DefineGlobalVariable(argvname6);
 //                        }
 
 //                        string argvname8 = "StatusWindow(EnableColor)";
-//                        Expression.SetVariableAsLong(ref argvname8, color);
+//                        Expression.SetVariableAsLong(argvname8, color);
 //                        break;
 //                    }
 
@@ -17303,14 +17303,14 @@
 //                        Status.StatusFontColorAbilityDisable = color;
 //                        // Global変数に保存
 //                        string argvname10 = "StatusWindow(DisableColor)";
-//                        if (!Expression.IsGlobalVariableDefined(ref argvname10))
+//                        if (!Expression.IsGlobalVariableDefined(argvname10))
 //                        {
 //                            string argvname9 = "StatusWindow(DisableColor)";
-//                            Expression.DefineGlobalVariable(ref argvname9);
+//                            Expression.DefineGlobalVariable(argvname9);
 //                        }
 
 //                        string argvname11 = "StatusWindow(DisableColor)";
-//                        Expression.SetVariableAsLong(ref argvname11, color);
+//                        Expression.SetVariableAsLong(argvname11, color);
 //                        break;
 //                    }
 //            }
@@ -17330,23 +17330,23 @@
 //            {
 //                case 4:
 //                    {
-//                        u = GetArgAsUnit((short)2);
-//                        aname = GetArgAsString((short)3);
-//                        num = (short)GetArgAsLong((short)4);
+//                        u = GetArgAsUnit(2);
+//                        aname = GetArgAsString(3);
+//                        num = GetArgAsLong(4);
 //                        break;
 //                    }
 
 //                case 3:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
-//                        aname = GetArgAsString((short)2);
-//                        num = (short)GetArgAsLong((short)3);
+//                        u = Event.SelectedUnitForEvent;
+//                        aname = GetArgAsString(2);
+//                        num = GetArgAsLong(3);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "SetStockコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "SetStockコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 466229
@@ -17362,10 +17362,10 @@
 
 //            if (Information.IsNumeric(aname))
 //            {
-//                aid = (short)GeneralLib.StrToLng(ref aname);
-//                if ((int)aid < 1 | u.CountAbility() < aid)
+//                aid = GeneralLib.StrToLng(aname);
+//                if (aid < 1 || u.CountAbility() < aid)
 //                {
-//                    Event_Renamed.EventErrorMessage = "アビリティの番号「" + aname + "」が間違っています";
+//                    Event.EventErrorMessage = "アビリティの番号「" + aname + "」が間違っています";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 466530
@@ -17380,7 +17380,7 @@
 //            else
 //            {
 //                var loopTo = u.CountAbility();
-//                for (aid = (short)1; aid <= loopTo; aid++)
+//                for (aid = 1; aid <= loopTo; aid++)
 //                {
 //                    if ((u.Ability(aid).Name ?? "") == (aname ?? ""))
 //                    {
@@ -17388,9 +17388,9 @@
 //                    }
 //                }
 
-//                if ((int)aid < 1 | u.CountAbility() < aid)
+//                if (aid < 1 || u.CountAbility() < aid)
 //                {
-//                    Event_Renamed.EventErrorMessage = u.Name + "はアビリティ「" + aname + "」を持っていません";
+//                    Event.EventErrorMessage = u.Name + "はアビリティ「" + aname + "」を持っていません";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 466821
@@ -17403,7 +17403,7 @@
 //                }
 //            }
 
-//            u.SetStock(aid, (short)GeneralLib.MinLng(num, u.MaxStock(aid)));
+//            u.SetStock(aid, GeneralLib.MinLng(num, u.MaxStock(aid)));
 //            ExecSetStockCmdRet = LineNum + 1;
 //            return ExecSetStockCmdRet;
 //        }
@@ -17416,9 +17416,9 @@
 //            bool isTargetLine, isTargetBG;
 
 //            // 引数チェック
-//            if ((int)ArgNum != 2 & (int)ArgNum != 3)
+//            if (ArgNum != 2 && ArgNum != 3)
 //            {
-//                Event_Renamed.EventErrorMessage = "SetWindowColorコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "SetWindowColorコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 467316
@@ -17432,9 +17432,9 @@
 
 //            // 色取得
 //            opt = GetArgAsString(2);
-//            if (Strings.Asc(opt) != 35 | Strings.Len(opt) != 7)
+//            if (Strings.Asc(opt) != 35 || Strings.Len(opt) != 7)
 //            {
-//                Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                Event.EventErrorMessage = "色指定が不正です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 467563
@@ -17447,16 +17447,16 @@
 //            }
 
 //            cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-//            StringType.MidStmtStr(ref cname, 1, 2, "&H");
+//            StringType.MidStmtStr(cname, 1, 2, "&H");
 //            var midTmp = Strings.Mid(opt, 6, 2);
-//            StringType.MidStmtStr(ref cname, 3, 2, midTmp);
+//            StringType.MidStmtStr(cname, 3, 2, midTmp);
 //            var midTmp1 = Strings.Mid(opt, 4, 2);
-//            StringType.MidStmtStr(ref cname, 5, 2, midTmp1);
+//            StringType.MidStmtStr(cname, 5, 2, midTmp1);
 //            var midTmp2 = Strings.Mid(opt, 2, 2);
-//            StringType.MidStmtStr(ref cname, 7, 2, midTmp2);
+//            StringType.MidStmtStr(cname, 7, 2, midTmp2);
 //            if (!Information.IsNumeric(cname))
 //            {
-//                Event_Renamed.EventErrorMessage = "色指定が不正です";
+//                Event.EventErrorMessage = "色指定が不正です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 468055
@@ -17473,9 +17473,9 @@
 //            // 変更対象取得
 //            isTargetLine = false;
 //            isTargetBG = false;
-//            if ((int)ArgNum == 3)
+//            if (ArgNum == 3)
 //            {
-//                target = GetArgAsString((short)3);
+//                target = GetArgAsString(3);
 //                if (target == "枠")
 //                {
 //                    isTargetLine = true;
@@ -17486,7 +17486,7 @@
 //                }
 //                else
 //                {
-//                    Event_Renamed.EventErrorMessage = "色設定対象の指定が不正です";
+//                    Event.EventErrorMessage = "色設定対象の指定が不正です";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 468406
@@ -17505,53 +17505,53 @@
 //                Status.StatusWindowFrameColor = color;
 //                // Global変数に保存
 //                string argvname1 = "StatusWindow(FrameColor)";
-//                if (!Expression.IsGlobalVariableDefined(ref argvname1))
+//                if (!Expression.IsGlobalVariableDefined(argvname1))
 //                {
 //                    string argvname = "StatusWindow(FrameColor)";
-//                    Expression.DefineGlobalVariable(ref argvname);
+//                    Expression.DefineGlobalVariable(argvname);
 //                }
 
 //                string argvname2 = "StatusWindow(FrameColor)";
-//                Expression.SetVariableAsLong(ref argvname2, color);
+//                Expression.SetVariableAsLong(argvname2, color);
 //            }
 //            else if (isTargetBG)
 //            {
 //                Status.StatusWindowBackBolor = color;
 //                // Global変数に保存
 //                string argvname4 = "StatusWindow(BackBolor)";
-//                if (!Expression.IsGlobalVariableDefined(ref argvname4))
+//                if (!Expression.IsGlobalVariableDefined(argvname4))
 //                {
 //                    string argvname3 = "StatusWindow(BackBolor)";
-//                    Expression.DefineGlobalVariable(ref argvname3);
+//                    Expression.DefineGlobalVariable(argvname3);
 //                }
 
 //                string argvname5 = "StatusWindow(BackBolor)";
-//                Expression.SetVariableAsLong(ref argvname5, color);
+//                Expression.SetVariableAsLong(argvname5, color);
 //            }
-//            else if (!isTargetLine & !isTargetBG)
+//            else if (!isTargetLine && !isTargetBG)
 //            {
 //                Status.StatusWindowFrameColor = color;
 //                // Global変数に保存
 //                string argvname7 = "StatusWindow(FrameColor)";
-//                if (!Expression.IsGlobalVariableDefined(ref argvname7))
+//                if (!Expression.IsGlobalVariableDefined(argvname7))
 //                {
 //                    string argvname6 = "StatusWindow(FrameColor)";
-//                    Expression.DefineGlobalVariable(ref argvname6);
+//                    Expression.DefineGlobalVariable(argvname6);
 //                }
 
 //                string argvname8 = "StatusWindow(FrameColor)";
-//                Expression.SetVariableAsLong(ref argvname8, color);
+//                Expression.SetVariableAsLong(argvname8, color);
 //                Status.StatusWindowBackBolor = color;
 //                // Global変数に保存
 //                string argvname10 = "StatusWindow(BackBolor)";
-//                if (!Expression.IsGlobalVariableDefined(ref argvname10))
+//                if (!Expression.IsGlobalVariableDefined(argvname10))
 //                {
 //                    string argvname9 = "StatusWindow(BackBolor)";
-//                    Expression.DefineGlobalVariable(ref argvname9);
+//                    Expression.DefineGlobalVariable(argvname9);
 //                }
 
 //                string argvname11 = "StatusWindow(BackBolor)";
-//                Expression.SetVariableAsLong(ref argvname11, color);
+//                Expression.SetVariableAsLong(argvname11, color);
 //            }
 
 //            ExecSetWindowColorRet = LineNum + 1;
@@ -17563,9 +17563,9 @@
 //            int ExecSetWindowFrameWidthRet = default;
 //            int width;
 //            // 引数チェック
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "SetWindowColorコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "SetWindowColorコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 470209
@@ -17582,14 +17582,14 @@
 //            Status.StatusWindowFrameWidth = width;
 //            // Global変数に保存
 //            string argvname1 = "StatusWindow(FrameWidth)";
-//            if (!Expression.IsGlobalVariableDefined(ref argvname1))
+//            if (!Expression.IsGlobalVariableDefined(argvname1))
 //            {
 //                string argvname = "StatusWindow(FrameWidth)";
-//                Expression.DefineGlobalVariable(ref argvname);
+//                Expression.DefineGlobalVariable(argvname);
 //            }
 
 //            string argvname2 = "StatusWindow(FrameWidth)";
-//            Expression.SetVariableAsLong(ref argvname2, width);
+//            Expression.SetVariableAsLong(argvname2, width);
 //            ExecSetWindowFrameWidthRet = LineNum + 1;
 //            return ExecSetWindowFrameWidthRet;
 //        }
@@ -17638,7 +17638,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "不正な画像ファイル名「" + fname + "」が指定されています";
+//                        Event.EventErrorMessage = "不正な画像ファイル名「" + fname + "」が指定されています";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 471517
@@ -17669,7 +17669,7 @@
 //            }
 
 //            string argdraw_option = "";
-//            ret = Conversions.ToShort(GUI.DrawPicture(ref fname, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, dw, dh, 0, 0, 0, 0, ref argdraw_option));
+//            ret = Conversions.ToShort(GUI.DrawPicture(fname, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, dw, dh, 0, 0, 0, 0, argdraw_option));
 //            GUI.MainForm.picMain(0).Refresh();
 //            ExecShowImageCmdRet = LineNum + 1;
 //            return ExecShowImageCmdRet;
@@ -17683,26 +17683,26 @@
 //            {
 //                case 1:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
+//                        u = Event.SelectedUnitForEvent;
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        if (GetArgAsString((short)2) == "終了")
+//                        if (GetArgAsString(2) == "終了")
 //                        {
 //                            Status.ClearUnitStatus();
 //                            ExecShowUnitStatusCmdRet = LineNum + 1;
 //                            return ExecShowUnitStatusCmdRet;
 //                        }
 
-//                        u = GetArgAsUnit((short)2);
+//                        u = GetArgAsUnit(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "ShowUnitStatusコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "ShowUnitStatusコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 472786
@@ -17718,7 +17718,7 @@
 
 //            if (u is object)
 //            {
-//                Status.DisplayUnitStatus(ref u);
+//                Status.DisplayUnitStatus(u);
 //            }
 
 //            ExecShowUnitStatusCmdRet = LineNum + 1;
@@ -17733,23 +17733,23 @@
 
 //            // 対応するループの末尾を探す
 //            depth = 1;
-//            var loopTo = Information.UBound(Event_Renamed.EventCmd);
+//            var loopTo = Information.UBound(Event.EventCmd);
 //            for (i = LineNum + 1; i <= loopTo; i++)
 //            {
-//                switch (Event_Renamed.EventCmd[i].Name)
+//                switch (Event.EventCmd[i].Name)
 //                {
-//                    case Event_Renamed.CmdType.DoCmd:
-//                    case Event_Renamed.CmdType.ForCmd:
-//                    case Event_Renamed.CmdType.ForEachCmd:
+//                    case Event.CmdType.DoCmd:
+//                    case Event.CmdType.ForCmd:
+//                    case Event.CmdType.ForEachCmd:
 //                        {
-//                            depth = (short)(depth + 1);
+//                            depth = (depth + 1);
 //                            break;
 //                        }
 
-//                    case Event_Renamed.CmdType.LoopCmd:
-//                    case Event_Renamed.CmdType.NextCmd:
+//                    case Event.CmdType.LoopCmd:
+//                    case Event.CmdType.NextCmd:
 //                        {
-//                            depth = (short)(depth - 1);
+//                            depth = (depth - 1);
 //                            if (depth == 0)
 //                            {
 //                                ExecSkipCmdRet = i;
@@ -17761,7 +17761,7 @@
 //                }
 //            }
 
-//            Event_Renamed.EventErrorMessage = "Skipコマンドがループの外で使われています";
+//            Event.EventErrorMessage = "Skipコマンドがループの外で使われています";
 //            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 473755
@@ -17791,9 +17791,9 @@
 //            // =1…変数のValueTyep
 //            // =2…変数の値
 
-//            if ((int)ArgNum < 2)
+//            if (ArgNum < 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "Sortコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Sortコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 474307
@@ -17811,7 +17811,7 @@
 //            isStringValue = false; // 配列の要素を数値として扱う
 //            isKeySort = false; // インデックスのみのソートではない
 //            var loopTo = ArgNum;
-//            for (i = (short)3; i <= loopTo; i++)
+//            for (i = 3; i <= loopTo; i++)
 //            {
 //                buf = GetArgAsString(i);
 //                switch (buf ?? "")
@@ -17854,7 +17854,7 @@
 
 //                    default:
 //                        {
-//                            Event_Renamed.EventErrorMessage = "Sortコマンドに不正なオプション「" + buf + "」が使われています";
+//                            Event.EventErrorMessage = "Sortコマンドに不正なオプション「" + buf + "」が使われています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 474945
@@ -17881,20 +17881,20 @@
 //                if (Strings.Right(vname, 1) == ")")
 //                {
 //                    vname = Strings.Mid(vname, 6, Strings.Len(vname) - 6);
-//                    vname = Expression.GetValueAsString(ref vname);
+//                    vname = Expression.GetValueAsString(vname);
 //                }
 //            }
 
 //            // 配列を検索し、配列要素を見つける
 //            num = 0;
-//            if (Expression.IsSubLocalVariableDefined(ref vname))
+//            if (Expression.IsSubLocalVariableDefined(vname))
 //            {
 //                // サブルーチンローカルな配列
-//                var loopTo1 = Event_Renamed.VarIndex;
-//                for (i = (short)(Event_Renamed.VarIndexStack[Event_Renamed.CallDepth - 1] + 1); i <= loopTo1; i++)
+//                var loopTo1 = Event.VarIndex;
+//                for (i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo1; i++)
 //                {
 //                    {
-//                        var withBlock = Event_Renamed.VarStack[i];
+//                        var withBlock = Event.VarStack[i];
 //                        if (Strings.InStr(withBlock.Name, vname + "[") == 1)
 //                        {
 //                            var oldArray_buf = array_buf;
@@ -17903,7 +17903,7 @@
 //                                for (var i1 = 0; i1 <= oldArray_buf.Length / oldArray_buf.GetLength(1) - 1; ++i1)
 //                                    Array.Copy(oldArray_buf, i1 * oldArray_buf.GetLength(1), array_buf, i1 * array_buf.GetLength(1), Math.Min(oldArray_buf.GetLength(1), array_buf.GetLength(1)));
 //                            string argstr2 = "]";
-//                            buf = Strings.Mid(withBlock.Name, Strings.InStr(withBlock.Name, "[") + 1, GeneralLib.InStr2(ref withBlock.Name, ref argstr2) - Strings.InStr(withBlock.Name, "[") - 1);
+//                            buf = Strings.Mid(withBlock.Name, Strings.InStr(withBlock.Name, "[") + 1, GeneralLib.InStr2(withBlock.Name, argstr2) - Strings.InStr(withBlock.Name, "[") - 1);
 //                            if (!Information.IsNumeric(buf))
 //                            {
 //                                isStringkey = true;
@@ -17932,7 +17932,7 @@
 //                            // UPGRADE_WARNING: オブジェクト value_buf の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 //                            // UPGRADE_WARNING: オブジェクト array_buf(2, num) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 //                            array_buf[2, num] = value_buf;
-//                            num = (short)(num + 1);
+//                            num = (num + 1);
 //                        }
 //                    }
 //                }
@@ -17944,10 +17944,10 @@
 //                    return ExecSortCmdRet;
 //                }
 //            }
-//            else if (Expression.IsLocalVariableDefined(ref vname))
+//            else if (Expression.IsLocalVariableDefined(vname))
 //            {
 //                // ローカルな配列
-//                foreach (VarData currentVar in Event_Renamed.LocalVariableList)
+//                foreach (VarData currentVar in Event.LocalVariableList)
 //                {
 //                    var = currentVar;
 //                    if (Strings.InStr(var.Name, vname + "[") == 1)
@@ -17958,7 +17958,7 @@
 //                            for (var i2 = 0; i2 <= oldArray_buf1.Length / oldArray_buf1.GetLength(1) - 1; ++i2)
 //                                Array.Copy(oldArray_buf1, i2 * oldArray_buf1.GetLength(1), array_buf, i2 * array_buf.GetLength(1), Math.Min(oldArray_buf1.GetLength(1), array_buf.GetLength(1)));
 //                        string argstr21 = "]";
-//                        buf = Strings.Mid(var.Name, Strings.InStr(var.Name, "[") + 1, GeneralLib.InStr2(ref var.Name, ref argstr21) - Strings.InStr(var.Name, "[") - 1);
+//                        buf = Strings.Mid(var.Name, Strings.InStr(var.Name, "[") + 1, GeneralLib.InStr2(var.Name, argstr21) - Strings.InStr(var.Name, "[") - 1);
 //                        if (!Information.IsNumeric(buf))
 //                        {
 //                            isStringkey = true;
@@ -17987,7 +17987,7 @@
 //                        // UPGRADE_WARNING: オブジェクト value_buf の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 //                        // UPGRADE_WARNING: オブジェクト array_buf(2, num) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 //                        array_buf[2, num] = value_buf;
-//                        num = (short)(num + 1);
+//                        num = (num + 1);
 //                    }
 //                }
 
@@ -17998,10 +17998,10 @@
 //                    return ExecSortCmdRet;
 //                }
 //            }
-//            else if (Expression.IsGlobalVariableDefined(ref vname))
+//            else if (Expression.IsGlobalVariableDefined(vname))
 //            {
 //                // グローバルな配列
-//                foreach (VarData currentVar1 in Event_Renamed.GlobalVariableList)
+//                foreach (VarData currentVar1 in Event.GlobalVariableList)
 //                {
 //                    var = currentVar1;
 //                    if (Strings.InStr(var.Name, vname + "[") == 1)
@@ -18012,7 +18012,7 @@
 //                            for (var i3 = 0; i3 <= oldArray_buf2.Length / oldArray_buf2.GetLength(1) - 1; ++i3)
 //                                Array.Copy(oldArray_buf2, i3 * oldArray_buf2.GetLength(1), array_buf, i3 * array_buf.GetLength(1), Math.Min(oldArray_buf2.GetLength(1), array_buf.GetLength(1)));
 //                        string argstr22 = "]";
-//                        buf = Strings.Mid(var.Name, Strings.InStr(var.Name, "[") + 1, GeneralLib.InStr2(ref var.Name, ref argstr22) - Strings.InStr(var.Name, "[") - 1);
+//                        buf = Strings.Mid(var.Name, Strings.InStr(var.Name, "[") + 1, GeneralLib.InStr2(var.Name, argstr22) - Strings.InStr(var.Name, "[") - 1);
 //                        if (!Information.IsNumeric(buf))
 //                        {
 //                            isStringkey = true;
@@ -18041,7 +18041,7 @@
 //                        // UPGRADE_WARNING: オブジェクト value_buf の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 //                        // UPGRADE_WARNING: オブジェクト array_buf(2, num) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 //                        array_buf[2, num] = value_buf;
-//                        num = (short)(num + 1);
+//                        num = (num + 1);
 //                    }
 //                }
 
@@ -18053,15 +18053,15 @@
 //                }
 //            }
 
-//            num = (short)(num - 1);
-//            if (!isStringkey | isKeySort)
+//            num = (num - 1);
+//            if (!isStringkey || isKeySort)
 //            {
 //                // 添字が数値の場合、またはインデックスのみのソートの場合、
 //                // 先に添字の昇順に並び替える
-//                var loopTo2 = (short)(num - 1);
+//                var loopTo2 = (num - 1);
 //                for (i = 0; i <= loopTo2; i++)
 //                {
-//                    var loopTo3 = (short)(i + 1);
+//                    var loopTo3 = (i + 1);
 //                    for (j = num; j >= loopTo3; j += -1)
 //                    {
 //                        isSwap = false;
@@ -18113,10 +18113,10 @@
 //            if (!isKeySort)
 //            {
 //                // 改めて要素をソート
-//                var loopTo4 = (short)(num - 1);
+//                var loopTo4 = (num - 1);
 //                for (i = 0; i <= loopTo4; i++)
 //                {
-//                    var loopTo5 = (short)(i + 1);
+//                    var loopTo5 = (i + 1);
 //                    for (j = num; j >= loopTo5; j += -1)
 //                    {
 //                        isSwap = false;
@@ -18171,20 +18171,20 @@
 //            {
 //                // UPGRADE_WARNING: オブジェクト array_buf() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 //                buf = vname + "[" + Conversions.ToString(array_buf[0, i]) + "]";
-//                Expression.UndefineVariable(ref buf);
+//                Expression.UndefineVariable(buf);
 //                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(array_buf[1, i], Expression.ValueType.StringType, false)))
 //                {
 //                    // UPGRADE_WARNING: オブジェクト array_buf() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 //                    string argstr_value = Conversions.ToString(array_buf[2, i]);
 //                    int argnum_value = 0;
-//                    Expression.SetVariable(ref buf, ref Expression.ValueType.StringType, ref argstr_value, ref argnum_value);
+//                    Expression.SetVariable(buf, Expression.ValueType.StringType, argstr_value, argnum_value);
 //                }
 //                else
 //                {
 //                    // UPGRADE_WARNING: オブジェクト array_buf() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 //                    string argstr_value1 = "";
 //                    double argnum_value1 = Conversions.ToDouble(array_buf[2, i]);
-//                    Expression.SetVariable(ref buf, ref Expression.ValueType.NumericType, ref argstr_value1, ref argnum_value1);
+//                    Expression.SetVariable(buf, Expression.ValueType.NumericType, argstr_value1, argnum_value1);
 //                }
 //            }
 
@@ -18205,23 +18205,23 @@
 //            {
 //                case 4:
 //                    {
-//                        u = GetArgAsUnit((short)2);
-//                        sname = GetArgAsString((short)3);
-//                        t = GetArgAsUnit((short)4);
+//                        u = GetArgAsUnit(2);
+//                        sname = GetArgAsString(3);
+//                        t = GetArgAsUnit(4);
 //                        break;
 //                    }
 
 //                case 3:
 //                    {
-//                        object argIndex2 = (object)GetArgAsString((short)2);
-//                        if (SRC.SPDList.IsDefined(ref argIndex2))
+//                        object argIndex2 = (object)GetArgAsString(2);
+//                        if (SRC.SPDList.IsDefined(argIndex2))
 //                        {
-//                            object argIndex1 = (object)GetArgAsString((short)2);
+//                            object argIndex1 = (object)GetArgAsString(2);
 //                            {
-//                                var withBlock = SRC.SPDList.Item(ref argIndex1);
+//                                var withBlock = SRC.SPDList.Item(argIndex1);
 //                                string argename = "みがわり";
 //                                string argename1 = "挑発";
-//                                if (Conversions.ToBoolean(Operators.OrObject(withBlock.IsEffectAvailable(ref argename), withBlock.IsEffectAvailable(ref argename1))))
+//                                if (Conversions.ToBoolean(Operators.OrObject(withBlock.IsEffectAvailable(argename), withBlock.IsEffectAvailable(argename1))))
 //                                {
 //                                    need_target = true;
 //                                }
@@ -18230,14 +18230,14 @@
 
 //                        if (need_target)
 //                        {
-//                            u = Event_Renamed.SelectedUnitForEvent;
-//                            sname = GetArgAsString((short)2);
-//                            t = GetArgAsUnit((short)3);
+//                            u = Event.SelectedUnitForEvent;
+//                            sname = GetArgAsString(2);
+//                            t = GetArgAsUnit(3);
 //                        }
 //                        else
 //                        {
-//                            u = GetArgAsUnit((short)2);
-//                            sname = GetArgAsString((short)3);
+//                            u = GetArgAsUnit(2);
+//                            sname = GetArgAsString(3);
 //                        }
 
 //                        break;
@@ -18245,14 +18245,14 @@
 
 //                case 2:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
-//                        sname = GetArgAsString((short)2);
+//                        u = Event.SelectedUnitForEvent;
+//                        sname = GetArgAsString(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "SpecialPowerコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "SpecialPowerコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 492305
@@ -18266,11 +18266,11 @@
 //                    }
 //            }
 
-//            bool localIsDefined() { object argIndex1 = sname; var ret = SRC.SPDList.IsDefined(ref argIndex1); return ret; }
+//            bool localIsDefined() { object argIndex1 = sname; var ret = SRC.SPDList.IsDefined(argIndex1); return ret; }
 
 //            if (!localIsDefined())
 //            {
-//                Event_Renamed.EventErrorMessage = "SpecialPowerコマンドで指定されたスペシャルパワー「" + sname + "」が見つかりません";
+//                Event.EventErrorMessage = "SpecialPowerコマンドで指定されたスペシャルパワー「" + sname + "」が見つかりません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 492506
@@ -18283,7 +18283,7 @@
 //            }
 
 //            object argIndex3 = sname;
-//            sd = SRC.SPDList.Item(ref argIndex3);
+//            sd = SRC.SPDList.Item(argIndex3);
 //            msg_window_visible = My.MyProject.Forms.frmMessage.Visible;
 //            Unit prev_target;
 //            if (sd.Duration == "即効")
@@ -18295,17 +18295,17 @@
 //                }
 //                else
 //                {
-//                    Commands.SelectedTarget = Event_Renamed.SelectedTargetForEvent;
+//                    Commands.SelectedTarget = Event.SelectedTargetForEvent;
 //                }
 
 //                prev_action = u.Action;
-//                sd.Execute(ref u.MainPilot(), true);
+//                sd.Execute(u.MainPilot(), true);
 //                if (prev_target is object)
 //                {
 //                    Commands.SelectedTarget = prev_target.CurrentForm();
 //                }
 
-//                if (prev_action == 0 & u.Action > 0 | prev_action > 0 & u.Action == 0)
+//                if (prev_action == 0 && u.Action > 0 || prev_action > 0 && u.Action == 0)
 //                {
 //                    GUI.RedrawScreen();
 //                }
@@ -18313,8 +18313,8 @@
 //            else if (t is object)
 //            {
 //                prev_action = t.Action;
-//                t.MakeSpecialPowerInEffect(ref sname, ref u.MainPilot().ID);
-//                if (prev_action == 0 & t.Action > 0 | prev_action > 0 & t.Action == 0)
+//                t.MakeSpecialPowerInEffect(sname, u.MainPilot().ID);
+//                if (prev_action == 0 && t.Action > 0 || prev_action > 0 && t.Action == 0)
 //                {
 //                    GUI.RedrawScreen();
 //                }
@@ -18323,8 +18323,8 @@
 //            {
 //                prev_action = u.Action;
 //                string argsdata = "";
-//                u.MakeSpecialPowerInEffect(ref sname, sdata: ref argsdata);
-//                if (prev_action == 0 & u.Action > 0 | prev_action > 0 & u.Action == 0)
+//                u.MakeSpecialPowerInEffect(sname, sdata: argsdata);
+//                if (prev_action == 0 && u.Action > 0 || prev_action > 0 && u.Action == 0)
 //                {
 //                    GUI.RedrawScreen();
 //                }
@@ -18347,19 +18347,19 @@
 //            {
 //                case 1:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
+//                        u = Event.SelectedUnitForEvent;
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        u = GetArgAsUnit((short)2);
+//                        u = GetArgAsUnit(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Splitコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Splitコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 494229
@@ -18376,9 +18376,9 @@
 //            {
 //                var withBlock = u;
 //                string argfname = "分離";
-//                if (!withBlock.IsFeatureAvailable(ref argfname))
+//                if (!withBlock.IsFeatureAvailable(argfname))
 //                {
-//                    Event_Renamed.EventErrorMessage = withBlock.Name + "は分離できません";
+//                    Event.EventErrorMessage = withBlock.Name + "は分離できません";
 //                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 494387
@@ -18393,10 +18393,10 @@
 //                withBlock.Split_Renamed();
 
 //                // 分離形態の１番目のユニットをメインユニットに設定
-//                string localLIndex() { object argIndex1 = "分離"; string arglist = withBlock.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
+//                string localLIndex() { object argIndex1 = "分離"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
 
 //                object argIndex1 = localLIndex();
-//                u = SRC.UList.Item(ref argIndex1);
+//                u = SRC.UList.Item(argIndex1);
 
 //                // 変数のアップデート
 //                if (Commands.SelectedUnit is object)
@@ -18407,11 +18407,11 @@
 //                    }
 //                }
 
-//                if (Event_Renamed.SelectedUnitForEvent is object)
+//                if (Event.SelectedUnitForEvent is object)
 //                {
-//                    if ((withBlock.ID ?? "") == (Event_Renamed.SelectedUnitForEvent.ID ?? ""))
+//                    if ((withBlock.ID ?? "") == (Event.SelectedUnitForEvent.ID ?? ""))
 //                    {
-//                        Event_Renamed.SelectedUnitForEvent = u;
+//                        Event.SelectedUnitForEvent = u;
 //                    }
 //                }
 
@@ -18423,11 +18423,11 @@
 //                    }
 //                }
 
-//                if (Event_Renamed.SelectedTargetForEvent is object)
+//                if (Event.SelectedTargetForEvent is object)
 //                {
-//                    if ((withBlock.ID ?? "") == (Event_Renamed.SelectedTargetForEvent.ID ?? ""))
+//                    if ((withBlock.ID ?? "") == (Event.SelectedTargetForEvent.ID ?? ""))
 //                    {
-//                        Event_Renamed.SelectedTargetForEvent = u;
+//                        Event.SelectedTargetForEvent = u;
 //                    }
 //                }
 //            }
@@ -18444,10 +18444,10 @@
 //            int i;
 
 //            // StartBGMコマンドが連続してる場合、最後のStartBGMコマンドの位置を検索
-//            var loopTo = Information.UBound(Event_Renamed.EventCmd);
+//            var loopTo = Information.UBound(Event.EventCmd);
 //            for (i = LineNum + 1; i <= loopTo; i++)
 //            {
-//                if (Event_Renamed.EventCmd[i].Name != Event_Renamed.CmdType.StartBGMCmd)
+//                if (Event.EventCmd[i].Name != Event.CmdType.StartBGMCmd)
 //                {
 //                    break;
 //                }
@@ -18459,22 +18459,22 @@
 //            var loopTo1 = LineNum;
 //            for (i = start_bgm_end; i >= loopTo1; i -= 1)
 //            {
-//                fname = GeneralLib.ListTail(ref Event_Renamed.EventData[i], 2);
-//                if (GeneralLib.ListLength(ref fname) == 1)
+//                fname = GeneralLib.ListTail(Event.EventData[i], 2);
+//                if (GeneralLib.ListLength(fname) == 1)
 //                {
 //                    if (Strings.Left(fname, 2) == "$(")
 //                    {
 //                        fname = "\"" + fname + "\"";
 //                    }
 
-//                    fname = Expression.GetValueAsString(ref fname, true);
+//                    fname = Expression.GetValueAsString(fname, true);
 //                }
 //                else
 //                {
 //                    fname = "(" + fname + ")";
 //                }
 
-//                fname = Sound.SearchMidiFile(ref fname);
+//                fname = Sound.SearchMidiFile(fname);
 //                if (!string.IsNullOrEmpty(fname))
 //                {
 //                    // MIDIファイルが存在したので選択
@@ -18485,7 +18485,7 @@
 //            // MIDIファイルを再生
 //            Sound.KeepBGM = false;
 //            Sound.BossBGM = false;
-//            Sound.StartBGM(ref fname);
+//            Sound.StartBGM(fname);
 
 //            // 次のコマンド実行位置は最後のStartBGMコマンドの後
 //            ExecStartBGMCmdRet = start_bgm_end + 1;
@@ -18513,19 +18513,19 @@
 //            {
 //                case 1:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
+//                        u = Event.SelectedUnitForEvent;
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        u = GetArgAsUnit((short)2);
+//                        u = GetArgAsUnit(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "StopSummoningコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "StopSummoningコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 497442
@@ -18555,7 +18555,7 @@
 //            late_refresh = false;
 //            Map.MapDrawIsMapOnly = false;
 //            var loopTo = ArgNum;
-//            for (i = (short)2; i <= loopTo; i++)
+//            for (i = 2; i <= loopTo; i++)
 //            {
 //                buf = GetArgAsString(i);
 //                switch (buf ?? "")
@@ -18574,7 +18574,7 @@
 
 //                    default:
 //                        {
-//                            Event_Renamed.EventErrorMessage = "Sunsetコマンドに不正なオプション「" + buf + "」が使われています";
+//                            Event.EventErrorMessage = "Sunsetコマンドに不正なオプション「" + buf + "」が使われています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 498133
@@ -18599,7 +18599,7 @@
 //            string argdraw_option = "非同期";
 //            int argfilter_color = 0;
 //            double argfilter_trans_par = 0d;
-//            GUI.SetupBackground(ref argdraw_mode, ref argdraw_option, filter_color: ref argfilter_color, filter_trans_par: ref argfilter_trans_par);
+//            GUI.SetupBackground(argdraw_mode, argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
 //            foreach (Unit u in SRC.UList)
 //            {
 //                {
@@ -18610,15 +18610,15 @@
 //                        {
 //                            object argIndex1 = withBlock.Name;
 //                            {
-//                                var withBlock1 = SRC.UList.Item(ref argIndex1);
+//                                var withBlock1 = SRC.UList.Item(argIndex1);
 //                                string argfname = "ダミーユニット";
-//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") & withBlock1.BitmapID != 0 & (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") & !withBlock1.IsFeatureAvailable(ref argfname))
+//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable(argfname))
 //                                {
 //                                    u.BitmapID = withBlock1.BitmapID;
 //                                }
 //                                else
 //                                {
-//                                    u.BitmapID = GUI.MakeUnitBitmap(ref u);
+//                                    u.BitmapID = GUI.MakeUnitBitmap(u);
 //                                }
 //                            }
 
@@ -18646,19 +18646,19 @@
 //            {
 //                case 2:
 //                    {
-//                        u = GetArgAsUnit((short)2);
+//                        u = GetArgAsUnit(2);
 //                        break;
 //                    }
 
 //                case 1:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
+//                        u = Event.SelectedUnitForEvent;
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Supplyコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Supplyコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 499859
@@ -18689,9 +18689,9 @@
 //            VarData old_var1;
 //            VarData old_var2;
 //            short i;
-//            if ((int)ArgNum != 3)
+//            if (ArgNum != 3)
 //            {
-//                Event_Renamed.EventErrorMessage = "Swapコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Swapコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 500350
@@ -18706,8 +18706,8 @@
 //            {
 //                // 入れ替える前の変数の値を保存
 //                // 引数1の変数
-//                string argvar_name = GetArg((short)2);
-//                old_var1 = Expression.GetVariableObject(ref argvar_name);
+//                string argvar_name = GetArg(2);
+//                old_var1 = Expression.GetVariableObject(argvar_name);
 //                if (old_var1 is object)
 //                {
 //                    {
@@ -18719,8 +18719,8 @@
 //                    }
 //                }
 //                // 引数2の変数
-//                string argvar_name1 = GetArg((short)3);
-//                old_var2 = Expression.GetVariableObject(ref argvar_name1);
+//                string argvar_name1 = GetArg(3);
+//                old_var2 = Expression.GetVariableObject(argvar_name1);
 //                if (old_var2 is object)
 //                {
 //                    {
@@ -18736,15 +18736,15 @@
 //                {
 //                    var withBlock2 = old_var1;
 //                    // 引数1がサブルーチンローカル変数の場合
-//                    if ((int)Event_Renamed.CallDepth > 0)
+//                    if (Event.CallDepth > 0)
 //                    {
-//                        var loopTo = Event_Renamed.VarIndex;
-//                        for (i = (short)((int)Event_Renamed.VarIndexStack[(int)Event_Renamed.CallDepth - 1] + 1); i <= loopTo; i++)
+//                        var loopTo = Event.VarIndex;
+//                        for (i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo; i++)
 //                        {
-//                            if ((withBlock2.Name ?? "") == (Event_Renamed.VarStack[(int)i].Name ?? ""))
+//                            if ((withBlock2.Name ?? "") == (Event.VarStack[i].Name ?? ""))
 //                            {
 //                                {
-//                                    var withBlock3 = Event_Renamed.VarStack[(int)i];
+//                                    var withBlock3 = Event.VarStack[i];
 //                                    withBlock3.VariableType = new_var1.VariableType;
 //                                    withBlock3.StringValue = new_var1.StringValue;
 //                                    withBlock3.NumericValue = new_var1.NumericValue;
@@ -18768,15 +18768,15 @@
 //                {
 //                    var withBlock4 = old_var2;
 //                    // 引数2がサブルーチンローカル変数の場合
-//                    if ((int)Event_Renamed.CallDepth > 0)
+//                    if (Event.CallDepth > 0)
 //                    {
-//                        var loopTo1 = Event_Renamed.VarIndex;
-//                        for (i = (short)((int)Event_Renamed.VarIndexStack[(int)Event_Renamed.CallDepth - 1] + 1); i <= loopTo1; i++)
+//                        var loopTo1 = Event.VarIndex;
+//                        for (i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo1; i++)
 //                        {
-//                            if ((withBlock4.Name ?? "") == (Event_Renamed.VarStack[(int)i].Name ?? ""))
+//                            if ((withBlock4.Name ?? "") == (Event.VarStack[i].Name ?? ""))
 //                            {
 //                                {
-//                                    var withBlock5 = Event_Renamed.VarStack[(int)i];
+//                                    var withBlock5 = Event.VarStack[i];
 //                                    withBlock5.VariableType = new_var2.VariableType;
 //                                    withBlock5.StringValue = new_var2.StringValue;
 //                                    withBlock5.NumericValue = new_var2.NumericValue;
@@ -18816,9 +18816,9 @@
 //            int i;
 //            short j, depth;
 //            string a, b;
-//            if ((int)ArgNum != 2)
+//            if (ArgNum != 2)
 //            {
-//                Event_Renamed.EventErrorMessage = "Switchコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Switchコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 503846
@@ -18832,14 +18832,14 @@
 
 //            a = GetArgAsString(2);
 //            depth = 1;
-//            var loopTo = Information.UBound(Event_Renamed.EventCmd);
+//            var loopTo = Information.UBound(Event.EventCmd);
 //            for (i = LineNum + 1; i <= loopTo; i++)
 //            {
 //                {
-//                    var withBlock = Event_Renamed.EventCmd[i];
+//                    var withBlock = Event.EventCmd[i];
 //                    switch (withBlock.Name)
 //                    {
-//                        case Event_Renamed.CmdType.CaseCmd:
+//                        case Event.CmdType.CaseCmd:
 //                            {
 //                                if (depth == 1)
 //                                {
@@ -18873,7 +18873,7 @@
 //                                break;
 //                            }
 
-//                        case Event_Renamed.CmdType.CaseElseCmd:
+//                        case Event.CmdType.CaseElseCmd:
 //                            {
 //                                if (depth == 1)
 //                                {
@@ -18884,7 +18884,7 @@
 //                                break;
 //                            }
 
-//                        case Event_Renamed.CmdType.EndSwCmd:
+//                        case Event.CmdType.EndSwCmd:
 //                            {
 //                                if (depth == 1)
 //                                {
@@ -18893,22 +18893,22 @@
 //                                }
 //                                else
 //                                {
-//                                    depth = (short)(depth - 1);
+//                                    depth = (depth - 1);
 //                                }
 
 //                                break;
 //                            }
 
-//                        case Event_Renamed.CmdType.SwitchCmd:
+//                        case Event.CmdType.SwitchCmd:
 //                            {
-//                                depth = (short)(depth + 1);
+//                                depth = (depth + 1);
 //                                break;
 //                            }
 //                    }
 //                }
 //            }
 
-//            Event_Renamed.EventErrorMessage = "SwitchとEndSwが対応していません";
+//            Event.EventErrorMessage = "SwitchとEndSwが対応していません";
 //            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 505287
@@ -18928,20 +18928,20 @@
 
 //            // 対応するEndSwを探す
 //            depth = 1;
-//            var loopTo = Information.UBound(Event_Renamed.EventCmd);
+//            var loopTo = Information.UBound(Event.EventCmd);
 //            for (i = LineNum + 1; i <= loopTo; i++)
 //            {
-//                switch (Event_Renamed.EventCmd[i].Name)
+//                switch (Event.EventCmd[i].Name)
 //                {
-//                    case Event_Renamed.CmdType.SwitchCmd:
+//                    case Event.CmdType.SwitchCmd:
 //                        {
-//                            depth = (short)(depth + 1);
+//                            depth = (depth + 1);
 //                            break;
 //                        }
 
-//                    case Event_Renamed.CmdType.EndSwCmd:
+//                    case Event.CmdType.EndSwCmd:
 //                        {
-//                            depth = (short)(depth - 1);
+//                            depth = (depth - 1);
 //                            if (depth == 0)
 //                            {
 //                                ExecCaseCmdRet = i + 1;
@@ -18953,7 +18953,7 @@
 //                }
 //            }
 
-//            Event_Renamed.EventErrorMessage = "SwitchとEndSwが対応していません";
+//            Event.EventErrorMessage = "SwitchとEndSwが対応していません";
 //            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 505970
@@ -18978,21 +18978,21 @@
 //            string options = default, opt;
 //            string buf;
 //            short counter;
-//            counter = (short)LineNum;
+//            counter = LineNum;
 //            string cname;
 //            int tcolor;
-//            var loopTo = Information.UBound(Event_Renamed.EventData);
-//            for (i = (int)counter; i <= loopTo; i++)
+//            var loopTo = Information.UBound(Event.EventData);
+//            for (i = counter; i <= loopTo; i++)
 //            {
 //                {
-//                    var withBlock = Event_Renamed.EventCmd[i];
+//                    var withBlock = Event.EventCmd[i];
 //                    switch (withBlock.Name)
 //                    {
-//                        case Event_Renamed.CmdType.TalkCmd:
+//                        case Event.CmdType.TalkCmd:
 //                            {
-//                                if ((int)withBlock.ArgNum > 1)
+//                                if (withBlock.ArgNum > 1)
 //                                {
-//                                    pname = withBlock.GetArgAsString((short)2);
+//                                    pname = withBlock.GetArgAsString(2);
 //                                }
 //                                else
 //                                {
@@ -19004,11 +19004,11 @@
 //                                    // メインパイロットの強制指定
 //                                    pname = Strings.Mid(pname, 2);
 //                                    object argIndex2 = (object)pname;
-//                                    if (SRC.PList.IsDefined(ref argIndex2))
+//                                    if (SRC.PList.IsDefined(argIndex2))
 //                                    {
 //                                        object argIndex1 = (object)pname;
 //                                        {
-//                                            var withBlock1 = SRC.PList.Item(ref argIndex1);
+//                                            var withBlock1 = SRC.PList.Item(argIndex1);
 //                                            if (withBlock1.Unit_Renamed is object)
 //                                            {
 //                                                pname = withBlock1.Unit_Renamed.MainPilot().Name;
@@ -19018,15 +19018,15 @@
 //                                }
 
 //                                // 話者名チェック
-//                                bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(ref argIndex1); return ret; }
+//                                bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-//                                bool localIsDefined1() { object argIndex1 = (object)pname; var ret = SRC.PDList.IsDefined(ref argIndex1); return ret; }
+//                                bool localIsDefined1() { object argIndex1 = (object)pname; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
 
-//                                bool localIsDefined2() { object argIndex1 = (object)pname; var ret = SRC.NPDList.IsDefined(ref argIndex1); return ret; }
+//                                bool localIsDefined2() { object argIndex1 = (object)pname; var ret = SRC.NPDList.IsDefined(argIndex1); return ret; }
 
-//                                if (!localIsDefined() & !localIsDefined1() & !localIsDefined2() & !(pname == "システム") & !string.IsNullOrEmpty(pname))
+//                                if (!localIsDefined() && !localIsDefined1() && !localIsDefined2() && !(pname == "システム") && !string.IsNullOrEmpty(pname))
 //                                {
-//                                    Event_Renamed.EventErrorMessage = "「" + pname + "」というパイロットが定義されていません";
+//                                    Event.EventErrorMessage = "「" + pname + "」というパイロットが定義されていません";
 //                                    LineNum = i;
 //                                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
@@ -19039,12 +19039,12 @@
 //                                     */
 //                                }
 
-//                                if ((int)withBlock.ArgNum > 1)
+//                                if (withBlock.ArgNum > 1)
 //                                {
 //                                    options = "";
 //                                    without_cursor = false;
-//                                    j = (short)2;
-//                                    lnum = (short)1;
+//                                    j = 2;
+//                                    lnum = 1;
 //                                    while (j <= withBlock.ArgNum)
 //                                    {
 //                                        opt = withBlock.GetArgAsString(j);
@@ -19082,7 +19082,7 @@
 //                                            case "水中":
 //                                            case "通常":
 //                                                {
-//                                                    if ((int)j > 2)
+//                                                    if (j > 2)
 //                                                    {
 //                                                        // これらのパイロット画像描画に関するオプションは
 //                                                        // パイロット名が指定されている場合にのみ有効
@@ -19098,32 +19098,32 @@
 
 //                                            case "右回転":
 //                                                {
-//                                                    j = (short)((int)j + 1);
+//                                                    j = (j + 1);
 //                                                    options = options + "右回転 " + withBlock.GetArgAsString(j) + " ";
 //                                                    break;
 //                                                }
 
 //                                            case "左回転":
 //                                                {
-//                                                    j = (short)((int)j + 1);
+//                                                    j = (j + 1);
 //                                                    options = options + "左回転 " + withBlock.GetArgAsString(j) + " ";
 //                                                    break;
 //                                                }
 
 //                                            case "フィルタ":
 //                                                {
-//                                                    j = (short)((int)j + 1);
+//                                                    j = (j + 1);
 //                                                    buf = withBlock.GetArgAsString(j);
 //                                                    cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-//                                                    StringType.MidStmtStr(ref cname, 1, 2, "&H");
+//                                                    StringType.MidStmtStr(cname, 1, 2, "&H");
 //                                                    var midTmp = Strings.Mid(buf, 6, 2);
-//                                                    StringType.MidStmtStr(ref cname, 3, 2, midTmp);
+//                                                    StringType.MidStmtStr(cname, 3, 2, midTmp);
 //                                                    var midTmp1 = Strings.Mid(buf, 4, 2);
-//                                                    StringType.MidStmtStr(ref cname, 5, 2, midTmp1);
+//                                                    StringType.MidStmtStr(cname, 5, 2, midTmp1);
 //                                                    var midTmp2 = Strings.Mid(buf, 2, 2);
-//                                                    StringType.MidStmtStr(ref cname, 7, 2, midTmp2);
+//                                                    StringType.MidStmtStr(cname, 7, 2, midTmp2);
 //                                                    tcolor = Conversions.ToInteger(cname);
-//                                                    j = (short)((int)j + 1);
+//                                                    j = (j + 1);
 //                                                    // 空白のオプションをスキップ
 //                                                    options = options + "フィルタ " + SrcFormatter.Format((object)tcolor) + " " + withBlock.GetArgAsString(j) + " ";
 //                                                    break;
@@ -19142,12 +19142,12 @@
 //                                                }
 //                                        }
 
-//                                        j = (short)((int)j + 1);
+//                                        j = (j + 1);
 //                                    }
 //                                }
 //                                else
 //                                {
-//                                    lnum = (short)1;
+//                                    lnum = 1;
 //                                }
 
 //                                switch (lnum)
@@ -19161,14 +19161,14 @@
 //                                            {
 //                                                Unit argu1 = null;
 //                                                Unit argu2 = null;
-//                                                GUI.OpenMessageForm(u1: ref argu1, u2: ref argu2);
+//                                                GUI.OpenMessageForm(u1: argu1, u2: argu2);
 //                                            }
 
 //                                            // メッセージウィンドウのパイロット画像を以前指定された
 //                                            // ものに確定させる
 //                                            if (!string.IsNullOrEmpty(current_pname))
 //                                            {
-//                                                GUI.DisplayMessage(ref current_pname, "", options);
+//                                                GUI.DisplayMessage(current_pname, "", options);
 //                                            }
 
 //                                            current_pname = "";
@@ -19183,7 +19183,7 @@
 //                                            // 話者中心に画面位置を変更
 
 //                                            // プロローグイベントやエピローグイベント時はキャンセル
-//                                            if (SRC.Stage == "プロローグ" | SRC.Stage == "エピローグ")
+//                                            if (SRC.Stage == "プロローグ" || SRC.Stage == "エピローグ")
 //                                            {
 //                                                goto NextLoop;
 //                                            }
@@ -19212,7 +19212,7 @@
 //                                    case 3:
 //                                        {
 //                                            current_pname = pname;
-//                                            switch (withBlock.GetArgAsString((short)3) ?? "")
+//                                            switch (withBlock.GetArgAsString(3) ?? "")
 //                                            {
 //                                                case "母艦":
 //                                                    {
@@ -19242,13 +19242,13 @@
 //                                        {
 //                                            // 表示の座標指定あり
 //                                            current_pname = pname;
-//                                            CenterUnit(pname, without_cursor, (short)withBlock.GetArgAsLong((short)3), (short)withBlock.GetArgAsLong((short)4));
+//                                            CenterUnit(pname, without_cursor, withBlock.GetArgAsLong(3), withBlock.GetArgAsLong(4));
 //                                            break;
 //                                        }
 
 //                                    case -1:
 //                                        {
-//                                            Event_Renamed.EventErrorMessage = "Talkコマンドのパラメータの括弧の対応が取れていません";
+//                                            Event.EventErrorMessage = "Talkコマンドのパラメータの括弧の対応が取れていません";
 //                                            LineNum = i;
 //                                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
@@ -19264,7 +19264,7 @@
 
 //                                    default:
 //                                        {
-//                                            Event_Renamed.EventErrorMessage = "Talkコマンドの引数の数が違います";
+//                                            Event.EventErrorMessage = "Talkコマンドの引数の数が違います";
 //                                            LineNum = i;
 //                                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
@@ -19283,19 +19283,19 @@
 //                                {
 //                                    Unit argu11 = null;
 //                                    Unit argu21 = null;
-//                                    GUI.OpenMessageForm(u1: ref argu11, u2: ref argu21);
+//                                    GUI.OpenMessageForm(u1: argu11, u2: argu21);
 //                                }
 
 //                                break;
 //                            }
 
-//                        case Event_Renamed.CmdType.EndCmd:
+//                        case Event.CmdType.EndCmd:
 //                            {
 //                                GUI.CloseMessageForm();
 //                                GUI.MessageWindowIsOut = false;
-//                                if ((int)withBlock.ArgNum != 1)
+//                                if (withBlock.ArgNum != 1)
 //                                {
-//                                    Event_Renamed.EventErrorMessage = "End部分の引数の数が違います";
+//                                    Event.EventErrorMessage = "End部分の引数の数が違います";
 //                                    LineNum = i;
 //                                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
@@ -19311,11 +19311,11 @@
 //                                break;
 //                            }
 
-//                        case Event_Renamed.CmdType.SuspendCmd:
+//                        case Event.CmdType.SuspendCmd:
 //                            {
-//                                if ((int)withBlock.ArgNum != 1)
+//                                if (withBlock.ArgNum != 1)
 //                                {
-//                                    Event_Renamed.EventErrorMessage = "Suspend部分の引数の数が違います";
+//                                    Event.EventErrorMessage = "Suspend部分の引数の数が違います";
 //                                    LineNum = i;
 //                                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
@@ -19337,10 +19337,10 @@
 //                                {
 //                                    Unit argu12 = null;
 //                                    Unit argu22 = null;
-//                                    GUI.OpenMessageForm(u1: ref argu12, u2: ref argu22);
+//                                    GUI.OpenMessageForm(u1: argu12, u2: argu22);
 //                                }
 
-//                                GUI.DisplayMessage(ref current_pname, Event_Renamed.EventData[i], options);
+//                                GUI.DisplayMessage(current_pname, Event.EventData[i], options);
 //                                break;
 //                            }
 //                    }
@@ -19350,10 +19350,10 @@
 //                ;
 //            }
 
-//            if (i > Information.UBound(Event_Renamed.EventData))
+//            if (i > Information.UBound(Event.EventData))
 //            {
 //                GUI.CloseMessageForm();
-//                Event_Renamed.EventErrorMessage = "TalkとEndが対応していません";
+//                Event.EventErrorMessage = "TalkとEndが対応していません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 512450
@@ -19373,25 +19373,25 @@
 //        {
 //            int ExecTelopCmdRet = default;
 //            string msg, BGM;
-//            msg = GeneralLib.ListTail(ref Event_Renamed.EventData[LineNum], 2);
-//            if (GeneralLib.ListLength(ref msg) == 1)
+//            msg = GeneralLib.ListTail(Event.EventData[LineNum], 2);
+//            if (GeneralLib.ListLength(msg) == 1)
 //            {
-//                msg = Expression.GetValueAsString(ref msg);
+//                msg = Expression.GetValueAsString(msg);
 //            }
 
-//            Expression.FormatMessage(ref msg);
+//            Expression.FormatMessage(msg);
 //            string argbgm_name = "Subtitle";
-//            string argmidi_name = Sound.BGMName(ref argbgm_name);
-//            BGM = Sound.SearchMidiFile(ref argmidi_name);
+//            string argmidi_name = Sound.BGMName(argbgm_name);
+//            BGM = Sound.SearchMidiFile(argmidi_name);
 //            if (Strings.Len(BGM) > 0)
 //            {
-//                Sound.StartBGM(ref BGM, false);
+//                Sound.StartBGM(BGM, false);
 //                if (!GUI.IsRButtonPressed())
 //                {
 //                    GUI.Sleep(1000);
 //                }
 
-//                GUI.DisplayTelop(ref msg);
+//                GUI.DisplayTelop(msg);
 //                if (!GUI.IsRButtonPressed())
 //                {
 //                    GUI.Sleep(2000);
@@ -19399,7 +19399,7 @@
 //            }
 //            else
 //            {
-//                GUI.DisplayTelop(ref msg);
+//                GUI.DisplayTelop(msg);
 //            }
 
 //            ExecTelopCmdRet = LineNum + 1;
@@ -19415,21 +19415,21 @@
 //            {
 //                case 3:
 //                    {
-//                        u = GetArgAsUnit((short)2);
-//                        tname = GetArgAsString((short)3);
+//                        u = GetArgAsUnit(2);
+//                        tname = GetArgAsString(3);
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        u = Event_Renamed.SelectedUnitForEvent;
-//                        tname = GetArgAsString((short)2);
+//                        u = Event.SelectedUnitForEvent;
+//                        tname = GetArgAsString(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Transformコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Transformコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 513842
@@ -19451,7 +19451,7 @@
 //            }
 
 //            // 変形
-//            u.Transform(ref tname);
+//            u.Transform(tname);
 
 //            // グローバル変数の更新
 //            if (ReferenceEquals(u, Commands.SelectedUnit))
@@ -19459,9 +19459,9 @@
 //                Commands.SelectedUnit = u.CurrentForm();
 //            }
 
-//            if (ReferenceEquals(u, Event_Renamed.SelectedUnitForEvent))
+//            if (ReferenceEquals(u, Event.SelectedUnitForEvent))
 //            {
-//                Event_Renamed.SelectedUnitForEvent = u.CurrentForm();
+//                Event.SelectedUnitForEvent = u.CurrentForm();
 //            }
 
 //            if (ReferenceEquals(u, Commands.SelectedTarget))
@@ -19469,9 +19469,9 @@
 //                Commands.SelectedTarget = u.CurrentForm();
 //            }
 
-//            if (ReferenceEquals(u, Event_Renamed.SelectedTargetForEvent))
+//            if (ReferenceEquals(u, Event.SelectedTargetForEvent))
 //            {
-//                Event_Renamed.SelectedTargetForEvent = u.CurrentForm();
+//                Event.SelectedTargetForEvent = u.CurrentForm();
 //            }
 
 //            ExecTransformCmdRet = LineNum + 1;
@@ -19484,9 +19484,9 @@
 //            string uname;
 //            Unit u;
 //            short urank;
-//            if ((int)ArgNum < 0)
+//            if (ArgNum < 0)
 //            {
-//                Event_Renamed.EventErrorMessage = "Unitコマンドのパラメータの括弧の対応が取れていません";
+//                Event.EventErrorMessage = "Unitコマンドのパラメータの括弧の対応が取れていません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 514928
@@ -19497,9 +19497,9 @@
 
 //                 */
 //            }
-//            else if ((int)ArgNum != 3)
+//            else if (ArgNum != 3)
 //            {
-//                Event_Renamed.EventErrorMessage = "Unitコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Unitコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 515047
@@ -19512,11 +19512,11 @@
 //            }
 
 //            uname = GetArgAsString(2);
-//            bool localIsDefined() { object argIndex1 = uname; var ret = SRC.UDList.IsDefined(ref argIndex1); return ret; }
+//            bool localIsDefined() { object argIndex1 = uname; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
 
 //            if (!localIsDefined())
 //            {
-//                Event_Renamed.EventErrorMessage = "指定したユニット「" + uname + "」のデータが見つかりません";
+//                Event.EventErrorMessage = "指定したユニット「" + uname + "」のデータが見つかりません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 515257
@@ -19528,12 +19528,12 @@
 //                 */
 //            }
 
-//            urank = (short)GetArgAsLong(3);
+//            urank = GetArgAsLong(3);
 //            string arguparty = "味方";
-//            u = SRC.UList.Add(ref uname, urank, ref arguparty);
+//            u = SRC.UList.Add(uname, urank, arguparty);
 //            if (u is null)
 //            {
-//                Event_Renamed.EventErrorMessage = uname + "のユニットデータが不正です";
+//                Event.EventErrorMessage = uname + "のユニットデータが不正です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 515477
@@ -19545,7 +19545,7 @@
 //                 */
 //            }
 
-//            Event_Renamed.SelectedUnitForEvent = u;
+//            Event.SelectedUnitForEvent = u;
 //            ExecUnitCmdRet = LineNum + 1;
 //            return ExecUnitCmdRet;
 //        }
@@ -19554,7 +19554,7 @@
 //        {
 //            int ExecUnsetCmdRet = default;
 //            string argvar_name = GetArg(2);
-//            Expression.UndefineVariable(ref argvar_name);
+//            Expression.UndefineVariable(argvar_name);
 //            ExecUnsetCmdRet = LineNum + 1;
 //            return ExecUnsetCmdRet;
 //        }
@@ -19570,19 +19570,19 @@
 //            {
 //                case 2:
 //                    {
-//                        u1 = Event_Renamed.SelectedUnitForEvent.CurrentForm();
-//                        uname = GetArgAsString((short)2);
+//                        u1 = Event.SelectedUnitForEvent.CurrentForm();
+//                        uname = GetArgAsString(2);
 //                        break;
 //                    }
 
 //                case 3:
 //                    {
-//                        uname = GetArgAsString((short)2);
-//                        bool localIsDefined() { object argIndex1 = (object)uname; var ret = SRC.UList.IsDefined(ref argIndex1); return ret; }
+//                        uname = GetArgAsString(2);
+//                        bool localIsDefined() { object argIndex1 = (object)uname; var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
 //                        if (!localIsDefined())
 //                        {
-//                            Event_Renamed.EventErrorMessage = uname + "というユニットはありません";
+//                            Event.EventErrorMessage = uname + "というユニットはありません";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 516265
@@ -19594,16 +19594,16 @@
 //                             */
 //                        }
 
-//                        Unit localItem() { object argIndex1 = (object)uname; var ret = SRC.UList.Item(ref argIndex1); return ret; }
+//                        Unit localItem() { object argIndex1 = (object)uname; var ret = SRC.UList.Item(argIndex1); return ret; }
 
 //                        u1 = localItem().CurrentForm();
-//                        uname = GetArgAsString((short)3);
+//                        uname = GetArgAsString(3);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Upgradeコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Upgradeコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 516484
@@ -19617,11 +19617,11 @@
 //                    }
 //            }
 
-//            bool localIsDefined1() { object argIndex1 = uname; var ret = SRC.UDList.IsDefined(ref argIndex1); return ret; }
+//            bool localIsDefined1() { object argIndex1 = uname; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
 
 //            if (!localIsDefined1())
 //            {
-//                Event_Renamed.EventErrorMessage = "ユニット「" + uname + "」のデータが見つかりません";
+//                Event.EventErrorMessage = "ユニット「" + uname + "」のデータが見つかりません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 516662
@@ -19635,11 +19635,11 @@
 
 //            prev_status = u1.Status_Renamed;
 //            string arguparty = u1.Party0;
-//            u2 = SRC.UList.Add(ref uname, u1.Rank, ref arguparty);
+//            u2 = SRC.UList.Add(uname, u1.Rank, arguparty);
 //            u1.Party0 = arguparty;
 //            if (u2 is null)
 //            {
-//                Event_Renamed.EventErrorMessage = uname + "のユニットデータが不正です";
+//                Event.EventErrorMessage = uname + "のユニットデータが不正です";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 516898
@@ -19664,45 +19664,45 @@
 //            {
 //                pilot_list = new Pilot[(u1.CountPilot() + 1)];
 //                support_list = new Pilot[(u1.CountSupport() + 1)];
-//                var loopTo = (short)Information.UBound(pilot_list);
+//                var loopTo = Information.UBound(pilot_list);
 //                for (i = 1; i <= loopTo; i++)
 //                {
 //                    object argIndex1 = i;
-//                    pilot_list[i] = u1.Pilot(ref argIndex1);
+//                    pilot_list[i] = u1.Pilot(argIndex1);
 //                }
 
-//                var loopTo1 = (short)Information.UBound(support_list);
+//                var loopTo1 = Information.UBound(support_list);
 //                for (i = 1; i <= loopTo1; i++)
 //                {
 //                    object argIndex2 = i;
-//                    support_list[i] = u1.Support(ref argIndex2);
+//                    support_list[i] = u1.Support(argIndex2);
 //                }
 
 //                object argIndex3 = 1;
-//                u1.Pilot(ref argIndex3).GetOff();
-//                var loopTo2 = (short)Information.UBound(pilot_list);
+//                u1.Pilot(argIndex3).GetOff();
+//                var loopTo2 = Information.UBound(pilot_list);
 //                for (i = 1; i <= loopTo2; i++)
-//                    pilot_list[i].Ride(ref u2);
-//                var loopTo3 = (short)Information.UBound(support_list);
+//                    pilot_list[i].Ride(u2);
+//                var loopTo3 = Information.UBound(support_list);
 //                for (i = 1; i <= loopTo3; i++)
-//                    support_list[i].Ride(ref u2);
+//                    support_list[i].Ride(u2);
 //            }
 
 //            // アイテムの交換
 //            var loopTo4 = u1.CountItem();
 //            for (i = 1; i <= loopTo4; i++)
 //            {
-//                Item localItem1() { object argIndex1 = i; var ret = u1.Item(ref argIndex1); return ret; }
+//                Item localItem1() { object argIndex1 = i; var ret = u1.Item(argIndex1); return ret; }
 
 //                var argitm = localItem1();
-//                u2.AddItem(ref argitm);
+//                u2.AddItem(argitm);
 //            }
 
 //            var loopTo5 = u1.CountItem();
 //            for (i = 1; i <= loopTo5; i++)
 //            {
 //                object argIndex4 = 1;
-//                u1.DeleteItem(ref argIndex4);
+//                u1.DeleteItem(argIndex4);
 //            }
 
 //            // リンクの付け替え
@@ -19717,47 +19717,47 @@
 //            var loopTo6 = u1.CountServant();
 //            for (i = 1; i <= loopTo6; i++)
 //            {
-//                Unit localServant() { object argIndex1 = i; var ret = u1.Servant(ref argIndex1); return ret; }
+//                Unit localServant() { object argIndex1 = i; var ret = u1.Servant(argIndex1); return ret; }
 
 //                var argu = localServant();
-//                u2.AddServant(ref argu);
+//                u2.AddServant(argu);
 //            }
 
 //            var loopTo7 = u1.CountServant();
 //            for (i = 1; i <= loopTo7; i++)
 //            {
 //                object argIndex5 = 1;
-//                u1.DeleteServant(ref argIndex5);
+//                u1.DeleteServant(argIndex5);
 //            }
 
 //            // 収納ユニットの交換
 //            string argfname = "母艦";
-//            if (u1.IsFeatureAvailable(ref argfname))
+//            if (u1.IsFeatureAvailable(argfname))
 //            {
 //                var loopTo8 = u1.CountOtherForm();
 //                for (i = 1; i <= loopTo8; i++)
 //                {
-//                    Unit localOtherForm1() { object argIndex1 = i; var ret = u1.OtherForm(ref argIndex1); return ret; }
+//                    Unit localOtherForm1() { object argIndex1 = i; var ret = u1.OtherForm(argIndex1); return ret; }
 
 //                    if (localOtherForm1().Status_Renamed == "格納")
 //                    {
-//                        Unit localOtherForm() { object argIndex1 = i; var ret = u1.OtherForm(ref argIndex1); return ret; }
+//                        Unit localOtherForm() { object argIndex1 = i; var ret = u1.OtherForm(argIndex1); return ret; }
 
 //                        var argu1 = localOtherForm();
-//                        u2.AddOtherForm(ref argu1);
+//                        u2.AddOtherForm(argu1);
 //                    }
 //                }
 
 //                var loopTo9 = u2.CountOtherForm();
 //                for (i = 1; i <= loopTo9; i++)
 //                {
-//                    Unit localOtherForm3() { object argIndex1 = i; var ret = u2.OtherForm(ref argIndex1); return ret; }
+//                    Unit localOtherForm3() { object argIndex1 = i; var ret = u2.OtherForm(argIndex1); return ret; }
 
 //                    if (localOtherForm3().Status_Renamed == "格納")
 //                    {
-//                        Unit localOtherForm2() { object argIndex1 = i; var ret = u2.OtherForm(ref argIndex1); return ret; }
+//                        Unit localOtherForm2() { object argIndex1 = i; var ret = u2.OtherForm(argIndex1); return ret; }
 
-//                        u1.DeleteOtherForm(ref (object)localOtherForm2().ID);
+//                        u1.DeleteOtherForm((object)localOtherForm2().ID);
 //                    }
 //                }
 //            }
@@ -19769,11 +19769,11 @@
 //            var loopTo10 = u1.CountOtherForm();
 //            for (i = 1; i <= loopTo10; i++)
 //            {
-//                Unit localOtherForm5() { object argIndex1 = i; var ret = u1.OtherForm(ref argIndex1); return ret; }
+//                Unit localOtherForm5() { object argIndex1 = i; var ret = u1.OtherForm(argIndex1); return ret; }
 
 //                if (localOtherForm5().Status_Renamed == "他形態")
 //                {
-//                    Unit localOtherForm4() { object argIndex1 = i; var ret = u1.OtherForm(ref argIndex1); return ret; }
+//                    Unit localOtherForm4() { object argIndex1 = i; var ret = u1.OtherForm(argIndex1); return ret; }
 
 //                    localOtherForm4().Status_Renamed = "破棄";
 //                }
@@ -19826,12 +19826,12 @@
 //                                var loopTo11 = withBlock.CountUnitOnBoard();
 //                                for (i = 1; i <= loopTo11; i++)
 //                                {
-//                                    Unit localUnitOnBoard() { object argIndex1 = i; var ret = withBlock.UnitOnBoard(ref argIndex1); return ret; }
+//                                    Unit localUnitOnBoard() { object argIndex1 = i; var ret = withBlock.UnitOnBoard(argIndex1); return ret; }
 
 //                                    if ((u1.ID ?? "") == (localUnitOnBoard().ID ?? ""))
 //                                    {
-//                                        withBlock.UnloadUnit(ref (object)u1.ID);
-//                                        u2.Land(ref u, true);
+//                                        withBlock.UnloadUnit((object)u1.ID);
+//                                        u2.Land(u, true);
 //                                        goto ExitLoop;
 //                                    }
 //                                }
@@ -19856,9 +19856,9 @@
 //                Commands.SelectedUnit = u2;
 //            }
 
-//            if (ReferenceEquals(u1, Event_Renamed.SelectedUnitForEvent))
+//            if (ReferenceEquals(u1, Event.SelectedUnitForEvent))
 //            {
-//                Event_Renamed.SelectedUnitForEvent = u2;
+//                Event.SelectedUnitForEvent = u2;
 //            }
 
 //            if (ReferenceEquals(u1, Commands.SelectedTarget))
@@ -19866,9 +19866,9 @@
 //                Commands.SelectedTarget = u2;
 //            }
 
-//            if (ReferenceEquals(u1, Event_Renamed.SelectedTargetForEvent))
+//            if (ReferenceEquals(u1, Event.SelectedTargetForEvent))
 //            {
-//                Event_Renamed.SelectedTargetForEvent = u2;
+//                Event.SelectedTargetForEvent = u2;
 //            }
 
 //            var loopTo12 = Commands.SelectionStackIndex;
@@ -19902,7 +19902,7 @@
 //        private int ExecUpvarCmd()
 //        {
 //            int ExecUpvarCmdRet = default;
-//            Event_Renamed.UpVarLevel = (short)(Event_Renamed.UpVarLevel + 1);
+//            Event.UpVarLevel = (Event.UpVarLevel + 1);
 //            ExecUpvarCmdRet = LineNum + 1;
 //            return ExecUpvarCmdRet;
 //        }
@@ -19917,10 +19917,10 @@
 //            {
 //                case 4:
 //                    {
-//                        u1 = GetArgAsUnit((short)2);
-//                        aname = GetArgAsString((short)3);
+//                        u1 = GetArgAsUnit(2);
+//                        aname = GetArgAsString(3);
 //                        var loopTo = u1.CountAbility();
-//                        for (a = (short)1; a <= loopTo; a++)
+//                        for (a = 1; a <= loopTo; a++)
 //                        {
 //                            if ((aname ?? "") == (u1.Ability(a).Name ?? ""))
 //                            {
@@ -19930,7 +19930,7 @@
 
 //                        if (a > u1.CountAbility())
 //                        {
-//                            Event_Renamed.EventErrorMessage = "アビリティ名が間違っています";
+//                            Event.EventErrorMessage = "アビリティ名が間違っています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 522554
@@ -19942,18 +19942,18 @@
 //                             */
 //                        }
 
-//                        u2 = GetArgAsUnit((short)4);
+//                        u2 = GetArgAsUnit(4);
 //                        break;
 //                    }
 
 //                case 3:
 //                    {
-//                        u1 = Event_Renamed.SelectedUnitForEvent;
+//                        u1 = Event.SelectedUnitForEvent;
 //                        if (u1 is object)
 //                        {
-//                            aname = GetArgAsString((short)2);
+//                            aname = GetArgAsString(2);
 //                            var loopTo1 = u1.CountAbility();
-//                            for (a = (short)1; a <= loopTo1; a++)
+//                            for (a = 1; a <= loopTo1; a++)
 //                            {
 //                                if ((aname ?? "") == (u1.Ability(a).Name ?? ""))
 //                                {
@@ -19963,14 +19963,14 @@
 
 //                            if (a <= u1.CountAbility())
 //                            {
-//                                u2 = GetArgAsUnit((short)3);
+//                                u2 = GetArgAsUnit(3);
 //                            }
 //                            else
 //                            {
-//                                u1 = GetArgAsUnit((short)2);
-//                                aname = GetArgAsString((short)3);
+//                                u1 = GetArgAsUnit(2);
+//                                aname = GetArgAsString(3);
 //                                var loopTo2 = u1.CountAbility();
-//                                for (a = (short)1; a <= loopTo2; a++)
+//                                for (a = 1; a <= loopTo2; a++)
 //                                {
 //                                    if ((aname ?? "") == (u1.Ability(a).Name ?? ""))
 //                                    {
@@ -19980,7 +19980,7 @@
 
 //                                if (a > u1.CountAbility())
 //                                {
-//                                    Event_Renamed.EventErrorMessage = "アビリティ名が間違っています";
+//                                    Event.EventErrorMessage = "アビリティ名が間違っています";
 //                                    ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 523270
@@ -19997,10 +19997,10 @@
 //                        }
 //                        else
 //                        {
-//                            u1 = GetArgAsUnit((short)2);
-//                            aname = GetArgAsString((short)3);
+//                            u1 = GetArgAsUnit(2);
+//                            aname = GetArgAsString(3);
 //                            var loopTo3 = u1.CountAbility();
-//                            for (a = (short)1; a <= loopTo3; a++)
+//                            for (a = 1; a <= loopTo3; a++)
 //                            {
 //                                if ((aname ?? "") == (u1.Ability(a).Name ?? ""))
 //                                {
@@ -20010,7 +20010,7 @@
 
 //                            if (a > u1.CountAbility())
 //                            {
-//                                Event_Renamed.EventErrorMessage = "アビリティ名が間違っています";
+//                                Event.EventErrorMessage = "アビリティ名が間違っています";
 //                                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 523646
@@ -20030,10 +20030,10 @@
 
 //                case 2:
 //                    {
-//                        u1 = Event_Renamed.SelectedUnitForEvent;
-//                        aname = GetArgAsString((short)2);
+//                        u1 = Event.SelectedUnitForEvent;
+//                        aname = GetArgAsString(2);
 //                        var loopTo4 = u1.CountAbility();
-//                        for (a = (short)1; a <= loopTo4; a++)
+//                        for (a = 1; a <= loopTo4; a++)
 //                        {
 //                            if ((aname ?? "") == (u1.Ability(a).Name ?? ""))
 //                            {
@@ -20043,7 +20043,7 @@
 
 //                        if (a > u1.CountAbility())
 //                        {
-//                            Event_Renamed.EventErrorMessage = "アビリティ名が間違っています";
+//                            Event.EventErrorMessage = "アビリティ名が間違っています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 524040
@@ -20055,13 +20055,13 @@
 //                             */
 //                        }
 
-//                        u2 = Event_Renamed.SelectedUnitForEvent;
+//                        u2 = Event.SelectedUnitForEvent;
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "UseAbilityコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "UseAbilityコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 524229
@@ -20077,7 +20077,7 @@
 
 //            if (u1.Status_Renamed != "出撃")
 //            {
-//                Event_Renamed.EventErrorMessage = u1.Nickname + "は出撃していません";
+//                Event.EventErrorMessage = u1.Nickname + "は出撃していません";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 524387
@@ -20089,7 +20089,7 @@
 //                 */
 //            }
 
-//            u1.ExecuteAbility(a, ref u2, false, true);
+//            u1.ExecuteAbility(a, u2, false, true);
 //            GUI.CloseMessageForm();
 //            GUI.RedrawScreen();
 //            ExecUseAbilityCmdRet = LineNum + 1;
@@ -20105,19 +20105,19 @@
 //            {
 //                case 2:
 //                    {
-//                        switch (Strings.LCase(GetArg((short)2)) ?? "")
+//                        switch (Strings.LCase(GetArg(2)) ?? "")
 //                        {
 //                            case "start":
 //                                {
-//                                    Event_Renamed.WaitStartTime = GeneralLib.timeGetTime();
-//                                    Event_Renamed.WaitTimeCount = 0;
+//                                    Event.WaitStartTime = GeneralLib.timeGetTime();
+//                                    Event.WaitTimeCount = 0;
 //                                    break;
 //                                }
 
 //                            case "reset":
 //                                {
-//                                    Event_Renamed.WaitStartTime = -1;
-//                                    Event_Renamed.WaitTimeCount = 0;
+//                                    Event.WaitStartTime = -1;
+//                                    Event.WaitTimeCount = 0;
 //                                    break;
 //                                }
 
@@ -20127,7 +20127,7 @@
 //                                    Application.DoEvents();
 //                                    Commands.WaitClickMode = true;
 //                                    GUI.IsFormClicked = false;
-//                                    Event_Renamed.SelectedAlternative = "";
+//                                    Event.SelectedAlternative = "";
 
 //                                    // ウィンドウが表示されていない場合は表示
 //                                    {
@@ -20144,7 +20144,7 @@
 //                                    {
 //                                        if (GUI.IsRButtonPressed(true))
 //                                        {
-//                                            GUI.MouseButton = (short)0;
+//                                            GUI.MouseButton = 0;
 //                                            break;
 //                                        }
 
@@ -20153,16 +20153,16 @@
 //                                    }
 
 //                                    // マウスの左ボタンが押された場合はホットポイントの判定を行う
-//                                    if (string.IsNullOrEmpty(Event_Renamed.SelectedAlternative) & (int)GUI.MouseButton == 1)
+//                                    if (string.IsNullOrEmpty(Event.SelectedAlternative) && GUI.MouseButton == 1)
 //                                    {
-//                                        var loopTo = (short)Information.UBound(Event_Renamed.HotPointList);
-//                                        for (i = (short)1; i <= loopTo; i++)
+//                                        var loopTo = Information.UBound(Event.HotPointList);
+//                                        for (i = 1; i <= loopTo; i++)
 //                                        {
 //                                            {
-//                                                var withBlock1 = Event_Renamed.HotPointList[(int)i];
-//                                                if ((float)withBlock1.Left_Renamed <= GUI.MouseX & GUI.MouseX < (float)(withBlock1.Left_Renamed + withBlock1.width) & (float)withBlock1.Top <= GUI.MouseY & GUI.MouseY < (float)(withBlock1.Top + withBlock1.Height))
+//                                                var withBlock1 = Event.HotPointList[i];
+//                                                if ((float)withBlock1.Left_Renamed <= GUI.MouseX && GUI.MouseX < (float)(withBlock1.Left_Renamed + withBlock1.width) && (float)withBlock1.Top <= GUI.MouseY && GUI.MouseY < (float)(withBlock1.Top + withBlock1.Height))
 //                                                {
-//                                                    Event_Renamed.SelectedAlternative = withBlock1.Name;
+//                                                    Event.SelectedAlternative = withBlock1.Name;
 //                                                    break;
 //                                                }
 //                                            }
@@ -20176,7 +20176,7 @@
 
 //                            default:
 //                                {
-//                                    wait_time = (int)(100d * GetArgAsDouble((short)2));
+//                                    wait_time = (100d * GetArgAsDouble(2));
 
 //                                    // 待ち時間が切れるまで待機
 //                                    if (wait_time < 1000)
@@ -20214,28 +20214,28 @@
 //                    {
 //                        // Wait Until ～
 
-//                        wait_time = (int)(100d * GetArgAsDouble((short)3));
-//                        Event_Renamed.WaitTimeCount = Event_Renamed.WaitTimeCount + 1;
-//                        if (Event_Renamed.WaitStartTime == -1)
+//                        wait_time = (100d * GetArgAsDouble(3));
+//                        Event.WaitTimeCount = Event.WaitTimeCount + 1;
+//                        if (Event.WaitStartTime == -1)
 //                        {
 //                            // Wait Reset が実行されていた場合
-//                            Event_Renamed.WaitStartTime = GeneralLib.timeGetTime();
+//                            Event.WaitStartTime = GeneralLib.timeGetTime();
 //                        }
 //                        else if (wait_time < 100)
 //                        {
 //                            // アニメの１回目の表示は例外的に時間がかかってしまうことがある
 //                            // ので、超過時間を無視する
-//                            if (Event_Renamed.WaitTimeCount == 1)
+//                            if (Event.WaitTimeCount == 1)
 //                            {
 //                                cur_time = GeneralLib.timeGetTime();
-//                                if (Event_Renamed.WaitStartTime + wait_time > cur_time)
+//                                if (Event.WaitStartTime + wait_time > cur_time)
 //                                {
-//                                    Event_Renamed.WaitStartTime = cur_time;
+//                                    Event.WaitStartTime = cur_time;
 //                                }
 //                            }
 //                        }
 
-//                        while (Event_Renamed.WaitStartTime + wait_time > GeneralLib.timeGetTime())
+//                        while (Event.WaitStartTime + wait_time > GeneralLib.timeGetTime())
 //                        {
 //                            if (GUI.IsRButtonPressed(true))
 //                            {
@@ -20251,7 +20251,7 @@
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "Waitコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "Waitコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 528646
@@ -20279,7 +20279,7 @@
 //            late_refresh = false;
 //            Map.MapDrawIsMapOnly = false;
 //            var loopTo = ArgNum;
-//            for (i = (short)2; i <= loopTo; i++)
+//            for (i = 2; i <= loopTo; i++)
 //            {
 //                buf = GetArgAsString(i);
 //                switch (buf ?? "")
@@ -20298,7 +20298,7 @@
 
 //                    default:
 //                        {
-//                            Event_Renamed.EventErrorMessage = "Waterコマンドに不正なオプション「" + buf + "」が使われています";
+//                            Event.EventErrorMessage = "Waterコマンドに不正なオプション「" + buf + "」が使われています";
 //                            ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 529284
@@ -20323,7 +20323,7 @@
 //            string argdraw_option = "非同期";
 //            int argfilter_color = 0;
 //            double argfilter_trans_par = 0d;
-//            GUI.SetupBackground(ref argdraw_mode, ref argdraw_option, filter_color: ref argfilter_color, filter_trans_par: ref argfilter_trans_par);
+//            GUI.SetupBackground(argdraw_mode, argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
 //            foreach (Unit u in SRC.UList)
 //            {
 //                {
@@ -20334,15 +20334,15 @@
 //                        {
 //                            object argIndex1 = withBlock.Name;
 //                            {
-//                                var withBlock1 = SRC.UList.Item(ref argIndex1);
+//                                var withBlock1 = SRC.UList.Item(argIndex1);
 //                                string argfname = "ダミーユニット";
-//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") & withBlock1.BitmapID != 0 & (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") & !withBlock1.IsFeatureAvailable(ref argfname))
+//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable(argfname))
 //                                {
 //                                    u.BitmapID = withBlock1.BitmapID;
 //                                }
 //                                else
 //                                {
-//                                    u.BitmapID = GUI.MakeUnitBitmap(ref u);
+//                                    u.BitmapID = GUI.MakeUnitBitmap(u);
 //                                }
 //                            }
 
@@ -20372,19 +20372,19 @@
 //            {
 //                case 1:
 //                    {
-//                        num = (short)10;
+//                        num = 10;
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        num = (short)GetArgAsLong((short)2);
+//                        num = GetArgAsLong(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "WhiteInコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "WhiteInコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 531028
@@ -20416,10 +20416,10 @@
 //                // MOD END マージ
 
 //                var argpic = withBlock.picMain(0);
-//                Graphics.InitFade(ref argpic, num, true);
+//                Graphics.InitFade(argpic, num, true);
 //                start_time = GeneralLib.timeGetTime();
 //                wait_time = 50;
-//                var loopTo = (int)num;
+//                var loopTo = num;
 //                for (i = 0; i <= loopTo; i++)
 //                {
 //                    if (i % 4 == 0)
@@ -20431,7 +20431,7 @@
 //                    }
 
 //                    var argpic1 = withBlock.picMain(0);
-//                    Graphics.DoFade(ref argpic1, i);
+//                    Graphics.DoFade(argpic1, i);
 //                    withBlock.picMain(0).Refresh();
 //                    cur_time = GeneralLib.timeGetTime();
 //                    while (cur_time < start_time + wait_time * (i + 1))
@@ -20468,19 +20468,19 @@
 //            {
 //                case 1:
 //                    {
-//                        num = (short)10;
+//                        num = 10;
 //                        break;
 //                    }
 
 //                case 2:
 //                    {
-//                        num = (short)GetArgAsLong((short)2);
+//                        num = GetArgAsLong(2);
 //                        break;
 //                    }
 
 //                default:
 //                    {
-//                        Event_Renamed.EventErrorMessage = "WhiteOutコマンドの引数の数が違います";
+//                        Event.EventErrorMessage = "WhiteOutコマンドの引数の数が違います";
 //                        ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 536101
@@ -20498,10 +20498,10 @@
 //            {
 //                var withBlock = GUI.MainForm;
 //                var argpic = withBlock.picMain(0);
-//                Graphics.InitFade(ref argpic, num, true);
+//                Graphics.InitFade(argpic, num, true);
 //                start_time = GeneralLib.timeGetTime();
 //                wait_time = 50;
-//                var loopTo = (int)num;
+//                var loopTo = num;
 //                for (i = 0; i <= loopTo; i++)
 //                {
 //                    if (i % 4 == 0)
@@ -20519,7 +20519,7 @@
 //                    }
 
 //                    var argpic1 = withBlock.picMain(0);
-//                    Graphics.DoFade(ref argpic1, (int)num - i);
+//                    Graphics.DoFade(argpic1, num - i);
 //                    withBlock.picMain(0).Refresh();
 //                    cur_time = GeneralLib.timeGetTime();
 //                    while (cur_time < start_time + wait_time * (i + 1))
@@ -20546,9 +20546,9 @@
 //            int ExecWriteCmdRet = default;
 //            short f;
 //            short i;
-//            if ((int)ArgNum < 3)
+//            if (ArgNum < 3)
 //            {
-//                Event_Renamed.EventErrorMessage = "Writeコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "Writeコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 538676
@@ -20560,7 +20560,7 @@
 //                 */
 //            }
 
-//            f = (short)GetArgAsLong(2);
+//            f = GetArgAsLong(2);
 //            var loopTo = ArgNum;
 //            for (i = 3; i <= loopTo; i++)
 //                FileSystem.WriteLine(f, GetArgAsString(i));
@@ -20576,9 +20576,9 @@
 //            short fw, fx, fy, fh;
 //            short i;
 //            string opt, buf;
-//            if ((int)ArgNum < 6)
+//            if (ArgNum < 6)
 //            {
-//                Event_Renamed.EventErrorMessage = "PlayFlashコマンドの引数の数が違います";
+//                Event.EventErrorMessage = "PlayFlashコマンドの引数の数が違います";
 //                ;
 //#error Cannot convert ErrorStatementSyntax - see comment for details
 //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 539170
@@ -20591,12 +20591,12 @@
 //            }
 
 //            fname = GetArgAsString(2);
-//            fw = (short)GetArgAsLong(5);
-//            fh = (short)GetArgAsLong(6);
+//            fw = GetArgAsLong(5);
+//            fh = GetArgAsLong(6);
 //            buf = GetArgAsString(3);
 //            if (buf == "-")
 //            {
-//                fx = (short)((480 - fw) / 2d);
+//                fx = ((480 - fw) / 2d);
 //            }
 //            else
 //            {
@@ -20606,7 +20606,7 @@
 //            buf = GetArgAsString(4);
 //            if (buf == "-")
 //            {
-//                fy = (short)((480 - fh) / 2d);
+//                fy = ((480 - fh) / 2d);
 //            }
 //            else
 //            {
@@ -20618,7 +20618,7 @@
 //            for (i = 7; i <= loopTo; i++)
 //                opt = opt + " " + GetArgAsString(i);
 //            opt = Strings.Trim(opt);
-//            Flash.PlayFlash(ref fname, ref fx, ref fy, ref fw, ref fh, ref opt);
+//            Flash.PlayFlash(fname, fx, fy, fw, fh, opt);
 //            ExecPlayFlashCmdRet = LineNum + 1;
 //            return ExecPlayFlashCmdRet;
 //        }
