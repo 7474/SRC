@@ -29,14 +29,14 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             // 呼び出し階層をチェック
-            if (Event.CallDepth > Event.MaxCallDepth)
+            if (Event.CallDepth >= Event.MaxCallDepth)
             {
                 Event.CallDepth = Event.MaxCallDepth;
                 throw new EventErrorException(this, Event.MaxCallDepth + "階層を越えるサブルーチンの呼び出しは出来ません");
             }
 
             // 引数用スタックが溢れないかチェック
-            if (Event.ArgIndex + ArgNum - 2 > Event.MaxArgIndex)
+            if (Event.ArgIndex + ArgNum - 2 >= Event.MaxArgIndex)
             {
                 throw new EventErrorException(this, "サブルーチンの引数の総数が" + Event.MaxArgIndex + "個を超えています");
             }

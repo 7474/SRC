@@ -46,16 +46,13 @@ namespace SRCCore.Expressions
             // サブルーチンローカル変数
             if (Event.CallDepth > 0)
             {
-                // TODO ちゃんと作ってないので死ぬ
-                // XXX ローカル変数の参照の仕方
-                //for (int i = Event.VarIndexStack[Event.CallDepth - 1]; i <= Event.VarIndex; i++)
-                //{
-                //    var withBlock = Event.VarStack[i];
-                //    if ((vname ?? "") == (withBlock.Name ?? ""))
-                //    {
-                //        return ReferenceValue(etype, withBlock, out str_result, out num_result);
-                //    }
-                //}
+                foreach (var v in Event.SubLocalVars())
+                {
+                    if ((vname ?? "") == (v.Name ?? ""))
+                    {
+                        return v.ReferenceValue(etype, out str_result, out num_result);
+                    }
+                }
             }
 
             // ローカル変数
@@ -1718,7 +1715,7 @@ namespace SRCCore.Expressions
             {
                 // サブルーチンローカル変数の配列の要素として定義
                 Event.VarIndex = Event.VarIndex + 1;
-                if (Event.VarIndex > Events.Event.MaxVarIndex)
+                if (Event.VarIndex >= Events.Event.MaxVarIndex)
                 {
                     Event.VarIndex = Events.Event.MaxVarIndex;
                     Event.DisplayEventErrorMessage(Event.CurrentLineNum, "作成したサブルーチンローカル変数の総数が" + SrcFormatter.Format(Events.Event.MaxVarIndex) + "個を超えています");

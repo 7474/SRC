@@ -25,7 +25,7 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             // 呼び出し階層数をデクリメント
-            Event.CallDepth = (Event.CallDepth - 1);
+            Event.CallDepth = Event.CallDepth - 1;
 
             // サブルーチン実行前の状態に復帰
             Event.ArgIndex = Event.ArgIndexStack[Event.CallDepth];

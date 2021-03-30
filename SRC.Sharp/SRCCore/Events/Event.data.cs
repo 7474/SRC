@@ -51,7 +51,7 @@ namespace SRCCore.Events
             //ArgStack.Clear();
             UpVarLevel = 0;
             //UpVarLevelStack.Clear();
-            VarIndex = 0;
+            VarIndex = -1;
             //VarIndexStack.Clear();
             //VarStack.Clear();
             ForIndex = 0;

@@ -19,7 +19,7 @@ namespace SRCCore.Events
             if (CallDepth > 0)
             {
                 int i = VarIndexStack[CallDepth - 1];
-                return VarStack.Skip(i).Take(VarIndex - i);
+                return VarStack.Skip(i + 1).Take(VarIndex - i);
             }
             else
             {
