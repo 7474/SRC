@@ -15,6 +15,9 @@ namespace SRCCore.Extensions.Tests
         public void ArrayIndexByNameTest()
         {
             Assert.AreEqual("", "hoge".ArrayIndexByName());
+            Assert.AreEqual("", "ho[1]ge".ArrayIndexByName());
+            Assert.AreEqual("", "[1]hoge".ArrayIndexByName());
+            Assert.AreEqual("", "[1]".ArrayIndexByName());
             Assert.AreEqual("1", "hoge[1]".ArrayIndexByName());
             Assert.AreEqual("abc", "hoge[abc]".ArrayIndexByName());
             Assert.AreEqual("fuga[abc]", "hoge[fuga[abc]]".ArrayIndexByName());
