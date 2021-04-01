@@ -58,11 +58,10 @@ namespace SRCCore.Units
         // 待機：待機中
         // 旧形態：分離ユニットが合体前に取っていた形態
         // 離脱：Leaveコマンドにより戦線を離脱。Organizeコマンドでも表示されない
-        // UPGRADE_NOTE: Status は Status_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
         public string Status;
 
-        //// ユニットに対して使用されているスペシャルパワー
-        //private Collection colSpecialPowerInEffect = new Collection();
+        // ユニットに対して使用されているスペシャルパワー
+        private SrcCollection<Condition> colSpecialPowerInEffect = new SrcCollection<Condition>();
 
         // サポートアタック＆ガードの使用回数
         public int UsedSupportAttack;
