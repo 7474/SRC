@@ -67,7 +67,7 @@ namespace SRCCore.Models
 
                         j = Strings.InStr(buf, "Lv");
                         k = Strings.InStr(buf, "=");
-                        if (j > 0 & (k == 0 | j < k))
+                        if (j > 0 && (k == 0 | j < k))
                         {
                             // データ指定中にレベル指定があるもの
                             etype = Strings.Left(buf, j - 1);
@@ -97,7 +97,7 @@ namespace SRCCore.Models
                             edata = "";
                         }
 
-                        if (Name == "付加" & string.IsNullOrEmpty(elevel))
+                        if (Name == "付加" && string.IsNullOrEmpty(elevel))
                         {
                             elevel = SrcFormatter.Format(Constants.DEFAULT_LEVEL);
                         }
@@ -152,7 +152,7 @@ namespace SRCCore.Models
                         edata = "";
                     }
 
-                    if (Name == "付加" & string.IsNullOrEmpty(elevel))
+                    if (Name == "付加" && string.IsNullOrEmpty(elevel))
                     {
                         elevel = SrcFormatter.Format(Constants.DEFAULT_LEVEL);
                     }
@@ -204,859 +204,816 @@ namespace SRCCore.Models
         //            return EffectDataRet;
         //        }
 
-        //        // 特殊効果 ename を持っているか
-        //        public object IsEffectAvailable(string ename)
-        //        {
-        //            object IsEffectAvailableRet = default;
-        //            int i;
-        //            var loopTo = CountEffect();
-        //            for (i = 1; i <= loopTo; i++)
-        //            {
-        //                if ((ename ?? "") == (EffectType(i) ?? ""))
-        //                {
-        //                    // UPGRADE_WARNING: オブジェクト IsEffectAvailable の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                    IsEffectAvailableRet = true;
-        //                    return IsEffectAvailableRet;
-        //                }
-
-        //                if (EffectType(i) == "スペシャルパワー")
-        //                {
-        //                    // UPGRADE_WARNING: オブジェクト SPDList.Item(EffectData(i)).IsEffectAvailable(ename) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                    SpecialPowerData localItem() { object argIndex1 = EffectData(i); var ret = SRC.SPDList.Item(argIndex1); return ret; }
-
-        //                    if (Conversions.ToBoolean(localItem().IsEffectAvailable(ename)))
-        //                    {
-        //                        // UPGRADE_WARNING: オブジェクト IsEffectAvailable の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                        IsEffectAvailableRet = true;
-        //                        return IsEffectAvailableRet;
-        //                    }
-        //                }
-        //            }
-
-        //            return IsEffectAvailableRet;
-        //        }
-
-        //        // スペシャルパワーがその時点で役に立つかどうか
-        //        // (パイロット p が使用した場合)
-        //        public bool Useful(Pilot p)
-        //        {
-        //            bool UsefulRet = default;
-        //            Unit u;
-        //            int i;
-        //            switch (TargetType ?? "")
-        //            {
-        //                case "自分":
-        //                    {
-        //                        UsefulRet = Effective(p, p.Unit_Renamed);
-        //                        return UsefulRet;
-        //                    }
-
-        //                case "味方":
-        //                case "全味方":
-        //                    {
-        //                        foreach (Unit currentU in SRC.UList)
-        //                        {
-        //                            u = currentU;
-        //                            {
-        //                                var withBlock = u;
-        //                                // 出撃している？
-        //                                if (withBlock.Status_Renamed != "出撃")
-        //                                {
-        //                                    goto NextUnit1;
-        //                                }
-
-        //                                // 味方ユニット？
-        //                                switch (p.Party ?? "")
-        //                                {
-        //                                    case "味方":
-        //                                    case "ＮＰＣ":
-        //                                        {
-        //                                            if (withBlock.Party != "味方" & withBlock.Party0 != "味方" & withBlock.Party != "ＮＰＣ" & withBlock.Party0 != "ＮＰＣ")
-        //                                            {
-        //                                                goto NextUnit1;
-        //                                            }
-
-        //                                            break;
-        //                                        }
-
-        //                                    default:
-        //                                        {
-        //                                            if ((p.Party ?? "") != (withBlock.Party ?? ""))
-        //                                            {
-        //                                                goto NextUnit1;
-        //                                            }
-
-        //                                            break;
-        //                                        }
-        //                                }
-
-        //                                // 効果がある？
-        //                                if (Effective(p, u))
-        //                                {
-        //                                    UsefulRet = true;
-        //                                    return UsefulRet;
-        //                                }
-        //                            }
-
-        //                        NextUnit1:
-        //                            ;
-        //                        }
-
-        //                        break;
-        //                    }
-
-        //                case "破壊味方":
-        //                    {
-        //                        foreach (Unit currentU1 in SRC.UList)
-        //                        {
-        //                            u = currentU1;
-        //                            {
-        //                                var withBlock1 = u;
-        //                                // 破壊されている？
-        //                                if (withBlock1.Status_Renamed != "破壊")
-        //                                {
-        //                                    goto NextUnit2;
-        //                                }
-
-        //                                // 味方ユニット？
-        //                                if ((p.Party ?? "") != (withBlock1.Party0 ?? ""))
-        //                                {
-        //                                    goto NextUnit2;
-        //                                }
-
-        //                                // 効果がある？
-        //                                if (Effective(p, u))
-        //                                {
-        //                                    UsefulRet = true;
-        //                                    return UsefulRet;
-        //                                }
-        //                            }
-
-        //                        NextUnit2:
-        //                            ;
-        //                        }
-
-        //                        break;
-        //                    }
-
-        //                case "敵":
-        //                case "全敵":
-        //                    {
-        //                        foreach (Unit currentU2 in SRC.UList)
-        //                        {
-        //                            u = currentU2;
-        //                            {
-        //                                var withBlock2 = u;
-        //                                // 出撃している？
-        //                                if (withBlock2.Status_Renamed != "出撃")
-        //                                {
-        //                                    goto NextUnit3;
-        //                                }
-
-        //                                // 敵ユニット？
-        //                                switch (p.Party ?? "")
-        //                                {
-        //                                    case "味方":
-        //                                    case "ＮＰＣ":
-        //                                        {
-        //                                            if (withBlock2.Party == "味方" & withBlock2.Party0 == "味方" | withBlock2.Party == "ＮＰＣ" & withBlock2.Party0 == "ＮＰＣ")
-        //                                            {
-        //                                                goto NextUnit3;
-        //                                            }
-
-        //                                            break;
-        //                                        }
-
-        //                                    default:
-        //                                        {
-        //                                            if ((p.Party ?? "") == (withBlock2.Party ?? ""))
-        //                                            {
-        //                                                goto NextUnit3;
-        //                                            }
-
-        //                                            break;
-        //                                        }
-        //                                }
-
-        //                                // 効果がある？
-        //                                if (Effective(p, u))
-        //                                {
-        //                                    UsefulRet = true;
-        //                                    return UsefulRet;
-        //                                }
-        //                            }
-
-        //                        NextUnit3:
-        //                            ;
-        //                        }
-
-        //                        break;
-        //                    }
-
-        //                case "任意":
-        //                case "全":
-        //                    {
-        //                        foreach (Unit currentU3 in SRC.UList)
-        //                        {
-        //                            u = currentU3;
-        //                            // 出撃している？
-        //                            if (u.Status_Renamed == "出撃")
-        //                            {
-        //                                // 効果がある？
-        //                                if (Effective(p, u))
-        //                                {
-        //                                    UsefulRet = true;
-        //                                    return UsefulRet;
-        //                                }
-        //                            }
-        //                        }
-
-        //                        break;
-        //                    }
-        //            }
-
-        //            return UsefulRet;
-        //        }
-
-        //        // スペシャルパワーがユニット t に対して効果があるかどうか
-        //        // (パイロット p が使用した場合)
-        //        public bool Effective(Pilot p, Unit t)
-        //        {
-        //            bool EffectiveRet = default;
-        //            int i, j;
-        //            string ncond;
-        //            Unit my_unit;
-
-        //            // 同じ追加パイロットを持つユニットが複数いる場合、パイロットのUnitが
-        //            // 変化してしまうことがあるため、元のUnitを記録しておく
-        //            my_unit = p.Unit_Renamed;
-        //            // 適用条件を満たしている？
-        //            var loopTo = GeneralLib.LLength(NecessaryCondition);
-        //            for (i = 1; i <= loopTo; i++)
-        //            {
-        //                ncond = GeneralLib.LIndex(NecessaryCondition, i);
-        //                switch (ncond ?? "")
-        //                {
-        //                    case "技量":
-        //                        {
-        //                            if (p.Technique < t.MainPilot().Technique)
-        //                            {
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "非ボス":
-        //                        {
-        //                            if (t.BossRank >= 0)
-        //                            {
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "支援":
-        //                        {
-        //                            if (ReferenceEquals(my_unit, t))
-        //                            {
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "隣接":
-        //                        {
-        //                            if (Math.Abs((my_unit.x - t.x)) + Math.Abs((my_unit.y - t.y)) != 1)
-        //                            {
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    default:
-        //                        {
-        //                            if (Strings.InStr(ncond, "射程Lv") == 1)
-        //                            {
-        //                                int localStrToLng() { string argexpr = Strings.Mid(ncond, 5); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-        //                                if (Math.Abs((my_unit.x - t.x)) + Math.Abs((my_unit.y - t.y)) > localStrToLng())
-        //                                {
-        //                                    goto ExitFunc;
-        //                                }
-        //                            }
-
-        //                            break;
-        //                        }
-        //                }
-
-        //                // Unitが変化してしまった場合は元に戻しておく
-        //                if (!ReferenceEquals(my_unit, p.Unit_Renamed))
-        //                {
-        //                    my_unit.MainPilot();
-        //                }
-        //            }
-
-        //            // 無効化されている？
-        //            switch (TargetType ?? "")
-        //            {
-        //                case "敵":
-        //                case "全敵":
-        //                case "任意":
-        //                case "全":
-        //                    {
-        //                        object argIndex1 = "スペシャルパワー無効化";
-        //                        object argIndex2 = "精神コマンド無効化";
-        //                        if (t.IsConditionSatisfied(argIndex1) | t.IsConditionSatisfied(argIndex2))
-        //                        {
-        //                            goto ExitFunc;
-        //                        }
-
-        //                        break;
-        //                    }
-        //            }
-
-        //            // 持続効果があるものは同じスペシャルパワーが既に適用されていなければ
-        //            // 効果があるとみなす
-        //            if (Duration != "即効")
-        //            {
-        //                if (!t.IsSpecialPowerInEffect(Name))
-        //                {
-        //                    EffectiveRet = true;
-        //                }
-
-        //                // ただしみがわりは自分自身には使えないのでチェックしておく
-        //                if (EffectType(1) == "みがわり")
-        //                {
-        //                    if (ReferenceEquals(my_unit, t))
-        //                    {
-        //                        EffectiveRet = false;
-        //                        goto ExitFunc;
-        //                    }
-        //                }
-
-        //                goto ExitFunc;
-        //            }
-
-        //            // 個々の効果に関して有効かどうか判定
-        //            var loopTo1 = CountEffect();
-        //            for (i = 1; i <= loopTo1; i++)
-        //            {
-        //                switch (EffectType(i) ?? "")
-        //                {
-        //                    case "ＨＰ回復":
-        //                    case "ＨＰ増加":
-        //                        {
-        //                            if (EffectLevel(i) < 0d)
-        //                            {
-        //                                EffectiveRet = true;
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            object argIndex3 = "ゾンビ";
-        //                            if (t.IsConditionSatisfied(argIndex3))
-        //                            {
-        //                                goto NextEffect;
-        //                            }
-
-        //                            if (t.HP < t.MaxHP)
-        //                            {
-        //                                EffectiveRet = true;
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "ＥＮ回復":
-        //                    case "ＥＮ増加":
-        //                        {
-        //                            if (EffectLevel(i) < 0d)
-        //                            {
-        //                                EffectiveRet = true;
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            object argIndex4 = "ゾンビ";
-        //                            if (t.IsConditionSatisfied(argIndex4))
-        //                            {
-        //                                goto NextEffect;
-        //                            }
-
-        //                            if (t.EN < t.MaxEN)
-        //                            {
-        //                                EffectiveRet = true;
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "霊力回復":
-        //                    case "霊力増加":
-        //                        {
-        //                            if (EffectLevel(i) < 0d)
-        //                            {
-        //                                EffectiveRet = true;
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            object argIndex5 = "ゾンビ";
-        //                            if (t.IsConditionSatisfied(argIndex5))
-        //                            {
-        //                                goto NextEffect;
-        //                            }
-
-        //                            if (t.MainPilot().Plana < t.MainPilot().MaxPlana())
-        //                            {
-        //                                EffectiveRet = true;
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "ＳＰ回復":
-        //                        {
-        //                            if (EffectLevel(i) < 0d)
-        //                            {
-        //                                EffectiveRet = true;
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            object argIndex6 = "ゾンビ";
-        //                            if (t.IsConditionSatisfied(argIndex6))
-        //                            {
-        //                                goto NextEffect;
-        //                            }
-
-        //                            if (t.MainPilot().SP < t.MainPilot().MaxSP)
-        //                            {
-        //                                EffectiveRet = true;
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            var loopTo2 = t.CountPilot();
-        //                            for (j = 2; j <= loopTo2; j++)
-        //                            {
-        //                                Pilot localPilot() { object argIndex1 = j; var ret = t.Pilot(argIndex1); return ret; }
-
-        //                                Pilot localPilot1() { object argIndex1 = j; var ret = t.Pilot(argIndex1); return ret; }
-
-        //                                if (localPilot().SP < localPilot1().MaxSP)
-        //                                {
-        //                                    EffectiveRet = true;
-        //                                    goto ExitFunc;
-        //                                }
-        //                            }
-
-        //                            var loopTo3 = t.CountSupport();
-        //                            for (j = 1; j <= loopTo3; j++)
-        //                            {
-        //                                Pilot localSupport() { object argIndex1 = j; var ret = t.Support(argIndex1); return ret; }
-
-        //                                Pilot localSupport1() { object argIndex1 = j; var ret = t.Support(argIndex1); return ret; }
-
-        //                                if (localSupport().SP < localSupport1().MaxSP)
-        //                                {
-        //                                    EffectiveRet = true;
-        //                                    goto ExitFunc;
-        //                                }
-        //                            }
-
-        //                            string argfname = "追加サポート";
-        //                            if (t.IsFeatureAvailable(argfname))
-        //                            {
-        //                                if (t.AdditionalSupport().SP < t.AdditionalSupport().MaxSP)
-        //                                {
-        //                                    EffectiveRet = true;
-        //                                    goto ExitFunc;
-        //                                }
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "状態回復":
-        //                        {
-        //                            object argIndex8 = "攻撃不能";
-        //                            object argIndex9 = "移動不能";
-        //                            object argIndex10 = "装甲劣化";
-        //                            object argIndex11 = "混乱";
-        //                            object argIndex12 = "魅了";
-        //                            object argIndex13 = "憑依";
-        //                            object argIndex14 = "石化";
-        //                            object argIndex15 = "凍結";
-        //                            object argIndex16 = "麻痺";
-        //                            object argIndex17 = "睡眠";
-        //                            object argIndex18 = "毒";
-        //                            object argIndex19 = "盲目";
-        //                            object argIndex20 = "撹乱";
-        //                            object argIndex21 = "恐怖";
-        //                            object argIndex22 = "沈黙";
-        //                            object argIndex23 = "ゾンビ";
-        //                            object argIndex24 = "回復不能";
-        //                            object argIndex25 = "オーラ使用不能";
-        //                            object argIndex26 = "超能力使用不能";
-        //                            object argIndex27 = "同調率使用不能";
-        //                            object argIndex28 = "超感覚使用不能";
-        //                            object argIndex29 = "知覚強化使用不能";
-        //                            object argIndex30 = "霊力使用不能";
-        //                            object argIndex31 = "術使用不能";
-        //                            object argIndex32 = "技使用不能";
-        //                            if (t.ConditionLifetime(argIndex8) > 0 | t.ConditionLifetime(argIndex9) > 0 | t.ConditionLifetime(argIndex10) > 0 | t.ConditionLifetime(argIndex11) > 0 | t.ConditionLifetime(argIndex12) > 0 | t.ConditionLifetime(argIndex13) > 0 | t.ConditionLifetime(argIndex14) > 0 | t.ConditionLifetime(argIndex15) > 0 | t.ConditionLifetime(argIndex16) > 0 | t.ConditionLifetime(argIndex17) > 0 | t.ConditionLifetime(argIndex18) > 0 | t.ConditionLifetime(argIndex19) > 0 | t.ConditionLifetime(argIndex20) > 0 | t.ConditionLifetime(argIndex21) > 0 | t.ConditionLifetime(argIndex22) > 0 | t.ConditionLifetime(argIndex23) > 0 | t.ConditionLifetime(argIndex24) > 0 | t.ConditionLifetime(argIndex25) > 0 | t.ConditionLifetime(argIndex26) > 0 | t.ConditionLifetime(argIndex27) > 0 | t.ConditionLifetime(argIndex28) > 0 | t.ConditionLifetime(argIndex29) > 0 | t.ConditionLifetime(argIndex30) > 0 | t.ConditionLifetime(argIndex31) > 0 | t.ConditionLifetime(argIndex32) > 0)
-        //                            {
-        //                                EffectiveRet = true;
-        //                                goto ExitFunc;
-        //                            }
-        //                            else
-        //                            {
-        //                                var loopTo4 = t.CountCondition();
-        //                                for (j = 1; j <= loopTo4; j++)
-        //                                {
-        //                                    string localCondition2() { object argIndex1 = j; var ret = t.Condition(argIndex1); return ret; }
-
-        //                                    if (Strings.Len(localCondition2()) > 6)
-        //                                    {
-        //                                        string localCondition1() { object argIndex1 = j; var ret = t.Condition(argIndex1); return ret; }
-
-        //                                        if (Strings.Right(localCondition1(), 6) == "属性使用不能")
-        //                                        {
-        //                                            string localCondition() { object argIndex1 = j; var ret = t.Condition(argIndex1); return ret; }
-
-        //                                            object argIndex7 = localCondition();
-        //                                            if (t.ConditionLifetime(argIndex7) > 0)
-        //                                            {
-        //                                                EffectiveRet = true;
-        //                                                goto ExitFunc;
-        //                                            }
-        //                                        }
-        //                                    }
-        //                                }
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "装填":
-        //                        {
-        //                            var loopTo5 = t.CountWeapon();
-        //                            for (j = 1; j <= loopTo5; j++)
-        //                            {
-        //                                if (t.Bullet(j) < t.MaxBullet(j))
-        //                                {
-        //                                    EffectiveRet = true;
-        //                                    goto ExitFunc;
-        //                                }
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "行動数回復":
-        //                        {
-        //                            if (t.Action == 0 & t.MaxAction() > 0)
-        //                            {
-        //                                EffectiveRet = true;
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "行動数増加":
-        //                        {
-        //                            if (EffectLevel(i) < 0d)
-        //                            {
-        //                                EffectiveRet = true;
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            if (t.Action < 3 & t.MaxAction() > 0)
-        //                            {
-        //                                EffectiveRet = true;
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "スペシャルパワー":
-        //                    case "精神コマンド":
-        //                        {
-        //                            bool localIsSpecialPowerInEffect() { string argsname = EffectData(i); var ret = t.IsSpecialPowerInEffect(argsname); return ret; }
-
-        //                            if (!localIsSpecialPowerInEffect())
-        //                            {
-        //                                EffectiveRet = true;
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "気力増加":
-        //                        {
-        //                            if (t.MainPilot().Personality != "機械" & t.MainPilot().Morale < t.MainPilot().MaxMorale)
-        //                            {
-        //                                EffectiveRet = true;
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            var loopTo6 = t.CountPilot();
-        //                            for (j = 2; j <= loopTo6; j++)
-        //                            {
-        //                                Pilot localPilot2() { object argIndex1 = j; var ret = t.Pilot(argIndex1); return ret; }
-
-        //                                Pilot localPilot3() { object argIndex1 = j; var ret = t.Pilot(argIndex1); return ret; }
-
-        //                                if (localPilot2().Personality != "機械" & localPilot3().Morale < t.MainPilot().MaxMorale)
-        //                                {
-        //                                    EffectiveRet = true;
-        //                                    goto ExitFunc;
-        //                                }
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "気力低下":
-        //                        {
-        //                            if (t.MainPilot().Personality == "機械")
-        //                            {
-        //                                goto NextEffect;
-        //                            }
-
-        //                            if (t.MainPilot().Morale > t.MainPilot().MinMorale)
-        //                            {
-        //                                EffectiveRet = true;
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "ランダムダメージ":
-        //                    case "ＨＰ減少":
-        //                    case "ＥＮ減少":
-        //                        {
-        //                            object argIndex33 = "無敵";
-        //                            if (!t.IsConditionSatisfied(argIndex33))
-        //                            {
-        //                                EffectiveRet = true;
-        //                                goto ExitFunc;
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case var @case when @case == "気力増加":
-        //                    case "自爆":
-        //                    case "復活":
-        //                    case "偵察":
-        //                    case "味方スペシャルパワー実行":
-        //                    case "イベント":
-        //                        {
-        //                            EffectiveRet = true;
-        //                            goto ExitFunc;
-        //                            break;
-        //                        }
-        //                }
-
-        //            NextEffect:
-        //                ;
-        //            }
-
-        //        ExitFunc:
-        //            ;
-
-
-        //            // Unitが変化してしまった場合は元に戻しておく
-        //            if (!ReferenceEquals(my_unit, p.Unit_Renamed))
-        //            {
-        //                my_unit.MainPilot();
-        //            }
-
-        //            return EffectiveRet;
-        //        }
-
-
-        //        // スペシャルパワーを使用する
-        //        // (パイロット p が使用した場合)
-        //        public void Execute(Pilot p, bool is_event = false)
-        //        {
-        //            Unit u;
-        //            int i, j;
-        //            switch (TargetType ?? "")
-        //            {
-        //                case "自分":
-        //                    {
-        //                        if (Apply(p, p.Unit_Renamed, is_event) & !is_event)
-        //                        {
-        //                            GUI.Sleep(300);
-        //                        }
-
-        //                        break;
-        //                    }
-
-        //                case "全味方":
-        //                    {
-        //                        var loopTo = Map.MapWidth;
-        //                        for (i = 1; i <= loopTo; i++)
-        //                        {
-        //                            var loopTo1 = Map.MapHeight;
-        //                            for (j = 1; j <= loopTo1; j++)
-        //                            {
-        //                                u = Map.MapDataForUnit[i, j];
-        //                                if (u is null)
-        //                                {
-        //                                    goto NextUnit1;
-        //                                }
-
-        //                                {
-        //                                    var withBlock = u;
-        //                                    // 味方ユニット？
-        //                                    switch (p.Party ?? "")
-        //                                    {
-        //                                        case "味方":
-        //                                        case "ＮＰＣ":
-        //                                            {
-        //                                                if (withBlock.Party != "味方" & withBlock.Party0 != "味方" & withBlock.Party != "ＮＰＣ" & withBlock.Party0 != "ＮＰＣ")
-        //                                                {
-        //                                                    goto NextUnit1;
-        //                                                }
-
-        //                                                break;
-        //                                            }
-
-        //                                        default:
-        //                                            {
-        //                                                if ((p.Party ?? "") != (withBlock.Party ?? ""))
-        //                                                {
-        //                                                    goto NextUnit1;
-        //                                                }
-
-        //                                                break;
-        //                                            }
-        //                                    }
-
-        //                                    Apply(p, u, is_event);
-        //                                }
-
-        //                            NextUnit1:
-        //                                ;
-        //                            }
-        //                        }
-
-        //                        if (!is_event)
-        //                        {
-        //                            GUI.Sleep(300);
-        //                        }
-
-        //                        break;
-        //                    }
-
-        //                case "全敵":
-        //                    {
-        //                        var loopTo2 = Map.MapWidth;
-        //                        for (i = 1; i <= loopTo2; i++)
-        //                        {
-        //                            var loopTo3 = Map.MapHeight;
-        //                            for (j = 1; j <= loopTo3; j++)
-        //                            {
-        //                                u = Map.MapDataForUnit[i, j];
-        //                                if (u is null)
-        //                                {
-        //                                    goto NextUnit2;
-        //                                }
-
-        //                                {
-        //                                    var withBlock1 = u;
-        //                                    // 敵ユニット？
-        //                                    switch (p.Party ?? "")
-        //                                    {
-        //                                        case "味方":
-        //                                        case "ＮＰＣ":
-        //                                            {
-        //                                                if (withBlock1.Party == "味方" | withBlock1.Party == "ＮＰＣ")
-        //                                                {
-        //                                                    goto NextUnit2;
-        //                                                }
-
-        //                                                break;
-        //                                            }
-
-        //                                        default:
-        //                                            {
-        //                                                if ((p.Party ?? "") == (withBlock1.Party ?? ""))
-        //                                                {
-        //                                                    goto NextUnit2;
-        //                                                }
-
-        //                                                break;
-        //                                            }
-        //                                    }
-
-        //                                    Apply(p, u, is_event);
-        //                                }
-
-        //                            NextUnit2:
-        //                                ;
-        //                            }
-        //                        }
-
-        //                        if (!is_event)
-        //                        {
-        //                            GUI.Sleep(300);
-        //                        }
-
-        //                        break;
-        //                    }
-
-        //                case "全":
-        //                    {
-        //                        var loopTo4 = Map.MapWidth;
-        //                        for (i = 1; i <= loopTo4; i++)
-        //                        {
-        //                            var loopTo5 = Map.MapHeight;
-        //                            for (j = 1; j <= loopTo5; j++)
-        //                            {
-        //                                u = Map.MapDataForUnit[i, j];
-        //                                if (u is object)
-        //                                {
-        //                                    Apply(p, u, is_event);
-        //                                }
-        //                            }
-        //                        }
-
-        //                        if (!is_event)
-        //                        {
-        //                            GUI.Sleep(300);
-        //                        }
-
-        //                        break;
-        //                    }
-
-        //                default:
-        //                    {
-        //                        if (Apply(p, Commands.SelectedTarget, is_event) & !is_event)
-        //                        {
-        //                            GUI.Sleep(300);
-        //                        }
-
-        //                        break;
-        //                    }
-        //            }
-
-        //            if (!is_event)
-        //            {
-        //                GUI.CloseMessageForm();
-        //                GUI.RedrawScreen();
-        //            }
-        //        }
+        // 特殊効果 ename を持っているか
+        public bool IsEffectAvailable(string ename)
+        {
+            return false;
+            // TODO Impl
+            //object IsEffectAvailableRet = default;
+            //int i;
+            //var loopTo = CountEffect();
+            //for (i = 1; i <= loopTo; i++)
+            //{
+            //    if ((ename ?? "") == (EffectType(i) ?? ""))
+            //    {
+            //        // UPGRADE_WARNING: オブジェクト IsEffectAvailable の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
+            //        IsEffectAvailableRet = true;
+            //        return IsEffectAvailableRet;
+            //    }
+
+            //    if (EffectType(i) == "スペシャルパワー")
+            //    {
+            //        // UPGRADE_WARNING: オブジェクト SPDList.Item(EffectData(i)).IsEffectAvailable(ename) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
+            //        SpecialPowerData localItem() { object argIndex1 = EffectData(i); var ret = SRC.SPDList.Item(argIndex1); return ret; }
+
+            //        if (Conversions.ToBoolean(localItem().IsEffectAvailable(ename)))
+            //        {
+            //            // UPGRADE_WARNING: オブジェクト IsEffectAvailable の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
+            //            IsEffectAvailableRet = true;
+            //            return IsEffectAvailableRet;
+            //        }
+            //    }
+            //}
+
+            //return IsEffectAvailableRet;
+        }
+
+        // スペシャルパワーがその時点で役に立つかどうか
+        // (パイロット p が使用した場合)
+        public bool Useful(Pilot p)
+        {
+            return true;
+            // TODO Impl
+            //bool UsefulRet = default;
+            //Unit u;
+            //int i;
+            //switch (TargetType ?? "")
+            //{
+            //    case "自分":
+            //        {
+            //            UsefulRet = Effective(p, p.Unit);
+            //            return UsefulRet;
+            //        }
+
+            //    case "味方":
+            //    case "全味方":
+            //        {
+            //            foreach (Unit currentU in SRC.UList)
+            //            {
+            //                u = currentU;
+            //                {
+            //                    var withBlock = u;
+            //                    // 出撃している？
+            //                    if (withBlock.Status != "出撃")
+            //                    {
+            //                        goto NextUnit1;
+            //                    }
+
+            //                    // 味方ユニット？
+            //                    switch (p.Party ?? "")
+            //                    {
+            //                        case "味方":
+            //                        case "ＮＰＣ":
+            //                            {
+            //                                if (withBlock.Party != "味方" && withBlock.Party0 != "味方" && withBlock.Party != "ＮＰＣ" && withBlock.Party0 != "ＮＰＣ")
+            //                                {
+            //                                    goto NextUnit1;
+            //                                }
+
+            //                                break;
+            //                            }
+
+            //                        default:
+            //                            {
+            //                                if ((p.Party ?? "") != (withBlock.Party ?? ""))
+            //                                {
+            //                                    goto NextUnit1;
+            //                                }
+
+            //                                break;
+            //                            }
+            //                    }
+
+            //                    // 効果がある？
+            //                    if (Effective(p, u))
+            //                    {
+            //                        UsefulRet = true;
+            //                        return UsefulRet;
+            //                    }
+            //                }
+
+            //            NextUnit1:
+            //                ;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "破壊味方":
+            //        {
+            //            foreach (Unit currentU1 in SRC.UList)
+            //            {
+            //                u = currentU1;
+            //                {
+            //                    var withBlock1 = u;
+            //                    // 破壊されている？
+            //                    if (withBlock1.Status != "破壊")
+            //                    {
+            //                        goto NextUnit2;
+            //                    }
+
+            //                    // 味方ユニット？
+            //                    if ((p.Party ?? "") != (withBlock1.Party0 ?? ""))
+            //                    {
+            //                        goto NextUnit2;
+            //                    }
+
+            //                    // 効果がある？
+            //                    if (Effective(p, u))
+            //                    {
+            //                        UsefulRet = true;
+            //                        return UsefulRet;
+            //                    }
+            //                }
+
+            //            NextUnit2:
+            //                ;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "敵":
+            //    case "全敵":
+            //        {
+            //            foreach (Unit currentU2 in SRC.UList)
+            //            {
+            //                u = currentU2;
+            //                {
+            //                    var withBlock2 = u;
+            //                    // 出撃している？
+            //                    if (withBlock2.Status != "出撃")
+            //                    {
+            //                        goto NextUnit3;
+            //                    }
+
+            //                    // 敵ユニット？
+            //                    switch (p.Party ?? "")
+            //                    {
+            //                        case "味方":
+            //                        case "ＮＰＣ":
+            //                            {
+            //                                if (withBlock2.Party == "味方" && withBlock2.Party0 == "味方" | withBlock2.Party == "ＮＰＣ" && withBlock2.Party0 == "ＮＰＣ")
+            //                                {
+            //                                    goto NextUnit3;
+            //                                }
+
+            //                                break;
+            //                            }
+
+            //                        default:
+            //                            {
+            //                                if ((p.Party ?? "") == (withBlock2.Party ?? ""))
+            //                                {
+            //                                    goto NextUnit3;
+            //                                }
+
+            //                                break;
+            //                            }
+            //                    }
+
+            //                    // 効果がある？
+            //                    if (Effective(p, u))
+            //                    {
+            //                        UsefulRet = true;
+            //                        return UsefulRet;
+            //                    }
+            //                }
+
+            //            NextUnit3:
+            //                ;
+            //            }
+
+            //            break;
+            //        }
+
+            //    case "任意":
+            //    case "全":
+            //        {
+            //            foreach (Unit currentU3 in SRC.UList)
+            //            {
+            //                u = currentU3;
+            //                // 出撃している？
+            //                if (u.Status == "出撃")
+            //                {
+            //                    // 効果がある？
+            //                    if (Effective(p, u))
+            //                    {
+            //                        UsefulRet = true;
+            //                        return UsefulRet;
+            //                    }
+            //                }
+            //            }
+
+            //            break;
+            //        }
+            //}
+
+            //return UsefulRet;
+        }
+
+        // スペシャルパワーがユニット t に対して効果があるかどうか
+        // (パイロット p が使用した場合)
+        public bool Effective(Pilot p, Unit t)
+        {
+            return true;
+            // TODO Impl
+            //    bool EffectiveRet = default;
+            //    int i, j;
+            //    string ncond;
+            //    Unit my_unit;
+
+            //    // 同じ追加パイロットを持つユニットが複数いる場合、パイロットのUnitが
+            //    // 変化してしまうことがあるため、元のUnitを記録しておく
+            //    my_unit = p.Unit;
+            //    // 適用条件を満たしている？
+            //    var loopTo = GeneralLib.LLength(NecessaryCondition);
+            //    for (i = 1; i <= loopTo; i++)
+            //    {
+            //        ncond = GeneralLib.LIndex(NecessaryCondition, i);
+            //        switch (ncond ?? "")
+            //        {
+            //            case "技量":
+            //                {
+            //                    if (p.Technique < t.MainPilot().Technique)
+            //                    {
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case "非ボス":
+            //                {
+            //                    if (t.BossRank >= 0)
+            //                    {
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case "支援":
+            //                {
+            //                    if (ReferenceEquals(my_unit, t))
+            //                    {
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case "隣接":
+            //                {
+            //                    if (Math.Abs((my_unit.x - t.x)) + Math.Abs((my_unit.y - t.y)) != 1)
+            //                    {
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            default:
+            //                {
+            //                    if (Strings.InStr(ncond, "射程Lv") == 1)
+            //                    {
+            //                        int localStrToLng() { string argexpr = Strings.Mid(ncond, 5); var ret = GeneralLib.StrToLng(argexpr); return ret; }
+
+            //                        if (Math.Abs((my_unit.x - t.x)) + Math.Abs((my_unit.y - t.y)) > localStrToLng())
+            //                        {
+            //                            goto ExitFunc;
+            //                        }
+            //                    }
+
+            //                    break;
+            //                }
+            //        }
+
+            //        // Unitが変化してしまった場合は元に戻しておく
+            //        if (!ReferenceEquals(my_unit, p.Unit))
+            //        {
+            //            my_unit.MainPilot();
+            //        }
+            //    }
+
+            //    // 無効化されている？
+            //    switch (TargetType ?? "")
+            //    {
+            //        case "敵":
+            //        case "全敵":
+            //        case "任意":
+            //        case "全":
+            //            {
+            //                object argIndex1 = "スペシャルパワー無効化";
+            //                object argIndex2 = "精神コマンド無効化";
+            //                if (t.IsConditionSatisfied(argIndex1) | t.IsConditionSatisfied(argIndex2))
+            //                {
+            //                    goto ExitFunc;
+            //                }
+
+            //                break;
+            //            }
+            //    }
+
+            //    // 持続効果があるものは同じスペシャルパワーが既に適用されていなければ
+            //    // 効果があるとみなす
+            //    if (Duration != "即効")
+            //    {
+            //        if (!t.IsSpecialPowerInEffect(Name))
+            //        {
+            //            EffectiveRet = true;
+            //        }
+
+            //        // ただしみがわりは自分自身には使えないのでチェックしておく
+            //        if (EffectType(1) == "みがわり")
+            //        {
+            //            if (ReferenceEquals(my_unit, t))
+            //            {
+            //                EffectiveRet = false;
+            //                goto ExitFunc;
+            //            }
+            //        }
+
+            //        goto ExitFunc;
+            //    }
+
+            //    // 個々の効果に関して有効かどうか判定
+            //    var loopTo1 = CountEffect();
+            //    for (i = 1; i <= loopTo1; i++)
+            //    {
+            //        switch (EffectType(i) ?? "")
+            //        {
+            //            case "ＨＰ回復":
+            //            case "ＨＰ増加":
+            //                {
+            //                    if (EffectLevel(i) < 0d)
+            //                    {
+            //                        EffectiveRet = true;
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    object argIndex3 = "ゾンビ";
+            //                    if (t.IsConditionSatisfied(argIndex3))
+            //                    {
+            //                        goto NextEffect;
+            //                    }
+
+            //                    if (t.HP < t.MaxHP)
+            //                    {
+            //                        EffectiveRet = true;
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case "ＥＮ回復":
+            //            case "ＥＮ増加":
+            //                {
+            //                    if (EffectLevel(i) < 0d)
+            //                    {
+            //                        EffectiveRet = true;
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    object argIndex4 = "ゾンビ";
+            //                    if (t.IsConditionSatisfied(argIndex4))
+            //                    {
+            //                        goto NextEffect;
+            //                    }
+
+            //                    if (t.EN < t.MaxEN)
+            //                    {
+            //                        EffectiveRet = true;
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case "霊力回復":
+            //            case "霊力増加":
+            //                {
+            //                    if (EffectLevel(i) < 0d)
+            //                    {
+            //                        EffectiveRet = true;
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    object argIndex5 = "ゾンビ";
+            //                    if (t.IsConditionSatisfied(argIndex5))
+            //                    {
+            //                        goto NextEffect;
+            //                    }
+
+            //                    if (t.MainPilot().Plana < t.MainPilot().MaxPlana())
+            //                    {
+            //                        EffectiveRet = true;
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case "ＳＰ回復":
+            //                {
+            //                    if (EffectLevel(i) < 0d)
+            //                    {
+            //                        EffectiveRet = true;
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    object argIndex6 = "ゾンビ";
+            //                    if (t.IsConditionSatisfied(argIndex6))
+            //                    {
+            //                        goto NextEffect;
+            //                    }
+
+            //                    if (t.MainPilot().SP < t.MainPilot().MaxSP)
+            //                    {
+            //                        EffectiveRet = true;
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    var loopTo2 = t.CountPilot();
+            //                    for (j = 2; j <= loopTo2; j++)
+            //                    {
+            //                        Pilot localPilot() { object argIndex1 = j; var ret = t.Pilot(argIndex1); return ret; }
+
+            //                        Pilot localPilot1() { object argIndex1 = j; var ret = t.Pilot(argIndex1); return ret; }
+
+            //                        if (localPilot().SP < localPilot1().MaxSP)
+            //                        {
+            //                            EffectiveRet = true;
+            //                            goto ExitFunc;
+            //                        }
+            //                    }
+
+            //                    var loopTo3 = t.CountSupport();
+            //                    for (j = 1; j <= loopTo3; j++)
+            //                    {
+            //                        Pilot localSupport() { object argIndex1 = j; var ret = t.Support(argIndex1); return ret; }
+
+            //                        Pilot localSupport1() { object argIndex1 = j; var ret = t.Support(argIndex1); return ret; }
+
+            //                        if (localSupport().SP < localSupport1().MaxSP)
+            //                        {
+            //                            EffectiveRet = true;
+            //                            goto ExitFunc;
+            //                        }
+            //                    }
+
+            //                    string argfname = "追加サポート";
+            //                    if (t.IsFeatureAvailable(argfname))
+            //                    {
+            //                        if (t.AdditionalSupport().SP < t.AdditionalSupport().MaxSP)
+            //                        {
+            //                            EffectiveRet = true;
+            //                            goto ExitFunc;
+            //                        }
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case "状態回復":
+            //                {
+            //                    object argIndex8 = "攻撃不能";
+            //                    object argIndex9 = "移動不能";
+            //                    object argIndex10 = "装甲劣化";
+            //                    object argIndex11 = "混乱";
+            //                    object argIndex12 = "魅了";
+            //                    object argIndex13 = "憑依";
+            //                    object argIndex14 = "石化";
+            //                    object argIndex15 = "凍結";
+            //                    object argIndex16 = "麻痺";
+            //                    object argIndex17 = "睡眠";
+            //                    object argIndex18 = "毒";
+            //                    object argIndex19 = "盲目";
+            //                    object argIndex20 = "撹乱";
+            //                    object argIndex21 = "恐怖";
+            //                    object argIndex22 = "沈黙";
+            //                    object argIndex23 = "ゾンビ";
+            //                    object argIndex24 = "回復不能";
+            //                    object argIndex25 = "オーラ使用不能";
+            //                    object argIndex26 = "超能力使用不能";
+            //                    object argIndex27 = "同調率使用不能";
+            //                    object argIndex28 = "超感覚使用不能";
+            //                    object argIndex29 = "知覚強化使用不能";
+            //                    object argIndex30 = "霊力使用不能";
+            //                    object argIndex31 = "術使用不能";
+            //                    object argIndex32 = "技使用不能";
+            //                    if (t.ConditionLifetime(argIndex8) > 0 | t.ConditionLifetime(argIndex9) > 0 | t.ConditionLifetime(argIndex10) > 0 | t.ConditionLifetime(argIndex11) > 0 | t.ConditionLifetime(argIndex12) > 0 | t.ConditionLifetime(argIndex13) > 0 | t.ConditionLifetime(argIndex14) > 0 | t.ConditionLifetime(argIndex15) > 0 | t.ConditionLifetime(argIndex16) > 0 | t.ConditionLifetime(argIndex17) > 0 | t.ConditionLifetime(argIndex18) > 0 | t.ConditionLifetime(argIndex19) > 0 | t.ConditionLifetime(argIndex20) > 0 | t.ConditionLifetime(argIndex21) > 0 | t.ConditionLifetime(argIndex22) > 0 | t.ConditionLifetime(argIndex23) > 0 | t.ConditionLifetime(argIndex24) > 0 | t.ConditionLifetime(argIndex25) > 0 | t.ConditionLifetime(argIndex26) > 0 | t.ConditionLifetime(argIndex27) > 0 | t.ConditionLifetime(argIndex28) > 0 | t.ConditionLifetime(argIndex29) > 0 | t.ConditionLifetime(argIndex30) > 0 | t.ConditionLifetime(argIndex31) > 0 | t.ConditionLifetime(argIndex32) > 0)
+            //                    {
+            //                        EffectiveRet = true;
+            //                        goto ExitFunc;
+            //                    }
+            //                    else
+            //                    {
+            //                        var loopTo4 = t.CountCondition();
+            //                        for (j = 1; j <= loopTo4; j++)
+            //                        {
+            //                            string localCondition2() { object argIndex1 = j; var ret = t.Condition(argIndex1); return ret; }
+
+            //                            if (Strings.Len(localCondition2()) > 6)
+            //                            {
+            //                                string localCondition1() { object argIndex1 = j; var ret = t.Condition(argIndex1); return ret; }
+
+            //                                if (Strings.Right(localCondition1(), 6) == "属性使用不能")
+            //                                {
+            //                                    string localCondition() { object argIndex1 = j; var ret = t.Condition(argIndex1); return ret; }
+
+            //                                    object argIndex7 = localCondition();
+            //                                    if (t.ConditionLifetime(argIndex7) > 0)
+            //                                    {
+            //                                        EffectiveRet = true;
+            //                                        goto ExitFunc;
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case "装填":
+            //                {
+            //                    var loopTo5 = t.CountWeapon();
+            //                    for (j = 1; j <= loopTo5; j++)
+            //                    {
+            //                        if (t.Bullet(j) < t.MaxBullet(j))
+            //                        {
+            //                            EffectiveRet = true;
+            //                            goto ExitFunc;
+            //                        }
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case "行動数回復":
+            //                {
+            //                    if (t.Action == 0 && t.MaxAction() > 0)
+            //                    {
+            //                        EffectiveRet = true;
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case "行動数増加":
+            //                {
+            //                    if (EffectLevel(i) < 0d)
+            //                    {
+            //                        EffectiveRet = true;
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    if (t.Action < 3 && t.MaxAction() > 0)
+            //                    {
+            //                        EffectiveRet = true;
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case "スペシャルパワー":
+            //            case "精神コマンド":
+            //                {
+            //                    bool localIsSpecialPowerInEffect() { string argsname = EffectData(i); var ret = t.IsSpecialPowerInEffect(argsname); return ret; }
+
+            //                    if (!localIsSpecialPowerInEffect())
+            //                    {
+            //                        EffectiveRet = true;
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case "気力増加":
+            //                {
+            //                    if (t.MainPilot().Personality != "機械" && t.MainPilot().Morale < t.MainPilot().MaxMorale)
+            //                    {
+            //                        EffectiveRet = true;
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    var loopTo6 = t.CountPilot();
+            //                    for (j = 2; j <= loopTo6; j++)
+            //                    {
+            //                        Pilot localPilot2() { object argIndex1 = j; var ret = t.Pilot(argIndex1); return ret; }
+
+            //                        Pilot localPilot3() { object argIndex1 = j; var ret = t.Pilot(argIndex1); return ret; }
+
+            //                        if (localPilot2().Personality != "機械" && localPilot3().Morale < t.MainPilot().MaxMorale)
+            //                        {
+            //                            EffectiveRet = true;
+            //                            goto ExitFunc;
+            //                        }
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case "気力低下":
+            //                {
+            //                    if (t.MainPilot().Personality == "機械")
+            //                    {
+            //                        goto NextEffect;
+            //                    }
+
+            //                    if (t.MainPilot().Morale > t.MainPilot().MinMorale)
+            //                    {
+            //                        EffectiveRet = true;
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case "ランダムダメージ":
+            //            case "ＨＰ減少":
+            //            case "ＥＮ減少":
+            //                {
+            //                    object argIndex33 = "無敵";
+            //                    if (!t.IsConditionSatisfied(argIndex33))
+            //                    {
+            //                        EffectiveRet = true;
+            //                        goto ExitFunc;
+            //                    }
+
+            //                    break;
+            //                }
+
+            //            case var @case when @case == "気力増加":
+            //            case "自爆":
+            //            case "復活":
+            //            case "偵察":
+            //            case "味方スペシャルパワー実行":
+            //            case "イベント":
+            //                {
+            //                    EffectiveRet = true;
+            //                    goto ExitFunc;
+            //                    break;
+            //                }
+            //        }
+
+            //    NextEffect:
+            //        ;
+            //    }
+
+            //ExitFunc:
+            //    ;
+
+
+            //    // Unitが変化してしまった場合は元に戻しておく
+            //    if (!ReferenceEquals(my_unit, p.Unit))
+            //    {
+            //        my_unit.MainPilot();
+            //    }
+
+            //    return EffectiveRet;
+        }
+
+
+        // スペシャルパワーを使用する
+        // (パイロット p が使用した場合)
+        public void Execute(SRC SRC, Pilot p, bool is_event = false)
+        {
+            Unit u;
+            int i, j;
+            switch (TargetType ?? "")
+            {
+                case "自分":
+                    if (Apply(p, p.Unit, is_event) && !is_event)
+                    {
+                        SRC.GUI.Sleep(300);
+                    }
+                    break;
+
+                case "全味方":
+                    for (i = 1; i <= SRC.Map.MapWidth; i++)
+                    {
+                        for (j = 1; j <= SRC.Map.MapHeight; j++)
+                        {
+                            u = SRC.Map.MapDataForUnit[i, j];
+                            if (u is null)
+                            {
+                                continue;
+                            }
+
+                            // 味方ユニット？
+                            switch (p.Party ?? "")
+                            {
+                                case "味方":
+                                case "ＮＰＣ":
+                                    if (u.Party != "味方" && u.Party0 != "味方" && u.Party != "ＮＰＣ" && u.Party0 != "ＮＰＣ")
+                                    {
+                                        continue;
+                                    }
+                                    break;
+
+                                default:
+                                    if ((p.Party ?? "") != (u.Party ?? ""))
+                                    {
+                                        continue;
+                                    }
+                                    break;
+                            }
+                            Apply(p, u, is_event);
+                        }
+
+                        if (!is_event)
+                        {
+                            SRC.GUI.Sleep(300);
+                        }
+                    }
+                    break;
+
+                case "全敵":
+                    for (i = 1; i <= SRC.Map.MapWidth; i++)
+                    {
+                        for (j = 1; j <= SRC.Map.MapHeight; j++)
+                        {
+                            u = SRC.Map.MapDataForUnit[i, j];
+                            if (u is null)
+                            {
+                                continue;
+                            }
+
+                            // 敵ユニット？
+                            switch (p.Party ?? "")
+                            {
+                                case "味方":
+                                case "ＮＰＣ":
+                                    if (u.Party == "味方" | u.Party == "ＮＰＣ")
+                                    {
+                                        continue;
+                                    }
+                                    break;
+
+                                default:
+                                    if ((p.Party ?? "") == (u.Party ?? ""))
+                                    {
+                                        continue;
+                                    }
+                                    break;
+                            }
+                            Apply(p, u, is_event);
+                        }
+                    }
+                    if (!is_event)
+                    {
+                        SRC.GUI.Sleep(300);
+                    }
+                    break;
+
+                case "全":
+                    for (i = 1; i <= SRC.Map.MapWidth; i++)
+                    {
+                        for (j = 1; j <= SRC.Map.MapHeight; j++)
+                        {
+                            u = SRC.Map.MapDataForUnit[i, j];
+                            if (u is object)
+                            {
+                                Apply(p, u, is_event);
+                            }
+                        }
+                    }
+                    if (!is_event)
+                    {
+                        SRC.GUI.Sleep(300);
+                    }
+                    break;
+
+                default:
+                    if (Apply(p, SRC.Commands.SelectedTarget, is_event) && !is_event)
+                    {
+                        SRC.GUI.Sleep(300);
+                    }
+                    break;
+            }
+
+            if (!is_event)
+            {
+                SRC.GUI.CloseMessageForm();
+                SRC.GUI.RedrawScreen();
+            }
+        }
 
         // スペシャルパワーをユニット t に対して適用
         // (パイロット p が使用)
@@ -1074,7 +1031,7 @@ namespace SRCCore.Models
 
             //            // 同じ追加パイロットを持つユニットが複数いる場合、パイロットのUnitが
             //            // 変化してしまうことがあるため、元のUnitを記録しておく
-            //            my_unit = p.Unit_Renamed;
+            //            my_unit = p.Unit;
             //            {
             //                var withBlock = t;
             //                // 適用条件を満たしている？
@@ -1141,7 +1098,7 @@ namespace SRCCore.Models
             //                    }
 
             //                    // Unitが変化してしまった場合は元に戻しておく
-            //                    if (!ReferenceEquals(my_unit, p.Unit_Renamed))
+            //                    if (!ReferenceEquals(my_unit, p.Unit))
             //                    {
             //                        my_unit.CurrentForm().MainPilot();
             //                    }
@@ -1170,7 +1127,7 @@ namespace SRCCore.Models
             //                }
 
             //                // 持続効果がある場合は単にスペシャルパワーの効果を付加するだけでよい
-            //                if (Duration != "即効" & !as_instant)
+            //                if (Duration != "即効" && !as_instant)
             //                {
             //                    withBlock.MakeSpecialPowerInEffect(Name, my_unit.MainPilot().ID);
             //                    return ApplyRet;
@@ -1785,7 +1742,7 @@ namespace SRCCore.Models
             //                                object argIndex33 = "霊力使用不能";
             //                                object argIndex34 = "術使用不能";
             //                                object argIndex35 = "技使用不能";
-            //                                if (withBlock1.ConditionLifetime(argIndex11) <= 0 & withBlock1.ConditionLifetime(argIndex12) <= 0 & withBlock1.ConditionLifetime(argIndex13) <= 0 & withBlock1.ConditionLifetime(argIndex14) <= 0 & withBlock1.ConditionLifetime(argIndex15) <= 0 & withBlock1.ConditionLifetime(argIndex16) <= 0 & withBlock1.ConditionLifetime(argIndex17) <= 0 & withBlock1.ConditionLifetime(argIndex18) <= 0 & withBlock1.ConditionLifetime(argIndex19) <= 0 & withBlock1.ConditionLifetime(argIndex20) <= 0 & withBlock1.ConditionLifetime(argIndex21) <= 0 & withBlock1.ConditionLifetime(argIndex22) <= 0 & withBlock1.ConditionLifetime(argIndex23) <= 0 & withBlock1.ConditionLifetime(argIndex24) <= 0 & withBlock1.ConditionLifetime(argIndex25) <= 0 & withBlock1.ConditionLifetime(argIndex26) <= 0 & withBlock1.ConditionLifetime(argIndex27) <= 0 & withBlock1.ConditionLifetime(argIndex28) <= 0 & withBlock1.ConditionLifetime(argIndex29) <= 0 & withBlock1.ConditionLifetime(argIndex30) <= 0 & withBlock1.ConditionLifetime(argIndex31) <= 0 & withBlock1.ConditionLifetime(argIndex32) <= 0 & withBlock1.ConditionLifetime(argIndex33) <= 0 & withBlock1.ConditionLifetime(argIndex34) <= 0 & withBlock1.ConditionLifetime(argIndex35) <= 0)
+            //                                if (withBlock1.ConditionLifetime(argIndex11) <= 0 && withBlock1.ConditionLifetime(argIndex12) <= 0 && withBlock1.ConditionLifetime(argIndex13) <= 0 && withBlock1.ConditionLifetime(argIndex14) <= 0 && withBlock1.ConditionLifetime(argIndex15) <= 0 && withBlock1.ConditionLifetime(argIndex16) <= 0 && withBlock1.ConditionLifetime(argIndex17) <= 0 && withBlock1.ConditionLifetime(argIndex18) <= 0 && withBlock1.ConditionLifetime(argIndex19) <= 0 && withBlock1.ConditionLifetime(argIndex20) <= 0 && withBlock1.ConditionLifetime(argIndex21) <= 0 && withBlock1.ConditionLifetime(argIndex22) <= 0 && withBlock1.ConditionLifetime(argIndex23) <= 0 && withBlock1.ConditionLifetime(argIndex24) <= 0 && withBlock1.ConditionLifetime(argIndex25) <= 0 && withBlock1.ConditionLifetime(argIndex26) <= 0 && withBlock1.ConditionLifetime(argIndex27) <= 0 && withBlock1.ConditionLifetime(argIndex28) <= 0 && withBlock1.ConditionLifetime(argIndex29) <= 0 && withBlock1.ConditionLifetime(argIndex30) <= 0 && withBlock1.ConditionLifetime(argIndex31) <= 0 && withBlock1.ConditionLifetime(argIndex32) <= 0 && withBlock1.ConditionLifetime(argIndex33) <= 0 && withBlock1.ConditionLifetime(argIndex34) <= 0 && withBlock1.ConditionLifetime(argIndex35) <= 0)
             //                                {
             //                                    var loopTo5 = withBlock1.CountCondition();
             //                                    for (j = 1; j <= loopTo5; j++)
@@ -2257,7 +2214,7 @@ namespace SRCCore.Models
             //                                if (withBlock1.IsFeatureAvailable(argfname2))
             //                                {
             //                                    object argIndex90 = "暴走";
-            //                                    if (withBlock1.HP <= withBlock1.MaxHP / 4 & !withBlock1.IsConditionSatisfied(argIndex90))
+            //                                    if (withBlock1.HP <= withBlock1.MaxHP / 4 && !withBlock1.IsConditionSatisfied(argIndex90))
             //                                    {
             //                                        string argcname = "暴走";
             //                                        string argcdata = "";
@@ -2340,7 +2297,7 @@ namespace SRCCore.Models
             //                                if (withBlock1.IsFeatureAvailable(argfname3))
             //                                {
             //                                    object argIndex92 = "暴走";
-            //                                    if (withBlock1.HP <= withBlock1.MaxHP / 4 & !withBlock1.IsConditionSatisfied(argIndex92))
+            //                                    if (withBlock1.HP <= withBlock1.MaxHP / 4 && !withBlock1.IsConditionSatisfied(argIndex92))
             //                                    {
             //                                        string argcname1 = "暴走";
             //                                        string argcdata1 = "";
@@ -2656,8 +2613,8 @@ namespace SRCCore.Models
             //                            {
             //                                // イベントコマンドで定義されたスペシャルパワー
             //                                // 対象ユニットＩＤ及び相手ユニットＩＤを設定
-            //                                Event_Renamed.SelectedUnitForEvent = my_unit.CurrentForm();
-            //                                Event_Renamed.SelectedTargetForEvent = withBlock1.CurrentForm();
+            //                                Event.SelectedUnitForEvent = my_unit.CurrentForm();
+            //                                Event.SelectedTargetForEvent = withBlock1.CurrentForm();
             //                                // 指定されたサブルーチンを実行
             //                                string argexpr = "Call(" + EffectData(i) + ")";
             //                                Expression.GetValueAsString(argexpr);
@@ -2671,7 +2628,7 @@ namespace SRCCore.Models
             //            }
 
             //            // Unitが変化してしまった場合は元に戻しておく
-            //            if (!ReferenceEquals(my_unit, p.Unit_Renamed))
+            //            if (!ReferenceEquals(my_unit, p.Unit))
             //            {
             //                my_unit.CurrentForm().MainPilot();
             //            }
@@ -2701,7 +2658,7 @@ namespace SRCCore.Models
             //            {
             //                case "自分":
             //                    {
-            //                        if (Effective(p, p.Unit_Renamed))
+            //                        if (Effective(p, p.Unit))
             //                        {
             //                            CountTargetRet = 1;
             //                        }
@@ -2718,7 +2675,7 @@ namespace SRCCore.Models
             //                            {
             //                                var withBlock = u;
             //                                // 出撃している？
-            //                                if (withBlock.Status_Renamed != "出撃")
+            //                                if (withBlock.Status != "出撃")
             //                                {
             //                                    goto NextUnit1;
             //                                }
@@ -2729,7 +2686,7 @@ namespace SRCCore.Models
             //                                    case "味方":
             //                                    case "ＮＰＣ":
             //                                        {
-            //                                            if (withBlock.Party != "味方" & withBlock.Party0 != "味方" & withBlock.Party != "ＮＰＣ" & withBlock.Party0 != "ＮＰＣ")
+            //                                            if (withBlock.Party != "味方" && withBlock.Party0 != "味方" && withBlock.Party != "ＮＰＣ" && withBlock.Party0 != "ＮＰＣ")
             //                                            {
             //                                                goto NextUnit1;
             //                                            }
@@ -2770,7 +2727,7 @@ namespace SRCCore.Models
             //                            {
             //                                var withBlock1 = u;
             //                                // 破壊されている？
-            //                                if (withBlock1.Status_Renamed != "破壊")
+            //                                if (withBlock1.Status != "破壊")
             //                                {
             //                                    goto NextUnit2;
             //                                }
@@ -2804,7 +2761,7 @@ namespace SRCCore.Models
             //                            {
             //                                var withBlock2 = u;
             //                                // 出撃している？
-            //                                if (withBlock2.Status_Renamed != "出撃")
+            //                                if (withBlock2.Status != "出撃")
             //                                {
             //                                    goto NextUnit3;
             //                                }
@@ -2815,7 +2772,7 @@ namespace SRCCore.Models
             //                                    case "味方":
             //                                    case "ＮＰＣ":
             //                                        {
-            //                                            if (withBlock2.Party == "味方" & withBlock2.Party0 == "味方" | withBlock2.Party == "ＮＰＣ" & withBlock2.Party0 == "ＮＰＣ")
+            //                                            if (withBlock2.Party == "味方" && withBlock2.Party0 == "味方" | withBlock2.Party == "ＮＰＣ" && withBlock2.Party0 == "ＮＰＣ")
             //                                            {
             //                                                goto NextUnit3;
             //                                            }
@@ -2855,7 +2812,7 @@ namespace SRCCore.Models
             //                        {
             //                            u = currentU3;
             //                            // 出撃している？
-            //                            if (u.Status_Renamed == "出撃")
+            //                            if (u.Status == "出撃")
             //                            {
             //                                // 効果がある？
             //                                if (Effective(p, u))
@@ -2904,14 +2861,14 @@ namespace SRCCore.Models
             //            if ((Animation ?? "") == (Name ?? ""))
             //            {
             //                string arglname = "ＳＰアニメ_" + Animation;
-            //                if (Event_Renamed.FindNormalLabel(arglname) == 0)
+            //                if (Event.FindNormalLabel(arglname) == 0)
             //                {
-            //                    if (Name != "自爆" & Name != "祈り")
+            //                    if (Name != "自爆" && Name != "祈り")
             //                    {
             //                        object argIndex1 = "特殊効果 " + Name;
-            //                        if (Event_Renamed.IsLabelDefined(argIndex1))
+            //                        if (Event.IsLabelDefined(argIndex1))
             //                        {
-            //                            Event_Renamed.HandleEvent("特殊効果", Name);
+            //                            Event.HandleEvent("特殊効果", Name);
             //                            PlayAnimationRet = true;
             //                        }
             //                    }
@@ -2928,18 +2885,18 @@ namespace SRCCore.Models
             //            }
 
             //            // オブジェクト色等を記録しておく
-            //            prev_obj_color = Event_Renamed.ObjColor;
-            //            prev_obj_fill_color = Event_Renamed.ObjFillColor;
-            //            prev_obj_fill_style = Event_Renamed.ObjFillStyle;
-            //            prev_obj_draw_width = Event_Renamed.ObjDrawWidth;
-            //            prev_obj_draw_option = Event_Renamed.ObjDrawOption;
+            //            prev_obj_color = Event.ObjColor;
+            //            prev_obj_fill_color = Event.ObjFillColor;
+            //            prev_obj_fill_style = Event.ObjFillStyle;
+            //            prev_obj_draw_width = Event.ObjDrawWidth;
+            //            prev_obj_draw_option = Event.ObjDrawOption;
 
             //            // オブジェクト色等をデフォルトに戻す
-            //            Event_Renamed.ObjColor = ColorTranslator.ToOle(Color.White);
-            //            Event_Renamed.ObjFillColor = ColorTranslator.ToOle(Color.White);
-            //            Event_Renamed.ObjFillStyle = vbFSTransparent;
-            //            Event_Renamed.ObjDrawWidth = 1;
-            //            Event_Renamed.ObjDrawOption = "";
+            //            Event.ObjColor = ColorTranslator.ToOle(Color.White);
+            //            Event.ObjFillColor = ColorTranslator.ToOle(Color.White);
+            //            Event.ObjFillStyle = vbFSTransparent;
+            //            Event.ObjDrawWidth = 1;
+            //            Event.ObjDrawOption = "";
 
             //            // アニメ指定を分割
             //            animes = new string[2];
@@ -3113,12 +3070,12 @@ namespace SRCCore.Models
             //                GUI.IsPictureDrawn = false;
 
             //                // アニメ再生
-            //                Event_Renamed.SaveBasePoint();
+            //                Event.SaveBasePoint();
             //                Expression.CallFunction(expr, Expression.ValueType.StringType, buf, ret);
-            //                Event_Renamed.RestoreBasePoint();
+            //                Event.RestoreBasePoint();
 
             //                // 画像を消去しておく
-            //                if (GUI.IsPictureDrawn & Strings.LCase(buf) != "keep")
+            //                if (GUI.IsPictureDrawn && Strings.LCase(buf) != "keep")
             //                {
             //                    GUI.ClearPicture();
             //                    GUI.MainForm.picMain(0).Refresh();
@@ -3139,11 +3096,11 @@ namespace SRCCore.Models
             //            GUI.CloseMessageForm();
 
             //            // オブジェクト色等を元に戻す
-            //            Event_Renamed.ObjColor = prev_obj_color;
-            //            Event_Renamed.ObjFillColor = prev_obj_fill_color;
-            //            Event_Renamed.ObjFillStyle = prev_obj_fill_style;
-            //            Event_Renamed.ObjDrawWidth = prev_obj_draw_width;
-            //            Event_Renamed.ObjDrawOption = prev_obj_draw_option;
+            //            Event.ObjColor = prev_obj_color;
+            //            Event.ObjFillColor = prev_obj_fill_color;
+            //            Event.ObjFillStyle = prev_obj_fill_style;
+            //            Event.ObjDrawWidth = prev_obj_draw_width;
+            //            Event.ObjDrawOption = prev_obj_draw_option;
             //            PlayAnimationRet = true;
             //            return PlayAnimationRet;
             //        ErrorHandler:
@@ -3151,14 +3108,14 @@ namespace SRCCore.Models
 
 
             //            // アニメ再生中に発生したエラーの処理
-            //            if (Strings.Len(Event_Renamed.EventErrorMessage) > 0)
+            //            if (Strings.Len(Event.EventErrorMessage) > 0)
             //            {
-            //                Event_Renamed.DisplayEventErrorMessage(Event_Renamed.CurrentLineNum, Event_Renamed.EventErrorMessage);
-            //                Event_Renamed.EventErrorMessage = "";
+            //                Event.DisplayEventErrorMessage(Event.CurrentLineNum, Event.EventErrorMessage);
+            //                Event.EventErrorMessage = "";
             //            }
             //            else
             //            {
-            //                Event_Renamed.DisplayEventErrorMessage(Event_Renamed.CurrentLineNum, "");
+            //                Event.DisplayEventErrorMessage(Event.CurrentLineNum, "");
             //            }
         }
     }

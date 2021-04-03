@@ -256,77 +256,202 @@ namespace SRCCore.Pilots
             }
         }
 
+        // ＳＰ関連処理で適用されるパイロット
+        // ＳＰを持たない追加パイロットの場合は１番目のパイロットのデータを使う
+        private Pilot ForSP()
+        {
+            if (Data.SP <= 0)
+            {
+                if (IsActiveAdditionalPilot())
+                {
+                    return Unit.Pilots.First();
+                }
+            }
+            return this;
+        }
+
+        public bool IsActiveAdditionalPilot()
+        {
+            if (Unit is object)
+            {
+                if (Unit.CountPilot() > 0)
+                {
+                    if (!ReferenceEquals(Unit.Pilots.First(), this))
+                    {
+                        if (ReferenceEquals(Unit.MainPilot(), this))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
 
         // スペシャルパワーの個数
         public int CountSpecialPower
         {
             get
             {
-                int CountSpecialPowerRet = default;
-                if (Data.SP <= 0)
-                {
-                    // Impl
-                    //// ＳＰを持たない追加パイロットの場合は１番目のパイロットのデータを使う
-                    //if (Unit is object)
-                    //{
-                    //    {
-                    //        var withBlock = Unit;
-                    //        if (withBlock.CountPilot() > 0)
-                    //        {
-                    //            object argIndex2 = 1;
-                    //            object argIndex3 = 1;
-                    //            if (!ReferenceEquals(withBlock.Pilot(argIndex3), this))
-                    //            {
-                    //                if (ReferenceEquals(withBlock.MainPilot(), this))
-                    //                {
-                    //                    object argIndex1 = 1;
-                    //                    CountSpecialPowerRet = withBlock.Pilot(argIndex1).Data.CountSpecialPower(Level);
-                    //                    return default;
-                    //                }
-                    //            }
-                    //        }
-                    //    }
-                    //}
-                }
-
-                CountSpecialPowerRet = Data.CountSpecialPower(Level);
-                return CountSpecialPowerRet;
+                return ForSP().Data.CountSpecialPower(Level);
+            }
+        }
+        public IList<string> SpecialPowerNames
+        {
+            get
+            {
+                return Enumerable.Range(1, ForSP().Data.CountSpecialPower(Level))
+                    .Select(i => get_SpecialPower(i))
+                    .ToList();
             }
         }
 
         // idx番目のスペシャルパワー
         public string get_SpecialPower(int idx)
         {
-            string SpecialPowerRet = default;
-            if (Data.SP <= 0)
-            {
-                // Impl
-                //// ＳＰを持たない追加パイロットの場合は１番目のパイロットのデータを使う
-                //if (Unit is object)
-                //{
-                //    {
-                //        var withBlock = Unit;
-                //        if (withBlock.CountPilot() > 0)
-                //        {
-                //            object argIndex2 = 1;
-                //            object argIndex3 = 1;
-                //            if (!ReferenceEquals(withBlock.Pilot(argIndex3), this))
-                //            {
-                //                if (ReferenceEquals(withBlock.MainPilot(), this))
-                //                {
-                //                    object argIndex1 = 1;
-                //                    SpecialPowerRet = withBlock.Pilot(argIndex1).Data.SpecialPower(Level, idx);
-                //                    return default;
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
-            }
-
-            SpecialPowerRet = Data.SpecialPower(Level, idx);
-            return SpecialPowerRet;
+            return ForSP().Data.SpecialPower(Level, idx);
         }
 
+        // スペシャルパワー sname を修得しているか？
+        public bool IsSpecialPowerAvailable(string sname)
+        {
+            return ForSP().Data.IsSpecialPowerAvailable(Level, sname);
+        }
+
+        // スペシャルパワー sname が有用か？
+        public bool IsSpecialPowerUseful(string sname)
+        {
+            return SRC.SPDList.Item(sname).Useful(this);
+        }
+
+        // スペシャルパワー sname に必要なＳＰ値
+        public int SpecialPowerCost(string sname)
+        {
+            return ForSP().SpecialPowerCostInternal(sname);
+        }
+
+        private int SpecialPowerCostInternal(string sname)
+        {
+            // 基本消費ＳＰ値
+            var SpecialPowerCostRet = Data.SpecialPowerCost(sname);
+
+            // 特殊能力による消費ＳＰ値修正
+            if (IsSkillAvailable("超能力") || IsSkillAvailable("集中力"))
+            {
+                SpecialPowerCostRet = (int)(0.8d * SpecialPowerCostRet);
+            }
+
+            if (IsSkillAvailable("知覚強化"))
+            {
+                SpecialPowerCostRet = (int)(1.2d * SpecialPowerCostRet);
+            }
+
+            // ＳＰ消費減少能力
+            if (Unit is object)
+            {
+                if (Unit.CountPilot() > 0)
+                {
+                    if (ReferenceEquals(Unit.MainPilot(), this))
+                    {
+                        if (Unit.IsConditionSatisfied("ＳＰ消費減少付加")
+                            || Unit.IsConditionSatisfied("ＳＰ消費減少付加２"))
+                        {
+                            var adata = SkillData("ＳＰ消費減少");
+                            var loopTo = GeneralLib.LLength(adata);
+                            for (var i = 2; i <= loopTo; i++)
+                            {
+                                if ((sname ?? "") == (GeneralLib.LIndex(adata, i) ?? ""))
+                                {
+                                    return (int)((10d - SkillLevel("ＳＰ消費減少", "")) * SpecialPowerCostRet / 10L);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach (var skill in colSkill.List.Where(x => x.Name == "ＳＰ消費減少"))
+            {
+                var adata = skill.StrData;
+                var loopTo2 = GeneralLib.LLength(adata);
+                for (var j = 2; j <= loopTo2; j++)
+                {
+                    if ((sname ?? "") == (GeneralLib.LIndex(adata, j) ?? ""))
+                    {
+                        return (int)((10d - skill.LevelOrDefault(1d)) * SpecialPowerCostRet / 10L);
+                    }
+                }
+            }
+
+            return SpecialPowerCostRet;
+        }
+
+        // スペシャルパワー sname を実行する
+        public void UseSpecialPower(string sname, double sp_mod = 1d)
+        {
+            Unit my_unit;
+
+            if (!SRC.SPDList.IsDefined(sname))
+            {
+                return;
+            }
+
+            SRC.GUIStatus.ClearUnitStatus();
+            Commands.SelectedPilot = this;
+
+            // TODO Impl
+            //// スペシャルパワー使用メッセージ
+            //SpecialPowerData localItem() { object argIndex1 = sname; var ret = SRC.SPDList.Item(argIndex1); return ret; }
+
+            //SpecialPowerData localItem1() { object argIndex1 = sname; var ret = SRC.SPDList.Item(argIndex1); return ret; }
+
+            //string argename = "復活";
+            //string argename1 = "自爆";
+            //if (Conversions.ToBoolean(Operators.AndObject(Operators.AndObject(sp_mod != 2d, !localItem().IsEffectAvailable(argename)), !localItem1().IsEffectAvailable(argename1))))
+            //{
+            //    if (Unit.IsMessageDefined(sname))
+            //    {
+            //        Unit argu1 = null;
+            //        Unit argu2 = null;
+            //        GUI.OpenMessageForm(u1: argu1, u2: argu2);
+            //        string argmsg_mode = "";
+            //        Unit.PilotMessage(sname, msg_mode: argmsg_mode);
+            //        GUI.CloseMessageForm();
+            //    }
+            //}
+
+            // 同じ追加パイロットを持つユニットが複数いる場合、パイロットのUnitが
+            // 変化してしまうことがあるため、元のUnitを記録しておく
+            my_unit = Unit;
+
+            //// スペシャルパワーアニメを表示
+            //SpecialPowerData localItem2() { object argIndex1 = sname; var ret = SRC.SPDList.Item(argIndex1); return ret; }
+
+            //if (!localItem2().PlayAnimation())
+            //{
+            //    // メッセージ表示のみ
+            //    Unit argu21 = null;
+            //    GUI.OpenMessageForm(Unit, u2: argu21);
+            //    GUI.DisplaySysMessage(get_Nickname(false) + "は" + sname + "を使った。");
+            //}
+
+            //// Unitが変化した場合に元に戻す
+            //if (!ReferenceEquals(my_unit, Unit))
+            //{
+            //    my_unit.MainPilot();
+            //}
+
+            // スペシャルパワーを実行
+            SRC.SPDList.Item(sname).Execute(SRC, this);
+
+            // Unitが変化した場合に元に戻す
+            if (!ReferenceEquals(my_unit, Unit))
+            {
+                my_unit.CurrentForm().MainPilot();
+            }
+
+            SP = (int)(SP - sp_mod * SpecialPowerCost(sname));
+            GUI.CloseMessageForm();
+        }
     }
 }

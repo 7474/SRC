@@ -18,5 +18,10 @@ namespace SRCCore.Models
         public int NecessaryLevel { get; set; }
 
         public bool HasLevel => Level != Constants.DEFAULT_LEVEL;
+
+        public double LevelOrDefault(double defaultLevel)
+        {
+            return HasLevel ? Level : defaultLevel;
+        }
     }
 }

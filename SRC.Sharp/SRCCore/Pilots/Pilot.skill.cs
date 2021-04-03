@@ -12,13 +12,11 @@ namespace SRCCore.Pilots
     // === 特殊能力関連処理 ===
     public partial class Pilot
     {
-        //        // 特殊能力の総数
-        //        public int CountSkill()
-        //        {
-        //            int CountSkillRet = default;
-        //            CountSkillRet = colSkill.Count;
-        //            return CountSkillRet;
-        //        }
+        // 特殊能力の総数
+        public int CountSkill()
+        {
+            return colSkill.Count;
+        }
 
         // 特殊能力
         public string Skill(string Index)
