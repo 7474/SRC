@@ -23,22 +23,7 @@ namespace SRCCore.Commands
                 var u = SelectedUnit;
 
                 // スペシャルパワーを使用可能なパイロットの一覧を作成
-                var pilots = new List<Pilot>();
-                // メインパイロット＆サブパイロット
-                // １番目のパイロットの場合はメインパイロットを使用
-                // ただし２人乗り以上のユニットで、メインパイロットが
-                // スペシャルパワーを持たない場合はそのまま１番目のパイロットを使用
-                pilots.Add(u.CountPilot() > 1 && u.MainPilot().Data.SP <= 0 && u.Pilots.First().Data.SP > 0
-                    ? u.Pilots.First() : u.MainPilot());
-                pilots.AddRange(u.SubPilots);
-                // サポートパイロット
-                pilots.AddRange(u.Supports.Skip(1));
-                // 追加サポートパイロット
-                if (u.IsFeatureAvailable("追加サポート"))
-                {
-                    pilots.Add(u.AdditionalSupport());
-                }
-                pilots = pilots.Where(x => x.CountSpecialPower > 0).ToList();
+                var pilots = u.PilotsHaveSpecialPower();
                 var listItems = pilots.Select(p =>
                 {
                     return new ListBoxItem

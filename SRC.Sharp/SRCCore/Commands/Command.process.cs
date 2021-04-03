@@ -1460,55 +1460,16 @@ namespace SRCCore.Commands
                     //    }
                     //}
 
-                    //// スペシャルパワーコマンド
-                    //string argtname3 = "スペシャルパワー";
-                    //GUI.MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Caption = Expression.Term(argtname3, SelectedUnit);
-                    //if (currentUnit.MainPilot().CountSpecialPower > 0)
-                    //{
-                    //    GUI.MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Visible = true;
-                    //}
-                    //else
-                    //{
-                    //    var loopTo18 = currentUnit.CountPilot();
-                    //    for (i = 1; i <= loopTo18; i++)
-                    //    {
-                    //        Pilot localPilot() { object argIndex1 = i; var ret = currentUnit.Pilot(argIndex1); return ret; }
-
-                    //        if (localPilot().CountSpecialPower > 0)
-                    //        {
-                    //            GUI.MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Visible = true;
-                    //            break;
-                    //        }
-                    //    }
-
-                    //    var loopTo19 = currentUnit.CountSupport();
-                    //    for (i = 1; i <= loopTo19; i++)
-                    //    {
-                    //        Pilot localSupport() { object argIndex1 = i; var ret = currentUnit.Support(argIndex1); return ret; }
-
-                    //        if (localSupport().CountSpecialPower > 0)
-                    //        {
-                    //            GUI.MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Visible = true;
-                    //            break;
-                    //        }
-                    //    }
-
-                    //    string argfname19 = "追加サポート";
-                    //    if (currentUnit.IsFeatureAvailable(argfname19))
-                    //    {
-                    //        if (currentUnit.AdditionalSupport().CountSpecialPower > 0)
-                    //        {
-                    //            GUI.MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Visible = true;
-                    //        }
-                    //    }
-                    //}
-
-                    //object argIndex56 = "憑依";
-                    //object argIndex57 = "スペシャルパワー使用不能";
-                    //if (currentUnit.IsConditionSatisfied(argIndex56) | currentUnit.IsConditionSatisfied(argIndex57))
-                    //{
-                    //    GUI.MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Visible = false;
-                    //}
+                    // スペシャルパワーコマンド
+                    {
+                        if (!currentUnit.IsConditionSatisfied("憑依") && !currentUnit.IsConditionSatisfied("スペシャルパワー使用不能"))
+                        {
+                            if (currentUnit.PilotsHaveSpecialPower().Count > 0)
+                            {
+                                unitCommands.Add(new UiCommand(SpecialPowerCmdID, Expression.Term("スペシャルパワー", SelectedUnit)));
+                            }
+                        }
+                    }
 
                     // 変形コマンド
                     if (currentUnit.IsFeatureAvailable("変形")
