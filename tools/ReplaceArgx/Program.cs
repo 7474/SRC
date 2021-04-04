@@ -12,6 +12,10 @@ namespace ReplaceArgx
     {
         static async Task Main(string[] args)
         {
+            args = new string[]
+            {
+                @"C:\Users\koudenpa\source\repos\src\SRC\SRC.Sharp"
+            };
             var sw = new Stopwatch();
             sw.Start();
 
@@ -64,7 +68,6 @@ namespace ReplaceArgx
                                     Console.WriteLine($"{file.Name}: {k} -> {argDic[k]}");
                                     argDic.Remove(k);
                                     line = replacedLine;
-                                    break;
                                 }
                             }
                             await writer.WriteLineAsync(line);
@@ -72,11 +75,7 @@ namespace ReplaceArgx
                     }
                 }
                 writer.Flush();
-                using (var w = file.OpenWrite())
-                {
-                    ms.Position = 0;
-                    await ms.CopyToAsync(w);
-                }
+                await File.WriteAllBytesAsync(file.FullName, ms.ToArray());
             }
         }
     }
