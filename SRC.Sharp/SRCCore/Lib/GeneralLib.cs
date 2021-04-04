@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -101,8 +101,7 @@ namespace SRCCore.Lib
             }
             return random.Next(max) + 1;
             // TODO Impl
-            //string argoname = "乱数系列非保存";
-            //if (Expression.IsOptionDefined(argoname))
+            //if (Expression.IsOptionDefined("乱数系列非保存"))
             //{
             //    DiceRet = Conversion.Int(max * VBMath.Rnd() + 1f);
             //    return DiceRet;
@@ -537,23 +536,16 @@ namespace SRCCore.Lib
         //            var ret = default;
 
         //            // シナリオ側に Src.ini ファイルがあればそちらを優先
-        //            string argfname = SRC.ScenarioPath + "Src.ini";
-        //            if (FileExists(argfname))
+        //            if (FileExists(SRC.ScenarioPath + "Src.ini"))
         //            {
-        //                string arglpDefault = "";
-        //                string arglpReturnedString = s.Value;
-        //                string arglpFileName = SRC.ScenarioPath + "Src.ini";
-        //                ret = GetPrivateProfileString(ini_section, ini_entry, arglpDefault, arglpReturnedString, 1024, arglpFileName);
+        //                ret = GetPrivateProfileString(ini_section, ini_entry, "", s.Value, 1024, SRC.ScenarioPath + "Src.ini");
         //                s.Value = arglpReturnedString;
         //            }
 
         //            // シナリオ側 Src.ini にエントリが無ければ本体側から読み出し
         //            if (ret == 0)
         //            {
-        //                string arglpDefault1 = "";
-        //                string arglpReturnedString1 = s.Value;
-        //                string arglpFileName1 = SRC.AppPath + "Src.ini";
-        //                ret = GetPrivateProfileString(ini_section, ini_entry, arglpDefault1, arglpReturnedString1, 1024, arglpFileName1);
+        //                ret = GetPrivateProfileString(ini_section, ini_entry, "", s.Value, 1024, SRC.AppPath + "Src.ini");
         //                s.Value = arglpReturnedString1;
         //            }
 
@@ -572,8 +564,7 @@ namespace SRCCore.Lib
         //            // LastFolderの設定のみは必ず本体側の Src.ini に書き込む
         //            if (ini_entry == "LastFolder")
         //            {
-        //                string arglpFileName = SRC.AppPath + "Src.ini";
-        //                ret = WritePrivateProfileString(ini_section, ini_entry, ini_data, arglpFileName);
+        //                ret = WritePrivateProfileString(ini_section, ini_entry, ini_data, SRC.AppPath + "Src.ini");
         //                return;
         //            }
 
@@ -583,23 +574,18 @@ namespace SRCCore.Lib
         //            if (Strings.Len(SRC.ScenarioPath) > 0 & localFileExists())
         //            {
         //                // エントリが存在するかチェック
-        //                string arglpDefault = "";
-        //                string arglpReturnedString = s.Value;
-        //                string arglpFileName1 = SRC.ScenarioPath + "Src.ini";
-        //                ret = GetPrivateProfileString(ini_section, ini_entry, arglpDefault, arglpReturnedString, 1024, arglpFileName1);
+        //                ret = GetPrivateProfileString(ini_section, ini_entry, "", s.Value, 1024, SRC.ScenarioPath + "Src.ini");
         //                s.Value = arglpReturnedString;
         //                if (ret > 1)
         //                {
-        //                    string arglpFileName2 = SRC.ScenarioPath + "Src.ini";
-        //                    ret = WritePrivateProfileString(ini_section, ini_entry, ini_data, arglpFileName2);
+        //                    ret = WritePrivateProfileString(ini_section, ini_entry, ini_data, SRC.ScenarioPath + "Src.ini");
         //                }
         //            }
 
         //            // シナリオ側 Src.ini にエントリが無ければ本体側から読み出し
         //            if (ret == 0)
         //            {
-        //                string arglpFileName3 = SRC.AppPath + "Src.ini";
-        //                ret = WritePrivateProfileString(ini_section, ini_entry, ini_data, arglpFileName3);
+        //                ret = WritePrivateProfileString(ini_section, ini_entry, ini_data, SRC.AppPath + "Src.ini");
         //            }
         //        }
 
@@ -700,9 +686,7 @@ namespace SRCCore.Lib
         //                ;
         //            }
 
-        //            string args2 = "，";
-        //            string args3 = ", ";
-        //            ReplaceString(line_buf, args2, args3);
+        //            ReplaceString(line_buf, "，", ", ");
         //        }
 
 

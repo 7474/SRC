@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
@@ -64,8 +64,7 @@ namespace SRCCore.Expressions
                 // 式置換を実施
                 string localGetValueAsString(string localStr)
                 {
-                    string argexpr = Strings.Mid(localStr, start_idx + 2, end_idx - start_idx - 2);
-                    return GetValueAsString(argexpr);
+                    return GetValueAsString(Strings.Mid(localStr, start_idx + 2, end_idx - start_idx - 2));
                 }
                 str = Strings.Left(str, start_idx - 1) + localGetValueAsString(str) + Strings.Right(str, str_len - end_idx);
             }

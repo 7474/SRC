@@ -1,4 +1,4 @@
-﻿using SRCCore.Pilots;
+using SRCCore.Pilots;
 using SRCCore.Units;
 using System;
 using System.Collections.Generic;

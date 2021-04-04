@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -301,8 +301,7 @@ namespace SRCSharpForm
                 {
                     if (SRC.AutoMoveCursor)
                     {
-                        string argcursor_mode1 = "ダイアログ";
-                        GUI.MoveCursorPos(argcursor_mode1);
+                        GUI.MoveCursorPos("ダイアログ");
                     }
                 }
 
@@ -333,8 +332,7 @@ namespace SRCSharpForm
                 {
                     if (SRC.AutoMoveCursor)
                     {
-                        string argcursor_mode = "ダイアログ";
-                        GUI.MoveCursorPos(argcursor_mode);
+                        GUI.MoveCursorPos("ダイアログ");
                     }
                 }
 
@@ -708,8 +706,7 @@ namespace SRCSharpForm
             //            }
 
             //            var tmp = GUI.ListItemID;
-            //            object argIndex1 = tmp[lstItems.SelectedIndex + 1];
-            //            u = SRC.UList.Item2(argIndex1);
+            //            u = SRC.UList.Item2(tmp[lstItems.SelectedIndex + 1]);
 
             //            // 選択されたユニットにパイロットが乗っている？
             //            if (u.CountPilot() == 0)

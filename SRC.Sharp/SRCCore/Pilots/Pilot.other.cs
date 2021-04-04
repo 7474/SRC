@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -41,25 +41,19 @@ namespace SRCCore.Pilots
         //{
         //    int SynchroRateRet = default;
         //    int lv;
-        //    string argsname = "同調率";
-        //    if (!IsSkillAvailable(argsname))
+        //    if (!IsSkillAvailable("同調率"))
         //    {
         //        return SynchroRateRet;
         //    }
 
         //    // 同調率基本値
-        //    object argIndex1 = "同調率";
-        //    string argref_mode = "";
-        //    SynchroRateRet = SkillLevel(argIndex1, ref_mode: argref_mode);
+        //    SynchroRateRet = SkillLevel("同調率", ref_mode: "");
 
         //    // レベルによる増加分
         //    lv = GeneralLib.MinLng(Level, 100);
-        //    string argsname1 = "同調率成長";
-        //    if (IsSkillAvailable(argsname1))
+        //    if (IsSkillAvailable("同調率成長"))
         //    {
-        //        object argIndex2 = "同調率成長";
-        //        string argref_mode1 = "";
-        //        SynchroRateRet = (SynchroRateRet + (long)(lv * (10d + SkillLevel(argIndex2, ref_mode: argref_mode1))) / 10L);
+        //        SynchroRateRet = (SynchroRateRet + (long)(lv * (10d + SkillLevel("同調率成長", ref_mode: ""))) / 10L);
         //    }
         //    else
         //    {
@@ -74,17 +68,14 @@ namespace SRCCore.Pilots
         //{
         //    int CommandRangeRet = default;
         //    // 指揮能力を持っていなければ範囲は0
-        //    string argsname = "指揮";
-        //    if (!IsSkillAvailable(argsname))
+        //    if (!IsSkillAvailable("指揮"))
         //    {
         //        CommandRangeRet = 0;
         //        return CommandRangeRet;
         //    }
 
         //    // 指揮能力を持っている場合は階級レベルに依存
-        //    object argIndex1 = "階級";
-        //    string argref_mode = "";
-        //    switch (SkillLevel(argIndex1, ref_mode: argref_mode))
+        //    switch (SkillLevel("階級", ref_mode: ""))
         //    {
         //        case var @case when 0d <= @case && @case <= 6d:
         //            {
@@ -142,8 +133,7 @@ namespace SRCCore.Pilots
         //public int Relation(Pilot t)
         //{
         //    int RelationRet = default;
-        //    string argexpr = "関係:" + Name + ":" + t.Name;
-        //    RelationRet = Expression.GetValueAsLong(argexpr);
+        //    RelationRet = Expression.GetValueAsLong("関係:" + Name + ":" + t.Name);
         //    return RelationRet;
         //}
 

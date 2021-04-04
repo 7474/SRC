@@ -1,4 +1,4 @@
-﻿using SRCCore.Events;
+using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Units;
 using SRCCore.VB;
@@ -60,26 +60,17 @@ namespace SRCCore.CmdDatas.Commands
             }
             else
             {
-                string argfname1 = "";
-                Map.LoadMapData(argfname1);
+                Map.LoadMapData("");
             }
 
             if (late_refresh)
             {
-                string argdraw_mode = "";
-                string argdraw_option = "非同期";
-                int argfilter_color = 0;
-                double argfilter_trans_par = 0d;
-                GUI.SetupBackground(argdraw_mode, argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
+                GUI.SetupBackground("", "非同期", filter_color: 0, filter_trans_par: 0d);
                 GUI.RedrawScreen(true);
             }
             else
             {
-                string argdraw_mode1 = "";
-                string argdraw_option1 = "";
-                int argfilter_color1 = 0;
-                double argfilter_trans_par1 = 0d;
-                GUI.SetupBackground(draw_mode: argdraw_mode1, draw_option: argdraw_option1, filter_color: argfilter_color1, filter_trans_par: argfilter_trans_par1);
+                GUI.SetupBackground(draw_mode: "", draw_option: "", filter_color: 0, filter_trans_par: 0d);
                 GUI.RedrawScreen();
             }
 

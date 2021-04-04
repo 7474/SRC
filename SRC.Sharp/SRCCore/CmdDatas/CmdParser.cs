@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using SRCCore.CmdDatas.Commands;
 using SRCCore.Events;
 using SRCCore.Lib;

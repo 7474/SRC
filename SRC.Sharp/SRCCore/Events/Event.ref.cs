@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -389,9 +389,7 @@ namespace Project1
             }
 
             // 本体側のシナリオデータをチェックする
-            string argfname = "";
-            string argload_mode = "システム";
-            LoadEventData(ref argfname, ref argload_mode);
+            LoadEventData(ref "", ref "システム");
         }
 
         // イベントファイルのロード
@@ -464,19 +462,14 @@ namespace Project1
             }
 
             // デバッグモードの設定
-            string argini_section = "Option";
-            string argini_entry = "DebugMode";
-            if (Strings.LCase(GeneralLib.ReadIni(ref argini_section, ref argini_entry)) == "on")
+            if (Strings.LCase(GeneralLib.ReadIni(ref "Option", ref "DebugMode")) == "on")
             {
-                string argoname = "デバッグ";
-                if (!Expression.IsOptionDefined(ref argoname))
+                if (!Expression.IsOptionDefined(ref "デバッグ"))
                 {
-                    string argvname = "Option(デバッグ)";
-                    Expression.DefineGlobalVariable(ref argvname);
+                    Expression.DefineGlobalVariable(ref "Option(デバッグ)");
                 }
 
-                string argvname1 = "Option(デバッグ)";
-                Expression.SetVariableAsLong(ref argvname1, 1);
+                Expression.SetVariableAsLong(ref "Option(デバッグ)", 1);
             }
 
             // システム側のイベントデータのロード
@@ -495,42 +488,33 @@ namespace Project1
 
                 bool localFileExists4() { string argfname = SRC.AppPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
 
-                string argfname6 = SRC.ExtDataPath + @"Lib\スペシャルパワー.eve";
-                if (GeneralLib.FileExists(ref argfname6))
+                if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Lib\スペシャルパワー.eve"))
                 {
-                    string argfname = SRC.ExtDataPath + @"Lib\スペシャルパワー.eve";
-                    LoadEventData2(ref argfname);
+                    LoadEventData2(ref SRC.ExtDataPath + @"Lib\スペシャルパワー.eve");
                 }
                 else if (localFileExists())
                 {
-                    string argfname1 = SRC.ExtDataPath2 + @"Lib\スペシャルパワー.eve";
-                    LoadEventData2(ref argfname1);
+                    LoadEventData2(ref SRC.ExtDataPath2 + @"Lib\スペシャルパワー.eve");
                 }
                 else if (localFileExists1())
                 {
-                    string argfname2 = SRC.AppPath + @"Lib\スペシャルパワー.eve";
-                    LoadEventData2(ref argfname2);
+                    LoadEventData2(ref SRC.AppPath + @"Lib\スペシャルパワー.eve");
                 }
                 else if (localFileExists2())
                 {
-                    string argfname3 = SRC.ExtDataPath + @"Lib\精神コマンド.eve";
-                    LoadEventData2(ref argfname3);
+                    LoadEventData2(ref SRC.ExtDataPath + @"Lib\精神コマンド.eve");
                 }
                 else if (localFileExists3())
                 {
-                    string argfname4 = SRC.ExtDataPath2 + @"Lib\精神コマンド.eve";
-                    LoadEventData2(ref argfname4);
+                    LoadEventData2(ref SRC.ExtDataPath2 + @"Lib\精神コマンド.eve");
                 }
                 else if (localFileExists4())
                 {
-                    string argfname5 = SRC.AppPath + @"Lib\精神コマンド.eve";
-                    LoadEventData2(ref argfname5);
+                    LoadEventData2(ref SRC.AppPath + @"Lib\精神コマンド.eve");
                 }
 
                 // 汎用戦闘アニメ用インクルードファイルをダウンロード
-                string argini_section1 = "Option";
-                string argini_entry1 = "BattleAnimation";
-                if (Strings.LCase(GeneralLib.ReadIni(ref argini_section1, ref argini_entry1)) != "off")
+                if (Strings.LCase(GeneralLib.ReadIni(ref "Option", ref "BattleAnimation")) != "off")
                 {
                     SRC.BattleAnimation = true;
                 }
@@ -539,21 +523,17 @@ namespace Project1
 
                 bool localFileExists6() { string argfname = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
 
-                string argfname10 = SRC.ExtDataPath + @"Lib\汎用戦闘アニメ\include.eve";
-                if (GeneralLib.FileExists(ref argfname10))
+                if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Lib\汎用戦闘アニメ\include.eve"))
                 {
-                    string argfname7 = SRC.ExtDataPath + @"Lib\汎用戦闘アニメ\include.eve";
-                    LoadEventData2(ref argfname7);
+                    LoadEventData2(ref SRC.ExtDataPath + @"Lib\汎用戦闘アニメ\include.eve");
                 }
                 else if (localFileExists5())
                 {
-                    string argfname8 = SRC.ExtDataPath2 + @"Lib\汎用戦闘アニメ\include.eve";
-                    LoadEventData2(ref argfname8);
+                    LoadEventData2(ref SRC.ExtDataPath2 + @"Lib\汎用戦闘アニメ\include.eve");
                 }
                 else if (localFileExists6())
                 {
-                    string argfname9 = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve";
-                    LoadEventData2(ref argfname9);
+                    LoadEventData2(ref SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve");
                 }
                 else
                 {
@@ -622,52 +602,41 @@ namespace Project1
 
                     bool localFileExists13() { string argfname = SRC.AppPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
 
-                    string argfname19 = SRC.ScenarioPath + @"Lib\スペシャルパワー.eve";
-                    if (GeneralLib.FileExists(ref argfname19))
+                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Lib\スペシャルパワー.eve"))
                     {
-                        string argfname11 = SRC.ScenarioPath + @"Lib\スペシャルパワー.eve";
-                        LoadEventData2(ref argfname11);
+                        LoadEventData2(ref SRC.ScenarioPath + @"Lib\スペシャルパワー.eve");
                     }
                     else if (localFileExists7())
                     {
-                        string argfname12 = SRC.ScenarioPath + @"Lib\精神コマンド.eve";
-                        LoadEventData2(ref argfname12);
+                        LoadEventData2(ref SRC.ScenarioPath + @"Lib\精神コマンド.eve");
                     }
                     else if (localFileExists8())
                     {
-                        string argfname13 = SRC.ExtDataPath + @"Lib\スペシャルパワー.eve";
-                        LoadEventData2(ref argfname13);
+                        LoadEventData2(ref SRC.ExtDataPath + @"Lib\スペシャルパワー.eve");
                     }
                     else if (localFileExists9())
                     {
-                        string argfname14 = SRC.ExtDataPath2 + @"Lib\スペシャルパワー.eve";
-                        LoadEventData2(ref argfname14);
+                        LoadEventData2(ref SRC.ExtDataPath2 + @"Lib\スペシャルパワー.eve");
                     }
                     else if (localFileExists10())
                     {
-                        string argfname15 = SRC.AppPath + @"Lib\スペシャルパワー.eve";
-                        LoadEventData2(ref argfname15);
+                        LoadEventData2(ref SRC.AppPath + @"Lib\スペシャルパワー.eve");
                     }
                     else if (localFileExists11())
                     {
-                        string argfname16 = SRC.ExtDataPath + @"Lib\精神コマンド.eve";
-                        LoadEventData2(ref argfname16);
+                        LoadEventData2(ref SRC.ExtDataPath + @"Lib\精神コマンド.eve");
                     }
                     else if (localFileExists12())
                     {
-                        string argfname17 = SRC.ExtDataPath2 + @"Lib\精神コマンド.eve";
-                        LoadEventData2(ref argfname17);
+                        LoadEventData2(ref SRC.ExtDataPath2 + @"Lib\精神コマンド.eve");
                     }
                     else if (localFileExists13())
                     {
-                        string argfname18 = SRC.AppPath + @"Lib\精神コマンド.eve";
-                        LoadEventData2(ref argfname18);
+                        LoadEventData2(ref SRC.AppPath + @"Lib\精神コマンド.eve");
                     }
 
                     // 汎用戦闘アニメ用インクルードファイルをダウンロード
-                    string argini_section2 = "Option";
-                    string argini_entry2 = "BattleAnimation";
-                    if (Strings.LCase(GeneralLib.ReadIni(ref argini_section2, ref argini_entry2)) != "off")
+                    if (Strings.LCase(GeneralLib.ReadIni(ref "Option", ref "BattleAnimation")) != "off")
                     {
                         SRC.BattleAnimation = true;
                     }
@@ -678,26 +647,21 @@ namespace Project1
 
                     bool localFileExists16() { string argfname = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
 
-                    string argfname24 = SRC.ScenarioPath + @"Lib\汎用戦闘アニメ\include.eve";
-                    if (GeneralLib.FileExists(ref argfname24))
+                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Lib\汎用戦闘アニメ\include.eve"))
                     {
-                        string argfname20 = SRC.ScenarioPath + @"Lib\汎用戦闘アニメ\include.eve";
-                        LoadEventData2(ref argfname20);
+                        LoadEventData2(ref SRC.ScenarioPath + @"Lib\汎用戦闘アニメ\include.eve");
                     }
                     else if (localFileExists14())
                     {
-                        string argfname21 = SRC.ExtDataPath + @"Lib\汎用戦闘アニメ\include.eve";
-                        LoadEventData2(ref argfname21);
+                        LoadEventData2(ref SRC.ExtDataPath + @"Lib\汎用戦闘アニメ\include.eve");
                     }
                     else if (localFileExists15())
                     {
-                        string argfname22 = SRC.ExtDataPath2 + @"Lib\汎用戦闘アニメ\include.eve";
-                        LoadEventData2(ref argfname22);
+                        LoadEventData2(ref SRC.ExtDataPath2 + @"Lib\汎用戦闘アニメ\include.eve");
                     }
                     else if (localFileExists16())
                     {
-                        string argfname23 = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve";
-                        LoadEventData2(ref argfname23);
+                        LoadEventData2(ref SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve");
                     }
                     else
                     {
@@ -707,11 +671,9 @@ namespace Project1
                 }
 
                 // シナリオ添付の汎用インクルードファイルをダウンロード
-                string argfname26 = SRC.ScenarioPath + @"Lib\include.eve";
-                if (GeneralLib.FileExists(ref argfname26))
+                if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Lib\include.eve"))
                 {
-                    string argfname25 = SRC.ScenarioPath + @"Lib\include.eve";
-                    LoadEventData2(ref argfname25);
+                    LoadEventData2(ref SRC.ScenarioPath + @"Lib\include.eve");
                 }
 
                 // システム側のイベントデータの総行数＆ファイル数を記録しておく
@@ -778,11 +740,9 @@ namespace Project1
                 for (i = 1; i <= loopTo7; i++)
                 {
                     tfolder = SRC.SearchDataFolder(ref SRC.Titles[i]);
-                    string argfname28 = tfolder + @"\include.eve";
-                    if (GeneralLib.FileExists(ref argfname28))
+                    if (GeneralLib.FileExists(ref tfolder + @"\include.eve"))
                     {
-                        string argfname27 = tfolder + @"\include.eve";
-                        LoadEventData2(ref argfname27);
+                        LoadEventData2(ref tfolder + @"\include.eve");
                     }
                 }
 
@@ -793,26 +753,21 @@ namespace Project1
 
                 bool localFileExists22() { string argfname = SRC.AppPath + @"Data\include.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
 
-                string argfname33 = SRC.ScenarioPath + @"Data\include.eve";
-                if (GeneralLib.FileExists(ref argfname33))
+                if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Data\include.eve"))
                 {
-                    string argfname29 = SRC.ScenarioPath + @"Data\include.eve";
-                    LoadEventData2(ref argfname29);
+                    LoadEventData2(ref SRC.ScenarioPath + @"Data\include.eve");
                 }
                 else if (localFileExists20())
                 {
-                    string argfname30 = SRC.ExtDataPath + @"Data\include.eve";
-                    LoadEventData2(ref argfname30);
+                    LoadEventData2(ref SRC.ExtDataPath + @"Data\include.eve");
                 }
                 else if (localFileExists21())
                 {
-                    string argfname31 = SRC.ExtDataPath2 + @"Data\include.eve";
-                    LoadEventData2(ref argfname31);
+                    LoadEventData2(ref SRC.ExtDataPath2 + @"Data\include.eve");
                 }
                 else if (localFileExists22())
                 {
-                    string argfname32 = SRC.AppPath + @"Data\include.eve";
-                    LoadEventData2(ref argfname32);
+                    LoadEventData2(ref SRC.AppPath + @"Data\include.eve");
                 }
             }
 
@@ -837,8 +792,7 @@ namespace Project1
                     buf = EventData[CurrentLineNum];
                     if (Strings.Right(buf, 1) == ":")
                     {
-                        string arglname = Strings.Left(buf, Strings.Len(buf) - 1);
-                        AddSysLabel(ref arglname, CurrentLineNum);
+                        AddSysLabel(ref Strings.Left(buf, Strings.Len(buf) - 1), CurrentLineNum);
                     }
                 }
             }
@@ -853,8 +807,7 @@ namespace Project1
                     {
                         case ":":
                             {
-                                string arglname2 = Strings.Left(buf, Strings.Len(buf) - 1);
-                                AddSysLabel(ref arglname2, CurrentLineNum);
+                                AddSysLabel(ref Strings.Left(buf, Strings.Len(buf) - 1), CurrentLineNum);
                                 break;
                             }
 
@@ -875,8 +828,7 @@ namespace Project1
                     {
                         case ":":
                             {
-                                string arglname3 = Strings.Left(buf, Strings.Len(buf) - 1);
-                                AddLabel(ref arglname3, CurrentLineNum);
+                                AddLabel(ref Strings.Left(buf, Strings.Len(buf) - 1), CurrentLineNum);
                                 break;
                             }
 
@@ -899,8 +851,7 @@ namespace Project1
                     {
                         case ":":
                             {
-                                string arglname1 = Strings.Left(buf, Strings.Len(buf) - 1);
-                                AddLabel(ref arglname1, CurrentLineNum);
+                                AddLabel(ref Strings.Left(buf, Strings.Len(buf) - 1), CurrentLineNum);
                                 break;
                             }
 
@@ -1733,8 +1684,7 @@ namespace Project1
                 num = num + 2;
             }
 
-            string argfname34 = Strings.Left(fname, Strings.Len(fname) - 4) + ".map";
-            if (GeneralLib.FileExists(ref argfname34))
+            if (GeneralLib.FileExists(ref Strings.Left(fname, Strings.Len(fname) - 4) + ".map"))
             {
                 num = num + 1;
             }
@@ -1760,96 +1710,71 @@ namespace Project1
             // ローカルデータの読みこみ
             if (!SRC.IsLocalDataLoaded | Information.UBound(new_titles) > 0)
             {
-                string argfname36 = SRC.ScenarioPath + @"Data\alias.txt";
-                if (GeneralLib.FileExists(ref argfname36))
+                if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Data\alias.txt"))
                 {
-                    string argfname35 = SRC.ScenarioPath + @"Data\alias.txt";
-                    SRC.ALDList.Load(ref argfname35);
+                    SRC.ALDList.Load(ref SRC.ScenarioPath + @"Data\alias.txt");
                 }
 
                 bool localFileExists23() { string argfname = SRC.ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
 
-                string argfname39 = SRC.ScenarioPath + @"Data\sp.txt";
-                if (GeneralLib.FileExists(ref argfname39))
+                if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Data\sp.txt"))
                 {
-                    string argfname37 = SRC.ScenarioPath + @"Data\sp.txt";
-                    SRC.SPDList.Load(ref argfname37);
+                    SRC.SPDList.Load(ref SRC.ScenarioPath + @"Data\sp.txt");
                 }
                 else if (localFileExists23())
                 {
-                    string argfname38 = SRC.ScenarioPath + @"Data\mind.txt";
-                    SRC.SPDList.Load(ref argfname38);
+                    SRC.SPDList.Load(ref SRC.ScenarioPath + @"Data\mind.txt");
                 }
 
-                string argfname41 = SRC.ScenarioPath + @"Data\pilot.txt";
-                if (GeneralLib.FileExists(ref argfname41))
+                if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Data\pilot.txt"))
                 {
-                    string argfname40 = SRC.ScenarioPath + @"Data\pilot.txt";
-                    SRC.PDList.Load(ref argfname40);
+                    SRC.PDList.Load(ref SRC.ScenarioPath + @"Data\pilot.txt");
                 }
 
-                string argfname43 = SRC.ScenarioPath + @"Data\non_pilot.txt";
-                if (GeneralLib.FileExists(ref argfname43))
+                if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Data\non_pilot.txt"))
                 {
-                    string argfname42 = SRC.ScenarioPath + @"Data\non_pilot.txt";
-                    SRC.NPDList.Load(ref argfname42);
+                    SRC.NPDList.Load(ref SRC.ScenarioPath + @"Data\non_pilot.txt");
                 }
 
-                string argfname45 = SRC.ScenarioPath + @"Data\robot.txt";
-                if (GeneralLib.FileExists(ref argfname45))
+                if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Data\robot.txt"))
                 {
-                    string argfname44 = SRC.ScenarioPath + @"Data\robot.txt";
-                    SRC.UDList.Load(ref argfname44);
+                    SRC.UDList.Load(ref SRC.ScenarioPath + @"Data\robot.txt");
                 }
 
-                string argfname47 = SRC.ScenarioPath + @"Data\unit.txt";
-                if (GeneralLib.FileExists(ref argfname47))
+                if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Data\unit.txt"))
                 {
-                    string argfname46 = SRC.ScenarioPath + @"Data\unit.txt";
-                    SRC.UDList.Load(ref argfname46);
+                    SRC.UDList.Load(ref SRC.ScenarioPath + @"Data\unit.txt");
                 }
 
                 GUI.DisplayLoadingProgress();
-                string argfname49 = SRC.ScenarioPath + @"Data\pilot_message.txt";
-                if (GeneralLib.FileExists(ref argfname49))
+                if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Data\pilot_message.txt"))
                 {
-                    string argfname48 = SRC.ScenarioPath + @"Data\pilot_message.txt";
-                    SRC.MDList.Load(ref argfname48);
+                    SRC.MDList.Load(ref SRC.ScenarioPath + @"Data\pilot_message.txt");
                 }
 
-                string argfname51 = SRC.ScenarioPath + @"Data\pilot_dialog.txt";
-                if (GeneralLib.FileExists(ref argfname51))
+                if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Data\pilot_dialog.txt"))
                 {
-                    string argfname50 = SRC.ScenarioPath + @"Data\pilot_dialog.txt";
-                    SRC.DDList.Load(ref argfname50);
+                    SRC.DDList.Load(ref SRC.ScenarioPath + @"Data\pilot_dialog.txt");
                 }
 
-                string argfname53 = SRC.ScenarioPath + @"Data\effect.txt";
-                if (GeneralLib.FileExists(ref argfname53))
+                if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Data\effect.txt"))
                 {
-                    string argfname52 = SRC.ScenarioPath + @"Data\effect.txt";
-                    SRC.EDList.Load(ref argfname52);
+                    SRC.EDList.Load(ref SRC.ScenarioPath + @"Data\effect.txt");
                 }
 
-                string argfname55 = SRC.ScenarioPath + @"Data\animation.txt";
-                if (GeneralLib.FileExists(ref argfname55))
+                if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Data\animation.txt"))
                 {
-                    string argfname54 = SRC.ScenarioPath + @"Data\animation.txt";
-                    SRC.ADList.Load(ref argfname54);
+                    SRC.ADList.Load(ref SRC.ScenarioPath + @"Data\animation.txt");
                 }
 
-                string argfname57 = SRC.ScenarioPath + @"Data\ext_animation.txt";
-                if (GeneralLib.FileExists(ref argfname57))
+                if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Data\ext_animation.txt"))
                 {
-                    string argfname56 = SRC.ScenarioPath + @"Data\ext_animation.txt";
-                    SRC.EADList.Load(ref argfname56);
+                    SRC.EADList.Load(ref SRC.ScenarioPath + @"Data\ext_animation.txt");
                 }
 
-                string argfname59 = SRC.ScenarioPath + @"Data\item.txt";
-                if (GeneralLib.FileExists(ref argfname59))
+                if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Data\item.txt"))
                 {
-                    string argfname58 = SRC.ScenarioPath + @"Data\item.txt";
-                    SRC.IDList.Load(ref argfname58);
+                    SRC.IDList.Load(ref SRC.ScenarioPath + @"Data\item.txt");
                 }
 
                 GUI.DisplayLoadingProgress();
@@ -1860,16 +1785,10 @@ namespace Project1
             SRC.ADList.AddDefaultAnimation();
 
             // マップデータをロード
-            string argfname61 = Strings.Left(fname, Strings.Len(fname) - 4) + ".map";
-            if (GeneralLib.FileExists(ref argfname61))
+            if (GeneralLib.FileExists(ref Strings.Left(fname, Strings.Len(fname) - 4) + ".map"))
             {
-                string argfname60 = Strings.Left(fname, Strings.Len(fname) - 4) + ".map";
-                Map.LoadMapData(ref argfname60);
-                string argdraw_mode = "";
-                string argdraw_option = "";
-                int argfilter_color = 0;
-                double argfilter_trans_par = 0d;
-                GUI.SetupBackground(draw_mode: ref argdraw_mode, draw_option: ref argdraw_option, filter_color: ref argfilter_color, filter_trans_par: ref argfilter_trans_par);
+                Map.LoadMapData(ref Strings.Left(fname, Strings.Len(fname) - 4) + ".map");
+                GUI.SetupBackground(draw_mode: ref "", draw_option: ref "", filter_color: ref 0, filter_trans_par: ref 0d);
                 GUI.RedrawScreen();
                 GUI.DisplayLoadingProgress();
             }
@@ -2003,26 +1922,22 @@ namespace Project1
                             // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                             if (Strings.Len(FileSystem.Dir(SRC.ScenarioPath + fname2)) > 0)
                             {
-                                string argfname = SRC.ScenarioPath + fname2;
-                                LoadEventData2(ref argfname);
+                                LoadEventData2(ref SRC.ScenarioPath + fname2);
                             }
                             // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                             else if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath + fname2)) > 0)
                             {
-                                string argfname1 = SRC.ExtDataPath + fname2;
-                                LoadEventData2(ref argfname1);
+                                LoadEventData2(ref SRC.ExtDataPath + fname2);
                             }
                             // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                             else if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath2 + fname2)) > 0)
                             {
-                                string argfname2 = SRC.ExtDataPath2 + fname2;
-                                LoadEventData2(ref argfname2);
+                                LoadEventData2(ref SRC.ExtDataPath2 + fname2);
                             }
                             // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                             else if (Strings.Len(FileSystem.Dir(SRC.AppPath + fname2)) > 0)
                             {
-                                string argfname3 = SRC.AppPath + fname2;
-                                LoadEventData2(ref argfname3);
+                                LoadEventData2(ref SRC.AppPath + fname2);
                             }
                         }
                     }
@@ -2036,13 +1951,11 @@ namespace Project1
             ;
             if (Strings.Len(buf) == 0)
             {
-                string argmsg = fname + "が開けません";
-                GUI.ErrorMessage(ref argmsg);
+                GUI.ErrorMessage(ref fname + "が開けません");
             }
             else
             {
-                string argmsg1 = fname + "のロード中にエラーが発生しました" + Constants.vbCr + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(CurrentLineNum2) + "行目のイベントデータが不正です";
-                GUI.ErrorMessage(ref argmsg1);
+                GUI.ErrorMessage(ref fname + "のロード中にエラーが発生しました" + Constants.vbCr + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(CurrentLineNum2) + "行目のイベントデータが不正です");
             }
 
             SRC.TerminateSRC();
@@ -2133,8 +2046,7 @@ namespace Project1
                                     // Next
                                     while (withBlock2.CountUnitOnBoard() > 0)
                                     {
-                                        object argIndex1 = 1;
-                                        u = withBlock2.UnitOnBoard(ref argIndex1);
+                                        u = withBlock2.UnitOnBoard(ref 1);
                                         withBlock2.UnloadUnit(ref (object)u.ID);
                                         u.Status_Renamed = "破壊";
                                         u.HP = 0;
@@ -2154,8 +2066,7 @@ namespace Project1
                             u = currentU;
                             {
                                 var withBlock3 = u;
-                                object argIndex2 = "憑依";
-                                if ((withBlock3.Party0 ?? "") == (uparty ?? "") & withBlock3.Status_Renamed == "出撃" & !withBlock3.IsConditionSatisfied(ref argIndex2))
+                                if ((withBlock3.Party0 ?? "") == (uparty ?? "") & withBlock3.Status_Renamed == "出撃" & !withBlock3.IsConditionSatisfied(ref "憑依"))
                                 {
                                     flag = true;
                                     break;
@@ -2187,8 +2098,7 @@ namespace Project1
                                     var loopTo = withBlock5.CountUnitOnBoard();
                                     for (i = 1; i <= loopTo; i++)
                                     {
-                                        object argIndex3 = i;
-                                        u = withBlock5.UnitOnBoard(ref argIndex3);
+                                        u = withBlock5.UnitOnBoard(ref i);
                                         withBlock5.UnloadUnit(ref (object)u.ID);
                                         u.Status_Renamed = "破壊";
                                         u.HP = 0;
@@ -2351,8 +2261,7 @@ namespace Project1
 
             if (CallDepth > MaxCallDepth)
             {
-                string argmsg = "サブルーチンの呼び出し階層が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(MaxCallDepth) + "を超えているため、イベントの処理が出来ません";
-                GUI.ErrorMessage(ref argmsg);
+                GUI.ErrorMessage(ref "サブルーチンの呼び出し階層が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(MaxCallDepth) + "を超えているため、イベントの処理が出来ません");
                 CallDepth = MaxCallDepth;
                 return;
             }
@@ -2382,8 +2291,7 @@ namespace Project1
                     foreach (Unit currentU1 in SRC.UList)
                     {
                         u = currentU1;
-                        object argIndex4 = "憑依";
-                        if ((u.Party0 ?? "") == (uparty ?? "") & u.Status_Renamed == "出撃" & !u.IsConditionSatisfied(ref argIndex4))
+                        if ((u.Party0 ?? "") == (uparty ?? "") & u.Status_Renamed == "出撃" & !u.IsConditionSatisfied(ref "憑依"))
                         {
                             goto NextLoop;
                         }
@@ -2910,8 +2818,7 @@ namespace Project1
                             // 陣営名で比較
                             if (str1 != "味方" & str1 != "ＮＰＣ" & str1 != "敵" & str1 != "中立")
                             {
-                                object argIndex1 = str1;
-                                if (SRC.PList.IsDefined(ref argIndex1))
+                                if (SRC.PList.IsDefined(ref str1))
                                 {
                                     Pilot localItem() { object argIndex1 = str1; var ret = SRC.PList.Item(ref argIndex1); return ret; }
 
@@ -2922,16 +2829,14 @@ namespace Project1
                         else if (localIsDefined())
                         {
                             // パイロットで比較
-                            object argIndex5 = str2;
                             {
-                                var withBlock = SRC.PList.Item(ref argIndex5);
+                                var withBlock = SRC.PList.Item(ref str2);
                                 if ((str2 ?? "") == (withBlock.Data.Name ?? "") | (str2 ?? "") == (withBlock.Data.Nickname ?? ""))
                                 {
                                     // グループＩＤが付けられていない場合は
                                     // パイロット名で比較
                                     str2 = withBlock.Name;
-                                    object argIndex3 = str1;
-                                    if (SRC.PList.IsDefined(ref argIndex3))
+                                    if (SRC.PList.IsDefined(ref str1))
                                     {
                                         Pilot localItem2() { object argIndex1 = str1; var ret = SRC.PList.Item(ref argIndex1); return ret; }
 
@@ -2942,8 +2847,7 @@ namespace Project1
                                 {
                                     // グループＩＤが付けられている場合は
                                     // グループＩＤで比較
-                                    object argIndex4 = str1;
-                                    if (SRC.PList.IsDefined(ref argIndex4))
+                                    if (SRC.PList.IsDefined(ref str1))
                                     {
                                         Pilot localItem3() { object argIndex1 = str1; var ret = SRC.PList.Item(ref argIndex1); return ret; }
 
@@ -2963,8 +2867,7 @@ namespace Project1
                             PilotData localItem4() { object argIndex1 = str2; var ret = SRC.PDList.Item(ref argIndex1); return ret; }
 
                             str2 = localItem4().Name;
-                            object argIndex6 = str1;
-                            if (SRC.PList.IsDefined(ref argIndex6))
+                            if (SRC.PList.IsDefined(ref str1))
                             {
                                 Pilot localItem5() { object argIndex1 = str1; var ret = SRC.PList.Item(ref argIndex1); return ret; }
 
@@ -2974,12 +2877,10 @@ namespace Project1
                         else if (localIsDefined2())
                         {
                             // ユニット名で比較
-                            object argIndex8 = str1;
-                            if (SRC.PList.IsDefined(ref argIndex8))
+                            if (SRC.PList.IsDefined(ref str1))
                             {
-                                object argIndex7 = str1;
                                 {
-                                    var withBlock1 = SRC.PList.Item(ref argIndex7);
+                                    var withBlock1 = SRC.PList.Item(ref str1);
                                     if (withBlock1.Unit_Renamed is object)
                                     {
                                         str1 = withBlock1.Unit_Renamed.Name;
@@ -2991,8 +2892,7 @@ namespace Project1
                         {
                             // グループＩＤが付けられているおり、なおかつ同じＩＤの
                             // ２番目以降のユニットの場合はグループＩＤで比較
-                            object argIndex2 = str1;
-                            if (SRC.PList.IsDefined(ref argIndex2))
+                            if (SRC.PList.IsDefined(ref str1))
                             {
                                 Pilot localItem1() { object argIndex1 = str1; var ret = SRC.PList.Item(ref argIndex1); return ret; }
 
@@ -3474,10 +3374,8 @@ namespace Project1
                     withBlock.Remove(1);
             }
 
-            string argvname = "次ステージ";
-            Expression.DefineGlobalVariable(ref argvname);
-            string argvname1 = "セーブデータファイル名";
-            Expression.DefineGlobalVariable(ref argvname1);
+            Expression.DefineGlobalVariable(ref "次ステージ");
+            Expression.DefineGlobalVariable(ref "セーブデータファイル名");
         }
 
 
@@ -3664,8 +3562,7 @@ namespace Project1
                         buf = EventData[i];
                         if (Strings.Right(buf, 1) == ":")
                         {
-                            string arglname = Strings.Left(buf, Strings.Len(buf) - 1);
-                            AddLabel(ref arglname, i);
+                            AddLabel(ref Strings.Left(buf, Strings.Len(buf) - 1), i);
                         }
                     }
 
@@ -3792,9 +3689,7 @@ namespace Project1
                 {
                     is_number = false;
                     vvalue = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-                    string args2 = "\"\"";
-                    string args3 = "\"";
-                    GeneralLib.ReplaceString(ref vvalue, ref args2, ref args3);
+                    GeneralLib.ReplaceString(ref vvalue, ref "\"\"", ref "\"");
                 }
                 else
                 {
@@ -3813,8 +3708,7 @@ namespace Project1
                         {
                             // 個々の能力定義
                             aname = Strings.Mid(vname, idx + 1, Strings.Len(vname) - idx - 1);
-                            object argIndex1 = aname;
-                            if (SRC.ALDList.IsDefined(ref argIndex1))
+                            if (SRC.ALDList.IsDefined(ref aname))
                             {
                                 AliasDataType localItem() { object argIndex1 = aname; var ret = SRC.ALDList.Item(ref argIndex1); return ret; }
 
@@ -3833,8 +3727,7 @@ namespace Project1
                             for (j = 1; j <= loopTo2; j++)
                             {
                                 aname = GeneralLib.LIndex(ref vvalue, j);
-                                object argIndex2 = aname;
-                                if (SRC.ALDList.IsDefined(ref argIndex2))
+                                if (SRC.ALDList.IsDefined(ref aname))
                                 {
                                     AliasDataType localItem1() { object argIndex1 = aname; var ret = SRC.ALDList.Item(ref argIndex1); return ret; }
 
@@ -4019,9 +3912,7 @@ namespace Project1
                 {
                     is_number = false;
                     vvalue = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-                    string args2 = "\"\"";
-                    string args3 = "\"";
-                    GeneralLib.ReplaceString(ref vvalue, ref args2, ref args3);
+                    GeneralLib.ReplaceString(ref vvalue, ref "\"\"", ref "\"");
                 }
                 else
                 {
@@ -4141,13 +4032,8 @@ namespace Project1
             }
 
             // マップをクリア
-            string argfname = "";
-            Map.LoadMapData(ref argfname);
-            string argdraw_mode = "";
-            string argdraw_option = "ステータス";
-            int argfilter_color = 0;
-            double argfilter_trans_par = 0d;
-            GUI.SetupBackground(ref argdraw_mode, ref argdraw_option, filter_color: ref argfilter_color, filter_trans_par: ref argfilter_trans_par);
+            Map.LoadMapData(ref "");
+            GUI.SetupBackground(ref "", ref "ステータス", filter_color: ref 0, filter_trans_par: ref 0d);
 
             // ユニット一覧を作成
             if (key_type != "名称")
@@ -4210,14 +4096,11 @@ namespace Project1
                                         var loopTo = withBlock1.CountWeapon();
                                         for (j = 1; j <= loopTo; j++)
                                         {
-                                            string argattr = "合";
-                                            if (withBlock1.IsWeaponMastered(j) & !withBlock1.IsDisabled(ref withBlock1.Weapon(j).Name) & !withBlock1.IsWeaponClassifiedAs(j, ref argattr))
+                                            if (withBlock1.IsWeaponMastered(j) & !withBlock1.IsDisabled(ref withBlock1.Weapon(j).Name) & !withBlock1.IsWeaponClassifiedAs(j, ref "合"))
                                             {
-                                                string argtarea1 = "";
-                                                if (withBlock1.WeaponPower(j, ref argtarea1) > key_list[i])
+                                                if (withBlock1.WeaponPower(j, ref "") > key_list[i])
                                                 {
-                                                    string argtarea = "";
-                                                    key_list[i] = withBlock1.WeaponPower(j, ref argtarea);
+                                                    key_list[i] = withBlock1.WeaponPower(j, ref "");
                                                 }
                                             }
                                         }
@@ -4230,8 +4113,7 @@ namespace Project1
                                         var loopTo1 = withBlock1.CountWeapon();
                                         for (j = 1; j <= loopTo1; j++)
                                         {
-                                            string argattr1 = "合";
-                                            if (withBlock1.IsWeaponMastered(j) & !withBlock1.IsDisabled(ref withBlock1.Weapon(j).Name) & !withBlock1.IsWeaponClassifiedAs(j, ref argattr1))
+                                            if (withBlock1.IsWeaponMastered(j) & !withBlock1.IsDisabled(ref withBlock1.Weapon(j).Name) & !withBlock1.IsWeaponClassifiedAs(j, ref "合"))
                                             {
                                                 if (withBlock1.WeaponMaxRange(j) > key_list[i])
                                                 {
@@ -4340,8 +4222,7 @@ namespace Project1
                         {
                             i = (short)(i + 1);
                             unit_list[i] = u;
-                            string argoname = "等身大基準";
-                            if (Expression.IsOptionDefined(ref argoname))
+                            if (Expression.IsOptionDefined(ref "等身大基準"))
                             {
                                 // UPGRADE_WARNING: オブジェクト strkey_list(i) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                                 strkey_list[i] = withBlock2.MainPilot().KanaName;
@@ -4430,10 +4311,7 @@ namespace Project1
                     // パイロットが乗っていない場合はダミーパイロットを乗せる
                     if (withBlock4.CountPilot() == 0)
                     {
-                        string argpname = "ステータス表示用ダミーパイロット(ザコ)";
-                        string argpparty = "味方";
-                        string arggid = "";
-                        p = SRC.PList.Add(ref argpname, 1, ref argpparty, gid: ref arggid);
+                        p = SRC.PList.Add(ref "ステータス表示用ダミーパイロット(ザコ)", 1, ref "味方", gid: ref "");
                         p.Ride(ref u);
                     }
 
@@ -4442,13 +4320,10 @@ namespace Project1
                     withBlock4.StandBy(xx, yy);
 
                     // プレイヤーが操作できないように
-                    string argcname = "非操作";
-                    string argcdata = "";
-                    withBlock4.AddCondition(ref argcname, -1, cdata: ref argcdata);
+                    withBlock4.AddCondition(ref "非操作", -1, cdata: ref "");
 
                     // ユニットの愛称を表示
-                    string argmsg = withBlock4.Nickname;
-                    GUI.DrawString(ref argmsg, 32 * xx + 2, 32 * yy - 31);
+                    GUI.DrawString(ref withBlock4.Nickname, 32 * xx + 2, 32 * yy - 31);
                     withBlock4.Nickname = argmsg;
 
                     // ソート項目にあわせてユニットのステータスを表示
@@ -4456,10 +4331,7 @@ namespace Project1
                     {
                         case "ランク":
                             {
-                                string argtname = "HP";
-                                string argtname1 = "EN";
-                                string argmsg1 = "RK" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]) + " " + Expression.Term(ref argtname, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.HP) + " " + Expression.Term(ref argtname1, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.EN);
-                                GUI.DrawString(ref argmsg1, 32 * xx + 2, 32 * yy - 15);
+                                GUI.DrawString(ref "RK" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]) + " " + Expression.Term(ref "HP", ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.HP) + " " + Expression.Term(ref "EN", ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.EN), 32 * xx + 2, 32 * yy - 15);
                                 break;
                             }
 
@@ -4467,71 +4339,55 @@ namespace Project1
                         case "ＥＮ":
                         case "名称":
                             {
-                                string argtname2 = "HP";
-                                string argtname3 = "EN";
-                                string argmsg2 = Expression.Term(ref argtname2, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.HP) + " " + Expression.Term(ref argtname3, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.EN);
-                                GUI.DrawString(ref argmsg2, 32 * xx + 2, 32 * yy - 15);
+                                GUI.DrawString(ref Expression.Term(ref "HP", ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.HP) + " " + Expression.Term(ref "EN", ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.EN), 32 * xx + 2, 32 * yy - 15);
                                 break;
                             }
 
                         case "装甲":
                             {
-                                string argtname4 = "装甲";
-                                string argmsg3 = Expression.Term(ref argtname4, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg3, 32 * xx + 2, 32 * yy - 15);
+                                GUI.DrawString(ref Expression.Term(ref "装甲", ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
                                 break;
                             }
 
                         case "運動性":
                             {
-                                string argtname5 = "運動性";
-                                string argmsg4 = Expression.Term(ref argtname5, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg4, 32 * xx + 2, 32 * yy - 15);
+                                GUI.DrawString(ref Expression.Term(ref "運動性", ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
                                 break;
                             }
 
                         case "移動力":
                             {
-                                string argtname6 = "移動力";
-                                string argmsg5 = Expression.Term(ref argtname6, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg5, 32 * xx + 2, 32 * yy - 15);
+                                GUI.DrawString(ref Expression.Term(ref "移動力", ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
                                 break;
                             }
 
                         case "最大攻撃力":
                             {
-                                string argmsg6 = "攻撃力" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg6, 32 * xx + 2, 32 * yy - 15);
+                                GUI.DrawString(ref "攻撃力" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
                                 break;
                             }
 
                         case "最長射程":
                             {
-                                string argmsg7 = "射程" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg7, 32 * xx + 2, 32 * yy - 15);
+                                GUI.DrawString(ref "射程" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
                                 break;
                             }
 
                         case "レベル":
                             {
-                                string argmsg8 = "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg8, 32 * xx + 2, 32 * yy - 15);
+                                GUI.DrawString(ref "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
                                 break;
                             }
 
                         case "ＳＰ":
                             {
-                                string argtname7 = "SP";
-                                string argmsg9 = Expression.Term(ref argtname7, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg9, 32 * xx + 2, 32 * yy - 15);
+                                GUI.DrawString(ref Expression.Term(ref "SP", ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
                                 break;
                             }
 
                         case "格闘":
                             {
-                                string argtname8 = "格闘";
-                                string argmsg10 = Expression.Term(ref argtname8, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg10, 32 * xx + 2, 32 * yy - 15);
+                                GUI.DrawString(ref Expression.Term(ref "格闘", ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
                                 break;
                             }
 
@@ -4539,15 +4395,11 @@ namespace Project1
                             {
                                 if (withBlock4.MainPilot().HasMana())
                                 {
-                                    string argtname9 = "魔力";
-                                    string argmsg11 = Expression.Term(ref argtname9, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                    GUI.DrawString(ref argmsg11, 32 * xx + 2, 32 * yy - 15);
+                                    GUI.DrawString(ref Expression.Term(ref "魔力", ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
                                 }
                                 else
                                 {
-                                    string argtname10 = "射撃";
-                                    string argmsg12 = Expression.Term(ref argtname10, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                    GUI.DrawString(ref argmsg12, 32 * xx + 2, 32 * yy - 15);
+                                    GUI.DrawString(ref Expression.Term(ref "射撃", ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
                                 }
 
                                 break;
@@ -4555,33 +4407,25 @@ namespace Project1
 
                         case "命中":
                             {
-                                string argtname11 = "命中";
-                                string argmsg13 = Expression.Term(ref argtname11, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg13, 32 * xx + 2, 32 * yy - 15);
+                                GUI.DrawString(ref Expression.Term(ref "命中", ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
                                 break;
                             }
 
                         case "回避":
                             {
-                                string argtname12 = "回避";
-                                string argmsg14 = Expression.Term(ref argtname12, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg14, 32 * xx + 2, 32 * yy - 15);
+                                GUI.DrawString(ref Expression.Term(ref "回避", ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
                                 break;
                             }
 
                         case "技量":
                             {
-                                string argtname13 = "技量";
-                                string argmsg15 = Expression.Term(ref argtname13, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg15, 32 * xx + 2, 32 * yy - 15);
+                                GUI.DrawString(ref Expression.Term(ref "技量", ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
                                 break;
                             }
 
                         case "反応":
                             {
-                                string argtname14 = "反応";
-                                string argmsg16 = Expression.Term(ref argtname14, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg16, 32 * xx + 2, 32 * yy - 15);
+                                GUI.DrawString(ref Expression.Term(ref "反応", ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
                                 break;
                             }
                     }

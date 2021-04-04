@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
@@ -706,8 +706,7 @@ namespace SRCCore.Expressions
                         if (etype == ValueType.NumericType)
                         {
                             EvalExprRet = ValueType.NumericType;
-                            string argexpr = lstr + rstr;
-                            num_result = Conversions.ToDouble(argexpr);
+                            num_result = Conversions.ToDouble(lstr + rstr);
                         }
                         else
                         {
@@ -1350,8 +1349,7 @@ namespace SRCCore.Expressions
                 case ' ': // 空白
                     {
                         // Trimされてない？
-                        string argexpr = Strings.Trim(expr);
-                        EvalTermRet = EvalTerm(argexpr, etype, out str_result, out num_result);
+                        EvalTermRet = EvalTerm(Strings.Trim(expr), etype, out str_result, out num_result);
                         return EvalTermRet;
                     }
 
@@ -1391,8 +1389,7 @@ namespace SRCCore.Expressions
                         // カッコで囲まれた式
                         if (Strings.Right(expr, 1) == ")")
                         {
-                            string argexpr1 = Strings.Mid(expr, 2, Strings.Len(expr) - 2);
-                            EvalTermRet = EvalExpr(argexpr1, etype, out str_result, out num_result);
+                            EvalTermRet = EvalExpr(Strings.Mid(expr, 2, Strings.Len(expr) - 2), etype, out str_result, out num_result);
                         }
                         else
                         {

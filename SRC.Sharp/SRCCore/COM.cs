@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -171,10 +171,7 @@ namespace SRCCore
                 if (!selectedUnit.IsAlly(Commands.SelectedTarget))
                 {
                     // ユニットが敵の場合はそのユニットを狙う
-                    string argamode = "移動可能";
-                    int argmax_prob = 0;
-                    int argmax_dmg = 0;
-                    w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, argamode, out argmax_prob, out argmax_dmg);
+                    w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動可能", out 0, out 0);
                     if (w == 0)
                     {
                         dst_x = Commands.SelectedTarget.x;
@@ -206,9 +203,7 @@ namespace SRCCore
 
                     // 合体技や援護防御を持っている場合はとにかく護衛対象に
                     // 隣接することを優先する
-                    string argsname = "援護";
-                    string argsname1 = "援護防御";
-                    if (selectedUnit.MainPilot().IsSkillAvailable(argsname) | selectedUnit.MainPilot().IsSkillAvailable(argsname1))
+                    if (selectedUnit.MainPilot().IsSkillAvailable("援護") | selectedUnit.MainPilot().IsSkillAvailable("援護防御"))
                     {
                         if (Math.Abs((selectedUnit.x - dst_x)) + Math.Abs((selectedUnit.y - dst_y)) > 1)
                         {
@@ -218,8 +213,7 @@ namespace SRCCore
                         guard_unit_mode = true;
                     }
 
-                    string argfname1 = "合体技";
-                    if (selectedUnit.IsFeatureAvailable(argfname1))
+                    if (selectedUnit.IsFeatureAvailable("合体技"))
                     {
                         if (Math.Abs((selectedUnit.x - dst_x)) > 1 | Math.Abs((selectedUnit.y - dst_y)) > 1)
                         {
@@ -245,8 +239,7 @@ namespace SRCCore
                             var withBlock1 = selectedUnit;
                             if (withBlock1.Status == "出撃" & Commands.SelectedUnit.IsEnemy(selectedUnit) & Math.Abs((dst_x - withBlock1.x)) + Math.Abs((dst_y - withBlock1.y)) <= 5)
                             {
-                                string argamode1 = "移動可能";
-                                tmp_w = SelectWeapon(Commands.SelectedUnit, selectedUnit, argamode1, out prob, out dmg);
+                                tmp_w = SelectWeapon(Commands.SelectedUnit, selectedUnit, "移動可能", out prob, out dmg);
                             }
                             else
                             {
@@ -309,10 +302,7 @@ namespace SRCCore
                 // 既にターゲットを選択している場合は攻撃方法を再選択
                 if (w > 0)
                 {
-                    string argamode2 = "移動可能";
-                    int argmax_prob1 = 0;
-                    int argmax_dmg1 = 0;
-                    w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, argamode2, out argmax_prob1, out argmax_dmg1);
+                    w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動可能", out 0, out 0);
                     if (w == 0)
                     {
                         // 変形の結果、攻撃できなくなってしまった……
@@ -356,8 +346,7 @@ namespace SRCCore
             }
 
             // 修理が可能であれば修理装置を使う
-            Unit argt = null;
-            if (TryFix(moved, t: argt))
+            if (TryFix(moved, t: null))
             {
                 goto EndOfOperation;
             }
@@ -374,8 +363,7 @@ namespace SRCCore
             }
 
             // 回復アビリティを使う？
-            Unit argt1 = null;
-            if (TryHealing(moved, t: argt1))
+            if (TryHealing(moved, t: null))
             {
                 if (SRC.IsScenarioFinished | SRC.IsCanceled)
                 {
@@ -766,8 +754,7 @@ namespace SRCCore
                                 //    // 水中は水中用ユニットでない限り選択しない
                                 //    if (Map.TerrainClass(i, j) == "水")
                                 //    {
-                                //        string argarea_name = "水";
-                                //        if (selectedUnit.IsTransAvailable(argarea_name))
+                                //        if (selectedUnit.IsTransAvailable("水"))
                                 //        {
                                 //            tmp = (tmp + 100);
                                 //        }
@@ -819,18 +806,14 @@ namespace SRCCore
                         }
 
                         // 実はマップ攻撃が使える？
-                        bool argmoved = true;
-                        if (TryMapAttack(argmoved))
+                        if (TryMapAttack(true))
                         {
                             goto EndOfOperation;
                         }
 
                         // 移動のために選択していた武器が使えなくなったり、合体技が使える
                         // ようになったりすることがあるので、武器を再度選択
-                        string argamode6 = "移動後";
-                        int argmax_prob2 = 0;
-                        int argmax_dmg2 = 0;
-                        w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, argamode6, out argmax_prob2, out argmax_dmg2);
+                        w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動後", out 0, out 0);
                         selectedWeapon = selectedUnit.Weapon(w);
                         if (w == 0)
                         {
@@ -851,18 +834,15 @@ namespace SRCCore
                 }
                 // TODO Impl
                 //// 合体技の場合はパートナーもハイライト表示
-                //string argattr5 = "合";
-                //if (selectedUnit.IsWeaponClassifiedAs(w, argattr5))
+                //if (selectedUnit.IsWeaponClassifiedAs(w, "合"))
                 //{
                 //    if (selectedUnit.WeaponMaxRange(w) == 1)
                 //    {
-                //        string argctype_Renamed = "武装";
-                //        selectedUnit.CombinationPartner(argctype_Renamed, w, partners, Commands.SelectedTarget.x, Commands.SelectedTarget.y);
+                //        selectedUnit.CombinationPartner("武装", w, partners, Commands.SelectedTarget.x, Commands.SelectedTarget.y);
                 //    }
                 //    else
                 //    {
-                //        string argctype_Renamed1 = "武装";
-                //        selectedUnit.CombinationPartner(argctype_Renamed1, w, partners);
+                //        selectedUnit.CombinationPartner("武装", w, partners);
                 //    }
 
                 //    if (!SRC.BattleAnimation)
@@ -906,8 +886,7 @@ namespace SRCCore
                     // ボス用ＢＧＭ？
                     if (selectedUnit.IsFeatureAvailable("ＢＧＭ") & Strings.InStr(selectedUnit.MainPilot().Name, "(ザコ)") == 0)
                     {
-                        string argmidi_name = selectedUnit.FeatureData("ＢＧＭ");
-                        BGM = Sound.SearchMidiFile(argmidi_name);
+                        BGM = Sound.SearchMidiFile(selectedUnit.FeatureData("ＢＧＭ"));
                     }
 
                     Sound.BossBGM = false;
@@ -927,8 +906,7 @@ namespace SRCCore
                             // ターゲットが味方なのでターゲット側を優先
                             if (Commands.SelectedTarget.IsFeatureAvailable("ＢＧＭ"))
                             {
-                                string argmidi_name1 = Commands.SelectedTarget.FeatureData("ＢＧＭ");
-                                BGM = Sound.SearchMidiFile(argmidi_name1);
+                                BGM = Sound.SearchMidiFile(Commands.SelectedTarget.FeatureData("ＢＧＭ"));
                             }
 
                             if (Strings.Len(BGM) == 0)
@@ -941,8 +919,7 @@ namespace SRCCore
                             // ターゲットが味方でなければ攻撃側を優先
                             if (selectedUnit.IsFeatureAvailable("ＢＧＭ"))
                             {
-                                string argmidi_name3 = selectedUnit.FeatureData("ＢＧＭ");
-                                BGM = Sound.SearchMidiFile(argmidi_name3);
+                                BGM = Sound.SearchMidiFile(selectedUnit.FeatureData("ＢＧＭ"));
                             }
 
                             if (Strings.Len(BGM) == 0)
@@ -953,8 +930,7 @@ namespace SRCCore
 
                         if (Strings.Len(BGM) == 0)
                         {
-                            string argbgm_name = "default";
-                            BGM = Sound.BGMName(argbgm_name);
+                            BGM = Sound.BGMName("default");
                         }
 
                         // ＢＧＭを変更
@@ -998,13 +974,11 @@ namespace SRCCore
                 //        // '                    .Weapon(w).MinRange, _
                 //        // '                    .WeaponMaxRange(w), _
                 //        // '                    "空間"
-                //        string arguparty1 = "空間";
-                //        Map.AreaInRange(selectedUnit.x, selectedUnit.y, selectedUnit.WeaponMaxRange(w), selectedUnit.Weapon(w).MinRange, arguparty1);
+                //        Map.AreaInRange(selectedUnit.x, selectedUnit.y, selectedUnit.WeaponMaxRange(w), selectedUnit.Weapon(w).MinRange, "空間");
                 //        // MOD END マージ
 
                 //        // 合体技の場合はパートナーもハイライト表示
-                //        string argattr8 = "合";
-                //        if (selectedUnit.IsWeaponClassifiedAs(w, argattr8))
+                //        if (selectedUnit.IsWeaponClassifiedAs(w, "合"))
                 //        {
                 //            var loopTo10 = Information.UBound(partners);
                 //            for (i = 1; i <= loopTo10; i++)
@@ -1026,10 +1000,8 @@ namespace SRCCore
 
                 //    hit_prob = selectedUnit.HitProbability(w, Commands.SelectedTarget, true);
                 //    crit_prob = selectedUnit.CriticalProbability(w, Commands.SelectedTarget);
-                //    string argtarea = "";
-                //    caption_msg = "反撃：" + selectedUnit.WeaponNickname(w) + " 攻撃力=" + SrcFormatter.Format(selectedUnit.WeaponPower(w, argtarea));
-                //    string argoname2 = "予測命中率非表示";
-                //    if (!Expression.IsOptionDefined(argoname2))
+                //    caption_msg = "反撃：" + selectedUnit.WeaponNickname(w) + " 攻撃力=" + SrcFormatter.Format(selectedUnit.WeaponPower(w, ""));
+                //    if (!Expression.IsOptionDefined("予測命中率非表示"))
                 //    {
                 //        caption_msg = caption_msg + " 命中率=" + SrcFormatter.Format(GeneralLib.MinLng(hit_prob, 100)) + "％（" + crit_prob + "％）";
                 //    }
@@ -1044,8 +1016,7 @@ namespace SRCCore
                 //        list[1] = "反撃不能";
                 //    }
 
-                //    string argoname3 = "予測命中率非表示";
-                //    if (!Expression.IsOptionDefined(argoname3))
+                //    if (!Expression.IsOptionDefined("予測命中率非表示"))
                 //    {
                 //        list[2] = "防御：命中率＝" + SrcFormatter.Format(GeneralLib.MinLng(hit_prob, 100)) + "％（" + selectedUnit.CriticalProbability(w, Commands.SelectedTarget, "防御") + "％）";
                 //        list[3] = "回避：命中率＝" + SrcFormatter.Format(GeneralLib.MinLng(hit_prob / 2, 100)) + "％（" + selectedUnit.CriticalProbability(w, Commands.SelectedTarget, "回避") + "％）";
@@ -1061,8 +1032,7 @@ namespace SRCCore
                 //    if (Commands.SupportGuardUnit is object)
                 //    {
                 //        Array.Resize(list, 5);
-                //        string argoname4 = "等身大基準";
-                //        if (Expression.IsOptionDefined(argoname4))
+                //        if (Expression.IsOptionDefined("等身大基準"))
                 //        {
                 //            list[4] = "援護防御：使用する (" + Commands.SupportGuardUnit.Nickname + ")";
                 //        }
@@ -1096,8 +1066,7 @@ namespace SRCCore
                 //            }
 
                 //            // 防御が選択可能？
-                //            string argfname12 = "防御不可";
-                //            if (withBlock10.IsFeatureAvailable(argfname12))
+                //            if (withBlock10.IsFeatureAvailable("防御不可"))
                 //            {
                 //                GUI.ListItemFlag[2] = true;
                 //            }
@@ -1107,9 +1076,7 @@ namespace SRCCore
                 //            }
 
                 //            // 回避が選択可能？
-                //            string argfname13 = "回避不可";
-                //            object argIndex14 = "移動不能";
-                //            if (withBlock10.IsFeatureAvailable(argfname13) | withBlock10.IsConditionSatisfied(argIndex14))
+                //            if (withBlock10.IsFeatureAvailable("回避不可") | withBlock10.IsConditionSatisfied("移動不能"))
                 //            {
                 //                GUI.ListItemFlag[3] = true;
                 //            }
@@ -1120,9 +1087,7 @@ namespace SRCCore
 
                 //            // 対応手段を選択
                 //            GUI.TopItem = 1;
-                //            string arglb_info = withBlock10.Nickname0 + " " + withBlock10.MainPilot().get_Nickname(false);
-                //            string arglb_mode = "連続表示,カーソル移動";
-                //            i = GUI.ListBox(caption_msg, list, arglb_info, arglb_mode);
+                //            i = GUI.ListBox(caption_msg, list, withBlock10.Nickname0 + " " + withBlock10.MainPilot().get_Nickname(false), "連続表示,カーソル移動");
                 //        }
 
                 //        switch (i)
@@ -1130,33 +1095,26 @@ namespace SRCCore
                 //            case 1:
                 //                {
                 //                    // 反撃を選択した場合は反撃に使う武器を選択
-                //                    string argtarea1 = "";
-                //                    buf = "反撃：" + selectedUnit.WeaponNickname(w) + " 攻撃力=" + SrcFormatter.Format(selectedUnit.WeaponPower(w, argtarea1));
-                //                    string argoname5 = "予測命中率非表示";
-                //                    if (!Expression.IsOptionDefined(argoname5))
+                //                    buf = "反撃：" + selectedUnit.WeaponNickname(w) + " 攻撃力=" + SrcFormatter.Format(selectedUnit.WeaponPower(w, ""));
+                //                    if (!Expression.IsOptionDefined("予測命中率非表示"))
                 //                    {
                 //                        buf = buf + " 命中率=" + SrcFormatter.Format(GeneralLib.MinLng(hit_prob, 100)) + "％（" + crit_prob + "％）" + " ： ";
                 //                    }
 
                 //                    {
                 //                        var withBlock11 = Commands.SelectedTarget.MainPilot();
-                //                        string argtname = "格闘";
-                //                        buf = buf + withBlock11.get_Nickname(false) + " " + Expression.Term(argtname, Commands.SelectedTarget) + SrcFormatter.Format(withBlock11.Infight) + " ";
+                //                        buf = buf + withBlock11.get_Nickname(false) + " " + Expression.Term("格闘", Commands.SelectedTarget) + SrcFormatter.Format(withBlock11.Infight) + " ";
                 //                        if (withBlock11.HasMana())
                 //                        {
-                //                            string argtname1 = "魔力";
-                //                            buf = buf + Expression.Term(argtname1, Commands.SelectedTarget) + SrcFormatter.Format(withBlock11.Shooting);
+                //                            buf = buf + Expression.Term("魔力", Commands.SelectedTarget) + SrcFormatter.Format(withBlock11.Shooting);
                 //                        }
                 //                        else
                 //                        {
-                //                            string argtname2 = "射撃";
-                //                            buf = buf + Expression.Term(argtname2, Commands.SelectedTarget) + SrcFormatter.Format(withBlock11.Shooting);
+                //                            buf = buf + Expression.Term("射撃", Commands.SelectedTarget) + SrcFormatter.Format(withBlock11.Shooting);
                 //                        }
                 //                    }
 
-                //                    string arglb_mode1 = "反撃";
-                //                    string argBGM = "";
-                //                    tw = GUI.WeaponListBox(Commands.SelectedTarget, buf, arglb_mode1, BGM: argBGM);
+                //                    tw = GUI.WeaponListBox(Commands.SelectedTarget, buf, "反撃", BGM: "");
                 //                    if (tw == 0)
                 //                    {
                 //                        i = 0;
@@ -1192,8 +1150,7 @@ namespace SRCCore
                 //                        list[4] = "援護防御：使用しない (";
                 //                    }
 
-                //                    string argoname6 = "等身大基準";
-                //                    if (Expression.IsOptionDefined(argoname6))
+                //                    if (Expression.IsOptionDefined("等身大基準"))
                 //                    {
                 //                        list[4] = list[4] + Commands.SupportGuardUnit.Nickname + ")";
                 //                    }
@@ -1235,10 +1192,7 @@ namespace SRCCore
                 //    // コンピューターが操作するユニット及び自動反撃モードの場合
 
                 //    // 反撃に使う武器を選択
-                //    string argamode7 = "反撃";
-                //    int argmax_prob3 = 0;
-                //    int argmax_dmg3 = 0;
-                //    tw = SelectWeapon(Commands.SelectedTarget, Commands.SelectedUnit, argamode7, max_prob: argmax_prob3, max_dmg: argmax_dmg3);
+                //    tw = SelectWeapon(Commands.SelectedTarget, Commands.SelectedUnit, "反撃", max_prob: 0, max_dmg: 0);
                 //    if (indirect_attack)
                 //    {
                 //        tw = 0;
@@ -1261,8 +1215,7 @@ namespace SRCCore
                 //{
                 //    {
                 //        var withBlock12 = Commands.SelectedTarget;
-                //        string argfname14 = "武器ＢＧＭ";
-                //        if (withBlock12.Party == "味方" & tw > 0 & withBlock12.IsFeatureAvailable(argfname14))
+                //        if (withBlock12.Party == "味方" & tw > 0 & withBlock12.IsFeatureAvailable("武器ＢＧＭ"))
                 //        {
                 //            var loopTo11 = withBlock12.CountFeature();
                 //            for (i = 1; i <= loopTo11; i++)
@@ -1280,8 +1233,7 @@ namespace SRCCore
 
                 //                    string localFeatureData1() { object argIndex1 = i; var ret = withBlock12.FeatureData(argIndex1); return ret; }
 
-                //                    string argmidi_name5 = Strings.Mid(localFeatureData(), Strings.InStr(localFeatureData1(), " ") + 1);
-                //                    BGM = Sound.SearchMidiFile(argmidi_name5);
+                //                    BGM = Sound.SearchMidiFile(Strings.Mid(localFeatureData(), Strings.InStr(localFeatureData1(), " ") + 1));
                 //                    if (Strings.Len(BGM) > 0)
                 //                    {
                 //                        // 武器用ＢＧＭのMIDIが見つかったのでＢＧＭを変更
@@ -1417,8 +1369,7 @@ namespace SRCCore
                 //    // 合体技ではサポートアタック不能
                 //    if (0 < Commands.SelectedWeapon & Commands.SelectedWeapon <= withBlock14.CountWeapon())
                 //    {
-                //        string argattr12 = "合";
-                //        if (withBlock14.IsWeaponClassifiedAs(Commands.SelectedWeapon, argattr12))
+                //        if (withBlock14.IsWeaponClassifiedAs(Commands.SelectedWeapon, "合"))
                 //        {
                 //            // UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
                 //            Commands.SupportAttackUnit = null;
@@ -1426,16 +1377,14 @@ namespace SRCCore
                 //    }
 
                 //    // 魅了された場合
-                //    object argIndex16 = "魅了";
-                //    if (withBlock14.IsConditionSatisfied(argIndex16) & ReferenceEquals(withBlock14.Master, Commands.SelectedTarget))
+                //    if (withBlock14.IsConditionSatisfied("魅了") & ReferenceEquals(withBlock14.Master, Commands.SelectedTarget))
                 //    {
                 //        // UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
                 //        Commands.SupportAttackUnit = null;
                 //    }
 
                 //    // 憑依された場合
-                //    object argIndex17 = "憑依";
-                //    if (withBlock14.IsConditionSatisfied(argIndex17))
+                //    if (withBlock14.IsConditionSatisfied("憑依"))
                 //    {
                 //        if ((withBlock14.Master.Party ?? "") == (Commands.SelectedTarget.Party ?? ""))
                 //        {
@@ -1445,8 +1394,7 @@ namespace SRCCore
                 //    }
 
                 //    // 踊らされた場合
-                //    object argIndex18 = "踊り";
-                //    if (withBlock14.IsConditionSatisfied(argIndex18))
+                //    if (withBlock14.IsConditionSatisfied("踊り"))
                 //    {
                 //        // UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
                 //        Commands.SupportAttackUnit = null;
@@ -1476,16 +1424,14 @@ namespace SRCCore
                     //}
                     //else if (moved)
                     //{
-                    //    string argref_mode4 = "移動後";
-                    //    if (!selectedUnit.IsWeaponAvailable(w, argref_mode4))
+                    //    if (!selectedUnit.IsWeaponAvailable(w, "移動後"))
                     //    {
                     //        w = -1;
                     //    }
                     //}
                     //else
                     //{
-                    //    string argref_mode3 = "移動前";
-                    //    if (!selectedUnit.IsWeaponAvailable(w, argref_mode3))
+                    //    if (!selectedUnit.IsWeaponAvailable(w, "移動前"))
                     //    {
                     //        w = -1;
                     //    }
@@ -1506,15 +1452,13 @@ namespace SRCCore
                     //}
 
                     //// 魅了された場合
-                    //object argIndex19 = "魅了";
-                    //if (selectedUnit.IsConditionSatisfied(argIndex19) & ReferenceEquals(selectedUnit.Master, Commands.SelectedTarget))
+                    //if (selectedUnit.IsConditionSatisfied("魅了") & ReferenceEquals(selectedUnit.Master, Commands.SelectedTarget))
                     //{
                     //    w = -1;
                     //}
 
                     //// 憑依された場合
-                    //object argIndex20 = "憑依";
-                    //if (selectedUnit.IsConditionSatisfied(argIndex20))
+                    //if (selectedUnit.IsConditionSatisfied("憑依"))
                     //{
                     //    if ((selectedUnit.Master.Party ?? "") == (Commands.SelectedTarget.Party ?? ""))
                     //    {
@@ -1523,8 +1467,7 @@ namespace SRCCore
                     //}
 
                     //// 踊らされた場合
-                    //object argIndex21 = "踊り";
-                    //if (selectedUnit.IsConditionSatisfied(argIndex21))
+                    //if (selectedUnit.IsConditionSatisfied("踊り"))
                     //{
                     //    w = -1;
                     //}
@@ -1596,10 +1539,7 @@ namespace SRCCore
                 //    {
                 //        var withBlock16 = Commands.SupportAttackUnit;
                 //        // サポートアタックに使う武器を決定
-                //        string argamode8 = "サポートアタック";
-                //        int argmax_prob4 = 0;
-                //        int argmax_dmg4 = 0;
-                //        w2 = SelectWeapon(Commands.SupportAttackUnit, Commands.SelectedTarget, argamode8, max_prob: argmax_prob4, max_dmg: argmax_dmg4);
+                //        w2 = SelectWeapon(Commands.SupportAttackUnit, Commands.SelectedTarget, "サポートアタック", max_prob: 0, max_dmg: 0);
                 //        if (w2 > 0)
                 //        {
                 //            // サポートアタックを実施
@@ -1609,17 +1549,12 @@ namespace SRCCore
                 //                GUI.MaskScreen();
                 //            }
 
-                //            string argmain_situation4 = "サポートアタック開始";
-                //            string argsub_situation4 = "";
-                //            if (withBlock16.IsAnimationDefined(argmain_situation4, sub_situation: argsub_situation4))
+                //            if (withBlock16.IsAnimationDefined("サポートアタック開始", sub_situation: ""))
                 //            {
-                //                string argmain_situation3 = "サポートアタック開始";
-                //                string argsub_situation3 = "";
-                //                withBlock16.PlayAnimation(argmain_situation3, sub_situation: argsub_situation3);
+                //                withBlock16.PlayAnimation("サポートアタック開始", sub_situation: "");
                 //            }
 
-                //            object argu2 = Commands.SupportAttackUnit;
-                //            GUI.UpdateMessageForm(Commands.SelectedTarget, argu2);
+                //            GUI.UpdateMessageForm(Commands.SelectedTarget, Commands.SupportAttackUnit);
                 //            withBlock16.Attack(w2, Commands.SelectedTarget, "同時援護攻撃", def_mode);
                 //        }
                 //    }
@@ -1629,13 +1564,9 @@ namespace SRCCore
                 //        var withBlock17 = Commands.SupportAttackUnit.CurrentForm();
                 //        if (w2 > 0)
                 //        {
-                //            string argmain_situation6 = "サポートアタック終了";
-                //            string argsub_situation6 = "";
-                //            if (withBlock17.IsAnimationDefined(argmain_situation6, sub_situation: argsub_situation6))
+                //            if (withBlock17.IsAnimationDefined("サポートアタック終了", sub_situation: ""))
                 //            {
-                //                string argmain_situation5 = "サポートアタック終了";
-                //                string argsub_situation5 = "";
-                //                withBlock17.PlayAnimation(argmain_situation5, sub_situation: argsub_situation5);
+                //                withBlock17.PlayAnimation("サポートアタック終了", sub_situation: "");
                 //            }
 
                 //            // サポートアタックの残り回数を減らす
@@ -1670,12 +1601,11 @@ namespace SRCCore
                         // TODO Impl
                         //if (tw > 0)
                         //{
-                        //    string argref_mode5 = "移動前";
                         //    if (tw > targetUnit.CountWeapon())
                         //    {
                         //        tw = -1;
                         //    }
-                        //    else if ((twname ?? "") != (targetUnit.Weapon(tw).Name ?? "") | !targetUnit.IsWeaponAvailable(tw, argref_mode5))
+                        //    else if ((twname ?? "") != (targetUnit.Weapon(tw).Name ?? "") | !targetUnit.IsWeaponAvailable(tw, "移動前"))
                         //    {
                         //        tw = -1;
                         //    }
@@ -1697,15 +1627,13 @@ namespace SRCCore
                         //}
 
                         //// 魅了された場合
-                        //object argIndex23 = "魅了";
-                        //if (targetUnit.IsConditionSatisfied(argIndex23) & ReferenceEquals(targetUnit.Master, Commands.SelectedUnit))
+                        //if (targetUnit.IsConditionSatisfied("魅了") & ReferenceEquals(targetUnit.Master, Commands.SelectedUnit))
                         //{
                         //    tw = -1;
                         //}
 
                         //// 憑依された場合
-                        //object argIndex24 = "憑依";
-                        //if (targetUnit.IsConditionSatisfied(argIndex24))
+                        //if (targetUnit.IsConditionSatisfied("憑依"))
                         //{
                         //    if ((targetUnit.Master.Party ?? "") == (Commands.SelectedUnit.Party ?? ""))
                         //    {
@@ -1714,8 +1642,7 @@ namespace SRCCore
                         //}
 
                         //// 踊らされた場合
-                        //object argIndex25 = "踊り";
-                        //if (targetUnit.IsConditionSatisfied(argIndex25))
+                        //if (targetUnit.IsConditionSatisfied("踊り"))
                         //{
                         //    tw = -1;
                         //}
@@ -1789,10 +1716,7 @@ namespace SRCCore
                 //{
                 //    var withBlock19 = Commands.SupportAttackUnit;
                 //    // サポートアタックに使う武器を決定
-                //    string argamode9 = "サポートアタック";
-                //    int argmax_prob5 = 0;
-                //    int argmax_dmg5 = 0;
-                //    w2 = SelectWeapon(Commands.SupportAttackUnit, Commands.SelectedTarget, argamode9, max_prob: argmax_prob5, max_dmg: argmax_dmg5);
+                //    w2 = SelectWeapon(Commands.SupportAttackUnit, Commands.SelectedTarget, "サポートアタック", max_prob: 0, max_dmg: 0);
                 //    if (w2 > 0)
                 //    {
                 //        // サポートアタックを実施
@@ -1802,17 +1726,12 @@ namespace SRCCore
                 //            GUI.MaskScreen();
                 //        }
 
-                //        string argmain_situation11 = "サポートアタック開始";
-                //        string argsub_situation11 = "";
-                //        if (withBlock19.IsAnimationDefined(argmain_situation11, sub_situation: argsub_situation11))
+                //        if (withBlock19.IsAnimationDefined("サポートアタック開始", sub_situation: ""))
                 //        {
-                //            string argmain_situation10 = "サポートアタック開始";
-                //            string argsub_situation10 = "";
-                //            withBlock19.PlayAnimation(argmain_situation10, sub_situation: argsub_situation10);
+                //            withBlock19.PlayAnimation("サポートアタック開始", sub_situation: "");
                 //        }
 
-                //        object argu21 = Commands.SupportAttackUnit;
-                //        GUI.UpdateMessageForm(Commands.SelectedTarget, argu21);
+                //        GUI.UpdateMessageForm(Commands.SelectedTarget, Commands.SupportAttackUnit);
                 //        withBlock19.Attack(w2, Commands.SelectedTarget, "援護攻撃", def_mode);
                 //    }
                 //}
@@ -1820,13 +1739,9 @@ namespace SRCCore
                 //// 後始末
                 //{
                 //    var withBlock20 = Commands.SupportAttackUnit.CurrentForm();
-                //    string argmain_situation13 = "サポートアタック終了";
-                //    string argsub_situation13 = "";
-                //    if (withBlock20.IsAnimationDefined(argmain_situation13, sub_situation: argsub_situation13))
+                //    if (withBlock20.IsAnimationDefined("サポートアタック終了", sub_situation: ""))
                 //    {
-                //        string argmain_situation12 = "サポートアタック終了";
-                //        string argsub_situation12 = "";
-                //        withBlock20.PlayAnimation(argmain_situation12, sub_situation: argsub_situation12);
+                //        withBlock20.PlayAnimation("サポートアタック終了", sub_situation: "");
                 //    }
 
                 //    // サポートアタックの残り回数を減らす
@@ -1876,9 +1791,7 @@ namespace SRCCore
                     //    if (Commands.SelectedUnit.Status == "破壊" & !is_suiside)
                     //    {
                     //        // 経験値を獲得
-                    //        string argexp_situation = "破壊";
-                    //        string argexp_mode = "";
-                    //        selectedUnit.GetExp(Commands.SelectedUnit, argexp_situation, exp_mode: argexp_mode);
+                    //        selectedUnit.GetExp(Commands.SelectedUnit, "破壊", exp_mode: "");
 
                     //        // 現在の資金を記録
                     //        prev_money = SRC.Money;
@@ -1905,15 +1818,12 @@ namespace SRCCore
                     //        SRC.IncrMoney(earnings);
                     //        if (SRC.Money > prev_money)
                     //        {
-                    //            string argtname3 = "資金";
-                    //            GUI.DisplaySysMessage(SrcFormatter.Format(SRC.Money - prev_money) + "の" + Expression.Term(argtname3, Commands.SelectedUnit) + "を得た。");
+                    //            GUI.DisplaySysMessage(SrcFormatter.Format(SRC.Money - prev_money) + "の" + Expression.Term("資金", Commands.SelectedUnit) + "を得た。");
                     //        }
                     //    }
                     //    else
                     //    {
-                    //        string argexp_situation1 = "攻撃";
-                    //        string argexp_mode1 = "";
-                    //        selectedUnit.GetExp(Commands.SelectedUnit, argexp_situation1, exp_mode: argexp_mode1);
+                    //        selectedUnit.GetExp(Commands.SelectedUnit, "攻撃", exp_mode: "");
                     //    }
                 }
 
@@ -1944,28 +1854,21 @@ namespace SRCCore
                             //// ターゲットを破壊した場合
 
                             //// 経験値を獲得
-                            //string argexp_situation2 = "破壊";
-                            //string argexp_mode2 = "";
-                            //selectedUnit.GetExp(Commands.SelectedTarget, argexp_situation2, exp_mode: argexp_mode2);
+                            //selectedUnit.GetExp(Commands.SelectedTarget, "破壊", exp_mode: "");
 
                             //// 獲得する資金を算出
                             //earnings = Commands.SelectedTarget.Value / 2;
 
                             //// スペシャルパワーによる獲得資金増加
-                            //string argsptype4 = "獲得資金増加";
-                            //if (selectedUnit.IsUnderSpecialPowerEffect(argsptype4))
+                            //if (selectedUnit.IsUnderSpecialPowerEffect("獲得資金増加"))
                             //{
-                            //    string argsname8 = "獲得資金増加";
-                            //    earnings = (earnings * (1d + 0.1d * selectedUnit.SpecialPowerEffectLevel(argsname8)));
+                            //    earnings = (earnings * (1d + 0.1d * selectedUnit.SpecialPowerEffectLevel("獲得資金増加")));
                             //}
 
                             //// パイロット能力による獲得資金増加
-                            //string argsname9 = "資金獲得";
-                            //if (selectedUnit.IsSkillAvailable(argsname9))
+                            //if (selectedUnit.IsSkillAvailable("資金獲得"))
                             //{
-                            //    string argsptype5 = "獲得資金増加";
-                            //    string argoname8 = "収得効果重複";
-                            //    if (!selectedUnit.IsUnderSpecialPowerEffect(argsptype5) | Expression.IsOptionDefined(argoname8))
+                            //    if (!selectedUnit.IsUnderSpecialPowerEffect("獲得資金増加") | Expression.IsOptionDefined("収得効果重複"))
                             //    {
                             //        earnings = ((earnings * (10d + selectedUnit.SkillLevel("資金獲得", 5d))) / 10L);
                             //    }
@@ -1975,8 +1878,7 @@ namespace SRCCore
                             //SRC.IncrMoney(earnings);
                             //if (earnings > 0)
                             //{
-                            //    string argtname4 = "資金";
-                            //    GUI.DisplaySysMessage(SrcFormatter.Format(earnings) + "の" + Expression.Term(argtname4, Commands.SelectedTarget) + "を得た。");
+                            //    GUI.DisplaySysMessage(SrcFormatter.Format(earnings) + "の" + Expression.Term("資金", Commands.SelectedTarget) + "を得た。");
                             //}
                         }
                         else
@@ -1984,9 +1886,7 @@ namespace SRCCore
                             // ターゲットを破壊出来なかった場合
 
                             // 経験値を獲得
-                            string argexp_situation3 = "攻撃";
-                            string argexp_mode3 = "";
-                            selectedUnit.GetExp(Commands.SelectedTarget, argexp_situation3, exp_mode: argexp_mode3);
+                            selectedUnit.GetExp(Commands.SelectedTarget, "攻撃", exp_mode: "");
                         }
                     }
                 }
@@ -1994,8 +1894,7 @@ namespace SRCCore
                 if (selectedUnit.Status == "出撃")
                 {
                     // スペシャルパワー効果「敵破壊時再行動」
-                    string argsptype6 = "敵破壊時再行動";
-                    if (selectedUnit.IsUnderSpecialPowerEffect(argsptype6))
+                    if (selectedUnit.IsUnderSpecialPowerEffect("敵破壊時再行動"))
                     {
                         if (Commands.SelectedTarget.Status == "破壊")
                         {
@@ -2004,12 +1903,10 @@ namespace SRCCore
                     }
 
                     // 持続期間が「戦闘終了」のスペシャルパワー効果を削除
-                    string argstype2 = "戦闘終了";
-                    selectedUnit.RemoveSpecialPowerInEffect(argstype2);
+                    selectedUnit.RemoveSpecialPowerInEffect("戦闘終了");
                     if (earnings > 0)
                     {
-                        string argstype3 = "敵破壊";
-                        selectedUnit.RemoveSpecialPowerInEffect(argstype3);
+                        selectedUnit.RemoveSpecialPowerInEffect("敵破壊");
                     }
                 }
             }
@@ -2290,8 +2187,7 @@ namespace SRCCore
                 // 移動可能範囲を設定
 
                 // テレポート能力を使える場合は優先的に使用
-                string arglist = selectedUnit.FeatureData("テレポート");
-                if (GeneralLib.LLength(arglist) == 2)
+                if (GeneralLib.LLength(selectedUnit.FeatureData("テレポート")) == 2)
                 {
                     tmp = Conversions.ToInteger(GeneralLib.LIndex(arglist, 2));
                 }
@@ -2309,8 +2205,7 @@ namespace SRCCore
                 }
 
                 // ジャンプ能力を使う？
-                string arglist1 = selectedUnit.FeatureData("ジャンプ");
-                if (GeneralLib.LLength(arglist1) == 2)
+                if (GeneralLib.LLength(selectedUnit.FeatureData("ジャンプ")) == 2)
                 {
                     tmp = Conversions.ToInteger(GeneralLib.LIndex(arglist1, 2));
                 }
@@ -2512,8 +2407,7 @@ namespace SRCCore
                                         // 水中用ユニットの場合は水中を優先
                                         if (Map.Terrain(tx, ty).Class == "水")
                                         {
-                                            string argarea_name1 = "水";
-                                            if (selectedUnit.IsTransAvailable(argarea_name1))
+                                            if (selectedUnit.IsTransAvailable("水"))
                                             {
                                                 tmp = (tmp + 100);
                                             }
@@ -2605,47 +2499,30 @@ namespace SRCCore
                         case "テレポート":
                             {
                                 // TODO Impl
-                                //string argmain_situation14 = "テレポート";
-                                //if (selectedUnit.IsMessageDefined(argmain_situation14))
+                                //if (selectedUnit.IsMessageDefined("テレポート"))
                                 //{
-                                //    Unit argu1 = null;
-                                //    Unit argu22 = null;
-                                //    GUI.OpenMessageForm(u1: argu1, u2: argu22);
-                                //    string argSituation2 = "テレポート";
-                                //    string argmsg_mode2 = "";
-                                //    selectedUnit.PilotMessage(argSituation2, msg_mode: argmsg_mode2);
+                                //    GUI.OpenMessageForm(u1: null, u2: null);
+                                //    selectedUnit.PilotMessage("テレポート", msg_mode: "");
                                 //    GUI.CloseMessageForm();
                                 //}
 
                                 //bool localIsSpecialEffectDefined() { string argmain_situation = "テレポート"; object argIndex1 = "テレポート"; string argsub_situation = selectedUnit.FeatureName(argIndex1); var ret = selectedUnit.IsSpecialEffectDefined(argmain_situation, argsub_situation); return ret; }
 
-                                //string argmain_situation17 = "テレポート";
-                                //object argIndex36 = "テレポート";
-                                //string argsub_situation16 = selectedUnit.FeatureName(argIndex36);
-                                //if (selectedUnit.IsAnimationDefined(argmain_situation17, argsub_situation16))
+                                //if (selectedUnit.IsAnimationDefined("テレポート", selectedUnit.FeatureName("テレポート")))
                                 //{
-                                //    string argmain_situation15 = "テレポート";
-                                //    object argIndex33 = "テレポート";
-                                //    string argsub_situation14 = selectedUnit.FeatureName(argIndex33);
-                                //    selectedUnit.PlayAnimation(argmain_situation15, argsub_situation14);
+                                //    selectedUnit.PlayAnimation("テレポート", selectedUnit.FeatureName("テレポート"));
                                 //}
                                 //else if (localIsSpecialEffectDefined())
                                 //{
-                                //    string argmain_situation16 = "テレポート";
-                                //    object argIndex34 = "テレポート";
-                                //    string argsub_situation15 = selectedUnit.FeatureName(argIndex34);
-                                //    selectedUnit.SpecialEffect(argmain_situation16, argsub_situation15);
+                                //    selectedUnit.SpecialEffect("テレポート", selectedUnit.FeatureName("テレポート"));
                                 //}
                                 //else if (SRC.BattleAnimation)
                                 //{
-                                //    object argIndex35 = "テレポート";
-                                //    string arganame = "テレポート発動 Whiz.wav " + selectedUnit.FeatureName0(argIndex35);
-                                //    Effect.ShowAnimation(arganame);
+                                //    Effect.ShowAnimation("テレポート発動 Whiz.wav " + selectedUnit.FeatureName0("テレポート"));
                                 //}
                                 //else
                                 //{
-                                //    string argwave_name = "Whiz.wav";
-                                //    Sound.PlayWave(argwave_name);
+                                //    Sound.PlayWave("Whiz.wav");
                                 //}
 
                                 selectedUnit.Move(new_x, new_y, true, false, true);
@@ -2657,41 +2534,26 @@ namespace SRCCore
                         case "ジャンプ":
                             {
                                 // TODO Impl
-                                //string argmain_situation18 = "ジャンプ";
-                                //if (selectedUnit.IsMessageDefined(argmain_situation18))
+                                //if (selectedUnit.IsMessageDefined("ジャンプ"))
                                 //{
-                                //    Unit argu11 = null;
-                                //    Unit argu23 = null;
-                                //    GUI.OpenMessageForm(u1: argu11, u2: argu23);
-                                //    string argSituation3 = "ジャンプ";
-                                //    string argmsg_mode3 = "";
-                                //    selectedUnit.PilotMessage(argSituation3, msg_mode: argmsg_mode3);
+                                //    GUI.OpenMessageForm(u1: null, u2: null);
+                                //    selectedUnit.PilotMessage("ジャンプ", msg_mode: "");
                                 //    GUI.CloseMessageForm();
                                 //}
 
                                 //bool localIsSpecialEffectDefined1() { string argmain_situation = "ジャンプ"; object argIndex1 = "ジャンプ"; string argsub_situation = selectedUnit.FeatureName(argIndex1); var ret = selectedUnit.IsSpecialEffectDefined(argmain_situation, argsub_situation); return ret; }
 
-                                //string argmain_situation21 = "ジャンプ";
-                                //object argIndex39 = "ジャンプ";
-                                //string argsub_situation19 = selectedUnit.FeatureName(argIndex39);
-                                //if (selectedUnit.IsAnimationDefined(argmain_situation21, argsub_situation19))
+                                //if (selectedUnit.IsAnimationDefined("ジャンプ", selectedUnit.FeatureName("ジャンプ")))
                                 //{
-                                //    string argmain_situation19 = "ジャンプ";
-                                //    object argIndex37 = "ジャンプ";
-                                //    string argsub_situation17 = selectedUnit.FeatureName(argIndex37);
-                                //    selectedUnit.PlayAnimation(argmain_situation19, argsub_situation17);
+                                //    selectedUnit.PlayAnimation("ジャンプ", selectedUnit.FeatureName("ジャンプ"));
                                 //}
                                 //else if (localIsSpecialEffectDefined1())
                                 //{
-                                //    string argmain_situation20 = "ジャンプ";
-                                //    object argIndex38 = "ジャンプ";
-                                //    string argsub_situation18 = selectedUnit.FeatureName(argIndex38);
-                                //    selectedUnit.SpecialEffect(argmain_situation20, argsub_situation18);
+                                //    selectedUnit.SpecialEffect("ジャンプ", selectedUnit.FeatureName("ジャンプ"));
                                 //}
                                 //else
                                 //{
-                                //    string argwave_name1 = "Swing.wav";
-                                //    Sound.PlayWave(argwave_name1);
+                                //    Sound.PlayWave("Swing.wav");
                                 //}
 
                                 selectedUnit.Move(new_x, new_y, true, false, true);
@@ -2751,17 +2613,11 @@ namespace SRCCore
                         {
                             if (moved)
                             {
-                                string argamode10 = "移動後";
-                                int argmax_prob6 = 0;
-                                int argmax_dmg6 = 0;
-                                w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, argamode10, out argmax_prob6, out argmax_dmg6);
+                                w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動後", out 0, out 0);
                             }
                             else
                             {
-                                string argamode11 = "移動可能";
-                                int argmax_prob7 = 0;
-                                int argmax_dmg7 = 0;
-                                w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, argamode11, out argmax_prob7, out argmax_dmg7);
+                                w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動可能", out 0, out 0);
                             }
 
                             if (w > 0)
@@ -2793,17 +2649,11 @@ namespace SRCCore
                                 // 移動先の場所にいる敵を優先して排除
                                 if (moved)
                                 {
-                                    string argamode12 = "移動後";
-                                    int argmax_prob8 = 0;
-                                    int argmax_dmg8 = 0;
-                                    w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, argamode12, out argmax_prob8, out argmax_dmg8);
+                                    w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動後", out 0, out 0);
                                 }
                                 else
                                 {
-                                    string argamode13 = "移動可能";
-                                    int argmax_prob9 = 0;
-                                    int argmax_dmg9 = 0;
-                                    w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, argamode13, out argmax_prob9, out argmax_dmg9);
+                                    w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動可能", out 0, out 0);
                                 }
 
                                 if (w > 0)
@@ -2834,8 +2684,7 @@ namespace SRCCore
             if (moved)
             {
                 // 持続期間が「移動」のスペシャルパワー効果を削除
-                string argstype4 = "移動";
-                Commands.SelectedUnit.RemoveSpecialPowerInEffect(argstype4);
+                Commands.SelectedUnit.RemoveSpecialPowerInEffect("移動");
             }
         }
 
@@ -2850,18 +2699,14 @@ namespace SRCCore
             //{
             //    var withBlock = Commands.SelectedUnit;
             //    // ハイパーモードを持っている？
-            //    string argfname = "ハイパーモード";
-            //    if (!withBlock.IsFeatureAvailable(argfname))
+            //    if (!withBlock.IsFeatureAvailable("ハイパーモード"))
             //    {
             //        return;
             //    }
 
-            //    object argIndex1 = "ハイパーモード";
-            //    fname = withBlock.FeatureName(argIndex1);
-            //    object argIndex2 = "ハイパーモード";
-            //    flevel = withBlock.FeatureLevel(argIndex2);
-            //    object argIndex3 = "ハイパーモード";
-            //    fdata = withBlock.FeatureData(argIndex3);
+            //    fname = withBlock.FeatureName("ハイパーモード");
+            //    flevel = withBlock.FeatureLevel("ハイパーモード");
+            //    fdata = withBlock.FeatureData("ハイパーモード");
 
             //    // 発動条件を満たす？
             //    if (withBlock.MainPilot().Morale < 100 + (10d * flevel) & (Strings.InStr(fdata, "気力発動") > 0 | withBlock.HP > withBlock.MaxHP / 4))
@@ -2870,50 +2715,40 @@ namespace SRCCore
             //    }
 
             //    // ハイパーモードが禁止されている？
-            //    object argIndex4 = "形態固定";
-            //    if (withBlock.IsConditionSatisfied(argIndex4))
+            //    if (withBlock.IsConditionSatisfied("形態固定"))
             //    {
             //        return;
             //    }
 
-            //    object argIndex5 = "機体固定";
-            //    if (withBlock.IsConditionSatisfied(argIndex5))
+            //    if (withBlock.IsConditionSatisfied("機体固定"))
             //    {
             //        return;
             //    }
 
             //    // 変身中・能力コピー中はハイパーモードを使用できない
-            //    object argIndex6 = "ノーマルモード付加";
-            //    if (withBlock.IsConditionSatisfied(argIndex6))
+            //    if (withBlock.IsConditionSatisfied("ノーマルモード付加"))
             //    {
             //        return;
             //    }
 
             //    // ハイパーモード先の形態を調べる
             //    uname = GeneralLib.LIndex(fdata, 2);
-            //    object argIndex7 = uname;
-            //    u = withBlock.OtherForm(argIndex7);
+            //    u = withBlock.OtherForm(uname);
 
             //    // ハイパーモード先の形態は使用可能？
-            //    object argIndex8 = "行動不能";
-            //    if (u.IsConditionSatisfied(argIndex8) | !u.IsAbleToEnter(withBlock.x, withBlock.y))
+            //    if (u.IsConditionSatisfied("行動不能") | !u.IsAbleToEnter(withBlock.x, withBlock.y))
             //    {
             //        return;
             //    }
 
             //    // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
-            //    string argfname1 = "追加パイロット";
-            //    if (u.IsFeatureAvailable(argfname1))
+            //    if (u.IsFeatureAvailable("追加パイロット"))
             //    {
             //        bool localIsDefined() { object argIndex1 = "追加パイロット"; object argIndex2 = u.FeatureData(argIndex1); var ret = SRC.PList.IsDefined(argIndex2); return ret; }
 
             //        if (!localIsDefined())
             //        {
-            //            object argIndex9 = "追加パイロット";
-            //            string argpname = u.FeatureData(argIndex9);
-            //            string argpparty = withBlock.Party0;
-            //            string arggid = "";
-            //            SRC.PList.Add(argpname, withBlock.MainPilot().Level, argpparty, gid: arggid);
+            //            SRC.PList.Add(u.FeatureData("追加パイロット"), withBlock.MainPilot().Level, withBlock.Party0, gid: "");
             //            withBlock.Party0 = argpparty;
             //        }
             //    }
@@ -2923,46 +2758,28 @@ namespace SRCCore
 
             //    bool localIsMessageDefined1() { string argmain_situation = "ハイパーモード(" + fname + ")"; var ret = withBlock.IsMessageDefined(argmain_situation); return ret; }
 
-            //    string argmain_situation = "ハイパーモード(" + withBlock.Name + "=>" + uname + ")";
-            //    string argmain_situation1 = "ハイパーモード";
-            //    if (withBlock.IsMessageDefined(argmain_situation))
+            //    if (withBlock.IsMessageDefined("ハイパーモード(" + withBlock.Name + "=>" + uname + ")"))
             //    {
-            //        Unit argu1 = null;
-            //        Unit argu2 = null;
-            //        GUI.OpenMessageForm(u1: argu1, u2: argu2);
-            //        string argSituation = "ハイパーモード(" + withBlock.Name + "=>" + uname + ")";
-            //        string argmsg_mode = "";
-            //        withBlock.PilotMessage(argSituation, msg_mode: argmsg_mode);
+            //        GUI.OpenMessageForm(u1: null, u2: null);
+            //        withBlock.PilotMessage("ハイパーモード(" + withBlock.Name + "=>" + uname + ")", msg_mode: "");
             //        GUI.CloseMessageForm();
             //    }
             //    else if (localIsMessageDefined())
             //    {
-            //        Unit argu11 = null;
-            //        Unit argu21 = null;
-            //        GUI.OpenMessageForm(u1: argu11, u2: argu21);
-            //        string argSituation1 = "ハイパーモード(" + uname + ")";
-            //        string argmsg_mode1 = "";
-            //        withBlock.PilotMessage(argSituation1, msg_mode: argmsg_mode1);
+            //        GUI.OpenMessageForm(u1: null, u2: null);
+            //        withBlock.PilotMessage("ハイパーモード(" + uname + ")", msg_mode: "");
             //        GUI.CloseMessageForm();
             //    }
             //    else if (localIsMessageDefined1())
             //    {
-            //        Unit argu12 = null;
-            //        Unit argu22 = null;
-            //        GUI.OpenMessageForm(u1: argu12, u2: argu22);
-            //        string argSituation2 = "ハイパーモード(" + fname + ")";
-            //        string argmsg_mode2 = "";
-            //        withBlock.PilotMessage(argSituation2, msg_mode: argmsg_mode2);
+            //        GUI.OpenMessageForm(u1: null, u2: null);
+            //        withBlock.PilotMessage("ハイパーモード(" + fname + ")", msg_mode: "");
             //        GUI.CloseMessageForm();
             //    }
-            //    else if (withBlock.IsMessageDefined(argmain_situation1))
+            //    else if (withBlock.IsMessageDefined("ハイパーモード"))
             //    {
-            //        Unit argu13 = null;
-            //        Unit argu23 = null;
-            //        GUI.OpenMessageForm(u1: argu13, u2: argu23);
-            //        string argSituation3 = "ハイパーモード";
-            //        string argmsg_mode3 = "";
-            //        withBlock.PilotMessage(argSituation3, msg_mode: argmsg_mode3);
+            //        GUI.OpenMessageForm(u1: null, u2: null);
+            //        withBlock.PilotMessage("ハイパーモード", msg_mode: "");
             //        GUI.CloseMessageForm();
             //    }
 
@@ -2977,59 +2794,37 @@ namespace SRCCore
 
             //    bool localIsSpecialEffectDefined2() { string argmain_situation = "ハイパーモード(" + fname + ")"; string argsub_situation = ""; var ret = withBlock.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //    string argmain_situation10 = "ハイパーモード(" + withBlock.Name + "=>" + uname + ")";
-            //    string argsub_situation8 = "";
-            //    string argmain_situation11 = "ハイパーモード";
-            //    string argsub_situation9 = "";
-            //    string argmain_situation12 = "ハイパーモード";
-            //    string argsub_situation10 = "";
-            //    if (withBlock.IsAnimationDefined(argmain_situation10, sub_situation: argsub_situation8))
+            //    if (withBlock.IsAnimationDefined("ハイパーモード(" + withBlock.Name + "=>" + uname + ")", sub_situation: ""))
             //    {
-            //        string argmain_situation2 = "ハイパーモード(" + withBlock.Name + "=>" + uname + ")";
-            //        string argsub_situation = "";
-            //        withBlock.PlayAnimation(argmain_situation2, sub_situation: argsub_situation);
+            //        withBlock.PlayAnimation("ハイパーモード(" + withBlock.Name + "=>" + uname + ")", sub_situation: "");
             //    }
             //    else if (localIsAnimationDefined())
             //    {
-            //        string argmain_situation3 = "ハイパーモード(" + uname + ")";
-            //        string argsub_situation1 = "";
-            //        withBlock.PlayAnimation(argmain_situation3, sub_situation: argsub_situation1);
+            //        withBlock.PlayAnimation("ハイパーモード(" + uname + ")", sub_situation: "");
             //    }
             //    else if (localIsAnimationDefined1())
             //    {
-            //        string argmain_situation4 = "ハイパーモード(" + fname + ")";
-            //        string argsub_situation2 = "";
-            //        withBlock.PlayAnimation(argmain_situation4, sub_situation: argsub_situation2);
+            //        withBlock.PlayAnimation("ハイパーモード(" + fname + ")", sub_situation: "");
             //    }
-            //    else if (withBlock.IsAnimationDefined(argmain_situation11, sub_situation: argsub_situation9))
+            //    else if (withBlock.IsAnimationDefined("ハイパーモード", sub_situation: ""))
             //    {
-            //        string argmain_situation5 = "ハイパーモード";
-            //        string argsub_situation3 = "";
-            //        withBlock.PlayAnimation(argmain_situation5, sub_situation: argsub_situation3);
+            //        withBlock.PlayAnimation("ハイパーモード", sub_situation: "");
             //    }
             //    else if (localIsSpecialEffectDefined())
             //    {
-            //        string argmain_situation6 = "ハイパーモード(" + withBlock.Name + "=>" + uname + ")";
-            //        string argsub_situation4 = "";
-            //        withBlock.SpecialEffect(argmain_situation6, sub_situation: argsub_situation4);
+            //        withBlock.SpecialEffect("ハイパーモード(" + withBlock.Name + "=>" + uname + ")", sub_situation: "");
             //    }
             //    else if (localIsSpecialEffectDefined1())
             //    {
-            //        string argmain_situation7 = "ハイパーモード(" + uname + ")";
-            //        string argsub_situation5 = "";
-            //        withBlock.SpecialEffect(argmain_situation7, sub_situation: argsub_situation5);
+            //        withBlock.SpecialEffect("ハイパーモード(" + uname + ")", sub_situation: "");
             //    }
             //    else if (localIsSpecialEffectDefined2())
             //    {
-            //        string argmain_situation8 = "ハイパーモード(" + fname + ")";
-            //        string argsub_situation6 = "";
-            //        withBlock.SpecialEffect(argmain_situation8, sub_situation: argsub_situation6);
+            //        withBlock.SpecialEffect("ハイパーモード(" + fname + ")", sub_situation: "");
             //    }
-            //    else if (withBlock.IsSpecialEffectDefined(argmain_situation12, sub_situation: argsub_situation10))
+            //    else if (withBlock.IsSpecialEffectDefined("ハイパーモード", sub_situation: ""))
             //    {
-            //        string argmain_situation9 = "ハイパーモード";
-            //        string argsub_situation7 = "";
-            //        withBlock.SpecialEffect(argmain_situation9, sub_situation: argsub_situation7);
+            //        withBlock.SpecialEffect("ハイパーモード", sub_situation: "");
             //    }
 
             //    // ハイパーモード発動
@@ -3062,10 +2857,7 @@ namespace SRCCore
             //{
             //    var withBlock = Commands.SelectedUnit;
             //    // 変形が可能？
-            //    string argfname = "変形";
-            //    object argIndex1 = "形態固定";
-            //    object argIndex2 = "機体固定";
-            //    if (!withBlock.IsFeatureAvailable(argfname) | withBlock.IsConditionSatisfied(argIndex1) | withBlock.IsConditionSatisfied(argIndex2))
+            //    if (!withBlock.IsFeatureAvailable("変形") | withBlock.IsConditionSatisfied("形態固定") | withBlock.IsConditionSatisfied("機体固定"))
             //    {
             //        return TryBattleTransformRet;
             //    }
@@ -3081,20 +2873,14 @@ namespace SRCCore
             //    u = Commands.SelectedUnit;
             //    xx = withBlock.x;
             //    yy = withBlock.y;
-            //    object argIndex9 = "変形";
-            //    string arglist1 = withBlock.FeatureData(argIndex9);
-            //    var loopTo = GeneralLib.LLength(arglist1);
+            //    var loopTo = GeneralLib.LLength(withBlock.FeatureData("変形"));
             //    for (i = 2; i <= loopTo; i++)
             //    {
-            //        object argIndex3 = "変形";
-            //        string arglist = withBlock.FeatureData(argIndex3);
-            //        uname = GeneralLib.LIndex(arglist, i);
-            //        object argIndex7 = uname;
+            //        uname = GeneralLib.LIndex(withBlock.FeatureData("変形"), i);
             //        {
-            //            var withBlock1 = withBlock.OtherForm(argIndex7);
+            //            var withBlock1 = withBlock.OtherForm(uname);
             //            // その形態に変形可能？
-            //            object argIndex4 = "行動不能";
-            //            if (withBlock1.IsConditionSatisfied(argIndex4) | !withBlock1.IsAbleToEnter(xx, yy))
+            //            if (withBlock1.IsConditionSatisfied("行動不能") | !withBlock1.IsAbleToEnter(xx, yy))
             //            {
             //                goto NextForm;
             //            }
@@ -3119,8 +2905,7 @@ namespace SRCCore
             //                        {
             //                            if (Strings.InStr(u.Data.Transportation, "水") == 0)
             //                            {
-            //                                object argIndex5 = uname;
-            //                                u = withBlock1.OtherForm(argIndex5);
+            //                                u = withBlock1.OtherForm(uname);
             //                                goto NextForm;
             //                            }
             //                        }
@@ -3138,8 +2923,7 @@ namespace SRCCore
             //                        {
             //                            if (Strings.InStr(u.Data.Transportation, "空") == 0)
             //                            {
-            //                                object argIndex6 = uname;
-            //                                u = withBlock1.OtherForm(argIndex6);
+            //                                u = withBlock1.OtherForm(uname);
             //                                goto NextForm;
             //                            }
             //                        }
@@ -3195,8 +2979,7 @@ namespace SRCCore
             //            }
             //        }
 
-            //        object argIndex8 = uname;
-            //        u = withBlock.OtherForm(argIndex8);
+            //        u = withBlock.OtherForm(uname);
             //    NextForm:
             //        ;
             //    }
@@ -3211,8 +2994,7 @@ namespace SRCCore
             //    uname = u.Name;
 
             //    // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
-            //    string argfname1 = "追加パイロット";
-            //    if (u.IsFeatureAvailable(argfname1))
+            //    if (u.IsFeatureAvailable("追加パイロット"))
             //    {
             //        bool localIsDefined1() { object argIndex1 = "追加パイロット"; object argIndex2 = u.FeatureData(argIndex1); var ret = SRC.PList.IsDefined(argIndex2); return ret; }
 
@@ -3222,17 +3004,11 @@ namespace SRCCore
 
             //            if (!localIsDefined())
             //            {
-            //                object argIndex10 = "追加パイロット";
-            //                string argmsg = uname + "の追加パイロット「" + u.FeatureData(argIndex10) + "」のデータが見つかりません";
-            //                GUI.ErrorMessage(argmsg);
+            //                GUI.ErrorMessage(uname + "の追加パイロット「" + u.FeatureData("追加パイロット") + "」のデータが見つかりません");
             //                SRC.TerminateSRC();
             //            }
 
-            //            object argIndex11 = "追加パイロット";
-            //            string argpname = u.FeatureData(argIndex11);
-            //            string argpparty = withBlock.Party0;
-            //            string arggid = "";
-            //            SRC.PList.Add(argpname, withBlock.MainPilot().Level, argpparty, gid: arggid);
+            //            SRC.PList.Add(u.FeatureData("追加パイロット"), withBlock.MainPilot().Level, withBlock.Party0, gid: "");
             //            withBlock.Party0 = argpparty;
             //        }
             //    }
@@ -3242,36 +3018,22 @@ namespace SRCCore
 
             //    bool localIsMessageDefined1() { object argIndex1 = "変形"; string argmain_situation = "変形(" + withBlock.FeatureName(argIndex1) + ")"; var ret = withBlock.IsMessageDefined(argmain_situation); return ret; }
 
-            //    string argmain_situation = "変形(" + withBlock.Name + "=>" + uname + ")";
-            //    if (withBlock.IsMessageDefined(argmain_situation))
+            //    if (withBlock.IsMessageDefined("変形(" + withBlock.Name + "=>" + uname + ")"))
             //    {
-            //        Unit argu1 = null;
-            //        Unit argu2 = null;
-            //        GUI.OpenMessageForm(u1: argu1, u2: argu2);
-            //        string argSituation = "変形(" + withBlock.Name + "=>" + uname + ")";
-            //        string argmsg_mode = "";
-            //        withBlock.PilotMessage(argSituation, msg_mode: argmsg_mode);
+            //        GUI.OpenMessageForm(u1: null, u2: null);
+            //        withBlock.PilotMessage("変形(" + withBlock.Name + "=>" + uname + ")", msg_mode: "");
             //        GUI.CloseMessageForm();
             //    }
             //    else if (localIsMessageDefined())
             //    {
-            //        Unit argu11 = null;
-            //        Unit argu21 = null;
-            //        GUI.OpenMessageForm(u1: argu11, u2: argu21);
-            //        string argSituation1 = "変形(" + uname + ")";
-            //        string argmsg_mode1 = "";
-            //        withBlock.PilotMessage(argSituation1, msg_mode: argmsg_mode1);
+            //        GUI.OpenMessageForm(u1: null, u2: null);
+            //        withBlock.PilotMessage("変形(" + uname + ")", msg_mode: "");
             //        GUI.CloseMessageForm();
             //    }
             //    else if (localIsMessageDefined1())
             //    {
-            //        Unit argu12 = null;
-            //        Unit argu22 = null;
-            //        GUI.OpenMessageForm(u1: argu12, u2: argu22);
-            //        object argIndex12 = "変形";
-            //        string argSituation2 = "変形(" + withBlock.FeatureName(argIndex12) + ")";
-            //        string argmsg_mode2 = "";
-            //        withBlock.PilotMessage(argSituation2, msg_mode: argmsg_mode2);
+            //        GUI.OpenMessageForm(u1: null, u2: null);
+            //        withBlock.PilotMessage("変形(" + withBlock.FeatureName("変形") + ")", msg_mode: "");
             //        GUI.CloseMessageForm();
             //    }
 
@@ -3286,45 +3048,29 @@ namespace SRCCore
 
             //    bool localIsSpecialEffectDefined2() { object argIndex1 = "変形"; string argmain_situation = "変形(" + withBlock.FeatureName(argIndex1) + ")"; string argsub_situation = ""; var ret = withBlock.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //    string argmain_situation7 = "変形(" + withBlock.Name + "=>" + uname + ")";
-            //    string argsub_situation6 = "";
-            //    if (withBlock.IsAnimationDefined(argmain_situation7, sub_situation: argsub_situation6))
+            //    if (withBlock.IsAnimationDefined("変形(" + withBlock.Name + "=>" + uname + ")", sub_situation: ""))
             //    {
-            //        string argmain_situation1 = "変形(" + withBlock.Name + "=>" + uname + ")";
-            //        string argsub_situation = "";
-            //        withBlock.PlayAnimation(argmain_situation1, sub_situation: argsub_situation);
+            //        withBlock.PlayAnimation("変形(" + withBlock.Name + "=>" + uname + ")", sub_situation: "");
             //    }
             //    else if (localIsAnimationDefined())
             //    {
-            //        string argmain_situation2 = "変形(" + uname + ")";
-            //        string argsub_situation1 = "";
-            //        withBlock.PlayAnimation(argmain_situation2, sub_situation: argsub_situation1);
+            //        withBlock.PlayAnimation("変形(" + uname + ")", sub_situation: "");
             //    }
             //    else if (localIsAnimationDefined1())
             //    {
-            //        object argIndex13 = "変形";
-            //        string argmain_situation3 = "変形(" + withBlock.FeatureName(argIndex13) + ")";
-            //        string argsub_situation2 = "";
-            //        withBlock.PlayAnimation(argmain_situation3, sub_situation: argsub_situation2);
+            //        withBlock.PlayAnimation("変形(" + withBlock.FeatureName("変形") + ")", sub_situation: "");
             //    }
             //    else if (localIsSpecialEffectDefined())
             //    {
-            //        string argmain_situation4 = "変形(" + withBlock.Name + "=>" + uname + ")";
-            //        string argsub_situation3 = "";
-            //        withBlock.SpecialEffect(argmain_situation4, sub_situation: argsub_situation3);
+            //        withBlock.SpecialEffect("変形(" + withBlock.Name + "=>" + uname + ")", sub_situation: "");
             //    }
             //    else if (localIsSpecialEffectDefined1())
             //    {
-            //        string argmain_situation5 = "変形(" + uname + ")";
-            //        string argsub_situation4 = "";
-            //        withBlock.SpecialEffect(argmain_situation5, sub_situation: argsub_situation4);
+            //        withBlock.SpecialEffect("変形(" + uname + ")", sub_situation: "");
             //    }
             //    else if (localIsSpecialEffectDefined2())
             //    {
-            //        object argIndex14 = "変形";
-            //        string argmain_situation6 = "変形(" + withBlock.FeatureName(argIndex14) + ")";
-            //        string argsub_situation5 = "";
-            //        withBlock.SpecialEffect(argmain_situation6, sub_situation: argsub_situation5);
+            //        withBlock.SpecialEffect("変形(" + withBlock.FeatureName("変形") + ")", sub_situation: "");
             //    }
 
             //    // 変形
@@ -3360,10 +3106,7 @@ namespace SRCCore
             //{
             //    var withBlock = Commands.SelectedUnit;
             //    // 変形が可能？
-            //    string argfname = "変形";
-            //    object argIndex1 = "形態固定";
-            //    object argIndex2 = "機体固定";
-            //    if (!withBlock.IsFeatureAvailable(argfname) | withBlock.IsConditionSatisfied(argIndex1) | withBlock.IsConditionSatisfied(argIndex2))
+            //    if (!withBlock.IsFeatureAvailable("変形") | withBlock.IsConditionSatisfied("形態固定") | withBlock.IsConditionSatisfied("機体固定"))
             //    {
             //        return TryMoveTransformRet;
             //    }
@@ -3401,20 +3144,14 @@ namespace SRCCore
 
             //    // 最も移動力が高い形態に変形
             //    u = Commands.SelectedUnit;
-            //    object argIndex11 = "変形";
-            //    string arglist1 = withBlock.FeatureData(argIndex11);
-            //    var loopTo = GeneralLib.LLength(arglist1);
+            //    var loopTo = GeneralLib.LLength(withBlock.FeatureData("変形"));
             //    for (i = 2; i <= loopTo; i++)
             //    {
-            //        object argIndex3 = "変形";
-            //        string arglist = withBlock.FeatureData(argIndex3);
-            //        uname = GeneralLib.LIndex(arglist, i);
-            //        object argIndex9 = uname;
+            //        uname = GeneralLib.LIndex(withBlock.FeatureData("変形"), i);
             //        {
-            //            var withBlock1 = withBlock.OtherForm(argIndex9);
+            //            var withBlock1 = withBlock.OtherForm(uname);
             //            // その形態に変形可能？
-            //            object argIndex4 = "行動不能";
-            //            if (withBlock1.IsConditionSatisfied(argIndex4) | !withBlock1.IsAbleToEnter(xx, yy))
+            //            if (withBlock1.IsConditionSatisfied("行動不能") | !withBlock1.IsAbleToEnter(xx, yy))
             //            {
             //                goto NextForm;
             //            }
@@ -3427,18 +3164,14 @@ namespace SRCCore
 
             //            // 移動力が高い方を優先
             //            speed1 = withBlock1.Data.Speed;
-            //            string argfname1 = "テレポート";
-            //            if (withBlock1.Data.IsFeatureAvailable(argfname1))
+            //            if (withBlock1.Data.IsFeatureAvailable("テレポート"))
             //            {
-            //                object argIndex5 = "テレポート";
-            //                speed1 = (speed1 + withBlock1.Data.FeatureLevel(argIndex5) + 1d);
+            //                speed1 = (speed1 + withBlock1.Data.FeatureLevel("テレポート") + 1d);
             //            }
 
-            //            string argfname2 = "ジャンプ";
-            //            if (withBlock1.Data.IsFeatureAvailable(argfname2))
+            //            if (withBlock1.Data.IsFeatureAvailable("ジャンプ"))
             //            {
-            //                object argIndex6 = "ジャンプ";
-            //                speed1 = (speed1 + withBlock1.Data.FeatureLevel(argIndex6) + 1d);
+            //                speed1 = (speed1 + withBlock1.Data.FeatureLevel("ジャンプ") + 1d);
             //            }
             //            // 移動可能な地形タイプも考慮
             //            switch (Map.TerrainClass(xx, yy) ?? "")
@@ -3472,18 +3205,14 @@ namespace SRCCore
             //            }
 
             //            speed2 = u.Data.Speed;
-            //            string argfname3 = "テレポート";
-            //            if (u.Data.IsFeatureAvailable(argfname3))
+            //            if (u.Data.IsFeatureAvailable("テレポート"))
             //            {
-            //                object argIndex7 = "テレポート";
-            //                speed2 = (speed2 + u.Data.FeatureLevel(argIndex7) + 1d);
+            //                speed2 = (speed2 + u.Data.FeatureLevel("テレポート") + 1d);
             //            }
 
-            //            string argfname4 = "ジャンプ";
-            //            if (u.Data.IsFeatureAvailable(argfname4))
+            //            if (u.Data.IsFeatureAvailable("ジャンプ"))
             //            {
-            //                object argIndex8 = "ジャンプ";
-            //                speed2 = (speed2 + u.Data.FeatureLevel(argIndex8) + 1d);
+            //                speed2 = (speed2 + u.Data.FeatureLevel("ジャンプ") + 1d);
             //            }
             //            // 移動可能な地形タイプも考慮
             //            switch (Map.TerrainClass(xx, yy) ?? "")
@@ -3530,8 +3259,7 @@ namespace SRCCore
             //            }
             //        }
 
-            //        object argIndex10 = uname;
-            //        u = withBlock.OtherForm(argIndex10);
+            //        u = withBlock.OtherForm(uname);
             //    NextForm:
             //        ;
             //    }
@@ -3546,8 +3274,7 @@ namespace SRCCore
             //    uname = u.Name;
 
             //    // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
-            //    string argfname5 = "追加パイロット";
-            //    if (u.IsFeatureAvailable(argfname5))
+            //    if (u.IsFeatureAvailable("追加パイロット"))
             //    {
             //        bool localIsDefined1() { object argIndex1 = "追加パイロット"; object argIndex2 = u.FeatureData(argIndex1); var ret = SRC.PList.IsDefined(argIndex2); return ret; }
 
@@ -3557,17 +3284,11 @@ namespace SRCCore
 
             //            if (!localIsDefined())
             //            {
-            //                object argIndex12 = "追加パイロット";
-            //                string argmsg = uname + "の追加パイロット「" + u.FeatureData(argIndex12) + "」のデータが見つかりません";
-            //                GUI.ErrorMessage(argmsg);
+            //                GUI.ErrorMessage(uname + "の追加パイロット「" + u.FeatureData("追加パイロット") + "」のデータが見つかりません");
             //                SRC.TerminateSRC();
             //            }
 
-            //            object argIndex13 = "追加パイロット";
-            //            string argpname = u.FeatureData(argIndex13);
-            //            string argpparty = withBlock.Party0;
-            //            string arggid = "";
-            //            SRC.PList.Add(argpname, withBlock.MainPilot().Level, argpparty, gid: arggid);
+            //            SRC.PList.Add(u.FeatureData("追加パイロット"), withBlock.MainPilot().Level, withBlock.Party0, gid: "");
             //            withBlock.Party0 = argpparty;
             //        }
             //    }
@@ -3577,36 +3298,22 @@ namespace SRCCore
 
             //    bool localIsMessageDefined1() { object argIndex1 = "変形"; string argmain_situation = "変形(" + withBlock.FeatureName(argIndex1) + ")"; var ret = withBlock.IsMessageDefined(argmain_situation); return ret; }
 
-            //    string argmain_situation = "変形(" + withBlock.Name + "=>" + uname + ")";
-            //    if (withBlock.IsMessageDefined(argmain_situation))
+            //    if (withBlock.IsMessageDefined("変形(" + withBlock.Name + "=>" + uname + ")"))
             //    {
-            //        Unit argu1 = null;
-            //        Unit argu2 = null;
-            //        GUI.OpenMessageForm(u1: argu1, u2: argu2);
-            //        string argSituation = "変形(" + withBlock.Name + "=>" + uname + ")";
-            //        string argmsg_mode = "";
-            //        withBlock.PilotMessage(argSituation, msg_mode: argmsg_mode);
+            //        GUI.OpenMessageForm(u1: null, u2: null);
+            //        withBlock.PilotMessage("変形(" + withBlock.Name + "=>" + uname + ")", msg_mode: "");
             //        GUI.CloseMessageForm();
             //    }
             //    else if (localIsMessageDefined())
             //    {
-            //        Unit argu11 = null;
-            //        Unit argu21 = null;
-            //        GUI.OpenMessageForm(u1: argu11, u2: argu21);
-            //        string argSituation1 = "変形(" + uname + ")";
-            //        string argmsg_mode1 = "";
-            //        withBlock.PilotMessage(argSituation1, msg_mode: argmsg_mode1);
+            //        GUI.OpenMessageForm(u1: null, u2: null);
+            //        withBlock.PilotMessage("変形(" + uname + ")", msg_mode: "");
             //        GUI.CloseMessageForm();
             //    }
             //    else if (localIsMessageDefined1())
             //    {
-            //        Unit argu12 = null;
-            //        Unit argu22 = null;
-            //        GUI.OpenMessageForm(u1: argu12, u2: argu22);
-            //        object argIndex14 = "変形";
-            //        string argSituation2 = "変形(" + withBlock.FeatureName(argIndex14) + ")";
-            //        string argmsg_mode2 = "";
-            //        withBlock.PilotMessage(argSituation2, msg_mode: argmsg_mode2);
+            //        GUI.OpenMessageForm(u1: null, u2: null);
+            //        withBlock.PilotMessage("変形(" + withBlock.FeatureName("変形") + ")", msg_mode: "");
             //        GUI.CloseMessageForm();
             //    }
 
@@ -3621,45 +3328,29 @@ namespace SRCCore
 
             //    bool localIsSpecialEffectDefined2() { object argIndex1 = "変形"; string argmain_situation = "変形(" + withBlock.FeatureName(argIndex1) + ")"; string argsub_situation = ""; var ret = withBlock.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //    string argmain_situation7 = "変形(" + withBlock.Name + "=>" + uname + ")";
-            //    string argsub_situation6 = "";
-            //    if (withBlock.IsAnimationDefined(argmain_situation7, sub_situation: argsub_situation6))
+            //    if (withBlock.IsAnimationDefined("変形(" + withBlock.Name + "=>" + uname + ")", sub_situation: ""))
             //    {
-            //        string argmain_situation1 = "変形(" + withBlock.Name + "=>" + uname + ")";
-            //        string argsub_situation = "";
-            //        withBlock.PlayAnimation(argmain_situation1, sub_situation: argsub_situation);
+            //        withBlock.PlayAnimation("変形(" + withBlock.Name + "=>" + uname + ")", sub_situation: "");
             //    }
             //    else if (localIsAnimationDefined())
             //    {
-            //        string argmain_situation2 = "変形(" + uname + ")";
-            //        string argsub_situation1 = "";
-            //        withBlock.PlayAnimation(argmain_situation2, sub_situation: argsub_situation1);
+            //        withBlock.PlayAnimation("変形(" + uname + ")", sub_situation: "");
             //    }
             //    else if (localIsAnimationDefined1())
             //    {
-            //        object argIndex15 = "変形";
-            //        string argmain_situation3 = "変形(" + withBlock.FeatureName(argIndex15) + ")";
-            //        string argsub_situation2 = "";
-            //        withBlock.PlayAnimation(argmain_situation3, sub_situation: argsub_situation2);
+            //        withBlock.PlayAnimation("変形(" + withBlock.FeatureName("変形") + ")", sub_situation: "");
             //    }
             //    else if (localIsSpecialEffectDefined())
             //    {
-            //        string argmain_situation4 = "変形(" + withBlock.Name + "=>" + uname + ")";
-            //        string argsub_situation3 = "";
-            //        withBlock.SpecialEffect(argmain_situation4, sub_situation: argsub_situation3);
+            //        withBlock.SpecialEffect("変形(" + withBlock.Name + "=>" + uname + ")", sub_situation: "");
             //    }
             //    else if (localIsSpecialEffectDefined1())
             //    {
-            //        string argmain_situation5 = "変形(" + uname + ")";
-            //        string argsub_situation4 = "";
-            //        withBlock.SpecialEffect(argmain_situation5, sub_situation: argsub_situation4);
+            //        withBlock.SpecialEffect("変形(" + uname + ")", sub_situation: "");
             //    }
             //    else if (localIsSpecialEffectDefined2())
             //    {
-            //        object argIndex16 = "変形";
-            //        string argmain_situation6 = "変形(" + withBlock.FeatureName(argIndex16) + ")";
-            //        string argsub_situation5 = "";
-            //        withBlock.SpecialEffect(argmain_situation6, sub_situation: argsub_situation5);
+            //        withBlock.SpecialEffect("変形(" + withBlock.FeatureName("変形") + ")", sub_situation: "");
             //    }
 
             //    // 変形
@@ -3703,8 +3394,7 @@ namespace SRCCore
             //    for (i = 1; i <= loopTo; i++)
             //    {
             //        // 使用可能＆効果あり？
-            //        string argref_mode = "移動前";
-            //        if (!withBlock.IsAbilityUseful(i, argref_mode))
+            //        if (!withBlock.IsAbilityUseful(i, "移動前"))
             //        {
             //            goto NextAbility;
             //        }
@@ -3730,8 +3420,7 @@ namespace SRCCore
             //            var loopTo1 = withBlock1.CountEffect();
             //            for (j = 1; j <= loopTo1; j++)
             //            {
-            //                object argIndex1 = j;
-            //                if (withBlock1.EffectType(argIndex1) == "再行動")
+            //                if (withBlock1.EffectType(j) == "再行動")
             //                {
             //                    break;
             //                }
@@ -3772,11 +3461,9 @@ namespace SRCCore
 
 
             //    // 合体技パートナーの設定
-            //    string argattr = "合";
-            //    if (withBlock.IsAbilityClassifiedAs(Commands.SelectedAbility, argattr))
+            //    if (withBlock.IsAbilityClassifiedAs(Commands.SelectedAbility, "合"))
             //    {
-            //        string argctype_Renamed = "アビリティ";
-            //        withBlock.CombinationPartner(argctype_Renamed, Commands.SelectedAbility, partners);
+            //        withBlock.CombinationPartner("アビリティ", Commands.SelectedAbility, partners);
             //    }
             //    else
             //    {
@@ -3795,8 +3482,7 @@ namespace SRCCore
             //    }
 
             //    // アビリティを使用
-            //    Unit argu2 = null;
-            //    GUI.OpenMessageForm(Commands.SelectedUnit, u2: argu2);
+            //    GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
             //    withBlock.ExecuteAbility(Commands.SelectedAbility, Commands.SelectedUnit);
             //    GUI.CloseMessageForm();
             //    Commands.SelectedUnit = withBlock.CurrentForm();
@@ -3825,8 +3511,7 @@ namespace SRCCore
             //Commands.SelectedUnit.UseAction();
 
             //// 合体技のパートナーの行動数を減らす
-            //string argoname = "合体技パートナー行動数無消費";
-            //if (!Expression.IsOptionDefined(argoname))
+            //if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
             //{
             //    var loopTo3 = Information.UBound(partners);
             //    for (i = 1; i <= loopTo3; i++)
@@ -3850,14 +3535,12 @@ namespace SRCCore
             //    var loopTo = withBlock.CountAbility();
             //    for (i = 1; i <= loopTo; i++)
             //    {
-            //        string argref_mode = "移動前";
-            //        if (withBlock.IsAbilityAvailable(i, argref_mode))
+            //        if (withBlock.IsAbilityAvailable(i, "移動前"))
             //        {
             //            var loopTo1 = withBlock.Ability(i).CountEffect();
             //            for (j = 1; j <= loopTo1; j++)
             //            {
-            //                object argIndex1 = j;
-            //                if (withBlock.Ability(i).EffectType(argIndex1) == "召喚")
+            //                if (withBlock.Ability(i).EffectType(j) == "召喚")
             //                {
             //                    Commands.SelectedAbility = i;
             //                    goto UseSummonning;
@@ -3882,11 +3565,9 @@ namespace SRCCore
             //    }
 
             //    // 合体技パートナーの設定
-            //    string argattr = "合";
-            //    if (withBlock.IsAbilityClassifiedAs(Commands.SelectedAbility, argattr))
+            //    if (withBlock.IsAbilityClassifiedAs(Commands.SelectedAbility, "合"))
             //    {
-            //        string argctype_Renamed = "アビリティ";
-            //        withBlock.CombinationPartner(argctype_Renamed, Commands.SelectedAbility, partners);
+            //        withBlock.CombinationPartner("アビリティ", Commands.SelectedAbility, partners);
             //    }
             //    else
             //    {
@@ -3895,8 +3576,7 @@ namespace SRCCore
             //    }
 
             //    // 召喚アビリティを使用
-            //    Unit argu2 = null;
-            //    GUI.OpenMessageForm(Commands.SelectedUnit, u2: argu2);
+            //    GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
             //    withBlock.ExecuteAbility(Commands.SelectedAbility, Commands.SelectedUnit);
             //    GUI.CloseMessageForm();
             //    Commands.SelectedUnit = withBlock.CurrentForm();
@@ -3922,8 +3602,7 @@ namespace SRCCore
             //}
 
             //// 合体技のパートナーの行動数を減らす
-            //string argoname = "合体技パートナー行動数無消費";
-            //if (!Expression.IsOptionDefined(argoname))
+            //if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
             //{
             //    var loopTo2 = Information.UBound(partners);
             //    for (i = 1; i <= loopTo2; i++)
@@ -3957,8 +3636,7 @@ namespace SRCCore
             //    Commands.SelectedAbility = 0;
 
             //    // 狂戦士状態の際は回復アビリティを使わない
-            //    object argIndex1 = "狂戦士";
-            //    if (withBlock.IsConditionSatisfied(argIndex1))
+            //    if (withBlock.IsConditionSatisfied("狂戦士"))
             //    {
             //        return TryMapHealingRet;
             //    }
@@ -3968,8 +3646,7 @@ namespace SRCCore
             //    while (a > 0)
             //    {
             //        // マップアビリティかどうか
-            //        string argattr = "Ｍ";
-            //        if (!withBlock.IsAbilityClassifiedAs(a, argattr))
+            //        if (!withBlock.IsAbilityClassifiedAs(a, "Ｍ"))
             //        {
             //            goto NextAbility;
             //        }
@@ -3977,16 +3654,14 @@ namespace SRCCore
             //        // アビリティの使用可否を判定
             //        if (moved)
             //        {
-            //            string argref_mode = "移動後";
-            //            if (!withBlock.IsAbilityAvailable(a, argref_mode))
+            //            if (!withBlock.IsAbilityAvailable(a, "移動後"))
             //            {
             //                goto NextAbility;
             //            }
             //        }
             //        else
             //        {
-            //            string argref_mode1 = "移動前";
-            //            if (!withBlock.IsAbilityAvailable(a, argref_mode1))
+            //            if (!withBlock.IsAbilityAvailable(a, "移動前"))
             //            {
             //                goto NextAbility;
             //            }
@@ -3996,8 +3671,7 @@ namespace SRCCore
             //        var loopTo = withBlock.Ability(a).CountEffect();
             //        for (i = 1; i <= loopTo; i++)
             //        {
-            //            object argIndex2 = i;
-            //            if (withBlock.Ability(a).EffectType(argIndex2) == "回復")
+            //            if (withBlock.Ability(a).EffectType(i) == "回復")
             //            {
             //                // 回復量を算出しておく
             //                if (withBlock.IsSpellAbility(a))
@@ -4033,20 +3707,16 @@ namespace SRCCore
             //        // アビリティの効果範囲に応じてアビリティが有効かどうか判断する
             //        num = 0;
             //        score = 0;
-            //        string argattr4 = "Ｍ全";
-            //        string argattr5 = "Ｍ投";
-            //        if (withBlock.IsAbilityClassifiedAs(a, argattr4))
+            //        if (withBlock.IsAbilityClassifiedAs(a, "Ｍ全"))
             //        {
             //            // MOD START マージ
             //            // AreaInRange .X, .Y, min_range, max_range, .Party
-            //            string arguparty = withBlock.Party;
-            //            Map.AreaInRange(withBlock.x, withBlock.y, max_range, min_range, arguparty);
+            //            Map.AreaInRange(withBlock.x, withBlock.y, max_range, min_range, withBlock.Party);
             //            withBlock.Party = arguparty;
             //            // MOD END マージ
 
             //            // 支援専用アビリティの場合は自分には効果がない
-            //            string argattr1 = "援";
-            //            if (withBlock.IsAbilityClassifiedAs(a, argattr1))
+            //            if (withBlock.IsAbilityClassifiedAs(a, "援"))
             //            {
             //                Map.MaskData[withBlock.x, withBlock.y] = true;
             //            }
@@ -4078,8 +3748,7 @@ namespace SRCCore
             //                    {
             //                        var withBlock1 = t;
             //                        // ゾンビ？
-            //                        object argIndex3 = "ゾンビ";
-            //                        if (withBlock1.IsConditionSatisfied(argIndex3))
+            //                        if (withBlock1.IsConditionSatisfied("ゾンビ"))
             //                        {
             //                            goto NextUnit1;
             //                        }
@@ -4101,10 +3770,9 @@ namespace SRCCore
             //            tx = withBlock.x;
             //            ty = withBlock.y;
             //        }
-            //        else if (withBlock.IsAbilityClassifiedAs(a, argattr5))
+            //        else if (withBlock.IsAbilityClassifiedAs(a, "Ｍ投"))
             //        {
-            //            string argattr2 = "Ｍ投";
-            //            mlv = withBlock.AbilityLevel(a, argattr2);
+            //            mlv = withBlock.AbilityLevel(a, "Ｍ投");
 
             //            // 投下位置を変えながら試してみる
             //            var loopTo3 = x2;
@@ -4119,17 +3787,14 @@ namespace SRCCore
             //                    }
 
             //                    // MOD START マージ
-            //                    string arguparty1 = withBlock.Party;
-            //                    Map.AreaInRange(xx, yy, 1, mlv, arguparty1);
+            //                    Map.AreaInRange(xx, yy, 1, mlv, withBlock.Party);
             //                    withBlock.Party = arguparty1;
-            //                    string arguparty2 = withBlock.Party;
-            //                    Map.AreaInRange(xx, yy, mlv, 1, arguparty2);
+            //                    Map.AreaInRange(xx, yy, mlv, 1, withBlock.Party);
             //                    withBlock.Party = arguparty2;
             //                    // MOD END マージ
 
             //                    // 支援専用アビリティの場合は自分には効果がない
-            //                    string argattr3 = "援";
-            //                    if (withBlock.IsAbilityClassifiedAs(a, argattr3))
+            //                    if (withBlock.IsAbilityClassifiedAs(a, "援"))
             //                    {
             //                        Map.MaskData[withBlock.x, withBlock.y] = true;
             //                    }
@@ -4160,8 +3825,7 @@ namespace SRCCore
             //                                goto NextUnit2;
             //                            }
             //                            // ゾンビ？
-            //                            object argIndex4 = "ゾンビ";
-            //                            if (t.IsConditionSatisfied(argIndex4))
+            //                            if (t.IsConditionSatisfied("ゾンビ"))
             //                            {
             //                                goto NextUnit2;
             //                            }
@@ -4209,11 +3873,9 @@ namespace SRCCore
             //    }
 
             //    // 合体技パートナーの設定
-            //    string argattr6 = "合";
-            //    if (withBlock.IsAbilityClassifiedAs(Commands.SelectedAbility, argattr6))
+            //    if (withBlock.IsAbilityClassifiedAs(Commands.SelectedAbility, "合"))
             //    {
-            //        string argctype_Renamed = "アビリティ";
-            //        withBlock.CombinationPartner(argctype_Renamed, Commands.SelectedAbility, partners);
+            //        withBlock.CombinationPartner("アビリティ", Commands.SelectedAbility, partners);
             //    }
             //    else
             //    {
@@ -4232,8 +3894,7 @@ namespace SRCCore
             //    }
 
             //    // 合体技のパートナーの行動数を減らす
-            //    string argoname = "合体技パートナー行動数無消費";
-            //    if (!Expression.IsOptionDefined(argoname))
+            //    if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
             //    {
             //        var loopTo7 = Information.UBound(partners);
             //        for (i = 1; i <= loopTo7; i++)
@@ -4265,8 +3926,7 @@ namespace SRCCore
             //{
             //    var withBlock = Commands.SelectedUnit;
             //    // 狂戦士状態の際は回復アビリティを使わない
-            //    object argIndex1 = "狂戦士";
-            //    if (withBlock.IsConditionSatisfied(argIndex1))
+            //    if (withBlock.IsConditionSatisfied("狂戦士"))
             //    {
             //        return TryHealingRet;
             //    }
@@ -4293,24 +3953,21 @@ namespace SRCCore
             //        // アビリティが使用可能？
             //        if (moved)
             //        {
-            //            string argref_mode = "移動後";
-            //            if (!withBlock.IsAbilityAvailable(a, argref_mode))
+            //            if (!withBlock.IsAbilityAvailable(a, "移動後"))
             //            {
             //                goto NextHealingSkill;
             //            }
             //        }
             //        else
             //        {
-            //            string argref_mode1 = "移動前";
-            //            if (!withBlock.IsAbilityAvailable(a, argref_mode1))
+            //            if (!withBlock.IsAbilityAvailable(a, "移動前"))
             //            {
             //                goto NextHealingSkill;
             //            }
             //        }
 
             //        // マップアビリティは別関数で調べる
-            //        string argattr = "Ｍ";
-            //        if (withBlock.IsAbilityClassifiedAs(a, argattr))
+            //        if (withBlock.IsAbilityClassifiedAs(a, "Ｍ"))
             //        {
             //            goto NextHealingSkill;
             //        }
@@ -4319,8 +3976,7 @@ namespace SRCCore
             //        var loopTo1 = withBlock.Ability(a).CountEffect();
             //        for (i = 1; i <= loopTo1; i++)
             //        {
-            //            object argIndex2 = i;
-            //            if (withBlock.Ability(a).EffectType(argIndex2) == "回復")
+            //            if (withBlock.Ability(a).EffectType(i) == "回復")
             //            {
             //                break;
             //            }
@@ -4396,8 +4052,7 @@ namespace SRCCore
             //            }
 
             //            // 移動可能か？
-            //            string argattr1 = "Ｐ";
-            //            if (withBlock.AbilityMaxRange(a) == 1 | withBlock.IsAbilityClassifiedAs(a, argattr1))
+            //            if (withBlock.AbilityMaxRange(a) == 1 | withBlock.IsAbilityClassifiedAs(a, "Ｐ"))
             //            {
             //                is_able_to_move = true;
             //            }
@@ -4406,8 +4061,7 @@ namespace SRCCore
             //                is_able_to_move = false;
             //            }
 
-            //            string argattr2 = "Ｑ";
-            //            if (withBlock.IsAbilityClassifiedAs(a, argattr2))
+            //            if (withBlock.IsAbilityClassifiedAs(a, "Ｑ"))
             //            {
             //                is_able_to_move = false;
             //            }
@@ -4451,8 +4105,7 @@ namespace SRCCore
             //            }
 
             //            // ゾンビ？
-            //            object argIndex3 = "ゾンビ";
-            //            if (u.IsConditionSatisfied(argIndex3))
+            //            if (u.IsConditionSatisfied("ゾンビ"))
             //            {
             //                goto NextHealingTarget;
             //            }
@@ -4591,11 +4244,9 @@ namespace SRCCore
             //    Commands.SelectedAbilityName = aname;
 
             //    // 合体技パートナーの設定
-            //    string argattr3 = "合";
-            //    if (withBlock.IsAbilityClassifiedAs(Commands.SelectedAbility, argattr3))
+            //    if (withBlock.IsAbilityClassifiedAs(Commands.SelectedAbility, "合"))
             //    {
-            //        string argctype_Renamed = "アビリティ";
-            //        withBlock.CombinationPartner(argctype_Renamed, Commands.SelectedAbility, partners);
+            //        withBlock.CombinationPartner("アビリティ", Commands.SelectedAbility, partners);
             //    }
             //    else
             //    {
@@ -4613,8 +4264,7 @@ namespace SRCCore
 
             //    if (ReferenceEquals(Commands.SelectedTarget, Commands.SelectedUnit))
             //    {
-            //        Unit argu2 = null;
-            //        GUI.OpenMessageForm(Commands.SelectedUnit, u2: argu2);
+            //        GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
             //    }
             //    else
             //    {
@@ -4663,8 +4313,7 @@ namespace SRCCore
             //}
 
             //// 合体技のパートナーの行動数を減らす
-            //string argoname = "合体技パートナー行動数無消費";
-            //if (!Expression.IsOptionDefined(argoname))
+            //if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
             //{
             //    var loopTo4 = Information.UBound(partners);
             //    for (i = 1; i <= loopTo4; i++)
@@ -4690,15 +4339,13 @@ namespace SRCCore
             //{
             //    var withBlock = Commands.SelectedUnit;
             //    // 修理装置を使用可能？
-            //    string argfname = "修理装置";
-            //    if (!withBlock.IsFeatureAvailable(argfname) | withBlock.Area == "地中")
+            //    if (!withBlock.IsFeatureAvailable("修理装置") | withBlock.Area == "地中")
             //    {
             //        return TryFixRet;
             //    }
 
             //    // 狂戦士状態の際は修理装置を使わない
-            //    object argIndex1 = "狂戦士";
-            //    if (withBlock.IsConditionSatisfied(argIndex1))
+            //    if (withBlock.IsConditionSatisfied("狂戦士"))
             //    {
             //        return TryFixRet;
             //    }
@@ -4817,37 +4464,29 @@ namespace SRCCore
             //            }
 
             //            // ゾンビ？
-            //            object argIndex2 = "ゾンビ";
-            //            if (u.IsConditionSatisfied(argIndex2))
+            //            if (u.IsConditionSatisfied("ゾンビ"))
             //            {
             //                goto NextFixTarget;
             //            }
 
             //            // 修理不可？
-            //            string argfname1 = "修理不可";
-            //            if (u.IsFeatureAvailable(argfname1))
+            //            if (u.IsFeatureAvailable("修理不可"))
             //            {
-            //                object argIndex6 = "修理不可";
-            //                object argIndex7 = "修理不可";
-            //                var loopTo10 = Conversions.ToIntegereger(u.FeatureData(argIndex7));
+            //                var loopTo10 = Conversions.ToIntegereger(u.FeatureData("修理不可"));
             //                for (k = 2; k <= loopTo10; k++)
             //                {
-            //                    object argIndex3 = "修理不可";
-            //                    string arglist = u.FeatureData(argIndex3);
-            //                    fname = GeneralLib.LIndex(arglist, k);
+            //                    fname = GeneralLib.LIndex(u.FeatureData("修理不可"), k);
             //                    if (Strings.Left(fname, 1) == "!")
             //                    {
             //                        fname = Strings.Mid(fname, 2);
-            //                        object argIndex4 = "修理装置";
-            //                        if ((fname ?? "") != (withBlock.FeatureName0(argIndex4) ?? ""))
+            //                        if ((fname ?? "") != (withBlock.FeatureName0("修理装置") ?? ""))
             //                        {
             //                            goto NextFixTarget;
             //                        }
             //                    }
             //                    else
             //                    {
-            //                        object argIndex5 = "修理装置";
-            //                        if ((fname ?? "") == (withBlock.FeatureName0(argIndex5) ?? ""))
+            //                        if ((fname ?? "") == (withBlock.FeatureName0("修理装置") ?? ""))
             //                        {
             //                            goto NextFixTarget;
             //                        }
@@ -4930,55 +4569,37 @@ namespace SRCCore
 
             //    // メッセージ表示
             //    GUI.OpenMessageForm(Commands.SelectedTarget, Commands.SelectedUnit);
-            //    string argmain_situation = "修理";
-            //    if (withBlock.IsMessageDefined(argmain_situation))
+            //    if (withBlock.IsMessageDefined("修理"))
             //    {
-            //        string argSituation = "修理";
-            //        string argmsg_mode = "";
-            //        withBlock.PilotMessage(argSituation, msg_mode: argmsg_mode);
+            //        withBlock.PilotMessage("修理", msg_mode: "");
             //    }
 
             //    // アニメ表示
-            //    string argmain_situation3 = "修理";
-            //    object argIndex10 = "修理";
-            //    string argsub_situation2 = withBlock.FeatureName(argIndex10);
-            //    if (withBlock.IsAnimationDefined(argmain_situation3, argsub_situation2))
+            //    if (withBlock.IsAnimationDefined("修理", withBlock.FeatureName("修理")))
             //    {
-            //        string argmain_situation1 = "修理";
-            //        object argIndex8 = "修理";
-            //        string argsub_situation = withBlock.FeatureName(argIndex8);
-            //        withBlock.PlayAnimation(argmain_situation1, argsub_situation);
+            //        withBlock.PlayAnimation("修理", withBlock.FeatureName("修理"));
             //    }
             //    else
             //    {
-            //        string argmain_situation2 = "修理";
-            //        object argIndex9 = "修理";
-            //        string argsub_situation1 = withBlock.FeatureName(argIndex9);
-            //        withBlock.SpecialEffect(argmain_situation2, argsub_situation1);
+            //        withBlock.SpecialEffect("修理", withBlock.FeatureName("修理"));
             //    }
 
-            //    object argIndex11 = "修理装置";
-            //    GUI.DisplaySysMessage(withBlock.Nickname + "は[" + Commands.SelectedTarget.Nickname + "]に[" + withBlock.FeatureName0(argIndex11) + "]を使った。");
+            //    GUI.DisplaySysMessage(withBlock.Nickname + "は[" + Commands.SelectedTarget.Nickname + "]に[" + withBlock.FeatureName0("修理装置") + "]を使った。");
 
             //    // 修理実行
             //    tmp = Commands.SelectedTarget.HP;
-            //    object argIndex14 = "修理装置";
-            //    switch (withBlock.FeatureLevel(argIndex14))
+            //    switch (withBlock.FeatureLevel("修理装置"))
             //    {
             //        case 1d:
             //        case -1:
             //            {
-            //                object argIndex12 = "修理技能";
-            //                string argref_mode = "";
-            //                Commands.SelectedTarget.RecoverHP(30d + 3d * withBlock.MainPilot().SkillLevel(argIndex12, ref_mode: argref_mode));
+            //                Commands.SelectedTarget.RecoverHP(30d + 3d * withBlock.MainPilot().SkillLevel("修理技能", ref_mode: ""));
             //                break;
             //            }
 
             //        case 2d:
             //            {
-            //                object argIndex13 = "修理技能";
-            //                string argref_mode1 = "";
-            //                Commands.SelectedTarget.RecoverHP(50d + 5d * withBlock.MainPilot().SkillLevel(argIndex13, ref_mode: argref_mode1));
+            //                Commands.SelectedTarget.RecoverHP(50d + 5d * withBlock.MainPilot().SkillLevel("修理技能", ref_mode: ""));
             //                break;
             //            }
 
@@ -4989,17 +4610,13 @@ namespace SRCCore
             //            }
             //    }
 
-            //    string argmsg = "+" + SrcFormatter.Format(Commands.SelectedTarget.HP - tmp);
-            //    GUI.DrawSysString(Commands.SelectedTarget.x, Commands.SelectedTarget.y, argmsg);
-            //    object argu2 = Commands.SelectedUnit;
-            //    GUI.UpdateMessageForm(Commands.SelectedTarget, argu2);
+            //    GUI.DrawSysString(Commands.SelectedTarget.x, Commands.SelectedTarget.y, "+" + SrcFormatter.Format(Commands.SelectedTarget.HP - tmp));
+            //    GUI.UpdateMessageForm(Commands.SelectedTarget, Commands.SelectedUnit);
             //    GUI.DisplaySysMessage(Commands.SelectedTarget.Nickname + "のＨＰが[" + SrcFormatter.Format(Commands.SelectedTarget.HP - tmp) + "]回復した。");
             //}
 
             //// 経験値獲得
-            //string argexp_situation = "修理";
-            //string argexp_mode = "";
-            //Commands.SelectedUnit.GetExp(Commands.SelectedTarget, argexp_situation, exp_mode: argexp_mode);
+            //Commands.SelectedUnit.GetExp(Commands.SelectedTarget, "修理", exp_mode: "");
             //if (GUI.MessageWait < 10000)
             //{
             //    GUI.Sleep(GUI.MessageWait);
@@ -5040,14 +4657,12 @@ namespace SRCCore
             //    for (i = 1; i <= loopTo; i++)
             //    {
             //        // 通常攻撃を持っている場合は単独の敵への攻撃の際に通常攻撃を優先する
-            //        string argattr = "Ｍ";
-            //        if (!withBlock.IsWeaponClassifiedAs(i, argattr))
+            //        if (!withBlock.IsWeaponClassifiedAs(i, "Ｍ"))
             //        {
             //            // MOD START マージ
             //            // score_limit = 2
             //            // Exit For
-            //            string argref_mode = "移動前";
-            //            if (withBlock.IsWeaponAvailable(i, argref_mode))
+            //            if (withBlock.IsWeaponAvailable(i, "移動前"))
             //            {
             //                score_limit = 2;
             //                break;
@@ -5064,8 +4679,7 @@ namespace SRCCore
             //        Commands.SelectedTWeapon = 0;
 
             //        // マップ攻撃かどうか
-            //        string argattr1 = "Ｍ";
-            //        if (!withBlock.IsWeaponClassifiedAs(w, argattr1))
+            //        if (!withBlock.IsWeaponClassifiedAs(w, "Ｍ"))
             //        {
             //            goto NextWeapon;
             //        }
@@ -5073,16 +4687,14 @@ namespace SRCCore
             //        // 武器の使用可否を判定
             //        if (moved)
             //        {
-            //            string argref_mode1 = "移動後";
-            //            if (!withBlock.IsWeaponAvailable(w, argref_mode1))
+            //            if (!withBlock.IsWeaponAvailable(w, "移動後"))
             //            {
             //                goto NextWeapon;
             //            }
             //        }
             //        else
             //        {
-            //            string argref_mode2 = "移動前";
-            //            if (!withBlock.IsWeaponAvailable(w, argref_mode2))
+            //            if (!withBlock.IsWeaponAvailable(w, "移動前"))
             //            {
             //                goto NextWeapon;
             //            }
@@ -5091,10 +4703,7 @@ namespace SRCCore
             //        // ボスユニットが自爆＆全ＥＮ消費攻撃等を使うのは非常時のみ
             //        if (withBlock.BossRank >= 0)
             //        {
-            //            string argattr2 = "自";
-            //            string argattr3 = "尽";
-            //            string argattr4 = "消";
-            //            if (withBlock.IsWeaponClassifiedAs(w, argattr2) | withBlock.IsWeaponClassifiedAs(w, argattr3) | withBlock.IsWeaponClassifiedAs(w, argattr4))
+            //            if (withBlock.IsWeaponClassifiedAs(w, "自") | withBlock.IsWeaponClassifiedAs(w, "尽") | withBlock.IsWeaponClassifiedAs(w, "消"))
             //            {
             //                if (withBlock.HP > withBlock.MaxHP / 4)
             //                {
@@ -5111,14 +4720,7 @@ namespace SRCCore
             //        y2 = GeneralLib.MinLng(withBlock.y + max_range, Map.MapHeight);
 
             //        // マップ攻撃の種類にしたがって効果範囲内にいる敵をカウント
-            //        string argattr7 = "Ｍ直";
-            //        string argattr8 = "Ｍ拡";
-            //        string argattr9 = "Ｍ扇";
-            //        string argattr10 = "Ｍ全";
-            //        string argattr11 = "Ｍ投";
-            //        string argattr12 = "Ｍ線";
-            //        string argattr13 = "Ｍ移";
-            //        if (withBlock.IsWeaponClassifiedAs(w, argattr7))
+            //        if (withBlock.IsWeaponClassifiedAs(w, "Ｍ直"))
             //        {
             //            for (i = 1; i <= 4; i++)
             //            {
@@ -5194,7 +4796,7 @@ namespace SRCCore
             //                }
             //            }
             //        }
-            //        else if (withBlock.IsWeaponClassifiedAs(w, argattr8))
+            //        else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ拡"))
             //        {
             //            for (i = 1; i <= 4; i++)
             //            {
@@ -5270,7 +4872,7 @@ namespace SRCCore
             //                }
             //            }
             //        }
-            //        else if (withBlock.IsWeaponClassifiedAs(w, argattr9))
+            //        else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ扇"))
             //        {
             //            for (i = 1; i <= 4; i++)
             //            {
@@ -5302,8 +4904,7 @@ namespace SRCCore
             //                }
 
             //                // 効果範囲を設定
-            //                string argattr5 = "Ｍ扇";
-            //                Map.AreaInSector(withBlock.x, withBlock.y, min_range, max_range, direction, withBlock.WeaponLevel(w, argattr5));
+            //                Map.AreaInSector(withBlock.x, withBlock.y, min_range, max_range, direction, withBlock.WeaponLevel(w, "Ｍ扇"));
             //                Map.MaskData[withBlock.x, withBlock.y] = true;
 
             //                // 効果範囲内にいるユニットをカウント
@@ -5347,13 +4948,12 @@ namespace SRCCore
             //                }
             //            }
             //        }
-            //        else if (withBlock.IsWeaponClassifiedAs(w, argattr10))
+            //        else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ全"))
             //        {
             //            // 効果範囲を設定
             //            // MOD START マージ
             //            // AreaInRange .X, .Y, min_range, max_range, "すべて"
-            //            string arguparty = "すべて";
-            //            Map.AreaInRange(withBlock.x, withBlock.y, max_range, min_range, arguparty);
+            //            Map.AreaInRange(withBlock.x, withBlock.y, max_range, min_range, "すべて");
             //            // MOD END マージ
             //            Map.MaskData[withBlock.x, withBlock.y] = true;
 
@@ -5368,10 +4968,9 @@ namespace SRCCore
             //                goto FoundWeapon;
             //            }
             //        }
-            //        else if (withBlock.IsWeaponClassifiedAs(w, argattr11))
+            //        else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ投"))
             //        {
-            //            string argattr6 = "Ｍ投";
-            //            lv = withBlock.WeaponLevel(w, argattr6);
+            //            lv = withBlock.WeaponLevel(w, "Ｍ投");
             //            score = 0;
             //            var loopTo1 = x2;
             //            for (xx = x1; xx <= loopTo1; xx++)
@@ -5386,8 +4985,7 @@ namespace SRCCore
             //                        {
             //                            // MOD START マージ
             //                            // AreaInRange xx, yy, 1, lv, "すべて"
-            //                            string arguparty1 = "すべて";
-            //                            Map.AreaInRange(xx, yy, lv, 1, arguparty1);
+            //                            Map.AreaInRange(xx, yy, lv, 1, "すべて");
             //                        }
             //                        // MOD END マージ
             //                        else
@@ -5424,7 +5022,7 @@ namespace SRCCore
             //                goto FoundWeapon;
             //            }
             //        }
-            //        else if (withBlock.IsWeaponClassifiedAs(w, argattr12))
+            //        else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ線"))
             //        {
             //            score = 0;
             //            var loopTo5 = x2;
@@ -5457,7 +5055,7 @@ namespace SRCCore
             //                goto FoundWeapon;
             //            }
             //        }
-            //        else if (withBlock.IsWeaponClassifiedAs(w, argattr13))
+            //        else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ移"))
             //        {
             //            // その場を動かない場合は移動型マップ攻撃は選考外
             //            if (withBlock.Mode == "固定")
@@ -5520,11 +5118,9 @@ namespace SRCCore
             //    // 有効なマップ攻撃が見つかった場合
 
             //    // 合体技パートナーの設定
-            //    string argattr14 = "合";
-            //    if (withBlock.IsWeaponClassifiedAs(w, argattr14))
+            //    if (withBlock.IsWeaponClassifiedAs(w, "合"))
             //    {
-            //        string argctype_Renamed = "武装";
-            //        withBlock.CombinationPartner(argctype_Renamed, w, partners);
+            //        withBlock.CombinationPartner("武装", w, partners);
             //    }
             //    else
             //    {
@@ -5536,8 +5132,7 @@ namespace SRCCore
             //    withBlock.MapAttack(w, tx, ty);
 
             //    // 合体技のパートナーの行動数を減らす
-            //    string argoname = "合体技パートナー行動数無消費";
-            //    if (!Expression.IsOptionDefined(argoname))
+            //    if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
             //    {
             //        var loopTo9 = Information.UBound(partners);
             //        for (i = 1; i <= loopTo9; i++)
@@ -5590,13 +5185,11 @@ namespace SRCCore
             //            }
             //            else if (withBlock.ExpDamage(w, t, false) <= 10)
             //            {
-            //                string argattr = "Ｋ";
-            //                string argattr1 = "吹";
             //                if (withBlock.IsNormalWeapon(w))
             //                {
             //                    goto NextPoint;
             //                }
-            //                else if (withBlock.CriticalProbability(w, t) <= 1 & withBlock.WeaponLevel(w, argattr) == 0d & withBlock.WeaponLevel(w, argattr1) == 0d)
+            //                else if (withBlock.CriticalProbability(w, t) <= 1 & withBlock.WeaponLevel(w, "Ｋ") == 0d & withBlock.WeaponLevel(w, "吹") == 0d)
             //                {
             //                    goto NextPoint;
             //                }
@@ -5646,24 +5239,18 @@ namespace SRCCore
             //            }
 
             //            // ターゲットが見える？
-            //            string argsptype = "隠れ身";
-            //            if (t.IsUnderSpecialPowerEffect(argsptype))
+            //            if (t.IsUnderSpecialPowerEffect("隠れ身"))
             //            {
             //                goto NextPoint;
             //            }
 
-            //            string argfname1 = "ステルス";
-            //            if (t.IsFeatureAvailable(argfname1))
+            //            if (t.IsFeatureAvailable("ステルス"))
             //            {
-            //                object argIndex3 = "ステルス無効";
-            //                string argfname = "ステルス無効化";
-            //                if (!t.IsConditionSatisfied(argIndex3) & !withBlock.IsFeatureAvailable(argfname))
+            //                if (!t.IsConditionSatisfied("ステルス無効") & !withBlock.IsFeatureAvailable("ステルス無効化"))
             //                {
-            //                    object argIndex2 = "ステルス";
-            //                    if (t.IsFeatureLevelSpecified(argIndex2))
+            //                    if (t.IsFeatureLevelSpecified("ステルス"))
             //                    {
-            //                        object argIndex1 = "ステルス";
-            //                        if (Math.Abs((withBlock.x - t.x)) + Math.Abs((withBlock.y - t.y)) > t.FeatureLevel(argIndex1))
+            //                        if (Math.Abs((withBlock.x - t.x)) + Math.Abs((withBlock.y - t.y)) > t.FeatureLevel("ステルス"))
             //                        {
             //                            goto NextPoint;
             //                        }
@@ -5683,9 +5270,7 @@ namespace SRCCore
             //    }
 
             //    // 味方を巻き込んでしまう場合は攻撃を止める
-            //    string argattr2 = "識";
-            //    string argsptype1 = "識別攻撃";
-            //    if (is_ally_involved & !withBlock.IsWeaponClassifiedAs(w, argattr2) & !withBlock.IsUnderSpecialPowerEffect(argsptype1))
+            //    if (is_ally_involved & !withBlock.IsWeaponClassifiedAs(w, "識") & !withBlock.IsUnderSpecialPowerEffect("識別攻撃"))
             //    {
             //        CountTargetInRangeRet = 0;
             //    }
@@ -5718,19 +5303,13 @@ namespace SRCCore
             //{
             //    var withBlock = Commands.SelectedUnit;
             //    // 正常な判断力がある？
-            //    object argIndex1 = "混乱";
-            //    object argIndex2 = "魅了";
-            //    object argIndex3 = "憑依";
-            //    object argIndex4 = "恐怖";
-            //    object argIndex5 = "狂戦士";
-            //    if (withBlock.IsConditionSatisfied(argIndex1) | withBlock.IsConditionSatisfied(argIndex2) | withBlock.IsConditionSatisfied(argIndex3) | withBlock.IsConditionSatisfied(argIndex4) | withBlock.IsConditionSatisfied(argIndex5))
+            //    if (withBlock.IsConditionSatisfied("混乱") | withBlock.IsConditionSatisfied("魅了") | withBlock.IsConditionSatisfied("憑依") | withBlock.IsConditionSatisfied("恐怖") | withBlock.IsConditionSatisfied("狂戦士"))
             //    {
             //        return;
             //    }
 
             //    // スペシャルパワー使用不能
-            //    object argIndex6 = "スペシャルパワー使用不能";
-            //    if (withBlock.IsConditionSatisfied(argIndex6))
+            //    if (withBlock.IsConditionSatisfied("スペシャルパワー使用不能"))
             //    {
             //        return;
             //    }
@@ -5742,8 +5321,7 @@ namespace SRCCore
             //for (i = 1; i <= loopTo; i++)
             //{
             //    Commands.SelectedSpecialPower = p.get_SpecialPower(i);
-            //    object argIndex7 = Commands.SelectedSpecialPower;
-            //    sd = SRC.SPDList.Item(argIndex7);
+            //    sd = SRC.SPDList.Item(Commands.SelectedSpecialPower);
 
             //    // ＳＰが足りている？
             //    if (p.SP < p.SpecialPowerCost(Commands.SelectedSpecialPower))
@@ -5757,8 +5335,7 @@ namespace SRCCore
             //        goto NextSpecialPower;
             //    }
 
-            //    object argIndex8 = Commands.SelectedSpecialPower;
-            //    sd = SRC.SPDList.Item(argIndex8);
+            //    sd = SRC.SPDList.Item(Commands.SelectedSpecialPower);
             //    {
             //        var withBlock1 = sd;
             //        // ターゲットを選択する必要のあるスペシャルパワーは判断が難しいので
@@ -5800,8 +5377,7 @@ namespace SRCCore
             //        // 使用に適した状況下にある？
 
             //        // UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(ＨＰ回復) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        string argename = "ＨＰ回復";
-            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable(argename)))
+            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable("ＨＰ回復")))
             //        {
             //            if (withBlock1.TargetType == "自分")
             //            {
@@ -5820,8 +5396,7 @@ namespace SRCCore
             //        }
 
             //        // UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(ＥＮ回復) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        string argename1 = "ＥＮ回復";
-            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable(argename1)))
+            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable("ＥＮ回復")))
             //        {
             //            if (withBlock1.TargetType == "自分")
             //            {
@@ -5840,8 +5415,7 @@ namespace SRCCore
             //        }
 
             //        // UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(気力増加) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        string argename2 = "気力増加";
-            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable(argename2)))
+            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable("気力増加")))
             //        {
             //            if (withBlock1.TargetType == "自分")
             //            {
@@ -5860,8 +5434,7 @@ namespace SRCCore
             //        }
 
             //        // UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(行動数増加) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        string argename3 = "行動数増加";
-            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable(argename3)))
+            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable("行動数増加")))
             //        {
             //            if (withBlock1.TargetType == "自分")
             //            {
@@ -5873,8 +5446,7 @@ namespace SRCCore
             //        }
 
             //        // UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(復活) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        string argename4 = "復活";
-            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable(argename4)))
+            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable("復活")))
             //        {
             //            if (withBlock1.TargetType == "自分")
             //            {
@@ -5882,14 +5454,7 @@ namespace SRCCore
             //            }
             //        }
 
-            //        string argename5 = "絶対命中";
-            //        string argename6 = "ダメージ増加";
-            //        string argename7 = "クリティカル率増加";
-            //        string argename8 = "命中強化";
-            //        string argename9 = "貫通攻撃";
-            //        string argename10 = "再攻撃";
-            //        string argename11 = "隠れ身";
-            //        if (IsSPEffectUseful(sd, argename5) | IsSPEffectUseful(sd, argename6) | IsSPEffectUseful(sd, argename7) | IsSPEffectUseful(sd, argename8) | IsSPEffectUseful(sd, argename9) | IsSPEffectUseful(sd, argename10) | IsSPEffectUseful(sd, argename11))
+            //        if (IsSPEffectUseful(sd, "絶対命中") | IsSPEffectUseful(sd, "ダメージ増加") | IsSPEffectUseful(sd, "クリティカル率増加") | IsSPEffectUseful(sd, "命中強化") | IsSPEffectUseful(sd, "貫通攻撃") | IsSPEffectUseful(sd, "再攻撃") | IsSPEffectUseful(sd, "隠れ身"))
             //        {
             //            if (withBlock1.TargetType == "自分")
             //            {
@@ -5904,11 +5469,7 @@ namespace SRCCore
             //            }
             //        }
 
-            //        string argename12 = "絶対回避";
-            //        string argename13 = "被ダメージ低下";
-            //        string argename14 = "装甲強化";
-            //        string argename15 = "回避強化";
-            //        if (IsSPEffectUseful(sd, argename12) | IsSPEffectUseful(sd, argename13) | IsSPEffectUseful(sd, argename14) | IsSPEffectUseful(sd, argename15))
+            //        if (IsSPEffectUseful(sd, "絶対回避") | IsSPEffectUseful(sd, "被ダメージ低下") | IsSPEffectUseful(sd, "装甲強化") | IsSPEffectUseful(sd, "回避強化"))
             //        {
             //            if (withBlock1.TargetType == "自分")
             //            {
@@ -5923,8 +5484,7 @@ namespace SRCCore
             //            }
             //        }
 
-            //        string argename16 = "移動力強化";
-            //        if (IsSPEffectUseful(sd, argename16))
+            //        if (IsSPEffectUseful(sd, "移動力強化"))
             //        {
             //            if (withBlock1.TargetType == "自分")
             //            {
@@ -5939,8 +5499,7 @@ namespace SRCCore
             //            }
             //        }
 
-            //        string argename17 = "射程延長";
-            //        if (IsSPEffectUseful(sd, argename17))
+            //        if (IsSPEffectUseful(sd, "射程延長"))
             //        {
             //            if (withBlock1.TargetType == "自分")
             //            {
@@ -5960,12 +5519,7 @@ namespace SRCCore
             //            }
             //        }
 
-            //        string argename18 = "気力低下";
-            //        string argename19 = "ランダムダメージ";
-            //        string argename20 = "ＨＰ減少";
-            //        string argename21 = "ＥＮ減少";
-            //        string argename22 = "挑発";
-            //        if (Conversions.ToBoolean(Operators.OrObject(Operators.OrObject(Operators.OrObject(Operators.OrObject(withBlock1.IsEffectAvailable(argename18), withBlock1.IsEffectAvailable(argename19)), withBlock1.IsEffectAvailable(argename20)), withBlock1.IsEffectAvailable(argename21)), withBlock1.IsEffectAvailable(argename22))))
+            //        if (Conversions.ToBoolean(Operators.OrObject(Operators.OrObject(Operators.OrObject(Operators.OrObject(withBlock1.IsEffectAvailable("気力低下"), withBlock1.IsEffectAvailable("ランダムダメージ")), withBlock1.IsEffectAvailable("ＨＰ減少")), withBlock1.IsEffectAvailable("ＥＮ減少")), withBlock1.IsEffectAvailable("挑発"))))
             //        {
             //            if (withBlock1.TargetType == "全敵")
             //            {
@@ -5973,14 +5527,7 @@ namespace SRCCore
             //            }
             //        }
 
-            //        string argename23 = "ダメージ低下";
-            //        string argename24 = "被ダメージ増加";
-            //        string argename25 = "命中低下";
-            //        string argename26 = "回避低下";
-            //        string argename27 = "命中率低下";
-            //        string argename28 = "移動力低下";
-            //        string argename29 = "サポートガード不能";
-            //        if (Conversions.ToBoolean(Operators.OrObject(Operators.OrObject(Operators.OrObject(Operators.OrObject(Operators.OrObject(Operators.OrObject(withBlock1.IsEffectAvailable(argename23), withBlock1.IsEffectAvailable(argename24)), withBlock1.IsEffectAvailable(argename25)), withBlock1.IsEffectAvailable(argename26)), withBlock1.IsEffectAvailable(argename27)), withBlock1.IsEffectAvailable(argename28)), withBlock1.IsEffectAvailable(argename29))))
+            //        if (Conversions.ToBoolean(Operators.OrObject(Operators.OrObject(Operators.OrObject(Operators.OrObject(Operators.OrObject(Operators.OrObject(withBlock1.IsEffectAvailable("ダメージ低下"), withBlock1.IsEffectAvailable("被ダメージ増加")), withBlock1.IsEffectAvailable("命中低下")), withBlock1.IsEffectAvailable("回避低下")), withBlock1.IsEffectAvailable("命中率低下")), withBlock1.IsEffectAvailable("移動力低下")), withBlock1.IsEffectAvailable("サポートガード不能"))))
             //        {
             //            if (withBlock1.TargetType == "全敵")
             //            {
@@ -6092,8 +5639,7 @@ namespace SRCCore
             string fdata;
 
             //// 御主人さまにはさからえません
-            //object argIndex1 = "魅了";
-            //if (u.IsConditionSatisfied(argIndex1))
+            //if (u.IsConditionSatisfied("魅了"))
             //{
             //    if (ReferenceEquals(u.Master, t))
             //    {
@@ -6103,8 +5649,7 @@ namespace SRCCore
             //}
 
             //// 踊りに忙しい……
-            //object argIndex2 = "踊り";
-            //if (u.IsConditionSatisfied(argIndex2))
+            //if (u.IsConditionSatisfied("踊り"))
             //{
             //    SelectWeaponRet = -1;
             //    return SelectWeaponRet;
@@ -6132,26 +5677,22 @@ namespace SRCCore
             //    su = u.LookForSupportAttack(t);
             //    if (su is object)
             //    {
-            //        string argamode = "サポートアタック";
-            //        w = SelectWeapon(su, t, argamode, support_prob, support_exp_dmg);
+            //        w = SelectWeapon(su, t, "サポートアタック", support_prob, support_exp_dmg);
             //        if (w > 0)
             //        {
             //            support_prob = GeneralLib.MinLng(su.HitProbability(w, t, use_true_value), 100);
             //            dmg_mod = 1d;
 
             //            // サポートアタックダメージ低下
-            //            string argoname = "サポートアタックダメージ低下";
-            //            if (Expression.IsOptionDefined(argoname))
+            //            if (Expression.IsOptionDefined("サポートアタックダメージ低下"))
             //            {
             //                dmg_mod = 0.7d;
             //            }
 
             //            // 同時援護攻撃？
-            //            string argsname = "統率";
-            //            if (su.MainPilot().IsSkillAvailable(argsname) & su.IsNormalWeapon(w))
+            //            if (su.MainPilot().IsSkillAvailable("統率") & su.IsNormalWeapon(w))
             //            {
-            //                string argoname1 = "ダメージ倍率低下";
-            //                if (Expression.IsOptionDefined(argoname1))
+            //                if (Expression.IsOptionDefined("ダメージ倍率低下"))
             //                {
             //                    dmg_mod = 1.2d * dmg_mod;
             //                }
@@ -6182,15 +5723,13 @@ namespace SRCCore
                 }
 
                 // マップ攻撃は武器選定外
-                string argattr = "Ｍ";
-                if (selectedWeapon.IsWeaponClassifiedAs(argattr))
+                if (selectedWeapon.IsWeaponClassifiedAs("Ｍ"))
                 {
                     goto NextWeapon;
                 }
 
                 // 合体技は自分から攻撃をかける場合にのみ使用
-                string argattr1 = "合";
-                if (selectedWeapon.IsWeaponClassifiedAs(argattr1))
+                if (selectedWeapon.IsWeaponClassifiedAs("合"))
                 {
                     if (Strings.InStr(amode, "反撃") > 0 | Strings.InStr(amode, "サポート") > 0)
                     {
@@ -6199,14 +5738,11 @@ namespace SRCCore
                 }
 
                 // 射程範囲内？
-                string argattr4 = "移動後攻撃可";
-                if (selectedWeapon.IsWeaponClassifiedAs(argattr4) & amode == "移動可能" & u.Mode != "固定")
+                if (selectedWeapon.IsWeaponClassifiedAs("移動後攻撃可") & amode == "移動可能" & u.Mode != "固定")
                 {
                     // 合体技は移動後攻撃可能でも移動を前提にしない
                     // (移動後の位置では使えない危険性があるため)
-                    string argattr2 = "合";
-                    string argattr3 = "Ｐ";
-                    if (selectedWeapon.IsWeaponClassifiedAs(argattr2) & selectedWeapon.IsWeaponClassifiedAs(argattr3))
+                    if (selectedWeapon.IsWeaponClassifiedAs("合") & selectedWeapon.IsWeaponClassifiedAs("Ｐ"))
                     {
                         // 移動して攻撃は出来ない
                         if (!selectedWeapon.IsTargetWithinRange(t))
@@ -6243,8 +5779,7 @@ namespace SRCCore
                 if (u.Party == "味方" & u.Party0 == "味方" & Strings.InStr(amode, "イベント") == 0)
                 {
                     //    // 自爆攻撃は武器を手動選択する場合にのみ使用
-                    //    string argattr5 = "自";
-                    //    if (selectedWeapon.IsWeaponClassifiedAs(argattr5))
+                    //    if (selectedWeapon.IsWeaponClassifiedAs("自"))
                     //    {
                     //        goto NextWeapon;
                     //    }
@@ -6252,8 +5787,7 @@ namespace SRCCore
                     //    // 手動反撃時のサポートアタック以外は残弾数が少ない武器を使用しない
                     //    if (amode != "サポートアタック" | GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked)
                     //    {
-                    //        string argattr6 = "永";
-                    //        if (!selectedWeapon.IsWeaponClassifiedAs(argattr6))
+                    //        if (!selectedWeapon.IsWeaponClassifiedAs("永"))
                     //        {
                     //            if (u.Bullet(w) == 1 | u.MaxBullet(w) == 2 | u.MaxBullet(w) == 3)
                     //            {
@@ -6269,8 +5803,7 @@ namespace SRCCore
                     //            }
                     //        }
 
-                    //        string argattr7 = "尽";
-                    //        if (selectedWeapon.IsWeaponClassifiedAs(argattr7))
+                    //        if (selectedWeapon.IsWeaponClassifiedAs("尽"))
                     //        {
                     //            goto NextWeapon;
                     //        }
@@ -6280,9 +5813,7 @@ namespace SRCCore
                 // ボスユニットが自爆＆全ＥＮ消費攻撃使うのは非常時のみ
                 if (u.BossRank >= 0 & Strings.InStr(amode, "イベント") == 0)
                 {
-                    string argattr8 = "自";
-                    string argattr9 = "尽";
-                    if (selectedWeapon.IsWeaponClassifiedAs(argattr8) | selectedWeapon.IsWeaponClassifiedAs(argattr9))
+                    if (selectedWeapon.IsWeaponClassifiedAs("自") | selectedWeapon.IsWeaponClassifiedAs("尽"))
                     {
                         if (u.HP > u.MaxHP / 4)
                         {
@@ -6315,8 +5846,7 @@ namespace SRCCore
                 // サポートアタックダメージ低下
                 if (Strings.InStr(amode, "サポート") > 0)
                 {
-                    string argoname2 = "サポートアタックダメージ低下";
-                    if (Expression.IsOptionDefined(argoname2))
+                    if (Expression.IsOptionDefined("サポートアタックダメージ低下"))
                     {
                         dmg_mod = 0.7d;
                     }
@@ -6348,16 +5878,14 @@ namespace SRCCore
                 if (dmg == 0)
                 {
                     // 抹殺攻撃は一撃で倒せる場合でないと効果が無い
-                    string argattr11 = "殺";
-                    if (selectedWeapon.IsWeaponClassifiedAs(argattr11))
+                    if (selectedWeapon.IsWeaponClassifiedAs("殺"))
                     {
                         goto NextWeapon;
                     }
 
                     // ダメージ増加のスペシャルパワーを使用している場合はダメージを与えられない
                     // 武器を選択しない
-                    string argsptype = "ダメージ増加";
-                    if (u.IsUnderSpecialPowerEffect(argsptype))
+                    if (u.IsUnderSpecialPowerEffect("ダメージ増加"))
                     {
                         goto NextWeapon;
                     }
@@ -6378,9 +5906,7 @@ namespace SRCCore
                 // 再攻撃が可能な場合
                 if (Strings.InStr(amode, "サポート") == 0)
                 {
-                    string argsptype1 = "再攻撃";
-                    string argattr13 = "再";
-                    if (u.IsUnderSpecialPowerEffect(argsptype1))
+                    if (u.IsUnderSpecialPowerEffect("再攻撃"))
                     {
                         // 再攻撃する残弾＆ＥＮがある？
                         if (selectedWeapon.WeaponData.Bullet > 0)
@@ -6401,7 +5927,7 @@ namespace SRCCore
 
                         dmg = 2 * dmg;
                     }
-                    else if (selectedWeapon.IsWeaponClassifiedAs(argattr13))
+                    else if (selectedWeapon.IsWeaponClassifiedAs("再"))
                     {
                         dmg = (int)(dmg + (dmg * selectedWeapon.WeaponLevel("再")) / 16);
                     }
@@ -6412,20 +5938,15 @@ namespace SRCCore
 
                 // 特殊能力による回避を認識する？
                 // TODO Impl
-                string argsptype2 = "絶対命中";
-                if ((u.MainPilot().TacticalTechnique() >= 150 | u.Party == "味方") & !u.IsUnderSpecialPowerEffect(argsptype2))
+                if ((u.MainPilot().TacticalTechnique() >= 150 | u.Party == "味方") & !u.IsUnderSpecialPowerEffect("絶対命中"))
                 {
                     //// 切り払い可能な場合は命中率を低下
-                    //string argattr17 = "武";
-                    //string argattr18 = "突";
-                    //string argattr19 = "実";
-                    //if (selectedWeapon.IsWeaponClassifiedAs(argattr17) | selectedWeapon.IsWeaponClassifiedAs(argattr18) | selectedWeapon.IsWeaponClassifiedAs(argattr19))
+                    //if (selectedWeapon.IsWeaponClassifiedAs("武") | selectedWeapon.IsWeaponClassifiedAs("突") | selectedWeapon.IsWeaponClassifiedAs("実"))
                     //{
 
                     //    // 切り払い可能？
                     //    flag = false;
-                    //    string argfname = "格闘武器";
-                    //    if (t.IsFeatureAvailable(argfname))
+                    //    if (t.IsFeatureAvailable("格闘武器"))
                     //    {
                     //        flag = true;
                     //    }
@@ -6434,8 +5955,7 @@ namespace SRCCore
                     //        var loopTo1 = t.CountWeapon();
                     //        for (i = 1; i <= loopTo1; i++)
                     //        {
-                    //            string argattr14 = "武";
-                    //            if (t.IsWeaponClassifiedAs(i, argattr14) & t.IsWeaponMastered(i) & t.MainPilot().Morale >= t.Weapon(i).NecessaryMorale & !t.IsDisabled(t.Weapon(i).Name))
+                    //            if (t.IsWeaponClassifiedAs(i, "武") & t.IsWeaponMastered(i) & t.MainPilot().Morale >= t.Weapon(i).NecessaryMorale & !t.IsDisabled(t.Weapon(i).Name))
                     //            {
                     //                flag = true;
                     //                break;
@@ -6443,8 +5963,7 @@ namespace SRCCore
                     //        }
                     //    }
 
-                    //    string argsname1 = "切り払い";
-                    //    if (!t.MainPilot().IsSkillAvailable(argsname1))
+                    //    if (!t.MainPilot().IsSkillAvailable("切り払い"))
                     //    {
                     //        flag = false;
                     //    }
@@ -6452,35 +5971,21 @@ namespace SRCCore
                     //    // 切り払い出来る場合は命中率を低下
                     //    if (flag)
                     //    {
-                    //        object argIndex3 = "切り払い";
-                    //        string argref_mode = "";
-                    //        parry_prob = (2d * t.MainPilot().SkillLevel(argIndex3, ref_mode: argref_mode));
-                    //        string argattr16 = "実";
-                    //        if (selectedWeapon.IsWeaponClassifiedAs(argattr16))
+                    //        parry_prob = (2d * t.MainPilot().SkillLevel("切り払い", ref_mode: ""));
+                    //        if (selectedWeapon.IsWeaponClassifiedAs("実"))
                     //        {
-                    //            string argattr15 = "サ";
-                    //            if (selectedWeapon.IsWeaponClassifiedAs(argattr15))
+                    //            if (selectedWeapon.IsWeaponClassifiedAs("サ"))
                     //            {
-                    //                object argIndex4 = "超感覚";
-                    //                string argref_mode1 = "";
-                    //                object argIndex5 = "知覚強化";
-                    //                string argref_mode2 = "";
-                    //                parry_prob = (parry_prob - u.MainPilot().SkillLevel(argIndex4, ref_mode: argref_mode1) - u.MainPilot().SkillLevel(argIndex5, ref_mode: argref_mode2));
+                    //                parry_prob = (parry_prob - u.MainPilot().SkillLevel("超感覚", ref_mode: "") - u.MainPilot().SkillLevel("知覚強化", ref_mode: ""));
                     //                {
                     //                    var withBlock = t.MainPilot();
-                    //                    object argIndex6 = "超感覚";
-                    //                    string argref_mode3 = "";
-                    //                    object argIndex7 = "知覚強化";
-                    //                    string argref_mode4 = "";
-                    //                    parry_prob = (parry_prob + withBlock.SkillLevel(argIndex6, ref_mode: argref_mode3) + withBlock.SkillLevel(argIndex7, ref_mode: argref_mode4));
+                    //                    parry_prob = (parry_prob + withBlock.SkillLevel("超感覚", ref_mode: "") + withBlock.SkillLevel("知覚強化", ref_mode: ""));
                     //                }
                     //            }
                     //        }
                     //        else
                     //        {
-                    //            object argIndex8 = "切り払い";
-                    //            string argref_mode5 = "";
-                    //            parry_prob = (parry_prob - u.MainPilot().SkillLevel(argIndex8, ref_mode: argref_mode5));
+                    //            parry_prob = (parry_prob - u.MainPilot().SkillLevel("切り払い", ref_mode: ""));
                     //        }
 
                     //        if (parry_prob > 0)
@@ -6491,8 +5996,7 @@ namespace SRCCore
                     //}
 
                     //// 分身可能な場合は命中率を低下
-                    //string argfname1 = "分身";
-                    //if (t.IsFeatureAvailable(argfname1))
+                    //if (t.IsFeatureAvailable("分身"))
                     //{
                     //    if (t.MainPilot().Morale >= 130)
                     //    {
@@ -6500,29 +6004,22 @@ namespace SRCCore
                     //    }
                     //}
 
-                    //object argIndex10 = "分身";
-                    //string argref_mode7 = "";
-                    //if (t.MainPilot().SkillLevel(argIndex10, ref_mode: argref_mode7) > 0d)
+                    //if (t.MainPilot().SkillLevel("分身", ref_mode: "") > 0d)
                     //{
-                    //    object argIndex9 = "分身";
-                    //    string argref_mode6 = "";
-                    //    prob = ((prob * t.MainPilot().SkillLevel(argIndex9, ref_mode: argref_mode6)) / 16L);
+                    //    prob = ((prob * t.MainPilot().SkillLevel("分身", ref_mode: "")) / 16L);
                     //}
 
                     //// 超回避可能な場合は命中率を低下
-                    //string argfname2 = "超回避";
-                    //if (t.IsFeatureAvailable(argfname2))
+                    //if (t.IsFeatureAvailable("超回避"))
                     //{
-                    //    object argIndex11 = "超回避";
-                    //    fdata = t.FeatureData(argIndex11);
+                    //    fdata = t.FeatureData("超回避");
                     //    int localStrToLng() { string argexpr = GeneralLib.LIndex(fdata, 2); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
                     //    int localStrToLng1() { string argexpr = GeneralLib.LIndex(fdata, 3); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
                     //    if (localStrToLng() > t.EN & localStrToLng1() > t.MainPilot().Morale)
                     //    {
-                    //        object argIndex12 = "超回避";
-                    //        prob = ((prob * t.FeatureLevel(argIndex12)) / 10L);
+                    //        prob = ((prob * t.FeatureLevel("超回避")) / 10L);
                     //    }
                     //}
                 }
@@ -6551,8 +6048,7 @@ namespace SRCCore
                     //        {
                     //            case "縛":
                     //                {
-                    //                    object argIndex13 = "行動不能";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex13))
+                    //                    if (!withBlock1.IsConditionSatisfied("行動不能"))
                     //                    {
                     //                        sp_prob = sp_prob + 0.5d;
                     //                    }
@@ -6562,8 +6058,7 @@ namespace SRCCore
 
                     //            case "Ｓ":
                     //                {
-                    //                    object argIndex14 = "行動不能";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex14))
+                    //                    if (!withBlock1.IsConditionSatisfied("行動不能"))
                     //                    {
                     //                        sp_prob = sp_prob + 0.3d;
                     //                    }
@@ -6573,8 +6068,7 @@ namespace SRCCore
 
                     //            case "眠":
                     //                {
-                    //                    object argIndex15 = "睡眠";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex15))
+                    //                    if (!withBlock1.IsConditionSatisfied("睡眠"))
                     //                    {
                     //                        sp_prob = sp_prob + 0.3d;
                     //                    }
@@ -6584,8 +6078,7 @@ namespace SRCCore
 
                     //            case "痺":
                     //                {
-                    //                    object argIndex16 = "麻痺";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex16))
+                    //                    if (!withBlock1.IsConditionSatisfied("麻痺"))
                     //                    {
                     //                        sp_prob = sp_prob + 0.7d;
                     //                    }
@@ -6595,8 +6088,7 @@ namespace SRCCore
 
                     //            case "不":
                     //                {
-                    //                    object argIndex17 = "攻撃不能";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex17) & withBlock1.CountWeapon() > 0)
+                    //                    if (!withBlock1.IsConditionSatisfied("攻撃不能") & withBlock1.CountWeapon() > 0)
                     //                    {
                     //                        sp_prob = sp_prob + 0.2d;
                     //                    }
@@ -6606,8 +6098,7 @@ namespace SRCCore
 
                     //            case "止":
                     //                {
-                    //                    object argIndex18 = "移動不能";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex18) & withBlock1.Speed > 0)
+                    //                    if (!withBlock1.IsConditionSatisfied("移動不能") & withBlock1.Speed > 0)
                     //                    {
                     //                        sp_prob = sp_prob + 0.2d;
                     //                    }
@@ -6617,8 +6108,7 @@ namespace SRCCore
 
                     //            case "石":
                     //                {
-                    //                    object argIndex19 = "石化";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex19) & withBlock1.BossRank < 0)
+                    //                    if (!withBlock1.IsConditionSatisfied("石化") & withBlock1.BossRank < 0)
                     //                    {
                     //                        sp_prob = sp_prob + 1d;
                     //                    }
@@ -6628,8 +6118,7 @@ namespace SRCCore
 
                     //            case "凍":
                     //                {
-                    //                    object argIndex20 = "凍結";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex20))
+                    //                    if (!withBlock1.IsConditionSatisfied("凍結"))
                     //                    {
                     //                        sp_prob = sp_prob + 0.5d;
                     //                    }
@@ -6639,8 +6128,7 @@ namespace SRCCore
 
                     //            case "乱":
                     //                {
-                    //                    object argIndex21 = "混乱";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex21))
+                    //                    if (!withBlock1.IsConditionSatisfied("混乱"))
                     //                    {
                     //                        sp_prob = sp_prob + 0.5d;
                     //                    }
@@ -6650,8 +6138,7 @@ namespace SRCCore
 
                     //            case "撹":
                     //                {
-                    //                    object argIndex22 = "撹乱";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex22) & withBlock1.CountWeapon() > 0)
+                    //                    if (!withBlock1.IsConditionSatisfied("撹乱") & withBlock1.CountWeapon() > 0)
                     //                    {
                     //                        sp_prob = sp_prob + 0.2d;
                     //                    }
@@ -6661,8 +6148,7 @@ namespace SRCCore
 
                     //            case "恐":
                     //                {
-                    //                    object argIndex23 = "恐怖";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex23))
+                    //                    if (!withBlock1.IsConditionSatisfied("恐怖"))
                     //                    {
                     //                        sp_prob = sp_prob + 0.4d;
                     //                    }
@@ -6672,8 +6158,7 @@ namespace SRCCore
 
                     //            case "魅":
                     //                {
-                    //                    object argIndex24 = "魅了";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex24))
+                    //                    if (!withBlock1.IsConditionSatisfied("魅了"))
                     //                    {
                     //                        sp_prob = sp_prob + 0.6d;
                     //                    }
@@ -6693,14 +6178,12 @@ namespace SRCCore
 
                     //            case "黙":
                     //                {
-                    //                    object argIndex25 = "沈黙";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex25))
+                    //                    if (!withBlock1.IsConditionSatisfied("沈黙"))
                     //                    {
                     //                        var loopTo3 = withBlock1.CountWeapon();
                     //                        for (j = 1; j <= loopTo3; j++)
                     //                        {
-                    //                            string argattr20 = "音";
-                    //                            if (withBlock1.IsSpellWeapon(j) | withBlock1.IsWeaponClassifiedAs(j, argattr20))
+                    //                            if (withBlock1.IsSpellWeapon(j) | withBlock1.IsWeaponClassifiedAs(j, "音"))
                     //                            {
                     //                                sp_prob = sp_prob + 0.3d;
                     //                                break;
@@ -6712,8 +6195,7 @@ namespace SRCCore
                     //                            var loopTo4 = withBlock1.CountAbility();
                     //                            for (j = 1; j <= loopTo4; j++)
                     //                            {
-                    //                                string argattr21 = "音";
-                    //                                if (withBlock1.IsSpellAbility(j) | withBlock1.IsAbilityClassifiedAs(j, argattr21))
+                    //                                if (withBlock1.IsSpellAbility(j) | withBlock1.IsAbilityClassifiedAs(j, "音"))
                     //                                {
                     //                                    sp_prob = sp_prob + 0.3d;
                     //                                    break;
@@ -6727,8 +6209,7 @@ namespace SRCCore
 
                     //            case "盲":
                     //                {
-                    //                    object argIndex26 = "盲目";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex26))
+                    //                    if (!withBlock1.IsConditionSatisfied("盲目"))
                     //                    {
                     //                        sp_prob = sp_prob + 0.3d;
                     //                    }
@@ -6738,8 +6219,7 @@ namespace SRCCore
 
                     //            case "毒":
                     //                {
-                    //                    object argIndex27 = "毒";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex27))
+                    //                    if (!withBlock1.IsConditionSatisfied("毒"))
                     //                    {
                     //                        sp_prob = sp_prob + 0.3d;
                     //                    }
@@ -6749,8 +6229,7 @@ namespace SRCCore
 
                     //            case "踊":
                     //                {
-                    //                    object argIndex28 = "踊り";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex28))
+                    //                    if (!withBlock1.IsConditionSatisfied("踊り"))
                     //                    {
                     //                        sp_prob = sp_prob + 0.3d;
                     //                    }
@@ -6760,8 +6239,7 @@ namespace SRCCore
 
                     //            case "狂":
                     //                {
-                    //                    object argIndex29 = "狂戦士";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex29))
+                    //                    if (!withBlock1.IsConditionSatisfied("狂戦士"))
                     //                    {
                     //                        sp_prob = sp_prob + 0.3d;
                     //                    }
@@ -6771,8 +6249,7 @@ namespace SRCCore
 
                     //            case "ゾ":
                     //                {
-                    //                    object argIndex30 = "ゾンビ";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex30))
+                    //                    if (!withBlock1.IsConditionSatisfied("ゾンビ"))
                     //                    {
                     //                        sp_prob = sp_prob + 0.3d;
                     //                    }
@@ -6782,12 +6259,9 @@ namespace SRCCore
 
                     //            case "害":
                     //                {
-                    //                    object argIndex31 = "回復不能";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex31))
+                    //                    if (!withBlock1.IsConditionSatisfied("回復不能"))
                     //                    {
-                    //                        string argfname3 = "ＨＰ回復";
-                    //                        string argfname4 = "ＥＮ回復";
-                    //                        if (withBlock1.IsFeatureAvailable(argfname3) | withBlock1.IsFeatureAvailable(argfname4))
+                    //                        if (withBlock1.IsFeatureAvailable("ＨＰ回復") | withBlock1.IsFeatureAvailable("ＥＮ回復"))
                     //                        {
                     //                            sp_prob = sp_prob + 0.4d;
                     //                        }
@@ -6798,8 +6272,7 @@ namespace SRCCore
 
                     //            case "劣":
                     //                {
-                    //                    object argIndex32 = "装甲劣化";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex32))
+                    //                    if (!withBlock1.IsConditionSatisfied("装甲劣化"))
                     //                    {
                     //                        sp_prob = sp_prob + 0.3d;
                     //                    }
@@ -6809,40 +6282,29 @@ namespace SRCCore
 
                     //            case "中":
                     //                {
-                    //                    object argIndex37 = "バリア無効化";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex37))
+                    //                    if (!withBlock1.IsConditionSatisfied("バリア無効化"))
                     //                    {
-                    //                        string argfname5 = "バリア";
-                    //                        object argIndex33 = "バリア";
-                    //                        string argfname6 = "広域バリア";
-                    //                        string argfname7 = "バリアシールド";
-                    //                        object argIndex34 = "バリアシールド";
-                    //                        string argfname8 = "フィールド";
-                    //                        object argIndex35 = "フィールド";
-                    //                        string argfname9 = "広域フィールド";
-                    //                        string argfname10 = "アクティブフィールド";
-                    //                        object argIndex36 = "アクティブフィールド";
-                    //                        if (withBlock1.IsFeatureAvailable(argfname5) & Strings.InStr(t.FeatureData(argIndex33), "バリア無効化無効") == 0)
+                    //                        if (withBlock1.IsFeatureAvailable("バリア") & Strings.InStr(t.FeatureData("バリア"), "バリア無効化無効") == 0)
                     //                        {
                     //                            sp_prob = sp_prob + 0.3d;
                     //                        }
-                    //                        else if (withBlock1.IsFeatureAvailable(argfname6))
+                    //                        else if (withBlock1.IsFeatureAvailable("広域バリア"))
                     //                        {
                     //                            sp_prob = sp_prob + 0.3d;
                     //                        }
-                    //                        else if (withBlock1.IsFeatureAvailable(argfname7) & Strings.InStr(t.FeatureData(argIndex34), "バリア無効化無効") == 0)
+                    //                        else if (withBlock1.IsFeatureAvailable("バリアシールド") & Strings.InStr(t.FeatureData("バリアシールド"), "バリア無効化無効") == 0)
                     //                        {
                     //                            sp_prob = sp_prob + 0.3d;
                     //                        }
-                    //                        else if (withBlock1.IsFeatureAvailable(argfname8) & Strings.InStr(t.FeatureData(argIndex35), "バリア無効化無効") == 0)
+                    //                        else if (withBlock1.IsFeatureAvailable("フィールド") & Strings.InStr(t.FeatureData("フィールド"), "バリア無効化無効") == 0)
                     //                        {
                     //                            sp_prob = sp_prob + 0.3d;
                     //                        }
-                    //                        else if (withBlock1.IsFeatureAvailable(argfname9))
+                    //                        else if (withBlock1.IsFeatureAvailable("広域フィールド"))
                     //                        {
                     //                            sp_prob = sp_prob + 0.3d;
                     //                        }
-                    //                        else if (withBlock1.IsFeatureAvailable(argfname10) & Strings.InStr(t.FeatureData(argIndex36), "バリア無効化無効") == 0)
+                    //                        else if (withBlock1.IsFeatureAvailable("アクティブフィールド") & Strings.InStr(t.FeatureData("アクティブフィールド"), "バリア無効化無効") == 0)
                     //                        {
                     //                            sp_prob = sp_prob + 0.3d;
                     //                        }
@@ -6916,8 +6378,7 @@ namespace SRCCore
 
                     //            case "低攻":
                     //                {
-                    //                    object argIndex38 = "攻撃力ＤＯＷＮ";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex38) & withBlock1.CountWeapon() > 0)
+                    //                    if (!withBlock1.IsConditionSatisfied("攻撃力ＤＯＷＮ") & withBlock1.CountWeapon() > 0)
                     //                    {
                     //                        sp_prob = sp_prob + 0.2d;
                     //                    }
@@ -6927,8 +6388,7 @@ namespace SRCCore
 
                     //            case "低防":
                     //                {
-                    //                    object argIndex39 = "防御力ＤＯＷＮ";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex39))
+                    //                    if (!withBlock1.IsConditionSatisfied("防御力ＤＯＷＮ"))
                     //                    {
                     //                        sp_prob = sp_prob + 0.2d;
                     //                    }
@@ -6938,8 +6398,7 @@ namespace SRCCore
 
                     //            case "低運":
                     //                {
-                    //                    object argIndex40 = "運動性ＤＯＷＮ";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex40))
+                    //                    if (!withBlock1.IsConditionSatisfied("運動性ＤＯＷＮ"))
                     //                    {
                     //                        sp_prob = sp_prob + 0.1d;
                     //                    }
@@ -6949,8 +6408,7 @@ namespace SRCCore
 
                     //            case "低移":
                     //                {
-                    //                    object argIndex41 = "移動力ＤＯＷＮ";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex41) & withBlock1.Speed > 0)
+                    //                    if (!withBlock1.IsConditionSatisfied("移動力ＤＯＷＮ") & withBlock1.Speed > 0)
                     //                    {
                     //                        sp_prob = sp_prob + 0.1d;
                     //                    }
@@ -6960,8 +6418,7 @@ namespace SRCCore
 
                     //            case "盗":
                     //                {
-                    //                    object argIndex42 = "すかんぴん";
-                    //                    if (!withBlock1.IsConditionSatisfied(argIndex42))
+                    //                    if (!withBlock1.IsConditionSatisfied("すかんぴん"))
                     //                    {
                     //                        sp_prob = sp_prob + 0.5d;
                     //                    }
@@ -6971,8 +6428,7 @@ namespace SRCCore
 
                     //            case "写":
                     //                {
-                    //                    string argfname11 = "ノーマルモード";
-                    //                    if (withBlock1.BossRank >= 0 | u.IsFeatureAvailable(argfname11))
+                    //                    if (withBlock1.BossRank >= 0 | u.IsFeatureAvailable("ノーマルモード"))
                     //                    {
                     //                        goto NextAttribute;
                     //                    }
@@ -7084,8 +6540,7 @@ namespace SRCCore
 
                     //            case "化":
                     //                {
-                    //                    string argfname12 = "ノーマルモード";
-                    //                    if (withBlock1.BossRank < 0 & !u.IsFeatureAvailable(argfname12))
+                    //                    if (withBlock1.BossRank < 0 & !u.IsFeatureAvailable("ノーマルモード"))
                     //                    {
                     //                        sp_prob = sp_prob + 1d;
                     //                    }
@@ -7097,9 +6552,7 @@ namespace SRCCore
                     //                {
                     //                    if (withBlock1.BossRank >= 0)
                     //                    {
-                    //                        string argattr22 = "衰";
-                    //                        string argattr23 = "衰";
-                    //                        switch (selectedWeapon.WeaponLevel(argattr23))
+                    //                        switch (selectedWeapon.WeaponLevel("衰"))
                     //                        {
                     //                            case 1:
                     //                                {
@@ -7122,9 +6575,7 @@ namespace SRCCore
                     //                    }
                     //                    else
                     //                    {
-                    //                        string argattr24 = "衰";
-                    //                        string argattr25 = "衰";
-                    //                        switch (selectedWeapon.WeaponLevel(argattr25))
+                    //                        switch (selectedWeapon.WeaponLevel("衰"))
                     //                        {
                     //                            case 1:
                     //                                {
@@ -7153,9 +6604,7 @@ namespace SRCCore
                     //                {
                     //                    if (withBlock1.BossRank >= 0)
                     //                    {
-                    //                        string argattr26 = "滅";
-                    //                        string argattr27 = "滅";
-                    //                        switch (selectedWeapon.WeaponLevel(argattr27))
+                    //                        switch (selectedWeapon.WeaponLevel("滅"))
                     //                        {
                     //                            case 1:
                     //                                {
@@ -7178,9 +6627,7 @@ namespace SRCCore
                     //                    }
                     //                    else
                     //                    {
-                    //                        string argattr28 = "滅";
-                    //                        string argattr29 = "滅";
-                    //                        switch (selectedWeapon.WeaponLevel(argattr29))
+                    //                        switch (selectedWeapon.WeaponLevel("滅"))
                     //                        {
                     //                            case 1:
                     //                                {
@@ -7224,18 +6671,14 @@ namespace SRCCore
                     //                                    var loopTo6 = checku.CountWeapon();
                     //                                    for (j = 1; j <= loopTo6; j++)
                     //                                    {
-                    //                                        string argref_mode8 = "移動前";
-                    //                                        if (checku.IsWeaponClassifiedAs(j, checkwc) & checku.IsWeaponAvailable(j, argref_mode8))
+                    //                                        if (checku.IsWeaponClassifiedAs(j, checkwc) & checku.IsWeaponAvailable(j, "移動前"))
                     //                                        {
                     //                                            // 射程範囲内？
-                    //                                            string argattr32 = "移動後攻撃可";
-                    //                                            if (checku.IsWeaponClassifiedAs(j, argattr32) & checku.Mode != "固定")
+                    //                                            if (checku.IsWeaponClassifiedAs(j, "移動後攻撃可") & checku.Mode != "固定")
                     //                                            {
                     //                                                // 合体技は移動後攻撃可能でも移動を前提にしない
                     //                                                // (移動後の位置では使えない危険性があるため)
-                    //                                                string argattr30 = "合";
-                    //                                                string argattr31 = "Ｐ";
-                    //                                                if (checku.IsWeaponClassifiedAs(j, argattr30) & checku.IsWeaponClassifiedAs(j, argattr31))
+                    //                                                if (checku.IsWeaponClassifiedAs(j, "合") & checku.IsWeaponClassifiedAs(j, "Ｐ"))
                     //                                                {
                     //                                                    // 移動して攻撃は出来ない
                     //                                                    if (checku.IsTargetWithinRange(j, t))
@@ -7280,8 +6723,7 @@ namespace SRCCore
                     //                                    var loopTo7 = checku.CountWeapon();
                     //                                    for (j = 1; j <= loopTo7; j++)
                     //                                    {
-                    //                                        string argref_mode9 = "移動前";
-                    //                                        if (checku.IsWeaponClassifiedAs(j, checkwc) & checku.IsWeaponAvailable(j, argref_mode9))
+                    //                                        if (checku.IsWeaponClassifiedAs(j, checkwc) & checku.IsWeaponAvailable(j, "移動前"))
                     //                                        {
                     //                                            // 付加する有効に対応する封印、限定武器がある
                     //                                            int localInStrNotNest1() { string argstring1 = checku.WeaponClass(j); string argstring2 = "封"; var ret = GeneralLib.InStrNotNest(argstring1, argstring2); return ret; }
@@ -7292,18 +6734,14 @@ namespace SRCCore
                     //                                            {
                     //                                                int localInStrNotNest() { string argstring1 = checku.WeaponClass(j); string argstring2 = "限"; var ret = GeneralLib.InStrNotNest(argstring1, argstring2); return ret; }
 
-                    //                                                string argstring1 = checku.WeaponClass(j);
-                    //                                                if (GeneralLib.InStrNotNest(argstring1, checkwc) > localInStrNotNest())
+                    //                                                if (GeneralLib.InStrNotNest(checku.WeaponClass(j), checkwc) > localInStrNotNest())
                     //                                                {
                     //                                                    // 射程範囲内？
-                    //                                                    string argattr35 = "移動後攻撃可";
-                    //                                                    if (checku.IsWeaponClassifiedAs(j, argattr35) & checku.Mode != "固定")
+                    //                                                    if (checku.IsWeaponClassifiedAs(j, "移動後攻撃可") & checku.Mode != "固定")
                     //                                                    {
                     //                                                        // 合体技は移動後攻撃可能でも移動を前提にしない
                     //                                                        // (移動後の位置では使えない危険性があるため)
-                    //                                                        string argattr33 = "合";
-                    //                                                        string argattr34 = "Ｐ";
-                    //                                                        if (checku.IsWeaponClassifiedAs(j, argattr33) & checku.IsWeaponClassifiedAs(j, argattr34))
+                    //                                                        if (checku.IsWeaponClassifiedAs(j, "合") & checku.IsWeaponClassifiedAs(j, "Ｐ"))
                     //                                                        {
                     //                                                            // 移動して攻撃は出来ない
                     //                                                            if (checku.IsTargetWithinRange(j, t))
@@ -7342,11 +6780,9 @@ namespace SRCCore
                     //                        {
                     //                            case "オ":
                     //                                {
-                    //                                    object argIndex43 = "オーラ使用不能";
-                    //                                    if (!withBlock1.IsConditionSatisfied(argIndex43))
+                    //                                    if (!withBlock1.IsConditionSatisfied("オーラ使用不能"))
                     //                                    {
-                    //                                        string argsname2 = "オーラ";
-                    //                                        if (withBlock1.IsSkillAvailable(argsname2))
+                    //                                        if (withBlock1.IsSkillAvailable("オーラ"))
                     //                                        {
                     //                                            sp_prob = sp_prob + 0.3d;
                     //                                        }
@@ -7361,11 +6797,9 @@ namespace SRCCore
 
                     //                            case "超":
                     //                                {
-                    //                                    object argIndex44 = "超能力使用不能";
-                    //                                    if (!withBlock1.IsConditionSatisfied(argIndex44))
+                    //                                    if (!withBlock1.IsConditionSatisfied("超能力使用不能"))
                     //                                    {
-                    //                                        string argsname3 = "超能力";
-                    //                                        if (withBlock1.IsSkillAvailable(argsname3))
+                    //                                        if (withBlock1.IsSkillAvailable("超能力"))
                     //                                        {
                     //                                            sp_prob = sp_prob + 0.3d;
                     //                                        }
@@ -7380,11 +6814,9 @@ namespace SRCCore
 
                     //                            case "シ":
                     //                                {
-                    //                                    object argIndex45 = "同調率使用不能";
-                    //                                    if (!withBlock1.IsConditionSatisfied(argIndex45))
+                    //                                    if (!withBlock1.IsConditionSatisfied("同調率使用不能"))
                     //                                    {
-                    //                                        string argsname4 = "同調率";
-                    //                                        if (withBlock1.IsSkillAvailable(argsname4))
+                    //                                        if (withBlock1.IsSkillAvailable("同調率"))
                     //                                        {
                     //                                            sp_prob = sp_prob + 0.3d;
                     //                                        }
@@ -7399,13 +6831,9 @@ namespace SRCCore
 
                     //                            case "サ":
                     //                                {
-                    //                                    object argIndex46 = "超感覚使用不能";
-                    //                                    object argIndex47 = "知覚強化使用不能";
-                    //                                    if (!withBlock1.IsConditionSatisfied(argIndex46) & !withBlock1.IsConditionSatisfied(argIndex47))
+                    //                                    if (!withBlock1.IsConditionSatisfied("超感覚使用不能") & !withBlock1.IsConditionSatisfied("知覚強化使用不能"))
                     //                                    {
-                    //                                        string argsname5 = "超感覚";
-                    //                                        string argsname6 = "知覚強化";
-                    //                                        if (withBlock1.IsSkillAvailable(argsname5) | withBlock1.IsSkillAvailable(argsname6))
+                    //                                        if (withBlock1.IsSkillAvailable("超感覚") | withBlock1.IsSkillAvailable("知覚強化"))
                     //                                        {
                     //                                            sp_prob = sp_prob + 0.3d;
                     //                                        }
@@ -7420,11 +6848,9 @@ namespace SRCCore
 
                     //                            case "霊":
                     //                                {
-                    //                                    object argIndex48 = "霊力使用不能";
-                    //                                    if (!withBlock1.IsConditionSatisfied(argIndex48))
+                    //                                    if (!withBlock1.IsConditionSatisfied("霊力使用不能"))
                     //                                    {
-                    //                                        string argsname7 = "霊力";
-                    //                                        if (withBlock1.IsSkillAvailable(argsname7))
+                    //                                        if (withBlock1.IsSkillAvailable("霊力"))
                     //                                        {
                     //                                            sp_prob = sp_prob + 0.3d;
                     //                                        }
@@ -7441,8 +6867,7 @@ namespace SRCCore
                     //                                {
                     //                                    // 術は射撃を魔力と表示するためだけに付いている場合があるため
                     //                                    // 1レベル以下の場合は武器、アビリティを確認
-                    //                                    object argIndex49 = "術使用不能";
-                    //                                    if (!withBlock1.IsConditionSatisfied(argIndex49))
+                    //                                    if (!withBlock1.IsConditionSatisfied("術使用不能"))
                     //                                    {
                     //                                        if (withBlock1.SkillLevel("術") > 1d)
                     //                                        {
@@ -7459,11 +6884,9 @@ namespace SRCCore
 
                     //                            case "技":
                     //                                {
-                    //                                    object argIndex50 = "技使用不能";
-                    //                                    if (!withBlock1.IsConditionSatisfied(argIndex50))
+                    //                                    if (!withBlock1.IsConditionSatisfied("技使用不能"))
                     //                                    {
-                    //                                        string argsname8 = "技";
-                    //                                        if (withBlock1.IsSkillAvailable(argsname8))
+                    //                                        if (withBlock1.IsSkillAvailable("技"))
                     //                                        {
                     //                                            sp_prob = sp_prob + 0.3d;
                     //                                        }
@@ -7523,16 +6946,13 @@ namespace SRCCore
                 sp_prob = sp_prob * ct_prob;
 
                 // バリア等で攻撃が防がれてしまう場合は特殊効果は発動しない
-                string argtarea = "";
-                string argattr36 = "無";
-                if (selectedWeapon.WeaponPower(argtarea) > 0 & dmg == 0 & !selectedWeapon.IsWeaponClassifiedAs(argattr36))
+                if (selectedWeapon.WeaponPower("") > 0 & dmg == 0 & !selectedWeapon.IsWeaponClassifiedAs("無"))
                 {
                     sp_prob = 0d;
                 }
 
                 // 必ず発動する特殊効果を考慮
-                string argattr37 = "吸";
-                if (selectedWeapon.IsWeaponClassifiedAs(argattr37))
+                if (selectedWeapon.IsWeaponClassifiedAs("吸"))
                 {
                     if (u.HP < u.MaxHP)
                     {
@@ -7540,14 +6960,12 @@ namespace SRCCore
                     }
                 }
 
-                string argattr38 = "減";
-                if (selectedWeapon.IsWeaponClassifiedAs(argattr38))
+                if (selectedWeapon.IsWeaponClassifiedAs("減"))
                 {
                     sp_prob = sp_prob + 50 * dmg / t.MaxHP;
                 }
 
-                string argattr39 = "奪";
-                if (selectedWeapon.IsWeaponClassifiedAs(argattr39))
+                if (selectedWeapon.IsWeaponClassifiedAs("奪"))
                 {
                     sp_prob = sp_prob + 50 * dmg / t.MaxHP;
                 }
@@ -7555,8 +6973,7 @@ namespace SRCCore
                 // 先制攻撃の場合は特殊効果を有利に判定
                 if (Strings.InStr(amode, "反撃") > 0)
                 {
-                    string argattr40 = "先";
-                    if (selectedWeapon.IsWeaponClassifiedAs(argattr40) | u.UsedCounterAttack < u.MaxCounterAttack())
+                    if (selectedWeapon.IsWeaponClassifiedAs("先") | u.UsedCounterAttack < u.MaxCounterAttack())
                     {
                         sp_prob = 1.5d * sp_prob;
                     }
@@ -7589,14 +7006,11 @@ namespace SRCCore
                     else
                     {
                         // クリティカルの影響を加味してダメージの期待値を計算
-                        string argoname3 = "ダメージ倍率低下";
-                        if (Expression.IsOptionDefined(argoname3))
+                        if (Expression.IsOptionDefined("ダメージ倍率低下"))
                         {
-                            string argattr42 = "痛";
-                            if (selectedWeapon.IsWeaponClassifiedAs(argattr42))
+                            if (selectedWeapon.IsWeaponClassifiedAs("痛"))
                             {
-                                string argattr41 = "痛";
-                                exp_dmg = (int)(dmg + (0.1d * selectedWeapon.WeaponLevel(argattr41) * dmg * ct_prob) / 100);
+                                exp_dmg = (int)(dmg + (0.1d * selectedWeapon.WeaponLevel("痛") * dmg * ct_prob) / 100);
                             }
                             else
                             {
@@ -7605,11 +7019,9 @@ namespace SRCCore
                         }
                         else
                         {
-                            string argattr44 = "痛";
-                            if (selectedWeapon.IsWeaponClassifiedAs(argattr44))
+                            if (selectedWeapon.IsWeaponClassifiedAs("痛"))
                             {
-                                string argattr43 = "痛";
-                                exp_dmg = (int)(dmg + (0.25d * selectedWeapon.WeaponLevel(argattr43) * dmg * ct_prob) / 100);
+                                exp_dmg = (int)(dmg + (0.25d * selectedWeapon.WeaponLevel("痛") * dmg * ct_prob) / 100);
                             }
                             else
                             {
@@ -7635,8 +7047,7 @@ namespace SRCCore
 
                 // 敵の破壊確率を計算
                 destroy_prob = 0;
-                string argfname13 = "防御不可";
-                if (t.Party == "味方" & !t.IsFeatureAvailable(argfname13))
+                if (t.Party == "味方" & !t.IsFeatureAvailable("防御不可"))
                 {
                     if (dmg >= 2 * t.HP)
                     {
@@ -7678,16 +7089,14 @@ namespace SRCCore
                 // 先制攻撃の場合は敵を破壊出来る攻撃を有利に判定
                 if (Strings.InStr(amode, "反撃") > 0)
                 {
-                    string argattr45 = "先";
-                    if (selectedWeapon.IsWeaponClassifiedAs(argattr45) | u.UsedCounterAttack < u.MaxCounterAttack())
+                    if (selectedWeapon.IsWeaponClassifiedAs("先") | u.UsedCounterAttack < u.MaxCounterAttack())
                     {
                         destroy_prob = (int)(1.5d * destroy_prob);
                     }
                 }
 
                 // ＥＮ消耗攻撃の使用は慎重に
-                string argattr46 = "消";
-                if (selectedWeapon.IsWeaponClassifiedAs(argattr46))
+                if (selectedWeapon.IsWeaponClassifiedAs("消"))
                 {
                     if (u.Party == "味方")
                     {
@@ -7799,8 +7208,7 @@ namespace SRCCore
             //var is_target_inferior = default(bool);
 
             //// マップ攻撃に対しては防御行動が取れない
-            //string argattr = "Ｍ";
-            //if (u.IsWeaponClassifiedAs(w, argattr))
+            //if (u.IsWeaponClassifiedAs(w, "Ｍ"))
             //{
             //    return SelectDefenseRet;
             //}
@@ -7808,8 +7216,7 @@ namespace SRCCore
             //{
             //    var withBlock = t;
             //    // 踊っている場合は回避扱い
-            //    object argIndex1 = "踊り";
-            //    if (withBlock.IsConditionSatisfied(argIndex1))
+            //    if (withBlock.IsConditionSatisfied("踊り"))
             //    {
             //        // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
             //        SelectDefenseRet = "回避";
@@ -7817,15 +7224,13 @@ namespace SRCCore
             //    }
 
             //    // 狂戦士状態の際は防御行動を取らない
-            //    object argIndex2 = "狂戦士";
-            //    if (withBlock.IsConditionSatisfied(argIndex2))
+            //    if (withBlock.IsConditionSatisfied("狂戦士"))
             //    {
             //        return SelectDefenseRet;
             //    }
 
             //    // 無防備状態のユニットは防御行動が取れない
-            //    string argsptype = "無防備";
-            //    if (withBlock.IsUnderSpecialPowerEffect(argsptype))
+            //    if (withBlock.IsUnderSpecialPowerEffect("無防備"))
             //    {
             //        return SelectDefenseRet;
             //    }
@@ -7834,8 +7239,7 @@ namespace SRCCore
             //    {
             //        // 「敵ユニット防御使用」オプションを選択している場合にのみ敵ユニットは
             //        // 防御行動を行う
-            //        string argoname = "敵ユニット防御使用";
-            //        if (!Expression.IsOptionDefined(argoname))
+            //        if (!Expression.IsOptionDefined("敵ユニット防御使用"))
             //        {
             //            return SelectDefenseRet;
             //        }
@@ -7854,9 +7258,7 @@ namespace SRCCore
             //    if (withBlock.MaxAction() == 0)
             //    {
             //        // チャージ中、消耗中は常に防御、それ以外の場合は防御行動が取れない
-            //        object argIndex3 = "チャージ";
-            //        object argIndex4 = "消耗";
-            //        if (withBlock.IsConditionSatisfied(argIndex3) | withBlock.IsConditionSatisfied(argIndex4))
+            //        if (withBlock.IsConditionSatisfied("チャージ") | withBlock.IsConditionSatisfied("消耗"))
             //        {
             //            // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
             //            SelectDefenseRet = "防御";
@@ -7870,10 +7272,7 @@ namespace SRCCore
             //    prob = GeneralLib.MinLng(u.HitProbability(w, t, true), 100);
 
             //    // ダミーを持っている場合、相手の攻撃は無効
-            //    string argfname = "ダミー";
-            //    object argIndex5 = "ダミー破壊";
-            //    object argIndex6 = "ダミー";
-            //    if (withBlock.IsFeatureAvailable(argfname) & withBlock.ConditionLevel(argIndex5) < withBlock.FeatureLevel(argIndex6))
+            //    if (withBlock.IsFeatureAvailable("ダミー") & withBlock.ConditionLevel("ダミー破壊") < withBlock.FeatureLevel("ダミー"))
             //    {
             //        prob = 0;
             //    }
@@ -7891,10 +7290,7 @@ namespace SRCCore
             //        tprob = GeneralLib.MinLng(withBlock.HitProbability(tw, u, true), 100);
 
             //        // ダミーを持っている場合は反撃は無効
-            //        string argfname1 = "ダミー";
-            //        object argIndex7 = "ダミー破壊";
-            //        object argIndex8 = "ダミー";
-            //        if (u.IsFeatureAvailable(argfname1) & u.ConditionLevel(argIndex7) < u.FeatureLevel(argIndex8))
+            //        if (u.IsFeatureAvailable("ダミー") & u.ConditionLevel("ダミー破壊") < u.FeatureLevel("ダミー"))
             //        {
             //            prob = 0;
             //        }
@@ -7910,8 +7306,7 @@ namespace SRCCore
             //        }
 
             //        // 気合の一撃は防御を優先し、やり過ごす
-            //        string argsptype1 = "ダメージ増加";
-            //        if (u.IsUnderSpecialPowerEffect(argsptype1))
+            //        if (u.IsUnderSpecialPowerEffect("ダメージ増加"))
             //        {
             //            if (2 * dmg * prob > tdmg * tprob & tdmg < u.HP)
             //            {
@@ -7928,8 +7323,7 @@ namespace SRCCore
             //        }
 
             //        // 気合の一撃は防御を優先し、やり過ごす
-            //        string argsptype2 = "ダメージ増加";
-            //        if (u.IsUnderSpecialPowerEffect(argsptype2))
+            //        if (u.IsUnderSpecialPowerEffect("ダメージ増加"))
             //        {
             //            if (dmg * prob > tdmg * tprob & tdmg < u.HP)
             //            {
@@ -7948,12 +7342,9 @@ namespace SRCCore
             //    if (tw > 0)
             //    {
             //        // 先制攻撃可能？
-            //        string argattr3 = "後";
-            //        if (!withBlock.IsWeaponClassifiedAs(tw, argattr3))
+            //        if (!withBlock.IsWeaponClassifiedAs(tw, "後"))
             //        {
-            //            string argattr1 = "先";
-            //            string argattr2 = "後";
-            //            if (withBlock.IsWeaponClassifiedAs(tw, argattr1) | u.IsWeaponClassifiedAs(w, argattr2) | withBlock.MaxCounterAttack() > withBlock.UsedCounterAttack)
+            //            if (withBlock.IsWeaponClassifiedAs(tw, "先") | u.IsWeaponClassifiedAs(w, "後") | withBlock.MaxCounterAttack() > withBlock.UsedCounterAttack)
             //            {
             //                if (tdmg >= u.HP & tprob > 70)
             //                {
@@ -7978,9 +7369,7 @@ namespace SRCCore
             //    // 防御側が劣勢なので反撃は行わず、防御行動を選択
 
             //    // 命中すれば一撃死で、防御すれば破壊をまぬがれる攻撃は必ず防御
-            //    string argfname2 = "防御不可";
-            //    string argattr4 = "殺";
-            //    if (dmg > withBlock.HP & dmg / 2 < withBlock.HP & !withBlock.IsFeatureAvailable(argfname2) & !u.IsWeaponClassifiedAs(w, argattr4))
+            //    if (dmg > withBlock.HP & dmg / 2 < withBlock.HP & !withBlock.IsFeatureAvailable("防御不可") & !u.IsWeaponClassifiedAs(w, "殺"))
             //    {
             //        // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
             //        SelectDefenseRet = "防御";
@@ -7988,9 +7377,7 @@ namespace SRCCore
             //    }
 
             //    // 相手の命中率が低い場合は回避
-            //    string argfname3 = "回避不可";
-            //    object argIndex9 = "移動不能";
-            //    if (prob < 50 & !withBlock.IsFeatureAvailable(argfname3) & !withBlock.IsConditionSatisfied(argIndex9))
+            //    if (prob < 50 & !withBlock.IsFeatureAvailable("回避不可") & !withBlock.IsConditionSatisfied("移動不能"))
             //    {
             //        // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
             //        SelectDefenseRet = "回避";
@@ -7998,9 +7385,7 @@ namespace SRCCore
             //    }
 
             //    // 防御すれば一撃死をまぬがれる場合は防御
-            //    string argfname4 = "防御不可";
-            //    string argattr5 = "殺";
-            //    if (dmg / 2 < withBlock.HP & !withBlock.IsFeatureAvailable(argfname4) & !u.IsWeaponClassifiedAs(w, argattr5))
+            //    if (dmg / 2 < withBlock.HP & !withBlock.IsFeatureAvailable("防御不可") & !u.IsWeaponClassifiedAs(w, "殺"))
             //    {
             //        // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
             //        SelectDefenseRet = "防御";
@@ -8008,9 +7393,7 @@ namespace SRCCore
             //    }
 
             //    // どうしようもないのでとりあえず回避
-            //    string argfname5 = "回避不可";
-            //    object argIndex10 = "移動不能";
-            //    if (!withBlock.IsFeatureAvailable(argfname5) & !withBlock.IsConditionSatisfied(argIndex10))
+            //    if (!withBlock.IsFeatureAvailable("回避不可") & !withBlock.IsConditionSatisfied("移動不能"))
             //    {
             //        // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
             //        SelectDefenseRet = "回避";
@@ -8018,8 +7401,7 @@ namespace SRCCore
             //    }
 
             //    // 回避も出来ないので防御……
-            //    string argfname6 = "防御不可";
-            //    if (!withBlock.IsFeatureAvailable(argfname6))
+            //    if (!withBlock.IsFeatureAvailable("防御不可"))
             //    {
             //        // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
             //        SelectDefenseRet = "防御";
@@ -8040,22 +7422,19 @@ namespace SRCCore
             //for (w = 1; w <= loopTo; w++)
             //{
             //    // 武器が使用可能？
-            //    string argref_mode = "移動前";
-            //    if (!u.IsWeaponAvailable(w, argref_mode))
+            //    if (!u.IsWeaponAvailable(w, "移動前"))
             //    {
             //        goto NextWeapon;
             //    }
 
             //    // マップ攻撃は武器選定外
-            //    string argattr = "Ｍ";
-            //    if (u.IsWeaponClassifiedAs(w, argattr))
+            //    if (u.IsWeaponClassifiedAs(w, "Ｍ"))
             //    {
             //        goto NextWeapon;
             //    }
 
             //    // 合体技は自分から攻撃をかける場合にのみ使用
-            //    string argattr1 = "合";
-            //    if (u.IsWeaponClassifiedAs(w, argattr1))
+            //    if (u.IsWeaponClassifiedAs(w, "合"))
             //    {
             //        goto NextWeapon;
             //    }

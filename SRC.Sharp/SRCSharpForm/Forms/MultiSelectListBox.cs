@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 
@@ -280,8 +280,7 @@ namespace Project1
             //{
             //    Unit localItem() { var tmp = GUI.ListItemID; object argIndex1 = tmp[1]; var ret = SRC.UList.Item(ref argIndex1); return ret; }
 
-            //    var argu = localItem();
-            //    Status.DisplayUnitStatus(ref argu);
+            //    Status.DisplayUnitStatus(ref localItem());
             //}
         }
 
@@ -459,8 +458,7 @@ namespace Project1
             //}
 
             //var tmp = GUI.ListItemID;
-            //object argIndex1 = tmp[lstItems.SelectedIndex + 1];
-            //u = SRC.UList.Item(ref argIndex1);
+            //u = SRC.UList.Item(ref tmp[lstItems.SelectedIndex + 1]);
             //if (!ReferenceEquals(Status.DisplayedUnit, u))
             //{
             //    // ユニット選択中だけ

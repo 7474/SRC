@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -241,8 +241,7 @@ namespace SRCCore.Models
                                 case "女性":
                                 case "-":
                                     {
-                                        string argstr_Renamed = pd.Nickname;
-                                        pd.KanaName = GeneralLib.StrToHiragana(argstr_Renamed);
+                                        pd.KanaName = GeneralLib.StrToHiragana(pd.Nickname);
                                         pd.Nickname = argstr_Renamed;
                                         pd.Sex = buf2;
                                         break;
@@ -270,10 +269,8 @@ namespace SRCCore.Models
                                 case "女性":
                                 case "-":
                                     {
-                                        string argmsg = "読み仮名の設定が抜けています。";
-                                        SRC.AddDataError(reader.InvalidData(@argmsg, data_name));
-                                        string argstr_Renamed1 = pd.Nickname;
-                                        pd.KanaName = GeneralLib.StrToHiragana(argstr_Renamed1);
+                                        SRC.AddDataError(reader.InvalidData(@"読み仮名の設定が抜けています。", data_name));
+                                        pd.KanaName = GeneralLib.StrToHiragana(pd.Nickname);
                                         pd.Nickname = argstr_Renamed1;
                                         break;
                                     }
@@ -301,8 +298,7 @@ namespace SRCCore.Models
 
                                 default:
                                     {
-                                        string argmsg1 = "性別の設定が間違っています。";
-                                        SRC.AddDataError(reader.InvalidData(@argmsg1, data_name));
+                                        SRC.AddDataError(reader.InvalidData(@"性別の設定が間違っています。", data_name));
                                         break;
                                     }
                             }
@@ -312,8 +308,7 @@ namespace SRCCore.Models
 
                     default:
                         {
-                            string argstr_Renamed2 = pd.Nickname;
-                            pd.KanaName = GeneralLib.StrToHiragana(argstr_Renamed2);
+                            pd.KanaName = GeneralLib.StrToHiragana(pd.Nickname);
                             pd.Nickname = argstr_Renamed2;
                             break;
                         }
@@ -329,8 +324,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    string argmsg2 = "クラスの設定が間違っています。";
-                    SRC.AddDataError(reader.InvalidData(@argmsg2, data_name));
+                    SRC.AddDataError(reader.InvalidData(@"クラスの設定が間違っています。", data_name));
                 }
 
                 // 地形適応
@@ -343,8 +337,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    string argmsg3 = "地形適応の設定が間違っています。";
-                    SRC.AddDataError(reader.InvalidData(@argmsg3, data_name));
+                    SRC.AddDataError(reader.InvalidData(@"地形適応の設定が間違っています。", data_name));
                     pd.Adaption = "AAAA";
                 }
 
@@ -356,8 +349,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    string argmsg4 = "経験値の設定が間違っています。";
-                    SRC.AddDataError(reader.InvalidData(@argmsg4, data_name));
+                    SRC.AddDataError(reader.InvalidData(@"経験値の設定が間違っています。", data_name));
                 }
 
                 // 特殊能力データ
@@ -461,8 +453,7 @@ namespace SRCCore.Models
                                 }
                                 else
                                 {
-                                    string argmsg5 = "行頭から" + SrcFormatter.Format((object)((i + 1) / 2)) + "番目の特殊能力名の設定が間違っています。";
-                                    SRC.AddDataError(reader.InvalidData(@argmsg5, data_name));
+                                    SRC.AddDataError(reader.InvalidData(@"行頭から" + SrcFormatter.Format((object)((i + 1) / 2)) + "番目の特殊能力名の設定が間違っています。", data_name));
                                 }
                             }
 
@@ -510,15 +501,13 @@ namespace SRCCore.Models
                                         // レベル指定のみあり
                                         if (!Information.IsNumeric(Strings.Mid(buf2, j + 2)))
                                         {
-                                            string argmsg6 = "特殊能力「" + aname + "」のレベル指定が不正です。";
-                                            SRC.AddDataError(reader.InvalidData(@argmsg6, data_name));
+                                            SRC.AddDataError(reader.InvalidData(@"特殊能力「" + aname + "」のレベル指定が不正です。", data_name));
                                         }
 
                                         alevel = Conversions.ToDouble(Strings.Mid(buf2, j + 2));
                                         if (string.IsNullOrEmpty(aname))
                                         {
-                                            string argmsg7 = "行頭から" + SrcFormatter.Format((object)((i + 1) / 2)) + "番目の特殊能力名の設定が間違っています。";
-                                            SRC.AddDataError(reader.InvalidData(@argmsg7, data_name));
+                                            SRC.AddDataError(reader.InvalidData(@"行頭から" + SrcFormatter.Format((object)((i + 1) / 2)) + "番目の特殊能力名の設定が間違っています。", data_name));
                                         }
 
                                         break;
@@ -542,13 +531,11 @@ namespace SRCCore.Models
                         {
                             if (alevel > 0d)
                             {
-                                string argmsg8 = "特殊能力「" + aname + "Lv" + SrcFormatter.Format((object)alevel) + "」の修得レベルが間違っています。";
-                                SRC.AddDataError(reader.InvalidData(@argmsg8, data_name));
+                                SRC.AddDataError(reader.InvalidData(@"特殊能力「" + aname + "Lv" + SrcFormatter.Format((object)alevel) + "」の修得レベルが間違っています。", data_name));
                             }
                             else
                             {
-                                string argmsg9 = "特殊能力「" + aname + "」の修得レベルが間違っています。";
-                                SRC.AddDataError(reader.InvalidData(@argmsg9, data_name));
+                                SRC.AddDataError(reader.InvalidData(@"特殊能力「" + aname + "」の修得レベルが間違っています。", data_name));
                             }
 
                             pd.AddSkill(aname, alevel, adata, 1);
@@ -563,13 +550,11 @@ namespace SRCCore.Models
                             {
                                 if (alevel > 0d)
                                 {
-                                    string argmsg10 = "特殊能力「" + aname + "Lv" + SrcFormatter.Format((object)alevel) + "」の修得レベルが間違っています。";
-                                    SRC.AddDataError(reader.InvalidData(@argmsg10, data_name));
+                                    SRC.AddDataError(reader.InvalidData(@"特殊能力「" + aname + "Lv" + SrcFormatter.Format((object)alevel) + "」の修得レベルが間違っています。", data_name));
                                 }
                                 else
                                 {
-                                    string argmsg11 = "特殊能力「" + aname + "」の修得レベルが間違っています。";
-                                    SRC.AddDataError(reader.InvalidData(@argmsg11, data_name));
+                                    SRC.AddDataError(reader.InvalidData(@"特殊能力「" + aname + "」の修得レベルが間違っています。", data_name));
                                 }
                             }
 
@@ -735,13 +720,11 @@ namespace SRCCore.Models
                         {
                             if (alevel > 0d)
                             {
-                                string argmsg12 = "特殊能力「" + aname + "Lv" + SrcFormatter.Format((object)alevel) + "」の修得レベルが間違っています。";
-                                SRC.AddDataError(reader.InvalidData(@argmsg12, data_name));
+                                SRC.AddDataError(reader.InvalidData(@"特殊能力「" + aname + "Lv" + SrcFormatter.Format((object)alevel) + "」の修得レベルが間違っています。", data_name));
                             }
                             else
                             {
-                                string argmsg13 = "特殊能力「" + aname + "」の修得レベルが間違っています。";
-                                SRC.AddDataError(reader.InvalidData(@argmsg13, data_name));
+                                SRC.AddDataError(reader.InvalidData(@"特殊能力「" + aname + "」の修得レベルが間違っています。", data_name));
                             }
 
                             pd.AddSkill(aname, alevel, adata, 1);
@@ -754,13 +737,11 @@ namespace SRCCore.Models
                     {
                         if (alevel > 0d)
                         {
-                            string argmsg14 = "特殊能力「" + aname + "Lv" + SrcFormatter.Format((object)alevel) + "」の修得レベルが間違っています。";
-                            SRC.AddDataError(reader.InvalidData(@argmsg14, data_name));
+                            SRC.AddDataError(reader.InvalidData(@"特殊能力「" + aname + "Lv" + SrcFormatter.Format((object)alevel) + "」の修得レベルが間違っています。", data_name));
                         }
                         else
                         {
-                            string argmsg15 = "特殊能力「" + aname + "」の修得レベルが間違っています。";
-                            SRC.AddDataError(reader.InvalidData(@argmsg15, data_name));
+                            SRC.AddDataError(reader.InvalidData(@"特殊能力「" + aname + "」の修得レベルが間違っています。", data_name));
                         }
                     }
 
@@ -791,8 +772,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    string argmsg16 = "格闘攻撃力の設定が間違っています。";
-                    SRC.AddDataError(reader.InvalidData(@argmsg16, data_name));
+                    SRC.AddDataError(reader.InvalidData(@"格闘攻撃力の設定が間違っています。", data_name));
                 }
 
                 // 射撃
@@ -810,8 +790,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    string argmsg17 = "射撃攻撃力の設定が間違っています。";
-                    SRC.AddDataError(reader.InvalidData(@argmsg17, data_name));
+                    SRC.AddDataError(reader.InvalidData(@"射撃攻撃力の設定が間違っています。", data_name));
                 }
 
                 // 命中
@@ -829,8 +808,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    string argmsg18 = "命中の設定が間違っています。";
-                    SRC.AddDataError(reader.InvalidData(@argmsg18, data_name));
+                    SRC.AddDataError(reader.InvalidData(@"命中の設定が間違っています。", data_name));
                 }
 
                 // 回避
@@ -848,8 +826,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    string argmsg19 = "回避の設定が間違っています。";
-                    SRC.AddDataError(reader.InvalidData(@argmsg19, data_name));
+                    SRC.AddDataError(reader.InvalidData(@"回避の設定が間違っています。", data_name));
                 }
 
                 // 技量
@@ -867,8 +844,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    string argmsg20 = "技量の設定が間違っています。";
-                    SRC.AddDataError(reader.InvalidData(@argmsg20, data_name));
+                    SRC.AddDataError(reader.InvalidData(@"技量の設定が間違っています。", data_name));
                 }
 
                 // 反応
@@ -886,8 +862,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    string argmsg21 = "反応の設定が間違っています。";
-                    SRC.AddDataError(reader.InvalidData(@argmsg21, data_name));
+                    SRC.AddDataError(reader.InvalidData(@"反応の設定が間違っています。", data_name));
                 }
 
                 // 性格
@@ -899,8 +874,7 @@ namespace SRCCore.Models
 
                 if (Strings.InStr(buf2, ",") > 0)
                 {
-                    string argmsg22 = "行末に余分なコンマが付けられています。";
-                    SRC.AddDataError(reader.InvalidData(@argmsg22, data_name));
+                    SRC.AddDataError(reader.InvalidData(@"行末に余分なコンマが付けられています。", data_name));
                     buf2 = Strings.Trim(Strings.Left(buf2, Strings.InStr(buf2, ",") - 1));
                 }
 
@@ -910,8 +884,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    string argmsg23 = "性格の設定が間違っています。";
-                    SRC.AddDataError(reader.InvalidData(@argmsg23, data_name));
+                    SRC.AddDataError(reader.InvalidData(@"性格の設定が間違っています。", data_name));
                 }
 
                 // スペシャルパワー
@@ -964,8 +937,7 @@ namespace SRCCore.Models
                             }
                             else
                             {
-                                string argmsg24 = "ＳＰの設定が間違っています。";
-                                SRC.AddDataError(reader.InvalidData(@argmsg24, data_name));
+                                SRC.AddDataError(reader.InvalidData(@"ＳＰの設定が間違っています。", data_name));
                                 pd.SP = 1;
                             }
 
@@ -981,8 +953,7 @@ namespace SRCCore.Models
                                 // ＳＰ消費量
                                 if (Strings.InStr(sname, "=") > 0)
                                 {
-                                    string argexpr = Strings.Mid(sname, Strings.InStr(sname, "=") + 1);
-                                    sp_cost = GeneralLib.StrToLng(argexpr);
+                                    sp_cost = GeneralLib.StrToLng(Strings.Mid(sname, Strings.InStr(sname, "=") + 1));
                                     sname = Strings.Left(sname, Strings.InStr(sname, "=") - 1);
                                 }
                                 else
@@ -1008,18 +979,15 @@ namespace SRCCore.Models
 
                                 if (string.IsNullOrEmpty(sname))
                                 {
-                                    string argmsg25 = "スペシャルパワーの指定が抜けています。";
-                                    SRC.AddDataError(reader.InvalidData(@argmsg25, data_name));
+                                    SRC.AddDataError(reader.InvalidData(@"スペシャルパワーの指定が抜けています。", data_name));
                                 }
                                 else if (!localIsDefined())
                                 {
-                                    string argmsg26 = sname + "というスペシャルパワーは存在しません。";
-                                    SRC.AddDataError(reader.InvalidData(@argmsg26, data_name));
+                                    SRC.AddDataError(reader.InvalidData(@sname + "というスペシャルパワーは存在しません。", data_name));
                                 }
                                 else if (!Information.IsNumeric(buf2))
                                 {
-                                    string argmsg27 = "スペシャルパワー「" + sname + "」の獲得レベルが間違っています。";
-                                    SRC.AddDataError(reader.InvalidData(@argmsg27, data_name));
+                                    SRC.AddDataError(reader.InvalidData(@"スペシャルパワー「" + sname + "」の獲得レベルが間違っています。", data_name));
                                     pd.AddSpecialPower(sname, 1, sp_cost);
                                 }
                                 else
@@ -1032,8 +1000,7 @@ namespace SRCCore.Models
 
                             if (!string.IsNullOrEmpty(buf))
                             {
-                                string argmsg28 = "スペシャルパワー「" + Strings.Trim(sname) + "」の獲得レベル指定が抜けています。";
-                                SRC.AddDataError(reader.InvalidData(@argmsg28, data_name));
+                                SRC.AddDataError(reader.InvalidData(@"スペシャルパワー「" + Strings.Trim(sname) + "」の獲得レベル指定が抜けています。", data_name));
                             }
 
                             break;
@@ -1063,8 +1030,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    string argmsg29 = "ビットマップの設定が間違っています。";
-                    SRC.AddDataError(reader.InvalidData(@argmsg29, data_name));
+                    SRC.AddDataError(reader.InvalidData(@"ビットマップの設定が間違っています。", data_name));
                     pd.IsBitmapMissing = true;
                 }
 
@@ -1086,16 +1052,14 @@ namespace SRCCore.Models
 
                     case var case1 when case1 == "":
                         {
-                            string argmsg30 = "ＭＩＤＩの設定が抜けています。";
-                            SRC.AddDataError(reader.InvalidData(@argmsg30, data_name));
+                            SRC.AddDataError(reader.InvalidData(@"ＭＩＤＩの設定が抜けています。", data_name));
                             pd.Bitmap = "-.mid";
                             break;
                         }
 
                     default:
                         {
-                            string argmsg31 = "ＭＩＤＩの設定が間違っています。";
-                            SRC.AddDataError(reader.InvalidData(@argmsg31, data_name));
+                            SRC.AddDataError(reader.InvalidData(@"ＭＩＤＩの設定が間違っています。", data_name));
                             pd.Bitmap = "-.mid";
                             break;
                         }

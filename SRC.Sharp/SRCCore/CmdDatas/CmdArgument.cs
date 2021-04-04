@@ -1,4 +1,4 @@
-﻿namespace SRCCore.CmdDatas
+namespace SRCCore.CmdDatas
 {
     public class CmdArgument
     {

@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -62,8 +62,7 @@ namespace SRCCore.Commands
             //string BGM;
             //{
             //    var withBlock = SelectedUnit;
-            //    string argfname = "アビリティＢＧＭ";
-            //    if (withBlock.IsFeatureAvailable(argfname))
+            //    if (withBlock.IsFeatureAvailable("アビリティＢＧＭ"))
             //    {
             //        var loopTo = withBlock.CountFeature();
             //        for (i = 1; i <= loopTo; i++)
@@ -80,8 +79,7 @@ namespace SRCCore.Commands
 
             //                string localFeatureData1() { object argIndex1 = i; var ret = withBlock.FeatureData(argIndex1); return ret; }
 
-            //                string argmidi_name = Strings.Mid(localFeatureData(), Strings.InStr(localFeatureData1(), " ") + 1);
-            //                BGM = Sound.SearchMidiFile(argmidi_name);
+            //                BGM = Sound.SearchMidiFile(Strings.Mid(localFeatureData(), Strings.InStr(localFeatureData1(), " ") + 1));
             //                if (Strings.Len(BGM) > 0)
             //                {
             //                    Sound.ChangeBGM(BGM);
@@ -103,8 +101,7 @@ namespace SRCCore.Commands
             //    var loopTo1 = SelectedUnit.Ability(SelectedAbility).CountEffect();
             //    for (i = 1; i <= loopTo1; i++)
             //    {
-            //        object argIndex1 = i;
-            //        if (SelectedUnit.Ability(SelectedAbility).EffectType(argIndex1) == "変身")
+            //        if (SelectedUnit.Ability(SelectedAbility).EffectType(i) == "変身")
             //        {
             //            is_transformation = true;
             //            break;
@@ -196,8 +193,7 @@ namespace SRCCore.Commands
             //            // カーソル自動移動
             //            if (SRC.AutoMoveCursor)
             //            {
-            //                string argcursor_mode = "ユニット選択";
-            //                GUI.MoveCursorPos(argcursor_mode, SelectedUnit);
+            //                GUI.MoveCursorPos("ユニット選択", SelectedUnit);
             //            }
 
             //            Status.DisplayUnitStatus(SelectedUnit);
@@ -220,8 +216,7 @@ namespace SRCCore.Commands
             //    // マップ型アビリティかどうかで今後のコマンド処理の進行の仕方が異なる
             //    if (is_item)
             //    {
-            //        string argattr = "Ｍ";
-            //        if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, argattr))
+            //        if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ"))
             //        {
             //            SelectedCommand = "マップアイテム";
             //        }
@@ -232,8 +227,7 @@ namespace SRCCore.Commands
             //    }
             //    else
             //    {
-            //        string argattr1 = "Ｍ";
-            //        if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, argattr1))
+            //        if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ"))
             //        {
             //            SelectedCommand = "マップアビリティ";
             //        }
@@ -248,37 +242,29 @@ namespace SRCCore.Commands
             //    max_range = withBlock3.AbilityMaxRange(SelectedAbility);
 
             //    // アビリティの効果範囲を設定
-            //    string argattr3 = "Ｍ直";
-            //    string argattr4 = "Ｍ拡";
-            //    string argattr5 = "Ｍ扇";
-            //    string argattr6 = "Ｍ移";
-            //    if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, argattr3))
+            //    if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ直"))
             //    {
             //        Map.AreaInCross(withBlock3.x, withBlock3.y, min_range, max_range);
             //    }
-            //    else if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, argattr4))
+            //    else if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ拡"))
             //    {
             //        Map.AreaInWideCross(withBlock3.x, withBlock3.y, min_range, max_range);
             //    }
-            //    else if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, argattr5))
+            //    else if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ扇"))
             //    {
-            //        string argattr2 = "Ｍ扇";
-            //        Map.AreaInSectorCross(withBlock3.x, withBlock3.y, min_range, max_range, withBlock3.AbilityLevel(SelectedAbility, argattr2));
+            //        Map.AreaInSectorCross(withBlock3.x, withBlock3.y, min_range, max_range, withBlock3.AbilityLevel(SelectedAbility, "Ｍ扇"));
             //    }
-            //    else if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, argattr6))
+            //    else if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ移"))
             //    {
             //        Map.AreaInMoveAction(SelectedUnit, max_range);
             //    }
             //    else
             //    {
-            //        string arguparty = "すべて";
-            //        Map.AreaInRange(withBlock3.x, withBlock3.y, max_range, min_range, arguparty);
+            //        Map.AreaInRange(withBlock3.x, withBlock3.y, max_range, min_range, "すべて");
             //    }
 
             //    // 射程１の合体技はパートナーで相手を取り囲んでいないと使用できない
-            //    string argattr7 = "合";
-            //    string argattr8 = "Ｍ";
-            //    if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, argattr7) & !withBlock3.IsAbilityClassifiedAs(SelectedAbility, argattr8) & withBlock3.Ability(SelectedAbility).MaxRange == 1)
+            //    if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, "合") & !withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ") & withBlock3.Ability(SelectedAbility).MaxRange == 1)
             //    {
             //        for (i = 1; i <= 4; i++)
             //        {
@@ -331,8 +317,7 @@ namespace SRCCore.Commands
             //            {
             //                if (withBlock3.IsAlly(t))
             //                {
-            //                    string argctype_Renamed = "アビリティ";
-            //                    withBlock3.CombinationPartner(argctype_Renamed, SelectedAbility, partners, t.x, t.y);
+            //                    withBlock3.CombinationPartner("アビリティ", SelectedAbility, partners, t.x, t.y);
             //                    if (Information.UBound(partners) == 0)
             //                    {
             //                        Map.MaskData[t.x, t.y] = true;
@@ -343,10 +328,7 @@ namespace SRCCore.Commands
             //    }
 
             //    // ユニットがいるマスの処理
-            //    string argattr9 = "Ｍ投";
-            //    string argattr10 = "Ｍ線";
-            //    string argattr11 = "Ｍ移";
-            //    if (!withBlock3.IsAbilityClassifiedAs(SelectedAbility, argattr9) & !withBlock3.IsAbilityClassifiedAs(SelectedAbility, argattr10) & !withBlock3.IsAbilityClassifiedAs(SelectedAbility, argattr11))
+            //    if (!withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ投") & !withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ線") & !withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ移"))
             //    {
             //        var loopTo2 = GeneralLib.MinLng(withBlock3.x + max_range, Map.MapWidth);
             //        for (i = GeneralLib.MaxLng(withBlock3.x - max_range, 1); i <= loopTo2; i++)
@@ -377,15 +359,13 @@ namespace SRCCore.Commands
             //    // 支援専用アビリティは自分には使用できない
             //    if (!Map.MaskData[withBlock3.x, withBlock3.y])
             //    {
-            //        string argattr12 = "援";
-            //        if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, argattr12))
+            //        if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, "援"))
             //        {
             //            Map.MaskData[withBlock3.x, withBlock3.y] = true;
             //        }
             //    }
 
-            //    string argoname = "大型マップ";
-            //    if (!Expression.IsOptionDefined(argoname))
+            //    if (!Expression.IsOptionDefined("大型マップ"))
             //    {
             //        GUI.Center(withBlock3.x, withBlock3.y);
             //    }
@@ -472,18 +452,15 @@ namespace SRCCore.Commands
             //// 合体技のパートナーを設定
             //{
             //    var withBlock = SelectedUnit;
-            //    string argattr = "合";
-            //    if (withBlock.IsAbilityClassifiedAs(SelectedAbility, argattr))
+            //    if (withBlock.IsAbilityClassifiedAs(SelectedAbility, "合"))
             //    {
             //        if (withBlock.AbilityMaxRange(SelectedAbility) == 1)
             //        {
-            //            string argctype_Renamed = "アビリティ";
-            //            withBlock.CombinationPartner(argctype_Renamed, SelectedAbility, partners, SelectedTarget.x, SelectedTarget.y);
+            //            withBlock.CombinationPartner("アビリティ", SelectedAbility, partners, SelectedTarget.x, SelectedTarget.y);
             //        }
             //        else
             //        {
-            //            string argctype_Renamed1 = "アビリティ";
-            //            withBlock.CombinationPartner(argctype_Renamed1, SelectedAbility, partners);
+            //            withBlock.CombinationPartner("アビリティ", SelectedAbility, partners);
             //        }
             //    }
             //    else
@@ -498,9 +475,7 @@ namespace SRCCore.Commands
 
             //// ADD START MARGE
             //// 移動後使用後可能なアビリティか記録しておく
-            //string argattr1 = "Ｐ";
-            //string argattr2 = "Ｑ";
-            //is_p_ability = SelectedUnit.IsAbilityClassifiedAs(SelectedAbility, argattr1) | SelectedUnit.AbilityMaxRange(SelectedAbility) == 1 & !SelectedUnit.IsAbilityClassifiedAs(SelectedAbility, argattr2);
+            //is_p_ability = SelectedUnit.IsAbilityClassifiedAs(SelectedAbility, "Ｐ") | SelectedUnit.AbilityMaxRange(SelectedAbility) == 1 & !SelectedUnit.IsAbilityClassifiedAs(SelectedAbility, "Ｑ");
             //// ADD END MARGE
 
             //// 使用イベント
@@ -532,8 +507,7 @@ namespace SRCCore.Commands
             //    }
 
             //    // 合体技パートナーのハイライト表示
-            //    string argattr3 = "合";
-            //    if (withBlock1.IsAbilityClassifiedAs(SelectedAbility, argattr3))
+            //    if (withBlock1.IsAbilityClassifiedAs(SelectedAbility, "合"))
             //    {
             //        var loopTo = Information.UBound(partners);
             //        for (i = 1; i <= loopTo; i++)
@@ -614,8 +588,7 @@ namespace SRCCore.Commands
             //}
 
             //// 合体技のパートナーの行動数を減らす
-            //string argoname = "合体技パートナー行動数無消費";
-            //if (!Expression.IsOptionDefined(argoname))
+            //if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
             //{
             //    var loopTo1 = Information.UBound(partners);
             //    for (i = 1; i <= loopTo1; i++)
@@ -628,8 +601,7 @@ namespace SRCCore.Commands
             //// 再移動
             //if (is_p_ability & SelectedUnit.Status == "出撃")
             //{
-            //    string argsname = "遊撃";
-            //    if (SelectedUnit.MainPilot().IsSkillAvailable(argsname) & SelectedUnit.Speed * 2 > SelectedUnitMoveCost)
+            //    if (SelectedUnit.MainPilot().IsSkillAvailable("遊撃") & SelectedUnit.Speed * 2 > SelectedUnitMoveCost)
             //    {
             //        // 進入イベント
             //        if (SelectedUnitMoveCost > 0)
@@ -652,8 +624,7 @@ namespace SRCCore.Commands
 
             //        SelectedCommand = "再移動";
             //        Map.AreaInSpeed(SelectedUnit);
-            //        string argoname1 = "大型マップ";
-            //        if (!Expression.IsOptionDefined(argoname1))
+            //        if (!Expression.IsOptionDefined("大型マップ"))
             //        {
             //            GUI.Center(SelectedUnit.x, SelectedUnit.y);
             //        }
@@ -693,19 +664,14 @@ namespace SRCCore.Commands
             //    var withBlock = SelectedUnit;
             //    // ADD START MARGE
             //    // 移動後使用後可能なアビリティか記録しておく
-            //    string argattr = "Ｐ";
-            //    string argattr1 = "Ｑ";
-            //    is_p_ability = withBlock.IsAbilityClassifiedAs(SelectedAbility, argattr) | withBlock.AbilityMaxRange(SelectedAbility) == 1 & !withBlock.IsAbilityClassifiedAs(SelectedAbility, argattr1);
+            //    is_p_ability = withBlock.IsAbilityClassifiedAs(SelectedAbility, "Ｐ") | withBlock.AbilityMaxRange(SelectedAbility) == 1 & !withBlock.IsAbilityClassifiedAs(SelectedAbility, "Ｑ");
             //    // ADD END MARGE
 
             //    // 目標地点を選択して初めて効果範囲が分かるタイプのマップアビリティ
             //    // の場合は再度プレイヤーの選択を促す必要がある
             //    if (CommandState == "ターゲット選択" | CommandState == "移動後ターゲット選択")
             //    {
-            //        string argattr3 = "Ｍ投";
-            //        string argattr4 = "Ｍ移";
-            //        string argattr5 = "Ｍ線";
-            //        if (withBlock.IsAbilityClassifiedAs(SelectedAbility, argattr3))
+            //        if (withBlock.IsAbilityClassifiedAs(SelectedAbility, "Ｍ投"))
             //        {
             //            if (CommandState == "ターゲット選択")
             //            {
@@ -721,13 +687,11 @@ namespace SRCCore.Commands
             //            SelectedY = GUI.PixelToMapY(GUI.MouseY);
 
             //            // 効果範囲を設定
-            //            string argattr2 = "Ｍ投";
-            //            string arguparty = "味方";
-            //            Map.AreaInRange(SelectedX, SelectedY, withBlock.AbilityLevel(SelectedAbility, argattr2), 1, arguparty);
+            //            Map.AreaInRange(SelectedX, SelectedY, withBlock.AbilityLevel(SelectedAbility, "Ｍ投"), 1, "味方");
             //            GUI.MaskScreen();
             //            return;
             //        }
-            //        else if (withBlock.IsAbilityClassifiedAs(SelectedAbility, argattr4))
+            //        else if (withBlock.IsAbilityClassifiedAs(SelectedAbility, "Ｍ移"))
             //        {
             //            SelectedX = GUI.PixelToMapX(GUI.MouseX);
             //            SelectedY = GUI.PixelToMapY(GUI.MouseY);
@@ -752,7 +716,7 @@ namespace SRCCore.Commands
             //            GUI.MaskScreen();
             //            return;
             //        }
-            //        else if (withBlock.IsAbilityClassifiedAs(SelectedAbility, argattr5))
+            //        else if (withBlock.IsAbilityClassifiedAs(SelectedAbility, "Ｍ線"))
             //        {
             //            if (CommandState == "ターゲット選択")
             //            {
@@ -775,11 +739,9 @@ namespace SRCCore.Commands
             //    }
 
             //    // 合体技パートナーの設定
-            //    string argattr6 = "合";
-            //    if (withBlock.IsAbilityClassifiedAs(SelectedAbility, argattr6))
+            //    if (withBlock.IsAbilityClassifiedAs(SelectedAbility, "合"))
             //    {
-            //        string argctype_Renamed = "アビリティ";
-            //        withBlock.CombinationPartner(argctype_Renamed, SelectedAbility, partners);
+            //        withBlock.CombinationPartner("アビリティ", SelectedAbility, partners);
             //    }
             //    else
             //    {
@@ -817,8 +779,7 @@ namespace SRCCore.Commands
             //}
 
             //// 合体技のパートナーの行動数を減らす
-            //string argoname = "合体技パートナー行動数無消費";
-            //if (!Expression.IsOptionDefined(argoname))
+            //if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
             //{
             //    var loopTo = Information.UBound(partners);
             //    for (i = 1; i <= loopTo; i++)
@@ -831,8 +792,7 @@ namespace SRCCore.Commands
             //// 再移動
             //if (is_p_ability & SelectedUnit.Status == "出撃")
             //{
-            //    string argsname = "遊撃";
-            //    if (SelectedUnit.MainPilot().IsSkillAvailable(argsname) & SelectedUnit.Speed * 2 > SelectedUnitMoveCost)
+            //    if (SelectedUnit.MainPilot().IsSkillAvailable("遊撃") & SelectedUnit.Speed * 2 > SelectedUnitMoveCost)
             //    {
             //        // 進入イベント
             //        if (SelectedUnitMoveCost > 0)
@@ -855,8 +815,7 @@ namespace SRCCore.Commands
 
             //        SelectedCommand = "再移動";
             //        Map.AreaInSpeed(SelectedUnit);
-            //        string argoname1 = "大型マップ";
-            //        if (!Expression.IsOptionDefined(argoname1))
+            //        if (!Expression.IsOptionDefined("大型マップ"))
             //        {
             //            GUI.Center(SelectedUnit.x, SelectedUnit.y);
             //        }

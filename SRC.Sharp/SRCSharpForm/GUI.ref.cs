@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -383,9 +383,7 @@ namespace Project1
             Commands.CommandState = "ユニット選択";
 
             // マップ画面に表示できるマップのサイズ
-            string argini_section1 = "Option";
-            string argini_entry1 = "NewGUI";
-            switch (Strings.LCase(GeneralLib.ReadIni(ref argini_section1, ref argini_entry1)) ?? "")
+            switch (Strings.LCase(GeneralLib.ReadIni(ref "Option", ref "NewGUI")) ?? "")
             {
                 case "on":
                     {
@@ -405,17 +403,13 @@ namespace Project1
                 default:
                     {
                         MainWidth = 15;
-                        string argini_section = "Option";
-                        string argini_entry = "NewGUI";
-                        string argini_data = "Off";
-                        GeneralLib.WriteIni(ref argini_section, ref argini_entry, ref argini_data);
+                        GeneralLib.WriteIni(ref "Option", ref "NewGUI", ref "Off");
                         break;
                     }
             }
             // ADD START MARGE
             // Optionで定義されていればそちらを優先する
-            string argoname = "新ＧＵＩ";
-            if (Expression.IsOptionDefined(ref argoname))
+            if (Expression.IsOptionDefined(ref "新ＧＵＩ"))
             {
                 NewGUIMode = true;
                 MainWidth = 20;
@@ -521,8 +515,7 @@ namespace Project1
         public static void SetNewGUIMode()
         {
             // Optionで定義されているのにNewGUIModeがfalseの場合、LoadFormsを呼ぶ
-            string argoname = "新ＧＵＩ";
-            if (Expression.IsOptionDefined(ref argoname) & !NewGUIMode)
+            if (Expression.IsOptionDefined(ref "新ＧＵＩ") & !NewGUIMode)
             {
                 LoadForms();
             }
@@ -628,8 +621,7 @@ namespace Project1
                         withBlock.picUnit2.Visible = false;
                     }
 
-                    object argu21 = null;
-                    UpdateMessageForm(ref u1, u2: ref argu21);
+                    UpdateMessageForm(ref u1, u2: ref null);
                     withBlock.Width = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(withBlock.Width) - withBlock.ClientRectangle.Width * tppx + 508 * tppx);
                     withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(withBlock.Height) - withBlock.ClientRectangle.Height * tppy + 118 * tppy);
                     withBlock.picFace.Top = 42;
@@ -654,8 +646,7 @@ namespace Project1
                     withBlock.txtEN2.Visible = true;
                     withBlock.picUnit1.Visible = true;
                     withBlock.picUnit2.Visible = true;
-                    object argu2 = u2;
-                    UpdateMessageForm(ref u1, ref argu2);
+                    UpdateMessageForm(ref u1, ref u2);
                     withBlock.Width = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(withBlock.Width) - withBlock.ClientRectangle.Width * tppx + 508 * tppx);
                     withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(withBlock.Height) - withBlock.ClientRectangle.Height * tppy + 118 * tppy);
                     withBlock.picFace.Top = 42;
@@ -846,9 +837,7 @@ namespace Project1
                         }
                         else
                         {
-                            var argpic = withBlock.picUnit1;
-                            string argfname = "";
-                            LoadUnitBitmap(ref lu, ref argpic, 0, 0, true, fname: ref argfname);
+                            LoadUnitBitmap(ref lu, ref withBlock.picUnit1, 0, 0, true, fname: ref "");
                             withBlock.picUnit1 = argpic;
                         }
                     }
@@ -861,22 +850,17 @@ namespace Project1
                     withBlock.picUnit1.Refresh();
 
                     // ＨＰ名称
-                    object argIndex1 = "データ不明";
-                    if (lu.IsConditionSatisfied(ref argIndex1))
+                    if (lu.IsConditionSatisfied(ref "データ不明"))
                     {
-                        string argtname = "HP";
-                        Unit argu = null;
-                        withBlock.labHP1.Text = Expression.Term(ref argtname, u: ref argu);
+                        withBlock.labHP1.Text = Expression.Term(ref "HP", u: ref null);
                     }
                     else
                     {
-                        string argtname1 = "HP";
-                        withBlock.labHP1.Text = Expression.Term(ref argtname1, ref lu);
+                        withBlock.labHP1.Text = Expression.Term(ref "HP", ref lu);
                     }
 
                     // ＨＰ数値
-                    object argIndex2 = "データ不明";
-                    if (lu.IsConditionSatisfied(ref argIndex2))
+                    if (lu.IsConditionSatisfied(ref "データ不明"))
                     {
                         withBlock.txtHP1.Text = "?????/?????";
                     }
@@ -884,8 +868,7 @@ namespace Project1
                     {
                         if (lu.HP < 100000)
                         {
-                            string argbuf = SrcFormatter.Format(lu.HP);
-                            buf = GeneralLib.LeftPaddedString(ref argbuf, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxHP)), 5));
+                            buf = GeneralLib.LeftPaddedString(ref SrcFormatter.Format(lu.HP), (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxHP)), 5));
                         }
                         else
                         {
@@ -912,22 +895,17 @@ namespace Project1
                     }
 
                     // ＥＮ名称
-                    object argIndex3 = "データ不明";
-                    if (lu.IsConditionSatisfied(ref argIndex3))
+                    if (lu.IsConditionSatisfied(ref "データ不明"))
                     {
-                        string argtname2 = "EN";
-                        Unit argu1 = null;
-                        withBlock.labEN1.Text = Expression.Term(ref argtname2, u: ref argu1);
+                        withBlock.labEN1.Text = Expression.Term(ref "EN", u: ref null);
                     }
                     else
                     {
-                        string argtname3 = "EN";
-                        withBlock.labEN1.Text = Expression.Term(ref argtname3, ref lu);
+                        withBlock.labEN1.Text = Expression.Term(ref "EN", ref lu);
                     }
 
                     // ＥＮ数値
-                    object argIndex4 = "データ不明";
-                    if (lu.IsConditionSatisfied(ref argIndex4))
+                    if (lu.IsConditionSatisfied(ref "データ不明"))
                     {
                         withBlock.txtEN1.Text = "???/???";
                     }
@@ -935,8 +913,7 @@ namespace Project1
                     {
                         if (lu.EN < 1000)
                         {
-                            string argbuf1 = SrcFormatter.Format(lu.EN);
-                            buf = GeneralLib.LeftPaddedString(ref argbuf1, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxEN)), 3));
+                            buf = GeneralLib.LeftPaddedString(ref SrcFormatter.Format(lu.EN), (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxEN)), 3));
                         }
                         else
                         {
@@ -981,9 +958,7 @@ namespace Project1
                         }
                         else
                         {
-                            var argpic1 = withBlock.picUnit2;
-                            string argfname1 = "";
-                            LoadUnitBitmap(ref ru, ref argpic1, 0, 0, true, fname: ref argfname1);
+                            LoadUnitBitmap(ref ru, ref withBlock.picUnit2, 0, 0, true, fname: ref "");
                             withBlock.picUnit2 = argpic1;
                         }
                     }
@@ -996,22 +971,17 @@ namespace Project1
                     withBlock.picUnit2.Refresh();
 
                     // ＨＰ数値
-                    object argIndex5 = "データ不明";
-                    if (ru.IsConditionSatisfied(ref argIndex5))
+                    if (ru.IsConditionSatisfied(ref "データ不明"))
                     {
-                        string argtname4 = "HP";
-                        Unit argu2 = null;
-                        withBlock.labHP2.Text = Expression.Term(ref argtname4, u: ref argu2);
+                        withBlock.labHP2.Text = Expression.Term(ref "HP", u: ref null);
                     }
                     else
                     {
-                        string argtname5 = "HP";
-                        withBlock.labHP2.Text = Expression.Term(ref argtname5, ref ru);
+                        withBlock.labHP2.Text = Expression.Term(ref "HP", ref ru);
                     }
 
                     // ＨＰ数値
-                    object argIndex6 = "データ不明";
-                    if (ru.IsConditionSatisfied(ref argIndex6))
+                    if (ru.IsConditionSatisfied(ref "データ不明"))
                     {
                         withBlock.txtHP2.Text = "?????/?????";
                     }
@@ -1019,8 +989,7 @@ namespace Project1
                     {
                         if (ru.HP < 100000)
                         {
-                            string argbuf2 = SrcFormatter.Format(ru.HP);
-                            buf = GeneralLib.LeftPaddedString(ref argbuf2, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxHP)), 5));
+                            buf = GeneralLib.LeftPaddedString(ref SrcFormatter.Format(ru.HP), (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxHP)), 5));
                         }
                         else
                         {
@@ -1047,22 +1016,17 @@ namespace Project1
                     }
 
                     // ＥＮ名称
-                    object argIndex7 = "データ不明";
-                    if (ru.IsConditionSatisfied(ref argIndex7))
+                    if (ru.IsConditionSatisfied(ref "データ不明"))
                     {
-                        string argtname6 = "EN";
-                        Unit argu3 = null;
-                        withBlock.labEN2.Text = Expression.Term(ref argtname6, u: ref argu3);
+                        withBlock.labEN2.Text = Expression.Term(ref "EN", u: ref null);
                     }
                     else
                     {
-                        string argtname7 = "EN";
-                        withBlock.labEN2.Text = Expression.Term(ref argtname7, ref ru);
+                        withBlock.labEN2.Text = Expression.Term(ref "EN", ref ru);
                     }
 
                     // ＥＮ数値
-                    object argIndex8 = "データ不明";
-                    if (ru.IsConditionSatisfied(ref argIndex8))
+                    if (ru.IsConditionSatisfied(ref "データ不明"))
                     {
                         withBlock.txtEN2.Text = "???/???";
                     }
@@ -1070,8 +1034,7 @@ namespace Project1
                     {
                         if (ru.EN < 1000)
                         {
-                            string argbuf3 = SrcFormatter.Format(ru.EN);
-                            buf = GeneralLib.LeftPaddedString(ref argbuf3, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxEN)), 3));
+                            buf = GeneralLib.LeftPaddedString(ref SrcFormatter.Format(ru.EN), (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxEN)), 3));
                         }
                         else
                         {
@@ -1142,8 +1105,7 @@ namespace Project1
                         if (lu.HP / (double)lu.MaxHP != LeftUnitHPRatio)
                         {
                             tmp = (int)((long)(lu.MaxHP * LeftUnitHPRatio * (num - i) + lu.HP * i) / num);
-                            object argIndex9 = "データ不明";
-                            if (lu.IsConditionSatisfied(ref argIndex9))
+                            if (lu.IsConditionSatisfied(ref "データ不明"))
                             {
                                 withBlock.txtHP1.Text = "?????/?????";
                             }
@@ -1151,8 +1113,7 @@ namespace Project1
                             {
                                 if (lu.HP < 100000)
                                 {
-                                    string argbuf4 = SrcFormatter.Format(tmp);
-                                    buf = GeneralLib.LeftPaddedString(ref argbuf4, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxHP)), 5));
+                                    buf = GeneralLib.LeftPaddedString(ref SrcFormatter.Format(tmp), (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxHP)), 5));
                                 }
                                 else
                                 {
@@ -1182,8 +1143,7 @@ namespace Project1
                         if (lu.EN / (double)lu.MaxEN != LeftUnitENRatio)
                         {
                             tmp = (int)((long)(lu.MaxEN * LeftUnitENRatio * (num - i) + lu.EN * i) / num);
-                            object argIndex10 = "データ不明";
-                            if (lu.IsConditionSatisfied(ref argIndex10))
+                            if (lu.IsConditionSatisfied(ref "データ不明"))
                             {
                                 withBlock.txtEN1.Text = "???/???";
                             }
@@ -1191,8 +1151,7 @@ namespace Project1
                             {
                                 if (lu.EN < 1000)
                                 {
-                                    string argbuf5 = SrcFormatter.Format(tmp);
-                                    buf = GeneralLib.LeftPaddedString(ref argbuf5, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxEN)), 3));
+                                    buf = GeneralLib.LeftPaddedString(ref SrcFormatter.Format(tmp), (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxEN)), 3));
                                 }
                                 else
                                 {
@@ -1226,8 +1185,7 @@ namespace Project1
                         if (ru.HP / (double)ru.MaxHP != RightUnitHPRatio)
                         {
                             tmp = (int)((long)(ru.MaxHP * RightUnitHPRatio * (num - i) + ru.HP * i) / num);
-                            object argIndex11 = "データ不明";
-                            if (ru.IsConditionSatisfied(ref argIndex11))
+                            if (ru.IsConditionSatisfied(ref "データ不明"))
                             {
                                 withBlock.txtHP2.Text = "?????/?????";
                             }
@@ -1235,8 +1193,7 @@ namespace Project1
                             {
                                 if (ru.HP < 100000)
                                 {
-                                    string argbuf6 = SrcFormatter.Format(tmp);
-                                    buf = GeneralLib.LeftPaddedString(ref argbuf6, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxHP)), 5));
+                                    buf = GeneralLib.LeftPaddedString(ref SrcFormatter.Format(tmp), (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxHP)), 5));
                                 }
                                 else
                                 {
@@ -1266,8 +1223,7 @@ namespace Project1
                         if (ru.EN / (double)ru.MaxEN != RightUnitENRatio)
                         {
                             tmp = (int)((long)(ru.MaxEN * RightUnitENRatio * (num - i) + ru.EN * i) / num);
-                            object argIndex12 = "データ不明";
-                            if (ru.IsConditionSatisfied(ref argIndex12))
+                            if (ru.IsConditionSatisfied(ref "データ不明"))
                             {
                                 withBlock.txtEN2.Text = "???/???";
                             }
@@ -1275,8 +1231,7 @@ namespace Project1
                             {
                                 if (ru.EN < 1000)
                                 {
-                                    string argbuf7 = SrcFormatter.Format(tmp);
-                                    buf = GeneralLib.LeftPaddedString(ref argbuf7, (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxEN)), 3));
+                                    buf = GeneralLib.LeftPaddedString(ref SrcFormatter.Format(tmp), (short)GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxEN)), 3));
                                 }
                                 else
                                 {
@@ -1425,8 +1380,7 @@ namespace Project1
 
                 bool localIsDefined1() { object argIndex1 = pname; var ret = SRC.NPDList.IsDefined(ref argIndex1); return ret; }
 
-                object argIndex1 = pname;
-                if (SRC.PList.IsDefined(ref argIndex1))
+                if (SRC.PList.IsDefined(ref pname))
                 {
                     Pilot localItem() { object argIndex1 = pname; var ret = SRC.PList.Item(ref argIndex1); return ret; }
 
@@ -1464,8 +1418,7 @@ namespace Project1
                     fname = @"Pilot\" + fname;
                     if ((DisplayedPilot ?? "") != (fname ?? "") | (DisplayMode ?? "") != (msg_mode ?? ""))
                     {
-                        string argdraw_option = "メッセージ " + msg_mode;
-                        if (DrawPicture(ref fname, 0, 0, 64, 64, 0, 0, 0, 0, ref argdraw_option))
+                        if (DrawPicture(ref fname, 0, 0, 64, 64, 0, 0, 0, 0, ref "メッセージ " + msg_mode))
                         {
                             My.MyProject.Forms.frmMessage.picFace.Refresh();
                             DisplayedPilot = fname;
@@ -1483,12 +1436,10 @@ namespace Project1
 
                             bool localIsDefined3() { object argIndex1 = pname; var ret = SRC.NPDList.IsDefined(ref argIndex1); return ret; }
 
-                            object argIndex3 = pname;
-                            if (SRC.PList.IsDefined(ref argIndex3))
+                            if (SRC.PList.IsDefined(ref pname))
                             {
-                                object argIndex2 = pname;
                                 {
-                                    var withBlock = SRC.PList.Item(ref argIndex2);
+                                    var withBlock = SRC.PList.Item(ref pname);
                                     if ((withBlock.get_Bitmap(false) ?? "") == (withBlock.Data.Bitmap ?? ""))
                                     {
                                         withBlock.Data.IsBitmapMissing = true;
@@ -1518,8 +1469,7 @@ namespace Project1
                     DisplayMode = "";
                 }
 
-                string argoname = "会話パイロット名改行";
-                if (Expression.IsOptionDefined(ref argoname))
+                if (Expression.IsOptionDefined(ref "会話パイロット名改行"))
                 {
                     left_margin = " ";
                 }
@@ -1602,20 +1552,17 @@ namespace Project1
                         {
                             // モノローグ
                             msg = Strings.Mid(msg, 2, Strings.Len(msg) - 2);
-                            string argoname1 = "会話パイロット名改行";
-                            msg = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(pnickname, Interaction.IIf(Expression.IsOptionDefined(ref argoname1), ";", " ")), "（"), msg), "）"));
+                            msg = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(pnickname, Interaction.IIf(Expression.IsOptionDefined(ref "会話パイロット名改行"), ";", " ")), "（"), msg), "）"));
                         }
                         else if (Strings.Left(msg, 1) == "『" & Strings.Right(msg, 1) == "』")
                         {
                             msg = Strings.Mid(msg, 2, Strings.Len(msg) - 2);
-                            string argoname3 = "会話パイロット名改行";
-                            msg = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(pnickname, Interaction.IIf(Expression.IsOptionDefined(ref argoname3), ";", " ")), "『"), msg), "』"));
+                            msg = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(pnickname, Interaction.IIf(Expression.IsOptionDefined(ref "会話パイロット名改行"), ";", " ")), "『"), msg), "』"));
                         }
                         else
                         {
                             // せりふ
-                            string argoname2 = "会話パイロット名改行";
-                            msg = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(pnickname, Interaction.IIf(Expression.IsOptionDefined(ref argoname2), ";", " ")), "「"), msg), "」"));
+                            msg = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(pnickname, Interaction.IIf(Expression.IsOptionDefined(ref "会話パイロット名改行"), ";", " ")), "「"), msg), "」"));
                         }
 
                         break;
@@ -1623,8 +1570,7 @@ namespace Project1
             }
 
             // 強制改行の位置を設定
-            string argoname4 = "改行時余白短縮";
-            if (Expression.IsOptionDefined(ref argoname4))
+            if (Expression.IsOptionDefined(ref "改行時余白短縮"))
             {
                 cl_margin[0] = 0.94f; // メッセージ長の超過による改行の位置
                 cl_margin[1] = 0.7f; // "。"," "による改行の位置
@@ -1703,12 +1649,9 @@ namespace Project1
                     {
                         if (j != line_head)
                         {
-                            string argmsg = Strings.Mid(buf, line_head, j - line_head);
-                            PrintMessage(ref argmsg);
+                            PrintMessage(ref Strings.Mid(buf, line_head, j - line_head));
                             lnum = (short)(lnum + 1);
-                            string argoname5 = "会話パイロット名改行";
-                            string argoname6 = "会話パイロット名改行";
-                            if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref argoname5) | lnum > 0 & !Expression.IsOptionDefined(ref argoname6)))
+                            if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref "会話パイロット名改行") | lnum > 0 & !Expression.IsOptionDefined(ref "会話パイロット名改行")))
                             {
                                 p.Print(left_margin);
                             }
@@ -1736,12 +1679,9 @@ namespace Project1
                     // メッセージが途切れてしまう場合は必ず改行
                     if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > 0.95d * SrcFormatter.PixelsToTwipsX(p.Width))
                     {
-                        string argmsg1 = Strings.Mid(buf, line_head, j - line_head + 1);
-                        PrintMessage(ref argmsg1);
+                        PrintMessage(ref Strings.Mid(buf, line_head, j - line_head + 1));
                         lnum = (short)(lnum + 1);
-                        string argoname7 = "会話パイロット名改行";
-                        string argoname8 = "会話パイロット名改行";
-                        if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref argoname7) | lnum > 0 & !Expression.IsOptionDefined(ref argoname8)))
+                        if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref "会話パイロット名改行") | lnum > 0 & !Expression.IsOptionDefined(ref "会話パイロット名改行")))
                         {
                             p.Print(left_margin);
                         }
@@ -1819,12 +1759,9 @@ namespace Project1
                             {
                                 if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[1] * SrcFormatter.PixelsToTwipsX(p.Width))
                                 {
-                                    string argmsg2 = Strings.Mid(buf, line_head, j - line_head + 1);
-                                    PrintMessage(ref argmsg2);
+                                    PrintMessage(ref Strings.Mid(buf, line_head, j - line_head + 1));
                                     lnum = (short)(lnum + 1);
-                                    string argoname9 = "会話パイロット名改行";
-                                    string argoname10 = "会話パイロット名改行";
-                                    if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref argoname9) | lnum > 0 & !Expression.IsOptionDefined(ref argoname10)))
+                                    if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref "会話パイロット名改行") | lnum > 0 & !Expression.IsOptionDefined(ref "会話パイロット名改行")))
                                     {
                                         p.Print(left_margin);
                                     }
@@ -1839,12 +1776,9 @@ namespace Project1
                             {
                                 if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[2] * SrcFormatter.PixelsToTwipsX(p.Width))
                                 {
-                                    string argmsg3 = Strings.Mid(buf, line_head, j - line_head + 1);
-                                    PrintMessage(ref argmsg3);
+                                    PrintMessage(ref Strings.Mid(buf, line_head, j - line_head + 1));
                                     lnum = (short)(lnum + 1);
-                                    string argoname11 = "会話パイロット名改行";
-                                    string argoname12 = "会話パイロット名改行";
-                                    if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref argoname11) | lnum > 0 & !Expression.IsOptionDefined(ref argoname12)))
+                                    if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref "会話パイロット名改行") | lnum > 0 & !Expression.IsOptionDefined(ref "会話パイロット名改行")))
                                     {
                                         p.Print(left_margin);
                                     }
@@ -1864,12 +1798,9 @@ namespace Project1
                                     // 文の区切り
                                     if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[1] * SrcFormatter.PixelsToTwipsX(p.Width))
                                     {
-                                        string argmsg4 = Strings.Mid(buf, line_head, j - line_head + 1);
-                                        PrintMessage(ref argmsg4);
+                                        PrintMessage(ref Strings.Mid(buf, line_head, j - line_head + 1));
                                         lnum = (short)(lnum + 1);
-                                        string argoname13 = "会話パイロット名改行";
-                                        string argoname14 = "会話パイロット名改行";
-                                        if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref argoname13) | lnum > 0 & !Expression.IsOptionDefined(ref argoname14)))
+                                        if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref "会話パイロット名改行") | lnum > 0 & !Expression.IsOptionDefined(ref "会話パイロット名改行")))
                                         {
                                             p.Print(left_margin);
                                         }
@@ -1880,12 +1811,9 @@ namespace Project1
                                 // 単なる空白
                                 else if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[0] * SrcFormatter.PixelsToTwipsX(p.Width))
                                 {
-                                    string argmsg5 = Strings.Mid(buf, line_head, j - line_head + 1);
-                                    PrintMessage(ref argmsg5);
+                                    PrintMessage(ref Strings.Mid(buf, line_head, j - line_head + 1));
                                     lnum = (short)(lnum + 1);
-                                    string argoname15 = "会話パイロット名改行";
-                                    string argoname16 = "会話パイロット名改行";
-                                    if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref argoname15) | lnum > 0 & !Expression.IsOptionDefined(ref argoname16)))
+                                    if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref "会話パイロット名改行") | lnum > 0 & !Expression.IsOptionDefined(ref "会話パイロット名改行")))
                                     {
                                         p.Print(left_margin);
                                     }
@@ -1900,12 +1828,9 @@ namespace Project1
                             {
                                 if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[0] * SrcFormatter.PixelsToTwipsX(p.Width))
                                 {
-                                    string argmsg6 = Strings.Mid(buf, line_head, j - line_head + 1);
-                                    PrintMessage(ref argmsg6);
+                                    PrintMessage(ref Strings.Mid(buf, line_head, j - line_head + 1));
                                     lnum = (short)(lnum + 1);
-                                    string argoname17 = "会話パイロット名改行";
-                                    string argoname18 = "会話パイロット名改行";
-                                    if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref argoname17) | lnum > 0 & !Expression.IsOptionDefined(ref argoname18)))
+                                    if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref "会話パイロット名改行") | lnum > 0 & !Expression.IsOptionDefined(ref "会話パイロット名改行")))
                                     {
                                         p.Print(left_margin);
                                     }
@@ -1934,8 +1859,7 @@ namespace Project1
                 {
                     if (Strings.Len(buf) >= line_head)
                     {
-                        string argmsg7 = Strings.Mid(buf, line_head);
-                        PrintMessage(ref argmsg7);
+                        PrintMessage(ref Strings.Mid(buf, line_head));
                     }
                 }
 
@@ -2070,8 +1994,7 @@ namespace Project1
             return;
             ErrorHandler:
             ;
-            string argmsg8 = "パイロット用画像ファイル" + Constants.vbCr + Constants.vbLf + DisplayedPilot + Constants.vbCr + Constants.vbLf + "の読み込み中にエラーが発生しました。" + Constants.vbCr + Constants.vbLf + "画像ファイルが壊れていないか確認して下さい。";
-            ErrorMessage(ref argmsg8);
+            ErrorMessage(ref "パイロット用画像ファイル" + Constants.vbCr + Constants.vbLf + DisplayedPilot + Constants.vbCr + Constants.vbLf + "の読み込み中にエラーが発生しました。" + Constants.vbCr + Constants.vbLf + "画像ファイルが壊れていないか確認して下さい。");
         }
 
         // メッセージウィンドウに文字列を書き込む
@@ -2254,8 +2177,7 @@ namespace Project1
                                             if (Strings.InStr(tag, "color=") == 1)
                                             {
                                                 // 色設定
-                                                string argexpr = Strings.Mid(tag, 7);
-                                                cname = Expression.GetValueAsString(ref argexpr);
+                                                cname = Expression.GetValueAsString(ref Strings.Mid(tag, 7));
                                                 switch (cname ?? "")
                                                 {
                                                     case "black":
@@ -2660,8 +2582,7 @@ namespace Project1
 
                 bool localIsDefined1() { object argIndex1 = pname; var ret = SRC.NPDList.IsDefined(ref argIndex1); return ret; }
 
-                object argIndex1 = pname;
-                if (SRC.PList.IsDefined(ref argIndex1))
+                if (SRC.PList.IsDefined(ref pname))
                 {
                     Pilot localItem() { object argIndex1 = pname; var ret = SRC.PList.Item(ref argIndex1); return ret; }
 
@@ -2699,8 +2620,7 @@ namespace Project1
                     fname = @"Pilot\" + fname;
                     if ((DisplayedPilot ?? "") != (fname ?? "") | (DisplayMode ?? "") != (msg_mode ?? ""))
                     {
-                        string argdraw_option = "メッセージ " + msg_mode;
-                        if (DrawPicture(ref fname, 0, 0, 64, 64, 0, 0, 0, 0, ref argdraw_option))
+                        if (DrawPicture(ref fname, 0, 0, 64, 64, 0, 0, 0, 0, ref "メッセージ " + msg_mode))
                         {
                             My.MyProject.Forms.frmMessage.picFace.Refresh();
                             DisplayedPilot = fname;
@@ -2718,12 +2638,10 @@ namespace Project1
 
                             bool localIsDefined3() { object argIndex1 = pname; var ret = SRC.NPDList.IsDefined(ref argIndex1); return ret; }
 
-                            object argIndex3 = pname;
-                            if (SRC.PList.IsDefined(ref argIndex3))
+                            if (SRC.PList.IsDefined(ref pname))
                             {
-                                object argIndex2 = pname;
                                 {
-                                    var withBlock = SRC.PList.Item(ref argIndex2);
+                                    var withBlock = SRC.PList.Item(ref pname);
                                     if ((withBlock.get_Bitmap(false) ?? "") == (withBlock.Data.Bitmap ?? ""))
                                     {
                                         withBlock.Data.IsBitmapMissing = true;
@@ -2799,8 +2717,7 @@ namespace Project1
             wait_time = Constants.DEFAULT_LEVEL;
 
             // 強制改行の位置を設定
-            string argoname = "改行時余白短縮";
-            if (Expression.IsOptionDefined(ref argoname))
+            if (Expression.IsOptionDefined(ref "改行時余白短縮"))
             {
                 cl_margin[0] = 0.94f; // メッセージ長の超過による改行の位置
                 cl_margin[1] = 0.7f; // "。"," "による改行の位置
@@ -2976,9 +2893,7 @@ namespace Project1
                                 // ウィンドウが表示されていなければ表示
                                 if (!My.MyProject.Forms.frmMessage.Visible)
                                 {
-                                    Unit argu1 = null;
-                                    Unit argu2 = null;
-                                    OpenMessageForm(u1: ref argu1, u2: ref argu2);
+                                    OpenMessageForm(u1: ref null, u2: ref null);
                                 }
 
                                 if (wait_time > 0)
@@ -3185,8 +3100,7 @@ namespace Project1
                 // 戦闘アニメ呼び出し
                 if (Strings.Left(buf, 1) == "@")
                 {
-                    string arganame = Strings.Mid(buf, 2);
-                    Effect.ShowAnimation(ref arganame);
+                    Effect.ShowAnimation(ref Strings.Mid(buf, 2));
                     goto NextMessage;
                 }
 
@@ -3251,8 +3165,7 @@ namespace Project1
                         if (Commands.SelectedUnit.CountPilot() > 0)
                         {
                             fname = Commands.SelectedUnit.MainPilot().get_Bitmap(false);
-                            string argdraw_option1 = "メッセージ " + msg_mode;
-                            if (DrawPicture(ref fname, 0, 0, 64, 64, 0, 0, 0, 0, ref argdraw_option1))
+                            if (DrawPicture(ref fname, 0, 0, 64, 64, 0, 0, 0, 0, ref "メッセージ " + msg_mode))
                             {
                                 My.MyProject.Forms.frmMessage.picFace.Refresh();
                                 DisplayedPilot = fname;
@@ -3338,8 +3251,7 @@ namespace Project1
                     {
                         if (j != line_head)
                         {
-                            string argmsg = Strings.Mid(buf, line_head, j - line_head);
-                            PrintMessage(ref argmsg, !is_char_message);
+                            PrintMessage(ref Strings.Mid(buf, line_head, j - line_head), !is_char_message);
                             if (is_char_message)
                             {
                                 p.Print("  ");
@@ -3370,8 +3282,7 @@ namespace Project1
                     // メッセージが途切れてしまう場合は必ず改行
                     if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > 0.95d * SrcFormatter.PixelsToTwipsX(p.Width))
                     {
-                        string argmsg1 = Strings.Mid(buf, line_head, j - line_head + 1);
-                        PrintMessage(ref argmsg1, !is_char_message);
+                        PrintMessage(ref Strings.Mid(buf, line_head, j - line_head + 1), !is_char_message);
                         if (is_char_message)
                         {
                             p.Print("  ");
@@ -3451,8 +3362,7 @@ namespace Project1
                             {
                                 if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[1] * SrcFormatter.PixelsToTwipsX(p.Width))
                                 {
-                                    string argmsg2 = Strings.Mid(buf, line_head, j - line_head + 1);
-                                    PrintMessage(ref argmsg2, !is_char_message);
+                                    PrintMessage(ref Strings.Mid(buf, line_head, j - line_head + 1), !is_char_message);
                                     if (is_char_message)
                                     {
                                         p.Print("  ");
@@ -3469,8 +3379,7 @@ namespace Project1
                             {
                                 if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[1] * SrcFormatter.PixelsToTwipsX(p.Width))
                                 {
-                                    string argmsg3 = Strings.Mid(buf, line_head, j - line_head);
-                                    PrintMessage(ref argmsg3, !is_char_message);
+                                    PrintMessage(ref Strings.Mid(buf, line_head, j - line_head), !is_char_message);
                                     if (is_char_message)
                                     {
                                         p.Print("  ");
@@ -3487,8 +3396,7 @@ namespace Project1
                             {
                                 if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[2] * SrcFormatter.PixelsToTwipsX(p.Width))
                                 {
-                                    string argmsg4 = Strings.Mid(buf, line_head, j - line_head + 1);
-                                    PrintMessage(ref argmsg4, !is_char_message);
+                                    PrintMessage(ref Strings.Mid(buf, line_head, j - line_head + 1), !is_char_message);
                                     if (is_char_message)
                                     {
                                         p.Print("  ");
@@ -3505,8 +3413,7 @@ namespace Project1
                             {
                                 if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[0] * SrcFormatter.PixelsToTwipsX(p.Width))
                                 {
-                                    string argmsg5 = Strings.Mid(buf, line_head, j - line_head);
-                                    PrintMessage(ref argmsg5, !is_char_message);
+                                    PrintMessage(ref Strings.Mid(buf, line_head, j - line_head), !is_char_message);
                                     if (is_char_message)
                                     {
                                         p.Print("  ");
@@ -3526,8 +3433,7 @@ namespace Project1
                 // メッセージの残りを表示しておく
                 if (Strings.Len(buf) >= line_head)
                 {
-                    string argmsg6 = Strings.Mid(buf, line_head);
-                    PrintMessage(ref argmsg6, !is_char_message);
+                    PrintMessage(ref Strings.Mid(buf, line_head), !is_char_message);
                     lnum = (short)(lnum + 1);
                 }
 
@@ -3626,8 +3532,7 @@ namespace Project1
             return;
             ErrorHandler:
             ;
-            string argmsg7 = "画像ファイル" + Constants.vbCr + Constants.vbLf + fname + Constants.vbCr + Constants.vbLf + "の読み込み中にエラーが発生しました。" + Constants.vbCr + Constants.vbLf + "画像ファイルが壊れていないか確認して下さい。";
-            ErrorMessage(ref argmsg7);
+            ErrorMessage(ref "画像ファイル" + Constants.vbCr + Constants.vbLf + fname + Constants.vbCr + Constants.vbLf + "の読み込み中にエラーが発生しました。" + Constants.vbCr + Constants.vbLf + "画像ファイルが壊れていないか確認して下さい。");
         }
 
         // システムによるメッセージを表示
@@ -3924,61 +3829,49 @@ namespace Project1
                         {
                             case "夜":
                                 {
-                                    var argpic = withBlock.picTmp32(0);
-                                    Graphics.GetImage(ref argpic);
+                                    Graphics.GetImage(ref withBlock.picTmp32(0));
                                     Graphics.Dark();
-                                    var argpic1 = withBlock.picTmp32(0);
-                                    Graphics.SetImage(ref argpic1);
+                                    Graphics.SetImage(ref withBlock.picTmp32(0));
                                     break;
                                 }
 
                             case "セピア":
                                 {
-                                    var argpic2 = withBlock.picTmp32(0);
-                                    Graphics.GetImage(ref argpic2);
+                                    Graphics.GetImage(ref withBlock.picTmp32(0));
                                     Graphics.Sepia();
-                                    var argpic3 = withBlock.picTmp32(0);
-                                    Graphics.SetImage(ref argpic3);
+                                    Graphics.SetImage(ref withBlock.picTmp32(0));
                                     break;
                                 }
 
                             case "白黒":
                                 {
-                                    var argpic4 = withBlock.picTmp32(0);
-                                    Graphics.GetImage(ref argpic4);
+                                    Graphics.GetImage(ref withBlock.picTmp32(0));
                                     Graphics.Monotone();
-                                    var argpic5 = withBlock.picTmp32(0);
-                                    Graphics.SetImage(ref argpic5);
+                                    Graphics.SetImage(ref withBlock.picTmp32(0));
                                     break;
                                 }
 
                             case "夕焼け":
                                 {
-                                    var argpic6 = withBlock.picTmp32(0);
-                                    Graphics.GetImage(ref argpic6);
+                                    Graphics.GetImage(ref withBlock.picTmp32(0));
                                     Graphics.Sunset();
-                                    var argpic7 = withBlock.picTmp32(0);
-                                    Graphics.SetImage(ref argpic7);
+                                    Graphics.SetImage(ref withBlock.picTmp32(0));
                                     break;
                                 }
 
                             case "水中":
                                 {
-                                    var argpic8 = withBlock.picTmp32(0);
-                                    Graphics.GetImage(ref argpic8);
+                                    Graphics.GetImage(ref withBlock.picTmp32(0));
                                     Graphics.Water();
-                                    var argpic9 = withBlock.picTmp32(0);
-                                    Graphics.SetImage(ref argpic9);
+                                    Graphics.SetImage(ref withBlock.picTmp32(0));
                                     break;
                                 }
 
                             case "フィルタ":
                                 {
-                                    var argpic10 = withBlock.picTmp32(0);
-                                    Graphics.GetImage(ref argpic10);
+                                    Graphics.GetImage(ref withBlock.picTmp32(0));
                                     Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent);
-                                    var argpic11 = withBlock.picTmp32(0);
-                                    Graphics.SetImage(ref argpic11);
+                                    Graphics.SetImage(ref withBlock.picTmp32(0));
                                     break;
                                 }
                         }
@@ -4025,61 +3918,49 @@ namespace Project1
                                 {
                                     case "夜":
                                         {
-                                            var argpic12 = withBlock.picTmp32(0);
-                                            Graphics.GetImage(ref argpic12);
+                                            Graphics.GetImage(ref withBlock.picTmp32(0));
                                             Graphics.Dark(true);
-                                            var argpic13 = withBlock.picTmp32(0);
-                                            Graphics.SetImage(ref argpic13);
+                                            Graphics.SetImage(ref withBlock.picTmp32(0));
                                             break;
                                         }
 
                                     case "セピア":
                                         {
-                                            var argpic14 = withBlock.picTmp32(0);
-                                            Graphics.GetImage(ref argpic14);
+                                            Graphics.GetImage(ref withBlock.picTmp32(0));
                                             Graphics.Sepia(true);
-                                            var argpic15 = withBlock.picTmp32(0);
-                                            Graphics.SetImage(ref argpic15);
+                                            Graphics.SetImage(ref withBlock.picTmp32(0));
                                             break;
                                         }
 
                                     case "白黒":
                                         {
-                                            var argpic16 = withBlock.picTmp32(0);
-                                            Graphics.GetImage(ref argpic16);
+                                            Graphics.GetImage(ref withBlock.picTmp32(0));
                                             Graphics.Monotone(true);
-                                            var argpic17 = withBlock.picTmp32(0);
-                                            Graphics.SetImage(ref argpic17);
+                                            Graphics.SetImage(ref withBlock.picTmp32(0));
                                             break;
                                         }
 
                                     case "夕焼け":
                                         {
-                                            var argpic18 = withBlock.picTmp32(0);
-                                            Graphics.GetImage(ref argpic18);
+                                            Graphics.GetImage(ref withBlock.picTmp32(0));
                                             Graphics.Sunset(true);
-                                            var argpic19 = withBlock.picTmp32(0);
-                                            Graphics.SetImage(ref argpic19);
+                                            Graphics.SetImage(ref withBlock.picTmp32(0));
                                             break;
                                         }
 
                                     case "水中":
                                         {
-                                            var argpic20 = withBlock.picTmp32(0);
-                                            Graphics.GetImage(ref argpic20);
+                                            Graphics.GetImage(ref withBlock.picTmp32(0));
                                             Graphics.Water(true);
-                                            var argpic21 = withBlock.picTmp32(0);
-                                            Graphics.SetImage(ref argpic21);
+                                            Graphics.SetImage(ref withBlock.picTmp32(0));
                                             break;
                                         }
 
                                     case "フィルタ":
                                         {
-                                            var argpic22 = withBlock.picTmp32(0);
-                                            Graphics.GetImage(ref argpic22);
+                                            Graphics.GetImage(ref withBlock.picTmp32(0));
                                             Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent, true);
-                                            var argpic23 = withBlock.picTmp32(0);
-                                            Graphics.SetImage(ref argpic23);
+                                            Graphics.SetImage(ref withBlock.picTmp32(0));
                                             break;
                                         }
                                 }
@@ -4130,8 +4011,7 @@ namespace Project1
             return;
             ErrorHandler:
             ;
-            string argmsg = "マップ用ビットマップファイル" + Constants.vbCr + Constants.vbLf + fname + Constants.vbCr + Constants.vbLf + "の読み込み中にエラーが発生しました。" + Constants.vbCr + Constants.vbLf + "画像ファイルが壊れていないか確認して下さい。";
-            ErrorMessage(ref argmsg);
+            ErrorMessage(ref "マップ用ビットマップファイル" + Constants.vbCr + Constants.vbLf + fname + Constants.vbCr + Constants.vbLf + "の読み込み中にエラーが発生しました。" + Constants.vbCr + Constants.vbLf + "画像ファイルが壊れていないか確認して下さい。");
             SRC.TerminateSRC();
         }
 
@@ -4338,8 +4218,7 @@ namespace Project1
                             }
                             else
                             {
-                                string argfname = "地形ユニット";
-                                if (u.Action > 0 | u.IsFeatureAvailable(ref argfname))
+                                if (u.Action > 0 | u.IsFeatureAvailable(ref "地形ユニット"))
                                 {
                                     // ユニット
                                     ret = BitBlt(pic.hDC, xx, yy, 32, 32, withBlock.picUnitBitmap.hDC, 32 * ((int)u.BitmapID % 15), 96 * ((int)u.BitmapID / 15), SRCCOPY);
@@ -4701,8 +4580,7 @@ namespace Project1
                                 }
                                 else
                                 {
-                                    string argfname = "地形ユニット";
-                                    if (u.Action > 0 | u.IsFeatureAvailable(ref argfname))
+                                    if (u.Action > 0 | u.IsFeatureAvailable(ref "地形ユニット"))
                                     {
                                         // ユニット
                                         ret = BitBlt(pic.hDC, 0, yy, 16, 32, withBlock.picUnitBitmap.hDC, 32 * ((int)u.BitmapID % 15) + 16, 96 * ((int)u.BitmapID / 15), SRCCOPY);
@@ -4765,8 +4643,7 @@ namespace Project1
                             }
                             else
                             {
-                                string argfname1 = "地形ユニット";
-                                if (u.Action > 0 | u.IsFeatureAvailable(ref argfname1))
+                                if (u.Action > 0 | u.IsFeatureAvailable(ref "地形ユニット"))
                                 {
                                     // ユニット
                                     ret = BitBlt(pic.hDC, xx, yy, 32, 32, withBlock.picUnitBitmap.hDC, 32 * ((int)u.BitmapID % 15), 96 * ((int)u.BitmapID / 15), SRCCOPY);
@@ -5230,16 +5107,14 @@ namespace Project1
             short i, j;
             // インターミッションでのパイロットステータス表示の場合は
             // 特殊な処理が必要
-            string argfname = "ダミーユニット";
-            if (u.IsFeatureAvailable(ref argfname) & Strings.InStr(u.Name, "ステータス表示用ユニット") == 0)
+            if (u.IsFeatureAvailable(ref "ダミーユニット") & Strings.InStr(u.Name, "ステータス表示用ユニット") == 0)
             {
                 if (u.CountPilot() == 0)
                 {
                     return FindUnitBitmapRet;
                 }
 
-                object argIndex1 = "ダミーユニット";
-                if (u.FeatureData(ref argIndex1) == "ユニット画像使用")
+                if (u.FeatureData(ref "ダミーユニット") == "ユニット画像使用")
                 {
                     // ユニット画像を使って表示
                     uname = "搭乗ユニット[" + u.MainPilot().ID + "]";
@@ -5293,15 +5168,13 @@ namespace Project1
                 return FindUnitBitmapRet;
             }
 
-            string argfname3 = "地形ユニット";
-            if (u.IsFeatureAvailable(ref argfname3))
+            if (u.IsFeatureAvailable(ref "地形ユニット"))
             {
                 // 地形ユニット
                 fname = u.get_Bitmap(false);
                 bool localFileExists5() { string argfname = SRC.ScenarioPath + @"Bitmap\Map\" + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
 
-                string argfname2 = SRC.AppPath + @"Bitmap\Map\" + fname;
-                if (GeneralLib.FileExists(ref argfname2) | localFileExists5())
+                if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + fname) | localFileExists5())
                 {
                     fname = @"Bitmap\Map\" + fname;
                 }
@@ -5350,8 +5223,7 @@ namespace Project1
                     {
                         bool localFileExists4() { string argfname = SRC.ScenarioPath + @"Bitmap\Map\" + tname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
 
-                        string argfname1 = SRC.AppPath + @"Bitmap\Map\" + tname;
-                        if (GeneralLib.FileExists(ref argfname1) | localFileExists4())
+                        if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + tname) | localFileExists4())
                         {
                             fname = @"Bitmap\Map\" + tname;
                         }
@@ -5512,8 +5384,7 @@ namespace Project1
              */
             {
                 var withBlock = MainForm;
-                string argfname = "非表示";
-                if (u.IsFeatureAvailable(ref argfname))
+                if (u.IsFeatureAvailable(ref "非表示"))
                 {
                     MakeUnitBitmapRet = -1;
                     return MakeUnitBitmapRet;
@@ -5589,8 +5460,7 @@ namespace Project1
 
                 // 画像をそのまま使用する場合
                 // 画像の読み込み
-                object argIndex1 = "ダミーユニット";
-                if (Strings.InStr(fname, @"\Pilot\") > 0 | u.FeatureData(ref argIndex1) == "ユニット画像使用")
+                if (Strings.InStr(fname, @"\Pilot\") > 0 | u.FeatureData(ref "ダミーユニット") == "ユニット画像使用")
                 {
                     ;
                     withBlock.picTmp = Image.FromFile(fname);
@@ -5602,8 +5472,7 @@ namespace Project1
                 }
 
                 // ユニットが自分で発光しているかをあらかじめチェック
-                string argfname = "発光";
-                if (Map.MapDrawMode == "夜" & !Map.MapDrawIsMapOnly & !use_orig_color & u.IsFeatureAvailable(ref argfname))
+                if (Map.MapDrawMode == "夜" & !Map.MapDrawIsMapOnly & !use_orig_color & u.IsFeatureAvailable(ref "発光"))
                 {
                     emit_light = true;
                 }
@@ -5624,13 +5493,11 @@ namespace Project1
                             withBlock1.Height = 32;
                         }
 
-                        string argmsg = u.Name + "のユニット画像が32x32の大きさになっていません";
-                        ErrorMessage(ref argmsg);
+                        ErrorMessage(ref u.Name + "のユニット画像が32x32の大きさになっていません");
                         return;
                     }
 
-                    string argfname1 = "地形ユニット";
-                    if (u.IsFeatureAvailable(ref argfname1))
+                    if (u.IsFeatureAvailable(ref "地形ユニット"))
                     {
                         // 地形ユニットの場合は画像をそのまま使う
                         ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, SRCCOPY);
@@ -5674,10 +5541,7 @@ namespace Project1
                         // BitBltを使ってユニット画像とタイルを重ね合わせる
 
                         // マスクを作成
-                        int argw = 32;
-                        int argh = 32;
-                        int argtcolor = ColorTranslator.ToOle(Color.White);
-                        Graphics.MakeMask(ref withBlock.picTmp32(0).hDC, ref withBlock.picTmp32(2).hDC, ref argw, ref argh, ref argtcolor);
+                        Graphics.MakeMask(ref withBlock.picTmp32(0).hDC, ref withBlock.picTmp32(2).hDC, ref 32, ref 32, ref ColorTranslator.ToOle(Color.White));
 
                         // タイル
                         switch (u.Party0 ?? "")
@@ -5744,11 +5608,9 @@ namespace Project1
                     {
                         case "夜":
                             {
-                                var argpic = withBlock.picTmp32(1);
-                                Graphics.GetImage(ref argpic);
+                                Graphics.GetImage(ref withBlock.picTmp32(1));
                                 Graphics.Dark();
-                                var argpic1 = withBlock.picTmp32(1);
-                                Graphics.SetImage(ref argpic1);
+                                Graphics.SetImage(ref withBlock.picTmp32(1));
                                 // ユニットが"発光"の特殊能力を持つ場合、
                                 // ユニット画像を、暗くしたタイル画像の上に描画する。
                                 if (emit_light)
@@ -5769,51 +5631,41 @@ namespace Project1
 
                         case "セピア":
                             {
-                                var argpic2 = withBlock.picTmp32(1);
-                                Graphics.GetImage(ref argpic2);
+                                Graphics.GetImage(ref withBlock.picTmp32(1));
                                 Graphics.Sepia();
-                                var argpic3 = withBlock.picTmp32(1);
-                                Graphics.SetImage(ref argpic3);
+                                Graphics.SetImage(ref withBlock.picTmp32(1));
                                 break;
                             }
 
                         case "白黒":
                             {
-                                var argpic4 = withBlock.picTmp32(1);
-                                Graphics.GetImage(ref argpic4);
+                                Graphics.GetImage(ref withBlock.picTmp32(1));
                                 Graphics.Monotone();
-                                var argpic5 = withBlock.picTmp32(1);
-                                Graphics.SetImage(ref argpic5);
+                                Graphics.SetImage(ref withBlock.picTmp32(1));
                                 break;
                             }
 
                         case "夕焼け":
                             {
-                                var argpic6 = withBlock.picTmp32(1);
-                                Graphics.GetImage(ref argpic6);
+                                Graphics.GetImage(ref withBlock.picTmp32(1));
                                 Graphics.Sunset();
-                                var argpic7 = withBlock.picTmp32(1);
-                                Graphics.SetImage(ref argpic7);
+                                Graphics.SetImage(ref withBlock.picTmp32(1));
                                 break;
                             }
 
                         case "水中":
                             {
-                                var argpic8 = withBlock.picTmp32(1);
-                                Graphics.GetImage(ref argpic8);
+                                Graphics.GetImage(ref withBlock.picTmp32(1));
                                 Graphics.Water();
-                                var argpic9 = withBlock.picTmp32(1);
-                                Graphics.SetImage(ref argpic9);
+                                Graphics.SetImage(ref withBlock.picTmp32(1));
                                 break;
                             }
 
                         case "フィルタ":
                             {
-                                var argpic10 = withBlock.picTmp32(1);
-                                Graphics.GetImage(ref argpic10);
+                                Graphics.GetImage(ref withBlock.picTmp32(1));
                                 Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent);
-                                var argpic11 = withBlock.picTmp32(1);
-                                Graphics.SetImage(ref argpic11);
+                                Graphics.SetImage(ref withBlock.picTmp32(1));
                                 break;
                             }
                     }
@@ -5826,8 +5678,7 @@ namespace Project1
             return;
             ErrorHandler:
             ;
-            string argmsg1 = "ユニット用ビットマップファイル" + Constants.vbCr + Constants.vbLf + fname + Constants.vbCr + Constants.vbLf + "の読み込み中にエラーが発生しました。" + Constants.vbCr + Constants.vbLf + "画像ファイルが壊れていないか確認して下さい。";
-            ErrorMessage(ref argmsg1);
+            ErrorMessage(ref "ユニット用ビットマップファイル" + Constants.vbCr + Constants.vbLf + fname + Constants.vbCr + Constants.vbLf + "の読み込み中にエラーが発生しました。" + Constants.vbCr + Constants.vbLf + "画像ファイルが壊れていないか確認して下さい。");
         }
 
         // ユニット画像の描画
@@ -5869,8 +5720,7 @@ namespace Project1
                 }
 
                 // ユニット画像の書き込み
-                string argfname = "地形ユニット";
-                if (u.Action > 0 | u.IsFeatureAvailable(ref argfname))
+                if (u.Action > 0 | u.IsFeatureAvailable(ref "地形ユニット"))
                 {
                     // 通常の表示
                     ret = BitBlt(pic.hDC, xx, yy, 32, 32, withBlock.picUnitBitmap.hDC, 32 * ((int)u.BitmapID % 15), 96 * ((int)u.BitmapID / 15), SRCCOPY);
@@ -6446,8 +6296,7 @@ namespace Project1
                     {
                         if (SRC.AutoMoveCursor)
                         {
-                            string argcursor_mode1 = "ダイアログ";
-                            MoveCursorPos(ref argcursor_mode1);
+                            MoveCursorPos(ref "ダイアログ");
                         }
                     }
 
@@ -6478,8 +6327,7 @@ namespace Project1
                     {
                         if (SRC.AutoMoveCursor)
                         {
-                            string argcursor_mode = "ダイアログ";
-                            MoveCursorPos(ref argcursor_mode);
+                            MoveCursorPos(ref "ダイアログ");
                         }
                     }
 
@@ -6672,8 +6520,7 @@ namespace Project1
 
                 bool localFileExists2() { string argfname = SRC.AppPath + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
 
-                string argfname = SRC.ScenarioPath + fname;
-                if (GeneralLib.FileExists(ref argfname))
+                if (GeneralLib.FileExists(ref SRC.ScenarioPath + fname))
                 {
                     withBlock.imgPilot1.Image = Image.FromFile(SRC.ScenarioPath + fname);
                 }
@@ -6710,26 +6557,19 @@ namespace Project1
                 }
                 else
                 {
-                    var argpic = withBlock.picUnit1;
-                    string argfname1 = "";
-                    LoadUnitBitmap(ref u, ref argpic, 0, 0, true, fname: ref argfname1);
+                    LoadUnitBitmap(ref u, ref withBlock.picUnit1, 0, 0, true, fname: ref "");
                     withBlock.picUnit1 = argpic;
                 }
 
                 withBlock.picUnit1.Refresh();
-                object argIndex1 = "データ不明";
-                if (u.IsConditionSatisfied(ref argIndex1))
+                if (u.IsConditionSatisfied(ref "データ不明"))
                 {
-                    string argtname = "HP";
-                    Unit argu = null;
-                    withBlock.labHP1.Text = Expression.Term(ref argtname, u: ref argu);
+                    withBlock.labHP1.Text = Expression.Term(ref "HP", u: ref null);
                     withBlock.txtHP1.Text = "?????/?????";
                 }
                 else
                 {
-                    string argtname1 = "HP";
-                    Unit argu1 = null;
-                    withBlock.labHP1.Text = Expression.Term(ref argtname1, u: ref argu1);
+                    withBlock.labHP1.Text = Expression.Term(ref "HP", u: ref null);
                     if (u.HP < 100000)
                     {
                         withBlock.txtHP1.Text = SrcFormatter.Format(u.HP);
@@ -6753,18 +6593,14 @@ namespace Project1
             My.MyProject.Forms.frmListBox.picHP1.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
             {
                 var withBlock1 = My.MyProject.Forms.frmListBox;
-                object argIndex2 = "データ不明";
-                if (u.IsConditionSatisfied(ref argIndex2))
+                if (u.IsConditionSatisfied(ref "データ不明"))
                 {
-                    string argtname2 = "EN";
-                    Unit argu2 = null;
-                    withBlock1.labEN1.Text = Expression.Term(ref argtname2, u: ref argu2);
+                    withBlock1.labEN1.Text = Expression.Term(ref "EN", u: ref null);
                     withBlock1.txtEN1.Text = "???/???";
                 }
                 else
                 {
-                    string argtname3 = "EN";
-                    withBlock1.labEN1.Text = Expression.Term(ref argtname3, ref t);
+                    withBlock1.labEN1.Text = Expression.Term(ref "EN", ref t);
                     if (u.EN < 1000)
                     {
                         withBlock1.txtEN1.Text = SrcFormatter.Format(u.EN);
@@ -6796,8 +6632,7 @@ namespace Project1
 
                 bool localFileExists5() { string argfname = SRC.AppPath + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
 
-                string argfname2 = SRC.ScenarioPath + fname;
-                if (GeneralLib.FileExists(ref argfname2))
+                if (GeneralLib.FileExists(ref SRC.ScenarioPath + fname))
                 {
                     withBlock2.imgPilot2.Image = Image.FromFile(SRC.ScenarioPath + fname);
                 }
@@ -6834,25 +6669,19 @@ namespace Project1
                 }
                 else
                 {
-                    var argpic1 = withBlock2.picUnit2;
-                    string argfname3 = "";
-                    LoadUnitBitmap(ref t, ref argpic1, 0, 0, true, fname: ref argfname3);
+                    LoadUnitBitmap(ref t, ref withBlock2.picUnit2, 0, 0, true, fname: ref "");
                     withBlock2.picUnit2 = argpic1;
                 }
 
                 withBlock2.picUnit2.Refresh();
-                object argIndex3 = "データ不明";
-                if (t.IsConditionSatisfied(ref argIndex3))
+                if (t.IsConditionSatisfied(ref "データ不明"))
                 {
-                    string argtname4 = "HP";
-                    Unit argu3 = null;
-                    withBlock2.labHP2.Text = Expression.Term(ref argtname4, u: ref argu3);
+                    withBlock2.labHP2.Text = Expression.Term(ref "HP", u: ref null);
                     withBlock2.txtHP2.Text = "?????/?????";
                 }
                 else
                 {
-                    string argtname5 = "HP";
-                    withBlock2.labHP2.Text = Expression.Term(ref argtname5, ref t);
+                    withBlock2.labHP2.Text = Expression.Term(ref "HP", ref t);
                     if (t.HP < 100000)
                     {
                         withBlock2.txtHP2.Text = SrcFormatter.Format(t.HP);
@@ -6876,18 +6705,14 @@ namespace Project1
             My.MyProject.Forms.frmListBox.picHP2.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
             {
                 var withBlock3 = My.MyProject.Forms.frmListBox;
-                object argIndex4 = "データ不明";
-                if (t.IsConditionSatisfied(ref argIndex4))
+                if (t.IsConditionSatisfied(ref "データ不明"))
                 {
-                    string argtname6 = "EN";
-                    Unit argu4 = null;
-                    withBlock3.labEN2.Text = Expression.Term(ref argtname6, u: ref argu4);
+                    withBlock3.labEN2.Text = Expression.Term(ref "EN", u: ref null);
                     withBlock3.txtEN2.Text = "???/???";
                 }
                 else
                 {
-                    string argtname7 = "EN";
-                    withBlock3.labEN2.Text = Expression.Term(ref argtname7, ref t);
+                    withBlock3.labEN2.Text = Expression.Term(ref "EN", ref t);
                     if (t.EN < 1000)
                     {
                         withBlock3.txtEN2.Text = SrcFormatter.Format(t.EN);
@@ -6967,8 +6792,7 @@ namespace Project1
                 var loopTo = withBlock.CountWeapon();
                 for (i = 1; i <= loopTo; i++)
                 {
-                    string argtarea = "";
-                    wpower[i] = withBlock.WeaponPower(i, ref argtarea);
+                    wpower[i] = withBlock.WeaponPower(i, ref "");
                 }
 
                 // 攻撃力でソート
@@ -7025,8 +6849,7 @@ namespace Project1
                         var withBlock1 = u;
                         if (lb_mode == "一覧")
                         {
-                            string argref_mode = "ステータス";
-                            if (!withBlock1.IsWeaponAvailable(w, ref argref_mode))
+                            if (!withBlock1.IsWeaponAvailable(w, ref "ステータス"))
                             {
                                 // Disableコマンドで使用不可にされた武器と使用できない合体技
                                 // は表示しない
@@ -7040,8 +6863,7 @@ namespace Project1
                                     goto NextLoop1;
                                 }
 
-                                string argattr = "合";
-                                if (withBlock1.IsWeaponClassifiedAs(w, ref argattr))
+                                if (withBlock1.IsWeaponClassifiedAs(w, ref "合"))
                                 {
                                     if (!withBlock1.IsCombinationAttackAvailable(w, true))
                                     {
@@ -7070,8 +6892,7 @@ namespace Project1
                                 goto NextLoop1;
                             }
 
-                            string argattr1 = "合";
-                            if (withBlock1.IsWeaponClassifiedAs(w, ref argattr1))
+                            if (withBlock1.IsWeaponClassifiedAs(w, ref "合"))
                             {
                                 if (!withBlock1.IsCombinationAttackAvailable(w, true))
                                 {
@@ -7178,11 +6999,9 @@ namespace Project1
 
                         // 属性
                         wclass = u.WeaponClass(w);
-                        string argstring21 = "|";
-                        if (GeneralLib.InStrNotNest(ref wclass, ref argstring21) > 0)
+                        if (GeneralLib.InStrNotNest(ref wclass, ref "|") > 0)
                         {
-                            string argstring2 = "|";
-                            wclass = Strings.Left(wclass, GeneralLib.InStrNotNest(ref wclass, ref argstring2) - 1);
+                            wclass = Strings.Left(wclass, GeneralLib.InStrNotNest(ref wclass, ref "|") - 1);
                         }
 
                         list[Information.UBound(list)] = list[Information.UBound(list)] + " " + wclass;
@@ -7194,9 +7013,7 @@ namespace Project1
 
                 if (lb_mode == "移動前" | lb_mode == "移動後")
                 {
-                    Unit argt = null;
-                    Unit argt1 = null;
-                    if (u.LookForSupportAttack(ref argt1) is object)
+                    if (u.LookForSupportAttack(ref null) is object)
                     {
                         // 援護攻撃を使うかどうか選択
                         Commands.UseSupportAttack = true;
@@ -7208,22 +7025,16 @@ namespace Project1
 
                 // リストボックスを表示
                 TopItem = -1;
-                string argtname = "EN";
-                string argtname1 = "CT";
-                string arglb_info = "名称                       攻撃 射程  命 弾  " + Expression.Term(ref argtname, ref u, 2) + "  " + Expression.Term(ref argtname1, ref u, 2) + " 適応 分類";
-                string arglb_mode = "表示のみ";
-                ret = ListBox(ref caption_msg, ref list, ref arglb_info, ref arglb_mode);
+                ret = ListBox(ref caption_msg, ref list, ref "名称                       攻撃 射程  命 弾  " + Expression.Term(ref argtname, ref u, 2) + "  " + Expression.Term(ref argtname1, ref u, 2) + " 適応 分類", ref "表示のみ");
                 if (SRC.AutoMoveCursor)
                 {
                     if (lb_mode != "一覧")
                     {
-                        string argcursor_mode = "武器選択";
-                        MoveCursorPos(ref argcursor_mode);
+                        MoveCursorPos(ref "武器選択");
                     }
                     else
                     {
-                        string argcursor_mode1 = "ダイアログ";
-                        MoveCursorPos(ref argcursor_mode1);
+                        MoveCursorPos(ref "ダイアログ");
                     }
                 }
 
@@ -7265,11 +7076,7 @@ namespace Project1
                             list[Information.UBound(list)] = "援護攻撃：使用しない";
                         }
 
-                        string argtname2 = "EN";
-                        string argtname3 = "CT";
-                        string arglb_info1 = "名称                       攻撃 射程  命 弾  " + Expression.Term(ref argtname2, ref u, 2) + "  " + Expression.Term(ref argtname3, ref u, 2) + " 適応 分類";
-                        string arglb_mode1 = "表示のみ";
-                        Commands.SelectedItem = ListBox(ref caption_msg, ref list, ref arglb_info1, ref arglb_mode1);
+                        Commands.SelectedItem = ListBox(ref caption_msg, ref list, ref "名称                       攻撃 射程  命 弾  " + Expression.Term(ref argtname2, ref u, 2) + "  " + Expression.Term(ref argtname3, ref u, 2) + " 適応 分類", ref "表示のみ");
                     }
                 }
 
@@ -7304,8 +7111,7 @@ namespace Project1
                         }
 
                         // 使用できない合体技は表示しない
-                        string argattr2 = "合";
-                        if (withBlock3.IsWeaponClassifiedAs(w, ref argattr2))
+                        if (withBlock3.IsWeaponClassifiedAs(w, ref "合"))
                         {
                             if (!withBlock3.IsCombinationAttackAvailable(w, true))
                             {
@@ -7313,10 +7119,7 @@ namespace Project1
                             }
                         }
 
-                        string argref_mode1 = "移動前";
-                        string argattr3 = "Ｍ";
-                        string argattr4 = "合";
-                        if (!withBlock3.IsWeaponAvailable(w, ref argref_mode1))
+                        if (!withBlock3.IsWeaponAvailable(w, ref "移動前"))
                         {
                             // この武器は使用不能
                             ListItemFlag[Information.UBound(list) + 1] = true;
@@ -7326,12 +7129,12 @@ namespace Project1
                             // ターゲットが射程外
                             ListItemFlag[Information.UBound(list) + 1] = true;
                         }
-                        else if (withBlock3.IsWeaponClassifiedAs(w, ref argattr3))
+                        else if (withBlock3.IsWeaponClassifiedAs(w, ref "Ｍ"))
                         {
                             // マップ攻撃は武器選定外
                             ListItemFlag[Information.UBound(list) + 1] = true;
                         }
-                        else if (withBlock3.IsWeaponClassifiedAs(w, ref argattr4))
+                        else if (withBlock3.IsWeaponClassifiedAs(w, ref "合"))
                         {
                             // 合体技は自分から攻撃をかける場合にのみ使用
                             ListItemFlag[Information.UBound(list) + 1] = true;
@@ -7366,8 +7169,7 @@ namespace Project1
                         list[Information.UBound(list)] = GeneralLib.RightPaddedString(ref withBlock4.Nickname(), 29) + localLeftPaddedString8();
 
                         // 命中率
-                        string argoname = "予測命中率非表示";
-                        if (!Expression.IsOptionDefined(ref argoname))
+                        if (!Expression.IsOptionDefined(ref "予測命中率非表示"))
                         {
                             buf = SrcFormatter.Format(GeneralLib.MinLng(u.HitProbability(w, ref Commands.SelectedUnit, true), 100)) + "%";
                             list[Information.UBound(list)] = list[Information.UBound(list)] + GeneralLib.LeftPaddedString(ref buf, 5);
@@ -7387,8 +7189,7 @@ namespace Project1
 
 
                         // クリティカル率
-                        string argoname1 = "予測命中率非表示";
-                        if (!Expression.IsOptionDefined(ref argoname1))
+                        if (!Expression.IsOptionDefined(ref "予測命中率非表示"))
                         {
                             buf = SrcFormatter.Format(GeneralLib.MinLng(u.CriticalProbability(w, ref Commands.SelectedUnit), 100)) + "%";
                             list[Information.UBound(list)] = list[Information.UBound(list)] + GeneralLib.LeftPaddedString(ref buf, 5);
@@ -7441,11 +7242,9 @@ namespace Project1
 
                         // 属性
                         wclass = u.WeaponClass(w);
-                        string argstring23 = "|";
-                        if (GeneralLib.InStrNotNest(ref wclass, ref argstring23) > 0)
+                        if (GeneralLib.InStrNotNest(ref wclass, ref "|") > 0)
                         {
-                            string argstring22 = "|";
-                            wclass = Strings.Left(wclass, GeneralLib.InStrNotNest(ref wclass, ref argstring22) - 1);
+                            wclass = Strings.Left(wclass, GeneralLib.InStrNotNest(ref wclass, ref "|") - 1);
                         }
 
                         list[Information.UBound(list)] = list[Information.UBound(list)] + " " + wclass;
@@ -7457,11 +7256,7 @@ namespace Project1
 
                 // リストボックスを表示
                 TopItem = -1;
-                string argtname4 = "CT";
-                string argtname5 = "EN";
-                string arglb_info2 = "名称                         攻撃 命中 " + Expression.Term(ref argtname4, ref u, 2) + "   弾  " + Expression.Term(ref argtname5, ref u, 2) + " 適応 分類";
-                string arglb_mode2 = "連続表示,カーソル移動";
-                ret = ListBox(ref caption_msg, ref list, ref arglb_info2, ref arglb_mode2);
+                ret = ListBox(ref caption_msg, ref list, ref "名称                         攻撃 命中 " + Expression.Term(ref "CT", ref u, 2) + "   弾  " + Expression.Term(ref argtname5, ref u, 2) + " 適応 分類", ref "連続表示,カーソル移動");
                 WeaponListBoxRet = wlist[ret];
             }
 
@@ -7484,8 +7279,7 @@ namespace Project1
                 var withBlock = u;
                 // アビリティが一つしかない場合は自動的にそのアビリティを選択する。
                 // リストボックスの表示は行わない。
-                string argtname = "アビリティ";
-                if (lb_mode != "一覧" & !is_item & MainForm.mnuUnitCommandItem(Commands.AbilityCmdID).Caption != Expression.Term(ref argtname, ref u))
+                if (lb_mode != "一覧" & !is_item & MainForm.mnuUnitCommandItem(Commands.AbilityCmdID).Caption != Expression.Term(ref "アビリティ", ref u))
                 {
                     var loopTo = withBlock.CountAbility();
                     for (i = 1; i <= loopTo; i++)
@@ -7507,8 +7301,7 @@ namespace Project1
                     is_available = true;
                     if (lb_mode == "一覧")
                     {
-                        string argref_mode = "ステータス";
-                        if (withBlock.IsAbilityAvailable(i, ref argref_mode))
+                        if (withBlock.IsAbilityAvailable(i, ref "ステータス"))
                         {
                             // アイテムの使用効果かどうか
                             {
@@ -7540,8 +7333,7 @@ namespace Project1
                                 goto NextLoop;
                             }
 
-                            string argattr = "合";
-                            if (withBlock.IsAbilityClassifiedAs(i, ref argattr))
+                            if (withBlock.IsAbilityClassifiedAs(i, ref "合"))
                             {
                                 if (!withBlock.IsCombinationAbilityAvailable(i, true))
                                 {
@@ -7582,8 +7374,7 @@ namespace Project1
                                 goto NextLoop;
                             }
 
-                            string argattr1 = "合";
-                            if (withBlock.IsAbilityClassifiedAs(i, ref argattr1))
+                            if (withBlock.IsAbilityClassifiedAs(i, ref "合"))
                             {
                                 if (!withBlock.IsCombinationAbilityAvailable(i, true))
                                 {
@@ -7612,11 +7403,9 @@ namespace Project1
 
                             string localEffectName7() { object argIndex1 = j; var ret = withBlock3.EffectName(ref argIndex1); return ret; }
 
-                            object argIndex2 = j;
-                            if (withBlock3.EffectType(ref argIndex2) == "解説")
+                            if (withBlock3.EffectType(ref j) == "解説")
                             {
-                                object argIndex1 = j;
-                                msg = withBlock3.EffectName(ref argIndex1);
+                                msg = withBlock3.EffectName(ref j);
                                 break;
                             }
                             else if (Strings.InStr(localEffectName6(), "ターン)") > 0)
@@ -7673,8 +7462,7 @@ namespace Project1
                             msg = buf;
                         }
 
-                        string argbuf = list[Information.UBound(list)] + " " + msg;
-                        list[Information.UBound(list)] = GeneralLib.RightPaddedString(ref argbuf, 53);
+                        list[Information.UBound(list)] = GeneralLib.RightPaddedString(ref list[Information.UBound(list)] + " " + msg, 53);
 
                         // 最大射程
                         if (u.AbilityMaxRange(i) > 1)
@@ -7723,11 +7511,9 @@ namespace Project1
                         }
 
                         // 属性
-                        string argstring21 = "|";
-                        if (GeneralLib.InStrNotNest(ref withBlock3.Class_Renamed, ref argstring21) > 0)
+                        if (GeneralLib.InStrNotNest(ref withBlock3.Class_Renamed, ref "|") > 0)
                         {
-                            string argstring2 = "|";
-                            list[Information.UBound(list)] = list[Information.UBound(list)] + " " + Strings.Left(withBlock3.Class_Renamed, GeneralLib.InStrNotNest(ref withBlock3.Class_Renamed, ref argstring2) - 1);
+                            list[Information.UBound(list)] = list[Information.UBound(list)] + " " + Strings.Left(withBlock3.Class_Renamed, GeneralLib.InStrNotNest(ref withBlock3.Class_Renamed, ref "|") - 1);
                         }
                         else
                         {
@@ -7758,14 +7544,10 @@ namespace Project1
 
             // リストボックスを表示
             TopItem = -1;
-            string argtname1 = "EN";
-            string arglb_info = "名称                 効果                            射程 数  " + Expression.Term(ref argtname1, ref u, 2) + " 分類";
-            string arglb_mode = "表示のみ";
-            ret = ListBox(ref caption_msg, ref list, ref arglb_info, ref arglb_mode);
+            ret = ListBox(ref caption_msg, ref list, ref "名称                 効果                            射程 数  " + Expression.Term(ref nullname1, ref u, 2) + " 分類", ref "表示のみ");
             if (SRC.AutoMoveCursor)
             {
-                string argcursor_mode = "ダイアログ";
-                MoveCursorPos(ref argcursor_mode);
+                MoveCursorPos(ref "ダイアログ");
             }
 
             while (!IsFormClicked)
@@ -9037,8 +8819,7 @@ namespace Project1
                     case "右回転":
                         {
                             i = (short)(i + 1);
-                            string argexpr = GeneralLib.LIndex(ref draw_option, i);
-                            angle = GeneralLib.StrToLng(ref argexpr);
+                            angle = GeneralLib.StrToLng(ref GeneralLib.LIndex(ref draw_option, i));
                             pic_option2 = pic_option2 + " 右回転=" + SrcFormatter.Format(angle % 360);
                             break;
                         }
@@ -9349,8 +9130,7 @@ namespace Project1
             {
                 if (scenario_anime_bitmap_dir_exists)
                 {
-                    string argfname = SRC.ScenarioPath + @"Bitmap\Anime\" + fname;
-                    if (GeneralLib.FileExists(ref argfname))
+                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Anime\" + fname))
                     {
                         fpath = SRC.ScenarioPath + @"Bitmap\Anime\";
                         last_path = "";
@@ -9360,8 +9140,7 @@ namespace Project1
 
                 if (extdata_anime_bitmap_dir_exists)
                 {
-                    string argfname1 = SRC.ExtDataPath + @"Bitmap\Anime\" + fname;
-                    if (GeneralLib.FileExists(ref argfname1))
+                    if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Anime\" + fname))
                     {
                         fpath = SRC.ExtDataPath + @"Bitmap\Anime\";
                         last_path = "";
@@ -9371,8 +9150,7 @@ namespace Project1
 
                 if (extdata2_anime_bitmap_dir_exists)
                 {
-                    string argfname2 = SRC.ExtDataPath2 + @"Bitmap\Anime\" + fname;
-                    if (GeneralLib.FileExists(ref argfname2))
+                    if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Anime\" + fname))
                     {
                         fpath = SRC.ExtDataPath2 + @"Bitmap\Anime\";
                         last_path = "";
@@ -9380,8 +9158,7 @@ namespace Project1
                     }
                 }
 
-                string argfname3 = SRC.AppPath + @"Bitmap\Anime\" + fname;
-                if (GeneralLib.FileExists(ref argfname3))
+                if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Anime\" + fname))
                 {
                     fpath = SRC.AppPath + @"Bitmap\Anime\";
                     last_path = "";
@@ -9392,8 +9169,7 @@ namespace Project1
             // 前回と同じパス？
             if (Strings.Len(last_path) > 0)
             {
-                string argfname4 = last_path + fname;
-                if (GeneralLib.FileExists(ref argfname4))
+                if (GeneralLib.FileExists(ref last_path + fname))
                 {
                     fpath = last_path;
                     goto FoundPicture;
@@ -9405,8 +9181,7 @@ namespace Project1
             {
                 if (scenario_bitmap_dir_exists)
                 {
-                    string argfname5 = SRC.ScenarioPath + fname;
-                    if (GeneralLib.FileExists(ref argfname5))
+                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + fname))
                     {
                         fpath = SRC.ScenarioPath;
                         last_path = fpath;
@@ -9414,8 +9189,7 @@ namespace Project1
                     }
                 }
 
-                string argfname6 = SRC.AppPath + fname;
-                if (GeneralLib.FileExists(ref argfname6))
+                if (GeneralLib.FileExists(ref SRC.AppPath + fname))
                 {
                     fpath = SRC.AppPath;
                     last_path = "";
@@ -9435,8 +9209,7 @@ namespace Project1
             {
                 if (scenario_bitmap_dir_exists)
                 {
-                    string argfname7 = SRC.ScenarioPath + @"Bitmap\" + fname;
-                    if (GeneralLib.FileExists(ref argfname7))
+                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\" + fname))
                     {
                         fpath = SRC.ScenarioPath + @"Bitmap\";
                         last_path = fpath;
@@ -9446,8 +9219,7 @@ namespace Project1
 
                 if (extdata_bitmap_dir_exists)
                 {
-                    string argfname8 = SRC.ExtDataPath + @"Bitmap\" + fname;
-                    if (GeneralLib.FileExists(ref argfname8))
+                    if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\" + fname))
                     {
                         fpath = SRC.ExtDataPath + @"Bitmap\";
                         last_path = "";
@@ -9457,8 +9229,7 @@ namespace Project1
 
                 if (extdata2_bitmap_dir_exists)
                 {
-                    string argfname9 = SRC.ExtDataPath2 + @"Bitmap\" + fname;
-                    if (GeneralLib.FileExists(ref argfname9))
+                    if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\" + fname))
                     {
                         fpath = SRC.ExtDataPath2 + @"Bitmap\";
                         last_path = "";
@@ -9466,8 +9237,7 @@ namespace Project1
                     }
                 }
 
-                string argfname10 = SRC.AppPath + @"Bitmap\" + fname;
-                if (GeneralLib.FileExists(ref argfname10))
+                if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\" + fname))
                 {
                     fpath = SRC.AppPath + @"Bitmap\";
                     last_path = "";
@@ -9546,8 +9316,7 @@ namespace Project1
             // Bitmapフォルダに直置き
             if (scenario_map_bitmap_dir_exists)
             {
-                string argfname11 = SRC.ScenarioPath + @"Bitmap\" + fname;
-                if (GeneralLib.FileExists(ref argfname11))
+                if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\" + fname))
                 {
                     fpath = SRC.ScenarioPath + @"Bitmap\";
                     last_path = fpath;
@@ -9555,8 +9324,7 @@ namespace Project1
                 }
             }
 
-            string argfname12 = SRC.ScenarioPath + @"Bitmap\" + fname;
-            if (GeneralLib.FileExists(ref argfname12))
+            if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\" + fname))
             {
                 fpath = SRC.ScenarioPath + @"Bitmap\";
                 last_path = fpath;
@@ -9568,8 +9336,7 @@ namespace Project1
             {
                 if (scenario_anime_bitmap_dir_exists)
                 {
-                    string argfname13 = SRC.ScenarioPath + @"Bitmap\Anime\" + fname;
-                    if (GeneralLib.FileExists(ref argfname13))
+                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Anime\" + fname))
                     {
                         fpath = SRC.ScenarioPath + @"Bitmap\Anime\";
                         last_path = fpath;
@@ -9579,8 +9346,7 @@ namespace Project1
 
                 if (scenario_event_bitmap_dir_exists)
                 {
-                    string argfname14 = SRC.ScenarioPath + @"Bitmap\Event\" + fname;
-                    if (GeneralLib.FileExists(ref argfname14))
+                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Event\" + fname))
                     {
                         fpath = SRC.ScenarioPath + @"Bitmap\Event\";
                         last_path = fpath;
@@ -9590,8 +9356,7 @@ namespace Project1
 
                 if (scenario_cutin_bitmap_dir_exists)
                 {
-                    string argfname15 = SRC.ScenarioPath + @"Bitmap\Cutin\" + fname;
-                    if (GeneralLib.FileExists(ref argfname15))
+                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Cutin\" + fname))
                     {
                         fpath = SRC.ScenarioPath + @"Bitmap\Cutin\";
                         last_path = fpath;
@@ -9601,8 +9366,7 @@ namespace Project1
 
                 if (scenario_pilot_bitmap_dir_exists)
                 {
-                    string argfname16 = SRC.ScenarioPath + @"Bitmap\Pilot\" + fname;
-                    if (GeneralLib.FileExists(ref argfname16))
+                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Pilot\" + fname))
                     {
                         fpath = SRC.ScenarioPath + @"Bitmap\Pilot\";
                         last_path = fpath;
@@ -9612,8 +9376,7 @@ namespace Project1
 
                 if (scenario_unit_bitmap_dir_exists)
                 {
-                    string argfname17 = SRC.ScenarioPath + @"Bitmap\Unit\" + fname;
-                    if (GeneralLib.FileExists(ref argfname17))
+                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Unit\" + fname))
                     {
                         fpath = SRC.ScenarioPath + @"Bitmap\Unit\";
                         last_path = fpath;
@@ -9625,16 +9388,14 @@ namespace Project1
                 {
                     if (!string.IsNullOrEmpty(tdir))
                     {
-                        string argfname18 = SRC.ScenarioPath + @"Bitmap\Map\" + tdir + fname;
-                        if (GeneralLib.FileExists(ref argfname18))
+                        if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Map\" + tdir + fname))
                         {
                             fpath = SRC.ScenarioPath + @"Bitmap\Map\" + tdir;
                             last_path = fpath;
                             goto FoundPicture;
                         }
 
-                        string argfname19 = SRC.ScenarioPath + @"Bitmap\Map\" + tdir + tname;
-                        if (GeneralLib.FileExists(ref argfname19))
+                        if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Map\" + tdir + tname))
                         {
                             fname = tname;
                             fpath = SRC.ScenarioPath + @"Bitmap\Map\" + tdir;
@@ -9644,8 +9405,7 @@ namespace Project1
                             goto FoundPicture;
                         }
 
-                        string argfname20 = SRC.ScenarioPath + @"Bitmap\Map\" + tname;
-                        if (GeneralLib.FileExists(ref argfname20))
+                        if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Map\" + tname))
                         {
                             fname = tname;
                             fpath = SRC.ScenarioPath + @"Bitmap\Map\";
@@ -9656,8 +9416,7 @@ namespace Project1
                         }
                     }
 
-                    string argfname21 = SRC.ScenarioPath + @"Bitmap\Map\" + fname;
-                    if (GeneralLib.FileExists(ref argfname21))
+                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Map\" + fname))
                     {
                         fpath = SRC.ScenarioPath + @"Bitmap\Map\";
                         last_path = fpath;
@@ -9671,8 +9430,7 @@ namespace Project1
             {
                 if (extdata_anime_bitmap_dir_exists)
                 {
-                    string argfname22 = SRC.ExtDataPath + @"Bitmap\Anime\" + fname;
-                    if (GeneralLib.FileExists(ref argfname22))
+                    if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Anime\" + fname))
                     {
                         fpath = SRC.ExtDataPath + @"Bitmap\Anime\";
                         last_path = "";
@@ -9682,8 +9440,7 @@ namespace Project1
 
                 if (extdata_event_bitmap_dir_exists)
                 {
-                    string argfname23 = SRC.ExtDataPath + @"Bitmap\Event\" + fname;
-                    if (GeneralLib.FileExists(ref argfname23))
+                    if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Event\" + fname))
                     {
                         fpath = SRC.ExtDataPath + @"Bitmap\Event\";
                         last_path = "";
@@ -9693,8 +9450,7 @@ namespace Project1
 
                 if (extdata_cutin_bitmap_dir_exists)
                 {
-                    string argfname24 = SRC.ExtDataPath + @"Bitmap\Cutin\" + fname;
-                    if (GeneralLib.FileExists(ref argfname24))
+                    if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Cutin\" + fname))
                     {
                         fpath = SRC.ExtDataPath + @"Bitmap\Cutin\";
                         last_path = "";
@@ -9704,8 +9460,7 @@ namespace Project1
 
                 if (extdata_pilot_bitmap_dir_exists)
                 {
-                    string argfname25 = SRC.ExtDataPath + @"Bitmap\Pilot\" + fname;
-                    if (GeneralLib.FileExists(ref argfname25))
+                    if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Pilot\" + fname))
                     {
                         fpath = SRC.ExtDataPath + @"Bitmap\Pilot\";
                         last_path = "";
@@ -9715,8 +9470,7 @@ namespace Project1
 
                 if (extdata_unit_bitmap_dir_exists)
                 {
-                    string argfname26 = SRC.ExtDataPath + @"Bitmap\Unit\" + fname;
-                    if (GeneralLib.FileExists(ref argfname26))
+                    if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Unit\" + fname))
                     {
                         fpath = SRC.ExtDataPath + @"Bitmap\Unit\";
                         last_path = "";
@@ -9728,16 +9482,14 @@ namespace Project1
                 {
                     if (!string.IsNullOrEmpty(tdir))
                     {
-                        string argfname27 = SRC.ExtDataPath + @"Bitmap\Map\" + tdir + fname;
-                        if (GeneralLib.FileExists(ref argfname27))
+                        if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Map\" + tdir + fname))
                         {
                             fpath = SRC.ExtDataPath + @"Bitmap\Map\" + tdir;
                             last_path = "";
                             goto FoundPicture;
                         }
 
-                        string argfname28 = SRC.ExtDataPath + @"Bitmap\Map\" + tdir + tname;
-                        if (GeneralLib.FileExists(ref argfname28))
+                        if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Map\" + tdir + tname))
                         {
                             fname = tname;
                             fpath = SRC.ExtDataPath + @"Bitmap\Map\" + tdir;
@@ -9747,8 +9499,7 @@ namespace Project1
                             goto FoundPicture;
                         }
 
-                        string argfname29 = SRC.ExtDataPath + @"Bitmap\Map\" + tname;
-                        if (GeneralLib.FileExists(ref argfname29))
+                        if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Map\" + tname))
                         {
                             fname = tname;
                             fpath = SRC.ExtDataPath + @"Bitmap\Map\";
@@ -9759,8 +9510,7 @@ namespace Project1
                         }
                     }
 
-                    string argfname30 = SRC.ExtDataPath + @"Bitmap\Map\" + fname;
-                    if (GeneralLib.FileExists(ref argfname30))
+                    if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Map\" + fname))
                     {
                         fpath = SRC.ExtDataPath + @"Bitmap\Map\";
                         last_path = "";
@@ -9774,8 +9524,7 @@ namespace Project1
             {
                 if (extdata2_anime_bitmap_dir_exists)
                 {
-                    string argfname31 = SRC.ExtDataPath2 + @"Bitmap\Anime\" + fname;
-                    if (GeneralLib.FileExists(ref argfname31))
+                    if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Anime\" + fname))
                     {
                         fpath = SRC.ExtDataPath2 + @"Bitmap\Anime\";
                         last_path = "";
@@ -9785,8 +9534,7 @@ namespace Project1
 
                 if (extdata2_event_bitmap_dir_exists)
                 {
-                    string argfname32 = SRC.ExtDataPath2 + @"Bitmap\Event\" + fname;
-                    if (GeneralLib.FileExists(ref argfname32))
+                    if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Event\" + fname))
                     {
                         fpath = SRC.ExtDataPath2 + @"Bitmap\Event\";
                         last_path = "";
@@ -9796,8 +9544,7 @@ namespace Project1
 
                 if (extdata2_cutin_bitmap_dir_exists)
                 {
-                    string argfname33 = SRC.ExtDataPath2 + @"Bitmap\Cutin\" + fname;
-                    if (GeneralLib.FileExists(ref argfname33))
+                    if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Cutin\" + fname))
                     {
                         fpath = SRC.ExtDataPath2 + @"Bitmap\Cutin\";
                         last_path = "";
@@ -9807,8 +9554,7 @@ namespace Project1
 
                 if (extdata2_pilot_bitmap_dir_exists)
                 {
-                    string argfname34 = SRC.ExtDataPath2 + @"Bitmap\Pilot\" + fname;
-                    if (GeneralLib.FileExists(ref argfname34))
+                    if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Pilot\" + fname))
                     {
                         fpath = SRC.ExtDataPath2 + @"Bitmap\Pilot\";
                         last_path = "";
@@ -9818,8 +9564,7 @@ namespace Project1
 
                 if (extdata2_unit_bitmap_dir_exists)
                 {
-                    string argfname35 = SRC.ExtDataPath2 + @"Bitmap\Unit\" + fname;
-                    if (GeneralLib.FileExists(ref argfname35))
+                    if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Unit\" + fname))
                     {
                         fpath = SRC.ExtDataPath2 + @"Bitmap\Unit\";
                         last_path = "";
@@ -9831,16 +9576,14 @@ namespace Project1
                 {
                     if (!string.IsNullOrEmpty(tdir))
                     {
-                        string argfname36 = SRC.ExtDataPath2 + @"Bitmap\Map\" + tdir + fname;
-                        if (GeneralLib.FileExists(ref argfname36))
+                        if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Map\" + tdir + fname))
                         {
                             fpath = SRC.ExtDataPath2 + @"Bitmap\Map\" + tdir;
                             last_path = "";
                             goto FoundPicture;
                         }
 
-                        string argfname37 = SRC.ExtDataPath2 + @"Bitmap\Map\" + tdir + tname;
-                        if (GeneralLib.FileExists(ref argfname37))
+                        if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Map\" + tdir + tname))
                         {
                             fname = tname;
                             fpath = SRC.ExtDataPath2 + @"Bitmap\Map\" + tdir;
@@ -9850,8 +9593,7 @@ namespace Project1
                             goto FoundPicture;
                         }
 
-                        string argfname38 = SRC.ExtDataPath2 + @"Bitmap\Map\" + tname;
-                        if (GeneralLib.FileExists(ref argfname38))
+                        if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Map\" + tname))
                         {
                             fname = tname;
                             fpath = SRC.ExtDataPath2 + @"Bitmap\Map\";
@@ -9862,8 +9604,7 @@ namespace Project1
                         }
                     }
 
-                    string argfname39 = SRC.ExtDataPath2 + @"Bitmap\Map\" + fname;
-                    if (GeneralLib.FileExists(ref argfname39))
+                    if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Map\" + fname))
                     {
                         fpath = SRC.ExtDataPath2 + @"Bitmap\Map\";
                         last_path = "";
@@ -9873,16 +9614,14 @@ namespace Project1
             }
 
             // 本体側フォルダ
-            string argfname40 = SRC.AppPath + @"Bitmap\Anime\" + fname;
-            if (GeneralLib.FileExists(ref argfname40))
+            if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Anime\" + fname))
             {
                 fpath = SRC.AppPath + @"Bitmap\Anime\";
                 last_path = "";
                 goto FoundPicture;
             }
 
-            string argfname41 = SRC.AppPath + @"Bitmap\Event\" + fname;
-            if (GeneralLib.FileExists(ref argfname41))
+            if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Event\" + fname))
             {
                 fpath = SRC.AppPath + @"Bitmap\Event\";
                 last_path = "";
@@ -9891,8 +9630,7 @@ namespace Project1
 
             if (app_cutin_bitmap_dir_exists)
             {
-                string argfname42 = SRC.AppPath + @"Bitmap\Cutin\" + fname;
-                if (GeneralLib.FileExists(ref argfname42))
+                if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Cutin\" + fname))
                 {
                     fpath = SRC.AppPath + @"Bitmap\Cutin\";
                     last_path = "";
@@ -9902,8 +9640,7 @@ namespace Project1
 
             if (app_pilot_bitmap_dir_exists)
             {
-                string argfname43 = SRC.AppPath + @"Bitmap\Pilot\" + fname;
-                if (GeneralLib.FileExists(ref argfname43))
+                if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Pilot\" + fname))
                 {
                     fpath = SRC.AppPath + @"Bitmap\Pilot\";
                     last_path = "";
@@ -9913,8 +9650,7 @@ namespace Project1
 
             if (app_unit_bitmap_dir_exists)
             {
-                string argfname44 = SRC.AppPath + @"Bitmap\Unit\" + fname;
-                if (GeneralLib.FileExists(ref argfname44))
+                if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Unit\" + fname))
                 {
                     fpath = SRC.AppPath + @"Bitmap\Unit\";
                     last_path = "";
@@ -9924,16 +9660,14 @@ namespace Project1
 
             if (!string.IsNullOrEmpty(tdir))
             {
-                string argfname45 = SRC.AppPath + @"Bitmap\Map\" + tdir + fname;
-                if (GeneralLib.FileExists(ref argfname45))
+                if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + tdir + fname))
                 {
                     fpath = SRC.AppPath + @"Bitmap\Map\" + tdir;
                     last_path = "";
                     goto FoundPicture;
                 }
 
-                string argfname46 = SRC.AppPath + @"Bitmap\Map\" + tdir + tname;
-                if (GeneralLib.FileExists(ref argfname46))
+                if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + tdir + tname))
                 {
                     fname = tname;
                     fpath = SRC.AppPath + @"Bitmap\Map\" + tdir;
@@ -9943,8 +9677,7 @@ namespace Project1
                     goto FoundPicture;
                 }
 
-                string argfname47 = SRC.AppPath + @"Bitmap\Map\" + tname;
-                if (GeneralLib.FileExists(ref argfname47))
+                if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + tname))
                 {
                     fname = tname;
                     fpath = SRC.AppPath + @"Bitmap\Map\";
@@ -9955,8 +9688,7 @@ namespace Project1
                 }
             }
 
-            string argfname48 = SRC.AppPath + @"Bitmap\Map\" + fname;
-            if (GeneralLib.FileExists(ref argfname48))
+            if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + fname))
             {
                 fpath = SRC.AppPath + @"Bitmap\Map\";
                 last_path = "";
@@ -10158,8 +9890,7 @@ namespace Project1
                 // 画像のサイズをチェック
                 if (orig_width * orig_height % 4 != 0)
                 {
-                    string argmsg = fname + "の画像サイズが4の倍数になっていません";
-                    ErrorMessage(ref argmsg);
+                    ErrorMessage(ref fname + "の画像サイズが4の倍数になっていません");
                     return DrawPictureRet;
                 }
 
@@ -11552,8 +11283,7 @@ namespace Project1
             {
                 if (Commands.SelectedUnit.Status == "出撃")
                 {
-                    string argcursor_mode = "ユニット選択";
-                    MoveCursorPos(ref argcursor_mode, Commands.SelectedUnit);
+                    MoveCursorPos(ref "ユニット選択", Commands.SelectedUnit);
                     return;
                 }
             }

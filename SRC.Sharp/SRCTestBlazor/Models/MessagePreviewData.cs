@@ -1,4 +1,4 @@
-﻿using Markdig;
+using Markdig;
 using Microsoft.AspNetCore.Components;
 using System.Text.RegularExpressions;
 

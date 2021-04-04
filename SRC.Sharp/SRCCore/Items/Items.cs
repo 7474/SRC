@@ -1,4 +1,4 @@
-﻿//using System;
+//using System;
 //using System.Collections;
 //using Microsoft.VisualBasic;
 //using Microsoft.VisualBasic.CompilerServices;
@@ -248,9 +248,8 @@
 //            var loopTo = Count();
 //            for (i = 1; i <= loopTo; i++)
 //            {
-//                object argIndex1 = i;
 //                {
-//                    var withBlock = Item(ref argIndex1);
+//                    var withBlock = Item(ref i);
 //                    FileSystem.WriteLine(SRC.SaveDataFileNumber, withBlock.Name);
 //                    if (withBlock.Unit_Renamed is null)
 //                    {
@@ -293,8 +292,7 @@
 
 //                if (!localIsDefined())
 //                {
-//                    string argmsg = iname + "のデータが定義されていません";
-//                    GUI.ErrorMessage(ref argmsg);
+//                    GUI.ErrorMessage(ref iname + "のデータが定義されていません");
 //                    Sound.StopBGM();
 //                    Environment.Exit(0);
 //                }
@@ -385,8 +383,7 @@
 //            var loopTo = Count();
 //            for (i = 1; i <= loopTo; i++)
 //            {
-//                object argIndex1 = 1;
-//                Delete(ref argIndex1);
+//                Delete(ref 1);
 //            }
 //        }
 //    }

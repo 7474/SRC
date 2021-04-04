@@ -1,4 +1,4 @@
-﻿using SRCCore.Events;
+using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Expressions;
 using SRCCore.VB;
@@ -31,8 +31,7 @@ namespace SRCCore.CmdDatas.Commands
             //GUI.ListItemFlag = new bool[1];
 
             // 表示オプションの処理
-            var argIndex = ArgNum;
-            while (argIndex > 1)
+            while (ArgNum > 1)
             {
                 switch (GetArg(argIndex) ?? "")
                 {

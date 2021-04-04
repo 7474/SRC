@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -50,8 +50,7 @@ namespace SRCCore.Commands
                 if (pilots.Count > 1)
                 {
                     // どのパイロットを使うか選択
-                    string argoname = "等身大基準";
-                    if (Expression.IsOptionDefined(argoname))
+                    if (Expression.IsOptionDefined("等身大基準"))
                     {
                         i = GUI.ListBox(new ListBoxArgs
                         {
@@ -135,8 +134,7 @@ namespace SRCCore.Commands
                     // カーソル自動移動
                     if (SRC.AutoMoveCursor)
                     {
-                        string argcursor_mode = "ユニット選択";
-                        GUI.MoveCursorPos(argcursor_mode, SelectedUnit);
+                        GUI.MoveCursorPos("ユニット選択", SelectedUnit);
                     }
 
                     GUI.UnlockGUI();
@@ -159,9 +157,8 @@ namespace SRCCore.Commands
                 //var loopTo6 = SRC.SPDList.Count();
                 //for (i = 1; i <= loopTo6; i++)
                 //{
-                //    object argIndex7 = i;
                 //    {
-                //        var withBlock5 = SRC.SPDList.Item(argIndex7);
+                //        var withBlock5 = SRC.SPDList.Item(i);
                 //        if (withBlock5.EffectType(1) != "味方スペシャルパワー実行" & withBlock5.intName != "非表示")
                 //        {
                 //            Array.Resize(list, Information.UBound(list) + 1 + 1);
@@ -213,8 +210,7 @@ namespace SRCCore.Commands
                 //        {
                 //            if (p.Unit is object)
                 //            {
-                //                object argIndex8 = "憑依";
-                //                if (p.Unit.Status == "出撃" & !p.Unit.IsConditionSatisfied(argIndex8))
+                //                if (p.Unit.Status == "出撃" & !p.Unit.IsConditionSatisfied("憑依"))
                 //                {
                 //                    // 本当に乗っている？
                 //                    found = false;
@@ -303,10 +299,7 @@ namespace SRCCore.Commands
 
                 //// 検索するスペシャルパワーを選択
                 //GUI.TopItem = 1;
-                //string argtname7 = "スペシャルパワー";
-                //Unit argu = null;
-                //string arglb_caption3 = Expression.Term(argtname7, u: argu) + "検索";
-                //ret = GUI.MultiColumnListBox(arglb_caption3, list, true);
+                //ret = GUI.MultiColumnListBox(Expression.Term(argtname7, u: argu) + "検索", list, true);
                 //if (ret == 0)
                 //{
                 //    SelectedSpecialPower = "";
@@ -318,11 +311,8 @@ namespace SRCCore.Commands
                 //// スペシャルパワー使用メッセージ
                 //if (SelectedUnit.IsMessageDefined(SelectedSpecialPower))
                 //{
-                //    Unit argu1 = null;
-                //    Unit argu2 = null;
-                //    GUI.OpenMessageForm(u1: argu1, u2: argu2);
-                //    string argmsg_mode = "";
-                //    SelectedUnit.PilotMessage(SelectedSpecialPower, msg_mode: argmsg_mode);
+                //    GUI.OpenMessageForm(u1: null1, u2: null2);
+                //    SelectedUnit.PilotMessage(SelectedSpecialPower, msg_mode: "");
                 //    GUI.CloseMessageForm();
                 //}
 
@@ -441,10 +431,7 @@ namespace SRCCore.Commands
                         //    }
 
                         //    GUI.TopItem = 1;
-                        //    string arglb_caption4 = "ユニット選択";
-                        //    string arglb_info3 = "ユニット名                  パイロット     レベル";
-                        //    string arglb_mode3 = "";
-                        //    i = GUI.ListBox(arglb_caption4, list, arglb_info3, lb_mode: arglb_mode3);
+                        //    i = GUI.ListBox("ユニット選択", list, "ユニット名                  パイロット     レベル", lb_mode: "");
                         //    if (i == 0)
                         //    {
                         //        GUI.UnlockGUI();
@@ -453,8 +440,7 @@ namespace SRCCore.Commands
                         //    }
 
                         //    var tmp1 = id_list;
-                        //    object argIndex10 = tmp1[i];
-                        //    SelectedTarget = SRC.UList.Item(argIndex10);
+                        //    SelectedTarget = SRC.UList.Item(tmp1[i]);
                         //    break;
                     }
             }
@@ -532,9 +518,8 @@ namespace SRCCore.Commands
             //GUI.LockGUI();
 
             //// 自爆を選択した場合は確認を取る
-            //object argIndex1 = SelectedSpecialPower;
             //{
-            //    var withBlock = SRC.SPDList.Item(argIndex1);
+            //    var withBlock = SRC.SPDList.Item(SelectedSpecialPower);
             //    var loopTo = withBlock.CountEffect();
             //    for (i = 1; i <= loopTo; i++)
             //    {

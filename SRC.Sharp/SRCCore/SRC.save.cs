@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -27,8 +27,7 @@ namespace SRCCore
             //    var loopTo = Information.UBound(Titles);
             //    for (i = 1; i <= loopTo; i++)
             //        FileSystem.WriteLine(SaveDataFileNumber, Titles[i]);
-            //    string argexpr = "次ステージ";
-            //    FileSystem.WriteLine(SaveDataFileNumber, Expression.GetValueAsString(argexpr));
+            //    FileSystem.WriteLine(SaveDataFileNumber, Expression.GetValueAsString("次ステージ"));
             //    FileSystem.WriteLine(SaveDataFileNumber, (object)TotalTurn);
             //    FileSystem.WriteLine(SaveDataFileNumber, (object)Money);
             //    FileSystem.WriteLine(SaveDataFileNumber, (object)0); // パーツ用のダミー
@@ -40,8 +39,7 @@ namespace SRCCore
             //}
             //catch
             //{
-            //    string argmsg = "セーブ中にエラーが発生しました";
-            //    GUI.ErrorMessage(argmsg);
+            //    GUI.ErrorMessage("セーブ中にエラーが発生しました");
             //}
         }
 
@@ -73,96 +71,71 @@ namespace SRCCore
             //        IncludeData(Titles[i]);
             //    }
 
-            //    string argfname1 = ScenarioPath + @"Data\alias.txt";
-            //    if (GeneralLib.FileExists(argfname1))
+            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\alias.txt"))
             //    {
-            //        string argfname = ScenarioPath + @"Data\alias.txt";
-            //        ALDList.Load(argfname);
+            //        ALDList.Load(ScenarioPath + @"Data\alias.txt");
             //    }
 
             //    bool localFileExists() { string argfname = ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-            //    string argfname4 = ScenarioPath + @"Data\sp.txt";
-            //    if (GeneralLib.FileExists(argfname4))
+            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\sp.txt"))
             //    {
-            //        string argfname2 = ScenarioPath + @"Data\sp.txt";
-            //        SPDList.Load(argfname2);
+            //        SPDList.Load(ScenarioPath + @"Data\sp.txt");
             //    }
             //    else if (localFileExists())
             //    {
-            //        string argfname3 = ScenarioPath + @"Data\mind.txt";
-            //        SPDList.Load(argfname3);
+            //        SPDList.Load(ScenarioPath + @"Data\mind.txt");
             //    }
 
-            //    string argfname6 = ScenarioPath + @"Data\pilot.txt";
-            //    if (GeneralLib.FileExists(argfname6))
+            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot.txt"))
             //    {
-            //        string argfname5 = ScenarioPath + @"Data\pilot.txt";
-            //        PDList.Load(argfname5);
+            //        PDList.Load(ScenarioPath + @"Data\pilot.txt");
             //    }
 
-            //    string argfname8 = ScenarioPath + @"Data\non_pilot.txt";
-            //    if (GeneralLib.FileExists(argfname8))
+            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\non_pilot.txt"))
             //    {
-            //        string argfname7 = ScenarioPath + @"Data\non_pilot.txt";
-            //        NPDList.Load(argfname7);
+            //        NPDList.Load(ScenarioPath + @"Data\non_pilot.txt");
             //    }
 
-            //    string argfname10 = ScenarioPath + @"Data\robot.txt";
-            //    if (GeneralLib.FileExists(argfname10))
+            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\robot.txt"))
             //    {
-            //        string argfname9 = ScenarioPath + @"Data\robot.txt";
-            //        UDList.Load(argfname9);
+            //        UDList.Load(ScenarioPath + @"Data\robot.txt");
             //    }
 
-            //    string argfname12 = ScenarioPath + @"Data\unit.txt";
-            //    if (GeneralLib.FileExists(argfname12))
+            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\unit.txt"))
             //    {
-            //        string argfname11 = ScenarioPath + @"Data\unit.txt";
-            //        UDList.Load(argfname11);
+            //        UDList.Load(ScenarioPath + @"Data\unit.txt");
             //    }
 
             //    GUI.DisplayLoadingProgress();
-            //    string argfname14 = ScenarioPath + @"Data\pilot_message.txt";
-            //    if (GeneralLib.FileExists(argfname14))
+            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_message.txt"))
             //    {
-            //        string argfname13 = ScenarioPath + @"Data\pilot_message.txt";
-            //        MDList.Load(argfname13);
+            //        MDList.Load(ScenarioPath + @"Data\pilot_message.txt");
             //    }
 
-            //    string argfname16 = ScenarioPath + @"Data\pilot_dialog.txt";
-            //    if (GeneralLib.FileExists(argfname16))
+            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_dialog.txt"))
             //    {
-            //        string argfname15 = ScenarioPath + @"Data\pilot_dialog.txt";
-            //        DDList.Load(argfname15);
+            //        DDList.Load(ScenarioPath + @"Data\pilot_dialog.txt");
             //    }
 
-            //    string argfname18 = ScenarioPath + @"Data\effect.txt";
-            //    if (GeneralLib.FileExists(argfname18))
+            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\effect.txt"))
             //    {
-            //        string argfname17 = ScenarioPath + @"Data\effect.txt";
-            //        EDList.Load(argfname17);
+            //        EDList.Load(ScenarioPath + @"Data\effect.txt");
             //    }
 
-            //    string argfname20 = ScenarioPath + @"Data\animation.txt";
-            //    if (GeneralLib.FileExists(argfname20))
+            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\animation.txt"))
             //    {
-            //        string argfname19 = ScenarioPath + @"Data\animation.txt";
-            //        ADList.Load(argfname19);
+            //        ADList.Load(ScenarioPath + @"Data\animation.txt");
             //    }
 
-            //    string argfname22 = ScenarioPath + @"Data\ext_animation.txt";
-            //    if (GeneralLib.FileExists(argfname22))
+            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\ext_animation.txt"))
             //    {
-            //        string argfname21 = ScenarioPath + @"Data\ext_animation.txt";
-            //        EADList.Load(argfname21);
+            //        EADList.Load(ScenarioPath + @"Data\ext_animation.txt");
             //    }
 
-            //    string argfname24 = ScenarioPath + @"Data\item.txt";
-            //    if (GeneralLib.FileExists(argfname24))
+            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\item.txt"))
             //    {
-            //        string argfname23 = ScenarioPath + @"Data\item.txt";
-            //        IDList.Load(argfname23);
+            //        IDList.Load(ScenarioPath + @"Data\item.txt");
             //    }
 
             //    GUI.DisplayLoadingProgress();
@@ -172,15 +145,12 @@ namespace SRCCore
             //    FileSystem.Input(SaveDataFileNumber, Money);
             //    FileSystem.Input(SaveDataFileNumber, num); // パーツ用のダミー
             //    Event_Renamed.LoadGlobalVariables();
-            //    string argvname1 = "次ステージ";
-            //    if (!Expression.IsGlobalVariableDefined(argvname1))
+            //    if (!Expression.IsGlobalVariableDefined("次ステージ"))
             //    {
-            //        string argvname = "次ステージ";
-            //        Expression.DefineGlobalVariable(argvname);
+            //        Expression.DefineGlobalVariable("次ステージ");
             //    }
 
-            //    string argvname2 = "次ステージ";
-            //    Expression.SetVariableAsString(argvname2, fname2);
+            //    Expression.SetVariableAsString("次ステージ", fname2);
             //    PList.Load();
             //    UList.Load();
             //    IList.Load();
@@ -220,15 +190,12 @@ namespace SRCCore
             //    GUI.DisplayLoadingProgress();
 
             //    // 追加されたシステム側イベントデータの読み込み
-            //    string argfname25 = "";
-            //    string argload_mode = "";
-            //    Event_Renamed.LoadEventData(argfname25, load_mode: argload_mode);
+            //    Event_Renamed.LoadEventData("", load_mode: "");
             //    GUI.DisplayLoadingProgress();
             //    return;
             //ErrorHandler:
             //    ;
-            //    string argmsg = "ロード中にエラーが発生しました";
-            //    GUI.ErrorMessage(argmsg);
+            //    GUI.ErrorMessage("ロード中にエラーが発生しました");
             //    FileSystem.FileClose(SaveDataFileNumber);
             //    TerminateSRC();
         }
@@ -298,8 +265,7 @@ namespace SRCCore
             //    return;
             //ErrorHandler:
             //    ;
-            //    string argmsg = "セーブ中にエラーが発生しました";
-            //    GUI.ErrorMessage(argmsg);
+            //    GUI.ErrorMessage("セーブ中にエラーが発生しました");
             //    FileSystem.FileClose(SaveDataFileNumber);
         }
 
@@ -318,11 +284,9 @@ namespace SRCCore
             //    Cursor.Current = Cursors.WaitCursor;
             //    if (quick_load)
             //    {
-            //        string argoname = "デバッグ";
-            //        if (Expression.IsOptionDefined(argoname))
+            //        if (Expression.IsOptionDefined("デバッグ"))
             //        {
-            //            string argload_mode = "クイックロード";
-            //            Event_Renamed.LoadEventData(ScenarioFileName, argload_mode);
+            //            Event_Renamed.LoadEventData(ScenarioFileName, "クイックロード");
             //        }
             //    }
 
@@ -366,102 +330,76 @@ namespace SRCCore
             //            IncludeData(Titles[i]);
             //        }
 
-            //        string argfname1 = ScenarioPath + @"Data\alias.txt";
-            //        if (GeneralLib.FileExists(argfname1))
+            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\alias.txt"))
             //        {
-            //            string argfname = ScenarioPath + @"Data\alias.txt";
-            //            ALDList.Load(argfname);
+            //            ALDList.Load(ScenarioPath + @"Data\alias.txt");
             //        }
 
             //        bool localFileExists() { string argfname = ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-            //        string argfname4 = ScenarioPath + @"Data\sp.txt";
-            //        if (GeneralLib.FileExists(argfname4))
+            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\sp.txt"))
             //        {
-            //            string argfname2 = ScenarioPath + @"Data\sp.txt";
-            //            SPDList.Load(argfname2);
+            //            SPDList.Load(ScenarioPath + @"Data\sp.txt");
             //        }
             //        else if (localFileExists())
             //        {
-            //            string argfname3 = ScenarioPath + @"Data\mind.txt";
-            //            SPDList.Load(argfname3);
+            //            SPDList.Load(ScenarioPath + @"Data\mind.txt");
             //        }
 
-            //        string argfname6 = ScenarioPath + @"Data\pilot.txt";
-            //        if (GeneralLib.FileExists(argfname6))
+            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot.txt"))
             //        {
-            //            string argfname5 = ScenarioPath + @"Data\pilot.txt";
-            //            PDList.Load(argfname5);
+            //            PDList.Load(ScenarioPath + @"Data\pilot.txt");
             //        }
 
-            //        string argfname8 = ScenarioPath + @"Data\non_pilot.txt";
-            //        if (GeneralLib.FileExists(argfname8))
+            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\non_pilot.txt"))
             //        {
-            //            string argfname7 = ScenarioPath + @"Data\non_pilot.txt";
-            //            NPDList.Load(argfname7);
+            //            NPDList.Load(ScenarioPath + @"Data\non_pilot.txt");
             //        }
 
-            //        string argfname10 = ScenarioPath + @"Data\robot.txt";
-            //        if (GeneralLib.FileExists(argfname10))
+            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\robot.txt"))
             //        {
-            //            string argfname9 = ScenarioPath + @"Data\robot.txt";
-            //            UDList.Load(argfname9);
+            //            UDList.Load(ScenarioPath + @"Data\robot.txt");
             //        }
 
-            //        string argfname12 = ScenarioPath + @"Data\unit.txt";
-            //        if (GeneralLib.FileExists(argfname12))
+            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\unit.txt"))
             //        {
-            //            string argfname11 = ScenarioPath + @"Data\unit.txt";
-            //            UDList.Load(argfname11);
+            //            UDList.Load(ScenarioPath + @"Data\unit.txt");
             //        }
 
             //        GUI.DisplayLoadingProgress();
-            //        string argfname14 = ScenarioPath + @"Data\pilot_message.txt";
-            //        if (GeneralLib.FileExists(argfname14))
+            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_message.txt"))
             //        {
-            //            string argfname13 = ScenarioPath + @"Data\pilot_message.txt";
-            //            MDList.Load(argfname13);
+            //            MDList.Load(ScenarioPath + @"Data\pilot_message.txt");
             //        }
 
-            //        string argfname16 = ScenarioPath + @"Data\pilot_dialog.txt";
-            //        if (GeneralLib.FileExists(argfname16))
+            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_dialog.txt"))
             //        {
-            //            string argfname15 = ScenarioPath + @"Data\pilot_dialog.txt";
-            //            DDList.Load(argfname15);
+            //            DDList.Load(ScenarioPath + @"Data\pilot_dialog.txt");
             //        }
 
-            //        string argfname18 = ScenarioPath + @"Data\effect.txt";
-            //        if (GeneralLib.FileExists(argfname18))
+            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\effect.txt"))
             //        {
-            //            string argfname17 = ScenarioPath + @"Data\effect.txt";
-            //            EDList.Load(argfname17);
+            //            EDList.Load(ScenarioPath + @"Data\effect.txt");
             //        }
 
-            //        string argfname20 = ScenarioPath + @"Data\animation.txt";
-            //        if (GeneralLib.FileExists(argfname20))
+            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\animation.txt"))
             //        {
-            //            string argfname19 = ScenarioPath + @"Data\animation.txt";
-            //            ADList.Load(argfname19);
+            //            ADList.Load(ScenarioPath + @"Data\animation.txt");
             //        }
 
-            //        string argfname22 = ScenarioPath + @"Data\ext_animation.txt";
-            //        if (GeneralLib.FileExists(argfname22))
+            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\ext_animation.txt"))
             //        {
-            //            string argfname21 = ScenarioPath + @"Data\ext_animation.txt";
-            //            EADList.Load(argfname21);
+            //            EADList.Load(ScenarioPath + @"Data\ext_animation.txt");
             //        }
 
-            //        string argfname24 = ScenarioPath + @"Data\item.txt";
-            //        if (GeneralLib.FileExists(argfname24))
+            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\item.txt"))
             //        {
-            //            string argfname23 = ScenarioPath + @"Data\item.txt";
-            //            IDList.Load(argfname23);
+            //            IDList.Load(ScenarioPath + @"Data\item.txt");
             //        }
 
             //        GUI.DisplayLoadingProgress();
             //        IsLocalDataLoaded = true;
-            //        string argload_mode1 = "リストア";
-            //        Event_Renamed.LoadEventData(ScenarioFileName, argload_mode1);
+            //        Event_Renamed.LoadEventData(ScenarioFileName, "リストア");
             //        GUI.DisplayLoadingProgress();
             //    }
             //    else
@@ -471,8 +409,7 @@ namespace SRCCore
             //            dummy = FileSystem.LineInput(SaveDataFileNumber);
             //        if (scenario_file_is_different)
             //        {
-            //            string argload_mode2 = "リストア";
-            //            Event_Renamed.LoadEventData(ScenarioFileName, argload_mode2);
+            //            Event_Renamed.LoadEventData(ScenarioFileName, "リストア");
             //        }
             //    }
 
@@ -491,8 +428,7 @@ namespace SRCCore
             //    // マップデータの互換性維持のため、RestoreMapDataでＢＧＭ関連の１行目まで読み込んで戻り値にした
             //    fname2 = Map.RestoreMapData();
             //    // MOD  END  240a
-            //    string argmidi_name = "(" + fname2 + ")";
-            //    fname2 = Sound.SearchMidiFile(argmidi_name);
+            //    fname2 = Sound.SearchMidiFile("(" + fname2 + ")");
             //    if (!string.IsNullOrEmpty(fname2))
             //    {
             //        Sound.KeepBGM = false;
@@ -511,9 +447,7 @@ namespace SRCCore
             //    }
 
             //    // 乱数系列を復元
-            //    string argoname1 = "デバッグ";
-            //    string argoname2 = "乱数系列非保存";
-            //    if (!Expression.IsOptionDefined(argoname1) & !Expression.IsOptionDefined(argoname2) & !FileSystem.EOF(SaveDataFileNumber))
+            //    if (!Expression.IsOptionDefined("デバッグ") & !Expression.IsOptionDefined("乱数系列非保存") & !FileSystem.EOF(SaveDataFileNumber))
             //    {
             //        FileSystem.Input(SaveDataFileNumber, GeneralLib.RndSeed);
             //        GeneralLib.RndReset();
@@ -599,10 +533,7 @@ namespace SRCCore
             //    {
             //        map_x = GUI.MapX;
             //        map_y = GUI.MapY;
-            //        string argdraw_option = "非同期";
-            //        int argfilter_color = 0;
-            //        double argfilter_trans_par = 0d;
-            //        GUI.SetupBackground(Map.MapDrawMode, argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
+            //        GUI.SetupBackground(Map.MapDrawMode, "非同期", filter_color: 0, filter_trans_par: 0d);
             //        GUI.MapX = map_x;
             //        GUI.MapY = map_y;
 
@@ -668,8 +599,7 @@ namespace SRCCore
             //        // 味方ターンの処理が２重起動されるのを防ぐため、Turnをチェックしてから起動する
             //        if (Turn == 0)
             //        {
-            //            string arguparty = "味方";
-            //            StartTurn(arguparty);
+            //            StartTurn("味方");
             //        }
             //    }
             //    // MOD END MARGE
@@ -692,8 +622,7 @@ namespace SRCCore
             //    return;
             //ErrorHandler:
             //    ;
-            //    string argmsg = "ロード中にエラーが発生しました";
-            //    GUI.ErrorMessage(argmsg);
+            //    GUI.ErrorMessage("ロード中にエラーが発生しました");
             //    FileSystem.FileClose(SaveDataFileNumber);
             //    TerminateSRC();
         }

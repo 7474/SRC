@@ -1,4 +1,4 @@
-﻿using SRCCore;
+using SRCCore;
 using SRCCore.Maps;
 using SRCSharpForm.Resoruces;
 using System.Drawing;
@@ -466,8 +466,7 @@ namespace SRCSharpForm
             }
 
             // フィルタ
-            //            string argfname1 = "地形ユニット";
-            //            if (u.IsFeatureAvailable(ref argfname1))
+            //            if (u.IsFeatureAvailable(ref "地形ユニット"))
             //            {
             //                // 地形ユニットの場合は画像をそのまま使う
             //                ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, SRCCOPY);
@@ -477,10 +476,7 @@ namespace SRCSharpForm
             //                // BitBltを使ってユニット画像とタイルを重ね合わせる
 
             //                // マスクを作成
-            //                int argw = 32;
-            //                int argh = 32;
-            //                int argtcolor = ColorTranslator.ToOle(Color.White);
-            //                Graphics.MakeMask(ref withBlock.picTmp32(0).hDC, ref withBlock.picTmp32(2).hDC, ref argw, ref argh, ref argtcolor);
+            //                Graphics.MakeMask(ref withBlock.picTmp32(0).hDC, ref withBlock.picTmp32(2).hDC, ref 32, ref 32, ref ColorTranslator.ToOle(Color.White));
 
 
             //                // 画像の重ね合わせ
@@ -498,11 +494,9 @@ namespace SRCSharpForm
             //    {
             //        case "夜":
             //            {
-            //                var argpic = withBlock.picTmp32(1);
-            //                Graphics.GetImage(ref argpic);
+            //                Graphics.GetImage(ref withBlock.picTmp32(1));
             //                Graphics.Dark();
-            //                var argpic1 = withBlock.picTmp32(1);
-            //                Graphics.SetImage(ref argpic1);
+            //                Graphics.SetImage(ref withBlock.picTmp32(1));
             //                // ユニットが"発光"の特殊能力を持つ場合、
             //                // ユニット画像を、暗くしたタイル画像の上に描画する。
             //                if (emit_light)
@@ -523,51 +517,41 @@ namespace SRCSharpForm
 
             //        case "セピア":
             //            {
-            //                var argpic2 = withBlock.picTmp32(1);
-            //                Graphics.GetImage(ref argpic2);
+            //                Graphics.GetImage(ref withBlock.picTmp32(1));
             //                Graphics.Sepia();
-            //                var argpic3 = withBlock.picTmp32(1);
-            //                Graphics.SetImage(ref argpic3);
+            //                Graphics.SetImage(ref withBlock.picTmp32(1));
             //                break;
             //            }
 
             //        case "白黒":
             //            {
-            //                var argpic4 = withBlock.picTmp32(1);
-            //                Graphics.GetImage(ref argpic4);
+            //                Graphics.GetImage(ref withBlock.picTmp32(1));
             //                Graphics.Monotone();
-            //                var argpic5 = withBlock.picTmp32(1);
-            //                Graphics.SetImage(ref argpic5);
+            //                Graphics.SetImage(ref withBlock.picTmp32(1));
             //                break;
             //            }
 
             //        case "夕焼け":
             //            {
-            //                var argpic6 = withBlock.picTmp32(1);
-            //                Graphics.GetImage(ref argpic6);
+            //                Graphics.GetImage(ref withBlock.picTmp32(1));
             //                Graphics.Sunset();
-            //                var argpic7 = withBlock.picTmp32(1);
-            //                Graphics.SetImage(ref argpic7);
+            //                Graphics.SetImage(ref withBlock.picTmp32(1));
             //                break;
             //            }
 
             //        case "水中":
             //            {
-            //                var argpic8 = withBlock.picTmp32(1);
-            //                Graphics.GetImage(ref argpic8);
+            //                Graphics.GetImage(ref withBlock.picTmp32(1));
             //                Graphics.Water();
-            //                var argpic9 = withBlock.picTmp32(1);
-            //                Graphics.SetImage(ref argpic9);
+            //                Graphics.SetImage(ref withBlock.picTmp32(1));
             //                break;
             //            }
 
             //        case "フィルタ":
             //            {
-            //                var argpic10 = withBlock.picTmp32(1);
-            //                Graphics.GetImage(ref argpic10);
+            //                Graphics.GetImage(ref withBlock.picTmp32(1));
             //                Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent);
-            //                var argpic11 = withBlock.picTmp32(1);
-            //                Graphics.SetImage(ref argpic11);
+            //                Graphics.SetImage(ref withBlock.picTmp32(1));
             //                break;
             //            }
             //    }

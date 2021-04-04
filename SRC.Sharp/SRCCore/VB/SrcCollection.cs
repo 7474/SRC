@@ -1,4 +1,4 @@
-﻿using SRCCore.Models;
+using SRCCore.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;

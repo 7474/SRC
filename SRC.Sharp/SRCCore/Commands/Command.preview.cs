@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -32,14 +32,11 @@ namespace SRCCore.Commands
             //is_unit_feature = new bool[1];
 
             //// 武器・防具クラス
-            //string argoname = "アイテム交換";
-            //if (Expression.IsOptionDefined(argoname))
+            //if (Expression.IsOptionDefined("アイテム交換"))
             //{
             //    {
             //        var withBlock = SelectedUnit;
-            //        string argfname = "武器クラス";
-            //        string argfname1 = "防具クラス";
-            //        if (withBlock.IsFeatureAvailable(argfname) | withBlock.IsFeatureAvailable(argfname1))
+            //        if (withBlock.IsFeatureAvailable("武器クラス") | withBlock.IsFeatureAvailable("武器クラス"1))
             //        {
             //            Array.Resize(list, Information.UBound(list) + 1 + 1);
             //            Array.Resize(id_list, Information.UBound(list) + 1);
@@ -57,21 +54,18 @@ namespace SRCCore.Commands
             //    var loopTo = withBlock1.CountSkill();
             //    for (i = 1; i <= loopTo; i++)
             //    {
-            //        object argIndex3 = i;
-            //        switch (withBlock1.Skill(argIndex3) ?? "")
+            //        switch (withBlock1.Skill(i) ?? "")
             //        {
             //            case "得意技":
             //            case "不得手":
             //                {
-            //                    object argIndex1 = i;
-            //                    fname = withBlock1.Skill(argIndex1);
+            //                    fname = withBlock1.Skill(i);
             //                    break;
             //                }
 
             //            default:
             //                {
-            //                    object argIndex2 = i;
-            //                    fname = withBlock1.SkillName(argIndex2);
+            //                    fname = withBlock1.SkillName(i);
             //                    break;
             //                }
             //        }
@@ -127,8 +121,7 @@ namespace SRCCore.Commands
             //        // 非表示の能力？
             //        string localConditionData() { object argIndex1 = i; var ret = withBlock2.ConditionData(argIndex1); return ret; }
 
-            //        string arglist = localConditionData();
-            //        switch (GeneralLib.LIndex(arglist, 1) ?? "")
+            //        switch (GeneralLib.LIndex(localConditionData(), 1) ?? "")
             //        {
             //            case "非表示":
             //            case "解説":
@@ -139,15 +132,13 @@ namespace SRCCore.Commands
             //        }
 
             //        // 有効時間が残っている？
-            //        object argIndex4 = i;
-            //        if (withBlock2.ConditionLifetime(argIndex4) == 0)
+            //        if (withBlock2.ConditionLifetime(i) == 0)
             //        {
             //            goto NextSkill2;
             //        }
 
             //        // 表示名称
-            //        object argIndex5 = ftype;
-            //        fname = withBlock2.MainPilot().SkillName(argIndex5);
+            //        fname = withBlock2.MainPilot().SkillName(ftype);
             //        if (Strings.InStr(fname, "非表示") > 0)
             //        {
             //            goto NextSkill2;
@@ -188,8 +179,7 @@ namespace SRCCore.Commands
             //    while (i <= withBlock2.CountAllFeature())
             //    {
             //        // 非表示の特殊能力を排除
-            //        object argIndex6 = i;
-            //        if (string.IsNullOrEmpty(withBlock2.AllFeatureName(argIndex6)))
+            //        if (string.IsNullOrEmpty(withBlock2.AllFeatureName(i)))
             //        {
             //            goto NextFeature;
             //        }
@@ -224,8 +214,7 @@ namespace SRCCore.Commands
             //        Array.Resize(list, Information.UBound(list) + 1 + 1);
             //        Array.Resize(id_list, Information.UBound(list) + 1);
             //        Array.Resize(is_unit_feature, Information.UBound(list) + 1);
-            //        object argIndex7 = i;
-            //        list[Information.UBound(list)] = withBlock2.AllFeatureName(argIndex7);
+            //        list[Information.UBound(list)] = withBlock2.AllFeatureName(i);
             //        id_list[Information.UBound(list)] = SrcFormatter.Format(i);
             //        is_unit_feature[Information.UBound(list)] = true;
             //    NextFeature:
@@ -274,8 +263,7 @@ namespace SRCCore.Commands
 
             //        string localConditionData1() { object argIndex1 = i; var ret = withBlock2.ConditionData(argIndex1); return ret; }
 
-            //        string arglist1 = localConditionData1();
-            //        switch (GeneralLib.LIndex(arglist1, 1) ?? "")
+            //        switch (GeneralLib.LIndex(localConditionData1(), 1) ?? "")
             //        {
             //            case "非表示":
             //            case "解説":
@@ -286,21 +274,18 @@ namespace SRCCore.Commands
             //        }
 
             //        // 有効時間が残っている？
-            //        object argIndex8 = i;
-            //        if (withBlock2.ConditionLifetime(argIndex8) == 0)
+            //        if (withBlock2.ConditionLifetime(i) == 0)
             //        {
             //            goto NextSkill3;
             //        }
 
             //        // 表示名称
-            //        object argIndex9 = ftype;
-            //        if (string.IsNullOrEmpty(withBlock2.FeatureName0(argIndex9)))
+            //        if (string.IsNullOrEmpty(withBlock2.FeatureName0(ftype)))
             //        {
             //            goto NextSkill3;
             //        }
 
-            //        object argIndex10 = ftype;
-            //        fname = withBlock2.MainPilot().SkillName0(argIndex10);
+            //        fname = withBlock2.MainPilot().SkillName0(ftype);
             //        if (Strings.InStr(fname, "非表示") > 0)
             //        {
             //            goto NextSkill3;
@@ -316,8 +301,7 @@ namespace SRCCore.Commands
             //            }
             //        }
 
-            //        object argIndex11 = ftype;
-            //        fname = withBlock2.MainPilot().SkillName(argIndex11);
+            //        fname = withBlock2.MainPilot().SkillName(ftype);
             //        if (Strings.InStr(fname, "Lv") > 0)
             //        {
             //            fname0 = Strings.Left(fname, Strings.InStr(fname, "Lv") - 1);
@@ -388,22 +372,15 @@ namespace SRCCore.Commands
             //    default:
             //        {
             //            GUI.TopItem = 1;
-            //            string arglb_caption = "特殊能力一覧";
-            //            string arglb_info = "能力名";
-            //            string arglb_mode = "表示のみ";
-            //            ret = GUI.ListBox(arglb_caption, list, arglb_info, arglb_mode);
+            //            ret = GUI.ListBox("特殊能力一覧", list, "能力名", "表示のみ");
             //            if (SRC.AutoMoveCursor)
             //            {
-            //                string argcursor_mode = "ダイアログ";
-            //                GUI.MoveCursorPos(argcursor_mode);
+            //                GUI.MoveCursorPos("ダイアログ");
             //            }
 
             //            while (true)
             //            {
-            //                string arglb_caption1 = "特殊能力一覧";
-            //                string arglb_info1 = "能力名";
-            //                string arglb_mode1 = "連続表示";
-            //                ret = GUI.ListBox(arglb_caption1, list, arglb_info1, arglb_mode1);
+            //                ret = GUI.ListBox("特殊能力一覧", list, "能力名", "連続表示");
             //                // listが一定なので連続表示を流用
             //                My.MyProject.Forms.frmListBox.Hide();
             //                if (ret == 0)
@@ -541,10 +518,7 @@ namespace SRCCore.Commands
                     //        else
                     //        {
                     //            GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
-                    //            string arglb_caption = "武器属性一覧";
-                    //            string arglb_info = "属性    効果";
-                    //            string arglb_mode1 = "連続表示";
-                    //            i = GUI.ListBox(arglb_caption, list, arglb_info, arglb_mode1);
+                    //            i = GUI.ListBox("武器属性一覧", list, "属性    効果", "連続表示");
                     //        }
 
                     //        if (i == 0)
@@ -561,56 +535,40 @@ namespace SRCCore.Commands
                     //            max_range = withBlock.WeaponMaxRange(w);
 
                     //            // 射程範囲表示
-                    //            string argattr3 = "Ｐ";
-                    //            string argattr4 = "Ｑ";
-                    //            string argattr5 = "Ｍ直";
-                    //            string argattr6 = "Ｍ拡";
-                    //            string argattr7 = "Ｍ扇";
-                    //            string argattr8 = "Ｍ全";
-                    //            string argattr9 = "Ｍ線";
-                    //            string argattr10 = "Ｍ投";
-                    //            string argattr11 = "Ｍ移";
-                    //            if ((max_range == 1 | withBlock.IsWeaponClassifiedAs(w, argattr3)) & !withBlock.IsWeaponClassifiedAs(w, argattr4))
+                    //            if ((max_range == 1 | withBlock.IsWeaponClassifiedAs(w, "Ｐ")) & !withBlock.IsWeaponClassifiedAs(w, "Ｑ"))
                     //            {
-                    //                string arguparty = withBlock.Party + "の敵";
-                    //                Map.AreaInReachable(SelectedUnit, max_range, arguparty);
+                    //                Map.AreaInReachable(SelectedUnit, max_range, withBlock.Party + "の敵");
                     //            }
-                    //            else if (withBlock.IsWeaponClassifiedAs(w, argattr5))
+                    //            else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ直"))
                     //            {
                     //                Map.AreaInCross(withBlock.x, withBlock.y, min_range, max_range);
                     //            }
-                    //            else if (withBlock.IsWeaponClassifiedAs(w, argattr6))
+                    //            else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ拡"))
                     //            {
                     //                Map.AreaInWideCross(withBlock.x, withBlock.y, min_range, max_range);
                     //            }
-                    //            else if (withBlock.IsWeaponClassifiedAs(w, argattr7))
+                    //            else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ扇"))
                     //            {
-                    //                string argattr = "Ｍ扇";
-                    //                Map.AreaInSectorCross(withBlock.x, withBlock.y, min_range, max_range, withBlock.WeaponLevel(w, argattr));
+                    //                Map.AreaInSectorCross(withBlock.x, withBlock.y, min_range, max_range, withBlock.WeaponLevel(w, "Ｍ扇"));
                     //            }
-                    //            else if (withBlock.IsWeaponClassifiedAs(w, argattr8) | withBlock.IsWeaponClassifiedAs(w, argattr9))
+                    //            else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ全") | withBlock.IsWeaponClassifiedAs(w, "Ｍ線"))
                     //            {
-                    //                string arguparty2 = "すべて";
-                    //                Map.AreaInRange(withBlock.x, withBlock.y, max_range, min_range, arguparty2);
+                    //                Map.AreaInRange(withBlock.x, withBlock.y, max_range, min_range, "すべて");
                     //            }
-                    //            else if (withBlock.IsWeaponClassifiedAs(w, argattr10))
+                    //            else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ投"))
                     //            {
-                    //                string argattr1 = "Ｍ投";
-                    //                max_range = (max_range + withBlock.WeaponLevel(w, argattr1));
-                    //                string argattr2 = "Ｍ投";
-                    //                min_range = (min_range - withBlock.WeaponLevel(w, argattr2));
+                    //                max_range = (max_range + withBlock.WeaponLevel(w, "Ｍ投"));
+                    //                min_range = (min_range - withBlock.WeaponLevel(w, "Ｍ投"));
                     //                min_range = GeneralLib.MaxLng(min_range, 1);
-                    //                string arguparty3 = "すべて";
-                    //                Map.AreaInRange(withBlock.x, withBlock.y, max_range, min_range, arguparty3);
+                    //                Map.AreaInRange(withBlock.x, withBlock.y, max_range, min_range, "すべて");
                     //            }
-                    //            else if (withBlock.IsWeaponClassifiedAs(w, argattr11))
+                    //            else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ移"))
                     //            {
                     //                Map.AreaInMoveAction(SelectedUnit, max_range);
                     //            }
                     //            else
                     //            {
-                    //                string arguparty1 = withBlock.Party + "の敵";
-                    //                Map.AreaInRange(withBlock.x, withBlock.y, max_range, min_range, arguparty1);
+                    //                Map.AreaInRange(withBlock.x, withBlock.y, max_range, min_range, withBlock.Party + "の敵");
                     //            }
 
                     //            GUI.Center(withBlock.x, withBlock.y);
@@ -642,8 +600,7 @@ namespace SRCCore.Commands
                     //        {
                     //            // 指定された属性の解説を表示
                     //            My.MyProject.Forms.frmListBox.Hide();
-                    //            string argatr = GeneralLib.LIndex(list[i], 1);
-                    //            Help.AttributeHelp(SelectedUnit, argatr, w);
+                    //            Help.AttributeHelp(SelectedUnit, GeneralLib.LIndex(list[i], 1), w);
                     //        }
                     //    }
                     //}
@@ -666,10 +623,8 @@ namespace SRCCore.Commands
             int min_range, max_range;
             while (true)
             {
-                string argcaption_msg = Expression.Term("アビリティ", SelectedUnit) + "一覧";
-                string arglb_mode = "一覧";
                 var list = new UnitAbilityList(AbilityListMode.List, SelectedUnit);
-                var currentAbility = GUI.AbilityListBox(SelectedUnit, list, argcaption_msg, arglb_mode);
+                var currentAbility = GUI.AbilityListBox(SelectedUnit, list, Expression.Term("アビリティ", SelectedUnit) + "一覧", "一覧");
                 if (currentAbility == null)
                 {
                     SelectedAbility = 0;
@@ -764,10 +719,7 @@ namespace SRCCore.Commands
                     //            else
                     //            {
                     //                GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
-                    //                string arglb_caption = "アビリティ属性一覧";
-                    //                string arglb_info = "属性    効果";
-                    //                string arglb_mode1 = "連続表示";
-                    //                i = GUI.ListBox(arglb_caption, list, arglb_info, arglb_mode1);
+                    //                i = GUI.ListBox("アビリティ属性一覧", list, "属性    効果", "連続表示");
                     //            }
 
                     //            if (i == 0)
@@ -784,49 +736,36 @@ namespace SRCCore.Commands
                     //                max_range = currentUnit.AbilityMaxRange(a);
 
                     //                // 射程範囲表示
-                    //                string argattr3 = "Ｐ";
-                    //                string argattr4 = "Ｑ";
-                    //                string argattr5 = "Ｍ直";
-                    //                string argattr6 = "Ｍ拡";
-                    //                string argattr7 = "Ｍ扇";
-                    //                string argattr8 = "Ｍ投";
-                    //                string argattr9 = "Ｍ移";
-                    //                if ((max_range == 1 | currentUnit.IsAbilityClassifiedAs(a, argattr3)) & !currentUnit.IsAbilityClassifiedAs(a, argattr4))
+                    //                if ((max_range == 1 | currentUnit.IsAbilityClassifiedAs(a, "Ｐ")) & !currentUnit.IsAbilityClassifiedAs(a, "Ｑ"))
                     //                {
-                    //                    string arguparty = "すべて";
-                    //                    Map.AreaInReachable(SelectedUnit, max_range, arguparty);
+                    //                    Map.AreaInReachable(SelectedUnit, max_range, "すべて");
                     //                }
-                    //                else if (currentUnit.IsAbilityClassifiedAs(a, argattr5))
+                    //                else if (currentUnit.IsAbilityClassifiedAs(a, "Ｍ直"))
                     //                {
                     //                    Map.AreaInCross(currentUnit.x, currentUnit.y, min_range, max_range);
                     //                }
-                    //                else if (currentUnit.IsAbilityClassifiedAs(a, argattr6))
+                    //                else if (currentUnit.IsAbilityClassifiedAs(a, "Ｍ拡"))
                     //                {
                     //                    Map.AreaInWideCross(currentUnit.x, currentUnit.y, min_range, max_range);
                     //                }
-                    //                else if (currentUnit.IsAbilityClassifiedAs(a, argattr7))
+                    //                else if (currentUnit.IsAbilityClassifiedAs(a, "Ｍ扇"))
                     //                {
-                    //                    string argattr = "Ｍ扇";
-                    //                    Map.AreaInSectorCross(currentUnit.x, currentUnit.y, min_range, max_range, currentUnit.AbilityLevel(a, argattr));
+                    //                    Map.AreaInSectorCross(currentUnit.x, currentUnit.y, min_range, max_range, currentUnit.AbilityLevel(a, "Ｍ扇"));
                     //                }
-                    //                else if (currentUnit.IsAbilityClassifiedAs(a, argattr8))
+                    //                else if (currentUnit.IsAbilityClassifiedAs(a, "Ｍ投"))
                     //                {
-                    //                    string argattr1 = "Ｍ投";
-                    //                    max_range = (max_range + currentUnit.AbilityLevel(a, argattr1));
-                    //                    string argattr2 = "Ｍ投";
-                    //                    min_range = (min_range - currentUnit.AbilityLevel(a, argattr2));
+                    //                    max_range = (max_range + currentUnit.AbilityLevel(a, "Ｍ投"));
+                    //                    min_range = (min_range - currentUnit.AbilityLevel(a, "Ｍ投"));
                     //                    min_range = GeneralLib.MaxLng(min_range, 1);
-                    //                    string arguparty2 = "すべて";
-                    //                    Map.AreaInRange(currentUnit.x, currentUnit.y, max_range, min_range, arguparty2);
+                    //                    Map.AreaInRange(currentUnit.x, currentUnit.y, max_range, min_range, "すべて");
                     //                }
-                    //                else if (currentUnit.IsAbilityClassifiedAs(a, argattr9))
+                    //                else if (currentUnit.IsAbilityClassifiedAs(a, "Ｍ移"))
                     //                {
                     //                    Map.AreaInMoveAction(SelectedUnit, max_range);
                     //                }
                     //                else
                     //                {
-                    //                    string arguparty1 = "すべて";
-                    //                    Map.AreaInRange(currentUnit.x, currentUnit.y, max_range, min_range, arguparty1);
+                    //                    Map.AreaInRange(currentUnit.x, currentUnit.y, max_range, min_range, "すべて");
                     //                }
 
                     //                GUI.Center(currentUnit.x, currentUnit.y);
@@ -858,8 +797,7 @@ namespace SRCCore.Commands
                     //            {
                     //                // 指定された属性の解説を表示
                     //                My.MyProject.Forms.frmListBox.Hide();
-                    //                string argatr = GeneralLib.LIndex(list[i], 1);
-                    //                Help.AttributeHelp(SelectedUnit, argatr, a, true);
+                    //                Help.AttributeHelp(SelectedUnit, GeneralLib.LIndex(list[i], 1), a, true);
                     //            }
                     //        }
                     //    }
@@ -911,9 +849,7 @@ namespace SRCCore.Commands
             //    var loopTo = withBlock.CountWeapon();
             //    for (i = 1; i <= loopTo; i++)
             //    {
-            //        string argref_mode = "ステータス";
-            //        string argattr = "Ｍ";
-            //        if (withBlock.IsWeaponAvailable(i, argref_mode) & !withBlock.IsWeaponClassifiedAs(i, argattr))
+            //        if (withBlock.IsWeaponAvailable(i, "ステータス") & !withBlock.IsWeaponClassifiedAs(i, "Ｍ"))
             //        {
             //            if (withBlock.WeaponMaxRange(i) > max_range)
             //            {
@@ -924,8 +860,7 @@ namespace SRCCore.Commands
             //    }
 
             //    // 見つかった最大の射程を持つ武器の射程範囲を選択
-            //    string arguparty = withBlock.Party + "の敵";
-            //    Map.AreaInRange(withBlock.x, withBlock.y, max_range, 1, arguparty);
+            //    Map.AreaInRange(withBlock.x, withBlock.y, max_range, 1, withBlock.Party + "の敵");
 
             //    // 射程範囲を表示
             //    GUI.Center(withBlock.x, withBlock.y);

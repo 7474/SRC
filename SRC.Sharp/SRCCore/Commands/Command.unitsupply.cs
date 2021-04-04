@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -22,8 +22,7 @@ namespace SRCCore.Commands
             //// 射程範囲？を表示
             //{
             //    var withBlock = SelectedUnit;
-            //    string arguparty = "味方";
-            //    Map.AreaInRange(withBlock.x, withBlock.y, 1, 1, arguparty);
+            //    Map.AreaInRange(withBlock.x, withBlock.y, 1, 1, "味方");
             //    var loopTo = Map.MapWidth;
             //    for (i = 1; i <= loopTo; i++)
             //    {
@@ -34,28 +33,21 @@ namespace SRCCore.Commands
             //            {
             //                {
             //                    var withBlock1 = Map.MapDataForUnit[i, j];
-            //                    object argIndex1 = "ゾンビ";
-            //                    if (withBlock1.HP == withBlock1.MaxHP | withBlock1.IsConditionSatisfied(argIndex1))
+            //                    if (withBlock1.HP == withBlock1.MaxHP | withBlock1.IsConditionSatisfied("ゾンビ"))
             //                    {
             //                        Map.MaskData[i, j] = true;
             //                    }
 
-            //                    string argfname = "修理不可";
-            //                    if (withBlock1.IsFeatureAvailable(argfname))
+            //                    if (withBlock1.IsFeatureAvailable("修理不可"))
             //                    {
-            //                        object argIndex5 = "修理不可";
-            //                        object argIndex6 = "修理不可";
-            //                        var loopTo2 = Conversions.ToInteger(withBlock1.FeatureData(argIndex6));
+            //                        var loopTo2 = Conversions.ToInteger(withBlock1.FeatureData("修理不可"));
             //                        for (k = 2; k <= loopTo2; k++)
             //                        {
-            //                            object argIndex2 = "修理不可";
-            //                            string arglist = withBlock1.FeatureData(argIndex2);
-            //                            fname = GeneralLib.LIndex(arglist, k);
+            //                            fname = GeneralLib.LIndex(withBlock1.FeatureData(argIndex2), k);
             //                            if (Strings.Left(fname, 1) == "!")
             //                            {
             //                                fname = Strings.Mid(fname, 2);
-            //                                object argIndex3 = "修理装置";
-            //                                if ((fname ?? "") != (SelectedUnit.FeatureName0(argIndex3) ?? ""))
+            //                                if ((fname ?? "") != (SelectedUnit.FeatureName0("修理装置") ?? ""))
             //                                {
             //                                    Map.MaskData[i, j] = true;
             //                                    break;
@@ -63,8 +55,7 @@ namespace SRCCore.Commands
             //                            }
             //                            else
             //                            {
-            //                                object argIndex4 = "修理装置";
-            //                                if ((fname ?? "") == (SelectedUnit.FeatureName0(argIndex4) ?? ""))
+            //                                if ((fname ?? "") == (SelectedUnit.FeatureName0("修理装置") ?? ""))
             //                                {
             //                                    Map.MaskData[i, j] = true;
             //                                    break;
@@ -110,8 +101,7 @@ namespace SRCCore.Commands
             //        t = SelectedUnit;
             //    }
 
-            //    string argcursor_mode = "ユニット選択";
-            //    GUI.MoveCursorPos(argcursor_mode, t);
+            //    GUI.MoveCursorPos("ユニット選択", t);
             //    if (!ReferenceEquals(SelectedUnit, t))
             //    {
             //        Status.DisplayUnitStatus(t);
@@ -142,54 +132,36 @@ namespace SRCCore.Commands
             //    Event_Renamed.SelectedTargetForEvent = SelectedTarget;
 
             //    // 修理メッセージ＆特殊効果
-            //    string argmain_situation = "修理";
-            //    if (withBlock.IsMessageDefined(argmain_situation))
+            //    if (withBlock.IsMessageDefined("修理"))
             //    {
-            //        string argSituation = "修理";
-            //        string argmsg_mode = "";
-            //        withBlock.PilotMessage(argSituation, msg_mode: argmsg_mode);
+            //        withBlock.PilotMessage("修理", msg_mode: "");
             //    }
 
-            //    string argmain_situation3 = "修理";
-            //    object argIndex3 = "修理装置";
-            //    string argsub_situation2 = withBlock.FeatureName(argIndex3);
-            //    if (withBlock.IsAnimationDefined(argmain_situation3, argsub_situation2))
+            //    if (withBlock.IsAnimationDefined("修理", withBlock.FeatureName(argIndex3)))
             //    {
-            //        string argmain_situation1 = "修理";
-            //        object argIndex1 = "修理装置";
-            //        string argsub_situation = withBlock.FeatureName(argIndex1);
-            //        withBlock.PlayAnimation(argmain_situation1, argsub_situation);
+            //        withBlock.PlayAnimation("修理", withBlock.FeatureName(argIndex1));
             //    }
             //    else
             //    {
-            //        string argmain_situation2 = "修理";
-            //        object argIndex2 = "修理装置";
-            //        string argsub_situation1 = withBlock.FeatureName(argIndex2);
-            //        withBlock.SpecialEffect(argmain_situation2, argsub_situation1);
+            //        withBlock.SpecialEffect("修理", withBlock.FeatureName(argIndex2));
             //    }
 
-            //    object argIndex4 = "修理装置";
-            //    GUI.DisplaySysMessage(withBlock.Nickname + "は" + SelectedTarget.Nickname + "に" + withBlock.FeatureName(argIndex4) + "を使った。");
+            //    GUI.DisplaySysMessage(withBlock.Nickname + "は" + SelectedTarget.Nickname + "に" + withBlock.FeatureName("修理装置") + "を使った。");
 
             //    // 修理を実行
             //    tmp = SelectedTarget.HP;
-            //    object argIndex7 = "修理装置";
-            //    switch (withBlock.FeatureLevel(argIndex7))
+            //    switch (withBlock.FeatureLevel("修理装置"))
             //    {
             //        case 1d:
             //        case -1:
             //            {
-            //                object argIndex5 = "修理";
-            //                string argref_mode = "";
-            //                SelectedTarget.RecoverHP(30d + 3d * SelectedUnit.MainPilot().SkillLevel(argIndex5, ref_mode: argref_mode));
+            //                SelectedTarget.RecoverHP(30d + 3d * SelectedUnit.MainPilot().SkillLevel("修理", ref_mode: ""));
             //                break;
             //            }
 
             //        case 2d:
             //            {
-            //                object argIndex6 = "修理";
-            //                string argref_mode1 = "";
-            //                SelectedTarget.RecoverHP(50d + 5d * SelectedUnit.MainPilot().SkillLevel(argIndex6, ref_mode: argref_mode1));
+            //                SelectedTarget.RecoverHP(50d + 5d * SelectedUnit.MainPilot().SkillLevel("修理", ref_mode: ""));
             //                break;
             //            }
 
@@ -200,7 +172,7 @@ namespace SRCCore.Commands
             //            }
             //    }
 
-            //    string localLIndex2() { object argIndex1 = "修理装置"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+            //    string localLIndex2() { object "修理装置" = "修理装置"; string arglist = withBlock.FeatureData("修理装置"); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
 
             //    if (Information.IsNumeric(localLIndex2()))
             //    {
@@ -211,17 +183,12 @@ namespace SRCCore.Commands
             //        withBlock.EN = withBlock.EN - Conversions.Toint(localLIndex1());
             //    }
 
-            //    string argmsg = "+" + SrcFormatter.Format(SelectedTarget.HP - tmp);
-            //    GUI.DrawSysString(SelectedTarget.x, SelectedTarget.y, argmsg);
-            //    object argu2 = SelectedUnit;
-            //    GUI.UpdateMessageForm(SelectedTarget, argu2);
-            //    string argtname = "ＨＰ";
-            //    GUI.DisplaySysMessage(SelectedTarget.Nickname + "の" + Expression.Term(argtname, SelectedTarget) + "が" + SrcFormatter.Format(SelectedTarget.HP - tmp) + "回復した。");
+            //    GUI.DrawSysString(SelectedTarget.x, SelectedTarget.y, "+" + SrcFormatter.Format(SelectedTarget.HP - tmp));
+            //    GUI.UpdateMessageForm(SelectedTarget, SelectedUnit);
+            //    GUI.DisplaySysMessage(SelectedTarget.Nickname + "の" + Expression.Term("ＨＰ", SelectedTarget) + "が" + SrcFormatter.Format(SelectedTarget.HP - tmp) + "回復した。");
 
             //    // 経験値獲得
-            //    string argexp_situation = "修理";
-            //    string argexp_mode = "";
-            //    withBlock.GetExp(SelectedTarget, argexp_situation, exp_mode: argexp_mode);
+            //    withBlock.GetExp(SelectedTarget, "修理", exp_mode: "");
             //    if (GUI.MessageWait < 10000)
             //    {
             //        GUI.Sleep(GUI.MessageWait);
@@ -250,8 +217,7 @@ namespace SRCCore.Commands
             //// 射程範囲？を表示
             //{
             //    var withBlock = SelectedUnit;
-            //    string arguparty = "味方";
-            //    Map.AreaInRange(withBlock.x, withBlock.y, 1, 1, arguparty);
+            //    Map.AreaInRange(withBlock.x, withBlock.y, 1, 1, "味方");
             //    var loopTo = Map.MapWidth;
             //    for (i = 1; i <= loopTo; i++)
             //    {
@@ -263,8 +229,7 @@ namespace SRCCore.Commands
             //                Map.MaskData[i, j] = true;
             //                {
             //                    var withBlock1 = Map.MapDataForUnit[i, j];
-            //                    object argIndex1 = "ゾンビ";
-            //                    if (withBlock1.EN < withBlock1.MaxEN & !withBlock1.IsConditionSatisfied(argIndex1))
+            //                    if (withBlock1.EN < withBlock1.MaxEN & !withBlock1.IsConditionSatisfied("ゾンビ"))
             //                    {
             //                        Map.MaskData[i, j] = false;
             //                    }
@@ -322,8 +287,7 @@ namespace SRCCore.Commands
             //        t = SelectedUnit;
             //    }
 
-            //    string argcursor_mode = "ユニット選択";
-            //    GUI.MoveCursorPos(argcursor_mode, t);
+            //    GUI.MoveCursorPos("ユニット選択", t);
             //    if (!ReferenceEquals(SelectedUnit, t))
             //    {
             //        Status.DisplayUnitStatus(t);
@@ -354,34 +318,21 @@ namespace SRCCore.Commands
             //    Event_Renamed.SelectedTargetForEvent = SelectedTarget;
 
             //    // 補給メッセージ＆特殊効果
-            //    string argmain_situation = "補給";
-            //    if (withBlock.IsMessageDefined(argmain_situation))
+            //    if (withBlock.IsMessageDefined("補給"))
             //    {
-            //        string argSituation = "補給";
-            //        string argmsg_mode = "";
-            //        withBlock.PilotMessage(argSituation, msg_mode: argmsg_mode);
+            //        withBlock.PilotMessage("補給", msg_mode: "");
             //    }
 
-            //    string argmain_situation3 = "補給";
-            //    object argIndex3 = "補給装置";
-            //    string argsub_situation2 = withBlock.FeatureName(argIndex3);
-            //    if (withBlock.IsAnimationDefined(argmain_situation3, argsub_situation2))
+            //    if (withBlock.IsAnimationDefined("補給", withBlock.FeatureName(argIndex3)))
             //    {
-            //        string argmain_situation1 = "補給";
-            //        object argIndex1 = "補給装置";
-            //        string argsub_situation = withBlock.FeatureName(argIndex1);
-            //        withBlock.PlayAnimation(argmain_situation1, argsub_situation);
+            //        withBlock.PlayAnimation("補給", withBlock.FeatureName("補給装置"));
             //    }
             //    else
             //    {
-            //        string argmain_situation2 = "補給";
-            //        object argIndex2 = "補給装置";
-            //        string argsub_situation1 = withBlock.FeatureName(argIndex2);
-            //        withBlock.SpecialEffect(argmain_situation2, argsub_situation1);
+            //        withBlock.SpecialEffect("補給", withBlock.FeatureName(argIndex2));
             //    }
 
-            //    object argIndex4 = "補給装置";
-            //    GUI.DisplaySysMessage(withBlock.Nickname + "は" + SelectedTarget.Nickname + "に" + withBlock.FeatureName(argIndex4) + "を使った。");
+            //    GUI.DisplaySysMessage(withBlock.Nickname + "は" + SelectedTarget.Nickname + "に" + withBlock.FeatureName("補給装置") + "を使った。");
 
             //    // 補給を実施
             //    SelectedTarget.FullSupply();
@@ -397,15 +348,11 @@ namespace SRCCore.Commands
             //        withBlock.EN = withBlock.EN - Conversions.Toint(localLIndex1());
             //    }
 
-            //    object argu2 = SelectedUnit;
-            //    GUI.UpdateMessageForm(SelectedTarget, argu2);
-            //    string argtname = "ＥＮ";
-            //    GUI.DisplaySysMessage(SelectedTarget.Nickname + "の弾数と" + Expression.Term(argtname, SelectedTarget) + "が全快した。");
+            //    GUI.UpdateMessageForm(SelectedTarget, SelectedUnit);
+            //    GUI.DisplaySysMessage(SelectedTarget.Nickname + "の弾数と" + Expression.Term("ＥＮ", SelectedTarget) + "が全快した。");
 
             //    // 経験値を獲得
-            //    string argexp_situation = "補給";
-            //    string argexp_mode = "";
-            //    withBlock.GetExp(SelectedTarget, argexp_situation, exp_mode: argexp_mode);
+            //    withBlock.GetExp(SelectedTarget, "補給", exp_mode: "");
             //    if (GUI.MessageWait < 10000)
             //    {
             //        GUI.Sleep(GUI.MessageWait);

@@ -1,4 +1,4 @@
-﻿
+
 namespace SRCSharpForm.Forms
 {
     partial class InputForm

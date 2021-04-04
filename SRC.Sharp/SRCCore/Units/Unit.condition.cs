@@ -1,4 +1,4 @@
-﻿using SRCCore.Lib;
+using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.VB;
 using System;
@@ -158,8 +158,7 @@ namespace SRCCore.Units
             //                        // 魅了を解除
             //                        if (Master is object)
             //                        {
-            //                            object argIndex1 = ID;
-            //                            Master.CurrentForm().DeleteSlave(ref argIndex1);
+            //                            Master.CurrentForm().DeleteSlave(ref ID);
             //                            // UPGRADE_NOTE: オブジェクト Master をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             //                            Master = null;
             //                        }
@@ -180,9 +179,7 @@ namespace SRCCore.Units
             //                        // 活動限界時間切れ
             //                        GUI.Center(x, y);
             //                        Escape();
-            //                        Unit argu1 = null;
-            //                        Unit argu2 = null;
-            //                        GUI.OpenMessageForm(u1: ref argu1, u2: ref argu2);
+            //                        GUI.OpenMessageForm(u1: ref null, u2: ref null);
             //                        GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
             //                        GUI.CloseMessageForm();
             //                        Event_Renamed.HandleEvent("破壊", MainPilot().ID);
@@ -206,9 +203,7 @@ namespace SRCCore.Units
             //    // チャージ状態が終了したらチャージ完了状態にする
             //    if (charge_complete)
             //    {
-            //        string argcname = "チャージ完了";
-            //        string argcdata = "";
-            //        AddCondition(ref argcname, 1, cdata: ref argcdata);
+            //        AddCondition(ref "チャージ完了", 1, cdata: ref "");
             //    }
 
             //    // ユニットのステータス変化あり？

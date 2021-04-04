@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -48,8 +48,7 @@ namespace SRCCore.Expressions
             //    case "ユニット":
             //        {
             //            var tmp = @params;
-            //            object argIndex1 = tmp[2];
-            //            u = SRC.UList.Item(argIndex1);
+            //            u = SRC.UList.Item(tmp[2]);
             //            idx = 3;
             //            break;
             //        }
@@ -57,8 +56,7 @@ namespace SRCCore.Expressions
             //    case "ユニットデータ":
             //        {
             //            var tmp1 = @params;
-            //            object argIndex2 = tmp1[2];
-            //            ud = SRC.UDList.Item(argIndex2);
+            //            ud = SRC.UDList.Item(tmp1[2]);
             //            idx = 3;
             //            break;
             //        }
@@ -66,8 +64,7 @@ namespace SRCCore.Expressions
             //    case "パイロット":
             //        {
             //            var tmp2 = @params;
-            //            object argIndex3 = tmp2[2];
-            //            p = SRC.PList.Item(argIndex3);
+            //            p = SRC.PList.Item(tmp2[2]);
             //            idx = 3;
             //            break;
             //        }
@@ -75,8 +72,7 @@ namespace SRCCore.Expressions
             //    case "パイロットデータ":
             //        {
             //            var tmp3 = @params;
-            //            object argIndex4 = tmp3[2];
-            //            pd = SRC.PDList.Item(argIndex4);
+            //            pd = SRC.PDList.Item(tmp3[2]);
             //            idx = 3;
             //            break;
             //        }
@@ -84,8 +80,7 @@ namespace SRCCore.Expressions
             //    case "非戦闘員":
             //        {
             //            var tmp4 = @params;
-            //            object argIndex5 = tmp4[2];
-            //            nd = SRC.NPDList.Item(argIndex5);
+            //            nd = SRC.NPDList.Item(tmp4[2]);
             //            idx = 3;
             //            break;
             //        }
@@ -93,18 +88,15 @@ namespace SRCCore.Expressions
             //    case "アイテム":
             //        {
             //            var tmp7 = @params;
-            //            object argIndex8 = tmp7[2];
-            //            if (SRC.IList.IsDefined(argIndex8))
+            //            if (SRC.IList.IsDefined(tmp7[2]))
             //            {
             //                var tmp5 = @params;
-            //                object argIndex6 = tmp5[2];
-            //                it = SRC.IList.Item(argIndex6);
+            //                it = SRC.IList.Item(tmp5[2]);
             //            }
             //            else
             //            {
             //                var tmp6 = @params;
-            //                object argIndex7 = tmp6[2];
-            //                itd = SRC.IDList.Item(argIndex7);
+            //                itd = SRC.IDList.Item(tmp6[2]);
             //            }
 
             //            idx = 3;
@@ -114,8 +106,7 @@ namespace SRCCore.Expressions
             //    case "アイテムデータ":
             //        {
             //            var tmp8 = @params;
-            //            object argIndex9 = tmp8[2];
-            //            itd = SRC.IDList.Item(argIndex9);
+            //            itd = SRC.IDList.Item(tmp8[2]);
             //            idx = 3;
             //            break;
             //        }
@@ -123,8 +114,7 @@ namespace SRCCore.Expressions
             //    case "スペシャルパワー":
             //        {
             //            var tmp9 = @params;
-            //            object argIndex10 = tmp9[2];
-            //            spd = SRC.SPDList.Item(argIndex10);
+            //            spd = SRC.SPDList.Item(tmp9[2]);
             //            idx = 3;
             //            break;
             //        }
@@ -144,29 +134,21 @@ namespace SRCCore.Expressions
             //    default:
             //        {
             //            var tmp10 = @params;
-            //            object argIndex11 = tmp10[1];
-            //            u = SRC.UList.Item(argIndex11);
+            //            u = SRC.UList.Item(tmp10[1]);
             //            var tmp11 = @params;
-            //            object argIndex12 = tmp11[1];
-            //            ud = SRC.UDList.Item(argIndex12);
+            //            ud = SRC.UDList.Item(tmp11[1]);
             //            var tmp12 = @params;
-            //            object argIndex13 = tmp12[1];
-            //            p = SRC.PList.Item(argIndex13);
+            //            p = SRC.PList.Item(tmp12[1]);
             //            var tmp13 = @params;
-            //            object argIndex14 = tmp13[1];
-            //            pd = SRC.PDList.Item(argIndex14);
+            //            pd = SRC.PDList.Item(tmp13[1]);
             //            var tmp14 = @params;
-            //            object argIndex15 = tmp14[1];
-            //            nd = SRC.NPDList.Item(argIndex15);
+            //            nd = SRC.NPDList.Item(tmp14[1]);
             //            var tmp15 = @params;
-            //            object argIndex16 = tmp15[1];
-            //            it = SRC.IList.Item(argIndex16);
+            //            it = SRC.IList.Item(tmp15[1]);
             //            var tmp16 = @params;
-            //            object argIndex17 = tmp16[1];
-            //            itd = SRC.IDList.Item(argIndex17);
+            //            itd = SRC.IDList.Item(tmp16[1]);
             //            var tmp17 = @params;
-            //            object argIndex18 = tmp17[1];
-            //            spd = SRC.SPDList.Item(argIndex18);
+            //            spd = SRC.SPDList.Item(tmp17[1]);
             //            idx = 2;
             //            break;
             //        }
@@ -699,8 +681,7 @@ namespace SRCCore.Expressions
             //                {
             //                    if (ReferenceEquals(p, p.Unit.MainPilot()))
             //                    {
-            //                        object argIndex19 = 1;
-            //                        EvalInfoFuncRet = SrcFormatter.Format(p.Unit.Pilot(argIndex19).MaxSP);
+            //                        EvalInfoFuncRet = SrcFormatter.Format(p.Unit.Pilot(1).MaxSP);
             //                    }
             //                }
             //            }
@@ -721,8 +702,7 @@ namespace SRCCore.Expressions
             //                {
             //                    if (ReferenceEquals(p, p.Unit.MainPilot()))
             //                    {
-            //                        object argIndex20 = 1;
-            //                        EvalInfoFuncRet = SrcFormatter.Format(p.Unit.Pilot(argIndex20).SP);
+            //                        EvalInfoFuncRet = SrcFormatter.Format(p.Unit.Pilot(1).SP);
             //                    }
             //                }
             //            }
@@ -813,8 +793,7 @@ namespace SRCCore.Expressions
             //            }
             //            else if (pd is object)
             //            {
-            //                string argsname = "霊力";
-            //                EvalInfoFuncRet = SrcFormatter.Format(pd.SkillLevel(0, argsname));
+            //                EvalInfoFuncRet = SrcFormatter.Format(pd.SkillLevel(0, "霊力"));
             //            }
 
             //            break;
@@ -829,8 +808,7 @@ namespace SRCCore.Expressions
             //            }
             //            else if (pd is object)
             //            {
-            //                string argsname1 = "霊力";
-            //                EvalInfoFuncRet = SrcFormatter.Format(pd.SkillLevel(0, argsname1));
+            //                EvalInfoFuncRet = SrcFormatter.Format(pd.SkillLevel(0, "霊力"));
             //            }
 
             //            break;
@@ -845,8 +823,7 @@ namespace SRCCore.Expressions
             //            }
             //            else if (pd is object)
             //            {
-            //                string argsname2 = "同調率";
-            //                EvalInfoFuncRet = SrcFormatter.Format(pd.SkillLevel(0, argsname2));
+            //                EvalInfoFuncRet = SrcFormatter.Format(pd.SkillLevel(0, "同調率"));
             //            }
 
             //            break;
@@ -862,8 +839,7 @@ namespace SRCCore.Expressions
             //                {
             //                    if (ReferenceEquals(p, p.Unit.MainPilot()))
             //                    {
-            //                        object argIndex21 = 1;
-            //                        p = p.Unit.Pilot(argIndex21);
+            //                        p = p.Unit.Pilot(1);
             //                    }
             //                }
 
@@ -896,8 +872,7 @@ namespace SRCCore.Expressions
             //                {
             //                    if (ReferenceEquals(p, p.Unit.MainPilot()))
             //                    {
-            //                        object argIndex22 = 1;
-            //                        p = p.Unit.Pilot(argIndex22);
+            //                        p = p.Unit.Pilot(1);
             //                    }
             //                }
 
@@ -934,8 +909,7 @@ namespace SRCCore.Expressions
             //                {
             //                    if (ReferenceEquals(p, p.Unit.MainPilot()))
             //                    {
-            //                        object argIndex23 = 1;
-            //                        p = p.Unit.Pilot(argIndex23);
+            //                        p = p.Unit.Pilot(1);
             //                    }
             //                }
 
@@ -989,48 +963,42 @@ namespace SRCCore.Expressions
             //            {
             //                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                {
-            //                    object argIndex24 = Conversions.Toint(@params[idx + 1]);
-            //                    EvalInfoFuncRet = u.Feature(argIndex24);
+            //                    EvalInfoFuncRet = u.Feature(Conversions.Toint(@params[idx + 1]));
             //                }
             //            }
             //            else if (ud is object)
             //            {
             //                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                {
-            //                    object argIndex25 = Conversions.Toint(@params[idx + 1]);
-            //                    EvalInfoFuncRet = ud.Feature(argIndex25);
+            //                    EvalInfoFuncRet = ud.Feature(Conversions.Toint(@params[idx + 1]));
             //                }
             //            }
             //            else if (p is object)
             //            {
             //                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                {
-            //                    object argIndex26 = Conversions.Toint(@params[idx + 1]);
-            //                    EvalInfoFuncRet = p.Skill(argIndex26);
+            //                    EvalInfoFuncRet = p.Skill(Conversions.Toint(@params[idx + 1]));
             //                }
             //            }
             //            else if (pd is object)
             //            {
             //                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                {
-            //                    string arglist = pd.Skill(100);
-            //                    EvalInfoFuncRet = GeneralLib.LIndex(arglist, Conversions.Toint(@params[idx + 1]));
+            //                    EvalInfoFuncRet = GeneralLib.LIndex(pd.Skill(100), Conversions.Toint(@params[idx + 1]));
             //                }
             //            }
             //            else if (it is object)
             //            {
             //                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                {
-            //                    object argIndex27 = Conversions.Toint(@params[idx + 1]);
-            //                    EvalInfoFuncRet = it.Feature(argIndex27);
+            //                    EvalInfoFuncRet = it.Feature(Conversions.Toint(@params[idx + 1]));
             //                }
             //            }
             //            else if (itd is object)
             //            {
             //                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                {
-            //                    object argIndex28 = Conversions.Toint(@params[idx + 1]);
-            //                    EvalInfoFuncRet = itd.Feature(argIndex28);
+            //                    EvalInfoFuncRet = itd.Feature(Conversions.Toint(@params[idx + 1]));
             //                }
             //            }
 
@@ -1042,12 +1010,10 @@ namespace SRCCore.Expressions
             //            aname = @params[idx + 1];
 
             //            // エリアスが定義されている？
-            //            object argIndex30 = aname;
-            //            if (SRC.ALDList.IsDefined(argIndex30))
+            //            if (SRC.ALDList.IsDefined(aname))
             //            {
-            //                object argIndex29 = aname;
             //                {
-            //                    var withBlock1 = SRC.ALDList.Item(argIndex29);
+            //                    var withBlock1 = SRC.ALDList.Item(aname);
             //                    var loopTo2 = withBlock1.Count;
             //                    for (i = 1; i <= loopTo2; i++)
             //                    {
@@ -1071,39 +1037,33 @@ namespace SRCCore.Expressions
             //            {
             //                if (GeneralLib.IsNumber(aname))
             //                {
-            //                    object argIndex31 = Conversions.Toint(@params[idx + 1]);
-            //                    EvalInfoFuncRet = u.FeatureName(argIndex31);
+            //                    EvalInfoFuncRet = u.FeatureName(Conversions.Toint(@params[idx + 1]));
             //                }
             //                else
             //                {
-            //                    object argIndex32 = aname;
-            //                    EvalInfoFuncRet = u.FeatureName(argIndex32);
+            //                    EvalInfoFuncRet = u.FeatureName(aname);
             //                }
             //            }
             //            else if (ud is object)
             //            {
             //                if (GeneralLib.IsNumber(aname))
             //                {
-            //                    object argIndex33 = Conversions.Toint(aname);
-            //                    EvalInfoFuncRet = ud.FeatureName(argIndex33);
+            //                    EvalInfoFuncRet = ud.FeatureName(Conversions.Toint(aname));
             //                }
             //                else
             //                {
-            //                    object argIndex34 = aname;
-            //                    EvalInfoFuncRet = ud.FeatureName(argIndex34);
+            //                    EvalInfoFuncRet = ud.FeatureName(aname);
             //                }
             //            }
             //            else if (p is object)
             //            {
             //                if (GeneralLib.IsNumber(aname))
             //                {
-            //                    object argIndex35 = Conversions.Toint(aname);
-            //                    EvalInfoFuncRet = p.SkillName(argIndex35);
+            //                    EvalInfoFuncRet = p.SkillName(Conversions.Toint(aname));
             //                }
             //                else
             //                {
-            //                    object argIndex36 = aname;
-            //                    EvalInfoFuncRet = p.SkillName(argIndex36);
+            //                    EvalInfoFuncRet = p.SkillName(aname);
             //                }
             //            }
             //            else if (pd is object)
@@ -1112,8 +1072,7 @@ namespace SRCCore.Expressions
             //                {
             //                    string localLIndex1() { string arglist = pd.Skill(100); var ret = GeneralLib.LIndex(arglist, Conversions.Toint(aname)); return ret; }
 
-            //                    string argsname3 = localLIndex1();
-            //                    EvalInfoFuncRet = pd.SkillName(100, argsname3);
+            //                    EvalInfoFuncRet = pd.SkillName(100, localLIndex1());
             //                }
             //                else
             //                {
@@ -1124,26 +1083,22 @@ namespace SRCCore.Expressions
             //            {
             //                if (GeneralLib.IsNumber(aname))
             //                {
-            //                    object argIndex37 = Conversions.Toint(aname);
-            //                    EvalInfoFuncRet = it.FeatureName(argIndex37);
+            //                    EvalInfoFuncRet = it.FeatureName(Conversions.Toint(aname));
             //                }
             //                else
             //                {
-            //                    object argIndex38 = aname;
-            //                    EvalInfoFuncRet = it.FeatureName(argIndex38);
+            //                    EvalInfoFuncRet = it.FeatureName(aname);
             //                }
             //            }
             //            else if (itd is object)
             //            {
             //                if (GeneralLib.IsNumber(aname))
             //                {
-            //                    object argIndex39 = Conversions.Toint(aname);
-            //                    EvalInfoFuncRet = itd.FeatureName(argIndex39);
+            //                    EvalInfoFuncRet = itd.FeatureName(Conversions.Toint(aname));
             //                }
             //                else
             //                {
-            //                    object argIndex40 = aname;
-            //                    EvalInfoFuncRet = itd.FeatureName(argIndex40);
+            //                    EvalInfoFuncRet = itd.FeatureName(aname);
             //                }
             //            }
 
@@ -1155,12 +1110,10 @@ namespace SRCCore.Expressions
             //            aname = @params[idx + 1];
 
             //            // エリアスが定義されている？
-            //            object argIndex42 = aname;
-            //            if (SRC.ALDList.IsDefined(argIndex42))
+            //            if (SRC.ALDList.IsDefined(aname))
             //            {
-            //                object argIndex41 = aname;
             //                {
-            //                    var withBlock2 = SRC.ALDList.Item(argIndex41);
+            //                    var withBlock2 = SRC.ALDList.Item(aname);
             //                    var loopTo3 = withBlock2.Count;
             //                    for (i = 1; i <= loopTo3; i++)
             //                    {
@@ -1255,12 +1208,10 @@ namespace SRCCore.Expressions
             //            aname = @params[idx + 1];
 
             //            // エリアスが定義されている？
-            //            object argIndex44 = aname;
-            //            if (SRC.ALDList.IsDefined(argIndex44))
+            //            if (SRC.ALDList.IsDefined(aname))
             //            {
-            //                object argIndex43 = aname;
             //                {
-            //                    var withBlock3 = SRC.ALDList.Item(argIndex43);
+            //                    var withBlock3 = SRC.ALDList.Item(aname);
             //                    var loopTo4 = withBlock3.Count;
             //                    for (i = 1; i <= loopTo4; i++)
             //                    {
@@ -1379,12 +1330,10 @@ namespace SRCCore.Expressions
             //            aname = @params[idx + 1];
 
             //            // エリアスが定義されている？
-            //            object argIndex46 = aname;
-            //            if (SRC.ALDList.IsDefined(argIndex46))
+            //            if (SRC.ALDList.IsDefined(aname))
             //            {
-            //                object argIndex45 = aname;
             //                {
-            //                    var withBlock4 = SRC.ALDList.Item(argIndex45);
+            //                    var withBlock4 = SRC.ALDList.Item(aname);
             //                    var loopTo5 = withBlock4.Count;
             //                    for (i = 1; i <= loopTo5; i++)
             //                    {
@@ -1408,39 +1357,33 @@ namespace SRCCore.Expressions
             //            {
             //                if (GeneralLib.IsNumber(aname))
             //                {
-            //                    object argIndex47 = Conversions.Toint(aname);
-            //                    EvalInfoFuncRet = u.FeatureData(argIndex47);
+            //                    EvalInfoFuncRet = u.FeatureData(Conversions.Toint(aname));
             //                }
             //                else
             //                {
-            //                    object argIndex48 = aname;
-            //                    EvalInfoFuncRet = u.FeatureData(argIndex48);
+            //                    EvalInfoFuncRet = u.FeatureData(aname);
             //                }
             //            }
             //            else if (ud is object)
             //            {
             //                if (GeneralLib.IsNumber(aname))
             //                {
-            //                    object argIndex49 = Conversions.Toint(aname);
-            //                    EvalInfoFuncRet = ud.FeatureData(argIndex49);
+            //                    EvalInfoFuncRet = ud.FeatureData(Conversions.Toint(aname));
             //                }
             //                else
             //                {
-            //                    object argIndex50 = aname;
-            //                    EvalInfoFuncRet = ud.FeatureData(argIndex50);
+            //                    EvalInfoFuncRet = ud.FeatureData(aname);
             //                }
             //            }
             //            else if (p is object)
             //            {
             //                if (GeneralLib.IsNumber(aname))
             //                {
-            //                    object argIndex51 = Conversions.Toint(aname);
-            //                    EvalInfoFuncRet = p.SkillData(argIndex51);
+            //                    EvalInfoFuncRet = p.SkillData(Conversions.Toint(aname));
             //                }
             //                else
             //                {
-            //                    object argIndex52 = aname;
-            //                    EvalInfoFuncRet = p.SkillData(argIndex52);
+            //                    EvalInfoFuncRet = p.SkillData(aname);
             //                }
             //            }
             //            else if (pd is object)
@@ -1449,8 +1392,7 @@ namespace SRCCore.Expressions
             //                {
             //                    string localLIndex6() { string arglist = pd.Skill(100); var ret = GeneralLib.LIndex(arglist, Conversions.Toint(aname)); return ret; }
 
-            //                    string argsname4 = localLIndex6();
-            //                    EvalInfoFuncRet = pd.SkillData(100, argsname4);
+            //                    EvalInfoFuncRet = pd.SkillData(100, localLIndex6());
             //                }
             //                else
             //                {
@@ -1461,26 +1403,22 @@ namespace SRCCore.Expressions
             //            {
             //                if (GeneralLib.IsNumber(aname))
             //                {
-            //                    object argIndex53 = Conversions.Toint(aname);
-            //                    EvalInfoFuncRet = it.FeatureData(argIndex53);
+            //                    EvalInfoFuncRet = it.FeatureData(Conversions.Toint(aname));
             //                }
             //                else
             //                {
-            //                    object argIndex54 = aname;
-            //                    EvalInfoFuncRet = it.FeatureData(argIndex54);
+            //                    EvalInfoFuncRet = it.FeatureData(aname);
             //                }
             //            }
             //            else if (itd is object)
             //            {
             //                if (GeneralLib.IsNumber(aname))
             //                {
-            //                    object argIndex55 = Conversions.Toint(aname);
-            //                    EvalInfoFuncRet = itd.FeatureData(argIndex55);
+            //                    EvalInfoFuncRet = itd.FeatureData(Conversions.Toint(aname));
             //                }
             //                else
             //                {
-            //                    object argIndex56 = aname;
-            //                    EvalInfoFuncRet = itd.FeatureData(argIndex56);
+            //                    EvalInfoFuncRet = itd.FeatureData(aname);
             //                }
             //            }
 
@@ -1492,12 +1430,10 @@ namespace SRCCore.Expressions
             //            aname = @params[idx + 1];
 
             //            // エリアスが定義されている？
-            //            object argIndex58 = aname;
-            //            if (SRC.ALDList.IsDefined(argIndex58))
+            //            if (SRC.ALDList.IsDefined(aname))
             //            {
-            //                object argIndex57 = aname;
             //                {
-            //                    var withBlock5 = SRC.ALDList.Item(argIndex57);
+            //                    var withBlock5 = SRC.ALDList.Item(aname);
             //                    var loopTo6 = withBlock5.Count;
             //                    for (i = 1; i <= loopTo6; i++)
             //                    {
@@ -1521,52 +1457,44 @@ namespace SRCCore.Expressions
             //            {
             //                if (GeneralLib.IsNumber(aname))
             //                {
-            //                    object argIndex59 = Conversions.Toint(aname);
-            //                    EvalInfoFuncRet = u.FeatureNecessarySkill(argIndex59);
+            //                    EvalInfoFuncRet = u.FeatureNecessarySkill(Conversions.Toint(aname));
             //                }
             //                else
             //                {
-            //                    object argIndex60 = aname;
-            //                    EvalInfoFuncRet = u.FeatureNecessarySkill(argIndex60);
+            //                    EvalInfoFuncRet = u.FeatureNecessarySkill(aname);
             //                }
             //            }
             //            else if (ud is object)
             //            {
             //                if (GeneralLib.IsNumber(aname))
             //                {
-            //                    object argIndex61 = Conversions.Toint(aname);
-            //                    EvalInfoFuncRet = ud.FeatureNecessarySkill(argIndex61);
+            //                    EvalInfoFuncRet = ud.FeatureNecessarySkill(Conversions.Toint(aname));
             //                }
             //                else
             //                {
-            //                    object argIndex62 = aname;
-            //                    EvalInfoFuncRet = ud.FeatureNecessarySkill(argIndex62);
+            //                    EvalInfoFuncRet = ud.FeatureNecessarySkill(aname);
             //                }
             //            }
             //            else if (it is object)
             //            {
             //                if (GeneralLib.IsNumber(aname))
             //                {
-            //                    object argIndex63 = Conversions.Toint(aname);
-            //                    EvalInfoFuncRet = it.FeatureNecessarySkill(argIndex63);
+            //                    EvalInfoFuncRet = it.FeatureNecessarySkill(Conversions.Toint(aname));
             //                }
             //                else
             //                {
-            //                    object argIndex64 = aname;
-            //                    EvalInfoFuncRet = it.FeatureNecessarySkill(argIndex64);
+            //                    EvalInfoFuncRet = it.FeatureNecessarySkill(aname);
             //                }
             //            }
             //            else if (itd is object)
             //            {
             //                if (GeneralLib.IsNumber(aname))
             //                {
-            //                    object argIndex65 = Conversions.Toint(aname);
-            //                    EvalInfoFuncRet = itd.FeatureNecessarySkill(argIndex65);
+            //                    EvalInfoFuncRet = itd.FeatureNecessarySkill(Conversions.Toint(aname));
             //                }
             //                else
             //                {
-            //                    object argIndex66 = aname;
-            //                    EvalInfoFuncRet = itd.FeatureNecessarySkill(argIndex66);
+            //                    EvalInfoFuncRet = itd.FeatureNecessarySkill(aname);
             //                }
             //            }
 
@@ -1578,12 +1506,10 @@ namespace SRCCore.Expressions
             //            aname = @params[idx + 1];
 
             //            // エリアスが定義されている？
-            //            object argIndex68 = aname;
-            //            if (SRC.ALDList.IsDefined(argIndex68))
+            //            if (SRC.ALDList.IsDefined(aname))
             //            {
-            //                object argIndex67 = aname;
             //                {
-            //                    var withBlock6 = SRC.ALDList.Item(argIndex67);
+            //                    var withBlock6 = SRC.ALDList.Item(aname);
             //                    var loopTo7 = withBlock6.Count;
             //                    for (i = 1; i <= loopTo7; i++)
             //                    {
@@ -1953,8 +1879,7 @@ namespace SRCCore.Expressions
 
             //                        case "攻撃力":
             //                            {
-            //                                string argtarea = "";
-            //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock7.WeaponPower(i, argtarea));
+            //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock7.WeaponPower(i, ""));
             //                                break;
             //                            }
 
@@ -2059,8 +1984,7 @@ namespace SRCCore.Expressions
 
             //                        case "使用可":
             //                            {
-            //                                string argref_mode = "ステータス";
-            //                                if (withBlock7.IsWeaponAvailable(i, argref_mode))
+            //                                if (withBlock7.IsWeaponAvailable(i, "ステータス"))
             //                                {
             //                                    EvalInfoFuncRet = "1";
             //                                }
@@ -2115,9 +2039,8 @@ namespace SRCCore.Expressions
             //                }
 
             //                idx = (idx + 1);
-            //                object argIndex69 = i;
             //                {
-            //                    var withBlock8 = ud.Weapon(argIndex69);
+            //                    var withBlock8 = ud.Weapon(i);
             //                    switch (@params[idx] ?? "")
             //                    {
             //                        case var case2 when case2 == "":
@@ -2205,8 +2128,7 @@ namespace SRCCore.Expressions
 
             //                        case "属性レベル":
             //                            {
-            //                                string argstring2 = @params[idx + 1] + "L";
-            //                                j = GeneralLib.InStrNotNest(withBlock8.Class, argstring2);
+            //                                j = GeneralLib.InStrNotNest(withBlock8.Class, @params[idx + 1] + "L");
             //                                if (j == 0)
             //                                {
             //                                    EvalInfoFuncRet = "0";
@@ -2215,13 +2137,12 @@ namespace SRCCore.Expressions
 
             //                                EvalInfoFuncRet = "";
             //                                j = (j + Strings.Len(@params[idx + 1]) + 1);
-            //                                string argstr_Renamed = Strings.Mid(withBlock8.Class, j, 1);
             //                                do
             //                                {
             //                                    EvalInfoFuncRet = EvalInfoFuncRet + Strings.Mid(withBlock8.Class, j, 1);
             //                                    j = (j + 1);
             //                                }
-            //                                while (GeneralLib.IsNumber(argstr_Renamed));
+            //                                while (GeneralLib.IsNumber(Strings.Mid(withBlock8.Class, j, 1)));
             //                                if (!GeneralLib.IsNumber(EvalInfoFuncRet))
             //                                {
             //                                    EvalInfoFuncRet = "0";
@@ -2274,9 +2195,8 @@ namespace SRCCore.Expressions
             //                    }
 
             //                    idx = (idx + 1);
-            //                    object argIndex70 = i;
             //                    {
-            //                        var withBlock10 = withBlock9.Weapon(argIndex70);
+            //                        var withBlock10 = withBlock9.Weapon(i);
             //                        switch (@params[idx] ?? "")
             //                        {
             //                            case var case3 when case3 == "":
@@ -2364,8 +2284,7 @@ namespace SRCCore.Expressions
 
             //                            case "属性レベル":
             //                                {
-            //                                    string argstring21 = @params[idx + 1] + "L";
-            //                                    j = GeneralLib.InStrNotNest(withBlock10.Class, argstring21);
+            //                                    j = GeneralLib.InStrNotNest(withBlock10.Class, @params[idx + 1] + "L");
             //                                    if (j == 0)
             //                                    {
             //                                        EvalInfoFuncRet = "0";
@@ -2374,13 +2293,12 @@ namespace SRCCore.Expressions
 
             //                                    EvalInfoFuncRet = "";
             //                                    j = (j + Strings.Len(@params[idx + 1]) + 1);
-            //                                    string argstr_Renamed1 = Strings.Mid(withBlock10.Class, j, 1);
             //                                    do
             //                                    {
             //                                        EvalInfoFuncRet = EvalInfoFuncRet + Strings.Mid(withBlock10.Class, j, 1);
             //                                        j = (j + 1);
             //                                    }
-            //                                    while (GeneralLib.IsNumber(argstr_Renamed1));
+            //                                    while (GeneralLib.IsNumber(Strings.Mid(withBlock10.Class, j, 1)));
             //                                    if (!GeneralLib.IsNumber(EvalInfoFuncRet))
             //                                    {
             //                                        EvalInfoFuncRet = "0";
@@ -2432,9 +2350,8 @@ namespace SRCCore.Expressions
             //                }
 
             //                idx = (idx + 1);
-            //                object argIndex71 = i;
             //                {
-            //                    var withBlock11 = pd.Weapon(argIndex71);
+            //                    var withBlock11 = pd.Weapon(i);
             //                    switch (@params[idx] ?? "")
             //                    {
             //                        case var case4 when case4 == "":
@@ -2522,8 +2439,7 @@ namespace SRCCore.Expressions
 
             //                        case "属性レベル":
             //                            {
-            //                                string argstring22 = @params[idx + 1] + "L";
-            //                                j = GeneralLib.InStrNotNest(withBlock11.Class, argstring22);
+            //                                j = GeneralLib.InStrNotNest(withBlock11.Class, @params[idx + 1] + "L");
             //                                if (j == 0)
             //                                {
             //                                    EvalInfoFuncRet = "0";
@@ -2532,13 +2448,12 @@ namespace SRCCore.Expressions
 
             //                                EvalInfoFuncRet = "";
             //                                j = (j + Strings.Len(@params[idx + 1]) + 1);
-            //                                string argstr_Renamed2 = Strings.Mid(withBlock11.Class, j, 1);
             //                                do
             //                                {
             //                                    EvalInfoFuncRet = EvalInfoFuncRet + Strings.Mid(withBlock11.Class, j, 1);
             //                                    j = (j + 1);
             //                                }
-            //                                while (GeneralLib.IsNumber(argstr_Renamed2));
+            //                                while (GeneralLib.IsNumber(Strings.Mid(withBlock11.Class, j, 1)));
             //                                if (!GeneralLib.IsNumber(EvalInfoFuncRet))
             //                                {
             //                                    EvalInfoFuncRet = "0";
@@ -2589,9 +2504,8 @@ namespace SRCCore.Expressions
             //                }
 
             //                idx = (idx + 1);
-            //                object argIndex72 = i;
             //                {
-            //                    var withBlock12 = it.Weapon(argIndex72);
+            //                    var withBlock12 = it.Weapon(i);
             //                    switch (@params[idx] ?? "")
             //                    {
             //                        case var case5 when case5 == "":
@@ -2679,8 +2593,7 @@ namespace SRCCore.Expressions
 
             //                        case "属性レベル":
             //                            {
-            //                                string argstring23 = @params[idx + 1] + "L";
-            //                                j = GeneralLib.InStrNotNest(withBlock12.Class, argstring23);
+            //                                j = GeneralLib.InStrNotNest(withBlock12.Class, @params[idx + 1] + "L");
             //                                if (j == 0)
             //                                {
             //                                    EvalInfoFuncRet = "0";
@@ -2689,13 +2602,12 @@ namespace SRCCore.Expressions
 
             //                                EvalInfoFuncRet = "";
             //                                j = (j + Strings.Len(@params[idx + 1]) + 1);
-            //                                string argstr_Renamed3 = Strings.Mid(withBlock12.Class, j, 1);
             //                                do
             //                                {
             //                                    EvalInfoFuncRet = EvalInfoFuncRet + Strings.Mid(withBlock12.Class, j, 1);
             //                                    j = (j + 1);
             //                                }
-            //                                while (GeneralLib.IsNumber(argstr_Renamed3));
+            //                                while (GeneralLib.IsNumber(Strings.Mid(withBlock12.Class, j, 1)));
             //                                if (!GeneralLib.IsNumber(EvalInfoFuncRet))
             //                                {
             //                                    EvalInfoFuncRet = "0";
@@ -2746,9 +2658,8 @@ namespace SRCCore.Expressions
             //                }
 
             //                idx = (idx + 1);
-            //                object argIndex73 = i;
             //                {
-            //                    var withBlock13 = itd.Weapon(argIndex73);
+            //                    var withBlock13 = itd.Weapon(i);
             //                    switch (@params[idx] ?? "")
             //                    {
             //                        case var case6 when case6 == "":
@@ -2836,8 +2747,7 @@ namespace SRCCore.Expressions
 
             //                        case "属性レベル":
             //                            {
-            //                                string argstring24 = @params[idx + 1] + "L";
-            //                                j = GeneralLib.InStrNotNest(withBlock13.Class, argstring24);
+            //                                j = GeneralLib.InStrNotNest(withBlock13.Class, @params[idx + 1] + "L");
             //                                if (j == 0)
             //                                {
             //                                    EvalInfoFuncRet = "0";
@@ -2846,13 +2756,12 @@ namespace SRCCore.Expressions
 
             //                                EvalInfoFuncRet = "";
             //                                j = (j + Strings.Len(@params[idx + 1]) + 1);
-            //                                string argstr_Renamed4 = Strings.Mid(withBlock13.Class, j, 1);
             //                                do
             //                                {
             //                                    EvalInfoFuncRet = EvalInfoFuncRet + Strings.Mid(withBlock13.Class, j, 1);
             //                                    j = (j + 1);
             //                                }
-            //                                while (GeneralLib.IsNumber(argstr_Renamed4));
+            //                                while (GeneralLib.IsNumber(Strings.Mid(withBlock13.Class, j, 1)));
             //                                if (!GeneralLib.IsNumber(EvalInfoFuncRet))
             //                                {
             //                                    EvalInfoFuncRet = "0";
@@ -2968,8 +2877,7 @@ namespace SRCCore.Expressions
             //                                    return EvalInfoFuncRet;
             //                                }
 
-            //                                object argIndex74 = j;
-            //                                EvalInfoFuncRet = withBlock14.Ability(i).EffectType(argIndex74);
+            //                                EvalInfoFuncRet = withBlock14.Ability(i).EffectType(j);
             //                                break;
             //                            }
 
@@ -3005,8 +2913,7 @@ namespace SRCCore.Expressions
             //                                    return EvalInfoFuncRet;
             //                                }
 
-            //                                object argIndex75 = j;
-            //                                EvalInfoFuncRet = withBlock14.Ability(i).EffectData(argIndex75);
+            //                                EvalInfoFuncRet = withBlock14.Ability(i).EffectData(j);
             //                                break;
             //                            }
 
@@ -3093,8 +3000,7 @@ namespace SRCCore.Expressions
 
             //                        case "使用可":
             //                            {
-            //                                string argref_mode1 = "移動前";
-            //                                if (withBlock14.IsAbilityAvailable(i, argref_mode1))
+            //                                if (withBlock14.IsAbilityAvailable(i, "移動前"))
             //                                {
             //                                    EvalInfoFuncRet = "1";
             //                                }
@@ -3149,9 +3055,8 @@ namespace SRCCore.Expressions
             //                }
 
             //                idx = (idx + 1);
-            //                object argIndex78 = i;
             //                {
-            //                    var withBlock15 = ud.Ability(argIndex78);
+            //                    var withBlock15 = ud.Ability(i);
             //                    switch (@params[idx] ?? "")
             //                    {
             //                        case var case8 when case8 == "":
@@ -3180,8 +3085,7 @@ namespace SRCCore.Expressions
             //                                    return EvalInfoFuncRet;
             //                                }
 
-            //                                object argIndex76 = j;
-            //                                EvalInfoFuncRet = withBlock15.EffectType(argIndex76);
+            //                                EvalInfoFuncRet = withBlock15.EffectType(j);
             //                                break;
             //                            }
 
@@ -3217,8 +3121,7 @@ namespace SRCCore.Expressions
             //                                    return EvalInfoFuncRet;
             //                                }
 
-            //                                object argIndex77 = j;
-            //                                EvalInfoFuncRet = withBlock15.EffectData(argIndex77);
+            //                                EvalInfoFuncRet = withBlock15.EffectData(j);
             //                                break;
             //                            }
 
@@ -3276,8 +3179,7 @@ namespace SRCCore.Expressions
 
             //                        case "属性レベル":
             //                            {
-            //                                string argstring25 = @params[idx + 1] + "L";
-            //                                j = GeneralLib.InStrNotNest(withBlock15.Class, argstring25);
+            //                                j = GeneralLib.InStrNotNest(withBlock15.Class, @params[idx + 1] + "L");
             //                                if (j == 0)
             //                                {
             //                                    EvalInfoFuncRet = "0";
@@ -3286,13 +3188,12 @@ namespace SRCCore.Expressions
 
             //                                EvalInfoFuncRet = "";
             //                                j = (j + Strings.Len(@params[idx + 1]) + 1);
-            //                                string argstr_Renamed5 = Strings.Mid(withBlock15.Class, j, 1);
             //                                do
             //                                {
             //                                    EvalInfoFuncRet = EvalInfoFuncRet + Strings.Mid(withBlock15.Class, j, 1);
             //                                    j = (j + 1);
             //                                }
-            //                                while (GeneralLib.IsNumber(argstr_Renamed5));
+            //                                while (GeneralLib.IsNumber(Strings.Mid(withBlock15.Class, j, 1)));
             //                                if (!GeneralLib.IsNumber(EvalInfoFuncRet))
             //                                {
             //                                    EvalInfoFuncRet = "0";
@@ -3345,9 +3246,8 @@ namespace SRCCore.Expressions
             //                    }
 
             //                    idx = (idx + 1);
-            //                    object argIndex81 = i;
             //                    {
-            //                        var withBlock17 = withBlock16.Ability(argIndex81);
+            //                        var withBlock17 = withBlock16.Ability(i);
             //                        switch (@params[idx] ?? "")
             //                        {
             //                            case var case9 when case9 == "":
@@ -3376,8 +3276,7 @@ namespace SRCCore.Expressions
             //                                        return EvalInfoFuncRet;
             //                                    }
 
-            //                                    object argIndex79 = j;
-            //                                    EvalInfoFuncRet = withBlock17.EffectType(argIndex79);
+            //                                    EvalInfoFuncRet = withBlock17.EffectType(j);
             //                                    break;
             //                                }
 
@@ -3413,8 +3312,7 @@ namespace SRCCore.Expressions
             //                                        return EvalInfoFuncRet;
             //                                    }
 
-            //                                    object argIndex80 = j;
-            //                                    EvalInfoFuncRet = withBlock17.EffectData(argIndex80);
+            //                                    EvalInfoFuncRet = withBlock17.EffectData(j);
             //                                    break;
             //                                }
 
@@ -3472,8 +3370,7 @@ namespace SRCCore.Expressions
 
             //                            case "属性レベル":
             //                                {
-            //                                    string argstring26 = @params[idx + 1] + "L";
-            //                                    j = GeneralLib.InStrNotNest(withBlock17.Class, argstring26);
+            //                                    j = GeneralLib.InStrNotNest(withBlock17.Class, @params[idx + 1] + "L");
             //                                    if (j == 0)
             //                                    {
             //                                        EvalInfoFuncRet = "0";
@@ -3482,13 +3379,12 @@ namespace SRCCore.Expressions
 
             //                                    EvalInfoFuncRet = "";
             //                                    j = (j + Strings.Len(@params[idx + 1]) + 1);
-            //                                    string argstr_Renamed6 = Strings.Mid(withBlock17.Class, j, 1);
             //                                    do
             //                                    {
             //                                        EvalInfoFuncRet = EvalInfoFuncRet + Strings.Mid(withBlock17.Class, j, 1);
             //                                        j = (j + 1);
             //                                    }
-            //                                    while (GeneralLib.IsNumber(argstr_Renamed6));
+            //                                    while (GeneralLib.IsNumber(Strings.Mid(withBlock17.Class, j, 1)));
             //                                    if (!GeneralLib.IsNumber(EvalInfoFuncRet))
             //                                    {
             //                                        EvalInfoFuncRet = "0";
@@ -3540,9 +3436,8 @@ namespace SRCCore.Expressions
             //                }
 
             //                idx = (idx + 1);
-            //                object argIndex84 = i;
             //                {
-            //                    var withBlock18 = pd.Ability(argIndex84);
+            //                    var withBlock18 = pd.Ability(i);
             //                    switch (@params[idx] ?? "")
             //                    {
             //                        case var case10 when case10 == "":
@@ -3571,8 +3466,7 @@ namespace SRCCore.Expressions
             //                                    return EvalInfoFuncRet;
             //                                }
 
-            //                                object argIndex82 = j;
-            //                                EvalInfoFuncRet = withBlock18.EffectType(argIndex82);
+            //                                EvalInfoFuncRet = withBlock18.EffectType(j);
             //                                break;
             //                            }
 
@@ -3608,8 +3502,7 @@ namespace SRCCore.Expressions
             //                                    return EvalInfoFuncRet;
             //                                }
 
-            //                                object argIndex83 = j;
-            //                                EvalInfoFuncRet = withBlock18.EffectData(argIndex83);
+            //                                EvalInfoFuncRet = withBlock18.EffectData(j);
             //                                break;
             //                            }
 
@@ -3667,8 +3560,7 @@ namespace SRCCore.Expressions
 
             //                        case "属性レベル":
             //                            {
-            //                                string argstring27 = @params[idx + 1] + "L";
-            //                                j = GeneralLib.InStrNotNest(withBlock18.Class, argstring27);
+            //                                j = GeneralLib.InStrNotNest(withBlock18.Class, @params[idx + 1] + "L");
             //                                if (j == 0)
             //                                {
             //                                    EvalInfoFuncRet = "0";
@@ -3677,13 +3569,12 @@ namespace SRCCore.Expressions
 
             //                                EvalInfoFuncRet = "";
             //                                j = (j + Strings.Len(@params[idx + 1]) + 1);
-            //                                string argstr_Renamed7 = Strings.Mid(withBlock18.Class, j, 1);
             //                                do
             //                                {
             //                                    EvalInfoFuncRet = EvalInfoFuncRet + Strings.Mid(withBlock18.Class, j, 1);
             //                                    j = (j + 1);
             //                                }
-            //                                while (GeneralLib.IsNumber(argstr_Renamed7));
+            //                                while (GeneralLib.IsNumber(Strings.Mid(withBlock18.Class, j, 1)));
             //                                if (!GeneralLib.IsNumber(EvalInfoFuncRet))
             //                                {
             //                                    EvalInfoFuncRet = "0";
@@ -3734,9 +3625,8 @@ namespace SRCCore.Expressions
             //                }
 
             //                idx = (idx + 1);
-            //                object argIndex87 = i;
             //                {
-            //                    var withBlock19 = it.Ability(argIndex87);
+            //                    var withBlock19 = it.Ability(i);
             //                    switch (@params[idx] ?? "")
             //                    {
             //                        case var case11 when case11 == "":
@@ -3765,8 +3655,7 @@ namespace SRCCore.Expressions
             //                                    return EvalInfoFuncRet;
             //                                }
 
-            //                                object argIndex85 = j;
-            //                                EvalInfoFuncRet = withBlock19.EffectType(argIndex85);
+            //                                EvalInfoFuncRet = withBlock19.EffectType(j);
             //                                break;
             //                            }
 
@@ -3802,8 +3691,7 @@ namespace SRCCore.Expressions
             //                                    return EvalInfoFuncRet;
             //                                }
 
-            //                                object argIndex86 = j;
-            //                                EvalInfoFuncRet = withBlock19.EffectData(argIndex86);
+            //                                EvalInfoFuncRet = withBlock19.EffectData(j);
             //                                break;
             //                            }
 
@@ -3861,8 +3749,7 @@ namespace SRCCore.Expressions
 
             //                        case "属性レベル":
             //                            {
-            //                                string argstring28 = @params[idx + 1] + "L";
-            //                                j = GeneralLib.InStrNotNest(withBlock19.Class, argstring28);
+            //                                j = GeneralLib.InStrNotNest(withBlock19.Class, @params[idx + 1] + "L");
             //                                if (j == 0)
             //                                {
             //                                    EvalInfoFuncRet = "0";
@@ -3871,13 +3758,12 @@ namespace SRCCore.Expressions
 
             //                                EvalInfoFuncRet = "";
             //                                j = (j + Strings.Len(@params[idx + 1]) + 1);
-            //                                string argstr_Renamed8 = Strings.Mid(withBlock19.Class, j, 1);
             //                                do
             //                                {
             //                                    EvalInfoFuncRet = EvalInfoFuncRet + Strings.Mid(withBlock19.Class, j, 1);
             //                                    j = (j + 1);
             //                                }
-            //                                while (GeneralLib.IsNumber(argstr_Renamed8));
+            //                                while (GeneralLib.IsNumber(Strings.Mid(withBlock19.Class, j, 1)));
             //                                if (!GeneralLib.IsNumber(EvalInfoFuncRet))
             //                                {
             //                                    EvalInfoFuncRet = "0";
@@ -3928,9 +3814,8 @@ namespace SRCCore.Expressions
             //                }
 
             //                idx = (idx + 1);
-            //                object argIndex90 = i;
             //                {
-            //                    var withBlock20 = itd.Ability(argIndex90);
+            //                    var withBlock20 = itd.Ability(i);
             //                    switch (@params[idx] ?? "")
             //                    {
             //                        case var case12 when case12 == "":
@@ -3959,8 +3844,7 @@ namespace SRCCore.Expressions
             //                                    return EvalInfoFuncRet;
             //                                }
 
-            //                                object argIndex88 = j;
-            //                                EvalInfoFuncRet = withBlock20.EffectType(argIndex88);
+            //                                EvalInfoFuncRet = withBlock20.EffectType(j);
             //                                break;
             //                            }
 
@@ -3996,8 +3880,7 @@ namespace SRCCore.Expressions
             //                                    return EvalInfoFuncRet;
             //                                }
 
-            //                                object argIndex89 = j;
-            //                                EvalInfoFuncRet = withBlock20.EffectData(argIndex89);
+            //                                EvalInfoFuncRet = withBlock20.EffectData(j);
             //                                break;
             //                            }
 
@@ -4055,8 +3938,7 @@ namespace SRCCore.Expressions
 
             //                        case "属性レベル":
             //                            {
-            //                                string argstring29 = @params[idx + 1] + "L";
-            //                                j = GeneralLib.InStrNotNest(withBlock20.Class, argstring29);
+            //                                j = GeneralLib.InStrNotNest(withBlock20.Class, @params[idx + 1] + "L");
             //                                if (j == 0)
             //                                {
             //                                    EvalInfoFuncRet = "0";
@@ -4065,13 +3947,12 @@ namespace SRCCore.Expressions
 
             //                                EvalInfoFuncRet = "";
             //                                j = (j + Strings.Len(@params[idx + 1]) + 1);
-            //                                string argstr_Renamed9 = Strings.Mid(withBlock20.Class, j, 1);
             //                                do
             //                                {
             //                                    EvalInfoFuncRet = EvalInfoFuncRet + Strings.Mid(withBlock20.Class, j, 1);
             //                                    j = (j + 1);
             //                                }
-            //                                while (GeneralLib.IsNumber(argstr_Renamed9));
+            //                                while (GeneralLib.IsNumber(Strings.Mid(withBlock20.Class, j, 1)));
             //                                if (!GeneralLib.IsNumber(EvalInfoFuncRet))
             //                                {
             //                                    EvalInfoFuncRet = "0";
@@ -4149,14 +4030,11 @@ namespace SRCCore.Expressions
             //                    var loopTo20 = withBlock21.CountWeapon();
             //                    for (i = 1; i <= loopTo20; i++)
             //                    {
-            //                        string argattr = "合";
-            //                        if (withBlock21.IsWeaponMastered(i) & !withBlock21.IsDisabled(withBlock21.Weapon(i).Name) & !withBlock21.IsWeaponClassifiedAs(i, argattr))
+            //                        if (withBlock21.IsWeaponMastered(i) & !withBlock21.IsDisabled(withBlock21.Weapon(i).Name) & !withBlock21.IsWeaponClassifiedAs(i, "合"))
             //                        {
-            //                            string argtarea2 = "";
-            //                            if (withBlock21.WeaponPower(i, argtarea2) > max_value)
+            //                            if (withBlock21.WeaponPower(i, "") > max_value)
             //                            {
-            //                                string argtarea1 = "";
-            //                                max_value = withBlock21.WeaponPower(i, argtarea1);
+            //                                max_value = withBlock21.WeaponPower(i, "");
             //                            }
             //                        }
             //                    }
@@ -4201,8 +4079,7 @@ namespace SRCCore.Expressions
             //                    var loopTo22 = withBlock22.CountWeapon();
             //                    for (i = 1; i <= loopTo22; i++)
             //                    {
-            //                        string argattr1 = "合";
-            //                        if (withBlock22.IsWeaponMastered(i) & !withBlock22.IsDisabled(withBlock22.Weapon(i).Name) & !withBlock22.IsWeaponClassifiedAs(i, argattr1))
+            //                        if (withBlock22.IsWeaponMastered(i) & !withBlock22.IsDisabled(withBlock22.Weapon(i).Name) & !withBlock22.IsWeaponClassifiedAs(i, "合"))
             //                        {
             //                            if (withBlock22.WeaponMaxRange(i) > max_value)
             //                            {
@@ -4405,16 +4282,12 @@ namespace SRCCore.Expressions
             //            if (it is object)
             //            {
             //                EvalInfoFuncRet = it.Data.Comment;
-            //                string args2 = Constants.vbCr + Constants.vbLf;
-            //                string args3 = " ";
-            //                GeneralLib.ReplaceString(EvalInfoFuncRet, args2, args3);
+            //                GeneralLib.ReplaceString(EvalInfoFuncRet, Constants.vbCr + Constants.vbLf, " ");
             //            }
             //            else if (itd is object)
             //            {
             //                EvalInfoFuncRet = itd.Comment;
-            //                string args21 = Constants.vbCr + Constants.vbLf;
-            //                string args31 = " ";
-            //                GeneralLib.ReplaceString(EvalInfoFuncRet, args21, args31);
+            //                GeneralLib.ReplaceString(EvalInfoFuncRet, Constants.vbCr + Constants.vbLf, " ");
             //            }
             //            else if (spd is object)
             //            {
@@ -4862,8 +4735,7 @@ namespace SRCCore.Expressions
             //                case "NewGUI":
             //                    {
             //                        // MOD END MARGE
-            //                        string argini_section = "Option";
-            //                        EvalInfoFuncRet = GeneralLib.ReadIni(argini_section, @params[idx]);
+            //                        EvalInfoFuncRet = GeneralLib.ReadIni("Option", @params[idx]);
             //                        break;
             //                    }
 

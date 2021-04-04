@@ -1,4 +1,4 @@
-﻿using SRCCore.VB;
+using SRCCore.VB;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -92,7 +92,6 @@ namespace SRCCore.Units
                 }
                 // ユニットクラスで検索
                 var uclass = Class0;
-                object argIndex4 = uclass;
                 if (SRC.EDList.IsDefined(uclass))
                 {
                     var res = SRC.EDList.Item(uclass).SelectMessage(situations[i], this);
@@ -157,8 +156,7 @@ namespace SRCCore.Units
             //                return;
             //            }
 
-            //            string argoname = "戦闘アニメ非自動選択";
-            //            if (SRC.BattleAnimation & !Expression.IsOptionDefined(argoname))
+            //            if (SRC.BattleAnimation & !Expression.IsOptionDefined("戦闘アニメ非自動選択"))
             //            {
             //                var loopTo = CountWeapon();
             //                for (i = 1; i <= loopTo; i++)
@@ -176,18 +174,14 @@ namespace SRCCore.Units
             //                    {
             //                        case "swing.wav":
             //                            {
-            //                                string argattr = "武";
-            //                                string argattr1 = "実";
             //                                if (Strings.InStr(main_situation, "槍") > 0 | Strings.InStr(main_situation, "スピア") > 0 | Strings.InStr(main_situation, "ランス") > 0 | Strings.InStr(main_situation, "ジャベリン") > 0)
             //                                {
-            //                                    string arganame = "刺突攻撃";
-            //                                    Effect.ShowAnimation(arganame);
+            //                                    Effect.ShowAnimation("刺突攻撃");
             //                                    return;
             //                                }
-            //                                else if (IsWeaponClassifiedAs(w, argattr) | IsWeaponClassifiedAs(w, argattr1))
+            //                                else if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "武"1))
             //                                {
-            //                                    string arganame1 = "白兵武器攻撃";
-            //                                    Effect.ShowAnimation(arganame1);
+            //                                    Effect.ShowAnimation("白兵武器攻撃");
             //                                    return;
             //                                }
 
@@ -201,60 +195,51 @@ namespace SRCCore.Units
             //                    {
             //                        case "break.wav":
             //                            {
-            //                                string arganame2 = "打撃命中";
-            //                                Effect.ShowAnimation(arganame2);
+            //                                Effect.ShowAnimation("打撃命中");
             //                                return;
             //                            }
 
             //                        case "combo.wav":
             //                            {
-            //                                string arganame3 = "乱打命中";
-            //                                Effect.ShowAnimation(arganame3);
+            //                                Effect.ShowAnimation("乱打命中");
             //                                return;
             //                            }
 
             //                        case "crash.wav":
             //                            {
-            //                                string arganame4 = "強打命中 Crash.wav";
-            //                                Effect.ShowAnimation(arganame4);
+            //                                Effect.ShowAnimation("強打命中 Crash.wav");
             //                                return;
             //                            }
 
             //                        case "explode.wav":
             //                            {
-            //                                string arganame5 = "爆発命中";
-            //                                Effect.ShowAnimation(arganame5);
+            //                                Effect.ShowAnimation("爆発命中");
             //                                return;
             //                            }
 
             //                        case "explode(far).wav":
             //                            {
-            //                                string arganame6 = "超爆発命中 Explode(Far).wav";
-            //                                Effect.ShowAnimation(arganame6);
+            //                                Effect.ShowAnimation("超爆発命中 Explode(Far).wav");
             //                                return;
             //                            }
 
             //                        case "explode(nuclear).wav":
             //                            {
-            //                                string arganame7 = "超爆発命中 Explode(Nuclear).wav";
-            //                                Effect.ShowAnimation(arganame7);
+            //                                Effect.ShowAnimation("超爆発命中 Explode(Nuclear).wav");
             //                                return;
             //                            }
 
             //                        case "fire.wav":
             //                            {
-            //                                string arganame8 = "炎命中";
-            //                                Effect.ShowAnimation(arganame8);
+            //                                Effect.ShowAnimation("炎命中");
             //                                return;
             //                            }
 
             //                        case "glass.wav":
             //                            {
-            //                                string argattr2 = "冷";
-            //                                if (IsWeaponClassifiedAs(w, argattr2))
+            //                                if (IsWeaponClassifiedAs(w, "冷"))
             //                                {
-            //                                    string arganame9 = "凍結命中 Glass.wav";
-            //                                    Effect.ShowAnimation(arganame9);
+            //                                    Effect.ShowAnimation("凍結命中 Glass.wav");
             //                                }
 
             //                                return;
@@ -262,8 +247,7 @@ namespace SRCCore.Units
 
             //                        case "punch.wav":
             //                            {
-            //                                string arganame10 = "打撃命中";
-            //                                Effect.ShowAnimation(arganame10);
+            //                                Effect.ShowAnimation("打撃命中");
             //                                return;
             //                            }
 
@@ -271,44 +255,38 @@ namespace SRCCore.Units
             //                        case "punch(3).wav":
             //                        case "punch(4).wav":
             //                            {
-            //                                string arganame11 = "連打命中";
-            //                                Effect.ShowAnimation(arganame11);
+            //                                Effect.ShowAnimation("連打命中");
             //                                return;
             //                            }
 
             //                        case "saber.wav":
             //                        case "slash.wav":
             //                            {
-            //                                string arganame12 = "斬撃命中 " + anime;
-            //                                Effect.ShowAnimation(arganame12);
+            //                                Effect.ShowAnimation("斬撃命中 " + anime);
             //                                return;
             //                            }
 
             //                        case "shock(low).wav":
             //                            {
-            //                                string arganame13 = "強打命中 Shock(Low).wav";
-            //                                Effect.ShowAnimation(arganame13);
+            //                                Effect.ShowAnimation("強打命中 Shock(Low).wav");
             //                                return;
             //                            }
 
             //                        case "stab.wav":
             //                            {
-            //                                string arganame14 = "刺突命中";
-            //                                Effect.ShowAnimation(arganame14);
+            //                                Effect.ShowAnimation("刺突命中");
             //                                return;
             //                            }
 
             //                        case "thunder.wav":
             //                            {
-            //                                string arganame15 = "放電命中 Thunder.wav";
-            //                                Effect.ShowAnimation(arganame15);
+            //                                Effect.ShowAnimation("放電命中 Thunder.wav");
             //                                return;
             //                            }
 
             //                        case "whip.wav":
             //                            {
-            //                                string arganame16 = "打撃命中 Whip.wav";
-            //                                Effect.ShowAnimation(arganame16);
+            //                                Effect.ShowAnimation("打撃命中 Whip.wav");
             //                                return;
             //                            }
             //                    }
@@ -456,9 +434,7 @@ namespace SRCCore.Units
             //                                need_refresh = true;
             //                            }
 
-            //                            string argpname = "-";
-            //                            string argmsg_mode = "";
-            //                            GUI.DisplayBattleMessage(argpname, anime, msg_mode: argmsg_mode);
+            //                            GUI.DisplayBattleMessage("-", anime, msg_mode: "");
             //                            goto NextAnime;
             //                            break;
             //                        }
@@ -487,9 +463,7 @@ namespace SRCCore.Units
             //                                need_refresh = true;
             //                            }
 
-            //                            string argpname1 = "-";
-            //                            string argmsg_mode1 = "";
-            //                            GUI.DisplayBattleMessage(argpname1, anime, msg_mode: argmsg_mode1);
+            //                            GUI.DisplayBattleMessage("-", anime, msg_mode: "");
             //                            goto NextAnime;
             //                            break;
             //                        }
@@ -497,14 +471,11 @@ namespace SRCCore.Units
             //                    case "center":
             //                        {
             //                            // 指定したユニットを中央表示
-            //                            string argexpr = GeneralLib.ListIndex(anime, 2);
-            //                            buf = Expression.GetValueAsString(argexpr);
-            //                            object argIndex2 = buf;
-            //                            if (SRC.UList.IsDefined(argIndex2))
+            //                            buf = Expression.GetValueAsString(GeneralLib.ListIndex(anime, 2));
+            //                            if (SRC.UList.IsDefined(buf))
             //                            {
-            //                                object argIndex1 = buf;
             //                                {
-            //                                    var withBlock = SRC.UList.Item(argIndex1);
+            //                                    var withBlock = SRC.UList.Item(buf);
             //                                    GUI.Center(withBlock.x, withBlock.y);
             //                                    GUI.RedrawScreen();
             //                                    need_refresh = false;
@@ -540,37 +511,29 @@ namespace SRCCore.Units
             //                {
             //                    if (ReferenceEquals(Commands.SelectedTarget, this))
             //                    {
-            //                        var argu1 = this;
-            //                        Unit argu2 = null;
-            //                        GUI.OpenMessageForm(argu1, u2: argu2);
+            //                        GUI.OpenMessageForm(this, u2: null);
             //                    }
             //                    else
             //                    {
-            //                        var argu21 = this;
-            //                        GUI.OpenMessageForm(Commands.SelectedTarget, argu21);
+            //                        GUI.OpenMessageForm(Commands.SelectedTarget, this);
             //                    }
             //                }
 
-            //                string argpname2 = "-";
-            //                string argmsg_mode2 = "";
-            //                GUI.DisplayBattleMessage(argpname2, anime, msg_mode: argmsg_mode2);
+            //                GUI.DisplayBattleMessage("-", anime, msg_mode: "");
             //                goto NextAnime;
             //            NextAnime:
             //                ;
             //            }
 
-            //            string argoname1 = "戦闘アニメ非自動選択";
-            //            if (SRC.BattleAnimation & !GUI.IsPictureDrawn & !Expression.IsOptionDefined(argoname1))
+            //            if (SRC.BattleAnimation & !GUI.IsPictureDrawn & !Expression.IsOptionDefined("戦闘アニメ非自動選択"))
             //            {
             //                if (w > 0)
             //                {
-            //                    string arganame17 = "デフォルト攻撃";
-            //                    Effect.ShowAnimation(arganame17);
+            //                    Effect.ShowAnimation("デフォルト攻撃");
             //                }
             //                else if (Strings.InStr(main_situation, "(命中)") > 0)
             //                {
-            //                    string arganame18 = "ダメージ命中 -.wav";
-            //                    Effect.ShowAnimation(arganame18);
+            //                    Effect.ShowAnimation("ダメージ命中 -.wav");
             //                }
             //            }
 

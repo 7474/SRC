@@ -1,4 +1,4 @@
-﻿using SRCCore.Events;
+using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Expressions;
 using SRCCore.VB;
@@ -64,17 +64,13 @@ namespace SRCCore.CmdDatas.Commands
             //                {
             //                    case 3:
             //                        {
-            //                            string arglb_caption = "選択";
-            //                            string arglb_info = GetArgAsString((short)3);
-            //                            Commands.SelectedItem = GUI.LIPS(ref arglb_caption, ref list, ref arglb_info, (short)GetArgAsLong((short)2));
+            //                            Commands.SelectedItem = GUI.LIPS(ref "選択", ref list, ref GetArgAsString((short)3), (short)GetArgAsLong((short)2));
             //                            break;
             //                        }
 
             //                    case 2:
             //                        {
-            //                            string arglb_caption1 = "選択";
-            //                            string arglb_info1 = "さあ、どうする？";
-            //                            Commands.SelectedItem = GUI.LIPS(ref arglb_caption1, ref list, ref arglb_info1, (short)GetArgAsLong((short)2));
+            //                            Commands.SelectedItem = GUI.LIPS(ref "選択", ref list, ref "さあ、どうする？", (short)GetArgAsLong((short)2));
             //                            break;
             //                        }
 

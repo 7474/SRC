@@ -1,4 +1,4 @@
-﻿using SRCCore.Events;
+using SRCCore.Events;
 using SRCCore.Exceptions;
 
 namespace SRCCore.CmdDatas.Commands

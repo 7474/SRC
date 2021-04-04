@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -45,8 +45,7 @@ namespace SRCCore.Models
             ud.Transportation = "陸";
             ud.Adaption = "AAAA";
             ud.Bitmap = ".bmp";
-            string argfdef = "ダミーユニット=システム用非表示能力";
-            ud.AddFeature(argfdef);
+            ud.AddFeature("ダミーユニット=システム用非表示能力");
             colUnitDataList.Add(ud, ud.Name);
         }
 
@@ -187,10 +186,8 @@ namespace SRCCore.Models
                     throw reader.InvalidDataException(@"名称に\は使用出来ません。", data_name);
                 }
 
-                object argIndex2 = (object)data_name;
                 if (IsDefined(data_name))
                 {
-                    object argIndex1 = (object)data_name;
                     ud = Item(data_name);
                     ud.Clear();
                 }
@@ -637,8 +634,7 @@ namespace SRCCore.Models
                     }
                     else
                     {
-                        string argmsg12 = SrcFormatter.Format(i + "番目の特殊能力の設定が間違っています。");
-                        SRC.AddDataError(reader.InvalidData(argmsg12, data_name));
+                        SRC.AddDataError(reader.InvalidData(SrcFormatter.Format(i + "番目の特殊能力の設定が間違っています。"), data_name));
                     }
                 }
 
@@ -650,8 +646,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    string argmsg13 = SrcFormatter.Format(i + "番目の特殊能力の設定が間違っています。");
-                    SRC.AddDataError(reader.InvalidData(argmsg13, data_name));
+                    SRC.AddDataError(reader.InvalidData(SrcFormatter.Format(i + "番目の特殊能力の設定が間違っています。"), data_name));
                 }
 
                 line_buf = reader.GetLine();
@@ -727,8 +722,7 @@ namespace SRCCore.Models
                 }
                 else if (string.IsNullOrEmpty(buf2) | Information.IsNumeric(buf2))
                 {
-                    string argmsg11 = "行頭から" + i + "番目の特殊能力の設定が間違っています。";
-                    SRC.AddDataError(reader.InvalidData(argmsg11, data_name));
+                    SRC.AddDataError(reader.InvalidData("行頭から" + i + "番目の特殊能力の設定が間違っています。", data_name));
                 }
                 else
                 {
@@ -796,8 +790,7 @@ namespace SRCCore.Models
                     if (GeneralLib.LLength(buf2) > 1)
                     {
                         buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
-                        string argexpr = GeneralLib.LIndex(buf2, 1);
-                        wd.Power = GeneralLib.StrToLng(argexpr);
+                        wd.Power = GeneralLib.StrToLng(GeneralLib.LIndex(buf2, 1));
                     }
                 }
 
@@ -821,8 +814,7 @@ namespace SRCCore.Models
                     if (GeneralLib.LLength(buf2) > 1)
                     {
                         buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
-                        string argexpr1 = GeneralLib.LIndex(buf2, 1);
-                        wd.MinRange = GeneralLib.StrToLng(argexpr1);
+                        wd.MinRange = GeneralLib.StrToLng(GeneralLib.LIndex(buf2, 1));
                     }
                 }
 
@@ -846,8 +838,7 @@ namespace SRCCore.Models
                     if (GeneralLib.LLength(buf2) > 1)
                     {
                         buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
-                        string argexpr2 = GeneralLib.LIndex(buf2, 1);
-                        wd.MaxRange = GeneralLib.StrToLng(argexpr2);
+                        wd.MaxRange = GeneralLib.StrToLng(GeneralLib.LIndex(buf2, 1));
                     }
                 }
 
@@ -880,8 +871,7 @@ namespace SRCCore.Models
                     if (GeneralLib.LLength(buf2) > 1)
                     {
                         buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
-                        string argexpr3 = GeneralLib.LIndex(buf2, 1);
-                        wd.Precision = GeneralLib.StrToLng(argexpr3);
+                        wd.Precision = GeneralLib.StrToLng(GeneralLib.LIndex(buf2, 1));
                     }
                 }
 
@@ -906,8 +896,7 @@ namespace SRCCore.Models
                         if (GeneralLib.LLength(buf2) > 1)
                         {
                             buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
-                            string argexpr4 = GeneralLib.LIndex(buf2, 1);
-                            wd.Bullet = GeneralLib.StrToLng(argexpr4);
+                            wd.Bullet = GeneralLib.StrToLng(GeneralLib.LIndex(buf2, 1));
                         }
                     }
                 }
@@ -932,8 +921,7 @@ namespace SRCCore.Models
                         SRC.AddDataError(reader.InvalidData(@wname + "の消費ＥＮの設定が間違っています。", data_name));
                         {
                             buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
-                            string argexpr5 = GeneralLib.LIndex(buf2, 1);
-                            wd.ENConsumption = GeneralLib.StrToLng(argexpr5);
+                            wd.ENConsumption = GeneralLib.StrToLng(GeneralLib.LIndex(buf2, 1));
                         }
                     }
                 }
@@ -969,8 +957,7 @@ namespace SRCCore.Models
                         if (GeneralLib.LLength(buf2) > 1)
                         {
                             buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
-                            string argexpr6 = GeneralLib.LIndex(buf2, 1);
-                            wd.NecessaryMorale = GeneralLib.StrToLng(argexpr6);
+                            wd.NecessaryMorale = GeneralLib.StrToLng(GeneralLib.LIndex(buf2, 1));
                         }
                     }
                 }
@@ -1028,8 +1015,7 @@ namespace SRCCore.Models
                     if (GeneralLib.LLength(buf2) > 1)
                     {
                         buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
-                        string argexpr7 = GeneralLib.LIndex(buf2, 1);
-                        wd.Critical = GeneralLib.StrToLng(argexpr7);
+                        wd.Critical = GeneralLib.StrToLng(GeneralLib.LIndex(buf2, 1));
                     }
                 }
 
@@ -1159,8 +1145,7 @@ namespace SRCCore.Models
                     if (GeneralLib.LLength(buf2) > 1)
                     {
                         buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
-                        string argexpr8 = GeneralLib.LIndex(buf2, 1);
-                        sd.MaxRange = GeneralLib.StrToLng(argexpr8);
+                        sd.MaxRange = GeneralLib.StrToLng(GeneralLib.LIndex(buf2, 1));
                     }
                 }
 
@@ -1185,8 +1170,7 @@ namespace SRCCore.Models
                         if (GeneralLib.LLength(buf2) > 1)
                         {
                             buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
-                            string argexpr9 = GeneralLib.LIndex(buf2, 1);
-                            sd.Stock = GeneralLib.StrToLng(argexpr9);
+                            sd.Stock = GeneralLib.StrToLng(GeneralLib.LIndex(buf2, 1));
                         }
                     }
                 }
@@ -1212,8 +1196,7 @@ namespace SRCCore.Models
                         if (GeneralLib.LLength(buf2) > 1)
                         {
                             buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
-                            string argexpr10 = GeneralLib.LIndex(buf2, 1);
-                            sd.ENConsumption = GeneralLib.StrToLng(argexpr10);
+                            sd.ENConsumption = GeneralLib.StrToLng(GeneralLib.LIndex(buf2, 1));
                         }
                     }
                 }
@@ -1249,8 +1232,7 @@ namespace SRCCore.Models
                         if (GeneralLib.LLength(buf2) > 1)
                         {
                             buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
-                            string argexpr11 = GeneralLib.LIndex(buf2, 1);
-                            sd.NecessaryMorale = GeneralLib.StrToLng(argexpr11);
+                            sd.NecessaryMorale = GeneralLib.StrToLng(GeneralLib.LIndex(buf2, 1));
                         }
                     }
                 }

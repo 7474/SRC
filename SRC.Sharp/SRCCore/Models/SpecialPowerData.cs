@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -495,9 +495,7 @@ namespace SRCCore.Models
             //        case "任意":
             //        case "全":
             //            {
-            //                object argIndex1 = "スペシャルパワー無効化";
-            //                object argIndex2 = "精神コマンド無効化";
-            //                if (t.IsConditionSatisfied(argIndex1) | t.IsConditionSatisfied(argIndex2))
+            //                if (t.IsConditionSatisfied("スペシャルパワー無効化") | t.IsConditionSatisfied("精神コマンド無効化"))
             //                {
             //                    goto ExitFunc;
             //                }
@@ -543,8 +541,7 @@ namespace SRCCore.Models
             //                        goto ExitFunc;
             //                    }
 
-            //                    object argIndex3 = "ゾンビ";
-            //                    if (t.IsConditionSatisfied(argIndex3))
+            //                    if (t.IsConditionSatisfied("ゾンビ"))
             //                    {
             //                        goto NextEffect;
             //                    }
@@ -567,8 +564,7 @@ namespace SRCCore.Models
             //                        goto ExitFunc;
             //                    }
 
-            //                    object argIndex4 = "ゾンビ";
-            //                    if (t.IsConditionSatisfied(argIndex4))
+            //                    if (t.IsConditionSatisfied("ゾンビ"))
             //                    {
             //                        goto NextEffect;
             //                    }
@@ -591,8 +587,7 @@ namespace SRCCore.Models
             //                        goto ExitFunc;
             //                    }
 
-            //                    object argIndex5 = "ゾンビ";
-            //                    if (t.IsConditionSatisfied(argIndex5))
+            //                    if (t.IsConditionSatisfied("ゾンビ"))
             //                    {
             //                        goto NextEffect;
             //                    }
@@ -614,8 +609,7 @@ namespace SRCCore.Models
             //                        goto ExitFunc;
             //                    }
 
-            //                    object argIndex6 = "ゾンビ";
-            //                    if (t.IsConditionSatisfied(argIndex6))
+            //                    if (t.IsConditionSatisfied("ゾンビ"))
             //                    {
             //                        goto NextEffect;
             //                    }
@@ -654,8 +648,7 @@ namespace SRCCore.Models
             //                        }
             //                    }
 
-            //                    string argfname = "追加サポート";
-            //                    if (t.IsFeatureAvailable(argfname))
+            //                    if (t.IsFeatureAvailable("追加サポート"))
             //                    {
             //                        if (t.AdditionalSupport().SP < t.AdditionalSupport().MaxSP)
             //                        {
@@ -669,32 +662,7 @@ namespace SRCCore.Models
 
             //            case "状態回復":
             //                {
-            //                    object argIndex8 = "攻撃不能";
-            //                    object argIndex9 = "移動不能";
-            //                    object argIndex10 = "装甲劣化";
-            //                    object argIndex11 = "混乱";
-            //                    object argIndex12 = "魅了";
-            //                    object argIndex13 = "憑依";
-            //                    object argIndex14 = "石化";
-            //                    object argIndex15 = "凍結";
-            //                    object argIndex16 = "麻痺";
-            //                    object argIndex17 = "睡眠";
-            //                    object argIndex18 = "毒";
-            //                    object argIndex19 = "盲目";
-            //                    object argIndex20 = "撹乱";
-            //                    object argIndex21 = "恐怖";
-            //                    object argIndex22 = "沈黙";
-            //                    object argIndex23 = "ゾンビ";
-            //                    object argIndex24 = "回復不能";
-            //                    object argIndex25 = "オーラ使用不能";
-            //                    object argIndex26 = "超能力使用不能";
-            //                    object argIndex27 = "同調率使用不能";
-            //                    object argIndex28 = "超感覚使用不能";
-            //                    object argIndex29 = "知覚強化使用不能";
-            //                    object argIndex30 = "霊力使用不能";
-            //                    object argIndex31 = "術使用不能";
-            //                    object argIndex32 = "技使用不能";
-            //                    if (t.ConditionLifetime(argIndex8) > 0 | t.ConditionLifetime(argIndex9) > 0 | t.ConditionLifetime(argIndex10) > 0 | t.ConditionLifetime(argIndex11) > 0 | t.ConditionLifetime(argIndex12) > 0 | t.ConditionLifetime(argIndex13) > 0 | t.ConditionLifetime(argIndex14) > 0 | t.ConditionLifetime(argIndex15) > 0 | t.ConditionLifetime(argIndex16) > 0 | t.ConditionLifetime(argIndex17) > 0 | t.ConditionLifetime(argIndex18) > 0 | t.ConditionLifetime(argIndex19) > 0 | t.ConditionLifetime(argIndex20) > 0 | t.ConditionLifetime(argIndex21) > 0 | t.ConditionLifetime(argIndex22) > 0 | t.ConditionLifetime(argIndex23) > 0 | t.ConditionLifetime(argIndex24) > 0 | t.ConditionLifetime(argIndex25) > 0 | t.ConditionLifetime(argIndex26) > 0 | t.ConditionLifetime(argIndex27) > 0 | t.ConditionLifetime(argIndex28) > 0 | t.ConditionLifetime(argIndex29) > 0 | t.ConditionLifetime(argIndex30) > 0 | t.ConditionLifetime(argIndex31) > 0 | t.ConditionLifetime(argIndex32) > 0)
+            //                    if (t.ConditionLifetime("攻撃不能") > 0 | t.ConditionLifetime("移動不能") > 0 | t.ConditionLifetime("装甲劣化") > 0 | t.ConditionLifetime("混乱") > 0 | t.ConditionLifetime("魅了") > 0 | t.ConditionLifetime("憑依") > 0 | t.ConditionLifetime("石化") > 0 | t.ConditionLifetime("凍結") > 0 | t.ConditionLifetime("麻痺") > 0 | t.ConditionLifetime("睡眠") > 0 | t.ConditionLifetime("毒") > 0 | t.ConditionLifetime("盲目") > 0 | t.ConditionLifetime("撹乱") > 0 | t.ConditionLifetime("恐怖") > 0 | t.ConditionLifetime("沈黙") > 0 | t.ConditionLifetime("ゾンビ") > 0 | t.ConditionLifetime("回復不能") > 0 | t.ConditionLifetime("オーラ使用不能") > 0 | t.ConditionLifetime("超能力使用不能") > 0 | t.ConditionLifetime("同調率使用不能") > 0 | t.ConditionLifetime("超感覚使用不能") > 0 | t.ConditionLifetime("知覚強化使用不能") > 0 | t.ConditionLifetime("霊力使用不能") > 0 | t.ConditionLifetime("術使用不能") > 0 | t.ConditionLifetime("技使用不能") > 0)
             //                    {
             //                        EffectiveRet = true;
             //                        goto ExitFunc;
@@ -714,8 +682,7 @@ namespace SRCCore.Models
             //                                {
             //                                    string localCondition() { object argIndex1 = j; var ret = t.Condition(argIndex1); return ret; }
 
-            //                                    object argIndex7 = localCondition();
-            //                                    if (t.ConditionLifetime(argIndex7) > 0)
+            //                                    if (t.ConditionLifetime(localCondition()) > 0)
             //                                    {
             //                                        EffectiveRet = true;
             //                                        goto ExitFunc;
@@ -830,8 +797,7 @@ namespace SRCCore.Models
             //            case "ＨＰ減少":
             //            case "ＥＮ減少":
             //                {
-            //                    object argIndex33 = "無敵";
-            //                    if (!t.IsConditionSatisfied(argIndex33))
+            //                    if (!t.IsConditionSatisfied("無敵"))
             //                    {
             //                        EffectiveRet = true;
             //                        goto ExitFunc;
@@ -1126,13 +1092,11 @@ namespace SRCCore.Models
                                 {
                                     if (!My.MyProject.Forms.frmMessage.Visible)
                                     {
-                                        Unit argu2 = null;
-                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: argu2);
+                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                     else
                                     {
-                                        object argu21 = null;
-                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: argu21);
+                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
                                 else if (!My.MyProject.Forms.frmMessage.Visible)
@@ -1141,8 +1105,7 @@ namespace SRCCore.Models
                                 }
                                 else
                                 {
-                                    object argu22 = Commands.SelectedUnit;
-                                    GUI.UpdateMessageForm(t, argu22);
+                                    GUI.UpdateMessageForm(t, Commands.SelectedUnit);
                                 }
 
                                 GUI.Sleep(150);
@@ -1165,37 +1128,31 @@ namespace SRCCore.Models
                                 {
                                     if (effect.dblEffectLevel >= 0d)
                                     {
-                                        string argmsg = "+" + SrcFormatter.Format(t.HP - tmp);
-                                        GUI.DrawSysString(t.x, t.y, argmsg);
+                                        GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(t.HP - tmp));
                                     }
                                     else
                                     {
-                                        string argmsg1 = SrcFormatter.Format(t.HP - tmp);
-                                        GUI.DrawSysString(t.x, t.y, argmsg1);
+                                        GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(t.HP - tmp));
                                     }
                                 }
 
                                 displayed_string = true;
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    object argu23 = null;
-                                    GUI.UpdateMessageForm(Commands.SelectedUnit, u2: argu23);
+                                    GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                 }
                                 else
                                 {
-                                    object argu24 = Commands.SelectedUnit;
-                                    GUI.UpdateMessageForm(t, argu24);
+                                    GUI.UpdateMessageForm(t, Commands.SelectedUnit);
                                 }
 
                                 if (effect.dblEffectLevel >= 0d)
                                 {
-                                    string argtname = "ＨＰ";
-                                    GUI.DisplaySysMessage(t.Nickname + "の" + Expression.Term(argtname, t) + "が" + SrcFormatter.Format(t.HP - tmp) + "回復した。");
+                                    GUI.DisplaySysMessage(t.Nickname + "の" + Expression.Term("ＨＰ", t) + "が" + SrcFormatter.Format(t.HP - tmp) + "回復した。");
                                 }
                                 else
                                 {
-                                    string argtname1 = "ＨＰ";
-                                    GUI.DisplaySysMessage(t.Nickname + "の" + Expression.Term(argtname1, t) + "が" + SrcFormatter.Format(tmp - t.HP) + "減少した。");
+                                    GUI.DisplaySysMessage(t.Nickname + "の" + Expression.Term("ＨＰ", t) + "が" + SrcFormatter.Format(tmp - t.HP) + "減少した。");
                                 }
                             }
 
@@ -1209,8 +1166,7 @@ namespace SRCCore.Models
                             // 効果が適用可能かどうか判定
                             if (effect.dblEffectLevel > 0d)
                             {
-                                object argIndex3 = "ゾンビ";
-                                if (t.IsConditionSatisfied(argIndex3))
+                                if (t.IsConditionSatisfied("ゾンビ"))
                                 {
                                     goto NextEffect;
                                 }
@@ -1227,13 +1183,11 @@ namespace SRCCore.Models
                                 {
                                     if (!My.MyProject.Forms.frmMessage.Visible)
                                     {
-                                        Unit argu25 = null;
-                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: argu25);
+                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                     else
                                     {
-                                        object argu26 = null;
-                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: argu26);
+                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
                                 else if (!My.MyProject.Forms.frmMessage.Visible)
@@ -1242,8 +1196,7 @@ namespace SRCCore.Models
                                 }
                                 else
                                 {
-                                    object argu27 = Commands.SelectedUnit;
-                                    GUI.UpdateMessageForm(t, argu27);
+                                    GUI.UpdateMessageForm(t, Commands.SelectedUnit);
                                 }
 
                                 GUI.Sleep(150);
@@ -1266,37 +1219,31 @@ namespace SRCCore.Models
                                 {
                                     if (effect.dblEffectLevel >= 0d)
                                     {
-                                        string argmsg2 = "+" + SrcFormatter.Format(t.EN - tmp);
-                                        GUI.DrawSysString(t.x, t.y, argmsg2);
+                                        GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(t.EN - tmp));
                                     }
                                     else
                                     {
-                                        string argmsg3 = SrcFormatter.Format(t.EN - tmp);
-                                        GUI.DrawSysString(t.x, t.y, argmsg3);
+                                        GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(t.EN - tmp));
                                     }
                                 }
 
                                 displayed_string = true;
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    object argu28 = null;
-                                    GUI.UpdateMessageForm(Commands.SelectedUnit, u2: argu28);
+                                    GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                 }
                                 else
                                 {
-                                    object argu29 = Commands.SelectedUnit;
-                                    GUI.UpdateMessageForm(t, argu29);
+                                    GUI.UpdateMessageForm(t, Commands.SelectedUnit);
                                 }
 
                                 if (effect.dblEffectLevel >= 0d)
                                 {
-                                    string argtname2 = "ＥＮ";
-                                    GUI.DisplaySysMessage(t.Nickname + "の" + Expression.Term(argtname2, t) + "が" + SrcFormatter.Format(t.EN - tmp) + "回復した。");
+                                    GUI.DisplaySysMessage(t.Nickname + "の" + Expression.Term("ＥＮ", t) + "が" + SrcFormatter.Format(t.EN - tmp) + "回復した。");
                                 }
                                 else
                                 {
-                                    string argtname3 = "ＥＮ";
-                                    GUI.DisplaySysMessage(t.Nickname + "の" + Expression.Term(argtname3, t) + "が" + SrcFormatter.Format(tmp - t.EN) + "減少した。");
+                                    GUI.DisplaySysMessage(t.Nickname + "の" + Expression.Term("ＥＮ", t) + "が" + SrcFormatter.Format(tmp - t.EN) + "減少した。");
                                 }
                             }
 
@@ -1310,8 +1257,7 @@ namespace SRCCore.Models
                             // 効果が適用可能かどうか判定
                             if (effect.dblEffectLevel > 0d)
                             {
-                                object argIndex4 = "ゾンビ";
-                                if (t.IsConditionSatisfied(argIndex4))
+                                if (t.IsConditionSatisfied("ゾンビ"))
                                 {
                                     goto NextEffect;
                                 }
@@ -1328,13 +1274,11 @@ namespace SRCCore.Models
                                 {
                                     if (!My.MyProject.Forms.frmMessage.Visible)
                                     {
-                                        Unit argu210 = null;
-                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: argu210);
+                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                     else
                                     {
-                                        object argu211 = null;
-                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: argu211);
+                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
                                 else if (!My.MyProject.Forms.frmMessage.Visible)
@@ -1343,8 +1287,7 @@ namespace SRCCore.Models
                                 }
                                 else
                                 {
-                                    object argu212 = Commands.SelectedUnit;
-                                    GUI.UpdateMessageForm(t, argu212);
+                                    GUI.UpdateMessageForm(t, Commands.SelectedUnit);
                                 }
 
                                 GUI.Sleep(150);
@@ -1370,37 +1313,31 @@ namespace SRCCore.Models
                                 {
                                     if (effect.dblEffectLevel >= 0d)
                                     {
-                                        string argmsg4 = "+" + SrcFormatter.Format(t.MainPilot().Plana - tmp);
-                                        GUI.DrawSysString(t.x, t.y, argmsg4);
+                                        GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(t.MainPilot().Plana - tmp));
                                     }
                                     else
                                     {
-                                        string argmsg5 = SrcFormatter.Format(t.MainPilot().Plana - tmp);
-                                        GUI.DrawSysString(t.x, t.y, argmsg5);
+                                        GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(t.MainPilot().Plana - tmp));
                                     }
                                 }
 
                                 displayed_string = true;
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    object argu213 = null;
-                                    GUI.UpdateMessageForm(Commands.SelectedUnit, u2: argu213);
+                                    GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                 }
                                 else
                                 {
-                                    object argu214 = Commands.SelectedUnit;
-                                    GUI.UpdateMessageForm(t, argu214);
+                                    GUI.UpdateMessageForm(t, Commands.SelectedUnit);
                                 }
 
                                 if (effect.dblEffectLevel >= 0d)
                                 {
-                                    object argIndex5 = "霊力";
-                                    GUI.DisplaySysMessage(t.Nickname + "の" + t.MainPilot().SkillName0(argIndex5) + "が" + SrcFormatter.Format(t.MainPilot().Plana - tmp) + "回復した。");
+                                    GUI.DisplaySysMessage(t.Nickname + "の" + t.MainPilot().SkillName0("霊力") + "が" + SrcFormatter.Format(t.MainPilot().Plana - tmp) + "回復した。");
                                 }
                                 else
                                 {
-                                    object argIndex6 = "霊力";
-                                    GUI.DisplaySysMessage(t.Nickname + "の" + t.MainPilot().SkillName0(argIndex6) + "が" + SrcFormatter.Format(tmp - t.MainPilot().Plana) + "減少した。");
+                                    GUI.DisplaySysMessage(t.Nickname + "の" + t.MainPilot().SkillName0("霊力") + "が" + SrcFormatter.Format(tmp - t.MainPilot().Plana) + "減少した。");
                                 }
                             }
 
@@ -1413,8 +1350,7 @@ namespace SRCCore.Models
                             // 効果が適用可能かどうか判定
                             if (effect.dblEffectLevel > 0d)
                             {
-                                object argIndex7 = "ゾンビ";
-                                if (t.IsConditionSatisfied(argIndex7))
+                                if (t.IsConditionSatisfied("ゾンビ"))
                                 {
                                     goto NextEffect;
                                 }
@@ -1426,13 +1362,11 @@ namespace SRCCore.Models
                                 {
                                     if (!My.MyProject.Forms.frmMessage.Visible)
                                     {
-                                        Unit argu215 = null;
-                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: argu215);
+                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                     else
                                     {
-                                        object argu216 = null;
-                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: argu216);
+                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
                                 else if (!My.MyProject.Forms.frmMessage.Visible)
@@ -1441,8 +1375,7 @@ namespace SRCCore.Models
                                 }
                                 else
                                 {
-                                    object argu217 = Commands.SelectedUnit;
-                                    GUI.UpdateMessageForm(t, argu217);
+                                    GUI.UpdateMessageForm(t, Commands.SelectedUnit);
                                 }
 
                                 GUI.Sleep(150);
@@ -1450,8 +1383,7 @@ namespace SRCCore.Models
 
                             // 回復対象となるパイロット数を算出
                             n = (t.CountPilot() + t.CountSupport());
-                            string argfname = "追加サポート";
-                            if (t.IsFeatureAvailable(argfname))
+                            if (t.IsFeatureAvailable("追加サポート"))
                             {
                                 n = (n + 1);
                             }
@@ -1468,26 +1400,22 @@ namespace SRCCore.Models
                                     {
                                         if (effect.dblEffectLevel >= 0d)
                                         {
-                                            string argmsg6 = "+" + SrcFormatter.Format(t.MainPilot().SP - tmp);
-                                            GUI.DrawSysString(t.x, t.y, argmsg6);
+                                            GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(t.MainPilot().SP - tmp));
                                         }
                                         else
                                         {
-                                            string argmsg7 = SrcFormatter.Format(t.MainPilot().SP - tmp);
-                                            GUI.DrawSysString(t.x, t.y, argmsg7);
+                                            GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(t.MainPilot().SP - tmp));
                                         }
                                     }
 
                                     displayed_string = true;
                                     if (effect.dblEffectLevel >= 0d)
                                     {
-                                        string argtname4 = "ＳＰ";
-                                        GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term(argtname4, t) + "が" + SrcFormatter.Format(t.MainPilot().SP - tmp) + "回復した。");
+                                        GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(t.MainPilot().SP - tmp) + "回復した。");
                                     }
                                     else
                                     {
-                                        string argtname5 = "ＳＰ";
-                                        GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term(argtname5, t) + "が" + SrcFormatter.Format(tmp - t.MainPilot().SP) + "減少した。");
+                                        GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - t.MainPilot().SP) + "減少した。");
                                     }
                                 }
                             }
@@ -1502,26 +1430,22 @@ namespace SRCCore.Models
                                     {
                                         if (effect.dblEffectLevel >= 0d)
                                         {
-                                            string argmsg8 = "+" + SrcFormatter.Format(t.MainPilot().SP - tmp);
-                                            GUI.DrawSysString(t.x, t.y, argmsg8);
+                                            GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(t.MainPilot().SP - tmp));
                                         }
                                         else
                                         {
-                                            string argmsg9 = SrcFormatter.Format(t.MainPilot().SP - tmp);
-                                            GUI.DrawSysString(t.x, t.y, argmsg9);
+                                            GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(t.MainPilot().SP - tmp));
                                         }
                                     }
 
                                     displayed_string = true;
                                     if (effect.dblEffectLevel >= 0d)
                                     {
-                                        string argtname6 = "ＳＰ";
-                                        GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term(argtname6, t) + "が" + SrcFormatter.Format(t.MainPilot().SP - tmp) + "回復した。");
+                                        GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(t.MainPilot().SP - tmp) + "回復した。");
                                     }
                                     else
                                     {
-                                        string argtname7 = "ＳＰ";
-                                        GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term(argtname7, t) + "が" + SrcFormatter.Format(tmp - t.MainPilot().SP) + "減少した。");
+                                        GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - t.MainPilot().SP) + "減少した。");
                                     }
                                 }
 
@@ -1529,9 +1453,8 @@ namespace SRCCore.Models
                                 var loopTo2 = t.CountPilot();
                                 for (j = 2; j <= loopTo2; j++)
                                 {
-                                    object argIndex8 = j;
                                     {
-                                        var withBlock3 = t.Pilot(argIndex8);
+                                        var withBlock3 = t.Pilot(j);
                                         tmp = withBlock3.SP;
                                         withBlock3.SP = (withBlock3.SP + 2d * effect.dblEffectLevel + (long)(10d * effect.dblEffectLevel) / n);
                                         if (!is_event)
@@ -1540,13 +1463,11 @@ namespace SRCCore.Models
                                             {
                                                 if (effect.dblEffectLevel >= 0d)
                                                 {
-                                                    string argtname8 = "ＳＰ";
-                                                    GUI.DisplaySysMessage(withBlock3.get_Nickname(false) + "の" + Expression.Term(argtname8, t) + "が" + SrcFormatter.Format(withBlock3.SP - tmp) + "回復した。");
+                                                    GUI.DisplaySysMessage(withBlock3.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(withBlock3.SP - tmp) + "回復した。");
                                                 }
                                                 else
                                                 {
-                                                    string argtname9 = "ＳＰ";
-                                                    GUI.DisplaySysMessage(withBlock3.get_Nickname(false) + "の" + Expression.Term(argtname9, t) + "が" + SrcFormatter.Format(tmp - withBlock3.SP) + "減少した。");
+                                                    GUI.DisplaySysMessage(withBlock3.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - withBlock3.SP) + "減少した。");
                                                 }
                                             }
                                         }
@@ -1557,9 +1478,8 @@ namespace SRCCore.Models
                                 var loopTo3 = t.CountSupport();
                                 for (j = 1; j <= loopTo3; j++)
                                 {
-                                    object argIndex9 = j;
                                     {
-                                        var withBlock4 = t.Support(argIndex9);
+                                        var withBlock4 = t.Support(j);
                                         tmp = withBlock4.SP;
                                         withBlock4.SP = (withBlock4.SP + 2d * effect.dblEffectLevel + (long)(10d * effect.dblEffectLevel) / n);
                                         if (!is_event)
@@ -1568,13 +1488,11 @@ namespace SRCCore.Models
                                             {
                                                 if (effect.dblEffectLevel >= 0d)
                                                 {
-                                                    string argtname10 = "ＳＰ";
-                                                    GUI.DisplaySysMessage(withBlock4.get_Nickname(false) + "の" + Expression.Term(argtname10, t) + "が" + SrcFormatter.Format(withBlock4.SP - tmp) + "回復した。");
+                                                    GUI.DisplaySysMessage(withBlock4.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(withBlock4.SP - tmp) + "回復した。");
                                                 }
                                                 else
                                                 {
-                                                    string argtname11 = "ＳＰ";
-                                                    GUI.DisplaySysMessage(withBlock4.get_Nickname(false) + "の" + Expression.Term(argtname11, t) + "が" + SrcFormatter.Format(tmp - withBlock4.SP) + "減少した。");
+                                                    GUI.DisplaySysMessage(withBlock4.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - withBlock4.SP) + "減少した。");
                                                 }
                                             }
                                         }
@@ -1582,8 +1500,7 @@ namespace SRCCore.Models
                                 }
 
                                 // 追加サポートパイロットのＳＰを回復
-                                string argfname1 = "追加サポート";
-                                if (t.IsFeatureAvailable(argfname1))
+                                if (t.IsFeatureAvailable("追加サポート"))
                                 {
                                     {
                                         var withBlock5 = t.AdditionalSupport();
@@ -1595,13 +1512,11 @@ namespace SRCCore.Models
                                             {
                                                 if (effect.dblEffectLevel >= 0d)
                                                 {
-                                                    string argtname12 = "ＳＰ";
-                                                    GUI.DisplaySysMessage(withBlock5.get_Nickname(false) + "の" + Expression.Term(argtname12, t) + "が" + SrcFormatter.Format(withBlock5.SP - tmp) + "回復した。");
+                                                    GUI.DisplaySysMessage(withBlock5.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(withBlock5.SP - tmp) + "回復した。");
                                                 }
                                                 else
                                                 {
-                                                    string argtname13 = "ＳＰ";
-                                                    GUI.DisplaySysMessage(withBlock5.get_Nickname(false) + "の" + Expression.Term(argtname13, t) + "が" + SrcFormatter.Format(tmp - withBlock5.SP) + "減少した。");
+                                                    GUI.DisplaySysMessage(withBlock5.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - withBlock5.SP) + "減少した。");
                                                 }
                                             }
                                         }
@@ -1643,13 +1558,11 @@ namespace SRCCore.Models
                                 {
                                     if (!My.MyProject.Forms.frmMessage.Visible)
                                     {
-                                        Unit argu218 = null;
-                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: argu218);
+                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                     else
                                     {
-                                        object argu219 = null;
-                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: argu219);
+                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
                                 else if (!My.MyProject.Forms.frmMessage.Visible)
@@ -1658,8 +1571,7 @@ namespace SRCCore.Models
                                 }
                                 else
                                 {
-                                    object argu220 = Commands.SelectedUnit;
-                                    GUI.UpdateMessageForm(t, argu220);
+                                    GUI.UpdateMessageForm(t, Commands.SelectedUnit);
                                 }
                             }
 
@@ -1675,32 +1587,7 @@ namespace SRCCore.Models
 
                     case "状態回復":
                         {
-                            object argIndex11 = "攻撃不能";
-                            object argIndex12 = "移動不能";
-                            object argIndex13 = "装甲劣化";
-                            object argIndex14 = "混乱";
-                            object argIndex15 = "魅了";
-                            object argIndex16 = "憑依";
-                            object argIndex17 = "石化";
-                            object argIndex18 = "凍結";
-                            object argIndex19 = "麻痺";
-                            object argIndex20 = "睡眠";
-                            object argIndex21 = "毒";
-                            object argIndex22 = "盲目";
-                            object argIndex23 = "撹乱";
-                            object argIndex24 = "恐怖";
-                            object argIndex25 = "沈黙";
-                            object argIndex26 = "ゾンビ";
-                            object argIndex27 = "回復不能";
-                            object argIndex28 = "オーラ使用不能";
-                            object argIndex29 = "超能力使用不能";
-                            object argIndex30 = "同調率使用不能";
-                            object argIndex31 = "超感覚使用不能";
-                            object argIndex32 = "知覚強化使用不能";
-                            object argIndex33 = "霊力使用不能";
-                            object argIndex34 = "術使用不能";
-                            object argIndex35 = "技使用不能";
-                            if (t.ConditionLifetime(argIndex11) <= 0 && t.ConditionLifetime(argIndex12) <= 0 && t.ConditionLifetime(argIndex13) <= 0 && t.ConditionLifetime(argIndex14) <= 0 && t.ConditionLifetime(argIndex15) <= 0 && t.ConditionLifetime(argIndex16) <= 0 && t.ConditionLifetime(argIndex17) <= 0 && t.ConditionLifetime(argIndex18) <= 0 && t.ConditionLifetime(argIndex19) <= 0 && t.ConditionLifetime(argIndex20) <= 0 && t.ConditionLifetime(argIndex21) <= 0 && t.ConditionLifetime(argIndex22) <= 0 && t.ConditionLifetime(argIndex23) <= 0 && t.ConditionLifetime(argIndex24) <= 0 && t.ConditionLifetime(argIndex25) <= 0 && t.ConditionLifetime(argIndex26) <= 0 && t.ConditionLifetime(argIndex27) <= 0 && t.ConditionLifetime(argIndex28) <= 0 && t.ConditionLifetime(argIndex29) <= 0 && t.ConditionLifetime(argIndex30) <= 0 && t.ConditionLifetime(argIndex31) <= 0 && t.ConditionLifetime(argIndex32) <= 0 && t.ConditionLifetime(argIndex33) <= 0 && t.ConditionLifetime(argIndex34) <= 0 && t.ConditionLifetime(argIndex35) <= 0)
+                            if (t.ConditionLifetime("攻撃不能") <= 0 && t.ConditionLifetime("移動不能") <= 0 && t.ConditionLifetime("装甲劣化") <= 0 && t.ConditionLifetime("混乱") <= 0 && t.ConditionLifetime("魅了") <= 0 && t.ConditionLifetime("憑依") <= 0 && t.ConditionLifetime("石化") <= 0 && t.ConditionLifetime("凍結") <= 0 && t.ConditionLifetime("麻痺") <= 0 && t.ConditionLifetime("睡眠") <= 0 && t.ConditionLifetime("毒") <= 0 && t.ConditionLifetime("盲目") <= 0 && t.ConditionLifetime("撹乱") <= 0 && t.ConditionLifetime("恐怖") <= 0 && t.ConditionLifetime("沈黙") <= 0 && t.ConditionLifetime("ゾンビ") <= 0 && t.ConditionLifetime("回復不能") <= 0 && t.ConditionLifetime("オーラ使用不能") <= 0 && t.ConditionLifetime("超能力使用不能") <= 0 && t.ConditionLifetime("同調率使用不能") <= 0 && t.ConditionLifetime("超感覚使用不能") <= 0 && t.ConditionLifetime("知覚強化使用不能") <= 0 && t.ConditionLifetime("霊力使用不能") <= 0 && t.ConditionLifetime("術使用不能") <= 0 && t.ConditionLifetime("技使用不能") <= 0)
                             {
                                 var loopTo5 = t.CountCondition();
                                 for (j = 1; j <= loopTo5; j++)
@@ -1716,8 +1603,7 @@ namespace SRCCore.Models
                                         {
                                             string localCondition() { object argIndex1 = j; var ret = t.Condition(argIndex1); return ret; }
 
-                                            object argIndex10 = localCondition();
-                                            if (t.ConditionLifetime(argIndex10) > 0)
+                                            if (t.ConditionLifetime(localCondition()) > 0)
                                             {
                                                 break;
                                             }
@@ -1737,13 +1623,11 @@ namespace SRCCore.Models
                                 {
                                     if (!My.MyProject.Forms.frmMessage.Visible)
                                     {
-                                        Unit argu221 = null;
-                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: argu221);
+                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                     else
                                     {
-                                        object argu222 = null;
-                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: argu222);
+                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
                                 else if (!My.MyProject.Forms.frmMessage.Visible)
@@ -1752,185 +1636,134 @@ namespace SRCCore.Models
                                 }
                                 else
                                 {
-                                    object argu223 = Commands.SelectedUnit;
-                                    GUI.UpdateMessageForm(t, argu223);
+                                    GUI.UpdateMessageForm(t, Commands.SelectedUnit);
                                 }
                             }
 
                             // 全てのステータス異常を回復
-                            object argIndex37 = "攻撃不能";
-                            if (t.ConditionLifetime(argIndex37) > 0)
+                            if (t.ConditionLifetime("攻撃不能") > 0)
                             {
-                                object argIndex36 = "攻撃不能";
-                                t.DeleteCondition(argIndex36);
+                                t.DeleteCondition("攻撃不能");
                             }
 
-                            object argIndex39 = "移動不能";
-                            if (t.ConditionLifetime(argIndex39) > 0)
+                            if (t.ConditionLifetime("移動不能") > 0)
                             {
-                                object argIndex38 = "移動不能";
-                                t.DeleteCondition(argIndex38);
+                                t.DeleteCondition("移動不能");
                             }
 
-                            object argIndex41 = "装甲劣化";
-                            if (t.ConditionLifetime(argIndex41) > 0)
+                            if (t.ConditionLifetime("装甲劣化") > 0)
                             {
-                                object argIndex40 = "装甲劣化";
-                                t.DeleteCondition(argIndex40);
+                                t.DeleteCondition("装甲劣化");
                             }
 
-                            object argIndex43 = "混乱";
-                            if (t.ConditionLifetime(argIndex43) > 0)
+                            if (t.ConditionLifetime("混乱") > 0)
                             {
-                                object argIndex42 = "混乱";
-                                t.DeleteCondition(argIndex42);
+                                t.DeleteCondition("混乱");
                             }
 
-                            object argIndex45 = "魅了";
-                            if (t.ConditionLifetime(argIndex45) > 0)
+                            if (t.ConditionLifetime("魅了") > 0)
                             {
-                                object argIndex44 = "魅了";
-                                t.DeleteCondition(argIndex44);
+                                t.DeleteCondition("魅了");
                             }
 
-                            object argIndex47 = "憑依";
-                            if (t.ConditionLifetime(argIndex47) > 0)
+                            if (t.ConditionLifetime("憑依") > 0)
                             {
-                                object argIndex46 = "憑依";
-                                t.DeleteCondition(argIndex46);
+                                t.DeleteCondition("憑依");
                             }
 
-                            object argIndex49 = "石化";
-                            if (t.ConditionLifetime(argIndex49) > 0)
+                            if (t.ConditionLifetime("石化") > 0)
                             {
-                                object argIndex48 = "石化";
-                                t.DeleteCondition(argIndex48);
+                                t.DeleteCondition("石化");
                             }
 
-                            object argIndex51 = "凍結";
-                            if (t.ConditionLifetime(argIndex51) > 0)
+                            if (t.ConditionLifetime("凍結") > 0)
                             {
-                                object argIndex50 = "凍結";
-                                t.DeleteCondition(argIndex50);
+                                t.DeleteCondition("凍結");
                             }
 
-                            object argIndex53 = "麻痺";
-                            if (t.ConditionLifetime(argIndex53) > 0)
+                            if (t.ConditionLifetime("麻痺") > 0)
                             {
-                                object argIndex52 = "麻痺";
-                                t.DeleteCondition(argIndex52);
+                                t.DeleteCondition("麻痺");
                             }
 
-                            object argIndex55 = "睡眠";
-                            if (t.ConditionLifetime(argIndex55) > 0)
+                            if (t.ConditionLifetime("睡眠") > 0)
                             {
-                                object argIndex54 = "睡眠";
-                                t.DeleteCondition(argIndex54);
+                                t.DeleteCondition("睡眠");
                             }
 
-                            object argIndex57 = "毒";
-                            if (t.ConditionLifetime(argIndex57) > 0)
+                            if (t.ConditionLifetime("毒") > 0)
                             {
-                                object argIndex56 = "毒";
-                                t.DeleteCondition(argIndex56);
+                                t.DeleteCondition("毒");
                             }
 
-                            object argIndex59 = "盲目";
-                            if (t.ConditionLifetime(argIndex59) > 0)
+                            if (t.ConditionLifetime("盲目") > 0)
                             {
-                                object argIndex58 = "盲目";
-                                t.DeleteCondition(argIndex58);
+                                t.DeleteCondition("盲目");
                             }
 
-                            object argIndex61 = "撹乱";
-                            if (t.ConditionLifetime(argIndex61) > 0)
+                            if (t.ConditionLifetime("撹乱") > 0)
                             {
-                                object argIndex60 = "撹乱";
-                                t.DeleteCondition(argIndex60);
+                                t.DeleteCondition("撹乱");
                             }
 
-                            object argIndex63 = "恐怖";
-                            if (t.ConditionLifetime(argIndex63) > 0)
+                            if (t.ConditionLifetime("恐怖") > 0)
                             {
-                                object argIndex62 = "恐怖";
-                                t.DeleteCondition(argIndex62);
+                                t.DeleteCondition("恐怖");
                             }
 
-                            object argIndex65 = "沈黙";
-                            if (t.ConditionLifetime(argIndex65) > 0)
+                            if (t.ConditionLifetime("沈黙") > 0)
                             {
-                                object argIndex64 = "沈黙";
-                                t.DeleteCondition(argIndex64);
+                                t.DeleteCondition("沈黙");
                             }
 
-                            object argIndex67 = "ゾンビ";
-                            if (t.ConditionLifetime(argIndex67) > 0)
+                            if (t.ConditionLifetime("ゾンビ") > 0)
                             {
-                                object argIndex66 = "ゾンビ";
-                                t.DeleteCondition(argIndex66);
+                                t.DeleteCondition("ゾンビ");
                             }
 
-                            object argIndex69 = "回復不能";
-                            if (t.ConditionLifetime(argIndex69) > 0)
+                            if (t.ConditionLifetime("回復不能") > 0)
                             {
-                                object argIndex68 = "回復不能";
-                                t.DeleteCondition(argIndex68);
+                                t.DeleteCondition("回復不能");
                             }
 
-                            object argIndex71 = "オーラ使用不能";
-                            if (t.ConditionLifetime(argIndex71) > 0)
+                            if (t.ConditionLifetime("オーラ使用不能") > 0)
                             {
-                                object argIndex70 = "オーラ使用不能";
-                                t.DeleteCondition(argIndex70);
+                                t.DeleteCondition("オーラ使用不能");
                             }
 
-                            object argIndex73 = "超能力使用不能";
-                            if (t.ConditionLifetime(argIndex73) > 0)
+                            if (t.ConditionLifetime("超能力使用不能") > 0)
                             {
-                                object argIndex72 = "超能力使用不能";
-                                t.DeleteCondition(argIndex72);
+                                t.DeleteCondition("超能力使用不能");
                             }
 
-                            object argIndex75 = "同調率使用不能";
-                            if (t.ConditionLifetime(argIndex75) > 0)
+                            if (t.ConditionLifetime("同調率使用不能") > 0)
                             {
-                                object argIndex74 = "同調率使用不能";
-                                t.DeleteCondition(argIndex74);
+                                t.DeleteCondition("同調率使用不能");
                             }
 
-                            object argIndex77 = "超感覚使用不能";
-                            if (t.ConditionLifetime(argIndex77) > 0)
+                            if (t.ConditionLifetime("超感覚使用不能") > 0)
                             {
-                                object argIndex76 = "超感覚使用不能";
-                                t.DeleteCondition(argIndex76);
+                                t.DeleteCondition("超感覚使用不能");
                             }
 
-                            object argIndex79 = "知覚強化使用不能";
-                            if (t.ConditionLifetime(argIndex79) > 0)
+                            if (t.ConditionLifetime("知覚強化使用不能") > 0)
                             {
-                                object argIndex78 = "知覚強化使用不能";
-                                t.DeleteCondition(argIndex78);
+                                t.DeleteCondition("知覚強化使用不能");
                             }
 
-                            object argIndex81 = "霊力使用不能";
-                            if (t.ConditionLifetime(argIndex81) > 0)
+                            if (t.ConditionLifetime("霊力使用不能") > 0)
                             {
-                                object argIndex80 = "霊力使用不能";
-                                t.DeleteCondition(argIndex80);
+                                t.DeleteCondition("霊力使用不能");
                             }
 
-                            object argIndex83 = "術使用不能";
-                            if (t.ConditionLifetime(argIndex83) > 0)
+                            if (t.ConditionLifetime("術使用不能") > 0)
                             {
-                                object argIndex82 = "術使用不能";
-                                t.DeleteCondition(argIndex82);
+                                t.DeleteCondition("術使用不能");
                             }
 
-                            object argIndex85 = "技使用不能";
-                            if (t.ConditionLifetime(argIndex85) > 0)
+                            if (t.ConditionLifetime("技使用不能") > 0)
                             {
-                                object argIndex84 = "技使用不能";
-                                t.DeleteCondition(argIndex84);
+                                t.DeleteCondition("技使用不能");
                             }
 
                             var loopTo6 = t.CountCondition();
@@ -1947,13 +1780,11 @@ namespace SRCCore.Models
                                     {
                                         string localCondition4() { object argIndex1 = j; var ret = t.Condition(argIndex1); return ret; }
 
-                                        object argIndex87 = localCondition4();
-                                        if (t.ConditionLifetime(argIndex87) > 0)
+                                        if (t.ConditionLifetime(localCondition4()) > 0)
                                         {
                                             string localCondition3() { object argIndex1 = j; var ret = t.Condition(argIndex1); return ret; }
 
-                                            object argIndex86 = localCondition3();
-                                            t.DeleteCondition(argIndex86);
+                                            t.DeleteCondition(localCondition3());
                                         }
                                     }
                                 }
@@ -1986,13 +1817,11 @@ namespace SRCCore.Models
                                 {
                                     if (ReferenceEquals(t, Commands.SelectedUnit))
                                     {
-                                        object argu224 = null;
-                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: argu224);
+                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                     else
                                     {
-                                        object argu225 = Commands.SelectedUnit;
-                                        GUI.UpdateMessageForm(t, argu225);
+                                        GUI.UpdateMessageForm(t, Commands.SelectedUnit);
                                     }
 
                                     GUI.DisplaySysMessage(t.Nickname + "は行動可能になった。");
@@ -2018,13 +1847,11 @@ namespace SRCCore.Models
                                 {
                                     if (!My.MyProject.Forms.frmMessage.Visible)
                                     {
-                                        Unit argu226 = null;
-                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: argu226);
+                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                     else
                                     {
-                                        object argu227 = null;
-                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: argu227);
+                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
                                 else if (!My.MyProject.Forms.frmMessage.Visible)
@@ -2033,8 +1860,7 @@ namespace SRCCore.Models
                                 }
                                 else
                                 {
-                                    object argu228 = Commands.SelectedUnit;
-                                    GUI.UpdateMessageForm(t, argu228);
+                                    GUI.UpdateMessageForm(t, Commands.SelectedUnit);
                                 }
 
                                 GUI.DisplaySysMessage((string)(t.Nickname + "は" + Strings.StrConv(SrcFormatter.Format((object)t.Action), VbStrConv.Wide) + "回行動可能になった。"));
@@ -2046,16 +1872,13 @@ namespace SRCCore.Models
                     case "スペシャルパワー":
                     case "精神コマンド":
                         {
-                            object argIndex88 = EffectData(i);
-                            if (SRC.SPDList.IsDefined(argIndex88))
+                            if (SRC.SPDList.IsDefined(EffectData(i)))
                             {
-                                string argsname = EffectData(i);
-                                t.MakeSpecialPowerInEffect(argsname, my_unit.MainPilot().ID);
+                                t.MakeSpecialPowerInEffect(EffectData(i), my_unit.MainPilot().ID);
                             }
                             else
                             {
-                                string argmsg10 = "スペシャルパワー「" + Name + "」で使われているスペシャルパワー「" + EffectData(i) + "」は定義されていません。";
-                                GUI.ErrorMessage(argmsg10);
+                                GUI.ErrorMessage("スペシャルパワー「" + Name + "」で使われているスペシャルパワー「" + EffectData(i) + "」は定義されていません。");
                             }
 
                             break;
@@ -2080,8 +1903,7 @@ namespace SRCCore.Models
                             {
                                 if (!displayed_string)
                                 {
-                                    string argmsg11 = "+" + SrcFormatter.Format(t.MainPilot().Morale - tmp);
-                                    GUI.DrawSysString(t.x, t.y, argmsg11);
+                                    GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(t.MainPilot().Morale - tmp));
                                 }
 
                                 displayed_string = true;
@@ -2113,8 +1935,7 @@ namespace SRCCore.Models
                                 {
                                     if (!displayed_string)
                                     {
-                                        string argmsg12 = SrcFormatter.Format(t.MainPilot().Morale - tmp);
-                                        GUI.DrawSysString(t.x, t.y, argmsg12);
+                                        GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(t.MainPilot().Morale - tmp));
                                         displayed_string = true;
                                     }
                                 }
@@ -2127,8 +1948,7 @@ namespace SRCCore.Models
                     case "ランダムダメージ":
                         {
                             // 効果が適用可能かどうか判定
-                            object argIndex89 = "無敵";
-                            if (t.IsConditionSatisfied(argIndex89))
+                            if (t.IsConditionSatisfied("無敵"))
                             {
                                 goto NextEffect;
                             }
@@ -2139,13 +1959,11 @@ namespace SRCCore.Models
                                 {
                                     if (!My.MyProject.Forms.frmMessage.Visible)
                                     {
-                                        Unit argu229 = null;
-                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: argu229);
+                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                     else
                                     {
-                                        object argu230 = null;
-                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: argu230);
+                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
                                 else if (!My.MyProject.Forms.frmMessage.Visible)
@@ -2154,8 +1972,7 @@ namespace SRCCore.Models
                                 }
                                 else
                                 {
-                                    object argu231 = Commands.SelectedUnit;
-                                    GUI.UpdateMessageForm(t, argu231);
+                                    GUI.UpdateMessageForm(t, Commands.SelectedUnit);
                                 }
                             }
 
@@ -2168,15 +1985,11 @@ namespace SRCCore.Models
                             }
 
                             // 特殊能力「不安定」による暴走チェック
-                            string argfname2 = "不安定";
-                            if (t.IsFeatureAvailable(argfname2))
+                            if (t.IsFeatureAvailable("不安定"))
                             {
-                                object argIndex90 = "暴走";
-                                if (t.HP <= t.MaxHP / 4 && !t.IsConditionSatisfied(argIndex90))
+                                if (t.HP <= t.MaxHP / 4 && !t.IsConditionSatisfied("暴走"))
                                 {
-                                    string argcname = "暴走";
-                                    string argcdata = "";
-                                    t.AddCondition(argcname, -1, cdata: argcdata);
+                                    t.AddCondition("暴走", -1, cdata: "");
                                 }
                             }
 
@@ -2184,20 +1997,17 @@ namespace SRCCore.Models
                             {
                                 if (!displayed_string)
                                 {
-                                    string argmsg13 = SrcFormatter.Format(tmp - t.HP);
-                                    GUI.DrawSysString(t.x, t.y, argmsg13);
+                                    GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(tmp - t.HP));
                                 }
 
                                 displayed_string = true;
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    object argu232 = null;
-                                    GUI.UpdateMessageForm(Commands.SelectedUnit, u2: argu232);
+                                    GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                 }
                                 else
                                 {
-                                    object argu233 = Commands.SelectedUnit;
-                                    GUI.UpdateMessageForm(t, argu233);
+                                    GUI.UpdateMessageForm(t, Commands.SelectedUnit);
                                 }
 
                                 GUI.DisplaySysMessage(t.Nickname + "に" + SrcFormatter.Format(tmp - t.HP) + "のダメージを与えた。");
@@ -2210,8 +2020,7 @@ namespace SRCCore.Models
                     case "ＨＰ減少":
                         {
                             // 効果が適用可能かどうか判定
-                            object argIndex91 = "無敵";
-                            if (t.IsConditionSatisfied(argIndex91))
+                            if (t.IsConditionSatisfied("無敵"))
                             {
                                 goto NextEffect;
                             }
@@ -2222,13 +2031,11 @@ namespace SRCCore.Models
                                 {
                                     if (!My.MyProject.Forms.frmMessage.Visible)
                                     {
-                                        Unit argu234 = null;
-                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: argu234);
+                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                     else
                                     {
-                                        object argu235 = null;
-                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: argu235);
+                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
                                 else if (!My.MyProject.Forms.frmMessage.Visible)
@@ -2237,8 +2044,7 @@ namespace SRCCore.Models
                                 }
                                 else
                                 {
-                                    object argu236 = Commands.SelectedUnit;
-                                    GUI.UpdateMessageForm(t, argu236);
+                                    GUI.UpdateMessageForm(t, Commands.SelectedUnit);
                                 }
                             }
 
@@ -2251,15 +2057,11 @@ namespace SRCCore.Models
                             }
 
                             // 特殊能力「不安定」による暴走チェック
-                            string argfname3 = "不安定";
-                            if (t.IsFeatureAvailable(argfname3))
+                            if (t.IsFeatureAvailable("不安定"))
                             {
-                                object argIndex92 = "暴走";
-                                if (t.HP <= t.MaxHP / 4 && !t.IsConditionSatisfied(argIndex92))
+                                if (t.HP <= t.MaxHP / 4 && !t.IsConditionSatisfied("暴走"))
                                 {
-                                    string argcname1 = "暴走";
-                                    string argcdata1 = "";
-                                    t.AddCondition(argcname1, -1, cdata: argcdata1);
+                                    t.AddCondition("暴走", -1, cdata: "");
                                 }
                             }
 
@@ -2267,31 +2069,26 @@ namespace SRCCore.Models
                             {
                                 if (!displayed_string)
                                 {
-                                    string argmsg14 = SrcFormatter.Format(tmp - t.HP);
-                                    GUI.DrawSysString(t.x, t.y, argmsg14);
+                                    GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(tmp - t.HP));
                                 }
 
                                 displayed_string = true;
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    object argu237 = null;
-                                    GUI.UpdateMessageForm(Commands.SelectedUnit, u2: argu237);
+                                    GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                 }
                                 else
                                 {
-                                    object argu238 = Commands.SelectedUnit;
-                                    GUI.UpdateMessageForm(t, argu238);
+                                    GUI.UpdateMessageForm(t, Commands.SelectedUnit);
                                 }
 
                                 if (ReferenceEquals(Commands.SelectedUnit, t))
                                 {
-                                    string argtname14 = "ＨＰ";
-                                    GUI.DisplaySysMessage(t.Nickname + "の" + Expression.Term(argtname14, t) + "が" + SrcFormatter.Format(tmp - t.HP) + "減少した。");
+                                    GUI.DisplaySysMessage(t.Nickname + "の" + Expression.Term("ＨＰ", t) + "が" + SrcFormatter.Format(tmp - t.HP) + "減少した。");
                                 }
                                 else
                                 {
-                                    string argtname15 = "ＨＰ";
-                                    GUI.DisplaySysMessage(t.Nickname + "の" + Expression.Term(argtname15, t) + "を" + SrcFormatter.Format(tmp - t.HP) + "減少させた。");
+                                    GUI.DisplaySysMessage(t.Nickname + "の" + Expression.Term("ＨＰ", t) + "を" + SrcFormatter.Format(tmp - t.HP) + "減少させた。");
                                 }
                             }
 
@@ -2302,8 +2099,7 @@ namespace SRCCore.Models
                     case "ＥＮ減少":
                         {
                             // 効果が適用可能かどうか判定
-                            object argIndex93 = "無敵";
-                            if (t.IsConditionSatisfied(argIndex93))
+                            if (t.IsConditionSatisfied("無敵"))
                             {
                                 goto NextEffect;
                             }
@@ -2314,13 +2110,11 @@ namespace SRCCore.Models
                                 {
                                     if (!My.MyProject.Forms.frmMessage.Visible)
                                     {
-                                        Unit argu239 = null;
-                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: argu239);
+                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                     else
                                     {
-                                        object argu240 = null;
-                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: argu240);
+                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
                                 else if (!My.MyProject.Forms.frmMessage.Visible)
@@ -2329,8 +2123,7 @@ namespace SRCCore.Models
                                 }
                                 else
                                 {
-                                    object argu241 = Commands.SelectedUnit;
-                                    GUI.UpdateMessageForm(t, argu241);
+                                    GUI.UpdateMessageForm(t, Commands.SelectedUnit);
                                 }
                             }
 
@@ -2344,31 +2137,26 @@ namespace SRCCore.Models
 
                             if (!displayed_string)
                             {
-                                string argmsg15 = SrcFormatter.Format(tmp - t.EN);
-                                GUI.DrawSysString(t.x, t.y, argmsg15);
+                                GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(tmp - t.EN));
                             }
 
                             displayed_string = true;
                             if (ReferenceEquals(t, Commands.SelectedUnit))
                             {
-                                object argu242 = null;
-                                GUI.UpdateMessageForm(Commands.SelectedUnit, u2: argu242);
+                                GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                             }
                             else
                             {
-                                object argu243 = Commands.SelectedUnit;
-                                GUI.UpdateMessageForm(t, argu243);
+                                GUI.UpdateMessageForm(t, Commands.SelectedUnit);
                             }
 
                             if (ReferenceEquals(Commands.SelectedUnit, t))
                             {
-                                string argtname16 = "ＥＮ";
-                                GUI.DisplaySysMessage(t.Nickname + "の" + Expression.Term(argtname16, t) + "が" + SrcFormatter.Format(tmp - t.EN) + "減少した。");
+                                GUI.DisplaySysMessage(t.Nickname + "の" + Expression.Term("ＥＮ", t) + "が" + SrcFormatter.Format(tmp - t.EN) + "減少した。");
                             }
                             else
                             {
-                                string argtname17 = "ＥＮ";
-                                GUI.DisplaySysMessage(t.Nickname + "の" + Expression.Term(argtname17, t) + "を" + SrcFormatter.Format(tmp - t.EN) + "減少させた。");
+                                GUI.DisplaySysMessage(t.Nickname + "の" + Expression.Term("ＥＮ", t) + "を" + SrcFormatter.Format(tmp - t.EN) + "減少させた。");
                             }
 
                             need_update = true;
@@ -2378,45 +2166,30 @@ namespace SRCCore.Models
                     case "偵察":
                         {
                             // 未識別のユニットは識別しておく
-                            string argoname = "ユニット情報隠蔽";
-                            if (Expression.IsOptionDefined(argoname))
+                            if (Expression.IsOptionDefined("ユニット情報隠蔽"))
                             {
-                                object argIndex94 = "識別済み";
-                                if (!t.IsConditionSatisfied(argIndex94))
+                                if (!t.IsConditionSatisfied("識別済み"))
                                 {
-                                    string argcname2 = "識別済み";
-                                    string argcdata2 = "非表示";
-                                    t.AddCondition(argcname2, -1, 0d, argcdata2);
+                                    t.AddCondition("識別済み", -1, 0d, "非表示");
                                     Status.DisplayUnitStatus(t);
                                 }
                             }
 
-                            object argIndex96 = "ユニット情報隠蔽";
-                            if (t.IsConditionSatisfied(argIndex96))
+                            if (t.IsConditionSatisfied("ユニット情報隠蔽"))
                             {
-                                object argIndex95 = "ユニット情報隠蔽";
-                                t.DeleteCondition(argIndex95);
+                                t.DeleteCondition("ユニット情報隠蔽");
                                 Status.DisplayUnitStatus(t);
                             }
 
                             if (!My.MyProject.Forms.frmMessage.Visible)
                             {
-                                Unit argu1 = null;
-                                Unit argu244 = null;
-                                GUI.OpenMessageForm(u1: argu1, u2: argu244);
+                                GUI.OpenMessageForm(u1: null, u2: null);
                             }
 
-                            string argpname = "システム";
-                            string argtname18 = "ＨＰ";
-                            string argtname19 = "ＥＮ";
-                            string argtname20 = "資金";
-                            GUI.DisplayMessage(argpname, Expression.Term(argtname18, t, 6) + "：" + SrcFormatter.Format(t.HP) + "/" + SrcFormatter.Format(t.MaxHP) + ";" + Expression.Term(argtname19, t, 6) + "：" + SrcFormatter.Format(t.EN) + "/" + SrcFormatter.Format(t.MaxEN) + ";" + Expression.Term(argtname20, t, 6) + "：" + SrcFormatter.Format(t.Value / 2) + ";" + "経験値：" + SrcFormatter.Format(t.ExpValue + t.MainPilot().ExpValue));
-                            string argfname4 = "アイテム所有";
-                            if (t.IsFeatureAvailable(argfname4))
+                            GUI.DisplayMessage("システム", Expression.Term("ＨＰ", t, 6) + "：" + SrcFormatter.Format(t.HP) + "/" + SrcFormatter.Format(t.MaxHP) + ";" + Expression.Term("ＥＮ", t, 6) + "：" + SrcFormatter.Format(t.EN) + "/" + SrcFormatter.Format(t.MaxEN) + ";" + Expression.Term("資金", t, 6) + "：" + SrcFormatter.Format(t.Value / 2) + ";" + "経験値：" + SrcFormatter.Format(t.ExpValue + t.MainPilot().ExpValue));
+                            if (t.IsFeatureAvailable("アイテム所有"))
                             {
-                                object argIndex98 = "アイテム所有";
-                                object argIndex99 = t.FeatureData(argIndex98);
-                                if (SRC.IDList.IsDefined(argIndex99))
+                                if (SRC.IDList.IsDefined(t.FeatureData("アイテム所有")))
                                 {
                                     ItemData localItem() { object argIndex1 = "アイテム所有"; object argIndex2 = t.FeatureData(argIndex1); var ret = SRC.IDList.Item(argIndex2); return ret; }
 
@@ -2424,18 +2197,13 @@ namespace SRCCore.Models
                                 }
                                 else
                                 {
-                                    object argIndex97 = "アイテム所有";
-                                    string argmsg16 = t.Name + "の所有アイテム「" + t.FeatureData(argIndex97) + "」のデータが見つかりません";
-                                    GUI.ErrorMessage(argmsg16);
+                                    GUI.ErrorMessage(t.Name + "の所有アイテム「" + t.FeatureData("アイテム所有") + "」のデータが見つかりません");
                                 }
                             }
 
-                            string argfname5 = "レアアイテム所有";
-                            if (t.IsFeatureAvailable(argfname5))
+                            if (t.IsFeatureAvailable("レアアイテム所有"))
                             {
-                                object argIndex101 = "レアアイテム所有";
-                                object argIndex102 = t.FeatureData(argIndex101);
-                                if (SRC.IDList.IsDefined(argIndex102))
+                                if (SRC.IDList.IsDefined(t.FeatureData("レアアイテム所有")))
                                 {
                                     if (Strings.Len(msg) > 0)
                                     {
@@ -2448,23 +2216,18 @@ namespace SRCCore.Models
                                 }
                                 else
                                 {
-                                    object argIndex100 = "レアアイテム所有";
-                                    string argmsg17 = t.Name + "の所有レアアイテム「" + t.FeatureData(argIndex100) + "」のデータが見つかりません";
-                                    GUI.ErrorMessage(argmsg17);
+                                    GUI.ErrorMessage(t.Name + "の所有レアアイテム「" + t.FeatureData("レアアイテム所有") + "」のデータが見つかりません");
                                 }
                             }
 
-                            string argfname6 = "ラーニング可能技";
-                            if (t.IsFeatureAvailable(argfname6))
+                            if (t.IsFeatureAvailable("ラーニング可能技"))
                             {
-                                object argIndex103 = "ラーニング可能技";
-                                msg = msg + "「" + t.FeatureData(argIndex103) + "」をラーニング可能。";
+                                msg = msg + "「" + t.FeatureData("ラーニング可能技") + "」をラーニング可能。";
                             }
 
                             if (Strings.Len(msg) > 0)
                             {
-                                string argpname1 = "システム";
-                                GUI.DisplayMessage(argpname1, msg);
+                                GUI.DisplayMessage("システム", msg);
                             }
 
                             break;
@@ -2472,8 +2235,7 @@ namespace SRCCore.Models
 
                     case "自爆":
                         {
-                            Unit argu245 = null;
-                            GUI.OpenMessageForm(t, u2: argu245);
+                            GUI.OpenMessageForm(t, u2: null);
                             t.SuicidalExplosion();
                             return ApplyRet;
                         }
@@ -2490,27 +2252,22 @@ namespace SRCCore.Models
                                 // 破壊後に他のパイロットの力で復活する場合
 
                                 // 復活時は通常形態に戻る
-                                string argfname7 = "ノーマルモード";
-                                if (t.IsFeatureAvailable(argfname7))
+                                if (t.IsFeatureAvailable("ノーマルモード"))
                                 {
                                     string localLIndex() { object argIndex1 = "ノーマルモード"; string arglist = t.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                                    string argnew_form = localLIndex();
-                                    t.Transform(argnew_form);
+                                    t.Transform(localLIndex());
                                     t = t.CurrentForm();
                                     n = 0;
                                 }
                                 else
                                 {
-                                    object argIndex104 = "残り時間";
-                                    n = t.ConditionLifetime(argIndex104);
+                                    n = t.ConditionLifetime("残り時間");
 
                                     // 後のRestで残り時間が0にならないように一旦時間を巻き戻す
                                     if (n > 0)
                                     {
-                                        string argcname3 = "残り時間";
-                                        string argcdata3 = "";
-                                        t.AddCondition(argcname3, 10, cdata: argcdata3);
+                                        t.AddCondition("残り時間", 10, cdata: "");
                                     }
                                 }
 
@@ -2523,11 +2280,8 @@ namespace SRCCore.Models
                                 // 残り時間を元に戻す
                                 if (n > 0)
                                 {
-                                    object argIndex105 = "残り時間";
-                                    t.DeleteCondition(argIndex105);
-                                    string argcname4 = "残り時間";
-                                    string argcdata4 = "";
-                                    t.AddCondition(argcname4, n, cdata: argcdata4);
+                                    t.DeleteCondition("残り時間");
+                                    t.AddCondition("残り時間", n, cdata: "");
                                 }
 
                                 GUI.RedrawScreen();
@@ -2535,32 +2289,21 @@ namespace SRCCore.Models
 
                             if (!My.MyProject.Forms.frmMessage.Visible)
                             {
-                                Unit argu11 = null;
-                                Unit argu246 = null;
-                                GUI.OpenMessageForm(u1: argu11, u2: argu246);
+                                GUI.OpenMessageForm(u1: null, u2: null);
                             }
 
-                            string argmain_situation = "復活";
-                            if (t.IsMessageDefined(argmain_situation))
+                            if (t.IsMessageDefined("復活"))
                             {
-                                string argSituation = "復活";
-                                string argmsg_mode = "";
-                                t.PilotMessage(argSituation, msg_mode: argmsg_mode);
+                                t.PilotMessage("復活", msg_mode: "");
                             }
 
-                            string argmain_situation3 = "復活";
-                            string argsub_situation2 = "";
-                            if (t.IsAnimationDefined(argmain_situation3, sub_situation: argsub_situation2))
+                            if (t.IsAnimationDefined("復活", sub_situation: ""))
                             {
-                                string argmain_situation1 = "復活";
-                                string argsub_situation = "";
-                                t.PlayAnimation(argmain_situation1, sub_situation: argsub_situation);
+                                t.PlayAnimation("復活", sub_situation: "");
                             }
                             else
                             {
-                                string argmain_situation2 = "復活";
-                                string argsub_situation1 = "";
-                                t.SpecialEffect(argmain_situation2, sub_situation: argsub_situation1);
+                                t.SpecialEffect("復活", sub_situation: "");
                             }
 
                             GUI.DisplaySysMessage(t.Nickname + "は復活した。");
@@ -2574,8 +2317,7 @@ namespace SRCCore.Models
                             Event.SelectedUnitForEvent = my_unit.CurrentForm();
                             Event.SelectedTargetForEvent = t.CurrentForm();
                             // 指定されたサブルーチンを実行
-                            string argexpr = "Call(" + EffectData(i) + ")";
-                            Expression.GetValueAsString(argexpr);
+                            Expression.GetValueAsString("Call(" + EffectData(i) + ")");
                             break;
                         }
                 }
@@ -2817,13 +2559,11 @@ namespace SRCCore.Models
         //            // アニメ指定がなされていない場合はアニメ表示用サブルーチンが見つらなければそのまま終了
         //            if ((Animation ?? "") == (Name ?? ""))
         //            {
-        //                string arglname = "ＳＰアニメ_" + Animation;
-        //                if (Event.FindNormalLabel(arglname) == 0)
+        //                if (Event.FindNormalLabel("ＳＰアニメ_" + Animation) == 0)
         //                {
         //                    if (Name != "自爆" && Name != "祈り")
         //                    {
-        //                        object argIndex1 = "特殊効果 " + Name;
-        //                        if (Event.IsLabelDefined(argIndex1))
+        //                        if (Event.IsLabelDefined("特殊効果 " + Name))
         //                        {
         //                            Event.HandleEvent("特殊効果", Name);
         //                            PlayAnimationRet = true;
@@ -2926,9 +2666,7 @@ namespace SRCCore.Models
         //                                wait_time = 0;
         //                            }
 
-        //                            string argpname = "";
-        //                            string argmsg_mode = "";
-        //                            GUI.DisplayBattleMessage(argpname, anime, msg_mode: argmsg_mode);
+        //                            GUI.DisplayBattleMessage("", anime, msg_mode: "");
         //                            goto NextAnime;
         //                            break;
         //                        }
@@ -2952,9 +2690,7 @@ namespace SRCCore.Models
         //                                wait_time = 0;
         //                            }
 
-        //                            string argpname1 = "";
-        //                            string argmsg_mode1 = "";
-        //                            GUI.DisplayBattleMessage(argpname1, anime, msg_mode: argmsg_mode1);
+        //                            GUI.DisplayBattleMessage("", anime, msg_mode: "");
         //                            goto NextAnime;
         //                            break;
         //                        }
@@ -2962,14 +2698,11 @@ namespace SRCCore.Models
         //                    case "center":
         //                        {
         //                            // 指定したユニットを中央表示
-        //                            string argexpr = GeneralLib.ListIndex(anime, 2);
-        //                            buf = Expression.GetValueAsString(argexpr);
-        //                            object argIndex3 = buf;
-        //                            if (SRC.UList.IsDefined(argIndex3))
+        //                            buf = Expression.GetValueAsString(GeneralLib.ListIndex(anime, 2));
+        //                            if (SRC.UList.IsDefined(buf))
         //                            {
-        //                                object argIndex2 = buf;
         //                                {
-        //                                    var withBlock = SRC.UList.Item(argIndex2);
+        //                                    var withBlock = SRC.UList.Item(buf);
         //                                    GUI.Center(withBlock.x, withBlock.y);
         //                                    GUI.RedrawScreen();
         //                                }

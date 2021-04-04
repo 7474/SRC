@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -98,16 +98,14 @@ namespace SRCCore.Models
         //public double FeatureLevel(int ID, string ftype)
         //{
         //    double FeatureLevelRet = default;
-        //    object argIndex1 = ftype;
-        //    FeatureLevelRet = TerrainDataList_Renamed[ID].FeatureLevel(argIndex1);
+        //    FeatureLevelRet = TerrainDataList_Renamed[ID].FeatureLevel(ftype);
         //    return FeatureLevelRet;
         //}
 
         //public string FeatureData(int ID, string ftype)
         //{
         //    string FeatureDataRet = default;
-        //    object argIndex1 = ftype;
-        //    FeatureDataRet = TerrainDataList_Renamed[ID].FeatureData(argIndex1);
+        //    FeatureDataRet = TerrainDataList_Renamed[ID].FeatureData(ftype);
         //    return FeatureDataRet;
         //}
 

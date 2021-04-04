@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -41,8 +41,7 @@ namespace SRCCore.Pilots
                 //        return default;
                 //    }
 
-                //    object argIndex1 = 1;
-                //    if (ReferenceEquals(withBlock.Pilot(argIndex1), this))
+                //    if (ReferenceEquals(withBlock.Pilot(1), this))
                 //    {
                 //        return default;
                 //    }
@@ -53,12 +52,10 @@ namespace SRCCore.Pilots
                 //    }
 
                 //    // 追加パイロットだったので第１パイロットの霊力を代わりに使う
-                //    string argsname1 = "霊力";
-                //    if (IsSkillAvailable(argsname1))
+                //    if (IsSkillAvailable("霊力"))
                 //    {
-                //        object argIndex2 = 1;
                 //        {
-                //            var withBlock1 = withBlock.Pilot(argIndex2);
+                //            var withBlock1 = withBlock.Pilot(1);
                 //            if (withBlock1.MaxPlana() > 0)
                 //            {
                 //                proPlana = (MaxPlana() * withBlock1.Plana0 / withBlock1.MaxPlana());
@@ -68,8 +65,7 @@ namespace SRCCore.Pilots
                 //    }
                 //    else
                 //    {
-                //        object argIndex3 = 1;
-                //        PlanaRet = withBlock.Pilot(argIndex3).Plana0;
+                //        PlanaRet = withBlock.Pilot(1).Plana0;
                 //    }
                 //}
 
@@ -107,8 +103,7 @@ namespace SRCCore.Pilots
                 //        return;
                 //    }
 
-                //    object argIndex1 = 1;
-                //    if (ReferenceEquals(withBlock.Pilot(argIndex1), this))
+                //    if (ReferenceEquals(withBlock.Pilot(1), this))
                 //    {
                 //        return;
                 //    }
@@ -119,11 +114,9 @@ namespace SRCCore.Pilots
                 //    }
 
                 //    // 追加パイロットだったので第１パイロットの霊力値を代わりに使う
-                //    object argIndex2 = 1;
                 //    {
-                //        var withBlock1 = withBlock.Pilot(argIndex2);
-                //        string argsname = "霊力";
-                //        if (IsSkillAvailable(argsname))
+                //        var withBlock1 = withBlock.Pilot(1);
+                //        if (IsSkillAvailable("霊力"))
                 //        {
                 //            // 追加パイロットが霊力を持つ場合は第１パイロットと消費率を一致させる
                 //            if (withBlock1.MaxSP > 0)

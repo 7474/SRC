@@ -1,4 +1,4 @@
-﻿using SRCCore;
+using SRCCore;
 using SRCCore.Commands;
 using SRCCore.Units;
 using System;

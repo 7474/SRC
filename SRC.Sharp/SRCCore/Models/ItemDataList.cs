@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -194,8 +194,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    string argstr_Renamed = nd.Nickname;
-                    nd.KanaName = GeneralLib.StrToHiragana(argstr_Renamed);
+                    nd.KanaName = GeneralLib.StrToHiragana(nd.Nickname);
                     nd.Nickname = argstr_Renamed;
                 }
 
@@ -234,8 +233,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    string argmsg3 = "最大ＨＰ修正値の設定が間違っています。";
-                    SRC.AddDataError(reader.InvalidData(argmsg3, data_name));
+                    SRC.AddDataError(reader.InvalidData("最大ＨＰ修正値の設定が間違っています。", data_name));
                 }
 
                 // 最大ＥＮ修正値
@@ -253,8 +251,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    string argmsg4 = "最大ＥＮ修正値の設定が間違っています。";
-                    SRC.AddDataError(reader.InvalidData(argmsg4, data_name));
+                    SRC.AddDataError(reader.InvalidData("最大ＥＮ修正値の設定が間違っています。", data_name));
                 }
 
                 // 装甲修正値
@@ -272,8 +269,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    string argmsg5 = "装甲修正値の設定が間違っています。";
-                    SRC.AddDataError(reader.InvalidData(argmsg5, data_name));
+                    SRC.AddDataError(reader.InvalidData("装甲修正値の設定が間違っています。", data_name));
                 }
 
                 // 運動性修正値
@@ -291,8 +287,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    string argmsg6 = "運動性修正値の設定が間違っています。";
-                    SRC.AddDataError(reader.InvalidData(argmsg6, data_name));
+                    SRC.AddDataError(reader.InvalidData("運動性修正値の設定が間違っています。", data_name));
                 }
 
                 // 移動力修正値
@@ -308,8 +303,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    string argmsg7 = "移動力修正値の設定が間違っています。";
-                    SRC.AddDataError(reader.InvalidData(argmsg7, data_name));
+                    SRC.AddDataError(reader.InvalidData("移動力修正値の設定が間違っています。", data_name));
                 }
 
                 if (reader.EOT)

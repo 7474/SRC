@@ -1,4 +1,4 @@
-﻿using SRCCore.Maps;
+using SRCCore.Maps;
 using System;
 
 namespace SRCCore.Events

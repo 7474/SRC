@@ -1,4 +1,4 @@
-﻿//using System;
+//using System;
 //using Microsoft.VisualBasic;
 //using Microsoft.VisualBasic.CompilerServices;
 //using SRCCore.Pilots;
@@ -27,8 +27,7 @@
 //            // 特殊能力の名称を調べる
 //            if (Information.IsNumeric(sindex))
 //            {
-//                object argIndex1 = Conversions.ToShort(sindex);
-//                sname = p.SkillName(ref argIndex1);
+//                sname = p.SkillName(ref Conversions.ToShort(sindex));
 //            }
 //            else
 //            {
@@ -42,8 +41,7 @@
 //                    stype = sindex;
 //                }
 
-//                object argIndex2 = stype;
-//                sname = p.SkillName(ref argIndex2);
+//                sname = p.SkillName(ref stype);
 //            }
 
 //            msg = SkillHelpMessage(ref p, ref sindex);
@@ -53,17 +51,13 @@
 //            {
 //                prev_mode = GUI.AutoMessageMode;
 //                GUI.AutoMessageMode = false;
-//                Unit argu1 = null;
-//                Unit argu2 = null;
-//                GUI.OpenMessageForm(u1: ref argu1, u2: ref argu2);
+//                GUI.OpenMessageForm(u1: ref null, u2: ref null);
 //                if (SRC.AutoMoveCursor)
 //                {
-//                    string argcursor_mode = "メッセージウィンドウ";
-//                    GUI.MoveCursorPos(ref argcursor_mode);
+//                    GUI.MoveCursorPos(ref "メッセージウィンドウ");
 //                }
 
-//                string argpname = "システム";
-//                GUI.DisplayMessage(ref argpname, "<b>" + sname + "</b>;" + msg);
+//                GUI.DisplayMessage(ref "システム", "<b>" + sname + "</b>;" + msg);
 //                GUI.CloseMessageForm();
 //                GUI.AutoMessageMode = prev_mode;
 //            }
@@ -85,19 +79,12 @@
 //            // 特殊能力の名称、レベル、データを調べる
 //            if (Information.IsNumeric(sindex))
 //            {
-//                object argIndex1 = Conversions.ToShort(sindex);
-//                stype = p.Skill(ref argIndex1);
-//                object argIndex2 = Conversions.ToShort(sindex);
-//                string argref_mode = "";
-//                slevel = p.SkillLevel(ref argIndex2, ref_mode: ref argref_mode);
-//                object argIndex3 = Conversions.ToShort(sindex);
-//                sdata = p.SkillData(ref argIndex3);
-//                object argIndex4 = Conversions.ToShort(sindex);
-//                sname = p.SkillName(ref argIndex4);
-//                object argIndex5 = Conversions.ToShort(sindex);
-//                sname0 = p.SkillName0(ref argIndex5);
-//                object argIndex6 = Conversions.ToShort(sindex);
-//                is_level_specified = p.IsSkillLevelSpecified(ref argIndex6);
+//                stype = p.Skill(ref Conversions.ToShort(sindex));
+//                slevel = p.SkillLevel(ref Conversions.ToShort(sindex), ref_mode: ref "");
+//                sdata = p.SkillData(ref Conversions.ToShort(sindex));
+//                sname = p.SkillName(ref Conversions.ToShort(sindex));
+//                sname0 = p.SkillName0(ref Conversions.ToShort(sindex));
+//                is_level_specified = p.IsSkillLevelSpecified(ref Conversions.ToShort(sindex));
 //            }
 //            else
 //            {
@@ -112,33 +99,25 @@
 //                }
 
 //                stype = p.SkillType(ref stype);
-//                object argIndex7 = stype;
-//                string argref_mode1 = "";
-//                slevel = p.SkillLevel(ref argIndex7, ref_mode: ref argref_mode1);
-//                object argIndex8 = stype;
-//                sdata = p.SkillData(ref argIndex8);
-//                object argIndex9 = stype;
-//                sname = p.SkillName(ref argIndex9);
-//                object argIndex10 = stype;
-//                sname0 = p.SkillName0(ref argIndex10);
-//                object argIndex11 = stype;
-//                is_level_specified = p.IsSkillLevelSpecified(ref argIndex11);
+//                slevel = p.SkillLevel(ref stype, ref_mode: ref "");
+//                sdata = p.SkillData(ref stype);
+//                sname = p.SkillName(ref stype);
+//                sname0 = p.SkillName0(ref stype);
+//                is_level_specified = p.IsSkillLevelSpecified(ref stype);
 //            }
 
 //            // パイロットが乗っているユニット
 //            u = p.Unit_Renamed;
 //            if (u.Name == "ステータス表示用ダミーユニット")
 //            {
-//                string argvname = "搭乗ユニット[" + p.ID + "]";
-//                if (Expression.IsLocalVariableDefined(ref argvname))
+//                if (Expression.IsLocalVariableDefined(ref "搭乗ユニット[" + p.ID + "]"))
 //                {
 //                    // UPGRADE_WARNING: オブジェクト LocalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 //                    uname = Conversions.ToString(Event_Renamed.LocalVariableList["搭乗ユニット[" + p.ID + "]"].StringValue);
 //                    if (!string.IsNullOrEmpty(uname))
 //                    {
 //                        u2 = u;
-//                        object argIndex12 = uname;
-//                        u = SRC.UList.Item(ref argIndex12);
+//                        u = SRC.UList.Item(ref uname);
 //                    }
 //                }
 //            }
@@ -147,26 +126,18 @@
 //            {
 //                case "オーラ":
 //                    {
-//                        object argIndex14 = "バリア";
-//                        if (u.FeatureName0(ref argIndex14) == "オーラバリア")
+//                        if (u.FeatureName0(ref "バリア") == "オーラバリア")
 //                        {
-//                            object argIndex13 = "オーラバリア";
-//                            msg = "オーラ技「オ」の攻撃力と" + u.FeatureName0(ref argIndex13) + "の強度に" + SrcFormatter.Format((int)(100d * slevel)) + "の修正を与える。";
+//                            msg = "オーラ技「オ」の攻撃力と" + u.FeatureName0(ref "オーラバリア") + "の強度に" + SrcFormatter.Format((int)(100d * slevel)) + "の修正を与える。";
 //                        }
 //                        else
 //                        {
 //                            msg = "オーラ技「オ」の攻撃力の強度に" + SrcFormatter.Format((int)(100d * slevel)) + "の修正を与える。";
 //                        }
 
-//                        string argfname = "オーラ変換器";
-//                        if (u.IsFeatureAvailable(ref argfname))
+//                        if (u.IsFeatureAvailable(ref "オーラ変換器"))
 //                        {
-//                            string argtname = "ＨＰ";
-//                            string argtname1 = "ＥＮ";
-//                            string argtname2 = "装甲";
-//                            string argtname3 = "運動性";
-//                            Unit argu = null;
-//                            msg = msg + "また、" + Expression.Term(ref argtname, ref u) + "、" + Expression.Term(ref argtname1, ref u) + "、" + Expression.Term(ref argtname2, ref u) + "、" + Expression.Term(ref argtname3, u: ref argu) + "がレベルに合わせてそれぞれ増加する。";
+//                            msg = msg + "また、" + Expression.Term(ref "ＨＰ", ref u) + "、" + Expression.Term(ref "ＥＮ", ref u) + "、" + Expression.Term(ref "ＨＰ"2, ref u) + "、" + Expression.Term(ref "ＨＰ"3, u: ref null) + "がレベルに合わせてそれぞれ増加する。";
 //                        }
 
 //                        break;
@@ -180,9 +151,7 @@
 
 //                case "超感覚":
 //                    {
-//                        string argtname4 = "命中";
-//                        string argtname5 = "回避";
-//                        msg = Expression.Term(ref argtname4, ref u) + "・" + Expression.Term(ref argtname5, ref u);
+//                        msg = Expression.Term(ref "命中", ref u) + "・" + Expression.Term(ref "回避", ref u);
 //                        if (slevel > 0d)
 //                        {
 //                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel + 3d)) + " の修正を与える。";
@@ -202,9 +171,7 @@
 
 //                case "知覚強化":
 //                    {
-//                        string argtname6 = "命中";
-//                        string argtname7 = "回避";
-//                        msg = Expression.Term(ref argtname6, ref u) + "・" + Expression.Term(ref argtname7, ref u);
+//                        msg = Expression.Term(ref "命中", ref u) + "・" + Expression.Term(ref "回避", ref u);
 //                        if (slevel > 0d)
 //                        {
 //                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel + 3d)) + " の修正を与える。;";
@@ -219,16 +186,13 @@
 //                            msg = msg + "思念誘導攻撃(サ)の射程を" + SrcFormatter.Format((int)((long)slevel / 4L)) + "だけ延長する。";
 //                        }
 
-//                        string argtname8 = "ＳＰ";
-//                        msg = msg + "精神不安定により" + Expression.Term(ref argtname8, ref u) + "消費量が20%増加する";
+//                        msg = msg + "精神不安定により" + Expression.Term(ref "ＳＰ", ref u) + "消費量が20%増加する";
 //                        break;
 //                    }
 
 //                case "念力":
 //                    {
-//                        string argtname9 = "命中";
-//                        string argtname10 = "回避";
-//                        msg = Expression.Term(ref argtname9, ref u) + "・" + Expression.Term(ref argtname10, ref u);
+//                        msg = Expression.Term(ref "命中", ref u) + "・" + Expression.Term(ref "回避", ref u);
 //                        if (slevel > 0d)
 //                        {
 //                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel + 3d)) + " の修正を与える。";
@@ -255,17 +219,14 @@
 
 //                case "サイボーグ":
 //                    {
-//                        string argtname11 = "命中";
-//                        string argtname12 = "回避";
-//                        msg = Expression.Term(ref argtname11, ref u) + "・" + Expression.Term(ref argtname12, ref u);
+//                        msg = Expression.Term(ref "命中", ref u) + "・" + Expression.Term(ref "回避", ref u);
 //                        msg = msg + "に +5 の修正を与える。";
 //                        break;
 //                    }
 
 //                case "Ｓ防御":
 //                    {
-//                        string argfname1 = "盾";
-//                        if (u.IsFeatureAvailable(ref argfname1))
+//                        if (u.IsFeatureAvailable(ref "盾"))
 //                        {
 //                            msg = "シールド防御を行い、ダメージを" + SrcFormatter.Format((int)(100d * slevel + 400d)) + "減少させる。";
 //                        }
@@ -279,9 +240,7 @@
 
 //                case "資金獲得":
 //                    {
-//                        string argtname13 = "資金";
-//                        Unit argu1 = null;
-//                        msg = "敵を倒した時に得られる" + Expression.Term(ref argtname13, u: ref argu1);
+//                        msg = "敵を倒した時に得られる" + Expression.Term(ref "資金", u: ref null);
 //                        if (!is_level_specified)
 //                        {
 //                            msg = msg + "が 50% 増加する。";
@@ -300,8 +259,7 @@
 
 //                case "浄化":
 //                    {
-//                        object argIndex15 = "再生";
-//                        msg = "浄化技(浄)を使うことで敵の" + p.SkillName0(ref argIndex15) + "能力を無効化。";
+//                        msg = "浄化技(浄)を使うことで敵の" + p.SkillName0(ref "再生") + "能力を無効化。";
 //                        break;
 //                    }
 
@@ -316,8 +274,7 @@
 //                            msg = "機体に同調し";
 //                        }
 
-//                        string argtname14 = "運動性";
-//                        msg = msg + Expression.Term(ref argtname14, ref u) + "・攻撃力を強化する。";
+//                        msg = msg + Expression.Term(ref "運動性", ref u) + "・攻撃力を強化する。";
 //                        break;
 //                    }
 
@@ -325,13 +282,11 @@
 //                    {
 //                        if (slevel >= 0d)
 //                        {
-//                            object argIndex16 = "同調率";
-//                            msg = p.SkillName0(ref argIndex16) + "の成長率が " + SrcFormatter.Format(10d * slevel) + "% 増加する。";
+//                            msg = p.SkillName0(ref "同調率") + "の成長率が " + SrcFormatter.Format(10d * slevel) + "% 増加する。";
 //                        }
 //                        else
 //                        {
-//                            object argIndex17 = "同調率";
-//                            msg = p.SkillName0(ref argIndex17) + "の成長率が " + SrcFormatter.Format(-10 * slevel) + "% 減少する。";
+//                            msg = p.SkillName0(ref "同調率") + "の成長率が " + SrcFormatter.Format(-10 * slevel) + "% 減少する。";
 //                        }
 
 //                        break;
@@ -339,11 +294,7 @@
 
 //                case "霊力":
 //                    {
-//                        string argtname15 = "ＨＰ";
-//                        string argtname16 = "ＥＮ";
-//                        string argtname17 = "装甲";
-//                        string argtname18 = "移動力";
-//                        msg = "現在の" + sname0 + "値にあわせて" + Expression.Term(ref argtname15, ref u) + "・" + Expression.Term(ref argtname16, ref u) + "・" + Expression.Term(ref argtname17, ref u) + "・" + Expression.Term(ref argtname18, ref u) + "を強化する。";
+//                        msg = "現在の" + sname0 + "値にあわせて" + Expression.Term(ref "ＨＰ", ref u) + "・" + Expression.Term(ref "ＥＮ", ref u) + "・" + Expression.Term(ref "装甲", ref u) + "・" + Expression.Term(ref "移動力", ref u) + "を強化する。";
 //                        break;
 //                    }
 
@@ -351,13 +302,11 @@
 //                    {
 //                        if (slevel >= 0d)
 //                        {
-//                            object argIndex18 = "霊力";
-//                            msg = p.SkillName0(ref argIndex18) + "の成長率が " + SrcFormatter.Format(10d * slevel) + "% 増加する。";
+//                            msg = p.SkillName0(ref "霊力") + "の成長率が " + SrcFormatter.Format(10d * slevel) + "% 増加する。";
 //                        }
 //                        else
 //                        {
-//                            object argIndex19 = "霊力";
-//                            msg = p.SkillName0(ref argIndex19) + "の成長率が " + SrcFormatter.Format(-10 * slevel) + "% 減少する。";
+//                            msg = p.SkillName0(ref "霊力") + "の成長率が " + SrcFormatter.Format(-10 * slevel) + "% 減少する。";
 //                        }
 
 //                        break;
@@ -365,27 +314,20 @@
 
 //                case "底力":
 //                    {
-//                        string argtname19 = "ＨＰ";
-//                        string argtname20 = "ＨＰ";
-//                        msg = Expression.Term(ref argtname19, ref u) + "が最大" + Expression.Term(ref argtname20, ref u) + "の1/4以下の時に発動。;" + "命中＆回避 +30%、クリティカル発生率 +50%。";
+//                        msg = Expression.Term(ref "ＨＰ", ref u) + "が最大" + Expression.Term(ref "装甲"0, ref u) + "の1/4以下の時に発動。;" + "命中＆回避 +30%、クリティカル発生率 +50%。";
 //                        break;
 //                    }
 
 //                case "超底力":
 //                    {
-//                        string argtname21 = "ＨＰ";
-//                        string argtname22 = "ＨＰ";
-//                        msg = Expression.Term(ref argtname21, ref u) + "が最大" + Expression.Term(ref argtname22, ref u) + "の1/4以下の時に発動。;" + "命中＆回避 +50%、クリティカル発生率 +50%。";
+//                        msg = Expression.Term(ref "ＨＰ", ref u) + "が最大" + Expression.Term(ref "ＨＰ", ref u) + "の1/4以下の時に発動。;" + "命中＆回避 +50%、クリティカル発生率 +50%。";
 //                        break;
 //                    }
 
 //                case "覚悟":
 //                    {
-//                        string argtname23 = "ＨＰ";
-//                        string argtname24 = "ＨＰ";
-//                        msg = Expression.Term(ref argtname23, ref u) + "が最大" + Expression.Term(ref argtname24, ref u) + "の1/4以下の時に発動。;";
-//                        string argoname = "ダメージ倍率低下";
-//                        if (Expression.IsOptionDefined(ref argoname))
+//                        msg = Expression.Term(ref "ＨＰ", ref u) + "が最大" + Expression.Term(ref "ＨＰ", ref u) + "の1/4以下の時に発動。;";
+//                        if (Expression.IsOptionDefined(ref "ダメージ倍率低下"))
 //                        {
 //                            msg = msg + "攻撃力10%アップ、クリティカル発生率 +50%。";
 //                        }
@@ -399,9 +341,7 @@
 
 //                case "不屈":
 //                    {
-//                        string argtname25 = "ＨＰ";
-//                        string argtname26 = "ＨＰ";
-//                        msg = Expression.Term(ref argtname25, ref u) + "が最大" + Expression.Term(ref argtname26, ref u) + "の1/2以下の時に発動。;" + "損傷率に応じて防御力が増加する。";
+//                        msg = Expression.Term(ref "ＨＰ", ref u) + "が最大" + Expression.Term(ref "ＨＰ", ref u) + "の1/2以下の時に発動。;" + "損傷率に応じて防御力が増加する。";
 //                        break;
 //                    }
 
@@ -432,35 +372,25 @@
 //                case "再生":
 //                case "英雄":
 //                    {
-//                        string argtname27 = "ＨＰ";
-//                        msg = Expression.Term(ref argtname27, ref u) + "が０になった時に" + SrcFormatter.Format((int)((long)(100d * slevel) / 16L)) + "%の確率で復活する。";
+//                        msg = Expression.Term(ref "ＨＰ", ref u) + "が０になった時に" + SrcFormatter.Format((int)((long)(100d * slevel) / 16L)) + "%の確率で復活する。";
 //                        break;
 //                    }
 
 //                case "超能力":
 //                    {
-//                        string argtname28 = "命中";
-//                        string argtname29 = "回避";
-//                        string argtname30 = "ＣＴ率";
-//                        string argtname31 = "ＳＰ";
-//                        msg = Expression.Term(ref argtname28, ref u) + "・" + Expression.Term(ref argtname29, ref u) + "・" + Expression.Term(ref argtname30, ref u) + "にそれぞれ +5。;" + "サイキック攻撃(超)の攻撃力に +" + SrcFormatter.Format((int)(100d * slevel)) + "。;" + Expression.Term(ref argtname31, ref u) + "消費量を20%削減する。";
+//                        msg = Expression.Term(ref "命中", ref u) + "・" + Expression.Term(ref "回避", ref u) + "・" + Expression.Term(ref "ＣＴ率", ref u) + "にそれぞれ +5。;" + "サイキック攻撃(超)の攻撃力に +" + SrcFormatter.Format((int)(100d * slevel)) + "。;" + Expression.Term(ref "ＳＰ", ref u) + "消費量を20%削減する。";
 //                        break;
 //                    }
 
 //                case "悟り":
 //                    {
-//                        string argtname32 = "命中";
-//                        string argtname33 = "回避";
-//                        msg = Expression.Term(ref argtname32, ref u) + "・" + Expression.Term(ref argtname33, ref u) + "に +10 の修正を与える。";
+//                        msg = Expression.Term(ref "運動性"2, ref u) + "・" + Expression.Term(ref "回避", ref u) + "に +10 の修正を与える。";
 //                        break;
 //                    }
 
 //                case "超反応":
 //                    {
-//                        string argtname34 = "命中";
-//                        string argtname35 = "回避";
-//                        string argtname36 = "ＣＴ率";
-//                        msg = Expression.Term(ref argtname34, ref u) + "・" + Expression.Term(ref argtname35, ref u) + "・" + Expression.Term(ref argtname36, ref u);
+//                        msg = Expression.Term(ref "命中", ref u) + "・" + Expression.Term(ref "回避", ref u) + "・" + Expression.Term(ref "ＣＴ率", ref u);
 //                        if (slevel >= 0d)
 //                        {
 //                            msg = msg + "にそれぞれ +" + SrcFormatter.Format((int)(2d * slevel)) + " の修正を与える。";
@@ -544,10 +474,7 @@
 //                                }
 //                        }
 
-//                        string argtname37 = "アビリティ";
-//                        string argtname38 = "アビリティ";
-//                        string argtname39 = "ＥＮ";
-//                        msg = "術属性を持つ武装・" + Expression.Term(ref argtname37, ref u) + "及び必要技能が" + sname0 + "の武装・" + Expression.Term(ref argtname38, ref u) + "の消費" + Expression.Term(ref argtname39, ref u) + "を" + SrcFormatter.Format(i) + "%減少させる。";
+//                        msg = "術属性を持つ武装・" + Expression.Term(ref "アビリティ", ref u) + "及び必要技能が" + sname0 + "の武装・" + Expression.Term(ref "アビリティ", ref u) + "の消費" + Expression.Term(ref "ＥＮ", ref u) + "を" + SrcFormatter.Format(i) + "%減少させる。";
 //                        break;
 //                    }
 
@@ -622,18 +549,13 @@
 //                                }
 //                        }
 
-//                        string argtname40 = "アビリティ";
-//                        string argtname41 = "アビリティ";
-//                        string argtname42 = "ＥＮ";
-//                        msg = "技属性を持つ武装・" + Expression.Term(ref argtname40, ref u) + "及び必要技能が" + sname0 + "の武装・" + Expression.Term(ref argtname41, ref u) + "の消費" + Expression.Term(ref argtname42, ref u) + "を" + SrcFormatter.Format(i) + "%減少させる。";
+//                        msg = "技属性を持つ武装・" + Expression.Term(ref "アビリティ", ref u) + "及び必要技能が" + sname0 + "の武装・" + Expression.Term(ref "アビリティ", ref u) + "の消費" + Expression.Term(ref "ＥＮ", ref u) + "を" + SrcFormatter.Format(i) + "%減少させる。";
 //                        break;
 //                    }
 
 //                case "集中力":
 //                    {
-//                        string argtname43 = "スペシャルパワー";
-//                        string argtname44 = "ＳＰ";
-//                        msg = Expression.Term(ref argtname43, ref u) + "の" + Expression.Term(ref argtname44, ref u) + "消費量が元の80%に減少する。";
+//                        msg = Expression.Term(ref "スペシャルパワー", ref u) + "の" + Expression.Term(ref "ＳＰ", ref u) + "消費量が元の80%に減少する。";
 //                        break;
 //                    }
 
@@ -641,40 +563,32 @@
 //                    {
 //                        if (p.MinMorale > 100)
 //                        {
-//                            object argIndex20 = "闘争本能";
-//                            if (!p.IsSkillLevelSpecified(ref argIndex20))
+//                            if (!p.IsSkillLevelSpecified(ref "闘争本能"))
 //                            {
-//                                string argtname45 = "気力";
-//                                msg = "出撃時の" + Expression.Term(ref argtname45, ref u) + "が" + SrcFormatter.Format(p.MinMorale + 5d * slevel) + "に増加する。";
+//                                msg = "出撃時の" + Expression.Term(ref "気力", ref u) + "が" + SrcFormatter.Format(p.MinMorale + 5d * slevel) + "に増加する。";
 //                            }
 //                            else if (slevel >= 0d)
 //                            {
-//                                string argtname47 = "気力";
-//                                msg = "出撃時の" + Expression.Term(ref argtname47, ref u) + "が" + SrcFormatter.Format(p.MinMorale + 5d * slevel) + "に増加する。";
+//                                msg = "出撃時の" + Expression.Term(ref "気力", ref u) + "が" + SrcFormatter.Format(p.MinMorale + 5d * slevel) + "に増加する。";
 //                            }
 //                            else
 //                            {
-//                                string argtname46 = "気力";
-//                                msg = "出撃時の" + Expression.Term(ref argtname46, ref u) + "が" + SrcFormatter.Format(p.MinMorale + 5d * slevel) + "に減少する。";
+//                                msg = "出撃時の" + Expression.Term(ref "気力", ref u) + "が" + SrcFormatter.Format(p.MinMorale + 5d * slevel) + "に減少する。";
 //                            }
 //                        }
 //                        else
 //                        {
-//                            object argIndex21 = "闘争本能";
-//                            if (!p.IsSkillLevelSpecified(ref argIndex21))
+//                            if (!p.IsSkillLevelSpecified(ref "闘争本能"))
 //                            {
-//                                string argtname48 = "気力";
-//                                msg = "出撃時の" + Expression.Term(ref argtname48, ref u) + "が105に増加する。";
+//                                msg = "出撃時の" + Expression.Term(ref "気力", ref u) + "が105に増加する。";
 //                            }
 //                            else if (slevel >= 0d)
 //                            {
-//                                string argtname50 = "気力";
-//                                msg = "出撃時の" + Expression.Term(ref argtname50, ref u) + "が" + SrcFormatter.Format(100d + 5d * slevel) + "に増加する。";
+//                                msg = "出撃時の" + Expression.Term(ref "気力", ref u) + "が" + SrcFormatter.Format(100d + 5d * slevel) + "に増加する。";
 //                            }
 //                            else
 //                            {
-//                                string argtname49 = "気力";
-//                                msg = "出撃時の" + Expression.Term(ref argtname49, ref u) + "が" + SrcFormatter.Format(100d + 5d * slevel) + "に減少する。";
+//                                msg = "出撃時の" + Expression.Term(ref "気力", ref u) + "が" + SrcFormatter.Format(100d + 5d * slevel) + "に減少する。";
 //                            }
 //                        }
 
@@ -683,16 +597,13 @@
 
 //                case "潜在力開放":
 //                    {
-//                        string argoname1 = "ダメージ倍率低下";
-//                        if (Expression.IsOptionDefined(ref argoname1))
+//                        if (Expression.IsOptionDefined(ref "ダメージ倍率低下"))
 //                        {
-//                            string argtname51 = "気力";
-//                            msg = Expression.Term(ref argtname51, ref u) + "130以上で発動し、ダメージを 20% 増加させる。";
+//                            msg = Expression.Term(ref "気力", ref u) + "130以上で発動し、ダメージを 20% 増加させる。";
 //                        }
 //                        else
 //                        {
-//                            string argtname52 = "気力";
-//                            msg = Expression.Term(ref argtname52, ref u) + "130以上で発動し、ダメージを 25% 増加させる。";
+//                            msg = Expression.Term(ref "気力", ref u) + "130以上で発動し、ダメージを 25% 増加させる。";
 //                        }
 
 //                        break;
@@ -700,9 +611,7 @@
 
 //                case "指揮":
 //                    {
-//                        string argtname53 = "命中";
-//                        string argtname54 = "回避";
-//                        msg = "半径" + Strings.StrConv(SrcFormatter.Format(p.CommandRange()), VbStrConv.Wide) + "マス以内にいる味方ザコ・汎用及び階級所有パイロットの" + Expression.Term(ref argtname53, ref u) + "・" + Expression.Term(ref argtname54, ref u);
+//                        msg = "半径" + Strings.StrConv(SrcFormatter.Format(p.CommandRange()), VbStrConv.Wide) + "マス以内にいる味方ザコ・汎用及び階級所有パイロットの" + Expression.Term(ref "命中", ref u) + "・" + Expression.Term(ref "回避", ref u);
 //                        if (slevel >= 0d)
 //                        {
 //                            msg = msg + "に +" + SrcFormatter.Format((int)(5d * slevel)) + "。";
@@ -728,8 +637,7 @@
 
 //                case "格闘サポート":
 //                    {
-//                        string argtname55 = "格闘";
-//                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref argtname55, ref u);
+//                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref "格闘", ref u);
 //                        if (slevel >= 0d)
 //                        {
 //                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
@@ -744,8 +652,7 @@
 
 //                case "射撃サポート":
 //                    {
-//                        string argtname56 = "射撃";
-//                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref argtname56, ref u);
+//                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref "射撃", ref u);
 //                        if (slevel >= 0d)
 //                        {
 //                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
@@ -760,8 +667,7 @@
 
 //                case "魔力サポート":
 //                    {
-//                        string argtname57 = "魔力";
-//                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref argtname57, ref u);
+//                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref "魔力", ref u);
 //                        if (slevel >= 0d)
 //                        {
 //                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
@@ -776,8 +682,7 @@
 
 //                case "命中サポート":
 //                    {
-//                        string argtname58 = "命中";
-//                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref argtname58, ref u);
+//                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref "命中", ref u);
 //                        if (slevel >= 0d)
 //                        {
 //                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
@@ -792,8 +697,7 @@
 
 //                case "回避サポート":
 //                    {
-//                        string argtname59 = "回避";
-//                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref argtname59, ref u);
+//                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref "回避", ref u);
 //                        if (slevel >= 0d)
 //                        {
 //                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
@@ -808,8 +712,7 @@
 
 //                case "技量サポート":
 //                    {
-//                        string argtname60 = "技量";
-//                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref argtname60, ref u);
+//                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref "技量", ref u);
 //                        if (slevel >= 0d)
 //                        {
 //                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
@@ -824,8 +727,7 @@
 
 //                case "反応サポート":
 //                    {
-//                        string argtname61 = "反応";
-//                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref argtname61, ref u);
+//                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref "反応", ref u);
 //                        if (slevel >= 0d)
 //                        {
 //                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
@@ -840,9 +742,7 @@
 
 //                case "サポート":
 //                    {
-//                        string argtname62 = "命中";
-//                        string argtname63 = "回避";
-//                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref argtname62, ref u) + "・" + Expression.Term(ref argtname63, ref u);
+//                        msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term(ref "命中", ref u) + "・" + Expression.Term(ref "回避", ref u);
 //                        if (slevel >= 0d)
 //                        {
 //                            msg = msg + "に +" + SrcFormatter.Format((int)(3d * slevel)) + "。";
@@ -857,9 +757,7 @@
 
 //                case "広域サポート":
 //                    {
-//                        string argtname64 = "命中";
-//                        string argtname65 = "回避";
-//                        msg = "半径２マス以内にいる味方パイロットの" + Expression.Term(ref argtname64, ref u) + "・" + Expression.Term(ref argtname65, ref u);
+//                        msg = "半径２マス以内にいる味方パイロットの" + Expression.Term(ref "命中", ref u) + "・" + Expression.Term(ref "回避", ref u);
 //                        if (slevel >= 0d)
 //                        {
 //                            msg = msg + "に +" + SrcFormatter.Format((int)(5d * slevel)) + "。";
@@ -912,13 +810,11 @@
 //                    {
 //                        if (GeneralLib.LLength(ref sdata) == 2)
 //                        {
-//                            string argtname66 = "気力";
-//                            msg = "パイロットの" + Expression.Term(ref argtname66, ref u) + "が" + GeneralLib.LIndex(ref sdata, 2) + "以上で発動。";
+//                            msg = "パイロットの" + Expression.Term(ref "気力", ref u) + "が" + GeneralLib.LIndex(ref sdata, 2) + "以上で発動。";
 //                        }
 //                        else
 //                        {
-//                            string argtname67 = "気力";
-//                            msg = "パイロットの" + Expression.Term(ref argtname67, ref u) + "が120以上で発動。";
+//                            msg = "パイロットの" + Expression.Term(ref "気力", ref u) + "が120以上で発動。";
 //                        }
 
 //                        msg = msg + "反撃が必ずカウンター攻撃になり、相手の攻撃に先制して反撃を行う。";
@@ -933,8 +829,7 @@
 
 //                case "再攻撃":
 //                    {
-//                        string argtname68 = "反応";
-//                        msg = "自分の攻撃の直後に " + SrcFormatter.Format((int)((long)(100d * slevel) / 16L)) + "% の確率で再攻撃を行う。" + "ただしパイロットの" + Expression.Term(ref argtname68, ref u) + "が相手を下回る場合、確率は半減。";
+//                        msg = "自分の攻撃の直後に " + SrcFormatter.Format((int)((long)(100d * slevel) / 16L)) + "% の確率で再攻撃を行う。" + "ただしパイロットの" + Expression.Term(ref "反応", ref u) + "が相手を下回る場合、確率は半減。";
 //                        break;
 //                    }
 
@@ -948,13 +843,11 @@
 //                    {
 //                        if (slevel >= 0d)
 //                        {
-//                            string argtname69 = "装甲";
-//                            msg = "ダメージ計算の際に" + Expression.Term(ref argtname69, ref u) + "を" + SrcFormatter.Format((int)(5d * slevel)) + "%増加させる。";
+//                            msg = "ダメージ計算の際に" + Expression.Term(ref "装甲", ref u) + "を" + SrcFormatter.Format((int)(5d * slevel)) + "%増加させる。";
 //                        }
 //                        else
 //                        {
-//                            string argtname70 = "装甲";
-//                            msg = "ダメージ計算の際に" + Expression.Term(ref argtname70, ref u) + "を" + SrcFormatter.Format((int)(5d * Math.Abs(slevel))) + "%減少させる。";
+//                            msg = "ダメージ計算の際に" + Expression.Term(ref "装甲", ref u) + "を" + SrcFormatter.Format((int)(5d * Math.Abs(slevel))) + "%減少させる。";
 //                        }
 
 //                        break;
@@ -962,32 +855,27 @@
 
 //                case "ＳＰ低成長":
 //                    {
-//                        string argtname71 = "ＳＰ";
-//                        msg = "レベルアップ時の最大" + Expression.Term(ref argtname71, ref u) + "の増加量が通常の半分に減少する。";
+//                        msg = "レベルアップ時の最大" + Expression.Term(ref "ＳＰ", ref u) + "の増加量が通常の半分に減少する。";
 //                        break;
 //                    }
 
 //                case "ＳＰ高成長":
 //                    {
-//                        string argtname72 = "ＳＰ";
-//                        msg = "レベルアップ時の最大" + Expression.Term(ref argtname72, ref u) + "の増加量が通常の1.5倍に増加する。";
+//                        msg = "レベルアップ時の最大" + Expression.Term(ref "ＳＰ", ref u) + "の増加量が通常の1.5倍に増加する。";
 //                        break;
 //                    }
 
 //                case "ＳＰ回復":
 //                    {
-//                        string argtname73 = "ＳＰ";
-//                        msg = "毎ターン" + Expression.Term(ref argtname73, ref u) + "がパイロットレベル/8+5回復する(+" + SrcFormatter.Format(p.Level / 8 + 5) + ")。";
+//                        msg = "毎ターン" + Expression.Term(ref "ＳＰ", ref u) + "がパイロットレベル/8+5回復する(+" + SrcFormatter.Format(p.Level / 8 + 5) + ")。";
 //                        break;
 //                    }
 
 //                case "格闘成長":
 //                    {
 //                        // 攻撃力低成長オプションが指定されているかどうかで解説を変更する。
-//                        string argtname74 = "格闘";
-//                        msg = "レベルアップ時の" + Expression.Term(ref argtname74, ref u) + "の増加量が";
-//                        string argoname2 = "攻撃力低成長";
-//                        if (Expression.IsOptionDefined(ref argoname2))
+//                        msg = "レベルアップ時の" + Expression.Term(ref "格闘", ref u) + "の増加量が";
+//                        if (Expression.IsOptionDefined(ref "攻撃力低成長"))
 //                        {
 //                            msg = msg + SrcFormatter.Format(slevel + 0.5d) + "になる。";
 //                        }
@@ -1004,17 +892,14 @@
 //                        // 攻撃力低成長オプション、術技能の有無によってデフォルト解説を変更する。
 //                        if (p.HasMana())
 //                        {
-//                            string argtname75 = "魔力";
-//                            msg = "レベルアップ時の" + Expression.Term(ref argtname75, ref u) + "の増加量が";
+//                            msg = "レベルアップ時の" + Expression.Term(ref "魔力", ref u) + "の増加量が";
 //                        }
 //                        else
 //                        {
-//                            string argtname76 = "射撃";
-//                            msg = "レベルアップ時の" + Expression.Term(ref argtname76, ref u) + "の増加量が";
+//                            msg = "レベルアップ時の" + Expression.Term(ref "射撃", ref u) + "の増加量が";
 //                        }
 
-//                        string argoname3 = "攻撃力低成長";
-//                        if (Expression.IsOptionDefined(ref argoname3))
+//                        if (Expression.IsOptionDefined(ref "攻撃力低成長"))
 //                        {
 //                            msg = msg + SrcFormatter.Format(slevel + 0.5d) + "になる。";
 //                        }
@@ -1028,39 +913,33 @@
 
 //                case "命中成長":
 //                    {
-//                        string argtname77 = "命中";
-//                        msg = "レベルアップ時の" + Expression.Term(ref argtname77, ref u) + "の増加量が" + SrcFormatter.Format(slevel + 2d) + "になる。";
+//                        msg = "レベルアップ時の" + Expression.Term(ref "命中", ref u) + "の増加量が" + SrcFormatter.Format(slevel + 2d) + "になる。";
 //                        break;
 //                    }
 
 //                case "回避成長":
 //                    {
-//                        string argtname78 = "回避";
-//                        msg = "レベルアップ時の" + Expression.Term(ref argtname78, ref u) + "の増加量が" + SrcFormatter.Format(slevel + 2d) + "になる。";
+//                        msg = "レベルアップ時の" + Expression.Term(ref "回避", ref u) + "の増加量が" + SrcFormatter.Format(slevel + 2d) + "になる。";
 //                        break;
 //                    }
 
 //                case "技量成長":
 //                    {
-//                        string argtname79 = "技量";
-//                        msg = "レベルアップ時の" + Expression.Term(ref argtname79, ref u) + "の増加量が" + SrcFormatter.Format(slevel + 1d) + "になる。";
+//                        msg = "レベルアップ時の" + Expression.Term(ref "技量", ref u) + "の増加量が" + SrcFormatter.Format(slevel + 1d) + "になる。";
 //                        break;
 //                    }
 
 //                case "反応成長":
 //                    {
-//                        string argtname80 = "反応";
-//                        msg = "レベルアップ時の" + Expression.Term(ref argtname80, ref u) + "の増加量が" + SrcFormatter.Format(slevel + 1d) + "になる。";
+//                        msg = "レベルアップ時の" + Expression.Term(ref "反応", ref u) + "の増加量が" + SrcFormatter.Format(slevel + 1d) + "になる。";
 //                        break;
 //                    }
 
 //                case "防御成長":
 //                    {
 //                        // 防御力低成長オプションが指定されているかどうかで解説を変更する。
-//                        string argtname81 = "防御";
-//                        msg = "レベルアップ時の" + Expression.Term(ref argtname81, ref u) + "の増加量が";
-//                        string argoname4 = "防御力低成長";
-//                        if (Expression.IsOptionDefined(ref argoname4))
+//                        msg = "レベルアップ時の" + Expression.Term(ref "防御", ref u) + "の増加量が";
+//                        if (Expression.IsOptionDefined(ref "防御力低成長"))
 //                        {
 //                            msg = msg + SrcFormatter.Format(slevel + 0.5d) + "になる。";
 //                        }
@@ -1074,11 +953,7 @@
 
 //                case "精神統一":
 //                    {
-//                        string argtname82 = "ＳＰ";
-//                        string argtname83 = "ＳＰ";
-//                        string argtname84 = "ＳＰ";
-//                        string argtname85 = "ＳＰ";
-//                        msg = Expression.Term(ref argtname82, ref u) + "が最大" + Expression.Term(ref argtname83, ref u) + "の20%未満(" + SrcFormatter.Format(p.MaxSP / 5) + "未満)の場合、" + "ターン開始時に" + Expression.Term(ref argtname84, ref u) + "が最大" + Expression.Term(ref argtname85, ref u) + "の10%分回復する(+" + SrcFormatter.Format(p.MaxSP / 10) + ")。";
+//                        msg = Expression.Term(ref "ＳＰ", ref u) + "が最大" + Expression.Term(ref "ＳＰ", ref u) + "の20%未満(" + SrcFormatter.Format(p.MaxSP / 5) + "未満)の場合、" + "ターン開始時に" + Expression.Term(ref "ＳＰ", ref u) + "が最大" + Expression.Term(ref "ＳＰ", ref u) + "の10%分回復する(+" + SrcFormatter.Format(p.MaxSP / 10) + ")。";
 //                        break;
 //                    }
 
@@ -1086,13 +961,11 @@
 //                    {
 //                        if (slevel >= -1)
 //                        {
-//                            string argtname86 = "気力";
-//                            msg = "ダメージを受けた際に" + Expression.Term(ref argtname86, ref u) + "+" + SrcFormatter.Format((int)(slevel + 1d)) + "。";
+//                            msg = "ダメージを受けた際に" + Expression.Term(ref "気力", ref u) + "+" + SrcFormatter.Format((int)(slevel + 1d)) + "。";
 //                        }
 //                        else
 //                        {
-//                            string argtname87 = "気力";
-//                            msg = "ダメージを受けた際に" + Expression.Term(ref argtname87, ref u) + SrcFormatter.Format((int)(slevel + 1d)) + "。";
+//                            msg = "ダメージを受けた際に" + Expression.Term(ref "気力", ref u) + SrcFormatter.Format((int)(slevel + 1d)) + "。";
 //                        }
 
 //                        break;
@@ -1102,13 +975,11 @@
 //                    {
 //                        if (slevel >= 0d)
 //                        {
-//                            string argtname88 = "気力";
-//                            msg = "攻撃を命中させた際に" + Expression.Term(ref argtname88, ref u) + "+" + SrcFormatter.Format((int)slevel) + "。(マップ攻撃は例外)";
+//                            msg = "攻撃を命中させた際に" + Expression.Term(ref "気力", ref u) + "+" + SrcFormatter.Format((int)slevel) + "。(マップ攻撃は例外)";
 //                        }
 //                        else
 //                        {
-//                            string argtname89 = "気力";
-//                            msg = "攻撃を命中させた際に" + Expression.Term(ref argtname89, ref u) + SrcFormatter.Format((int)slevel) + "。(マップ攻撃は例外)";
+//                            msg = "攻撃を命中させた際に" + Expression.Term(ref "気力", ref u) + SrcFormatter.Format((int)slevel) + "。(マップ攻撃は例外)";
 //                        }
 
 //                        break;
@@ -1118,13 +989,11 @@
 //                    {
 //                        if (slevel >= 0d)
 //                        {
-//                            string argtname90 = "気力";
-//                            msg = "攻撃を外してしまった際に" + Expression.Term(ref argtname90, ref u) + "+" + SrcFormatter.Format((int)slevel) + "。(マップ攻撃は例外)";
+//                            msg = "攻撃を外してしまった際に" + Expression.Term(ref "気力", ref u) + "+" + SrcFormatter.Format((int)slevel) + "。(マップ攻撃は例外)";
 //                        }
 //                        else
 //                        {
-//                            string argtname91 = "気力";
-//                            msg = "攻撃を外してしまった際に" + Expression.Term(ref argtname91, ref u) + SrcFormatter.Format((int)slevel) + "。(マップ攻撃は例外)";
+//                            msg = "攻撃を外してしまった際に" + Expression.Term(ref "気力", ref u) + SrcFormatter.Format((int)slevel) + "。(マップ攻撃は例外)";
 //                        }
 
 //                        break;
@@ -1134,13 +1003,11 @@
 //                    {
 //                        if (slevel >= 0d)
 //                        {
-//                            string argtname92 = "気力";
-//                            msg = "攻撃を回避した際に" + Expression.Term(ref argtname92, ref u) + "+" + SrcFormatter.Format((int)slevel) + "。";
+//                            msg = "攻撃を回避した際に" + Expression.Term(ref "気力", ref u) + "+" + SrcFormatter.Format((int)slevel) + "。";
 //                        }
 //                        else
 //                        {
-//                            string argtname93 = "気力";
-//                            msg = "攻撃を回避した際に" + Expression.Term(ref argtname93, ref u) + SrcFormatter.Format((int)slevel) + "。";
+//                            msg = "攻撃を回避した際に" + Expression.Term(ref "気力", ref u) + SrcFormatter.Format((int)slevel) + "。";
 //                        }
 
 //                        break;
@@ -1148,20 +1015,13 @@
 
 //                case "起死回生":
 //                    {
-//                        string argtname94 = "ＳＰ";
-//                        string argtname95 = "ＨＰ";
-//                        string argtname96 = "ＥＮ";
-//                        string argtname97 = "ＳＰ";
-//                        string argtname98 = "ＨＰ";
-//                        string argtname99 = "ＥＮ";
-//                        msg = Expression.Term(ref argtname94, ref u) + "、" + Expression.Term(ref argtname95, ref u) + "、" + Expression.Term(ref argtname96, ref u) + "の全てが最大値の20%以下になると毎ターン最初に発動。" + Expression.Term(ref argtname97, ref u) + "、" + Expression.Term(ref argtname98, ref u) + "、" + Expression.Term(ref argtname99, ref u) + "が全快する。";
+//                        msg = Expression.Term(ref "ＳＰ", ref u) + "、" + Expression.Term(ref "ＨＰ", ref u) + "、" + Expression.Term(ref "ＥＮ", ref u) + "の全てが最大値の20%以下になると毎ターン最初に発動。" + Expression.Term(ref "ＳＰ", ref u) + "、" + Expression.Term(ref "ＨＰ", ref u) + "、" + Expression.Term(ref "ＥＮ", ref u) + "が全快する。";
 //                        break;
 //                    }
 
 //                case "戦術":
 //                    {
-//                        string argtname100 = "技量";
-//                        msg = "思考パターン決定の際に用いられる" + Expression.Term(ref argtname100, ref u);
+//                        msg = "思考パターン決定の際に用いられる" + Expression.Term(ref "技量", ref u);
 //                        if (slevel >= 0d)
 //                        {
 //                            msg = msg + "初期値がレベル×10増加(+" + SrcFormatter.Format((int)(10d * slevel)) + ")。";
@@ -1178,9 +1038,7 @@
 //                    {
 //                        string localSkillData() { object argIndex1 = stype; var ret = p.SkillData(ref argIndex1); return ret; }
 
-//                        string argtname101 = "アビリティ";
-//                        string argtname102 = "アビリティ";
-//                        msg = "「" + localSkillData() + "」属性を持つ武器・" + Expression.Term(ref argtname101, ref u) + "によるダメージ・効果量が 20% 増加。" + "また、" + Expression.Term(ref argtname102, ref u) + "の継続時間が 40% 増加。";
+//                        msg = "「" + localSkillData() + "」属性を持つ武器・" + Expression.Term(ref "アビリティ", ref u) + "によるダメージ・効果量が 20% 増加。" + "また、" + Expression.Term(ref "アビリティ", ref u) + "の継続時間が 40% 増加。";
 //                        break;
 //                    }
 
@@ -1188,9 +1046,7 @@
 //                    {
 //                        string localSkillData1() { object argIndex1 = stype; var ret = p.SkillData(ref argIndex1); return ret; }
 
-//                        string argtname103 = "アビリティ";
-//                        string argtname104 = "アビリティ";
-//                        msg = "「" + localSkillData1() + "」属性を持つ武器・" + Expression.Term(ref argtname103, ref u) + "によるダメージ・効果量が 20% 減少。" + "また、" + Expression.Term(ref argtname104, ref u) + "の継続時間が 40% 減少。";
+//                        msg = "「" + localSkillData1() + "」属性を持つ武器・" + Expression.Term(ref "アビリティ", ref u) + "によるダメージ・効果量が 20% 減少。" + "また、" + Expression.Term(ref "アビリティ", ref u) + "の継続時間が 40% 減少。";
 //                        break;
 //                    }
 
@@ -1227,13 +1083,11 @@
 
 //                case "ＳＰ消費減少":
 //                    {
-//                        string argtname105 = "スペシャルパワー";
-//                        msg = Expression.Term(ref argtname105, ref u);
+//                        msg = Expression.Term(ref "スペシャルパワー", ref u);
 //                        var loopTo1 = GeneralLib.LLength(ref sdata);
 //                        for (i = 2; i <= loopTo1; i++)
 //                            msg = msg + "「" + GeneralLib.LIndex(ref sdata, i) + "」";
-//                        string argtname106 = "ＳＰ";
-//                        msg = msg + "の" + Expression.Term(ref argtname106, ref u) + "消費量が";
+//                        msg = msg + "の" + Expression.Term(ref "ＳＰ", ref u) + "消費量が";
 //                        if (slevel >= 0d)
 //                        {
 //                            msg = msg + SrcFormatter.Format(10d * slevel) + "%減少する。";
@@ -1248,17 +1102,13 @@
 
 //                case "スペシャルパワー自動発動":
 //                    {
-//                        string argtname107 = "気力";
-//                        string argtname108 = "ＳＰ";
-//                        msg = Expression.Term(ref argtname107, ref u) + "が" + GeneralLib.LIndex(ref sdata, 3) + "以上で発動し、" + "毎ターン最初に「" + GeneralLib.LIndex(ref sdata, 2) + "」が自動でかかる。" + "（" + Expression.Term(ref argtname108, ref u) + "は消費しない）";
+//                        msg = Expression.Term(ref "気力", ref u) + "が" + GeneralLib.LIndex(ref sdata, 3) + "以上で発動し、" + "毎ターン最初に「" + GeneralLib.LIndex(ref sdata, 2) + "」が自動でかかる。" + "（" + Expression.Term(ref "ＳＰ", ref u) + "は消費しない）";
 //                        break;
 //                    }
 
 //                case "修理":
 //                    {
-//                        string argtname109 = "アビリティ";
-//                        string argtname110 = "ＨＰ";
-//                        msg = "修理装置や回復" + Expression.Term(ref argtname109, ref u) + "を使った際の" + Expression.Term(ref argtname110, ref u) + "回復量が ";
+//                        msg = "修理装置や回復" + Expression.Term(ref "アビリティ", ref u) + "を使った際の" + Expression.Term(ref "ＨＰ", ref u) + "回復量が ";
 //                        if (slevel >= 0d)
 //                        {
 //                            msg = msg + SrcFormatter.Format(10d * slevel) + "% 増加する。";
@@ -1273,15 +1123,12 @@
 
 //                case "補給":
 //                    {
-//                        string argoname5 = "移動後補給不可";
-//                        if (Expression.IsOptionDefined(ref argoname5))
+//                        if (Expression.IsOptionDefined(ref "移動後補給不可"))
 //                        {
 //                            msg = "移動後に補給装置を使用できるようになる。また、";
 //                        }
 
-//                        string argtname111 = "アビリティ";
-//                        string argtname112 = "ＥＮ";
-//                        msg = msg + "補給" + Expression.Term(ref argtname111, ref u) + "を使った際の" + Expression.Term(ref argtname112, ref u) + "回復量が ";
+//                        msg = msg + "補給" + Expression.Term(ref "アビリティ", ref u) + "を使った際の" + Expression.Term(ref "ＥＮ", ref u) + "回復量が ";
 //                        if (slevel >= 0d)
 //                        {
 //                            msg = msg + SrcFormatter.Format(10d * slevel) + "% 増加する。";
@@ -1302,8 +1149,7 @@
 //                            i = (short)GeneralLib.MaxLng((int)slevel, 0);
 //                        }
 
-//                        string argtname113 = "気力";
-//                        msg = Expression.Term(ref argtname113, ref u) + "の上限が" + SrcFormatter.Format(i) + "になる。";
+//                        msg = Expression.Term(ref "気力", ref u) + "の上限が" + SrcFormatter.Format(i) + "になる。";
 //                        break;
 //                    }
 
@@ -1315,8 +1161,7 @@
 //                            i = (short)GeneralLib.MaxLng((int)slevel, 0);
 //                        }
 
-//                        string argtname114 = "気力";
-//                        msg = Expression.Term(ref argtname114, ref u) + "の下限が" + SrcFormatter.Format(i) + "になる。";
+//                        msg = Expression.Term(ref "気力", ref u) + "の下限が" + SrcFormatter.Format(i) + "になる。";
 //                        break;
 //                    }
 
@@ -1325,8 +1170,7 @@
 //                    {
 //                        // ADD END MARGE
 
-//                        string argtname115 = "アビリティ";
-//                        msg = "移動後使用可能な武器・" + Expression.Term(ref argtname115, ref u) + "を使った後に、残った移動力を使って移動できる。";
+//                        msg = "移動後使用可能な武器・" + Expression.Term(ref "アビリティ", ref u) + "を使った後に、残った移動力を使って移動できる。";
 //                        break;
 //                    }
 
@@ -1335,8 +1179,7 @@
 //                        // ダミー能力
 
 //                        // パイロット側で解説を定義している？
-//                        object argIndex22 = sname0;
-//                        sdata = p.SkillData(ref argIndex22);
+//                        sdata = p.SkillData(ref sname0);
 //                        if (GeneralLib.ListIndex(ref sdata, 1) == "解説")
 //                        {
 //                            msg = GeneralLib.ListIndex(ref sdata, GeneralLib.ListLength(ref sdata));
@@ -1353,11 +1196,9 @@
 //                        var loopTo2 = u.CountFeature();
 //                        for (i = 1; i <= loopTo2; i++)
 //                        {
-//                            object argIndex24 = i;
-//                            if ((u.Feature(ref argIndex24) ?? "") == (stype ?? ""))
+//                            if ((u.Feature(ref i) ?? "") == (stype ?? ""))
 //                            {
-//                                object argIndex23 = i;
-//                                fdata = u.FeatureData(ref argIndex23);
+//                                fdata = u.FeatureData(ref i);
 //                                if (GeneralLib.ListIndex(ref fdata, 1) == "解説")
 //                                {
 //                                    msg = GeneralLib.ListIndex(ref fdata, GeneralLib.ListLength(ref fdata));
@@ -1370,11 +1211,9 @@
 //                            var loopTo3 = u2.CountFeature();
 //                            for (i = 1; i <= loopTo3; i++)
 //                            {
-//                                object argIndex26 = i;
-//                                if ((u2.Feature(ref argIndex26) ?? "") == (stype ?? ""))
+//                                if ((u2.Feature(ref i) ?? "") == (stype ?? ""))
 //                                {
-//                                    object argIndex25 = i;
-//                                    fdata = u2.FeatureData(ref argIndex25);
+//                                    fdata = u2.FeatureData(ref i);
 //                                    if (GeneralLib.ListIndex(ref fdata, 1) == "解説")
 //                                    {
 //                                        msg = GeneralLib.ListIndex(ref fdata, GeneralLib.ListLength(ref fdata));
@@ -1399,8 +1238,7 @@
 //            }
 
 //            // パイロット側で解説を定義している？
-//            object argIndex27 = sname0;
-//            sdata = p.SkillData(ref argIndex27);
+//            sdata = p.SkillData(ref sname0);
 //            if (GeneralLib.ListIndex(ref sdata, 1) == "解説")
 //            {
 //                msg = GeneralLib.ListIndex(ref sdata, GeneralLib.ListLength(ref sdata));
@@ -1414,11 +1252,9 @@
 //            var loopTo4 = u.CountFeature();
 //            for (i = 1; i <= loopTo4; i++)
 //            {
-//                object argIndex29 = i;
-//                if ((u.Feature(ref argIndex29) ?? "") == (sname0 ?? ""))
+//                if ((u.Feature(ref i) ?? "") == (sname0 ?? ""))
 //                {
-//                    object argIndex28 = i;
-//                    fdata = u.FeatureData(ref argIndex28);
+//                    fdata = u.FeatureData(ref i);
 //                    if (GeneralLib.ListIndex(ref fdata, 1) == "解説")
 //                    {
 //                        msg = GeneralLib.ListIndex(ref fdata, GeneralLib.ListLength(ref fdata));
@@ -1435,11 +1271,9 @@
 //                var loopTo5 = u2.CountFeature();
 //                for (i = 1; i <= loopTo5; i++)
 //                {
-//                    object argIndex31 = i;
-//                    if ((u2.Feature(ref argIndex31) ?? "") == (sname0 ?? ""))
+//                    if ((u2.Feature(ref i) ?? "") == (sname0 ?? ""))
 //                    {
-//                        object argIndex30 = i;
-//                        fdata = u2.FeatureData(ref argIndex30);
+//                        fdata = u2.FeatureData(ref i);
 //                        if (GeneralLib.ListIndex(ref fdata, 1) == "解説")
 //                        {
 //                            msg = GeneralLib.ListIndex(ref fdata, GeneralLib.ListLength(ref fdata));
@@ -1453,21 +1287,12 @@
 //            }
 
 //            // 等身大基準の際は「パイロット」という語を使わないようにする
-//            string argoname6 = "等身大基準";
-//            if (Expression.IsOptionDefined(ref argoname6))
+//            if (Expression.IsOptionDefined(ref "等身大基準"))
 //            {
-//                string args2 = "メインパイロット";
-//                string args3 = "ユニット";
-//                GeneralLib.ReplaceString(ref msg, ref args2, ref args3);
-//                string args21 = "サポートパイロット";
-//                string args31 = "サポート";
-//                GeneralLib.ReplaceString(ref msg, ref args21, ref args31);
-//                string args22 = "パイロットレベル";
-//                string args32 = "レベル";
-//                GeneralLib.ReplaceString(ref msg, ref args22, ref args32);
-//                string args23 = "パイロット";
-//                string args33 = "ユニット";
-//                GeneralLib.ReplaceString(ref msg, ref args23, ref args33);
+//                GeneralLib.ReplaceString(ref msg, ref "メインパイロット", ref "ユニット");
+//                GeneralLib.ReplaceString(ref msg, ref "サポートパイロット", ref "サポート");
+//                GeneralLib.ReplaceString(ref msg, ref "パイロットレベル", ref "レベル");
+//                GeneralLib.ReplaceString(ref msg, ref "パイロット", ref "ユニット");
 //            }
 
 //            SkillHelpMessageRet = msg;
@@ -1493,8 +1318,7 @@
 //                else if (Information.IsNumeric(findex))
 //                {
 //                    // UPGRADE_WARNING: オブジェクト findex の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-//                    object argIndex1 = Conversions.ToShort(findex);
-//                    fname = withBlock.AllFeatureName(ref argIndex1);
+//                    fname = withBlock.AllFeatureName(ref Conversions.ToShort(findex));
 //                }
 //                else
 //                {
@@ -1509,17 +1333,13 @@
 //            {
 //                prev_mode = GUI.AutoMessageMode;
 //                GUI.AutoMessageMode = false;
-//                Unit argu1 = null;
-//                Unit argu2 = null;
-//                GUI.OpenMessageForm(u1: ref argu1, u2: ref argu2);
+//                GUI.OpenMessageForm(u1: ref null, u2: ref null);
 //                if (SRC.AutoMoveCursor)
 //                {
-//                    string argcursor_mode = "メッセージウィンドウ";
-//                    GUI.MoveCursorPos(ref argcursor_mode);
+//                    GUI.MoveCursorPos(ref "メッセージウィンドウ");
 //                }
 
-//                string argpname = "システム";
-//                GUI.DisplayMessage(ref argpname, "<b>" + fname + "</b>;" + msg);
+//                GUI.DisplayMessage(ref "システム", "<b>" + fname + "</b>;" + msg);
 //                GUI.CloseMessageForm();
 //                GUI.AutoMessageMode = prev_mode;
 //            }
@@ -1560,16 +1380,11 @@
 //                {
 //                    // UPGRADE_WARNING: オブジェクト findex の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 //                    fid = Conversions.ToShort(findex);
-//                    object argIndex2 = fid;
-//                    ftype = withBlock.AllFeature(ref argIndex2);
-//                    object argIndex3 = fid;
-//                    fname = withBlock.AllFeatureName(ref argIndex3);
-//                    object argIndex4 = fid;
-//                    fdata = withBlock.AllFeatureData(ref argIndex4);
-//                    object argIndex5 = fid;
-//                    flevel = withBlock.AllFeatureLevel(ref argIndex5);
-//                    object argIndex6 = fid;
-//                    flevel_specified = withBlock.AllFeatureLevelSpecified(ref argIndex6);
+//                    ftype = withBlock.AllFeature(ref fid);
+//                    fname = withBlock.AllFeatureName(ref fid);
+//                    fdata = withBlock.AllFeatureData(ref fid);
+//                    flevel = withBlock.AllFeatureLevel(ref fid);
+//                    flevel_specified = withBlock.AllFeatureLevelSpecified(ref fid);
 //                }
 //                else
 //                {
@@ -1582,8 +1397,7 @@
 //                    for (fid = 1; fid <= loopTo; fid++)
 //                    {
 //                        // UPGRADE_WARNING: オブジェクト findex の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-//                        object argIndex1 = fid;
-//                        if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(withBlock.AllFeature(ref argIndex1), findex, false)))
+//                        if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(withBlock.AllFeature(ref fid), findex, false)))
 //                        {
 //                            break;
 //                        }
@@ -1631,25 +1445,18 @@
 //            {
 //                case "シールド":
 //                    {
-//                        object argIndex7 = "Ｓ防御";
-//                        sname = p.SkillName0(ref argIndex7);
-//                        object argIndex8 = "Ｓ防御";
-//                        string argref_mode = "";
-//                        prob = (short)((long)(p.SkillLevel(ref argIndex8, ref_mode: ref argref_mode) * 100d) / 16L);
+//                        sname = p.SkillName0(ref "Ｓ防御");
+//                        prob = (short)((long)(p.SkillLevel(ref "Ｓ防御", ref_mode: ref "") * 100d) / 16L);
 //                        msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で防御を行い、" + "ダメージを半減。";
 //                        break;
 //                    }
 
 //                case "大型シールド":
 //                    {
-//                        object argIndex9 = "Ｓ防御";
-//                        sname = p.SkillName0(ref argIndex9);
-//                        string argsname = "Ｓ防御";
-//                        if (p.IsSkillAvailable(ref argsname))
+//                        sname = p.SkillName0(ref "Ｓ防御");
+//                        if (p.IsSkillAvailable(ref "Ｓ防御"))
 //                        {
-//                            object argIndex10 = "Ｓ防御";
-//                            string argref_mode1 = "";
-//                            prob = (short)((long)((p.SkillLevel(ref argIndex10, ref_mode: ref argref_mode1) + 1d) * 100d) / 16L);
+//                            prob = (short)((long)((p.SkillLevel(ref "Ｓ防御", ref_mode: ref "") + 1d) * 100d) / 16L);
 //                        }
 
 //                        msg = "(" + sname + "Lv+1)/16の確率(" + SrcFormatter.Format(prob) + "%)で防御を行い、" + "ダメージを半減。";
@@ -1658,22 +1465,16 @@
 
 //                case "小型シールド":
 //                    {
-//                        object argIndex11 = "Ｓ防御";
-//                        sname = p.SkillName0(ref argIndex11);
-//                        object argIndex12 = "Ｓ防御";
-//                        string argref_mode2 = "";
-//                        prob = (short)((long)(p.SkillLevel(ref argIndex12, ref_mode: ref argref_mode2) * 100d) / 16L);
+//                        sname = p.SkillName0(ref "Ｓ防御");
+//                        prob = (short)((long)(p.SkillLevel(ref "Ｓ防御", ref_mode: ref "") * 100d) / 16L);
 //                        msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で防御を行い、" + "ダメージを2/3に減少。";
 //                        break;
 //                    }
 
 //                case "エネルギーシールド":
 //                    {
-//                        object argIndex13 = "Ｓ防御";
-//                        sname = p.SkillName0(ref argIndex13);
-//                        object argIndex14 = "Ｓ防御";
-//                        string argref_mode3 = "";
-//                        prob = (short)((long)(p.SkillLevel(ref argIndex14, ref_mode: ref argref_mode3) * 100d) / 16L);
+//                        sname = p.SkillName0(ref "Ｓ防御");
+//                        prob = (short)((long)(p.SkillLevel(ref "Ｓ防御", ref_mode: ref "") * 100d) / 16L);
 //                        if (flevel > 0d)
 //                        {
 //                            msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で防御を行い、" + "ダメージを半減した上で更に" + SrcFormatter.Format(100d * flevel) + "減少。";
@@ -1689,17 +1490,11 @@
 
 //                case "アクティブシールド":
 //                    {
-//                        object argIndex15 = "Ｓ防御";
-//                        sname = p.SkillName0(ref argIndex15);
-//                        object argIndex16 = "Ｓ防御";
-//                        string argref_mode4 = "";
-//                        prob = (short)((long)(p.SkillLevel(ref argIndex16, ref_mode: ref argref_mode4) * 100d) / 16L);
-//                        string argsname1 = "Ｓ防御";
-//                        if (p.IsSkillAvailable(ref argsname1))
+//                        sname = p.SkillName0(ref "Ｓ防御");
+//                        prob = (short)((long)(p.SkillLevel(ref "Ｓ防御", ref_mode: ref "") * 100d) / 16L);
+//                        if (p.IsSkillAvailable(ref "Ｓ防御"))
 //                        {
-//                            object argIndex17 = "Ｓ防御";
-//                            string argref_mode5 = "";
-//                            prob = (short)((long)((p.SkillLevel(ref argIndex17, ref_mode: ref argref_mode5) + 2d) * 100d) / 16L);
+//                            prob = (short)((long)((p.SkillLevel(ref "Ｓ防御", ref_mode: ref "") + 2d) * 100d) / 16L);
 //                        }
 
 //                        msg = "(" + sname + "Lv+2)/16の確率(" + SrcFormatter.Format(prob) + "%)で防御を行い、" + "ダメージを半減。";
@@ -1708,11 +1503,8 @@
 
 //                case "盾":
 //                    {
-//                        object argIndex18 = "Ｓ防御";
-//                        sname = p.SkillName0(ref argIndex18);
-//                        object argIndex19 = "Ｓ防御";
-//                        string argref_mode6 = "";
-//                        slevel = p.SkillLevel(ref argIndex19, ref_mode: ref argref_mode6);
+//                        sname = p.SkillName0(ref "Ｓ防御");
+//                        slevel = p.SkillLevel(ref "Ｓ防御", ref_mode: ref "");
 //                        if (slevel > 0d)
 //                        {
 //                            slevel = 100d * slevel + 400d;
@@ -1741,16 +1533,13 @@
 //                        {
 //                            int localStrToLng() { string argexpr = GeneralLib.LIndex(ref fdata, 3); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
 
-//                            string argexpr = GeneralLib.LIndex(ref fdata, 3);
-//                            if (GeneralLib.StrToLng(ref argexpr) > 0)
+//                            if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 3)) > 0)
 //                            {
-//                                string argtname = "ＥＮ";
-//                                msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 3) + Expression.Term(ref argtname, ref u) + "消費。";
+//                                msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 3) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                            }
 //                            else if (localStrToLng() < 0)
 //                            {
-//                                string argtname1 = "ＥＮ";
-//                                msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 3), 2) + Expression.Term(ref argtname1, ref u) + "増加。";
+//                                msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 3), 2) + Expression.Term(ref "ＥＮ", ref u) + "増加。";
 //                            }
 //                        }
 //                        else
@@ -1758,11 +1547,9 @@
 //                            msg = msg + ";発動時に10ＥＮ消費。";
 //                        }
 
-//                        string argexpr1 = GeneralLib.LIndex(ref fdata, 4);
-//                        if (GeneralLib.StrToLng(ref argexpr1) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 4)) > 50)
 //                        {
-//                            string argtname2 = "気力";
-//                            msg = msg + Expression.Term(ref argtname2, ref u) + GeneralLib.LIndex(ref fdata, 4) + "以上で使用可能。";
+//                            msg = msg + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 4) + "以上で使用可能。";
 //                        }
 
 //                        var loopTo2 = GeneralLib.LLength(ref fdata);
@@ -1772,8 +1559,7 @@
 //                            idx = (short)Strings.InStr(opt, "*");
 //                            if (idx > 0)
 //                            {
-//                                string argexpr2 = Strings.Mid(opt, idx + 1);
-//                                lv_mod = GeneralLib.StrToDbl(ref argexpr2);
+//                                lv_mod = GeneralLib.StrToDbl(ref Strings.Mid(opt, idx + 1));
 //                                opt = Strings.Left(opt, idx - 1);
 //                            }
 //                            else
@@ -1820,8 +1606,7 @@
 //                                // スキップ
 //                                case "同調率":
 //                                    {
-//                                        object argIndex20 = opt;
-//                                        sname = p.SkillName0(ref argIndex20);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 20d;
@@ -1841,8 +1626,7 @@
 
 //                                case "霊力":
 //                                    {
-//                                        object argIndex21 = opt;
-//                                        sname = p.SkillName0(ref argIndex21);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 10d;
@@ -1854,8 +1638,7 @@
 
 //                                case "オーラ":
 //                                    {
-//                                        object argIndex22 = opt;
-//                                        sname = p.SkillName0(ref argIndex22);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 200d;
@@ -1867,8 +1650,7 @@
 
 //                                case "超能力":
 //                                    {
-//                                        object argIndex23 = opt;
-//                                        sname = p.SkillName0(ref argIndex23);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 200d;
@@ -1897,11 +1679,8 @@
 
 //                case "バリアシールド":
 //                    {
-//                        object argIndex24 = "Ｓ防御";
-//                        sname = p.SkillName0(ref argIndex24);
-//                        object argIndex25 = "Ｓ防御";
-//                        string argref_mode7 = "";
-//                        prob = (short)((long)(p.SkillLevel(ref argIndex25, ref_mode: ref argref_mode7) * 100d) / 16L);
+//                        sname = p.SkillName0(ref "Ｓ防御");
+//                        prob = (short)((long)(p.SkillLevel(ref "Ｓ防御", ref_mode: ref "") * 100d) / 16L);
 //                        msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で発動し、";
 //                        if (!string.IsNullOrEmpty(GeneralLib.LIndex(ref fdata, 2)) & GeneralLib.LIndex(ref fdata, 2) != "全")
 //                        {
@@ -1920,29 +1699,23 @@
 //                        {
 //                            int localStrToLng1() { string argexpr = GeneralLib.LIndex(ref fdata, 3); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
 
-//                            string argexpr3 = GeneralLib.LIndex(ref fdata, 3);
-//                            if (GeneralLib.StrToLng(ref argexpr3) > 0)
+//                            if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 3)) > 0)
 //                            {
-//                                string argtname3 = "ＥＮ";
-//                                msg = msg + "発動時に" + GeneralLib.LIndex(ref fdata, 3) + Expression.Term(ref argtname3, ref u) + "消費。";
+//                                msg = msg + "発動時に" + GeneralLib.LIndex(ref fdata, 3) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                            }
 //                            else if (localStrToLng1() < 0)
 //                            {
-//                                string argtname4 = "ＥＮ";
-//                                msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 3), 2) + Expression.Term(ref argtname4, ref u) + "増加。";
+//                                msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 3), 2) + Expression.Term(ref "ＥＮ", ref u) + "増加。";
 //                            }
 //                        }
 //                        else
 //                        {
-//                            string argtname5 = "ＥＮ";
-//                            msg = msg + "発動時に10" + Expression.Term(ref argtname5, ref u) + "消費。";
+//                            msg = msg + "発動時に10" + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                        }
 
-//                        string argexpr4 = GeneralLib.LIndex(ref fdata, 4);
-//                        if (GeneralLib.StrToLng(ref argexpr4) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 4)) > 50)
 //                        {
-//                            string argtname6 = "気力";
-//                            msg = msg + Expression.Term(ref argtname6, ref u) + GeneralLib.LIndex(ref fdata, 4) + "以上で使用可能。";
+//                            msg = msg + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 4) + "以上で使用可能。";
 //                        }
 
 //                        var loopTo3 = GeneralLib.LLength(ref fdata);
@@ -1952,8 +1725,7 @@
 //                            idx = (short)Strings.InStr(opt, "*");
 //                            if (idx > 0)
 //                            {
-//                                string argexpr5 = Strings.Mid(opt, idx + 1);
-//                                lv_mod = GeneralLib.StrToDbl(ref argexpr5);
+//                                lv_mod = GeneralLib.StrToDbl(ref Strings.Mid(opt, idx + 1));
 //                                opt = Strings.Left(opt, idx - 1);
 //                            }
 //                            else
@@ -2000,8 +1772,7 @@
 //                                // スキップ
 //                                case "同調率":
 //                                    {
-//                                        object argIndex26 = opt;
-//                                        sname = p.SkillName0(ref argIndex26);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 20d;
@@ -2021,8 +1792,7 @@
 
 //                                case "霊力":
 //                                    {
-//                                        object argIndex27 = opt;
-//                                        sname = p.SkillName0(ref argIndex27);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 10d;
@@ -2034,8 +1804,7 @@
 
 //                                case "オーラ":
 //                                    {
-//                                        object argIndex28 = opt;
-//                                        sname = p.SkillName0(ref argIndex28);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 200d;
@@ -2047,8 +1816,7 @@
 
 //                                case "超能力":
 //                                    {
-//                                        object argIndex29 = opt;
-//                                        sname = p.SkillName0(ref argIndex29);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 200d;
@@ -2105,29 +1873,23 @@
 //                        {
 //                            int localStrToLng2() { string argexpr = GeneralLib.LIndex(ref fdata, 4); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
 
-//                            string argexpr6 = GeneralLib.LIndex(ref fdata, 4);
-//                            if (GeneralLib.StrToLng(ref argexpr6) > 0)
+//                            if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 4)) > 0)
 //                            {
-//                                string argtname7 = "ＥＮ";
-//                                msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 4) + Expression.Term(ref argtname7, ref u) + "消費。";
+//                                msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 4) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                            }
 //                            else if (localStrToLng2() < 0)
 //                            {
-//                                string argtname8 = "ＥＮ";
-//                                msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 4), 2) + Expression.Term(ref argtname8, ref u) + "増加。";
+//                                msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 4), 2) + Expression.Term(ref "ＥＮ", ref u) + "増加。";
 //                            }
 //                        }
 //                        else
 //                        {
-//                            string argtname9 = "ＥＮ";
-//                            msg = msg + ";発動時に" + SrcFormatter.Format(20 * i) + Expression.Term(ref argtname9, ref u) + "消費。";
+//                            msg = msg + ";発動時に" + SrcFormatter.Format(20 * i) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                        }
 
-//                        string argexpr7 = GeneralLib.LIndex(ref fdata, 5);
-//                        if (GeneralLib.StrToLng(ref argexpr7) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 5)) > 50)
 //                        {
-//                            string argtname10 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname10, ref u) + GeneralLib.LIndex(ref fdata, 5) + "以上で使用可能。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 5) + "以上で使用可能。";
 //                        }
 
 //                        msg = msg + ";ただし攻撃側も有効範囲内にいる場合は無効化。";
@@ -2159,23 +1921,18 @@
 
 //                        int localStrToLng3() { string argexpr = GeneralLib.LIndex(ref fdata, 3); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
 
-//                        string argexpr8 = GeneralLib.LIndex(ref fdata, 3);
-//                        if (GeneralLib.StrToLng(ref argexpr8) > 0)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 3)) > 0)
 //                        {
-//                            string argtname11 = "ＥＮ";
-//                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 3) + Expression.Term(ref argtname11, ref u) + "消費。";
+//                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 3) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                        }
 //                        else if (localStrToLng3() < 0)
 //                        {
-//                            string argtname12 = "ＥＮ";
-//                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 3), 2) + Expression.Term(ref argtname12, ref u) + "増加。";
+//                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 3), 2) + Expression.Term(ref "ＥＮ", ref u) + "増加。";
 //                        }
 
-//                        string argexpr9 = GeneralLib.LIndex(ref fdata, 4);
-//                        if (GeneralLib.StrToLng(ref argexpr9) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 4)) > 50)
 //                        {
-//                            string argtname13 = "気力";
-//                            msg = msg + Expression.Term(ref argtname13, ref u) + GeneralLib.LIndex(ref fdata, 4) + "以上で使用可能。";
+//                            msg = msg + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 4) + "以上で使用可能。";
 //                        }
 
 //                        var loopTo4 = GeneralLib.LLength(ref fdata);
@@ -2185,8 +1942,7 @@
 //                            idx = (short)Strings.InStr(opt, "*");
 //                            if (idx > 0)
 //                            {
-//                                string argexpr10 = Strings.Mid(opt, idx + 1);
-//                                lv_mod = GeneralLib.StrToDbl(ref argexpr10);
+//                                lv_mod = GeneralLib.StrToDbl(ref Strings.Mid(opt, idx + 1));
 //                                opt = Strings.Left(opt, idx - 1);
 //                            }
 //                            else
@@ -2233,8 +1989,7 @@
 //                                // スキップ
 //                                case "同調率":
 //                                    {
-//                                        object argIndex30 = opt;
-//                                        sname = p.SkillName0(ref argIndex30);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 20d;
@@ -2254,8 +2009,7 @@
 
 //                                case "霊力":
 //                                    {
-//                                        object argIndex31 = opt;
-//                                        sname = p.SkillName0(ref argIndex31);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 10d;
@@ -2267,8 +2021,7 @@
 
 //                                case "オーラ":
 //                                    {
-//                                        object argIndex32 = opt;
-//                                        sname = p.SkillName0(ref argIndex32);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 200d;
@@ -2280,8 +2033,7 @@
 
 //                                case "超能力":
 //                                    {
-//                                        object argIndex33 = opt;
-//                                        sname = p.SkillName0(ref argIndex33);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 200d;
@@ -2310,11 +2062,8 @@
 
 //                case "アクティブフィールド":
 //                    {
-//                        object argIndex34 = "Ｓ防御";
-//                        sname = p.SkillName0(ref argIndex34);
-//                        object argIndex35 = "Ｓ防御";
-//                        string argref_mode8 = "";
-//                        prob = (short)((long)(p.SkillLevel(ref argIndex35, ref_mode: ref argref_mode8) * 100d) / 16L);
+//                        sname = p.SkillName0(ref "Ｓ防御");
+//                        prob = (short)((long)(p.SkillLevel(ref "Ｓ防御", ref_mode: ref "") * 100d) / 16L);
 //                        msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で発動し、";
 //                        if (!string.IsNullOrEmpty(GeneralLib.LIndex(ref fdata, 2)) & GeneralLib.LIndex(ref fdata, 2) != "全")
 //                        {
@@ -2339,23 +2088,18 @@
 
 //                        int localStrToLng4() { string argexpr = GeneralLib.LIndex(ref fdata, 3); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
 
-//                        string argexpr11 = GeneralLib.LIndex(ref fdata, 3);
-//                        if (GeneralLib.StrToLng(ref argexpr11) > 0)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 3)) > 0)
 //                        {
-//                            string argtname14 = "ＥＮ";
-//                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 3) + Expression.Term(ref argtname14, ref u) + "消費。";
+//                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 3) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                        }
 //                        else if (localStrToLng4() < 0)
 //                        {
-//                            string argtname15 = "ＥＮ";
-//                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 3), 2) + Expression.Term(ref argtname15, ref u) + "増加。";
+//                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 3), 2) + Expression.Term(ref "ＥＮ", ref u) + "増加。";
 //                        }
 
-//                        string argexpr12 = GeneralLib.LIndex(ref fdata, 4);
-//                        if (GeneralLib.StrToLng(ref argexpr12) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 4)) > 50)
 //                        {
-//                            string argtname16 = "気力";
-//                            msg = msg + Expression.Term(ref argtname16, ref u) + GeneralLib.LIndex(ref fdata, 4) + "以上で使用可能。";
+//                            msg = msg + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 4) + "以上で使用可能。";
 //                        }
 
 //                        var loopTo5 = GeneralLib.LLength(ref fdata);
@@ -2365,8 +2109,7 @@
 //                            idx = (short)Strings.InStr(opt, "*");
 //                            if (idx > 0)
 //                            {
-//                                string argexpr13 = Strings.Mid(opt, idx + 1);
-//                                lv_mod = GeneralLib.StrToDbl(ref argexpr13);
+//                                lv_mod = GeneralLib.StrToDbl(ref Strings.Mid(opt, idx + 1));
 //                                opt = Strings.Left(opt, idx - 1);
 //                            }
 //                            else
@@ -2413,8 +2156,7 @@
 //                                // スキップ
 //                                case "同調率":
 //                                    {
-//                                        object argIndex36 = opt;
-//                                        sname = p.SkillName0(ref argIndex36);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 20d;
@@ -2434,8 +2176,7 @@
 
 //                                case "霊力":
 //                                    {
-//                                        object argIndex37 = opt;
-//                                        sname = p.SkillName0(ref argIndex37);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 10d;
@@ -2447,8 +2188,7 @@
 
 //                                case "オーラ":
 //                                    {
-//                                        object argIndex38 = opt;
-//                                        sname = p.SkillName0(ref argIndex38);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 200d;
@@ -2460,8 +2200,7 @@
 
 //                                case "超能力":
 //                                    {
-//                                        object argIndex39 = opt;
-//                                        sname = p.SkillName0(ref argIndex39);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 200d;
@@ -2526,29 +2265,23 @@
 //                        {
 //                            int localStrToLng5() { string argexpr = GeneralLib.LIndex(ref fdata, 4); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
 
-//                            string argexpr14 = GeneralLib.LIndex(ref fdata, 4);
-//                            if (GeneralLib.StrToLng(ref argexpr14) > 0)
+//                            if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 4)) > 0)
 //                            {
-//                                string argtname17 = "ＥＮ";
-//                                msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 4) + Expression.Term(ref argtname17, ref u) + "消費。";
+//                                msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 4) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                            }
 //                            else if (localStrToLng5() < 0)
 //                            {
-//                                string argtname18 = "ＥＮ";
-//                                msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 4), 2) + Expression.Term(ref argtname18, ref u) + "増加。";
+//                                msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 4), 2) + Expression.Term(ref "ＥＮ", ref u) + "増加。";
 //                            }
 //                        }
 //                        else
 //                        {
-//                            string argtname19 = "ＥＮ";
-//                            msg = msg + ";発動時に" + SrcFormatter.Format(20 * i) + Expression.Term(ref argtname19, ref u) + "消費。";
+//                            msg = msg + ";発動時に" + SrcFormatter.Format(20 * i) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                        }
 
-//                        string argexpr15 = GeneralLib.LIndex(ref fdata, 5);
-//                        if (GeneralLib.StrToLng(ref argexpr15) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 5)) > 50)
 //                        {
-//                            string argtname20 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname20, ref u) + GeneralLib.LIndex(ref fdata, 5) + "以上で使用可能。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 5) + "以上で使用可能。";
 //                        }
 
 //                        msg = msg + ";ただし攻撃側も有効範囲内にいる場合は無効化。";
@@ -2588,25 +2321,20 @@
 
 //                        if (!Information.IsNumeric(GeneralLib.LIndex(ref fdata, 3)))
 //                        {
-//                            string argtname21 = "ＥＮ";
-//                            msg = msg + ";発動時に10" + Expression.Term(ref argtname21, ref u) + "増加。";
+//                            msg = msg + ";発動時に10" + Expression.Term(ref "ＥＮ", ref u) + "増加。";
 //                        }
 //                        else if (localStrToLng6() > 0)
 //                        {
-//                            string argtname22 = "ＥＮ";
-//                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 3) + Expression.Term(ref argtname22, ref u) + "消費。";
+//                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 3) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                        }
 //                        else if (localStrToLng7() < 0)
 //                        {
-//                            string argtname23 = "ＥＮ";
-//                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 3), 2) + Expression.Term(ref argtname23, ref u) + "増加。";
+//                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 3), 2) + Expression.Term(ref "ＥＮ", ref u) + "増加。";
 //                        }
 
-//                        string argexpr16 = GeneralLib.LIndex(ref fdata, 4);
-//                        if (GeneralLib.StrToLng(ref argexpr16) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 4)) > 50)
 //                        {
-//                            string argtname24 = "気力";
-//                            msg = msg + Expression.Term(ref argtname24, ref u) + GeneralLib.LIndex(ref fdata, 4) + "以上で使用可能。";
+//                            msg = msg + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 4) + "以上で使用可能。";
 //                        }
 
 //                        var loopTo6 = GeneralLib.LLength(ref fdata);
@@ -2616,8 +2344,7 @@
 //                            idx = (short)Strings.InStr(opt, "*");
 //                            if (idx > 0)
 //                            {
-//                                string argexpr17 = Strings.Mid(opt, idx + 1);
-//                                lv_mod = GeneralLib.StrToDbl(ref argexpr17);
+//                                lv_mod = GeneralLib.StrToDbl(ref Strings.Mid(opt, idx + 1));
 //                                opt = Strings.Left(opt, idx - 1);
 //                            }
 //                            else
@@ -2664,8 +2391,7 @@
 //                                // スキップ
 //                                case "同調率":
 //                                    {
-//                                        object argIndex40 = opt;
-//                                        sname = p.SkillName0(ref argIndex40);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 0.5d;
@@ -2685,8 +2411,7 @@
 
 //                                case "霊力":
 //                                    {
-//                                        object argIndex41 = opt;
-//                                        sname = p.SkillName0(ref argIndex41);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 0.2d;
@@ -2698,8 +2423,7 @@
 
 //                                case "オーラ":
 //                                    {
-//                                        object argIndex42 = opt;
-//                                        sname = p.SkillName0(ref argIndex42);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 5d;
@@ -2711,8 +2435,7 @@
 
 //                                case "超能力":
 //                                    {
-//                                        object argIndex43 = opt;
-//                                        sname = p.SkillName0(ref argIndex43);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 5d;
@@ -2741,11 +2464,8 @@
 
 //                case "アクティブプロテクション":
 //                    {
-//                        object argIndex44 = "Ｓ防御";
-//                        sname = p.SkillName0(ref argIndex44);
-//                        object argIndex45 = "Ｓ防御";
-//                        string argref_mode9 = "";
-//                        prob = (short)((long)(p.SkillLevel(ref argIndex45, ref_mode: ref argref_mode9) * 100d) / 16L);
+//                        sname = p.SkillName0(ref "Ｓ防御");
+//                        prob = (short)((long)(p.SkillLevel(ref "Ｓ防御", ref_mode: ref "") * 100d) / 16L);
 //                        msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で発動し、";
 //                        if (!string.IsNullOrEmpty(GeneralLib.LIndex(ref fdata, 2)) & GeneralLib.LIndex(ref fdata, 2) != "全")
 //                        {
@@ -2778,25 +2498,20 @@
 
 //                        if (!Information.IsNumeric(GeneralLib.LIndex(ref fdata, 3)))
 //                        {
-//                            string argtname25 = "ＥＮ";
-//                            msg = msg + ";発動時に10" + Expression.Term(ref argtname25, ref u) + "増加。";
+//                            msg = msg + ";発動時に10" + Expression.Term(ref "ＥＮ", ref u) + "増加。";
 //                        }
 //                        else if (localStrToLng8() > 0)
 //                        {
-//                            string argtname26 = "ＥＮ";
-//                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 3) + Expression.Term(ref argtname26, ref u) + "消費。";
+//                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 3) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                        }
 //                        else if (localStrToLng9() < 0)
 //                        {
-//                            string argtname27 = "ＥＮ";
-//                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 3), 2) + Expression.Term(ref argtname27, ref u) + "増加。";
+//                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 3), 2) + Expression.Term(ref "ＥＮ", ref u) + "増加。";
 //                        }
 
-//                        string argexpr18 = GeneralLib.LIndex(ref fdata, 4);
-//                        if (GeneralLib.StrToLng(ref argexpr18) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 4)) > 50)
 //                        {
-//                            string argtname28 = "気力";
-//                            msg = msg + Expression.Term(ref argtname28, ref u) + GeneralLib.LIndex(ref fdata, 4) + "以上で使用可能。";
+//                            msg = msg + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 4) + "以上で使用可能。";
 //                        }
 
 //                        var loopTo7 = GeneralLib.LLength(ref fdata);
@@ -2806,8 +2521,7 @@
 //                            idx = (short)Strings.InStr(opt, "*");
 //                            if (idx > 0)
 //                            {
-//                                string argexpr19 = Strings.Mid(opt, idx + 1);
-//                                lv_mod = GeneralLib.StrToDbl(ref argexpr19);
+//                                lv_mod = GeneralLib.StrToDbl(ref Strings.Mid(opt, idx + 1));
 //                                opt = Strings.Left(opt, idx - 1);
 //                            }
 //                            else
@@ -2854,8 +2568,7 @@
 //                                // スキップ
 //                                case "同調率":
 //                                    {
-//                                        object argIndex46 = opt;
-//                                        sname = p.SkillName0(ref argIndex46);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 0.5d;
@@ -2875,8 +2588,7 @@
 
 //                                case "霊力":
 //                                    {
-//                                        object argIndex47 = opt;
-//                                        sname = p.SkillName0(ref argIndex47);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 0.2d;
@@ -2888,8 +2600,7 @@
 
 //                                case "オーラ":
 //                                    {
-//                                        object argIndex48 = opt;
-//                                        sname = p.SkillName0(ref argIndex48);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 5d;
@@ -2901,8 +2612,7 @@
 
 //                                case "超能力":
 //                                    {
-//                                        object argIndex49 = opt;
-//                                        sname = p.SkillName0(ref argIndex49);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 5d;
@@ -2971,29 +2681,23 @@
 //                        {
 //                            int localStrToLng10() { string argexpr = GeneralLib.LIndex(ref fdata, 4); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
 
-//                            string argexpr20 = GeneralLib.LIndex(ref fdata, 4);
-//                            if (GeneralLib.StrToLng(ref argexpr20) > 0)
+//                            if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 4)) > 0)
 //                            {
-//                                string argtname29 = "ＥＮ";
-//                                msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 4) + Expression.Term(ref argtname29, ref u) + "消費。";
+//                                msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 4) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                            }
 //                            else if (localStrToLng10() < 0)
 //                            {
-//                                string argtname30 = "ＥＮ";
-//                                msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 4), 2) + Expression.Term(ref argtname30, ref u) + "増加。";
+//                                msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 4), 2) + Expression.Term(ref "ＥＮ", ref u) + "増加。";
 //                            }
 //                        }
 //                        else
 //                        {
-//                            string argtname31 = "ＥＮ";
-//                            msg = msg + ";発動時に" + SrcFormatter.Format(20 * i) + Expression.Term(ref argtname31, ref u) + "消費。";
+//                            msg = msg + ";発動時に" + SrcFormatter.Format(20 * i) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                        }
 
-//                        string argexpr21 = GeneralLib.LIndex(ref fdata, 5);
-//                        if (GeneralLib.StrToLng(ref argexpr21) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 5)) > 50)
 //                        {
-//                            string argtname32 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname32, ref u) + GeneralLib.LIndex(ref fdata, 5) + "以上で使用可能。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 5) + "以上で使用可能。";
 //                        }
 
 //                        msg = msg + ";ただし攻撃側も有効範囲内にいる場合は無効化。";
@@ -3023,11 +2727,9 @@
 //                            msg = msg + "攻撃に対して装甲を" + SrcFormatter.Format((int)(-100 * flevel)) + "減少させる。";
 //                        }
 
-//                        string argexpr22 = GeneralLib.LIndex(ref fdata, 3);
-//                        if (GeneralLib.StrToLng(ref argexpr22) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 3)) > 50)
 //                        {
-//                            string argtname33 = "気力";
-//                            msg = msg + Expression.Term(ref argtname33, ref u) + GeneralLib.LIndex(ref fdata, 3) + "以上で使用可能。";
+//                            msg = msg + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 3) + "以上で使用可能。";
 //                        }
 
 //                        var loopTo8 = GeneralLib.LLength(ref fdata);
@@ -3037,8 +2739,7 @@
 //                            idx = (short)Strings.InStr(opt, "*");
 //                            if (idx > 0)
 //                            {
-//                                string argexpr23 = Strings.Mid(opt, idx + 1);
-//                                lv_mod = GeneralLib.StrToDbl(ref argexpr23);
+//                                lv_mod = GeneralLib.StrToDbl(ref Strings.Mid(opt, idx + 1));
 //                                opt = Strings.Left(opt, idx - 1);
 //                            }
 //                            else
@@ -3055,8 +2756,7 @@
 //                                // スキップ
 //                                case "同調率":
 //                                    {
-//                                        object argIndex50 = opt;
-//                                        sname = p.SkillName0(ref argIndex50);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 5d;
@@ -3076,8 +2776,7 @@
 
 //                                case "霊力":
 //                                    {
-//                                        object argIndex51 = opt;
-//                                        sname = p.SkillName0(ref argIndex51);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 2d;
@@ -3089,8 +2788,7 @@
 
 //                                case "オーラ":
 //                                    {
-//                                        object argIndex52 = opt;
-//                                        sname = p.SkillName0(ref argIndex52);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 50d;
@@ -3102,8 +2800,7 @@
 
 //                                case "超能力":
 //                                    {
-//                                        object argIndex53 = opt;
-//                                        sname = p.SkillName0(ref argIndex53);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 50d;
@@ -3157,11 +2854,9 @@
 //                            msg = msg + "攻撃に対してダメージを" + SrcFormatter.Format((int)(-10 * flevel)) + "%増加させる。";
 //                        }
 
-//                        string argexpr24 = GeneralLib.LIndex(ref fdata, 3);
-//                        if (GeneralLib.StrToLng(ref argexpr24) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 3)) > 50)
 //                        {
-//                            string argtname34 = "気力";
-//                            msg = msg + Expression.Term(ref argtname34, ref u) + GeneralLib.LIndex(ref fdata, 3) + "以上で使用可能。";
+//                            msg = msg + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 3) + "以上で使用可能。";
 //                        }
 
 //                        var loopTo9 = GeneralLib.LLength(ref fdata);
@@ -3171,8 +2866,7 @@
 //                            idx = (short)Strings.InStr(opt, "*");
 //                            if (idx > 0)
 //                            {
-//                                string argexpr25 = Strings.Mid(opt, idx + 1);
-//                                lv_mod = GeneralLib.StrToDbl(ref argexpr25);
+//                                lv_mod = GeneralLib.StrToDbl(ref Strings.Mid(opt, idx + 1));
 //                                opt = Strings.Left(opt, idx - 1);
 //                            }
 //                            else
@@ -3189,8 +2883,7 @@
 //                                // スキップ
 //                                case "同調率":
 //                                    {
-//                                        object argIndex54 = opt;
-//                                        sname = p.SkillName0(ref argIndex54);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 5d;
@@ -3210,8 +2903,7 @@
 
 //                                case "霊力":
 //                                    {
-//                                        object argIndex55 = opt;
-//                                        sname = p.SkillName0(ref argIndex55);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 2d;
@@ -3223,8 +2915,7 @@
 
 //                                case "オーラ":
 //                                    {
-//                                        object argIndex56 = opt;
-//                                        sname = p.SkillName0(ref argIndex56);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 50d;
@@ -3236,8 +2927,7 @@
 
 //                                case "超能力":
 //                                    {
-//                                        object argIndex57 = opt;
-//                                        sname = p.SkillName0(ref argIndex57);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 50d;
@@ -3319,23 +3009,18 @@
 //                        msg = msg + buf + "で反撃。";
 //                        int localStrToLng11() { string argexpr = GeneralLib.LIndex(ref fdata, 5); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
 
-//                        string argexpr26 = GeneralLib.LIndex(ref fdata, 5);
-//                        if (GeneralLib.StrToLng(ref argexpr26) > 0)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 5)) > 0)
 //                        {
-//                            string argtname35 = "ＥＮ";
-//                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 5) + Expression.Term(ref argtname35, ref u) + "消費。";
+//                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 5) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                        }
 //                        else if (localStrToLng11() < 0)
 //                        {
-//                            string argtname36 = "ＥＮ";
-//                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 5), 2) + Expression.Term(ref argtname36, ref u) + "増加。";
+//                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 5), 2) + Expression.Term(ref "ＥＮ", ref u) + "増加。";
 //                        }
 
-//                        string argexpr27 = GeneralLib.LIndex(ref fdata, 6);
-//                        if (GeneralLib.StrToLng(ref argexpr27) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 6)) > 50)
 //                        {
-//                            string argtname37 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname37, ref u) + GeneralLib.LIndex(ref fdata, 6) + "以上で使用可能。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 6) + "以上で使用可能。";
 //                        }
 
 //                        var loopTo10 = GeneralLib.LLength(ref fdata);
@@ -3345,8 +3030,7 @@
 //                            idx = (short)Strings.InStr(opt, "*");
 //                            if (idx > 0)
 //                            {
-//                                string argexpr28 = Strings.Mid(opt, idx + 1);
-//                                lv_mod = GeneralLib.StrToDbl(ref argexpr28);
+//                                lv_mod = GeneralLib.StrToDbl(ref Strings.Mid(opt, idx + 1));
 //                                opt = Strings.Left(opt, idx - 1);
 //                            }
 //                            else
@@ -3387,8 +3071,7 @@
 //                                // スキップ
 //                                case "同調率":
 //                                    {
-//                                        object argIndex58 = opt;
-//                                        sname = p.SkillName0(ref argIndex58);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 20d;
@@ -3408,8 +3091,7 @@
 
 //                                case "霊力":
 //                                    {
-//                                        object argIndex59 = opt;
-//                                        sname = p.SkillName0(ref argIndex59);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 10d;
@@ -3421,8 +3103,7 @@
 
 //                                case "オーラ":
 //                                    {
-//                                        object argIndex60 = opt;
-//                                        sname = p.SkillName0(ref argIndex60);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 200d;
@@ -3434,8 +3115,7 @@
 
 //                                case "超能力":
 //                                    {
-//                                        object argIndex61 = opt;
-//                                        sname = p.SkillName0(ref argIndex61);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 200d;
@@ -3510,23 +3190,18 @@
 
 //                        int localStrToLng12() { string argexpr = GeneralLib.LIndex(ref fdata, 4); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
 
-//                        string argexpr29 = GeneralLib.LIndex(ref fdata, 4);
-//                        if (GeneralLib.StrToLng(ref argexpr29) > 0)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 4)) > 0)
 //                        {
-//                            string argtname38 = "ＥＮ";
-//                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 4) + Expression.Term(ref argtname38, ref u) + "消費。";
+//                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 4) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                        }
 //                        else if (localStrToLng12() < 0)
 //                        {
-//                            string argtname39 = "ＥＮ";
-//                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 4), 2) + Expression.Term(ref argtname39, ref u) + "増加。";
+//                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 4), 2) + Expression.Term(ref "ＥＮ", ref u) + "増加。";
 //                        }
 
-//                        string argexpr30 = GeneralLib.LIndex(ref fdata, 5);
-//                        if (GeneralLib.StrToLng(ref argexpr30) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 5)) > 50)
 //                        {
-//                            string argtname40 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname40, ref u) + GeneralLib.LIndex(ref fdata, 5) + "以上で使用可能。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 5) + "以上で使用可能。";
 //                        }
 
 //                        var loopTo11 = GeneralLib.LLength(ref fdata);
@@ -3536,8 +3211,7 @@
 //                            idx = (short)Strings.InStr(opt, "*");
 //                            if (idx > 0)
 //                            {
-//                                string argexpr31 = Strings.Mid(opt, idx + 1);
-//                                lv_mod = GeneralLib.StrToDbl(ref argexpr31);
+//                                lv_mod = GeneralLib.StrToDbl(ref Strings.Mid(opt, idx + 1));
 //                                opt = Strings.Left(opt, idx - 1);
 //                            }
 //                            else
@@ -3578,8 +3252,7 @@
 //                                // スキップ
 //                                case "同調率":
 //                                    {
-//                                        object argIndex62 = opt;
-//                                        sname = p.SkillName0(ref argIndex62);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 20d;
@@ -3599,8 +3272,7 @@
 
 //                                case "霊力":
 //                                    {
-//                                        object argIndex63 = opt;
-//                                        sname = p.SkillName0(ref argIndex63);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 10d;
@@ -3612,8 +3284,7 @@
 
 //                                case "オーラ":
 //                                    {
-//                                        object argIndex64 = opt;
-//                                        sname = p.SkillName0(ref argIndex64);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 200d;
@@ -3625,8 +3296,7 @@
 
 //                                case "超能力":
 //                                    {
-//                                        object argIndex65 = opt;
-//                                        sname = p.SkillName0(ref argIndex65);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 200d;
@@ -3704,23 +3374,18 @@
 
 //                        int localStrToLng13() { string argexpr = GeneralLib.LIndex(ref fdata, 4); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
 
-//                        string argexpr32 = GeneralLib.LIndex(ref fdata, 4);
-//                        if (GeneralLib.StrToLng(ref argexpr32) > 0)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 4)) > 0)
 //                        {
-//                            string argtname41 = "ＥＮ";
-//                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 4) + Expression.Term(ref argtname41, ref u) + "消費。";
+//                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 4) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                        }
 //                        else if (localStrToLng13() < 0)
 //                        {
-//                            string argtname42 = "ＥＮ";
-//                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 4), 2) + Expression.Term(ref argtname42, ref u) + "増加。";
+//                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 4), 2) + Expression.Term(ref "ＥＮ", ref u) + "増加。";
 //                        }
 
-//                        string argexpr33 = GeneralLib.LIndex(ref fdata, 5);
-//                        if (GeneralLib.StrToLng(ref argexpr33) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 5)) > 50)
 //                        {
-//                            string argtname43 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname43, ref u) + GeneralLib.LIndex(ref fdata, 5) + "以上で使用可能。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 5) + "以上で使用可能。";
 //                        }
 
 //                        var loopTo12 = GeneralLib.LLength(ref fdata);
@@ -3730,8 +3395,7 @@
 //                            idx = (short)Strings.InStr(opt, "*");
 //                            if (idx > 0)
 //                            {
-//                                string argexpr34 = Strings.Mid(opt, idx + 1);
-//                                lv_mod = GeneralLib.StrToDbl(ref argexpr34);
+//                                lv_mod = GeneralLib.StrToDbl(ref Strings.Mid(opt, idx + 1));
 //                                opt = Strings.Left(opt, idx - 1);
 //                            }
 //                            else
@@ -3772,8 +3436,7 @@
 //                                // スキップ
 //                                case "同調率":
 //                                    {
-//                                        object argIndex66 = opt;
-//                                        sname = p.SkillName0(ref argIndex66);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 20d;
@@ -3793,8 +3456,7 @@
 
 //                                case "霊力":
 //                                    {
-//                                        object argIndex67 = opt;
-//                                        sname = p.SkillName0(ref argIndex67);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 10d;
@@ -3806,8 +3468,7 @@
 
 //                                case "オーラ":
 //                                    {
-//                                        object argIndex68 = opt;
-//                                        sname = p.SkillName0(ref argIndex68);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 200d;
@@ -3819,8 +3480,7 @@
 
 //                                case "超能力":
 //                                    {
-//                                        object argIndex69 = opt;
-//                                        sname = p.SkillName0(ref argIndex69);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 200d;
@@ -3909,23 +3569,18 @@
 
 //                        int localStrToLng14() { string argexpr = GeneralLib.LIndex(ref fdata, 5); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
 
-//                        string argexpr35 = GeneralLib.LIndex(ref fdata, 5);
-//                        if (GeneralLib.StrToLng(ref argexpr35) > 0)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 5)) > 0)
 //                        {
-//                            string argtname44 = "ＥＮ";
-//                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 5) + Expression.Term(ref argtname44, ref u) + "消費。";
+//                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 5) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                        }
 //                        else if (localStrToLng14() < 0)
 //                        {
-//                            string argtname45 = "ＥＮ";
-//                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 5), 2) + Expression.Term(ref argtname45, ref u) + "増加。";
+//                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 5), 2) + Expression.Term(ref "ＥＮ", ref u) + "増加。";
 //                        }
 
-//                        string argexpr36 = GeneralLib.LIndex(ref fdata, 6);
-//                        if (GeneralLib.StrToLng(ref argexpr36) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 6)) > 50)
 //                        {
-//                            string argtname46 = "気力";
-//                            msg = msg + Expression.Term(ref argtname46, ref u) + GeneralLib.LIndex(ref fdata, 6) + "以上で使用可能。";
+//                            msg = msg + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 6) + "以上で使用可能。";
 //                        }
 
 //                        msg = msg + ";ただし攻撃側も有効範囲内にいる場合は無効化。";
@@ -3935,8 +3590,7 @@
 //                case "融合":
 //                    {
 //                        prob = (short)((long)(flevel * 100d) / 16L);
-//                        string argtname47 = "ＨＰ";
-//                        msg = SrcFormatter.Format(flevel) + "/16の確率(" + SrcFormatter.Format(prob) + "%)で発動し、" + "ダメージを" + Expression.Term(ref argtname47, ref u) + "に変換。;" + "ただし、「武」「突」「接」による攻撃には無効。";
+//                        msg = SrcFormatter.Format(flevel) + "/16の確率(" + SrcFormatter.Format(prob) + "%)で発動し、" + "ダメージを" + Expression.Term(ref "ＨＰ", ref u) + "に変換。;" + "ただし、「武」「突」「接」による攻撃には無効。";
 //                        break;
 //                    }
 
@@ -3954,9 +3608,7 @@
 //                            }
 //                        }
 
-//                        string argtname48 = "ＥＮ";
-//                        string argtname49 = "ＥＮ";
-//                        msg = msg + "攻撃を受けた際にダメージを" + Expression.Term(ref argtname48, ref u) + "に変換。;" + "変換効率は " + Expression.Term(ref argtname49, ref u) + "増加 ＝ ";
+//                        msg = msg + "攻撃を受けた際にダメージを" + Expression.Term(ref "ＥＮ", ref u) + "に変換。;" + "変換効率は " + Expression.Term(ref "ＥＮ", ref u) + "増加 ＝ ";
 //                        msg = msg + SrcFormatter.Format(0.01d * flevel);
 //                        msg = msg + " × ダメージ";
 //                        break;
@@ -4019,23 +3671,18 @@
 //                        msg = msg + buf + "による自動反撃が発動する。";
 //                        int localStrToLng15() { string argexpr = GeneralLib.LIndex(ref fdata, 5); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
 
-//                        string argexpr37 = GeneralLib.LIndex(ref fdata, 5);
-//                        if (GeneralLib.StrToLng(ref argexpr37) > 0)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 5)) > 0)
 //                        {
-//                            string argtname50 = "ＥＮ";
-//                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 5) + Expression.Term(ref argtname50, ref u) + "消費。";
+//                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 5) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                        }
 //                        else if (localStrToLng15() < 0)
 //                        {
-//                            string argtname51 = "ＥＮ";
-//                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 5), 2) + Expression.Term(ref argtname51, ref u) + "増加。";
+//                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 5), 2) + Expression.Term(ref "ＥＮ", ref u) + "増加。";
 //                        }
 
-//                        string argexpr38 = GeneralLib.LIndex(ref fdata, 6);
-//                        if (GeneralLib.StrToLng(ref argexpr38) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 6)) > 50)
 //                        {
-//                            string argtname52 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname52, ref u) + GeneralLib.LIndex(ref fdata, 6) + "以上で使用可能。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 6) + "以上で使用可能。";
 //                        }
 
 //                        var loopTo13 = GeneralLib.LLength(ref fdata);
@@ -4045,8 +3692,7 @@
 //                            idx = (short)Strings.InStr(opt, "*");
 //                            if (idx > 0)
 //                            {
-//                                string argexpr39 = Strings.Mid(opt, idx + 1);
-//                                lv_mod = GeneralLib.StrToDbl(ref argexpr39);
+//                                lv_mod = GeneralLib.StrToDbl(ref Strings.Mid(opt, idx + 1));
 //                                opt = Strings.Left(opt, idx - 1);
 //                            }
 //                            else
@@ -4087,8 +3733,7 @@
 //                                // スキップ
 //                                case "同調率":
 //                                    {
-//                                        object argIndex70 = opt;
-//                                        sname = p.SkillName0(ref argIndex70);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 20d;
@@ -4108,8 +3753,7 @@
 
 //                                case "霊力":
 //                                    {
-//                                        object argIndex71 = opt;
-//                                        sname = p.SkillName0(ref argIndex71);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 10d;
@@ -4121,8 +3765,7 @@
 
 //                                case "オーラ":
 //                                    {
-//                                        object argIndex72 = opt;
-//                                        sname = p.SkillName0(ref argIndex72);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 200d;
@@ -4134,8 +3777,7 @@
 
 //                                case "超能力":
 //                                    {
-//                                        object argIndex73 = opt;
-//                                        sname = p.SkillName0(ref argIndex73);
+//                                        sname = p.SkillName0(ref opt);
 //                                        if (lv_mod == -1)
 //                                        {
 //                                            lv_mod = 200d;
@@ -4164,56 +3806,45 @@
 
 //                case "ＨＰ回復":
 //                    {
-//                        string argtname53 = "ＨＰ";
-//                        string argtname54 = "ＨＰ";
-//                        msg = "毎ターン最大" + Expression.Term(ref argtname53, ref u) + "の" + SrcFormatter.Format(10d * flevel) + "%分の" + Expression.Term(ref argtname54, ref u) + "を回復。";
+//                        msg = "毎ターン最大" + Expression.Term(ref "ＨＰ", ref u) + "の" + SrcFormatter.Format(10d * flevel) + "%分の" + Expression.Term(ref "ＨＰ", ref u) + "を回復。";
 //                        break;
 //                    }
 
 //                case "ＥＮ回復":
 //                    {
-//                        string argtname55 = "ＥＮ";
-//                        string argtname56 = "ＥＮ";
-//                        msg = "毎ターン最大" + Expression.Term(ref argtname55, ref u) + "の" + SrcFormatter.Format(10d * flevel) + "%分の" + Expression.Term(ref argtname56, ref u) + "を回復。";
+//                        msg = "毎ターン最大" + Expression.Term(ref "ＥＮ", ref u) + "の" + SrcFormatter.Format(10d * flevel) + "%分の" + Expression.Term(ref "ＥＮ", ref u) + "を回復。";
 //                        break;
 //                    }
 
 //                case "霊力回復":
 //                    {
-//                        object argIndex74 = "霊力";
-//                        sname = p.SkillName0(ref argIndex74);
+//                        sname = p.SkillName0(ref "霊力");
 //                        msg = "毎ターン最大" + sname + "の" + SrcFormatter.Format(10d * flevel) + "%分の" + sname + "を回復。";
 //                        break;
 //                    }
 
 //                case "ＨＰ消費":
 //                    {
-//                        string argtname57 = "ＨＰ";
-//                        string argtname58 = "ＨＰ";
-//                        msg = "毎ターン最大" + Expression.Term(ref argtname57, ref u) + "の" + SrcFormatter.Format(10d * flevel) + "%分の" + Expression.Term(ref argtname58, ref u) + "を消費。";
+//                        msg = "毎ターン最大" + Expression.Term(ref "ＨＰ", ref u) + "の" + SrcFormatter.Format(10d * flevel) + "%分の" + Expression.Term(ref "ＨＰ", ref u) + "を消費。";
 //                        break;
 //                    }
 
 //                case "ＥＮ消費":
 //                    {
-//                        string argtname59 = "ＥＮ";
-//                        string argtname60 = "ＥＮ";
-//                        msg = "毎ターン最大" + Expression.Term(ref argtname59, ref u) + "の" + SrcFormatter.Format(10d * flevel) + "%分の" + Expression.Term(ref argtname60, ref u) + "を消費。";
+//                        msg = "毎ターン最大" + Expression.Term(ref "ＥＮ", ref u) + "の" + SrcFormatter.Format(10d * flevel) + "%分の" + Expression.Term(ref "ＥＮ", ref u) + "を消費。";
 //                        break;
 //                    }
 
 //                case "霊力消費":
 //                    {
-//                        object argIndex75 = "霊力";
-//                        sname = p.SkillName0(ref argIndex75);
+//                        sname = p.SkillName0(ref "霊力");
 //                        msg = "毎ターン最大" + sname + "の" + SrcFormatter.Format(10d * flevel) + "%分の" + sname + "を消費。";
 //                        break;
 //                    }
 
 //                case "分身":
 //                    {
-//                        string argtname61 = "気力";
-//                        msg = "50%の確率で攻撃を完全に回避。;" + "発動条件：" + Expression.Term(ref argtname61, ref u) + "130以上";
+//                        msg = "50%の確率で攻撃を完全に回避。;" + "発動条件：" + Expression.Term(ref "気力", ref u) + "130以上";
 //                        break;
 //                    }
 
@@ -4224,24 +3855,19 @@
 //                        {
 //                            int localStrToLng16() { string argexpr = GeneralLib.LIndex(ref fdata, 2); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
 
-//                            string argexpr40 = GeneralLib.LIndex(ref fdata, 2);
-//                            if (GeneralLib.StrToLng(ref argexpr40) > 0)
+//                            if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 2)) > 0)
 //                            {
-//                                string argtname62 = "ＥＮ";
-//                                msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 2) + Expression.Term(ref argtname62, ref u) + "消費。";
+//                                msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 2) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                            }
 //                            else if (localStrToLng16() < 0)
 //                            {
-//                                string argtname63 = "ＥＮ";
-//                                msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 2), 2) + Expression.Term(ref argtname63, ref u) + "増加。";
+//                                msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 2), 2) + Expression.Term(ref "ＥＮ", ref u) + "増加。";
 //                            }
 //                        }
 
-//                        string argexpr41 = GeneralLib.LIndex(ref fdata, 3);
-//                        if (GeneralLib.StrToLng(ref argexpr41) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 3)) > 50)
 //                        {
-//                            string argtname64 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname64, ref u) + GeneralLib.LIndex(ref fdata, 3) + "以上で使用可能。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 3) + "以上で使用可能。";
 //                        }
 
 //                        if (GeneralLib.LIndex(ref fdata, 4) == "手動")
@@ -4259,24 +3885,19 @@
 //                        {
 //                            int localStrToLng17() { string argexpr = GeneralLib.LIndex(ref fdata, 3); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
 
-//                            string argexpr42 = GeneralLib.LIndex(ref fdata, 3);
-//                            if (GeneralLib.StrToLng(ref argexpr42) > 0)
+//                            if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 3)) > 0)
 //                            {
-//                                string argtname65 = "ＥＮ";
-//                                msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 3) + Expression.Term(ref argtname65, ref u) + "消費。";
+//                                msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 3) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                            }
 //                            else if (localStrToLng17() < 0)
 //                            {
-//                                string argtname66 = "ＥＮ";
-//                                msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 3), 2) + Expression.Term(ref argtname66, ref u) + "増加。";
+//                                msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 3), 2) + Expression.Term(ref "ＥＮ", ref u) + "増加。";
 //                            }
 //                        }
 
-//                        string argexpr43 = GeneralLib.LIndex(ref fdata, 4);
-//                        if (GeneralLib.StrToLng(ref argexpr43) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 4)) > 50)
 //                        {
-//                            string argtname67 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname67, ref u) + GeneralLib.LIndex(ref fdata, 4) + "以上で使用可能。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 4) + "以上で使用可能。";
 //                        }
 
 //                        if (GeneralLib.LIndex(ref fdata, 5) == "手動")
@@ -4322,11 +3943,9 @@
 //                            msg = msg + "攻撃の命中率を本来の" + SrcFormatter.Format((int)(100d - 10d * flevel)) + "%に増加させる。";
 //                        }
 
-//                        string argexpr44 = GeneralLib.LIndex(ref fdata, 3);
-//                        if (GeneralLib.StrToLng(ref argexpr44) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 3)) > 50)
 //                        {
-//                            string argtname68 = "気力";
-//                            msg = msg + Expression.Term(ref argtname68, ref u) + GeneralLib.LIndex(ref fdata, 3) + "以上で使用可能。";
+//                            msg = msg + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 3) + "以上で使用可能。";
 //                        }
 
 //                        break;
@@ -4348,21 +3967,18 @@
 
 //                case "修理装置":
 //                    {
-//                        string argtname69 = "ＨＰ";
-//                        msg = "他のユニットの" + Expression.Term(ref argtname69, ref u);
+//                        msg = "他のユニットの" + Expression.Term(ref "ＨＰ", ref u);
 //                        switch (flevel)
 //                        {
 //                            case 1d:
 //                                {
-//                                    string argtname70 = "ＨＰ";
-//                                    msg = msg + "を最大" + Expression.Term(ref argtname70, ref u) + "の30%だけ回復。";
+//                                    msg = msg + "を最大" + Expression.Term(ref "ＨＰ", ref u) + "の30%だけ回復。";
 //                                    break;
 //                                }
 
 //                            case 2d:
 //                                {
-//                                    string argtname71 = "ＨＰ";
-//                                    msg = msg + "を最大" + Expression.Term(ref argtname71, ref u) + "の50%だけ回復。";
+//                                    msg = msg + "を最大" + Expression.Term(ref "ＨＰ", ref u) + "の50%だけ回復。";
 //                                    break;
 //                                }
 
@@ -4378,11 +3994,8 @@
 
 //                case "補給装置":
 //                    {
-//                        string argtname72 = "ＥＮ";
-//                        string argtname73 = "気力";
-//                        msg = "他のユニットの" + Expression.Term(ref argtname72, ref u) + "と弾薬を全快。;" + "ただしユニットのパイロットの" + Expression.Term(ref argtname73, ref u) + "は-10。";
-//                        string argoname = "移動後補給不可";
-//                        if (Expression.IsOptionDefined(ref argoname))
+//                        msg = "他のユニットの" + Expression.Term(ref "ＥＮ", ref u) + "と弾薬を全快。;" + "ただしユニットのパイロットの" + Expression.Term(ref "気力", ref u) + "は-10。";
+//                        if (Expression.IsOptionDefined(ref "移動後補給不可"))
 //                        {
 //                            msg = msg + "移動後は使用不可。";
 //                        }
@@ -4399,25 +4012,21 @@
 //                            if (Strings.Left(buf, 1) == "!")
 //                            {
 //                                buf = Strings.Mid(buf, 2);
-//                                string argtname74 = "ＨＰ";
-//                                msg = msg + buf + "以外では" + Expression.Term(ref argtname74, ref u) + "を回復出来ない。";
+//                                msg = msg + buf + "以外では" + Expression.Term(ref "ＨＰ", ref u) + "を回復出来ない。";
 //                            }
 //                            else
 //                            {
-//                                string argtname75 = "ＨＰ";
-//                                msg = msg + buf + "では" + Expression.Term(ref argtname75, ref u) + "を回復出来ない。";
+//                                msg = msg + buf + "では" + Expression.Term(ref "ＨＰ", ref u) + "を回復出来ない。";
 //                            }
 //                        }
 
-//                        string argtname76 = "スペシャルパワー";
-//                        msg = msg + buf + ";ただし、" + Expression.Term(ref argtname76, ref u) + "や地形、母艦による回復は可能。";
+//                        msg = msg + buf + ";ただし、" + Expression.Term(ref "スペシャルパワー", ref u) + "や地形、母艦による回復は可能。";
 //                        break;
 //                    }
 
 //                case "霊力変換器":
 //                    {
-//                        object argIndex76 = "霊力";
-//                        sname = p.SkillName0(ref argIndex76);
+//                        sname = p.SkillName0(ref "霊力");
 //                        msg = sname + "に合わせて各種能力が上昇する。";
 //                        if (flevel_specified)
 //                        {
@@ -4429,8 +4038,7 @@
 
 //                case "オーラ変換器":
 //                    {
-//                        object argIndex77 = "オーラ";
-//                        sname = p.SkillName0(ref argIndex77);
+//                        sname = p.SkillName0(ref "オーラ");
 //                        msg = sname + "レベルに合わせて各種能力が上昇する。";
 //                        if (flevel_specified)
 //                        {
@@ -4442,11 +4050,8 @@
 
 //                case "サイキックドライブ":
 //                    {
-//                        object argIndex78 = "超能力";
-//                        sname = p.SkillName0(ref argIndex78);
-//                        string argtname77 = "装甲";
-//                        string argtname78 = "運動性";
-//                        msg = sname + "レベルごとに" + Expression.Term(ref argtname77, ref u) + "+100、" + Expression.Term(ref argtname78, ref u) + "+5";
+//                        sname = p.SkillName0(ref "超能力");
+//                        msg = sname + "レベルごとに" + Expression.Term(ref "装甲", ref u) + "+100、" + Expression.Term(ref "運動性", ref u) + "+5";
 //                        if (flevel_specified)
 //                        {
 //                            msg = msg + ";（" + sname + "上限レベル = " + SrcFormatter.Format(flevel) + "）";
@@ -4457,8 +4062,7 @@
 
 //                case "シンクロドライブ":
 //                    {
-//                        object argIndex79 = "同調率";
-//                        sname = p.SkillName0(ref argIndex79);
+//                        sname = p.SkillName0(ref "同調率");
 //                        msg = sname + "に合わせて各種能力が上昇する。";
 //                        if (flevel_specified)
 //                        {
@@ -4490,20 +4094,17 @@
 
 //                case "テレポート":
 //                    {
-//                        string argtname79 = "移動力";
-//                        msg = "テレポートを行い、" + Expression.Term(ref argtname79, ref u) + SrcFormatter.Format(u.Speed + flevel) + "で地形を無視して移動。;";
+//                        msg = "テレポートを行い、" + Expression.Term(ref "移動力", ref u) + SrcFormatter.Format(u.Speed + flevel) + "で地形を無視して移動。;";
 //                        if (GeneralLib.LLength(ref fdata) > 1)
 //                        {
 //                            if (Conversions.ToShort(GeneralLib.LIndex(ref fdata, 2)) > 0)
 //                            {
-//                                string argtname80 = "ＥＮ";
-//                                msg = msg + GeneralLib.LIndex(ref fdata, 2) + Expression.Term(ref argtname80, ref u) + "消費。";
+//                                msg = msg + GeneralLib.LIndex(ref fdata, 2) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                            }
 //                        }
 //                        else
 //                        {
-//                            string argtname81 = "ＥＮ";
-//                            msg = msg + "40" + Expression.Term(ref argtname81, ref u) + "消費。";
+//                            msg = msg + "40" + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                        }
 
 //                        break;
@@ -4511,15 +4112,12 @@
 
 //                case "ジャンプ":
 //                    {
-//                        string argtname82 = "移動力";
-//                        msg = Expression.Term(ref argtname82, ref u) + SrcFormatter.Format(u.Speed + flevel) + "で地上地形を無視しながらジャンプ移動。";
+//                        msg = Expression.Term(ref "移動力", ref u) + SrcFormatter.Format(u.Speed + flevel) + "で地上地形を無視しながらジャンプ移動。";
 //                        if (GeneralLib.LLength(ref fdata) > 1)
 //                        {
-//                            string argexpr45 = GeneralLib.LIndex(ref fdata, 2);
-//                            if (GeneralLib.StrToLng(ref argexpr45) > 0)
+//                            if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 2)) > 0)
 //                            {
-//                                string argtname83 = "ＥＮ";
-//                                msg = msg + ";" + GeneralLib.LIndex(ref fdata, 2) + Expression.Term(ref argtname83, ref u) + "消費。";
+//                                msg = msg + ";" + GeneralLib.LIndex(ref fdata, 2) + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                            }
 //                        }
 
@@ -4540,8 +4138,7 @@
 
 //                case "ホバー移動":
 //                    {
-//                        string argtname84 = "ＥＮ";
-//                        msg = "空中に浮きながら移動することで砂漠と雪原の移動コストが１になる。" + "また、水上移動も可能。ただし移動時に5" + Expression.Term(ref argtname84, ref u) + "消費。";
+//                        msg = "空中に浮きながら移動することで砂漠と雪原の移動コストが１になる。" + "また、水上移動も可能。ただし移動時に5" + Expression.Term(ref "ＥＮ", ref u) + "消費。";
 //                        break;
 //                    }
 
@@ -4595,8 +4192,7 @@
 
 //                case "追加移動力":
 //                    {
-//                        string argtname85 = "移動力";
-//                        msg = GeneralLib.LIndex(ref fdata, 2) + "にいると、" + Expression.Term(ref argtname85, ref u) + "が";
+//                        msg = GeneralLib.LIndex(ref fdata, 2) + "にいると、" + Expression.Term(ref "移動力", ref u) + "が";
 //                        if (flevel >= 0d)
 //                        {
 //                            msg = msg + SrcFormatter.Format(flevel) + "増加。";
@@ -4841,21 +4437,15 @@
 
 //                        if (Strings.InStr(fdata, "気力発動") > 0)
 //                        {
-//                            string argtname86 = "気力";
-//                            msg = Expression.Term(ref argtname86, ref u) + SrcFormatter.Format(100d + 10d * flevel) + "で特殊形態" + uname + "に";
+//                            msg = Expression.Term(ref "気力", ref u) + SrcFormatter.Format(100d + 10d * flevel) + "で特殊形態" + uname + "に";
 //                        }
 //                        else if (flevel <= 5d)
 //                        {
-//                            string argtname89 = "気力";
-//                            string argtname90 = "ＨＰ";
-//                            string argtname91 = "ＨＰ";
-//                            msg = Expression.Term(ref argtname89, ref u) + SrcFormatter.Format(100d + 10d * flevel) + "、" + "もしくは" + Expression.Term(ref argtname90, ref u) + "が最大" + Expression.Term(ref argtname91, ref u) + "の1/4以下で特殊形態" + uname + "に";
+//                            msg = Expression.Term(ref "気力", ref u) + SrcFormatter.Format(100d + 10d * flevel) + "、" + "もしくは" + Expression.Term(ref "ＨＰ", ref u) + "が最大" + Expression.Term(ref "ＨＰ", ref u) + "の1/4以下で特殊形態" + uname + "に";
 //                        }
 //                        else
 //                        {
-//                            string argtname87 = "ＨＰ";
-//                            string argtname88 = "ＨＰ";
-//                            msg = Expression.Term(ref argtname87, ref u) + "が最大" + Expression.Term(ref argtname88, ref u) + "の1/4以下で特殊形態" + uname + "に";
+//                            msg = Expression.Term(ref "ＨＰ", ref u) + "が最大" + Expression.Term(ref "ＨＰ", ref u) + "の1/4以下で特殊形態" + uname + "に";
 //                        }
 
 //                        if (Strings.InStr(fdata, "自動発動") > 0)
@@ -4888,8 +4478,7 @@
 
 //                        if (GeneralLib.LLength(ref fdata) > 3)
 //                        {
-//                            object argIndex80 = GeneralLib.LIndex(ref fdata, 2);
-//                            if (SRC.UDList.IsDefined(ref argIndex80))
+//                            if (SRC.UDList.IsDefined(ref GeneralLib.LIndex(ref fdata, 2)))
 //                            {
 //                                UnitData localItem15() { object argIndex1 = GeneralLib.LIndex(ref fdata, 2); var ret = SRC.UDList.Item(ref argIndex1); return ret; }
 
@@ -4903,8 +4492,7 @@
 //                            var loopTo19 = GeneralLib.LLength(ref fdata);
 //                            for (i = 3; i <= loopTo19; i++)
 //                            {
-//                                object argIndex81 = GeneralLib.LIndex(ref fdata, i);
-//                                if (SRC.UDList.IsDefined(ref argIndex81))
+//                                if (SRC.UDList.IsDefined(ref GeneralLib.LIndex(ref fdata, i)))
 //                                {
 //                                    UnitData localItem16() { object argIndex1 = GeneralLib.LIndex(ref fdata, i); var ret = SRC.UDList.Item(ref argIndex1); return ret; }
 
@@ -4918,8 +4506,7 @@
 //                        }
 //                        else
 //                        {
-//                            object argIndex82 = GeneralLib.LIndex(ref fdata, 3);
-//                            if (SRC.UDList.IsDefined(ref argIndex82))
+//                            if (SRC.UDList.IsDefined(ref GeneralLib.LIndex(ref fdata, 3)))
 //                            {
 //                                UnitData localItem17() { object argIndex1 = GeneralLib.LIndex(ref fdata, 3); var ret = SRC.UDList.Item(ref argIndex1); return ret; }
 
@@ -4930,8 +4517,7 @@
 //                                msg = GeneralLib.LIndex(ref fdata, 3) + "と合体し";
 //                            }
 
-//                            object argIndex83 = GeneralLib.LIndex(ref fdata, 2);
-//                            if (SRC.UDList.IsDefined(ref argIndex83))
+//                            if (SRC.UDList.IsDefined(ref GeneralLib.LIndex(ref fdata, 2)))
 //                            {
 //                                UnitData localItem18() { object argIndex1 = GeneralLib.LIndex(ref fdata, 2); var ret = SRC.UDList.Item(ref argIndex1); return ret; }
 
@@ -4952,8 +4538,7 @@
 //                        var loopTo20 = GeneralLib.LLength(ref fdata);
 //                        for (i = 2; i <= loopTo20; i++)
 //                        {
-//                            object argIndex84 = GeneralLib.LIndex(ref fdata, i);
-//                            if (SRC.UDList.IsDefined(ref argIndex84))
+//                            if (SRC.UDList.IsDefined(ref GeneralLib.LIndex(ref fdata, i)))
 //                            {
 //                                UnitData localItem19() { object argIndex1 = GeneralLib.LIndex(ref fdata, i); var ret = SRC.UDList.Item(ref argIndex1); return ret; }
 
@@ -4970,8 +4555,7 @@
 
 //                case "不安定":
 //                    {
-//                        string argtname92 = "ＨＰ";
-//                        msg = Expression.Term(ref argtname92, ref u) + "が最大値の1/4以下になると暴走する。";
+//                        msg = Expression.Term(ref "ＨＰ", ref u) + "が最大値の1/4以下になると暴走する。";
 //                        break;
 //                    }
 
@@ -4983,8 +4567,7 @@
 
 //                            if (!localIsDefined())
 //                            {
-//                                string argmsg = "支配対象のパイロット「" + GeneralLib.LIndex(ref fdata, 2) + "」のデータが定義されていません";
-//                                GUI.ErrorMessage(ref argmsg);
+//                                GUI.ErrorMessage(ref "支配対象のパイロット「" + GeneralLib.LIndex(ref fdata, 2) + "」のデータが定義されていません");
 //                                return FeatureHelpMessageRet;
 //                            }
 
@@ -5002,8 +4585,7 @@
 
 //                                if (!localIsDefined1())
 //                                {
-//                                    string argmsg1 = "支配対象のパイロット「" + GeneralLib.LIndex(ref fdata, i) + "」のデータが定義されていません";
-//                                    GUI.ErrorMessage(ref argmsg1);
+//                                    GUI.ErrorMessage(ref "支配対象のパイロット「" + GeneralLib.LIndex(ref fdata, i) + "」のデータが定義されていません");
 //                                    return FeatureHelpMessageRet;
 //                                }
 
@@ -5041,16 +4623,13 @@
 
 //                case "ブースト":
 //                    {
-//                        string argoname1 = "ダメージ倍率低下";
-//                        if (Expression.IsOptionDefined(ref argoname1))
+//                        if (Expression.IsOptionDefined(ref "ダメージ倍率低下"))
 //                        {
-//                            string argtname93 = "気力";
-//                            msg = Expression.Term(ref argtname93, ref u) + "130以上で発動し、ダメージを 20% アップ。";
+//                            msg = Expression.Term(ref "気力", ref u) + "130以上で発動し、ダメージを 20% アップ。";
 //                        }
 //                        else
 //                        {
-//                            string argtname94 = "気力";
-//                            msg = Expression.Term(ref argtname94, ref u) + "130以上で発動し、ダメージを 25% アップ。";
+//                            msg = Expression.Term(ref "気力", ref u) + "130以上で発動し、ダメージを 25% アップ。";
 //                        }
 
 //                        break;
@@ -5072,19 +4651,16 @@
 //                    {
 //                        if (flevel >= 0d)
 //                        {
-//                            string argtname95 = "格闘";
-//                            msg = "パイロットの" + Expression.Term(ref argtname95, ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref "格闘", ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 //                        else
 //                        {
-//                            string argtname96 = "格闘";
-//                            msg = "パイロットの" + Expression.Term(ref argtname96, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref "格闘", ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
 //                        {
-//                            string argtname97 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname97, ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
 //                        }
 
 //                        break;
@@ -5096,30 +4672,25 @@
 //                        {
 //                            if (flevel >= 0d)
 //                            {
-//                                string argtname98 = "魔力";
-//                                msg = "パイロットの" + Expression.Term(ref argtname98, ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
+//                                msg = "パイロットの" + Expression.Term(ref "魔力", ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                            }
 //                            else
 //                            {
-//                                string argtname99 = "魔力";
-//                                msg = "パイロットの" + Expression.Term(ref argtname99, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
+//                                msg = "パイロットの" + Expression.Term(ref "魔力", ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                            }
 //                        }
 //                        else if (flevel >= 0d)
 //                        {
-//                            string argtname100 = "射撃";
-//                            msg = "パイロットの" + Expression.Term(ref argtname100, ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref "射撃", ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 //                        else
 //                        {
-//                            string argtname101 = "射撃";
-//                            msg = "パイロットの" + Expression.Term(ref argtname101, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref "射撃", ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
 //                        {
-//                            string argtname102 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname102, ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
 //                        }
 
 //                        break;
@@ -5129,13 +4700,11 @@
 //                    {
 //                        if (flevel >= 0d)
 //                        {
-//                            string argtname103 = "命中";
-//                            msg = "パイロットの" + Expression.Term(ref argtname103, ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref "命中", ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 //                        else
 //                        {
-//                            string argtname104 = "命中";
-//                            msg = "パイロットの" + Expression.Term(ref argtname104, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref "命中", ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
@@ -5150,19 +4719,16 @@
 //                    {
 //                        if (flevel >= 0d)
 //                        {
-//                            string argtname105 = "回避";
-//                            msg = "パイロットの" + Expression.Term(ref argtname105, ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref "回避", ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 //                        else
 //                        {
-//                            string argtname106 = "回避";
-//                            msg = "パイロットの" + Expression.Term(ref argtname106, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref "回避", ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
 //                        {
-//                            string argtname107 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname107, ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
 //                        }
 
 //                        break;
@@ -5172,19 +4738,16 @@
 //                    {
 //                        if (flevel >= 0d)
 //                        {
-//                            string argtname108 = "技量";
-//                            msg = "パイロットの" + Expression.Term(ref argtname108, ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref "技量", ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 //                        else
 //                        {
-//                            string argtname109 = "技量";
-//                            msg = "パイロットの" + Expression.Term(ref argtname109, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref "技量", ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
 //                        {
-//                            string argtname110 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname110, ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
 //                        }
 
 //                        break;
@@ -5194,19 +4757,16 @@
 //                    {
 //                        if (flevel >= 0d)
 //                        {
-//                            string argtname111 = "反応";
-//                            msg = "パイロットの" + Expression.Term(ref argtname111, ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref "反応", ref u) + "を+" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 //                        else
 //                        {
-//                            string argtname112 = "反応";
-//                            msg = "パイロットの" + Expression.Term(ref argtname112, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
+//                            msg = "パイロットの" + Expression.Term(ref "反応", ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
 //                        {
-//                            string argtname113 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname113, ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
 //                        }
 
 //                        break;
@@ -5216,19 +4776,16 @@
 //                    {
 //                        if (flevel >= 0d)
 //                        {
-//                            string argtname114 = "ＨＰ";
-//                            msg = "最大" + Expression.Term(ref argtname114, ref u) + "を" + SrcFormatter.Format((short)(200d * flevel)) + "増加。";
+//                            msg = "最大" + Expression.Term(ref "ＨＰ", ref u) + "を" + SrcFormatter.Format((short)(200d * flevel)) + "増加。";
 //                        }
 //                        else
 //                        {
-//                            string argtname115 = "ＨＰ";
-//                            msg = "最大" + Expression.Term(ref argtname115, ref u) + "を" + SrcFormatter.Format((short)(-200 * flevel)) + "減少。";
+//                            msg = "最大" + Expression.Term(ref "ＨＰ", ref u) + "を" + SrcFormatter.Format((short)(-200 * flevel)) + "減少。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
 //                        {
-//                            string argtname116 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname116, ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
 //                        }
 
 //                        break;
@@ -5238,19 +4795,16 @@
 //                    {
 //                        if (flevel >= 0d)
 //                        {
-//                            string argtname117 = "ＥＮ";
-//                            msg = "最大" + Expression.Term(ref argtname117, ref u) + "を" + SrcFormatter.Format((short)(10d * flevel)) + "増加。";
+//                            msg = "最大" + Expression.Term(ref "ＥＮ", ref u) + "を" + SrcFormatter.Format((short)(10d * flevel)) + "増加。";
 //                        }
 //                        else
 //                        {
-//                            string argtname118 = "ＥＮ";
-//                            msg = "最大" + Expression.Term(ref argtname118, ref u) + "を" + SrcFormatter.Format((short)(-10 * flevel)) + "減少。";
+//                            msg = "最大" + Expression.Term(ref "ＥＮ", ref u) + "を" + SrcFormatter.Format((short)(-10 * flevel)) + "減少。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
 //                        {
-//                            string argtname119 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname119, ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
 //                        }
 
 //                        break;
@@ -5260,19 +4814,16 @@
 //                    {
 //                        if (flevel >= 0d)
 //                        {
-//                            string argtname120 = "装甲";
-//                            msg = Expression.Term(ref argtname120, ref u) + "を" + SrcFormatter.Format((short)(100d * flevel)) + "増加。";
+//                            msg = Expression.Term(ref "装甲", ref u) + "を" + SrcFormatter.Format((short)(100d * flevel)) + "増加。";
 //                        }
 //                        else
 //                        {
-//                            string argtname121 = "装甲";
-//                            msg = Expression.Term(ref argtname121, ref u) + "を" + SrcFormatter.Format((short)(-100 * flevel)) + "減少。";
+//                            msg = Expression.Term(ref "装甲", ref u) + "を" + SrcFormatter.Format((short)(-100 * flevel)) + "減少。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
 //                        {
-//                            string argtname122 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname122, ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
 //                        }
 
 //                        break;
@@ -5282,19 +4833,16 @@
 //                    {
 //                        if (flevel >= 0d)
 //                        {
-//                            string argtname123 = "運動性";
-//                            msg = Expression.Term(ref argtname123, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "増加。";
+//                            msg = Expression.Term(ref "運動性", ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "増加。";
 //                        }
 //                        else
 //                        {
-//                            string argtname124 = "運動性";
-//                            msg = Expression.Term(ref argtname124, ref u) + "を" + SrcFormatter.Format((short)(-5 * flevel)) + "減少。";
+//                            msg = Expression.Term(ref "運動性", ref u) + "を" + SrcFormatter.Format((short)(-5 * flevel)) + "減少。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
 //                        {
-//                            string argtname125 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname125, ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
 //                        }
 
 //                        break;
@@ -5304,19 +4852,16 @@
 //                    {
 //                        if (flevel >= 0d)
 //                        {
-//                            string argtname126 = "移動力";
-//                            msg = Expression.Term(ref argtname126, ref u) + "を" + SrcFormatter.Format((short)flevel) + "増加。";
+//                            msg = Expression.Term(ref "移動力", ref u) + "を" + SrcFormatter.Format((short)flevel) + "増加。";
 //                        }
 //                        else
 //                        {
-//                            string argtname127 = "移動力";
-//                            msg = Expression.Term(ref argtname127, ref u) + "を" + SrcFormatter.Format((short)flevel) + "減少。";
+//                            msg = Expression.Term(ref "移動力", ref u) + "を" + SrcFormatter.Format((short)flevel) + "減少。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
 //                        {
-//                            string argtname128 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname128, ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
 //                        }
 
 //                        break;
@@ -5326,19 +4871,16 @@
 //                    {
 //                        if (flevel >= 0d)
 //                        {
-//                            string argtname129 = "ＨＰ";
-//                            msg = "最大" + Expression.Term(ref argtname129, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "%分増加。";
+//                            msg = "最大" + Expression.Term(ref "ＨＰ", ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "%分増加。";
 //                        }
 //                        else
 //                        {
-//                            string argtname130 = "ＨＰ";
-//                            msg = "最大" + Expression.Term(ref argtname130, ref u) + "を" + SrcFormatter.Format((short)(-5 * flevel)) + "%分減少。";
+//                            msg = "最大" + Expression.Term(ref "ＨＰ", ref u) + "を" + SrcFormatter.Format((short)(-5 * flevel)) + "%分減少。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
 //                        {
-//                            string argtname131 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname131, ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
 //                        }
 
 //                        break;
@@ -5348,19 +4890,16 @@
 //                    {
 //                        if (flevel >= 0d)
 //                        {
-//                            string argtname132 = "ＥＮ";
-//                            msg = "最大" + Expression.Term(ref argtname132, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "%分増加。";
+//                            msg = "最大" + Expression.Term(ref "ＥＮ", ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "%分増加。";
 //                        }
 //                        else
 //                        {
-//                            string argtname133 = "ＥＮ";
-//                            msg = "最大" + Expression.Term(ref argtname133, ref u) + "を" + SrcFormatter.Format((short)(-5 * flevel)) + "%分減少。";
+//                            msg = "最大" + Expression.Term(ref "ＥＮ", ref u) + "を" + SrcFormatter.Format((short)(-5 * flevel)) + "%分減少。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
 //                        {
-//                            string argtname134 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname134, ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
 //                        }
 
 //                        break;
@@ -5370,19 +4909,16 @@
 //                    {
 //                        if (flevel >= 0d)
 //                        {
-//                            string argtname135 = "装甲";
-//                            msg = Expression.Term(ref argtname135, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "%分増加。";
+//                            msg = Expression.Term(ref "装甲", ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "%分増加。";
 //                        }
 //                        else
 //                        {
-//                            string argtname136 = "装甲";
-//                            msg = Expression.Term(ref argtname136, ref u) + "を" + SrcFormatter.Format((short)(-5 * flevel)) + "%分減少。";
+//                            msg = Expression.Term(ref "装甲", ref u) + "を" + SrcFormatter.Format((short)(-5 * flevel)) + "%分減少。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
 //                        {
-//                            string argtname137 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname137, ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
 //                        }
 
 //                        break;
@@ -5392,19 +4928,16 @@
 //                    {
 //                        if (flevel >= 0d)
 //                        {
-//                            string argtname138 = "運動性";
-//                            msg = Expression.Term(ref argtname138, ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "%分増加。";
+//                            msg = Expression.Term(ref "運動性", ref u) + "を" + SrcFormatter.Format((short)(5d * flevel)) + "%分増加。";
 //                        }
 //                        else
 //                        {
-//                            string argtname139 = "運動性";
-//                            msg = Expression.Term(ref argtname139, ref u) + "を" + SrcFormatter.Format((short)(-5 * flevel)) + "%分減少。";
+//                            msg = Expression.Term(ref "運動性", ref u) + "を" + SrcFormatter.Format((short)(-5 * flevel)) + "%分減少。";
 //                        }
 
 //                        if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
 //                        {
-//                            string argtname140 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname140, ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 2) + "以上で発動。";
 //                        }
 
 //                        break;
@@ -5482,8 +5015,7 @@
 //                        msg = msg + buf + "による追撃を行う。";
 //                        int localStrToLng18() { string argexpr = GeneralLib.LIndex(ref fdata, 5); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
 
-//                        string argexpr46 = GeneralLib.LIndex(ref fdata, 5);
-//                        if (GeneralLib.StrToLng(ref argexpr46) > 0)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 5)) > 0)
 //                        {
 //                            msg = msg + ";発動時に" + GeneralLib.LIndex(ref fdata, 5) + "ＥＮ消費。";
 //                        }
@@ -5492,11 +5024,9 @@
 //                            msg = msg + ";発動時に" + Strings.Mid(GeneralLib.LIndex(ref fdata, 5), 2) + "ＥＮ増加。";
 //                        }
 
-//                        string argexpr47 = GeneralLib.LIndex(ref fdata, 6);
-//                        if (GeneralLib.StrToLng(ref argexpr47) > 50)
+//                        if (GeneralLib.StrToLng(ref GeneralLib.LIndex(ref fdata, 6)) > 50)
 //                        {
-//                            string argtname141 = "気力";
-//                            msg = msg + ";" + Expression.Term(ref argtname141, ref u) + GeneralLib.LIndex(ref fdata, 6) + "以上で使用可能。";
+//                            msg = msg + ";" + Expression.Term(ref "気力", ref u) + GeneralLib.LIndex(ref fdata, 6) + "以上で使用可能。";
 //                        }
 
 //                        if (Strings.InStr(fdata, "連鎖不可") > 0)
@@ -5509,8 +5039,7 @@
 
 //                case "ＺＯＣ":
 //                    {
-//                        object argIndex85 = "ＺＯＣ";
-//                        if (u.FeatureLevel(ref argIndex85) < 0d)
+//                        if (u.FeatureLevel(ref "ＺＯＣ") < 0d)
 //                        {
 //                            msg = "このユニットはＺＯＣによる影響を与えることが出来ない。";
 //                        }
@@ -5681,8 +5210,7 @@
 //                    }
 //            }
 
-//            object argIndex86 = fname0;
-//            fdata = u.AllFeatureData(ref argIndex86);
+//            fdata = u.AllFeatureData(ref fname0);
 //            if (GeneralLib.ListIndex(ref fdata, 1) == "解説")
 //            {
 //                // 解説を定義している場合
@@ -5694,12 +5222,9 @@
 //            }
 
 //            // 等身大基準の際は「パイロット」という語を使わないようにする
-//            string argoname2 = "等身大基準";
-//            if (Expression.IsOptionDefined(ref argoname2))
+//            if (Expression.IsOptionDefined(ref "等身大基準"))
 //            {
-//                string args2 = "パイロット";
-//                string args3 = "ユニット";
-//                GeneralLib.ReplaceString(ref msg, ref args2, ref args3);
+//                GeneralLib.ReplaceString(ref msg, ref "パイロット", ref "ユニット");
 //            }
 
 //            FeatureHelpMessageRet = msg;
@@ -5841,22 +5366,19 @@
 
 //                case "吸":
 //                    {
-//                        string argtname = "ＨＰ";
-//                        AttributeNameRet = Expression.Term(ref argtname, ref u) + "吸収攻撃";
+//                        AttributeNameRet = Expression.Term(ref "ＨＰ", ref u) + "吸収攻撃";
 //                        break;
 //                    }
 
 //                case "減":
 //                    {
-//                        string argtname1 = "ＥＮ";
-//                        AttributeNameRet = Expression.Term(ref argtname1, ref u) + "破壊攻撃";
+//                        AttributeNameRet = Expression.Term(ref "ＥＮ", ref u) + "破壊攻撃";
 //                        break;
 //                    }
 
 //                case "奪":
 //                    {
-//                        string argtname2 = "ＥＮ";
-//                        AttributeNameRet = Expression.Term(ref argtname2, ref u) + "吸収攻撃";
+//                        AttributeNameRet = Expression.Term(ref "ＥＮ", ref u) + "吸収攻撃";
 //                        break;
 //                    }
 
@@ -5946,8 +5468,7 @@
 //                        }
 //                        else
 //                        {
-//                            string argtname3 = "アビリティ";
-//                            AttributeNameRet = "使用回数共有" + Expression.Term(ref argtname3, ref u);
+//                            AttributeNameRet = "使用回数共有" + Expression.Term(ref "アビリティ", ref u);
 //                        }
 
 //                        break;
@@ -5991,8 +5512,7 @@
 //                        }
 //                        else
 //                        {
-//                            string argtname4 = "アビリティ";
-//                            AttributeNameRet = "音波" + Expression.Term(ref argtname4, ref u);
+//                            AttributeNameRet = "音波" + Expression.Term(ref "アビリティ", ref u);
 //                        }
 
 //                        break;
@@ -6000,8 +5520,7 @@
 
 //                case "気":
 //                    {
-//                        string argtname5 = "気力";
-//                        AttributeNameRet = Expression.Term(ref argtname5, ref u) + "消費攻撃";
+//                        AttributeNameRet = Expression.Term(ref "気力", ref u) + "消費攻撃";
 //                        break;
 //                    }
 
@@ -6014,15 +5533,13 @@
 
 //                case "失":
 //                    {
-//                        string argtname6 = "ＨＰ";
-//                        AttributeNameRet = Expression.Term(ref argtname6, ref u) + "消費攻撃";
+//                        AttributeNameRet = Expression.Term(ref "ＨＰ", ref u) + "消費攻撃";
 //                        break;
 //                    }
 
 //                case "銭":
 //                    {
-//                        string argtname7 = "資金";
-//                        AttributeNameRet = Expression.Term(ref argtname7, ref u) + "消費攻撃";
+//                        AttributeNameRet = Expression.Term(ref "資金", ref u) + "消費攻撃";
 //                        break;
 //                    }
 
@@ -6226,15 +5743,13 @@
 
 //                case "脱":
 //                    {
-//                        string argtname8 = "気力";
-//                        AttributeNameRet = Expression.Term(ref argtname8, ref u) + "減少攻撃";
+//                        AttributeNameRet = Expression.Term(ref "気力", ref u) + "減少攻撃";
 //                        break;
 //                    }
 
 //                case "Ｄ":
 //                    {
-//                        string argtname9 = "気力";
-//                        AttributeNameRet = Expression.Term(ref argtname9, ref u) + "吸収攻撃";
+//                        AttributeNameRet = Expression.Term(ref "気力", ref u) + "吸収攻撃";
 //                        break;
 //                    }
 
@@ -6252,15 +5767,13 @@
 
 //                case "低運":
 //                    {
-//                        string argtname10 = "運動性";
-//                        AttributeNameRet = Expression.Term(ref argtname10, ref u) + "低下攻撃";
+//                        AttributeNameRet = Expression.Term(ref "運動性", ref u) + "低下攻撃";
 //                        break;
 //                    }
 
 //                case "低移":
 //                    {
-//                        string argtname11 = "移動力";
-//                        AttributeNameRet = Expression.Term(ref argtname11, ref u) + "低下攻撃";
+//                        AttributeNameRet = Expression.Term(ref "移動力", ref u) + "低下攻撃";
 //                        break;
 //                    }
 
@@ -6326,8 +5839,7 @@
 
 //                case "尽":
 //                    {
-//                        string argtname12 = "ＥＮ";
-//                        AttributeNameRet = "全" + Expression.Term(ref argtname12, ref u) + "消費攻撃";
+//                        AttributeNameRet = "全" + Expression.Term(ref "ＥＮ", ref u) + "消費攻撃";
 //                        break;
 //                    }
 
@@ -6381,15 +5893,13 @@
 
 //                case "衰":
 //                    {
-//                        string argtname13 = "ＨＰ";
-//                        AttributeNameRet = Expression.Term(ref argtname13, ref u) + "減衰攻撃";
+//                        AttributeNameRet = Expression.Term(ref "ＨＰ", ref u) + "減衰攻撃";
 //                        break;
 //                    }
 
 //                case "滅":
 //                    {
-//                        string argtname14 = "ＥＮ";
-//                        AttributeNameRet = Expression.Term(ref argtname14, ref u) + "減衰攻撃";
+//                        AttributeNameRet = Expression.Term(ref "ＥＮ", ref u) + "減衰攻撃";
 //                        break;
 //                    }
 
@@ -6443,15 +5953,13 @@
 
 //                case "援":
 //                    {
-//                        string argtname15 = "アビリティ";
-//                        AttributeNameRet = "支援専用" + Expression.Term(ref argtname15, ref u);
+//                        AttributeNameRet = "支援専用" + Expression.Term(ref "アビリティ", ref u);
 //                        break;
 //                    }
 
 //                case "難":
 //                    {
-//                        string argtname16 = "アビリティ";
-//                        AttributeNameRet = "高難度" + Expression.Term(ref argtname16, ref u);
+//                        AttributeNameRet = "高難度" + Expression.Term(ref "アビリティ", ref u);
 //                        break;
 //                    }
 
@@ -6580,8 +6088,7 @@
 
 //            if (u is object)
 //            {
-//                object argIndex1 = atr;
-//                fdata = u.FeatureData(ref argIndex1);
+//                fdata = u.FeatureData(ref atr);
 //                if (GeneralLib.ListIndex(ref fdata, 1) == "解説")
 //                {
 //                    // 解説を定義している場合
@@ -6594,8 +6101,7 @@
 //            {
 //                if (Strings.Right(AttributeNameRet, 2) == "攻撃" | Strings.Right(AttributeNameRet, 2) == "武器")
 //                {
-//                    string argtname17 = "アビリティ";
-//                    AttributeNameRet = Strings.Left(AttributeNameRet, Strings.Len(AttributeNameRet) - 2) + Expression.Term(ref argtname17, ref u);
+//                    AttributeNameRet = Strings.Left(AttributeNameRet, Strings.Len(AttributeNameRet) - 2) + Expression.Term(ref "アビリティ", ref u);
 //                }
 //            }
 
@@ -6614,13 +6120,10 @@
 //            {
 //                prev_mode = GUI.AutoMessageMode;
 //                GUI.AutoMessageMode = false;
-//                Unit argu1 = null;
-//                Unit argu2 = null;
-//                GUI.OpenMessageForm(u1: ref argu1, u2: ref argu2);
+//                GUI.OpenMessageForm(u1: ref null, u2: ref null);
 //                if (SRC.AutoMoveCursor)
 //                {
-//                    string argcursor_mode = "メッセージウィンドウ";
-//                    GUI.MoveCursorPos(ref argcursor_mode);
+//                    GUI.MoveCursorPos(ref "メッセージウィンドウ");
 //                }
 
 //                if (Strings.InStr(atr, "L") > 0)
@@ -6634,8 +6137,7 @@
 //                    aname = AttributeName(ref u, ref atr, is_ability);
 //                }
 
-//                string argpname = "システム";
-//                GUI.DisplayMessage(ref argpname, "<b>" + aname + "</b>;" + msg);
+//                GUI.DisplayMessage(ref "システム", "<b>" + aname + "</b>;" + msg);
 //                GUI.CloseMessageForm();
 //                GUI.AutoMessageMode = prev_mode;
 //            }
@@ -6679,8 +6181,7 @@
 //                {
 //                    waname = withBlock.Ability(idx).Name;
 //                    wanickname = withBlock.AbilityNickname(idx);
-//                    string argtname = "アビリティ";
-//                    whatsthis = Expression.Term(ref argtname, ref u);
+//                    whatsthis = Expression.Term(ref "アビリティ", ref u);
 //                }
 
 //                // メインパイロット
@@ -6691,8 +6192,7 @@
 //            {
 //                case "格":
 //                    {
-//                        string argtname1 = "格闘";
-//                        msg = "パイロットの" + Expression.Term(ref argtname1, ref u) + "を使って攻撃力を算出。";
+//                        msg = "パイロットの" + Expression.Term(ref "格闘", ref u) + "を使って攻撃力を算出。";
 //                        break;
 //                    }
 
@@ -6700,13 +6200,11 @@
 //                    {
 //                        if (p.HasMana())
 //                        {
-//                            string argtname2 = "魔力";
-//                            msg = "パイロットの" + Expression.Term(ref argtname2, ref u) + "を使って攻撃力を算出。";
+//                            msg = "パイロットの" + Expression.Term(ref "魔力", ref u) + "を使って攻撃力を算出。";
 //                        }
 //                        else
 //                        {
-//                            string argtname3 = "射撃";
-//                            msg = "パイロットの" + Expression.Term(ref argtname3, ref u) + "を使って攻撃力を算出。";
+//                            msg = "パイロットの" + Expression.Term(ref "射撃", ref u) + "を使って攻撃力を算出。";
 //                        }
 
 //                        break;
@@ -6716,15 +6214,11 @@
 //                    {
 //                        if (p.HasMana())
 //                        {
-//                            string argtname4 = "格闘";
-//                            string argtname5 = "魔力";
-//                            msg = "格闘と魔法の両方を使った攻撃。" + "パイロットの" + Expression.Term(ref argtname4, ref u) + "と" + Expression.Term(ref argtname5, ref u) + "の" + "平均値を使って攻撃力を算出する。";
+//                            msg = "格闘と魔法の両方を使った攻撃。" + "パイロットの" + Expression.Term(ref "格闘", ref u) + "と" + Expression.Term(ref "魔力", ref u) + "の" + "平均値を使って攻撃力を算出する。";
 //                        }
 //                        else
 //                        {
-//                            string argtname6 = "格闘";
-//                            string argtname7 = "射撃";
-//                            msg = "格闘と射撃の両方を使った攻撃。" + "パイロットの" + Expression.Term(ref argtname6, ref u) + "と" + Expression.Term(ref argtname7, ref u) + "の" + "平均値を使って攻撃力を算出する。";
+//                            msg = "格闘と射撃の両方を使った攻撃。" + "パイロットの" + Expression.Term(ref "格闘", ref u) + "と" + Expression.Term(ref "射撃", ref u) + "の" + "平均値を使って攻撃力を算出する。";
 //                        }
 
 //                        break;
@@ -6816,8 +6310,7 @@
 //                case "実":
 //                    {
 //                        msg = "切り払いと迎撃の対象になる。";
-//                        string argoname = "距離修正";
-//                        if (Expression.IsOptionDefined(ref argoname))
+//                        if (Expression.IsOptionDefined(ref "距離修正"))
 //                        {
 //                            msg = msg + "長距離の敵を攻撃する際もダメージが低下しない。";
 //                        }
@@ -6827,31 +6320,26 @@
 
 //                case "オ":
 //                    {
-//                        object argIndex1 = "オーラ";
-//                        msg = "パイロットの" + p.SkillName0(ref argIndex1) + "レベルによって攻撃力が変化。";
+//                        msg = "パイロットの" + p.SkillName0(ref "オーラ") + "レベルによって攻撃力が変化。";
 //                        break;
 //                    }
 
 //                case "超":
 //                    {
-//                        object argIndex2 = "超能力";
-//                        msg = "パイロットの" + p.SkillName0(ref argIndex2) + "レベルによって攻撃力が変化。";
+//                        msg = "パイロットの" + p.SkillName0(ref "超能力") + "レベルによって攻撃力が変化。";
 //                        break;
 //                    }
 
 //                case "シ":
 //                    {
-//                        object argIndex3 = "同調率";
-//                        msg = "パイロットの" + p.SkillName0(ref argIndex3) + "によって攻撃力が変化。";
+//                        msg = "パイロットの" + p.SkillName0(ref "同調率") + "によって攻撃力が変化。";
 //                        break;
 //                    }
 
 //                case "サ":
 //                    {
-//                        object argIndex4 = "超感覚";
-//                        msg = "パイロットの" + p.SkillName0(ref argIndex4) + "レベルによって射程が変化。";
-//                        string argoname1 = "距離修正";
-//                        if (Expression.IsOptionDefined(ref argoname1))
+//                        msg = "パイロットの" + p.SkillName0(ref "超感覚") + "レベルによって射程が変化。";
+//                        if (Expression.IsOptionDefined(ref "距離修正"))
 //                        {
 //                            msg = msg + "距離による命中率低下がない。また、";
 //                        }
@@ -6862,32 +6350,25 @@
 
 //                case "体":
 //                    {
-//                        string argtname8 = "ＨＰ";
-//                        msg = "生命力を攻撃力に換える攻撃。ユニットの" + Expression.Term(ref argtname8, ref u) + "によって攻撃力が変化する。";
+//                        msg = "生命力を攻撃力に換える攻撃。ユニットの" + Expression.Term(ref "ＨＰ", ref u) + "によって攻撃力が変化する。";
 //                        break;
 //                    }
 
 //                case "吸":
 //                    {
-//                        string argtname9 = "ＨＰ";
-//                        msg = "与えたダメージの１／４を吸収し、自分の" + Expression.Term(ref argtname9, ref u) + "に変換。";
+//                        msg = "与えたダメージの１／４を吸収し、自分の" + Expression.Term(ref "ＨＰ", ref u) + "に変換。";
 //                        break;
 //                    }
 
 //                case "減":
 //                    {
-//                        string argtname10 = "ＨＰ";
-//                        string argtname11 = "ＥＮ";
-//                        msg = Expression.Term(ref argtname10, ref u) + "にダメージを与えると同時に相手の" + Expression.Term(ref argtname11, ref u) + "を減少させる。";
+//                        msg = Expression.Term(ref "ＨＰ", ref u) + "にダメージを与えると同時に相手の" + Expression.Term(ref "ＥＮ", ref u) + "を減少させる。";
 //                        break;
 //                    }
 
 //                case "奪":
 //                    {
-//                        string argtname12 = "ＨＰ";
-//                        string argtname13 = "ＥＮ";
-//                        string argtname14 = "ＥＮ";
-//                        msg = Expression.Term(ref argtname12, ref u) + "にダメージを与えると同時に相手の" + Expression.Term(ref argtname13, ref u) + "を減少させ、" + "減少させた" + Expression.Term(ref argtname14, ref u) + "の半分を自分のものにする。";
+//                        msg = Expression.Term(ref "ＨＰ", ref u) + "にダメージを与えると同時に相手の" + Expression.Term(ref "ＥＮ", ref u) + "を減少させ、" + "減少させた" + Expression.Term(ref "ＥＮ", ref u) + "の半分を自分のものにする。";
 //                        break;
 //                    }
 
@@ -6895,13 +6376,11 @@
 //                    {
 //                        if (alevel > 0d)
 //                        {
-//                            string argtname15 = "装甲";
-//                            msg = "相手の" + Expression.Term(ref argtname15, ref u) + "を本来の" + SrcFormatter.Format(100d - 10d * alevel) + "％の値とみなしてダメージ計算を行う。";
+//                            msg = "相手の" + Expression.Term(ref "装甲", ref u) + "を本来の" + SrcFormatter.Format(100d - 10d * alevel) + "％の値とみなしてダメージ計算を行う。";
 //                        }
 //                        else
 //                        {
-//                            string argtname16 = "装甲";
-//                            msg = "相手の" + Expression.Term(ref argtname16, ref u) + "を半分とみなしてダメージ計算を行う。";
+//                            msg = "相手の" + Expression.Term(ref "装甲", ref u) + "を半分とみなしてダメージ計算を行う。";
 //                        }
 
 //                        break;
@@ -6927,8 +6406,7 @@
 
 //                case "浄":
 //                    {
-//                        object argIndex5 = "再生";
-//                        msg = "敵の" + p.SkillName0(ref argIndex5) + "能力を無効化。";
+//                        msg = "敵の" + p.SkillName0(ref "再生") + "能力を無効化。";
 //                        break;
 //                    }
 
@@ -6983,8 +6461,7 @@
 //                                }
 //                            }
 
-//                            string argattr = "共";
-//                            if (u.IsWeaponClassifiedAs(idx, ref argattr) & u.Weapon(idx).Bullet == 0)
+//                            if (u.IsWeaponClassifiedAs(idx, ref "共") & u.Weapon(idx).Bullet == 0)
 //                            {
 //                                msg = msg + "同レベルの弾薬共有武器も連動して使用不能になる。";
 //                            }
@@ -6996,17 +6473,14 @@
 //                            {
 //                                if (i != idx & (wanickname ?? "") == (u.AbilityNickname(i) ?? ""))
 //                                {
-//                                    string argtname17 = "アビリティ";
-//                                    msg = msg + "同名の" + Expression.Term(ref argtname17, ref u) + "も連動して使用不能になる。";
+//                                    msg = msg + "同名の" + Expression.Term(ref "アビリティ", ref u) + "も連動して使用不能になる。";
 //                                    break;
 //                                }
 //                            }
 
-//                            string argattr1 = "共";
-//                            if (u.IsAbilityClassifiedAs(idx, ref argattr1) & u.Ability(idx).Stock == 0)
+//                            if (u.IsAbilityClassifiedAs(idx, ref "共") & u.Ability(idx).Stock == 0)
 //                            {
-//                                string argtname18 = "アビリティ";
-//                                msg = msg + "同レベルの使用回数共有" + Expression.Term(ref argtname18, ref u) + "も連動して使用不能になる。";
+//                                msg = msg + "同レベルの使用回数共有" + Expression.Term(ref "アビリティ", ref u) + "も連動して使用不能になる。";
 //                            }
 //                        }
 
@@ -7032,22 +6506,18 @@
 
 //                        if (i > u.CountFeature())
 //                        {
-//                            string argmsg = u.Name + "の合体技「" + waname + "」に対応した合体技能力がありません";
-//                            GUI.ErrorMessage(ref argmsg);
+//                            GUI.ErrorMessage(ref u.Name + "の合体技「" + waname + "」に対応した合体技能力がありません");
 //                            return AttributeHelpMessageRet;
 //                        }
 
 //                        string localFeatureData4() { object argIndex1 = i; var ret = u.FeatureData(ref argIndex1); return ret; }
 
-//                        string arglist3 = localFeatureData4();
-//                        if (GeneralLib.LLength(ref arglist3) == 2)
+//                        if (GeneralLib.LLength(ref localFeatureData4()) == 2)
 //                        {
 //                            string localFeatureData1() { object argIndex1 = i; var ret = u.FeatureData(ref argIndex1); return ret; }
 
-//                            string arglist = localFeatureData1();
-//                            uname = GeneralLib.LIndex(ref arglist, 2);
-//                            object argIndex6 = uname;
-//                            if (SRC.UDList.IsDefined(ref argIndex6))
+//                            uname = GeneralLib.LIndex(ref localFeatureData1(), 2);
+//                            if (SRC.UDList.IsDefined(ref uname))
 //                            {
 //                                UnitData localItem() { object argIndex1 = uname; var ret = SRC.UDList.Item(ref argIndex1); return ret; }
 
@@ -7068,16 +6538,13 @@
 //                            msg = "以下のユニットと協力して行う技。;";
 //                            string localFeatureData3() { object argIndex1 = i; var ret = u.FeatureData(ref argIndex1); return ret; }
 
-//                            string arglist2 = localFeatureData3();
-//                            var loopTo3 = GeneralLib.LLength(ref arglist2);
+//                            var loopTo3 = GeneralLib.LLength(ref localFeatureData3());
 //                            for (j = 2; j <= loopTo3; j++)
 //                            {
 //                                string localFeatureData2() { object argIndex1 = i; var ret = u.FeatureData(ref argIndex1); return ret; }
 
-//                                string arglist1 = localFeatureData2();
-//                                uname = GeneralLib.LIndex(ref arglist1, j);
-//                                object argIndex7 = uname;
-//                                if (SRC.UDList.IsDefined(ref argIndex7))
+//                                uname = GeneralLib.LIndex(ref localFeatureData2(), j);
+//                                if (SRC.UDList.IsDefined(ref uname))
 //                                {
 //                                    UnitData localItem1() { object argIndex1 = uname; var ret = SRC.UDList.Item(ref argIndex1); return ret; }
 
@@ -7103,12 +6570,10 @@
 //                        }
 //                        else
 //                        {
-//                            string argtname19 = "アビリティ";
-//                            msg = "複数の" + Expression.Term(ref argtname19, ref u) + "で使用回数を共有していることを示す。";
+//                            msg = "複数の" + Expression.Term(ref "アビリティ", ref u) + "で使用回数を共有していることを示す。";
 //                            if (alevel > 0d)
 //                            {
-//                                string argtname20 = "アビリティ";
-//                                msg = msg + ";同レベルの使用回数共有" + Expression.Term(ref argtname20, ref u) + "間で使用回数を共有している。";
+//                                msg = msg + ";同レベルの使用回数共有" + Expression.Term(ref "アビリティ", ref u) + "間で使用回数を共有している。";
 //                            }
 //                        }
 
@@ -7123,8 +6588,7 @@
 //                        }
 //                        else
 //                        {
-//                            string argtname21 = "アビリティ";
-//                            msg = "回数制の" + Expression.Term(ref argtname21, ref u) + "全ての使用回数を消費する。";
+//                            msg = "回数制の" + Expression.Term(ref "アビリティ", ref u) + "全ての使用回数を消費する。";
 //                        }
 
 //                        break;
@@ -7138,19 +6602,16 @@
 
 //                case "術":
 //                    {
-//                        object argIndex8 = "術";
-//                        buf = p.SkillName0(ref argIndex8);
+//                        buf = p.SkillName0(ref "術");
 //                        if (buf == "非表示")
 //                        {
 //                            buf = "術";
 //                        }
 
-//                        string argtname22 = "ＥＮ";
-//                        msg = buf + "技能によって" + Expression.Term(ref argtname22, ref u) + "消費量が減少。";
+//                        msg = buf + "技能によって" + Expression.Term(ref "ＥＮ", ref u) + "消費量が減少。";
 //                        if (is_ability)
 //                        {
-//                            string argtname23 = "魔力";
-//                            msg = msg + ";パイロットの" + Expression.Term(ref argtname23, ref u) + "によって威力が増減する。";
+//                            msg = msg + ";パイロットの" + Expression.Term(ref "魔力", ref u) + "によって威力が増減する。";
 //                        }
 
 //                        msg = msg + ";沈黙状態の時には使用不能｡";
@@ -7159,15 +6620,13 @@
 
 //                case "技":
 //                    {
-//                        object argIndex9 = "技";
-//                        buf = p.SkillName0(ref argIndex9);
+//                        buf = p.SkillName0(ref "技");
 //                        if (buf == "非表示")
 //                        {
 //                            buf = "技";
 //                        }
 
-//                        string argtname24 = "ＥＮ";
-//                        msg = buf + "技能によって" + Expression.Term(ref argtname24, ref u) + "消費量が減少。";
+//                        msg = buf + "技能によって" + Expression.Term(ref "ＥＮ", ref u) + "消費量が減少。";
 //                        break;
 //                    }
 
@@ -7179,8 +6638,7 @@
 //                        }
 //                        else
 //                        {
-//                            string argtname25 = "アビリティ";
-//                            msg = "声などの音を使った" + Expression.Term(ref argtname25, ref u) + "であることを示す｡";
+//                            msg = "声などの音を使った" + Expression.Term(ref "アビリティ", ref u) + "であることを示す｡";
 //                        }
 
 //                        msg = msg + "沈黙状態の時には使用不能｡ ";
@@ -7202,23 +6660,19 @@
 //                case "霊":
 //                case "プ":
 //                    {
-//                        object argIndex10 = "霊力";
-//                        msg = "使用時に" + SrcFormatter.Format(5d * alevel) + p.SkillName0(ref argIndex10) + "を消費。";
+//                        msg = "使用時に" + SrcFormatter.Format(5d * alevel) + p.SkillName0(ref "霊力") + "を消費。";
 //                        break;
 //                    }
 
 //                case "失":
 //                    {
-//                        string argtname26 = "ＨＰ";
-//                        msg = "使用時に" + SrcFormatter.Format((long)(alevel * u.MaxHP) / 10L) + "の" + Expression.Term(ref argtname26, ref u) + "を失う。";
+//                        msg = "使用時に" + SrcFormatter.Format((long)(alevel * u.MaxHP) / 10L) + "の" + Expression.Term(ref "ＨＰ", ref u) + "を失う。";
 //                        break;
 //                    }
 
 //                case "銭":
 //                    {
-//                        string argtname27 = "資金";
-//                        string argtname28 = "資金";
-//                        msg = "使用時に" + SrcFormatter.Format(GeneralLib.MaxLng((int)alevel, 1) * u.Value / 10) + "の" + Expression.Term(ref argtname27, ref u) + "が必要。;" + Expression.Term(ref argtname28, ref u) + "が足りない場合は使用不可。";
+//                        msg = "使用時に" + SrcFormatter.Format(GeneralLib.MaxLng((int)alevel, 1) * u.Value / 10) + "の" + Expression.Term(ref "資金", ref u) + "が必要。;" + Expression.Term(ref "資金", ref u) + "が足りない場合は使用不可。";
 //                        break;
 //                    }
 
@@ -7234,22 +6688,16 @@
 //                        {
 //                            if (alevel > 0d)
 //                            {
-//                                string argtname29 = "ＥＮ";
-//                                string argtname30 = "ＥＮ";
-//                                string argtname31 = "ＥＮ";
-//                                string argtname32 = "ＥＮ";
-//                                msg = "全" + Expression.Term(ref argtname29, ref u) + "を使って攻撃し、使用後に" + Expression.Term(ref argtname30, ref u) + "が0になる。;" + "(残り" + Expression.Term(ref argtname31, ref u) + "－必要" + Expression.Term(ref argtname32, ref u) + ")×" + Strings.StrConv(SrcFormatter.Format(alevel), VbStrConv.Wide) + "だけ攻撃力が上昇。";
+//                                msg = "全" + Expression.Term(ref "ＥＮ", ref u) + "を使って攻撃し、使用後に" + Expression.Term(ref "ＥＮ", ref u) + "が0になる。;" + "(残り" + Expression.Term(ref "ＥＮ", ref u) + "－必要" + Expression.Term(ref "ＥＮ", ref u) + ")×" + Strings.StrConv(SrcFormatter.Format(alevel), VbStrConv.Wide) + "だけ攻撃力が上昇。";
 //                            }
 //                            else
 //                            {
-//                                string argtname33 = "ＥＮ";
-//                                msg = "全" + Expression.Term(ref argtname33, ref u) + "を使って攻撃し、使用後にＥＮが0になる。";
+//                                msg = "全" + Expression.Term(ref "ＥＮ", ref u) + "を使って攻撃し、使用後にＥＮが0になる。";
 //                            }
 //                        }
 //                        else
 //                        {
-//                            string argtname34 = "ＥＮ";
-//                            msg = "使用後に" + Expression.Term(ref argtname34, ref u) + "が0になる。";
+//                            msg = "使用後に" + Expression.Term(ref "ＥＮ", ref u) + "が0になる。";
 //                        }
 
 //                        break;
@@ -7263,8 +6711,7 @@
 
 //                case "変":
 //                    {
-//                        string argfname = "変形技";
-//                        if (u.IsFeatureAvailable(ref argfname))
+//                        if (u.IsFeatureAvailable(ref "変形技"))
 //                        {
 //                            var loopTo4 = u.CountFeature();
 //                            for (i = 1; i <= loopTo4; i++)
@@ -7279,8 +6726,7 @@
 //                                {
 //                                    string localFeatureData5() { object argIndex1 = i; var ret = u.FeatureData(ref argIndex1); return ret; }
 
-//                                    string arglist4 = localFeatureData5();
-//                                    uname = GeneralLib.LIndex(ref arglist4, 2);
+//                                    uname = GeneralLib.LIndex(ref localFeatureData5(), 2);
 //                                    break;
 //                                }
 //                            }
@@ -7288,17 +6734,13 @@
 
 //                        if (string.IsNullOrEmpty(uname))
 //                        {
-//                            object argIndex11 = "ノーマルモード";
-//                            string arglist5 = u.FeatureData(ref argIndex11);
-//                            uname = GeneralLib.LIndex(ref arglist5, 1);
+//                            uname = GeneralLib.LIndex(ref u.FeatureData(ref "ノーマルモード"), 1);
 //                        }
 
-//                        object argIndex13 = uname;
-//                        if (SRC.UDList.IsDefined(ref argIndex13))
+//                        if (SRC.UDList.IsDefined(ref uname))
 //                        {
-//                            object argIndex12 = uname;
 //                            {
-//                                var withBlock1 = SRC.UDList.Item(ref argIndex12);
+//                                var withBlock1 = SRC.UDList.Item(ref uname);
 //                                if ((u.Nickname ?? "") != (withBlock1.Nickname ?? ""))
 //                                {
 //                                    uname = withBlock1.Nickname;
@@ -7497,8 +6939,7 @@
 //                        }
 
 //                        msg = msg + "凍らせる。";
-//                        string argtname35 = "装甲";
-//                        msg = msg + ";凍結した相手は" + Expression.Term(ref argtname35, ref u) + "が半減するが、";
+//                        msg = msg + ";凍結した相手は" + Expression.Term(ref "装甲", ref u) + "が半減するが、";
 //                        msg = msg + "ダメージを与えると凍結は解除される。";
 //                        break;
 //                    }
@@ -7764,14 +7205,11 @@
 //                    {
 //                        if (!is_ability)
 //                        {
-//                            string argtname36 = "アビリティ";
-//                            msg = "クリティカル発生時に相手にかけられた" + Expression.Term(ref argtname36, ref u) + "による特殊効果を打ち消す。";
+//                            msg = "クリティカル発生時に相手にかけられた" + Expression.Term(ref "アビリティ", ref u) + "による特殊効果を打ち消す。";
 //                        }
 //                        else
 //                        {
-//                            string argtname37 = "アビリティ";
-//                            string argtname38 = "アビリティ";
-//                            msg = Expression.Term(ref argtname37, ref u) + "実行時に、それまでに相手にかけられていた" + Expression.Term(ref argtname38, ref u) + "による特殊効果が解除される。";
+//                            msg = Expression.Term(ref "アビリティ", ref u) + "実行時に、それまでに相手にかけられていた" + Expression.Term(ref "アビリティ", ref u) + "による特殊効果が解除される。";
 //                        }
 
 //                        break;
@@ -7787,13 +7225,11 @@
 //                    {
 //                        if (alevel > 0d)
 //                        {
-//                            string argtname39 = "ＨＰ";
-//                            msg = "クリティカル発生時に相手を「死の宣告」状態にし、" + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン後に" + Expression.Term(ref argtname39, ref u) + "を１にする。";
+//                            msg = "クリティカル発生時に相手を「死の宣告」状態にし、" + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン後に" + Expression.Term(ref "ＨＰ", ref u) + "を１にする。";
 //                        }
 //                        else
 //                        {
-//                            string argtname40 = "ＨＰ";
-//                            msg = "クリティカル発生時に相手の" + Expression.Term(ref argtname40, ref u) + "を１にする。";
+//                            msg = "クリティカル発生時に相手の" + Expression.Term(ref "ＨＰ", ref u) + "を１にする。";
 //                        }
 
 //                        break;
@@ -7803,18 +7239,15 @@
 //                    {
 //                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
-//                            string argtname41 = "気力";
-//                            msg = "相手の" + Expression.Term(ref argtname41, ref u) + "を10低下させる。";
+//                            msg = "相手の" + Expression.Term(ref "気力", ref u) + "を10低下させる。";
 //                        }
 //                        else if (alevel >= 0d)
 //                        {
-//                            string argtname43 = "気力";
-//                            msg = "相手の" + Expression.Term(ref argtname43, ref u) + "を" + SrcFormatter.Format((short)(5d * alevel)) + "低下させる。";
+//                            msg = "相手の" + Expression.Term(ref "気力", ref u) + "を" + SrcFormatter.Format((short)(5d * alevel)) + "低下させる。";
 //                        }
 //                        else
 //                        {
-//                            string argtname42 = "気力";
-//                            msg = "相手の" + Expression.Term(ref argtname42, ref u) + "を" + SrcFormatter.Format((short)(-5 * alevel)) + "増加させる。";
+//                            msg = "相手の" + Expression.Term(ref "気力", ref u) + "を" + SrcFormatter.Format((short)(-5 * alevel)) + "増加させる。";
 //                        }
 
 //                        break;
@@ -7824,18 +7257,15 @@
 //                    {
 //                        if (alevel == Constants.DEFAULT_LEVEL)
 //                        {
-//                            string argtname44 = "気力";
-//                            msg = "相手の" + Expression.Term(ref argtname44, ref u) + "を10低下させ、その半分を吸収する。";
+//                            msg = "相手の" + Expression.Term(ref "気力", ref u) + "を10低下させ、その半分を吸収する。";
 //                        }
 //                        else if (alevel >= 0d)
 //                        {
-//                            string argtname46 = "気力";
-//                            msg = "相手の" + Expression.Term(ref argtname46, ref u) + "を" + SrcFormatter.Format((short)(5d * alevel)) + "低下させ、その半分を吸収する。";
+//                            msg = "相手の" + Expression.Term(ref "気力", ref u) + "を" + SrcFormatter.Format((short)(5d * alevel)) + "低下させ、その半分を吸収する。";
 //                        }
 //                        else
 //                        {
-//                            string argtname45 = "気力";
-//                            msg = "相手の" + Expression.Term(ref argtname45, ref u) + "を" + SrcFormatter.Format((short)(-5 * alevel)) + "増加させ、その半分を与える。";
+//                            msg = "相手の" + Expression.Term(ref "気力", ref u) + "を" + SrcFormatter.Format((short)(-5 * alevel)) + "増加させ、その半分を与える。";
 //                        }
 
 //                        break;
@@ -7869,8 +7299,7 @@
 //                            alevel = 3d;
 //                        }
 
-//                        string argtname47 = "装甲";
-//                        msg = "クリティカル発生時に相手の" + Expression.Term(ref argtname47, ref u) + "を";
+//                        msg = "クリティカル発生時に相手の" + Expression.Term(ref "装甲", ref u) + "を";
 //                        if (alevel > 0d)
 //                        {
 //                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
@@ -7891,8 +7320,7 @@
 //                            alevel = 3d;
 //                        }
 
-//                        string argtname48 = "運動性";
-//                        msg = "クリティカル発生時に相手の" + Expression.Term(ref argtname48, ref u) + "を";
+//                        msg = "クリティカル発生時に相手の" + Expression.Term(ref "運動性", ref u) + "を";
 //                        if (alevel > 0d)
 //                        {
 //                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
@@ -7913,8 +7341,7 @@
 //                            alevel = 3d;
 //                        }
 
-//                        string argtname49 = "移動力";
-//                        msg = "クリティカル発生時に相手の" + Expression.Term(ref argtname49, ref u) + "を";
+//                        msg = "クリティカル発生時に相手の" + Expression.Term(ref "移動力", ref u) + "を";
 //                        if (alevel > 0d)
 //                        {
 //                            msg = msg + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "ターン";
@@ -7958,13 +7385,11 @@
 //                    {
 //                        if (alevel > 0d)
 //                        {
-//                            string argtname50 = "サイズ";
-//                            msg = "相手ユニットを" + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "マス吹き飛ばす。;" + "クリティカル発生時は吹き飛ばし距離＋１。" + Expression.Term(ref argtname50, ref u) + "制限あり。";
+//                            msg = "相手ユニットを" + Strings.StrConv(SrcFormatter.Format((short)alevel), VbStrConv.Wide) + "マス吹き飛ばす。;" + "クリティカル発生時は吹き飛ばし距離＋１。" + Expression.Term(ref "サイズ", ref u) + "制限あり。";
 //                        }
 //                        else
 //                        {
-//                            string argtname51 = "サイズ";
-//                            msg = "クリティカル発生時に相手ユニットを１マス吹き飛ばす。" + Expression.Term(ref argtname51, ref u) + "制限あり。";
+//                            msg = "クリティカル発生時に相手ユニットを１マス吹き飛ばす。" + Expression.Term(ref "サイズ", ref u) + "制限あり。";
 //                        }
 
 //                        break;
@@ -8014,23 +7439,20 @@
 
 //                case "忍":
 //                    {
-//                        string argtname52 = "ＣＴ率";
-//                        msg = "物音を立てずに攻撃し、" + "ステルス状態の際に" + Expression.Term(ref argtname52, ref u) + "に+10のボーナス。" + "一撃で相手を倒した場合は自分から攻撃をかけてもステルス状態が維持される。";
+//                        msg = "物音を立てずに攻撃し、" + "ステルス状態の際に" + Expression.Term(ref "ＣＴ率", ref u) + "に+10のボーナス。" + "一撃で相手を倒した場合は自分から攻撃をかけてもステルス状態が維持される。";
 //                        break;
 //                    }
 
 //                case "盗":
 //                    {
-//                        string argtname53 = "資金";
-//                        msg = "クリティカル発生時に敵から持ち物を盗む。;" + "盗めるものは通常は" + Expression.Term(ref argtname53, ref u) + "(普通に倒した時の半分の額)だが、" + "相手によってはアイテムを入手することもある。";
+//                        msg = "クリティカル発生時に敵から持ち物を盗む。;" + "盗めるものは通常は" + Expression.Term(ref "資金", ref u) + "(普通に倒した時の半分の額)だが、" + "相手によってはアイテムを入手することもある。";
 //                        break;
 //                    }
 
 //                case "Ｈ":
 //                    {
 //                        msg = "レーダー等でターゲットを追尾する攻撃。;";
-//                        string argoname2 = "距離修正";
-//                        if (Expression.IsOptionDefined(ref argoname2))
+//                        if (Expression.IsOptionDefined(ref "距離修正"))
 //                        {
 //                            msg = msg + "長距離の敵を攻撃する際も命中率が低下しないが、";
 //                        }
@@ -8043,8 +7465,7 @@
 //                case "追":
 //                    {
 //                        msg = "自己判断能力を持ち、ターゲットを追尾する攻撃。;";
-//                        string argoname3 = "距離修正";
-//                        if (Expression.IsOptionDefined(ref argoname3))
+//                        if (Expression.IsOptionDefined(ref "距離修正"))
 //                        {
 //                            msg = msg + "長距離の敵を攻撃する際も命中率が低下しない。また、";
 //                        }
@@ -8056,8 +7477,7 @@
 //                case "有":
 //                    {
 //                        msg = "有線による誘導でターゲットを追尾する攻撃。;";
-//                        string argoname4 = "距離修正";
-//                        if (Expression.IsOptionDefined(ref argoname4))
+//                        if (Expression.IsOptionDefined(ref "距離修正"))
 //                        {
 //                            msg = msg + "長距離の敵を攻撃する際も命中率が低下しない。また、";
 //                        }
@@ -8070,8 +7490,7 @@
 //                case "誘":
 //                    {
 //                        msg = "電波妨害を受けない特殊な手段による誘導でターゲットを追尾する攻撃。;";
-//                        string argoname5 = "距離修正";
-//                        if (Expression.IsOptionDefined(ref argoname5))
+//                        if (Expression.IsOptionDefined(ref "距離修正"))
 //                        {
 //                            msg = msg + "長距離の敵を攻撃する際も命中率が低下しない。また、";
 //                        }
@@ -8083,8 +7502,7 @@
 //                case "爆":
 //                    {
 //                        msg = "爆発によりダメージを与える攻撃。;";
-//                        string argoname6 = "距離修正";
-//                        if (Expression.IsOptionDefined(ref argoname6))
+//                        if (Expression.IsOptionDefined(ref "距離修正"))
 //                        {
 //                            msg = msg + "長距離の敵を攻撃する際もダメージが低下しない。";
 //                        }
@@ -8095,8 +7513,7 @@
 //                case "空":
 //                    {
 //                        msg = "空中にいるターゲットを攻撃することを目的とした攻撃。";
-//                        string argoname7 = "高度修正";
-//                        if (Expression.IsOptionDefined(ref argoname7))
+//                        if (Expression.IsOptionDefined(ref "高度修正"))
 //                        {
 //                            msg = msg + "地上から空中にいる敵を攻撃する際に命中率が低下しない。";
 //                        }
@@ -8106,18 +7523,13 @@
 
 //                case "固":
 //                    {
-//                        string argtname54 = "気力";
-//                        string argtname55 = "装甲";
-//                        string argtname56 = "スペシャルパワー";
-//                        string argtname57 = "地形適応";
-//                        msg = "パイロットの" + Expression.Term(ref argtname54, ref u) + "や攻撃力、防御側の" + Expression.Term(ref argtname55, ref u) + "にかかわらず" + "武器の攻撃力と同じダメージを与える攻撃。" + "ただし、ユニットランクが上がっても攻撃力は増えない。" + Expression.Term(ref argtname56, ref u) + "や" + Expression.Term(ref argtname57, ref u) + "によるダメージ修正は有効。";
+//                        msg = "パイロットの" + Expression.Term(ref "気力", ref u) + "や攻撃力、防御側の" + Expression.Term(ref "装甲", ref u) + "にかかわらず" + "武器の攻撃力と同じダメージを与える攻撃。" + "ただし、ユニットランクが上がっても攻撃力は増えない。" + Expression.Term(ref "スペシャルパワー", ref u) + "や" + Expression.Term(ref "地形適応", ref u) + "によるダメージ修正は有効。";
 //                        break;
 //                    }
 
 //                case "衰":
 //                    {
-//                        string argtname58 = "ＨＰ";
-//                        msg = "クリティカル発生時に敵の" + Expression.Term(ref argtname58, ref u) + "を現在値の ";
+//                        msg = "クリティカル発生時に敵の" + Expression.Term(ref "ＨＰ", ref u) + "を現在値の ";
 //                        switch ((short)alevel)
 //                        {
 //                            case 1:
@@ -8145,8 +7557,7 @@
 
 //                case "滅":
 //                    {
-//                        string argtname59 = "ＥＮ";
-//                        msg = "クリティカル発生時に敵の" + Expression.Term(ref argtname59, ref u) + "を現在値の ";
+//                        msg = "クリティカル発生時に敵の" + Expression.Term(ref "ＥＮ", ref u) + "を現在値の ";
 //                        switch ((short)alevel)
 //                        {
 //                            case 1:
@@ -8270,8 +7681,7 @@
 
 //                case "写":
 //                    {
-//                        string argtname60 = "サイズ";
-//                        msg = "クリティカル発生時に相手ユニットに変身する。;" + "ただし、既に変身している場合は使用できない。" + "また、相手と２段階以上" + Expression.Term(ref argtname60, ref u) + "が異なる場合は無効。";
+//                        msg = "クリティカル発生時に相手ユニットに変身する。;" + "ただし、既に変身している場合は使用できない。" + "また、相手と２段階以上" + Expression.Term(ref "サイズ", ref u) + "が異なる場合は無効。";
 //                        break;
 //                    }
 
@@ -8284,8 +7694,7 @@
 //                case "痛":
 //                    {
 //                        msg = "クリティカル発生時に通常の ";
-//                        string argoname8 = "ダメージ倍率低下";
-//                        if (Expression.IsOptionDefined(ref argoname8))
+//                        if (Expression.IsOptionDefined(ref "ダメージ倍率低下"))
 //                        {
 //                            msg = msg + SrcFormatter.Format(100d + 10d * (alevel + 2d));
 //                        }
@@ -8371,8 +7780,7 @@
 //                        }
 //                        else
 //                        {
-//                            string argtname61 = "アビリティ";
-//                            msg = "魔法による" + Expression.Term(ref argtname61, ref u) + "。";
+//                            msg = "魔法による" + Expression.Term(ref "アビリティ", ref u) + "。";
 //                        }
 
 //                        break;
@@ -8590,8 +7998,7 @@
 //                    }
 //            }
 
-//            object argIndex14 = atype;
-//            fdata = u.FeatureData(ref argIndex14);
+//            fdata = u.FeatureData(ref atype);
 //            if (GeneralLib.ListIndex(ref fdata, 1) == "解説")
 //            {
 //                // 解説を定義している場合
@@ -8603,18 +8010,11 @@
 //            }
 
 //            // 等身大基準の際は「パイロット」という語を使わないようにする
-//            string argoname9 = "等身大基準";
-//            if (Expression.IsOptionDefined(ref argoname9))
+//            if (Expression.IsOptionDefined(ref "等身大基準"))
 //            {
-//                string args2 = "メインパイロット";
-//                string args3 = "ユニット";
-//                GeneralLib.ReplaceString(ref msg, ref args2, ref args3);
-//                string args21 = "パイロット";
-//                string args31 = "ユニット";
-//                GeneralLib.ReplaceString(ref msg, ref args21, ref args31);
-//                string args22 = "相手のユニット";
-//                string args32 = "相手ユニット";
-//                GeneralLib.ReplaceString(ref msg, ref args22, ref args32);
+//                GeneralLib.ReplaceString(ref msg, ref "メインパイロット", ref "ユニット");
+//                GeneralLib.ReplaceString(ref msg, ref "パイロット", ref "ユニット");
+//                GeneralLib.ReplaceString(ref msg, ref "相手のユニット", ref "相手ユニット");
 //            }
 
 //            AttributeHelpMessageRet = msg;

@@ -1,4 +1,4 @@
-﻿//using System.Windows.Forms;
+//using System.Windows.Forms;
 //using Microsoft.VisualBasic;
 //using Microsoft.VisualBasic.CompilerServices;
 
@@ -49,8 +49,7 @@
 
 //            if (Event_Renamed.FindNormalLabel(ref expr) == 0)
 //            {
-//                string argmsg = "サブルーチン「" + expr + "」が見つかりません";
-//                GUI.ErrorMessage(ref argmsg);
+//                GUI.ErrorMessage(ref "サブルーチン「" + expr + "」が見つかりません");
 //                return;
 //            }
 
@@ -128,8 +127,7 @@
 //            short i;
 
 //            // 戦闘アニメ非自動選択
-//            string argoname = "戦闘アニメ非自動選択";
-//            if (Expression.IsOptionDefined(ref argoname))
+//            if (Expression.IsOptionDefined(ref "戦闘アニメ非自動選択"))
 //            {
 //                return;
 //            }
@@ -154,8 +152,7 @@
 //                }
 
 //                // 等身大基準の場合、非人間ユニットはメカであることが多いので内蔵武器を優先する
-//                string argoname1 = "等身大基準";
-//                if (Expression.IsOptionDefined(ref argoname1) & !withBlock.IsHero())
+//                if (Expression.IsOptionDefined(ref "等身大基準") & !withBlock.IsHero())
 //                {
 //                    WeaponInHand = "";
 //                    goto SkipWeaponAnimation;
@@ -168,8 +165,7 @@
 //            // 武器準備のアニメーションを非表示にするオプションを選択している？
 //            // MOD START MARGE
 //            // If Not WeaponAnimation Or IsOptionDefined("武器準備アニメ非表示") Then
-//            string argoname2 = "武器準備アニメ非表示";
-//            if (!SRC.WeaponAnimation & !SRC.ExtendedAnimation | Expression.IsOptionDefined(ref argoname2))
+//            if (!SRC.WeaponAnimation & !SRC.ExtendedAnimation | Expression.IsOptionDefined(ref "武器準備アニメ非表示"))
 //            {
 //                // MOD END MARGE
 //                WeaponInHand = "";
@@ -190,11 +186,7 @@
 
 //            // これから武器の種類を判定
 
-//            string argstring2 = "武";
-//            string argstring21 = "突";
-//            string argstring22 = "接";
-//            string argstring23 = "実";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring2) == 0 & GeneralLib.InStrNotNest(ref wclass, ref argstring21) == 0 & GeneralLib.InStrNotNest(ref wclass, ref argstring22) == 0 & GeneralLib.InStrNotNest(ref wclass, ref argstring23) == 0)
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "武") == 0 & GeneralLib.InStrNotNest(ref wclass, ref "武"1) == 0 & GeneralLib.InStrNotNest(ref wclass, ref "武"2) == 0 & GeneralLib.InStrNotNest(ref wclass, ref "武"3) == 0)
 //            {
 //                goto SkipInfightWeapon;
 //            }
@@ -213,27 +205,23 @@
 //            }
 
 //            // 詳細が分からなかった武器
-//            string argstring24 = "武";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring24) > 0)
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "武") > 0)
 //            {
 //                // 装備しているアイテムから武器を検索
 //                var loopTo = u.CountItem();
 //                for (i = 1; i <= loopTo; i++)
 //                {
-//                    object argIndex1 = i;
 //                    {
-//                        var withBlock1 = u.Item(ref argIndex1);
+//                        var withBlock1 = u.Item(ref i);
 //                        if (withBlock1.Activated & (withBlock1.Part() == "両手" | withBlock1.Part() == "片手" | withBlock1.Part() == "武器"))
 //                        {
-//                            string argwclass = "";
-//                            wtype = CheckWeaponType(ref withBlock1.Nickname(), ref argwclass);
+//                            wtype = CheckWeaponType(ref withBlock1.Nickname(), ref "");
 //                            if (!string.IsNullOrEmpty(wtype))
 //                            {
 //                                goto FoundWeaponType;
 //                            }
 
-//                            string argwclass1 = "";
-//                            wtype = CheckWeaponType(ref withBlock1.Class0(), ref argwclass1);
+//                            wtype = CheckWeaponType(ref withBlock1.Class0(), ref "");
 //                            if (!string.IsNullOrEmpty(wtype))
 //                            {
 //                                goto FoundWeaponType;
@@ -247,9 +235,7 @@
 //                goto SkipShootingWeapon;
 //            }
 
-//            string argstring25 = "突";
-//            string argstring26 = "接";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring25) > 0 | GeneralLib.InStrNotNest(ref wclass, ref argstring26) > 0)
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "突") > 0 | GeneralLib.InStrNotNest(ref wclass, ref "接") > 0)
 //            {
 //                goto SkipShootingWeapon;
 //            }
@@ -267,8 +253,7 @@
 //            // 手持ち？
 //            if (Strings.InStr(wname, "ライフル") > 0 | Strings.InStr(wname, "バズーカ") > 0 | Strings.Right(wname, 2) == "ガン" | Strings.Right(wname, 1) == "銃" & Strings.Right(wname, 2) != "機銃")
 //            {
-//                string argstring27 = "Ｍ";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring27) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "Ｍ") > 0)
 //                {
 //                    wtype = "ＭＡＰバスタービームライフル";
 //                    goto FoundWeaponType;
@@ -484,8 +469,7 @@
 //                aname = "フェイスアップ準備";
 
 //                // 衝撃を表示？
-//                string argstring28 = "サ";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring28) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "サ") > 0)
 //                {
 //                    aname = aname + " 衝撃";
 //                }
@@ -542,8 +526,7 @@
 
 //            if (Strings.InStr(wname, "ナイフ") > 0 | Strings.InStr(wname, "ダガー") > 0 | Strings.InStr(wname, "短刀") > 0 | Strings.InStr(wname, "小刀") > 0)
 //            {
-//                string argstring2 = "実";
-//                if (Strings.InStr(wname, "投") > 0 | Strings.InStr(wname, "飛び") > 0 | Strings.Right(wname, 3) == "スロー" | Strings.Right(wname, 3) == "スロウ" | GeneralLib.InStrNotNest(ref wclass, ref argstring2) > 0)
+//                if (Strings.InStr(wname, "投") > 0 | Strings.InStr(wname, "飛び") > 0 | Strings.Right(wname, 3) == "スロー" | Strings.Right(wname, 3) == "スロウ" | GeneralLib.InStrNotNest(ref wclass, ref "実") > 0)
 //                {
 //                    CheckWeaponTypeRet = "投げナイフ";
 //                }
@@ -742,8 +725,7 @@
 //            if (Strings.InStr(wname, "パンチ") > 0 | Strings.InStr(wname, "ナックル") > 0)
 //            {
 //                // ハンマーパンチ等がハンマーにひっかかると困るため、ここで判定
-//                string argstring21 = "実";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring21) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "実") > 0)
 //                {
 //                    CheckWeaponTypeRet = "ロケットパンチ";
 //                }
@@ -771,8 +753,7 @@
 
 //            if (Strings.InStr(wname, "ハンマー") > 0)
 //            {
-//                string argstring22 = "実";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring22) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "実") > 0)
 //                {
 //                    CheckWeaponTypeRet = "鎖鉄球";
 //                }
@@ -1114,14 +1095,11 @@
 //            Sound.IsWavePlayed = false;
 //            wname = u.WeaponNickname(w);
 //            wclass = u.Weapon(w).Class_Renamed;
-//            string argstring2 = "武";
-//            string argstring21 = "突";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring2) > 0 | GeneralLib.InStrNotNest(ref wclass, ref argstring21) > 0)
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "武") > 0 | GeneralLib.InStrNotNest(ref wclass, ref "突") > 0)
 //            {
 //                if (Strings.InStr(wname, "ビーム") > 0 | Strings.InStr(wname, "プラズマ") > 0 | Strings.InStr(wname, "レーザー") > 0 | Strings.InStr(wname, "ブラスター") > 0 | Strings.InStr(wname, "高周波") > 0 | Strings.InStr(wname, "電磁") > 0 | wname == "セイバー" | wname == "ライトセイバー" | wname == "ランサー")
 //                {
-//                    string argwave_name = "BeamSaber.wav";
-//                    Sound.PlayWave(ref argwave_name);
+//                    Sound.PlayWave(ref "BeamSaber.wav");
 //                }
 //            }
 
@@ -1163,11 +1141,9 @@
 //            short i;
 
 //            // 戦闘アニメ非自動選択オプション
-//            string argoname = "戦闘アニメ非自動選択";
-//            if (Expression.IsOptionDefined(ref argoname))
+//            if (Expression.IsOptionDefined(ref "戦闘アニメ非自動選択"))
 //            {
-//                string arganame = "デフォルト攻撃";
-//                ShowAnimation(ref arganame);
+//                ShowAnimation(ref "デフォルト攻撃");
 //                return;
 //            }
 
@@ -1181,8 +1157,7 @@
 //            }
 
 //            // 連続攻撃？
-//            string argstring2 = "連";
-//            if (Strings.InStr(wname, "ダブル") > 0 | Strings.InStr(wname, "ツイン") > 0 | Strings.InStr(wname, "コンビネーション") > 0 | Strings.InStr(wname, "コンボ") > 0 | Strings.InStr(wname, "連") > 0 | GeneralLib.InStrNotNest(ref wclass, ref argstring2) > 0)
+//            if (Strings.InStr(wname, "ダブル") > 0 | Strings.InStr(wname, "ツイン") > 0 | Strings.InStr(wname, "コンビネーション") > 0 | Strings.InStr(wname, "コンボ") > 0 | Strings.InStr(wname, "連") > 0 | GeneralLib.InStrNotNest(ref wclass, ref "連") > 0)
 //            {
 //                double_attack = true;
 //            }
@@ -1196,25 +1171,19 @@
 //            // これから武器の種類を判定
 
 //            // まずは白兵戦用武器の判定
-//            string argstring21 = "武";
-//            string argstring22 = "突";
-//            string argstring23 = "接";
-//            string argstring24 = "格";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring21) == 0 & GeneralLib.InStrNotNest(ref wclass, ref argstring22) == 0 & GeneralLib.InStrNotNest(ref wclass, ref argstring23) == 0 & GeneralLib.InStrNotNest(ref wclass, ref argstring24) == 0)
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "武") == 0 & GeneralLib.InStrNotNest(ref wclass, ref "突") == 0 & GeneralLib.InStrNotNest(ref wclass, ref "接") == 0 & GeneralLib.InStrNotNest(ref wclass, ref "格") == 0)
 //            {
 //                goto SkipInfightWeapon;
 //            }
 
 //            // 投擲武器を除く
-//            string argstring25 = "実";
-//            if (Strings.InStr(wname, "投") > 0 | Strings.InStr(wname, "飛び") > 0 | Strings.Right(wname, 3) == "スロー" | Strings.Right(wname, 3) == "スロウ" | GeneralLib.InStrNotNest(ref wclass, ref argstring25) > 0)
+//            if (Strings.InStr(wname, "投") > 0 | Strings.InStr(wname, "飛び") > 0 | Strings.Right(wname, 3) == "スロー" | Strings.Right(wname, 3) == "スロウ" | GeneralLib.InStrNotNest(ref wclass, ref "実") > 0)
 //            {
 //                goto SkipInfightWeapon;
 //            }
 
 //            // 移動マップ攻撃
-//            string argstring26 = "Ｍ移";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring26) > 0)
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "Ｍ移") > 0)
 //            {
 //                wtype = "ＭＡＰ移動タックル";
 //                goto FoundWeaponType;
@@ -1257,7 +1226,6 @@
 
 //            if (Strings.InStr(wname, "パンチ") > 0 | Strings.InStr(wname, "チョップ") > 0 | Strings.InStr(wname, "ナックル") > 0 | Strings.InStr(wname, "ブロー") > 0 | Strings.InStr(wname, "拳") > 0 | Strings.InStr(wname, "掌") > 0 | Strings.InStr(wname, "打") > 0 | Strings.InStr(wname, "勁") > 0 | Strings.InStr(wname, "殴") > 0 | Strings.Right(wname, 1) == "手" | Strings.Right(wname, 1) == "腕")
 //            {
-//                string argstring27 = "Ｊ";
 //                if (combo_attack)
 //                {
 //                    wtype = "乱打";
@@ -1266,7 +1234,7 @@
 //                {
 //                    wtype = "連打";
 //                }
-//                else if (GeneralLib.InStrNotNest(ref wclass, ref argstring27) > 0)
+//                else if (GeneralLib.InStrNotNest(ref wclass, ref "Ｊ") > 0)
 //                {
 //                    wtype = "アッパー";
 //                }
@@ -1312,7 +1280,6 @@
 
 //            if (Strings.InStr(wname, "ソード") > 0 | Strings.InStr(wname, "剣") > 0 | Strings.InStr(wname, "ナイフ") > 0 | Strings.InStr(wname, "ダガー") > 0 | Strings.InStr(wname, "シミター") > 0 | Strings.InStr(wname, "サーベル") > 0 | Strings.InStr(wname, "カットラス") > 0 | Strings.InStr(wname, "カッター") > 0 | Strings.Right(wname, 2) == "ムチ" | Strings.InStr(wname, "鞭") > 0 | Strings.InStr(wname, "ウィップ") > 0 | Strings.InStr(wname, "ハンマー") > 0 | Strings.InStr(wname, "ロッド") > 0 | Strings.InStr(wname, "クロー") > 0 | Strings.InStr(wname, "爪") > 0 | Strings.InStr(wname, "ひっかき") > 0 | Strings.InStr(wname, "アーム") > 0 | Strings.Right(wname, 1) == "尾")
 //            {
-//                string argstring28 = "Ｊ";
 //                if (combo_attack)
 //                {
 //                    wtype = "白兵乱撃";
@@ -1325,7 +1292,7 @@
 //                {
 //                    wtype = "白兵回転";
 //                }
-//                else if (GeneralLib.InStrNotNest(ref wclass, ref argstring28) > 0)
+//                else if (GeneralLib.InStrNotNest(ref wclass, ref "Ｊ") > 0)
 //                {
 //                    wtype = "振り上げ";
 //                }
@@ -1339,7 +1306,6 @@
 
 //            if (Strings.InStr(wname, "刀") > 0 | Strings.InStr(wname, "斬") > 0 | Strings.InStr(wname, "ブレード") > 0 | Strings.InStr(wname, "刃") > 0 | Strings.InStr(wname, "アックス") > 0 | Strings.InStr(wname, "斧") > 0 | Strings.InStr(wname, "カット") > 0 | Strings.InStr(wname, "カッター") > 0 | Strings.InStr(wname, "スラッシュ") > 0 | Strings.InStr(wname, "居合") > 0)
 //            {
-//                string argstring29 = "Ｊ";
 //                if (combo_attack)
 //                {
 //                    wtype = "白兵乱撃";
@@ -1352,7 +1318,7 @@
 //                {
 //                    wtype = "白兵回転";
 //                }
-//                else if (GeneralLib.InStrNotNest(ref wclass, ref argstring29) > 0)
+//                else if (GeneralLib.InStrNotNest(ref wclass, ref "Ｊ") > 0)
 //                {
 //                    wtype = "振り上げ";
 //                }
@@ -1465,24 +1431,20 @@
 //            }
 
 //            // 詳細が分からなかった武器
-//            string argstring211 = "武";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring211) > 0)
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "武") > 0)
 //            {
 //                // 装備しているアイテムから武器を検索
 //                var loopTo = u.CountItem();
 //                for (i = 1; i <= loopTo; i++)
 //                {
-//                    object argIndex1 = i;
 //                    {
-//                        var withBlock = u.Item(ref argIndex1);
+//                        var withBlock = u.Item(ref i);
 //                        if (withBlock.Activated & (withBlock.Part() == "両手" | withBlock.Part() == "片手" | withBlock.Part() == "武器"))
 //                        {
-//                            string argwclass = "";
-//                            wtype = CheckWeaponType(ref withBlock.Nickname(), ref argwclass);
+//                            wtype = CheckWeaponType(ref withBlock.Nickname(), ref "");
 //                            if (string.IsNullOrEmpty(wtype))
 //                            {
-//                                string argwclass1 = "";
-//                                wtype = CheckWeaponType(ref withBlock.Class0(), ref argwclass1);
+//                                wtype = CheckWeaponType(ref withBlock.Class0(), ref "");
 //                            }
 
 //                            break;
@@ -1516,7 +1478,6 @@
 
 //                    default:
 //                        {
-//                            string argstring210 = "Ｊ";
 //                            if (combo_attack)
 //                            {
 //                                wtype = "白兵乱撃";
@@ -1529,7 +1490,7 @@
 //                            {
 //                                wtype = "白兵回転";
 //                            }
-//                            else if (GeneralLib.InStrNotNest(ref wclass, ref argstring210) > 0)
+//                            else if (GeneralLib.InStrNotNest(ref wclass, ref "Ｊ") > 0)
 //                            {
 //                                wtype = "振り上げ";
 //                            }
@@ -1546,9 +1507,7 @@
 //            }
 
 //            // 詳細が分からなかった近接技
-//            string argstring212 = "突";
-//            string argstring213 = "接";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring212) > 0 & GeneralLib.InStrNotNest(ref wclass, ref argstring213) > 0)
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "突") > 0 & GeneralLib.InStrNotNest(ref wclass, ref "接") > 0)
 //            {
 //                wtype = "格闘";
 //                goto FoundWeaponType;
@@ -1556,8 +1515,7 @@
 
 //            SkipInfightWeapon:
 //            ;
-//            string argstring214 = "実";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring214) == 0)
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "実") == 0)
 //            {
 //                goto SkipThrowingWeapon;
 //            }
@@ -1879,8 +1837,7 @@
 
 //            if (Strings.InStr(wname, "レールガン") > 0 | Strings.InStr(wname, "リニアガン") > 0)
 //            {
-//                string argwave_name = "Thunder.wav";
-//                Sound.PlayWave(ref argwave_name);
+//                Sound.PlayWave(ref "Thunder.wav");
 //                GUI.Sleep(300);
 //                wtype = "キャノン砲";
 //                goto FoundWeaponType;
@@ -1902,8 +1859,7 @@
 
 //            if (Strings.InStr(wname, "ライフル") > 0 | Strings.InStr(wname, "ガン") > 0 | Strings.InStr(wname, "ピストル") > 0 | Strings.InStr(wname, "バズーカ") > 0 | Strings.Right(wname, 1) == "銃" & Strings.Right(wname, 2) != "機銃")
 //            {
-//                string argstring215 = "Ｍ";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring215) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "Ｍ") > 0)
 //                {
 //                    wtype = "ＭＡＰバスタービームライフル";
 //                    goto FoundWeaponType;
@@ -2088,8 +2044,7 @@
 
 //            if (Strings.InStr(wname, "雷") > 0 | Strings.InStr(wname, "ライトニング") > 0 | Strings.InStr(wname, "サンダー") > 0)
 //            {
-//                string argstring216 = "実";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring216) == 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "実") == 0)
 //                {
 //                    if (u.Weapon(w).MaxRange == 1)
 //                    {
@@ -2125,9 +2080,7 @@
 //                goto FoundWeaponType;
 //            }
 
-//            string argstring217 = "音";
-//            string argstring218 = "音";
-//            if (Strings.InStr(wname, "音波") > 0 | Strings.InStr(wname, "サウンド") > 0 | Strings.InStr(wname, "ソニック") > 0 | GeneralLib.InStrNotNest(ref wclass, ref argstring217) > 0 & Strings.InStr(wname, "ショック") > 0 | Strings.InStr(wname, "ウェーブ") > 0 | Strings.InStr(wname, "叫び") > 0 | GeneralLib.InStrNotNest(ref wclass, ref argstring218) > 0 & Strings.InStr(wname, "咆哮") > 0)
+//            if (Strings.InStr(wname, "音波") > 0 | Strings.InStr(wname, "サウンド") > 0 | Strings.InStr(wname, "ソニック") > 0 | GeneralLib.InStrNotNest(ref wclass, ref "音") > 0 & Strings.InStr(wname, "ショック") > 0 | Strings.InStr(wname, "ウェーブ") > 0 | Strings.InStr(wname, "叫び") > 0 | GeneralLib.InStrNotNest(ref wclass, ref "音") > 0 & Strings.InStr(wname, "咆哮") > 0)
 //            {
 //                wtype = "音波";
 //                goto FoundWeaponType;
@@ -2207,8 +2160,7 @@
 //            if (Strings.InStr(wname, "煙") > 0 | Strings.InStr(wname, "スモーク") > 0 | Strings.Right(wname, 2) == "ガス" | Strings.Right(wname, 1) == "霧" | Strings.InStr(wname, "胞子") > 0)
 //            {
 //                wtype = "煙";
-//                string argstring219 = "毒";
-//                if (Strings.InStr(wname, "毒") > 0 | GeneralLib.InStrNotNest(ref wclass, ref argstring219) > 0)
+//                if (Strings.InStr(wname, "毒") > 0 | GeneralLib.InStrNotNest(ref wclass, ref "毒") > 0)
 //                {
 //                    cname = "緑";
 //                }
@@ -2231,11 +2183,9 @@
 
 //            if (Strings.Right(wname, 5) == "ファイアー" | Strings.Right(wname, 5) == "ファイヤー" | Strings.Right(wname, 4) == "ファイア" | Strings.Right(wname, 4) == "ファイヤ")
 //            {
-//                string argstring221 = "実";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring221) == 0 & Strings.Left(wname, 2) != "フル")
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "実") == 0 & Strings.Left(wname, 2) != "フル")
 //                {
-//                    string argstring220 = "術";
-//                    if (GeneralLib.InStrNotNest(ref wclass, ref argstring220) > 0)
+//                    if (GeneralLib.InStrNotNest(ref wclass, ref "術") > 0)
 //                    {
 //                        wtype = "炎投射";
 //                    }
@@ -2251,8 +2201,7 @@
 
 //            if (Strings.InStr(wname, "息") > 0 | Strings.Right(wname, 3) == "ブレス")
 //            {
-//                string argstring222 = "実";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring222) == 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "実") == 0)
 //                {
 //                    wtype = "火炎放射";
 //                    sname = "Breath.wav";
@@ -2303,8 +2252,7 @@
 //                goto FoundWeaponType;
 //            }
 
-//            string argstring223 = "魔";
-//            if (u.IsSpellWeapon(w) | GeneralLib.InStrNotNest(ref wclass, ref argstring223) > 0)
+//            if (u.IsSpellWeapon(w) | GeneralLib.InStrNotNest(ref wclass, ref "魔") > 0)
 //            {
 //                // wtype = "魔法放射"
 //                // cname = SpellColor(wname, wclass)
@@ -2317,8 +2265,7 @@
 
 //            if (wtype == "ビーム")
 //            {
-//                string argstring224 = "Ｍ";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring224) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "Ｍ") > 0)
 //                {
 //                    wtype = "ＭＡＰビーム";
 //                    goto FoundWeaponType;
@@ -2427,8 +2374,7 @@
 //            {
 //                if (Strings.InStr(wname, "リニア") > 0 | Strings.InStr(wname, "レール") > 0 | Strings.InStr(wname, "電磁") > 0)
 //                {
-//                    string argwave_name1 = "Thunder.wav";
-//                    Sound.PlayWave(ref argwave_name1);
+//                    Sound.PlayWave(ref "Thunder.wav");
 //                    GUI.Sleep(300);
 //                }
 
@@ -2450,8 +2396,7 @@
 //            // 空中移動専用形態は武器を手で構えない。
 //            // また等身大基準の場合、非人間ユニットはメカであることが多いのでこちらも
 //            // 内蔵武器を優先する。
-//            string argoname1 = "等身大基準";
-//            if (is_handy_weapon & (u.Data.Transportation == "空" | Expression.IsOptionDefined(ref argoname1) & !u.IsHero()))
+//            if (is_handy_weapon & (u.Data.Transportation == "空" | Expression.IsOptionDefined(ref "等身大基準") & !u.IsHero()))
 //            {
 //                switch (wtype ?? "")
 //                {
@@ -2538,8 +2483,7 @@
 //            }
 
 //            // マップ攻撃？
-//            string argstring225 = "Ｍ";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring225) > 0)
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "Ｍ") > 0)
 //            {
 //                // マップ攻撃対応アニメに置き換え
 //                switch (wtype ?? "")
@@ -2749,10 +2693,7 @@
 //            wclass = u.Weapon(w).Class_Renamed;
 
 //            // 効果音が必要ないもの
-//            string argattr = "武";
-//            string argattr1 = "突";
-//            string argattr2 = "接";
-//            if (u.IsWeaponClassifiedAs(w, ref argattr) | u.IsWeaponClassifiedAs(w, ref argattr1) | u.IsWeaponClassifiedAs(w, ref argattr2))
+//            if (u.IsWeaponClassifiedAs(w, ref "武") | u.IsWeaponClassifiedAs(w, ref "突") | u.IsWeaponClassifiedAs(w, ref "接"))
 //            {
 //                return;
 //            }
@@ -2762,8 +2703,7 @@
 //                return;
 //            }
 
-//            string argstring2 = "武";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring2) > 0)
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "武") > 0)
 //            {
 //                if (Strings.InStr(wname, "銃剣") > 0)
 //                {
@@ -2775,15 +2715,9 @@
 //            num = CountAttack(ref u, w);
 
 //            // 武器名に応じて効果音を選択
-//            string argstring217 = "Ｍ";
-//            string argstring218 = "雷";
-//            string argstring219 = "魔";
-//            string argstring220 = "Ｂ";
-//            string argstring221 = "銃";
 //            if (Strings.InStr(wname, "主砲") > 0 | Strings.InStr(wname, "副砲") > 0)
 //            {
-//                string argstring21 = "Ｂ";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring21) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "Ｂ") > 0)
 //                {
 //                    sname = "Beam.wav";
 //                }
@@ -2794,8 +2728,7 @@
 //            }
 //            else if (Strings.InStr(wname, "対空砲") > 0)
 //            {
-//                string argstring22 = "Ｂ";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring22) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "Ｂ") > 0)
 //                {
 //                    sname = "Beam.wav";
 //                    num = 4;
@@ -2815,8 +2748,7 @@
 //            }
 //            else if (Strings.InStr(wname, "シューター") > 0)
 //            {
-//                string argstring23 = "実";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring23) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "実") > 0)
 //                {
 //                    sname = "Missile.wav";
 //                }
@@ -2827,8 +2759,7 @@
 //            }
 //            else if (Strings.InStr(wname, "ビーム") > 0)
 //            {
-//                string argstring24 = "Ｂ";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring24) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "Ｂ") > 0)
 //                {
 //                    sname = "Beam.wav";
 //                }
@@ -2844,8 +2775,7 @@
 //            }
 //            else if (Strings.InStr(wname, "機関銃") > 0 | Strings.InStr(wname, "機銃") > 0 | Strings.InStr(wname, "マシンガン") > 0 | Strings.InStr(wname, "アサルトライフル") > 0 | Strings.InStr(wname, "チェーンライフル") > 0 | Strings.InStr(wname, "パレットライフル") > 0 | Strings.InStr(wname, "マウラー砲") > 0 | Strings.InStr(wname, "ＳＭＧ") > 0)
 //            {
-//                string argstring25 = "Ｂ";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring25) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "Ｂ") > 0)
 //                {
 //                    sname = "LaserGun.wav";
 //                }
@@ -2858,8 +2788,7 @@
 //            }
 //            else if (Strings.InStr(wname, "機関砲") > 0 | Strings.InStr(wname, "速射砲") > 0 | Strings.InStr(wname, "マシンキャノン") > 0 | Strings.InStr(wname, "モーターカノン") > 0 | Strings.InStr(wname, "ガンクラスター") > 0 | Strings.InStr(wname, "チェーンガン") > 0)
 //            {
-//                string argstring26 = "Ｂ";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring26) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "Ｂ") > 0)
 //                {
 //                    sname = "LaserGun.wav";
 //                }
@@ -2872,8 +2801,7 @@
 //            }
 //            else if (Strings.InStr(wname, "ガンポッド") > 0 | Strings.InStr(wname, "バルカン") > 0 | Strings.InStr(wname, "ガトリング") > 0 | Strings.InStr(wname, "ハンドレールガン") > 0)
 //            {
-//                string argstring27 = "Ｂ";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring27) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "Ｂ") > 0)
 //                {
 //                    sname = "LaserGun.wav";
 //                }
@@ -2886,23 +2814,19 @@
 //            }
 //            else if (Strings.InStr(wname, "リニアキャノン") > 0 | Strings.InStr(wname, "レールキャノン") > 0 | Strings.InStr(wname, "リニアカノン") > 0 | Strings.InStr(wname, "レールカノン") > 0 | Strings.InStr(wname, "リニアガン") > 0 | Strings.InStr(wname, "レールガン") > 0 | Strings.InStr(wname, "電磁") > 0 & Strings.InStr(wname, "砲") > 0)
 //            {
-//                string argwave_name = "Thunder.wav";
-//                Sound.PlayWave(ref argwave_name);
+//                Sound.PlayWave(ref "Thunder.wav");
 //                GUI.Sleep(300);
-//                string argwave_name1 = "Cannon.wav";
-//                Sound.PlayWave(ref argwave_name1);
+//                Sound.PlayWave(ref "Cannon.wav");
 //                var loopTo = num;
 //                for (i = 2; i <= loopTo; i++)
 //                {
 //                    GUI.Sleep(130);
-//                    string argwave_name2 = "Cannon.wav";
-//                    Sound.PlayWave(ref argwave_name2);
+//                    Sound.PlayWave(ref "Cannon.wav");
 //                }
 //            }
 //            else if (Strings.InStr(wname, "ライフル") > 0)
 //            {
-//                string argstring28 = "Ｂ";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring28) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "Ｂ") > 0)
 //                {
 //                    sname = "Beam.wav";
 //                }
@@ -2913,8 +2837,7 @@
 //            }
 //            else if (Strings.InStr(wname, "バズーカ") > 0 | Strings.InStr(wname, "ジャイアントバズ") > 0 | Strings.InStr(wname, "シュツルムファウスト") > 0 | Strings.InStr(wname, "グレネード") > 0 | Strings.InStr(wname, "グレネイド") > 0 | Strings.InStr(wname, "ナパーム") > 0 | Strings.InStr(wname, "クレイモア") > 0 | Strings.InStr(wname, "ロケット砲") > 0 | Strings.InStr(wname, "迫撃砲") > 0 | Strings.InStr(wname, "無反動砲") > 0)
 //            {
-//                string argstring29 = "Ｂ";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring29) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "Ｂ") > 0)
 //                {
 //                    sname = "Beam.wav";
 //                }
@@ -2944,7 +2867,7 @@
 //            {
 //                sname = "Explode.wav";
 //            }
-//            else if (Strings.InStr(wname, "マイクロミサイル") > 0 & GeneralLib.InStrNotNest(ref wclass, ref argstring217) > 0)
+//            else if (Strings.InStr(wname, "マイクロミサイル") > 0 & GeneralLib.InStrNotNest(ref wclass, ref "Ｍ") > 0)
 //            {
 //                sname = "MicroMissile.wav";
 //                num = 1;
@@ -2956,8 +2879,7 @@
 //            }
 //            else if (Strings.InStr(wname, "ミサイル") > 0 | Strings.InStr(wname, "ロケット") > 0 | Strings.InStr(wname, "魚雷") > 0 | Strings.InStr(wname, "反応弾") > 0 | Strings.InStr(wname, "マルチポッド") > 0 | Strings.InStr(wname, "マルチランチャー") > 0 | Strings.InStr(wname, "ショット") > 0 | Strings.InStr(wname, "フルファイア") > 0 | Strings.InStr(wname, "ストリーム") > 0 | Strings.InStr(wname, "ナックル") > 0 | Strings.InStr(wname, "パンチ") > 0 | Strings.InStr(wname, "鉄腕") > 0 | Strings.InStr(wname, "発射") > 0 | Strings.InStr(wname, "射出") > 0 | Strings.InStr(wname, "ランチャー") > 0 | Strings.InStr(wname, "ＡＴＭ") > 0 | Strings.InStr(wname, "ＡＡＭ") > 0 | Strings.InStr(wname, "ＡＧＭ") > 0)
 //            {
-//                string argstring210 = "Ｂ";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring210) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "Ｂ") > 0)
 //                {
 //                    sname = "Beam.wav";
 //                }
@@ -2968,8 +2890,7 @@
 //            }
 //            else if (Strings.InStr(wname, "砲") > 0 | Strings.InStr(wname, "弾") > 0 | Strings.InStr(wname, "キャノン") > 0 | Strings.InStr(wname, "カノン") > 0 | Strings.InStr(wname, "ボム") > 0 | Strings.InStr(wname, "火球") > 0)
 //            {
-//                string argstring211 = "Ｂ";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring211) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "Ｂ") > 0)
 //                {
 //                    sname = "Beam.wav";
 //                }
@@ -2980,8 +2901,7 @@
 //            }
 //            else if (Strings.InStr(wname, "ガン") > 0 | Strings.InStr(wname, "ピストル") > 0 | Strings.InStr(wname, "リボルヴァー") > 0 | Strings.InStr(wname, "マグナム") > 0 | Strings.InStr(wname, "ライアット") > 0 | Strings.InStr(wname, "銃") > 0)
 //            {
-//                string argstring212 = "Ｂ";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring212) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "Ｂ") > 0)
 //                {
 //                    sname = "Beam.wav";
 //                }
@@ -3008,7 +2928,7 @@
 //                sname = "Swing.wav";
 //                num = 5;
 //            }
-//            else if (Strings.InStr(wname, "サンダー") > 0 | Strings.InStr(wname, "ライトニング") > 0 | Strings.InStr(wname, "ボルト") > 0 | Strings.InStr(wname, "稲妻") > 0 | Strings.InStr(wname, "放電") > 0 | Strings.InStr(wname, "電撃") > 0 | Strings.InStr(wname, "電流") > 0 | Strings.InStr(wname, "雷") > 0 | GeneralLib.InStrNotNest(ref wclass, ref argstring218) > 0)
+//            else if (Strings.InStr(wname, "サンダー") > 0 | Strings.InStr(wname, "ライトニング") > 0 | Strings.InStr(wname, "ボルト") > 0 | Strings.InStr(wname, "稲妻") > 0 | Strings.InStr(wname, "放電") > 0 | Strings.InStr(wname, "電撃") > 0 | Strings.InStr(wname, "電流") > 0 | Strings.InStr(wname, "雷") > 0 | GeneralLib.InStrNotNest(ref wclass, ref "雷") > 0)
 //            {
 //                sname = "Thunder.wav";
 //                num = 1;
@@ -3022,7 +2942,7 @@
 //                sname = "Fire.wav";
 //                num = 1;
 //            }
-//            else if (Strings.InStr(wname, "魔法") > 0 | GeneralLib.InStrNotNest(ref wclass, ref argstring219) > 0 | Strings.InStr(wname, "サイコキネシス") > 0 | Strings.InStr(wname, "糸") > 0 | Strings.InStr(wname, "アンカー") > 0)
+//            else if (Strings.InStr(wname, "魔法") > 0 | GeneralLib.InStrNotNest(ref wclass, ref "魔") > 0 | Strings.InStr(wname, "サイコキネシス") > 0 | Strings.InStr(wname, "糸") > 0 | Strings.InStr(wname, "アンカー") > 0)
 //            {
 //                sname = "Whiz.wav";
 //            }
@@ -3036,23 +2956,19 @@
 //            }
 //            else if (Strings.Right(wname, 3) == "ブレス" | Strings.Right(wname, 3) == "の息")
 //            {
-//                string argstring213 = "火";
-//                string argstring214 = "冷";
-//                string argstring215 = "闇";
-//                string argstring216 = "水";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring213) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "火") > 0)
 //                {
 //                    sname = "AntiShipMissile.wav";
 //                }
-//                else if (GeneralLib.InStrNotNest(ref wclass, ref argstring214) > 0)
+//                else if (GeneralLib.InStrNotNest(ref wclass, ref "冷") > 0)
 //                {
 //                    sname = "Storm.wav";
 //                }
-//                else if (GeneralLib.InStrNotNest(ref wclass, ref argstring215) > 0)
+//                else if (GeneralLib.InStrNotNest(ref wclass, ref "闇") > 0)
 //                {
 //                    sname = "GunPod.wav";
 //                }
-//                else if (GeneralLib.InStrNotNest(ref wclass, ref argstring216) > 0)
+//                else if (GeneralLib.InStrNotNest(ref wclass, ref "水") > 0)
 //                {
 //                    sname = "Hide.wav";
 //                }
@@ -3066,12 +2982,12 @@
 //                sname = "MultipleRocketLauncher(Light).wav";
 //                num = 1;
 //            }
-//            else if (GeneralLib.InStrNotNest(ref wclass, ref argstring220) > 0)
+//            else if (GeneralLib.InStrNotNest(ref wclass, ref "Ｂ") > 0)
 //            {
 //                // なんか分からんけどビーム
 //                sname = "Beam.wav";
 //            }
-//            else if (GeneralLib.InStrNotNest(ref wclass, ref argstring221) > 0)
+//            else if (GeneralLib.InStrNotNest(ref wclass, ref "銃") > 0)
 //            {
 //                // なんか分からんけど銃
 //                sname = "Gun.wav";
@@ -3135,11 +3051,9 @@
 //            short i;
 
 //            // 戦闘アニメ非自動選択オプション
-//            string argoname = "戦闘アニメ非自動選択";
-//            if (Expression.IsOptionDefined(ref argoname))
+//            if (Expression.IsOptionDefined(ref "戦闘アニメ非自動選択"))
 //            {
-//                string arganame = "ダメージ命中";
-//                ShowAnimation(ref arganame);
+//                ShowAnimation(ref "ダメージ命中");
 //                return;
 //            }
 
@@ -3147,12 +3061,10 @@
 //            wclass = u.Weapon(w).Class_Renamed;
 
 //            // マップ攻撃の場合は武器にかかわらずダメージを使う
-//            string argstring2 = "Ｍ";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring2) > 0)
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "Ｍ") > 0)
 //            {
 //                // 攻撃力0の攻撃の場合は「ダメージ」のアニメを使用しない
-//                string argtarea = "";
-//                if (u.WeaponPower(w, ref argtarea) == 0)
+//                if (u.WeaponPower(w, ref "") == 0)
 //                {
 //                    return;
 //                }
@@ -3173,8 +3085,7 @@
 //            }
 
 //            // 連続攻撃？
-//            string argstring21 = "連";
-//            if (Strings.InStr(wname, "ダブル") > 0 | Strings.InStr(wname, "ツイン") > 0 | Strings.InStr(wname, "コンビネーション") > 0 | Strings.InStr(wname, "連") > 0 | GeneralLib.InStrNotNest(ref wclass, ref argstring21) > 0)
+//            if (Strings.InStr(wname, "ダブル") > 0 | Strings.InStr(wname, "ツイン") > 0 | Strings.InStr(wname, "コンビネーション") > 0 | Strings.InStr(wname, "連") > 0 | GeneralLib.InStrNotNest(ref wclass, ref "連") > 0)
 //            {
 //                double_attack = true;
 //            }
@@ -3188,12 +3099,7 @@
 //            // これから武器の種類を判定
 
 //            // まずは白兵戦用武器の判定
-//            string argstring22 = "武";
-//            string argstring23 = "突";
-//            string argstring24 = "接";
-//            string argstring25 = "格";
-//            string argstring26 = "実";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring22) == 0 & GeneralLib.InStrNotNest(ref wclass, ref argstring23) == 0 & GeneralLib.InStrNotNest(ref wclass, ref argstring24) == 0 & !(GeneralLib.InStrNotNest(ref wclass, ref argstring25) > 0 & GeneralLib.InStrNotNest(ref wclass, ref argstring26) > 0))
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "武") == 0 & GeneralLib.InStrNotNest(ref wclass, ref "突") == 0 & GeneralLib.InStrNotNest(ref wclass, ref "接") == 0 & !(GeneralLib.InStrNotNest(ref wclass, ref "格") > 0 & GeneralLib.InStrNotNest(ref wclass, ref "実") > 0))
 //            {
 //                goto SkipInfightWeapon;
 //            }
@@ -3221,8 +3127,7 @@
 
 //            // 打撃系
 
-//            string argstring27 = "実";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring27) > 0 & (Strings.InStr(wname, "パンチ") > 0 | Strings.InStr(wname, "ナックル") > 0))
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "実") > 0 & (Strings.InStr(wname, "パンチ") > 0 | Strings.InStr(wname, "ナックル") > 0))
 //            {
 //                wtype = "ロケットパンチ";
 //                goto FoundWeaponType;
@@ -3281,8 +3186,7 @@
 
 //                if (Strings.InStr(wname, "拳") > 0 | Strings.InStr(wname, "掌") > 0 | Strings.InStr(wname, "打") > 0 | Strings.InStr(wname, "勁") > 0)
 //                {
-//                    string argwave_name = "Bazooka.wav";
-//                    Sound.PlayWave(ref argwave_name);
+//                    Sound.PlayWave(ref "Bazooka.wav");
 //                }
 
 //                goto FoundWeaponType;
@@ -3390,10 +3294,6 @@
 
 //            if (Strings.InStr(wname, "ソード") > 0 | Strings.InStr(wname, "剣") > 0 | Strings.InStr(wname, "ナイフ") > 0 | Strings.InStr(wname, "ダガー") > 0 | Strings.InStr(wname, "シミター") > 0 | Strings.InStr(wname, "サーベル") > 0 | Strings.InStr(wname, "カットラス") > 0 | Strings.InStr(wname, "刀") > 0 | Strings.InStr(wname, "斬") > 0 | Strings.InStr(wname, "ブレード") > 0 | Strings.InStr(wname, "刃") > 0 | Strings.InStr(wname, "アックス") > 0 | Strings.InStr(wname, "斧") > 0 | Strings.InStr(wname, "グレイブ") > 0 | Strings.InStr(wname, "ナギナタ") > 0 | Strings.InStr(wname, "切") > 0 | Strings.InStr(wname, "裂") > 0 | Strings.InStr(wname, "カット") > 0 | Strings.InStr(wname, "カッター") > 0 | Strings.InStr(wname, "スラッシュ") > 0 | Strings.InStr(wname, "居合") > 0)
 //            {
-//                string argstring28 = "火";
-//                string argstring29 = "雷";
-//                string argstring210 = "冷";
-//                string argstring211 = "Ｊ";
 //                if (combo_attack)
 //                {
 //                    wtype = "斬撃乱舞";
@@ -3406,15 +3306,15 @@
 //                {
 //                    wtype = "ダブル斬撃";
 //                }
-//                else if (GeneralLib.InStrNotNest(ref wclass, ref argstring28) > 0)
+//                else if (GeneralLib.InStrNotNest(ref wclass, ref "火") > 0)
 //                {
 //                    wtype = "炎斬撃";
 //                }
-//                else if (GeneralLib.InStrNotNest(ref wclass, ref argstring29) > 0)
+//                else if (GeneralLib.InStrNotNest(ref wclass, ref "雷") > 0)
 //                {
 //                    wtype = "雷斬撃";
 //                }
-//                else if (GeneralLib.InStrNotNest(ref wclass, ref argstring210) > 0)
+//                else if (GeneralLib.InStrNotNest(ref wclass, ref "冷") > 0)
 //                {
 //                    wtype = "凍斬撃";
 //                }
@@ -3430,7 +3330,7 @@
 //                {
 //                    wtype = "大斬撃";
 //                }
-//                else if (GeneralLib.InStrNotNest(ref wclass, ref argstring211) > 0)
+//                else if (GeneralLib.InStrNotNest(ref wclass, ref "Ｊ") > 0)
 //                {
 //                    wtype = "斬り上げ";
 //                }
@@ -3582,24 +3482,20 @@
 //            }
 
 //            // 詳細が分からなかった武器
-//            string argstring216 = "武";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring216) > 0)
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "武") > 0)
 //            {
 //                // 装備しているアイテムから武器を検索
 //                var loopTo = u.CountItem();
 //                for (i = 1; i <= loopTo; i++)
 //                {
-//                    object argIndex1 = i;
 //                    {
-//                        var withBlock = u.Item(ref argIndex1);
+//                        var withBlock = u.Item(ref i);
 //                        if (withBlock.Activated & (withBlock.Part() == "両手" | withBlock.Part() == "片手" | withBlock.Part() == "武器"))
 //                        {
-//                            string argwclass = "";
-//                            wtype = CheckWeaponType(ref withBlock.Nickname(), ref argwclass);
+//                            wtype = CheckWeaponType(ref withBlock.Nickname(), ref "");
 //                            if (string.IsNullOrEmpty(wtype))
 //                            {
-//                                string argwclass1 = "";
-//                                wtype = CheckWeaponType(ref withBlock.Class0(), ref argwclass1);
+//                                wtype = CheckWeaponType(ref withBlock.Class0(), ref "");
 //                            }
 
 //                            break;
@@ -3633,10 +3529,6 @@
 
 //                    default:
 //                        {
-//                            string argstring212 = "火";
-//                            string argstring213 = "雷";
-//                            string argstring214 = "冷";
-//                            string argstring215 = "Ｊ";
 //                            if (combo_attack)
 //                            {
 //                                wtype = "斬撃乱舞";
@@ -3649,19 +3541,19 @@
 //                            {
 //                                wtype = "連斬撃";
 //                            }
-//                            else if (GeneralLib.InStrNotNest(ref wclass, ref argstring212) > 0)
+//                            else if (GeneralLib.InStrNotNest(ref wclass, ref "火") > 0)
 //                            {
 //                                wtype = "炎斬撃";
 //                            }
-//                            else if (GeneralLib.InStrNotNest(ref wclass, ref argstring213) > 0)
+//                            else if (GeneralLib.InStrNotNest(ref wclass, ref "雷") > 0)
 //                            {
 //                                wtype = "雷斬撃";
 //                            }
-//                            else if (GeneralLib.InStrNotNest(ref wclass, ref argstring214) > 0)
+//                            else if (GeneralLib.InStrNotNest(ref wclass, ref "冷") > 0)
 //                            {
 //                                wtype = "凍斬撃";
 //                            }
-//                            else if (GeneralLib.InStrNotNest(ref wclass, ref argstring215) > 0)
+//                            else if (GeneralLib.InStrNotNest(ref wclass, ref "Ｊ") > 0)
 //                            {
 //                                wtype = "斬り上げ";
 //                            }
@@ -3678,9 +3570,7 @@
 //            }
 
 //            // 詳細が分からなかった近接技
-//            string argstring217 = "突";
-//            string argstring218 = "接";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring217) > 0 & GeneralLib.InStrNotNest(ref wclass, ref argstring218) > 0)
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "突") > 0 & GeneralLib.InStrNotNest(ref wclass, ref "接") > 0)
 //            {
 //                if (combo_attack)
 //                {
@@ -3984,8 +3874,7 @@
 //                }
 
 //                attack_times = CountAttack0(ref u, w);
-//                string argstring219 = "連";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring219) > 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "連") > 0)
 //                {
 //                    attack_times = hit_count;
 //                }
@@ -4016,11 +3905,9 @@
 //                goto FoundWeaponType;
 //            }
 
-//            string argstring221 = "電";
-//            if (Strings.InStr(wname, "雷") > 0 | Strings.InStr(wname, "ライトニング") > 0 | Strings.InStr(wname, "サンダー") > 0 | Strings.Right(wname, 2) == "稲妻" | GeneralLib.InStrNotNest(ref wclass, ref argstring221) > 0)
+//            if (Strings.InStr(wname, "雷") > 0 | Strings.InStr(wname, "ライトニング") > 0 | Strings.InStr(wname, "サンダー") > 0 | Strings.Right(wname, 2) == "稲妻" | GeneralLib.InStrNotNest(ref wclass, ref "電") > 0)
 //            {
-//                string argstring220 = "実";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring220) == 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "実") == 0)
 //                {
 //                    wtype = "放電";
 //                    goto FoundWeaponType;
@@ -4072,8 +3959,7 @@
 //            if (Strings.InStr(wname, "煙") > 0 | Strings.InStr(wname, "スモーク") > 0 | Strings.Right(wname, 2) == "ガス" | Strings.Right(wname, 1) == "霧" | Strings.InStr(wname, "胞子") > 0)
 //            {
 //                wtype = "煙";
-//                string argstring222 = "毒";
-//                if (Strings.InStr(wname, "毒") > 0 | GeneralLib.InStrNotNest(ref wclass, ref argstring222) > 0)
+//                if (Strings.InStr(wname, "毒") > 0 | GeneralLib.InStrNotNest(ref wclass, ref "毒") > 0)
 //                {
 //                    cname = "緑";
 //                }
@@ -4095,11 +3981,9 @@
 
 //            if (Strings.Right(wname, 5) == "ファイアー" | Strings.Right(wname, 5) == "ファイヤー" | Strings.Right(wname, 4) == "ファイア" | Strings.Right(wname, 4) == "ファイヤ")
 //            {
-//                string argstring224 = "実";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring224) == 0 & Strings.Left(wname, 2) != "フル")
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "実") == 0 & Strings.Left(wname, 2) != "フル")
 //                {
-//                    string argstring223 = "術";
-//                    if (GeneralLib.InStrNotNest(ref wclass, ref argstring223) > 0)
+//                    if (GeneralLib.InStrNotNest(ref wclass, ref "術") > 0)
 //                    {
 //                        wtype = "炎";
 //                    }
@@ -4114,8 +3998,7 @@
 
 //            if (Strings.InStr(wname, "息") > 0 | Strings.Right(wname, 3) == "ブレス")
 //            {
-//                string argstring225 = "実";
-//                if (GeneralLib.InStrNotNest(ref wclass, ref argstring225) == 0)
+//                if (GeneralLib.InStrNotNest(ref wclass, ref "実") == 0)
 //                {
 //                    wtype = "火炎放射";
 //                    switch (SpellColor(ref wname, wclass) ?? "")
@@ -4162,17 +4045,14 @@
 //                goto FoundWeaponType;
 //            }
 
-//            string argstring226 = "吸";
-//            string argstring227 = "減";
-//            if (Strings.InStr(wname, "吸収") > 0 | Strings.InStr(wname, "ドレイン") > 0 | GeneralLib.InStrNotNest(ref wclass, ref argstring226) > 0 | GeneralLib.InStrNotNest(ref wclass, ref argstring227) > 0)
+//            if (Strings.InStr(wname, "吸収") > 0 | Strings.InStr(wname, "ドレイン") > 0 | GeneralLib.InStrNotNest(ref wclass, ref "吸") > 0 | GeneralLib.InStrNotNest(ref wclass, ref "減") > 0)
 //            {
 //                wtype = "吸収";
 //                goto FoundWeaponType;
 //            }
 
 //            // 攻撃力0の攻撃の場合は「ダメージ」のアニメを使用しない
-//            string argtarea1 = "";
-//            if (u.WeaponPower(w, ref argtarea1) == 0)
+//            if (u.WeaponPower(w, ref "") == 0)
 //            {
 //                return;
 //            }
@@ -4189,9 +4069,7 @@
 //                case "強打":
 //                case "超打":
 //                    {
-//                        string argstring228 = "吹";
-//                        string argstring229 = "Ｋ";
-//                        if (GeneralLib.InStrNotNest(ref wclass, ref argstring228) > 0 | GeneralLib.InStrNotNest(ref wclass, ref argstring229) > 0)
+//                        if (GeneralLib.InStrNotNest(ref wclass, ref "吹") > 0 | GeneralLib.InStrNotNest(ref wclass, ref "Ｋ") > 0)
 //                        {
 //                            wtype = "打撃";
 //                        }
@@ -4294,64 +4172,47 @@
 //            num = CountAttack(ref u, w);
 
 //            // 武器に応じて効果音を再生
-//            string argstring25 = "武";
-//            string argstring26 = "突";
-//            string argstring27 = "接";
-//            string argstring28 = "実";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring25) > 0 | GeneralLib.InStrNotNest(ref wclass, ref argstring26) > 0 | GeneralLib.InStrNotNest(ref wclass, ref argstring27) > 0 | GeneralLib.InStrNotNest(ref wclass, ref argstring28) > 0)
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "武") > 0 | GeneralLib.InStrNotNest(ref wclass, ref "突") > 0 | GeneralLib.InStrNotNest(ref wclass, ref "接") > 0 | GeneralLib.InStrNotNest(ref wclass, ref "実") > 0)
 //            {
-//                string argstring2 = "突";
-//                string argstring21 = "核";
 //                // 無音
-//                string argstring22 = "武";
-//                string argstring23 = "突";
 //                if (Strings.InStr(wname, "ディスカッター") > 0 | Strings.InStr(wname, "リッパー") > 0 | Strings.InStr(wname, "スパイド") > 0 | Strings.InStr(wname, "居合") > 0 | Strings.InStr(wname, "閃") > 0)
 //                {
-//                    string argwave_name = "Swing.wav";
-//                    Sound.PlayWave(ref argwave_name);
+//                    Sound.PlayWave(ref "Swing.wav");
 //                    GUI.Sleep(200);
-//                    string argwave_name1 = "Sword.wav";
-//                    Sound.PlayWave(ref argwave_name1);
+//                    Sound.PlayWave(ref "Sword.wav");
 //                    var loopTo = num;
 //                    for (i = 2; i <= loopTo; i++)
 //                    {
 //                        GUI.Sleep(200);
-//                        string argwave_name2 = "Sword.wav";
-//                        Sound.PlayWave(ref argwave_name2);
+//                        Sound.PlayWave(ref "Sword.wav");
 //                    }
 //                }
 //                else if (Strings.InStr(wname, "プログレッシブナイフ") > 0 | Strings.InStr(wname, "ドリル") > 0)
 //                {
-//                    string argwave_name5 = "Drill.wav";
-//                    Sound.PlayWave(ref argwave_name5);
+//                    Sound.PlayWave(ref "Drill.wav");
 //                }
 //                else if (Strings.InStr(wname, "サーベル") > 0 | Strings.InStr(wname, "セイバー") > 0 | Strings.InStr(wname, "ソード") > 0 | Strings.InStr(wname, "ブレード") > 0 | Strings.InStr(wname, "スパッド") > 0 | Strings.InStr(wname, "セーバー") > 0 | Strings.InStr(wname, "ダガー") > 0 | Strings.InStr(wname, "ナイフ") > 0 | Strings.InStr(wname, "トマホーク") > 0 | Strings.InStr(wname, "メイス") > 0 | Strings.InStr(wname, "アックス") > 0 | Strings.InStr(wname, "グレイブ") > 0 | Strings.InStr(wname, "ナギナタ") > 0 | Strings.InStr(wname, "ビアンキ") > 0 | Strings.InStr(wname, "ウェッブ") > 0 | Strings.InStr(wname, "ザンバー") > 0 | Strings.InStr(wname, "マーカー") > 0 | Strings.InStr(wname, "バスター") > 0 | Strings.InStr(wname, "ブラスター") > 0 | Strings.InStr(wname, "クロー") > 0 | Strings.InStr(wname, "ジザース") > 0 | Strings.InStr(wname, "ブーメラン") > 0 | Strings.InStr(wname, "ソーサー") > 0 | Strings.InStr(wname, "レザー") > 0 | Strings.InStr(wname, "レイバー") > 0 | Strings.InStr(wname, "サイズ") > 0 | Strings.InStr(wname, "ショーテル") > 0 | Strings.InStr(wname, "カッター") > 0 | Strings.InStr(wname, "スパイク") > 0 | Strings.InStr(wname, "カトラス") > 0 | Strings.InStr(wname, "エッジ") > 0 | Strings.InStr(wname, "剣") > 0 & Strings.InStr(wname, "手裏剣") == 0 | Strings.InStr(wname, "切") > 0 | Strings.InStr(wname, "斬") > 0 | Strings.InStr(wname, "刀") > 0 | Strings.InStr(wname, "刃") > 0 | Strings.InStr(wname, "斧") > 0 | Strings.InStr(wname, "鎌") > 0 | Strings.InStr(wname, "かま") > 0 | Strings.InStr(wname, "カマ") > 0 | Strings.InStr(wname, "爪") > 0 | Strings.InStr(wname, "かぎづめ") > 0 | Strings.InStr(wname, "ハサミ") > 0 | Strings.InStr(wname, "バサミ") > 0 | Strings.InStr(wname, "羽") > 0)
 //                {
 //                    if (!t.IsHero() | Strings.InStr(wname, "ビーム") > 0 | Strings.InStr(wname, "プラズマ") > 0 | Strings.InStr(wname, "レーザー") > 0 | Strings.InStr(wname, "セイバー") > 0)
 //                    {
-//                        string argwave_name6 = "Saber.wav";
-//                        Sound.PlayWave(ref argwave_name6);
+//                        Sound.PlayWave(ref "Saber.wav");
 //                        var loopTo2 = num;
 //                        for (i = 2; i <= loopTo2; i++)
 //                        {
 //                            GUI.Sleep(350);
-//                            string argwave_name7 = "Saber.wav";
-//                            Sound.PlayWave(ref argwave_name7);
+//                            Sound.PlayWave(ref "Saber.wav");
 //                        }
 //                    }
 //                    else
 //                    {
-//                        string argwave_name8 = "Swing.wav";
-//                        Sound.PlayWave(ref argwave_name8);
+//                        Sound.PlayWave(ref "Swing.wav");
 //                        GUI.Sleep(190);
-//                        string argwave_name9 = "Slash.wav";
-//                        Sound.PlayWave(ref argwave_name9);
+//                        Sound.PlayWave(ref "Slash.wav");
 //                        var loopTo3 = num;
 //                        for (i = 2; i <= loopTo3; i++)
 //                        {
 //                            GUI.Sleep(350);
-//                            string argwave_name10 = "Slash.wav";
-//                            Sound.PlayWave(ref argwave_name10);
+//                            Sound.PlayWave(ref "Slash.wav");
 //                        }
 //                    }
 //                }
@@ -4359,29 +4220,24 @@
 //                {
 //                    if (!t.IsHero() | Strings.InStr(wname, "ビーム") > 0 | Strings.InStr(wname, "プラズマ") > 0 | Strings.InStr(wname, "レーザー") > 0 | Strings.InStr(wname, "ランサー") > 0)
 //                    {
-//                        string argwave_name11 = "Saber.wav";
-//                        Sound.PlayWave(ref argwave_name11);
+//                        Sound.PlayWave(ref "Saber.wav");
 //                        var loopTo4 = num;
 //                        for (i = 2; i <= loopTo4; i++)
 //                        {
 //                            GUI.Sleep(350);
-//                            string argwave_name12 = "Saber.wav";
-//                            Sound.PlayWave(ref argwave_name12);
+//                            Sound.PlayWave(ref "Saber.wav");
 //                        }
 //                    }
 //                    else
 //                    {
-//                        string argwave_name13 = "Swing.wav";
-//                        Sound.PlayWave(ref argwave_name13);
+//                        Sound.PlayWave(ref "Swing.wav");
 //                        GUI.Sleep(190);
-//                        string argwave_name14 = "Stab.wav";
-//                        Sound.PlayWave(ref argwave_name14);
+//                        Sound.PlayWave(ref "Stab.wav");
 //                        var loopTo5 = num;
 //                        for (i = 2; i <= loopTo5; i++)
 //                        {
 //                            GUI.Sleep(350);
-//                            string argwave_name15 = "Stab.wav";
-//                            Sound.PlayWave(ref argwave_name15);
+//                            Sound.PlayWave(ref "Stab.wav");
 //                        }
 //                    }
 //                }
@@ -4389,238 +4245,195 @@
 //                {
 //                    if (!t.IsHero())
 //                    {
-//                        string argwave_name16 = "Saber.wav";
-//                        Sound.PlayWave(ref argwave_name16);
+//                        Sound.PlayWave(ref "Saber.wav");
 //                        var loopTo6 = num;
 //                        for (i = 2; i <= loopTo6; i++)
 //                        {
 //                            GUI.Sleep(350);
-//                            string argwave_name17 = "Saber.wav";
-//                            Sound.PlayWave(ref argwave_name17);
+//                            Sound.PlayWave(ref "Saber.wav");
 //                        }
 //                    }
 //                    else
 //                    {
-//                        string argwave_name18 = "Stab.wav";
-//                        Sound.PlayWave(ref argwave_name18);
+//                        Sound.PlayWave(ref "Stab.wav");
 //                        var loopTo7 = num;
 //                        for (i = 2; i <= loopTo7; i++)
 //                        {
 //                            GUI.Sleep(350);
-//                            string argwave_name19 = "Stab.wav";
-//                            Sound.PlayWave(ref argwave_name19);
+//                            Sound.PlayWave(ref "Stab.wav");
 //                        }
 //                    }
 //                }
 //                else if (Strings.InStr(wname, "ストライク") > 0 | Strings.InStr(wname, "アーツ") > 0 | Strings.InStr(wname, "拳法") > 0 | Strings.InStr(wname, "振動拳") > 0)
 //                {
-//                    string argwave_name20 = "Combo.wav";
-//                    Sound.PlayWave(ref argwave_name20);
+//                    Sound.PlayWave(ref "Combo.wav");
 //                }
 //                else if (Strings.InStr(wname, "格闘") > 0 | Strings.InStr(wname, "パンチ") > 0 | Strings.InStr(wname, "キック") > 0 | Strings.InStr(wname, "チョップ") > 0 | Strings.InStr(wname, "ナックル") > 0 | Strings.InStr(wname, "ブロー") > 0 | Strings.InStr(wname, "ハンマー") > 0 | Strings.InStr(wname, "トンファー") > 0 | Strings.InStr(wname, "ヌンチャク") > 0 | Strings.InStr(wname, "パイプ") > 0 | Strings.InStr(wname, "ラリアット") > 0 | Strings.InStr(wname, "アーム") > 0 | Strings.InStr(wname, "ヘッドバット") > 0 | Strings.InStr(wname, "スリング") > 0 | Strings.InStr(wname, "頭突き") > 0 | Strings.InStr(wname, "脚") > 0 | Strings.InStr(wname, "蹴") > 0 | Strings.InStr(wname, "棒") > 0 | Strings.InStr(wname, "石") > 0 | Strings.InStr(wname, "角") > 0 | Strings.InStr(wname, "尻尾") > 0 | Strings.InStr(wname, "鉄腕") > 0)
 //                {
-//                    string argwave_name21 = "Punch.wav";
-//                    Sound.PlayWave(ref argwave_name21);
+//                    Sound.PlayWave(ref "Punch.wav");
 //                    var loopTo8 = num;
 //                    for (i = 2; i <= loopTo8; i++)
 //                    {
 //                        GUI.Sleep(120);
-//                        string argwave_name22 = "Punch.wav";
-//                        Sound.PlayWave(ref argwave_name22);
+//                        Sound.PlayWave(ref "Punch.wav");
 //                    }
 //                }
 //                else if (Strings.InStr(wname, "体当たり") > 0 | Strings.InStr(wname, "タックル") > 0 | Strings.InStr(wname, "ぶちかまし") > 0 | Strings.InStr(wname, "突進") > 0 | Strings.InStr(wname, "突撃") > 0 | Strings.InStr(wname, "怪力") > 0 | Strings.InStr(wname, "鉄拳") > 0 | Strings.InStr(wname, "メガトンパンチ") > 0 | Strings.InStr(wname, "鉄球") > 0 | Strings.InStr(wname, "ボール") > 0 | Strings.InStr(wname, "車輪") > 0 | Strings.InStr(wname, "キャタピラ") > 0 | Strings.InStr(wname, "シールド") > 0)
 //                {
-//                    string argwave_name23 = "Crash.wav";
-//                    Sound.PlayWave(ref argwave_name23);
+//                    Sound.PlayWave(ref "Crash.wav");
 //                }
 //                else if (Strings.InStr(wname, "拳") > 0 | Strings.InStr(wname, "掌") > 0 | Strings.InStr(wname, "打") > 0 | Strings.InStr(wname, "勁") > 0)
 //                {
-//                    string argwave_name24 = "Bazooka.wav";
-//                    Sound.PlayWave(ref argwave_name24);
+//                    Sound.PlayWave(ref "Bazooka.wav");
 //                    var loopTo9 = num;
 //                    for (i = 2; i <= loopTo9; i++)
 //                    {
 //                        GUI.Sleep(120);
-//                        string argwave_name25 = "Bazooka.wav";
-//                        Sound.PlayWave(ref argwave_name25);
+//                        Sound.PlayWave(ref "Bazooka.wav");
 //                    }
 //                }
 //                else if (Strings.InStr(wname, "踏み") > 0 | Strings.InStr(wname, "押し") > 0 | Strings.InStr(wname, "ドロップ") > 0)
 //                {
-//                    string argwave_name26 = "Shock(Low).wav";
-//                    Sound.PlayWave(ref argwave_name26);
+//                    Sound.PlayWave(ref "Shock(Low).wav");
 //                }
 //                else if (Strings.InStr(wname, "張り手") > 0 | Strings.InStr(wname, "ビンタ") > 0)
 //                {
-//                    string argwave_name27 = "Slap.wav";
-//                    Sound.PlayWave(ref argwave_name27);
+//                    Sound.PlayWave(ref "Slap.wav");
 //                    var loopTo10 = num;
 //                    for (i = 2; i <= loopTo10; i++)
 //                    {
 //                        GUI.Sleep(120);
-//                        string argwave_name28 = "Slap.wav";
-//                        Sound.PlayWave(ref argwave_name28);
+//                        Sound.PlayWave(ref "Slap.wav");
 //                    }
 //                }
 //                else if (Strings.InStr(wname, "弓") > 0 | Strings.InStr(wname, "矢") > 0 | Strings.InStr(wname, "アロー") > 0 | Strings.InStr(wname, "ボーガン") > 0 | Strings.InStr(wname, "ボウガン") > 0 | Strings.InStr(wname, "ショートボウ") > 0 | Strings.InStr(wname, "ロングボウ") > 0 | Strings.InStr(wname, "針") > 0 | Strings.InStr(wname, "ニードル") > 0)
 //                {
-//                    string argwave_name29 = "Stab.wav";
-//                    Sound.PlayWave(ref argwave_name29);
+//                    Sound.PlayWave(ref "Stab.wav");
 //                    var loopTo11 = num;
 //                    for (i = 2; i <= loopTo11; i++)
 //                    {
 //                        GUI.Sleep(120);
-//                        string argwave_name30 = "Stab.wav";
-//                        Sound.PlayWave(ref argwave_name30);
+//                        Sound.PlayWave(ref "Stab.wav");
 //                    }
 //                }
 //                else if (Strings.InStr(wname, "鞭") > 0 | Strings.InStr(wname, "ムチ") > 0 | Strings.InStr(wname, "ウイップ") > 0 | Strings.InStr(wname, "チェーン") > 0 | Strings.InStr(wname, "ロッド") > 0 | Strings.InStr(wname, "テンタク") > 0 | Strings.InStr(wname, "テイル") > 0 | Strings.InStr(wname, "尾") > 0 | Strings.InStr(wname, "触手") > 0 | Strings.InStr(wname, "触腕") > 0 | Strings.InStr(wname, "舌") > 0 | Strings.InStr(wname, "巻き") > 0 | Strings.InStr(wname, "糸") > 0)
 //                {
-//                    string argwave_name31 = "Whip.wav";
-//                    Sound.PlayWave(ref argwave_name31);
+//                    Sound.PlayWave(ref "Whip.wav");
 //                }
-//                else if (Strings.InStr(wname, "投げ") > 0 | Strings.InStr(wname, "スープレック") > 0 | Strings.InStr(wname, "返し") > 0 & GeneralLib.InStrNotNest(ref wclass, ref argstring2) > 0)
+//                else if (Strings.InStr(wname, "投げ") > 0 | Strings.InStr(wname, "スープレック") > 0 | Strings.InStr(wname, "返し") > 0 & GeneralLib.InStrNotNest(ref wclass, ref "突") > 0)
 //                {
-//                    string argwave_name32 = "Swing.wav";
-//                    Sound.PlayWave(ref argwave_name32);
+//                    Sound.PlayWave(ref "Swing.wav");
 //                    GUI.Sleep(500);
-//                    string argwave_name33 = "Shock(Low).wav";
-//                    Sound.PlayWave(ref argwave_name33);
+//                    Sound.PlayWave(ref "Shock(Low).wav");
 //                    var loopTo12 = num;
 //                    for (i = 2; i <= loopTo12; i++)
 //                    {
 //                        GUI.Sleep(700);
-//                        string argwave_name34 = "Swing.wav";
-//                        Sound.PlayWave(ref argwave_name34);
+//                        Sound.PlayWave(ref "Swing.wav");
 //                        GUI.Sleep(500);
-//                        string argwave_name35 = "Shock(Low).wav";
-//                        Sound.PlayWave(ref argwave_name35);
+//                        Sound.PlayWave(ref "Shock(Low).wav");
 //                    }
 //                }
 //                else if (Strings.InStr(wname, "大雪山おろし") > 0)
 //                {
-//                    string argwave_name36 = "Swing.wav";
-//                    Sound.PlayWave(ref argwave_name36);
+//                    Sound.PlayWave(ref "Swing.wav");
 //                    GUI.Sleep(700);
-//                    string argwave_name37 = "Swing.wav";
-//                    Sound.PlayWave(ref argwave_name37);
+//                    Sound.PlayWave(ref "Swing.wav");
 //                    GUI.Sleep(500);
-//                    string argwave_name38 = "Swing.wav";
-//                    Sound.PlayWave(ref argwave_name38);
+//                    Sound.PlayWave(ref "Swing.wav");
 //                    GUI.Sleep(300);
-//                    string argwave_name39 = "Shock(Low).wav";
-//                    Sound.PlayWave(ref argwave_name39);
+//                    Sound.PlayWave(ref "Shock(Low).wav");
 //                }
 //                else if (Strings.InStr(wname, "関節") > 0 | Strings.InStr(wname, "固め") > 0 | Strings.InStr(wname, "折り") > 0 | Strings.InStr(wname, "締め") > 0 | Strings.InStr(wname, "絞め") > 0 | Strings.InStr(wname, "アームロック") > 0 | Strings.InStr(wname, "ホールド") > 0)
 //                {
-//                    string argwave_name40 = "Swing.wav";
-//                    Sound.PlayWave(ref argwave_name40);
+//                    Sound.PlayWave(ref "Swing.wav");
 //                    GUI.Sleep(190);
-//                    string argwave_name41 = "BreakOff.wav";
-//                    Sound.PlayWave(ref argwave_name41);
+//                    Sound.PlayWave(ref "BreakOff.wav");
 //                }
-//                else if (GeneralLib.InStrNotNest(ref wclass, ref argstring21) > 0 | Strings.InStr(wname, "核") > 0 | Strings.InStr(wname, "反応弾") > 0)
+//                else if (GeneralLib.InStrNotNest(ref wclass, ref "核") > 0 | Strings.InStr(wname, "核") > 0 | Strings.InStr(wname, "反応弾") > 0)
 //                {
-//                    string argwave_name42 = "Explode(Nuclear).wav";
-//                    Sound.PlayWave(ref argwave_name42);
+//                    Sound.PlayWave(ref "Explode(Nuclear).wav");
 //                }
 //                else if (Strings.InStr(wname, "ミサイル") > 0 | Strings.InStr(wname, "ロケット") > 0 | Strings.InStr(wname, "魚雷") > 0 | Strings.InStr(wname, "マルチポッド") > 0 | Strings.InStr(wname, "マルチランチャー") > 0 | Strings.InStr(wname, "爆弾") > 0 | Strings.InStr(wname, "爆雷") > 0 | Strings.InStr(wname, "爆撃") > 0 | Strings.Right(wname, 3) == "マイン" | Strings.Right(wname, 2) == "ボム")
 //                {
-//                    string argwave_name43 = "Explode(Small).wav";
-//                    Sound.PlayWave(ref argwave_name43);
+//                    Sound.PlayWave(ref "Explode(Small).wav");
 //                    var loopTo13 = num;
 //                    for (i = 2; i <= loopTo13; i++)
 //                    {
 //                        GUI.Sleep(130);
-//                        string argwave_name44 = "Explode(Small).wav";
-//                        Sound.PlayWave(ref argwave_name44);
+//                        Sound.PlayWave(ref "Explode(Small).wav");
 //                    }
 //                }
 //                else if (Strings.InStr(wname, "アンカー") > 0)
 //                {
 //                }
-//                else if (GeneralLib.InStrNotNest(ref wclass, ref argstring22) > 0)
+//                else if (GeneralLib.InStrNotNest(ref wclass, ref "武") > 0)
 //                {
 //                    // なんか分からんけど武器
-//                    string argwave_name45 = "Saber.wav";
-//                    Sound.PlayWave(ref argwave_name45);
+//                    Sound.PlayWave(ref "Saber.wav");
 //                    var loopTo14 = num;
 //                    for (i = 2; i <= loopTo14; i++)
 //                    {
 //                        GUI.Sleep(350);
-//                        string argwave_name46 = "Saber.wav";
-//                        Sound.PlayWave(ref argwave_name46);
+//                        Sound.PlayWave(ref "Saber.wav");
 //                    }
 //                }
-//                else if (GeneralLib.InStrNotNest(ref wclass, ref argstring23) > 0)
+//                else if (GeneralLib.InStrNotNest(ref wclass, ref "突") > 0)
 //                {
 //                    // なんか分からんけど突進技
-//                    string argwave_name47 = "Punch.wav";
-//                    Sound.PlayWave(ref argwave_name47);
+//                    Sound.PlayWave(ref "Punch.wav");
 //                    var loopTo15 = num;
 //                    for (i = 2; i <= loopTo15; i++)
 //                    {
 //                        GUI.Sleep(120);
-//                        string argwave_name48 = "Punch.wav";
-//                        Sound.PlayWave(ref argwave_name48);
+//                        Sound.PlayWave(ref "Punch.wav");
 //                    }
 //                }
 //                else if (!t.IsHero())
 //                {
-//                    string argwave_name3 = "Explode(Small).wav";
-//                    Sound.PlayWave(ref argwave_name3);
+//                    Sound.PlayWave(ref "Explode(Small).wav");
 //                    var loopTo1 = num;
 //                    for (i = 2; i <= loopTo1; i++)
 //                    {
 //                        GUI.Sleep(130);
-//                        string argwave_name4 = "Explode(Small).wav";
-//                        Sound.PlayWave(ref argwave_name4);
+//                        Sound.PlayWave(ref "Explode(Small).wav");
 //                    }
 //                }
 //            }
 //            else
 //            {
-//                string argstring24 = "核";
 //                if (Strings.InStr(wname, "ストーム") > 0 | Strings.InStr(wname, "トルネード") > 0 | Strings.InStr(wname, "ハリケーン") > 0 | Strings.InStr(wname, "タイフーン") > 0 | Strings.InStr(wname, "サイクロン") > 0 | Strings.InStr(wname, "ブリザード") > 0 | Strings.InStr(wname, "竜巻") > 0 | Strings.InStr(wname, "渦巻") > 0 | Strings.InStr(wname, "台風") > 0 | Strings.InStr(wname, "嵐") > 0)
 //                {
 //                }
 //                // 命中時は無音
 //                else if (Strings.Right(wname, 1) == "液")
 //                {
-//                    string argwave_name51 = "Inori.wav";
-//                    Sound.PlayWave(ref argwave_name51);
+//                    Sound.PlayWave(ref "Inori.wav");
 //                }
 //                else if (Strings.InStr(wname, "発火") > 0 | Strings.InStr(wname, "パイロキネシス") > 0)
 //                {
-//                    string argwave_name52 = "Fire.wav";
-//                    Sound.PlayWave(ref argwave_name52);
+//                    Sound.PlayWave(ref "Fire.wav");
 //                }
 //                else if (wname == "テレキネシス")
 //                {
-//                    string argwave_name53 = "Crash.wav";
-//                    Sound.PlayWave(ref argwave_name53);
+//                    Sound.PlayWave(ref "Crash.wav");
 //                }
 //                else if (Strings.InStr(wname, "吸収") > 0)
 //                {
-//                    string argwave_name54 = "Charge.wav";
-//                    Sound.PlayWave(ref argwave_name54);
+//                    Sound.PlayWave(ref "Charge.wav");
 //                }
-//                else if (GeneralLib.InStrNotNest(ref wclass, ref argstring24) > 0)
+//                else if (GeneralLib.InStrNotNest(ref wclass, ref "核") > 0)
 //                {
-//                    string argwave_name55 = "Explode(Nuclear).wav";
-//                    Sound.PlayWave(ref argwave_name55);
+//                    Sound.PlayWave(ref "Explode(Nuclear).wav");
 //                }
 //                else if (!t.IsHero())
 //                {
-//                    string argwave_name49 = "Explode(Small).wav";
-//                    Sound.PlayWave(ref argwave_name49);
+//                    Sound.PlayWave(ref "Explode(Small).wav");
 //                    var loopTo16 = num;
 //                    for (i = 2; i <= loopTo16; i++)
 //                    {
 //                        GUI.Sleep(130);
-//                        string argwave_name50 = "Explode(Small).wav";
-//                        Sound.PlayWave(ref argwave_name50);
+//                        Sound.PlayWave(ref "Explode(Small).wav");
 //                    }
 //                }
 //            }
@@ -4638,13 +4451,9 @@
 //            wclass = u.Weapon(w).Class_Renamed;
 
 //            // 特殊効果が指定されていればそれを使用
-//            string argmain_situation1 = wname + "(回避)";
-//            string argsub_situation1 = "";
-//            if (u.IsSpecialEffectDefined(ref argmain_situation1, sub_situation: ref argsub_situation1))
+//            if (u.IsSpecialEffectDefined(ref wname + "(回避)", sub_situation: ref ""))
 //            {
-//                string argmain_situation = wname + "(回避)";
-//                string argsub_situation = "";
-//                u.SpecialEffect(ref argmain_situation, sub_situation: ref argsub_situation);
+//                u.SpecialEffect(ref wname + "(回避)", sub_situation: ref "");
 //                return;
 //            }
 
@@ -4654,8 +4463,7 @@
 //            }
 
 //            // 攻撃時の効果音が風切り音のみであれば風切り音は不要
-//            string argsub_situation2 = "";
-//            sname = u.SpecialEffectData(ref wname, sub_situation: ref argsub_situation2);
+//            sname = u.SpecialEffectData(ref wname, sub_situation: ref "");
 //            if (Strings.InStr(sname, ";") > 0)
 //            {
 //                sname = Strings.Mid(sname, Strings.InStr(sname, ";"));
@@ -4667,21 +4475,15 @@
 //            }
 
 //            // 風切り音が必要かどうか判定
-//            string argstring2 = "武";
-//            string argstring21 = "突";
-//            string argstring22 = "接";
-//            string argstring23 = "実";
-//            if (Conversions.ToBoolean(GeneralLib.InStrNotNest(ref wclass, ref argstring2) | GeneralLib.InStrNotNest(ref wclass, ref argstring21) | GeneralLib.InStrNotNest(ref wclass, ref argstring22)))
+//            if (Conversions.ToBoolean(GeneralLib.InStrNotNest(ref wclass, ref "武") | GeneralLib.InStrNotNest(ref wclass, ref "突") | GeneralLib.InStrNotNest(ref wclass, ref "武"2)))
 //            {
-//                string argwave_name = "Swing.wav";
-//                Sound.PlayWave(ref argwave_name);
+//                Sound.PlayWave(ref "Swing.wav");
 //            }
-//            else if (Conversions.ToBoolean(GeneralLib.InStrNotNest(ref wclass, ref argstring23)))
+//            else if (Conversions.ToBoolean(GeneralLib.InStrNotNest(ref wclass, ref "実")))
 //            {
 //                if (Strings.InStr(wname, "鞭") > 0 | Strings.InStr(wname, "ムチ") > 0 | Strings.InStr(wname, "ウイップ") > 0 | Strings.InStr(wname, "チェーン") > 0 | Strings.InStr(wname, "ロッド") > 0 | Strings.InStr(wname, "テンタク") > 0 | Strings.InStr(wname, "テイル") > 0 | Strings.InStr(wname, "尾") > 0 | Strings.InStr(wname, "触手") > 0 | Strings.InStr(wname, "触腕") > 0 | Strings.InStr(wname, "舌") > 0 | Strings.InStr(wname, "巻き") > 0 | Strings.InStr(wname, "糸") > 0)
 //                {
-//                    string argwave_name1 = "Swing.wav";
-//                    Sound.PlayWave(ref argwave_name1);
+//                    Sound.PlayWave(ref "Swing.wav");
 //                }
 //            }
 //        }
@@ -4711,21 +4513,15 @@
 //            }
 
 //            // 命中音を設定
-//            string argstring2 = "銃";
-//            string argstring21 = "格";
-//            string argstring22 = "武";
-//            string argstring23 = "突";
-//            string argstring24 = "実";
-//            string argstring25 = "Ｂ";
-//            if (Conversions.ToBoolean(GeneralLib.InStrNotNest(ref wclass, ref argstring2) | GeneralLib.InStrNotNest(ref wclass, ref argstring21) | GeneralLib.InStrNotNest(ref wclass, ref argstring22) | GeneralLib.InStrNotNest(ref wclass, ref argstring23) | Conversions.ToShort(Strings.InStr(wname, "弓") > 0) | Conversions.ToShort(Strings.InStr(wname, "アロー") > 0) | Conversions.ToShort(Strings.InStr(wname, "ロングボウ") > 0) | Conversions.ToShort(Strings.InStr(wname, "ショートボウ") > 0) | Conversions.ToShort(Strings.InStr(wname, "ボーガン") > 0) | Conversions.ToShort(Strings.InStr(wname, "ボウガン") > 0) | Conversions.ToShort(Strings.InStr(wname, "針") > 0) | Conversions.ToShort(Strings.InStr(wname, "ニードル") > 0) | Conversions.ToShort(Strings.InStr(wname, "ランサー") > 0) | Conversions.ToShort(Strings.InStr(wname, "ダガー") > 0) | Conversions.ToShort(Strings.InStr(wname, "剣") > 0)))
+//            if (Conversions.ToBoolean(GeneralLib.InStrNotNest(ref wclass, ref "銃") | GeneralLib.InStrNotNest(ref wclass, ref "格") | GeneralLib.InStrNotNest(ref wclass, ref "武") | GeneralLib.InStrNotNest(ref wclass, ref "突") | Conversions.ToShort(Strings.InStr(wname, "弓") > 0) | Conversions.ToShort(Strings.InStr(wname, "アロー") > 0) | Conversions.ToShort(Strings.InStr(wname, "ロングボウ") > 0) | Conversions.ToShort(Strings.InStr(wname, "ショートボウ") > 0) | Conversions.ToShort(Strings.InStr(wname, "ボーガン") > 0) | Conversions.ToShort(Strings.InStr(wname, "ボウガン") > 0) | Conversions.ToShort(Strings.InStr(wname, "針") > 0) | Conversions.ToShort(Strings.InStr(wname, "ニードル") > 0) | Conversions.ToShort(Strings.InStr(wname, "ランサー") > 0) | Conversions.ToShort(Strings.InStr(wname, "ダガー") > 0) | Conversions.ToShort(Strings.InStr(wname, "剣") > 0)))
 //            {
 //                sname = "Sword.wav";
 //            }
-//            else if (Conversions.ToBoolean(GeneralLib.InStrNotNest(ref wclass, ref argstring24)))
+//            else if (Conversions.ToBoolean(GeneralLib.InStrNotNest(ref wclass, ref "実")))
 //            {
 //                sname = "Explode(Small).wav";
 //            }
-//            else if (Conversions.ToBoolean(GeneralLib.InStrNotNest(ref wclass, ref argstring25)))
+//            else if (Conversions.ToBoolean(GeneralLib.InStrNotNest(ref wclass, ref "Ｂ")))
 //            {
 //                sname = "BeamCoat.wav";
 //            }
@@ -4735,16 +4531,14 @@
 //            }
 
 //            // 切り払い音を再生
-//            string argwave_name = "Saber.wav";
-//            Sound.PlayWave(ref argwave_name);
+//            Sound.PlayWave(ref "Saber.wav");
 //            GUI.Sleep(100);
 //            Sound.PlayWave(ref sname);
 //            var loopTo = num;
 //            for (i = 2; i <= loopTo; i++)
 //            {
 //                GUI.Sleep(130);
-//                string argwave_name1 = "Saber.wav";
-//                Sound.PlayWave(ref argwave_name1);
+//                Sound.PlayWave(ref "Saber.wav");
 //                GUI.Sleep(100);
 //                Sound.PlayWave(ref sname);
 //            }
@@ -4757,37 +4551,28 @@
 //        public static void ShieldEffect(ref Unit u)
 //        {
 //            // 戦闘アニメ非自動選択オプション
-//            string argoname = "戦闘アニメ非自動選択";
-//            if (Expression.IsOptionDefined(ref argoname))
+//            if (Expression.IsOptionDefined(ref "戦闘アニメ非自動選択"))
 //            {
-//                string arganame = "シールド防御発動";
-//                ShowAnimation(ref arganame);
+//                ShowAnimation(ref "シールド防御発動");
 //                return;
 //            }
 
 //            // シールドのタイプを識別
-//            string argfname = "エネルギーシールド";
-//            string argfname1 = "小型シールド";
-//            string argfname2 = "大型シールド";
-//            if (u.IsFeatureAvailable(ref argfname))
+//            if (u.IsFeatureAvailable(ref "エネルギーシールド"))
 //            {
-//                string arganame1 = "ビームシールド発動";
-//                ShowAnimation(ref arganame1);
+//                ShowAnimation(ref "ビームシールド発動");
 //            }
-//            else if (u.IsFeatureAvailable(ref argfname1))
+//            else if (u.IsFeatureAvailable(ref "小型シールド"))
 //            {
-//                string arganame3 = "シールド防御発動 28";
-//                ShowAnimation(ref arganame3);
+//                ShowAnimation(ref "シールド防御発動 28");
 //            }
-//            else if (u.IsFeatureAvailable(ref argfname2))
+//            else if (u.IsFeatureAvailable(ref "大型シールド"))
 //            {
-//                string arganame4 = "シールド防御発動 40";
-//                ShowAnimation(ref arganame4);
+//                ShowAnimation(ref "シールド防御発動 40");
 //            }
 //            else
 //            {
-//                string arganame2 = "シールド防御発動";
-//                ShowAnimation(ref arganame2);
+//                ShowAnimation(ref "シールド防御発動");
 //            }
 //        }
 
@@ -4803,11 +4588,9 @@
 //            }
 
 //            // 戦闘アニメオフの場合は効果音再生のみ
-//            string argoname = "戦闘アニメ非自動選択";
-//            if (!SRC.BattleAnimation | Expression.IsOptionDefined(ref argoname))
+//            if (!SRC.BattleAnimation | Expression.IsOptionDefined(ref "戦闘アニメ非自動選択"))
 //            {
-//                string argwave_name = "Charge.wav";
-//                Sound.PlayWave(ref argwave_name);
+//                Sound.PlayWave(ref "Charge.wav");
 //                return;
 //            }
 
@@ -4825,8 +4608,7 @@
 //            }
 
 //            // アニメを表示
-//            string arganame = "粒子集中発動 " + cname;
-//            ShowAnimation(ref arganame);
+//            ShowAnimation(ref "粒子集中発動 " + cname);
 //        }
 
 
@@ -4838,8 +4620,7 @@
 //            short i;
 //            if (Strings.Len(ctype_Renamed) == 0)
 //            {
-//                string arganame = "デフォルトクリティカル";
-//                ShowAnimation(ref arganame);
+//                ShowAnimation(ref "デフォルトクリティカル");
 //            }
 //            else
 //            {
@@ -4852,8 +4633,7 @@
 //                        goto NextLoop;
 //                    }
 
-//                    string arglname = "戦闘アニメ_" + aname;
-//                    if (Event_Renamed.FindNormalLabel(ref arglname) == 0)
+//                    if (Event_Renamed.FindNormalLabel(ref "戦闘アニメ_" + aname) == 0)
 //                    {
 //                        goto NextLoop;
 //                    }
@@ -4861,8 +4641,7 @@
 //                    sname = "";
 //                    if (aname == "ショッククリティカル")
 //                    {
-//                        string argattr = "冷";
-//                        if (Commands.SelectedUnit.IsWeaponClassifiedAs(w, ref argattr))
+//                        if (Commands.SelectedUnit.IsWeaponClassifiedAs(w, ref "冷"))
 //                        {
 //                            // 冷気による攻撃で行動不能になった場合は効果音をオフ
 //                            sname = "-.wav";
@@ -4871,8 +4650,7 @@
 
 //                    if (!string.IsNullOrEmpty(sname))
 //                    {
-//                        string arganame1 = aname + " " + sname;
-//                        ShowAnimation(ref arganame1);
+//                        ShowAnimation(ref aname + " " + sname);
 //                    }
 //                    else
 //                    {
@@ -4916,11 +4694,9 @@
 //            wclass = u.Weapon(w).Class_Renamed;
 
 //            // 連続攻撃の場合は攻撃回数にあわせる
-//            string argstring2 = "連";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring2) > 0)
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "連") > 0)
 //            {
-//                string argattr = "連";
-//                CountAttack0Ret = (short)u.WeaponLevel(w, ref argattr);
+//                CountAttack0Ret = (short)u.WeaponLevel(w, ref "連");
 //                return CountAttack0Ret;
 //            }
 
@@ -5069,15 +4845,13 @@
 //        private static bool IsBeamWeapon(ref string wname, string wclass, ref string cname)
 //        {
 //            bool IsBeamWeaponRet = default;
-//            string argstring2 = "実";
-//            if (GeneralLib.InStrNotNest(ref wclass, ref argstring2) > 0)
+//            if (GeneralLib.InStrNotNest(ref wclass, ref "実") > 0)
 //            {
 //                // 光線系攻撃ではあり得ない
 //                return IsBeamWeaponRet;
 //            }
 
-//            string argstring21 = "Ｂ";
-//            if (Strings.InStr(wname, "ビーム") > 0 | GeneralLib.InStrNotNest(ref wclass, ref argstring21) > 0)
+//            if (Strings.InStr(wname, "ビーム") > 0 | GeneralLib.InStrNotNest(ref wclass, ref "Ｂ") > 0)
 //            {
 //                IsBeamWeaponRet = true;
 //            }
@@ -5339,8 +5113,7 @@
 //            // 人間ユニットでない場合は爆発を表示
 //            if (!u.IsHero())
 //            {
-//                string argtsize = u.Size;
-//                ExplodeAnimation(ref argtsize, u.x, u.y);
+//                ExplodeAnimation(ref u.Size, u.x, u.y);
 //                u.Size = argtsize;
 //                return;
 //            }
@@ -5384,8 +5157,7 @@
 //            {
 //                case "地上":
 //                    {
-//                        string argwave_name = "FallDown.wav";
-//                        Sound.PlayWave(ref argwave_name);
+//                        Sound.PlayWave(ref "FallDown.wav");
 //                        break;
 //                    }
 
@@ -5393,20 +5165,17 @@
 //                    {
 //                        if (GUI.MessageWait > 0)
 //                        {
-//                            string argwave_name1 = "Bomb.wav";
-//                            Sound.PlayWave(ref argwave_name1);
+//                            Sound.PlayWave(ref "Bomb.wav");
 //                            GUI.Sleep(500);
 //                        }
 
 //                        if (Map.TerrainClass(u.x, u.y) == "水" | Map.TerrainClass(u.x, u.y) == "深海")
 //                        {
-//                            string argwave_name2 = "Splash.wav";
-//                            Sound.PlayWave(ref argwave_name2);
+//                            Sound.PlayWave(ref "Splash.wav");
 //                        }
 //                        else
 //                        {
-//                            string argwave_name3 = "FallDown.wav";
-//                            Sound.PlayWave(ref argwave_name3);
+//                            Sound.PlayWave(ref "FallDown.wav");
 //                        }
 
 //                        break;
@@ -5443,8 +5212,7 @@
 //                    }
 //            }
 
-//            string argfname = SRC.ScenarioPath + fname + ".bmp";
-//            if (GeneralLib.FileExists(ref argfname))
+//            if (GeneralLib.FileExists(ref SRC.ScenarioPath + fname + ".bmp"))
 //            {
 //                fname = SRC.ScenarioPath + fname;
 //            }
@@ -5477,14 +5245,9 @@
 
 //            for (i = 1; i <= 6; i++)
 //            {
-//                string argfname1 = fname + ".bmp";
-//                GUI.DrawPicture(ref argfname1, GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, ref draw_mode);
-//                string argfname2 = @"Unit\" + u.get_Bitmap(false);
-//                string argdraw_option = "透過 " + draw_mode;
-//                GUI.DrawPicture(ref argfname2, GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, ref argdraw_option);
-//                string argfname3 = fname + "0" + SrcFormatter.Format(i) + ".bmp";
-//                string argdraw_option1 = "透過 " + draw_mode;
-//                GUI.DrawPicture(ref argfname3, GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, ref argdraw_option1);
+//                GUI.DrawPicture(ref fname + ".bmp", GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, ref draw_mode);
+//                GUI.DrawPicture(ref @"Unit\" + u.get_Bitmap(false), GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, ref "透過 " + draw_mode);
+//                GUI.DrawPicture(ref fname + "0" + SrcFormatter.Format(i) + ".bmp", GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, ref "透過 " + draw_mode);
 //                GUI.MainForm.picMain(0).Refresh();
 //                GUI.Sleep(50);
 //            }
@@ -5552,8 +5315,7 @@
 
 //                bool localFileExists1() { string argfname = SRC.AppPath + @"Bitmap\Anime\Explode\EFFECT_Explode01.bmp"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
 
-//                string argfname = SRC.ScenarioPath + @"Bitmap\Anime\Explode\EFFECT_Explode01.bmp";
-//                if (GeneralLib.FileExists(ref argfname))
+//                if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Anime\Explode\EFFECT_Explode01.bmp"))
 //                {
 //                    explode_image_path = SRC.ScenarioPath + @"Bitmap\Anime\Explode\EFFECT_Explode";
 //                }
@@ -5572,8 +5334,7 @@
 
 //                // 爆発用画像の個数
 //                i = 2;
-//                string argfname1 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
-//                while (GeneralLib.FileExists(ref argfname1))
+//                while (GeneralLib.FileExists(ref explode_image_path + SrcFormatter.Format(i, "00") + ".bmp"))
 //                    i = (short)(i + 1);
 //                explode_image_num = (short)(i - 1);
 //            }
@@ -5618,8 +5379,7 @@
 //                case "XL":
 //                case "LL":
 //                    {
-//                        string argwave_name = "Explode(Far).wav";
-//                        Sound.PlayWave(ref argwave_name);
+//                        Sound.PlayWave(ref "Explode(Far).wav");
 //                        break;
 //                    }
 
@@ -5628,8 +5388,7 @@
 //                case "S":
 //                case "SS":
 //                    {
-//                        string argwave_name1 = "Explode.wav";
-//                        Sound.PlayWave(ref argwave_name1);
+//                        Sound.PlayWave(ref "Explode.wav");
 //                        break;
 //                    }
 //            }
@@ -5652,9 +5411,7 @@
 //                            for (i = 1; i <= loopTo; i++)
 //                            {
 //                                GUI.ClearPicture();
-//                                string argfname2 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
-//                                string argdraw_option = "透過";
-//                                GUI.DrawPicture(ref argfname2, GUI.MapToPixelX(tx) - 64, GUI.MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, ref argdraw_option);
+//                                GUI.DrawPicture(ref explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 64, GUI.MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, ref "透過");
 //                                GUI.MainForm.picMain(0).Refresh();
 //                                GUI.Sleep(130);
 //                            }
@@ -5668,9 +5425,7 @@
 //                            for (i = 1; i <= loopTo1; i++)
 //                            {
 //                                GUI.ClearPicture();
-//                                string argfname3 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
-//                                string argdraw_option1 = "透過";
-//                                GUI.DrawPicture(ref argfname3, GUI.MapToPixelX(tx) - 56, GUI.MapToPixelY(ty) - 56, 144, 144, 0, 0, 0, 0, ref argdraw_option1);
+//                                GUI.DrawPicture(ref explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 56, GUI.MapToPixelY(ty) - 56, 144, 144, 0, 0, 0, 0, ref "透過");
 //                                GUI.MainForm.picMain(0).Refresh();
 //                                GUI.Sleep(100);
 //                            }
@@ -5684,9 +5439,7 @@
 //                            for (i = 1; i <= loopTo2; i++)
 //                            {
 //                                GUI.ClearPicture();
-//                                string argfname4 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
-//                                string argdraw_option2 = "透過";
-//                                GUI.DrawPicture(ref argfname4, GUI.MapToPixelX(tx) - 48, GUI.MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, ref argdraw_option2);
+//                                GUI.DrawPicture(ref explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 48, GUI.MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, ref "透過");
 //                                GUI.MainForm.picMain(0).Refresh();
 //                                GUI.Sleep(70);
 //                            }
@@ -5700,9 +5453,7 @@
 //                            for (i = 1; i <= loopTo3; i++)
 //                            {
 //                                GUI.ClearPicture();
-//                                string argfname5 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
-//                                string argdraw_option3 = "透過";
-//                                GUI.DrawPicture(ref argfname5, GUI.MapToPixelX(tx) - 40, GUI.MapToPixelY(ty) - 40, 112, 112, 0, 0, 0, 0, ref argdraw_option3);
+//                                GUI.DrawPicture(ref explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 40, GUI.MapToPixelY(ty) - 40, 112, 112, 0, 0, 0, 0, ref "透過");
 //                                GUI.MainForm.picMain(0).Refresh();
 //                                GUI.Sleep(50);
 //                            }
@@ -5716,9 +5467,7 @@
 //                            for (i = 1; i <= loopTo4; i++)
 //                            {
 //                                GUI.ClearPicture();
-//                                string argfname6 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
-//                                string argdraw_option4 = "透過";
-//                                GUI.DrawPicture(ref argfname6, GUI.MapToPixelX(tx) - 24, GUI.MapToPixelY(ty) - 24, 80, 80, 0, 0, 0, 0, ref argdraw_option4);
+//                                GUI.DrawPicture(ref explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 24, GUI.MapToPixelY(ty) - 24, 80, 80, 0, 0, 0, 0, ref "透過");
 //                                GUI.MainForm.picMain(0).Refresh();
 //                                GUI.Sleep(40);
 //                            }
@@ -5732,9 +5481,7 @@
 //                            for (i = 1; i <= loopTo5; i++)
 //                            {
 //                                GUI.ClearPicture();
-//                                string argfname7 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
-//                                string argdraw_option5 = "透過";
-//                                GUI.DrawPicture(ref argfname7, GUI.MapToPixelX(tx) - 8, GUI.MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, ref argdraw_option5);
+//                                GUI.DrawPicture(ref explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 8, GUI.MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, ref "透過");
 //                                GUI.MainForm.picMain(0).Refresh();
 //                                GUI.Sleep(40);
 //                            }
@@ -5756,9 +5503,7 @@
 //                            var loopTo6 = explode_image_num;
 //                            for (i = 1; i <= loopTo6; i++)
 //                            {
-//                                string argfname8 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
-//                                string argdraw_option6 = "透過";
-//                                GUI.DrawPicture(ref argfname8, GUI.MapToPixelX(tx) - 64, GUI.MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, ref argdraw_option6);
+//                                GUI.DrawPicture(ref explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 64, GUI.MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, ref "透過");
 //                                GUI.MainForm.picMain(0).Refresh();
 //                                GUI.Sleep(130);
 //                            }
@@ -5771,9 +5516,7 @@
 //                            var loopTo7 = explode_image_num;
 //                            for (i = 1; i <= loopTo7; i++)
 //                            {
-//                                string argfname9 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
-//                                string argdraw_option7 = "透過";
-//                                GUI.DrawPicture(ref argfname9, GUI.MapToPixelX(tx) - 48, GUI.MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, ref argdraw_option7);
+//                                GUI.DrawPicture(ref explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 48, GUI.MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, ref "透過");
 //                                GUI.MainForm.picMain(0).Refresh();
 //                                GUI.Sleep(100);
 //                            }
@@ -5786,9 +5529,7 @@
 //                            var loopTo8 = explode_image_num;
 //                            for (i = 1; i <= loopTo8; i++)
 //                            {
-//                                string argfname10 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
-//                                string argdraw_option8 = "透過";
-//                                GUI.DrawPicture(ref argfname10, GUI.MapToPixelX(tx) - 32, GUI.MapToPixelY(ty) - 32, 96, 96, 0, 0, 0, 0, ref argdraw_option8);
+//                                GUI.DrawPicture(ref explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 32, GUI.MapToPixelY(ty) - 32, 96, 96, 0, 0, 0, 0, ref "透過");
 //                                GUI.MainForm.picMain(0).Refresh();
 //                                GUI.Sleep(70);
 //                            }
@@ -5801,9 +5542,7 @@
 //                            var loopTo9 = explode_image_num;
 //                            for (i = 1; i <= loopTo9; i++)
 //                            {
-//                                string argfname11 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
-//                                string argdraw_option9 = "透過";
-//                                GUI.DrawPicture(ref argfname11, GUI.MapToPixelX(tx) - 16, GUI.MapToPixelY(ty) - 16, 64, 64, 0, 0, 0, 0, ref argdraw_option9);
+//                                GUI.DrawPicture(ref explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 16, GUI.MapToPixelY(ty) - 16, 64, 64, 0, 0, 0, 0, ref "透過");
 //                                GUI.MainForm.picMain(0).Refresh();
 //                                GUI.Sleep(50);
 //                            }
@@ -5816,9 +5555,7 @@
 //                            var loopTo10 = explode_image_num;
 //                            for (i = 1; i <= loopTo10; i++)
 //                            {
-//                                string argfname12 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
-//                                string argdraw_option10 = "透過";
-//                                GUI.DrawPicture(ref argfname12, GUI.MapToPixelX(tx) - 8, GUI.MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, ref argdraw_option10);
+//                                GUI.DrawPicture(ref explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 8, GUI.MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, ref "透過");
 //                                GUI.MainForm.picMain(0).Refresh();
 //                                GUI.Sleep(40);
 //                            }
@@ -5831,9 +5568,7 @@
 //                            var loopTo11 = explode_image_num;
 //                            for (i = 1; i <= loopTo11; i++)
 //                            {
-//                                string argfname13 = explode_image_path + SrcFormatter.Format(i, "00") + ".bmp";
-//                                string argdraw_option11 = "透過";
-//                                GUI.DrawPicture(ref argfname13, GUI.MapToPixelX(tx), GUI.MapToPixelY(ty), 32, 32, 0, 0, 0, 0, ref argdraw_option11);
+//                                GUI.DrawPicture(ref explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx), GUI.MapToPixelY(ty), 32, 32, 0, 0, 0, 0, ref "透過");
 //                                GUI.MainForm.picMain(0).Refresh();
 //                                GUI.Sleep(40);
 //                            }
@@ -5855,32 +5590,23 @@
 //            {
 //                if (!be_quiet)
 //                {
-//                    string argmain_situation = "ビーム無効化(" + fname + ")";
-//                    if (t.IsMessageDefined(ref argmain_situation))
+//                    if (t.IsMessageDefined(ref "ビーム無効化(" + fname + ")"))
 //                    {
-//                        string argSituation = "ビーム無効化(" + fname + ")";
-//                        string argmsg_mode = "";
-//                        t.PilotMessage(ref argSituation, msg_mode: ref argmsg_mode);
+//                        t.PilotMessage(ref "ビーム無効化(" + fname + ")", msg_mode: ref "");
 //                    }
 //                    else
 //                    {
-//                        string argSituation1 = "ビーム無効化";
-//                        string argmsg_mode1 = "";
-//                        t.PilotMessage(ref argSituation1, msg_mode: ref argmsg_mode1);
+//                        t.PilotMessage(ref "ビーム無効化", msg_mode: ref "");
 //                    }
 //                }
 
-//                string argmain_situation3 = "ビーム無効化";
-//                string argmain_situation4 = "ビーム無効化";
-//                if (t.IsAnimationDefined(ref argmain_situation3, ref fname))
+//                if (t.IsAnimationDefined(ref "ビーム無効化", ref fname))
 //                {
-//                    string argmain_situation1 = "ビーム無効化";
-//                    t.PlayAnimation(ref argmain_situation1, ref fname);
+//                    t.PlayAnimation(ref "ビーム無効化", ref fname);
 //                }
-//                else if (t.IsSpecialEffectDefined(ref argmain_situation4, ref fname))
+//                else if (t.IsSpecialEffectDefined(ref "ビーム無効化", ref fname))
 //                {
-//                    string argmain_situation2 = "ビーム無効化";
-//                    t.SpecialEffect(ref argmain_situation2, ref fname);
+//                    t.SpecialEffect(ref "ビーム無効化", ref fname);
 //                }
 //                else if (dmg < 0)
 //                {
@@ -5888,38 +5614,27 @@
 //                }
 //                else if (SRC.BattleAnimation)
 //                {
-//                    string arganame = "ビームコート発動 - " + fname;
-//                    ShowAnimation(ref arganame);
+//                    ShowAnimation(ref "ビームコート発動 - " + fname);
 //                }
 //                else if (!Sound.IsWavePlayed)
 //                {
-//                    string argwave_name = "BeamCoat.wav";
-//                    Sound.PlayWave(ref argwave_name);
+//                    Sound.PlayWave(ref "BeamCoat.wav");
 //                }
 
 //                bool localIsSpecialEffectDefined() { string argmain_situation = wname + "(攻撃無効化)"; string argsub_situation = ""; var ret = u.IsSpecialEffectDefined(ref argmain_situation, sub_situation: ref argsub_situation); return ret; }
 
-//                string argmain_situation7 = wname + "(攻撃無効化)";
-//                string argsub_situation2 = "";
-//                if (u.IsAnimationDefined(ref argmain_situation7, sub_situation: ref argsub_situation2))
+//                if (u.IsAnimationDefined(ref wname + "(攻撃無効化)", sub_situation: ref ""))
 //                {
-//                    string argmain_situation5 = wname + "(攻撃無効化)";
-//                    string argsub_situation = "";
-//                    u.PlayAnimation(ref argmain_situation5, sub_situation: ref argsub_situation);
+//                    u.PlayAnimation(ref wname + "(攻撃無効化)", sub_situation: ref "");
 //                }
 //                else if (localIsSpecialEffectDefined())
 //                {
-//                    string argmain_situation6 = wname + "(攻撃無効化)";
-//                    string argsub_situation1 = "";
-//                    u.SpecialEffect(ref argmain_situation6, sub_situation: ref argsub_situation1);
+//                    u.SpecialEffect(ref wname + "(攻撃無効化)", sub_situation: ref "");
 //                }
 
-//                string argmain_situation9 = "ビーム無効化";
-//                if (t.IsSysMessageDefined(ref argmain_situation9, ref fname))
+//                if (t.IsSysMessageDefined(ref "ビーム無効化", ref fname))
 //                {
-//                    string argmain_situation8 = "ビーム無効化";
-//                    string argadd_msg = "";
-//                    t.SysMessage(ref argmain_situation8, ref fname, add_msg: ref argadd_msg);
+//                    t.SysMessage(ref "ビーム無効化", ref fname, add_msg: ref "");
 //                }
 //                else if (string.IsNullOrEmpty(fname))
 //                {
@@ -5945,33 +5660,24 @@
 //            {
 //                if (!be_quiet)
 //                {
-//                    string argmain_situation10 = "攻撃無効化(" + fname + ")";
-//                    if (t.IsMessageDefined(ref argmain_situation10))
+//                    if (t.IsMessageDefined(ref "攻撃無効化(" + fname + ")"))
 //                    {
-//                        string argSituation2 = "攻撃無効化(" + fname + ")";
-//                        string argmsg_mode2 = "";
-//                        t.PilotMessage(ref argSituation2, msg_mode: ref argmsg_mode2);
+//                        t.PilotMessage(ref "攻撃無効化(" + fname + ")", msg_mode: ref "");
 //                    }
 //                    else
 //                    {
-//                        string argSituation3 = "攻撃無効化";
-//                        string argmsg_mode3 = "";
-//                        t.PilotMessage(ref argSituation3, msg_mode: ref argmsg_mode3);
+//                        t.PilotMessage(ref "攻撃無効化", msg_mode: ref "");
 //                    }
 //                }
 
-//                string argmain_situation13 = "攻撃無効化";
-//                string argmain_situation14 = "攻撃無効化";
-//                if (t.IsAnimationDefined(ref argmain_situation13, ref fname))
+//                if (t.IsAnimationDefined(ref "攻撃無効化", ref fname))
 //                {
-//                    string argmain_situation11 = "攻撃無効化";
-//                    t.PlayAnimation(ref argmain_situation11, ref fname);
+//                    t.PlayAnimation(ref "攻撃無効化", ref fname);
 //                    defined = true;
 //                }
-//                else if (t.IsSpecialEffectDefined(ref argmain_situation14, ref fname))
+//                else if (t.IsSpecialEffectDefined(ref "攻撃無効化", ref fname))
 //                {
-//                    string argmain_situation12 = "攻撃無効化";
-//                    t.SpecialEffect(ref argmain_situation12, ref fname);
+//                    t.SpecialEffect(ref "攻撃無効化", ref fname);
 //                    defined = true;
 //                }
 //                else if (dmg < 0)
@@ -5985,18 +5691,15 @@
 //                    {
 //                        if (fname == "バリア")
 //                        {
-//                            string arganame1 = "バリア発動";
-//                            ShowAnimation(ref arganame1);
+//                            ShowAnimation(ref "バリア発動");
 //                        }
 //                        else if (string.IsNullOrEmpty(fname))
 //                        {
-//                            string arganame3 = "バリア発動 - 攻撃無効化";
-//                            ShowAnimation(ref arganame3);
+//                            ShowAnimation(ref "バリア発動 - 攻撃無効化");
 //                        }
 //                        else
 //                        {
-//                            string arganame2 = "バリア発動 - " + fname;
-//                            ShowAnimation(ref arganame2);
+//                            ShowAnimation(ref "バリア発動 - " + fname);
 //                        }
 
 //                        defined = true;
@@ -6005,20 +5708,14 @@
 
 //                bool localIsSpecialEffectDefined1() { string argmain_situation = wname + "(攻撃無効化)"; string argsub_situation = ""; var ret = u.IsSpecialEffectDefined(ref argmain_situation, sub_situation: ref argsub_situation); return ret; }
 
-//                string argmain_situation17 = wname + "(攻撃無効化)";
-//                string argsub_situation5 = "";
-//                if (u.IsAnimationDefined(ref argmain_situation17, sub_situation: ref argsub_situation5))
+//                if (u.IsAnimationDefined(ref wname + "(攻撃無効化)", sub_situation: ref ""))
 //                {
-//                    string argmain_situation15 = wname + "(攻撃無効化)";
-//                    string argsub_situation3 = "";
-//                    u.PlayAnimation(ref argmain_situation15, sub_situation: ref argsub_situation3);
+//                    u.PlayAnimation(ref wname + "(攻撃無効化)", sub_situation: ref "");
 //                    defined = true;
 //                }
 //                else if (localIsSpecialEffectDefined1())
 //                {
-//                    string argmain_situation16 = wname + "(攻撃無効化)";
-//                    string argsub_situation4 = "";
-//                    u.SpecialEffect(ref argmain_situation16, sub_situation: ref argsub_situation4);
+//                    u.SpecialEffect(ref wname + "(攻撃無効化)", sub_situation: ref "");
 //                    defined = true;
 //                }
 
@@ -6027,12 +5724,9 @@
 //                    HitEffect(ref u, ref w, ref t);
 //                }
 
-//                string argmain_situation19 = "攻撃無効化";
-//                if (t.IsSysMessageDefined(ref argmain_situation19, ref fname))
+//                if (t.IsSysMessageDefined(ref "攻撃無効化", ref fname))
 //                {
-//                    string argmain_situation18 = "攻撃無効化";
-//                    string argadd_msg1 = "";
-//                    t.SysMessage(ref argmain_situation18, ref fname, add_msg: ref argadd_msg1);
+//                    t.SysMessage(ref "攻撃無効化", ref fname, add_msg: ref "");
 //                }
 //                else if (string.IsNullOrEmpty(fname))
 //                {

@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -86,17 +86,14 @@ namespace SRCCore.Pilots
         //                return default;
         //            }
 
-        //            object argIndex1 = uname;
-        //            u = SRC.UList.Item(argIndex1);
+        //            u = SRC.UList.Item(uname);
         //        }
 
         //        {
         //            var withBlock1 = u;
-        //            string argfname = "パイロット愛称";
-        //            if (withBlock1.IsFeatureAvailable(argfname))
+        //            if (withBlock1.IsFeatureAvailable("パイロット愛称"))
         //            {
-        //                object argIndex2 = "パイロット愛称";
-        //                NicknameRet = withBlock1.FeatureData(argIndex2);
+        //                NicknameRet = withBlock1.FeatureData("パイロット愛称");
         //                idx = (short)Strings.InStr(NicknameRet, "$(愛称)");
         //                if (idx > 0)
         //                {
@@ -110,12 +107,8 @@ namespace SRCCore.Pilots
         //    // Nickname()への呼び出しは無効化
         //    if (dont_call_unit_nickname)
         //    {
-        //        string args2 = "Nickname()";
-        //        string args3 = "";
-        //        GeneralLib.ReplaceString(NicknameRet, args2, args3);
-        //        string args21 = "nickname()";
-        //        string args31 = "";
-        //        GeneralLib.ReplaceString(NicknameRet, args21, args31);
+        //        GeneralLib.ReplaceString(NicknameRet, "Nickname()", "");
+        //        GeneralLib.ReplaceString(NicknameRet, "nickname()", "");
         //    }
 
         //    // 愛称内の式置換のため、デフォルトユニットを一時的に変更する
@@ -188,28 +181,23 @@ namespace SRCCore.Pilots
         //                    return default;
         //                }
 
-        //                object argIndex1 = uname;
-        //                u = SRC.UList.Item(argIndex1);
+        //                u = SRC.UList.Item(uname);
         //            }
 
         //            {
         //                var withBlock1 = u;
-        //                string argfname = "パイロット読み仮名";
-        //                string argfname1 = "パイロット愛称";
-        //                if (withBlock1.IsFeatureAvailable(argfname))
+        //                if (withBlock1.IsFeatureAvailable("パイロット読み仮名"))
         //                {
-        //                    object argIndex2 = "パイロット読み仮名";
-        //                    KanaNameRet = withBlock1.FeatureData(argIndex2);
+        //                    KanaNameRet = withBlock1.FeatureData("パイロット読み仮名");
         //                    idx = (short)Strings.InStr(KanaNameRet, "$(読み仮名)");
         //                    if (idx > 0)
         //                    {
         //                        KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + Data.KanaName + Strings.Mid(KanaNameRet, idx + 5);
         //                    }
         //                }
-        //                else if (withBlock1.IsFeatureAvailable(argfname1))
+        //                else if (withBlock1.IsFeatureAvailable("パイロット愛称"))
         //                {
-        //                    object argIndex3 = "パイロット愛称";
-        //                    KanaNameRet = withBlock1.FeatureData(argIndex3);
+        //                    KanaNameRet = withBlock1.FeatureData("パイロット愛称");
         //                    idx = (short)Strings.InStr(KanaNameRet, "$(愛称)");
         //                    if (idx > 0)
         //                    {
@@ -241,11 +229,9 @@ namespace SRCCore.Pilots
         //        {
         //            {
         //                var withBlock = Unit_Renamed;
-        //                string argfname = "性別";
-        //                if (withBlock.IsFeatureAvailable(argfname))
+        //                if (withBlock.IsFeatureAvailable("性別"))
         //                {
-        //                    object argIndex1 = "性別";
-        //                    SexRet = withBlock.FeatureData(argIndex1);
+        //                    SexRet = withBlock.FeatureData("性別");
         //                }
         //            }
         //        }
@@ -294,11 +280,9 @@ namespace SRCCore.Pilots
         //        {
         //            var withBlock = Unit_Renamed;
         //            // アイテム用特殊能力「性格変更」
-        //            string argfname = "性格変更";
-        //            if (withBlock.IsFeatureAvailable(argfname))
+        //            if (withBlock.IsFeatureAvailable("性格変更"))
         //            {
-        //                object argIndex1 = "性格変更";
-        //                PersonalityRet = withBlock.FeatureData(argIndex1);
+        //                PersonalityRet = withBlock.FeatureData("性格変更");
         //                return default;
         //            }
 
@@ -307,8 +291,7 @@ namespace SRCCore.Pilots
         //            {
         //                if (withBlock.CountPilot() > 0)
         //                {
-        //                    object argIndex2 = 1;
-        //                    if (ReferenceEquals(withBlock.Pilot(argIndex2), this))
+        //                    if (ReferenceEquals(withBlock.Pilot(1), this))
         //                    {
         //                        PersonalityRet = withBlock.MainPilot().Data.Personality;
         //                    }
@@ -383,23 +366,17 @@ namespace SRCCore.Pilots
         //                return default;
         //            }
 
-        //            object argIndex1 = uname;
-        //            u = SRC.UList.Item(argIndex1);
+        //            u = SRC.UList.Item(uname);
         //        }
 
-        //        object argIndex3 = "パイロット画像";
-        //        if (u.IsConditionSatisfied(argIndex3))
+        //        if (u.IsConditionSatisfied("パイロット画像"))
         //        {
-        //            object argIndex2 = "パイロット画像";
-        //            string arglist = u.ConditionData(argIndex2);
-        //            BitmapRet = GeneralLib.LIndex(arglist, 2);
+        //            BitmapRet = GeneralLib.LIndex(u.ConditionData(argIndex2), 2);
         //        }
 
-        //        string argfname = "パイロット画像";
-        //        if (u.IsFeatureAvailable(argfname))
+        //        if (u.IsFeatureAvailable("パイロット画像"))
         //        {
-        //            object argIndex4 = "パイロット画像";
-        //            BitmapRet = u.FeatureData(argIndex4);
+        //            BitmapRet = u.FeatureData("パイロット画像");
         //        }
         //    }
 
@@ -418,11 +395,9 @@ namespace SRCCore.Pilots
         //        MessageTypeRet = Name;
 
         //        // パイロット能力「メッセージ」
-        //        string argsname = "メッセージ";
-        //        if (IsSkillAvailable(argsname))
+        //        if (IsSkillAvailable("メッセージ"))
         //        {
-        //            object argIndex1 = "メッセージ";
-        //            MessageTypeRet = SkillData(argIndex1);
+        //            MessageTypeRet = SkillData("メッセージ");
         //        }
 
         //        // 能力コピーで変身した場合はメッセージもコピー元パイロットのものを使う
@@ -430,12 +405,9 @@ namespace SRCCore.Pilots
         //        {
         //            {
         //                var withBlock = Unit_Renamed;
-        //                object argIndex3 = "メッセージ";
-        //                if (withBlock.IsConditionSatisfied(argIndex3))
+        //                if (withBlock.IsConditionSatisfied("メッセージ"))
         //                {
-        //                    object argIndex2 = "メッセージ";
-        //                    string arglist = withBlock.ConditionData(argIndex2);
-        //                    MessageTypeRet = GeneralLib.LIndex(arglist, 2);
+        //                    MessageTypeRet = GeneralLib.LIndex(withBlock.ConditionData(argIndex2), 2);
         //                }
         //            }
         //        }
@@ -451,32 +423,21 @@ namespace SRCCore.Pilots
         //    get
         //    {
         //        short DefenseRet = default;
-        //        string argoname1 = "防御力成長";
-        //        string argoname2 = "防御力レベルアップ";
-        //        if (Expression.IsOptionDefined(argoname1) | Expression.IsOptionDefined(argoname2))
+        //        if (Expression.IsOptionDefined("防御力成長") | Expression.IsOptionDefined("防御力レベルアップ"))
         //        {
-        //            object argIndex1 = "耐久";
-        //            string argref_mode = "";
-        //            DefenseRet = (short)(100d + 5d * SkillLevel(argIndex1, ref_mode: argref_mode));
-        //            string argoname = "防御力低成長";
-        //            if (Expression.IsOptionDefined(argoname))
+        //            DefenseRet = (short)(100d + 5d * SkillLevel("耐久", ref_mode: ""));
+        //            if (Expression.IsOptionDefined("防御力低成長"))
         //            {
-        //                object argIndex2 = "防御成長";
-        //                string argref_mode1 = "";
-        //                DefenseRet = (short)(DefenseRet + (long)(Level * (1d + 2d * SkillLevel(argIndex2, ref_mode: argref_mode1))) / 2L);
+        //                DefenseRet = (short)(DefenseRet + (long)(Level * (1d + 2d * SkillLevel("防御成長", ref_mode: ""))) / 2L);
         //            }
         //            else
         //            {
-        //                object argIndex3 = "防御成長";
-        //                string argref_mode2 = "";
-        //                DefenseRet = (short)(DefenseRet + Conversion.Int(Level * (1d + SkillLevel(argIndex3, ref_mode: argref_mode2))));
+        //                DefenseRet = (short)(DefenseRet + Conversion.Int(Level * (1d + SkillLevel("防御成長", ref_mode: ""))));
         //            }
         //        }
         //        else
         //        {
-        //            object argIndex4 = "耐久";
-        //            string argref_mode3 = "";
-        //            DefenseRet = (short)(100d + 5d * SkillLevel(argIndex4, ref_mode: argref_mode3));
+        //            DefenseRet = (short)(100d + 5d * SkillLevel("耐久", ref_mode: ""));
         //        }
 
         //        return DefenseRet;

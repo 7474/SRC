@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -101,8 +101,7 @@ namespace SRCCore.Units
             else
             {
                 // TODO Impl
-                //string argmsg = "ユニットデータ「" + uname + "」が見つかりません";
-                //GUI.ErrorMessage(argmsg);
+                //GUI.ErrorMessage("ユニットデータ「" + uname + "」が見つかりません");
             }
             return null;
         }
@@ -139,14 +138,12 @@ namespace SRCCore.Units
             //    var loopTo = CountFeature();
             //    for (i = 1; i <= loopTo; i++)
             //    {
-            //        object argIndex1 = i;
-            //        fname = Feature(argIndex1);
+            //        fname = Feature(i);
             //        switch (fname ?? "")
             //        {
             //            case "変形":
             //                {
-            //                    object argIndex2 = fname;
-            //                    fdata = FeatureData(argIndex2);
+            //                    fdata = FeatureData(fname);
             //                    n = (n + GeneralLib.LLength(fdata) - 1);
             //                    Array.Resize(uarray, n + 1);
             //                    var loopTo1 = (GeneralLib.LLength(fdata) - 1);
@@ -158,8 +155,7 @@ namespace SRCCore.Units
             //            case "換装":
             //            case "他形態":
             //                {
-            //                    object argIndex3 = fname;
-            //                    fdata = FeatureData(argIndex3);
+            //                    fdata = FeatureData(fname);
             //                    n = (n + GeneralLib.LLength(fdata));
             //                    Array.Resize(uarray, n + 1);
             //                    var loopTo2 = GeneralLib.LLength(fdata);
@@ -172,8 +168,7 @@ namespace SRCCore.Units
             //            case "パーツ分離":
             //            case "変形技":
             //                {
-            //                    object argIndex4 = fname;
-            //                    fdata = FeatureData(argIndex4);
+            //                    fdata = FeatureData(fname);
             //                    n = (n + 1);
             //                    Array.Resize(uarray, n + 1);
             //                    uarray[n] = GeneralLib.LIndex(fdata, 2);
@@ -183,8 +178,7 @@ namespace SRCCore.Units
             //            case "ノーマルモード":
             //            case "パーツ合体":
             //                {
-            //                    object argIndex5 = fname;
-            //                    fdata = FeatureData(argIndex5);
+            //                    fdata = FeatureData(fname);
             //                    n = (n + 1);
             //                    Array.Resize(uarray, n + 1);
             //                    uarray[n] = GeneralLib.LIndex(fdata, 1);
@@ -197,17 +191,15 @@ namespace SRCCore.Units
             //    var loopTo3 = CountOtherForm();
             //    for (i = 1; i <= loopTo3; i++)
             //    {
-            //        object argIndex8 = i;
             //        {
-            //            var withBlock = OtherForm(argIndex8);
+            //            var withBlock = OtherForm(i);
             //            if (withBlock.Status_Renamed == "他形態")
             //            {
             //                j = 1;
             //                while (j <= withBlock.CountOtherForm())
             //                {
-            //                    object argIndex6 = j;
             //                    {
-            //                        var withBlock1 = withBlock.OtherForm(argIndex6);
+            //                        var withBlock1 = withBlock.OtherForm(j);
             //                        var loopTo4 = n;
             //                        for (k = 1; k <= loopTo4; k++)
             //                        {
@@ -220,8 +212,7 @@ namespace SRCCore.Units
 
             //                    if (k > n)
             //                    {
-            //                        object argIndex7 = j;
-            //                        withBlock.DeleteOtherForm(argIndex7);
+            //                        withBlock.DeleteOtherForm(j);
             //                    }
             //                    else
             //                    {
@@ -236,9 +227,8 @@ namespace SRCCore.Units
             //    i = 1;
             //    while (i <= CountOtherForm())
             //    {
-            //        object argIndex9 = i;
             //        {
-            //            var withBlock2 = OtherForm(argIndex9);
+            //            var withBlock2 = OtherForm(i);
             //            var loopTo5 = n;
             //            for (j = 1; j <= loopTo5; j++)
             //            {
@@ -254,8 +244,7 @@ namespace SRCCore.Units
             //            Unit localOtherForm() { object argIndex1 = i; var ret = OtherForm(argIndex1); return ret; }
 
             //            localOtherForm().Status_Renamed = "破棄";
-            //            object argIndex10 = i;
-            //            DeleteOtherForm(argIndex10);
+            //            DeleteOtherForm(i);
             //        }
             //        else
             //        {

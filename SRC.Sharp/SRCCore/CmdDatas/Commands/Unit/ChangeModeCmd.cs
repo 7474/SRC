@@ -1,4 +1,4 @@
-﻿using SRCCore.Events;
+using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Units;
 using SRCCore.VB;

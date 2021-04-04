@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -96,8 +96,7 @@ namespace SRCCore.Units
         //                    if (!IsDefense())
         //                    {
         //                        Array.Resize(situations, 3);
-        //                        string argattr = "格闘系";
-        //                        if (IsWeaponClassifiedAs(w, argattr))
+        //                        if (IsWeaponClassifiedAs(w, "格闘系"))
         //                        {
         //                            situations[2] = "格闘";
         //                        }
@@ -111,8 +110,7 @@ namespace SRCCore.Units
         //                        Array.Resize(situations, 4);
         //                        situations[1] = Situation + "(反撃)";
         //                        situations[2] = Situation;
-        //                        string argattr2 = "格闘系";
-        //                        if (IsWeaponClassifiedAs(w, argattr2))
+        //                        if (IsWeaponClassifiedAs(w, "格闘系"))
         //                        {
         //                            situations[3] = "格闘";
         //                        }
@@ -126,8 +124,7 @@ namespace SRCCore.Units
         //                        Array.Resize(situations, 5);
         //                        situations[1] = Situation + "(反撃)";
         //                        situations[2] = Situation;
-        //                        string argattr1 = "格闘系";
-        //                        if (IsWeaponClassifiedAs(w, argattr1))
+        //                        if (IsWeaponClassifiedAs(w, "格闘系"))
         //                        {
         //                            situations[3] = "格闘(反撃)";
         //                            situations[4] = "格闘";
@@ -149,8 +146,7 @@ namespace SRCCore.Units
         //                    // サブシチュエーション付きの攻撃メッセージ
 
         //                    // 武器番号を検索
-        //                    string argstr2 = "(";
-        //                    wname = Strings.Left(Situation, GeneralLib.InStr2(Situation, argstr2) - 1);
+        //                    wname = Strings.Left(Situation, GeneralLib.InStr2(Situation, "(") - 1);
         //                    var loopTo1 = CountWeapon();
         //                    for (w = 1; w <= loopTo1; w++)
         //                    {
@@ -166,16 +162,13 @@ namespace SRCCore.Units
         //                    if (!IsDefense())
         //                    {
         //                        Array.Resize(situations, 3);
-        //                        string argattr3 = "格闘系";
-        //                        if (IsWeaponClassifiedAs(w, argattr3))
+        //                        if (IsWeaponClassifiedAs(w, "格闘系"))
         //                        {
-        //                            string argstr21 = "(";
-        //                            situations[2] = "格闘" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, argstr21));
+        //                            situations[2] = "格闘" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, "("));
         //                        }
         //                        else
         //                        {
-        //                            string argstr22 = "(";
-        //                            situations[2] = "射撃" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, argstr22));
+        //                            situations[2] = "射撃" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, "("));
         //                        }
         //                    }
         //                    else if (msg_mode == "カウンター")
@@ -183,16 +176,13 @@ namespace SRCCore.Units
         //                        Array.Resize(situations, 4);
         //                        situations[1] = Situation + "(反撃)";
         //                        situations[2] = Situation;
-        //                        string argattr5 = "格闘系";
-        //                        if (IsWeaponClassifiedAs(w, argattr5))
+        //                        if (IsWeaponClassifiedAs(w, "格闘系"))
         //                        {
-        //                            string argstr27 = "(";
-        //                            situations[3] = "格闘" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, argstr27));
+        //                            situations[3] = "格闘" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, "("));
         //                        }
         //                        else
         //                        {
-        //                            string argstr28 = "(";
-        //                            situations[3] = "射撃" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, argstr28));
+        //                            situations[3] = "射撃" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, "("));
         //                        }
         //                    }
         //                    else
@@ -200,20 +190,15 @@ namespace SRCCore.Units
         //                        Array.Resize(situations, 5);
         //                        situations[1] = Situation + "(反撃)";
         //                        situations[2] = Situation;
-        //                        string argattr4 = "格闘系";
-        //                        if (IsWeaponClassifiedAs(w, argattr4))
+        //                        if (IsWeaponClassifiedAs(w, "格闘系"))
         //                        {
-        //                            string argstr23 = "(";
-        //                            situations[3] = "格闘" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, argstr23)) + "(反撃)";
-        //                            string argstr24 = "(";
-        //                            situations[4] = "格闘" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, argstr24));
+        //                            situations[3] = "格闘" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, "(")) + "(反撃)";
+        //                            situations[4] = "格闘" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, "("));
         //                        }
         //                        else
         //                        {
-        //                            string argstr25 = "(";
-        //                            situations[3] = "射撃" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, argstr25)) + "(反撃)";
-        //                            string argstr26 = "(";
-        //                            situations[4] = "射撃" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, argstr26));
+        //                            situations[3] = "射撃" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, "(")) + "(反撃)";
+        //                            situations[4] = "射撃" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, "("));
         //                        }
         //                    }
         //                }
@@ -301,18 +286,13 @@ namespace SRCCore.Units
         //    // そちらを使用。
         //    if (string.IsNullOrEmpty(selected_msg))
         //    {
-        //        object argIndex1 = "石化";
-        //        object argIndex2 = "凍結";
-        //        object argIndex3 = "麻痺";
-        //        if (IsConditionSatisfied(argIndex1) | IsConditionSatisfied(argIndex2) | IsConditionSatisfied(argIndex3))
+        //        if (IsConditionSatisfied("石化") | IsConditionSatisfied("凍結") | IsConditionSatisfied("麻痺"))
         //        {
         //            // 意識不明
         //            return;
         //        }
 
-        //        object argIndex6 = "沈黙";
-        //        object argIndex7 = "憑依";
-        //        if (IsConditionSatisfied(argIndex6) | IsConditionSatisfied(argIndex7))
+        //        if (IsConditionSatisfied("沈黙") | IsConditionSatisfied("憑依"))
         //        {
         //            // 無言
         //            if (Strings.InStr(Situation, "(") == 0)
@@ -323,12 +303,9 @@ namespace SRCCore.Units
         //                    case "ダメージ大":
         //                    case "破壊":
         //                        {
-        //                            object argIndex4 = MainPilot().Name + "(ダメージ)";
-        //                            if (SRC.NPDList.IsDefined(argIndex4))
+        //                            if (SRC.NPDList.IsDefined(MainPilot().Name + "(ダメージ)"))
         //                            {
-        //                                string argpname = MainPilot().Name + "(ダメージ)";
-        //                                string argmsg_mode = "";
-        //                                GUI.DisplayBattleMessage(argpname, "…………！", msg_mode: argmsg_mode);
+        //                                GUI.DisplayBattleMessage(MainPilot().Name + "(ダメージ)", "…………！", msg_mode: "");
         //                                return;
         //                            }
 
@@ -343,41 +320,33 @@ namespace SRCCore.Units
 
         //                if (!string.IsNullOrEmpty(wname))
         //                {
-        //                    object argIndex5 = MainPilot().Name + "(攻撃)";
-        //                    if (SRC.NPDList.IsDefined(argIndex5))
+        //                    if (SRC.NPDList.IsDefined(MainPilot().Name + "(攻撃)"))
         //                    {
-        //                        string argpname1 = MainPilot().Name + "(攻撃)";
-        //                        string argmsg_mode1 = "";
-        //                        GUI.DisplayBattleMessage(argpname1, "…………！", msg_mode: argmsg_mode1);
+        //                        GUI.DisplayBattleMessage(MainPilot().Name + "(攻撃)", "…………！", msg_mode: "");
         //                        return;
         //                    }
         //                }
 
-        //                string argmsg_mode2 = "";
-        //                GUI.DisplayBattleMessage(MainPilot().ID, "…………", msg_mode: argmsg_mode2);
+        //                GUI.DisplayBattleMessage(MainPilot().ID, "…………", msg_mode: "");
         //            }
 
         //            return;
         //        }
 
-        //        object argIndex8 = "睡眠";
-        //        if (IsConditionSatisfied(argIndex8))
+        //        if (IsConditionSatisfied("睡眠"))
         //        {
         //            // 寝言
         //            if (Strings.InStr(Situation, "(") == 0)
         //            {
-        //                string argmsg_mode3 = "";
-        //                GUI.DisplayBattleMessage(MainPilot().ID, "ＺＺＺ……", msg_mode: argmsg_mode3);
+        //                GUI.DisplayBattleMessage(MainPilot().ID, "ＺＺＺ……", msg_mode: "");
         //            }
 
         //            return;
         //        }
 
-        //        object argIndex10 = "恐怖";
-        //        if (IsConditionSatisfied(argIndex10))
+        //        if (IsConditionSatisfied("恐怖"))
         //        {
-        //            string argmain_situation = "恐怖";
-        //            if (IsMessageDefined(argmain_situation))
+        //            if (IsMessageDefined("恐怖"))
         //            {
         //                // 恐怖状態用メッセージが定義されていればそちらを使う
         //                situations = new string[2];
@@ -460,23 +429,17 @@ namespace SRCCore.Units
         //                    {
         //                        bool localIsDefined() { object argIndex1 = MainPilot().Name + "(ダメージ)"; var ret = SRC.NPDList.IsDefined(argIndex1); return ret; }
 
-        //                        object argIndex9 = MainPilot().Name + "(泣き)";
-        //                        if (SRC.NPDList.IsDefined(argIndex9))
+        //                        if (SRC.NPDList.IsDefined(MainPilot().Name + "(泣き)"))
         //                        {
-        //                            string argpname2 = MainPilot().Name + "(泣き)";
-        //                            string argmsg_mode4 = "";
-        //                            GUI.DisplayBattleMessage(argpname2, msg, msg_mode: argmsg_mode4);
+        //                            GUI.DisplayBattleMessage(MainPilot().Name + "(泣き)", msg, msg_mode: "");
         //                        }
         //                        else if (localIsDefined())
         //                        {
-        //                            string argpname3 = MainPilot().Name + "(ダメージ)";
-        //                            string argmsg_mode6 = "";
-        //                            GUI.DisplayBattleMessage(argpname3, msg, msg_mode: argmsg_mode6);
+        //                            GUI.DisplayBattleMessage(MainPilot().Name + "(ダメージ)", msg, msg_mode: "");
         //                        }
         //                        else
         //                        {
-        //                            string argmsg_mode5 = "";
-        //                            GUI.DisplayBattleMessage(MainPilot().ID, msg, msg_mode: argmsg_mode5);
+        //                            GUI.DisplayBattleMessage(MainPilot().ID, msg, msg_mode: "");
         //                        }
         //                    }
         //                }
@@ -485,11 +448,9 @@ namespace SRCCore.Units
         //            }
         //        }
 
-        //        object argIndex11 = "混乱";
-        //        if (IsConditionSatisfied(argIndex11))
+        //        if (IsConditionSatisfied("混乱"))
         //        {
-        //            string argmain_situation1 = "混乱";
-        //            if (IsMessageDefined(argmain_situation1))
+        //            if (IsMessageDefined("混乱"))
         //            {
         //                // 混乱状態用メッセージが定義されていればそちらを使う
         //                situations = new string[2];
@@ -503,12 +464,10 @@ namespace SRCCore.Units
         //    pnames[1] = MainPilot().MessageType;
         //    pnames[2] = MainPilot().MessageType;
         //    pnames[3] = MainPilot().MessageType;
-        //    string argfname = "追加パイロット";
-        //    if (IsFeatureAvailable(argfname))
+        //    if (IsFeatureAvailable("追加パイロット"))
         //    {
         //        Array.Resize(pnames, 5);
-        //        object argIndex12 = 1;
-        //        pnames[4] = Pilot(argIndex12).MessageType;
+        //        pnames[4] = Pilot(1).MessageType;
         //    }
 
         //    var loopTo3 = CountPilot();
@@ -530,8 +489,7 @@ namespace SRCCore.Units
         //        pnames[1] = pnames[1] + " " + localSupport().MessageType;
         //    }
 
-        //    string argfname1 = "追加サポート";
-        //    if (IsFeatureAvailable(argfname1))
+        //    if (IsFeatureAvailable("追加サポート"))
         //    {
         //        pnames[1] = pnames[1] + " " + AdditionalSupport().MessageType;
         //    }
@@ -556,13 +514,11 @@ namespace SRCCore.Units
         //        }
 
         //        var tmp1 = pnames;
-        //        object argIndex14 = tmp1[i];
-        //        if (SRC.DDList.IsDefined(argIndex14))
+        //        if (SRC.DDList.IsDefined(tmp1[i]))
         //        {
         //            var tmp = pnames;
-        //            object argIndex13 = tmp[i];
         //            {
-        //                var withBlock2 = SRC.DDList.Item(argIndex13);
+        //                var withBlock2 = SRC.DDList.Item(tmp[i]);
         //                if (!string.IsNullOrEmpty(selected_msg))
         //                {
         //                    // SelectMessageで選択されたメッセージを検索
@@ -575,15 +531,13 @@ namespace SRCCore.Units
         //                            k = (k + 1);
         //                            if ((SrcFormatter.Format(k) ?? "") == (selected_msg ?? ""))
         //                            {
-        //                                var argdd = withBlock2.Dialog(j);
-        //                                PlayDialog(argdd, wname);
+        //                                PlayDialog(withBlock2.Dialog(j), wname);
         //                                return;
         //                            }
         //                        }
         //                        else if ((withBlock2.Situation(j) ?? "") == (selected_msg ?? ""))
         //                        {
-        //                            var argdd1 = withBlock2.Dialog(j);
-        //                            PlayDialog(argdd1, wname);
+        //                            PlayDialog(withBlock2.Dialog(j), wname);
         //                            return;
         //                        }
         //                    }
@@ -593,8 +547,7 @@ namespace SRCCore.Units
         //                    var loopTo7 = Information.UBound(situations);
         //                    for (j = 1; j <= loopTo7; j++)
         //                    {
-        //                        var argu = this;
-        //                        dd = withBlock2.SelectDialog(situations[j], argu);
+        //                        dd = withBlock2.SelectDialog(situations[j], this);
         //                        if (dd is object)
         //                        {
         //                            PlayDialog(dd, wname);
@@ -607,8 +560,7 @@ namespace SRCCore.Units
         //    }
 
         //    // ゲッターのようなユニットは必ずメインパイロットを使ってメッセージを表示
-        //    object argIndex15 = 1;
-        //    if (Data.PilotNum > 0 & ReferenceEquals(MainPilot(), Pilot(argIndex15)) & (Situation ?? "") != (Commands.SelectedSpecialPower ?? ""))
+        //    if (Data.PilotNum > 0 & ReferenceEquals(MainPilot(), Pilot(1)) & (Situation ?? "") != (Commands.SelectedSpecialPower ?? ""))
         //    {
         //        i = GeneralLib.Dice(CountPilot() + CountSupport());
         //    }
@@ -676,15 +628,13 @@ namespace SRCCore.Units
         //    // メッセージを表示
         //    if ((Situation ?? "") == (Commands.SelectedSpecialPower ?? ""))
         //    {
-        //        object argIndex16 = Commands.SelectedPilot.MessageType;
-        //        md = SRC.MDList.Item(argIndex16);
+        //        md = SRC.MDList.Item(Commands.SelectedPilot.MessageType);
         //        Commands.SelectedPilot.MessageType = Conversions.ToString(argIndex16);
         //        p = Commands.SelectedPilot;
         //    }
         //    else if (i == 1)
         //    {
-        //        object argIndex19 = MainPilot().MessageType;
-        //        md = SRC.MDList.Item(argIndex19);
+        //        md = SRC.MDList.Item(MainPilot().MessageType);
         //        MainPilot().MessageType = Conversions.ToString(argIndex19);
         //        p = MainPilot();
         //        if (md is object)
@@ -692,8 +642,7 @@ namespace SRCCore.Units
         //            var loopTo8 = Information.UBound(situations);
         //            for (j = 1; j <= loopTo8; j++)
         //            {
-        //                var argu1 = this;
-        //                if (Strings.Len(md.SelectMessage(situations[j], argu1)) > 0)
+        //                if (Strings.Len(md.SelectMessage(situations[j], this)) > 0)
         //                {
         //                    break;
         //                }
@@ -701,33 +650,26 @@ namespace SRCCore.Units
         //        }
         //        else
         //        {
-        //            object argIndex20 = 1;
-        //            object argIndex21 = Pilot(argIndex20).MessageType;
-        //            md = SRC.MDList.Item(argIndex21);
+        //            md = SRC.MDList.Item(Pilot(1).MessageType);
         //            Pilot(argIndex20).MessageType = Conversions.ToString(argIndex21);
-        //            object argIndex22 = 1;
-        //            p = Pilot(argIndex22);
+        //            p = Pilot(1);
         //        }
         //    }
         //    else if (i <= CountPilot())
         //    {
         //        Pilot localPilot3() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
 
-        //        object argIndex23 = localPilot3().MessageType;
-        //        md = SRC.MDList.Item(argIndex23);
+        //        md = SRC.MDList.Item(localPilot3().MessageType);
         //        localPilot3().MessageType = Conversions.ToString(argIndex23);
-        //        object argIndex24 = i;
-        //        p = Pilot(argIndex24);
+        //        p = Pilot(i);
         //    }
         //    else
         //    {
         //        Pilot localSupport2() { object argIndex1 = i - CountPilot(); var ret = Support(argIndex1); return ret; }
 
-        //        object argIndex17 = localSupport2().MessageType;
-        //        md = SRC.MDList.Item(argIndex17);
+        //        md = SRC.MDList.Item(localSupport2().MessageType);
         //        localSupport2().MessageType = Conversions.ToString(argIndex17);
-        //        object argIndex18 = i - CountPilot();
-        //        p = Support(argIndex18);
+        //        p = Support(i - CountPilot());
         //    }
 
         //    // メッセージデータが見つからない場合は他のパイロットで探しなおす
@@ -756,15 +698,13 @@ namespace SRCCore.Units
         //                k = (k + 1);
         //                if ((SrcFormatter.Format(k) ?? "") == (selected_msg ?? ""))
         //                {
-        //                    string argmsg = md.Message(j);
-        //                    PlayMessage(p, argmsg, wname);
+        //                    PlayMessage(p, md.Message(j), wname);
         //                    return;
         //                }
         //            }
         //            else if ((md.Situation(j) ?? "") == (selected_msg ?? ""))
         //            {
-        //                string argmsg1 = md.Message(j);
-        //                PlayMessage(p, argmsg1, wname);
+        //                PlayMessage(p, md.Message(j), wname);
         //                return;
         //            }
         //        }
@@ -775,8 +715,7 @@ namespace SRCCore.Units
         //        var loopTo10 = Information.UBound(situations);
         //        for (j = 1; j <= loopTo10; j++)
         //        {
-        //            var argu2 = this;
-        //            msg = md.SelectMessage(situations[j], argu2);
+        //            msg = md.SelectMessage(situations[j], this);
         //            if (!string.IsNullOrEmpty(msg))
         //            {
         //                PlayMessage(p, msg, wname);
@@ -799,13 +738,11 @@ namespace SRCCore.Units
         //    {
         //        if (!string.IsNullOrEmpty(selected_pilot))
         //        {
-        //            string argmsg_mode7 = "";
-        //            GUI.DisplayBattleMessage(selected_pilot, selected_msg, msg_mode: argmsg_mode7);
+        //            GUI.DisplayBattleMessage(selected_pilot, selected_msg, msg_mode: "");
         //        }
         //        else
         //        {
-        //            string argmsg_mode8 = "";
-        //            GUI.DisplayBattleMessage(MainPilot().ID, selected_msg, msg_mode: argmsg_mode8);
+        //            GUI.DisplayBattleMessage(MainPilot().ID, selected_msg, msg_mode: "");
         //        }
         //    }
         }
@@ -1011,26 +948,20 @@ namespace SRCCore.Units
             //    // メッセージを表示
             //    if ((dd.Name(i) ?? "") == (MainPilot().Name ?? ""))
             //    {
-            //        string argmsg_mode = "";
-            //        GUI.DisplayBattleMessage(MainPilot().ID, msg, msg_mode: argmsg_mode);
+            //        GUI.DisplayBattleMessage(MainPilot().ID, msg, msg_mode: "");
             //    }
             //    else if (Strings.Left(dd.Name(i), 1) == "@")
             //    {
-            //        string argpname1 = Strings.Mid(dd.Name(i), 2);
-            //        string argmsg_mode2 = "";
-            //        GUI.DisplayBattleMessage(argpname1, msg, msg_mode: argmsg_mode2);
+            //        GUI.DisplayBattleMessage(Strings.Mid(dd.Name(i), 2), msg, msg_mode: "");
             //    }
             //    else
             //    {
-            //        string argpname = dd.Name(i);
-            //        string argmsg_mode1 = "";
-            //        GUI.DisplayBattleMessage(argpname, msg, msg_mode: argmsg_mode1);
+            //        GUI.DisplayBattleMessage(dd.Name(i), msg, msg_mode: "");
             //    }
             //}
 
             //// カットインは消去しておく
-            //string argoname = "戦闘中画面初期化無効";
-            //if (!Expression.IsOptionDefined(argoname))
+            //if (!Expression.IsOptionDefined("戦闘中画面初期化無効"))
             //{
             //    if (GUI.IsPictureDrawn)
             //    {
@@ -1235,12 +1166,10 @@ namespace SRCCore.Units
             //}
 
             //// メッセージを表示
-            //string argmsg_mode = "";
-            //GUI.DisplayBattleMessage(p.ID, msg, msg_mode: argmsg_mode);
+            //GUI.DisplayBattleMessage(p.ID, msg, msg_mode: "");
 
             //// カットインは消去しておく
-            //string argoname = "戦闘中画面初期化無効";
-            //if (!Expression.IsOptionDefined(argoname))
+            //if (!Expression.IsOptionDefined("戦闘中画面初期化無効"))
             //{
             //    if (GUI.IsPictureDrawn)
             //    {
@@ -1263,28 +1192,20 @@ namespace SRCCore.Units
             //// しゃべれない場合
             //if (!ignore_condition)
             //{
-            //    object argIndex1 = "沈黙";
-            //    object argIndex2 = "憑依";
-            //    object argIndex3 = "石化";
-            //    object argIndex4 = "凍結";
-            //    object argIndex5 = "麻痺";
-            //    object argIndex6 = "睡眠";
-            //    if (IsConditionSatisfied(argIndex1) | IsConditionSatisfied(argIndex2) | IsConditionSatisfied(argIndex3) | IsConditionSatisfied(argIndex4) | IsConditionSatisfied(argIndex5) | IsConditionSatisfied(argIndex6))
+            //    if (IsConditionSatisfied("沈黙") | IsConditionSatisfied("憑依") | IsConditionSatisfied("石化") | IsConditionSatisfied("凍結") | IsConditionSatisfied("麻痺") | IsConditionSatisfied("睡眠"))
             //    {
             //        IsMessageDefinedRet = false;
             //        return IsMessageDefinedRet;
             //    }
 
             //    // 特殊状態用メッセージが定義されているか確認する場合を考慮
-            //    object argIndex7 = "恐怖";
-            //    if (IsConditionSatisfied(argIndex7) & main_situation != "恐怖")
+            //    if (IsConditionSatisfied("恐怖") & main_situation != "恐怖")
             //    {
             //        IsMessageDefinedRet = false;
             //        return IsMessageDefinedRet;
             //    }
 
-            //    object argIndex8 = "混乱";
-            //    if (IsConditionSatisfied(argIndex8) & main_situation != "混乱")
+            //    if (IsConditionSatisfied("混乱") & main_situation != "混乱")
             //    {
             //        IsMessageDefinedRet = false;
             //        return IsMessageDefinedRet;
@@ -1292,8 +1213,7 @@ namespace SRCCore.Units
             //}
 
             //// SetMessageコマンドでメッセージが設定されているか判定
-            //string argvname = "Message(" + MainPilot().ID + "," + main_situation + ")";
-            //if (Expression.IsLocalVariableDefined(argvname))
+            //if (Expression.IsLocalVariableDefined("Message(" + MainPilot().ID + "," + main_situation + ")"))
             //{
             //    IsMessageDefinedRet = true;
             //    return IsMessageDefinedRet;
@@ -1307,14 +1227,12 @@ namespace SRCCore.Units
             //    pnames[3] = withBlock.MessageType;
             //}
 
-            //object argIndex9 = 1;
-            //pnames[4] = Pilot(argIndex9).MessageType;
+            //pnames[4] = Pilot(1).MessageType;
             //var loopTo = CountPilot();
             //for (i = 2; i <= loopTo; i++)
             //{
-            //    object argIndex10 = i;
             //    {
-            //        var withBlock1 = Pilot(argIndex10);
+            //        var withBlock1 = Pilot(i);
             //        pnames[1] = pnames[1] + " " + withBlock1.MessageType;
             //        pnames[2] = pnames[2] + " " + withBlock1.MessageType;
             //    }
@@ -1328,8 +1246,7 @@ namespace SRCCore.Units
             //    pnames[1] = pnames[1] + " " + localSupport().MessageType;
             //}
 
-            //string argfname = "追加サポート";
-            //if (IsFeatureAvailable(argfname))
+            //if (IsFeatureAvailable("追加サポート"))
             //{
             //    pnames[1] = pnames[1] + " " + AdditionalSupport().MessageType;
             //}
@@ -1345,16 +1262,12 @@ namespace SRCCore.Units
             //for (i = 1; i <= 4; i++)
             //{
             //    var tmp1 = pnames;
-            //    object argIndex12 = tmp1[i];
-            //    if (SRC.DDList.IsDefined(argIndex12))
+            //    if (SRC.DDList.IsDefined(tmp1[i]))
             //    {
             //        var tmp = pnames;
-            //        object argIndex11 = tmp[i];
             //        {
-            //            var withBlock2 = SRC.DDList.Item(argIndex11);
-            //            var argu = this;
-            //            var argu1 = this;
-            //            if (withBlock2.SelectDialog(main_situation, argu1, ignore_condition) is object)
+            //            var withBlock2 = SRC.DDList.Item(tmp[i]);
+            //            if (withBlock2.SelectDialog(main_situation, this, ignore_condition) is object)
             //            {
             //                IsMessageDefinedRet = true;
             //                return IsMessageDefinedRet;
@@ -1374,8 +1287,7 @@ namespace SRCCore.Units
             //        {
             //            MessageData localItem() { object argIndex1 = withBlock3.MessageType; var ret = SRC.MDList.Item(argIndex1); withBlock3.MessageType = Conversions.ToString(argIndex1); return ret; }
 
-            //            var argu2 = this;
-            //            msg = localItem().SelectMessage(main_situation, argu2);
+            //            msg = localItem().SelectMessage(main_situation, this);
             //        }
             //    }
             //}
@@ -1389,24 +1301,21 @@ namespace SRCCore.Units
             //        {
             //            MessageData localItem1() { object argIndex1 = withBlock4.MessageType; var ret = SRC.MDList.Item(argIndex1); withBlock4.MessageType = Conversions.ToString(argIndex1); return ret; }
 
-            //            var argu3 = this;
-            //            msg = localItem1().SelectMessage(main_situation, argu3);
+            //            msg = localItem1().SelectMessage(main_situation, this);
             //        }
             //    }
 
             //    if (Strings.Len(msg) == 0)
             //    {
-            //        object argIndex13 = 1;
             //        {
-            //            var withBlock5 = Pilot(argIndex13);
+            //            var withBlock5 = Pilot(1);
             //            bool localIsDefined2() { object argIndex1 = withBlock5.MessageType; var ret = SRC.MDList.IsDefined(argIndex1); withBlock5.MessageType = Conversions.ToString(argIndex1); return ret; }
 
             //            if (localIsDefined2())
             //            {
             //                MessageData localItem2() { object argIndex1 = withBlock5.MessageType; var ret = SRC.MDList.Item(argIndex1); withBlock5.MessageType = Conversions.ToString(argIndex1); return ret; }
 
-            //                var argu4 = this;
-            //                msg = localItem2().SelectMessage(main_situation, argu4);
+            //                msg = localItem2().SelectMessage(main_situation, this);
             //            }
             //        }
             //    }
@@ -1450,18 +1359,14 @@ namespace SRCCore.Units
         //            for (i = 1; i <= loopTo; i++)
         //            {
         //                // 戦闘アニメ能力で指定された名称で検索
-        //                string argfname = "戦闘アニメ";
-        //                if (IsFeatureAvailable(argfname))
+        //                if (IsFeatureAvailable("戦闘アニメ"))
         //                {
-        //                    object argIndex1 = "戦闘アニメ";
-        //                    uname = FeatureData(argIndex1);
-        //                    object argIndex2 = uname;
-        //                    if (withBlock.IsDefined(argIndex2))
+        //                    uname = FeatureData("戦闘アニメ");
+        //                    if (withBlock.IsDefined(uname))
         //                    {
         //                        MessageData localItem() { object argIndex1 = uname; var ret = withBlock.Item(argIndex1); return ret; }
 
-        //                        var argu = this;
-        //                        msg = localItem().SelectMessage(situations[i], argu);
+        //                        msg = localItem().SelectMessage(situations[i], this);
         //                        if (Strings.Len(msg) > 0)
         //                        {
         //                            goto FoundMessage;
@@ -1476,8 +1381,7 @@ namespace SRCCore.Units
         //                {
         //                    MessageData localItem1() { object argIndex1 = Name; var ret = withBlock.Item(argIndex1); Name = Conversions.ToString(argIndex1); return ret; }
 
-        //                    var argu1 = this;
-        //                    msg = localItem1().SelectMessage(situations[i], argu1);
+        //                    msg = localItem1().SelectMessage(situations[i], this);
         //                    if (Strings.Len(msg) > 0)
         //                    {
         //                        goto FoundMessage;
@@ -1520,13 +1424,11 @@ namespace SRCCore.Units
         //                    uname = Strings.Left(uname, Strings.Len(uname) - 1);
         //                }
 
-        //                object argIndex3 = uname;
-        //                if (withBlock.IsDefined(argIndex3))
+        //                if (withBlock.IsDefined(uname))
         //                {
         //                    MessageData localItem2() { object argIndex1 = uname; var ret = withBlock.Item(argIndex1); return ret; }
 
-        //                    var argu2 = this;
-        //                    msg = localItem2().SelectMessage(situations[i], argu2);
+        //                    msg = localItem2().SelectMessage(situations[i], this);
         //                    if (Strings.Len(msg) > 0)
         //                    {
         //                        goto FoundMessage;
@@ -1535,13 +1437,11 @@ namespace SRCCore.Units
 
         //                // ユニットクラスで検索
         //                uclass = Class0;
-        //                object argIndex4 = uclass;
-        //                if (withBlock.IsDefined(argIndex4))
+        //                if (withBlock.IsDefined(uclass))
         //                {
         //                    MessageData localItem3() { object argIndex1 = uclass; var ret = withBlock.Item(argIndex1); return ret; }
 
-        //                    var argu3 = this;
-        //                    msg = localItem3().SelectMessage(situations[i], argu3);
+        //                    msg = localItem3().SelectMessage(situations[i], this);
         //                    if (Strings.Len(msg) > 0)
         //                    {
         //                        goto FoundMessage;
@@ -1549,12 +1449,9 @@ namespace SRCCore.Units
         //                }
 
         //                // 汎用
-        //                object argIndex6 = "汎用";
-        //                if (withBlock.IsDefined(argIndex6))
+        //                if (withBlock.IsDefined("汎用"))
         //                {
-        //                    object argIndex5 = "汎用";
-        //                    var argu4 = this;
-        //                    msg = withBlock.Item(argIndex5).SelectMessage(situations[i], argu4);
+        //                    msg = withBlock.Item("汎用").SelectMessage(situations[i], this);
         //                    if (Strings.Len(msg) > 0)
         //                    {
         //                        goto FoundMessage;
@@ -1572,18 +1469,14 @@ namespace SRCCore.Units
         //        for (i = 1; i <= loopTo1; i++)
         //        {
         //            // 戦闘アニメ能力で指定された名称で検索
-        //            string argfname1 = "戦闘アニメ";
-        //            if (IsFeatureAvailable(argfname1))
+        //            if (IsFeatureAvailable("戦闘アニメ"))
         //            {
-        //                object argIndex7 = "戦闘アニメ";
-        //                uname = FeatureData(argIndex7);
-        //                object argIndex8 = uname;
-        //                if (withBlock1.IsDefined(argIndex8))
+        //                uname = FeatureData("戦闘アニメ");
+        //                if (withBlock1.IsDefined(uname))
         //                {
         //                    MessageData localItem4() { object argIndex1 = uname; var ret = withBlock1.Item(argIndex1); return ret; }
 
-        //                    var argu5 = this;
-        //                    msg = localItem4().SelectMessage(situations[i], argu5);
+        //                    msg = localItem4().SelectMessage(situations[i], this);
         //                    if (Strings.Len(msg) > 0)
         //                    {
         //                        goto FoundMessage;
@@ -1598,8 +1491,7 @@ namespace SRCCore.Units
         //            {
         //                MessageData localItem5() { object argIndex1 = Name; var ret = withBlock1.Item(argIndex1); Name = Conversions.ToString(argIndex1); return ret; }
 
-        //                var argu6 = this;
-        //                msg = localItem5().SelectMessage(situations[i], argu6);
+        //                msg = localItem5().SelectMessage(situations[i], this);
         //                if (Strings.Len(msg) > 0)
         //                {
         //                    goto FoundMessage;
@@ -1642,13 +1534,11 @@ namespace SRCCore.Units
         //                uname = Strings.Left(uname, Strings.Len(uname) - 1);
         //            }
 
-        //            object argIndex9 = uname;
-        //            if (withBlock1.IsDefined(argIndex9))
+        //            if (withBlock1.IsDefined(uname))
         //            {
         //                MessageData localItem6() { object argIndex1 = uname; var ret = withBlock1.Item(argIndex1); return ret; }
 
-        //                var argu7 = this;
-        //                msg = localItem6().SelectMessage(situations[i], argu7);
+        //                msg = localItem6().SelectMessage(situations[i], this);
         //                if (Strings.Len(msg) > 0)
         //                {
         //                    goto FoundMessage;
@@ -1657,13 +1547,11 @@ namespace SRCCore.Units
 
         //            // ユニットクラスで検索
         //            uclass = Class0;
-        //            object argIndex10 = uclass;
-        //            if (withBlock1.IsDefined(argIndex10))
+        //            if (withBlock1.IsDefined(uclass))
         //            {
         //                MessageData localItem7() { object argIndex1 = uclass; var ret = withBlock1.Item(argIndex1); return ret; }
 
-        //                var argu8 = this;
-        //                msg = localItem7().SelectMessage(situations[i], argu8);
+        //                msg = localItem7().SelectMessage(situations[i], this);
         //                if (Strings.Len(msg) > 0)
         //                {
         //                    goto FoundMessage;
@@ -1671,12 +1559,9 @@ namespace SRCCore.Units
         //            }
 
         //            // 汎用
-        //            object argIndex12 = "汎用";
-        //            if (withBlock1.IsDefined(argIndex12))
+        //            if (withBlock1.IsDefined("汎用"))
         //            {
-        //                object argIndex11 = "汎用";
-        //                var argu9 = this;
-        //                msg = withBlock1.Item(argIndex11).SelectMessage(situations[i], argu9);
+        //                msg = withBlock1.Item("汎用").SelectMessage(situations[i], this);
         //                if (Strings.Len(msg) > 0)
         //                {
         //                    goto FoundMessage;
@@ -1692,18 +1577,14 @@ namespace SRCCore.Units
         //        for (i = 1; i <= loopTo2; i++)
         //        {
         //            // 特殊効果能力で指定された名称で検索
-        //            string argfname2 = "特殊効果";
-        //            if (IsFeatureAvailable(argfname2))
+        //            if (IsFeatureAvailable("特殊効果"))
         //            {
-        //                object argIndex13 = "特殊効果";
-        //                uname = FeatureData(argIndex13);
-        //                object argIndex14 = uname;
-        //                if (withBlock2.IsDefined(argIndex14))
+        //                uname = FeatureData("特殊効果");
+        //                if (withBlock2.IsDefined(uname))
         //                {
         //                    MessageData localItem8() { object argIndex1 = uname; var ret = withBlock2.Item(argIndex1); return ret; }
 
-        //                    var argu10 = this;
-        //                    msg = localItem8().SelectMessage(situations[i], argu10);
+        //                    msg = localItem8().SelectMessage(situations[i], this);
         //                    if (Strings.Len(msg) > 0)
         //                    {
         //                        goto FoundMessage;
@@ -1718,8 +1599,7 @@ namespace SRCCore.Units
         //            {
         //                MessageData localItem9() { object argIndex1 = Name; var ret = withBlock2.Item(argIndex1); Name = Conversions.ToString(argIndex1); return ret; }
 
-        //                var argu11 = this;
-        //                msg = localItem9().SelectMessage(situations[i], argu11);
+        //                msg = localItem9().SelectMessage(situations[i], this);
         //                if (Strings.Len(msg) > 0)
         //                {
         //                    goto FoundMessage;
@@ -1762,13 +1642,11 @@ namespace SRCCore.Units
         //                uname = Strings.Left(uname, Strings.Len(uname) - 1);
         //            }
 
-        //            object argIndex15 = uname;
-        //            if (withBlock2.IsDefined(argIndex15))
+        //            if (withBlock2.IsDefined(uname))
         //            {
         //                MessageData localItem10() { object argIndex1 = uname; var ret = withBlock2.Item(argIndex1); return ret; }
 
-        //                var argu12 = this;
-        //                msg = localItem10().SelectMessage(situations[i], argu12);
+        //                msg = localItem10().SelectMessage(situations[i], this);
         //                if (Strings.Len(msg) > 0)
         //                {
         //                    goto FoundMessage;
@@ -1777,13 +1655,11 @@ namespace SRCCore.Units
 
         //            // ユニットクラスで検索
         //            uclass = Class0;
-        //            object argIndex16 = uclass;
-        //            if (withBlock2.IsDefined(argIndex16))
+        //            if (withBlock2.IsDefined(uclass))
         //            {
         //                MessageData localItem11() { object argIndex1 = uclass; var ret = withBlock2.Item(argIndex1); return ret; }
 
-        //                var argu13 = this;
-        //                msg = localItem11().SelectMessage(situations[i], argu13);
+        //                msg = localItem11().SelectMessage(situations[i], this);
         //                if (Strings.Len(msg) > 0)
         //                {
         //                    goto FoundMessage;
@@ -1791,12 +1667,9 @@ namespace SRCCore.Units
         //            }
 
         //            // 汎用
-        //            object argIndex18 = "汎用";
-        //            if (withBlock2.IsDefined(argIndex18))
+        //            if (withBlock2.IsDefined("汎用"))
         //            {
-        //                object argIndex17 = "汎用";
-        //                var argu14 = this;
-        //                msg = withBlock2.Item(argIndex17).SelectMessage(situations[i], argu14);
+        //                msg = withBlock2.Item("汎用").SelectMessage(situations[i], this);
         //                if (Strings.Len(msg) > 0)
         //                {
         //                    goto FoundMessage;
@@ -2063,22 +1936,16 @@ namespace SRCCore.Units
 
         //    if (!My.MyProject.Forms.frmMessage.Visible)
         //    {
-        //        Unit argu15 = null;
-        //        Unit argu21 = null;
-        //        GUI.OpenMessageForm(u1: argu15, u2: argu21);
+        //        GUI.OpenMessageForm(u1: null, u2: null);
         //    }
 
         //    if (!string.IsNullOrEmpty(add_msg))
         //    {
-        //        string argpname = "-";
-        //        string argmsg_mode = "";
-        //        GUI.DisplayBattleMessage(argpname, msg + "." + add_msg, msg_mode: argmsg_mode);
+        //        GUI.DisplayBattleMessage("-", msg + "." + add_msg, msg_mode: "");
         //    }
         //    else
         //    {
-        //        string argpname1 = "-";
-        //        string argmsg_mode1 = "";
-        //        GUI.DisplayBattleMessage(argpname1, msg, msg_mode: argmsg_mode1);
+        //        GUI.DisplayBattleMessage("-", msg, msg_mode: "");
         //    }
         }
 
@@ -2112,18 +1979,14 @@ namespace SRCCore.Units
             //        for (i = 1; i <= loopTo; i++)
             //        {
             //            // 戦闘アニメ能力で指定された名称で検索
-            //            string argfname = "戦闘アニメ";
-            //            if (IsFeatureAvailable(argfname))
+            //            if (IsFeatureAvailable("戦闘アニメ"))
             //            {
-            //                object argIndex1 = "戦闘アニメ";
-            //                uname = FeatureData(argIndex1);
-            //                object argIndex2 = uname;
-            //                if (withBlock.IsDefined(argIndex2))
+            //                uname = FeatureData("戦闘アニメ");
+            //                if (withBlock.IsDefined(uname))
             //                {
             //                    MessageData localItem() { object argIndex1 = uname; var ret = withBlock.Item(argIndex1); return ret; }
 
-            //                    var argu = this;
-            //                    msg = localItem().SelectMessage(situations[i], argu);
+            //                    msg = localItem().SelectMessage(situations[i], this);
             //                    if (Strings.Len(msg) > 0)
             //                    {
             //                        IsSysMessageDefinedRet = true;
@@ -2139,8 +2002,7 @@ namespace SRCCore.Units
             //            {
             //                MessageData localItem1() { object argIndex1 = Name; var ret = withBlock.Item(argIndex1); Name = Conversions.ToString(argIndex1); return ret; }
 
-            //                var argu1 = this;
-            //                msg = localItem1().SelectMessage(situations[i], argu1);
+            //                msg = localItem1().SelectMessage(situations[i], this);
             //                if (Strings.Len(msg) > 0)
             //                {
             //                    IsSysMessageDefinedRet = true;
@@ -2184,13 +2046,11 @@ namespace SRCCore.Units
             //                uname = Strings.Left(uname, Strings.Len(uname) - 1);
             //            }
 
-            //            object argIndex3 = uname;
-            //            if (withBlock.IsDefined(argIndex3))
+            //            if (withBlock.IsDefined(uname))
             //            {
             //                MessageData localItem2() { object argIndex1 = uname; var ret = withBlock.Item(argIndex1); return ret; }
 
-            //                var argu2 = this;
-            //                msg = localItem2().SelectMessage(situations[i], argu2);
+            //                msg = localItem2().SelectMessage(situations[i], this);
             //                if (Strings.Len(msg) > 0)
             //                {
             //                    IsSysMessageDefinedRet = true;
@@ -2200,13 +2060,11 @@ namespace SRCCore.Units
 
             //            // ユニットクラスで検索
             //            uclass = Class0;
-            //            object argIndex4 = uclass;
-            //            if (withBlock.IsDefined(argIndex4))
+            //            if (withBlock.IsDefined(uclass))
             //            {
             //                MessageData localItem3() { object argIndex1 = uclass; var ret = withBlock.Item(argIndex1); return ret; }
 
-            //                var argu3 = this;
-            //                msg = localItem3().SelectMessage(situations[i], argu3);
+            //                msg = localItem3().SelectMessage(situations[i], this);
             //                if (Strings.Len(msg) > 0)
             //                {
             //                    IsSysMessageDefinedRet = true;
@@ -2215,12 +2073,9 @@ namespace SRCCore.Units
             //            }
 
             //            // 汎用
-            //            object argIndex6 = "汎用";
-            //            if (withBlock.IsDefined(argIndex6))
+            //            if (withBlock.IsDefined("汎用"))
             //            {
-            //                object argIndex5 = "汎用";
-            //                var argu4 = this;
-            //                msg = withBlock.Item(argIndex5).SelectMessage(situations[i], argu4);
+            //                msg = withBlock.Item("汎用").SelectMessage(situations[i], this);
             //                if (Strings.Len(msg) > 0)
             //                {
             //                    IsSysMessageDefinedRet = true;
@@ -2239,18 +2094,14 @@ namespace SRCCore.Units
             //    for (i = 1; i <= loopTo1; i++)
             //    {
             //        // 戦闘アニメ能力で指定された名称で検索
-            //        string argfname1 = "戦闘アニメ";
-            //        if (IsFeatureAvailable(argfname1))
+            //        if (IsFeatureAvailable("戦闘アニメ"))
             //        {
-            //            object argIndex7 = "戦闘アニメ";
-            //            uname = FeatureData(argIndex7);
-            //            object argIndex8 = uname;
-            //            if (withBlock1.IsDefined(argIndex8))
+            //            uname = FeatureData("戦闘アニメ");
+            //            if (withBlock1.IsDefined(uname))
             //            {
             //                MessageData localItem4() { object argIndex1 = uname; var ret = withBlock1.Item(argIndex1); return ret; }
 
-            //                var argu5 = this;
-            //                msg = localItem4().SelectMessage(situations[i], argu5);
+            //                msg = localItem4().SelectMessage(situations[i], this);
             //                if (Strings.Len(msg) > 0)
             //                {
             //                    IsSysMessageDefinedRet = true;
@@ -2266,8 +2117,7 @@ namespace SRCCore.Units
             //        {
             //            MessageData localItem5() { object argIndex1 = Name; var ret = withBlock1.Item(argIndex1); Name = Conversions.ToString(argIndex1); return ret; }
 
-            //            var argu6 = this;
-            //            msg = localItem5().SelectMessage(situations[i], argu6);
+            //            msg = localItem5().SelectMessage(situations[i], this);
             //            if (Strings.Len(msg) > 0)
             //            {
             //                IsSysMessageDefinedRet = true;
@@ -2311,13 +2161,11 @@ namespace SRCCore.Units
             //            uname = Strings.Left(uname, Strings.Len(uname) - 1);
             //        }
 
-            //        object argIndex9 = uname;
-            //        if (withBlock1.IsDefined(argIndex9))
+            //        if (withBlock1.IsDefined(uname))
             //        {
             //            MessageData localItem6() { object argIndex1 = uname; var ret = withBlock1.Item(argIndex1); return ret; }
 
-            //            var argu7 = this;
-            //            msg = localItem6().SelectMessage(situations[i], argu7);
+            //            msg = localItem6().SelectMessage(situations[i], this);
             //            if (Strings.Len(msg) > 0)
             //            {
             //                IsSysMessageDefinedRet = true;
@@ -2327,13 +2175,11 @@ namespace SRCCore.Units
 
             //        // ユニットクラスで検索
             //        uclass = Class0;
-            //        object argIndex10 = uclass;
-            //        if (withBlock1.IsDefined(argIndex10))
+            //        if (withBlock1.IsDefined(uclass))
             //        {
             //            MessageData localItem7() { object argIndex1 = uclass; var ret = withBlock1.Item(argIndex1); return ret; }
 
-            //            var argu8 = this;
-            //            msg = localItem7().SelectMessage(situations[i], argu8);
+            //            msg = localItem7().SelectMessage(situations[i], this);
             //            if (Strings.Len(msg) > 0)
             //            {
             //                IsSysMessageDefinedRet = true;
@@ -2342,12 +2188,9 @@ namespace SRCCore.Units
             //        }
 
             //        // 汎用
-            //        object argIndex12 = "汎用";
-            //        if (withBlock1.IsDefined(argIndex12))
+            //        if (withBlock1.IsDefined("汎用"))
             //        {
-            //            object argIndex11 = "汎用";
-            //            var argu9 = this;
-            //            msg = withBlock1.Item(argIndex11).SelectMessage(situations[i], argu9);
+            //            msg = withBlock1.Item("汎用").SelectMessage(situations[i], this);
             //            if (Strings.Len(msg) > 0)
             //            {
             //                IsSysMessageDefinedRet = true;
@@ -2364,18 +2207,14 @@ namespace SRCCore.Units
             //    for (i = 1; i <= loopTo2; i++)
             //    {
             //        // 特殊効果能力で指定された名称で検索
-            //        string argfname2 = "特殊効果";
-            //        if (IsFeatureAvailable(argfname2))
+            //        if (IsFeatureAvailable("特殊効果"))
             //        {
-            //            object argIndex13 = "特殊効果";
-            //            uname = FeatureData(argIndex13);
-            //            object argIndex14 = uname;
-            //            if (withBlock2.IsDefined(argIndex14))
+            //            uname = FeatureData("特殊効果");
+            //            if (withBlock2.IsDefined(uname))
             //            {
             //                MessageData localItem8() { object argIndex1 = uname; var ret = withBlock2.Item(argIndex1); return ret; }
 
-            //                var argu10 = this;
-            //                msg = localItem8().SelectMessage(situations[i], argu10);
+            //                msg = localItem8().SelectMessage(situations[i], this);
             //                if (Strings.Len(msg) > 0)
             //                {
             //                    IsSysMessageDefinedRet = true;
@@ -2391,8 +2230,7 @@ namespace SRCCore.Units
             //        {
             //            MessageData localItem9() { object argIndex1 = Name; var ret = withBlock2.Item(argIndex1); Name = Conversions.ToString(argIndex1); return ret; }
 
-            //            var argu11 = this;
-            //            msg = localItem9().SelectMessage(situations[i], argu11);
+            //            msg = localItem9().SelectMessage(situations[i], this);
             //            if (Strings.Len(msg) > 0)
             //            {
             //                IsSysMessageDefinedRet = true;
@@ -2436,13 +2274,11 @@ namespace SRCCore.Units
             //            uname = Strings.Left(uname, Strings.Len(uname) - 1);
             //        }
 
-            //        object argIndex15 = uname;
-            //        if (withBlock2.IsDefined(argIndex15))
+            //        if (withBlock2.IsDefined(uname))
             //        {
             //            MessageData localItem10() { object argIndex1 = uname; var ret = withBlock2.Item(argIndex1); return ret; }
 
-            //            var argu12 = this;
-            //            msg = localItem10().SelectMessage(situations[i], argu12);
+            //            msg = localItem10().SelectMessage(situations[i], this);
             //            if (Strings.Len(msg) > 0)
             //            {
             //                IsSysMessageDefinedRet = true;
@@ -2452,13 +2288,11 @@ namespace SRCCore.Units
 
             //        // ユニットクラスで検索
             //        uclass = Class0;
-            //        object argIndex16 = uclass;
-            //        if (withBlock2.IsDefined(argIndex16))
+            //        if (withBlock2.IsDefined(uclass))
             //        {
             //            MessageData localItem11() { object argIndex1 = uclass; var ret = withBlock2.Item(argIndex1); return ret; }
 
-            //            var argu13 = this;
-            //            msg = localItem11().SelectMessage(situations[i], argu13);
+            //            msg = localItem11().SelectMessage(situations[i], this);
             //            if (Strings.Len(msg) > 0)
             //            {
             //                IsSysMessageDefinedRet = true;
@@ -2467,12 +2301,9 @@ namespace SRCCore.Units
             //        }
 
             //        // 汎用
-            //        object argIndex18 = "汎用";
-            //        if (withBlock2.IsDefined(argIndex18))
+            //        if (withBlock2.IsDefined("汎用"))
             //        {
-            //            object argIndex17 = "汎用";
-            //            var argu14 = this;
-            //            msg = withBlock2.Item(argIndex17).SelectMessage(situations[i], argu14);
+            //            msg = withBlock2.Item("汎用").SelectMessage(situations[i], this);
             //            if (Strings.Len(msg) > 0)
             //            {
             //                IsSysMessageDefinedRet = true;

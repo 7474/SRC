@@ -1,4 +1,4 @@
-﻿using SRCCore.CmdDatas;
+using SRCCore.CmdDatas;
 using SRCCore.Events;
 using System;
 using System.Collections.Generic;

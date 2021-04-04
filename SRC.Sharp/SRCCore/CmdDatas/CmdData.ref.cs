@@ -1,4 +1,4 @@
-﻿//        private int ExecArcCmd()
+//        private int ExecArcCmd()
 //        {
 //            int ExecArcCmdRet = default;
 //            PictureBox pic, pic2 = default;
@@ -248,8 +248,7 @@
 //            if (IsList)
 //            {
 //                // リストを配列に変換
-//                string arglist = GetArgAsString(3);
-//                num = GeneralLib.ListSplit(arglist, array_buf2);
+//                num = GeneralLib.ListSplit(GetArgAsString(3), array_buf2);
 //                // UPGRADE_WARNING: オブジェクト array_buf の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 //                array_buf = SrcFormatter.CopyArray(array_buf2);
 //            }
@@ -616,11 +615,8 @@
 //            if (SRC.AutoMoveCursor)
 //            {
 //                GUI.TopItem = 1;
-//                string arglb_caption = "選択";
-//                string arglb_mode = "表示のみ";
-//                Commands.SelectedItem = GUI.ListBox(arglb_caption, list, msg, arglb_mode);
-//                string argcursor_mode = "ダイアログ";
-//                GUI.MoveCursorPos(argcursor_mode);
+//                Commands.SelectedItem = GUI.ListBox("選択", list, msg, "表示のみ");
+//                GUI.MoveCursorPos("ダイアログ");
 //            }
 
 //            // 選択肢の入力
@@ -629,15 +625,11 @@
 //                GUI.TopItem = 1;
 //                if (use_continuous_mode)
 //                {
-//                    string arglb_caption1 = "選択";
-//                    string arglb_mode1 = "連続表示";
-//                    Commands.SelectedItem = GUI.ListBox(arglb_caption1, list, msg, arglb_mode1);
+//                    Commands.SelectedItem = GUI.ListBox("選択", list, msg, "連続表示");
 //                }
 //                else
 //                {
-//                    string arglb_caption2 = "選択";
-//                    string arglb_mode2 = "";
-//                    Commands.SelectedItem = GUI.ListBox(arglb_caption2, list, msg, lb_mode: arglb_mode2);
+//                    Commands.SelectedItem = GUI.ListBox("選択", list, msg, lb_mode: "");
 //                }
 
 //                if (enable_rbutton_cancel)
@@ -731,18 +723,14 @@
 //            {
 //                if (GetArgAsString(3) == "自動")
 //                {
-//                    string argamode = "イベント";
-//                    int argmax_prob = 0;
-//                    int argmax_dmg = 0;
-//                    w1 = COM.SelectWeapon(u1, u2, argamode, max_prob: argmax_prob, max_dmg: argmax_dmg);
+//                    w1 = COM.SelectWeapon(u1, u2, "イベント", max_prob: 0, max_dmg: 0);
 //                }
 //                else
 //                {
 //                    var loopTo = u1.CountWeapon();
 //                    for (w1 = 1; w1 <= loopTo; w1++)
 //                    {
-//                        string argattr = "マップ攻撃";
-//                        if ((GetArgAsString(3) ?? "") == (u1.Weapon(w1).Name ?? "") && !u1.IsWeaponClassifiedAs(w1, argattr))
+//                        if ((GetArgAsString(3) ?? "") == (u1.Weapon(w1).Name ?? "") && !u1.IsWeaponClassifiedAs(w1, "マップ攻撃"))
 //                        {
 //                            break;
 //                        }
@@ -784,10 +772,7 @@
 //                    case "自動":
 //                        {
 //                            def_mode = "反撃";
-//                            string argamode1 = "反撃 イベント";
-//                            int argmax_prob1 = 0;
-//                            int argmax_dmg1 = 0;
-//                            w2 = COM.SelectWeapon(u2, u1, argamode1, max_prob: argmax_prob1, max_dmg: argmax_dmg1);
+//                            w2 = COM.SelectWeapon(u2, u1, "反撃 イベント", max_prob: 0, max_dmg: 0);
 //                            break;
 //                        }
 
@@ -797,8 +782,7 @@
 //                            var loopTo1 = u2.CountWeapon();
 //                            for (w2 = 1; w2 <= loopTo1; w2++)
 //                            {
-//                                string argattr1 = "マップ攻撃";
-//                                if ((GetArgAsString(5) ?? "") == (u2.Weapon(w2).Name ?? "") && !u2.IsWeaponClassifiedAs(w2, argattr1))
+//                                if ((GetArgAsString(5) ?? "") == (u2.Weapon(w2).Name ?? "") && !u2.IsWeaponClassifiedAs(w2, "マップ攻撃"))
 //                                {
 //                                    break;
 //                                }
@@ -857,13 +841,9 @@
 //                    // End If
 //                    if (def_option == "自動" && u2.Status_Renamed == "出撃")
 //                    {
-//                        string argref_mode = "移動前";
-//                        if (!u2.IsTargetWithinRange(w2, u1) || !u2.IsWeaponAvailable(w2, argref_mode))
+//                        if (!u2.IsTargetWithinRange(w2, u1) || !u2.IsWeaponAvailable(w2, "移動前"))
 //                        {
-//                            string argamode2 = "反撃 イベント";
-//                            int argmax_prob2 = 0;
-//                            int argmax_dmg2 = 0;
-//                            w2 = COM.SelectWeapon(u2, u1, argamode2, max_prob: argmax_prob2, max_dmg: argmax_dmg2);
+//                            w2 = COM.SelectWeapon(u2, u1, "反撃 イベント", max_prob: 0, max_dmg: 0);
 //                            Commands.SelectedTWeapon = w2;
 //                        }
 //                    }
@@ -875,8 +855,7 @@
 //                    // '                And u2.Status = "出撃" _
 //                    // '                And Not u2.IsConditionSatisfied("行動不能") _
 //                    // '            Then
-//                    object argIndex1 = (object)"攻撃不能";
-//                    if (def_mode == "反撃" && u2.Status_Renamed == "出撃" && u2.MaxAction() > 0 && !u2.IsConditionSatisfied(argIndex1))
+//                    if (def_mode == "反撃" && u2.Status_Renamed == "出撃" && u2.MaxAction() > 0 && !u2.IsConditionSatisfied((object)"攻撃不能"))
 //                    {
 //                        // MOD END マージ
 //                        if (w2 > 0)
@@ -885,9 +864,7 @@
 //                        }
 //                        else
 //                        {
-//                            string argSituation = "射程外";
-//                            string argmsg_mode = "";
-//                            u2.PilotMessage(argSituation, msg_mode: argmsg_mode);
+//                            u2.PilotMessage("射程外", msg_mode: "");
 //                        }
 //                    }
 
@@ -954,12 +931,10 @@
 //                                {
 //                                    // メインパイロットの強制指定
 //                                    pname = Strings.Mid(pname, 2);
-//                                    object argIndex2 = (object)pname;
-//                                    if (SRC.PList.IsDefined(argIndex2))
+//                                    if (SRC.PList.IsDefined((object)pname))
 //                                    {
-//                                        object argIndex1 = (object)pname;
 //                                        {
-//                                            var withBlock1 = SRC.PList.Item(argIndex1);
+//                                            var withBlock1 = SRC.PList.Item((object)pname);
 //                                            if (withBlock1.Unit_Renamed is object)
 //                                            {
 //                                                pname = withBlock1.Unit_Renamed.MainPilot().Name;
@@ -1110,9 +1085,7 @@
 
 //                                            if (!My.MyProject.Forms.frmMessage.Visible)
 //                                            {
-//                                                Unit argu1 = null;
-//                                                Unit argu2 = null;
-//                                                GUI.OpenMessageForm(u1: argu1, u2: argu2);
+//                                                GUI.OpenMessageForm(u1: null, u2: null);
 //                                            }
 
 //                                            // メッセージウィンドウのパイロット画像を以前指定された
@@ -1232,9 +1205,7 @@
 
 //                                if (!My.MyProject.Forms.frmMessage.Visible)
 //                                {
-//                                    Unit argu11 = null;
-//                                    Unit argu21 = null;
-//                                    GUI.OpenMessageForm(u1: argu11, u2: argu21);
+//                                    GUI.OpenMessageForm(u1: null, u2: null);
 //                                }
 
 //                                break;
@@ -1285,9 +1256,7 @@
 //                            {
 //                                if (!My.MyProject.Forms.frmMessage.Visible)
 //                                {
-//                                    Unit argu12 = null;
-//                                    Unit argu22 = null;
-//                                    GUI.OpenMessageForm(u1: argu12, u2: argu22);
+//                                    GUI.OpenMessageForm(u1: null, u2: null);
 //                                }
 
 //                                GUI.DisplayBattleMessage(current_pname, Event.EventData[i], options);
@@ -1347,8 +1316,7 @@
 //                {
 //                    if (u.Party0 == "味方" && u.Status_Renamed == "出撃")
 //                    {
-//                        string argfname = "母艦";
-//                        if (u.IsFeatureAvailable(argfname))
+//                        if (u.IsFeatureAvailable("母艦"))
 //                        {
 //                            xx = u.x;
 //                            yy = u.y;
@@ -1365,8 +1333,7 @@
 
 //            if (!localIsDefined() && Strings.InStr(pname, "(") > 0)
 //            {
-//                object argIndex1 = Strings.Left(pname, Strings.InStr(pname, "(") - 1);
-//                if (SRC.PList.IsDefined(argIndex1))
+//                if (SRC.PList.IsDefined(Strings.Left(pname, Strings.InStr(pname, "(") - 1)))
 //                {
 //                    pname = Strings.Left(pname, Strings.InStr(pname, "(") - 1);
 //                }
@@ -1391,9 +1358,8 @@
 //                return;
 //            }
 
-//            object argIndex2 = pname;
 //            {
-//                var withBlock = SRC.PList.Item(argIndex2);
+//                var withBlock = SRC.PList.Item(pname);
 //                if (withBlock.Unit_Renamed is object)
 //                {
 //                    // パイロットが乗っているユニットを中央表示
@@ -1428,9 +1394,7 @@
 //            if (!GUI.IsCursorVisible && !without_cursor)
 //            {
 //                tmp = GUI.IsPictureVisible;
-//                string argfname1 = @"Event\cursor.bmp";
-//                string argdraw_option = "透過";
-//                GUI.DrawPicture(argfname1, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, 0, 0, 0, 0, argdraw_option);
+//                GUI.DrawPicture(@"Event\cursor.bmp", Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, 0, 0, 0, 0, "透過");
 //                GUI.IsPictureVisible = tmp;
 //                GUI.IsCursorVisible = true;
 //            }
@@ -1586,8 +1550,7 @@
 //            var @params = new string[(Event.MaxArgIndex + 1)];
 
 //            // サブルーチンを探す
-//            string arglname = GetArgAsString(2);
-//            ret = Event.FindNormalLabel(arglname);
+//            ret = Event.FindNormalLabel(GetArgAsString(2));
 
 //            // 見つかった？
 //            if (ret == 0)
@@ -1744,16 +1707,7 @@
 //                            ret = GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -2, 0, 0, 0, 0, 0x3);
 //                        }
 
-//                        string argdtitle = "データセーブ";
-//                        string argexpr = "セーブデータファイル名";
-//                        string argdefault_file = Expression.GetValueAsString(argexpr);
-//                        string argftype = "ｾｰﾌﾞﾃﾞｰﾀ";
-//                        string argfsuffix = "src";
-//                        string argftype2 = "";
-//                        string argfsuffix2 = "";
-//                        string argftype3 = "";
-//                        string argfsuffix3 = "";
-//                        fname = FileDialog.SaveFileDialog(argdtitle, SRC.ScenarioPath, argdefault_file, 2, argftype, argfsuffix, ftype2: argftype2, fsuffix2: argfsuffix2, ftype3: argftype3, fsuffix3: argfsuffix3);
+//                        fname = FileDialog.SaveFileDialog("データセーブ", SRC.ScenarioPath, Expression.GetValueAsString("セーブデータファイル名"), 2, "ｾｰﾌﾞﾃﾞｰﾀ", "src", ftype2: "ｾｰﾌﾞﾃﾞｰﾀ"2, fsuffix2: "src"2, ftype3: "ｾｰﾌﾞﾃﾞｰﾀ"3, fsuffix3: "src"3);
 
 //                        // 再び「常に手前に表示」
 //                        if (My.MyProject.Forms.frmListBox.Visible)
@@ -1771,8 +1725,7 @@
 //                        // セーブ先はシナリオフォルダ？
 //                        if (Strings.InStr(fname, @"\") > 0)
 //                        {
-//                            string argstr2 = @"\";
-//                            save_path = Strings.Left(fname, GeneralLib.InStr2(fname, argstr2));
+//                            save_path = Strings.Left(fname, GeneralLib.InStr2(fname, @"\"));
 //                        }
 //                        // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
 //                        if ((FileSystem.Dir(save_path) ?? "") != (FileSystem.Dir(SRC.ScenarioPath) ?? ""))
@@ -1820,9 +1773,7 @@
 //                    {
 //                        // 選択用ダイアログを拡大
 //                        GUI.EnlargeListBoxHeight();
-//                        Unit argselected_unit = null;
-//                        string argselected_part = "";
-//                        InterMission.ExchangeItemCommand(selected_unit: argselected_unit, selected_part: argselected_part);
+//                        InterMission.ExchangeItemCommand(selected_unit: null, selected_part: "");
 
 //                        // 選択用リストボックスを元に戻す
 //                        GUI.ReduceListBoxHeight();
@@ -1849,8 +1800,7 @@
 
 //                        bool localFileExists1() { string argfname = SRC.ExtDataPath2 + @"Lib\パイロットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-//                        string argfname = SRC.ScenarioPath + @"Lib\パイロットステータス表示.eve";
-//                        if (GeneralLib.FileExists(argfname))
+//                        if (GeneralLib.FileExists(SRC.ScenarioPath + @"Lib\パイロットステータス表示.eve"))
 //                        {
 //                            SRC.StartScenario(SRC.ScenarioPath + @"Lib\パイロットステータス表示.eve");
 //                        }
@@ -1880,8 +1830,7 @@
 
 //                        bool localFileExists3() { string argfname = SRC.ExtDataPath2 + @"Lib\ユニットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-//                        string argfname1 = SRC.ScenarioPath + @"Lib\ユニットステータス表示.eve";
-//                        if (GeneralLib.FileExists(argfname1))
+//                        if (GeneralLib.FileExists(SRC.ScenarioPath + @"Lib\ユニットステータス表示.eve"))
 //                        {
 //                            SRC.StartScenario(SRC.ScenarioPath + @"Lib\ユニットステータス表示.eve");
 //                        }
@@ -2330,61 +2279,49 @@
 //                    {
 //                        case "夜":
 //                            {
-//                                var argpic = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(argpic);
+//                                Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                Graphics.Dark();
-//                                var argpic1 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(argpic1);
+//                                Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                break;
 //                            }
 
 //                        case "セピア":
 //                            {
-//                                var argpic2 = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(argpic2);
+//                                Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                Graphics.Sepia();
-//                                var argpic3 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(argpic3);
+//                                Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                break;
 //                            }
 
 //                        case "白黒":
 //                            {
-//                                var argpic4 = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(argpic4);
+//                                Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                Graphics.Monotone();
-//                                var argpic5 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(argpic5);
+//                                Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                break;
 //                            }
 
 //                        case "夕焼け":
 //                            {
-//                                var argpic6 = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(argpic6);
+//                                Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                Graphics.Sunset();
-//                                var argpic7 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(argpic7);
+//                                Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                break;
 //                            }
 
 //                        case "水中":
 //                            {
-//                                var argpic8 = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(argpic8);
+//                                Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                Graphics.Water();
-//                                var argpic9 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(argpic9);
+//                                Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                break;
 //                            }
 
 //                        case "フィルタ":
 //                            {
-//                                var argpic10 = withBlock1.picTmp32(0);
-//                                Graphics.GetImage(argpic10);
+//                                Graphics.GetImage(withBlock1.picTmp32(0));
 //                                Graphics.ColorFilter(Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent);
-//                                var argpic11 = withBlock1.picTmp32(0);
-//                                Graphics.SetImage(argpic11);
+//                                Graphics.SetImage(withBlock1.picTmp32(0));
 //                                break;
 //                            }
 //                    }
@@ -2397,61 +2334,49 @@
 //                    {
 //                        case "夜":
 //                            {
-//                                var argpic12 = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(argpic12);
+//                                Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                Graphics.Dark(true);
-//                                var argpic13 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(argpic13);
+//                                Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                break;
 //                            }
 
 //                        case "セピア":
 //                            {
-//                                var argpic14 = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(argpic14);
+//                                Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                Graphics.Sepia(true);
-//                                var argpic15 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(argpic15);
+//                                Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                break;
 //                            }
 
 //                        case "白黒":
 //                            {
-//                                var argpic16 = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(argpic16);
+//                                Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                Graphics.Monotone(true);
-//                                var argpic17 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(argpic17);
+//                                Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                break;
 //                            }
 
 //                        case "夕焼け":
 //                            {
-//                                var argpic18 = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(argpic18);
+//                                Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                Graphics.Sunset(true);
-//                                var argpic19 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(argpic19);
+//                                Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                break;
 //                            }
 
 //                        case "水中":
 //                            {
-//                                var argpic20 = GUI.MainForm.picTmp32(0);
-//                                Graphics.GetImage(argpic20);
+//                                Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                Graphics.Water(true);
-//                                var argpic21 = GUI.MainForm.picTmp32(0);
-//                                Graphics.SetImage(argpic21);
+//                                Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                break;
 //                            }
 
 //                        case "フィルタ":
 //                            {
-//                                var argpic22 = withBlock1.picTmp32(0);
-//                                Graphics.GetImage(argpic22);
+//                                Graphics.GetImage(withBlock1.picTmp32(0));
 //                                Graphics.ColorFilter(Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent, true);
-//                                var argpic23 = withBlock1.picTmp32(0);
-//                                Graphics.SetImage(argpic23);
+//                                Graphics.SetImage(withBlock1.picTmp32(0));
 //                                break;
 //                            }
 //                    }
@@ -2570,31 +2495,21 @@
 //            fname = GetArgAsString(2);
 //            if (Strings.Len(fname) > 0)
 //            {
-//                string argfname = SRC.ScenarioPath + fname;
-//                Map.LoadMapData(argfname);
+//                Map.LoadMapData(SRC.ScenarioPath + fname);
 //            }
 //            else
 //            {
-//                string argfname1 = "";
-//                Map.LoadMapData(argfname1);
+//                Map.LoadMapData("");
 //            }
 
 //            if (late_refresh)
 //            {
-//                string argdraw_mode = "";
-//                string argdraw_option = "非同期";
-//                int argfilter_color = 0;
-//                double argfilter_trans_par = 0d;
-//                GUI.SetupBackground(argdraw_mode, argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
+//                GUI.SetupBackground("", "非同期", filter_color: 0, filter_trans_par: 0d);
 //                GUI.RedrawScreen(true);
 //            }
 //            else
 //            {
-//                string argdraw_mode1 = "";
-//                string argdraw_option1 = "";
-//                int argfilter_color1 = 0;
-//                double argfilter_trans_par1 = 0d;
-//                GUI.SetupBackground(draw_mode: argdraw_mode1, draw_option: argdraw_option1, filter_color: argfilter_color1, filter_trans_par: argfilter_trans_par1);
+//                GUI.SetupBackground(draw_mode: "", draw_option: "", filter_color: 0, filter_trans_par: 0d);
 //                GUI.RedrawScreen();
 //            }
 
@@ -2673,8 +2588,7 @@
 
 //                                default:
 //                                    {
-//                                        object argIndex1 = (object)pname;
-//                                        uarray[1] = SRC.UList.Item2(argIndex1);
+//                                        uarray[1] = SRC.UList.Item2((object)pname);
 //                                        if (uarray[1] is null)
 //                                        {
 //                                            {
@@ -2699,8 +2613,7 @@
 
 //                                                uarray[1] = localItem().Unit_Renamed;
 //                                                i = 2;
-//                                                object argIndex2 = (object)(pname + ":" + SrcFormatter.Format((object)i));
-//                                                while (withBlock.IsDefined(argIndex2))
+//                                                while (withBlock.IsDefined((object)(pname + ":" + SrcFormatter.Format((object)i))))
 //                                                {
 //                                                    Array.Resize(uarray, Information.UBound(uarray) + 1 + 1);
 //                                                    Pilot localItem1() { object argIndex1 = (object)(pname + ":" + SrcFormatter.Format((object)i)); var ret = withBlock.Item(argIndex1); return ret; }
@@ -2747,8 +2660,7 @@
 
 //                            default:
 //                                {
-//                                    object argIndex3 = (object)pname;
-//                                    uarray[1] = SRC.UList.Item2(argIndex3);
+//                                    uarray[1] = SRC.UList.Item2((object)pname);
 //                                    if (uarray[1] is null)
 //                                    {
 //                                        {
@@ -2773,8 +2685,7 @@
 
 //                                            uarray[1] = localItem2().Unit_Renamed;
 //                                            i = 2;
-//                                            object argIndex4 = (object)(pname + ":" + SrcFormatter.Format((object)i));
-//                                            while (withBlock1.IsDefined(argIndex4))
+//                                            while (withBlock1.IsDefined((object)(pname + ":" + SrcFormatter.Format((object)i))))
 //                                            {
 //                                                Array.Resize(uarray, Information.UBound(uarray) + 1 + 1);
 //                                                Pilot localItem3() { object argIndex1 = (object)(pname + ":" + SrcFormatter.Format((object)i)); var ret = withBlock1.Item(argIndex1); return ret; }
@@ -2886,8 +2797,7 @@
 //                        }
 
 //                        pname = GetArgAsString(2);
-//                        object argIndex1 = (object)pname;
-//                        u = SRC.UList.Item2(argIndex1);
+//                        u = SRC.UList.Item2((object)pname);
 //                        if (u is null)
 //                        {
 //                            bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
@@ -2906,9 +2816,8 @@
 //                                 */
 //                            }
 
-//                            object argIndex2 = (object)pname;
 //                            {
-//                                var withBlock = SRC.PList.Item(argIndex2);
+//                                var withBlock = SRC.PList.Item((object)pname);
 //                                if (withBlock.Unit_Renamed is null)
 //                                {
 //                                    withBlock.Party = new_party;
@@ -3109,61 +3018,49 @@
 //                {
 //                    case "夜":
 //                        {
-//                            var argpic = GUI.MainForm.picTmp32(0);
-//                            Graphics.GetImage(argpic);
+//                            Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                            Graphics.Dark();
-//                            var argpic1 = GUI.MainForm.picTmp32(0);
-//                            Graphics.SetImage(argpic1);
+//                            Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                            break;
 //                        }
 
 //                    case "セピア":
 //                        {
-//                            var argpic2 = GUI.MainForm.picTmp32(0);
-//                            Graphics.GetImage(argpic2);
+//                            Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                            Graphics.Sepia();
-//                            var argpic3 = GUI.MainForm.picTmp32(0);
-//                            Graphics.SetImage(argpic3);
+//                            Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                            break;
 //                        }
 
 //                    case "白黒":
 //                        {
-//                            var argpic4 = GUI.MainForm.picTmp32(0);
-//                            Graphics.GetImage(argpic4);
+//                            Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                            Graphics.Monotone();
-//                            var argpic5 = GUI.MainForm.picTmp32(0);
-//                            Graphics.SetImage(argpic5);
+//                            Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                            break;
 //                        }
 
 //                    case "夕焼け":
 //                        {
-//                            var argpic6 = GUI.MainForm.picTmp32(0);
-//                            Graphics.GetImage(argpic6);
+//                            Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                            Graphics.Sunset();
-//                            var argpic7 = GUI.MainForm.picTmp32(0);
-//                            Graphics.SetImage(argpic7);
+//                            Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                            break;
 //                        }
 
 //                    case "水中":
 //                        {
-//                            var argpic8 = GUI.MainForm.picTmp32(0);
-//                            Graphics.GetImage(argpic8);
+//                            Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                            Graphics.Water();
-//                            var argpic9 = GUI.MainForm.picTmp32(0);
-//                            Graphics.SetImage(argpic9);
+//                            Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                            break;
 //                        }
 
 //                    case "フィルタ":
 //                        {
-//                            var argpic10 = withBlock2.picTmp32(0);
-//                            Graphics.GetImage(argpic10);
+//                            Graphics.GetImage(withBlock2.picTmp32(0));
 //                            Graphics.ColorFilter(Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent);
-//                            var argpic11 = withBlock2.picTmp32(0);
-//                            Graphics.SetImage(argpic11);
+//                            Graphics.SetImage(withBlock2.picTmp32(0));
 //                            break;
 //                        }
 //                }
@@ -3249,34 +3146,26 @@
 //                prev_bmp = withBlock.get_Bitmap(false);
 //                if (Strings.LCase(Strings.Right(new_bmp, 4)) == ".bmp")
 //                {
-//                    string argcname = "ユニット画像";
-//                    string argcdata = "非表示 " + new_bmp;
-//                    withBlock.AddCondition(argcname, -1, 0d, argcdata);
+//                    withBlock.AddCondition("ユニット画像", -1, 0d, "非表示 " + new_bmp);
 //                }
 //                else if (new_bmp == "-")
 //                {
-//                    object argIndex2 = (object)"ユニット画像";
-//                    if (withBlock.IsConditionSatisfied(argIndex2))
+//                    if (withBlock.IsConditionSatisfied((object)"ユニット画像"))
 //                    {
-//                        object argIndex1 = (object)"ユニット画像";
-//                        withBlock.DeleteCondition(argIndex1);
+//                        withBlock.DeleteCondition((object)"ユニット画像");
 //                    }
 //                }
 //                else if (new_bmp == "非表示")
 //                {
-//                    string argcname1 = "非表示付加";
-//                    string argcdata1 = "非表示";
-//                    withBlock.AddCondition(argcname1, -1, 0d, argcdata1);
+//                    withBlock.AddCondition("非表示付加", -1, 0d, "非表示");
 //                    withBlock.BitmapID = -1;
 //                    GUI.EraseUnitBitmap(withBlock.x, withBlock.y, false);
 //                }
 //                else if (new_bmp == "非表示解除")
 //                {
-//                    object argIndex4 = (object)"非表示付加";
-//                    if (withBlock.IsConditionSatisfied(argIndex4))
+//                    if (withBlock.IsConditionSatisfied((object)"非表示付加"))
 //                    {
-//                        object argIndex3 = (object)"非表示付加";
-//                        withBlock.DeleteCondition(argIndex3);
+//                        withBlock.DeleteCondition((object)"非表示付加");
 //                    }
 
 //                    withBlock.BitmapID = GUI.MakeUnitBitmap(u);
@@ -3341,9 +3230,7 @@
 //                    }
 //            }
 
-//            string argcname = "チャージ";
-//            string argcdata = "";
-//            u.AddCondition(argcname, 1, cdata: argcdata);
+//            u.AddCondition("チャージ", 1, cdata: "");
 //            ExecChargeCmdRet = LineNum + 1;
 //            return ExecChargeCmdRet;
 //        }
@@ -3504,8 +3391,7 @@
 //            {
 //                case 2:
 //                    {
-//                        string arglname = GetArgAsString(2);
-//                        ret = Event.FindLabel(arglname);
+//                        ret = Event.FindLabel(GetArgAsString(2));
 //                        if (ret > 0)
 //                        {
 //                            Event.ClearLabel(ret);
@@ -3702,61 +3588,49 @@
 //                                {
 //                                    case "夜":
 //                                        {
-//                                            var argpic = GUI.MainForm.picTmp32(0);
-//                                            Graphics.GetImage(argpic);
+//                                            Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                            Graphics.Dark();
-//                                            var argpic1 = GUI.MainForm.picTmp32(0);
-//                                            Graphics.SetImage(argpic1);
+//                                            Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                            break;
 //                                        }
 
 //                                    case "セピア":
 //                                        {
-//                                            var argpic2 = GUI.MainForm.picTmp32(0);
-//                                            Graphics.GetImage(argpic2);
+//                                            Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                            Graphics.Sepia();
-//                                            var argpic3 = GUI.MainForm.picTmp32(0);
-//                                            Graphics.SetImage(argpic3);
+//                                            Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                            break;
 //                                        }
 
 //                                    case "白黒":
 //                                        {
-//                                            var argpic4 = GUI.MainForm.picTmp32(0);
-//                                            Graphics.GetImage(argpic4);
+//                                            Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                            Graphics.Monotone();
-//                                            var argpic5 = GUI.MainForm.picTmp32(0);
-//                                            Graphics.SetImage(argpic5);
+//                                            Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                            break;
 //                                        }
 
 //                                    case "夕焼け":
 //                                        {
-//                                            var argpic6 = GUI.MainForm.picTmp32(0);
-//                                            Graphics.GetImage(argpic6);
+//                                            Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                            Graphics.Sunset();
-//                                            var argpic7 = GUI.MainForm.picTmp32(0);
-//                                            Graphics.SetImage(argpic7);
+//                                            Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                            break;
 //                                        }
 
 //                                    case "水中":
 //                                        {
-//                                            var argpic8 = GUI.MainForm.picTmp32(0);
-//                                            Graphics.GetImage(argpic8);
+//                                            Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                            Graphics.Water();
-//                                            var argpic9 = GUI.MainForm.picTmp32(0);
-//                                            Graphics.SetImage(argpic9);
+//                                            Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                            break;
 //                                        }
 
 //                                    case "フィルタ":
 //                                        {
-//                                            var argpic10 = withBlock.picTmp32(0);
-//                                            Graphics.GetImage(argpic10);
+//                                            Graphics.GetImage(withBlock.picTmp32(0));
 //                                            Graphics.ColorFilter(Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent);
-//                                            var argpic11 = withBlock.picTmp32(0);
-//                                            Graphics.SetImage(argpic11);
+//                                            Graphics.SetImage(withBlock.picTmp32(0));
 //                                            break;
 //                                        }
 //                                }
@@ -3823,61 +3697,49 @@
 //                        {
 //                            case "夜":
 //                                {
-//                                    var argpic12 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.GetImage(argpic12);
+//                                    Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                    Graphics.Dark();
-//                                    var argpic13 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.SetImage(argpic13);
+//                                    Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                    break;
 //                                }
 
 //                            case "セピア":
 //                                {
-//                                    var argpic14 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.GetImage(argpic14);
+//                                    Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                    Graphics.Sepia();
-//                                    var argpic15 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.SetImage(argpic15);
+//                                    Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                    break;
 //                                }
 
 //                            case "白黒":
 //                                {
-//                                    var argpic16 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.GetImage(argpic16);
+//                                    Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                    Graphics.Monotone();
-//                                    var argpic17 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.SetImage(argpic17);
+//                                    Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                    break;
 //                                }
 
 //                            case "夕焼け":
 //                                {
-//                                    var argpic18 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.GetImage(argpic18);
+//                                    Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                    Graphics.Sunset();
-//                                    var argpic19 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.SetImage(argpic19);
+//                                    Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                    break;
 //                                }
 
 //                            case "水中":
 //                                {
-//                                    var argpic20 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.GetImage(argpic20);
+//                                    Graphics.GetImage(GUI.MainForm.picTmp32(0));
 //                                    Graphics.Water();
-//                                    var argpic21 = GUI.MainForm.picTmp32(0);
-//                                    Graphics.SetImage(argpic21);
+//                                    Graphics.SetImage(GUI.MainForm.picTmp32(0));
 //                                    break;
 //                                }
 
 //                            case "フィルタ":
 //                                {
-//                                    var argpic22 = withBlock2.picTmp32(0);
-//                                    Graphics.GetImage(argpic22);
+//                                    Graphics.GetImage(withBlock2.picTmp32(0));
 //                                    Graphics.ColorFilter(Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent);
-//                                    var argpic23 = withBlock2.picTmp32(0);
-//                                    Graphics.SetImage(argpic23);
+//                                    Graphics.SetImage(withBlock2.picTmp32(0));
 //                                    break;
 //                                }
 //                        }
@@ -4066,8 +3928,7 @@
 //            pname = GetArgAsString(2);
 //            bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
 
-//            object argIndex1 = pname;
-//            if (SRC.PList.IsDefined(argIndex1))
+//            if (SRC.PList.IsDefined(pname))
 //            {
 //                Pilot localItem() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
@@ -4096,12 +3957,10 @@
 //            sname = GetArgAsString(3);
 
 //            // エリアスが定義されている？
-//            object argIndex3 = sname;
-//            if (SRC.ALDList.IsDefined(argIndex3))
+//            if (SRC.ALDList.IsDefined(sname))
 //            {
-//                object argIndex2 = sname;
 //                {
-//                    var withBlock = SRC.ALDList.Item(argIndex2);
+//                    var withBlock = SRC.ALDList.Item(sname);
 //                    sarray = new string[(withBlock.Count + 1)];
 //                    var loopTo = withBlock.Count;
 //                    for (i = 1; i <= loopTo; i++)
@@ -4120,12 +3979,10 @@
 //                sname = sarray[i];
 //                sname2 = "";
 //                vname = "Ability(" + pname + "," + sname + ")";
-//                string arglist1 = Expression.GetValueAsString(vname);
-//                if (GeneralLib.LLength(arglist1) >= 2)
+//                if (GeneralLib.LLength(Expression.GetValueAsString(vname)) >= 2)
 //                {
 //                    // 必要技能用変数を削除
-//                    string arglist = Expression.GetValueAsString(vname);
-//                    sname2 = GeneralLib.LIndex(arglist, 2);
+//                    sname2 = GeneralLib.LIndex(Expression.GetValueAsString(vname), 2);
 //                    vname2 = "Ability(" + pname + "," + sname2 + ")";
 //                    Expression.UndefineVariable(vname2);
 //                }
@@ -4161,12 +4018,10 @@
 //            }
 
 //            // パイロットやユニットのステータスをアップデート
-//            object argIndex5 = pname;
-//            if (SRC.PList.IsDefined(argIndex5))
+//            if (SRC.PList.IsDefined(pname))
 //            {
-//                object argIndex4 = pname;
 //                {
-//                    var withBlock1 = SRC.PList.Item(argIndex4);
+//                    var withBlock1 = SRC.PList.Item(pname);
 //                    withBlock1.Update();
 //                    if (withBlock1.Unit_Renamed is object)
 //                    {
@@ -4222,8 +4077,7 @@
 
 //            if (u.IsSpecialPowerInEffect(sname))
 //            {
-//                object argIndex1 = sname;
-//                u.RemoveSpecialPowerInEffect2(argIndex1);
+//                u.RemoveSpecialPowerInEffect2(sname);
 //            }
 
 //            ExecClearSpecialPowerCmdRet = LineNum + 1;
@@ -4269,11 +4123,9 @@
 
 //            {
 //                var withBlock = u;
-//                object argIndex2 = sname;
-//                if (withBlock.IsConditionSatisfied(argIndex2))
+//                if (withBlock.IsConditionSatisfied(sname))
 //                {
-//                    object argIndex1 = sname;
-//                    withBlock.DeleteCondition(argIndex1);
+//                    withBlock.DeleteCondition(sname);
 //                    withBlock.Update();
 //                    if (withBlock.Status_Renamed == "出撃")
 //                    {
@@ -4553,9 +4405,7 @@
 //            // マウスカーソルを砂時計に
 //            // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
 //            Cursor.Current = Cursors.WaitCursor;
-//            string argdraw_mode = "フィルタ";
-//            string argdraw_option = "非同期";
-//            GUI.SetupBackground(argdraw_mode, argdraw_option, fcolor, trans_par);
+//            GUI.SetupBackground("フィルタ", "非同期", fcolor, trans_par);
 //            foreach (Unit u in SRC.UList)
 //            {
 //                {
@@ -4564,11 +4414,9 @@
 //                    {
 //                        if (withBlock.BitmapID == 0)
 //                        {
-//                            object argIndex1 = withBlock.Name;
 //                            {
-//                                var withBlock1 = SRC.UList.Item(argIndex1);
-//                                string argfname = "ダミーユニット";
-//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable(argfname))
+//                                var withBlock1 = SRC.UList.Item(withBlock.Name);
+//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable("ダミーユニット"))
 //                                {
 //                                    u.BitmapID = withBlock1.BitmapID;
 //                                }
@@ -4658,8 +4506,7 @@
 //                {
 //                    if ((u.ID ?? "") == (Commands.SelectedUnit.ID ?? ""))
 //                    {
-//                        object argIndex1 = uname;
-//                        Commands.SelectedUnit = SRC.UList.Item(argIndex1);
+//                        Commands.SelectedUnit = SRC.UList.Item(uname);
 //                    }
 //                }
 
@@ -4667,8 +4514,7 @@
 //                {
 //                    if ((u.ID ?? "") == (Event.SelectedUnitForEvent.ID ?? ""))
 //                    {
-//                        object argIndex2 = uname;
-//                        Event.SelectedUnitForEvent = SRC.UList.Item(argIndex2);
+//                        Event.SelectedUnitForEvent = SRC.UList.Item(uname);
 //                    }
 //                }
 
@@ -4676,8 +4522,7 @@
 //                {
 //                    if ((u.ID ?? "") == (Commands.SelectedTarget.ID ?? ""))
 //                    {
-//                        object argIndex3 = uname;
-//                        Commands.SelectedTarget = SRC.UList.Item(argIndex3);
+//                        Commands.SelectedTarget = SRC.UList.Item(uname);
 //                    }
 //                }
 
@@ -4685,14 +4530,12 @@
 //                {
 //                    if ((u.ID ?? "") == (Event.SelectedTargetForEvent.ID ?? ""))
 //                    {
-//                        object argIndex4 = uname;
-//                        Event.SelectedTargetForEvent = SRC.UList.Item(argIndex4);
+//                        Event.SelectedTargetForEvent = SRC.UList.Item(uname);
 //                    }
 //                }
 
-//                object argIndex5 = uname;
 //                {
-//                    var withBlock = SRC.UList.Item(argIndex5);
+//                    var withBlock = SRC.UList.Item(uname);
 //                    withBlock.UsedAction = anum;
 //                    if (withBlock.Status_Renamed == "出撃")
 //                    {
@@ -4751,16 +4594,12 @@
 //            {
 //                case 2:
 //                    {
-//                        string argvname1 = "次ステージ";
-//                        if (!Expression.IsGlobalVariableDefined(argvname1))
+//                        if (!Expression.IsGlobalVariableDefined("次ステージ"))
 //                        {
-//                            string argvname = "次ステージ";
-//                            Expression.DefineGlobalVariable(argvname);
+//                            Expression.DefineGlobalVariable("次ステージ");
 //                        }
 
-//                        string argvname2 = "次ステージ";
-//                        string argnew_value = GetArgAsString(2);
-//                        Expression.SetVariableAsString(argvname2, argnew_value);
+//                        Expression.SetVariableAsString("次ステージ", GetArgAsString(2));
 //                        break;
 //                    }
 
@@ -4808,12 +4647,9 @@
 //            }
 
 //            // 追加経験値を収得
-//            string argoname = "追加経験値無効";
-//            if (SRC.Turn > 0 && !Expression.IsOptionDefined(argoname))
+//            if (SRC.Turn > 0 && !Expression.IsOptionDefined("追加経験値無効"))
 //            {
-//                Unit argu1 = null;
-//                Unit argu2 = null;
-//                GUI.OpenMessageForm(u1: argu1, u2: argu2);
+//                GUI.OpenMessageForm(u1: null, u2: null);
 //                n = 0;
 //                msg = "";
 //                foreach (Pilot p in SRC.PList)
@@ -4845,8 +4681,7 @@
 //                    if (p.Unit_Renamed.CountPilot() > 0 && !p.IsSupport(p.Unit_Renamed))
 //                    {
 //                        // 追加パイロットがメインパイロットの場合
-//                        object argIndex1 = 1;
-//                        if (ReferenceEquals(p, p.Unit_Renamed.Pilot(argIndex1)) && !ReferenceEquals(p, p.Unit_Renamed.MainPilot()) && p.Unit_Renamed.MainPilot().MaxSP > 0)
+//                        if (ReferenceEquals(p, p.Unit_Renamed.Pilot(1)) && !ReferenceEquals(p, p.Unit_Renamed.MainPilot()) && p.Unit_Renamed.MainPilot().MaxSP > 0)
 //                        {
 //                            goto NextPilot;
 //                        }
@@ -4885,8 +4720,7 @@
 //                    n = (n + 1);
 //                    if (n == 4)
 //                    {
-//                        string argpname = "システム";
-//                        GUI.DisplayMessage(argpname, Strings.Mid(msg, 2));
+//                        GUI.DisplayMessage("システム", Strings.Mid(msg, 2));
 //                        msg = "";
 //                        n = 0;
 //                    }
@@ -4897,8 +4731,7 @@
 
 //                if (n > 0)
 //                {
-//                    string argpname1 = "システム";
-//                    GUI.DisplayMessage(argpname1, Strings.Mid(msg, 2));
+//                    GUI.DisplayMessage("システム", Strings.Mid(msg, 2));
 //                }
 
 //                GUI.CloseMessageForm();
@@ -4907,8 +4740,7 @@
 //            GUI.MainForm.Hide();
 
 //            // エピローグイベントを実行
-//            string arglname1 = "エピローグ";
-//            if (Event.IsEventDefined(arglname1))
+//            if (Event.IsEventDefined("エピローグ"))
 //            {
 //                // ハイパーモードや変身、能力コピーを解除
 //                foreach (Unit currentU1 in SRC.UList)
@@ -4916,24 +4748,19 @@
 //                    u = currentU1;
 //                    if (u.Status_Renamed != "他形態" && u.Status_Renamed != "旧主形態" && u.Status_Renamed != "旧形態")
 //                    {
-//                        string argfname = "ノーマルモード";
-//                        if (u.IsFeatureAvailable(argfname))
+//                        if (u.IsFeatureAvailable("ノーマルモード"))
 //                        {
 //                            string localLIndex() { object argIndex1 = "ノーマルモード"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-//                            string argnew_form = localLIndex();
-//                            u.Transform(argnew_form);
+//                            u.Transform(localLIndex());
 //                        }
 //                    }
 //                }
 
-//                string arglname = "エピローグ";
-//                if (Event.IsEventDefined(arglname, true))
+//                if (Event.IsEventDefined("エピローグ", true))
 //                {
 //                    Sound.StopBGM();
-//                    string argbgm_name = "Briefing";
-//                    string argbgm_name1 = Sound.BGMName(argbgm_name);
-//                    Sound.StartBGM(argbgm_name1);
+//                    Sound.StartBGM(Sound.BGMName("Briefing"));
 //                }
 
 //                SRC.Stage = "エピローグ";
@@ -4949,8 +4776,7 @@
 //                InterMission.InterMissionCommand();
 //                if (!SRC.IsSubStage)
 //                {
-//                    string argexpr = "次ステージ";
-//                    if (string.IsNullOrEmpty(Expression.GetValueAsString(argexpr)))
+//                    if (string.IsNullOrEmpty(Expression.GetValueAsString("次ステージ")))
 //                    {
 //                        Event.EventErrorMessage = "次のステージのファイル名が設定されていません";
 //                        ;
@@ -4964,8 +4790,7 @@
 //                         */
 //                    }
 
-//                    string argexpr1 = "次ステージ";
-//                    SRC.StartScenario(Expression.GetValueAsString(argexpr1));
+//                    SRC.StartScenario(Expression.GetValueAsString("次ステージ"));
 //                }
 //                else
 //                {
@@ -5167,8 +4992,7 @@
 
 //            bool localFileExists2() { string argfname = SRC.AppPath + fname1; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-//            string argfname = SRC.ScenarioPath + fname1;
-//            if (GeneralLib.FileExists(argfname))
+//            if (GeneralLib.FileExists(SRC.ScenarioPath + fname1))
 //            {
 //                fname1 = SRC.ScenarioPath + fname1;
 //            }
@@ -5397,8 +5221,7 @@
 //            }
 
 //            plevel = Conversions.ToShort(buf);
-//            string argoname = "レベル限界突破";
-//            if (Expression.IsOptionDefined(argoname))
+//            if (Expression.IsOptionDefined("レベル限界突破"))
 //            {
 //                if (plevel > 999)
 //                {
@@ -5482,13 +5305,11 @@
 
 //            if (num == 9)
 //            {
-//                string arggid = GetArgAsString(9);
-//                p = SRC.PList.Add(pname, plevel, uparty, arggid);
+//                p = SRC.PList.Add(pname, plevel, uparty, GetArgAsString(9));
 //            }
 //            else
 //            {
-//                string arggid1 = "";
-//                p = SRC.PList.Add(pname, plevel, uparty, gid: arggid1);
+//                p = SRC.PList.Add(pname, plevel, uparty, gid: "");
 //            }
 
 //            p.Ride(u);
@@ -5633,11 +5454,9 @@
 //            }
 
 //            // 破壊キャンセル状態にある場合は解除しておく
-//            object argIndex2 = "破壊キャンセル";
-//            if (u.IsConditionSatisfied(argIndex2))
+//            if (u.IsConditionSatisfied("破壊キャンセル"))
 //            {
-//                object argIndex1 = "破壊キャンセル";
-//                u.DeleteCondition(argIndex1);
+//                u.DeleteCondition("破壊キャンセル");
 //            }
 
 //            switch (u.Status_Renamed ?? "")
@@ -5686,8 +5505,7 @@
 //            foreach (Unit currentU in SRC.UList)
 //            {
 //                u = currentU;
-//                object argIndex3 = "憑依";
-//                if ((u.Party0 ?? "") == (uparty ?? "") && (u.Status_Renamed == "出撃" || u.Status_Renamed == "格納") && !u.IsConditionSatisfied(argIndex3))
+//                if ((u.Party0 ?? "") == (uparty ?? "") && (u.Status_Renamed == "出撃" || u.Status_Renamed == "格納") && !u.IsConditionSatisfied("憑依"))
 //                {
 //                    ExecDestroyCmdRet = LineNum + 1;
 //                    return ExecDestroyCmdRet;
@@ -5789,8 +5607,7 @@
 //            {
 //                {
 //                    var withBlock = SRC.UList;
-//                    object argIndex1 = uname;
-//                    if (withBlock.IsDefined(argIndex1))
+//                    if (withBlock.IsDefined(uname))
 //                    {
 //                        Unit localItem() { object argIndex1 = uname; var ret = withBlock.Item(argIndex1); return ret; }
 
@@ -6169,8 +5986,7 @@
 //            {
 //                {
 //                    var withBlock = SRC.UList;
-//                    object argIndex1 = uname;
-//                    if (withBlock.IsDefined(argIndex1))
+//                    if (withBlock.IsDefined(uname))
 //                    {
 //                        Unit localItem() { object argIndex1 = uname; var ret = withBlock.Item(argIndex1); return ret; }
 
@@ -6234,8 +6050,7 @@
 
 //            // 大文字・小文字、ひらがな・かたかなの違いを正しく判定できるように、
 //            // 名前をデータのそれとあわせる
-//            object argIndex1 = iname;
-//            if (SRC.IDList.IsDefined(argIndex1))
+//            if (SRC.IDList.IsDefined(iname))
 //            {
 //                ItemData localItem() { object argIndex1 = iname; var ret = SRC.IDList.Item(argIndex1); return ret; }
 
@@ -6245,8 +6060,7 @@
 //            // 装備するアイテムを検索 or 作成
 //            bool localIsDefined() { object argIndex1 = iname; var ret = SRC.IDList.IsDefined(argIndex1); return ret; }
 
-//            object argIndex3 = iname;
-//            if (SRC.IList.IsDefined(argIndex3))
+//            if (SRC.IList.IsDefined(iname))
 //            {
 //                Item localItem1() { object argIndex1 = (object)iname; var ret = SRC.IList.Item(argIndex1); return ret; }
 
@@ -6293,8 +6107,7 @@
 //                else
 //                {
 //                    // アイテムＩＤで指定した場合
-//                    object argIndex2 = (object)iname;
-//                    itm = SRC.IList.Item(argIndex2);
+//                    itm = SRC.IList.Item((object)iname);
 //                }
 //            }
 //            else if (localIsDefined())
@@ -6329,8 +6142,7 @@
 //                    {
 //                        if (withBlock2.Unit_Renamed is object)
 //                        {
-//                            object argIndex4 = withBlock2.ID;
-//                            withBlock2.Unit_Renamed.DeleteItem(argIndex4);
+//                            withBlock2.Unit_Renamed.DeleteItem(withBlock2.ID);
 //                        }
 
 //                        {
@@ -6340,15 +6152,9 @@
 //                            {
 //                                {
 //                                    var withBlock4 = withBlock3.MainPilot();
-//                                    object argIndex5 = "指揮";
-//                                    string argref_mode = "";
-//                                    cmd_lv = withBlock4.SkillLevel(argIndex5, ref_mode: argref_mode);
-//                                    object argIndex6 = "階級";
-//                                    string argref_mode1 = "";
-//                                    rank_lv = withBlock4.SkillLevel(argIndex6, ref_mode: argref_mode1);
-//                                    object argIndex7 = "広域サポート";
-//                                    string argref_mode2 = "";
-//                                    support_lv = withBlock4.SkillLevel(argIndex7, ref_mode: argref_mode2);
+//                                    cmd_lv = withBlock4.SkillLevel("指揮", ref_mode: "");
+//                                    rank_lv = withBlock4.SkillLevel("階級", ref_mode: "");
+//                                    support_lv = withBlock4.SkillLevel("広域サポート", ref_mode: "");
 //                                }
 //                            }
 
@@ -6380,13 +6186,7 @@
 //                            {
 //                                {
 //                                    var withBlock5 = withBlock3.MainPilot();
-//                                    object argIndex8 = "指揮";
-//                                    string argref_mode3 = "";
-//                                    object argIndex9 = "階級";
-//                                    string argref_mode4 = "";
-//                                    object argIndex10 = "広域サポート";
-//                                    string argref_mode5 = "";
-//                                    if (cmd_lv != withBlock5.SkillLevel(argIndex8, ref_mode: argref_mode3) || rank_lv != withBlock5.SkillLevel(argIndex9, ref_mode: argref_mode4) || support_lv != withBlock5.SkillLevel(argIndex10, ref_mode: argref_mode5))
+//                                    if (cmd_lv != withBlock5.SkillLevel("指揮", ref_mode: "") || rank_lv != withBlock5.SkillLevel("階級", ref_mode: "") || support_lv != withBlock5.SkillLevel("広域サポート", ref_mode: ""))
 //                                    {
 //                                        if (u.Status_Renamed == "出撃")
 //                                        {
@@ -6397,8 +6197,7 @@
 //                            }
 
 //                            // 最大弾数が変化した？
-//                            string argfname = "最大弾数増加";
-//                            if (itm.IsFeatureAvailable(argfname))
+//                            if (itm.IsFeatureAvailable("最大弾数増加"))
 //                            {
 //                                withBlock3.FullSupply();
 //                            }
@@ -6466,8 +6265,7 @@
 //                        }
 //                        else
 //                        {
-//                            object argIndex1 = (object)pname;
-//                            u = SRC.UList.Item2(argIndex1);
+//                            u = SRC.UList.Item2((object)pname);
 //                            if (u is null)
 //                            {
 //                                {
@@ -6547,8 +6345,7 @@
 //                foreach (Unit currentU1 in SRC.UList)
 //                {
 //                    u = currentU1;
-//                    object argIndex2 = "憑依";
-//                    if ((u.Party0 ?? "") == (uparty ?? "") && (u.Status_Renamed == "出撃" || u.Status_Renamed == "格納") && !u.IsConditionSatisfied(argIndex2))
+//                    if ((u.Party0 ?? "") == (uparty ?? "") && (u.Status_Renamed == "出撃" || u.Status_Renamed == "格納") && !u.IsConditionSatisfied("憑依"))
 //                    {
 //                        ExecEscapeCmdRet = LineNum + 1;
 //                        return ExecEscapeCmdRet;
@@ -6636,12 +6433,9 @@
 //            }
 
 //            // 追加経験値を収得
-//            string argoname = "追加経験値無効";
-//            if (SRC.Turn > 0 && !Expression.IsOptionDefined(argoname))
+//            if (SRC.Turn > 0 && !Expression.IsOptionDefined("追加経験値無効"))
 //            {
-//                Unit argu1 = null;
-//                Unit argu2 = null;
-//                GUI.OpenMessageForm(u1: argu1, u2: argu2);
+//                GUI.OpenMessageForm(u1: null, u2: null);
 //                n = 0;
 //                msg = "";
 //                foreach (Pilot p in SRC.PList)
@@ -6673,8 +6467,7 @@
 //                    if (p.Unit_Renamed.CountPilot() > 0 && !p.IsSupport(p.Unit_Renamed))
 //                    {
 //                        // 追加パイロットがメインパイロットの場合
-//                        object argIndex1 = 1;
-//                        if (ReferenceEquals(p, p.Unit_Renamed.Pilot(argIndex1)) && !ReferenceEquals(p, p.Unit_Renamed.MainPilot()) && p.Unit_Renamed.MainPilot().MaxSP > 0)
+//                        if (ReferenceEquals(p, p.Unit_Renamed.Pilot(1)) && !ReferenceEquals(p, p.Unit_Renamed.MainPilot()) && p.Unit_Renamed.MainPilot().MaxSP > 0)
 //                        {
 //                            goto NextPilot;
 //                        }
@@ -6713,8 +6506,7 @@
 //                    n = (n + 1);
 //                    if (n == 4)
 //                    {
-//                        string argpname = "システム";
-//                        GUI.DisplayMessage(argpname, Strings.Mid(msg, 2));
+//                        GUI.DisplayMessage("システム", Strings.Mid(msg, 2));
 //                        msg = "";
 //                        n = 0;
 //                    }
@@ -6725,8 +6517,7 @@
 
 //                if (n > 0)
 //                {
-//                    string argpname1 = "システム";
-//                    GUI.DisplayMessage(argpname1, Strings.Mid(msg, 2));
+//                    GUI.DisplayMessage("システム", Strings.Mid(msg, 2));
 //                }
 
 //                GUI.CloseMessageForm();
@@ -6735,8 +6526,7 @@
 //            GUI.MainForm.Hide();
 
 //            // エピローグイベントを実行
-//            string arglname1 = "エピローグ";
-//            if (Event.IsEventDefined(arglname1))
+//            if (Event.IsEventDefined("エピローグ"))
 //            {
 //                // ハイパーモードや変身、能力コピーを解除
 //                foreach (Unit currentU1 in SRC.UList)
@@ -6744,24 +6534,19 @@
 //                    u = currentU1;
 //                    if (u.Status_Renamed != "他形態" && u.Status_Renamed != "旧主形態" && u.Status_Renamed != "旧形態")
 //                    {
-//                        string argfname = "ノーマルモード";
-//                        if (u.IsFeatureAvailable(argfname))
+//                        if (u.IsFeatureAvailable("ノーマルモード"))
 //                        {
 //                            string localLIndex() { object argIndex1 = "ノーマルモード"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-//                            string argnew_form = localLIndex();
-//                            u.Transform(argnew_form);
+//                            u.Transform(localLIndex());
 //                        }
 //                    }
 //                }
 
-//                string arglname = "エピローグ";
-//                if (Event.IsEventDefined(arglname, true))
+//                if (Event.IsEventDefined("エピローグ", true))
 //                {
 //                    Sound.StopBGM();
-//                    string argbgm_name = "Briefing";
-//                    string argbgm_name1 = Sound.BGMName(argbgm_name);
-//                    Sound.StartBGM(argbgm_name1);
+//                    Sound.StartBGM(Sound.BGMName("Briefing"));
 //                }
 
 //                SRC.Stage = "エピローグ";
@@ -6926,8 +6711,7 @@
 //                            var withBlock = Event.SelectedUnitForEvent;
 //                            if (withBlock.CountPilot() > 0)
 //                            {
-//                                object argIndex1 = (object)1;
-//                                p = withBlock.Pilot(argIndex1);
+//                                p = withBlock.Pilot((object)1);
 //                            }
 //                            else
 //                            {
@@ -7054,8 +6838,7 @@
 //                ret = GUI.BitBlt(withBlock.picTmp.hDC, 0, 0, GUI.MainPWidth, GUI.MainPHeight, withBlock.picMain(0).hDC, 0, 0, GUI.SRCCOPY);
 //                // MOD END マージ
 
-//                var argpic = withBlock.picMain(0);
-//                Graphics.InitFade(argpic, num);
+//                Graphics.InitFade(withBlock.picMain(0), num);
 //                start_time = GeneralLib.timeGetTime();
 //                wait_time = 50;
 //                var loopTo = num;
@@ -7069,8 +6852,7 @@
 //                        }
 //                    }
 
-//                    var argpic1 = withBlock.picMain(0);
-//                    Graphics.DoFade(argpic1, i);
+//                    Graphics.DoFade(withBlock.picMain(0), i);
 //                    withBlock.picMain(0).Refresh();
 //                    cur_time = GeneralLib.timeGetTime();
 //                    while (cur_time < start_time + wait_time * (i + 1))
@@ -7136,8 +6918,7 @@
 //            GUI.SaveScreen();
 //            {
 //                var withBlock = GUI.MainForm;
-//                var argpic = withBlock.picMain(0);
-//                Graphics.InitFade(argpic, num);
+//                Graphics.InitFade(withBlock.picMain(0), num);
 //                start_time = GeneralLib.timeGetTime();
 //                wait_time = 50;
 //                var loopTo = num;
@@ -7157,8 +6938,7 @@
 //                        }
 //                    }
 
-//                    var argpic1 = withBlock.picMain(0);
-//                    Graphics.DoFade(argpic1, num - i);
+//                    Graphics.DoFade(withBlock.picMain(0), num - i);
 //                    withBlock.picMain(0).Refresh();
 //                    cur_time = GeneralLib.timeGetTime();
 //                    while (cur_time < start_time + wait_time * (i + 1))
@@ -7404,8 +7184,7 @@
 //            {
 //                case 1:
 //                    {
-//                        object argIndex1 = (object)1;
-//                        buf = Event.SelectedUnitForEvent.Pilot(argIndex1).Name;
+//                        buf = Event.SelectedUnitForEvent.Pilot((object)1).Name;
 //                        break;
 //                    }
 
@@ -7430,8 +7209,7 @@
 //                             */
 //                        }
 
-//                        object argIndex2 = (object)buf;
-//                        if (SRC.PList.IsDefined(argIndex2))
+//                        if (SRC.PList.IsDefined((object)buf))
 //                        {
 //                            Pilot localItem() { object argIndex1 = (object)buf; var ret = SRC.PList.Item(argIndex1); return ret; }
 
@@ -7905,13 +7683,9 @@
 //                        }
 
 //                        // 配列を検索し、配列要素を見つける
-//                        string argstring24 = "パイロット一覧(";
-//                        string argstring25 = "ユニット一覧(";
-//                        if (GeneralLib.InStrNotNest(aname, argstring24) == 1)
+//                        if (GeneralLib.InStrNotNest(aname, "パイロット一覧(") == 1)
 //                        {
-//                            string argstring2 = "(";
-//                            string argstring21 = "(";
-//                            key_type = Strings.Mid(aname, GeneralLib.InStrNotNest(aname, argstring2) + 1, Strings.Len(aname) - GeneralLib.InStrNotNest(aname, argstring21) - 1);
+//                            key_type = Strings.Mid(aname, GeneralLib.InStrNotNest(aname, "(") + 1, Strings.Len(aname) - GeneralLib.InStrNotNest(aname, "(") - 1);
 //                            key_type = Expression.GetValueAsString(key_type);
 //                            if (key_type != "名称")
 //                            {
@@ -7933,9 +7707,7 @@
 //                                            var withBlock = p.Unit_Renamed;
 //                                            if (withBlock.CountPilot() > 0)
 //                                            {
-//                                                object argIndex1 = (object)1;
-//                                                object argIndex2 = (object)1;
-//                                                if (ReferenceEquals(p, withBlock.MainPilot()) && !ReferenceEquals(p, withBlock.Pilot(argIndex2)))
+//                                                if (ReferenceEquals(p, withBlock.MainPilot()) && !ReferenceEquals(p, withBlock.Pilot((object)1)))
 //                                                {
 //                                                    goto NextPilot1;
 //                                                }
@@ -8048,9 +7820,7 @@
 //                                            var withBlock1 = p.Unit_Renamed;
 //                                            if (withBlock1.CountPilot() > 0)
 //                                            {
-//                                                object argIndex3 = (object)1;
-//                                                object argIndex4 = (object)1;
-//                                                if (ReferenceEquals(p, withBlock1.MainPilot()) && !ReferenceEquals(p, withBlock1.Pilot(argIndex4)))
+//                                                if (ReferenceEquals(p, withBlock1.MainPilot()) && !ReferenceEquals(p, withBlock1.Pilot((object)1)))
 //                                                {
 //                                                    goto NextPilot2;
 //                                                }
@@ -8094,11 +7864,9 @@
 //                                }
 //                            }
 //                        }
-//                        else if (GeneralLib.InStrNotNest(aname, argstring25) == 1)
+//                        else if (GeneralLib.InStrNotNest(aname, "ユニット一覧(") == 1)
 //                        {
-//                            string argstring22 = "(";
-//                            string argstring23 = "(";
-//                            key_type = Strings.Mid(aname, GeneralLib.InStrNotNest(aname, argstring22) + 1, Strings.Len(aname) - GeneralLib.InStrNotNest(aname, argstring23) - 1);
+//                            key_type = Strings.Mid(aname, GeneralLib.InStrNotNest(aname, "(") + 1, Strings.Len(aname) - GeneralLib.InStrNotNest(aname, "(") - 1);
 //                            key_type = Expression.GetValueAsString(key_type);
 //                            if (key_type != "名称")
 //                            {
@@ -8156,14 +7924,11 @@
 //                                                    var loopTo4 = u.CountWeapon();
 //                                                    for (j = 1; j <= loopTo4; j++)
 //                                                    {
-//                                                        string argattr = "合";
-//                                                        if (u.IsWeaponMastered(j) && !u.IsDisabled(u.Weapon(j).Name) && !u.IsWeaponClassifiedAs(j, argattr))
+//                                                        if (u.IsWeaponMastered(j) && !u.IsDisabled(u.Weapon(j).Name) && !u.IsWeaponClassifiedAs(j, "合"))
 //                                                        {
-//                                                            string argtarea1 = "";
-//                                                            if (u.WeaponPower(j, argtarea1) > key_list[i])
+//                                                            if (u.WeaponPower(j, "") > key_list[i])
 //                                                            {
-//                                                                string argtarea = "";
-//                                                                key_list[i] = u.WeaponPower(j, argtarea);
+//                                                                key_list[i] = u.WeaponPower(j, "");
 //                                                            }
 //                                                        }
 //                                                    }
@@ -8176,8 +7941,7 @@
 //                                                    var loopTo5 = u.CountWeapon();
 //                                                    for (j = 1; j <= loopTo5; j++)
 //                                                    {
-//                                                        string argattr1 = "合";
-//                                                        if (u.IsWeaponMastered(j) && !u.IsDisabled(u.Weapon(j).Name) && !u.IsWeaponClassifiedAs(j, argattr1))
+//                                                        if (u.IsWeaponMastered(j) && !u.IsDisabled(u.Weapon(j).Name) && !u.IsWeaponClassifiedAs(j, "合"))
 //                                                        {
 //                                                            if (u.WeaponMaxRange(j) > key_list[i])
 //                                                            {
@@ -8409,13 +8173,11 @@
 //                if (ArgNum < 4)
 //                {
 //                    var tmp = Event.ForEachSet;
-//                    object argIndex5 = (object)tmp[1];
-//                    Event.SelectedUnitForEvent = SRC.UList.Item(argIndex5);
+//                    Event.SelectedUnitForEvent = SRC.UList.Item((object)tmp[1]);
 //                }
 //                else
 //                {
-//                    string argvname = GetArg(2);
-//                    Expression.SetVariableAsString(argvname, Event.ForEachSet[1]);
+//                    Expression.SetVariableAsString(GetArg(2), Event.ForEachSet[1]);
 //                }
 
 //                ExecForEachCmdRet = LineNum + 1;
@@ -8546,14 +8308,12 @@
 //                                    {
 //                                        // ユニット＆パイロットに対するForEach
 //                                        var tmp = Event.ForEachSet;
-//                                        object argIndex1 = tmp[Event.ForEachIndex];
-//                                        Event.SelectedUnitForEvent = SRC.UList.Item(argIndex1);
+//                                        Event.SelectedUnitForEvent = SRC.UList.Item(tmp[Event.ForEachIndex]);
 //                                    }
 //                                    else
 //                                    {
 //                                        // 配列に対するForEach
-//                                        string argvname = withBlock.GetArg(2);
-//                                        Expression.SetVariableAsString(argvname, Event.ForEachSet[Event.ForEachIndex]);
+//                                        Expression.SetVariableAsString(withBlock.GetArg(2), Event.ForEachSet[Event.ForEachIndex]);
 //                                    }
 
 //                                    ExecNextCmdRet = i + 1;
@@ -8725,8 +8485,7 @@
 //                    }
 
 //                    // パイロットを下ろす
-//                    object argIndex1 = 1;
-//                    u.Pilot(argIndex1).GetOff(true);
+//                    u.Pilot(1).GetOff(true);
 //                    if (u.Status_Renamed == "出撃")
 //                    {
 //                        // ユニットをマップ上に戻す
@@ -8795,8 +8554,7 @@
 //            }
 
 //            // ラベルが式でないと仮定
-//            string arglname = GetArg(2);
-//            ExecGotoCmdRet = Event.FindLabel(arglname);
+//            ExecGotoCmdRet = Event.FindLabel(GetArg(2));
 
 //            // ラベルが見つかった？
 //            if (ExecGotoCmdRet > 0)
@@ -8806,8 +8564,7 @@
 //            }
 
 //            // ラベルは式？
-//            string arglname1 = GetArgAsString(2);
-//            ExecGotoCmdRet = Event.FindLabel(arglname1);
+//            ExecGotoCmdRet = Event.FindLabel(GetArgAsString(2));
 //            if (ExecGotoCmdRet == 0)
 //            {
 //                Event.EventErrorMessage = "ラベル「" + GetArg(2) + "」がみつかりません";
@@ -8912,12 +8669,10 @@
 //            {
 //                case 1:
 //                    {
-//                        object argIndex2 = expr;
-//                        if (SRC.PList.IsDefined(argIndex2))
+//                        if (SRC.PList.IsDefined(expr))
 //                        {
-//                            object argIndex1 = expr;
 //                            {
-//                                var withBlock = SRC.PList.Item(argIndex1);
+//                                var withBlock = SRC.PList.Item(expr);
 //                                if (withBlock.Unit_Renamed is null)
 //                                {
 //                                    flag = false;
@@ -8953,12 +8708,10 @@
 //                case 2:
 //                    {
 //                        pname = GeneralLib.ListIndex(expr, 2);
-//                        object argIndex4 = pname;
-//                        if (SRC.PList.IsDefined(argIndex4))
+//                        if (SRC.PList.IsDefined(pname))
 //                        {
-//                            object argIndex3 = pname;
 //                            {
-//                                var withBlock2 = SRC.PList.Item(argIndex3);
+//                                var withBlock2 = SRC.PList.Item(pname);
 //                                if (withBlock2.Unit_Renamed is null)
 //                                {
 //                                    flag = true;
@@ -9026,12 +8779,10 @@
 //                    {
 //                        if (flag)
 //                        {
-//                            string arglname = GetArg(5);
-//                            ret = Event.FindLabel(arglname);
+//                            ret = Event.FindLabel(GetArg(5));
 //                            if (ret == 0)
 //                            {
-//                                string arglname1 = GetArgAsString(5);
-//                                ret = Event.FindLabel(arglname1);
+//                                ret = Event.FindLabel(GetArgAsString(5));
 //                                if (ret == 0)
 //                                {
 //                                    Event.EventErrorMessage = "ラベル「" + GetArg(5) + "」がみつかりません";
@@ -9107,12 +8858,10 @@
 //                                            {
 //                                                case 1:
 //                                                    {
-//                                                        object argIndex6 = (object)expr;
-//                                                        if (SRC.PList.IsDefined(argIndex6))
+//                                                        if (SRC.PList.IsDefined((object)expr))
 //                                                        {
-//                                                            object argIndex5 = (object)expr;
 //                                                            {
-//                                                                var withBlock5 = SRC.PList.Item(argIndex5);
+//                                                                var withBlock5 = SRC.PList.Item((object)expr);
 //                                                                if (withBlock5.Unit_Renamed is null)
 //                                                                {
 //                                                                    flag = false;
@@ -9148,12 +8897,10 @@
 //                                                case 2:
 //                                                    {
 //                                                        pname = GeneralLib.ListIndex(expr, 2);
-//                                                        object argIndex8 = (object)pname;
-//                                                        if (SRC.PList.IsDefined(argIndex8))
+//                                                        if (SRC.PList.IsDefined((object)pname))
 //                                                        {
-//                                                            object argIndex7 = (object)pname;
 //                                                            {
-//                                                                var withBlock7 = SRC.PList.Item(argIndex7);
+//                                                                var withBlock7 = SRC.PList.Item((object)pname);
 //                                                                if (withBlock7.Unit_Renamed is null)
 //                                                                {
 //                                                                    flag = true;
@@ -9439,8 +9186,7 @@
 //                    }
 //            }
 
-//            string argvname = GetArg(2);
-//            Expression.SetVariableAsString(argvname, str_Renamed);
+//            Expression.SetVariableAsString(GetArg(2), str_Renamed);
 //            ExecInputCmdRet = LineNum + 1;
 //            return ExecInputCmdRet;
 //        }
@@ -9486,8 +9232,7 @@
 //                    Expression.DefineGlobalVariable(vname);
 //                }
 
-//                string argnew_value = GetArgAsString(3);
-//                Expression.SetVariableAsString(vname, argnew_value);
+//                Expression.SetVariableAsString(vname, GetArgAsString(3));
 //            }
 
 //            // MOD START マージ
@@ -9561,8 +9306,7 @@
 
 //                        bool localIsDefined1() { object argIndex1 = (object)pname; var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
-//                        object argIndex2 = (object)pname;
-//                        if (SRC.PList.IsDefined(argIndex2))
+//                        if (SRC.PList.IsDefined((object)pname))
 //                        {
 //                            Pilot localItem() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
@@ -9588,8 +9332,7 @@
 //                            if ((pname ?? "") == (localItem2().ID ?? ""))
 //                            {
 //                                // UPGRADE_WARNING: オブジェクト u の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-//                                object argIndex1 = (object)pname;
-//                                u = SRC.UList.Item(argIndex1);
+//                                u = SRC.UList.Item((object)pname);
 //                            }
 //                            else
 //                            {
@@ -9654,8 +9397,7 @@
 
 //            if (u is null)
 //            {
-//                object argIndex3 = pname;
-//                if (SRC.PList.IsDefined(argIndex3))
+//                if (SRC.PList.IsDefined(pname))
 //                {
 //                    Pilot localItem3() { object argIndex1 = pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
@@ -9744,8 +9486,7 @@
 //                    }
 //            }
 
-//            string argfname = "母艦";
-//            if (u1.IsFeatureAvailable(argfname))
+//            if (u1.IsFeatureAvailable("母艦"))
 //            {
 //                Event.EventErrorMessage = u1.Name + "は母艦なので格納出来ません";
 //                ;
@@ -9759,8 +9500,7 @@
 //                 */
 //            }
 
-//            string argfname1 = "母艦";
-//            if (!u2.IsFeatureAvailable(argfname1))
+//            if (!u2.IsFeatureAvailable("母艦"))
 //            {
 //                Event.EventErrorMessage = u2.Name + "は母艦能力を持っていません";
 //                ;
@@ -9961,8 +9701,7 @@
 
 //                        bool localIsDefined1() { object argIndex1 = (object)pname; var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
-//                        object argIndex2 = (object)pname;
-//                        if (SRC.PList.IsDefined(argIndex2))
+//                        if (SRC.PList.IsDefined((object)pname))
 //                        {
 //                            Pilot localItem() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
@@ -9988,8 +9727,7 @@
 
 //                            if ((pname ?? "") == (localItem2().ID ?? ""))
 //                            {
-//                                object argIndex1 = (object)pname;
-//                                u = SRC.UList.Item(argIndex1);
+//                                u = SRC.UList.Item((object)pname);
 //                            }
 //                            else
 //                            {
@@ -10064,8 +9802,7 @@
 
 //                if (u.Party0 != "味方")
 //                {
-//                    string argnew_party = "味方";
-//                    u.ChangeParty(argnew_party);
+//                    u.ChangeParty("味方");
 //                }
 
 //                if (u.Status_Renamed != "他形態" && u.Status_Renamed != "旧主形態" && u.Status_Renamed != "旧形態")
@@ -10115,8 +9852,7 @@
 //                            var withBlock = Event.SelectedUnitForEvent;
 //                            if (withBlock.CountPilot() > 0)
 //                            {
-//                                object argIndex1 = (object)1;
-//                                p = withBlock.Pilot(argIndex1);
+//                                p = withBlock.Pilot((object)1);
 //                            }
 //                        }
 
@@ -10151,8 +9887,7 @@
 //                    }
 //                }
 
-//                string argoname = "レベル限界突破";
-//                if (Expression.IsOptionDefined(argoname))
+//                if (Expression.IsOptionDefined("レベル限界突破"))
 //                {
 //                    p.Level = GeneralLib.MinLng(GeneralLib.MaxLng(p.Level + num, 1), 999);
 //                }
@@ -10162,23 +9897,18 @@
 //                }
 
 //                // 闘争本能入手？
-//                string argsname = "闘争本能";
-//                if (p.IsSkillAvailable(argsname))
+//                if (p.IsSkillAvailable("闘争本能"))
 //                {
 //                    if (p.MinMorale > 100)
 //                    {
 //                        if (p.Morale == p.MinMorale)
 //                        {
-//                            object argIndex2 = "闘争本能";
-//                            string argref_mode = "";
-//                            p.Morale = (p.MinMorale + 5d * p.SkillLevel(argIndex2, ref_mode: argref_mode));
+//                            p.Morale = (p.MinMorale + 5d * p.SkillLevel("闘争本能", ref_mode: ""));
 //                        }
 //                    }
 //                    else if (p.Morale == 100)
 //                    {
-//                        object argIndex3 = "闘争本能";
-//                        string argref_mode1 = "";
-//                        p.Morale = (100d + 5d * p.SkillLevel(argIndex3, ref_mode: argref_mode1));
+//                        p.Morale = (100d + 5d * p.SkillLevel("闘争本能", ref_mode: ""));
 //                    }
 //                }
 
@@ -10413,8 +10143,7 @@
 //            }
 
 //            buf = FileSystem.LineInput(GetArgAsLong(2));
-//            string argvname = GetArg(3);
-//            Expression.SetVariableAsString(argvname, buf);
+//            Expression.SetVariableAsString(GetArg(3), buf);
 //            ExecLineReadCmdRet = LineNum + 1;
 //            return ExecLineReadCmdRet;
 //        }
@@ -10471,83 +10200,62 @@
 //            {
 //                SRC.IncludeData(new_titles[i]);
 //                tfolder = SRC.SearchDataFolder(new_titles[i]);
-//                string argfname1 = tfolder + @"\include.eve";
-//                if (GeneralLib.FileExists(argfname1))
+//                if (GeneralLib.FileExists(tfolder + @"\include.eve"))
 //                {
-//                    string argfname = tfolder + @"\include.eve";
-//                    Event.LoadEventData2(argfname, Information.UBound(Event.EventData));
+//                    Event.LoadEventData2(tfolder + @"\include.eve", Information.UBound(Event.EventData));
 //                }
 //            }
 
 //            // ローカルデータの読みこみ
-//            string argfname3 = SRC.ScenarioPath + @"Data\alias.txt";
-//            if (GeneralLib.FileExists(argfname3))
+//            if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\alias.txt"))
 //            {
-//                string argfname2 = SRC.ScenarioPath + @"Data\alias.txt";
-//                SRC.ALDList.Load(argfname2);
+//                SRC.ALDList.Load(SRC.ScenarioPath + @"Data\alias.txt");
 //            }
 
 //            bool localFileExists() { string argfname = SRC.ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-//            string argfname6 = SRC.ScenarioPath + @"Data\sp.txt";
-//            if (GeneralLib.FileExists(argfname6))
+//            if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\sp.txt"))
 //            {
-//                string argfname4 = SRC.ScenarioPath + @"Data\sp.txt";
-//                SRC.SPDList.Load(argfname4);
+//                SRC.SPDList.Load(SRC.ScenarioPath + @"Data\sp.txt");
 //            }
 //            else if (localFileExists())
 //            {
-//                string argfname5 = SRC.ScenarioPath + @"Data\mind.txt";
-//                SRC.SPDList.Load(argfname5);
+//                SRC.SPDList.Load(SRC.ScenarioPath + @"Data\mind.txt");
 //            }
 
-//            string argfname8 = SRC.ScenarioPath + @"Data\pilot.txt";
-//            if (GeneralLib.FileExists(argfname8))
+//            if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\pilot.txt"))
 //            {
-//                string argfname7 = SRC.ScenarioPath + @"Data\pilot.txt";
-//                SRC.PDList.Load(argfname7);
+//                SRC.PDList.Load(SRC.ScenarioPath + @"Data\pilot.txt");
 //            }
 
-//            string argfname10 = SRC.ScenarioPath + @"Data\non_pilot.txt";
-//            if (GeneralLib.FileExists(argfname10))
+//            if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\non_pilot.txt"))
 //            {
-//                string argfname9 = SRC.ScenarioPath + @"Data\non_pilot.txt";
-//                SRC.NPDList.Load(argfname9);
+//                SRC.NPDList.Load(SRC.ScenarioPath + @"Data\non_pilot.txt");
 //            }
 
-//            string argfname12 = SRC.ScenarioPath + @"Data\robot.txt";
-//            if (GeneralLib.FileExists(argfname12))
+//            if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\robot.txt"))
 //            {
-//                string argfname11 = SRC.ScenarioPath + @"Data\robot.txt";
-//                SRC.UDList.Load(argfname11);
+//                SRC.UDList.Load(SRC.ScenarioPath + @"Data\robot.txt");
 //            }
 
-//            string argfname14 = SRC.ScenarioPath + @"Data\unit.txt";
-//            if (GeneralLib.FileExists(argfname14))
+//            if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\unit.txt"))
 //            {
-//                string argfname13 = SRC.ScenarioPath + @"Data\unit.txt";
-//                SRC.UDList.Load(argfname13);
+//                SRC.UDList.Load(SRC.ScenarioPath + @"Data\unit.txt");
 //            }
 
-//            string argfname16 = SRC.ScenarioPath + @"Data\pilot_message.txt";
-//            if (GeneralLib.FileExists(argfname16))
+//            if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\pilot_message.txt"))
 //            {
-//                string argfname15 = SRC.ScenarioPath + @"Data\pilot_message.txt";
-//                SRC.MDList.Load(argfname15);
+//                SRC.MDList.Load(SRC.ScenarioPath + @"Data\pilot_message.txt");
 //            }
 
-//            string argfname18 = SRC.ScenarioPath + @"Data\pilot_dialog.txt";
-//            if (GeneralLib.FileExists(argfname18))
+//            if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\pilot_dialog.txt"))
 //            {
-//                string argfname17 = SRC.ScenarioPath + @"Data\pilot_dialog.txt";
-//                SRC.DDList.Load(argfname17);
+//                SRC.DDList.Load(SRC.ScenarioPath + @"Data\pilot_dialog.txt");
 //            }
 
-//            string argfname20 = SRC.ScenarioPath + @"Data\item.txt";
-//            if (GeneralLib.FileExists(argfname20))
+//            if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\item.txt"))
 //            {
-//                string argfname19 = SRC.ScenarioPath + @"Data\item.txt";
-//                SRC.IDList.Load(argfname19);
+//                SRC.IDList.Load(SRC.ScenarioPath + @"Data\item.txt");
 //            }
 
 //            var loopTo3 = Information.UBound(Event.EventData);
@@ -10570,8 +10278,7 @@
 //            {
 //                if (Strings.Right(Event.EventData[i], 1) == ":")
 //                {
-//                    string arglname = Strings.Left(Event.EventData[i], Strings.Len(Event.EventData[i]) - 1);
-//                    Event.AddLabel(arglname, i);
+//                    Event.AddLabel(Strings.Left(Event.EventData[i], Strings.Len(Event.EventData[i]) - 1), i);
 //                }
 //            }
 
@@ -10811,8 +10518,7 @@
 //                            {
 //                                Pilot localPilot() { object argIndex1 = i; var ret = withBlock.Pilot(argIndex1); return ret; }
 
-//                                string argvname = "搭乗ユニット[" + localPilot().ID + "]";
-//                                Expression.SetVariableAsString(argvname, withBlock.ID);
+//                                Expression.SetVariableAsString("搭乗ユニット[" + localPilot().ID + "]", withBlock.ID);
 //                            }
 
 //                            var loopTo1 = withBlock.CountSupport();
@@ -10820,8 +10526,7 @@
 //                            {
 //                                Pilot localSupport() { object argIndex1 = i; var ret = withBlock.Support(argIndex1); return ret; }
 
-//                                string argvname1 = "搭乗ユニット[" + localSupport().ID + "]";
-//                                Expression.SetVariableAsString(argvname1, withBlock.ID);
+//                                Expression.SetVariableAsString("搭乗ユニット[" + localSupport().ID + "]", withBlock.ID);
 //                            }
 //                        }
 //                    }
@@ -10829,13 +10534,8 @@
 //            }
 
 //            // マップをクリア
-//            string argfname = "";
-//            Map.LoadMapData(argfname);
-//            string argdraw_mode = "";
-//            string argdraw_option = "ステータス";
-//            int argfilter_color = 0;
-//            double argfilter_trans_par = 0d;
-//            GUI.SetupBackground(argdraw_mode, argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
+//            Map.LoadMapData("");
+//            GUI.SetupBackground("", "ステータス", filter_color: 0, filter_trans_par: 0d);
 
 //            // ユニット一覧を作成
 //            key_type = GetArgAsString(2);
@@ -10976,8 +10676,7 @@
 
 //                        if (withBlock2.Unit_Renamed is object)
 //                        {
-//                            object argIndex1 = "追加パイロット";
-//                            if ((withBlock2.Name ?? "") == (withBlock2.Unit_Renamed.FeatureData(argIndex1) ?? ""))
+//                            if ((withBlock2.Name ?? "") == (withBlock2.Unit_Renamed.FeatureData("追加パイロット") ?? ""))
 //                            {
 //                                // 追加パイロットは勘定に入れない
 //                                goto NextPilot2;
@@ -11052,40 +10751,29 @@
 //                }
 
 //                // ダミーユニットに載せる
-//                string argfname1 = "ダミーユニット";
 //                if (p.Unit_Renamed is null)
 //                {
-//                    object argIndex2 = p.Name + "ステータス表示用ユニット";
-//                    if (SRC.UDList.IsDefined(argIndex2))
+//                    if (SRC.UDList.IsDefined(p.Name + "ステータス表示用ユニット"))
 //                    {
-//                        string arguname = p.Name + "ステータス表示用ユニット";
-//                        string arguparty = "味方";
-//                        u = SRC.UList.Add(arguname, 0, arguparty);
+//                        u = SRC.UList.Add(p.Name + "ステータス表示用ユニット", 0, "味方");
 //                    }
 //                    else
 //                    {
-//                        string arguname1 = "ステータス表示用ダミーユニット";
-//                        string arguparty1 = "味方";
-//                        u = SRC.UList.Add(arguname1, 0, arguparty1);
+//                        u = SRC.UList.Add("ステータス表示用ダミーユニット", 0, "味方");
 //                    }
 
 //                    p.Ride(u);
 //                }
-//                else if (!p.Unit_Renamed.IsFeatureAvailable(argfname1))
+//                else if (!p.Unit_Renamed.IsFeatureAvailable("ダミーユニット"))
 //                {
 //                    p.GetOff();
-//                    object argIndex3 = p.Name + "ステータス表示用ユニット";
-//                    if (SRC.UDList.IsDefined(argIndex3))
+//                    if (SRC.UDList.IsDefined(p.Name + "ステータス表示用ユニット"))
 //                    {
-//                        string arguname2 = p.Name + "ステータス表示用ユニット";
-//                        string arguparty2 = "味方";
-//                        u = SRC.UList.Add(arguname2, 0, arguparty2);
+//                        u = SRC.UList.Add(p.Name + "ステータス表示用ユニット", 0, "味方");
 //                    }
 //                    else
 //                    {
-//                        string arguname3 = "ステータス表示用ダミーユニット";
-//                        string arguparty3 = "味方";
-//                        u = SRC.UList.Add(arguname3, 0, arguparty3);
+//                        u = SRC.UList.Add("ステータス表示用ダミーユニット", 0, "味方");
 //                    }
 
 //                    p.Ride(u);
@@ -11100,37 +10788,29 @@
 //                u.StandBy(xx, yy, "非同期");
 
 //                // プレイヤーが操作できないように
-//                string argcname = "非操作";
-//                string argcdata = "";
-//                u.AddCondition(argcname, -1, cdata: argcdata);
+//                u.AddCondition("非操作", -1, cdata: "");
 
 //                // パイロットの愛称を表示
-//                string argmsg = p.get_Nickname(false);
-//                GUI.DrawString(argmsg, 32 * xx + 2, 32 * yy - 31);
+//                GUI.DrawString(p.get_Nickname(false), 32 * xx + 2, 32 * yy - 31);
 //                p.get_Nickname(false) = argmsg;
 //                switch (key_type ?? "")
 //                {
 //                    case "レベル":
 //                    case "名称":
 //                        {
-//                            string argmsg1 = "Lv" + SrcFormatter.Format(p.Level);
-//                            GUI.DrawString(argmsg1, 32 * xx + 2, 32 * yy - 15);
+//                            GUI.DrawString("Lv" + SrcFormatter.Format(p.Level), 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
 
 //                    case "ＳＰ":
 //                        {
-//                            string argtname = "SP";
-//                            string argmsg2 = Expression.Term(argtname, u) + SrcFormatter.Format(key_list[i]);
-//                            GUI.DrawString(argmsg2, 32 * xx + 2, 32 * yy - 15);
+//                            GUI.DrawString(Expression.Term("SP", u) + SrcFormatter.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
 
 //                    case "格闘":
 //                        {
-//                            string argtname1 = "格闘";
-//                            string argmsg3 = Strings.Left(Expression.Term(argtname1, u), 1) + SrcFormatter.Format(key_list[i]);
-//                            GUI.DrawString(argmsg3, 32 * xx + 2, 32 * yy - 15);
+//                            GUI.DrawString(Strings.Left(Expression.Term("格闘", u), 1) + SrcFormatter.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
 
@@ -11138,15 +10818,11 @@
 //                        {
 //                            if (p.HasMana())
 //                            {
-//                                string argtname2 = "魔力";
-//                                string argmsg4 = Strings.Left(Expression.Term(argtname2, u), 1) + SrcFormatter.Format(key_list[i]);
-//                                GUI.DrawString(argmsg4, 32 * xx + 2, 32 * yy - 15);
+//                                GUI.DrawString(Strings.Left(Expression.Term("魔力", u), 1) + SrcFormatter.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
 //                            }
 //                            else
 //                            {
-//                                string argtname3 = "射撃";
-//                                string argmsg5 = Strings.Left(Expression.Term(argtname3, u), 1) + SrcFormatter.Format(key_list[i]);
-//                                GUI.DrawString(argmsg5, 32 * xx + 2, 32 * yy - 15);
+//                                GUI.DrawString(Strings.Left(Expression.Term("射撃", u), 1) + SrcFormatter.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
 //                            }
 
 //                            break;
@@ -11154,33 +10830,25 @@
 
 //                    case "命中":
 //                        {
-//                            string argtname4 = "命中";
-//                            string argmsg6 = Strings.Left(Expression.Term(argtname4, u), 1) + SrcFormatter.Format(key_list[i]);
-//                            GUI.DrawString(argmsg6, 32 * xx + 2, 32 * yy - 15);
+//                            GUI.DrawString(Strings.Left(Expression.Term("命中", u), 1) + SrcFormatter.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
 
 //                    case "回避":
 //                        {
-//                            string argtname5 = "回避";
-//                            string argmsg7 = Strings.Left(Expression.Term(argtname5, u), 1) + SrcFormatter.Format(key_list[i]);
-//                            GUI.DrawString(argmsg7, 32 * xx + 2, 32 * yy - 15);
+//                            GUI.DrawString(Strings.Left(Expression.Term("回避", u), 1) + SrcFormatter.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
 
 //                    case "技量":
 //                        {
-//                            string argtname6 = "技量";
-//                            string argmsg8 = Strings.Left(Expression.Term(argtname6, u), 1) + SrcFormatter.Format(key_list[i]);
-//                            GUI.DrawString(argmsg8, 32 * xx + 2, 32 * yy - 15);
+//                            GUI.DrawString(Strings.Left(Expression.Term("技量", u), 1) + SrcFormatter.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
 
 //                    case "反応":
 //                        {
-//                            string argtname7 = "反応";
-//                            string argmsg9 = Strings.Left(Expression.Term(argtname7, u), 1) + SrcFormatter.Format(key_list[i]);
-//                            GUI.DrawString(argmsg9, 32 * xx + 2, 32 * yy - 15);
+//                            GUI.DrawString(Strings.Left(Expression.Term("反応", u), 1) + SrcFormatter.Format(key_list[i]), 32 * xx + 2, 32 * yy - 15);
 //                            break;
 //                        }
 //                }
@@ -11211,8 +10879,7 @@
 //        {
 //            int ExecMakeUnitListCmdRet = default;
 //            // ユニット一覧を作成
-//            string argsmode = GetArgAsString(2);
-//            Event.MakeUnitList(argsmode);
+//            Event.MakeUnitList(GetArgAsString(2));
 //            ExecMakeUnitListCmdRet = LineNum + 1;
 //            return ExecMakeUnitListCmdRet;
 //        }
@@ -11233,8 +10900,7 @@
 //                            var loopTo = withBlock.CountAbility();
 //                            for (a = 1; a <= loopTo; a++)
 //                            {
-//                                string argattr = "Ｍ";
-//                                if ((GetArgAsString(3) ?? "") == (withBlock.Ability(a).Name ?? "") && withBlock.IsAbilityClassifiedAs(a, argattr))
+//                                if ((GetArgAsString(3) ?? "") == (withBlock.Ability(a).Name ?? "") && withBlock.IsAbilityClassifiedAs(a, "Ｍ"))
 //                                {
 //                                    break;
 //                                }
@@ -11284,8 +10950,7 @@
 //                        var loopTo1 = u.CountAbility();
 //                        for (a = 1; a <= loopTo1; a++)
 //                        {
-//                            string argattr1 = "Ｍ";
-//                            if ((GetArgAsString(2) ?? "") == (u.Ability(a).Name ?? "") && u.IsAbilityClassifiedAs(a, argattr1))
+//                            if ((GetArgAsString(2) ?? "") == (u.Ability(a).Name ?? "") && u.IsAbilityClassifiedAs(a, "Ｍ"))
 //                            {
 //                                break;
 //                            }
@@ -11358,9 +11023,7 @@
 //                 */
 //            }
 
-//            Unit argu1 = null;
-//            Unit argu2 = null;
-//            GUI.OpenMessageForm(u1: argu1, u2: argu2);
+//            GUI.OpenMessageForm(u1: null, u2: null);
 //            u.ExecuteMapAbility(a, tx, ty, true);
 //            GUI.CloseMessageForm();
 //            GUI.RedrawScreen();
@@ -11399,8 +11062,7 @@
 //                            var loopTo = withBlock.CountWeapon();
 //                            for (w = 1; w <= loopTo; w++)
 //                            {
-//                                string argattr = "Ｍ";
-//                                if ((GetArgAsString(3) ?? "") == (withBlock.Weapon(w).Name ?? "") && withBlock.IsWeaponClassifiedAs(w, argattr))
+//                                if ((GetArgAsString(3) ?? "") == (withBlock.Weapon(w).Name ?? "") && withBlock.IsWeaponClassifiedAs(w, "Ｍ"))
 //                                {
 //                                    break;
 //                                }
@@ -11450,8 +11112,7 @@
 //                        var loopTo1 = u.CountWeapon();
 //                        for (w = 1; w <= loopTo1; w++)
 //                        {
-//                            string argattr1 = "Ｍ";
-//                            if ((GetArgAsString(2) ?? "") == (u.Weapon(w).Name ?? "") && u.IsWeaponClassifiedAs(w, argattr1))
+//                            if ((GetArgAsString(2) ?? "") == (u.Weapon(w).Name ?? "") && u.IsWeaponClassifiedAs(w, "Ｍ"))
 //                            {
 //                                break;
 //                            }
@@ -11614,11 +11275,7 @@
 //            // マウスカーソルを砂時計に
 //            // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
 //            Cursor.Current = Cursors.WaitCursor;
-//            string argdraw_mode = "白黒";
-//            string argdraw_option = "非同期";
-//            int argfilter_color = 0;
-//            double argfilter_trans_par = 0d;
-//            GUI.SetupBackground(argdraw_mode, argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
+//            GUI.SetupBackground("白黒", "非同期", filter_color: 0, filter_trans_par: 0d);
 //            foreach (Unit u in SRC.UList)
 //            {
 //                {
@@ -11627,11 +11284,9 @@
 //                    {
 //                        if (withBlock.BitmapID == 0)
 //                        {
-//                            object argIndex1 = withBlock.Name;
 //                            {
-//                                var withBlock1 = SRC.UList.Item(argIndex1);
-//                                string argfname = "ダミーユニット";
-//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable(argfname))
+//                                var withBlock1 = SRC.UList.Item(withBlock.Name);
+//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable("ダミーユニット"))
 //                                {
 //                                    u.BitmapID = withBlock1.BitmapID;
 //                                }
@@ -11834,11 +11489,7 @@
 //            // マウスカーソルを砂時計に
 //            // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
 //            Cursor.Current = Cursors.WaitCursor;
-//            string argdraw_mode = "夜";
-//            string argdraw_option = "非同期";
-//            int argfilter_color = 0;
-//            double argfilter_trans_par = 0d;
-//            GUI.SetupBackground(argdraw_mode, argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
+//            GUI.SetupBackground("夜", "非同期", filter_color: 0, filter_trans_par: 0d);
 //            foreach (Unit u in SRC.UList)
 //            {
 //                {
@@ -11847,11 +11498,9 @@
 //                    {
 //                        if (withBlock.BitmapID == 0)
 //                        {
-//                            object argIndex1 = withBlock.Name;
 //                            {
-//                                var withBlock1 = SRC.UList.Item(argIndex1);
-//                                string argfname = "ダミーユニット";
-//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable(argfname))
+//                                var withBlock1 = SRC.UList.Item(withBlock.Name);
+//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable("ダミーユニット"))
 //                                {
 //                                    u.BitmapID = withBlock1.BitmapID;
 //                                }
@@ -11935,11 +11584,7 @@
 //            // マウスカーソルを砂時計に
 //            // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
 //            Cursor.Current = Cursors.WaitCursor;
-//            string argdraw_mode = "";
-//            string argdraw_option = "非同期";
-//            int argfilter_color = 0;
-//            double argfilter_trans_par = 0d;
-//            GUI.SetupBackground(argdraw_mode, argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
+//            GUI.SetupBackground("", "非同期", filter_color: 0, filter_trans_par: 0d);
 //            foreach (Unit u in SRC.UList)
 //            {
 //                {
@@ -11948,11 +11593,9 @@
 //                    {
 //                        if (withBlock.BitmapID == 0)
 //                        {
-//                            object argIndex1 = withBlock.Name;
 //                            {
-//                                var withBlock1 = SRC.UList.Item(argIndex1);
-//                                string argfname = "ダミーユニット";
-//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable(argfname))
+//                                var withBlock1 = SRC.UList.Item(withBlock.Name);
+//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable("ダミーユニット"))
 //                                {
 //                                    u.BitmapID = withBlock1.BitmapID;
 //                                }
@@ -12271,8 +11914,7 @@
 //                }
 
 //                // パイロット数のチェック
-//                string argfname = "１人乗り可能";
-//                if ((u.Data.PilotNum == 1 || Math.Abs(u.Data.PilotNum) == 2) && u.CountPilot() < Math.Abs(u.Data.PilotNum) && !u.IsFeatureAvailable(argfname))
+//                if ((u.Data.PilotNum == 1 || Math.Abs(u.Data.PilotNum) == 2) && u.CountPilot() < Math.Abs(u.Data.PilotNum) && !u.IsFeatureAvailable("１人乗り可能"))
 //                {
 //                    goto NextOrganizeLoop;
 //                }
@@ -12301,8 +11943,7 @@
 //                            // 空中マップか？
 //                            if (Map.TerrainName(1, 1) == "空" && Map.TerrainName((Map.MapWidth / 2), (Map.MapHeight / 2)) == "空" && Map.TerrainName(Map.MapWidth, Map.MapHeight) == "空")
 //                            {
-//                                string argarea_name = "空";
-//                                if (!u.IsTransAvailable(argarea_name))
+//                                if (!u.IsTransAvailable("空"))
 //                                {
 //                                    goto NextOrganizeLoop;
 //                                }
@@ -12322,8 +11963,7 @@
 //                    // 全てのユニット
 //                    case "通常ユニット":
 //                        {
-//                            string argfname1 = "母艦";
-//                            if (u.IsFeatureAvailable(argfname1))
+//                            if (u.IsFeatureAvailable("母艦"))
 //                            {
 //                                goto NextOrganizeLoop;
 //                            }
@@ -12333,8 +11973,7 @@
 
 //                    case "母艦ユニット":
 //                        {
-//                            string argfname2 = "母艦";
-//                            if (!u.IsFeatureAvailable(argfname2))
+//                            if (!u.IsFeatureAvailable("母艦"))
 //                            {
 //                                goto NextOrganizeLoop;
 //                            }
@@ -12417,8 +12056,7 @@
 
 //                Array.Resize(list, Information.UBound(list) + 1 + 1);
 //                Array.Resize(GUI.ListItemID, Information.UBound(list) + 1);
-//                string argoname = "等身大基準";
-//                if (Expression.IsOptionDefined(argoname))
+//                if (Expression.IsOptionDefined("等身大基準"))
 //                {
 //                    string localLeftPaddedString() { string argbuf = u.MainPilot().Level.ToString(); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
 
@@ -12498,8 +12136,7 @@
 //            {
 //                do
 //                {
-//                    string argoname1 = "等身大基準";
-//                    if (Expression.IsOptionDefined(argoname1))
+//                    if (Expression.IsOptionDefined("等身大基準"))
 //                    {
 //                        ret = GUI.MultiSelectListBox("出撃ユニット選択", list, "ユニット                                            Lv", unum);
 //                    }
@@ -12536,9 +12173,8 @@
 //                    if (GUI.ListItemFlag[i])
 //                    {
 //                        var tmp1 = GUI.ListItemID;
-//                        object argIndex1 = tmp1[i];
 //                        {
-//                            var withBlock1 = SRC.UList.Item(argIndex1);
+//                            var withBlock1 = SRC.UList.Item(tmp1[i]);
 //                            withBlock1.UsedAction = 0;
 //                            withBlock1.UsedSupportAttack = 0;
 //                            withBlock1.UsedSupportGuard = 0;
@@ -12869,8 +12505,7 @@
 
 //                        bool localIsDefined1() { object argIndex1 = (object)fname; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
 
-//                        object argIndex1 = (object)fname;
-//                        if (SRC.PDList.IsDefined(argIndex1))
+//                        if (SRC.PDList.IsDefined((object)fname))
 //                        {
 //                            PilotData localItem() { object argIndex1 = (object)fname; var ret = SRC.PDList.Item(argIndex1); return ret; }
 
@@ -13024,8 +12659,7 @@
 //                        // 座標指定がないことが確定
 //                        // MOD START マージ
 //                        // DrawString GetArgAsString(2), -1, -1, without_cr
-//                        string argmsg = GetArgAsString(2);
-//                        GUI.DrawString(argmsg, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, without_cr);
+//                        GUI.DrawString(GetArgAsString(2), Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, without_cr);
 //                        break;
 //                    }
 //                // MOD END マージ
@@ -13056,8 +12690,7 @@
 //                            yy = (Conversions.ToShort(sy) + Event.BaseY);
 //                        }
 
-//                        string argmsg1 = GetArgAsString(4);
-//                        GUI.DrawString(argmsg1, xx, yy, without_cr);
+//                        GUI.DrawString(GetArgAsString(4), xx, yy, without_cr);
 //                        break;
 //                    }
 
@@ -13092,13 +12725,11 @@
 //                                yy = (Conversions.ToShort(sy) + Event.BaseY);
 //                            }
 
-//                            string argmsg2 = GetArgAsString(4);
-//                            GUI.DrawString(argmsg2, xx, yy, without_cr);
+//                            GUI.DrawString(GetArgAsString(4), xx, yy, without_cr);
 //                        }
 //                        else
 //                        {
-//                            string argmsg3 = GetArgAsString(5);
-//                            GUI.DrawString(argmsg3, -1, -1, without_cr);
+//                            GUI.DrawString(GetArgAsString(5), -1, -1, without_cr);
 //                        }
 
 //                        break;
@@ -13135,8 +12766,7 @@
 //                }
 //            }
 
-//            string argmsg = GetArgAsString(4);
-//            GUI.DrawSysString(GetArgAsLong(2), GetArgAsLong(3), argmsg, without_refresh);
+//            GUI.DrawSysString(GetArgAsLong(2), GetArgAsLong(3), GetArgAsString(4), without_refresh);
 //            ExecPaintSysStringCmdRet = LineNum + 1;
 //            return ExecPaintSysStringCmdRet;
 //        }
@@ -13191,8 +12821,7 @@
 //            }
 
 //            plevel = GetArgAsLong(3);
-//            string argoname = "レベル限界突破";
-//            if (Expression.IsOptionDefined(argoname))
+//            if (Expression.IsOptionDefined("レベル限界突破"))
 //            {
 //                if (plevel > 999)
 //                {
@@ -13211,19 +12840,15 @@
 
 //            if (ArgNum == 3)
 //            {
-//                string argpparty = "味方";
-//                string arggid = "";
 //                {
-//                    var withBlock = SRC.PList.Add(pname, plevel, argpparty, gid: arggid);
+//                    var withBlock = SRC.PList.Add(pname, plevel, "味方", gid: "");
 //                    withBlock.FullRecover();
 //                }
 //            }
 //            else
 //            {
-//                string argpparty1 = "味方";
-//                string arggid1 = GetArgAsString(4);
 //                {
-//                    var withBlock1 = SRC.PList.Add(pname, plevel, argpparty1, arggid1);
+//                    var withBlock1 = SRC.PList.Add(pname, plevel, "味方", GetArgAsString(4));
 //                    withBlock1.FullRecover();
 //                }
 //            }
@@ -13460,8 +13085,7 @@
 //                    {
 //                        if (Strings.Right(msg, 1) == ")")
 //                        {
-//                            string argexpr = Strings.Mid(msg, 3, Strings.Len(msg) - 3);
-//                            msg = Expression.GetValueAsString(argexpr);
+//                            msg = Expression.GetValueAsString(Strings.Mid(msg, 3, Strings.Len(msg) - 3));
 //                        }
 //                    }
 //                    else if (GeneralLib.ListLength(msg) == 1)
@@ -13487,8 +13111,7 @@
 //                    {
 //                        if (Strings.Right(msg, 1) == ")")
 //                        {
-//                            string argexpr1 = Strings.Mid(msg, 3, Strings.Len(msg) - 3);
-//                            msg = Expression.GetValueAsString(argexpr1);
+//                            msg = Expression.GetValueAsString(Strings.Mid(msg, 3, Strings.Len(msg) - 3));
 //                        }
 //                    }
 //                    else if (GeneralLib.ListLength(msg) == 1)
@@ -13713,17 +13336,13 @@
 //                {
 //                    case 3:
 //                        {
-//                            string arglb_caption = "選択";
-//                            string arglb_info = GetArgAsString(3);
-//                            Commands.SelectedItem = GUI.LIPS(arglb_caption, list, arglb_info, GetArgAsLong(2));
+//                            Commands.SelectedItem = GUI.LIPS("選択", list, GetArgAsString(3), GetArgAsLong(2));
 //                            break;
 //                        }
 
 //                    case 2:
 //                        {
-//                            string arglb_caption1 = "選択";
-//                            string arglb_info1 = "さあ、どうする？";
-//                            Commands.SelectedItem = GUI.LIPS(arglb_caption1, list, arglb_info1, GetArgAsLong(2));
+//                            Commands.SelectedItem = GUI.LIPS("選択", list, "さあ、どうする？", GetArgAsLong(2));
 //                            break;
 //                        }
 
@@ -13763,14 +13382,12 @@
 //            if (GeneralLib.FileExists(SRC.LastSaveDataFileName))
 //            {
 //                // セーブしたファイルが存在すればそれをロード
-//                bool argquick_load = true;
-//                SRC.RestoreData(SRC.LastSaveDataFileName, argquick_load);
+//                SRC.RestoreData(SRC.LastSaveDataFileName, true);
 //            }
 //            else
 //            {
 //                // セーブファイルが見つからなければ強制終了
-//                string argmsg = "セーブデータが見つかりません";
-//                GUI.ErrorMessage(argmsg);
+//                GUI.ErrorMessage("セーブデータが見つかりません");
 //                SRC.TerminateSRC();
 //            }
 
@@ -13815,8 +13432,7 @@
 //                case 3:
 //                    {
 //                        uname = GetArgAsString(2);
-//                        object argIndex1 = (object)uname;
-//                        u = SRC.UList.Item(argIndex1);
+//                        u = SRC.UList.Item((object)uname);
 //                        if (u is null)
 //                        {
 //                            Event.EventErrorMessage = uname + "というユニットは存在しません";
@@ -13866,9 +13482,8 @@
 //            var loopTo = u.CountOtherForm();
 //            for (i = 1; i <= loopTo; i++)
 //            {
-//                object argIndex2 = i;
 //                {
-//                    var withBlock = u.OtherForm(argIndex2);
+//                    var withBlock = u.OtherForm(i);
 //                    hp_ratio = 100 * withBlock.HP / (double)withBlock.MaxHP;
 //                    en_ratio = 100 * withBlock.EN / (double)withBlock.MaxEN;
 //                    withBlock.Rank = (withBlock.Rank + rk);
@@ -13878,32 +13493,26 @@
 //            }
 
 //            // 合体できる場合は他の分離ユニットのユニットランクを上げる
-//            string argfname2 = "合体";
-//            if (u.IsFeatureAvailable(argfname2))
+//            if (u.IsFeatureAvailable("合体"))
 //            {
 //                // 合体後の形態を検索
 //                var loopTo1 = u.CountFeature();
 //                for (i = 1; i <= loopTo1; i++)
 //                {
-//                    object argIndex5 = i;
-//                    if (u.Feature(argIndex5) == "合体")
+//                    if (u.Feature(i) == "合体")
 //                    {
 //                        string localFeatureData() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
 
-//                        string arglist = localFeatureData();
-//                        buf = GeneralLib.LIndex(arglist, 2);
+//                        buf = GeneralLib.LIndex(localFeatureData(), 2);
 //                        string localFeatureData1() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
 
-//                        string arglist1 = localFeatureData1();
-//                        if (GeneralLib.LLength(arglist1) == 3)
+//                        if (GeneralLib.LLength(localFeatureData1()) == 3)
 //                        {
-//                            object argIndex3 = buf;
-//                            if (SRC.UDList.IsDefined(argIndex3))
+//                            if (SRC.UDList.IsDefined(buf))
 //                            {
 //                                UnitData localItem() { object argIndex1 = buf; var ret = SRC.UDList.Item(argIndex1); return ret; }
 
-//                                string argfname = "主形態";
-//                                if (localItem().IsFeatureAvailable(argfname))
+//                                if (localItem().IsFeatureAvailable("主形態"))
 //                                {
 //                                    break;
 //                                }
@@ -13911,13 +13520,11 @@
 //                        }
 //                        else
 //                        {
-//                            object argIndex4 = buf;
-//                            if (SRC.UDList.IsDefined(argIndex4))
+//                            if (SRC.UDList.IsDefined(buf))
 //                            {
 //                                UnitData localItem1() { object argIndex1 = buf; var ret = SRC.UDList.Item(argIndex1); return ret; }
 
-//                                string argfname1 = "制限時間";
-//                                if (!localItem1().IsFeatureAvailable(argfname1))
+//                                if (!localItem1().IsFeatureAvailable("制限時間"))
 //                                {
 //                                    break;
 //                                }
@@ -13934,17 +13541,14 @@
 
 //                    UnitData localItem2() { object argIndex1 = (object)hse505f2f9d761474e89617a2bf6851fa7(); var ret = SRC.UDList.Item(argIndex1); return ret; }
 
-//                    object argIndex6 = "分離";
-//                    buf = localItem2().FeatureData(argIndex6);
+//                    buf = localItem2().FeatureData("分離");
 //                    var loopTo2 = GeneralLib.LLength(buf);
 //                    for (i = 2; i <= loopTo2; i++)
 //                    {
-//                        object argIndex9 = GeneralLib.LIndex(buf, i);
-//                        if (SRC.UList.IsDefined(argIndex9))
+//                        if (SRC.UList.IsDefined(GeneralLib.LIndex(buf, i)))
 //                        {
-//                            object argIndex8 = GeneralLib.LIndex(buf, i);
 //                            {
-//                                var withBlock1 = SRC.UList.Item(argIndex8);
+//                                var withBlock1 = SRC.UList.Item(GeneralLib.LIndex(buf, i));
 //                                if (!u.IsEqual(withBlock1.Name))
 //                                {
 //                                    // 他の分離形態のユニットランクを上げる
@@ -13956,9 +13560,8 @@
 //                                    var loopTo3 = withBlock1.CountOtherForm();
 //                                    for (j = 1; j <= loopTo3; j++)
 //                                    {
-//                                        object argIndex7 = j;
 //                                        {
-//                                            var withBlock2 = withBlock1.OtherForm(argIndex7);
+//                                            var withBlock2 = withBlock1.OtherForm(j);
 //                                            hp_ratio = 100 * withBlock2.HP / (double)withBlock2.MaxHP;
 //                                            en_ratio = 100 * withBlock2.EN / (double)withBlock2.MaxEN;
 //                                            withBlock2.Rank = (withBlock2.Rank + rk);
@@ -13974,29 +13577,24 @@
 //            }
 
 //            // 分離できる場合は分離ユニットのユニットランクを上げる
-//            string argfname3 = "分離";
-//            if (u.IsFeatureAvailable(argfname3))
+//            if (u.IsFeatureAvailable("分離"))
 //            {
-//                object argIndex10 = "分離";
-//                buf = u.FeatureData(argIndex10);
+//                buf = u.FeatureData("分離");
 //                var loopTo4 = GeneralLib.LLength(buf);
 //                for (i = 2; i <= loopTo4; i++)
 //                {
-//                    object argIndex13 = GeneralLib.LIndex(buf, i);
-//                    if (SRC.UList.IsDefined(argIndex13))
+//                    if (SRC.UList.IsDefined(GeneralLib.LIndex(buf, i)))
 //                    {
-//                        object argIndex12 = GeneralLib.LIndex(buf, i);
 //                        {
-//                            var withBlock3 = SRC.UList.Item(argIndex12);
+//                            var withBlock3 = SRC.UList.Item(GeneralLib.LIndex(buf, i));
 //                            withBlock3.Rank = GeneralLib.MaxLng(withBlock3.Rank, u.Rank);
 //                            withBlock3.HP = withBlock3.MaxHP;
 //                            withBlock3.EN = withBlock3.MaxEN;
 //                            var loopTo5 = withBlock3.CountOtherForm();
 //                            for (j = 1; j <= loopTo5; j++)
 //                            {
-//                                object argIndex11 = j;
 //                                {
-//                                    var withBlock4 = withBlock3.OtherForm(argIndex11);
+//                                    var withBlock4 = withBlock3.OtherForm(j);
 //                                    hp_ratio = 100 * withBlock4.HP / (double)withBlock4.MaxHP;
 //                                    en_ratio = 100 * withBlock4.EN / (double)withBlock4.MaxEN;
 //                                    withBlock4.Rank = (withBlock4.Rank + rk);
@@ -14038,8 +13636,7 @@
 //            for (i = 3; i <= loopTo; i++)
 //            {
 //                FileSystem.Input(f, buf);
-//                string argvname = GetArg(i);
-//                Expression.SetVariableAsString(argvname, buf);
+//                Expression.SetVariableAsString(GetArg(i), buf);
 //            }
 
 //            ExecReadCmdRet = LineNum + 1;
@@ -14350,8 +13947,7 @@
 //                             */
 //                        }
 
-//                        object argIndex1 = (object)buf;
-//                        if (SRC.PList.IsDefined(argIndex1))
+//                        if (SRC.PList.IsDefined((object)buf))
 //                        {
 //                            Pilot localItem() { object argIndex1 = (object)buf; var ret = SRC.PList.Item(argIndex1); return ret; }
 
@@ -14536,21 +14132,17 @@
 //                            var withBlock = Event.SelectedUnitForEvent;
 //                            while (withBlock.CountItem() > 0)
 //                            {
-//                                object argIndex1 = (object)1;
-//                                string argfname = "ユニット画像";
-//                                if (withBlock.Item(argIndex1).IsFeatureAvailable(argfname))
+//                                if (withBlock.Item((object)1).IsFeatureAvailable("ユニット画像"))
 //                                {
 //                                    item_with_image = true;
 //                                }
 
 //                                if (withBlock.Party0 != "味方")
 //                                {
-//                                    object argIndex2 = (object)1;
-//                                    withBlock.Item(argIndex2).Exist = false;
+//                                    withBlock.Item((object)1).Exist = false;
 //                                }
 
-//                                object argIndex3 = (object)1;
-//                                withBlock.DeleteItem(argIndex3);
+//                                withBlock.DeleteItem((object)1);
 //                            }
 
 //                            if (item_with_image)
@@ -14582,8 +14174,7 @@
 //                        pname = GetArgAsString(2);
 //                        bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-//                        object argIndex17 = (object)pname;
-//                        if (SRC.UList.IsDefined(argIndex17))
+//                        if (SRC.UList.IsDefined((object)pname))
 //                        {
 //                            // 指定したユニットが装備しているアイテムすべてを外す
 //                            Unit localItem() { object argIndex1 = (object)pname; var ret = SRC.UList.Item(argIndex1); return ret; }
@@ -14593,21 +14184,17 @@
 //                                var withBlock1 = u;
 //                                while (withBlock1.CountItem() > 0)
 //                                {
-//                                    object argIndex4 = (object)1;
-//                                    string argfname1 = "ユニット画像";
-//                                    if (withBlock1.Item(argIndex4).IsFeatureAvailable(argfname1))
+//                                    if (withBlock1.Item((object)1).IsFeatureAvailable("ユニット画像"))
 //                                    {
 //                                        item_with_image = true;
 //                                    }
 
 //                                    if (withBlock1.Party0 != "味方")
 //                                    {
-//                                        object argIndex5 = (object)1;
-//                                        withBlock1.Item(argIndex5).Exist = false;
+//                                        withBlock1.Item((object)1).Exist = false;
 //                                    }
 
-//                                    object argIndex6 = (object)1;
-//                                    withBlock1.DeleteItem(argIndex6);
+//                                    withBlock1.DeleteItem((object)1);
 //                                }
 
 //                                if (item_with_image)
@@ -14643,21 +14230,17 @@
 //                                    var withBlock8 = u;
 //                                    while (withBlock8.CountItem() > 0)
 //                                    {
-//                                        object argIndex14 = (object)1;
-//                                        string argfname5 = "ユニット画像";
-//                                        if (withBlock8.Item(argIndex14).IsFeatureAvailable(argfname5))
+//                                        if (withBlock8.Item((object)1).IsFeatureAvailable("ユニット画像"))
 //                                        {
 //                                            item_with_image = true;
 //                                        }
 
 //                                        if (withBlock8.Party0 != "味方")
 //                                        {
-//                                            object argIndex15 = (object)1;
-//                                            withBlock8.Item(argIndex15).Exist = false;
+//                                            withBlock8.Item((object)1).Exist = false;
 //                                        }
 
-//                                        object argIndex16 = (object)1;
-//                                        withBlock8.DeleteItem(argIndex16);
+//                                        withBlock8.DeleteItem((object)1);
 //                                    }
 
 //                                    if (item_with_image)
@@ -14719,17 +14302,14 @@
 //                                         */
 //                                    }
 
-//                                    object argIndex8 = (object)inumber;
 //                                    {
-//                                        var withBlock3 = withBlock2.Item(argIndex8);
-//                                        string argfname2 = "ユニット画像";
-//                                        if (withBlock3.IsFeatureAvailable(argfname2))
+//                                        var withBlock3 = withBlock2.Item((object)inumber);
+//                                        if (withBlock3.IsFeatureAvailable("ユニット画像"))
 //                                        {
 //                                            item_with_image = true;
 //                                        }
 
-//                                        object argIndex7 = (object)withBlock3.ID;
-//                                        Event.SelectedUnitForEvent.DeleteItem(argIndex7);
+//                                        Event.SelectedUnitForEvent.DeleteItem((object)withBlock3.ID);
 //                                        if (item_with_image)
 //                                        {
 //                                            {
@@ -14763,26 +14343,22 @@
 //                            }
 
 //                            // アイテムＩＤが指定された場合はそのまま削除
-//                            object argIndex11 = (object)iname;
-//                            if (SRC.IList.IsDefined(argIndex11))
+//                            if (SRC.IList.IsDefined((object)iname))
 //                            {
 //                                Item localItem1() { object argIndex1 = (object)iname; var ret = SRC.IList.Item(argIndex1); return ret; }
 
 //                                if ((localItem1().ID ?? "") == (iname ?? ""))
 //                                {
-//                                    object argIndex10 = (object)iname;
 //                                    {
-//                                        var withBlock5 = SRC.IList.Item(argIndex10);
+//                                        var withBlock5 = SRC.IList.Item((object)iname);
 //                                        if (withBlock5.Unit_Renamed is object)
 //                                        {
-//                                            string argfname3 = "ユニット画像";
-//                                            if (withBlock5.IsFeatureAvailable(argfname3))
+//                                            if (withBlock5.IsFeatureAvailable("ユニット画像"))
 //                                            {
 //                                                item_with_image = true;
 //                                            }
 
-//                                            object argIndex9 = (object)withBlock5.ID;
-//                                            withBlock5.Unit_Renamed.DeleteItem(argIndex9);
+//                                            withBlock5.Unit_Renamed.DeleteItem((object)withBlock5.ID);
 //                                            if (item_with_image)
 //                                            {
 //                                                withBlock5.Unit_Renamed.BitmapID = GUI.MakeUnitBitmap(withBlock5.Unit_Renamed);
@@ -14818,8 +14394,7 @@
 
 //                            // 大文字・小文字、ひらがな・かたかなの違いを正しく判定できるように、
 //                            // 名前をデータのそれとあわせる
-//                            object argIndex12 = (object)iname;
-//                            if (SRC.IDList.IsDefined(argIndex12))
+//                            if (SRC.IDList.IsDefined((object)iname))
 //                            {
 //                                ItemData localItem2() { object argIndex1 = (object)iname; var ret = SRC.IDList.Item(argIndex1); return ret; }
 
@@ -14845,15 +14420,13 @@
 //                                    itm = currentItm1;
 //                                    if ((itm.Name ?? "") == (iname ?? "") && itm.Exist)
 //                                    {
-//                                        string argfname4 = "ユニット画像";
-//                                        if (itm.IsFeatureAvailable(argfname4))
+//                                        if (itm.IsFeatureAvailable("ユニット画像"))
 //                                        {
 //                                            item_with_image = true;
 //                                        }
 
 //                                        u = itm.Unit_Renamed;
-//                                        object argIndex13 = (object)itm.ID;
-//                                        u.DeleteItem(argIndex13);
+//                                        u.DeleteItem((object)itm.ID);
 //                                        if (item_with_image)
 //                                        {
 //                                            u.BitmapID = GUI.MakeUnitBitmap(u);
@@ -14895,8 +14468,7 @@
 //                        pname = GetArgAsString(2);
 //                        bool localIsDefined1() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-//                        object argIndex18 = (object)pname;
-//                        if (SRC.UList.IsDefined(argIndex18))
+//                        if (SRC.UList.IsDefined((object)pname))
 //                        {
 //                            Unit localItem4() { object argIndex1 = (object)pname; var ret = SRC.UList.Item(argIndex1); return ret; }
 
@@ -14969,17 +14541,14 @@
 //                                     */
 //                                }
 
-//                                object argIndex20 = (object)inumber;
 //                                {
-//                                    var withBlock10 = withBlock9.Item(argIndex20);
-//                                    string argfname6 = "ユニット画像";
-//                                    if (withBlock10.IsFeatureAvailable(argfname6))
+//                                    var withBlock10 = withBlock9.Item((object)inumber);
+//                                    if (withBlock10.IsFeatureAvailable("ユニット画像"))
 //                                    {
 //                                        item_with_image = true;
 //                                    }
 
-//                                    object argIndex19 = (object)withBlock10.ID;
-//                                    u.DeleteItem(argIndex19);
+//                                    u.DeleteItem((object)withBlock10.ID);
 //                                    if (item_with_image)
 //                                    {
 //                                        {
@@ -15013,8 +14582,7 @@
 
 //                            // 大文字・小文字、ひらがな・かたかなの違いを正しく判定できるように、
 //                            // 名前をデータのそれとあわせる
-//                            object argIndex21 = (object)iname;
-//                            if (SRC.IDList.IsDefined(argIndex21))
+//                            if (SRC.IDList.IsDefined((object)iname))
 //                            {
 //                                ItemData localItem6() { object argIndex1 = (object)iname; var ret = SRC.IDList.Item(argIndex1); return ret; }
 
@@ -15024,19 +14592,16 @@
 //                            var loopTo7 = withBlock9.CountItem();
 //                            for (i = 1; i <= loopTo7; i++)
 //                            {
-//                                object argIndex23 = (object)i;
 //                                {
-//                                    var withBlock12 = withBlock9.Item(argIndex23);
+//                                    var withBlock12 = withBlock9.Item((object)i);
 //                                    if (((withBlock12.Name ?? "") == (iname ?? "") || (withBlock12.ID ?? "") == (iname ?? "")) && withBlock12.Exist)
 //                                    {
-//                                        string argfname7 = "ユニット画像";
-//                                        if (withBlock12.IsFeatureAvailable(argfname7))
+//                                        if (withBlock12.IsFeatureAvailable("ユニット画像"))
 //                                        {
 //                                            item_with_image = true;
 //                                        }
 
-//                                        object argIndex22 = (object)withBlock12.ID;
-//                                        u.DeleteItem(argIndex22);
+//                                        u.DeleteItem((object)withBlock12.ID);
 //                                        if (item_with_image)
 //                                        {
 //                                            {
@@ -15188,15 +14753,13 @@
 //                             */
 //                        }
 
-//                        object argIndex1 = (object)pname;
-//                        p = SRC.PList.Item(argIndex1);
+//                        p = SRC.PList.Item((object)pname);
 //                        p.Alive = false;
 //                        if (p.Unit_Renamed is object)
 //                        {
 //                            {
 //                                var withBlock1 = p.Unit_Renamed;
-//                                object argIndex4 = (object)1;
-//                                if ((p.ID ?? "") == (withBlock1.MainPilot().ID ?? "") || (p.ID ?? "") == (withBlock1.Pilot(argIndex4).ID ?? ""))
+//                                if ((p.ID ?? "") == (withBlock1.MainPilot().ID ?? "") || (p.ID ?? "") == (withBlock1.Pilot((object)1).ID ?? ""))
 //                                {
 //                                    // メインパイロットの場合はパイロット＆サポートを全員削除
 //                                    // ユニットも削除する
@@ -15245,8 +14808,7 @@
 
 //                                        if ((p.ID ?? "") == (localPilot2().ID ?? ""))
 //                                        {
-//                                            object argIndex2 = (object)i;
-//                                            withBlock1.DeletePilot(argIndex2);
+//                                            withBlock1.DeletePilot((object)i);
 //                                            // UPGRADE_NOTE: オブジェクト p.Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 //                                            p.Unit_Renamed = null;
 //                                            return ExecRemovePilotCmdRet;
@@ -15260,8 +14822,7 @@
 
 //                                        if ((p.ID ?? "") == (localSupport2().ID ?? ""))
 //                                        {
-//                                            object argIndex3 = (object)i;
-//                                            withBlock1.DeleteSupport(argIndex3);
+//                                            withBlock1.DeleteSupport((object)i);
 //                                            // UPGRADE_NOTE: オブジェクト p.Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 //                                            p.Unit_Renamed = null;
 //                                            return ExecRemovePilotCmdRet;
@@ -15319,8 +14880,7 @@
 //                            withBlock.Escape(opt);
 //                            if (withBlock.CountPilot() > 0)
 //                            {
-//                                object argIndex1 = (object)1;
-//                                withBlock.Pilot(argIndex1).GetOff();
+//                                withBlock.Pilot((object)1).GetOff();
 //                            }
 
 //                            withBlock.Status_Renamed = "破棄";
@@ -15344,8 +14904,7 @@
 //                case 2:
 //                    {
 //                        uname = GetArgAsString(2);
-//                        object argIndex2 = (object)uname;
-//                        u = SRC.UList.Item(argIndex2);
+//                        u = SRC.UList.Item((object)uname);
 
 //                        // ユニットが存在しなければそのまま終了
 //                        if (u is null)
@@ -15360,8 +14919,7 @@
 //                            u.Escape(opt);
 //                            if (u.CountPilot() > 0)
 //                            {
-//                                object argIndex3 = (object)1;
-//                                u.Pilot(argIndex3).GetOff();
+//                                u.Pilot((object)1).GetOff();
 //                            }
 
 //                            u.Status_Renamed = "破棄";
@@ -15384,8 +14942,7 @@
 
 //                        // 大文字・小文字、ひらがな・かたかなの違いを正しく判定できるように、
 //                        // 名前をデータのそれとあわせる
-//                        object argIndex4 = (object)uname;
-//                        if (SRC.UDList.IsDefined(argIndex4))
+//                        if (SRC.UDList.IsDefined((object)uname))
 //                        {
 //                            UnitData localItem() { object argIndex1 = (object)uname; var ret = SRC.UDList.Item(argIndex1); return ret; }
 
@@ -15433,8 +14990,7 @@
 //                                if ((withBlock2.Name ?? "") == (uname ?? "") && withBlock2.Status_Renamed != "破棄")
 //                                {
 //                                    withBlock2.Escape(opt);
-//                                    object argIndex5 = (object)1;
-//                                    withBlock2.Pilot(argIndex5).GetOff();
+//                                    withBlock2.Pilot((object)1).GetOff();
 //                                    withBlock2.Status_Renamed = "破棄";
 //                                    var loopTo3 = withBlock2.CountOtherForm();
 //                                    for (i = 1; i <= loopTo3; i++)
@@ -15536,8 +15092,7 @@
 //                Expression.DefineGlobalVariable(vname);
 //            }
 
-//            string argnew_value = GetArgAsString(3);
-//            Expression.SetVariableAsString(vname, argnew_value);
+//            Expression.SetVariableAsString(vname, GetArgAsString(3));
 //            ExecRenameBGMCmdRet = LineNum + 1;
 //            return ExecRenameBGMCmdRet;
 //        }
@@ -15693,8 +15248,7 @@
 //                Expression.DefineGlobalVariable(vname);
 //            }
 
-//            string argnew_value = GetArgAsString(3);
-//            Expression.SetVariableAsString(vname, argnew_value);
+//            Expression.SetVariableAsString(vname, GetArgAsString(3));
 //            ExecRenameTermCmdRet = LineNum + 1;
 //            return ExecRenameTermCmdRet;
 //        }
@@ -15738,8 +15292,7 @@
 //                 */
 //            }
 
-//            string arggid = "";
-//            p2 = SRC.PList.Add(pname, p1.Level, p1.Party, gid: arggid);
+//            p2 = SRC.PList.Add(pname, p1.Level, p1.Party, gid: "");
 //            {
 //                var withBlock = p2;
 //                withBlock.FullRecover();
@@ -15750,11 +15303,9 @@
 //                    withBlock.SP = withBlock.MaxSP * p1.SP / p1.MaxSP;
 //                }
 
-//                string argsname1 = "霊力";
-//                if (withBlock.IsSkillAvailable(argsname1))
+//                if (withBlock.IsSkillAvailable("霊力"))
 //                {
-//                    string argsname = "霊力";
-//                    if (p1.IsSkillAvailable(argsname))
+//                    if (p1.IsSkillAvailable("霊力"))
 //                    {
 //                        withBlock.Plana = withBlock.MaxPlana() * p1.Plana / p1.MaxPlana();
 //                    }
@@ -15771,16 +15322,14 @@
 //                    var loopTo = withBlock1.CountSupport();
 //                    for (i = 1; i <= loopTo; i++)
 //                    {
-//                        object argIndex1 = i;
-//                        if (ReferenceEquals(withBlock1.Support(argIndex1), p1))
+//                        if (ReferenceEquals(withBlock1.Support(i), p1))
 //                        {
 //                            is_support = true;
 //                            break;
 //                        }
 //                    }
 
-//                    string argfname = "追加サポート";
-//                    if (withBlock1.IsFeatureAvailable(argfname))
+//                    if (withBlock1.IsFeatureAvailable("追加サポート"))
 //                    {
 //                        if (ReferenceEquals(withBlock1.AdditionalSupport(), p1))
 //                        {
@@ -15902,8 +15451,7 @@
 //                buf = Event.EventData[i];
 //                if (Strings.Right(buf, 1) == ":")
 //                {
-//                    string arglname = Strings.Left(buf, Strings.Len(buf) - 1);
-//                    Event.AddLabel(arglname, i);
+//                    Event.AddLabel(Strings.Left(buf, Strings.Len(buf) - 1), i);
 //                }
 //            }
 
@@ -15947,8 +15495,7 @@
 //                 */
 //            }
 
-//            string arglname = GetArgAsString(2);
-//            Event.RestoreLabel(arglname);
+//            Event.RestoreLabel(GetArgAsString(2));
 //            ExecRestoreEventCmdRet = LineNum + 1;
 //            return ExecRestoreEventCmdRet;
 //        }
@@ -15981,8 +15528,7 @@
 //                        }
 
 //                        p.GetOff();
-//                        object argIndex1 = (object)uname;
-//                        u = SRC.UList.Item(argIndex1);
+//                        u = SRC.UList.Item((object)uname);
 //                        if (u is null)
 //                        {
 //                            Event.EventErrorMessage = "ユニット名が間違っています";
@@ -16007,8 +15553,7 @@
 
 //                        // 大文字・小文字、ひらがな・かたかなの違いを正しく判定できるように、
 //                        // 名前をデータのそれとあわせる
-//                        object argIndex2 = (object)uname;
-//                        if (SRC.UDList.IsDefined(argIndex2))
+//                        if (SRC.UDList.IsDefined((object)uname))
 //                        {
 //                            UnitData localItem() { object argIndex1 = (object)uname; var ret = SRC.UDList.Item(argIndex1); return ret; }
 
@@ -16036,8 +15581,7 @@
 //                                var withBlock1 = u;
 //                                if ((withBlock1.Name ?? "") == (uname ?? "") && (withBlock1.Party0 ?? "") == (p.Party ?? "") && withBlock1.Status_Renamed != "破棄")
 //                                {
-//                                    string argfname = "ダミーユニット";
-//                                    if (p.IsSupport(u) && !withBlock1.IsFeatureAvailable(argfname))
+//                                    if (p.IsSupport(u) && !withBlock1.IsFeatureAvailable("ダミーユニット"))
 //                                    {
 //                                        p.Ride(withBlock1.CurrentForm());
 //                                        ExecRideCmdRet = LineNum + 1;
@@ -16072,8 +15616,7 @@
 //                                        }
 //                                    }
 
-//                                    object argIndex3 = (object)1;
-//                                    u.CurrentForm().Pilot(argIndex3).GetOff(true);
+//                                    u.CurrentForm().Pilot((object)1).GetOff(true);
 //                                }
 
 //                                p.Ride(u.CurrentForm());
@@ -16093,8 +15636,7 @@
 //                            {
 //                                if (u.CurrentForm().CountPilot() > 0)
 //                                {
-//                                    object argIndex4 = (object)1;
-//                                    u.CurrentForm().Pilot(argIndex4).GetOff(true);
+//                                    u.CurrentForm().Pilot((object)1).GetOff(true);
 //                                }
 
 //                                p.Ride(u.CurrentForm());
@@ -16134,8 +15676,7 @@
 //                            {
 //                                // MOD START マージ
 //                                // .Pilot(1).GetOff
-//                                object argIndex5 = (object)1;
-//                                withBlock2.Pilot(argIndex5).GetOff(true);
+//                                withBlock2.Pilot((object)1).GetOff(true);
 //                                // MOD END マージ
 //                            }
 //                        }
@@ -16182,16 +15723,7 @@
 //                    ret = GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -2, 0, 0, 0, 0, 0x3);
 //                }
 
-//                string argdtitle = "データセーブ";
-//                string argexpr = "セーブデータファイル名";
-//                string argdefault_file = Expression.GetValueAsString(argexpr);
-//                string argftype = "ｾｰﾌﾞﾃﾞｰﾀ";
-//                string argfsuffix = "src";
-//                string argftype2 = "";
-//                string argfsuffix2 = "";
-//                string argftype3 = "";
-//                string argfsuffix3 = "";
-//                fname = FileDialog.SaveFileDialog(argdtitle, SRC.ScenarioPath, argdefault_file, 2, argftype, argfsuffix, ftype2: argftype2, fsuffix2: argfsuffix2, ftype3: argftype3, fsuffix3: argfsuffix3);
+//                fname = FileDialog.SaveFileDialog("データセーブ", SRC.ScenarioPath, Expression.GetValueAsString("セーブデータファイル名"), 2, "ｾｰﾌﾞﾃﾞｰﾀ", "src", ftype2: "ｾｰﾌﾞﾃﾞｰﾀ"2, fsuffix2: "src"2, ftype3: "ｾｰﾌﾞﾃﾞｰﾀ"3, fsuffix3: "src"3);
 
 //                // 再び「常に手前に表示」
 //                if (My.MyProject.Forms.frmListBox.Visible)
@@ -16209,8 +15741,7 @@
 //                // セーブ先はシナリオフォルダ？
 //                if (Strings.InStr(fname, @"\") > 0)
 //                {
-//                    string argstr2 = @"\";
-//                    save_path = Strings.Left(fname, GeneralLib.InStr2(fname, argstr2));
+//                    save_path = Strings.Left(fname, GeneralLib.InStr2(fname, @"\"));
 //                }
 //                // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
 //                if ((FileSystem.Dir(save_path) ?? "") != (FileSystem.Dir(SRC.ScenarioPath) ?? ""))
@@ -16341,11 +15872,7 @@
 //            // マウスカーソルを砂時計に
 //            // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
 //            Cursor.Current = Cursors.WaitCursor;
-//            string argdraw_mode = "セピア";
-//            string argdraw_option = "非同期";
-//            int argfilter_color = 0;
-//            double argfilter_trans_par = 0d;
-//            GUI.SetupBackground(argdraw_mode, argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
+//            GUI.SetupBackground("セピア", "非同期", filter_color: 0, filter_trans_par: 0d);
 //            foreach (Unit u in SRC.UList)
 //            {
 //                {
@@ -16354,11 +15881,9 @@
 //                    {
 //                        if (withBlock.BitmapID == 0)
 //                        {
-//                            object argIndex1 = withBlock.Name;
 //                            {
-//                                var withBlock1 = SRC.UList.Item(argIndex1);
-//                                string argfname = "ダミーユニット";
-//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable(argfname))
+//                                var withBlock1 = SRC.UList.Item(withBlock.Name);
+//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable("ダミーユニット"))
 //                                {
 //                                    u.BitmapID = withBlock1.BitmapID;
 //                                }
@@ -16419,8 +15944,7 @@
 //            {
 //                case 2:
 //                    {
-//                        string argvname = GetArg(2);
-//                        Expression.SetVariableAsLong(argvname, 1);
+//                        Expression.SetVariableAsLong(GetArg(2), 1);
 //                        break;
 //                    }
 
@@ -16433,13 +15957,11 @@
 //                                    etype = Expression.EvalTerm(strArgs[3], Expression.ValueType.UndefinedType, str_result, num_result);
 //                                    if (etype == Expression.ValueType.NumericType)
 //                                    {
-//                                        string argvname1 = GetArg(2);
-//                                        Expression.SetVariableAsDouble(argvname1, num_result);
+//                                        Expression.SetVariableAsDouble(GetArg(2), num_result);
 //                                    }
 //                                    else
 //                                    {
-//                                        string argvname2 = GetArg(2);
-//                                        Expression.SetVariableAsString(argvname2, str_result);
+//                                        Expression.SetVariableAsString(GetArg(2), str_result);
 //                                    }
 
 //                                    break;
@@ -16447,15 +15969,13 @@
 
 //                            case Expression.ValueType.StringType:
 //                                {
-//                                    string argvname3 = GetArg(2);
-//                                    Expression.SetVariableAsString(argvname3, strArgs[3]);
+//                                    Expression.SetVariableAsString(GetArg(2), strArgs[3]);
 //                                    break;
 //                                }
 
 //                            case Expression.ValueType.NumericType:
 //                                {
-//                                    string argvname4 = GetArg(2);
-//                                    Expression.SetVariableAsDouble(argvname4, dblArgs[3]);
+//                                    Expression.SetVariableAsDouble(GetArg(2), dblArgs[3]);
 //                                    break;
 //                                }
 //                        }
@@ -16568,8 +16088,7 @@
 //                case 4:
 //                    {
 //                        pname = GetArgAsString(2);
-//                        object argIndex1 = (object)pname;
-//                        u = SRC.UList.Item2(argIndex1);
+//                        u = SRC.UList.Item2((object)pname);
 //                        if (u is null)
 //                        {
 //                            {
@@ -16581,8 +16100,7 @@
 //                                    pname0 = pname;
 //                                    if (Strings.InStr(pname0, "(") > 0)
 //                                    {
-//                                        string argstr2 = "(";
-//                                        pname0 = Strings.Left(pname0, GeneralLib.InStr2(pname0, argstr2) - 1);
+//                                        pname0 = Strings.Left(pname0, GeneralLib.InStr2(pname0, "(") - 1);
 //                                    }
 
 //                                    bool localIsDefined() { object argIndex1 = (object)pname0; var ret = withBlock.IsDefined(argIndex1); return ret; }
@@ -16687,21 +16205,17 @@
 //            if (selected_msg == "解除")
 //            {
 //                // メッセージ用変数を削除
-//                string argvar_name = "Message(" + u.MainPilot().ID + "," + sit + ")";
-//                Expression.UndefineVariable(argvar_name);
+//                Expression.UndefineVariable("Message(" + u.MainPilot().ID + "," + sit + ")");
 //            }
 //            else if (!string.IsNullOrEmpty(pname0))
 //            {
 //                // 表情指定付きメッセージをローカル変数として登録する
-//                string argvname1 = "Message(" + u.MainPilot().ID + "," + sit + ")";
-//                string argnew_value = pname + "::" + selected_msg;
-//                Expression.SetVariableAsString(argvname1, argnew_value);
+//                Expression.SetVariableAsString("Message(" + u.MainPilot().ID + "," + sit + ")", pname + "::" + selected_msg);
 //            }
 //            else
 //            {
 //                // メッセージをローカル変数として登録する
-//                string argvname = "Message(" + u.MainPilot().ID + "," + sit + ")";
-//                Expression.SetVariableAsString(argvname, selected_msg);
+//                Expression.SetVariableAsString("Message(" + u.MainPilot().ID + "," + sit + ")", selected_msg);
 //            }
 
 //            ExecSetMessageCmdRet = LineNum + 1;
@@ -16821,19 +16335,16 @@
 //            }
 
 //            // 信頼度補正による気力修正を更新
-//            string argoname = "信頼度補正";
-//            if (Expression.IsOptionDefined(argoname))
+//            if (Expression.IsOptionDefined("信頼度補正"))
 //            {
-//                object argIndex1 = pname1;
-//                if (SRC.PList.IsDefined(argIndex1))
+//                if (SRC.PList.IsDefined(pname1))
 //                {
 //                    Pilot localItem3() { object argIndex1 = pname1; var ret = SRC.PList.Item(argIndex1); return ret; }
 
 //                    localItem3().UpdateSupportMod();
 //                }
 
-//                object argIndex2 = pname2;
-//                if (SRC.PList.IsDefined(argIndex2))
+//                if (SRC.PList.IsDefined(pname2))
 //                {
 //                    Pilot localItem4() { object argIndex1 = pname2; var ret = SRC.PList.Item(argIndex1); return ret; }
 
@@ -16875,8 +16386,7 @@
 //            pname = GetArgAsString(2);
 //            bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
 
-//            object argIndex1 = pname;
-//            if (SRC.PList.IsDefined(argIndex1))
+//            if (SRC.PList.IsDefined(pname))
 //            {
 //                Pilot localItem() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
@@ -16910,12 +16420,10 @@
 //            }
 
 //            // エリアスが定義されている？
-//            object argIndex3 = sname;
-//            if (SRC.ALDList.IsDefined(argIndex3))
+//            if (SRC.ALDList.IsDefined(sname))
 //            {
-//                object argIndex2 = sname;
 //                {
-//                    var withBlock = SRC.ALDList.Item(argIndex2);
+//                    var withBlock = SRC.ALDList.Item(sname);
 //                    sname_array = new string[(withBlock.Count + 1)];
 //                    slevel_array = new double[(withBlock.Count + 1)];
 //                    sdata_array = new string[(withBlock.Count + 1)];
@@ -17012,8 +16520,7 @@
 
 //                if (!localIsGlobalVariableDefined())
 //                {
-//                    string argvname = "Ability(" + pname + ")";
-//                    Expression.DefineGlobalVariable(argvname);
+//                    Expression.DefineGlobalVariable("Ability(" + pname + ")");
 //                    slist = sname;
 //                }
 //                else
@@ -17035,8 +16542,7 @@
 //                    }
 //                }
 
-//                string argvname1 = "Ability(" + pname + ")";
-//                Expression.SetVariableAsString(argvname1, slist);
+//                Expression.SetVariableAsString("Ability(" + pname + ")", slist);
 
 //                // 今回SetSkillが適用された能力sname用変数を作成
 //                vname = "Ability(" + pname + "," + sname + ")";
@@ -17048,8 +16554,7 @@
 //                if (!string.IsNullOrEmpty(sdata))
 //                {
 //                    // 別名指定があった場合
-//                    string argnew_value = SrcFormatter.Format(slevel) + " " + sdata;
-//                    Expression.SetVariableAsString(vname, argnew_value);
+//                    Expression.SetVariableAsString(vname, SrcFormatter.Format(slevel) + " " + sdata);
 
 //                    // 必要技能用
 //                    if (sdata != "非表示" && GeneralLib.LIndex(sdata, 1) != "解説")
@@ -17060,14 +16565,12 @@
 //                            Expression.DefineGlobalVariable(vname);
 //                        }
 
-//                        string argnew_value1 = SrcFormatter.Format(slevel);
-//                        Expression.SetVariableAsString(vname, argnew_value1);
+//                        Expression.SetVariableAsString(vname, SrcFormatter.Format(slevel));
 //                    }
 //                }
 //                else
 //                {
-//                    string argnew_value2 = SrcFormatter.Format(slevel);
-//                    Expression.SetVariableAsString(vname, argnew_value2);
+//                    Expression.SetVariableAsString(vname, SrcFormatter.Format(slevel));
 //                }
 
 //                NextSkill:
@@ -17075,12 +16578,10 @@
 //            }
 
 //            // パイロットやユニットのステータスをアップデート
-//            object argIndex5 = pname;
-//            if (SRC.PList.IsDefined(argIndex5))
+//            if (SRC.PList.IsDefined(pname))
 //            {
-//                object argIndex4 = pname;
 //                {
-//                    var withBlock1 = SRC.PList.Item(argIndex4);
+//                    var withBlock1 = SRC.PList.Item(pname);
 //                    withBlock1.Update();
 //                    if (withBlock1.Unit_Renamed is object)
 //                    {
@@ -17110,8 +16611,7 @@
 //                        {
 //                            var withBlock = u;
 //                            cname = GetArgAsString(3);
-//                            string argcdata = "";
-//                            withBlock.AddCondition(cname, GetArgAsLong(4), cdata: argcdata);
+//                            withBlock.AddCondition(cname, GetArgAsLong(4), cdata: "");
 //                            if (withBlock.Status_Renamed == "出撃")
 //                            {
 //                                GUI.PaintUnitBitmap(u);
@@ -17133,8 +16633,7 @@
 //                            {
 //                                var withBlock1 = Event.SelectedUnitForEvent;
 //                                cname = GetArgAsString(2);
-//                                string argcdata1 = "";
-//                                withBlock1.AddCondition(cname, GetArgAsLong(3), cdata: argcdata1);
+//                                withBlock1.AddCondition(cname, GetArgAsLong(3), cdata: "");
 //                                if (withBlock1.Status_Renamed == "出撃")
 //                                {
 //                                    GUI.PaintUnitBitmap(Event.SelectedUnitForEvent);
@@ -17254,15 +16753,12 @@
 //                    {
 //                        Status.StatusFontColorNormalString = color;
 //                        // Global変数に保存
-//                        string argvname1 = "StatusWindow(StringColor)";
-//                        if (!Expression.IsGlobalVariableDefined(argvname1))
+//                        if (!Expression.IsGlobalVariableDefined("StatusWindow(StringColor)"))
 //                        {
-//                            string argvname = "StatusWindow(StringColor)";
-//                            Expression.DefineGlobalVariable(argvname);
+//                            Expression.DefineGlobalVariable("StatusWindow(StringColor)");
 //                        }
 
-//                        string argvname2 = "StatusWindow(StringColor)";
-//                        Expression.SetVariableAsLong(argvname2, color);
+//                        Expression.SetVariableAsLong("StatusWindow(StringColor)", color);
 //                        break;
 //                    }
 
@@ -17270,15 +16766,12 @@
 //                    {
 //                        Status.StatusFontColorAbilityName = color;
 //                        // Global変数に保存
-//                        string argvname4 = "StatusWindow(ANameColor)";
-//                        if (!Expression.IsGlobalVariableDefined(argvname4))
+//                        if (!Expression.IsGlobalVariableDefined("StatusWindow(ANameColor)"))
 //                        {
-//                            string argvname3 = "StatusWindow(ANameColor)";
-//                            Expression.DefineGlobalVariable(argvname3);
+//                            Expression.DefineGlobalVariable("StatusWindow(ANameColor)");
 //                        }
 
-//                        string argvname5 = "StatusWindow(ANameColor)";
-//                        Expression.SetVariableAsLong(argvname5, color);
+//                        Expression.SetVariableAsLong("StatusWindow(ANameColor)", color);
 //                        break;
 //                    }
 
@@ -17286,15 +16779,12 @@
 //                    {
 //                        Status.StatusFontColorAbilityEnable = color;
 //                        // Global変数に保存
-//                        string argvname7 = "StatusWindow(EnableColor)";
-//                        if (!Expression.IsGlobalVariableDefined(argvname7))
+//                        if (!Expression.IsGlobalVariableDefined("StatusWindow(EnableColor)"))
 //                        {
-//                            string argvname6 = "StatusWindow(EnableColor)";
-//                            Expression.DefineGlobalVariable(argvname6);
+//                            Expression.DefineGlobalVariable("StatusWindow(EnableColor)");
 //                        }
 
-//                        string argvname8 = "StatusWindow(EnableColor)";
-//                        Expression.SetVariableAsLong(argvname8, color);
+//                        Expression.SetVariableAsLong("StatusWindow(EnableColor)", color);
 //                        break;
 //                    }
 
@@ -17302,15 +16792,12 @@
 //                    {
 //                        Status.StatusFontColorAbilityDisable = color;
 //                        // Global変数に保存
-//                        string argvname10 = "StatusWindow(DisableColor)";
-//                        if (!Expression.IsGlobalVariableDefined(argvname10))
+//                        if (!Expression.IsGlobalVariableDefined("StatusWindow(DisableColor)"))
 //                        {
-//                            string argvname9 = "StatusWindow(DisableColor)";
-//                            Expression.DefineGlobalVariable(argvname9);
+//                            Expression.DefineGlobalVariable("StatusWindow(DisableColor)");
 //                        }
 
-//                        string argvname11 = "StatusWindow(DisableColor)";
-//                        Expression.SetVariableAsLong(argvname11, color);
+//                        Expression.SetVariableAsLong("StatusWindow(DisableColor)", color);
 //                        break;
 //                    }
 //            }
@@ -17504,54 +16991,42 @@
 //            {
 //                Status.StatusWindowFrameColor = color;
 //                // Global変数に保存
-//                string argvname1 = "StatusWindow(FrameColor)";
-//                if (!Expression.IsGlobalVariableDefined(argvname1))
+//                if (!Expression.IsGlobalVariableDefined("StatusWindow(FrameColor)"))
 //                {
-//                    string argvname = "StatusWindow(FrameColor)";
-//                    Expression.DefineGlobalVariable(argvname);
+//                    Expression.DefineGlobalVariable("StatusWindow(FrameColor)");
 //                }
 
-//                string argvname2 = "StatusWindow(FrameColor)";
-//                Expression.SetVariableAsLong(argvname2, color);
+//                Expression.SetVariableAsLong("StatusWindow(FrameColor)", color);
 //            }
 //            else if (isTargetBG)
 //            {
 //                Status.StatusWindowBackBolor = color;
 //                // Global変数に保存
-//                string argvname4 = "StatusWindow(BackBolor)";
-//                if (!Expression.IsGlobalVariableDefined(argvname4))
+//                if (!Expression.IsGlobalVariableDefined("StatusWindow(BackBolor)"))
 //                {
-//                    string argvname3 = "StatusWindow(BackBolor)";
-//                    Expression.DefineGlobalVariable(argvname3);
+//                    Expression.DefineGlobalVariable("StatusWindow(BackBolor)");
 //                }
 
-//                string argvname5 = "StatusWindow(BackBolor)";
-//                Expression.SetVariableAsLong(argvname5, color);
+//                Expression.SetVariableAsLong("StatusWindow(BackBolor)", color);
 //            }
 //            else if (!isTargetLine && !isTargetBG)
 //            {
 //                Status.StatusWindowFrameColor = color;
 //                // Global変数に保存
-//                string argvname7 = "StatusWindow(FrameColor)";
-//                if (!Expression.IsGlobalVariableDefined(argvname7))
+//                if (!Expression.IsGlobalVariableDefined("StatusWindow(FrameColor)"))
 //                {
-//                    string argvname6 = "StatusWindow(FrameColor)";
-//                    Expression.DefineGlobalVariable(argvname6);
+//                    Expression.DefineGlobalVariable("StatusWindow(FrameColor)");
 //                }
 
-//                string argvname8 = "StatusWindow(FrameColor)";
-//                Expression.SetVariableAsLong(argvname8, color);
+//                Expression.SetVariableAsLong("StatusWindow(FrameColor)", color);
 //                Status.StatusWindowBackBolor = color;
 //                // Global変数に保存
-//                string argvname10 = "StatusWindow(BackBolor)";
-//                if (!Expression.IsGlobalVariableDefined(argvname10))
+//                if (!Expression.IsGlobalVariableDefined("StatusWindow(BackBolor)"))
 //                {
-//                    string argvname9 = "StatusWindow(BackBolor)";
-//                    Expression.DefineGlobalVariable(argvname9);
+//                    Expression.DefineGlobalVariable("StatusWindow(BackBolor)");
 //                }
 
-//                string argvname11 = "StatusWindow(BackBolor)";
-//                Expression.SetVariableAsLong(argvname11, color);
+//                Expression.SetVariableAsLong("StatusWindow(BackBolor)", color);
 //            }
 
 //            ExecSetWindowColorRet = LineNum + 1;
@@ -17581,15 +17056,12 @@
 //            // 処理開始
 //            Status.StatusWindowFrameWidth = width;
 //            // Global変数に保存
-//            string argvname1 = "StatusWindow(FrameWidth)";
-//            if (!Expression.IsGlobalVariableDefined(argvname1))
+//            if (!Expression.IsGlobalVariableDefined("StatusWindow(FrameWidth)"))
 //            {
-//                string argvname = "StatusWindow(FrameWidth)";
-//                Expression.DefineGlobalVariable(argvname);
+//                Expression.DefineGlobalVariable("StatusWindow(FrameWidth)");
 //            }
 
-//            string argvname2 = "StatusWindow(FrameWidth)";
-//            Expression.SetVariableAsLong(argvname2, width);
+//            Expression.SetVariableAsLong("StatusWindow(FrameWidth)", width);
 //            ExecSetWindowFrameWidthRet = LineNum + 1;
 //            return ExecSetWindowFrameWidthRet;
 //        }
@@ -17668,8 +17140,7 @@
 //                GUI.MainForm.Show();
 //            }
 
-//            string argdraw_option = "";
-//            ret = Conversions.ToShort(GUI.DrawPicture(fname, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, dw, dh, 0, 0, 0, 0, argdraw_option));
+//            ret = Conversions.ToShort(GUI.DrawPicture(fname, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, dw, dh, 0, 0, 0, 0, ""));
 //            GUI.MainForm.picMain(0).Refresh();
 //            ExecShowImageCmdRet = LineNum + 1;
 //            return ExecShowImageCmdRet;
@@ -17902,8 +17373,7 @@
 //                            if (oldArray_buf is object)
 //                                for (var i1 = 0; i1 <= oldArray_buf.Length / oldArray_buf.GetLength(1) - 1; ++i1)
 //                                    Array.Copy(oldArray_buf, i1 * oldArray_buf.GetLength(1), array_buf, i1 * array_buf.GetLength(1), Math.Min(oldArray_buf.GetLength(1), array_buf.GetLength(1)));
-//                            string argstr2 = "]";
-//                            buf = Strings.Mid(withBlock.Name, Strings.InStr(withBlock.Name, "[") + 1, GeneralLib.InStr2(withBlock.Name, argstr2) - Strings.InStr(withBlock.Name, "[") - 1);
+//                            buf = Strings.Mid(withBlock.Name, Strings.InStr(withBlock.Name, "[") + 1, GeneralLib.InStr2(withBlock.Name, "]") - Strings.InStr(withBlock.Name, "[") - 1);
 //                            if (!Information.IsNumeric(buf))
 //                            {
 //                                isStringkey = true;
@@ -17957,8 +17427,7 @@
 //                        if (oldArray_buf1 is object)
 //                            for (var i2 = 0; i2 <= oldArray_buf1.Length / oldArray_buf1.GetLength(1) - 1; ++i2)
 //                                Array.Copy(oldArray_buf1, i2 * oldArray_buf1.GetLength(1), array_buf, i2 * array_buf.GetLength(1), Math.Min(oldArray_buf1.GetLength(1), array_buf.GetLength(1)));
-//                        string argstr21 = "]";
-//                        buf = Strings.Mid(var.Name, Strings.InStr(var.Name, "[") + 1, GeneralLib.InStr2(var.Name, argstr21) - Strings.InStr(var.Name, "[") - 1);
+//                        buf = Strings.Mid(var.Name, Strings.InStr(var.Name, "[") + 1, GeneralLib.InStr2(var.Name, "]") - Strings.InStr(var.Name, "[") - 1);
 //                        if (!Information.IsNumeric(buf))
 //                        {
 //                            isStringkey = true;
@@ -18011,8 +17480,7 @@
 //                        if (oldArray_buf2 is object)
 //                            for (var i3 = 0; i3 <= oldArray_buf2.Length / oldArray_buf2.GetLength(1) - 1; ++i3)
 //                                Array.Copy(oldArray_buf2, i3 * oldArray_buf2.GetLength(1), array_buf, i3 * array_buf.GetLength(1), Math.Min(oldArray_buf2.GetLength(1), array_buf.GetLength(1)));
-//                        string argstr22 = "]";
-//                        buf = Strings.Mid(var.Name, Strings.InStr(var.Name, "[") + 1, GeneralLib.InStr2(var.Name, argstr22) - Strings.InStr(var.Name, "[") - 1);
+//                        buf = Strings.Mid(var.Name, Strings.InStr(var.Name, "[") + 1, GeneralLib.InStr2(var.Name, "]") - Strings.InStr(var.Name, "[") - 1);
 //                        if (!Information.IsNumeric(buf))
 //                        {
 //                            isStringkey = true;
@@ -18175,16 +17643,12 @@
 //                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(array_buf[1, i], Expression.ValueType.StringType, false)))
 //                {
 //                    // UPGRADE_WARNING: オブジェクト array_buf() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-//                    string argstr_value = Conversions.ToString(array_buf[2, i]);
-//                    int argnum_value = 0;
-//                    Expression.SetVariable(buf, Expression.ValueType.StringType, argstr_value, argnum_value);
+//                    Expression.SetVariable(buf, Expression.ValueType.StringType, Conversions.ToString(array_buf[2, i]), 0);
 //                }
 //                else
 //                {
 //                    // UPGRADE_WARNING: オブジェクト array_buf() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-//                    string argstr_value1 = "";
-//                    double argnum_value1 = Conversions.ToDouble(array_buf[2, i]);
-//                    Expression.SetVariable(buf, Expression.ValueType.NumericType, argstr_value1, argnum_value1);
+//                    Expression.SetVariable(buf, Expression.ValueType.NumericType, "", Conversions.ToDouble(array_buf[2, i]));
 //                }
 //            }
 
@@ -18213,15 +17677,11 @@
 
 //                case 3:
 //                    {
-//                        object argIndex2 = (object)GetArgAsString(2);
-//                        if (SRC.SPDList.IsDefined(argIndex2))
+//                        if (SRC.SPDList.IsDefined((object)GetArgAsString(2)))
 //                        {
-//                            object argIndex1 = (object)GetArgAsString(2);
 //                            {
-//                                var withBlock = SRC.SPDList.Item(argIndex1);
-//                                string argename = "みがわり";
-//                                string argename1 = "挑発";
-//                                if (Conversions.ToBoolean(Operators.OrObject(withBlock.IsEffectAvailable(argename), withBlock.IsEffectAvailable(argename1))))
+//                                var withBlock = SRC.SPDList.Item((object)GetArgAsString(2));
+//                                if (Conversions.ToBoolean(Operators.OrObject(withBlock.IsEffectAvailable("みがわり"), withBlock.IsEffectAvailable("挑発"))))
 //                                {
 //                                    need_target = true;
 //                                }
@@ -18282,8 +17742,7 @@
 //                 */
 //            }
 
-//            object argIndex3 = sname;
-//            sd = SRC.SPDList.Item(argIndex3);
+//            sd = SRC.SPDList.Item(sname);
 //            msg_window_visible = My.MyProject.Forms.frmMessage.Visible;
 //            Unit prev_target;
 //            if (sd.Duration == "即効")
@@ -18322,8 +17781,7 @@
 //            else
 //            {
 //                prev_action = u.Action;
-//                string argsdata = "";
-//                u.MakeSpecialPowerInEffect(sname, sdata: argsdata);
+//                u.MakeSpecialPowerInEffect(sname, sdata: "");
 //                if (prev_action == 0 && u.Action > 0 || prev_action > 0 && u.Action == 0)
 //                {
 //                    GUI.RedrawScreen();
@@ -18375,8 +17833,7 @@
 
 //            {
 //                var withBlock = u;
-//                string argfname = "分離";
-//                if (!withBlock.IsFeatureAvailable(argfname))
+//                if (!withBlock.IsFeatureAvailable("分離"))
 //                {
 //                    Event.EventErrorMessage = withBlock.Name + "は分離できません";
 //                    ;
@@ -18395,8 +17852,7 @@
 //                // 分離形態の１番目のユニットをメインユニットに設定
 //                string localLIndex() { object argIndex1 = "分離"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
 
-//                object argIndex1 = localLIndex();
-//                u = SRC.UList.Item(argIndex1);
+//                u = SRC.UList.Item(localLIndex());
 
 //                // 変数のアップデート
 //                if (Commands.SelectedUnit is object)
@@ -18595,11 +18051,7 @@
 //            // マウスカーソルを砂時計に
 //            // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
 //            Cursor.Current = Cursors.WaitCursor;
-//            string argdraw_mode = "夕焼け";
-//            string argdraw_option = "非同期";
-//            int argfilter_color = 0;
-//            double argfilter_trans_par = 0d;
-//            GUI.SetupBackground(argdraw_mode, argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
+//            GUI.SetupBackground("夕焼け", "非同期", filter_color: 0, filter_trans_par: 0d);
 //            foreach (Unit u in SRC.UList)
 //            {
 //                {
@@ -18608,11 +18060,9 @@
 //                    {
 //                        if (withBlock.BitmapID == 0)
 //                        {
-//                            object argIndex1 = withBlock.Name;
 //                            {
-//                                var withBlock1 = SRC.UList.Item(argIndex1);
-//                                string argfname = "ダミーユニット";
-//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable(argfname))
+//                                var withBlock1 = SRC.UList.Item(withBlock.Name);
+//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable("ダミーユニット"))
 //                                {
 //                                    u.BitmapID = withBlock1.BitmapID;
 //                                }
@@ -18706,8 +18156,7 @@
 //            {
 //                // 入れ替える前の変数の値を保存
 //                // 引数1の変数
-//                string argvar_name = GetArg(2);
-//                old_var1 = Expression.GetVariableObject(argvar_name);
+//                old_var1 = Expression.GetVariableObject(GetArg(2));
 //                if (old_var1 is object)
 //                {
 //                    {
@@ -18719,8 +18168,7 @@
 //                    }
 //                }
 //                // 引数2の変数
-//                string argvar_name1 = GetArg(3);
-//                old_var2 = Expression.GetVariableObject(argvar_name1);
+//                old_var2 = Expression.GetVariableObject(GetArg(3));
 //                if (old_var2 is object)
 //                {
 //                    {
@@ -19003,12 +18451,10 @@
 //                                {
 //                                    // メインパイロットの強制指定
 //                                    pname = Strings.Mid(pname, 2);
-//                                    object argIndex2 = (object)pname;
-//                                    if (SRC.PList.IsDefined(argIndex2))
+//                                    if (SRC.PList.IsDefined((object)pname))
 //                                    {
-//                                        object argIndex1 = (object)pname;
 //                                        {
-//                                            var withBlock1 = SRC.PList.Item(argIndex1);
+//                                            var withBlock1 = SRC.PList.Item((object)pname);
 //                                            if (withBlock1.Unit_Renamed is object)
 //                                            {
 //                                                pname = withBlock1.Unit_Renamed.MainPilot().Name;
@@ -19159,9 +18605,7 @@
 
 //                                            if (!My.MyProject.Forms.frmMessage.Visible)
 //                                            {
-//                                                Unit argu1 = null;
-//                                                Unit argu2 = null;
-//                                                GUI.OpenMessageForm(u1: argu1, u2: argu2);
+//                                                GUI.OpenMessageForm(u1: null, u2: null);
 //                                            }
 
 //                                            // メッセージウィンドウのパイロット画像を以前指定された
@@ -19281,9 +18725,7 @@
 
 //                                if (!My.MyProject.Forms.frmMessage.Visible)
 //                                {
-//                                    Unit argu11 = null;
-//                                    Unit argu21 = null;
-//                                    GUI.OpenMessageForm(u1: argu11, u2: argu21);
+//                                    GUI.OpenMessageForm(u1: null, u2: null);
 //                                }
 
 //                                break;
@@ -19335,9 +18777,7 @@
 //                            {
 //                                if (!My.MyProject.Forms.frmMessage.Visible)
 //                                {
-//                                    Unit argu12 = null;
-//                                    Unit argu22 = null;
-//                                    GUI.OpenMessageForm(u1: argu12, u2: argu22);
+//                                    GUI.OpenMessageForm(u1: null, u2: null);
 //                                }
 
 //                                GUI.DisplayMessage(current_pname, Event.EventData[i], options);
@@ -19380,9 +18820,7 @@
 //            }
 
 //            Expression.FormatMessage(msg);
-//            string argbgm_name = "Subtitle";
-//            string argmidi_name = Sound.BGMName(argbgm_name);
-//            BGM = Sound.SearchMidiFile(argmidi_name);
+//            BGM = Sound.SearchMidiFile(Sound.BGMName("Subtitle"));
 //            if (Strings.Len(BGM) > 0)
 //            {
 //                Sound.StartBGM(BGM, false);
@@ -19529,8 +18967,7 @@
 //            }
 
 //            urank = GetArgAsLong(3);
-//            string arguparty = "味方";
-//            u = SRC.UList.Add(uname, urank, arguparty);
+//            u = SRC.UList.Add(uname, urank, "味方");
 //            if (u is null)
 //            {
 //                Event.EventErrorMessage = uname + "のユニットデータが不正です";
@@ -19553,8 +18990,7 @@
 //        private int ExecUnsetCmd()
 //        {
 //            int ExecUnsetCmdRet = default;
-//            string argvar_name = GetArg(2);
-//            Expression.UndefineVariable(argvar_name);
+//            Expression.UndefineVariable(GetArg(2));
 //            ExecUnsetCmdRet = LineNum + 1;
 //            return ExecUnsetCmdRet;
 //        }
@@ -19634,8 +19070,7 @@
 //            }
 
 //            prev_status = u1.Status_Renamed;
-//            string arguparty = u1.Party0;
-//            u2 = SRC.UList.Add(uname, u1.Rank, arguparty);
+//            u2 = SRC.UList.Add(uname, u1.Rank, u1.Party0);
 //            u1.Party0 = arguparty;
 //            if (u2 is null)
 //            {
@@ -19667,19 +19102,16 @@
 //                var loopTo = Information.UBound(pilot_list);
 //                for (i = 1; i <= loopTo; i++)
 //                {
-//                    object argIndex1 = i;
-//                    pilot_list[i] = u1.Pilot(argIndex1);
+//                    pilot_list[i] = u1.Pilot(i);
 //                }
 
 //                var loopTo1 = Information.UBound(support_list);
 //                for (i = 1; i <= loopTo1; i++)
 //                {
-//                    object argIndex2 = i;
-//                    support_list[i] = u1.Support(argIndex2);
+//                    support_list[i] = u1.Support(i);
 //                }
 
-//                object argIndex3 = 1;
-//                u1.Pilot(argIndex3).GetOff();
+//                u1.Pilot(1).GetOff();
 //                var loopTo2 = Information.UBound(pilot_list);
 //                for (i = 1; i <= loopTo2; i++)
 //                    pilot_list[i].Ride(u2);
@@ -19694,15 +19126,13 @@
 //            {
 //                Item localItem1() { object argIndex1 = i; var ret = u1.Item(argIndex1); return ret; }
 
-//                var argitm = localItem1();
-//                u2.AddItem(argitm);
+//                u2.AddItem(localItem1());
 //            }
 
 //            var loopTo5 = u1.CountItem();
 //            for (i = 1; i <= loopTo5; i++)
 //            {
-//                object argIndex4 = 1;
-//                u1.DeleteItem(argIndex4);
+//                u1.DeleteItem(1);
 //            }
 
 //            // リンクの付け替え
@@ -19719,20 +19149,17 @@
 //            {
 //                Unit localServant() { object argIndex1 = i; var ret = u1.Servant(argIndex1); return ret; }
 
-//                var argu = localServant();
-//                u2.AddServant(argu);
+//                u2.AddServant(localServant());
 //            }
 
 //            var loopTo7 = u1.CountServant();
 //            for (i = 1; i <= loopTo7; i++)
 //            {
-//                object argIndex5 = 1;
-//                u1.DeleteServant(argIndex5);
+//                u1.DeleteServant(1);
 //            }
 
 //            // 収納ユニットの交換
-//            string argfname = "母艦";
-//            if (u1.IsFeatureAvailable(argfname))
+//            if (u1.IsFeatureAvailable("母艦"))
 //            {
 //                var loopTo8 = u1.CountOtherForm();
 //                for (i = 1; i <= loopTo8; i++)
@@ -19743,8 +19170,7 @@
 //                    {
 //                        Unit localOtherForm() { object argIndex1 = i; var ret = u1.OtherForm(argIndex1); return ret; }
 
-//                        var argu1 = localOtherForm();
-//                        u2.AddOtherForm(argu1);
+//                        u2.AddOtherForm(localOtherForm());
 //                    }
 //                }
 
@@ -20319,11 +19745,7 @@
 //            // マウスカーソルを砂時計に
 //            // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
 //            Cursor.Current = Cursors.WaitCursor;
-//            string argdraw_mode = "水中";
-//            string argdraw_option = "非同期";
-//            int argfilter_color = 0;
-//            double argfilter_trans_par = 0d;
-//            GUI.SetupBackground(argdraw_mode, argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
+//            GUI.SetupBackground("水中", "非同期", filter_color: 0, filter_trans_par: 0d);
 //            foreach (Unit u in SRC.UList)
 //            {
 //                {
@@ -20332,11 +19754,9 @@
 //                    {
 //                        if (withBlock.BitmapID == 0)
 //                        {
-//                            object argIndex1 = withBlock.Name;
 //                            {
-//                                var withBlock1 = SRC.UList.Item(argIndex1);
-//                                string argfname = "ダミーユニット";
-//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable(argfname))
+//                                var withBlock1 = SRC.UList.Item(withBlock.Name);
+//                                if ((u.Party0 ?? "") == (withBlock1.Party0 ?? "") && withBlock1.BitmapID != 0 && (u.get_Bitmap(false) ?? "") == (withBlock1.get_Bitmap(false) ?? "") && !withBlock1.IsFeatureAvailable("ダミーユニット"))
 //                                {
 //                                    u.BitmapID = withBlock1.BitmapID;
 //                                }
@@ -20415,8 +19835,7 @@
 //                ret = GUI.BitBlt(withBlock.picTmp.hDC, 0, 0, GUI.MainPWidth, GUI.MainPHeight, withBlock.picMain(0).hDC, 0, 0, GUI.SRCCOPY);
 //                // MOD END マージ
 
-//                var argpic = withBlock.picMain(0);
-//                Graphics.InitFade(argpic, num, true);
+//                Graphics.InitFade(withBlock.picMain(0), num, true);
 //                start_time = GeneralLib.timeGetTime();
 //                wait_time = 50;
 //                var loopTo = num;
@@ -20430,8 +19849,7 @@
 //                        }
 //                    }
 
-//                    var argpic1 = withBlock.picMain(0);
-//                    Graphics.DoFade(argpic1, i);
+//                    Graphics.DoFade(withBlock.picMain(0), i);
 //                    withBlock.picMain(0).Refresh();
 //                    cur_time = GeneralLib.timeGetTime();
 //                    while (cur_time < start_time + wait_time * (i + 1))
@@ -20497,8 +19915,7 @@
 //            GUI.SaveScreen();
 //            {
 //                var withBlock = GUI.MainForm;
-//                var argpic = withBlock.picMain(0);
-//                Graphics.InitFade(argpic, num, true);
+//                Graphics.InitFade(withBlock.picMain(0), num, true);
 //                start_time = GeneralLib.timeGetTime();
 //                wait_time = 50;
 //                var loopTo = num;
@@ -20518,8 +19935,7 @@
 //                        }
 //                    }
 
-//                    var argpic1 = withBlock.picMain(0);
-//                    Graphics.DoFade(argpic1, num - i);
+//                    Graphics.DoFade(withBlock.picMain(0), num - i);
 //                    withBlock.picMain(0).Refresh();
 //                    cur_time = GeneralLib.timeGetTime();
 //                    while (cur_time < start_time + wait_time * (i + 1))

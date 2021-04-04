@@ -1,4 +1,4 @@
-﻿
+
 using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
@@ -204,8 +204,7 @@ namespace SRCCore.Events
 
             //if (CallDepth > MaxCallDepth)
             //{
-            //    string argmsg = "サブルーチンの呼び出し階層が" + SrcFormatter.Format(MaxCallDepth) + "を超えているため、イベントの処理が出来ません";
-            //    GUI.ErrorMessage(argmsg);
+            //    GUI.ErrorMessage("サブルーチンの呼び出し階層が" + SrcFormatter.Format(MaxCallDepth) + "を超えているため、イベントの処理が出来ません");
             //    CallDepth = MaxCallDepth;
             //    return;
             //}

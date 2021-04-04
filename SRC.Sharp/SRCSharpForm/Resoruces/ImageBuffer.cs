@@ -1,4 +1,4 @@
-﻿using SRCCore;
+using SRCCore;
 using SRCCore.Lib;
 using System.Collections.Generic;
 using System.Drawing;

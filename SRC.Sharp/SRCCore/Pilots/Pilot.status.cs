@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -67,8 +67,7 @@ namespace SRCCore.Pilots
             //    // SetSkillコマンドで付加された特殊能力を検索
             //    string sname, alist, sdata;
             //    string buf;
-            //    string argvname = "Ability(" + ID + ")";
-            //    if (Expression.IsGlobalVariableDefined(argvname))
+            //    if (Expression.IsGlobalVariableDefined("Ability(" + ID + ")"))
             //    {
 
             //        // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
@@ -117,8 +116,7 @@ namespace SRCCore.Pilots
             //                skill_name[j] = sname;
             //            }
 
-            //            string argexpr1 = GeneralLib.LIndex(buf, 1);
-            //            if (GeneralLib.StrToDbl(argexpr1) == 0d)
+            //            if (GeneralLib.StrToDbl(GeneralLib.LIndex(buf, 1)) == 0d)
             //            {
             //                // レベル0の場合は能力を封印
             //                // UPGRADE_NOTE: オブジェクト skill_data() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -130,8 +128,7 @@ namespace SRCCore.Pilots
             //                // アビリティデータを新規に作成
             //                sd = new SkillData();
             //                sd.Name = sname;
-            //                string argexpr = GeneralLib.LIndex(buf, 1);
-            //                sd.Level = GeneralLib.StrToDbl(argexpr);
+            //                sd.Level = GeneralLib.StrToDbl(GeneralLib.LIndex(buf, 1));
             //                if (sd.Level == -1)
             //                {
             //                    sd.Level = Constants.DEFAULT_LEVEL;
@@ -151,8 +148,7 @@ namespace SRCCore.Pilots
             //        {
             //            if (skill_data[j] is object)
             //            {
-            //                object argIndex1 = skill_data[j].Name + "使用不能";
-            //                if (Unit_Renamed.ConditionLifetime(argIndex1) > 0)
+            //                if (Unit_Renamed.ConditionLifetime(skill_data[j].Name + "使用不能") > 0)
             //                {
             //                    // UPGRADE_NOTE: オブジェクト skill_data() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             //                    skill_data[j] = null;
@@ -321,128 +317,71 @@ namespace SRCCore.Pilots
             //            var loopTo9 = withBlock4.CountPilot();
             //            for (i = 2; i <= loopTo9; i++)
             //            {
-            //                object argIndex36 = i;
             //                {
-            //                    var withBlock5 = withBlock4.Pilot(argIndex36);
-            //                    object argIndex27 = "格闘サポート";
-            //                    string argref_mode25 = "";
-            //                    InfightMod = (InfightMod + 2d * withBlock5.SkillLevel(argIndex27, ref_mode: argref_mode25));
+            //                    var withBlock5 = withBlock4.Pilot(i);
+            //                    InfightMod = (InfightMod + 2d * withBlock5.SkillLevel("格闘サポート", ref_mode: ""));
             //                    if (HasMana())
             //                    {
-            //                        object argIndex28 = "魔力サポート";
-            //                        string argref_mode26 = "";
-            //                        ShootingMod = (ShootingMod + 2d * withBlock5.SkillLevel(argIndex28, ref_mode: argref_mode26));
+            //                        ShootingMod = (ShootingMod + 2d * withBlock5.SkillLevel("魔力サポート", ref_mode: ""));
             //                    }
             //                    else
             //                    {
-            //                        object argIndex29 = "射撃サポート";
-            //                        string argref_mode27 = "";
-            //                        ShootingMod = (ShootingMod + 2d * withBlock5.SkillLevel(argIndex29, ref_mode: argref_mode27));
+            //                        ShootingMod = (ShootingMod + 2d * withBlock5.SkillLevel("射撃サポート", ref_mode: ""));
             //                    }
 
-            //                    object argIndex30 = "サポート";
-            //                    string argref_mode28 = "";
-            //                    HitMod = (HitMod + 3d * withBlock5.SkillLevel(argIndex30, ref_mode: argref_mode28));
-            //                    object argIndex31 = "命中サポート";
-            //                    string argref_mode29 = "";
-            //                    HitMod = (HitMod + 2d * withBlock5.SkillLevel(argIndex31, ref_mode: argref_mode29));
-            //                    object argIndex32 = "サポート";
-            //                    string argref_mode30 = "";
-            //                    DodgeMod = (DodgeMod + 3d * withBlock5.SkillLevel(argIndex32, ref_mode: argref_mode30));
-            //                    object argIndex33 = "回避サポート";
-            //                    string argref_mode31 = "";
-            //                    DodgeMod = (DodgeMod + 2d * withBlock5.SkillLevel(argIndex33, ref_mode: argref_mode31));
-            //                    object argIndex34 = "技量サポート";
-            //                    string argref_mode32 = "";
-            //                    TechniqueMod = (TechniqueMod + 2d * withBlock5.SkillLevel(argIndex34, ref_mode: argref_mode32));
-            //                    object argIndex35 = "反応サポート";
-            //                    string argref_mode33 = "";
-            //                    IntuitionMod = (IntuitionMod + 2d * withBlock5.SkillLevel(argIndex35, ref_mode: argref_mode33));
+            //                    HitMod = (HitMod + 3d * withBlock5.SkillLevel("サポート", ref_mode: ""));
+            //                    HitMod = (HitMod + 2d * withBlock5.SkillLevel("命中サポート", ref_mode: ""));
+            //                    DodgeMod = (DodgeMod + 3d * withBlock5.SkillLevel("サポート", ref_mode: ""));
+            //                    DodgeMod = (DodgeMod + 2d * withBlock5.SkillLevel("回避サポート", ref_mode: ""));
+            //                    TechniqueMod = (TechniqueMod + 2d * withBlock5.SkillLevel("技量サポート", ref_mode: ""));
+            //                    IntuitionMod = (IntuitionMod + 2d * withBlock5.SkillLevel("反応サポート", ref_mode: ""));
             //                }
             //            }
 
             //            var loopTo10 = withBlock4.CountSupport();
             //            for (i = 1; i <= loopTo10; i++)
             //            {
-            //                object argIndex46 = i;
             //                {
-            //                    var withBlock6 = withBlock4.Support(argIndex46);
-            //                    object argIndex37 = "格闘サポート";
-            //                    string argref_mode34 = "";
-            //                    InfightMod = (InfightMod + 2d * withBlock6.SkillLevel(argIndex37, ref_mode: argref_mode34));
+            //                    var withBlock6 = withBlock4.Support(i);
+            //                    InfightMod = (InfightMod + 2d * withBlock6.SkillLevel("格闘サポート", ref_mode: ""));
             //                    if (HasMana())
             //                    {
-            //                        object argIndex38 = "魔力サポート";
-            //                        string argref_mode35 = "";
-            //                        ShootingMod = (ShootingMod + 2d * withBlock6.SkillLevel(argIndex38, ref_mode: argref_mode35));
+            //                        ShootingMod = (ShootingMod + 2d * withBlock6.SkillLevel("魔力サポート", ref_mode: ""));
             //                    }
             //                    else
             //                    {
-            //                        object argIndex39 = "射撃サポート";
-            //                        string argref_mode36 = "";
-            //                        ShootingMod = (ShootingMod + 2d * withBlock6.SkillLevel(argIndex39, ref_mode: argref_mode36));
+            //                        ShootingMod = (ShootingMod + 2d * withBlock6.SkillLevel("射撃サポート", ref_mode: ""));
             //                    }
 
-            //                    object argIndex40 = "サポート";
-            //                    string argref_mode37 = "";
-            //                    HitMod = (HitMod + 3d * withBlock6.SkillLevel(argIndex40, ref_mode: argref_mode37));
-            //                    object argIndex41 = "命中サポート";
-            //                    string argref_mode38 = "";
-            //                    HitMod = (HitMod + 2d * withBlock6.SkillLevel(argIndex41, ref_mode: argref_mode38));
-            //                    object argIndex42 = "サポート";
-            //                    string argref_mode39 = "";
-            //                    DodgeMod = (DodgeMod + 3d * withBlock6.SkillLevel(argIndex42, ref_mode: argref_mode39));
-            //                    object argIndex43 = "回避サポート";
-            //                    string argref_mode40 = "";
-            //                    DodgeMod = (DodgeMod + 2d * withBlock6.SkillLevel(argIndex43, ref_mode: argref_mode40));
-            //                    object argIndex44 = "技量サポート";
-            //                    string argref_mode41 = "";
-            //                    TechniqueMod = (TechniqueMod + 2d * withBlock6.SkillLevel(argIndex44, ref_mode: argref_mode41));
-            //                    object argIndex45 = "反応サポート";
-            //                    string argref_mode42 = "";
-            //                    IntuitionMod = (IntuitionMod + 2d * withBlock6.SkillLevel(argIndex45, ref_mode: argref_mode42));
+            //                    HitMod = (HitMod + 3d * withBlock6.SkillLevel("サポート", ref_mode: ""));
+            //                    HitMod = (HitMod + 2d * withBlock6.SkillLevel("命中サポート", ref_mode: ""));
+            //                    DodgeMod = (DodgeMod + 3d * withBlock6.SkillLevel("サポート", ref_mode: ""));
+            //                    DodgeMod = (DodgeMod + 2d * withBlock6.SkillLevel("回避サポート", ref_mode: ""));
+            //                    TechniqueMod = (TechniqueMod + 2d * withBlock6.SkillLevel("技量サポート", ref_mode: ""));
+            //                    IntuitionMod = (IntuitionMod + 2d * withBlock6.SkillLevel("反応サポート", ref_mode: ""));
             //                }
             //            }
 
-            //            string argfname = "追加サポート";
-            //            if (withBlock4.IsFeatureAvailable(argfname))
+            //            if (withBlock4.IsFeatureAvailable("追加サポート"))
             //            {
             //                {
             //                    var withBlock7 = withBlock4.AdditionalSupport();
-            //                    object argIndex47 = "格闘サポート";
-            //                    string argref_mode43 = "";
-            //                    InfightMod = (InfightMod + 2d * withBlock7.SkillLevel(argIndex47, ref_mode: argref_mode43));
+            //                    InfightMod = (InfightMod + 2d * withBlock7.SkillLevel("格闘サポート", ref_mode: ""));
             //                    if (HasMana())
             //                    {
-            //                        object argIndex48 = "魔力サポート";
-            //                        string argref_mode44 = "";
-            //                        ShootingMod = (ShootingMod + 2d * withBlock7.SkillLevel(argIndex48, ref_mode: argref_mode44));
+            //                        ShootingMod = (ShootingMod + 2d * withBlock7.SkillLevel("魔力サポート", ref_mode: ""));
             //                    }
             //                    else
             //                    {
-            //                        object argIndex49 = "射撃サポート";
-            //                        string argref_mode45 = "";
-            //                        ShootingMod = (ShootingMod + 2d * withBlock7.SkillLevel(argIndex49, ref_mode: argref_mode45));
+            //                        ShootingMod = (ShootingMod + 2d * withBlock7.SkillLevel("射撃サポート", ref_mode: ""));
             //                    }
 
-            //                    object argIndex50 = "サポート";
-            //                    string argref_mode46 = "";
-            //                    HitMod = (HitMod + 3d * withBlock7.SkillLevel(argIndex50, ref_mode: argref_mode46));
-            //                    object argIndex51 = "命中サポート";
-            //                    string argref_mode47 = "";
-            //                    HitMod = (HitMod + 2d * withBlock7.SkillLevel(argIndex51, ref_mode: argref_mode47));
-            //                    object argIndex52 = "サポート";
-            //                    string argref_mode48 = "";
-            //                    DodgeMod = (DodgeMod + 3d * withBlock7.SkillLevel(argIndex52, ref_mode: argref_mode48));
-            //                    object argIndex53 = "回避サポート";
-            //                    string argref_mode49 = "";
-            //                    DodgeMod = (DodgeMod + 2d * withBlock7.SkillLevel(argIndex53, ref_mode: argref_mode49));
-            //                    object argIndex54 = "技量サポート";
-            //                    string argref_mode50 = "";
-            //                    TechniqueMod = (TechniqueMod + 2d * withBlock7.SkillLevel(argIndex54, ref_mode: argref_mode50));
-            //                    object argIndex55 = "反応サポート";
-            //                    string argref_mode51 = "";
-            //                    IntuitionMod = (IntuitionMod + 2d * withBlock7.SkillLevel(argIndex55, ref_mode: argref_mode51));
+            //                    HitMod = (HitMod + 3d * withBlock7.SkillLevel("サポート", ref_mode: ""));
+            //                    HitMod = (HitMod + 2d * withBlock7.SkillLevel("命中サポート", ref_mode: ""));
+            //                    DodgeMod = (DodgeMod + 3d * withBlock7.SkillLevel("サポート", ref_mode: ""));
+            //                    DodgeMod = (DodgeMod + 2d * withBlock7.SkillLevel("回避サポート", ref_mode: ""));
+            //                    TechniqueMod = (TechniqueMod + 2d * withBlock7.SkillLevel("技量サポート", ref_mode: ""));
+            //                    IntuitionMod = (IntuitionMod + 2d * withBlock7.SkillLevel("反応サポート", ref_mode: ""));
             //                }
             //            }
             //        }
@@ -451,8 +390,7 @@ namespace SRCCore.Pilots
             //        var loopTo11 = withBlock4.CountFeature();
             //        for (i = 1; i <= loopTo11; i++)
             //        {
-            //            object argIndex56 = i;
-            //            switch (withBlock4.Feature(argIndex56) ?? "")
+            //            switch (withBlock4.Feature(i) ?? "")
             //            {
             //                case "格闘強化":
             //                    {
@@ -565,8 +503,7 @@ namespace SRCCore.Pilots
             //        }
 
             //        // 地形適応変更
-            //        string argfname1 = "パイロット地形適応変更";
-            //        if (withBlock4.IsFeatureAvailable(argfname1))
+            //        if (withBlock4.IsFeatureAvailable("パイロット地形適応変更"))
             //        {
             //            for (i = 1; i <= 4; i++)
             //            {
@@ -615,8 +552,7 @@ namespace SRCCore.Pilots
             //            var loopTo12 = withBlock4.CountFeature();
             //            for (i = 1; i <= loopTo12; i++)
             //            {
-            //                object argIndex57 = i;
-            //                if (withBlock4.Feature(argIndex57) == "パイロット地形適応変更")
+            //                if (withBlock4.Feature(i) == "パイロット地形適応変更")
             //                {
             //                    for (j = 1; j <= 4; j++)
             //                    {
@@ -624,8 +560,7 @@ namespace SRCCore.Pilots
 
             //                        string localLIndex8() { string arglist = hsb8c32b5b97d840f1a1974442798ae710(); var ret = GeneralLib.LIndex(arglist, j); return ret; }
 
-            //                        string argexpr2 = localLIndex8();
-            //                        if (GeneralLib.StrToLng(argexpr2) >= 0)
+            //                        if (GeneralLib.StrToLng(localLIndex8()) >= 0)
             //                        {
             //                            // 修正値がプラスのとき
             //                            if (padaption[j] < 4)
@@ -791,14 +726,12 @@ namespace SRCCore.Pilots
         //        }
 
         //        // 正常な判断が出来ないユニットは支援を受けられない
-        //        object argIndex1 = "暴走";
-        //        if (withBlock.IsConditionSatisfied(argIndex1))
+        //        if (withBlock.IsConditionSatisfied("暴走"))
         //        {
         //            return;
         //        }
 
-        //        object argIndex2 = "混乱";
-        //        if (withBlock.IsConditionSatisfied(argIndex2))
+        //        if (withBlock.IsConditionSatisfied("混乱"))
         //        {
         //            return;
         //        }
@@ -807,12 +740,9 @@ namespace SRCCore.Pilots
         //        my_party = withBlock.Party;
 
         //        // 指揮効果判定用に自分の階級レベルを算出
-        //        string argsname = "階級";
-        //        if (IsSkillAvailable(argsname))
+        //        if (IsSkillAvailable("階級"))
         //        {
-        //            object argIndex3 = "階級";
-        //            string argref_mode = "";
-        //            my_cmd_rank = SkillLevel(argIndex3, ref_mode: argref_mode);
+        //            my_cmd_rank = SkillLevel("階級", ref_mode: "");
         //            cmd_rank = my_cmd_rank;
         //        }
         //        else
@@ -830,8 +760,7 @@ namespace SRCCore.Pilots
         //        }
 
         //        // 自分が所属しているチーム名
-        //        object argIndex4 = "チーム";
-        //        team = SkillData(argIndex4);
+        //        team = SkillData("チーム");
 
         //        // 周りのユニットを調べる
         //        cs_level = Constants.DEFAULT_LEVEL;
@@ -899,14 +828,12 @@ namespace SRCCore.Pilots
         //                    }
 
         //                    // 相手が正常な判断能力を持っていない場合も支援は受けられない
-        //                    object argIndex5 = "暴走";
-        //                    if (withBlock1.IsConditionSatisfied(argIndex5))
+        //                    if (withBlock1.IsConditionSatisfied("暴走"))
         //                    {
         //                        goto NextUnit;
         //                    }
 
-        //                    object argIndex6 = "混乱";
-        //                    if (withBlock1.IsConditionSatisfied(argIndex6))
+        //                    if (withBlock1.IsConditionSatisfied("混乱"))
         //                    {
         //                        goto NextUnit;
         //                    }
@@ -915,8 +842,7 @@ namespace SRCCore.Pilots
         //                {
         //                    var withBlock2 = u.MainPilot(true);
         //                    // 同じチームに所属している？
-        //                    object argIndex7 = "チーム";
-        //                    uteam = withBlock2.SkillData(argIndex7);
+        //                    uteam = withBlock2.SkillData("チーム");
         //                    if ((team ?? "") != (uteam ?? "") & !string.IsNullOrEmpty(uteam))
         //                    {
         //                        goto NextUnit;
@@ -925,9 +851,7 @@ namespace SRCCore.Pilots
         //                    // 広域サポート
         //                    if (range <= 2)
         //                    {
-        //                        object argIndex8 = "広域サポート";
-        //                        string argref_mode1 = "";
-        //                        cs_level = GeneralLib.MaxDbl(cs_level, withBlock2.SkillLevel(argIndex8, ref_mode: argref_mode1));
+        //                        cs_level = GeneralLib.MaxDbl(cs_level, withBlock2.SkillLevel("広域サポート", ref_mode: ""));
         //                    }
 
         //                    // 指揮効果
@@ -938,21 +862,15 @@ namespace SRCCore.Pilots
         //                            goto NextUnit;
         //                        }
 
-        //                        object argIndex9 = "階級";
-        //                        string argref_mode2 = "";
-        //                        cmd_rank2 = withBlock2.SkillLevel(argIndex9, ref_mode: argref_mode2);
+        //                        cmd_rank2 = withBlock2.SkillLevel("階級", ref_mode: "");
         //                        if (cmd_rank2 > cmd_rank)
         //                        {
         //                            cmd_rank = cmd_rank2;
-        //                            object argIndex10 = "指揮";
-        //                            string argref_mode3 = "";
-        //                            cmd_level = withBlock2.SkillLevel(argIndex10, ref_mode: argref_mode3);
+        //                            cmd_level = withBlock2.SkillLevel("指揮", ref_mode: "");
         //                        }
         //                        else if (cmd_rank2 == cmd_rank)
         //                        {
-        //                            object argIndex11 = "指揮";
-        //                            string argref_mode4 = "";
-        //                            cmd_level = GeneralLib.MaxDbl(cmd_level, withBlock2.SkillLevel(argIndex11, ref_mode: argref_mode4));
+        //                            cmd_level = GeneralLib.MaxDbl(cmd_level, withBlock2.SkillLevel("指揮", ref_mode: ""));
         //                        }
         //                    }
         //                }
@@ -1014,8 +932,7 @@ namespace SRCCore.Pilots
         //        Intuition = (Intuition + IntuitionMod2);
 
         //        // 信頼補正
-        //        string argoname = "信頼補正";
-        //        if (!Expression.IsOptionDefined(argoname))
+        //        if (!Expression.IsOptionDefined("信頼補正"))
         //        {
         //            return;
         //        }
@@ -1026,8 +943,7 @@ namespace SRCCore.Pilots
         //        }
 
         //        // 信頼補正が重複する？
-        //        string argoname1 = "信頼補正重複";
-        //        mod_stack = Expression.IsOptionDefined(argoname1);
+        //        mod_stack = Expression.IsOptionDefined("信頼補正重複");
 
         //        // 同じユニットに乗っているサポートパイロットからの補正
         //        if (mod_stack)
@@ -1042,8 +958,7 @@ namespace SRCCore.Pilots
         //                rel_lv = (rel_lv + localRelation());
         //            }
 
-        //            string argfname = "追加サポート";
-        //            if (withBlock.IsFeatureAvailable(argfname))
+        //            if (withBlock.IsFeatureAvailable("追加サポート"))
         //            {
         //                rel_lv = (rel_lv + Relation(withBlock.AdditionalSupport()));
         //            }
@@ -1060,16 +975,14 @@ namespace SRCCore.Pilots
         //                rel_lv = GeneralLib.MaxLng(localRelation1(), rel_lv);
         //            }
 
-        //            string argfname1 = "追加サポート";
-        //            if (withBlock.IsFeatureAvailable(argfname1))
+        //            if (withBlock.IsFeatureAvailable("追加サポート"))
         //            {
         //                rel_lv = GeneralLib.MaxLng(Relation(withBlock.AdditionalSupport()), rel_lv);
         //            }
         //        }
 
         //        // 周囲のユニットからの補正
-        //        string argoname2 = "信頼補正範囲拡大";
-        //        if (Expression.IsOptionDefined(argoname2))
+        //        if (Expression.IsOptionDefined("信頼補正範囲拡大"))
         //        {
         //            max_range = 2;
         //        }
@@ -1162,8 +1075,7 @@ namespace SRCCore.Pilots
         //                        rel_lv = (rel_lv + localRelation4());
         //                    }
 
-        //                    string argfname2 = "追加サポート";
-        //                    if (u.IsFeatureAvailable(argfname2))
+        //                    if (u.IsFeatureAvailable("追加サポート"))
         //                    {
         //                        rel_lv = (rel_lv + Relation(u.AdditionalSupport()));
         //                    }
@@ -1193,8 +1105,7 @@ namespace SRCCore.Pilots
         //                        rel_lv = GeneralLib.MaxLng(localRelation7(), rel_lv);
         //                    }
 
-        //                    string argfname3 = "追加サポート";
-        //                    if (u.IsFeatureAvailable(argfname3))
+        //                    if (u.IsFeatureAvailable("追加サポート"))
         //                    {
         //                        rel_lv = GeneralLib.MaxLng(Relation(u.AdditionalSupport()), rel_lv);
         //                    }

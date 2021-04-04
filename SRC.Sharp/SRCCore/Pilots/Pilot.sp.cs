@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -37,14 +37,11 @@ namespace SRCCore.Pilots
                 //            var withBlock = Unit;
                 //            if (withBlock.CountPilot() > 0)
                 //            {
-                //                object argIndex2 = 1;
-                //                object argIndex3 = 1;
-                //                if (!ReferenceEquals(withBlock.Pilot(argIndex3), this))
+                //                if (!ReferenceEquals(withBlock.Pilot(1), this))
                 //                {
                 //                    if (ReferenceEquals(withBlock.MainPilot(), this))
                 //                    {
-                //                        object argIndex1 = 1;
-                //                        MaxSPRet = withBlock.Pilot(argIndex1).MaxSP;
+                //                        MaxSPRet = withBlock.Pilot(1).MaxSP;
                 //                    }
                 //                }
                 //            }
@@ -71,19 +68,16 @@ namespace SRCCore.Pilots
                     MaxSPRet = 2 * lv;
                 }
 
-                string argsname = "ＳＰ低成長";
-                string argsname1 = "ＳＰ高成長";
-                if (IsSkillAvailable(argsname))
+                if (IsSkillAvailable("ＳＰ低成長"))
                 {
                     MaxSPRet = MaxSPRet / 2;
                 }
-                else if (IsSkillAvailable(argsname1))
+                else if (IsSkillAvailable("ＳＰ高成長"))
                 {
                     MaxSPRet = (int)(1.5d * MaxSPRet);
                 }
 
-                string argoname = "ＳＰ低成長";
-                if (Expression.IsOptionDefined(argoname))
+                if (Expression.IsOptionDefined("ＳＰ低成長"))
                 {
                     MaxSPRet = MaxSPRet / 2;
                 }
@@ -131,8 +125,7 @@ namespace SRCCore.Pilots
                 //        return default;
                 //    }
 
-                //    object argIndex1 = 1;
-                //    if (ReferenceEquals(withBlock.Pilot(argIndex1), this))
+                //    if (ReferenceEquals(withBlock.Pilot(1), this))
                 //    {
                 //        return default;
                 //    }
@@ -146,9 +139,8 @@ namespace SRCCore.Pilots
                 //    if (Data.SP > 0)
                 //    {
                 //        // ＳＰを持つ場合は消費量を一致させる
-                //        object argIndex2 = 1;
                 //        {
-                //            var withBlock1 = withBlock.Pilot(argIndex2);
+                //            var withBlock1 = withBlock.Pilot(1);
                 //            if (withBlock1.MaxSP > 0)
                 //            {
                 //                proSP = (MaxSP * withBlock1.SP0 / withBlock1.MaxSP);
@@ -159,8 +151,7 @@ namespace SRCCore.Pilots
                 //    else
                 //    {
                 //        // ＳＰを持たない場合はそのまま使う
-                //        object argIndex3 = 1;
-                //        SPRet = withBlock.Pilot(argIndex3).SP0;
+                //        SPRet = withBlock.Pilot(1).SP0;
                 //    }
                 //}
 
@@ -199,8 +190,7 @@ namespace SRCCore.Pilots
                 //        return;
                 //    }
 
-                //    object argIndex1 = 1;
-                //    if (ReferenceEquals(withBlock.Pilot(argIndex1), this))
+                //    if (ReferenceEquals(withBlock.Pilot(1), this))
                 //    {
                 //        return;
                 //    }
@@ -211,9 +201,8 @@ namespace SRCCore.Pilots
                 //    }
 
                 //    // 追加パイロットだったので第１パイロットのＳＰ値を代わりに使う
-                //    object argIndex2 = 1;
                 //    {
-                //        var withBlock1 = withBlock.Pilot(argIndex2);
+                //        var withBlock1 = withBlock.Pilot(1);
                 //        if (Data.SP > 0)
                 //        {
                 //            // 追加パイロットがＳＰを持つ場合は第１パイロットと消費率を一致させる
@@ -405,17 +394,12 @@ namespace SRCCore.Pilots
 
             //SpecialPowerData localItem1() { object argIndex1 = sname; var ret = SRC.SPDList.Item(argIndex1); return ret; }
 
-            //string argename = "復活";
-            //string argename1 = "自爆";
-            //if (Conversions.ToBoolean(Operators.AndObject(Operators.AndObject(sp_mod != 2d, !localItem().IsEffectAvailable(argename)), !localItem1().IsEffectAvailable(argename1))))
+            //if (Conversions.ToBoolean(Operators.AndObject(Operators.AndObject(sp_mod != 2d, !localItem().IsEffectAvailable("復活")), !localItem1().IsEffectAvailable("復活"1))))
             //{
             //    if (Unit.IsMessageDefined(sname))
             //    {
-            //        Unit argu1 = null;
-            //        Unit argu2 = null;
-            //        GUI.OpenMessageForm(u1: argu1, u2: argu2);
-            //        string argmsg_mode = "";
-            //        Unit.PilotMessage(sname, msg_mode: argmsg_mode);
+            //        GUI.OpenMessageForm(u1: null, u2: null);
+            //        Unit.PilotMessage(sname, msg_mode: "");
             //        GUI.CloseMessageForm();
             //    }
             //}
@@ -430,8 +414,7 @@ namespace SRCCore.Pilots
             //if (!localItem2().PlayAnimation())
             //{
             //    // メッセージ表示のみ
-            //    Unit argu21 = null;
-            //    GUI.OpenMessageForm(Unit, u2: argu21);
+            //    GUI.OpenMessageForm(Unit, u2: null);
             //    GUI.DisplaySysMessage(get_Nickname(false) + "は" + sname + "を使った。");
             //}
 
