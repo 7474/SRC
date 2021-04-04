@@ -27,7 +27,7 @@ namespace SRCCore.Models
         // スペシャルパワーデータリストにデータを追加
         public SpecialPowerData Add(string sname)
         {
-            var new_data = new SpecialPowerData();
+            var new_data = new SpecialPowerData(SRC);
             new_data.Name = sname;
             colSpecialPowerDataList.Add(new_data, sname);
             return new_data;

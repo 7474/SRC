@@ -442,7 +442,7 @@ namespace SRCCore.Pilots
             //}
 
             // スペシャルパワーを実行
-            SRC.SPDList.Item(sname).Execute(SRC, this);
+            SRC.SPDList.Item(sname).Execute(this);
 
             // Unitが変化した場合に元に戻す
             if (!ReferenceEquals(my_unit, Unit))

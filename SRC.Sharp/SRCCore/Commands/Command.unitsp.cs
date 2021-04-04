@@ -150,7 +150,7 @@ namespace SRCCore.Commands
 
             // 味方スペシャルパワー実行の効果により他のパイロットが持っているスペシャルパワーを
             // 使う場合は記録しておき、後で消費ＳＰを倍にする必要がある
-            // TODO Impl
+            // TODO Impl 夢
             //if (SRC.SPDList.Item(SelectedSpecialPower).EffectType(1) == "味方スペシャルパワー実行")
             if (false)
             {

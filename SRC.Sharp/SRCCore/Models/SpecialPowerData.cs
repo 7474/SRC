@@ -8,6 +8,7 @@ using SRCCore.Pilots;
 using SRCCore.Units;
 using SRCCore.VB;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.Models
 {
@@ -37,6 +38,12 @@ namespace SRCCore.Models
 
         // 解説
         public string Comment;
+
+        private SRC SRC;
+        public SpecialPowerData(SRC src)
+        {
+            SRC = src;
+        }
 
         // スペシャルパワーに効果を追加
         public void SetEffect(string elist)
@@ -207,35 +214,8 @@ namespace SRCCore.Models
         // 特殊効果 ename を持っているか
         public bool IsEffectAvailable(string ename)
         {
-            return false;
-            // TODO Impl
-            //object IsEffectAvailableRet = default;
-            //int i;
-            //var loopTo = CountEffect();
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    if ((ename ?? "") == (EffectType(i) ?? ""))
-            //    {
-            //        // UPGRADE_WARNING: オブジェクト IsEffectAvailable の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        IsEffectAvailableRet = true;
-            //        return IsEffectAvailableRet;
-            //    }
-
-            //    if (EffectType(i) == "スペシャルパワー")
-            //    {
-            //        // UPGRADE_WARNING: オブジェクト SPDList.Item(EffectData(i)).IsEffectAvailable(ename) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        SpecialPowerData localItem() { object argIndex1 = EffectData(i); var ret = SRC.SPDList.Item(argIndex1); return ret; }
-
-            //        if (Conversions.ToBoolean(localItem().IsEffectAvailable(ename)))
-            //        {
-            //            // UPGRADE_WARNING: オブジェクト IsEffectAvailable の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //            IsEffectAvailableRet = true;
-            //            return IsEffectAvailableRet;
-            //        }
-            //    }
-            //}
-
-            //return IsEffectAvailableRet;
+            return Effects.Any(x => x.strEffectType == ename
+                || (x.strEffectType == "スペシャルパワー" && SRC.SPDList.Item(x.strEffectData).IsEffectAvailable(ename)));
         }
 
         // スペシャルパワーがその時点で役に立つかどうか
@@ -892,7 +872,7 @@ namespace SRCCore.Models
 
         // スペシャルパワーを使用する
         // (パイロット p が使用した場合)
-        public void Execute(SRC SRC, Pilot p, bool is_event = false)
+        public void Execute(Pilot p, bool is_event = false)
         {
             Unit u;
             int i, j;
