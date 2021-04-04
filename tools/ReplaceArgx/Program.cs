@@ -42,7 +42,7 @@ namespace ReplaceArgx
         private static async Task ReplaceArgxAsync(FileInfo file)
         {
             Console.WriteLine($"{file.Name}");
-            var argReg = new Regex(" (arg[_a-zA-Z0-9]+) = (.*);");
+            var argReg = new Regex("^[/ ]*[_a-zA-Z0-9]+ (arg[_a-zA-Z0-9]+) = (.*);");
             var argDic = new Dictionary<string, string>();
 
             using (var ms = new MemoryStream())
