@@ -21,7 +21,7 @@ namespace SRCCore.Models
     }
 
     // ダイアログのクラス
-    public class Dialog
+    public class Dialog : ISituationItem
     {
         public string Situation { get; set; }
         private IList<DialogItem> dialogs = new List<DialogItem>();

@@ -406,27 +406,26 @@ namespace SRCCore.Lib
         //            }
         //        }
 
-        //        // 文字列 str 中に str2 が出現する位置を末尾から検索
-        //        // UPGRADE_NOTE: str は str_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        //        public static int InStr2(string str_Renamed, string str2)
-        //        {
-        //            int InStr2Ret = default;
-        //            int slen, i;
-        //            slen = Strings.Len(str2);
-        //            i = (Strings.Len(str_Renamed) - slen + 1);
-        //            while (i > 0)
-        //            {
-        //                if ((Strings.Mid(str_Renamed, i, slen) ?? "") == (str2 ?? ""))
-        //                {
-        //                    InStr2Ret = i;
-        //                    return InStr2Ret;
-        //                }
+        // 文字列 str 中に str2 が出現する位置を末尾から検索
+        public static int InStr2(string str, string str2)
+        {
+            int InStr2Ret = default;
+            int slen, i;
+            slen = Strings.Len(str2);
+            i = (Strings.Len(str) - slen + 1);
+            while (i > 0)
+            {
+                if ((Strings.Mid(str, i, slen) ?? "") == (str2 ?? ""))
+                {
+                    InStr2Ret = i;
+                    return InStr2Ret;
+                }
 
-        //                i = (i - 1);
-        //            }
+                i = (i - 1);
+            }
 
-        //            return InStr2Ret;
-        //        }
+            return InStr2Ret;
+        }
 
 
         // 文字列をDoubleに変換

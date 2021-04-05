@@ -26,7 +26,7 @@ namespace SRCCore.Models
         // ダイアログデータを追加
         public DialogData Add(string dname)
         {
-            var new_dd = new DialogData();
+            var new_dd = new DialogData(SRC);
             new_dd.Name = dname;
             colDialogDataList.Add(new_dd, dname);
             return new_dd;

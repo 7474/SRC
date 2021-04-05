@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.Units;
 using SRCCore.VB;
@@ -219,27 +220,27 @@ namespace SRCCore.Pilots
         //    }
         //}
 
-        //// 性別
-        //public string Sex
-        //{
-        //    get
-        //    {
-        //        string SexRet = default;
-        //        SexRet = Data.Sex;
-        //        if (Unit is object)
-        //        {
-        //            {
-        //                var withBlock = Unit;
-        //                if (withBlock.IsFeatureAvailable("性別"))
-        //                {
-        //                    SexRet = withBlock.FeatureData("性別");
-        //                }
-        //            }
-        //        }
+        // 性別
+        public string Sex
+        {
+            get
+            {
+                string SexRet = default;
+                SexRet = Data.Sex;
+                if (Unit is object)
+                {
+                    {
+                        var withBlock = Unit;
+                        if (withBlock.IsFeatureAvailable("性別"))
+                        {
+                            SexRet = withBlock.FeatureData("性別");
+                        }
+                    }
+                }
 
-        //        return SexRet;
-        //    }
-        //}
+                return SexRet;
+            }
+        }
 
         // 搭乗するユニットのクラス
         public string Class => Data.Class;
@@ -366,35 +367,32 @@ namespace SRCCore.Pilots
         // ＢＧＭ
         public string BGM => Data.BGM;
 
-        //// メッセージタイプ
-        //public string MessageType
-        //{
-        //    get
-        //    {
-        //        string MessageTypeRet = default;
-        //        MessageTypeRet = Name;
+        // メッセージタイプ
+        public string MessageType
+        {
+            get
+            {
+                string MessageTypeRet = default;
+                MessageTypeRet = Name;
 
-        //        // パイロット能力「メッセージ」
-        //        if (IsSkillAvailable("メッセージ"))
-        //        {
-        //            MessageTypeRet = SkillData("メッセージ");
-        //        }
+                // パイロット能力「メッセージ」
+                if (IsSkillAvailable("メッセージ"))
+                {
+                    MessageTypeRet = SkillData("メッセージ");
+                }
 
-        //        // 能力コピーで変身した場合はメッセージもコピー元パイロットのものを使う
-        //        if (Unit is object)
-        //        {
-        //            {
-        //                var withBlock = Unit;
-        //                if (withBlock.IsConditionSatisfied("メッセージ"))
-        //                {
-        //                    MessageTypeRet = GeneralLib.LIndex(withBlock.ConditionData(argIndex2), 2);
-        //                }
-        //            }
-        //        }
+                // 能力コピーで変身した場合はメッセージもコピー元パイロットのものを使う
+                if (Unit is object)
+                {
+                    if (Unit.IsConditionSatisfied("メッセージ"))
+                    {
+                        MessageTypeRet = GeneralLib.LIndex(Unit.Condition("メッセージ").StrData, 2);
+                    }
+                }
 
-        //        return MessageTypeRet;
-        //    }
-        //}
+                return MessageTypeRet;
+            }
+        }
 
 
         //// 防御力
