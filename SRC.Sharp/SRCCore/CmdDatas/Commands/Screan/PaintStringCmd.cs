@@ -1,4 +1,4 @@
-﻿using SRCCore.Events;
+using SRCCore.Events;
 using SRCCore.VB;
 
 namespace SRCCore.CmdDatas.Commands
@@ -277,8 +277,7 @@ namespace SRCCore.CmdDatas.Commands
             {
                 case 2:
                     // 座標指定がないことが確定
-                    string argmsg = GetArgAsString(2);
-                    GUI.DrawString(argmsg, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, without_cr);
+                    GUI.DrawString(GetArgAsString(2), Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, without_cr);
                     break;
                 case 4:
                     // 座標指定付きであることが確定
@@ -306,8 +305,7 @@ namespace SRCCore.CmdDatas.Commands
                         yy = Conversions.ToInteger(sy) + Event.BaseY;
                     }
 
-                    string argmsg1 = GetArgAsString(4);
-                    GUI.DrawString(argmsg1, xx, yy, without_cr);
+                    GUI.DrawString(GetArgAsString(4), xx, yy, without_cr);
                     break;
 
                 case 5:
@@ -340,13 +338,11 @@ namespace SRCCore.CmdDatas.Commands
                             yy = Conversions.ToInteger(sy) + Event.BaseY;
                         }
 
-                        string argmsg2 = GetArgAsString(4);
-                        GUI.DrawString(argmsg2, xx, yy, without_cr);
+                        GUI.DrawString(GetArgAsString(4), xx, yy, without_cr);
                     }
                     else
                     {
-                        string argmsg3 = GetArgAsString(5);
-                        GUI.DrawString(argmsg3, -1, -1, without_cr);
+                        GUI.DrawString(GetArgAsString(5), -1, -1, without_cr);
                     }
 
                     break;

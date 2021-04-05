@@ -1,4 +1,4 @@
-﻿using SRCCore.Events;
+using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Pilots;
 using SRCCore.Units;
@@ -22,8 +22,7 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             // ラベルが式でないと仮定
-            string arglname = GetArg(2);
-            ExecGotoCmdRet = Event.FindLabel(arglname);
+            ExecGotoCmdRet = Event.FindLabel(GetArg(2));
 
             // ラベルが見つかった？
             if (ExecGotoCmdRet > 0)
@@ -32,8 +31,7 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             // ラベルは式？
-            string arglname1 = GetArgAsString(2);
-            ExecGotoCmdRet = Event.FindLabel(arglname1);
+            ExecGotoCmdRet = Event.FindLabel(GetArgAsString(2));
             if (ExecGotoCmdRet == 0)
             {
                 throw new EventErrorException(this, "ラベル「" + GetArg(2) + "」がみつかりません");

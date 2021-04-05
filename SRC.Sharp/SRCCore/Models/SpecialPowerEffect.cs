@@ -1,4 +1,4 @@
-﻿namespace SRCCore.Models
+namespace SRCCore.Models
 {
     public class SpecialPowerEffect
     {

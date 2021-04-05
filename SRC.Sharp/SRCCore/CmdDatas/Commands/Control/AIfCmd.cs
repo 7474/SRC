@@ -1,4 +1,4 @@
-﻿using SRCCore.Events;
+using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.VB;
@@ -169,7 +169,6 @@ namespace SRCCore.CmdDatas.Commands
                     var pname = GeneralLib.ListIndex(Expr, 2);
                     if (SRC.PList.IsDefined(pname))
                     {
-                        object argIndex3 = pname;
                         {
                             var p = SRC.PList.Item(pname);
                             if (p.Unit is null)

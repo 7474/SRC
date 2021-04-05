@@ -1,4 +1,4 @@
-﻿using SRCCore.Exceptions;
+using SRCCore.Exceptions;
 using SRCCore.Pilots;
 using System;
 using System.Collections.Generic;
@@ -87,24 +87,19 @@ namespace SRCCore.Units
 
             //// 能力コピー中は同じパイロットが複数のユニットのメインパイロットに使用されるのを防ぐため
             //// 追加パイロットと暴走時パイロットを使用しない
-            //object argIndex1 = "能力コピー";
-            //if (IsConditionSatisfied(argIndex1))
+            //if (IsConditionSatisfied("能力コピー"))
             //{
             //    MainPilotRet = colPilot[1];
             //    return MainPilotRet;
             //}
 
             //// 暴走時の特殊パイロット
-            //object argIndex12 = "暴走";
-            //if (IsConditionSatisfied(argIndex12))
+            //if (IsConditionSatisfied("暴走"))
             //{
-            //    string argfname1 = "暴走時パイロット";
-            //    if (IsFeatureAvailable(argfname1))
+            //    if (IsFeatureAvailable("暴走時パイロット"))
             //    {
-            //        object argIndex2 = "暴走時パイロット";
-            //        pname = FeatureData(argIndex2);
-            //        object argIndex3 = pname;
-            //        if (SRC.PDList.IsDefined(argIndex3))
+            //        pname = FeatureData("暴走時パイロット");
+            //        if (SRC.PDList.IsDefined(pname))
             //        {
             //            PilotData localItem() { object argIndex1 = pname; var ret = SRC.PDList.Item(argIndex1); return ret; }
 
@@ -112,23 +107,17 @@ namespace SRCCore.Units
             //        }
             //        else
             //        {
-            //            string argmsg1 = "暴走時パイロット「" + pname + "」のデータが定義されていません";
-            //            GUI.ErrorMessage(argmsg1);
+            //            GUI.ErrorMessage("暴走時パイロット「" + pname + "」のデータが定義されていません");
             //        }
 
-            //        object argIndex11 = pname;
-            //        if (SRC.PList.IsDefined(argIndex11))
+            //        if (SRC.PList.IsDefined(pname))
             //        {
             //            // 既に暴走時パイロットが作成済み
-            //            object argIndex4 = pname;
-            //            MainPilotRet = SRC.PList.Item(argIndex4);
+            //            MainPilotRet = SRC.PList.Item(pname);
             //            MainPilotRet.Unit_Renamed = this;
-            //            object argIndex5 = 1;
-            //            MainPilotRet.Morale = Pilot(argIndex5).Morale;
-            //            object argIndex6 = 1;
-            //            MainPilotRet.Level = Pilot(argIndex6).Level;
-            //            object argIndex7 = 1;
-            //            MainPilotRet.Exp = Pilot(argIndex7).Exp;
+            //            MainPilotRet.Morale = Pilot(1).Morale;
+            //            MainPilotRet.Level = Pilot(1).Level;
+            //            MainPilotRet.Exp = Pilot(1).Exp;
             //            if (!without_update)
             //            {
             //                if (!erenceEquals(MainPilotRet.Unit_Renamed, this))
@@ -144,15 +133,10 @@ namespace SRCCore.Units
             //        else
             //        {
             //            // 暴走時パイロットが作成されていないので作成する
-            //            object argIndex8 = 1;
-            //            string argpparty = Party0;
-            //            string arggid = "";
-            //            MainPilotRet = SRC.PList.Add(pname, Pilot(argIndex8).Level, argpparty, gid: arggid);
+            //            MainPilotRet = SRC.PList.Add(pname, Pilot(1).Level, Party0, gid: "");
             //            this.Party0 = argpparty;
-            //            object argIndex9 = 1;
-            //            MainPilotRet.Morale = Pilot(argIndex9).Morale;
-            //            object argIndex10 = 1;
-            //            MainPilotRet.Exp = Pilot(argIndex10).Exp;
+            //            MainPilotRet.Morale = Pilot(1).Morale;
+            //            MainPilotRet.Exp = Pilot(1).Exp;
             //            MainPilotRet.Unit_Renamed = this;
             //            MainPilotRet.Update();
             //            MainPilotRet.UpdateSupportMod();
@@ -162,13 +146,10 @@ namespace SRCCore.Units
             //}
 
             //// 追加パイロットがいれば、それを使用
-            //string argfname2 = "追加パイロット";
-            //if (IsFeatureAvailable(argfname2))
+            //if (IsFeatureAvailable("追加パイロット"))
             //{
-            //    object argIndex13 = "追加パイロット";
-            //    pname = FeatureData(argIndex13);
-            //    object argIndex14 = pname;
-            //    if (SRC.PDList.IsDefined(argIndex14))
+            //    pname = FeatureData("追加パイロット");
+            //    if (SRC.PDList.IsDefined(pname))
             //    {
             //        PilotData localItem1() { object argIndex1 = pname; var ret = SRC.PDList.Item(argIndex1); return ret; }
 
@@ -176,8 +157,7 @@ namespace SRCCore.Units
             //    }
             //    else
             //    {
-            //        string argmsg2 = "追加パイロット「" + pname + "」のデータが定義されていません";
-            //        GUI.ErrorMessage(argmsg2);
+            //        GUI.ErrorMessage("追加パイロット「" + pname + "」のデータが定義されていません");
             //    }
 
             //    // 登録済みのパイロットをまずチェック
@@ -192,19 +172,15 @@ namespace SRCCore.Units
             //                {
             //                    withBlock.Unit_Renamed = this;
             //                    withBlock.Party = Party0;
-            //                    object argIndex15 = 1;
-            //                    withBlock.Exp = Pilot(argIndex15).Exp;
+            //                    withBlock.Exp = Pilot(1).Exp;
             //                    if (withBlock.Personality != "機械")
             //                    {
-            //                        object argIndex16 = 1;
-            //                        withBlock.Morale = Pilot(argIndex16).Morale;
+            //                        withBlock.Morale = Pilot(1).Morale;
             //                    }
 
-            //                    object argIndex18 = 1;
-            //                    if (withBlock.Level != this.Pilot(argIndex18).Level)
+            //                    if (withBlock.Level != this.Pilot(1).Level)
             //                    {
-            //                        object argIndex17 = 1;
-            //                        withBlock.Level = Pilot(argIndex17).Level;
+            //                        withBlock.Level = Pilot(1).Level;
             //                        withBlock.Update();
             //                    }
             //                }
@@ -236,14 +212,11 @@ namespace SRCCore.Units
             //                    withBlock1.Unit_Renamed = this;
             //                    if (withBlock1.IsAdditionalPilot & !erenceEquals(withBlock1.Unit_Renamed, this))
             //                    {
-            //                        object argIndex19 = 1;
-            //                        withBlock1.Level = Pilot(argIndex19).Level;
-            //                        object argIndex20 = 1;
-            //                        withBlock1.Exp = Pilot(argIndex20).Exp;
+            //                        withBlock1.Level = Pilot(1).Level;
+            //                        withBlock1.Exp = Pilot(1).Exp;
             //                        if (withBlock1.Personality != "機械")
             //                        {
-            //                            object argIndex21 = 1;
-            //                            withBlock1.Morale = Pilot(argIndex21).Morale;
+            //                            withBlock1.Morale = Pilot(1).Morale;
             //                        }
 
             //                        withBlock1.Update();
@@ -268,8 +241,7 @@ namespace SRCCore.Units
 
             //            if ((localPilot().Name ?? "") == (pname ?? ""))
             //            {
-            //                object argIndex22 = i;
-            //                pltAdditionalPilot = Pilot(argIndex22);
+            //                pltAdditionalPilot = Pilot(i);
             //                MainPilotRet = pltAdditionalPilot;
             //                return MainPilotRet;
             //            }
@@ -278,11 +250,9 @@ namespace SRCCore.Units
 
             //    // 既に作成されていればそれを使う
             //    // (ただし複数作成可能なパイロットで、他のユニットの追加パイロットとして登録済みの場合は除く)
-            //    object argIndex27 = pname;
-            //    if (SRC.PList.IsDefined(argIndex27))
+            //    if (SRC.PList.IsDefined(pname))
             //    {
-            //        object argIndex23 = pname;
-            //        p = SRC.PList.Item(argIndex23);
+            //        p = SRC.PList.Item(pname);
             //        if (!p.IsAdditionalPilot | Strings.InStr(pname, "(ザコ)") == 0 & Strings.InStr(pname, "(汎用)") == 0)
             //        {
             //            pltAdditionalPilot = p;
@@ -290,14 +260,11 @@ namespace SRCCore.Units
             //                var withBlock2 = pltAdditionalPilot;
             //                withBlock2.IsAdditionalPilot = true;
             //                withBlock2.Party = Party0;
-            //                object argIndex24 = 1;
-            //                withBlock2.Level = Pilot(argIndex24).Level;
-            //                object argIndex25 = 1;
-            //                withBlock2.Exp = Pilot(argIndex25).Exp;
+            //                withBlock2.Level = Pilot(1).Level;
+            //                withBlock2.Exp = Pilot(1).Exp;
             //                if (withBlock2.Personality != "機械")
             //                {
-            //                    object argIndex26 = 1;
-            //                    withBlock2.Morale = Pilot(argIndex26).Morale;
+            //                    withBlock2.Morale = Pilot(1).Morale;
             //                }
 
             //                if (!without_update)
@@ -323,28 +290,21 @@ namespace SRCCore.Units
             //    // まだ作成されていないので作成する
             //    if (CountPilot() > 0)
             //    {
-            //        object argIndex28 = 1;
-            //        string argpparty1 = Party0;
-            //        string arggid1 = "";
-            //        pltAdditionalPilot = SRC.PList.Add(pname, Pilot(argIndex28).Level, argpparty1, gid: arggid1);
+            //        pltAdditionalPilot = SRC.PList.Add(pname, Pilot(1).Level, Party0, gid: "");
             //        this.Party0 = argpparty1;
             //        {
             //            var withBlock3 = pltAdditionalPilot;
             //            withBlock3.IsAdditionalPilot = true;
-            //            object argIndex29 = 1;
-            //            withBlock3.Exp = Pilot(argIndex29).Exp;
+            //            withBlock3.Exp = Pilot(1).Exp;
             //            if (withBlock3.Personality != "機械")
             //            {
-            //                object argIndex30 = 1;
-            //                withBlock3.Morale = Pilot(argIndex30).Morale;
+            //                withBlock3.Morale = Pilot(1).Morale;
             //            }
             //        }
             //    }
             //    else
             //    {
-            //        string argpparty2 = Party0;
-            //        string arggid2 = "";
-            //        pltAdditionalPilot = SRC.PList.Add(pname, 1, argpparty2, gid: arggid2);
+            //        pltAdditionalPilot = SRC.PList.Add(pname, 1, Party0, gid: "");
             //        this.Party0 = argpparty2;
             //        pltAdditionalPilot.IsAdditionalPilot = true;
             //    }
@@ -436,8 +396,7 @@ namespace SRCCore.Units
             //    int i;
 
             //    // 追加サポートパイロットの名称
-            //    object argIndex1 = "追加サポート";
-            //    pname = FeatureData(argIndex1);
+            //    pname = FeatureData("追加サポート");
 
             //    // 追加サポートが存在しない？
             //    if (string.IsNullOrEmpty(pname))
@@ -465,9 +424,8 @@ namespace SRCCore.Units
             //    var loopTo = CountOtherForm();
             //    for (i = 1; i <= loopTo; i++)
             //    {
-            //        object argIndex2 = i;
             //        {
-            //            var withBlock = OtherForm(argIndex2);
+            //            var withBlock = OtherForm(i);
             //            if (withBlock.pltAdditionalSupport is object)
             //            {
             //                if ((withBlock.pltAdditionalSupport.Name ?? "") == (pname ?? ""))
@@ -482,11 +440,9 @@ namespace SRCCore.Units
 
             //    // 既に作成されていればそれを使う
             //    // (ただし他のユニットの追加サポートとして登録済みの場合は除く)
-            //    object argIndex7 = pname;
-            //    if (SRC.PList.IsDefined(argIndex7))
+            //    if (SRC.PList.IsDefined(pname))
             //    {
-            //        object argIndex3 = pname;
-            //        p = SRC.PList.Item(argIndex3);
+            //        p = SRC.PList.Item(pname);
             //        if (!p.IsAdditionalSupport | Strings.InStr(pname, "(ザコ)") == 0 & Strings.InStr(pname, "(汎用)") == 0)
             //        {
             //            pltAdditionalSupport = p;
@@ -495,14 +451,11 @@ namespace SRCCore.Units
             //                withBlock1.IsAdditionalSupport = true;
             //                withBlock1.Party = Party0;
             //                withBlock1.Unit_Renamed = this;
-            //                object argIndex4 = 1;
-            //                withBlock1.Level = Pilot(argIndex4).Level;
-            //                object argIndex5 = 1;
-            //                withBlock1.Exp = Pilot(argIndex5).Exp;
+            //                withBlock1.Level = Pilot(1).Level;
+            //                withBlock1.Exp = Pilot(1).Exp;
             //                if (withBlock1.Personality != "機械")
             //                {
-            //                    object argIndex6 = 1;
-            //                    withBlock1.Morale = Pilot(argIndex6).Morale;
+            //                    withBlock1.Morale = Pilot(1).Morale;
             //                }
             //            }
 
@@ -516,26 +469,20 @@ namespace SRCCore.Units
 
             //    if (!localIsDefined())
             //    {
-            //        string argmsg = "追加サポート「" + pname + "」のデータが定義されていません";
-            //        GUI.ErrorMessage(argmsg);
+            //        GUI.ErrorMessage("追加サポート「" + pname + "」のデータが定義されていません");
             //        return AdditionalSupportRet;
             //    }
 
-            //    object argIndex8 = 1;
-            //    string argpparty = Party0;
-            //    string arggid = "";
-            //    pltAdditionalSupport = SRC.PList.Add(pname, Pilot(argIndex8).Level, argpparty, gid: arggid);
+            //    pltAdditionalSupport = SRC.PList.Add(pname, Pilot(1).Level, Party0, gid: "");
             //    this.Party0 = argpparty;
             //    {
             //        var withBlock2 = pltAdditionalSupport;
             //        withBlock2.IsAdditionalSupport = true;
             //        withBlock2.Unit_Renamed = this;
-            //        object argIndex9 = 1;
-            //        withBlock2.Exp = Pilot(argIndex9).Exp;
+            //        withBlock2.Exp = Pilot(1).Exp;
             //        if (withBlock2.Personality != "機械")
             //        {
-            //            object argIndex10 = 1;
-            //            withBlock2.Morale = Pilot(argIndex10).Morale;
+            //            withBlock2.Morale = Pilot(1).Morale;
             //        }
             //    }
 
@@ -590,8 +537,7 @@ namespace SRCCore.Units
         //    }
 
         //    // 追加サポート
-        //    string argfname = "追加サポート";
-        //    if (IsFeatureAvailable(argfname))
+        //    if (IsFeatureAvailable("追加サポート"))
         //    {
         //        if (AdditionalSupport().IsSkillAvailable(sname))
         //        {
@@ -614,8 +560,7 @@ namespace SRCCore.Units
         //    }
 
         //    // エリアスが設定されてるかチェック
-        //    object argIndex1 = sname;
-        //    if (SRC.ALDList.IsDefined(argIndex1))
+        //    if (SRC.ALDList.IsDefined(sname))
         //    {
         //        AliasDataType localItem() { object argIndex1 = sname; var ret = SRC.ALDList.Item(argIndex1); return ret; }
 
@@ -651,25 +596,19 @@ namespace SRCCore.Units
         //        case "Ｓ防御":
         //        case "切り払い":
         //            {
-        //                object argIndex2 = sname;
-        //                string arg_mode = 1.ToString();
-        //                SkillLevelRet = MainPilot().SkillLevel(argIndex2, arg_mode);
+        //                SkillLevelRet = MainPilot().SkillLevel(sname, 1.ToString());
         //                break;
         //            }
 
         //        case "超感覚":
         //            {
-        //                string argsname2 = "超感覚";
-        //                string argsname3 = "知覚強化";
-        //                if (MaxSkillLevel(argsname2, 1d) > MaxSkillLevel(argsname3, 1d))
+        //                if (MaxSkillLevel("超感覚", 1d) > MaxSkillLevel("知覚強化", 1d))
         //                {
-        //                    string argsname = "超感覚";
-        //                    SkillLevelRet = MaxSkillLevel(argsname, 1d);
+        //                    SkillLevelRet = MaxSkillLevel("超感覚", 1d);
         //                }
         //                else
         //                {
-        //                    string argsname1 = "知覚強化";
-        //                    SkillLevelRet = MaxSkillLevel(argsname1, 1d);
+        //                    SkillLevelRet = MaxSkillLevel("知覚強化", 1d);
         //                }
 
         //                break;
@@ -699,12 +638,9 @@ namespace SRCCore.Units
         //    // メインパイロット
         //    {
         //        var withBlock = MainPilot();
-        //        object argIndex2 = sname;
-        //        if (withBlock.IsSkillLevelSpecified(argIndex2))
+        //        if (withBlock.IsSkillLevelSpecified(sname))
         //        {
-        //            object argIndex1 = sname;
-        //            string arg_mode = "";
-        //            MaxSkillLevelRet = withBlock.SkillLevel(argIndex1, _mode: arg_mode);
+        //            MaxSkillLevelRet = withBlock.SkillLevel(sname, _mode: "");
         //        }
         //        else if (withBlock.IsSkillAvailable(sname))
         //        {
@@ -722,15 +658,11 @@ namespace SRCCore.Units
         //        var loopTo = CountPilot();
         //        for (i = 2; i <= loopTo; i++)
         //        {
-        //            object argIndex5 = i;
         //            {
-        //                var withBlock1 = Pilot(argIndex5);
-        //                object argIndex4 = sname;
-        //                if (withBlock1.IsSkillLevelSpecified(argIndex4))
+        //                var withBlock1 = Pilot(i);
+        //                if (withBlock1.IsSkillLevelSpecified(sname))
         //                {
-        //                    object argIndex3 = sname;
-        //                    string arg_mode1 = "";
-        //                    slevel = withBlock1.SkillLevel(argIndex3, _mode: arg_mode1);
+        //                    slevel = withBlock1.SkillLevel(sname, _mode: "");
         //                }
         //                else if (withBlock1.IsSkillAvailable(sname))
         //                {
@@ -753,15 +685,11 @@ namespace SRCCore.Units
         //    var loopTo1 = CountSupport();
         //    for (i = 1; i <= loopTo1; i++)
         //    {
-        //        object argIndex8 = i;
         //        {
-        //            var withBlock2 = Support(argIndex8);
-        //            object argIndex7 = sname;
-        //            if (withBlock2.IsSkillLevelSpecified(argIndex7))
+        //            var withBlock2 = Support(i);
+        //            if (withBlock2.IsSkillLevelSpecified(sname))
         //            {
-        //                object argIndex6 = sname;
-        //                string arg_mode2 = "";
-        //                slevel = withBlock2.SkillLevel(argIndex6, _mode: arg_mode2);
+        //                slevel = withBlock2.SkillLevel(sname, _mode: "");
         //            }
         //            else if (withBlock2.IsSkillAvailable(sname))
         //            {
@@ -780,17 +708,13 @@ namespace SRCCore.Units
         //    }
 
         //    // 追加サポート
-        //    string argfname = "追加サポート";
-        //    if (IsFeatureAvailable(argfname))
+        //    if (IsFeatureAvailable("追加サポート"))
         //    {
         //        {
         //            var withBlock3 = AdditionalSupport();
-        //            object argIndex10 = sname;
-        //            if (withBlock3.IsSkillLevelSpecified(argIndex10))
+        //            if (withBlock3.IsSkillLevelSpecified(sname))
         //            {
-        //                object argIndex9 = sname;
-        //                string arg_mode3 = "";
-        //                slevel = withBlock3.SkillLevel(argIndex9, _mode: arg_mode3);
+        //                slevel = withBlock3.SkillLevel(sname, _mode: "");
         //            }
         //            else if (withBlock3.IsSkillAvailable(sname))
         //            {
@@ -824,50 +748,34 @@ namespace SRCCore.Units
 
         //        case 1:
         //            {
-        //                object argIndex1 = "オーラ";
-        //                string arg_mode = "";
-        //                AuraLevelRet = MainPilot().SkillLevel(argIndex1, _mode: arg_mode);
+        //                AuraLevelRet = MainPilot().SkillLevel("オーラ", _mode: "");
         //                break;
         //            }
 
         //        default:
         //            {
         //                // パイロットが２名以上の場合は２人目のオーラ力を加算
-        //                object argIndex2 = "オーラ";
-        //                string arg_mode1 = "";
-        //                object argIndex3 = 2;
-        //                object argIndex4 = "オーラ";
-        //                string arg_mode2 = "";
-        //                AuraLevelRet = MainPilot().SkillLevel(argIndex2, _mode: arg_mode1) + Pilot(argIndex3).SkillLevel(argIndex4, _mode: arg_mode2) / 2d;
+        //                AuraLevelRet = MainPilot().SkillLevel("オーラ", _mode: "") + Pilot(2).SkillLevel("オーラ", _mode: "") / 2d;
         //                break;
         //            }
         //    }
 
         //    // サポートのオーラ力を加算
-        //    string argfname = "追加サポート";
-        //    if (IsFeatureAvailable(argfname))
+        //    if (IsFeatureAvailable("追加サポート"))
         //    {
-        //        object argIndex5 = "オーラ";
-        //        string arg_mode3 = "";
-        //        AuraLevelRet = AuraLevelRet + AdditionalSupport().SkillLevel(argIndex5, _mode: arg_mode3) / 2d;
+        //        AuraLevelRet = AuraLevelRet + AdditionalSupport().SkillLevel("オーラ", _mode: "") / 2d;
         //    }
         //    else if (CountSupport() > 0)
         //    {
-        //        object argIndex6 = 1;
-        //        object argIndex7 = "オーラ";
-        //        string arg_mode4 = "";
-        //        AuraLevelRet = AuraLevelRet + Support(argIndex6).SkillLevel(argIndex7, _mode: arg_mode4) / 2d;
+        //        AuraLevelRet = AuraLevelRet + Support(1).SkillLevel("オーラ", _mode: "") / 2d;
         //    }
 
         //    // オーラ変換器レベルによる制限
-        //    string argfname1 = "オーラ変換器";
-        //    if (IsFeatureAvailable(argfname1) & !no_limit)
+        //    if (IsFeatureAvailable("オーラ変換器") & !no_limit)
         //    {
-        //        object argIndex9 = "オーラ変換器";
-        //        if (IsFeatureLevelSpecified(argIndex9))
+        //        if (IsFeatureLevelSpecified("オーラ変換器"))
         //        {
-        //            object argIndex8 = "オーラ変換器";
-        //            AuraLevelRet = GeneralLib.MinDbl(AuraLevelRet, FeatureLevel(argIndex8));
+        //            AuraLevelRet = GeneralLib.MinDbl(AuraLevelRet, FeatureLevel("オーラ変換器"));
         //        }
         //    }
 
@@ -887,51 +795,35 @@ namespace SRCCore.Units
 
         //        case 1:
         //            {
-        //                object argIndex1 = "超能力";
-        //                string arg_mode = "";
-        //                PsychicLevelRet = MainPilot().SkillLevel(argIndex1, _mode: arg_mode);
+        //                PsychicLevelRet = MainPilot().SkillLevel("超能力", _mode: "");
         //                break;
         //            }
 
         //        default:
         //            {
         //                // パイロットが２名以上の場合は２人目の超能力を加算
-        //                object argIndex2 = "超能力";
-        //                string arg_mode1 = "";
-        //                object argIndex3 = 2;
-        //                object argIndex4 = "超能力";
-        //                string arg_mode2 = "";
-        //                PsychicLevelRet = MainPilot().SkillLevel(argIndex2, _mode: arg_mode1) + Pilot(argIndex3).SkillLevel(argIndex4, _mode: arg_mode2) / 2d;
+        //                PsychicLevelRet = MainPilot().SkillLevel("超能力", _mode: "") + Pilot(2).SkillLevel("超能力", _mode: "") / 2d;
         //                break;
         //            }
         //    }
 
         //    // サポートのオーラ力を加算
-        //    string argfname = "追加サポート";
-        //    if (IsFeatureAvailable(argfname))
+        //    if (IsFeatureAvailable("追加サポート"))
         //    {
-        //        object argIndex5 = "超能力";
-        //        string arg_mode3 = "";
-        //        PsychicLevelRet = PsychicLevelRet + AdditionalSupport().SkillLevel(argIndex5, _mode: arg_mode3) / 2d;
+        //        PsychicLevelRet = PsychicLevelRet + AdditionalSupport().SkillLevel("超能力", _mode: "") / 2d;
         //    }
         //    else if (CountSupport() > 0)
         //    {
         //        // サポートの超能力を加算
-        //        object argIndex6 = 1;
-        //        object argIndex7 = "超能力";
-        //        string arg_mode4 = "";
-        //        PsychicLevelRet = PsychicLevelRet + Support(argIndex6).SkillLevel(argIndex7, _mode: arg_mode4) / 2d;
+        //        PsychicLevelRet = PsychicLevelRet + Support(1).SkillLevel("超能力", _mode: "") / 2d;
         //    }
 
         //    // サイキックドライブによる制限
-        //    string argfname1 = "サイキックドライブ";
-        //    if (IsFeatureAvailable(argfname1) & !no_limit)
+        //    if (IsFeatureAvailable("サイキックドライブ") & !no_limit)
         //    {
-        //        object argIndex9 = "サイキックドライブ";
-        //        if (IsFeatureLevelSpecified(argIndex9))
+        //        if (IsFeatureLevelSpecified("サイキックドライブ"))
         //        {
-        //            object argIndex8 = "サイキックドライブ";
-        //            PsychicLevelRet = GeneralLib.MinDbl(PsychicLevelRet, FeatureLevel(argIndex8));
+        //            PsychicLevelRet = GeneralLib.MinDbl(PsychicLevelRet, FeatureLevel("サイキックドライブ"));
         //        }
         //    }
 
@@ -950,14 +842,11 @@ namespace SRCCore.Units
         //    SyncLevelRet = MainPilot().SynchroRate();
 
         //    // シンクロドライブレベルによる制限
-        //    string argfname = "シンクロドライブ";
-        //    if (IsFeatureAvailable(argfname) & !no_limit)
+        //    if (IsFeatureAvailable("シンクロドライブ") & !no_limit)
         //    {
-        //        object argIndex2 = "シンクロドライブ";
-        //        if (IsFeatureLevelSpecified(argIndex2))
+        //        if (IsFeatureLevelSpecified("シンクロドライブ"))
         //        {
-        //            object argIndex1 = "シンクロドライブ";
-        //            SyncLevelRet = GeneralLib.MinDbl(SyncLevelRet, FeatureLevel(argIndex1));
+        //            SyncLevelRet = GeneralLib.MinDbl(SyncLevelRet, FeatureLevel("シンクロドライブ"));
         //        }
         //    }
 
@@ -976,14 +865,11 @@ namespace SRCCore.Units
         //    PlanaLevelRet = MainPilot().Plana;
 
         //    // 霊力変換器レベルによる制限
-        //    string argfname = "霊力変換器";
-        //    if (IsFeatureAvailable(argfname) & !no_limit)
+        //    if (IsFeatureAvailable("霊力変換器") & !no_limit)
         //    {
-        //        object argIndex2 = "霊力変換器";
-        //        if (IsFeatureLevelSpecified(argIndex2))
+        //        if (IsFeatureLevelSpecified("霊力変換器"))
         //        {
-        //            object argIndex1 = "霊力変換器";
-        //            PlanaLevelRet = GeneralLib.MinDbl(PlanaLevelRet, FeatureLevel(argIndex1));
+        //            PlanaLevelRet = GeneralLib.MinDbl(PlanaLevelRet, FeatureLevel("霊力変換器"));
         //        }
         //    }
 
@@ -995,8 +881,7 @@ namespace SRCCore.Units
         //{
         //    string SkillName0Ret = default;
         //    int i;
-        //    object argIndex1 = sname;
-        //    if (SRC.ALDList.IsDefined(argIndex1))
+        //    if (SRC.ALDList.IsDefined(sname))
         //    {
         //        AliasDataType localItem() { object argIndex1 = sname; var ret = SRC.ALDList.Item(argIndex1); return ret; }
 
@@ -1010,8 +895,7 @@ namespace SRCCore.Units
         //    }
 
         //    // メインパイロット
-        //    object argIndex2 = sname;
-        //    SkillName0Ret = MainPilot().SkillName0(argIndex2);
+        //    SkillName0Ret = MainPilot().SkillName0(sname);
         //    if ((SkillName0Ret ?? "") != (sname ?? ""))
         //    {
         //        return SkillName0Ret;
@@ -1025,8 +909,7 @@ namespace SRCCore.Units
         //        {
         //            Pilot localPilot() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
 
-        //            object argIndex3 = sname;
-        //            SkillName0Ret = localPilot().SkillName0(argIndex3);
+        //            SkillName0Ret = localPilot().SkillName0(sname);
         //            if ((SkillName0Ret ?? "") != (sname ?? ""))
         //            {
         //                return SkillName0Ret;
@@ -1040,8 +923,7 @@ namespace SRCCore.Units
         //    {
         //        Pilot localSupport() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
 
-        //        object argIndex4 = sname;
-        //        SkillName0Ret = localSupport().SkillName0(argIndex4);
+        //        SkillName0Ret = localSupport().SkillName0(sname);
         //        if ((SkillName0Ret ?? "") != (sname ?? ""))
         //        {
         //            return SkillName0Ret;
@@ -1049,15 +931,34 @@ namespace SRCCore.Units
         //    }
 
         //    // 追加サポート
-        //    string argfname = "追加サポート";
-        //    if (IsFeatureAvailable(argfname))
+        //    if (IsFeatureAvailable("追加サポート"))
         //    {
-        //        object argIndex5 = sname;
-        //        SkillName0Ret = AdditionalSupport().SkillName0(argIndex5);
+        //        SkillName0Ret = AdditionalSupport().SkillName0(sname);
         //    }
 
         //    return SkillName0Ret;
         //}
 
+        public IList<Pilot> PilotsHaveSpecialPower()
+        {
+            var u = this;
+            // スペシャルパワーを使用可能なパイロットの一覧を作成
+            var pilots = new List<Pilot>();
+            // メインパイロット＆サブパイロット
+            // １番目のパイロットの場合はメインパイロットを使用
+            // ただし２人乗り以上のユニットで、メインパイロットが
+            // スペシャルパワーを持たない場合はそのまま１番目のパイロットを使用
+            pilots.Add(u.CountPilot() > 1 && u.MainPilot().Data.SP <= 0 && u.Pilots.First().Data.SP > 0
+                ? u.Pilots.First() : u.MainPilot());
+            pilots.AddRange(u.SubPilots);
+            // サポートパイロット
+            pilots.AddRange(u.Supports.Skip(1));
+            // 追加サポートパイロット
+            if (u.IsFeatureAvailable("追加サポート"))
+            {
+                pilots.Add(u.AdditionalSupport());
+            }
+            return pilots.Where(x => x.CountSpecialPower > 0).ToList();
+        }
     }
 }

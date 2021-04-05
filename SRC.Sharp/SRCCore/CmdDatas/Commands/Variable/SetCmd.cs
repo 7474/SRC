@@ -1,4 +1,4 @@
-﻿using SRCCore.Events;
+using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Expressions;
 using SRCCore.VB;
@@ -31,8 +31,7 @@ namespace SRCCore.CmdDatas.Commands
             switch (num)
             {
                 case 2:
-                    string argvname = GetArg(2);
-                    Expression.SetVariableAsLong(argvname, 1);
+                    Expression.SetVariableAsLong(GetArg(2), 1);
                     break;
 
                 case 3:
@@ -44,13 +43,11 @@ namespace SRCCore.CmdDatas.Commands
                             var etype = Expression.EvalTerm(GetArgRaw(3).strArg, ValueType.UndefinedType, out str_result, out num_result);
                             if (etype == ValueType.NumericType)
                             {
-                                string argvname1 = GetArg(2);
-                                Expression.SetVariableAsDouble(argvname1, num_result);
+                                Expression.SetVariableAsDouble(GetArg(2), num_result);
                             }
                             else
                             {
-                                string argvname2 = GetArg(2);
-                                Expression.SetVariableAsString(argvname2, str_result);
+                                Expression.SetVariableAsString(GetArg(2), str_result);
                             }
                             break;
 

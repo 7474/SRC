@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -98,200 +98,131 @@ namespace Project1
             //        }
             //}
 
-            //string argini_section = "Option";
-            //string argini_entry = "MessageWait";
-            //string argini_data = SrcFormatter.Format(GUI.MessageWait);
-            //GeneralLib.WriteIni(ref argini_section, ref argini_entry, ref argini_data);
+            //GeneralLib.WriteIni(ref "Option", ref "MessageWait", ref SrcFormatter.Format(GUI.MessageWait));
 
             //// 戦闘アニメ表示
             //if ((int)chkBattleAnimation.CheckState == 1)
             //{
             //    SRC.BattleAnimation = true;
-            //    string argini_section1 = "Option";
-            //    string argini_entry1 = "BattleAnimation";
-            //    string argini_data1 = "On";
-            //    GeneralLib.WriteIni(ref argini_section1, ref argini_entry1, ref argini_data1);
+            //    GeneralLib.WriteIni(ref "Option", ref "BattleAnimation", ref "On");
             //}
             //else
             //{
             //    SRC.BattleAnimation = false;
-            //    string argini_section2 = "Option";
-            //    string argini_entry2 = "BattleAnimation";
-            //    string argini_data2 = "Off";
-            //    GeneralLib.WriteIni(ref argini_section2, ref argini_entry2, ref argini_data2);
+            //    GeneralLib.WriteIni(ref "Option", ref "BattleAnimation", ref "Off");
             //}
 
             //// 拡大戦闘アニメ表示
             //if ((int)chkExtendedAnimation.CheckState == 1)
             //{
             //    SRC.ExtendedAnimation = true;
-            //    string argini_section3 = "Option";
-            //    string argini_entry3 = "ExtendedAnimation";
-            //    string argini_data3 = "On";
-            //    GeneralLib.WriteIni(ref argini_section3, ref argini_entry3, ref argini_data3);
+            //    GeneralLib.WriteIni(ref "Option", ref "ExtendedAnimation", ref "On");
             //}
             //else
             //{
             //    SRC.ExtendedAnimation = false;
-            //    string argini_section4 = "Option";
-            //    string argini_entry4 = "Extendednimation";
-            //    string argini_data4 = "Off";
-            //    GeneralLib.WriteIni(ref argini_section4, ref argini_entry4, ref argini_data4);
+            //    GeneralLib.WriteIni(ref "Option", ref "Extendednimation", ref "Off");
             //}
 
             //// 武器準備アニメ表示
             //if ((int)chkWeaponAnimation.CheckState == 1)
             //{
             //    SRC.WeaponAnimation = true;
-            //    string argini_section5 = "Option";
-            //    string argini_entry5 = "WeaponAnimation";
-            //    string argini_data5 = "On";
-            //    GeneralLib.WriteIni(ref argini_section5, ref argini_entry5, ref argini_data5);
+            //    GeneralLib.WriteIni(ref "Option", ref "WeaponAnimation", ref "On");
             //}
             //else
             //{
             //    SRC.WeaponAnimation = false;
-            //    string argini_section6 = "Option";
-            //    string argini_entry6 = "WeaponAnimation";
-            //    string argini_data6 = "Off";
-            //    GeneralLib.WriteIni(ref argini_section6, ref argini_entry6, ref argini_data6);
+            //    GeneralLib.WriteIni(ref "Option", ref "WeaponAnimation", ref "Off");
             //}
 
             //// 移動アニメ表示
             //if ((int)chkMoveAnimation.CheckState == 1)
             //{
             //    SRC.MoveAnimation = true;
-            //    string argini_section7 = "Option";
-            //    string argini_entry7 = "MoveAnimation";
-            //    string argini_data7 = "On";
-            //    GeneralLib.WriteIni(ref argini_section7, ref argini_entry7, ref argini_data7);
+            //    GeneralLib.WriteIni(ref "Option", ref "MoveAnimation", ref "On");
             //}
             //else
             //{
             //    SRC.MoveAnimation = false;
-            //    string argini_section8 = "Option";
-            //    string argini_entry8 = "MoveAnimation";
-            //    string argini_data8 = "Off";
-            //    GeneralLib.WriteIni(ref argini_section8, ref argini_entry8, ref argini_data8);
+            //    GeneralLib.WriteIni(ref "Option", ref "MoveAnimation", ref "Off");
             //}
 
             //// スペシャルパワーアニメ表示
             //if ((int)chkSpecialPowerAnimation.CheckState == 1)
             //{
             //    SRC.SpecialPowerAnimation = true;
-            //    string argini_section9 = "Option";
-            //    string argini_entry9 = "SpecialPowerAnimation";
-            //    string argini_data9 = "On";
-            //    GeneralLib.WriteIni(ref argini_section9, ref argini_entry9, ref argini_data9);
+            //    GeneralLib.WriteIni(ref "Option", ref "SpecialPowerAnimation", ref "On");
             //}
             //else
             //{
             //    SRC.SpecialPowerAnimation = false;
-            //    string argini_section10 = "Option";
-            //    string argini_entry10 = "SpecialPowerAnimation";
-            //    string argini_data10 = "Off";
-            //    GeneralLib.WriteIni(ref argini_section10, ref argini_entry10, ref argini_data10);
+            //    GeneralLib.WriteIni(ref "Option", ref "SpecialPowerAnimation", ref "Off");
             //}
 
             //// マウスカーソルの自動移動
             //if (Conversions.ToBoolean(chkAutoMoveCursor.CheckState))
             //{
             //    SRC.AutoMoveCursor = true;
-            //    string argini_section11 = "Option";
-            //    string argini_entry11 = "AutoMoveCursor";
-            //    string argini_data11 = "On";
-            //    GeneralLib.WriteIni(ref argini_section11, ref argini_entry11, ref argini_data11);
+            //    GeneralLib.WriteIni(ref "Option", ref "AutoMoveCursor", ref "On");
             //}
             //else
             //{
             //    SRC.AutoMoveCursor = false;
-            //    string argini_section12 = "Option";
-            //    string argini_entry12 = "AutoMoveCursor";
-            //    string argini_data12 = "Off";
-            //    GeneralLib.WriteIni(ref argini_section12, ref argini_entry12, ref argini_data12);
+            //    GeneralLib.WriteIni(ref "Option", ref "AutoMoveCursor", ref "Off");
             //}
 
             //// マス目の表示
             //if (Conversions.ToBoolean(chkShowSquareLine.CheckState))
             //{
             //    SRC.ShowSquareLine = true;
-            //    string argini_section13 = "Option";
-            //    string argini_entry13 = "Square";
-            //    string argini_data13 = "On";
-            //    GeneralLib.WriteIni(ref argini_section13, ref argini_entry13, ref argini_data13);
+            //    GeneralLib.WriteIni(ref "Option", ref "Square", ref "On");
             //}
             //else
             //{
             //    SRC.ShowSquareLine = false;
-            //    string argini_section14 = "Option";
-            //    string argini_entry14 = "Square";
-            //    string argini_data14 = "Off";
-            //    GeneralLib.WriteIni(ref argini_section14, ref argini_entry14, ref argini_data14);
+            //    GeneralLib.WriteIni(ref "Option", ref "Square", ref "Off");
             //}
 
             //// 味方フェイズ開始時のターン表示
             //if (Conversions.ToBoolean(chkShowTurn.CheckState))
             //{
-            //    string argini_section15 = "Option";
-            //    string argini_entry15 = "Turn";
-            //    string argini_data15 = "On";
-            //    GeneralLib.WriteIni(ref argini_section15, ref argini_entry15, ref argini_data15);
+            //    GeneralLib.WriteIni(ref "Option", ref "Turn", ref "On");
             //}
             //else
             //{
-            //    string argini_section16 = "Option";
-            //    string argini_entry16 = "Turn";
-            //    string argini_data16 = "Off";
-            //    GeneralLib.WriteIni(ref argini_section16, ref argini_entry16, ref argini_data16);
+            //    GeneralLib.WriteIni(ref "Option", ref "Turn", ref "Off");
             //}
 
             //// 敵フェイズ中にＢＧＭを変更しない
             //if (Conversions.ToBoolean(chkKeepEnemyBGM.CheckState))
             //{
             //    SRC.KeepEnemyBGM = true;
-            //    string argini_section17 = "Option";
-            //    string argini_entry17 = "KeepEnemyBGM";
-            //    string argini_data17 = "On";
-            //    GeneralLib.WriteIni(ref argini_section17, ref argini_entry17, ref argini_data17);
+            //    GeneralLib.WriteIni(ref "Option", ref "KeepEnemyBGM", ref "On");
             //}
             //else
             //{
             //    SRC.KeepEnemyBGM = false;
-            //    string argini_section18 = "Option";
-            //    string argini_entry18 = "KeepEnemyBGM";
-            //    string argini_data18 = "Off";
-            //    GeneralLib.WriteIni(ref argini_section18, ref argini_entry18, ref argini_data18);
+            //    GeneralLib.WriteIni(ref "Option", ref "KeepEnemyBGM", ref "Off");
             //}
 
             //// MIDI演奏にDirectMusicを使用する
             //if (Conversions.ToBoolean(chkUseDirectMusic.CheckState))
             //{
-            //    string argini_section19 = "Option";
-            //    string argini_entry19 = "UseDirectMusic";
-            //    string argini_data19 = "On";
-            //    GeneralLib.WriteIni(ref argini_section19, ref argini_entry19, ref argini_data19);
+            //    GeneralLib.WriteIni(ref "Option", ref "UseDirectMusic", ref "On");
             //}
             //else
             //{
-            //    string argini_section20 = "Option";
-            //    string argini_entry20 = "UseDirectMusic";
-            //    string argini_data20 = "Off";
-            //    GeneralLib.WriteIni(ref argini_section20, ref argini_entry20, ref argini_data20);
+            //    GeneralLib.WriteIni(ref "Option", ref "UseDirectMusic", ref "Off");
             //}
 
             //// MIDI音源リセットの種類
             //SRC.MidiResetType = cboMidiReset.Text;
-            //string argini_section21 = "Option";
-            //string argini_entry21 = "MidiReset";
-            //string argini_data21 = cboMidiReset.Text;
-            //GeneralLib.WriteIni(ref argini_section21, ref argini_entry21, ref argini_data21);
+            //GeneralLib.WriteIni(ref "Option", ref "MidiReset", ref cboMidiReset.Text);
             //cboMidiReset.Text = argini_data21;
 
             //// MP3再生音量
-            //string argini_section22 = "Option";
-            //string argini_entry22 = "MP3Volume";
-            //string argini_data22 = SrcFormatter.Format(Sound.MP3Volume);
-            //GeneralLib.WriteIni(ref argini_section22, ref argini_entry22, ref argini_data22);
+            //GeneralLib.WriteIni(ref "Option", ref "MP3Volume", ref SrcFormatter.Format(Sound.MP3Volume));
 
             // ダイアログを閉じる
             Hide();
@@ -443,9 +374,7 @@ namespace Project1
             //}
 
             //// 味方フェイズ開始時のターン表示
-            //string argini_section = "Option";
-            //string argini_entry = "Turn";
-            //if (Strings.LCase(GeneralLib.ReadIni(ref argini_section, ref argini_entry)) == "on")
+            //if (Strings.LCase(GeneralLib.ReadIni(ref "Option", ref "Turn")) == "on")
             //{
             //    chkShowTurn.CheckState = CheckState.Checked;
             //}
@@ -465,9 +394,7 @@ namespace Project1
             //}
 
             //// MIDI演奏にDirectMusicを使用する
-            //string argini_section1 = "Option";
-            //string argini_entry1 = "UseDirectMusic";
-            //if (Strings.LCase(GeneralLib.ReadIni(ref argini_section1, ref argini_entry1)) == "on")
+            //if (Strings.LCase(GeneralLib.ReadIni(ref "Option", ref "UseDirectMusic")) == "on")
             //{
             //    chkUseDirectMusic.CheckState = CheckState.Checked;
             //}
@@ -520,8 +447,7 @@ namespace Project1
         private void txtMP3Volume_TextChanged(object eventSender, EventArgs eventArgs)
         {
             //var IsMP3Supported = default(object);
-            //string argexpr = txtMP3Volume.Text;
-            //Sound.MP3Volume = (short)GeneralLib.StrToLng(ref argexpr);
+            //Sound.MP3Volume = (short)GeneralLib.StrToLng(ref txtMP3Volume.Text);
             //txtMP3Volume.Text = argexpr;
             //if (Sound.MP3Volume < 0)
             //{

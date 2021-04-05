@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
@@ -921,8 +921,7 @@ namespace SRCCore.Expressions
                 //            case "気力":
                 //                {
                 //                    num = 0;
-                //                    string argoname = "気力効果小";
-                //                    if (IsOptionDefined(argoname))
+                //                    if (IsOptionDefined("気力効果小"))
                 //                    {
                 //                        num = (50 + (withBlock16.Morale + withBlock16.MoraleMod) / 2); // 気力の補正込み値を代入
                 //                    }
@@ -1469,11 +1468,9 @@ namespace SRCCore.Expressions
                 //                idx = GetValueAsString(idx);
                 //                bool localIsDefined() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-                //                object argIndex2 = idx;
-                //                if (SRC.UList.IsDefined2(argIndex2))
+                //                if (SRC.UList.IsDefined2(idx))
                 //                {
-                //                    object argIndex1 = idx;
-                //                    u = SRC.UList.Item2(argIndex1);
+                //                    u = SRC.UList.Item2(idx);
                 //                }
                 //                else if (localIsDefined())
                 //                {
@@ -1512,11 +1509,9 @@ namespace SRCCore.Expressions
                 //                idx = GetValueAsString(idx);
                 //                bool localIsDefined1() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-                //                object argIndex4 = idx;
-                //                if (SRC.UList.IsDefined2(argIndex4))
+                //                if (SRC.UList.IsDefined2(idx))
                 //                {
-                //                    object argIndex3 = idx;
-                //                    u = SRC.UList.Item2(argIndex3);
+                //                    u = SRC.UList.Item2(idx);
                 //                }
                 //                else if (localIsDefined1())
                 //                {
@@ -1555,8 +1550,7 @@ namespace SRCCore.Expressions
                 //                idx = GetValueAsString(idx);
                 //                bool localIsDefined2() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-                //                object argIndex6 = idx;
-                //                if (SRC.UList.IsDefined2(argIndex6))
+                //                if (SRC.UList.IsDefined2(idx))
                 //                {
                 //                    Unit localItem2() { object argIndex1 = idx; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
@@ -1564,8 +1558,7 @@ namespace SRCCore.Expressions
                 //                }
                 //                else if (localIsDefined2())
                 //                {
-                //                    object argIndex5 = idx;
-                //                    p = SRC.PList.Item(argIndex5);
+                //                    p = SRC.PList.Item(idx);
                 //                }
                 //                else
                 //                {
@@ -1599,8 +1592,7 @@ namespace SRCCore.Expressions
                 //                idx = GetValueAsString(idx);
                 //                bool localIsDefined3() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-                //                object argIndex8 = idx;
-                //                if (SRC.UList.IsDefined2(argIndex8))
+                //                if (SRC.UList.IsDefined2(idx))
                 //                {
                 //                    Unit localItem21() { object argIndex1 = idx; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
@@ -1608,8 +1600,7 @@ namespace SRCCore.Expressions
                 //                }
                 //                else if (localIsDefined3())
                 //                {
-                //                    object argIndex7 = idx;
-                //                    p = SRC.PList.Item(argIndex7);
+                //                    p = SRC.PList.Item(idx);
                 //                }
                 //                else
                 //                {
@@ -1640,11 +1631,9 @@ namespace SRCCore.Expressions
                 //                idx = GetValueAsString(idx);
                 //                bool localIsDefined4() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-                //                object argIndex10 = idx;
-                //                if (SRC.UList.IsDefined2(argIndex10))
+                //                if (SRC.UList.IsDefined2(idx))
                 //                {
-                //                    object argIndex9 = idx;
-                //                    u = SRC.UList.Item2(argIndex9);
+                //                    u = SRC.UList.Item2(idx);
                 //                }
                 //                else if (localIsDefined4())
                 //                {
@@ -1884,21 +1873,17 @@ namespace SRCCore.Expressions
 
         public void SetVariableAsString(string vname, string new_value)
         {
-            double argnum_value = 0d;
-            SetVariable(vname, ValueType.StringType, new_value, argnum_value);
+            SetVariable(vname, ValueType.StringType, new_value, 0d);
         }
 
         public void SetVariableAsDouble(string vname, double new_value)
         {
-            string argstr_value = "";
-            SetVariable(vname, ValueType.NumericType, argstr_value, new_value);
+            SetVariable(vname, ValueType.NumericType, "", new_value);
         }
 
         public void SetVariableAsLong(string vname, int new_value)
         {
-            string argstr_value = "";
-            double argnum_value = new_value;
-            SetVariable(vname, ValueType.NumericType, argstr_value, argnum_value);
+            SetVariable(vname, ValueType.NumericType, "", new_value);
         }
 
         // グローバル変数を定義
@@ -2031,8 +2016,7 @@ namespace SRCCore.Expressions
                                             buf = buf + ",";
                                         }
 
-                                        string argexpr = Strings.Mid(idx, start_idx, i - start_idx);
-                                        buf = buf + GetValueAsString(argexpr, is_term);
+                                        buf = buf + GetValueAsString(Strings.Mid(idx, start_idx, i - start_idx), is_term);
                                         start_idx = (i + 1);
                                         is_term = true;
                                     }
@@ -2057,13 +2041,11 @@ namespace SRCCore.Expressions
 
                 if (Strings.Len(buf) > 0)
                 {
-                    string argexpr = Strings.Mid(idx, start_idx, i - start_idx);
-                    idx = buf + "," + GetValueAsString(argexpr, is_term);
+                    idx = buf + "," + GetValueAsString(Strings.Mid(idx, start_idx, i - start_idx), is_term);
                 }
                 else
                 {
-                    string argexpr = Strings.Mid(idx, start_idx, i - start_idx);
-                    idx = GetValueAsString(argexpr, is_term);
+                    idx = GetValueAsString(Strings.Mid(idx, start_idx, i - start_idx), is_term);
                 }
             }
             else

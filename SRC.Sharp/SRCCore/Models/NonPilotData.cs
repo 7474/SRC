@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -36,8 +36,7 @@ namespace SRCCore.Models
                 //// イベントで愛称が変更されている？
                 //if (Strings.InStr(NicknameRet, "主人公") == 1 | Strings.InStr(NicknameRet, "ヒロイン") == 1)
                 //{
-                //    string argexpr = NicknameRet + "愛称";
-                //    NicknameRet = Expression.GetValueAsString(ref argexpr);
+                //    NicknameRet = Expression.GetValueAsString(ref NicknameRet + "愛称");
                 //}
 
                 //Expression.ReplaceSubExpression(ref NicknameRet);
@@ -57,9 +56,8 @@ namespace SRCCore.Models
                 //        return default;
                 //    }
 
-                //    object argIndex2 = pname;
                 //    {
-                //        var withBlock = SRC.PList.Item(ref argIndex2);
+                //        var withBlock = SRC.PList.Item(ref pname);
                 //        // パイロットがユニットに乗っている？
                 //        if (withBlock.Unit_Renamed is null)
                 //        {
@@ -81,11 +79,9 @@ namespace SRCCore.Models
                 //            }
 
                 //            // パイロット愛称変更能力を適用
-                //            string argfname = "パイロット愛称";
-                //            if (withBlock1.IsFeatureAvailable(ref argfname))
+                //            if (withBlock1.IsFeatureAvailable(ref "パイロット愛称"))
                 //            {
-                //                object argIndex1 = "パイロット愛称";
-                //                pname = withBlock1.FeatureData(ref argIndex1);
+                //                pname = withBlock1.FeatureData(ref "パイロット愛称");
                 //                idx = Strings.InStr(pname, "$(愛称)");
                 //                if (idx > 0)
                 //                {

@@ -1,4 +1,4 @@
-﻿using SRCCore.Lib;
+using SRCCore.Lib;
 using SRCCore.VB;
 using System;
 using System.Reflection;

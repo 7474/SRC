@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -322,8 +322,7 @@ namespace SRCCore.Units
             //bool IsSpellAbilityRet = default;
             //int i;
             //string nskill;
-            //string argattr = "術";
-            //if (IsAbilityClassifiedAs(argattr))
+            //if (IsAbilityClassifiedAs("術"))
             //{
             //    IsSpellAbilityRet = true;
             //    return IsSpellAbilityRet;
@@ -359,8 +358,7 @@ namespace SRCCore.Units
             //bool IsFeatAbilityRet = default;
             //int i;
             //string nskill;
-            //string argattr = "技";
-            //if (IsAbilityClassifiedAs(argattr))
+            //if (IsAbilityClassifiedAs("技"))
             //{
             //    IsFeatAbilityRet = true;
             //    return IsFeatAbilityRet;
@@ -446,20 +444,16 @@ namespace SRCCore.Units
             //    }
 
             //    // 霊力消費アビリティ
-            //    string argattr2 = "霊";
-            //    string argattr3 = "プ";
-            //    if (IsAbilityClassifiedAs(argattr2))
+            //    if (IsAbilityClassifiedAs("霊"))
             //    {
-            //        string argattr = "霊";
-            //        if (withBlock.Plana < AbilityLevel(argattr) * 5d)
+            //        if (withBlock.Plana < AbilityLevel("霊") * 5d)
             //        {
             //            return IsAbilityAvailableRet;
             //        }
             //    }
-            //    else if (IsAbilityClassifiedAs(argattr3))
+            //    else if (IsAbilityClassifiedAs("プ"))
             //    {
-            //        string argattr1 = "プ";
-            //        if (withBlock.Plana < AbilityLevel(argattr1) * 5d)
+            //        if (withBlock.Plana < AbilityLevel("プ") * 5d)
             //        {
             //            return IsAbilityAvailableRet;
             //        }
@@ -467,81 +461,65 @@ namespace SRCCore.Units
             //}
 
             //// 属性使用不能状態
-            //object argIndex1 = "オーラ使用不能";
-            //if (ConditionLifetime(argIndex1) > 0)
+            //if (ConditionLifetime("オーラ使用不能") > 0)
             //{
-            //    string argattr4 = "オ";
-            //    if (IsAbilityClassifiedAs(argattr4))
+            //    if (IsAbilityClassifiedAs("オ"))
             //    {
             //        return IsAbilityAvailableRet;
             //    }
             //}
 
-            //object argIndex2 = "超能力使用不能";
-            //if (ConditionLifetime(argIndex2) > 0)
+            //if (ConditionLifetime("超能力使用不能") > 0)
             //{
-            //    string argattr5 = "超";
-            //    if (IsAbilityClassifiedAs(argattr5))
+            //    if (IsAbilityClassifiedAs("超"))
             //    {
             //        return IsAbilityAvailableRet;
             //    }
             //}
 
-            //object argIndex3 = "同調率使用不能";
-            //if (ConditionLifetime(argIndex3) > 0)
+            //if (ConditionLifetime("同調率使用不能") > 0)
             //{
-            //    string argattr6 = "シ";
-            //    if (IsAbilityClassifiedAs(argattr6))
+            //    if (IsAbilityClassifiedAs("シ"))
             //    {
             //        return IsAbilityAvailableRet;
             //    }
             //}
 
-            //object argIndex4 = "超感覚使用不能";
-            //if (ConditionLifetime(argIndex4) > 0)
+            //if (ConditionLifetime("超感覚使用不能") > 0)
             //{
-            //    string argattr7 = "サ";
-            //    if (IsAbilityClassifiedAs(argattr7))
+            //    if (IsAbilityClassifiedAs("サ"))
             //    {
             //        return IsAbilityAvailableRet;
             //    }
             //}
 
-            //object argIndex5 = "知覚強化使用不能";
-            //if (ConditionLifetime(argIndex5) > 0)
+            //if (ConditionLifetime("知覚強化使用不能") > 0)
             //{
-            //    string argattr8 = "サ";
-            //    if (IsAbilityClassifiedAs(argattr8))
+            //    if (IsAbilityClassifiedAs("サ"))
             //    {
             //        return IsAbilityAvailableRet;
             //    }
             //}
 
-            //object argIndex6 = "霊力使用不能";
-            //if (ConditionLifetime(argIndex6) > 0)
+            //if (ConditionLifetime("霊力使用不能") > 0)
             //{
-            //    string argattr9 = "霊";
-            //    if (IsAbilityClassifiedAs(argattr9))
+            //    if (IsAbilityClassifiedAs("霊"))
             //    {
             //        return IsAbilityAvailableRet;
             //    }
             //}
 
-            //object argIndex7 = "術使用不能";
-            //if (ConditionLifetime(argIndex7) > 0)
+            //if (ConditionLifetime("術使用不能") > 0)
             //{
-            //    string argattr10 = "術";
-            //    if (IsAbilityClassifiedAs(argattr10))
+            //    if (IsAbilityClassifiedAs("術"))
             //    {
             //        return IsAbilityAvailableRet;
             //    }
             //}
 
-            //object argIndex8 = "技使用不能";
-            //if (ConditionLifetime(argIndex8) > 0)
+            //if (ConditionLifetime("技使用不能") > 0)
             //{
-            //    string argattr11 = "技";
-            //    if (IsAbilityClassifiedAs(argattr11))
+            //    if (IsAbilityClassifiedAs("技"))
             //    {
             //        return IsAbilityAvailableRet;
             //    }
@@ -562,8 +540,7 @@ namespace SRCCore.Units
 
             //            string localCondition1() { object argIndex1 = i; var ret = Condition(argIndex1); return ret; }
 
-            //            string argstring2 = Strings.Left(localCondition(), Strings.Len(localCondition1()) - 6);
-            //            if (GeneralLib.InStrNotNest(Data.Class, argstring2) > 0)
+            //            if (GeneralLib.InStrNotNest(Data.Class, Strings.Left(localCondition(), Strings.Len(localCondition1()) - 6)) > 0)
             //            {
             //                return IsAbilityAvailableRet;
             //            }
@@ -592,11 +569,9 @@ namespace SRCCore.Units
             //// お金が足りるか……
             //if (Party == "味方")
             //{
-            //    string argattr13 = "銭";
-            //    if (IsAbilityClassifiedAs(argattr13))
+            //    if (IsAbilityClassifiedAs("銭"))
             //    {
-            //        string argattr12 = "銭";
-            //        if (SRC.Money < GeneralLib.MaxLng(AbilityLevel(argattr12), 1) * Value / 10)
+            //        if (SRC.Money < GeneralLib.MaxLng(AbilityLevel("銭"), 1) * Value / 10)
             //        {
             //            return IsAbilityAvailableRet;
             //        }
@@ -604,24 +579,20 @@ namespace SRCCore.Units
             //}
 
             //// 移動不能時には移動型マップアビリティは使用不能
-            //object argIndex9 = "移動不能";
-            //if (IsConditionSatisfied(argIndex9))
+            //if (IsConditionSatisfied("移動不能"))
             //{
-            //    string argattr14 = "Ｍ移";
-            //    if (IsAbilityClassifiedAs(argattr14))
+            //    if (IsAbilityClassifiedAs("Ｍ移"))
             //    {
             //        return IsAbilityAvailableRet;
             //    }
             //}
 
             //// 術及び音声技は沈黙状態では使用不能
-            //object argIndex10 = "沈黙";
-            //if (IsConditionSatisfied(argIndex10))
+            //if (IsConditionSatisfied("沈黙"))
             //{
             //    {
             //        var withBlock1 = MainPilot();
-            //        string argattr15 = "音";
-            //        if (IsSpellAbility() | IsAbilityClassifiedAs(argattr15))
+            //        if (IsSpellAbility() | IsAbilityClassifiedAs("音"))
             //        {
             //            return IsAbilityAvailableRet;
             //        }
@@ -641,8 +612,7 @@ namespace SRCCore.Units
             //}
 
             //// 合体技の処理
-            //string argattr16 = "合";
-            //if (IsAbilityClassifiedAs(argattr16))
+            //if (IsAbilityClassifiedAs("合"))
             //{
             //    if (!IsCombinationAbilityAvailable())
             //    {
@@ -651,12 +621,9 @@ namespace SRCCore.Units
             //}
 
             //// この地形で変形できるか？
-            //string argattr17 = "変";
-            //if (IsAbilityClassifiedAs(argattr17))
+            //if (IsAbilityClassifiedAs("変"))
             //{
-            //    string argfname = "変形技";
-            //    string argfname1 = "ノーマルモード";
-            //    if (IsFeatureAvailable(argfname))
+            //    if (IsFeatureAvailable("変形技"))
             //    {
             //        var loopTo1 = CountFeature();
             //        for (i = 1; i <= loopTo1; i++)
@@ -682,7 +649,7 @@ namespace SRCCore.Units
             //            }
             //        }
             //    }
-            //    else if (IsFeatureAvailable(argfname1))
+            //    else if (IsFeatureAvailable("ノーマルモード"))
             //    {
             //        string localLIndex2() { object argIndex1 = "ノーマルモード"; string arglist = FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
@@ -694,22 +661,19 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    object argIndex12 = "形態固定";
-            //    if (IsConditionSatisfied(argIndex12))
+            //    if (IsConditionSatisfied("形態固定"))
             //    {
             //        return IsAbilityAvailableRet;
             //    }
 
-            //    object argIndex13 = "機体固定";
-            //    if (IsConditionSatisfied(argIndex13))
+            //    if (IsConditionSatisfied("機体固定"))
             //    {
             //        return IsAbilityAvailableRet;
             //    }
             //}
 
             //// 瀕死時限定
-            //string argattr18 = "瀕";
-            //if (IsAbilityClassifiedAs(argattr18))
+            //if (IsAbilityClassifiedAs("瀕"))
             //{
             //    if (HP > MaxHP / 4)
             //    {
@@ -718,29 +682,23 @@ namespace SRCCore.Units
             //}
 
             //// 自動チャージアビリティを充填中
-            //object argIndex14 = AbilityNickname() + "充填中";
-            //if (IsConditionSatisfied(argIndex14))
+            //if (IsConditionSatisfied(AbilityNickname() + "充填中"))
             //{
             //    return IsAbilityAvailableRet;
             //}
             //// 共有武器＆アビリティが充填中の場合も使用不可
             //int lv;
-            //string argattr24 = "共";
-            //if (IsAbilityClassifiedAs(argattr24))
+            //if (IsAbilityClassifiedAs("共"))
             //{
-            //    string argattr19 = "共";
-            //    lv = AbilityLevel(argattr19);
+            //    lv = AbilityLevel("共");
             //    var loopTo2 = CountAbility();
             //    for (i = 1; i <= loopTo2; i++)
             //    {
-            //        string argattr21 = "共";
-            //        if (IsAbilityClassifiedAs(i, argattr21))
+            //        if (IsAbilityClassifiedAs(i, "共"))
             //        {
-            //            string argattr20 = "共";
-            //            if (lv == AbilityLevel(i, argattr20))
+            //            if (lv == AbilityLevel(i, "共"))
             //            {
-            //                object argIndex15 = AbilityNickname(i) + "充填中";
-            //                if (IsConditionSatisfied(argIndex15))
+            //                if (IsConditionSatisfied(AbilityNickname(i) + "充填中"))
             //                {
             //                    return IsAbilityAvailableRet;
             //                }
@@ -751,14 +709,11 @@ namespace SRCCore.Units
             //    var loopTo3 = CountAbility();
             //    for (i = 1; i <= loopTo3; i++)
             //    {
-            //        string argattr23 = "共";
-            //        if (IsAbilityClassifiedAs(i, argattr23))
+            //        if (IsAbilityClassifiedAs(i, "共"))
             //        {
-            //            string argattr22 = "共";
-            //            if (lv == AbilityLevel(i, argattr22))
+            //            if (lv == AbilityLevel(i, "共"))
             //            {
-            //                object argIndex16 = AbilityNickname(i) + "充填中";
-            //                if (IsConditionSatisfied(argIndex16))
+            //                if (IsConditionSatisfied(AbilityNickname(i) + "充填中"))
             //                {
             //                    return IsAbilityAvailableRet;
             //                }
@@ -768,8 +723,7 @@ namespace SRCCore.Units
             //}
 
             //// 使用禁止
-            //string argattr25 = "禁";
-            //if (Conversions.ToInteger(IsAbilityClassifiedAs(argattr25)) > 0)
+            //if (Conversions.ToInteger(IsAbilityClassifiedAs("禁")) > 0)
             //{
             //    return IsAbilityAvailableRet;
             //}
@@ -782,11 +736,9 @@ namespace SRCCore.Units
             //}
 
             //// チャージ式アビリティ
-            //string argattr26 = "Ｃ";
-            //if (IsAbilityClassifiedAs(argattr26))
+            //if (IsAbilityClassifiedAs("Ｃ"))
             //{
-            //    object argIndex17 = "チャージ完了";
-            //    if (!IsConditionSatisfied(argIndex17))
+            //    if (!IsConditionSatisfied("チャージ完了"))
             //    {
             //        return IsAbilityAvailableRet;
             //    }
@@ -795,8 +747,7 @@ namespace SRCCore.Units
             //var loopTo4 = ad.CountEffect();
             //for (i = 1; i <= loopTo4; i++)
             //{
-            //    object argIndex22 = i;
-            //    if (ad.EffectType(argIndex22) == "召喚")
+            //    if (ad.EffectType(i) == "召喚")
             //    {
             //        // 召喚は既に召喚を行っている場合には不可能
             //        var loopTo5 = CountServant();
@@ -822,15 +773,12 @@ namespace SRCCore.Units
             //                            var loopTo6 = withBlock3.CountFeature();
             //                            for (k = 1; k <= loopTo6; k++)
             //                            {
-            //                                object argIndex19 = k;
-            //                                if (withBlock3.Feature(argIndex19) == "合体")
+            //                                if (withBlock3.Feature(k) == "合体")
             //                                {
             //                                    string localFeatureData2() { object argIndex1 = k; var ret = withBlock3.FeatureData(argIndex1); return ret; }
 
-            //                                    string arglist = localFeatureData2();
-            //                                    uname = GeneralLib.LIndex(arglist, 2);
-            //                                    object argIndex18 = uname;
-            //                                    if (SRC.UList.IsDefined(argIndex18))
+            //                                    uname = GeneralLib.LIndex(localFeatureData2(), 2);
+            //                                    if (SRC.UList.IsDefined(uname))
             //                                    {
             //                                        Unit localItem() { object argIndex1 = uname; var ret = SRC.UList.Item(argIndex1); return ret; }
 
@@ -865,8 +813,7 @@ namespace SRCCore.Units
 
             //        UnitData localItem1() { object argIndex1 = (object)hsdcada415e8eb41c68f44c81ef2bb94c6(); var ret = SRC.UDList.Item(argIndex1); return ret; }
 
-            //        object argIndex20 = "追加パイロット";
-            //        pname = localItem1().FeatureData(argIndex20);
+            //        pname = localItem1().FeatureData("追加パイロット");
             //        bool localIsDefined1() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
 
             //        if (!localIsDefined1())
@@ -878,8 +825,7 @@ namespace SRCCore.Units
             //        // ない場合、そのユニットが既に出撃中であれば使用不可
             //        if (Strings.InStr(pname, "(汎用)") == 0 & Strings.InStr(pname, "(ザコ)") == 0)
             //        {
-            //            object argIndex21 = pname;
-            //            if (SRC.PList.IsDefined(argIndex21))
+            //            if (SRC.PList.IsDefined(pname))
             //            {
             //                Pilot localItem2() { object argIndex1 = pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
@@ -905,16 +851,14 @@ namespace SRCCore.Units
             //var loopTo7 = ad.CountEffect();
             //for (i = 1; i <= loopTo7; i++)
             //{
-            //    object argIndex24 = i;
-            //    if (ad.EffectType(argIndex24) == "変身")
+            //    if (ad.EffectType(i) == "変身")
             //    {
             //        // 自分を変身させる場合
             //        if (this.Data.MaxRange == 0)
             //        {
             //            // ノーマルモードを持つユニットは変身できない
             //            // (変身からの復帰が出来ないため)
-            //            string argfname2 = "ノーマルモード";
-            //            if (IsFeatureAvailable(argfname2))
+            //            if (IsFeatureAvailable("ノーマルモード"))
             //            {
             //                return IsAbilityAvailableRet;
             //            }
@@ -924,9 +868,8 @@ namespace SRCCore.Units
 
             //            string localLIndex3() { string arglist = hsc2f37474313640f6843767ac6d51a5dd(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-            //            object argIndex23 = localLIndex3();
             //            {
-            //                var withBlock5 = OtherForm(argIndex23);
+            //                var withBlock5 = OtherForm(localLIndex3());
             //                if (!withBlock5.IsAbleToEnter(x, y))
             //                {
             //                    return IsAbilityAvailableRet;
@@ -944,8 +887,7 @@ namespace SRCCore.Units
 
             //if (AbilityMaxRange() > 1 | AbilityMaxRange() == 0)
             //{
-            //    string argattr27 = "Ｐ";
-            //    if (IsAbilityClassifiedAs(argattr27))
+            //    if (IsAbilityClassifiedAs("Ｐ"))
             //    {
             //        IsAbilityAvailableRet = true;
             //    }
@@ -956,8 +898,7 @@ namespace SRCCore.Units
             //}
             //else
             //{
-            //    string argattr28 = "Ｑ";
-            //    if (IsAbilityClassifiedAs(argattr28))
+            //    if (IsAbilityClassifiedAs("Ｑ"))
             //    {
             //        IsAbilityAvailableRet = false;
             //    }
@@ -976,8 +917,7 @@ namespace SRCCore.Units
             return true;
             // TODO Impl
             //bool IsAbilityMasteredRet = default;
-            //Pilot argp = null;
-            //IsAbilityMasteredRet = IsNecessarySkillSatisfied(Data.NecessarySkill, p: argp);
+            //IsAbilityMasteredRet = IsNecessarySkillSatisfied(Data.NecessarySkill, p: null);
             //return IsAbilityMasteredRet;
         }
 
@@ -987,8 +927,7 @@ namespace SRCCore.Units
             return true;
             // TODO Impl
             //bool IsAbilityEnabledRet = default;
-            //Pilot argp = null;
-            //IsAbilityEnabledRet = IsNecessarySkillSatisfied(Data.NecessaryCondition, p: argp);
+            //IsAbilityEnabledRet = IsNecessarySkillSatisfied(Data.NecessaryCondition, p: null);
             //return IsAbilityEnabledRet;
         }
 
@@ -1010,10 +949,7 @@ namespace SRCCore.Units
 
             //// 投下型マップアビリティと扇型マップアビリティは特殊なので判定ができない
             //// 移動型マップアビリティは移動手段として使うことを考慮
-            //string argattr = "Ｍ投";
-            //string argattr1 = "Ｍ扇";
-            //string argattr2 = "Ｍ移";
-            //if (IsAbilityClassifiedAs(argattr) | IsAbilityClassifiedAs(argattr1) | IsAbilityClassifiedAs(argattr2))
+            //if (IsAbilityClassifiedAs("Ｍ投") | IsAbilityClassifiedAs("Ｍ投"1) | IsAbilityClassifiedAs("Ｍ投"2))
             //{
             //    IsAbilityUsefulRet = true;
             //    return IsAbilityUsefulRet;
@@ -1023,8 +959,7 @@ namespace SRCCore.Units
             //var loopTo = Data.CountEffect();
             //for (i = 1; i <= loopTo; i++)
             //{
-            //    object argIndex1 = i;
-            //    if (Data.EffectType(argIndex1) == "召喚")
+            //    if (Data.EffectType(i) == "召喚")
             //    {
             //        IsAbilityUsefulRet = true;
             //        return IsAbilityUsefulRet;
@@ -1115,12 +1050,9 @@ namespace SRCCore.Units
             //    var loopTo = Data.CountEffect();
             //    for (i = 1; i <= loopTo; i++)
             //    {
-            //        object argIndex1 = i;
-            //        edata = Data.EffectData(argIndex1);
-            //        object argIndex2 = i;
-            //        elevel = Data.EffectLevel(argIndex2);
-            //        object argIndex36 = i;
-            //        switch (Data.EffectType(argIndex36) ?? "")
+            //        edata = Data.EffectData(i);
+            //        elevel = Data.EffectLevel(i);
+            //        switch (Data.EffectType(i) ?? "")
             //        {
             //            case "回復":
             //                {
@@ -1128,8 +1060,7 @@ namespace SRCCore.Units
             //                    {
             //                        if (withBlock.HP < withBlock.MaxHP)
             //                        {
-            //                            object argIndex3 = "ゾンビ";
-            //                            if (!withBlock.IsConditionSatisfied(argIndex3))
+            //                            if (!withBlock.IsConditionSatisfied("ゾンビ"))
             //                            {
             //                                IsAbilityEffectiveRet = true;
             //                                return IsAbilityEffectiveRet;
@@ -1152,33 +1083,7 @@ namespace SRCCore.Units
             //                {
             //                    if (string.IsNullOrEmpty(edata))
             //                    {
-            //                        object argIndex4 = "攻撃不能";
-            //                        object argIndex5 = "移動不能";
-            //                        object argIndex6 = "装甲劣化";
-            //                        object argIndex7 = "混乱";
-            //                        object argIndex8 = "恐怖";
-            //                        object argIndex9 = "踊り";
-            //                        object argIndex10 = "狂戦士";
-            //                        object argIndex11 = "ゾンビ";
-            //                        object argIndex12 = "回復不能";
-            //                        object argIndex13 = "石化";
-            //                        object argIndex14 = "凍結";
-            //                        object argIndex15 = "麻痺";
-            //                        object argIndex16 = "睡眠";
-            //                        object argIndex17 = "毒";
-            //                        object argIndex18 = "盲目";
-            //                        object argIndex19 = "沈黙";
-            //                        object argIndex20 = "魅了";
-            //                        object argIndex21 = "憑依";
-            //                        object argIndex22 = "オーラ使用不能";
-            //                        object argIndex23 = "超能力使用不能";
-            //                        object argIndex24 = "同調率使用不能";
-            //                        object argIndex25 = "超感覚使用不能";
-            //                        object argIndex26 = "知覚強化使用不能";
-            //                        object argIndex27 = "霊力使用不能";
-            //                        object argIndex28 = "術使用不能";
-            //                        object argIndex29 = "技使用不能";
-            //                        if (withBlock.ConditionLifetime(argIndex4) > 0 | withBlock.ConditionLifetime(argIndex5) > 0 | withBlock.ConditionLifetime(argIndex6) > 0 | withBlock.ConditionLifetime(argIndex7) > 0 | withBlock.ConditionLifetime(argIndex8) > 0 | withBlock.ConditionLifetime(argIndex9) > 0 | withBlock.ConditionLifetime(argIndex10) > 0 | withBlock.ConditionLifetime(argIndex11) > 0 | withBlock.ConditionLifetime(argIndex12) > 0 | withBlock.ConditionLifetime(argIndex13) > 0 | withBlock.ConditionLifetime(argIndex14) > 0 | withBlock.ConditionLifetime(argIndex15) > 0 | withBlock.ConditionLifetime(argIndex16) > 0 | withBlock.ConditionLifetime(argIndex17) > 0 | withBlock.ConditionLifetime(argIndex18) > 0 | withBlock.ConditionLifetime(argIndex19) > 0 | withBlock.ConditionLifetime(argIndex20) > 0 | withBlock.ConditionLifetime(argIndex21) > 0 | withBlock.ConditionLifetime(argIndex22) > 0 | withBlock.ConditionLifetime(argIndex23) > 0 | withBlock.ConditionLifetime(argIndex24) > 0 | withBlock.ConditionLifetime(argIndex25) > 0 | withBlock.ConditionLifetime(argIndex26) > 0 | withBlock.ConditionLifetime(argIndex27) > 0 | withBlock.ConditionLifetime(argIndex28) > 0 | withBlock.ConditionLifetime(argIndex29) > 0)
+            //                        if (withBlock.ConditionLifetime("攻撃不能") > 0 | withBlock.ConditionLifetime("移動不能") > 0 | withBlock.ConditionLifetime("装甲劣化") > 0 | withBlock.ConditionLifetime("混乱") > 0 | withBlock.ConditionLifetime("恐怖") > 0 | withBlock.ConditionLifetime("踊り") > 0 | withBlock.ConditionLifetime("狂戦士") > 0 | withBlock.ConditionLifetime("ゾンビ") > 0 | withBlock.ConditionLifetime("回復不能") > 0 | withBlock.ConditionLifetime("石化") > 0 | withBlock.ConditionLifetime("凍結") > 0 | withBlock.ConditionLifetime("麻痺") > 0 | withBlock.ConditionLifetime("睡眠") > 0 | withBlock.ConditionLifetime("毒") > 0 | withBlock.ConditionLifetime("盲目") > 0 | withBlock.ConditionLifetime("沈黙") > 0 | withBlock.ConditionLifetime("魅了") > 0 | withBlock.ConditionLifetime("憑依") > 0 | withBlock.ConditionLifetime("オーラ使用不能") > 0 | withBlock.ConditionLifetime("超能力使用不能") > 0 | withBlock.ConditionLifetime("同調率使用不能") > 0 | withBlock.ConditionLifetime("超感覚使用不能") > 0 | withBlock.ConditionLifetime("知覚強化使用不能") > 0 | withBlock.ConditionLifetime("霊力使用不能") > 0 | withBlock.ConditionLifetime("術使用不能") > 0 | withBlock.ConditionLifetime("技使用不能") > 0)
             //                        {
             //                            IsAbilityEffectiveRet = true;
             //                            return IsAbilityEffectiveRet;
@@ -1200,8 +1105,7 @@ namespace SRCCore.Units
             //                                {
             //                                    string localCondition() { object argIndex1 = j; var ret = withBlock.Condition(argIndex1); return ret; }
 
-            //                                    object argIndex30 = localCondition();
-            //                                    if (withBlock.ConditionLifetime(argIndex30) > 0)
+            //                                    if (withBlock.ConditionLifetime(localCondition()) > 0)
             //                                    {
             //                                        IsAbilityEffectiveRet = true;
             //                                        return IsAbilityEffectiveRet;
@@ -1215,8 +1119,7 @@ namespace SRCCore.Units
             //                        var loopTo2 = GeneralLib.LLength(edata);
             //                        for (j = 1; j <= loopTo2; j++)
             //                        {
-            //                            object argIndex31 = GeneralLib.LIndex(edata, j);
-            //                            if (withBlock.ConditionLifetime(argIndex31) > 0)
+            //                            if (withBlock.ConditionLifetime(GeneralLib.LIndex(edata, j)) > 0)
             //                            {
             //                                IsAbilityEffectiveRet = true;
             //                                return IsAbilityEffectiveRet;
@@ -1234,8 +1137,7 @@ namespace SRCCore.Units
             //                    {
             //                        if (withBlock.EN < withBlock.MaxEN)
             //                        {
-            //                            object argIndex32 = "ゾンビ";
-            //                            if (!withBlock.IsConditionSatisfied(argIndex32))
+            //                            if (!withBlock.IsConditionSatisfied("ゾンビ"))
             //                            {
             //                                IsAbilityEffectiveRet = true;
             //                                return IsAbilityEffectiveRet;
@@ -1303,8 +1205,7 @@ namespace SRCCore.Units
             //                            }
             //                        }
 
-            //                        string argfname = "追加サポート";
-            //                        if (withBlock.IsFeatureAvailable(argfname))
+            //                        if (withBlock.IsFeatureAvailable("追加サポート"))
             //                        {
             //                            if (withBlock.AdditionalSupport().SP < withBlock.AdditionalSupport().MaxSP)
             //                            {
@@ -1335,9 +1236,8 @@ namespace SRCCore.Units
             //                        var loopTo5 = withBlock.CountPilot();
             //                        for (j = 2; j <= loopTo5; j++)
             //                        {
-            //                            object argIndex33 = j;
             //                            {
-            //                                var withBlock2 = withBlock.Pilot(argIndex33);
+            //                                var withBlock2 = withBlock.Pilot(j);
             //                                if (withBlock2.Morale < withBlock2.MaxMorale & withBlock2.Personality != "機械")
             //                                {
             //                                    IsAbilityEffectiveRet = true;
@@ -1349,9 +1249,8 @@ namespace SRCCore.Units
             //                        var loopTo6 = withBlock.CountSupport();
             //                        for (j = 1; j <= loopTo6; j++)
             //                        {
-            //                            object argIndex34 = j;
             //                            {
-            //                                var withBlock3 = withBlock.Support(argIndex34);
+            //                                var withBlock3 = withBlock.Support(j);
             //                                if (withBlock3.Morale < withBlock3.MaxMorale & withBlock3.Personality != "機械")
             //                                {
             //                                    IsAbilityEffectiveRet = true;
@@ -1360,8 +1259,7 @@ namespace SRCCore.Units
             //                            }
             //                        }
 
-            //                        string argfname1 = "追加サポート";
-            //                        if (withBlock.IsFeatureAvailable(argfname1))
+            //                        if (withBlock.IsFeatureAvailable("追加サポート"))
             //                        {
             //                            {
             //                                var withBlock4 = withBlock.AdditionalSupport();
@@ -1417,8 +1315,7 @@ namespace SRCCore.Units
             //                {
             //                    bool localIsConditionSatisfied() { object argIndex1 = GeneralLib.LIndex(edata, 1) + "付加"; var ret = withBlock.IsConditionSatisfied(argIndex1); return ret; }
 
-            //                    string argattr = "除";
-            //                    if (!localIsConditionSatisfied() | IsAbilityClassifiedAs(argattr))
+            //                    if (!localIsConditionSatisfied() | IsAbilityClassifiedAs("除"))
             //                    {
             //                        IsAbilityEffectiveRet = true;
             //                        return IsAbilityEffectiveRet;
@@ -1432,8 +1329,7 @@ namespace SRCCore.Units
             //                {
             //                    bool localIsConditionSatisfied1() { object argIndex1 = GeneralLib.LIndex(edata, 1) + "強化"; var ret = withBlock.IsConditionSatisfied(argIndex1); return ret; }
 
-            //                    string argattr1 = "除";
-            //                    if (!localIsConditionSatisfied1() | IsAbilityClassifiedAs(argattr1))
+            //                    if (!localIsConditionSatisfied1() | IsAbilityClassifiedAs("除"))
             //                    {
             //                        IsAbilityEffectiveRet = true;
             //                        return IsAbilityEffectiveRet;
@@ -1476,8 +1372,7 @@ namespace SRCCore.Units
 
             //            case "変身":
             //                {
-            //                    string argfname2 = "ノーマルモード";
-            //                    if (!withBlock.IsFeatureAvailable(argfname2))
+            //                    if (!withBlock.IsFeatureAvailable("ノーマルモード"))
             //                    {
             //                        IsAbilityEffectiveRet = true;
             //                        return IsAbilityEffectiveRet;
@@ -1489,10 +1384,7 @@ namespace SRCCore.Units
 
             //            case "能力コピー":
             //                {
-            //                    string argfname3 = "ノーマルモード";
-            //                    object argIndex35 = "混乱";
-            //                    var argt = this;
-            //                    if (ReferenceEquals(t, this) | IsFeatureAvailable(argfname3) | Conversions.ToInteger(withBlock.IsConditionSatisfied(argIndex35)) > 0 | withBlock.IsEnemy(argt) | IsEnemy(t))
+            //                    if (ReferenceEquals(t, this) | IsFeatureAvailable("ノーマルモード") | Conversions.ToInteger(withBlock.IsConditionSatisfied("混乱")) > 0 | withBlock.IsEnemy(this) | IsEnemy(t))
             //                    {
             //                        IsAbilityEffectiveRet = false;
             //                        goto NextEffect;
@@ -1644,8 +1536,7 @@ namespace SRCCore.Units
             //bool IsAbilityApplicableRet = default;
             //int i;
             //string fname;
-            //string argattr = "封";
-            //if (IsAbilityClassifiedAs(argattr))
+            //if (IsAbilityClassifiedAs("封"))
             //{
             //    if (!t.Weakness(Data.Class) & !t.Effective(Data.Class))
             //    {
@@ -1653,8 +1544,7 @@ namespace SRCCore.Units
             //    }
             //}
 
-            //string argattr1 = "限";
-            //if (IsAbilityClassifiedAs(argattr1))
+            //if (IsAbilityClassifiedAs("限"))
             //{
             //    bool localWeakness() { string argstring2 = "限"; string arganame = Strings.Mid(Data.Class, GeneralLib.InStrNotNest(Data.Class, argstring2) + 1); var ret = t.Weakness(arganame); return ret; }
 
@@ -1669,8 +1559,7 @@ namespace SRCCore.Units
             //if (ReferenceEquals(this, t))
             //{
             //    // 支援専用アビリティは自分には使用できない
-            //    string argattr2 = "援";
-            //    if (!IsAbilityClassifiedAs(argattr2))
+            //    if (!IsAbilityClassifiedAs("援"))
             //    {
             //        IsAbilityApplicableRet = true;
             //    }
@@ -1687,11 +1576,9 @@ namespace SRCCore.Units
             //    }
             //}
 
-            //string argattr3 = "視";
-            //if (IsAbilityClassifiedAs(argattr3))
+            //if (IsAbilityClassifiedAs("視"))
             //{
-            //    object argIndex1 = "盲目";
-            //    if (t.IsConditionSatisfied(argIndex1))
+            //    if (t.IsConditionSatisfied("盲目"))
             //    {
             //        return IsAbilityApplicableRet;
             //    }
@@ -1699,19 +1586,16 @@ namespace SRCCore.Units
 
             //{
             //    var withBlock = t.MainPilot();
-            //    string argattr5 = "対";
-            //    if (IsAbilityClassifiedAs(argattr5))
+            //    if (IsAbilityClassifiedAs("対"))
             //    {
             //        // UPGRADE_WARNING: Mod に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //        string argattr4 = "対";
-            //        if (withBlock.Level % AbilityLevel(argattr4) != 0d)
+            //        if (withBlock.Level % AbilityLevel("対") != 0d)
             //        {
             //            return IsAbilityApplicableRet;
             //        }
             //    }
 
-            //    string argattr6 = "精";
-            //    if (IsAbilityClassifiedAs(argattr6))
+            //    if (IsAbilityClassifiedAs("精"))
             //    {
             //        if (withBlock.Personality == "機械")
             //        {
@@ -1719,8 +1603,7 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    string argattr7 = "♂";
-            //    if (IsAbilityClassifiedAs(argattr7))
+            //    if (IsAbilityClassifiedAs("♂"))
             //    {
             //        if (withBlock.Sex != "男性")
             //        {
@@ -1728,8 +1611,7 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    string argattr8 = "♀";
-            //    if (IsAbilityClassifiedAs(argattr8))
+            //    if (IsAbilityClassifiedAs("♀"))
             //    {
             //        if (withBlock.Sex != "女性")
             //        {
@@ -1739,14 +1621,12 @@ namespace SRCCore.Units
             //}
 
             //// 修理不可
-            //string argfname = "修理不可";
-            //if (t.IsFeatureAvailable(argfname))
+            //if (t.IsFeatureAvailable("修理不可"))
             //{
             //    var loopTo = Data.CountEffect();
             //    for (i = 1; i <= loopTo; i++)
             //    {
-            //        object argIndex2 = i;
-            //        if (Data.EffectType(argIndex2) == "回復")
+            //        if (Data.EffectType(i) == "回復")
             //        {
             //            break;
             //        }
@@ -1754,14 +1634,10 @@ namespace SRCCore.Units
 
             //    if (i <= Data.CountEffect())
             //    {
-            //        object argIndex4 = "修理不可";
-            //        object argIndex5 = "修理不可";
-            //        var loopTo1 = Conversions.ToInteger(t.FeatureData(argIndex5));
+            //        var loopTo1 = Conversions.ToInteger(t.FeatureData("修理不可"));
             //        for (i = 2; i <= loopTo1; i++)
             //        {
-            //            object argIndex3 = "修理不可";
-            //            string arglist = t.FeatureData(argIndex3);
-            //            fname = GeneralLib.LIndex(arglist, i);
+            //            fname = GeneralLib.LIndex(t.FeatureData("修理不可"), i);
             //            if (Strings.Left(fname, 1) == "!")
             //            {
             //                fname = Strings.Mid(fname, 2);
@@ -1808,12 +1684,9 @@ namespace SRCCore.Units
 
             //// 合体技で射程が１の場合は相手を囲んでいる必要がある
             //var partners = default(Unit[]);
-            //string argattr = "合";
-            //string argattr1 = "Ｍ";
-            //if (IsAbilityClassifiedAs(argattr) & !IsAbilityClassifiedAs(argattr1) & AbilityMaxRange() == 1)
+            //if (IsAbilityClassifiedAs("合") & !IsAbilityClassifiedAs("Ｍ") & AbilityMaxRange() == 1)
             //{
-            //    string argctype_Renamed = "アビリティ";
-            //    CombinationPartner(argctype_Renamed, a, partners, t.x, t.y);
+            //    CombinationPartner("アビリティ", a, partners, t.x, t.y);
             //    if (Information.UBound(partners) == 0)
             //    {
             //        IsTargetWithinAbilityRangeRet = false;
@@ -1900,14 +1773,12 @@ namespace SRCCore.Units
             //bool IsCombinationAbilityAvailableRet = default;
             //Unit[] partners;
             //partners = new Unit[1];
-            //string argattr = "Ｍ";
             //if (Status == "待機" | string.IsNullOrEmpty(Map.MapFileName))
             //{
             //    // 出撃時以外は相手が仲間にいるだけでＯＫ
-            //    string argctype_Renamed = "アビリティ";
-            //    CombinationPartner(argctype_Renamed, a, partners, x, y);
+            //    CombinationPartner("アビリティ", a, partners, x, y);
             //}
-            //else if (AbilityMaxRange(a) == 1 & !IsAbilityClassifiedAs(a, argattr))
+            //else if (AbilityMaxRange(a) == 1 & !IsAbilityClassifiedAs(a, "Ｍ"))
             //{
             //    // 射程１の場合は自分の周りのいずれかの味方ユニットに対して合体技が使えればＯＫ
             //    if (x > 1)
@@ -1916,8 +1787,7 @@ namespace SRCCore.Units
             //        {
             //            if (IsAlly(Map.MapDataForUnit[x - 1, y]))
             //            {
-            //                string argctype_Renamed2 = "アビリティ";
-            //                CombinationPartner(argctype_Renamed2, a, partners, (x - 1), y, check_formation);
+            //                CombinationPartner("アビリティ", a, partners, (x - 1), y, check_formation);
             //            }
             //        }
             //    }
@@ -1930,8 +1800,7 @@ namespace SRCCore.Units
             //            {
             //                if (IsAlly(Map.MapDataForUnit[x + 1, y]))
             //                {
-            //                    string argctype_Renamed3 = "アビリティ";
-            //                    CombinationPartner(argctype_Renamed3, a, partners, (x + 1), y, check_formation);
+            //                    CombinationPartner("アビリティ", a, partners, (x + 1), y, check_formation);
             //                }
             //            }
             //        }
@@ -1945,8 +1814,7 @@ namespace SRCCore.Units
             //            {
             //                if (IsAlly(Map.MapDataForUnit[x, y - 1]))
             //                {
-            //                    string argctype_Renamed4 = "アビリティ";
-            //                    CombinationPartner(argctype_Renamed4, a, partners, x, (y - 1), check_formation);
+            //                    CombinationPartner("アビリティ", a, partners, x, (y - 1), check_formation);
             //                }
             //            }
             //        }
@@ -1960,8 +1828,7 @@ namespace SRCCore.Units
             //            {
             //                if (IsAlly(Map.MapDataForUnit[x, y + 1]))
             //                {
-            //                    string argctype_Renamed5 = "アビリティ";
-            //                    CombinationPartner(argctype_Renamed5, a, partners, x, (y + 1), check_formation);
+            //                    CombinationPartner("アビリティ", a, partners, x, (y + 1), check_formation);
             //                }
             //            }
             //        }
@@ -1970,8 +1837,7 @@ namespace SRCCore.Units
             //else
             //{
             //    // 射程２以上の場合は自分の周りにパートナーがいればＯＫ
-            //    string argctype_Renamed1 = "アビリティ";
-            //    CombinationPartner(argctype_Renamed1, a, partners, x, y, check_formation);
+            //    CombinationPartner("アビリティ", a, partners, x, y, check_formation);
             //}
 
             //// 条件を満たすパートナーの組が見つかったか判定

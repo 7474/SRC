@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -38,9 +38,8 @@ namespace SRCCore.Commands
                 //    var loopTo = GeneralLib.LLength(fdata);
                 //    for (i = 2; i <= loopTo; i++)
                 //    {
-                //        object argIndex2 = GeneralLib.LIndex(fdata, i);
                 //        {
-                //            var withBlock1 = withBlock.OtherForm(argIndex2);
+                //            var withBlock1 = withBlock.OtherForm(GeneralLib.LIndex(fdata, i));
                 //            if (withBlock1.IsAvailable())
                 //            {
                 //                Array.Resize(list, Information.UBound(list) + 1 + 1);
@@ -57,10 +56,7 @@ namespace SRCCore.Commands
                 //    if (Information.UBound(list) > 1)
                 //    {
                 //        GUI.TopItem = 1;
-                //        string arglb_caption = "変形";
-                //        string arglb_info = "名前";
-                //        string arglb_mode = "カーソル移動";
-                //        ret = GUI.ListBox(arglb_caption, list, arglb_info, arglb_mode);
+                //        ret = GUI.ListBox("変形", list, "名前", "カーソル移動");
                 //        if (ret == 0)
                 //        {
                 //            CancelCommand();
@@ -76,13 +72,11 @@ namespace SRCCore.Commands
                 //    // 変形を実施
                 //    Unit localOtherForm() { var tmp = list_id; object argIndex1 = tmp[ret]; var ret = withBlock.OtherForm(argIndex1); return ret; }
 
-                //    string argnew_form = localOtherForm().Name;
-                //    withBlock.Transform(argnew_form);
+                //    withBlock.Transform(localOtherForm().Name);
                 //    localOtherForm().Name = argnew_form;
 
                 //    // ユニットリストの表示を更新
-                //    string argsmode = "";
-                //    Event.MakeUnitList(smode: argsmode);
+                //    Event.MakeUnitList(smode: "");
 
                 //    // ステータスウィンドウの表示を更新
                 //    Status.DisplayUnitStatus(withBlock.CurrentForm());
@@ -145,11 +139,9 @@ namespace SRCCore.Commands
             {
                 //var withBlock3 = SelectedUnit;
                 //// ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
-                //object argIndex6 = uname;
                 //{
-                //    var withBlock4 = SRC.UDList.Item(argIndex6);
-                //    string argfname = "追加パイロット";
-                //    if (withBlock4.IsFeatureAvailable(argfname))
+                //    var withBlock4 = SRC.UDList.Item(uname);
+                //    if (withBlock4.IsFeatureAvailable("追加パイロット"))
                 //    {
                 //        bool localIsDefined1() { object argIndex1 = "追加パイロット"; object argIndex2 = withBlock4.FeatureData(argIndex1); var ret = SRC.PList.IsDefined(argIndex2); return ret; }
 
@@ -159,25 +151,18 @@ namespace SRCCore.Commands
 
                 //            if (!localIsDefined())
                 //            {
-                //                object argIndex4 = "追加パイロット";
-                //                string argmsg = uname + "の追加パイロット「" + withBlock4.FeatureData(argIndex4) + "」のデータが見つかりません";
-                //                GUI.ErrorMessage(argmsg);
+                //                GUI.ErrorMessage(uname + "の追加パイロット「" + withBlock4.FeatureData("追加パイロット") + "」のデータが見つかりません");
                 //                SRC.TerminateSRC();
                 //            }
 
-                //            object argIndex5 = "追加パイロット";
-                //            string argpname = withBlock4.FeatureData(argIndex5);
-                //            string argpparty = SelectedUnit.Party0;
-                //            string arggid = "";
-                //            SRC.PList.Add(argpname, SelectedUnit.MainPilot().Level, argpparty, gid: arggid);
+                //            SRC.PList.Add(withBlock4.FeatureData("追加パイロット"), SelectedUnit.MainPilot().Level, SelectedUnit.Party0, gid: "");
                 //            SelectedUnit.Party0 = argpparty;
                 //        }
                 //    }
                 //}
 
                 //// ＢＧＭの変更
-                //string argfname1 = "変形ＢＧＭ";
-                //if (withBlock3.IsFeatureAvailable(argfname1))
+                //if (withBlock3.IsFeatureAvailable("変形ＢＧＭ"))
                 //{
                 //    var loopTo2 = withBlock3.CountFeature();
                 //    for (i = 1; i <= loopTo2; i++)
@@ -194,8 +179,7 @@ namespace SRCCore.Commands
 
                 //            string localFeatureData1() { object argIndex1 = i; var ret = withBlock3.FeatureData(argIndex1); return ret; }
 
-                //            string argmidi_name = Strings.Mid(localFeatureData(), Strings.InStr(localFeatureData1(), " ") + 1);
-                //            BGM = Sound.SearchMidiFile(argmidi_name);
+                //            BGM = Sound.SearchMidiFile(Strings.Mid(localFeatureData(), Strings.InStr(localFeatureData1(), " ") + 1));
                 //            if (Strings.Len(BGM) > 0)
                 //            {
                 //                Sound.ChangeBGM(BGM);
@@ -218,32 +202,22 @@ namespace SRCCore.Commands
                 //{
                 //    GUI.Center(withBlock3.x, withBlock3.y);
                 //    GUI.RefreshScreen();
-                //    Unit argu1 = null;
-                //    Unit argu2 = null;
-                //    GUI.OpenMessageForm(u1: argu1, u2: argu2);
+                //    GUI.OpenMessageForm(u1: null, u2: null);
                 //    bool localIsMessageDefined() { string argmain_situation = "変形(" + uname + ")"; var ret = withBlock3.IsMessageDefined(argmain_situation); return ret; }
 
                 //    bool localIsMessageDefined1() { object argIndex1 = "変形"; string argmain_situation = "変形(" + withBlock3.FeatureName(argIndex1) + ")"; var ret = withBlock3.IsMessageDefined(argmain_situation); return ret; }
 
-                //    string argmain_situation = "変形(" + withBlock3.Name + "=>" + uname + ")";
-                //    if (withBlock3.IsMessageDefined(argmain_situation))
+                //    if (withBlock3.IsMessageDefined("変形(" + withBlock3.Name + "=>" + uname + ")"))
                 //    {
-                //        string argSituation = "変形(" + withBlock3.Name + "=>" + uname + ")";
-                //        string argmsg_mode = "";
-                //        withBlock3.PilotMessage(argSituation, msg_mode: argmsg_mode);
+                //        withBlock3.PilotMessage("変形(" + withBlock3.Name + "=>" + uname + ")", msg_mode: "");
                 //    }
                 //    else if (localIsMessageDefined())
                 //    {
-                //        string argSituation1 = "変形(" + uname + ")";
-                //        string argmsg_mode1 = "";
-                //        withBlock3.PilotMessage(argSituation1, msg_mode: argmsg_mode1);
+                //        withBlock3.PilotMessage("変形(" + uname + ")", msg_mode: "");
                 //    }
                 //    else if (localIsMessageDefined1())
                 //    {
-                //        object argIndex7 = "変形";
-                //        string argSituation2 = "変形(" + withBlock3.FeatureName(argIndex7) + ")";
-                //        string argmsg_mode2 = "";
-                //        withBlock3.PilotMessage(argSituation2, msg_mode: argmsg_mode2);
+                //        withBlock3.PilotMessage("変形(" + withBlock3.FeatureName("変形") + ")", msg_mode: "");
                 //    }
 
                 //    GUI.CloseMessageForm();
@@ -260,45 +234,29 @@ namespace SRCCore.Commands
 
                 //bool localIsSpecialEffectDefined2() { object argIndex1 = "変形"; string argmain_situation = "変形(" + withBlock3.FeatureName(argIndex1) + ")"; string argsub_situation = ""; var ret = withBlock3.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-                //string argmain_situation7 = "変形(" + withBlock3.Name + "=>" + uname + ")";
-                //string argsub_situation6 = "";
-                //if (withBlock3.IsAnimationDefined(argmain_situation7, sub_situation: argsub_situation6))
+                //if (withBlock3.IsAnimationDefined("変形(" + withBlock3.Name + "=>" + uname + ")", sub_situation: ""))
                 //{
-                //    string argmain_situation1 = "変形(" + withBlock3.Name + "=>" + uname + ")";
-                //    string argsub_situation = "";
-                //    withBlock3.PlayAnimation(argmain_situation1, sub_situation: argsub_situation);
+                //    withBlock3.PlayAnimation("変形(" + withBlock3.Name + "=>" + uname + ")", sub_situation: "");
                 //}
                 //else if (localIsAnimationDefined())
                 //{
-                //    string argmain_situation2 = "変形(" + uname + ")";
-                //    string argsub_situation1 = "";
-                //    withBlock3.PlayAnimation(argmain_situation2, sub_situation: argsub_situation1);
+                //    withBlock3.PlayAnimation("変形(" + uname + ")", sub_situation: "");
                 //}
                 //else if (localIsAnimationDefined1())
                 //{
-                //    object argIndex8 = "変形";
-                //    string argmain_situation3 = "変形(" + withBlock3.FeatureName(argIndex8) + ")";
-                //    string argsub_situation2 = "";
-                //    withBlock3.PlayAnimation(argmain_situation3, sub_situation: argsub_situation2);
+                //    withBlock3.PlayAnimation("変形(" + withBlock3.FeatureName("変形") + ")", sub_situation: "");
                 //}
                 //else if (localIsSpecialEffectDefined())
                 //{
-                //    string argmain_situation4 = "変形(" + withBlock3.Name + "=>" + uname + ")";
-                //    string argsub_situation3 = "";
-                //    withBlock3.SpecialEffect(argmain_situation4, sub_situation: argsub_situation3);
+                //    withBlock3.SpecialEffect("変形(" + withBlock3.Name + "=>" + uname + ")", sub_situation: "");
                 //}
                 //else if (localIsSpecialEffectDefined1())
                 //{
-                //    string argmain_situation5 = "変形(" + uname + ")";
-                //    string argsub_situation4 = "";
-                //    withBlock3.SpecialEffect(argmain_situation5, sub_situation: argsub_situation4);
+                //    withBlock3.SpecialEffect("変形(" + uname + ")", sub_situation: "");
                 //}
                 //else if (localIsSpecialEffectDefined2())
                 //{
-                //    object argIndex9 = "変形";
-                //    string argmain_situation6 = "変形(" + withBlock3.FeatureName(argIndex9) + ")";
-                //    string argsub_situation5 = "";
-                //    withBlock3.SpecialEffect(argmain_situation6, sub_situation: argsub_situation5);
+                //    withBlock3.SpecialEffect("変形(" + withBlock3.FeatureName("変形") + ")", sub_situation: "");
                 //}
             }
 
@@ -353,8 +311,7 @@ namespace SRCCore.Commands
             {
                 if (SRC.AutoMoveCursor)
                 {
-                    string argcursor_mode = "ユニット選択";
-                    GUI.MoveCursorPos(argcursor_mode, SelectedUnit);
+                    GUI.MoveCursorPos("ユニット選択", SelectedUnit);
                 }
 
                 Status.DisplayUnitStatus(SelectedUnit);
@@ -383,30 +340,23 @@ namespace SRCCore.Commands
             //}
 
             //GUI.LockGUI();
-            //object argIndex1 = "ハイパーモード";
-            //string arglist = SelectedUnit.FeatureData(argIndex1);
-            //uname = GeneralLib.LIndex(arglist, 2);
-            //object argIndex2 = "ハイパーモード";
-            //fname = SelectedUnit.FeatureName(argIndex2);
+            //uname = GeneralLib.LIndex(SelectedUnit.FeatureData("ハイパーモード"), 2);
+            //fname = SelectedUnit.FeatureName("ハイパーモード");
             //if (string.IsNullOrEmpty(Map.MapFileName))
             //{
             //    // ユニットステータスコマンドの場合
             //    {
             //        var withBlock = SelectedUnit;
-            //        string argfname = "ハイパーモード";
-            //        if (!withBlock.IsFeatureAvailable(argfname))
+            //        if (!withBlock.IsFeatureAvailable("ハイパーモード"))
             //        {
-            //            object argIndex3 = "ノーマルモード";
-            //            string arglist1 = SelectedUnit.FeatureData(argIndex3);
-            //            uname = GeneralLib.LIndex(arglist1, 1);
+            //            uname = GeneralLib.LIndex(SelectedUnit.FeatureData("ノーマルモード"), 1);
             //        }
 
             //        // ハイパーモードを発動
             //        withBlock.Transform(uname);
 
             //        // ユニットリストの表示を更新
-            //        string argsmode = "";
-            //        Event.MakeUnitList(smode: argsmode);
+            //        Event.MakeUnitList(smode: "");
 
             //        // ステータスウィンドウの表示を更新
             //        Status.DisplayUnitStatus(withBlock.CurrentForm());
@@ -419,9 +369,8 @@ namespace SRCCore.Commands
             //}
 
             //// ハイパーモードを発動可能かどうかチェック
-            //object argIndex4 = uname;
             //{
-            //    var withBlock1 = SelectedUnit.OtherForm(argIndex4);
+            //    var withBlock1 = SelectedUnit.OtherForm(uname);
             //    if (!withBlock1.IsAbleToEnter(SelectedUnit.x, SelectedUnit.y) & !string.IsNullOrEmpty(Map.MapFileName))
             //    {
             //        Interaction.MsgBox("この地形では変形できません");
@@ -432,11 +381,9 @@ namespace SRCCore.Commands
             //}
 
             //// ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
-            //object argIndex7 = uname;
             //{
-            //    var withBlock2 = SRC.UDList.Item(argIndex7);
-            //    string argfname1 = "追加パイロット";
-            //    if (withBlock2.IsFeatureAvailable(argfname1))
+            //    var withBlock2 = SRC.UDList.Item(uname);
+            //    if (withBlock2.IsFeatureAvailable("追加パイロット"))
             //    {
             //        bool localIsDefined1() { object argIndex1 = "追加パイロット"; object argIndex2 = withBlock2.FeatureData(argIndex1); var ret = SRC.PList.IsDefined(argIndex2); return ret; }
 
@@ -446,17 +393,11 @@ namespace SRCCore.Commands
 
             //            if (!localIsDefined())
             //            {
-            //                object argIndex5 = "追加パイロット";
-            //                string argmsg = uname + "の追加パイロット「" + withBlock2.FeatureData(argIndex5) + "」のデータが見つかりません";
-            //                GUI.ErrorMessage(argmsg);
+            //                GUI.ErrorMessage(uname + "の追加パイロット「" + withBlock2.FeatureData("追加パイロット") + "」のデータが見つかりません");
             //                SRC.TerminateSRC();
             //            }
 
-            //            object argIndex6 = "追加パイロット";
-            //            string argpname = withBlock2.FeatureData(argIndex6);
-            //            string argpparty = SelectedUnit.Party0;
-            //            string arggid = "";
-            //            SRC.PList.Add(argpname, SelectedUnit.MainPilot().Level, argpparty, gid: arggid);
+            //            SRC.PList.Add(withBlock2.FeatureData("追加パイロット"), SelectedUnit.MainPilot().Level, SelectedUnit.Party0, gid: "");
             //            SelectedUnit.Party0 = argpparty;
             //        }
             //    }
@@ -466,8 +407,7 @@ namespace SRCCore.Commands
             //{
             //    var withBlock3 = SelectedUnit;
             //    // ＢＧＭを変更
-            //    string argfname2 = "ハイパーモードＢＧＭ";
-            //    if (withBlock3.IsFeatureAvailable(argfname2))
+            //    if (withBlock3.IsFeatureAvailable("ハイパーモードＢＧＭ"))
             //    {
             //        var loopTo = withBlock3.CountFeature();
             //        for (i = 1; i <= loopTo; i++)
@@ -484,8 +424,7 @@ namespace SRCCore.Commands
 
             //                string localFeatureData1() { object argIndex1 = i; var ret = withBlock3.FeatureData(argIndex1); return ret; }
 
-            //                string argmidi_name = Strings.Mid(localFeatureData(), Strings.InStr(localFeatureData1(), " ") + 1);
-            //                BGM = Sound.SearchMidiFile(argmidi_name);
+            //                BGM = Sound.SearchMidiFile(Strings.Mid(localFeatureData(), Strings.InStr(localFeatureData1(), " ") + 1));
             //                if (Strings.Len(BGM) > 0)
             //                {
             //                    Sound.ChangeBGM(BGM);
@@ -504,42 +443,30 @@ namespace SRCCore.Commands
 
             //    bool localIsMessageDefined4() { string argmain_situation = "ハイパーモード(" + fname + ")"; var ret = withBlock3.IsMessageDefined(argmain_situation); return ret; }
 
-            //    string argmain_situation1 = "ハイパーモード";
-            //    if (localIsMessageDefined2() | localIsMessageDefined3() | localIsMessageDefined4() | withBlock3.IsMessageDefined(argmain_situation1))
+            //    if (localIsMessageDefined2() | localIsMessageDefined3() | localIsMessageDefined4() | withBlock3.IsMessageDefined("ハイパーモード"))
             //    {
             //        GUI.Center(withBlock3.x, withBlock3.y);
             //        GUI.RefreshScreen();
-            //        Unit argu1 = null;
-            //        Unit argu2 = null;
-            //        GUI.OpenMessageForm(u1: argu1, u2: argu2);
+            //        GUI.OpenMessageForm(u1: null, u2: null);
             //        bool localIsMessageDefined() { string argmain_situation = "ハイパーモード(" + uname + ")"; var ret = withBlock3.IsMessageDefined(argmain_situation); return ret; }
 
             //        bool localIsMessageDefined1() { string argmain_situation = "ハイパーモード(" + fname + ")"; var ret = withBlock3.IsMessageDefined(argmain_situation); return ret; }
 
-            //        string argmain_situation = "ハイパーモード(" + withBlock3.Name + "=>" + uname + ")";
-            //        if (withBlock3.IsMessageDefined(argmain_situation))
+            //        if (withBlock3.IsMessageDefined("ハイパーモード(" + withBlock3.Name + "=>" + uname + ")"))
             //        {
-            //            string argSituation = "ハイパーモード(" + withBlock3.Name + "=>" + uname + ")";
-            //            string argmsg_mode = "";
-            //            withBlock3.PilotMessage(argSituation, msg_mode: argmsg_mode);
+            //            withBlock3.PilotMessage("ハイパーモード(" + withBlock3.Name + "=>" + uname + ")", msg_mode: "");
             //        }
             //        else if (localIsMessageDefined())
             //        {
-            //            string argSituation2 = "ハイパーモード(" + uname + ")";
-            //            string argmsg_mode2 = "";
-            //            withBlock3.PilotMessage(argSituation2, msg_mode: argmsg_mode2);
+            //            withBlock3.PilotMessage("ハイパーモード(" + uname + ")", msg_mode: "");
             //        }
             //        else if (localIsMessageDefined1())
             //        {
-            //            string argSituation3 = "ハイパーモード(" + fname + ")";
-            //            string argmsg_mode3 = "";
-            //            withBlock3.PilotMessage(argSituation3, msg_mode: argmsg_mode3);
+            //            withBlock3.PilotMessage("ハイパーモード(" + fname + ")", msg_mode: "");
             //        }
             //        else
             //        {
-            //            string argSituation1 = "ハイパーモード";
-            //            string argmsg_mode1 = "";
-            //            withBlock3.PilotMessage(argSituation1, msg_mode: argmsg_mode1);
+            //            withBlock3.PilotMessage("ハイパーモード", msg_mode: "");
             //        }
 
             //        GUI.CloseMessageForm();
@@ -556,57 +483,37 @@ namespace SRCCore.Commands
 
             //    bool localIsSpecialEffectDefined2() { string argmain_situation = "ハイパーモード(" + fname + ")"; string argsub_situation = ""; var ret = withBlock3.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //    string argmain_situation10 = "ハイパーモード(" + withBlock3.Name + "=>" + uname + ")";
-            //    string argsub_situation8 = "";
-            //    string argmain_situation11 = "ハイパーモード";
-            //    string argsub_situation9 = "";
-            //    if (withBlock3.IsAnimationDefined(argmain_situation10, sub_situation: argsub_situation8))
+            //    if (withBlock3.IsAnimationDefined("ハイパーモード(" + withBlock3.Name + "=>" + uname + ")", sub_situation: ""))
             //    {
-            //        string argmain_situation2 = "ハイパーモード(" + withBlock3.Name + "=>" + uname + ")";
-            //        string argsub_situation = "";
-            //        withBlock3.PlayAnimation(argmain_situation2, sub_situation: argsub_situation);
+            //        withBlock3.PlayAnimation("ハイパーモード(" + withBlock3.Name + "=>" + uname + ")", sub_situation: "");
             //    }
             //    else if (localIsAnimationDefined())
             //    {
-            //        string argmain_situation4 = "ハイパーモード(" + uname + ")";
-            //        string argsub_situation2 = "";
-            //        withBlock3.PlayAnimation(argmain_situation4, sub_situation: argsub_situation2);
+            //        withBlock3.PlayAnimation("ハイパーモード(" + uname + ")", sub_situation: "");
             //    }
             //    else if (localIsAnimationDefined1())
             //    {
-            //        string argmain_situation5 = "ハイパーモード(" + fname + ")";
-            //        string argsub_situation3 = "";
-            //        withBlock3.PlayAnimation(argmain_situation5, sub_situation: argsub_situation3);
+            //        withBlock3.PlayAnimation("ハイパーモード(" + fname + ")", sub_situation: "");
             //    }
-            //    else if (withBlock3.IsAnimationDefined(argmain_situation11, sub_situation: argsub_situation9))
+            //    else if (withBlock3.IsAnimationDefined("ハイパーモード", sub_situation: ""))
             //    {
-            //        string argmain_situation6 = "ハイパーモード";
-            //        string argsub_situation4 = "";
-            //        withBlock3.PlayAnimation(argmain_situation6, sub_situation: argsub_situation4);
+            //        withBlock3.PlayAnimation("ハイパーモード", sub_situation: "");
             //    }
             //    else if (localIsSpecialEffectDefined())
             //    {
-            //        string argmain_situation7 = "ハイパーモード(" + withBlock3.Name + "=>" + uname + ")";
-            //        string argsub_situation5 = "";
-            //        withBlock3.SpecialEffect(argmain_situation7, sub_situation: argsub_situation5);
+            //        withBlock3.SpecialEffect("ハイパーモード(" + withBlock3.Name + "=>" + uname + ")", sub_situation: "");
             //    }
             //    else if (localIsSpecialEffectDefined1())
             //    {
-            //        string argmain_situation8 = "ハイパーモード(" + uname + ")";
-            //        string argsub_situation6 = "";
-            //        withBlock3.SpecialEffect(argmain_situation8, sub_situation: argsub_situation6);
+            //        withBlock3.SpecialEffect("ハイパーモード(" + uname + ")", sub_situation: "");
             //    }
             //    else if (localIsSpecialEffectDefined2())
             //    {
-            //        string argmain_situation9 = "ハイパーモード(" + fname + ")";
-            //        string argsub_situation7 = "";
-            //        withBlock3.SpecialEffect(argmain_situation9, sub_situation: argsub_situation7);
+            //        withBlock3.SpecialEffect("ハイパーモード(" + fname + ")", sub_situation: "");
             //    }
             //    else
             //    {
-            //        string argmain_situation3 = "ハイパーモード";
-            //        string argsub_situation1 = "";
-            //        withBlock3.SpecialEffect(argmain_situation3, sub_situation: argsub_situation1);
+            //        withBlock3.SpecialEffect("ハイパーモード", sub_situation: "");
             //    }
             //}
 
@@ -641,8 +548,7 @@ namespace SRCCore.Commands
             //{
             //    if (SRC.AutoMoveCursor)
             //    {
-            //        string argcursor_mode = "ユニット選択";
-            //        GUI.MoveCursorPos(argcursor_mode, SelectedUnit);
+            //        GUI.MoveCursorPos("ユニット選択", SelectedUnit);
             //    }
 
             //    Status.DisplayUnitStatus(SelectedUnit);
@@ -674,10 +580,8 @@ namespace SRCCore.Commands
             //        // ユニットステータスコマンドの場合
             //        string localLIndex() { object argIndex1 = "ノーマルモード"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-            //        string argnew_form = localLIndex();
-            //        withBlock.Transform(argnew_form);
-            //        string argsmode = "";
-            //        Event.MakeUnitList(smode: argsmode);
+            //        withBlock.Transform(localLIndex());
+            //        Event.MakeUnitList(smode: "");
             //        Status.DisplayUnitStatus(withBlock.CurrentForm());
             //        GUI.UnlockGUI();
             //        CommandState = "ユニット選択";
@@ -702,16 +606,14 @@ namespace SRCCore.Commands
 
             //    string localLIndex1() { object argIndex1 = "ノーマルモード"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-            //    string argnew_form1 = localLIndex1();
-            //    withBlock.Transform(argnew_form1);
+            //    withBlock.Transform(localLIndex1());
             //    SelectedUnit = Map.MapDataForUnit[withBlock.x, withBlock.y];
             //}
 
             //// カーソル自動移動
             //if (SRC.AutoMoveCursor)
             //{
-            //    string argcursor_mode = "ユニット選択";
-            //    GUI.MoveCursorPos(argcursor_mode, SelectedUnit);
+            //    GUI.MoveCursorPos("ユニット選択", SelectedUnit);
             //}
 
             //Status.DisplayUnitStatus(SelectedUnit);
@@ -765,8 +667,7 @@ namespace SRCCore.Commands
 
                 // TODO Impl
                 //// ユニットリストの表示を更新
-                //string argsmode = "";
-                //Event.MakeUnitList(smode: argsmode);
+                //Event.MakeUnitList(smode: "");
 
                 // コマンドを終了
                 CommandState = "ユニット選択";
@@ -799,17 +700,12 @@ namespace SRCCore.Commands
 
                     // TODO Impl
                     //// ＢＧＭ変更
-                    //string argfname1 = "分離ＢＧＭ";
-                    //if (u.IsFeatureAvailable(argfname1))
+                    //if (u.IsFeatureAvailable("分離ＢＧＭ"))
                     //{
-                    //    object argIndex3 = "分離ＢＧＭ";
-                    //    string argmidi_name = u.FeatureData(argIndex3);
-                    //    BGM = Sound.SearchMidiFile(argmidi_name);
+                    //    BGM = Sound.SearchMidiFile(u.FeatureData("分離ＢＧＭ"));
                     //    if (Strings.Len(BGM) > 0)
                     //    {
-                    //        object argIndex4 = "分離ＢＧＭ";
-                    //        string argbgm_name = u.FeatureData(argIndex4);
-                    //        Sound.StartBGM(argbgm_name);
+                    //        Sound.StartBGM(u.FeatureData("分離ＢＧＭ"));
                     //        GUI.Sleep(500);
                     //    }
                     //}
@@ -821,34 +717,24 @@ namespace SRCCore.Commands
 
                     //bool localIsMessageDefined2() { string argmain_situation = "分離(" + fname + ")"; var ret = u.IsMessageDefined(argmain_situation); return ret; }
 
-                    //string argmain_situation1 = "分離";
-                    //if (localIsMessageDefined1() | localIsMessageDefined2() | u.IsMessageDefined(argmain_situation1))
+                    //if (localIsMessageDefined1() | localIsMessageDefined2() | u.IsMessageDefined("分離"))
                     //{
                     //    GUI.Center(u.x, u.y);
                     //    GUI.RefreshScreen();
-                    //    Unit argu1 = null;
-                    //    Unit argu2 = null;
-                    //    GUI.OpenMessageForm(u1: argu1, u2: argu2);
+                    //    GUI.OpenMessageForm(u1: null, u2: null);
                     //    bool localIsMessageDefined() { string argmain_situation = "分離(" + fname + ")"; var ret = u.IsMessageDefined(argmain_situation); return ret; }
 
-                    //    string argmain_situation = "分離(" + u.Name + ")";
-                    //    if (u.IsMessageDefined(argmain_situation))
+                    //    if (u.IsMessageDefined("分離(" + u.Name + ")"))
                     //    {
-                    //        string argSituation = "分離(" + u.Name + ")";
-                    //        string argmsg_mode = "";
-                    //        u.PilotMessage(argSituation, msg_mode: argmsg_mode);
+                    //        u.PilotMessage("分離(" + u.Name + ")", msg_mode: "");
                     //    }
                     //    else if (localIsMessageDefined())
                     //    {
-                    //        string argSituation2 = "分離(" + fname + ")";
-                    //        string argmsg_mode2 = "";
-                    //        u.PilotMessage(argSituation2, msg_mode: argmsg_mode2);
+                    //        u.PilotMessage("分離(" + fname + ")", msg_mode: "");
                     //    }
                     //    else
                     //    {
-                    //        string argSituation1 = "分離";
-                    //        string argmsg_mode1 = "";
-                    //        u.PilotMessage(argSituation1, msg_mode: argmsg_mode1);
+                    //        u.PilotMessage("分離", msg_mode: "");
                     //    }
 
                     //    GUI.CloseMessageForm();
@@ -861,45 +747,29 @@ namespace SRCCore.Commands
 
                     //bool localIsSpecialEffectDefined1() { string argmain_situation = "分離(" + fname + ")"; string argsub_situation = ""; var ret = u.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-                    //string argmain_situation8 = "分離(" + u.Name + ")";
-                    //string argsub_situation6 = "";
-                    //string argmain_situation9 = "分離";
-                    //string argsub_situation7 = "";
-                    //if (u.IsAnimationDefined(argmain_situation8, sub_situation: argsub_situation6))
+                    //if (u.IsAnimationDefined("分離(" + u.Name + ")", sub_situation: ""))
                     //{
-                    //    string argmain_situation2 = "分離(" + u.Name + ")";
-                    //    string argsub_situation = "";
-                    //    u.PlayAnimation(argmain_situation2, sub_situation: argsub_situation);
+                    //    u.PlayAnimation("分離(" + u.Name + ")", sub_situation: "");
                     //}
                     //else if (localIsAnimationDefined())
                     //{
-                    //    string argmain_situation4 = "分離(" + fname + ")";
-                    //    string argsub_situation2 = "";
-                    //    u.PlayAnimation(argmain_situation4, sub_situation: argsub_situation2);
+                    //    u.PlayAnimation("分離(" + fname + ")", sub_situation: "");
                     //}
-                    //else if (u.IsAnimationDefined(argmain_situation9, sub_situation: argsub_situation7))
+                    //else if (u.IsAnimationDefined("分離", sub_situation: ""))
                     //{
-                    //    string argmain_situation5 = "分離";
-                    //    string argsub_situation3 = "";
-                    //    u.PlayAnimation(argmain_situation5, sub_situation: argsub_situation3);
+                    //    u.PlayAnimation("分離", sub_situation: "");
                     //}
                     //else if (localIsSpecialEffectDefined())
                     //{
-                    //    string argmain_situation6 = "分離(" + u.Name + ")";
-                    //    string argsub_situation4 = "";
-                    //    u.SpecialEffect(argmain_situation6, sub_situation: argsub_situation4);
+                    //    u.SpecialEffect("分離(" + u.Name + ")", sub_situation: "");
                     //}
                     //else if (localIsSpecialEffectDefined1())
                     //{
-                    //    string argmain_situation7 = "分離(" + fname + ")";
-                    //    string argsub_situation5 = "";
-                    //    u.SpecialEffect(argmain_situation7, sub_situation: argsub_situation5);
+                    //    u.SpecialEffect("分離(" + fname + ")", sub_situation: "");
                     //}
                     //else
                     //{
-                    //    string argmain_situation3 = "分離";
-                    //    string argsub_situation1 = "";
-                    //    u.SpecialEffect(argmain_situation3, sub_situation: argsub_situation1);
+                    //    u.SpecialEffect("分離", sub_situation: "");
                     //}
 
                     // パーツ分離
@@ -922,57 +792,41 @@ namespace SRCCore.Commands
 
                     // TODO Impl
                     //// ＢＧＭを変更
-                    //string argfname2 = "分離ＢＧＭ";
-                    //if (u.IsFeatureAvailable(argfname2))
+                    //if (u.IsFeatureAvailable("分離ＢＧＭ"))
                     //{
-                    //    object argIndex6 = "分離ＢＧＭ";
-                    //    string argmidi_name1 = u.FeatureData(argIndex6);
-                    //    BGM = Sound.SearchMidiFile(argmidi_name1);
+                    //    BGM = Sound.SearchMidiFile(u.FeatureData("分離ＢＧＭ"));
                     //    if (Strings.Len(BGM) > 0)
                     //    {
-                    //        object argIndex7 = "分離ＢＧＭ";
-                    //        string argbgm_name1 = u.FeatureData(argIndex7);
-                    //        Sound.StartBGM(argbgm_name1);
+                    //        Sound.StartBGM(u.FeatureData("分離ＢＧＭ"));
                     //        GUI.Sleep(500);
                     //    }
                     //}
 
-                    //object argIndex8 = "分離";
-                    //fname = u.FeatureName(argIndex8);
+                    //fname = u.FeatureName("分離");
 
                     //// メッセージを表示
                     //bool localIsMessageDefined4() { string argmain_situation = "分離(" + u.Name + ")"; var ret = u.IsMessageDefined(argmain_situation); return ret; }
 
                     //bool localIsMessageDefined5() { string argmain_situation = "分離(" + fname + ")"; var ret = u.IsMessageDefined(argmain_situation); return ret; }
 
-                    //string argmain_situation11 = "分離";
-                    //if (localIsMessageDefined4() | localIsMessageDefined5() | u.IsMessageDefined(argmain_situation11))
+                    //if (localIsMessageDefined4() | localIsMessageDefined5() | u.IsMessageDefined("分離"))
                     //{
                     //    GUI.Center(u.x, u.y);
                     //    GUI.RefreshScreen();
-                    //    Unit argu11 = null;
-                    //    Unit argu21 = null;
-                    //    GUI.OpenMessageForm(u1: argu11, u2: argu21);
+                    //    GUI.OpenMessageForm(u1: null, u2: null);
                     //    bool localIsMessageDefined3() { string argmain_situation = "分離(" + fname + ")"; var ret = u.IsMessageDefined(argmain_situation); return ret; }
 
-                    //    string argmain_situation10 = "分離(" + u.Name + ")";
-                    //    if (u.IsMessageDefined(argmain_situation10))
+                    //    if (u.IsMessageDefined("分離(" + u.Name + ")"))
                     //    {
-                    //        string argSituation3 = "分離(" + u.Name + ")";
-                    //        string argmsg_mode3 = "";
-                    //        u.PilotMessage(argSituation3, msg_mode: argmsg_mode3);
+                    //        u.PilotMessage("分離(" + u.Name + ")", msg_mode: "");
                     //    }
                     //    else if (localIsMessageDefined3())
                     //    {
-                    //        string argSituation5 = "分離(" + fname + ")";
-                    //        string argmsg_mode5 = "";
-                    //        u.PilotMessage(argSituation5, msg_mode: argmsg_mode5);
+                    //        u.PilotMessage("分離(" + fname + ")", msg_mode: "");
                     //    }
                     //    else
                     //    {
-                    //        string argSituation4 = "分離";
-                    //        string argmsg_mode4 = "";
-                    //        u.PilotMessage(argSituation4, msg_mode: argmsg_mode4);
+                    //        u.PilotMessage("分離", msg_mode: "");
                     //    }
 
                     //    GUI.CloseMessageForm();
@@ -985,45 +839,29 @@ namespace SRCCore.Commands
 
                     //bool localIsSpecialEffectDefined3() { string argmain_situation = "分離(" + fname + ")"; string argsub_situation = ""; var ret = u.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-                    //string argmain_situation18 = "分離(" + u.Name + ")";
-                    //string argsub_situation14 = "";
-                    //string argmain_situation19 = "分離";
-                    //string argsub_situation15 = "";
-                    //if (u.IsAnimationDefined(argmain_situation18, sub_situation: argsub_situation14))
+                    //if (u.IsAnimationDefined("分離(" + u.Name + ")", sub_situation: ""))
                     //{
-                    //    string argmain_situation12 = "分離(" + u.Name + ")";
-                    //    string argsub_situation8 = "";
-                    //    u.PlayAnimation(argmain_situation12, sub_situation: argsub_situation8);
+                    //    u.PlayAnimation("分離(" + u.Name + ")", sub_situation: "");
                     //}
                     //else if (localIsAnimationDefined1())
                     //{
-                    //    string argmain_situation14 = "分離(" + fname + ")";
-                    //    string argsub_situation10 = "";
-                    //    u.PlayAnimation(argmain_situation14, sub_situation: argsub_situation10);
+                    //    u.PlayAnimation("分離(" + fname + ")", sub_situation: "");
                     //}
-                    //else if (u.IsAnimationDefined(argmain_situation19, sub_situation: argsub_situation15))
+                    //else if (u.IsAnimationDefined("分離", sub_situation: ""))
                     //{
-                    //    string argmain_situation15 = "分離";
-                    //    string argsub_situation11 = "";
-                    //    u.PlayAnimation(argmain_situation15, sub_situation: argsub_situation11);
+                    //    u.PlayAnimation("分離", sub_situation: "");
                     //}
                     //else if (localIsSpecialEffectDefined2())
                     //{
-                    //    string argmain_situation16 = "分離(" + u.Name + ")";
-                    //    string argsub_situation12 = "";
-                    //    u.SpecialEffect(argmain_situation16, sub_situation: argsub_situation12);
+                    //    u.SpecialEffect("分離(" + u.Name + ")", sub_situation: "");
                     //}
                     //else if (localIsSpecialEffectDefined3())
                     //{
-                    //    string argmain_situation17 = "分離(" + fname + ")";
-                    //    string argsub_situation13 = "";
-                    //    u.SpecialEffect(argmain_situation17, sub_situation: argsub_situation13);
+                    //    u.SpecialEffect("分離(" + fname + ")", sub_situation: "");
                     //}
                     //else
                     //{
-                    //    string argmain_situation13 = "分離";
-                    //    string argsub_situation9 = "";
-                    //    u.SpecialEffect(argmain_situation13, sub_situation: argsub_situation9);
+                    //    u.SpecialEffect("分離", sub_situation: "");
                     //}
 
                     // 分離
@@ -1092,8 +930,7 @@ namespace SRCCore.Commands
                 if (command.Label == "パーツ合体" & currentUnit.IsFeatureAvailable("パーツ合体"))
                 {
                     // パーツ合体を実施
-                    string argnew_form = currentUnit.FeatureData("パーツ合体");
-                    currentUnit.Transform(argnew_form);
+                    currentUnit.Transform(currentUnit.FeatureData("パーツ合体"));
                     Status.DisplayUnitStatus(Map.MapDataForUnit[currentUnit.x, currentUnit.y]);
                     Map.MapDataForUnit[currentUnit.x, currentUnit.y].CheckAutoHyperMode();
                     Map.MapDataForUnit[currentUnit.x, currentUnit.y].CheckAutoNormalMode();
@@ -1152,8 +989,7 @@ namespace SRCCore.Commands
 
                 // TODO Impl
                 //// ユニットリストの表示を更新
-                //string argsmode1 = "";
-                //Event.MakeUnitList(smode: argsmode1);
+                //Event.MakeUnitList(smode: "");
 
                 // コマンドを終了
                 CommandState = "ユニット選択";
@@ -1220,8 +1056,7 @@ namespace SRCCore.Commands
             //GUI.LockGUI();
             //{
             //    var withBlock = SelectedUnit;
-            //    object argIndex1 = "換装";
-            //    fdata = withBlock.FeatureData(argIndex1);
+            //    fdata = withBlock.FeatureData("換装");
 
             //    // 選択可能な換装先のリストを作成
             //    list = new string[1];
@@ -1230,9 +1065,8 @@ namespace SRCCore.Commands
             //    var loopTo = GeneralLib.LLength(fdata);
             //    for (i = 1; i <= loopTo; i++)
             //    {
-            //        object argIndex5 = GeneralLib.LIndex(fdata, i);
             //        {
-            //            var withBlock1 = withBlock.OtherForm(argIndex5);
+            //            var withBlock1 = withBlock.OtherForm(GeneralLib.LIndex(fdata, i));
             //            if (withBlock1.IsAvailable())
             //            {
             //                Array.Resize(list, Information.UBound(list) + 1 + 1);
@@ -1243,14 +1077,12 @@ namespace SRCCore.Commands
             //                // 各形態の表示内容を作成
             //                if ((SelectedUnit.Nickname0 ?? "") == (withBlock1.Nickname ?? ""))
             //                {
-            //                    string argbuf = withBlock1.Name;
-            //                    list[Information.UBound(list)] = GeneralLib.RightPaddedString(argbuf, 27);
+            //                    list[Information.UBound(list)] = GeneralLib.RightPaddedString(withBlock1.Name, 27);
             //                    withBlock1.Name = argbuf;
             //                }
             //                else
             //                {
-            //                    string argbuf1 = withBlock1.Nickname0;
-            //                    list[Information.UBound(list)] = GeneralLib.RightPaddedString(argbuf1, 27);
+            //                    list[Information.UBound(list)] = GeneralLib.RightPaddedString(withBlock1.Nickname0, 27);
             //                    withBlock1.Nickname0 = argbuf1;
             //                }
 
@@ -1269,14 +1101,11 @@ namespace SRCCore.Commands
             //                var loopTo1 = withBlock1.CountWeapon();
             //                for (j = 1; j <= loopTo1; j++)
             //                {
-            //                    string argattr = "合";
-            //                    if (withBlock1.IsWeaponMastered(j) & !withBlock1.IsDisabled(withBlock1.Weapon(j).Name) & !withBlock1.IsWeaponClassifiedAs(j, argattr))
+            //                    if (withBlock1.IsWeaponMastered(j) & !withBlock1.IsDisabled(withBlock1.Weapon(j).Name) & !withBlock1.IsWeaponClassifiedAs(j, "合"))
             //                    {
-            //                        string argtarea1 = "";
-            //                        if (withBlock1.WeaponPower(j, argtarea1) > max_value)
+            //                        if (withBlock1.WeaponPower(j, "") > max_value)
             //                        {
-            //                            string argtarea = "";
-            //                            max_value = withBlock1.WeaponPower(j, argtarea);
+            //                            max_value = withBlock1.WeaponPower(j, "");
             //                        }
             //                    }
             //                }
@@ -1290,8 +1119,7 @@ namespace SRCCore.Commands
             //                var loopTo2 = withBlock1.CountWeapon();
             //                for (j = 1; j <= loopTo2; j++)
             //                {
-            //                    string argattr1 = "合";
-            //                    if (withBlock1.IsWeaponMastered(j) & !withBlock1.IsDisabled(withBlock1.Weapon(j).Name) & !withBlock1.IsWeaponClassifiedAs(j, argattr1))
+            //                    if (withBlock1.IsWeaponMastered(j) & !withBlock1.IsDisabled(withBlock1.Weapon(j).Name) & !withBlock1.IsWeaponClassifiedAs(j, "合"))
             //                    {
             //                        if (withBlock1.WeaponMaxRange(j) > max_value)
             //                        {
@@ -1309,15 +1137,13 @@ namespace SRCCore.Commands
             //                var loopTo3 = withBlock1.CountFeature();
             //                for (j = 1; j <= loopTo3; j++)
             //                {
-            //                    object argIndex4 = j;
-            //                    if (!string.IsNullOrEmpty(withBlock1.FeatureName(argIndex4)))
+            //                    if (!string.IsNullOrEmpty(withBlock1.FeatureName(j)))
             //                    {
             //                        // 重複する特殊能力は表示しないようチェック
             //                        var loopTo4 = Information.UBound(farray);
             //                        for (k = 1; k <= loopTo4; k++)
             //                        {
-            //                            object argIndex2 = j;
-            //                            if ((withBlock1.FeatureName(argIndex2) ?? "") == (farray[k] ?? ""))
+            //                            if ((withBlock1.FeatureName(j) ?? "") == (farray[k] ?? ""))
             //                            {
             //                                break;
             //                            }
@@ -1329,8 +1155,7 @@ namespace SRCCore.Commands
 
             //                            GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + localFeatureName() + " ";
             //                            Array.Resize(farray, Information.UBound(farray) + 1 + 1);
-            //                            object argIndex3 = j;
-            //                            farray[Information.UBound(farray)] = withBlock1.FeatureName(argIndex3);
+            //                            farray[Information.UBound(farray)] = withBlock1.FeatureName(j);
             //                        }
             //                    }
             //                }
@@ -1342,18 +1167,7 @@ namespace SRCCore.Commands
 
             //    // どの形態に換装するかを選択
             //    GUI.TopItem = 1;
-            //    string arglb_caption = "変更先選択";
-            //    string argtname = "ＨＰ";
-            //    Unit argu = null;
-            //    string argtname1 = "ＥＮ";
-            //    Unit argu1 = null;
-            //    string argtname2 = "装甲";
-            //    Unit argu2 = null;
-            //    string argtname3 = "運動";
-            //    Unit argu3 = null;
-            //    string arglb_info = "ユニット                     " + Expression.Term(argtname, argu, 4) + " " + Expression.Term(argtname1, argu1, 4) + " " + Expression.Term(argtname2, argu2, 4) + " " + Expression.Term(argtname3, argu3, 4) + " " + "適応 攻撃力 射程";
-            //    string arglb_mode = "カーソル移動,コメント";
-            //    ret = GUI.ListBox(arglb_caption, list, arglb_info, arglb_mode);
+            //    ret = GUI.ListBox("変更先選択", list, "ユニット                     " + Expression.Term(argtname, argu, 4) + " " + Expression.Term(argtname1, argu1, 4) + " " + Expression.Term(argtname2, argu2, 4) + " " + Expression.Term(argtname3, argu3, 4) + " " + "適応 攻撃力 射程", "カーソル移動,コメント");
             //    if (ret == 0)
             //    {
             //        CancelCommand();
@@ -1364,19 +1178,16 @@ namespace SRCCore.Commands
             //    // 換装を実施
             //    Unit localOtherForm() { var tmp = id_list; object argIndex1 = tmp[ret]; var ret = withBlock.OtherForm(argIndex1); return ret; }
 
-            //    string argnew_form = localOtherForm().Name;
-            //    withBlock.Transform(argnew_form);
+            //    withBlock.Transform(localOtherForm().Name);
             //    localOtherForm().Name = argnew_form;
 
             //    // ユニットリストの再構築
-            //    string argsmode = "";
-            //    Event.MakeUnitList(smode: argsmode);
+            //    Event.MakeUnitList(smode: "");
 
             //    // カーソル自動移動
             //    if (SRC.AutoMoveCursor)
             //    {
-            //        string argcursor_mode = "ユニット選択";
-            //        GUI.MoveCursorPos(argcursor_mode, withBlock.CurrentForm());
+            //        GUI.MoveCursorPos("ユニット選択", withBlock.CurrentForm());
             //    }
 
             //    Status.DisplayUnitStatus(withBlock.CurrentForm());

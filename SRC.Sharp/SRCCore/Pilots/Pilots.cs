@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -63,8 +63,7 @@ namespace SRCCore.Pilots
                                 return p;
                             }
 
-                            string argmsg = key + "というパイロットは既に登録されています";
-                            GUI.ErrorMessage(argmsg);
+                            GUI.ErrorMessage(key + "というパイロットは既に登録されています");
                             return null;
                         }
                     }
@@ -192,8 +191,7 @@ namespace SRCCore.Pilots
         //                if (p.Party != "味方" | !p.Alive)
         //                {
         //                    // 味方でないパイロットや破棄されたパイロットは削除
-        //                    object argIndex1 = p.ID;
-        //                    Delete(argIndex1);
+        //                    Delete(p.ID);
         //                }
         //                else if (p.IsAdditionalPilot)
         //                {
@@ -215,8 +213,7 @@ namespace SRCCore.Pilots
         //                        }
         //                    }
 
-        //                    object argIndex2 = p.ID;
-        //                    Delete(argIndex2);
+        //                    Delete(p.ID);
         //                }
         //                else if (p.IsAdditionalSupport)
         //                {
@@ -238,23 +235,19 @@ namespace SRCCore.Pilots
         //                        }
         //                    }
 
-        //                    object argIndex3 = p.ID;
-        //                    Delete(argIndex3);
+        //                    Delete(p.ID);
         //                }
         //                else if (p.Nickname0 == "パイロット不在")
         //                {
         //                    // ダミーパイロットは削除
-        //                    object argIndex4 = p.ID;
-        //                    Delete(argIndex4);
+        //                    Delete(p.ID);
         //                }
         //                else if (p.Unit_Renamed is object)
         //                {
-        //                    string argfname = "召喚ユニット";
-        //                    if (p.Unit_Renamed.IsFeatureAvailable(argfname))
+        //                    if (p.Unit_Renamed.IsFeatureAvailable("召喚ユニット"))
         //                    {
         //                        // 召喚ユニットの追加パイロットも削除
-        //                        object argIndex5 = p.ID;
-        //                        Delete(argIndex5);
+        //                        Delete(p.ID);
         //                    }
         //                }
         //            }
@@ -352,17 +345,14 @@ namespace SRCCore.Pilots
 
         //                        if (!localIsDefined())
         //                        {
-        //                            string argmsg = pname + "のデータが定義されていません";
-        //                            GUI.ErrorMessage(argmsg);
+        //                            GUI.ErrorMessage(pname + "のデータが定義されていません");
         //                            SRC.TerminateSRC();
         //                            Environment.Exit(0);
         //                        }
         //                    }
 
-        //                    string argpparty = "味方";
-        //                    string arggid = "";
         //                    {
-        //                        var withBlock = Add(pname, plevel, argpparty, gid: arggid);
+        //                        var withBlock = Add(pname, plevel, "味方", gid: "");
         //                        withBlock.Exp = pexp;
         //                    }
         //                }
@@ -372,17 +362,13 @@ namespace SRCCore.Pilots
 
         //                    if (!localIsDefined2())
         //                    {
-        //                        string argmsg1 = GeneralLib.LIndex(pname, 1) + "のデータが定義されていません";
-        //                        GUI.ErrorMessage(argmsg1);
+        //                        GUI.ErrorMessage(GeneralLib.LIndex(pname, 1) + "のデータが定義されていません");
         //                        SRC.TerminateSRC();
         //                        Environment.Exit(0);
         //                    }
 
-        //                    string argpname = GeneralLib.LIndex(pname, 1);
-        //                    string argpparty1 = "味方";
-        //                    string arggid1 = GeneralLib.LIndex(pname, 2);
         //                    {
-        //                        var withBlock1 = Add(argpname, plevel, argpparty1, arggid1);
+        //                        var withBlock1 = Add(GeneralLib.LIndex(pname, 1), plevel, "味方", GeneralLib.LIndex(pname, 2));
         //                        withBlock1.Exp = pexp;
         //                    }
         //                }
@@ -453,12 +439,10 @@ namespace SRCCore.Pilots
         //                    SRC.ConvertUnitID(uid);
         //                }
 
-        //                object argIndex3 = uid;
-        //                if (SRC.UList.IsDefined(argIndex3))
+        //                if (SRC.UList.IsDefined(uid))
         //                {
         //                    // パイロットをユニットに乗せる
-        //                    object argIndex1 = uid;
-        //                    u = SRC.UList.Item(argIndex1);
+        //                    u = SRC.UList.Item(uid);
         //                    if (GeneralLib.LLength(pname) == 1)
         //                    {
         //                        Pilot localItem2() { object argIndex1 = pname; var ret = Item(argIndex1); return ret; }
@@ -478,11 +462,9 @@ namespace SRCCore.Pilots
         //                    // 作って乗せる (バグ対策だったけど……不要？)
         //                    ret = Strings.InStr(uid, ":");
         //                    uid = Strings.Left(uid, ret - 1);
-        //                    object argIndex2 = uid;
-        //                    if (SRC.UDList.IsDefined(argIndex2))
+        //                    if (SRC.UDList.IsDefined(uid))
         //                    {
-        //                        string arguparty = "味方";
-        //                        u = SRC.UList.Add(uid, 0, arguparty);
+        //                        u = SRC.UList.Add(uid, 0, "味方");
         //                        if (GeneralLib.LLength(pname) == 1)
         //                        {
         //                            Pilot localItem4() { object argIndex1 = pname; var ret = Item(argIndex1); return ret; }
@@ -584,8 +566,7 @@ namespace SRCCore.Pilots
         //            var loopTo = Count();
         //            for (i = 1; i <= loopTo; i++)
         //            {
-        //                object argIndex1 = 1;
-        //                Delete(argIndex1);
+        //                Delete(1);
         //            }
         //        }
 
@@ -621,17 +602,14 @@ namespace SRCCore.Pilots
 
             //    // 支援範囲を算出
             //    max_range = withBlock.CommandRange();
-            //    string argsname = "広域サポート";
-            //    if (withBlock.IsSkillAvailable(argsname))
+            //    if (withBlock.IsSkillAvailable("広域サポート"))
             //    {
             //        max_range = GeneralLib.MaxLng(max_range, 2);
             //    }
 
-            //    string argoname1 = "信頼補正";
-            //    if (Expression.IsOptionDefined(argoname1) & Strings.InStr(withBlock.Name, "(ザコ)") == 0)
+            //    if (Expression.IsOptionDefined("信頼補正") & Strings.InStr(withBlock.Name, "(ザコ)") == 0)
             //    {
-            //        string argoname = "信頼補正範囲拡大";
-            //        if (Expression.IsOptionDefined(argoname))
+            //        if (Expression.IsOptionDefined("信頼補正範囲拡大"))
             //        {
             //            max_range = GeneralLib.MaxLng(max_range, 2);
             //        }

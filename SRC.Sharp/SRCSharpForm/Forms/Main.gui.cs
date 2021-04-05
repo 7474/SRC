@@ -1,4 +1,4 @@
-﻿using SRCCore.Lib;
+using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.Units;
 using System;

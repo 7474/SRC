@@ -1,4 +1,4 @@
-﻿using SRCCore.Lib;
+using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.Pilots;
 using SRCCore.Units;

@@ -1,4 +1,4 @@
-﻿using SRCCore;
+using SRCCore;
 using SRCCore.Lib;
 using SRCCore.VB;
 using SRCSharpForm.Extensions;
@@ -532,8 +532,7 @@ namespace SRCSharpForm
                 //            {
                 //                if (scenario_anime_bitmap_dir_exists)
                 //                {
-                //                    string argfname = SRC.ScenarioPath + @"Bitmap\Anime\" + fname;
-                //                    if (GeneralLib.FileExists(argfname))
+                //                    if (GeneralLib.FileExists(SRC.ScenarioPath + @"Bitmap\Anime\" + fname))
                 //                    {
                 //                        fpath = SRC.ScenarioPath + @"Bitmap\Anime\";
                 //                        last_path = "";
@@ -543,8 +542,7 @@ namespace SRCSharpForm
 
                 //                if (extdata_anime_bitmap_dir_exists)
                 //                {
-                //                    string argfname1 = SRC.ExtDataPath + @"Bitmap\Anime\" + fname;
-                //                    if (GeneralLib.FileExists(argfname1))
+                //                    if (GeneralLib.FileExists(SRC.ExtDataPath + @"Bitmap\Anime\" + fname))
                 //                    {
                 //                        fpath = SRC.ExtDataPath + @"Bitmap\Anime\";
                 //                        last_path = "";
@@ -554,8 +552,7 @@ namespace SRCSharpForm
 
                 //                if (extdata2_anime_bitmap_dir_exists)
                 //                {
-                //                    string argfname2 = SRC.ExtDataPath2 + @"Bitmap\Anime\" + fname;
-                //                    if (GeneralLib.FileExists(argfname2))
+                //                    if (GeneralLib.FileExists(SRC.ExtDataPath2 + @"Bitmap\Anime\" + fname))
                 //                    {
                 //                        fpath = SRC.ExtDataPath2 + @"Bitmap\Anime\";
                 //                        last_path = "";
@@ -563,8 +560,7 @@ namespace SRCSharpForm
                 //                    }
                 //                }
 
-                //                string argfname3 = SRC.AppPath + @"Bitmap\Anime\" + fname;
-                //                if (GeneralLib.FileExists(argfname3))
+                //                if (GeneralLib.FileExists(SRC.AppPath + @"Bitmap\Anime\" + fname))
                 //                {
                 //                    fpath = SRC.AppPath + @"Bitmap\Anime\";
                 //                    last_path = "";
@@ -575,8 +571,7 @@ namespace SRCSharpForm
                 //            // 前回と同じパス？
                 //            if (Strings.Len(last_path) > 0)
                 //            {
-                //                string argfname4 = last_path + fname;
-                //                if (GeneralLib.FileExists(argfname4))
+                //                if (GeneralLib.FileExists(last_path + fname))
                 //                {
                 //                    fpath = last_path;
                 //                    goto FoundPicture;
@@ -588,8 +583,7 @@ namespace SRCSharpForm
                 //            {
                 //                if (scenario_bitmap_dir_exists)
                 //                {
-                //                    string argfname5 = SRC.ScenarioPath + fname;
-                //                    if (GeneralLib.FileExists(argfname5))
+                //                    if (GeneralLib.FileExists(SRC.ScenarioPath + fname))
                 //                    {
                 //                        fpath = SRC.ScenarioPath;
                 //                        last_path = fpath;
@@ -597,8 +591,7 @@ namespace SRCSharpForm
                 //                    }
                 //                }
 
-                //                string argfname6 = SRC.AppPath + fname;
-                //                if (GeneralLib.FileExists(argfname6))
+                //                if (GeneralLib.FileExists(SRC.AppPath + fname))
                 //                {
                 //                    fpath = SRC.AppPath;
                 //                    last_path = "";
@@ -618,8 +611,7 @@ namespace SRCSharpForm
                 //            {
                 //                if (scenario_bitmap_dir_exists)
                 //                {
-                //                    string argfname7 = SRC.ScenarioPath + @"Bitmap\" + fname;
-                //                    if (GeneralLib.FileExists(argfname7))
+                //                    if (GeneralLib.FileExists(SRC.ScenarioPath + @"Bitmap\" + fname))
                 //                    {
                 //                        fpath = SRC.ScenarioPath + @"Bitmap\";
                 //                        last_path = fpath;
@@ -629,8 +621,7 @@ namespace SRCSharpForm
 
                 //                if (extdata_bitmap_dir_exists)
                 //                {
-                //                    string argfname8 = SRC.ExtDataPath + @"Bitmap\" + fname;
-                //                    if (GeneralLib.FileExists(argfname8))
+                //                    if (GeneralLib.FileExists(SRC.ExtDataPath + @"Bitmap\" + fname))
                 //                    {
                 //                        fpath = SRC.ExtDataPath + @"Bitmap\";
                 //                        last_path = "";
@@ -640,8 +631,7 @@ namespace SRCSharpForm
 
                 //                if (extdata2_bitmap_dir_exists)
                 //                {
-                //                    string argfname9 = SRC.ExtDataPath2 + @"Bitmap\" + fname;
-                //                    if (GeneralLib.FileExists(argfname9))
+                //                    if (GeneralLib.FileExists(SRC.ExtDataPath2 + @"Bitmap\" + fname))
                 //                    {
                 //                        fpath = SRC.ExtDataPath2 + @"Bitmap\";
                 //                        last_path = "";
@@ -649,8 +639,7 @@ namespace SRCSharpForm
                 //                    }
                 //                }
 
-                //                string argfname10 = SRC.AppPath + @"Bitmap\" + fname;
-                //                if (GeneralLib.FileExists(argfname10))
+                //                if (GeneralLib.FileExists(SRC.AppPath + @"Bitmap\" + fname))
                 //                {
                 //                    fpath = SRC.AppPath + @"Bitmap\";
                 //                    last_path = "";
@@ -875,8 +864,7 @@ namespace SRCSharpForm
                     //        // 画像のサイズをチェック
                     //        if (orig_width * orig_height % 4 != 0)
                     //        {
-                    //            string argmsg = fname + "の画像サイズが4の倍数になっていません";
-                    //            ErrorMessage(argmsg);
+                    //            ErrorMessage(fname + "の画像サイズが4の倍数になっていません");
                     //            return DrawPictureRet;
                     //        }
 

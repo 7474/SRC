@@ -1,4 +1,4 @@
-﻿
+
 namespace SRCTestForm
 {
     partial class frmTeatMain

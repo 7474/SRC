@@ -1,4 +1,4 @@
-﻿//using Microsoft.VisualBasic;
+//using Microsoft.VisualBasic;
 //using SRCCore.Models;
 //using SRCCore.Units;
 
@@ -71,8 +71,7 @@
 
 //            set
 //            {
-//                object argIndex1 = value;
-//                Data = SRC.IDList.Item(ref argIndex1);
+//                Data = SRC.IDList.Item(ref value);
 //            }
 //        }
 
@@ -311,8 +310,7 @@
 //            IsAvailableRet = false;
 
 //            // イベントコマンド「Disable」
-//            string argvname = "Disable(" + Name + ")";
-//            if (Expression.IsGlobalVariableDefined(ref argvname))
+//            if (Expression.IsGlobalVariableDefined(ref "Disable(" + Name + ")"))
 //            {
 //                return IsAvailableRet;
 //            }
@@ -324,8 +322,7 @@
 //                case "両手":
 //                case "盾":
 //                    {
-//                        object argIndex1 = "装備個所";
-//                        if (Strings.InStr(u.FeatureData(ref argIndex1), "腕") == 0)
+//                        if (Strings.InStr(u.FeatureData(ref "装備個所"), "腕") == 0)
 //                        {
 //                            return IsAvailableRet;
 //                        }
@@ -336,8 +333,7 @@
 //                case "肩":
 //                case "両肩":
 //                    {
-//                        object argIndex2 = "装備個所";
-//                        if (Strings.InStr(u.FeatureData(ref argIndex2), "肩") == 0)
+//                        if (Strings.InStr(u.FeatureData(ref "装備個所"), "肩") == 0)
 //                        {
 //                            return IsAvailableRet;
 //                        }
@@ -347,8 +343,7 @@
 
 //                case "体":
 //                    {
-//                        object argIndex3 = "装備個所";
-//                        if (Strings.InStr(u.FeatureData(ref argIndex3), "体") == 0)
+//                        if (Strings.InStr(u.FeatureData(ref "装備個所"), "体") == 0)
 //                        {
 //                            return IsAvailableRet;
 //                        }
@@ -358,8 +353,7 @@
 
 //                case "頭":
 //                    {
-//                        object argIndex4 = "装備個所";
-//                        if (Strings.InStr(u.FeatureData(ref argIndex4), "頭") == 0)
+//                        if (Strings.InStr(u.FeatureData(ref "装備個所"), "頭") == 0)
 //                        {
 //                            return IsAvailableRet;
 //                        }
@@ -421,9 +415,7 @@
 //            }
 
 //            // 技能チェックが必要？
-//            string argfname = "必要技能";
-//            string argfname1 = "不必要技能";
-//            if (!IsFeatureAvailable(ref argfname) & !IsFeatureAvailable(ref argfname1))
+//            if (!IsFeatureAvailable(ref "必要技能") & !IsFeatureAvailable(ref "必要技能"1))
 //            {
 //                return IsAvailableRet;
 //            }
@@ -431,8 +423,7 @@
 //            var loopTo2 = CountFeature();
 //            for (i = 1; i <= loopTo2; i++)
 //            {
-//                object argIndex15 = i;
-//                switch (Feature(ref argIndex15) ?? "")
+//                switch (Feature(ref i) ?? "")
 //                {
 //                    case "必要技能":
 //                        {
@@ -467,13 +458,11 @@
 //                                {
 //                                    string localFeatureData() { object argIndex1 = i; var ret = FeatureData(ref argIndex1); return ret; }
 
-//                                    string argsname = localFeatureData();
-//                                    sname = u.MainPilot().SkillType(ref argsname);
+//                                    sname = u.MainPilot().SkillType(ref localFeatureData());
 //                                }
 //                                else
 //                                {
-//                                    object argIndex5 = i;
-//                                    sname = FeatureData(ref argIndex5);
+//                                    sname = FeatureData(ref i);
 //                                }
 
 //                                // 必要技能が「～装備」？
@@ -489,8 +478,7 @@
 //                                var loopTo4 = CountFeature();
 //                                for (j = 1; j <= loopTo4; j++)
 //                                {
-//                                    object argIndex6 = j;
-//                                    switch (Feature(ref argIndex6) ?? "")
+//                                    switch (Feature(ref j) ?? "")
 //                                    {
 //                                        case "パイロット能力付加":
 //                                        case "パイロット能力強化":
@@ -506,8 +494,7 @@
 //                                    }
 
 //                                    // 封印する能力名
-//                                    object argIndex7 = j;
-//                                    fdata = FeatureData(ref argIndex7);
+//                                    fdata = FeatureData(ref j);
 //                                    if (Strings.Left(fdata, 1) == "\"")
 //                                    {
 //                                        fdata = Strings.Mid(fdata, 2, Strings.Len(fdata) - 2);
@@ -526,12 +513,10 @@
 
 //                                    if (u.CountPilot() > 0)
 //                                    {
-//                                        object argIndex9 = fdata;
-//                                        if (SRC.ALDList.IsDefined(ref argIndex9))
+//                                        if (SRC.ALDList.IsDefined(ref fdata))
 //                                        {
-//                                            object argIndex8 = fdata;
 //                                            {
-//                                                var withBlock = SRC.ALDList.Item(ref argIndex8);
+//                                                var withBlock = SRC.ALDList.Item(ref fdata);
 //                                                var loopTo5 = withBlock.Count;
 //                                                for (k = 1; k <= loopTo5; k++)
 //                                                {
@@ -564,9 +549,7 @@
 //                        {
 //                            string localFeatureData3() { object argIndex1 = i; var ret = FeatureData(ref argIndex1); return ret; }
 
-//                            string argnabilities = localFeatureData3();
-//                            Pilot argp = null;
-//                            if (u.IsNecessarySkillSatisfied(ref argnabilities, p: ref argp))
+//                            if (u.IsNecessarySkillSatisfied(ref localFeatureData3(), p: ref null))
 //                            {
 //                                // アイテム自身により不必要技能が満たされている場合は不必要技能を
 //                                // 無視させるため、チェックする必要がある。
@@ -593,13 +576,11 @@
 //                                {
 //                                    string localFeatureData2() { object argIndex1 = i; var ret = FeatureData(ref argIndex1); return ret; }
 
-//                                    string argsname1 = localFeatureData2();
-//                                    sname = u.MainPilot().SkillType(ref argsname1);
+//                                    sname = u.MainPilot().SkillType(ref localFeatureData2());
 //                                }
 //                                else
 //                                {
-//                                    object argIndex10 = i;
-//                                    sname = FeatureData(ref argIndex10);
+//                                    sname = FeatureData(ref i);
 //                                }
 
 //                                // 不必要技能が「～装備」？
@@ -615,8 +596,7 @@
 //                                var loopTo7 = CountFeature();
 //                                for (j = 1; j <= loopTo7; j++)
 //                                {
-//                                    object argIndex11 = j;
-//                                    switch (Feature(ref argIndex11) ?? "")
+//                                    switch (Feature(ref j) ?? "")
 //                                    {
 //                                        case "パイロット能力付加":
 //                                        case "パイロット能力強化":
@@ -632,8 +612,7 @@
 //                                    }
 
 //                                    // 付加する能力名
-//                                    object argIndex12 = j;
-//                                    fdata = FeatureData(ref argIndex12);
+//                                    fdata = FeatureData(ref j);
 //                                    if (Strings.Left(fdata, 1) == "\"")
 //                                    {
 //                                        fdata = Strings.Mid(fdata, 2, Strings.Len(fdata) - 2);
@@ -652,12 +631,10 @@
 
 //                                    if (u.CountPilot() > 0)
 //                                    {
-//                                        object argIndex14 = fdata;
-//                                        if (SRC.ALDList.IsDefined(ref argIndex14))
+//                                        if (SRC.ALDList.IsDefined(ref fdata))
 //                                        {
-//                                            object argIndex13 = fdata;
 //                                            {
-//                                                var withBlock1 = SRC.ALDList.Item(ref argIndex13);
+//                                                var withBlock1 = SRC.ALDList.Item(ref fdata);
 //                                                var loopTo8 = withBlock1.Count;
 //                                                for (k = 1; k <= loopTo8; k++)
 //                                                {
@@ -737,11 +714,9 @@
 
 //            // Unit
 //            FileSystem.Input(SRC.SaveDataFileNumber, ref sbuf);
-//            object argIndex2 = sbuf;
-//            if (SRC.UList.IsDefined(ref argIndex2))
+//            if (SRC.UList.IsDefined(ref sbuf))
 //            {
-//                object argIndex1 = sbuf;
-//                Unit_Renamed = SRC.UList.Item(ref argIndex1);
+//                Unit_Renamed = SRC.UList.Item(ref sbuf);
 //            }
 //        }
 

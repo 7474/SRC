@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -99,8 +99,7 @@ namespace SRCCore
             //    do
             //    {
             //        i = (i + 1);
-            //        string argmidi_name = "(" + fname0 + "(" + SrcFormatter.Format(i) + ")" + Strings.Right(fname, 4) + ")";
-            //        fname2 = SearchMidiFile(argmidi_name);
+            //        fname2 = SearchMidiFile("(" + fname0 + "(" + SrcFormatter.Format(i) + ")" + Strings.Right(fname, 4) + ")");
             //    }
             //    while (Strings.InStr(fname2, SRC.ScenarioPath) > 0);
             //}
@@ -110,8 +109,7 @@ namespace SRCCore
             //    do
             //    {
             //        i = (i + 1);
-            //        string argmidi_name1 = "(" + fname0 + "(" + SrcFormatter.Format(i) + ")" + Strings.Right(fname, 4) + ")";
-            //        fname2 = SearchMidiFile(argmidi_name1);
+            //        fname2 = SearchMidiFile("(" + fname0 + "(" + SrcFormatter.Format(i) + ")" + Strings.Right(fname, 4) + ")");
             //    }
             //    while (!string.IsNullOrEmpty(fname2));
             //}
@@ -119,8 +117,7 @@ namespace SRCCore
             //i = Conversion.Int((i - 1) * VBMath.Rnd() + 1f);
             //if (i > 1)
             //{
-            //    string argmidi_name2 = "(" + fname0 + "(" + SrcFormatter.Format(i) + ")" + Strings.Right(fname, 4) + ")";
-            //    fname = SearchMidiFile(argmidi_name2);
+            //    fname = SearchMidiFile("(" + fname0 + "(" + SrcFormatter.Format(i) + ")" + Strings.Right(fname, 4) + ")");
             //}
 
             // ＢＧＭを連続演奏？
@@ -191,11 +188,9 @@ namespace SRCCore
 
             //// ファイル名の本体部分を抜き出す
             //fname = Strings.Left(bgm_name, Strings.Len(bgm_name) - 4);
-            //string argstr21 = @"\";
-            //if (GeneralLib.InStr2(fname, argstr21) > 0)
+            //if (GeneralLib.InStr2(fname, @"\") > 0)
             //{
-            //    string argstr2 = @"\";
-            //    fname = Strings.Mid(fname, GeneralLib.InStr2(fname, argstr2) + 1);
+            //    fname = Strings.Mid(fname, GeneralLib.InStr2(fname, @"\") + 1);
             //}
 
             //// 既に同じMIDIが演奏されていればそのまま演奏し続ける
@@ -211,11 +206,9 @@ namespace SRCCore
             //if (Strings.Len(BGMFileName) > 5)
             //{
             //    fname2 = Strings.Left(BGMFileName, Strings.Len(BGMFileName) - 4);
-            //    string argstr23 = @"\";
-            //    if (GeneralLib.InStr2(fname2, argstr23) > 0)
+            //    if (GeneralLib.InStr2(fname2, @"\") > 0)
             //    {
-            //        string argstr22 = @"\";
-            //        fname2 = Strings.Mid(fname2, GeneralLib.InStr2(fname2, argstr22) + 1);
+            //        fname2 = Strings.Mid(fname2, GeneralLib.InStr2(fname2, @"\") + 1);
             //    }
 
             //    if (Strings.Len(fname2) > 4)
@@ -319,8 +312,7 @@ namespace SRCCore
             //    }
 
             //    // MP3が演奏可能かどうかも調べておく
-            //    string argfname = SRC.AppPath + "VBMP3.dll";
-            //    if (GeneralLib.FileExists(argfname))
+            //    if (GeneralLib.FileExists(SRC.AppPath + "VBMP3.dll"))
             //    {
             //        is_mp3_available = true;
             //    }
@@ -614,8 +606,7 @@ namespace SRCCore
             //}
 
             //// そうでなければSrc.iniで設定されているファイルを使用
-            //string argini_section = "BGM";
-            //BGMNameRet = GeneralLib.ReadIni(argini_section, bgm_name);
+            //BGMNameRet = GeneralLib.ReadIni("BGM", bgm_name);
 
             //// Src.iniでも設定されていなければ標準のファイルを使用
             //if (string.IsNullOrEmpty(BGMNameRet))

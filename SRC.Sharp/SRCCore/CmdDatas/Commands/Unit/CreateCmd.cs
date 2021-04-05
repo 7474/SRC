@@ -1,4 +1,4 @@
-﻿using SRCCore.Events;
+using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Pilots;
 using SRCCore.Units;
@@ -138,13 +138,11 @@ namespace SRCCore.CmdDatas.Commands
             Pilot p;
             if (num == 9)
             {
-                string arggid = GetArgAsString(9);
-                p = SRC.PList.Add(pname, plevel, uparty, arggid);
+                p = SRC.PList.Add(pname, plevel, uparty, GetArgAsString(9));
             }
             else
             {
-                string arggid1 = "";
-                p = SRC.PList.Add(pname, plevel, uparty, gid: arggid1);
+                p = SRC.PList.Add(pname, plevel, uparty, gid: "");
             }
 
             p.Ride(u);

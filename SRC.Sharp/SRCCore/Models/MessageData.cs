@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -289,12 +289,10 @@ namespace SRCCore.Models
             //        sub_situations[8] = "(対" + withBlock.Area + ")";
 
             //        // 対メッセージクラス
-            //        string argfname = "メッセージクラス";
-            //        if (withBlock.IsFeatureAvailable(argfname))
+            //        if (withBlock.IsFeatureAvailable("メッセージクラス"))
             //        {
             //            Array.Resize(sub_situations, Information.UBound(sub_situations) + 1 + 1);
-            //            object argIndex1 = "メッセージクラス";
-            //            sub_situations[Information.UBound(sub_situations)] = "(対" + withBlock.FeatureData(argIndex1) + ")";
+            //            sub_situations[Information.UBound(sub_situations)] = "(対" + withBlock.FeatureData("メッセージクラス") + ")";
             //        }
 
             //        // 対性別
@@ -576,12 +574,10 @@ namespace SRCCore.Models
             //                }
             //        }
 
-            //        string argfname1 = "メッセージクラス";
-            //        if (u.IsFeatureAvailable(argfname1))
+            //        if (u.IsFeatureAvailable("メッセージクラス"))
             //        {
             //            Array.Resize(sub_situations, Information.UBound(sub_situations) + 1 + 1);
-            //            object argIndex2 = "メッセージクラス";
-            //            sub_situations[Information.UBound(sub_situations)] = "(" + u.FeatureData(argIndex2) + ")";
+            //            sub_situations[Information.UBound(sub_situations)] = "(" + u.FeatureData("メッセージクラス") + ")";
             //        }
             //    }
             //    else

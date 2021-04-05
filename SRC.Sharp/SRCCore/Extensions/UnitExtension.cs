@@ -1,4 +1,4 @@
-﻿
+
 using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.Units;

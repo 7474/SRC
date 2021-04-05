@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -122,11 +122,8 @@ namespace SRCCore.Commands
                         // XXX
                         //if (unit.IsMessageDefined(unit.Area))
                         //{
-                        //    Unit argu1 = null;
-                        //    Unit argu2 = null;
-                        //    GUI.OpenMessageForm(u1: argu1, u2: argu2);
-                        //    string argmsg_mode = "";
-                        //    unit.PilotMessage(unit.Area, msg_mode: argmsg_mode);
+                        //    GUI.OpenMessageForm(u1: null, u2: null);
+                        //    unit.PilotMessage(unit.Area, msg_mode: "");
                         //    GUI.CloseMessageForm();
                         //}
 
@@ -152,11 +149,8 @@ namespace SRCCore.Commands
                         // XXX
                         //if (unit.IsMessageDefined(unit.Area))
                         //{
-                        //    Unit argu11 = null;
-                        //    Unit argu21 = null;
-                        //    GUI.OpenMessageForm(u1: argu11, u2: argu21);
-                        //    string argmsg_mode1 = "";
-                        //    unit.PilotMessage(unit.Area, msg_mode: argmsg_mode1);
+                        //    GUI.OpenMessageForm(u1: null, u2: null);
+                        //    unit.PilotMessage(unit.Area, msg_mode: "");
                         //    GUI.CloseMessageForm();
                         //}
 
@@ -174,11 +168,8 @@ namespace SRCCore.Commands
                         // XXX
                         //if (unit.IsMessageDefined(unit.Area))
                         //{
-                        //    Unit argu12 = null;
-                        //    Unit argu22 = null;
-                        //    GUI.OpenMessageForm(u1: argu12, u2: argu22);
-                        //    string argmsg_mode2 = "";
-                        //    unit.PilotMessage(unit.Area, msg_mode: argmsg_mode2);
+                        //    GUI.OpenMessageForm(u1: null, u2: null);
+                        //    unit.PilotMessage(unit.Area, msg_mode: "");
                         //    GUI.CloseMessageForm();
                         //}
 
@@ -196,11 +187,8 @@ namespace SRCCore.Commands
                         // XXX
                         //if (unit.IsMessageDefined(unit.Area))
                         //{
-                        //    Unit argu13 = null;
-                        //    Unit argu23 = null;
-                        //    GUI.OpenMessageForm(u1: argu13, u2: argu23);
-                        //    string argmsg_mode3 = "";
-                        //    unit.PilotMessage(unit.Area, msg_mode: argmsg_mode3);
+                        //    GUI.OpenMessageForm(u1: null, u2: null);
+                        //    unit.PilotMessage(unit.Area, msg_mode: "");
                         //    GUI.CloseMessageForm();
                         //}
 
@@ -425,8 +413,7 @@ namespace SRCCore.Commands
 
             GUI.LockGUI();
             GUI.RedrawScreen();
-            //object argIndex1 = 1;
-            //p = SelectedUnit.Pilot(argIndex1);
+            //p = SelectedUnit.Pilot(1);
 
             //// 接触イベント
             //for (i = 1; i <= 4; i++)
@@ -542,8 +529,7 @@ namespace SRCCore.Commands
             //    // カーソル自動移動
             //    if (SRC.AutoMoveCursor)
             //    {
-            //        string argcursor_mode = "ユニット選択";
-            //        GUI.MoveCursorPos(argcursor_mode, SelectedUnit);
+            //        GUI.MoveCursorPos("ユニット選択", SelectedUnit);
             //    }
             //}
 

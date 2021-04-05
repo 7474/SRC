@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -146,16 +146,14 @@ namespace SRCCore.Maps
         //    //    case BoxTypes.UpperBmpOnly:
         //    //        {
         //    //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
-        //    //            string argftype = "ＨＰ回復";
-        //    //            TerrainEffectForHPRecoverRet = (10d * SRC.TDList.FeatureLevel(MapData[X, Y, MapDataIndex.TerrainType], argftype));
+        //    //            TerrainEffectForHPRecoverRet = (10d * SRC.TDList.FeatureLevel(MapData[X, Y, MapDataIndex.TerrainType], "ＨＰ回復"));
         //    //            break;
         //    //        }
 
         //    //    default:
         //    //        {
         //    //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
-        //    //            string argftype1 = "ＨＰ回復";
-        //    //            TerrainEffectForHPRecoverRet = (10d * SRC.TDList.FeatureLevel(MapData[X, Y, MapDataIndex.LayerType], argftype1));
+        //    //            TerrainEffectForHPRecoverRet = (10d * SRC.TDList.FeatureLevel(MapData[X, Y, MapDataIndex.LayerType], "ＨＰ回復"));
         //    //            break;
         //    //        }
         //    //}
@@ -177,16 +175,14 @@ namespace SRCCore.Maps
         //    //    case BoxTypes.UpperBmpOnly:
         //    //        {
         //    //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
-        //    //            string argftype = "ＥＮ回復";
-        //    //            TerrainEffectForENRecoverRet = (10d * SRC.TDList.FeatureLevel(MapData[X, Y, MapDataIndex.TerrainType], argftype));
+        //    //            TerrainEffectForENRecoverRet = (10d * SRC.TDList.FeatureLevel(MapData[X, Y, MapDataIndex.TerrainType], "ＥＮ回復"));
         //    //            break;
         //    //        }
 
         //    //    default:
         //    //        {
         //    //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
-        //    //            string argftype1 = "ＥＮ回復";
-        //    //            TerrainEffectForENRecoverRet = (10d * SRC.TDList.FeatureLevel(MapData[X, Y, MapDataIndex.LayerType], argftype1));
+        //    //            TerrainEffectForENRecoverRet = (10d * SRC.TDList.FeatureLevel(MapData[X, Y, MapDataIndex.LayerType], "ＥＮ回復"));
         //    //            break;
         //    //        }
         //    //}
@@ -295,16 +291,14 @@ namespace SRCCore.Maps
         //    //    case BoxTypes.UpperBmpOnly:
         //    //        {
         //    //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
-        //    //            string argftype = "衝突";
-        //    //            TerrainHasObstacleRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.TerrainType], argftype);
+        //    //            TerrainHasObstacleRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.TerrainType], "衝突");
         //    //            break;
         //    //        }
 
         //    //    default:
         //    //        {
         //    //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
-        //    //            string argftype1 = "衝突";
-        //    //            TerrainHasObstacleRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.LayerType], argftype1);
+        //    //            TerrainHasObstacleRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.LayerType], "衝突");
         //    //            break;
         //    //        }
         //    //}
@@ -325,16 +319,14 @@ namespace SRCCore.Maps
         //    //    case BoxTypes.UpperBmpOnly:
         //    //        {
         //    //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
-        //    //            string argftype = "移動停止";
-        //    //            TerrainHasMoveStopRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.TerrainType], argftype);
+        //    //            TerrainHasMoveStopRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.TerrainType], "移動停止");
         //    //            break;
         //    //        }
 
         //    //    default:
         //    //        {
         //    //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
-        //    //            string argftype1 = "移動停止";
-        //    //            TerrainHasMoveStopRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.LayerType], argftype1);
+        //    //            TerrainHasMoveStopRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.LayerType], "移動停止");
         //    //            break;
         //    //        }
         //    //}
@@ -353,13 +345,11 @@ namespace SRCCore.Maps
         //    //    case BoxTypes.UpperBmpOnly:
         //    //        {
         //    //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
-        //    //            string argftype = "進入禁止";
-        //    //            ret = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.TerrainType], argftype);
+        //    //            ret = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.TerrainType], "進入禁止");
         //    //            if (!ret)
         //    //            {
         //    //                // 互換性維持のため残している
-        //    //                string argftype1 = "侵入禁止";
-        //    //                ret = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.TerrainType], argftype1);
+        //    //                ret = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.TerrainType], "侵入禁止");
         //    //            }
 
         //    //            break;
@@ -368,13 +358,11 @@ namespace SRCCore.Maps
         //    //    default:
         //    //        {
         //    //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
-        //    //            string argftype2 = "進入禁止";
-        //    //            ret = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.LayerType], argftype2);
+        //    //            ret = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.LayerType], "進入禁止");
         //    //            if (!ret)
         //    //            {
         //    //                // 互換性維持のため残している
-        //    //                string argftype3 = "侵入禁止";
-        //    //                ret = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.LayerType], argftype3);
+        //    //                ret = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.LayerType], "侵入禁止");
         //    //            }
 
         //    //            break;
@@ -496,7 +484,6 @@ namespace SRCCore.Maps
                 //if (scenario_map_dir_exists)
                 //if (extdata_map_dir_exists)
                 //if (extdata2_map_dir_exists)
-                //string argfname9 = SRC.AppPath + fname1;
                 if (Directory.Exists(dir))
                 {
                     foreach (var file in fnames)
@@ -1277,10 +1264,7 @@ namespace SRCCore.Maps
             //                        {
             //                            {
             //                                var withBlock = MapDataForUnit[i, j];
-            //                                object argIndex1 = "暴走";
-            //                                object argIndex2 = "魅了";
-            //                                object argIndex3 = "憑依";
-            //                                if ((withBlock.Party == "味方" | withBlock.Party == "ＮＰＣ") & !withBlock.IsConditionSatisfied(argIndex1) & !withBlock.IsConditionSatisfied(argIndex2) & !withBlock.IsConditionSatisfied(argIndex3))
+            //                                if ((withBlock.Party == "味方" | withBlock.Party == "ＮＰＣ") & !withBlock.IsConditionSatisfied("暴走") & !withBlock.IsConditionSatisfied("魅了") & !withBlock.IsConditionSatisfied("憑依"))
             //                                {
             //                                    MaskData[i, j] = true;
             //                                }
@@ -2153,14 +2137,10 @@ namespace SRCCore.Maps
             //        MaskData[xx, yy] = true;
             //}
 
-            //string argdirection = "N";
-            //AreaInSector(X, Y, min_range, max_range, argdirection, lv, true);
-            //string argdirection1 = "S";
-            //AreaInSector(X, Y, min_range, max_range, argdirection1, lv, true);
-            //string argdirection2 = "W";
-            //AreaInSector(X, Y, min_range, max_range, argdirection2, lv, true);
-            //string argdirection3 = "E";
-            //AreaInSector(X, Y, min_range, max_range, argdirection3, lv, true);
+            //AreaInSector(X, Y, min_range, max_range, "N", lv, true);
+            //AreaInSector(X, Y, min_range, max_range, "S", lv, true);
+            //AreaInSector(X, Y, min_range, max_range, "W", lv, true);
+            //AreaInSector(X, Y, min_range, max_range, "E", lv, true);
         }
 
         // ２点間を結ぶ直線状のエリアを選択 (Ｍ線の範囲設定用)
@@ -2276,8 +2256,7 @@ namespace SRCCore.Maps
             //    uspeed = currentUnit.Speed;
             //}
 
-            //object argIndex4 = "移動不能";
-            //if (currentUnit.IsConditionSatisfied(argIndex4))
+            //if (currentUnit.IsConditionSatisfied("移動不能"))
             //{
             //    uspeed = 0;
             //}
@@ -2293,8 +2272,7 @@ namespace SRCCore.Maps
             //    uspeed = (uspeed - Commands.SelectedUnitMoveCost);
             //}
 
-            //object argIndex5 = "移動不能";
-            //if (currentUnit.IsConditionSatisfied(argIndex5))
+            //if (currentUnit.IsConditionSatisfied("移動不能"))
             //{
             //    uspeed = 0;
             //}
@@ -2320,9 +2298,7 @@ namespace SRCCore.Maps
             FillMoveCost(u, move_cost, move_area, x1, y1, x2, y2);
 
             //// ユニットがいるため通り抜け出来ない場所をチェック
-            //string argfname13 = "すり抜け移動";
-            //string argsptype1 = "すり抜け移動";
-            //if (!currentUnit.IsFeatureAvailable(argfname13) & !currentUnit.IsUnderSpecialPowerEffect(argsptype1))
+            //if (!currentUnit.IsFeatureAvailable("すり抜け移動") & !currentUnit.IsUnderSpecialPowerEffect("すり抜け移動"))
             //{
             //    foreach (Unit currentU2 in SRC.UList)
             //    {
@@ -2375,28 +2351,23 @@ namespace SRCCore.Maps
             //                {
             //                    is_zoc = false;
             //                    zarea = 0;
-            //                    string argfname12 = "ＺＯＣ";
-            //                    string argoname = "ＺＯＣ";
-            //                    if (withBlock1.IsFeatureAvailable(argfname12) | Expression.IsOptionDefined(argoname))
+            //                    if (withBlock1.IsFeatureAvailable("ＺＯＣ") | Expression.IsOptionDefined("ＺＯＣ"))
             //                    {
             //                        is_zoc = true;
             //                        zarea = 1;
 
             //                        // ＺＯＣ側のＺＯＣレベル
-            //                        object argIndex10 = "ＺＯＣ";
-            //                        n = withBlock1.FeatureLevel(argIndex10);
+            //                        n = withBlock1.FeatureLevel("ＺＯＣ");
             //                        if (n == 1)
             //                            n = 10000;
 
             //                        // Option「ＺＯＣ」が指定されている
             //                        n = Math.Max(1, n);
-            //                        string argfname11 = "ＺＯＣ無効化";
-            //                        if (u.IsFeatureAvailable(argfname11))
+            //                        if (u.IsFeatureAvailable("ＺＯＣ無効化"))
             //                        {
             //                            // 移動側のＺＯＣ無効化レベル
             //                            // レベル指定なし、またはLv1はLv10000として扱う
-            //                            object argIndex11 = "ＺＯＣ無効化";
-            //                            l = u.FeatureLevel(argIndex11);
+            //                            l = u.FeatureLevel("ＺＯＣ無効化");
             //                            if (l == 1)
             //                                l = 10000;
 
@@ -2449,8 +2420,7 @@ namespace SRCCore.Maps
             //                                                        }
             //                                                }
 
-            //                                                object argIndex12 = "隣接ユニットＺＯＣ無効化";
-            //                                                l = withBlock2.FeatureLevel(argIndex12);
+            //                                                l = withBlock2.FeatureLevel("隣接ユニットＺＯＣ無効化");
             //                                                if (l == 1)
             //                                                    l = 10000;
 
@@ -2474,9 +2444,7 @@ namespace SRCCore.Maps
             //                        // 特殊能力「ＺＯＣ」が指定されているなら、そのデータの2つ目の値をＺＯＣの範囲に設定
             //                        // 2つ目の値が省略されている場合は1を設定
             //                        // ＺＯＣLvが0以下の場合、オプション「ＺＯＣ」が指定されていても範囲を0に設定
-            //                        object argIndex13 = "ＺＯＣ";
-            //                        string arglist4 = withBlock1.FeatureData(argIndex13);
-            //                        if (GeneralLib.LLength(arglist4) >= 2)
+            //                        if (GeneralLib.LLength(withBlock1.FeatureData("ＺＯＣ")) >= 2)
             //                        {
             //                            string localLIndex() { object argIndex1 = "ＺＯＣ"; string arglist = withBlock1.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
 
@@ -2491,22 +2459,19 @@ namespace SRCCore.Maps
             //                            // 水平・垂直方向のみのＺＯＣかどうかを判断
             //                            is_hzoc = false;
             //                            is_vzoc = false;
-            //                            object argIndex16 = "ＺＯＣ";
-            //                            if (Conversions.ToBoolean(Strings.InStr(withBlock1.FeatureData(argIndex16), "直線")))
+            //                            if (Conversions.ToBoolean(Strings.InStr(withBlock1.FeatureData("ＺＯＣ"), "直線")))
             //                            {
             //                                is_hzoc = true;
             //                                is_vzoc = true;
             //                            }
             //                            else
             //                            {
-            //                                object argIndex14 = "ＺＯＣ";
-            //                                if (Conversions.ToBoolean(Strings.InStr(withBlock1.FeatureData(argIndex14), "水平")))
+            //                                if (Conversions.ToBoolean(Strings.InStr(withBlock1.FeatureData("ＺＯＣ"), "水平")))
             //                                {
             //                                    is_hzoc = true;
             //                                }
 
-            //                                object argIndex15 = "ＺＯＣ";
-            //                                if (Conversions.ToBoolean(Strings.InStr(withBlock1.FeatureData(argIndex15), "垂直")))
+            //                                if (Conversions.ToBoolean(Strings.InStr(withBlock1.FeatureData("ＺＯＣ"), "垂直")))
             //                                {
             //                                    is_vzoc = true;
             //                                }
@@ -2599,8 +2564,7 @@ namespace SRCCore.Maps
             //                else if (((Math.Abs((u.x - withBlock1.x)) + Math.Abs((u.y - withBlock1.y))) - zarea) <= uspeed)
             //                {
             //                    // レベル指定なし、またはLv1はLv10000として扱う
-            //                    object argIndex17 = "広域ＺＯＣ無効化";
-            //                    l = withBlock1.FeatureLevel(argIndex17);
+            //                    l = withBlock1.FeatureLevel("広域ＺＯＣ無効化");
             //                    if (l == 1)
             //                        l = 10000;
             //                    if (l > 0)
@@ -2771,19 +2735,16 @@ namespace SRCCore.Maps
                                     //{
                                     //    if (currentUnit.Feature() == "合体" && !string.IsNullOrEmpty(currentUnit.FeatureName()))
                                     //    {
-                                    //        object argIndex18 = k;
-                                    //        buf = currentUnit.FeatureData(argIndex18);
+                                    //        buf = currentUnit.FeatureData(k);
                                     //        bool localIsDefined() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
                                     //        bool localIsDefined1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
                                     //        if (GeneralLib.LLength(buf) == 3 & localIsDefined() & localIsDefined1())
                                     //        {
-                                    //            object argIndex20 = GeneralLib.LIndex(buf, 2);
                                     //            {
-                                    //                var withBlock5 = SRC.UList.Item(argIndex20);
-                                    //                object argIndex19 = "行動不能";
-                                    //                if (withBlock5.IsConditionSatisfied(argIndex19))
+                                    //                var withBlock5 = SRC.UList.Item(GeneralLib.LIndex(buf, 2));
+                                    //                if (withBlock5.IsConditionSatisfied("行動不能"))
                                     //                {
                                     //                    break;
                                     //                }
@@ -2796,13 +2757,12 @@ namespace SRCCore.Maps
 
                                     //            Unit localItem() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
 
-                                    //            string argfname16 = "合体制限";
                                     //            if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
                                     //            {
                                     //                MaskData[i, j] = false;
                                     //                break;
                                     //            }
-                                    //            else if ((u2.Name ?? "") == (localItem().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable(argfname16))
+                                    //            else if ((u2.Name ?? "") == (localItem().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable("合体制限"))
                                     //            {
                                     //                MaskData[i, j] = false;
                                     //                break;
@@ -2824,22 +2784,18 @@ namespace SRCCore.Maps
                                     //var loopTo62 = currentUnit.CountFeature();
                                     //for (k = 1; k <= loopTo62; k++)
                                     //{
-                                    //    object argIndex24 = k;
-                                    //    if (currentUnit.Feature(argIndex24) == "合体")
+                                    //    if (currentUnit.Feature(k) == "合体")
                                     //    {
-                                    //        object argIndex21 = k;
-                                    //        buf = currentUnit.FeatureData(argIndex21);
+                                    //        buf = currentUnit.FeatureData(k);
                                     //        bool localIsDefined2() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
                                     //        bool localIsDefined3() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
                                     //        if (GeneralLib.LLength(buf) == 3 & localIsDefined2() & localIsDefined3())
                                     //        {
-                                    //            object argIndex23 = GeneralLib.LIndex(buf, 2);
                                     //            {
-                                    //                var withBlock6 = SRC.UList.Item(argIndex23);
-                                    //                object argIndex22 = "行動不能";
-                                    //                if (withBlock6.IsConditionSatisfied(argIndex22))
+                                    //                var withBlock6 = SRC.UList.Item(GeneralLib.LIndex(buf, 2));
+                                    //                if (withBlock6.IsConditionSatisfied("行動不能"))
                                     //                {
                                     //                    break;
                                     //                }
@@ -2852,13 +2808,12 @@ namespace SRCCore.Maps
 
                                     //            Unit localItem1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
 
-                                    //            string argfname20 = "合体制限";
                                     //            if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
                                     //            {
                                     //                MaskData[i, j] = false;
                                     //                break;
                                     //            }
-                                    //            else if ((u2.Name ?? "") == (localItem1().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable(argfname20))
+                                    //            else if ((u2.Name ?? "") == (localItem1().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable("合体制限"))
                                     //            {
                                     //                MaskData[i, j] = false;
                                     //                break;
@@ -2875,9 +2830,7 @@ namespace SRCCore.Maps
             }
 
             //// ジャンプ＆透過移動先は進入可能？
-            //string argfname23 = "透過移動";
-            //string argsptype2 = "透過移動";
-            //if (ByJump | currentUnit.IsFeatureAvailable(argfname23) | currentUnit.IsUnderSpecialPowerEffect(argsptype2))
+            //if (ByJump | currentUnit.IsFeatureAvailable("透過移動") | currentUnit.IsUnderSpecialPowerEffect("透過移動"))
             //{
             //    var loopTo63 = x2;
             //    for (i = x1; i <= loopTo63; i++)
@@ -3665,8 +3618,7 @@ namespace SRCCore.Maps
             }
 
             //// 線路移動
-            //string argfname6 = "線路移動";
-            //if (currentUnit.IsFeatureAvailable(argfname6))
+            //if (currentUnit.IsFeatureAvailable("線路移動"))
             //{
             //    if (currentUnit.Area == "地上" & !ByJump)
             //    {
@@ -3691,21 +3643,16 @@ namespace SRCCore.Maps
 
             //// 移動制限
             //allowed_terrains = new string[1];
-            //string argfname7 = "移動制限";
-            //if (currentUnit.IsFeatureAvailable(argfname7))
+            //if (currentUnit.IsFeatureAvailable("移動制限"))
             //{
             //    if (currentUnit.Area != "空中" & currentUnit.Area != "地中")
             //    {
-            //        object argIndex6 = "移動制限";
-            //        string arglist = currentUnit.FeatureData(argIndex6);
-            //        n = GeneralLib.LLength(arglist);
+            //        n = GeneralLib.LLength(currentUnit.FeatureData("移動制限"));
             //        allowed_terrains = new string[(n + 1)];
             //        var loopTo32 = n;
             //        for (i = 2; i <= loopTo32; i++)
             //        {
-            //            object argIndex7 = "移動制限";
-            //            string arglist1 = currentUnit.FeatureData(argIndex7);
-            //            allowed_terrains[i] = GeneralLib.LIndex(arglist1, i);
+            //            allowed_terrains[i] = GeneralLib.LIndex(currentUnit.FeatureData("移動制限"), i);
             //        }
 
             //        if (!ByJump)
@@ -3737,21 +3684,16 @@ namespace SRCCore.Maps
 
             //// 進入不可
             //prohibited_terrains = new string[1];
-            //string argfname8 = "進入不可";
-            //if (currentUnit.IsFeatureAvailable(argfname8))
+            //if (currentUnit.IsFeatureAvailable("進入不可"))
             //{
             //    if (currentUnit.Area != "空中" & currentUnit.Area != "地中")
             //    {
-            //        object argIndex8 = "進入不可";
-            //        string arglist2 = currentUnit.FeatureData(argIndex8);
-            //        n = GeneralLib.LLength(arglist2);
+            //        n = GeneralLib.LLength(currentUnit.FeatureData("進入不可"));
             //        prohibited_terrains = new string[(n + 1)];
             //        var loopTo36 = n;
             //        for (i = 2; i <= loopTo36; i++)
             //        {
-            //            object argIndex9 = "進入不可";
-            //            string arglist3 = currentUnit.FeatureData(argIndex9);
-            //            prohibited_terrains[i] = GeneralLib.LIndex(arglist3, i);
+            //            prohibited_terrains[i] = GeneralLib.LIndex(currentUnit.FeatureData("進入不可"), i);
             //        }
 
             //        if (!ByJump)
@@ -3778,8 +3720,7 @@ namespace SRCCore.Maps
             //}
 
             //// ホバー移動
-            //string argfname9 = "ホバー移動";
-            //if (currentUnit.IsFeatureAvailable(argfname9))
+            //if (currentUnit.IsFeatureAvailable("ホバー移動"))
             //{
             //    if (move_area == "地上" | move_area == "水上")
             //    {
@@ -3804,9 +3745,7 @@ namespace SRCCore.Maps
             //}
 
             //// 透過移動
-            //string argfname10 = "透過移動";
-            //string argsptype = "透過移動";
-            //if (currentUnit.IsFeatureAvailable(argfname10) | currentUnit.IsUnderSpecialPowerEffect(argsptype))
+            //if (currentUnit.IsFeatureAvailable("透過移動") | currentUnit.IsUnderSpecialPowerEffect("透過移動"))
             //{
             //    var loopTo42 = x2;
             //    for (i = x1; i <= loopTo42; i++)
@@ -3835,69 +3774,52 @@ namespace SRCCore.Maps
             //string buf;
             //Unit u2;
             //// 移動能力の可否を調べておく
-            //string argarea_name = "陸";
-            //is_trans_available_on_ground = u.IsTransAvailable(argarea_name) & u.get_Adaption(2) != 0;
-            //string argarea_name1 = "水";
-            //is_trans_available_in_water = u.IsTransAvailable(argarea_name1) & u.get_Adaption(3) != 0;
-            //string argarea_name2 = "空";
-            //is_trans_available_in_sky = u.IsTransAvailable(argarea_name2) & u.get_Adaption(1) != 0;
-            //string argfname = "水中移動";
-            //if (Strings.Mid(u.Data.Adaption, 3, 1) != "-" | u.IsFeatureAvailable(argfname))
+            //is_trans_available_on_ground = u.IsTransAvailable("陸") & u.get_Adaption(2) != 0;
+            //is_trans_available_in_water = u.IsTransAvailable("水") & u.get_Adaption(3) != 0;
+            //is_trans_available_in_sky = u.IsTransAvailable("空") & u.get_Adaption(1) != 0;
+            //if (Strings.Mid(u.Data.Adaption, 3, 1) != "-" | u.IsFeatureAvailable("水中移動"))
             //{
             //    is_adaptable_in_water = true;
             //}
 
-            //string argfname1 = "宇宙移動";
-            //if (Strings.Mid(u.Data.Adaption, 4, 1) != "-" | u.IsFeatureAvailable(argfname1))
+            //if (Strings.Mid(u.Data.Adaption, 4, 1) != "-" | u.IsFeatureAvailable("宇宙移動"))
             //{
             //    is_adaptable_in_space = true;
             //}
 
-            //string argfname2 = "水上移動";
-            //string argfname3 = "ホバー移動";
-            //if (u.IsFeatureAvailable(argfname2) | u.IsFeatureAvailable(argfname3))
+            //if (u.IsFeatureAvailable("水上移動") | u.IsFeatureAvailable("ホバー移動"))
             //{
             //    is_trans_available_on_water = true;
             //}
 
             //// 移動制限
             //allowed_terrains = new string[1];
-            //string argfname4 = "移動制限";
-            //if (u.IsFeatureAvailable(argfname4))
+            //if (u.IsFeatureAvailable("移動制限"))
             //{
             //    if (u.Area != "空中" & u.Area != "地中")
             //    {
-            //        object argIndex1 = "移動制限";
-            //        string arglist = u.FeatureData(argIndex1);
-            //        n = GeneralLib.LLength(arglist);
+            //        n = GeneralLib.LLength(u.FeatureData("移動制限"));
             //        allowed_terrains = new string[(n + 1)];
             //        var loopTo = n;
             //        for (i = 2; i <= loopTo; i++)
             //        {
-            //            object argIndex2 = "移動制限";
-            //            string arglist1 = u.FeatureData(argIndex2);
-            //            allowed_terrains[i] = GeneralLib.LIndex(arglist1, i);
+            //            allowed_terrains[i] = GeneralLib.LIndex(u.FeatureData("移動制限"), i);
             //        }
             //    }
             //}
 
             //// 進入不可
             //prohibited_terrains = new string[1];
-            //string argfname5 = "進入不可";
-            //if (u.IsFeatureAvailable(argfname5))
+            //if (u.IsFeatureAvailable("進入不可"))
             //{
             //    if (u.Area != "空中" & u.Area != "地中")
             //    {
-            //        object argIndex3 = "進入不可";
-            //        string arglist2 = u.FeatureData(argIndex3);
-            //        n = GeneralLib.LLength(arglist2);
+            //        n = GeneralLib.LLength(u.FeatureData("進入不可"));
             //        prohibited_terrains = new string[(n + 1)];
             //        var loopTo1 = n;
             //        for (i = 2; i <= loopTo1; i++)
             //        {
-            //            object argIndex4 = "進入不可";
-            //            string arglist3 = u.FeatureData(argIndex4);
-            //            prohibited_terrains[i] = GeneralLib.LIndex(arglist3, i);
+            //            prohibited_terrains[i] = GeneralLib.LIndex(u.FeatureData("進入不可"), i);
             //        }
             //    }
             //}
@@ -3909,12 +3831,10 @@ namespace SRCCore.Maps
             //}
             //else
             //{
-            //    object argIndex5 = "テレポート";
-            //    r = (u.Speed + u.FeatureLevel(argIndex5));
+            //    r = (u.Speed + u.FeatureLevel("テレポート"));
             //}
 
-            //object argIndex6 = "移動不能";
-            //if (u.IsConditionSatisfied(argIndex6))
+            //if (u.IsConditionSatisfied("移動不能"))
             //{
             //    r = 0;
             //}
@@ -4156,21 +4076,15 @@ namespace SRCCore.Maps
             //        {
             //            case "味方":
             //                {
-            //                    string argfname10 = "母艦";
-            //                    string argfname11 = "合体";
-            //                    string argfname12 = "合体";
-            //                    if (u2.IsFeatureAvailable(argfname10))
+            //                    if (u2.IsFeatureAvailable("母艦"))
             //                    {
             //                        // 母艦に着艦？
-            //                        string argfname6 = "母艦";
-            //                        string argfname7 = "格納不可";
-            //                        string argfname8 = "母艦";
-            //                        if (!u.IsFeatureAvailable(argfname6) & !u.IsFeatureAvailable(argfname7) & u2.Area != "地中" & !u2.IsDisabled(argfname8))
+            //                        if (!u.IsFeatureAvailable("母艦") & !u.IsFeatureAvailable("格納不可") & u2.Area != "地中" & !u2.IsDisabled("母艦"))
             //                        {
             //                            MaskData[i, j] = false;
             //                        }
             //                    }
-            //                    else if (u.IsFeatureAvailable(argfname11) & u2.IsFeatureAvailable(argfname12))
+            //                    else if (u.IsFeatureAvailable("合体") & u2.IsFeatureAvailable("合体"))
             //                    {
             //                        // ２体合体？
             //                        MaskData[i, j] = true;
@@ -4183,19 +4097,16 @@ namespace SRCCore.Maps
 
             //                            if (localFeature() == "合体" & !string.IsNullOrEmpty(localFeatureName()))
             //                            {
-            //                                object argIndex7 = k;
-            //                                buf = u.FeatureData(argIndex7);
+            //                                buf = u.FeatureData(k);
             //                                bool localIsDefined() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
             //                                bool localIsDefined1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
             //                                if (GeneralLib.LLength(buf) == 3 & localIsDefined() & localIsDefined1())
             //                                {
-            //                                    object argIndex9 = GeneralLib.LIndex(buf, 2);
             //                                    {
-            //                                        var withBlock = SRC.UList.Item(argIndex9);
-            //                                        object argIndex8 = "行動不能";
-            //                                        if (withBlock.IsConditionSatisfied(argIndex8))
+            //                                        var withBlock = SRC.UList.Item(GeneralLib.LIndex(buf, 2));
+            //                                        if (withBlock.IsConditionSatisfied("行動不能"))
             //                                        {
             //                                            break;
             //                                        }
@@ -4208,13 +4119,12 @@ namespace SRCCore.Maps
 
             //                                    Unit localItem() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
 
-            //                                    string argfname9 = "合体制限";
             //                                    if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
             //                                    {
             //                                        MaskData[i, j] = false;
             //                                        break;
             //                                    }
-            //                                    else if ((u2.Name ?? "") == (localItem().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable(argfname9))
+            //                                    else if ((u2.Name ?? "") == (localItem().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable("合体制限"))
             //                                    {
             //                                        MaskData[i, j] = false;
             //                                        break;
@@ -4229,31 +4139,25 @@ namespace SRCCore.Maps
 
             //            case "ＮＰＣ":
             //                {
-            //                    string argfname14 = "合体";
-            //                    string argfname15 = "合体";
-            //                    if (u.IsFeatureAvailable(argfname14) & u2.IsFeatureAvailable(argfname15))
+            //                    if (u.IsFeatureAvailable("合体") & u2.IsFeatureAvailable("合体"))
             //                    {
             //                        // ２体合体？
             //                        MaskData[i, j] = true;
             //                        var loopTo9 = u.CountFeature();
             //                        for (k = 1; k <= loopTo9; k++)
             //                        {
-            //                            object argIndex13 = k;
-            //                            if (u.Feature(argIndex13) == "合体")
+            //                            if (u.Feature(k) == "合体")
             //                            {
-            //                                object argIndex10 = k;
-            //                                buf = u.FeatureData(argIndex10);
+            //                                buf = u.FeatureData(k);
             //                                bool localIsDefined2() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
             //                                bool localIsDefined3() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
             //                                if (GeneralLib.LLength(buf) == 3 & localIsDefined2() & localIsDefined3())
             //                                {
-            //                                    object argIndex12 = GeneralLib.LIndex(buf, 2);
             //                                    {
-            //                                        var withBlock1 = SRC.UList.Item(argIndex12);
-            //                                        object argIndex11 = "行動不能";
-            //                                        if (withBlock1.IsConditionSatisfied(argIndex11))
+            //                                        var withBlock1 = SRC.UList.Item(GeneralLib.LIndex(buf, 2));
+            //                                        if (withBlock1.IsConditionSatisfied("行動不能"))
             //                                        {
             //                                            break;
             //                                        }
@@ -4266,13 +4170,12 @@ namespace SRCCore.Maps
 
             //                                    Unit localItem1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
 
-            //                                    string argfname13 = "合体制限";
             //                                    if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
             //                                    {
             //                                        MaskData[i, j] = false;
             //                                        break;
             //                                    }
-            //                                    else if ((u2.Name ?? "") == (localItem1().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable(argfname13))
+            //                                    else if ((u2.Name ?? "") == (localItem1().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable("合体制限"))
             //                                    {
             //                                        MaskData[i, j] = false;
             //                                        break;
@@ -4331,34 +4234,25 @@ namespace SRCCore.Maps
             //}
 
             //// 移動能力の可否を調べておく
-            //string argarea_name = "陸";
-            //is_trans_available_on_ground = u.IsTransAvailable(argarea_name) & u.get_Adaption(2) != 0;
-            //string argarea_name1 = "水";
-            //is_trans_available_in_water = u.IsTransAvailable(argarea_name1) & u.get_Adaption(3) != 0;
-            //string argarea_name2 = "空";
-            //is_trans_available_in_sky = u.IsTransAvailable(argarea_name2) & u.get_Adaption(1) != 0;
-            //string argfname = "水中移動";
-            //if (Strings.Mid(u.Data.Adaption, 3, 1) != "-" | u.IsFeatureAvailable(argfname))
+            //is_trans_available_on_ground = u.IsTransAvailable("陸") & u.get_Adaption(2) != 0;
+            //is_trans_available_in_water = u.IsTransAvailable("水") & u.get_Adaption(3) != 0;
+            //is_trans_available_in_sky = u.IsTransAvailable("空") & u.get_Adaption(1) != 0;
+            //if (Strings.Mid(u.Data.Adaption, 3, 1) != "-" | u.IsFeatureAvailable("水中移動"))
             //{
             //    is_adaptable_in_water = true;
             //}
 
-            //string argfname1 = "宇宙移動";
-            //if (Strings.Mid(u.Data.Adaption, 4, 1) != "-" | u.IsFeatureAvailable(argfname1))
+            //if (Strings.Mid(u.Data.Adaption, 4, 1) != "-" | u.IsFeatureAvailable("宇宙移動"))
             //{
             //    is_adaptable_in_space = true;
             //}
 
-            //string argfname2 = "水上移動";
-            //string argfname3 = "ホバー移動";
-            //if (u.IsFeatureAvailable(argfname2) | u.IsFeatureAvailable(argfname3))
+            //if (u.IsFeatureAvailable("水上移動") | u.IsFeatureAvailable("ホバー移動"))
             //{
             //    is_trans_available_on_water = true;
             //}
 
-            //string argfname4 = "透過移動";
-            //string argsptype = "透過移動";
-            //if (u.IsFeatureAvailable(argfname4) | u.IsUnderSpecialPowerEffect(argsptype))
+            //if (u.IsFeatureAvailable("透過移動") | u.IsUnderSpecialPowerEffect("透過移動"))
             //{
             //    is_able_to_penetrate = true;
             //}
@@ -4366,21 +4260,17 @@ namespace SRCCore.Maps
             //// ADD START MARGE
             //// 地形適応のある地形のリストを作成
             //adopted_terrain = new string[1];
-            //string argfname5 = "地形適応";
-            //if (u.IsFeatureAvailable(argfname5))
+            //if (u.IsFeatureAvailable("地形適応"))
             //{
             //    var loopTo2 = u.CountFeature();
             //    for (i = 1; i <= loopTo2; i++)
             //    {
-            //        object argIndex2 = i;
-            //        if (u.Feature(argIndex2) == "地形適応")
+            //        if (u.Feature(i) == "地形適応")
             //        {
-            //            object argIndex1 = i;
-            //            buf = u.FeatureData(argIndex1);
+            //            buf = u.FeatureData(i);
             //            if (GeneralLib.LLength(buf) == 0)
             //            {
-            //                string argmsg = "ユニット「" + u.Name + "」の地形適応能力に対応地形が指定されていません";
-            //                GUI.ErrorMessage(argmsg);
+            //                GUI.ErrorMessage("ユニット「" + u.Name + "」の地形適応能力に対応地形が指定されていません");
             //                SRC.TerminateSRC();
             //            }
 
@@ -4396,42 +4286,32 @@ namespace SRCCore.Maps
 
             //// 移動制限
             //allowed_terrains = new string[1];
-            //string argfname6 = "移動制限";
-            //if (u.IsFeatureAvailable(argfname6))
+            //if (u.IsFeatureAvailable("移動制限"))
             //{
             //    if (u.Area != "空中" & u.Area != "地中")
             //    {
-            //        object argIndex3 = "移動制限";
-            //        string arglist = u.FeatureData(argIndex3);
-            //        n = GeneralLib.LLength(arglist);
+            //        n = GeneralLib.LLength(u.FeatureData("移動制限"));
             //        allowed_terrains = new string[(n + 1)];
             //        var loopTo4 = n;
             //        for (i = 2; i <= loopTo4; i++)
             //        {
-            //            object argIndex4 = "移動制限";
-            //            string arglist1 = u.FeatureData(argIndex4);
-            //            allowed_terrains[i] = GeneralLib.LIndex(arglist1, i);
+            //            allowed_terrains[i] = GeneralLib.LIndex(u.FeatureData("移動制限"), i);
             //        }
             //    }
             //}
 
             //// 進入不可
             //prohibited_terrains = new string[1];
-            //string argfname7 = "進入不可";
-            //if (u.IsFeatureAvailable(argfname7))
+            //if (u.IsFeatureAvailable("進入不可"))
             //{
             //    if (u.Area != "空中" & u.Area != "地中")
             //    {
-            //        object argIndex5 = "進入不可";
-            //        string arglist2 = u.FeatureData(argIndex5);
-            //        n = GeneralLib.LLength(arglist2);
+            //        n = GeneralLib.LLength(u.FeatureData("進入不可"));
             //        prohibited_terrains = new string[(n + 1)];
             //        var loopTo5 = n;
             //        for (i = 2; i <= loopTo5; i++)
             //        {
-            //            object argIndex6 = "進入不可";
-            //            string arglist3 = u.FeatureData(argIndex6);
-            //            prohibited_terrains[i] = GeneralLib.LIndex(arglist3, i);
+            //            prohibited_terrains[i] = GeneralLib.LIndex(u.FeatureData("進入不可"), i);
             //        }
             //    }
             //}

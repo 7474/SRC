@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using SRCCore;
 using SRCCore.Commands;
 using SRCCore.Lib;
@@ -147,9 +147,7 @@ namespace SRCSharpForm
             //Commands.CommandState = "ユニット選択";
 
             //// マップ画面に表示できるマップのサイズ
-            //string argini_section1 = "Option";
-            //string argini_entry1 = "NewGUI";
-            //switch (Strings.LCase(GeneralLib.ReadIni(argini_section1, argini_entry1)) ?? "")
+            //switch (Strings.LCase(GeneralLib.ReadIni("Option", "NewGUI")) ?? "")
             //{
             //    case "on":
             //        {
@@ -169,17 +167,13 @@ namespace SRCSharpForm
             //    default:
             //        {
             //            MainWidth = 15;
-            //            string argini_section = "Option";
-            //            string argini_entry = "NewGUI";
-            //            string argini_data = "Off";
-            //            GeneralLib.WriteIni(argini_section, argini_entry, argini_data);
+            //            GeneralLib.WriteIni("Option", "NewGUI", "Off");
             //            break;
             //        }
             //}
             //// ADD START MARGE
             //// Optionで定義されていればそちらを優先する
-            //string argoname = "新ＧＵＩ";
-            //if (Expression.IsOptionDefined(argoname))
+            //if (Expression.IsOptionDefined("新ＧＵＩ"))
             //{
             //    NewGUIMode = true;
             //    MainWidth = 20;
@@ -521,9 +515,7 @@ namespace SRCSharpForm
                 //    }
                 //    else
                 //    {
-                //        var argpic = frmMessage.picUnit1;
-                //        string argfname = "";
-                //        LoadUnitBitmap(lu, argpic, 0, 0, true, fname: argfname);
+                //        LoadUnitBitmap(lu, frmMessage.picUnit1, 0, 0, true, fname: "");
                 //        frmMessage.picUnit1 = argpic;
                 //    }
                 //}
@@ -554,8 +546,7 @@ namespace SRCSharpForm
                 {
                     if (lu.HP < 100000)
                     {
-                        string argbuf = SrcFormatter.Format(lu.HP);
-                        buf = GeneralLib.LeftPaddedString(argbuf, GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxHP)), 5));
+                        buf = GeneralLib.LeftPaddedString(SrcFormatter.Format(lu.HP), GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxHP)), 5));
                     }
                     else
                     {
@@ -596,8 +587,7 @@ namespace SRCSharpForm
                 {
                     if (lu.EN < 1000)
                     {
-                        string argbuf1 = SrcFormatter.Format(lu.EN);
-                        buf = GeneralLib.LeftPaddedString(argbuf1, GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxEN)), 3));
+                        buf = GeneralLib.LeftPaddedString(SrcFormatter.Format(lu.EN), GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxEN)), 3));
                     }
                     else
                     {
@@ -644,9 +634,7 @@ namespace SRCSharpForm
                 //    }
                 //    else
                 //    {
-                //        var argpic1 = frmMessage.picUnit2;
-                //        string argfname1 = "";
-                //        LoadUnitBitmap(ru, argpic1, 0, 0, true, fname: argfname1);
+                //        LoadUnitBitmap(ru, frmMessage.picUnit2, 0, 0, true, fname: "");
                 //        frmMessage.picUnit2 = argpic1;
                 //    }
                 //}
@@ -677,8 +665,7 @@ namespace SRCSharpForm
                 {
                     if (ru.HP < 100000)
                     {
-                        string argbuf2 = SrcFormatter.Format(ru.HP);
-                        buf = GeneralLib.LeftPaddedString(argbuf2, GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxHP)), 5));
+                        buf = GeneralLib.LeftPaddedString(SrcFormatter.Format(ru.HP), GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxHP)), 5));
                     }
                     else
                     {
@@ -719,8 +706,7 @@ namespace SRCSharpForm
                 {
                     if (ru.EN < 1000)
                     {
-                        string argbuf3 = SrcFormatter.Format(ru.EN);
-                        buf = GeneralLib.LeftPaddedString(argbuf3, GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxEN)), 3));
+                        buf = GeneralLib.LeftPaddedString(SrcFormatter.Format(ru.EN), GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxEN)), 3));
                     }
                     else
                     {
@@ -796,8 +782,7 @@ namespace SRCSharpForm
                         {
                             if (lu.HP < 100000)
                             {
-                                string argbuf4 = SrcFormatter.Format(tmp);
-                                buf = GeneralLib.LeftPaddedString(argbuf4, GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxHP)), 5));
+                                buf = GeneralLib.LeftPaddedString(SrcFormatter.Format(tmp), GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxHP)), 5));
                             }
                             else
                             {
@@ -831,8 +816,7 @@ namespace SRCSharpForm
                         {
                             if (lu.EN < 1000)
                             {
-                                string argbuf5 = SrcFormatter.Format(tmp);
-                                buf = GeneralLib.LeftPaddedString(argbuf5, GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxEN)), 3));
+                                buf = GeneralLib.LeftPaddedString(SrcFormatter.Format(tmp), GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxEN)), 3));
                             }
                             else
                             {
@@ -870,8 +854,7 @@ namespace SRCSharpForm
                         {
                             if (ru.HP < 100000)
                             {
-                                string argbuf6 = SrcFormatter.Format(tmp);
-                                buf = GeneralLib.LeftPaddedString(argbuf6, GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxHP)), 5));
+                                buf = GeneralLib.LeftPaddedString(SrcFormatter.Format(tmp), GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxHP)), 5));
                             }
                             else
                             {
@@ -905,8 +888,7 @@ namespace SRCSharpForm
                         {
                             if (ru.EN < 1000)
                             {
-                                string argbuf7 = SrcFormatter.Format(tmp);
-                                buf = GeneralLib.LeftPaddedString(argbuf7, GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxEN)), 3));
+                                buf = GeneralLib.LeftPaddedString(SrcFormatter.Format(tmp), GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxEN)), 3));
                             }
                             else
                             {
@@ -1061,8 +1043,7 @@ namespace SRCSharpForm
                     fname = SRC.FileSystem.PathCombine("Pilot", fname);
                     if ((DisplayedPilot ?? "") != (fname ?? "") || (DisplayMode ?? "") != (msg_mode ?? ""))
                     {
-                        string argdraw_option = "メッセージ " + msg_mode;
-                        if (DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, argdraw_option))
+                        if (DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, "メッセージ " + msg_mode))
                         {
                             frmMessage.picFace.Refresh();
                             DisplayedPilot = fname;
@@ -1077,12 +1058,10 @@ namespace SRCSharpForm
 
                             // TODO
                             //// パイロット画像が存在しないことを記録しておく
-                            //object argIndex3 = pname;
                             //if (SRC.PList.IsDefined(pname))
                             //{
-                            //    object argIndex2 = pname;
                             //    {
-                            //        var withBlock = SRC.PList.Item(argIndex2);
+                            //        var withBlock = SRC.PList.Item(pname);
                             //        if ((withBlock.get_Bitmap(false) ?? "") == (withBlock.Data.Bitmap ?? ""))
                             //        {
                             //            withBlock.Data.IsBitmapMissing = true;
@@ -1399,8 +1378,7 @@ namespace SRCSharpForm
             //    var loopTo = withBlock.CountWeapon();
             //    for (i = 1; i <= loopTo; i++)
             //    {
-            //        string argtarea = "";
-            //        wpower[i] = withBlock.WeaponPower(i, argtarea);
+            //        wpower[i] = withBlock.WeaponPower(i, "");
             //    }
 
             //    // 攻撃力でソート
@@ -1457,8 +1435,7 @@ namespace SRCSharpForm
             //            var withBlock1 = u;
             //            if (lb_mode == "一覧")
             //            {
-            //                string argref_mode = "ステータス";
-            //                if (!withBlock1.IsWeaponAvailable(w, argref_mode))
+            //                if (!withBlock1.IsWeaponAvailable(w, "ステータス"))
             //                {
             //                    // Disableコマンドで使用不可にされた武器と使用できない合体技
             //                    // は表示しない
@@ -1472,8 +1449,7 @@ namespace SRCSharpForm
             //                        goto NextLoop1;
             //                    }
 
-            //                    string argattr = "合";
-            //                    if (withBlock1.IsWeaponClassifiedAs(w, argattr))
+            //                    if (withBlock1.IsWeaponClassifiedAs(w, "合"))
             //                    {
             //                        if (!withBlock1.IsCombinationAttackAvailable(w, true))
             //                        {
@@ -1502,8 +1478,7 @@ namespace SRCSharpForm
             //                    goto NextLoop1;
             //                }
 
-            //                string argattr1 = "合";
-            //                if (withBlock1.IsWeaponClassifiedAs(w, argattr1))
+            //                if (withBlock1.IsWeaponClassifiedAs(w, "合"))
             //                {
             //                    if (!withBlock1.IsCombinationAttackAvailable(w, true))
             //                    {
@@ -1610,11 +1585,9 @@ namespace SRCSharpForm
 
             //            // 属性
             //            wclass = u.WeaponClass(w);
-            //            string argstring21 = "|";
-            //            if (GeneralLib.InStrNotNest(wclass, argstring21) > 0)
+            //            if (GeneralLib.InStrNotNest(wclass, "|") > 0)
             //            {
-            //                string argstring2 = "|";
-            //                wclass = Strings.Left(wclass, GeneralLib.InStrNotNest(wclass, argstring2) - 1);
+            //                wclass = Strings.Left(wclass, GeneralLib.InStrNotNest(wclass, "|") - 1);
             //            }
 
             //            list[Information.UBound(list)] = list[Information.UBound(list)] + " " + wclass;
@@ -1626,9 +1599,7 @@ namespace SRCSharpForm
 
             //    if (lb_mode == "移動前" | lb_mode == "移動後")
             //    {
-            //        Unit argt = null;
-            //        Unit argt1 = null;
-            //        if (u.LookForSupportAttack(argt1) is object)
+            //        if (u.LookForSupportAttack(null) is object)
             //        {
             //            // 援護攻撃を使うかどうか選択
             //            Commands.UseSupportAttack = true;
@@ -1640,22 +1611,16 @@ namespace SRCSharpForm
 
             //    // リストボックスを表示
             //    TopItem = -1;
-            //    string argtname = "EN";
-            //    string argtname1 = "CT";
-            //    string arglb_info = "名称                       攻撃 射程  命 弾  " + Expression.Term(argtname, u, 2) + "  " + Expression.Term(argtname1, u, 2) + " 適応 分類";
-            //    string arglb_mode = "表示のみ";
-            //    ret = ListBox(caption_msg, list, arglb_info, arglb_mode);
+            //    ret = ListBox(caption_msg, list, "名称                       攻撃 射程  命 弾  " + Expression.Term(argtname, u, 2) + "  " + Expression.Term(argtname1, u, 2) + " 適応 分類", "表示のみ");
             //    if (SRC.AutoMoveCursor)
             //    {
             //        if (lb_mode != "一覧")
             //        {
-            //            string argcursor_mode = "武器選択";
-            //            MoveCursorPos(argcursor_mode);
+            //            MoveCursorPos("武器選択");
             //        }
             //        else
             //        {
-            //            string argcursor_mode1 = "ダイアログ";
-            //            MoveCursorPos(argcursor_mode1);
+            //            MoveCursorPos("ダイアログ");
             //        }
             //    }
 
@@ -1697,11 +1662,7 @@ namespace SRCSharpForm
             //                list[Information.UBound(list)] = "援護攻撃：使用しない";
             //            }
 
-            //            string argtname2 = "EN";
-            //            string argtname3 = "CT";
-            //            string arglb_info1 = "名称                       攻撃 射程  命 弾  " + Expression.Term(argtname2, u, 2) + "  " + Expression.Term(argtname3, u, 2) + " 適応 分類";
-            //            string arglb_mode1 = "表示のみ";
-            //            Commands.SelectedItem = ListBox(caption_msg, list, arglb_info1, arglb_mode1);
+            //            Commands.SelectedItem = ListBox(caption_msg, list, "名称                       攻撃 射程  命 弾  " + Expression.Term(argtname2, u, 2) + "  " + Expression.Term(argtname3, u, 2) + " 適応 分類", "表示のみ");
             //        }
             //    }
 
@@ -1736,8 +1697,7 @@ namespace SRCSharpForm
             //            }
 
             //            // 使用できない合体技は表示しない
-            //            string argattr2 = "合";
-            //            if (withBlock3.IsWeaponClassifiedAs(w, argattr2))
+            //            if (withBlock3.IsWeaponClassifiedAs(w, "合"))
             //            {
             //                if (!withBlock3.IsCombinationAttackAvailable(w, true))
             //                {
@@ -1745,10 +1705,7 @@ namespace SRCSharpForm
             //                }
             //            }
 
-            //            string argref_mode1 = "移動前";
-            //            string argattr3 = "Ｍ";
-            //            string argattr4 = "合";
-            //            if (!withBlock3.IsWeaponAvailable(w, argref_mode1))
+            //            if (!withBlock3.IsWeaponAvailable(w, "移動前"))
             //            {
             //                // この武器は使用不能
             //                ListItemFlag[Information.UBound(list) + 1] = true;
@@ -1758,12 +1715,12 @@ namespace SRCSharpForm
             //                // ターゲットが射程外
             //                ListItemFlag[Information.UBound(list) + 1] = true;
             //            }
-            //            else if (withBlock3.IsWeaponClassifiedAs(w, argattr3))
+            //            else if (withBlock3.IsWeaponClassifiedAs(w, "Ｍ"))
             //            {
             //                // マップ攻撃は武器選定外
             //                ListItemFlag[Information.UBound(list) + 1] = true;
             //            }
-            //            else if (withBlock3.IsWeaponClassifiedAs(w, argattr4))
+            //            else if (withBlock3.IsWeaponClassifiedAs(w, "合"))
             //            {
             //                // 合体技は自分から攻撃をかける場合にのみ使用
             //                ListItemFlag[Information.UBound(list) + 1] = true;
@@ -1798,8 +1755,7 @@ namespace SRCSharpForm
             //            list[Information.UBound(list)] = GeneralLib.RightPaddedString(withBlock4.Nickname(), 29) + localLeftPaddedString8();
 
             //            // 命中率
-            //            string argoname = "予測命中率非表示";
-            //            if (!Expression.IsOptionDefined(argoname))
+            //            if (!Expression.IsOptionDefined("予測命中率非表示"))
             //            {
             //                buf = SrcFormatter.Format(GeneralLib.MinLng(u.HitProbability(w, Commands.SelectedUnit, true), 100)) + "%";
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + GeneralLib.LeftPaddedString(buf, 5);
@@ -1819,8 +1775,7 @@ namespace SRCSharpForm
 
 
             //            // クリティカル率
-            //            string argoname1 = "予測命中率非表示";
-            //            if (!Expression.IsOptionDefined(argoname1))
+            //            if (!Expression.IsOptionDefined("予測命中率非表示"))
             //            {
             //                buf = SrcFormatter.Format(GeneralLib.MinLng(u.CriticalProbability(w, Commands.SelectedUnit), 100)) + "%";
             //                list[Information.UBound(list)] = list[Information.UBound(list)] + GeneralLib.LeftPaddedString(buf, 5);
@@ -1873,11 +1828,9 @@ namespace SRCSharpForm
 
             //            // 属性
             //            wclass = u.WeaponClass(w);
-            //            string argstring23 = "|";
-            //            if (GeneralLib.InStrNotNest(wclass, argstring23) > 0)
+            //            if (GeneralLib.InStrNotNest(wclass, "|") > 0)
             //            {
-            //                string argstring22 = "|";
-            //                wclass = Strings.Left(wclass, GeneralLib.InStrNotNest(wclass, argstring22) - 1);
+            //                wclass = Strings.Left(wclass, GeneralLib.InStrNotNest(wclass, "|") - 1);
             //            }
 
             //            list[Information.UBound(list)] = list[Information.UBound(list)] + " " + wclass;
@@ -1889,11 +1842,7 @@ namespace SRCSharpForm
 
             //    // リストボックスを表示
             //    TopItem = -1;
-            //    string argtname4 = "CT";
-            //    string argtname5 = "EN";
-            //    string arglb_info2 = "名称                         攻撃 命中 " + Expression.Term(argtname4, u, 2) + "   弾  " + Expression.Term(argtname5, u, 2) + " 適応 分類";
-            //    string arglb_mode2 = "連続表示,カーソル移動";
-            //    ret = ListBox(caption_msg, list, arglb_info2, arglb_mode2);
+            //    ret = ListBox(caption_msg, list, "名称                         攻撃 命中 " + Expression.Term("CT", u, 2) + "   弾  " + Expression.Term(argtname5, u, 2) + " 適応 分類", "連続表示,カーソル移動");
             //    WeaponListBoxRet = wlist[ret];
             //}
 
@@ -1916,7 +1865,7 @@ namespace SRCSharpForm
                 Items = list,
                 HasFlag = true,
                 lb_caption = caption_msg,
-                //"名称                         攻撃 命中 " + Expression.Term(argtname4, u, 2) + "   弾  " + Expression.Term(argtname5, u, 2) + " 適応 分類",
+                //"名称                         攻撃 命中 " + Expression.Term("EN"4, u, 2) + "   弾  " + Expression.Term("EN"5, u, 2) + " 適応 分類",
                 lb_info = "名称                         攻撃 命中 CT   弾  EN 適応 分類",
                 lb_mode = "",
             });

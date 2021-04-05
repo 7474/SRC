@@ -1,4 +1,4 @@
-﻿using SRCCore.Lib;
+using SRCCore.Lib;
 using SRCCore.VB;
 using System;
 
@@ -71,8 +71,7 @@ namespace SRCCore.Units
             get
             {
                 string NicknameRet = default;
-                string argoname = "等身大基準";
-                if (Expression.IsOptionDefined(argoname))
+                if (Expression.IsOptionDefined("等身大基準"))
                 {
                     if (CountPilot() > 0)
                     {
@@ -104,12 +103,9 @@ namespace SRCCore.Units
         //        KanaNameRet = Data.KanaName;
 
         //        // 読み仮名変更能力による変更
-        //        string argfname = "読み仮名変更";
-        //        string argfname1 = "愛称変更";
-        //        if (IsFeatureAvailable(argfname))
+        //        if (IsFeatureAvailable("読み仮名変更"))
         //        {
-        //            object argIndex1 = "読み仮名変更";
-        //            KanaNameRet = FeatureData(argIndex1);
+        //            KanaNameRet = FeatureData("読み仮名変更");
         //            idx = (int)Strings.InStr(KanaNameRet, "$(読み仮名)");
         //            if (idx > 0)
         //            {
@@ -129,10 +125,9 @@ namespace SRCCore.Units
         //                }
         //            }
         //        }
-        //        else if (IsFeatureAvailable(argfname1))
+        //        else if (IsFeatureAvailable("愛称変更"))
         //        {
-        //            object argIndex2 = "愛称変更";
-        //            KanaNameRet = FeatureData(argIndex2);
+        //            KanaNameRet = FeatureData("愛称変更");
         //            idx = (int)Strings.InStr(KanaNameRet, "$(愛称)");
         //            if (idx > 0)
         //            {
@@ -284,15 +279,13 @@ namespace SRCCore.Units
                 //if (CountPilot() > 0)
                 //{
                 //    // 霊力変換器装備ユニットは霊力に応じて最大ＨＰが変化
-                //    string argfname = "霊力変換器";
-                //    if (IsFeatureAvailable(argfname))
+                //    if (IsFeatureAvailable("霊力変換器"))
                 //    {
                 //        MaxHPRet = (int)(MaxHPRet + 10d * PlanaLevel());
                 //    }
 
                 //    // オーラ変換器装備ユニットはオーラレベルに応じて最大ＨＰが変化
-                //    string argfname1 = "オーラ変換器";
-                //    if (IsFeatureAvailable(argfname1))
+                //    if (IsFeatureAvailable("オーラ変換器"))
                 //    {
                 //        MaxHPRet = (int)(MaxHPRet + 100d * AuraLevel());
                 //    }
@@ -320,15 +313,13 @@ namespace SRCCore.Units
                 //if (CountPilot() > 0)
                 //{
                 //    // 霊力変換器装備ユニットは霊力に応じて最大ＥＮが変化
-                //    string argfname = "霊力変換器";
-                //    if (IsFeatureAvailable(argfname))
+                //    if (IsFeatureAvailable("霊力変換器"))
                 //    {
                 //        MaxENRet = (int)(MaxENRet + 0.5d * PlanaLevel());
                 //    }
 
                 //    // オーラ変換器装備ユニットはオーラレベルに応じて最大ＥＮが変化
-                //    string argfname1 = "オーラ変換器";
-                //    if (IsFeatureAvailable(argfname1))
+                //    if (IsFeatureAvailable("オーラ変換器"))
                 //    {
                 //        MaxENRet = (int)(MaxENRet + 10d * AuraLevel());
                 //    }
@@ -401,17 +392,13 @@ namespace SRCCore.Units
 
                 // TODO
                 //// 特殊状態による移動力修正
-                //string argsptype = "移動力強化";
-                //object argIndex1 = "移動力ＵＰ";
-                //if (IsUnderSpecialPowerEffect(argsptype))
+                //if (IsUnderSpecialPowerEffect("移動力強化"))
                 //{
-                //    string argsname = "移動力強化";
-                //    SpeedRet = (int)(SpeedRet + SpecialPowerEffectLevel(argsname));
+                //    SpeedRet = (int)(SpeedRet + SpecialPowerEffectLevel("移動力強化"));
                 //}
-                //else if (IsConditionSatisfied(argIndex1))
+                //else if (IsConditionSatisfied("移動力ＵＰ"))
                 //{
-                //    string argoname = "大型マップ";
-                //    if (Expression.IsOptionDefined(argoname))
+                //    if (Expression.IsOptionDefined("大型マップ"))
                 //    {
                 //        SpeedRet = (int)(SpeedRet + 2);
                 //    }
@@ -421,15 +408,13 @@ namespace SRCCore.Units
                 //    }
                 //}
 
-                //object argIndex2 = "移動力ＤＯＷＮ";
-                //if (IsConditionSatisfied(argIndex2))
+                //if (IsConditionSatisfied("移動力ＤＯＷＮ"))
                 //{
                 //    SpeedRet = (int)GeneralLib.MaxLng(SpeedRet / 2, 1);
                 //}
 
                 //// 霊力による移動力ＵＰ
-                //string argfname2 = "霊力変換器";
-                //if (IsFeatureAvailable(argfname2))
+                //if (IsFeatureAvailable("霊力変換器"))
                 //{
                 //    if (CountPilot() > 0)
                 //    {
@@ -438,15 +423,13 @@ namespace SRCCore.Units
                 //}
 
                 //// スペシャルパワーによる移動力低下
-                //string argsptype1 = "移動力低下";
-                //if (IsUnderSpecialPowerEffect(argsptype1))
+                //if (IsUnderSpecialPowerEffect("移動力低下"))
                 //{
                 //    SpeedRet = (int)GeneralLib.MaxLng(SpeedRet / 2, 1);
                 //}
 
                 //// 移動不能の場合は移動力０
-                //object argIndex3 = "移動不能";
-                //if (IsConditionSatisfied(argIndex3))
+                //if (IsConditionSatisfied("移動不能"))
                 //{
                 //    SpeedRet = 0;
                 //}
@@ -708,11 +691,9 @@ namespace SRCCore.Units
         //    }
 
         //    // Optionコマンドの設定に応じて適応修正値を設定
-        //    string argoname2 = "地形適応修正緩和";
-        //    if (Expression.IsOptionDefined(argoname2))
+        //    if (Expression.IsOptionDefined("地形適応修正緩和"))
         //    {
-        //        string argoname = "地形適応修正繰り下げ";
-        //        if (Expression.IsOptionDefined(argoname))
+        //        if (Expression.IsOptionDefined("地形適応修正繰り下げ"))
         //        {
         //            switch (uad)
         //            {
@@ -797,8 +778,7 @@ namespace SRCCore.Units
         //    }
         //    else
         //    {
-        //        string argoname1 = "地形適応修正繰り下げ";
-        //        if (Expression.IsOptionDefined(argoname1))
+        //        if (Expression.IsOptionDefined("地形適応修正繰り下げ"))
         //        {
         //            switch (uad)
         //            {
@@ -897,20 +877,17 @@ namespace SRCCore.Units
             //{
             //    case "基本値":
             //        {
-            //            object argIndex1 = "装甲劣化";
-            //            if (IsConditionSatisfied(argIndex1))
+            //            if (IsConditionSatisfied("装甲劣化"))
             //            {
             //                ArmorRet = ArmorRet / 2;
             //            }
 
-            //            object argIndex2 = "石化";
-            //            if (IsConditionSatisfied(argIndex2))
+            //            if (IsConditionSatisfied("石化"))
             //            {
             //                ArmorRet = 2 * ArmorRet;
             //            }
 
-            //            object argIndex3 = "凍結";
-            //            if (IsConditionSatisfied(argIndex3))
+            //            if (IsConditionSatisfied("凍結"))
             //            {
             //                ArmorRet = ArmorRet / 2;
             //            }
@@ -929,44 +906,38 @@ namespace SRCCore.Units
             //if (CountPilot() > 0)
             //{
             //    // 霊力による装甲修正
-            //    string argfname = "霊力変換器";
-            //    if (IsFeatureAvailable(argfname))
+            //    if (IsFeatureAvailable("霊力変換器"))
             //    {
             //        ArmorRet = (int)(ArmorRet + 5d * PlanaLevel());
             //    }
 
             //    // サイキックドライブ装備ユニットは超能力レベルに応じて装甲が変化
-            //    string argfname1 = "サイキックドライブ";
-            //    if (IsFeatureAvailable(argfname1))
+            //    if (IsFeatureAvailable("サイキックドライブ"))
             //    {
             //        ArmorRet = (int)(ArmorRet + 100d * PsychicLevel());
             //    }
 
             //    // オーラ変換器装備ユニットはオーラレベルに応じて装甲が変化
-            //    string argfname2 = "オーラ変換器";
-            //    if (IsFeatureAvailable(argfname2))
+            //    if (IsFeatureAvailable("オーラ変換器"))
             //    {
             //        ArmorRet = (int)(ArmorRet + 50d * AuraLevel());
             //    }
             //}
 
             //// 装甲が劣化している場合は装甲値は半減
-            //object argIndex4 = "装甲劣化";
-            //if (IsConditionSatisfied(argIndex4))
+            //if (IsConditionSatisfied("装甲劣化"))
             //{
             //    ArmorRet = ArmorRet / 2;
             //}
 
             //// 石化しているユニットはとても固い……
-            //object argIndex5 = "石化";
-            //if (IsConditionSatisfied(argIndex5))
+            //if (IsConditionSatisfied("石化"))
             //{
             //    ArmorRet = 2 * ArmorRet;
             //}
 
             //// 凍っているユニットは脆くなる
-            //object argIndex6 = "凍結";
-            //if (IsConditionSatisfied(argIndex6))
+            //if (IsConditionSatisfied("凍結"))
             //{
             //    ArmorRet = ArmorRet / 2;
             //}
@@ -999,22 +970,19 @@ namespace SRCCore.Units
             //    if (CountPilot() > 0)
             //    {
             //        // サイキックドライブ装備ユニットは超能力レベルに応じて運動性が変化
-            //        string argfname = "サイキックドライブ";
-            //        if (IsFeatureAvailable(argfname))
+            //        if (IsFeatureAvailable("サイキックドライブ"))
             //        {
             //            MobilityRet = (int)(MobilityRet + 5d * PsychicLevel());
             //        }
 
             //        // オーラ変換器装備ユニットはオーラレベルに応じて運動性が変化
-            //        string argfname1 = "オーラ変換器";
-            //        if (IsFeatureAvailable(argfname1))
+            //        if (IsFeatureAvailable("オーラ変換器"))
             //        {
             //            MobilityRet = (int)(MobilityRet + 2d * AuraLevel());
             //        }
 
             //        // シンクロドライブ装備ユニットは同調率レベルに応じて運動性が変化
-            //        string argfname2 = "シンクロドライブ";
-            //        if (IsFeatureAvailable(argfname2))
+            //        if (IsFeatureAvailable("シンクロドライブ"))
             //        {
             //            if (MainPilot().SynchroRate() > 0)
             //            {
@@ -1030,20 +998,15 @@ namespace SRCCore.Units
         //public string get_Bitmap(bool use_orig)
         //{
         //    string BitmapRet = default;
-        //    object argIndex2 = "ユニット画像";
-        //    if (IsConditionSatisfied(argIndex2))
+        //    if (IsConditionSatisfied("ユニット画像"))
         //    {
-        //        object argIndex1 = "ユニット画像";
-        //        string arglist = ConditionData(argIndex1);
-        //        BitmapRet = GeneralLib.LIndex(arglist, 2);
+        //        BitmapRet = GeneralLib.LIndex(ConditionData(argIndex1), 2);
         //        return default;
         //    }
 
-        //    string argfname = "ユニット画像";
-        //    if (IsFeatureAvailable(argfname))
+        //    if (IsFeatureAvailable("ユニット画像"))
         //    {
-        //        object argIndex3 = "ユニット画像";
-        //        BitmapRet = FeatureData(argIndex3);
+        //        BitmapRet = FeatureData("ユニット画像");
         //        return default;
         //    }
 

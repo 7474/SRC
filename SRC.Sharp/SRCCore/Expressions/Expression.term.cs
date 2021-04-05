@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
@@ -26,24 +26,20 @@ namespace SRCCore.Expressions
             //// ユニットが用語名能力を持っている場合はそちらを優先
             //if (u is object)
             //{
-            //    string argfname = "用語名";
-            //    if (u.IsFeatureAvailable(argfname))
+            //    if (u.IsFeatureAvailable("用語名"))
             //    {
             //        var loopTo = u.CountFeature();
             //        for (i = 1; i <= loopTo; i++)
             //        {
-            //            object argIndex1 = i;
-            //            if (u.Feature(argIndex1) == "用語名")
+            //            if (u.Feature(i) == "用語名")
             //            {
             //                string localFeatureData1() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
 
-            //                string arglist1 = localFeatureData1();
-            //                if ((GeneralLib.LIndex(arglist1, 1) ?? "") == (tname ?? ""))
+            //                if ((GeneralLib.LIndex(localFeatureData1(), 1) ?? "") == (tname ?? ""))
             //                {
             //                    string localFeatureData() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
 
-            //                    string arglist = localFeatureData();
-            //                    TermRet = GeneralLib.LIndex(arglist, 2);
+            //                    TermRet = GeneralLib.LIndex(localFeatureData(), 2);
             //                    break;
             //                }
             //            }

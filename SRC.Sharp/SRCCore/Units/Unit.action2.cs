@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -23,8 +23,8 @@ namespace SRCCore.Units
             throw new NotImplementedException();
             //int GetExpRet = default;
             //var xp = default(int);
-            //short j, i, n;
-            //short prev_level;
+            //int j, i, n;
+            //int prev_level;
             //string[] prev_stype;
             //string[] prev_sname;
             //double[] prev_slevel;
@@ -34,8 +34,7 @@ namespace SRCCore.Units
             //string msg;
 
             //// 経験値を入手するのは味方ユニット及びＮＰＣの召喚ユニットのみ
-            //string argfname = "召喚ユニット";
-            //if ((Party != "味方" | Party0 != "味方") & (Party != "ＮＰＣ" | Party0 != "ＮＰＣ" | !IsFeatureAvailable(argfname)))
+            //if ((Party != "味方" | Party0 != "味方") & (Party != "ＮＰＣ" | Party0 != "ＮＰＣ" | !IsFeatureAvailable("召喚ユニット")))
             //{
             //    return GetExpRet;
             //}
@@ -54,13 +53,9 @@ namespace SRCCore.Units
             //    var loopTo1 = withBlock.CountSkill();
             //    for (i = 1; i <= loopTo1; i++)
             //    {
-            //        object argIndex1 = i;
-            //        prev_stype[i] = withBlock.Skill(argIndex1);
-            //        object argIndex2 = i;
-            //        prev_sname[i] = withBlock.SkillName(argIndex2);
-            //        object argIndex3 = i;
-            //        string argref_mode = "基本値";
-            //        prev_slevel[i] = withBlock.SkillLevel(argIndex3, argref_mode);
+            //        prev_stype[i] = withBlock.Skill(i);
+            //        prev_sname[i] = withBlock.SkillName(i);
+            //        prev_slevel[i] = withBlock.SkillLevel(i, "基本値");
             //    }
             //}
 
@@ -77,11 +72,10 @@ namespace SRCCore.Units
             //}
 
             //// ユニットに乗っているパイロット総数を計算
-            //n = (short)(CountPilot() + CountSupport());
-            //string argfname1 = "追加サポート";
-            //if (IsFeatureAvailable(argfname1))
+            //n = (int)(CountPilot() + CountSupport());
+            //if (IsFeatureAvailable("追加サポート"))
             //{
-            //    n = (short)(n + 1);
+            //    n = (int)(n + 1);
             //}
 
             //// 各パイロットが経験値を入手
@@ -90,13 +84,11 @@ namespace SRCCore.Units
             //{
             //    if (i <= CountPilot())
             //    {
-            //        object argIndex4 = i;
-            //        p = Pilot(argIndex4);
+            //        p = Pilot(i);
             //    }
-            //    else if (i <= (short)(CountPilot() + CountSupport()))
+            //    else if (i <= (int)(CountPilot() + CountSupport()))
             //    {
-            //        object argIndex5 = i - CountPilot();
-            //        p = Support(argIndex5);
+            //        p = Support(i - CountPilot());
             //    }
             //    else
             //    {
@@ -108,11 +100,9 @@ namespace SRCCore.Units
             //        case "破壊":
             //            {
             //                xp = t.ExpValue + t.MainPilot().ExpValue;
-            //                string argsptype = "獲得経験値増加";
-            //                if (IsUnderSpecialPowerEffect(argsptype) & exp_mode != "パートナー")
+            //                if (IsUnderSpecialPowerEffect("獲得経験値増加") & exp_mode != "パートナー")
             //                {
-            //                    string argsname = "獲得経験値増加";
-            //                    xp = (int)(xp * (1d + 0.1d * SpecialPowerEffectLevel(argsname)));
+            //                    xp = (int)(xp * (1d + 0.1d * SpecialPowerEffectLevel("獲得経験値増加")));
             //                }
 
             //                break;
@@ -121,11 +111,9 @@ namespace SRCCore.Units
             //        case "攻撃":
             //            {
             //                xp = (t.ExpValue + t.MainPilot().ExpValue) / 10;
-            //                string argsptype1 = "獲得経験値増加";
-            //                if (IsUnderSpecialPowerEffect(argsptype1) & exp_mode != "パートナー")
+            //                if (IsUnderSpecialPowerEffect("獲得経験値増加") & exp_mode != "パートナー")
             //                {
-            //                    string argsname1 = "獲得経験値増加";
-            //                    xp = (int)(xp * (1d + 0.1d * SpecialPowerEffectLevel(argsname1)));
+            //                    xp = (int)(xp * (1d + 0.1d * SpecialPowerEffectLevel("獲得経験値増加")));
             //                }
 
             //                break;
@@ -158,19 +146,13 @@ namespace SRCCore.Units
             //            }
             //    }
 
-            //    string argsptype2 = "獲得経験値増加";
-            //    string argoname = "収得効果重複";
-            //    if (!IsUnderSpecialPowerEffect(argsptype2) | Expression.IsOptionDefined(argoname))
+            //    if (!IsUnderSpecialPowerEffect("獲得経験値増加") | Expression.IsOptionDefined("収得効果重複"))
             //    {
-            //        string argsname2 = "素質";
-            //        if (p.IsSkillAvailable(argsname2))
+            //        if (p.IsSkillAvailable("素質"))
             //        {
-            //            object argIndex7 = "素質";
-            //            if (p.IsSkillLevelSpecified(argIndex7))
+            //            if (p.IsSkillLevelSpecified("素質"))
             //            {
-            //                object argIndex6 = "素質";
-            //                string argref_mode1 = "";
-            //                xp = (int)((long)(xp * (10d + p.SkillLevel(argIndex6, ref_mode: argref_mode1))) / 10L);
+            //                xp = (int)((long)(xp * (10d + p.SkillLevel("素質", ref_mode: ""))) / 10L);
             //            }
             //            else
             //            {
@@ -179,14 +161,13 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    string argsname3 = "遅成長";
-            //    if (p.IsSkillAvailable(argsname3))
+            //    if (p.IsSkillAvailable("遅成長"))
             //    {
             //        xp = xp / 2;
             //    }
 
             //    // 対象のパイロットのレベル差による修正
-            //    switch ((short)(t.MainPilot().Level - p.Level))
+            //    switch ((int)(t.MainPilot().Level - p.Level))
             //    {
             //        case var @case when @case > 7:
             //            {
@@ -288,21 +269,16 @@ namespace SRCCore.Units
             //}
 
             //// 追加パイロットの場合、一番目のパイロットにレベル、経験値を合わせる
-            //object argIndex10 = 1;
-            //object argIndex11 = 1;
-            //if (!ReferenceEquals(MainPilot(), Pilot(argIndex11)))
+            //if (!ReferenceEquals(MainPilot(), Pilot(1)))
             //{
-            //    object argIndex8 = 1;
-            //    MainPilot().Level = Pilot(argIndex8).Level;
-            //    object argIndex9 = 1;
-            //    MainPilot().Exp = Pilot(argIndex9).Exp;
+            //    MainPilot().Level = Pilot(1).Level;
+            //    MainPilot().Exp = Pilot(1).Exp;
             //}
 
             //// 召喚主も経験値を入手
             //if (Summoner is object)
             //{
-            //    string argexp_mode = "パートナー";
-            //    Summoner.CurrentForm().GetExp(t, exp_situation, argexp_mode);
+            //    Summoner.CurrentForm().GetExp(t, exp_situation, "パートナー");
             //}
 
             //// マップ攻撃による経験値収得の場合はメッセージ表示を省略
@@ -318,29 +294,18 @@ namespace SRCCore.Units
             //    {
             //        // レベルアップ
 
-            //        string argmain_situation2 = "レベルアップ";
-            //        string argsub_situation2 = "";
-            //        string argmain_situation3 = "レベルアップ";
-            //        string argsub_situation3 = "";
-            //        if (IsAnimationDefined(argmain_situation2, sub_situation: argsub_situation2))
+            //        if (IsAnimationDefined("レベルアップ", sub_situation: ""))
             //        {
-            //            string argmain_situation = "レベルアップ";
-            //            string argsub_situation = "";
-            //            PlayAnimation(argmain_situation, sub_situation: argsub_situation);
+            //            PlayAnimation("レベルアップ", sub_situation: "");
             //        }
-            //        else if (IsSpecialEffectDefined(argmain_situation3, sub_situation: argsub_situation3))
+            //        else if (IsSpecialEffectDefined("レベルアップ", sub_situation: ""))
             //        {
-            //            string argmain_situation1 = "レベルアップ";
-            //            string argsub_situation1 = "";
-            //            SpecialEffect(argmain_situation1, sub_situation: argsub_situation1);
+            //            SpecialEffect("レベルアップ", sub_situation: "");
             //        }
 
-            //        string argmain_situation4 = "レベルアップ";
-            //        if (IsMessageDefined(argmain_situation4))
+            //        if (IsMessageDefined("レベルアップ"))
             //        {
-            //            string argSituation = "レベルアップ";
-            //            string argmsg_mode = "";
-            //            PilotMessage(argSituation, msg_mode: argmsg_mode);
+            //            PilotMessage("レベルアップ", msg_mode: "");
             //        }
 
             //        msg = withBlock1.get_Nickname(false) + "は経験値[" + SrcFormatter.Format(GetExpRet) + "]を獲得、" + "レベル[" + SrcFormatter.Format(withBlock1.Level) + "]にレベルアップ。";
@@ -349,10 +314,8 @@ namespace SRCCore.Units
             //        var loopTo3 = withBlock1.CountSkill();
             //        for (i = 1; i <= loopTo3; i++)
             //        {
-            //            object argIndex12 = i;
-            //            stype = withBlock1.Skill(argIndex12);
-            //            object argIndex13 = i;
-            //            sname = withBlock1.SkillName(argIndex13);
+            //            stype = withBlock1.Skill(i);
+            //            sname = withBlock1.SkillName(i);
             //            if (Strings.InStr(sname, "非表示") == 0)
             //            {
             //                switch (stype ?? "")
@@ -369,7 +332,7 @@ namespace SRCCore.Units
             //                    case "スペシャルパワー自動発動":
             //                    case "ハンター":
             //                        {
-            //                            var loopTo4 = (short)Information.UBound(prev_stype);
+            //                            var loopTo4 = (int)Information.UBound(prev_stype);
             //                            for (j = 1; j <= loopTo4; j++)
             //                            {
             //                                if ((stype ?? "") == (prev_stype[j] ?? ""))
@@ -391,7 +354,7 @@ namespace SRCCore.Units
 
             //                    default:
             //                        {
-            //                            var loopTo5 = (short)Information.UBound(prev_stype);
+            //                            var loopTo5 = (int)Information.UBound(prev_stype);
             //                            for (j = 1; j <= loopTo5; j++)
             //                            {
             //                                if ((stype ?? "") == (prev_stype[j] ?? ""))
@@ -420,14 +383,12 @@ namespace SRCCore.Units
             //        // スペシャルパワーの習得
             //        if (withBlock1.CountSpecialPower > Information.UBound(prev_special_power))
             //        {
-            //            string argtname = "スペシャルパワー";
-            //            var argu = this;
-            //            msg = msg + ";" + Expression.Term(argtname, argu);
+            //            msg = msg + ";" + Expression.Term("スペシャルパワー", this);
             //            var loopTo6 = withBlock1.CountSpecialPower;
             //            for (i = 1; i <= loopTo6; i++)
             //            {
             //                sname = withBlock1.get_SpecialPower(i);
-            //                var loopTo7 = (short)Information.UBound(prev_special_power);
+            //                var loopTo7 = (int)Information.UBound(prev_special_power);
             //                for (j = 1; j <= loopTo7; j++)
             //                {
             //                    if ((sname ?? "") == (prev_special_power[j] ?? ""))
@@ -471,8 +432,7 @@ namespace SRCCore.Units
 
             //// ビットマップを作り直す
             // XXX 事前に画像を作っておく系はなしにしたい
-            //var argu = this;
-            //BitmapID = GUI.MakeUnitBitmap(argu);
+            //BitmapID = GUI.MakeUnitBitmap(this);
 
             // パイロットの陣営を変更
             foreach (var p in Pilots.Concat(SupportPilots))
@@ -481,8 +441,7 @@ namespace SRCCore.Units
             }
 
             // TODO Impl
-            //string argfname = "追加サポート";
-            //if (IsFeatureAvailable(argfname))
+            //if (IsFeatureAvailable("追加サポート"))
             //{
             //    AdditionalSupport().Party = new_party;
             //}
@@ -504,8 +463,7 @@ namespace SRCCore.Units
                     Rest();
                 }
                 // マップ上のユニット画像を更新
-                var argu1 = this;
-                GUI.PaintUnitBitmap(argu1);
+                GUI.PaintUnitBitmap(this);
             }
 
             SRC.PList.UpdateSupportMod(this);
@@ -516,7 +474,7 @@ namespace SRCCore.Units
 
         // ユニットに乗っているパイロットの気力をnumだけ増減
         // is_event:イベントによる気力増減(性格を無視して気力操作)
-        public void IncreaseMorale(short num, bool is_event = false)
+        public void IncreaseMorale(int num, bool is_event = false)
         {
             throw new NotImplementedException();
             //Pilot p;
@@ -530,7 +488,7 @@ namespace SRCCore.Units
             //    var withBlock = MainPilot();
             //    if (withBlock.Personality != "機械" | is_event)
             //    {
-            //        withBlock.Morale = (short)(withBlock.Morale + num);
+            //        withBlock.Morale = (int)(withBlock.Morale + num);
             //    }
             //}
 
@@ -540,7 +498,7 @@ namespace SRCCore.Units
             //    p = currentP;
             //    if ((MainPilot().ID ?? "") != (p.ID ?? "") & (p.Personality != "機械" | is_event))
             //    {
-            //        p.Morale = (short)(p.Morale + num);
+            //        p.Morale = (int)(p.Morale + num);
             //    }
             //}
 
@@ -550,19 +508,18 @@ namespace SRCCore.Units
             //    p = currentP1;
             //    if (p.Personality != "機械" | is_event)
             //    {
-            //        p.Morale = (short)(p.Morale + num);
+            //        p.Morale = (int)(p.Morale + num);
             //    }
             //}
 
             //// 追加サポート
-            //string argfname = "追加サポート";
-            //if (IsFeatureAvailable(argfname))
+            //if (IsFeatureAvailable("追加サポート"))
             //{
             //    {
             //        var withBlock1 = AdditionalSupport();
             //        if (withBlock1.Personality != "機械" | is_event)
             //        {
-            //            withBlock1.Morale = (short)(withBlock1.Morale + num);
+            //            withBlock1.Morale = (int)(withBlock1.Morale + num);
             //        }
             //    }
             //}
@@ -571,14 +528,13 @@ namespace SRCCore.Units
         // ユニットが破壊された時の処理
         public void Die(bool without_update = false)
         {
-            //    short i, j;
+            //    int i, j;
             //    string pname;
             HP = 0;
             Status = "破壊";
 
             // TODO Impl
             //// 破壊をキャンセルし、破壊イベント内で処理をしたい場合
-            //object argIndex2 = ;
             //if (IsConditionSatisfied("破壊キャンセル"))
             //{
             //    DeleteCondition("破壊キャンセル");
@@ -589,28 +545,19 @@ namespace SRCCore.Units
 
             //    // 爆発表示
             //    GUI.ClearPicture();
-            //    string argmain_situation2 = "脱出";
-            //    string argsub_situation2 = "";
-            //    string argmain_situation3 = "脱出";
-            //    string argsub_situation3 = "";
-            //    if (IsAnimationDefined(argmain_situation2, sub_situation: argsub_situation2))
+            //    if (IsAnimationDefined("脱出", sub_situation: ""))
             //    {
             //        GUI.EraseUnitBitmap(x, y, false);
-            //        string argmain_situation = "脱出";
-            //        string argsub_situation = "";
-            //        PlayAnimation(argmain_situation, sub_situation: argsub_situation);
+            //        PlayAnimation("脱出", sub_situation: "");
             //    }
-            //    else if (IsSpecialEffectDefined(argmain_situation3, sub_situation: argsub_situation3))
+            //    else if (IsSpecialEffectDefined("脱出", sub_situation: ""))
             //    {
             //        GUI.EraseUnitBitmap(x, y, false);
-            //        string argmain_situation1 = "脱出";
-            //        string argsub_situation1 = "";
-            //        SpecialEffect(argmain_situation1, sub_situation: argsub_situation1);
+            //        SpecialEffect("脱出", sub_situation: "");
             //    }
             //    else
             //    {
-            //        var argu = this;
-            //        Effect.DieAnimation(argu);
+            //        Effect.DieAnimation(this);
             //    }
 
             //SkipExplode:
@@ -624,32 +571,25 @@ namespace SRCCore.Units
             //    DismissSlave();
             //    if (Master is object)
             //    {
-            //        object argIndex3 = ID;
-            //        Master.CurrentForm().DeleteSlave(argIndex3);
+            //        Master.CurrentForm().DeleteSlave(ID);
             //        // UPGRADE_NOTE: オブジェクト Master をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             //        Master = null;
             //    }
 
             //    if (Summoner is object)
             //    {
-            //        object argIndex4 = ID;
-            //        Summoner.CurrentForm().DeleteServant(argIndex4);
+            //        Summoner.CurrentForm().DeleteServant(ID);
             //        // UPGRADE_NOTE: オブジェクト Summoner をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             //        Summoner = null;
             //    }
 
             //    // 支配しているユニットを強制退却
-            //    string argfname = "支配";
-            //    if (IsFeatureAvailable(argfname))
+            //    if (IsFeatureAvailable("支配"))
             //    {
-            //        object argIndex6 = "支配";
-            //        string arglist1 = FeatureData(argIndex6);
-            //        var loopTo = GeneralLib.LLength(arglist1);
+            //        var loopTo = GeneralLib.LLength(FeatureData("支配"));
             //        for (i = 2; i <= loopTo; i++)
             //        {
-            //            object argIndex5 = "支配";
-            //            string arglist = FeatureData(argIndex5);
-            //            pname = GeneralLib.LIndex(arglist, i);
+            //            pname = GeneralLib.LIndex(FeatureData("支配"), i);
             //            foreach (Pilot p in SRC.PList)
             //            {
             //                if ((p.Name ?? "") == (pname ?? "") | (p.get_Nickname(false) ?? "") == (pname ?? ""))
@@ -677,98 +617,66 @@ namespace SRCCore.Units
         public void SuicidalExplosion(bool is_event = false)
         {
             throw new NotImplementedException();
-            //    short i, j;
+            //    int i, j;
             //    int prev_hp;
             //    Unit u, t;
             //    int dmg, tdmg;
             //    string uname, fname;
-            //    string argSituation = "自爆";
-            //    string argmsg_mode = "";
-            //    PilotMessage(argSituation, msg_mode: argmsg_mode);
+            //    PilotMessage("自爆", msg_mode: "");
             //    GUI.DisplaySysMessage(Nickname + "は自爆した。");
 
             //    // ダメージ量設定
             //    dmg = HP;
 
             //    // 効果範囲の設定
-            //    string arguparty = "";
-            //    Map.AreaInRange(x, y, 1, 1, arguparty);
+            //    Map.AreaInRange(x, y, 1, 1, "");
             //    Map.MaskData[x, y] = true;
 
             //    // 爆発
             //    GUI.EraseUnitBitmap(x, y);
-            //    string argtsize = Size;
-            //    Effect.ExplodeAnimation(argtsize, x, y);
+            //    Effect.ExplodeAnimation(Size, x, y);
             //    this.Size = argtsize;
 
             //    // パーツ分離できれば自爆後にパーツ分離
-            //    string argfname = "パーツ分離";
-            //    if (IsFeatureAvailable(argfname))
+            //    if (IsFeatureAvailable("パーツ分離"))
             //    {
-            //        object argIndex1 = "パーツ分離";
-            //        string arglist = FeatureData(argIndex1);
-            //        uname = GeneralLib.LIndex(arglist, 2);
+            //        uname = GeneralLib.LIndex(FeatureData("パーツ分離"), 2);
             //        Unit localOtherForm() { object argIndex1 = uname; var ret = OtherForm(argIndex1); return ret; }
 
             //        if (localOtherForm().IsAbleToEnter(x, y))
             //        {
             //            Transform(uname);
             //            Map.MapDataForUnit[x, y].HP = Map.MapDataForUnit[x, y].MaxHP;
-            //            object argIndex2 = "パーツ分離";
-            //            fname = FeatureName(argIndex2);
+            //            fname = FeatureName("パーツ分離");
             //            bool localIsSysMessageDefined() { string argmain_situation = "破壊時分離(" + fname + ")"; string argsub_situation = ""; var ret = IsSysMessageDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
             //            bool localIsSysMessageDefined1() { string argmain_situation = "分離(" + Name + ")"; string argsub_situation = ""; var ret = IsSysMessageDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
             //            bool localIsSysMessageDefined2() { string argmain_situation = "分離(" + fname + ")"; string argsub_situation = ""; var ret = IsSysMessageDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //            string argmain_situation6 = "破壊時分離(" + Name + ")";
-            //            string argsub_situation6 = "";
-            //            string argmain_situation7 = "破壊時分離";
-            //            string argsub_situation7 = "";
-            //            string argmain_situation8 = "分離";
-            //            string argsub_situation8 = "";
-            //            if (IsSysMessageDefined(argmain_situation6, sub_situation: argsub_situation6))
+            //            if (IsSysMessageDefined("破壊時分離(" + Name + ")", sub_situation: ""))
             //            {
-            //                string argmain_situation = "破壊時分離(" + Name + ")";
-            //                string argsub_situation = "";
-            //                string argadd_msg = "";
-            //                SysMessage(argmain_situation, sub_situation: argsub_situation, add_msg: argadd_msg);
+            //                SysMessage("破壊時分離(" + Name + ")", sub_situation: "", add_msg: "");
             //            }
             //            else if (localIsSysMessageDefined())
             //            {
-            //                string argmain_situation1 = "破壊時分離(" + fname + ")";
-            //                string argsub_situation1 = "";
-            //                string argadd_msg1 = "";
-            //                SysMessage(argmain_situation1, sub_situation: argsub_situation1, add_msg: argadd_msg1);
+            //                SysMessage("破壊時分離(" + fname + ")", sub_situation: "", add_msg: "");
             //            }
-            //            else if (IsSysMessageDefined(argmain_situation7, sub_situation: argsub_situation7))
+            //            else if (IsSysMessageDefined("破壊時分離", sub_situation: ""))
             //            {
-            //                string argmain_situation2 = "破壊時分離";
-            //                string argsub_situation2 = "";
-            //                string argadd_msg2 = "";
-            //                SysMessage(argmain_situation2, sub_situation: argsub_situation2, add_msg: argadd_msg2);
+            //                SysMessage("破壊時分離", sub_situation: "", add_msg: "");
             //            }
             //            else if (localIsSysMessageDefined1())
             //            {
-            //                string argmain_situation3 = "分離(" + Name + ")";
-            //                string argsub_situation3 = "";
-            //                string argadd_msg3 = "";
-            //                SysMessage(argmain_situation3, sub_situation: argsub_situation3, add_msg: argadd_msg3);
+            //                SysMessage("分離(" + Name + ")", sub_situation: "", add_msg: "");
             //            }
             //            else if (localIsSysMessageDefined2())
             //            {
-            //                string argmain_situation4 = "分離(" + fname + ")";
-            //                string argsub_situation4 = "";
-            //                string argadd_msg4 = "";
-            //                SysMessage(argmain_situation4, sub_situation: argsub_situation4, add_msg: argadd_msg4);
+            //                SysMessage("分離(" + fname + ")", sub_situation: "", add_msg: "");
             //            }
-            //            else if (IsSysMessageDefined(argmain_situation8, sub_situation: argsub_situation8))
+            //            else if (IsSysMessageDefined("分離", sub_situation: ""))
             //            {
-            //                string argmain_situation5 = "分離";
-            //                string argsub_situation5 = "";
-            //                string argadd_msg5 = "";
-            //                SysMessage(argmain_situation5, sub_situation: argsub_situation5, add_msg: argadd_msg5);
+            //                SysMessage("分離", sub_situation: "", add_msg: "");
             //            }
             //            else
             //            {
@@ -781,13 +689,9 @@ namespace SRCCore.Units
 
             //    // 自分を破壊
             //    HP = 0;
-            //    var argu1 = this;
-            //    object argu2 = null;
-            //    GUI.UpdateMessageForm(argu1, u2: argu2);
+            //    GUI.UpdateMessageForm(this, u2: null);
             //    // 既に爆発アニメーションを表示しているので
-            //    string argcname = "破壊キャンセル";
-            //    string argcdata = "";
-            //    AddCondition(argcname, 1, cdata: argcdata);
+            //    AddCondition("破壊キャンセル", 1, cdata: "");
             //    // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             //    Map.MapDataForUnit[x, y] = null;
             //    Die();
@@ -831,24 +735,20 @@ namespace SRCCore.Units
             //                GUI.ClearMessageForm();
             //                if (CurrentForm().Party == "味方" | CurrentForm().Party == "ＮＰＣ")
             //                {
-            //                    object argu21 = CurrentForm();
-            //                    GUI.UpdateMessageForm(t, argu21);
+            //                    GUI.UpdateMessageForm(t, CurrentForm());
             //                }
             //                else
             //                {
-            //                    object argu22 = t;
-            //                    GUI.UpdateMessageForm(CurrentForm(), argu22);
+            //                    GUI.UpdateMessageForm(CurrentForm(), t);
             //                }
 
             //                // ダメージの適用
             //                prev_hp = withBlock.HP;
-            //                object argIndex3 = "無敵";
-            //                object argIndex4 = "不死身";
-            //                if (withBlock.IsConditionSatisfied(argIndex3))
+            //                if (withBlock.IsConditionSatisfied("無敵"))
             //                {
             //                    tdmg = 0;
             //                }
-            //                else if (withBlock.IsConditionSatisfied(argIndex4))
+            //                else if (withBlock.IsConditionSatisfied("不死身"))
             //                {
             //                    withBlock.HP = GeneralLib.MaxLng(withBlock.HP - dmg, 10);
             //                    tdmg = prev_hp - withBlock.HP;
@@ -860,63 +760,49 @@ namespace SRCCore.Units
             //                }
 
             //                // 特殊能力「不安定」による暴走チェック
-            //                string argfname1 = "不安定";
-            //                if (withBlock.IsFeatureAvailable(argfname1))
+            //                if (withBlock.IsFeatureAvailable("不安定"))
             //                {
-            //                    object argIndex5 = "暴走";
-            //                    if (withBlock.HP <= withBlock.MaxHP / 4 & !withBlock.IsConditionSatisfied(argIndex5))
+            //                    if (withBlock.HP <= withBlock.MaxHP / 4 & !withBlock.IsConditionSatisfied("暴走"))
             //                    {
-            //                        string argcname1 = "暴走";
-            //                        string argcdata1 = "";
-            //                        withBlock.AddCondition(argcname1, -1, cdata: argcdata1);
+            //                        withBlock.AddCondition("暴走", -1, cdata: "");
             //                        withBlock.Update();
             //                    }
             //                }
 
             //                // ダメージを受ければ眠りからさめる
-            //                object argIndex7 = "睡眠";
-            //                if (withBlock.IsConditionSatisfied(argIndex7))
+            //                if (withBlock.IsConditionSatisfied("睡眠"))
             //                {
-            //                    object argIndex6 = "睡眠";
-            //                    withBlock.DeleteCondition(argIndex6);
+            //                    withBlock.DeleteCondition("睡眠");
             //                }
 
             //                if (CurrentForm().Party == "味方" | CurrentForm().Party == "ＮＰＣ")
             //                {
-            //                    object argu23 = CurrentForm();
-            //                    GUI.UpdateMessageForm(t, argu23);
+            //                    GUI.UpdateMessageForm(t, CurrentForm());
             //                }
             //                else
             //                {
-            //                    object argu24 = t;
-            //                    GUI.UpdateMessageForm(CurrentForm(), argu24);
+            //                    GUI.UpdateMessageForm(CurrentForm(), t);
             //                }
 
             //                if (withBlock.HP > 0)
             //                {
-            //                    string argmsg = SrcFormatter.Format(tdmg);
-            //                    GUI.DrawSysString(withBlock.x, withBlock.y, argmsg);
+            //                    GUI.DrawSysString(withBlock.x, withBlock.y, SrcFormatter.Format(tdmg));
             //                    GUI.MainForm.picMain(0).Refresh();
             //                }
 
             //                if (withBlock.HP == 0)
             //                {
-            //                    string argsptype = "復活";
-            //                    if (withBlock.IsUnderSpecialPowerEffect(argsptype))
+            //                    if (withBlock.IsUnderSpecialPowerEffect("復活"))
             //                    {
             //                        withBlock.HP = withBlock.MaxHP;
-            //                        string argstype = "破壊";
-            //                        withBlock.RemoveSpecialPowerInEffect(argstype);
+            //                        withBlock.RemoveSpecialPowerInEffect("破壊");
             //                        GUI.DisplaySysMessage(withBlock.Nickname + "は復活した！");
             //                        goto NextLoop;
             //                    }
 
-            //                    string argfname2 = "パーツ分離";
-            //                    if (withBlock.IsFeatureAvailable(argfname2))
+            //                    if (withBlock.IsFeatureAvailable("パーツ分離"))
             //                    {
-            //                        object argIndex8 = "パーツ分離";
-            //                        string arglist1 = withBlock.FeatureData(argIndex8);
-            //                        uname = GeneralLib.LIndex(arglist1, 2);
+            //                        uname = GeneralLib.LIndex(withBlock.FeatureData("パーツ分離"), 2);
             //                        Unit localOtherForm1() { object argIndex1 = uname; var ret = withBlock.OtherForm(argIndex1); return ret; }
 
             //                        if (localOtherForm1().IsAbleToEnter(withBlock.x, withBlock.y))

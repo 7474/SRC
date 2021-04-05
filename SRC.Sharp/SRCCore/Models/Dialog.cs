@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -79,13 +79,7 @@ namespace SRCCore.Models
         //                        // 喋れるかどうかチェック
         //                        if (!ignore_condition)
         //                        {
-        //                            object argIndex1 = "睡眠";
-        //                            object argIndex2 = "麻痺";
-        //                            object argIndex3 = "石化";
-        //                            object argIndex4 = "恐怖";
-        //                            object argIndex5 = "沈黙";
-        //                            object argIndex6 = "混乱";
-        //                            if (withBlock1.IsConditionSatisfied(argIndex1) | withBlock1.IsConditionSatisfied(argIndex2) | withBlock1.IsConditionSatisfied(argIndex3) | withBlock1.IsConditionSatisfied(argIndex4) | withBlock1.IsConditionSatisfied(argIndex5) | withBlock1.IsConditionSatisfied(argIndex6))
+        //                            if (withBlock1.IsConditionSatisfied("睡眠") | withBlock1.IsConditionSatisfied("麻痺") | withBlock1.IsConditionSatisfied("石化") | withBlock1.IsConditionSatisfied("恐怖") | withBlock1.IsConditionSatisfied("沈黙") | withBlock1.IsConditionSatisfied("混乱"))
         //                            {
         //                                IsAvailableRet = false;
         //                                return default;
@@ -128,8 +122,7 @@ namespace SRCCore.Models
         //                // 表情パターンかどうか判定
         //                bool localIsDefined2() { object argIndex1 = pname2; var ret = SRC.NPDList.IsDefined2(argIndex1); return ret; }
 
-        //                object argIndex7 = pname2;
-        //                if (SRC.PDList.IsDefined2(argIndex7) | localIsDefined2())
+        //                if (SRC.PDList.IsDefined2(pname2) | localIsDefined2())
         //                {
         //                    // 表情パターンとみなす
         //                    pname = pname2;
@@ -154,11 +147,9 @@ namespace SRCCore.Models
         //        }
 
         //        // ノンパイロットはLeaveしていない限り常に存在
-        //        object argIndex8 = pname;
-        //        if (SRC.NPDList.IsDefined(argIndex8))
+        //        if (SRC.NPDList.IsDefined(pname))
         //        {
-        //            string argvname = "IsAway(" + pname + ")";
-        //            if (Expression.IsGlobalVariableDefined(argvname))
+        //            if (Expression.IsGlobalVariableDefined("IsAway(" + pname + ")"))
         //            {
         //                IsAvailableRet = false;
         //                return default;
@@ -167,8 +158,7 @@ namespace SRCCore.Models
         //            goto NextMessage;
         //        }
 
-        //        object argIndex10 = pname;
-        //        if (SRC.PDList.IsDefined(argIndex10))
+        //        if (SRC.PDList.IsDefined(pname))
         //        {
         //            // パイロットの場合
 
@@ -181,9 +171,8 @@ namespace SRCCore.Models
         //                return default;
         //            }
 
-        //            object argIndex9 = pname;
         //            {
-        //                var withBlock3 = SRC.PList.Item(argIndex9);
+        //                var withBlock3 = SRC.PList.Item(pname);
         //                // Leave中？
         //                if (withBlock3.Away)
         //                {

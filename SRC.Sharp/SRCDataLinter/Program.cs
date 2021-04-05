@@ -1,4 +1,4 @@
-﻿using ShiftJISExtension;
+using ShiftJISExtension;
 using SRCCore.Exceptions;
 using SRCCore.Filesystem;
 using System;

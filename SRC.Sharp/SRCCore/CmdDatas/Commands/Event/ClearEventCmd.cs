@@ -1,4 +1,4 @@
-﻿using SRCCore.Events;
+using SRCCore.Events;
 using SRCCore.Exceptions;
 
 namespace SRCCore.CmdDatas.Commands
@@ -14,8 +14,7 @@ namespace SRCCore.CmdDatas.Commands
             switch (ArgNum)
             {
                 case 2:
-                    string arglname = GetArgAsString(2);
-                    var ret = Event.FindLabel(arglname);
+                    var ret = Event.FindLabel(GetArgAsString(2));
                     if (ret >= 0)
                     {
                         Event.ClearLabel(ret);

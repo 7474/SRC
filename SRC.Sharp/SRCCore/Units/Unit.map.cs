@@ -1,4 +1,4 @@
-﻿using SRCCore.Extensions;
+using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.Pilots;
@@ -82,8 +82,7 @@ namespace SRCCore.Units
                         {
                             case "空":
                                 {
-                                    string argarea_name = "空";
-                                    if (!IsTransAvailable(argarea_name))
+                                    if (!IsTransAvailable("空"))
                                     {
                                         goto NextLoop;
                                     }
@@ -93,9 +92,7 @@ namespace SRCCore.Units
 
                             case "水":
                                 {
-                                    string argarea_name1 = "水上";
-                                    string argarea_name2 = "空";
-                                    if (!IsTransAvailable(argarea_name1) && !IsTransAvailable(argarea_name2) & get_Adaption(3) == 0)
+                                    if (!IsTransAvailable("水上") && !IsTransAvailable("空") & get_Adaption(3) == 0)
                                     {
                                         goto NextLoop;
                                     }
@@ -105,10 +102,7 @@ namespace SRCCore.Units
 
                             case "深水":
                                 {
-                                    string argarea_name3 = "水上";
-                                    string argarea_name4 = "空";
-                                    string argarea_name5 = "水";
-                                    if (!IsTransAvailable(argarea_name3) & !IsTransAvailable(argarea_name4) & !IsTransAvailable(argarea_name5))
+                                    if (!IsTransAvailable("水上") & !IsTransAvailable("空") & !IsTransAvailable("水"))
                                     {
                                         goto NextLoop;
                                     }
@@ -261,8 +255,7 @@ namespace SRCCore.Units
             //// ビットマップを作成
             //if (BitmapID == 0)
             //{
-            //    var argu = this;
-            //    BitmapID = GUI.MakeUnitBitmap(argu);
+            //    BitmapID = GUI.MakeUnitBitmap(this);
             //}
 
             //// 登場時アニメを表示
@@ -281,8 +274,7 @@ namespace SRCCore.Units
             //    // MOD END MARGE
 
             //    // ユニット出現音
-            //    string argwave_name = "UnitOn.wav";
-            //    Sound.PlayWave(argwave_name);
+            //    Sound.PlayWave("UnitOn.wav");
 
             //    // 表示させる画像
             //    switch (Party0 ?? "")
@@ -307,17 +299,14 @@ namespace SRCCore.Units
             //            }
             //    }
 
-            //    string argfname1 = SRC.AppPath + fname + "1.bmp";
-            //    if (GeneralLib.FileExists(argfname1))
+            //    if (GeneralLib.FileExists(SRC.AppPath + fname + "1.bmp"))
             //    {
             //        // アニメ表示開始時刻を記録
             //        start_time = GeneralLib.timeGetTime();
             //        for (i = 1; i <= 4; i++)
             //        {
             //            // 画像を透過表示
-            //            string argfname = fname + SrcFormatter.Format(i) + ".bmp";
-            //            string argdraw_option = "透過";
-            //            if (GUI.DrawPicture(argfname, GUI.MapToPixelX(x), GUI.MapToPixelY(y), 32, 32, 0, 0, 0, 0, argdraw_option) == false)
+            //            if (GUI.DrawPicture(fname + SrcFormatter.Format(i) + ".bmp", GUI.MapToPixelX(x), GUI.MapToPixelY(y), 32, 32, 0, 0, 0, 0, "透過") == false)
             //            {
             //                break;
             //            }
@@ -349,13 +338,11 @@ namespace SRCCore.Units
             //    if (Strings.InStr(smode, "非同期") > 0)
             //    {
             //        // MOD END MARGE
-            //        var argu1 = this;
-            //        GUI.PaintUnitBitmap(argu1, "リフレッシュ無し");
+            //        GUI.PaintUnitBitmap(this, "リフレッシュ無し");
             //    }
             //    else
             //    {
-            //        var argu2 = this;
-            //        GUI.PaintUnitBitmap(argu2);
+            //        GUI.PaintUnitBitmap(this);
             //    }
             //}
 
@@ -428,8 +415,7 @@ namespace SRCCore.Units
 
                 //        string localLIndex1() { string arglist = hsb6975299bb8a44cda80cb8aa733a682c(); var ret = GeneralLib.LIndex(arglist, 3); return ret; }
 
-                //        object argIndex3 = localLIndex1();
-                //        if (SRC.UList.IsDefined(argIndex3))
+                //        if (SRC.UList.IsDefined(localLIndex1()))
                 //        {
                 //            string localFeatureData() { object argIndex1 = i; var ret = targetUnit.FeatureData(argIndex1); return ret; }
 
@@ -439,8 +425,7 @@ namespace SRCCore.Units
 
                 //            if (ReferenceEquals(localItem().CurrentForm(), this))
                 //            {
-                //                string arguname = "";
-                //                Combine(uname: arguname);
+                //                Combine(uname: "");
                 //                return;
                 //            }
                 //        }
@@ -450,8 +435,7 @@ namespace SRCCore.Units
                 // 着艦？
                 if (!targetUnit.IsFeatureAvailable("母艦"))
                 {
-                    string argmsg = "合体元ユニット「" + Name + "」が複数あるため合体処理が出来ません";
-                    GUI.ErrorMessage(argmsg);
+                    GUI.ErrorMessage("合体元ユニット「" + Name + "」が複数あるため合体処理が出来ません");
                     return;
                 }
 
@@ -483,13 +467,11 @@ namespace SRCCore.Units
 
             //                    case "宇宙":
             //                        {
-            //                            string argarea_name = "空";
-            //                            string argarea_name1 = "陸";
-            //                            if (IsTransAvailable(argarea_name) & get_Adaption(1) >= get_Adaption(2))
+            //                            if (IsTransAvailable("空") & get_Adaption(1) >= get_Adaption(2))
             //                            {
             //                                Area = "空中";
             //                            }
-            //                            else if (IsTransAvailable(argarea_name1))
+            //                            else if (IsTransAvailable("陸"))
             //                            {
             //                                Area = "地上";
             //                            }
@@ -518,14 +500,11 @@ namespace SRCCore.Units
 
             //                    default:
             //                        {
-            //                            string argarea_name2 = "空";
-            //                            string argarea_name3 = "宇宙";
-            //                            string argarea_name4 = "陸";
-            //                            if ((IsTransAvailable(argarea_name2) | IsTransAvailable(argarea_name3)) & get_Adaption(4) >= get_Adaption(2))
+            //                            if ((IsTransAvailable("空") | IsTransAvailable("宇宙")) & get_Adaption(4) >= get_Adaption(2))
             //                            {
             //                                Area = "宇宙";
             //                            }
-            //                            else if (IsTransAvailable(argarea_name4))
+            //                            else if (IsTransAvailable("陸"))
             //                            {
             //                                Area = "地上";
             //                            }
@@ -548,8 +527,7 @@ namespace SRCCore.Units
             //                {
             //                    case "地上":
             //                        {
-            //                            string argarea_name5 = "水上";
-            //                            if (IsTransAvailable(argarea_name5))
+            //                            if (IsTransAvailable("水上"))
             //                            {
             //                                Area = "水上";
             //                            }
@@ -672,8 +650,7 @@ namespace SRCCore.Units
             //                {
             //                    case "空":
             //                        {
-            //                            string argarea_name = "空";
-            //                            if (!IsTransAvailable(argarea_name))
+            //                            if (!IsTransAvailable("空"))
             //                            {
             //                                goto NextLoop;
             //                            }
@@ -684,9 +661,7 @@ namespace SRCCore.Units
             //                    case "水":
             //                    case "深水":
             //                        {
-            //                            string argarea_name1 = "水上";
-            //                            string argarea_name2 = "空";
-            //                            if (!IsTransAvailable(argarea_name1) & !IsTransAvailable(argarea_name2) & get_Adaption(3) == 0)
+            //                            if (!IsTransAvailable("水上") & !IsTransAvailable("空") & get_Adaption(3) == 0)
             //                            {
             //                                goto NextLoop;
             //                            }
@@ -712,9 +687,8 @@ namespace SRCCore.Units
             //    var loopTo2 = CountOtherForm();
             //    for (i = 1; i <= loopTo2; i++)
             //    {
-            //        object argIndex1 = i;
             //        {
-            //            var withBlock = OtherForm(argIndex1);
+            //            var withBlock = OtherForm(i);
             //            withBlock.x = x;
             //            withBlock.y = y;
             //        }
@@ -723,9 +697,8 @@ namespace SRCCore.Units
             //    var loopTo3 = CountUnitOnBoard();
             //    for (i = 1; i <= loopTo3; i++)
             //    {
-            //        object argIndex2 = i;
             //        {
-            //            var withBlock1 = UnitOnBoard(argIndex2);
+            //            var withBlock1 = UnitOnBoard(i);
             //            withBlock1.x = x;
             //            withBlock1.y = y;
             //        }
@@ -754,13 +727,11 @@ namespace SRCCore.Units
 
             //                    case "宇宙":
             //                        {
-            //                            string argarea_name3 = "空";
-            //                            string argarea_name4 = "陸";
-            //                            if (IsTransAvailable(argarea_name3) & get_Adaption(1) >= get_Adaption(2))
+            //                            if (IsTransAvailable("空") & get_Adaption(1) >= get_Adaption(2))
             //                            {
             //                                Area = "空中";
             //                            }
-            //                            else if (IsTransAvailable(argarea_name4))
+            //                            else if (IsTransAvailable("陸"))
             //                            {
             //                                Area = "地上";
             //                            }
@@ -789,14 +760,11 @@ namespace SRCCore.Units
 
             //                    default:
             //                        {
-            //                            string argarea_name5 = "空";
-            //                            string argarea_name6 = "宇宙";
-            //                            string argarea_name7 = "陸";
-            //                            if ((IsTransAvailable(argarea_name5) | IsTransAvailable(argarea_name6)) & get_Adaption(4) >= get_Adaption(2))
+            //                            if ((IsTransAvailable("空") | IsTransAvailable("宇宙")) & get_Adaption(4) >= get_Adaption(2))
             //                            {
             //                                Area = "宇宙";
             //                            }
-            //                            else if (IsTransAvailable(argarea_name7))
+            //                            else if (IsTransAvailable("陸"))
             //                            {
             //                                Area = "地上";
             //                            }
@@ -819,8 +787,7 @@ namespace SRCCore.Units
             //                {
             //                    case "地上":
             //                        {
-            //                            string argarea_name8 = "水上";
-            //                            if (IsTransAvailable(argarea_name8))
+            //                            if (IsTransAvailable("水上"))
             //                            {
             //                                Area = "水上";
             //                            }
@@ -859,8 +826,7 @@ namespace SRCCore.Units
             // ユニット描画
             if (do_refresh)
             {
-                var argu = this;
-                GUI.PaintUnitBitmap(argu);
+                GUI.PaintUnitBitmap(this);
             }
         }
 
@@ -883,8 +849,7 @@ namespace SRCCore.Units
 
             //                if ((ID ?? "") == (localUnitOnBoard().ID ?? ""))
             //                {
-            //                    object argIndex1 = ID;
-            //                    u.UnloadUnit(argIndex1);
+            //                    u.UnloadUnit(ID);
             //                    goto EndLoop;
             //                }
             //            }
@@ -920,11 +885,9 @@ namespace SRCCore.Units
             //    }
 
             //    // 破壊をキャンセル状態は解除
-            //    object argIndex3 = "破壊キャンセル";
-            //    if (IsConditionSatisfied(argIndex3))
+            //    if (IsConditionSatisfied("破壊キャンセル"))
             //    {
-            //        object argIndex2 = "破壊キャンセル";
-            //        DeleteCondition(argIndex2);
+            //        DeleteCondition("破壊キャンセル");
             //    }
 
             //    // ユニットを格納していたら降ろす
@@ -984,13 +947,11 @@ namespace SRCCore.Units
                         case "陸":
                         case "屋内":
                             {
-                                string argarea_name = "空";
-                                string argarea_name1 = "陸";
-                                if (IsTransAvailable(argarea_name) & Strings.Mid(strAdaption, 1, 1) == "A")
+                                if (IsTransAvailable("空") & Strings.Mid(strAdaption, 1, 1) == "A")
                                 {
                                     Area = "空中";
                                 }
-                                else if (IsTransAvailable(argarea_name1))
+                                else if (IsTransAvailable("陸"))
                                 {
                                     Area = "地上";
                                 }
@@ -1004,14 +965,11 @@ namespace SRCCore.Units
 
                         case "月面":
                             {
-                                string argarea_name2 = "空";
-                                string argarea_name3 = "宇宙";
-                                string argarea_name4 = "陸";
-                                if ((IsTransAvailable(argarea_name2) | IsTransAvailable(argarea_name3)) & Strings.Mid(strAdaption, 4, 1) == "A")
+                                if ((IsTransAvailable("空") | IsTransAvailable("宇宙")) & Strings.Mid(strAdaption, 4, 1) == "A")
                                 {
                                     Area = "宇宙";
                                 }
-                                else if (IsTransAvailable(argarea_name4))
+                                else if (IsTransAvailable("陸"))
                                 {
                                     Area = "地上";
                                 }
@@ -1026,13 +984,11 @@ namespace SRCCore.Units
                         case "水":
                         case "深水":
                             {
-                                string argarea_name5 = "空";
-                                string argarea_name6 = "水上";
-                                if (IsTransAvailable(argarea_name5))
+                                if (IsTransAvailable("空"))
                                 {
                                     Area = "空中";
                                 }
-                                else if (IsTransAvailable(argarea_name6))
+                                else if (IsTransAvailable("水上"))
                                 {
                                     Area = "水上";
                                 }
@@ -1068,8 +1024,7 @@ namespace SRCCore.Units
                     //        }
                     //        else
                     //        {
-                    //            var argu = this;
-                    //            BitmapID = GUI.MakeUnitBitmap(argu);
+                    //            BitmapID = GUI.MakeUnitBitmap(this);
                     //        }
                     //    }
                     //}
@@ -1101,8 +1056,7 @@ namespace SRCCore.Units
                 //    var withBlock1 = MainPilot();
                 //    if (withBlock1.Personality != "機械")
                 //    {
-                //        string argoname = "母艦収納時気力低下小";
-                //        if (Expression.IsOptionDefined(argoname))
+                //        if (Expression.IsOptionDefined("母艦収納時気力低下小"))
                 //        {
                 //            withBlock1.Morale = GeneralLib.MinLng(withBlock1.Morale, GeneralLib.MaxLng(withBlock1.Morale - 5, 100));
                 //        }
@@ -1116,13 +1070,11 @@ namespace SRCCore.Units
                 //var loopTo = CountPilot();
                 //for (i = 1; i <= loopTo; i++)
                 //{
-                //    object argIndex2 = i;
                 //    {
-                //        var withBlock2 = Pilot(argIndex2);
+                //        var withBlock2 = Pilot(i);
                 //        if ((MainPilot().ID ?? "") != (withBlock2.ID ?? "") & withBlock2.Personality != "機械")
                 //        {
-                //            string argoname1 = "母艦収納時気力低下小";
-                //            if (Expression.IsOptionDefined(argoname1))
+                //            if (Expression.IsOptionDefined("母艦収納時気力低下小"))
                 //            {
                 //                withBlock2.Morale = GeneralLib.MinLng(withBlock2.Morale, GeneralLib.MaxLng(withBlock2.Morale - 5, 100));
                 //            }
@@ -1137,13 +1089,11 @@ namespace SRCCore.Units
                 //var loopTo1 = CountSupport();
                 //for (i = 1; i <= loopTo1; i++)
                 //{
-                //    object argIndex3 = i;
                 //    {
-                //        var withBlock3 = Support(argIndex3);
+                //        var withBlock3 = Support(i);
                 //        if (withBlock3.Personality != "機械")
                 //        {
-                //            string argoname2 = "母艦収納時気力低下小";
-                //            if (Expression.IsOptionDefined(argoname2))
+                //            if (Expression.IsOptionDefined("母艦収納時気力低下小"))
                 //            {
                 //                withBlock3.Morale = GeneralLib.MinLng(withBlock3.Morale, GeneralLib.MaxLng(withBlock3.Morale - 5, 100));
                 //            }
@@ -1161,8 +1111,7 @@ namespace SRCCore.Units
                 //        var withBlock4 = AdditionalSupport();
                 //        if (withBlock4.Personality != "機械")
                 //        {
-                //            string argoname3 = "母艦収納時気力低下小";
-                //            if (Expression.IsOptionDefined(argoname3))
+                //            if (Expression.IsOptionDefined("母艦収納時気力低下小"))
                 //            {
                 //                withBlock4.Morale = GeneralLib.MinLng(withBlock4.Morale, GeneralLib.MaxLng(withBlock4.Morale - 5, 100));
                 //            }
@@ -1193,7 +1142,6 @@ namespace SRCCore.Units
             //    string buf;
             var hp_ratio = 100 * HP / (double)MaxHP;
             var en_ratio = 100 * EN / (double)MaxEN;
-            object argIndex1 = new_form;
             var u = OtherForm(new_form);
             u.Status = Status;
             if (Status != "破棄")
@@ -1301,10 +1249,9 @@ namespace SRCCore.Units
                 //var loopTo2 = CountItem();
                 //for (i = 1; i <= loopTo2; i++)
                 //{
-                //    Item localItem() { object argIndex1 = i; var ret = Item(argIndex1); return ret; }
+                //    Item localItem() { object new_form = i; var ret = Item(new_form); return ret; }
 
-                //    var argitm = localItem();
-                //    u.AddItem0(argitm);
+                //    u.AddItem0(localItem());
                 //}
 
                 // スペシャルパワー効果のコピー
@@ -1371,8 +1318,7 @@ namespace SRCCore.Units
                 //{
                 //    Unit localServant() { object argIndex1 = i; var ret = Servant(argIndex1); return ret; }
 
-                //    var argu3 = localServant();
-                //    u.AddServant(argu3);
+                //    u.AddServant(localServant());
                 //}
 
                 //var loopTo14 = CountSlave();
@@ -1380,8 +1326,7 @@ namespace SRCCore.Units
                 //{
                 //    Unit localSlave() { object argIndex1 = i; var ret = Slave(argIndex1); return ret; }
 
-                //    var argu4 = localSlave();
-                //    u.AddSlave(argu4);
+                //    u.AddSlave(localSlave());
                 //}
 
                 colPilot.Clear();
@@ -1390,36 +1335,31 @@ namespace SRCCore.Units
                 //var loopTo15 = CountPilot();
                 //for (i = 1; i <= loopTo15; i++)
                 //{
-                //    object argIndex27 = 1;
-                //    DeletePilot(argIndex27);
+                //    DeletePilot(1);
                 //}
 
                 //var loopTo16 = CountSupport();
                 //for (i = 1; i <= loopTo16; i++)
                 //{
-                //    object argIndex28 = 1;
-                //    DeleteSupport(argIndex28);
+                //    DeleteSupport(1);
                 //}
 
                 //var loopTo17 = CountUnitOnBoard();
                 //for (i = 1; i <= loopTo17; i++)
                 //{
-                //    object argIndex29 = 1;
-                //    UnloadUnit(argIndex29);
+                //    UnloadUnit(1);
                 //}
 
                 //var loopTo18 = CountServant();
                 //for (i = 1; i <= loopTo18; i++)
                 //{
-                //    object argIndex30 = 1;
-                //    DeleteServant(argIndex30);
+                //    DeleteServant(1);
                 //}
 
                 //var loopTo19 = CountSlave();
                 //for (i = 1; i <= loopTo19; i++)
                 //{
-                //    object argIndex31 = 1;
-                //    DeleteSlave(argIndex31);
+                //    DeleteSlave(1);
                 //}
 
                 foreach (var p in u.Pilots)
@@ -1518,8 +1458,7 @@ namespace SRCCore.Units
                 //var loopTo29 = CountItem();
                 //for (i = 1; i <= loopTo29; i++)
                 //{
-                //    object argIndex34 = 1;
-                //    DeleteItem(argIndex34);
+                //    DeleteItem(1);
                 //}
 
                 u.Update();
@@ -1660,8 +1599,7 @@ namespace SRCCore.Units
             // 合体するユニットの配列を作成
             if (splitFeature == null)
             {
-                string argmsg1 = u.Name + "のデータに" + Name + "に対する分離指定がみつかりません。" + "書式を確認してください。";
-                GUI.ErrorMessage(argmsg1);
+                GUI.ErrorMessage(u.Name + "のデータに" + Name + "に対する分離指定がみつかりません。" + "書式を確認してください。");
                 return;
             }
             var runits = new List<Unit>();
@@ -1669,8 +1607,7 @@ namespace SRCCore.Units
             {
                 if (!SRC.UList.IsDefined(partuname))
                 {
-                    string argmsg2 = partuname + "が作成されていません";
-                    GUI.ErrorMessage(argmsg2);
+                    GUI.ErrorMessage(partuname + "が作成されていません");
                     return;
                 }
                 runits.Add(SRC.UList.Item(partuname));
@@ -1702,11 +1639,9 @@ namespace SRCCore.Units
 
                     //bool localIsMessageDefined2() { object argIndex1 = "合体"; string argmain_situation = "合体(" + FeatureName(argIndex1) + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
 
-                    //string argmain_situation1 = "合体";
-                    //if (localIsMessageDefined1() | localIsMessageDefined2() | IsMessageDefined(argmain_situation1))
+                    //if (localIsMessageDefined1() | localIsMessageDefined2() | IsMessageDefined("合体"))
                     //{
-                    //    string argfname1 = "合体ＢＧＭ";
-                    //    if (IsFeatureAvailable(argfname1))
+                    //    if (IsFeatureAvailable("合体ＢＧＭ"))
                     //    {
                     //        var loopTo5 = CountFeature();
                     //        for (i = 1; i <= loopTo5; i++)
@@ -1723,8 +1658,7 @@ namespace SRCCore.Units
 
                     //                string localFeatureData12() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
-                    //                string argmidi_name = Strings.Mid(localFeatureData11(), Strings.InStr(localFeatureData12(), " ") + 1);
-                    //                BGM = Sound.SearchMidiFile(argmidi_name);
+                    //                BGM = Sound.SearchMidiFile(Strings.Mid(localFeatureData11(), Strings.InStr(localFeatureData12(), " ") + 1));
                     //                if (Strings.Len(BGM) > 0)
                     //                {
                     //                    Sound.ChangeBGM(BGM);
@@ -1736,30 +1670,20 @@ namespace SRCCore.Units
                     //        }
                     //    }
 
-                    //    Unit argu1 = null;
-                    //    Unit argu2 = null;
-                    //    GUI.OpenMessageForm(u1: argu1, u2: argu2);
+                    //    GUI.OpenMessageForm(u1: null, u2: null);
                     //    bool localIsMessageDefined() { object argIndex1 = "合体"; string argmain_situation = "合体(" + FeatureName(argIndex1) + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
 
-                    //    string argmain_situation = "合体(" + u.Name + ")";
-                    //    if (IsMessageDefined(argmain_situation))
+                    //    if (IsMessageDefined("合体(" + u.Name + ")"))
                     //    {
-                    //        string argSituation = "合体(" + u.Name + ")";
-                    //        string argmsg_mode = "";
-                    //        PilotMessage(argSituation, msg_mode: argmsg_mode);
+                    //        PilotMessage("合体(" + u.Name + ")", msg_mode: "");
                     //    }
                     //    else if (localIsMessageDefined())
                     //    {
-                    //        object argIndex8 = "合体";
-                    //        string argSituation2 = "合体(" + FeatureName(argIndex8) + ")";
-                    //        string argmsg_mode2 = "";
-                    //        PilotMessage(argSituation2, msg_mode: argmsg_mode2);
+                    //        PilotMessage("合体(" + FeatureName("合体") + ")", msg_mode: "");
                     //    }
                     //    else
                     //    {
-                    //        string argSituation1 = "合体";
-                    //        string argmsg_mode1 = "";
-                    //        PilotMessage(argSituation1, msg_mode: argmsg_mode1);
+                    //        PilotMessage("合体", msg_mode: "");
                     //    }
 
                     //    GUI.CloseMessageForm();
@@ -1820,8 +1744,7 @@ namespace SRCCore.Units
                 //{
                 //    Item localItem3() { object argIndex1 = i; var ret = ru.Item(argIndex1); return ret; }
 
-                //    var argitm = localItem3();
-                //    u.AddItem(argitm);
+                //    u.AddItem(localItem3());
                 //}
 
                 u.Master = ru.Master;
@@ -1837,15 +1760,13 @@ namespace SRCCore.Units
                 //{
                 //    Unit localServant() { object argIndex1 = i; var ret = withBlock2.Servant(argIndex1); return ret; }
 
-                //    var argu = localServant();
-                //    u.AddServant(argu);
+                //    u.AddServant(localServant());
                 //}
 
                 //var loopTo14 = withBlock2.CountServant();
                 //for (i = 1; i <= loopTo14; i++)
                 //{
-                //    object argIndex9 = 1;
-                //    withBlock2.DeleteServant(argIndex9);
+                //    withBlock2.DeleteServant(1);
                 //}
 
                 //var loopTo15 = withBlock2.CountSlave();
@@ -1853,15 +1774,13 @@ namespace SRCCore.Units
                 //{
                 //    Unit localSlave() { object argIndex1 = i; var ret = withBlock2.Slave(argIndex1); return ret; }
 
-                //    var argu3 = localSlave();
-                //    u.AddSlave(argu3);
+                //    u.AddSlave(localSlave());
                 //}
 
                 //var loopTo16 = withBlock2.CountSlave();
                 //for (i = 1; i <= loopTo16; i++)
                 //{
-                //    object argIndex10 = 1;
-                //    withBlock2.DeleteSlave(argIndex10);
+                //    withBlock2.DeleteSlave(1);
                 //}
             }
 
@@ -1967,9 +1886,8 @@ namespace SRCCore.Units
                 //    var loopTo27 = ru.CountOtherForm();
                 //    for (k = 1; k <= loopTo27; k++)
                 //    {
-                //        object argIndex15 = k;
                 //        {
-                //            var withBlock5 = ru.OtherForm(argIndex15);
+                //            var withBlock5 = ru.OtherForm(k);
                 //            var loopTo28 = withBlock5.CountWeapon();
                 //            for (l = 1; l <= loopTo28; l++)
                 //            {
@@ -2000,9 +1918,8 @@ namespace SRCCore.Units
                 //    var loopTo31 = ru.CountOtherForm();
                 //    for (k = 1; k <= loopTo31; k++)
                 //    {
-                //        object argIndex16 = k;
                 //        {
-                //            var withBlock6 = ru.OtherForm(argIndex16);
+                //            var withBlock6 = ru.OtherForm(k);
                 //            var loopTo32 = withBlock6.CountAbility();
                 //            for (l = 1; l <= loopTo32; l++)
                 //            {
@@ -2044,9 +1961,8 @@ namespace SRCCore.Units
             //            var loopTo36 = withBlock7.CountOtherForm();
             //            for (k = 1; k <= loopTo36; k++)
             //            {
-            //                object argIndex17 = k;
             //                {
-            //                    var withBlock8 = withBlock7.OtherForm(argIndex17);
+            //                    var withBlock8 = withBlock7.OtherForm(k);
             //                    var loopTo37 = withBlock8.CountWeapon();
             //                    for (l = 1; l <= loopTo37; l++)
             //                    {
@@ -2080,9 +1996,8 @@ namespace SRCCore.Units
             //            var loopTo40 = withBlock7.CountOtherForm();
             //            for (k = 1; k <= loopTo40; k++)
             //            {
-            //                object argIndex18 = k;
             //                {
-            //                    var withBlock9 = withBlock7.OtherForm(argIndex18);
+            //                    var withBlock9 = withBlock7.OtherForm(k);
             //                    var loopTo41 = withBlock9.CountAbility();
             //                    for (l = 1; l <= loopTo41; l++)
             //                    {
@@ -2107,8 +2022,7 @@ namespace SRCCore.Units
             //    var loopTo42 = withBlock10.CountItem();
             //    for (i = 1; i <= loopTo42; i++)
             //    {
-            //        object argIndex19 = 1;
-            //        withBlock10.DeleteItem(argIndex19);
+            //        withBlock10.DeleteItem(1);
             //    }
             //}
 
@@ -2210,15 +2124,13 @@ namespace SRCCore.Units
                 //{
                 //    Item localItem() { object argIndex1 = j; var ret = Item(argIndex1); return ret; }
 
-                //    var argitm = localItem();
-                //    firstUnit.AddItem(argitm);
+                //    firstUnit.AddItem(localItem());
                 //}
 
                 //var loopTo3 = CountItem();
                 //for (j = 1; j <= loopTo3; j++)
                 //{
-                //    object argIndex3 = 1;
-                //    DeleteItem(argIndex3);
+                //    DeleteItem(1);
                 //}
 
                 firstUnit.Master = Master;
@@ -2234,15 +2146,13 @@ namespace SRCCore.Units
                 //{
                 //    Unit localServant() { object argIndex1 = j; var ret = Servant(argIndex1); return ret; }
 
-                //    var argu = localServant();
-                //    firstUnit.AddServant(argu);
+                //    firstUnit.AddServant(localServant());
                 //}
 
                 //var loopTo5 = CountServant();
                 //for (j = 1; j <= loopTo5; j++)
                 //{
-                //    object argIndex4 = 1;
-                //    DeleteServant(argIndex4);
+                //    DeleteServant(1);
                 //}
 
                 //var loopTo6 = CountSlave();
@@ -2250,15 +2160,13 @@ namespace SRCCore.Units
                 //{
                 //    Unit localSlave() { object argIndex1 = j; var ret = Slave(argIndex1); return ret; }
 
-                //    var argu1 = localSlave();
-                //    firstUnit.AddSlave(argu1);
+                //    firstUnit.AddSlave(localSlave());
                 //}
 
                 //var loopTo7 = CountSlave();
                 //for (j = 1; j <= loopTo7; j++)
                 //{
-                //    object argIndex5 = 1;
-                //    DeleteSlave(argIndex5);
+                //    DeleteSlave(1);
                 //}
             }
 
@@ -2269,8 +2177,7 @@ namespace SRCCore.Units
             foreach (var u in uarray)
             {
                 // 召喚ユニットでない場合は陣営を合わせる
-                string argfname = "召喚ユニット";
-                if (!u.IsFeatureAvailable(argfname))
+                if (!u.IsFeatureAvailable("召喚ユニット"))
                 {
                     u.Party = Party0;
                 }
@@ -2370,9 +2277,8 @@ namespace SRCCore.Units
                 //var loopTo14 = u.CountOtherForm();
                 //for (j = 1; j <= loopTo14; j++)
                 //{
-                //    object argIndex11 = j;
                 //    {
-                //        var withBlock2 = u.OtherForm(argIndex11);
+                //        var withBlock2 = u.OtherForm(j);
                 //        idx = 1;
                 //        var loopTo15 = CountWeapon();
                 //        for (k = 1; k <= loopTo15; k++)
@@ -2413,9 +2319,8 @@ namespace SRCCore.Units
                 //var loopTo19 = u.CountOtherForm();
                 //for (j = 1; j <= loopTo19; j++)
                 //{
-                //    object argIndex12 = j;
                 //    {
-                //        var withBlock3 = u.OtherForm(argIndex12);
+                //        var withBlock3 = u.OtherForm(j);
                 //        idx = 1;
                 //        var loopTo20 = CountAbility();
                 //        for (k = 1; k <= loopTo20; k++)
@@ -2495,7 +2400,6 @@ namespace SRCCore.Units
                     //Unit localItem3() { object argIndex1 = GeneralLib.LIndex(buf, 2); 
                     //    var ret = SRC.UList.Item(argIndex1); return ret; }
 
-                    //var argu3 = localItem3();
                     sup.Ride(uarray.First());
                 }
                 else

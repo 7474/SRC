@@ -1,4 +1,4 @@
-﻿using SRCCore.Events;
+using SRCCore.Events;
 using SRCCore.Exceptions;
 
 namespace SRCCore.CmdDatas.Commands
@@ -52,12 +52,9 @@ namespace SRCCore.CmdDatas.Commands
             //}
 
             //// 追加経験値を収得
-            //string argoname = "追加経験値無効";
-            //if (SRC.Turn > 0 & !Expression.IsOptionDefined(argoname))
+            //if (SRC.Turn > 0 & !Expression.IsOptionDefined("追加経験値無効"))
             //{
-            //    Unit argu1 = null;
-            //    Unit argu2 = null;
-            //    GUI.OpenMessageForm(u1: argu1, u2: argu2);
+            //    GUI.OpenMessageForm(u1: null, u2: null);
             //    n = 0;
             //    msg = "";
             //    foreach (Pilot p in SRC.PList)
@@ -89,8 +86,7 @@ namespace SRCCore.CmdDatas.Commands
             //        if (p.Unit_Renamed.CountPilot() > 0 & !p.IsSupport(p.Unit_Renamed))
             //        {
             //            // 追加パイロットがメインパイロットの場合
-            //            object argIndex1 = 1;
-            //            if (ReferenceEquals(p, p.Unit_Renamed.Pilot(argIndex1)) & !ReferenceEquals(p, p.Unit_Renamed.MainPilot()) & p.Unit_Renamed.MainPilot().MaxSP > 0)
+            //            if (ReferenceEquals(p, p.Unit_Renamed.Pilot(1)) & !ReferenceEquals(p, p.Unit_Renamed.MainPilot()) & p.Unit_Renamed.MainPilot().MaxSP > 0)
             //            {
             //                goto NextPilot;
             //            }
@@ -129,8 +125,7 @@ namespace SRCCore.CmdDatas.Commands
             //        n = (n + 1);
             //        if (n == 4)
             //        {
-            //            string argpname = "システム";
-            //            GUI.DisplayMessage(argpname, Strings.Mid(msg, 2));
+            //            GUI.DisplayMessage("システム", Strings.Mid(msg, 2));
             //            msg = "";
             //            n = 0;
             //        }
@@ -141,8 +136,7 @@ namespace SRCCore.CmdDatas.Commands
 
             //    if (n > 0)
             //    {
-            //        string argpname1 = "システム";
-            //        GUI.DisplayMessage(argpname1, Strings.Mid(msg, 2));
+            //        GUI.DisplayMessage("システム", Strings.Mid(msg, 2));
             //    }
 
             //    GUI.CloseMessageForm();
@@ -160,13 +154,11 @@ namespace SRCCore.CmdDatas.Commands
                 //    u = currentU1;
                 //    if (u.Status != "他形態" & u.Status != "旧主形態" & u.Status != "旧形態")
                 //    {
-                //        string argfname = "ノーマルモード";
-                //        if (u.IsFeatureAvailable(argfname))
+                //        if (u.IsFeatureAvailable("ノーマルモード"))
                 //        {
                 //            string localLIndex() { object argIndex1 = "ノーマルモード"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                //            string argnew_form = localLIndex();
-                //            u.Transform(argnew_form);
+                //            u.Transform(localLIndex());
                 //        }
                 //    }
                 //}

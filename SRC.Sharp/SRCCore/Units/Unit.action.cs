@@ -1,4 +1,4 @@
-﻿using SRCCore.VB;
+using SRCCore.VB;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,15 +17,7 @@ namespace SRCCore.Units
         {
             int MaxActionRet;
             //// ステータス異常？
-            //object argIndex1 = "行動不能";
-            //object argIndex2 = "麻痺";
-            //object argIndex3 = "石化";
-            //object argIndex4 = "凍結";
-            //object argIndex5 = "睡眠";
-            //object argIndex6 = "チャージ";
-            //object argIndex7 = "消耗";
-            //string argsptype = "行動不能";
-            //if (IsConditionSatisfied(argIndex1) | IsConditionSatisfied(argIndex2) | IsConditionSatisfied(argIndex3) | IsConditionSatisfied(argIndex4) | IsConditionSatisfied(argIndex5) | IsConditionSatisfied(argIndex6) | IsConditionSatisfied(argIndex7) | IsUnderSpecialPowerEffect(argsptype))
+            //if (IsConditionSatisfied("行動不能") | IsConditionSatisfied("麻痺") | IsConditionSatisfied("石化") | IsConditionSatisfied("凍結") | IsConditionSatisfied("睡眠") | IsConditionSatisfied("チャージ") | IsConditionSatisfied("消耗") | IsUnderSpecialPowerEffect("行動不能"))
             //{
             //    return MaxActionRet;
             //}
@@ -35,8 +27,7 @@ namespace SRCCore.Units
             //{
             //    if (EN == 0)
             //    {
-            //        string argoname = "ＥＮ０時行動可";
-            //        if (!Expression.IsOptionDefined(argoname))
+            //        if (!Expression.IsOptionDefined("ＥＮ０時行動可"))
             //        {
             //            return MaxActionRet;
             //        }
@@ -49,11 +40,9 @@ namespace SRCCore.Units
             //}
 
             //// ２回行動可能？
-            //string argoname1 = "２回行動能力使用";
-            //if (Expression.IsOptionDefined(argoname1))
+            //if (Expression.IsOptionDefined("２回行動能力使用"))
             //{
-            //    string argsname = "２回行動";
-            //    if (MainPilot().IsSkillAvailable(argsname))
+            //    if (MainPilot().IsSkillAvailable("２回行動"))
             //    {
             //        MaxActionRet = 2;
             //    }
@@ -83,15 +72,13 @@ namespace SRCCore.Units
             //int max_action;
 
             //// ２回行動可能？
-            //string argoname = "２回行動能力使用";
             //if (CountPilot() == 0)
             //{
             //    max_action = 1;
             //}
-            //else if (Expression.IsOptionDefined(argoname))
+            //else if (Expression.IsOptionDefined("２回行動能力使用"))
             //{
-            //    string argsname = "２回行動";
-            //    if (MainPilot().IsSkillAvailable(argsname))
+            //    if (MainPilot().IsSkillAvailable("２回行動"))
             //    {
             //        max_action = 2;
             //    }
@@ -124,8 +111,7 @@ namespace SRCCore.Units
 
                 // TODO Impl
                 //// 魅了されている場合
-                //object argIndex1 = "魅了";
-                //if (IsConditionSatisfied(argIndex1) & Master is object)
+                //if (IsConditionSatisfied("魅了") & Master is object)
                 //{
                 //    PartyRet = Master.Party;
                 //    if (PartyRet == "味方")
@@ -136,8 +122,7 @@ namespace SRCCore.Units
                 //}
 
                 //// 憑依されている場合
-                //object argIndex2 = "憑依";
-                //if (IsConditionSatisfied(argIndex2) & Master is object)
+                //if (IsConditionSatisfied("憑依") & Master is object)
                 //{
                 //    PartyRet = Master.Party;
                 //}
@@ -145,12 +130,7 @@ namespace SRCCore.Units
                 //// コントロール不能の味方ユニットはＮＰＣとして扱う
                 //if (PartyRet == "味方")
                 //{
-                //    object argIndex3 = "暴走";
-                //    object argIndex4 = "混乱";
-                //    object argIndex5 = "恐怖";
-                //    object argIndex6 = "踊り";
-                //    object argIndex7 = "狂戦士";
-                //    if (IsConditionSatisfied(argIndex3) | IsConditionSatisfied(argIndex4) | IsConditionSatisfied(argIndex5) | IsConditionSatisfied(argIndex6) | IsConditionSatisfied(argIndex7))
+                //    if (IsConditionSatisfied("暴走") | IsConditionSatisfied("混乱") | IsConditionSatisfied("恐怖") | IsConditionSatisfied("踊り") | IsConditionSatisfied("狂戦士"))
                 //    {
                 //        PartyRet = "ＮＰＣ";
                 //    }
@@ -174,8 +154,7 @@ namespace SRCCore.Units
                 // TODO Impl
                 //string ModeRet = default;
                 //int i;
-                //string argsptype = "挑発";
-                //if (IsUnderSpecialPowerEffect(argsptype))
+                //if (IsUnderSpecialPowerEffect("挑発"))
                 //{
                 //    // 挑発を最優先
                 //    var loopTo = CountSpecialPower();
@@ -184,21 +163,15 @@ namespace SRCCore.Units
                 //        // UPGRADE_WARNING: オブジェクト SpecialPower(i).IsEffectAvailable(挑発) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                 //        SpecialPowerData localSpecialPower() { object argIndex1 = i; var ret = SpecialPower(argIndex1); return ret; }
 
-                //        string argename = "挑発";
-                //        if (Conversions.ToBoolean(localSpecialPower().IsEffectAvailable(argename)))
+                //        if (Conversions.ToBoolean(localSpecialPower().IsEffectAvailable("挑発")))
                 //        {
-                //            object argIndex1 = i;
-                //            ModeRet = SpecialPowerData(argIndex1);
+                //            ModeRet = SpecialPowerData(i);
                 //            return default;
                 //        }
                 //    }
                 //}
 
-                //object argIndex2 = "暴走";
-                //object argIndex3 = "混乱";
-                //object argIndex4 = "憑依";
-                //object argIndex5 = "狂戦士";
-                //if (IsConditionSatisfied(argIndex2) | IsConditionSatisfied(argIndex3) | IsConditionSatisfied(argIndex4) | IsConditionSatisfied(argIndex5))
+                //if (IsConditionSatisfied("暴走") | IsConditionSatisfied("混乱") | IsConditionSatisfied("憑依") | IsConditionSatisfied("狂戦士"))
                 //{
                 //    // 正常な判断が出来ない場合は当初の目的を忘れてしまうため
                 //    // 常に通常モードとして扱う
@@ -206,16 +179,14 @@ namespace SRCCore.Units
                 //    return default;
                 //}
 
-                //object argIndex6 = "恐怖";
-                //if (IsConditionSatisfied(argIndex6))
+                //if (IsConditionSatisfied("恐怖"))
                 //{
                 //    // 恐怖にかられた場合は逃亡
                 //    ModeRet = "逃亡";
                 //    return default;
                 //}
 
-                //object argIndex7 = "踊り";
-                //if (IsConditionSatisfied(argIndex7))
+                //if (IsConditionSatisfied("踊り"))
                 //{
                 //    // 踊るのに忙しい……
                 //    ModeRet = "固定";

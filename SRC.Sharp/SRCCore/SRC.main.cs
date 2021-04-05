@@ -1,4 +1,4 @@
-﻿using SRCCore.Exceptions;
+using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.VB;
@@ -47,9 +47,7 @@ namespace SRCCore
             //            GeneralLib.timeBeginPeriod(1);
 
             //            // フルスクリーンモードを使う？
-            //            string argini_section = "Option";
-            //            string argini_entry = "FullScreen";
-            //            if (Strings.LCase(GeneralLib.ReadIni(argini_section, argini_entry)) == "on")
+            //            if (Strings.LCase(GeneralLib.ReadIni("Option", "FullScreen")) == "on")
             //            {
             //                GUI.ChangeDisplaySize(800, 600);
             //            }
@@ -86,22 +84,19 @@ namespace SRCCore
             //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //            if (Strings.Len(FileSystem.Dir(AppPath + "Bitmap", FileAttribute.Directory)) == 0)
             //            {
-            //                string argmsg = "Bitmapフォルダがありません。" + Constants.vbCr + Constants.vbLf + "SRC.exeと同じフォルダに汎用グラフィック集をインストールしてください。";
-            //                GUI.ErrorMessage(argmsg);
+            //                GUI.ErrorMessage("Bitmapフォルダがありません。" + Constants.vbCr + Constants.vbLf + "SRC.exeと同じフォルダに汎用グラフィック集をインストールしてください。");
             //                Environment.Exit(0);
             //            }
             //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //            if (Strings.Len(FileSystem.Dir(AppPath + "Ｂｉｔｍａｐ", FileAttribute.Directory)) > 0)
             //            {
-            //                string argmsg1 = "Bitmapフォルダのフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + AppPath + "Ｂｉｔｍａｐ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。";
-            //                GUI.ErrorMessage(argmsg1);
+            //                GUI.ErrorMessage("Bitmapフォルダのフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + AppPath + "Ｂｉｔｍａｐ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
             //                Environment.Exit(0);
             //            }
             //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //            if (Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Bitmap", FileAttribute.Directory)) > 0)
             //            {
-            //                string argmsg2 = "Bitmapフォルダ内にさらにBitmapフォルダが存在します。" + Constants.vbCr + Constants.vbLf + AppPath + @"Bitmap\Bitmap" + Constants.vbCr + Constants.vbLf + "フォルダ構造を直してください。";
-            //                GUI.ErrorMessage(argmsg2);
+            //                GUI.ErrorMessage("Bitmapフォルダ内にさらにBitmapフォルダが存在します。" + Constants.vbCr + Constants.vbLf + AppPath + @"Bitmap\Bitmap" + Constants.vbCr + Constants.vbLf + "フォルダ構造を直してください。");
             //                Environment.Exit(0);
             //            }
 
@@ -109,8 +104,7 @@ namespace SRCCore
             //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //            if (Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Event", FileAttribute.Directory)) == 0)
             //            {
-            //                string argmsg3 = @"Bitmap\Eventフォルダが見つかりません。" + Constants.vbCr + Constants.vbLf + "汎用グラフィック集が正しくインストールされていないと思われます。";
-            //                GUI.ErrorMessage(argmsg3);
+            //                GUI.ErrorMessage(@"Bitmap\Eventフォルダが見つかりません。" + Constants.vbCr + Constants.vbLf + "汎用グラフィック集が正しくインストールされていないと思われます。");
             //                Environment.Exit(0);
             //            }
 
@@ -118,8 +112,7 @@ namespace SRCCore
             //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //            if (Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Map", FileAttribute.Directory)) == 0)
             //            {
-            //                string argmsg4 = @"Bitmap\Mapフォルダがありません。" + Constants.vbCr + Constants.vbLf + "汎用グラフィック集が正しくインストールされていないと思われます。";
-            //                GUI.ErrorMessage(argmsg4);
+            //                GUI.ErrorMessage(@"Bitmap\Mapフォルダがありません。" + Constants.vbCr + Constants.vbLf + "汎用グラフィック集が正しくインストールされていないと思われます。");
             //                Environment.Exit(0);
             //            }
             //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
@@ -128,21 +121,18 @@ namespace SRCCore
             //                // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //                if (Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Map\Map", FileAttribute.Directory)) > 0)
             //                {
-            //                    string argmsg5 = @"Bitmap\Mapフォルダ内にさらにMapフォルダが存在します。" + Constants.vbCr + Constants.vbLf + AppPath + @"Bitmap\Map\Map" + Constants.vbCr + Constants.vbLf + "フォルダ構造を直してください。";
-            //                    GUI.ErrorMessage(argmsg5);
+            //                    GUI.ErrorMessage(@"Bitmap\Mapフォルダ内にさらにMapフォルダが存在します。" + Constants.vbCr + Constants.vbLf + AppPath + @"Bitmap\Map\Map" + Constants.vbCr + Constants.vbLf + "フォルダ構造を直してください。");
             //                    Environment.Exit(0);
             //                }
 
             //                // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //                if (Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Map\*", FileAttribute.Normal)) == 0)
             //                {
-            //                    string argmsg6 = @"Bitmap\Mapフォルダ内にファイルがありません。" + Constants.vbCr + Constants.vbLf + "汎用グラフィック集が正しくインストールされていないと思われます。";
-            //                    GUI.ErrorMessage(argmsg6);
+            //                    GUI.ErrorMessage(@"Bitmap\Mapフォルダ内にファイルがありません。" + Constants.vbCr + Constants.vbLf + "汎用グラフィック集が正しくインストールされていないと思われます。");
             //                    Environment.Exit(0);
             //                }
 
-            //                string argmsg7 = @"Bitmap\Mapフォルダ内にplain0000.bmpがありません。" + Constants.vbCr + Constants.vbLf + "一部のマップ画像ファイルしかインストールされていない恐れがあります。" + Constants.vbCr + Constants.vbLf + "新規インストールのファイルを使って汎用グラフィック集をインストールしてください。";
-            //                GUI.ErrorMessage(argmsg7);
+            //                GUI.ErrorMessage(@"Bitmap\Mapフォルダ内にplain0000.bmpがありません。" + Constants.vbCr + Constants.vbLf + "一部のマップ画像ファイルしかインストールされていない恐れがあります。" + Constants.vbCr + Constants.vbLf + "新規インストールのファイルを使って汎用グラフィック集をインストールしてください。");
             //                Environment.Exit(0);
             //            }
 
@@ -150,29 +140,25 @@ namespace SRCCore
             //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //            if (Strings.Len(FileSystem.Dir(AppPath + "Sound", FileAttribute.Directory)) == 0)
             //            {
-            //                string argmsg8 = "Soundフォルダがありません。" + Constants.vbCr + Constants.vbLf + "SRC.exeと同じフォルダに効果音集をインストールしてください。";
-            //                GUI.ErrorMessage(argmsg8);
+            //                GUI.ErrorMessage("Soundフォルダがありません。" + Constants.vbCr + Constants.vbLf + "SRC.exeと同じフォルダに効果音集をインストールしてください。");
             //                Environment.Exit(0);
             //            }
             //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //            if (Strings.Len(FileSystem.Dir(AppPath + "Ｓｏｕｎｄ", FileAttribute.Directory)) > 0)
             //            {
-            //                string argmsg9 = "Soundフォルダのフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + AppPath + "Ｓｏｕｎｄ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。";
-            //                GUI.ErrorMessage(argmsg9);
+            //                GUI.ErrorMessage("Soundフォルダのフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + AppPath + "Ｓｏｕｎｄ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
             //                Environment.Exit(0);
             //            }
             //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //            if (Strings.Len(FileSystem.Dir(AppPath + @"Sound\Sound", FileAttribute.Directory)) > 0)
             //            {
-            //                string argmsg10 = "Soundフォルダ内にさらにSoundフォルダが存在します。" + Constants.vbCr + Constants.vbLf + AppPath + @"Sound\Sound" + Constants.vbCr + Constants.vbLf + "フォルダ構造を直してください。";
-            //                GUI.ErrorMessage(argmsg10);
+            //                GUI.ErrorMessage("Soundフォルダ内にさらにSoundフォルダが存在します。" + Constants.vbCr + Constants.vbLf + AppPath + @"Sound\Sound" + Constants.vbCr + Constants.vbLf + "フォルダ構造を直してください。");
             //                Environment.Exit(0);
             //            }
             //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //            if (Strings.Len(FileSystem.Dir(AppPath + @"Sound\*", FileAttribute.Normal)) == 0)
             //            {
-            //                string argmsg11 = "Soundフォルダ内にファイルがありません。" + Constants.vbCr + Constants.vbLf + "Soundフォルダ内に効果音集をインストールしてください。";
-            //                GUI.ErrorMessage(argmsg11);
+            //                GUI.ErrorMessage("Soundフォルダ内にファイルがありません。" + Constants.vbCr + Constants.vbLf + "Soundフォルダ内に効果音集をインストールしてください。");
             //                Environment.Exit(0);
             //            }
         }
@@ -182,9 +168,7 @@ namespace SRCCore
             // TODO Impl この辺は実行環境に依存しそう
 
             //            // WAVE再生の手段は？
-            //            string argini_section1 = "Option";
-            //            string argini_entry1 = "UseDirectSound";
-            //            switch (Strings.LCase(GeneralLib.ReadIni(argini_section1, argini_entry1)) ?? "")
+            //            switch (Strings.LCase(GeneralLib.ReadIni("Option", "UseDirectSound")) ?? "")
             //            {
             //                case "on":
             //                    {
@@ -214,9 +198,7 @@ namespace SRCCore
             //            }
 
             //            // MIDI演奏の手段は？
-            //            string argini_section5 = "Option";
-            //            string argini_entry5 = "UseDirectMusic";
-            //            switch (Strings.LCase(GeneralLib.ReadIni(argini_section5, argini_entry5)) ?? "")
+            //            switch (Strings.LCase(GeneralLib.ReadIni("Option", "UseDirectMusic")) ?? "")
             //            {
             //                case "on":
             //                    {
@@ -241,53 +223,34 @@ namespace SRCCore
             //                            // DirectMusicが使用可能かどうかで設定を切り替え
             //                            if (Sound.UseDirectMusic)
             //                            {
-            //                                string argini_section2 = "Option";
-            //                                string argini_entry2 = "UseDirectMusic";
-            //                                string argini_data = "On";
-            //                                GeneralLib.WriteIni(argini_section2, argini_entry2, argini_data);
+            //                                GeneralLib.WriteIni("Option", "UseDirectMusic", "On");
             //                            }
             //                            else
             //                            {
-            //                                string argini_section3 = "Option";
-            //                                string argini_entry3 = "UseDirectMusic";
-            //                                string argini_data1 = "Off";
-            //                                GeneralLib.WriteIni(argini_section3, argini_entry3, argini_data1);
+            //                                GeneralLib.WriteIni("Option", "UseDirectMusic", "Off");
             //                            }
             //                        }
             //                        else
             //                        {
             //                            // NT系OSでなければMCIを使う
             //                            Sound.UseMCI = true;
-            //                            string argini_section4 = "Option";
-            //                            string argini_entry4 = "UseDirectMusic";
-            //                            string argini_data2 = "Off";
-            //                            GeneralLib.WriteIni(argini_section4, argini_entry4, argini_data2);
+            //                            GeneralLib.WriteIni("Option", "UseDirectMusic", "Off");
             //                        }
 
             //                        break;
             //                    }
             //            }
 
-            //            string argini_section7 = "Option";
-            //            string argini_entry7 = "MIDIPortID";
-            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni(argini_section7, argini_entry7)))
+            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("Option", "MIDIPortID")))
             //            {
-            //                string argini_section6 = "Option";
-            //                string argini_entry6 = "MIDIPortID";
-            //                string argini_data3 = "0";
-            //                GeneralLib.WriteIni(argini_section6, argini_entry6, argini_data3);
+            //                GeneralLib.WriteIni("Option", "MIDIPortID", "0");
             //            }
 
             //            // MP3の再生音量
-            //            string argini_section8 = "Option";
-            //            string argini_entry8 = "MP3Volume";
-            //            buf = GeneralLib.ReadIni(argini_section8, argini_entry8);
+            //            buf = GeneralLib.ReadIni("Option", "MP3Volume");
             //            if (string.IsNullOrEmpty(buf))
             //            {
-            //                string argini_section9 = "Option";
-            //                string argini_entry9 = "MP3Volume";
-            //                string argini_data4 = "50";
-            //                GeneralLib.WriteIni(argini_section9, argini_entry9, argini_data4);
+            //                GeneralLib.WriteIni("Option", "MP3Volume", "50");
             //                Sound.MP3Volume = 50;
             //            }
             //            else
@@ -295,184 +258,102 @@ namespace SRCCore
             //                Sound.MP3Volume = GeneralLib.StrToLng(buf);
             //                if (Sound.MP3Volume < 0)
             //                {
-            //                    string argini_section10 = "Option";
-            //                    string argini_entry10 = "MP3Volume";
-            //                    string argini_data5 = "0";
-            //                    GeneralLib.WriteIni(argini_section10, argini_entry10, argini_data5);
+            //                    GeneralLib.WriteIni("Option", "MP3Volume", "0");
             //                    Sound.MP3Volume = 0;
             //                }
             //                else if (Sound.MP3Volume > 100)
             //                {
-            //                    string argini_section11 = "Option";
-            //                    string argini_entry11 = "MP3Volume";
-            //                    string argini_data6 = "100";
-            //                    GeneralLib.WriteIni(argini_section11, argini_entry11, argini_data6);
+            //                    GeneralLib.WriteIni("Option", "MP3Volume", "100");
             //                    Sound.MP3Volume = 100;
             //                }
             //            }
 
             //            // MP3の出力フレーム数
-            //            string argini_section12 = "Option";
-            //            string argini_entry12 = "MP3OutputBlock";
-            //            buf = GeneralLib.ReadIni(argini_section12, argini_entry12);
+            //            buf = GeneralLib.ReadIni("Option", "MP3OutputBlock");
             //            if (string.IsNullOrEmpty(buf))
             //            {
-            //                string argini_section13 = "Option";
-            //                string argini_entry13 = "MP3OutputBlock";
-            //                string argini_data7 = "20";
-            //                GeneralLib.WriteIni(argini_section13, argini_entry13, argini_data7);
+            //                GeneralLib.WriteIni("Option", "MP3OutputBlock", "20");
             //            }
 
             //            // MP3の入力直後のスリープ時間
-            //            string argini_section14 = "Option";
-            //            string argini_entry14 = "MP3InputSleep";
-            //            buf = GeneralLib.ReadIni(argini_section14, argini_entry14);
+            //            buf = GeneralLib.ReadIni("Option", "MP3InputSleep");
             //            if (string.IsNullOrEmpty(buf))
             //            {
-            //                string argini_section15 = "Option";
-            //                string argini_entry15 = "MP3InputSleep";
-            //                string argini_data8 = "5";
-            //                GeneralLib.WriteIni(argini_section15, argini_entry15, argini_data8);
+            //                GeneralLib.WriteIni("Option", "MP3InputSleep", "5");
             //            }
 
             //            // ＢＧＭ用MIDIファイル設定
-            //            string argini_section17 = "BGM";
-            //            string argini_entry17 = "Opening";
-            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni(argini_section17, argini_entry17)))
+            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Opening")))
             //            {
-            //                string argini_section16 = "BGM";
-            //                string argini_entry16 = "Opening";
-            //                string argini_data9 = "Opening.mid";
-            //                GeneralLib.WriteIni(argini_section16, argini_entry16, argini_data9);
+            //                GeneralLib.WriteIni("BGM", "Opening", "Opening.mid");
             //            }
 
-            //            string argini_section19 = "BGM";
-            //            string argini_entry19 = "Map1";
-            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni(argini_section19, argini_entry19)))
+            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Map1")))
             //            {
-            //                string argini_section18 = "BGM";
-            //                string argini_entry18 = "Map1";
-            //                string argini_data10 = "Map1.mid";
-            //                GeneralLib.WriteIni(argini_section18, argini_entry18, argini_data10);
+            //                GeneralLib.WriteIni("BGM", "Map1", "Map1.mid");
             //            }
 
-            //            string argini_section21 = "BGM";
-            //            string argini_entry21 = "Map2";
-            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni(argini_section21, argini_entry21)))
+            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Map2")))
             //            {
-            //                string argini_section20 = "BGM";
-            //                string argini_entry20 = "Map2";
-            //                string argini_data11 = "Map2.mid";
-            //                GeneralLib.WriteIni(argini_section20, argini_entry20, argini_data11);
+            //                GeneralLib.WriteIni("BGM", "Map2", "Map2.mid");
             //            }
 
-            //            string argini_section23 = "BGM";
-            //            string argini_entry23 = "Map3";
-            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni(argini_section23, argini_entry23)))
+            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Map3")))
             //            {
-            //                string argini_section22 = "BGM";
-            //                string argini_entry22 = "Map3";
-            //                string argini_data12 = "Map3.mid";
-            //                GeneralLib.WriteIni(argini_section22, argini_entry22, argini_data12);
+            //                GeneralLib.WriteIni("BGM", "Map3", "Map3.mid");
             //            }
 
-            //            string argini_section25 = "BGM";
-            //            string argini_entry25 = "Map4";
-            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni(argini_section25, argini_entry25)))
+            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Map4")))
             //            {
-            //                string argini_section24 = "BGM";
-            //                string argini_entry24 = "Map4";
-            //                string argini_data13 = "Map4.mid";
-            //                GeneralLib.WriteIni(argini_section24, argini_entry24, argini_data13);
+            //                GeneralLib.WriteIni("BGM", "Map4", "Map4.mid");
             //            }
 
-            //            string argini_section27 = "BGM";
-            //            string argini_entry27 = "Map5";
-            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni(argini_section27, argini_entry27)))
+            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Map5")))
             //            {
-            //                string argini_section26 = "BGM";
-            //                string argini_entry26 = "Map5";
-            //                string argini_data14 = "Map5.mid";
-            //                GeneralLib.WriteIni(argini_section26, argini_entry26, argini_data14);
+            //                GeneralLib.WriteIni("BGM", "Map5", "Map5.mid");
             //            }
 
-            //            string argini_section29 = "BGM";
-            //            string argini_entry29 = "Map6";
-            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni(argini_section29, argini_entry29)))
+            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Map6")))
             //            {
-            //                string argini_section28 = "BGM";
-            //                string argini_entry28 = "Map6";
-            //                string argini_data15 = "Map6.mid";
-            //                GeneralLib.WriteIni(argini_section28, argini_entry28, argini_data15);
+            //                GeneralLib.WriteIni("BGM", "Map6", "Map6.mid");
             //            }
 
-            //            string argini_section31 = "BGM";
-            //            string argini_entry31 = "Briefing";
-            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni(argini_section31, argini_entry31)))
+            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Briefing")))
             //            {
-            //                string argini_section30 = "BGM";
-            //                string argini_entry30 = "Briefing";
-            //                string argini_data16 = "Briefing.mid";
-            //                GeneralLib.WriteIni(argini_section30, argini_entry30, argini_data16);
+            //                GeneralLib.WriteIni("BGM", "Briefing", "Briefing.mid");
             //            }
 
-            //            string argini_section33 = "BGM";
-            //            string argini_entry33 = "Intermission";
-            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni(argini_section33, argini_entry33)))
+            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Intermission")))
             //            {
-            //                string argini_section32 = "BGM";
-            //                string argini_entry32 = "Intermission";
-            //                string argini_data17 = "Intermission.mid";
-            //                GeneralLib.WriteIni(argini_section32, argini_entry32, argini_data17);
+            //                GeneralLib.WriteIni("BGM", "Intermission", "Intermission.mid");
             //            }
 
-            //            string argini_section35 = "BGM";
-            //            string argini_entry35 = "Subtitle";
-            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni(argini_section35, argini_entry35)))
+            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Subtitle")))
             //            {
-            //                string argini_section34 = "BGM";
-            //                string argini_entry34 = "Subtitle";
-            //                string argini_data18 = "Subtitle.mid";
-            //                GeneralLib.WriteIni(argini_section34, argini_entry34, argini_data18);
+            //                GeneralLib.WriteIni("BGM", "Subtitle", "Subtitle.mid");
             //            }
 
-            //            string argini_section37 = "BGM";
-            //            string argini_entry37 = "End";
-            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni(argini_section37, argini_entry37)))
+            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "End")))
             //            {
-            //                string argini_section36 = "BGM";
-            //                string argini_entry36 = "End";
-            //                string argini_data19 = "End.mid";
-            //                GeneralLib.WriteIni(argini_section36, argini_entry36, argini_data19);
+            //                GeneralLib.WriteIni("BGM", "End", "End.mid");
             //            }
 
-            //            string argini_section39 = "BGM";
-            //            string argini_entry39 = "default";
-            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni(argini_section39, argini_entry39)))
+            //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "default")))
             //            {
-            //                string argini_section38 = "BGM";
-            //                string argini_entry38 = "default";
-            //                string argini_data20 = "default.mid";
-            //                GeneralLib.WriteIni(argini_section38, argini_entry38, argini_data20);
+            //                GeneralLib.WriteIni("BGM", "default", "default.mid");
             //            }
         }
 
         private void LoadIni()
         {
             //            // スペシャルパワーアニメ
-            //            string argini_section48 = "Option";
-            //            string argini_entry48 = "SpecialPowerAnimation";
-            //            buf = GeneralLib.ReadIni(argini_section48, argini_entry48);
+            //            buf = GeneralLib.ReadIni("Option", "SpecialPowerAnimation");
             //            if (string.IsNullOrEmpty(buf))
             //            {
-            //                string argini_section49 = "Option";
-            //                string argini_entry49 = "MindEffect";
-            //                buf = GeneralLib.ReadIni(argini_section49, argini_entry49);
+            //                buf = GeneralLib.ReadIni("Option", "MindEffect");
             //                if (!string.IsNullOrEmpty(buf))
             //                {
-            //                    string argini_section50 = "Option";
-            //                    string argini_entry50 = "SpecialPowerAnimation";
-            //                    GeneralLib.WriteIni(argini_section50, argini_entry50, buf);
+            //                    GeneralLib.WriteIni("Option", "SpecialPowerAnimation", buf);
             //                }
             //            }
 
@@ -489,23 +370,15 @@ namespace SRCCore
             //            }
             //            else if (SpecialPowerAnimation)
             //            {
-            //                string argini_section51 = "Option";
-            //                string argini_entry51 = "SpecialPowerAnimation";
-            //                string argini_data21 = "On";
-            //                GeneralLib.WriteIni(argini_section51, argini_entry51, argini_data21);
+            //                GeneralLib.WriteIni("Option", "SpecialPowerAnimation", "On");
             //            }
             //            else
             //            {
-            //                string argini_section52 = "Option";
-            //                string argini_entry52 = "SpecialPowerAnimation";
-            //                string argini_data22 = "Off";
-            //                GeneralLib.WriteIni(argini_section52, argini_entry52, argini_data22);
+            //                GeneralLib.WriteIni("Option", "SpecialPowerAnimation", "Off");
             //            }
 
             //            // 戦闘アニメ
-            //            string argini_section53 = "Option";
-            //            string argini_entry53 = "BattleAnimation";
-            //            buf = Strings.LCase(GeneralLib.ReadIni(argini_section53, argini_entry53));
+            //            buf = Strings.LCase(GeneralLib.ReadIni("Option", "BattleAnimation"));
             //            if (!string.IsNullOrEmpty(buf))
             //            {
             //                if (buf == "on")
@@ -519,23 +392,15 @@ namespace SRCCore
             //            }
             //            else if (BattleAnimation)
             //            {
-            //                string argini_section54 = "Option";
-            //                string argini_entry54 = "BattleAnimation";
-            //                string argini_data23 = "On";
-            //                GeneralLib.WriteIni(argini_section54, argini_entry54, argini_data23);
+            //                GeneralLib.WriteIni("Option", "BattleAnimation", "On");
             //            }
             //            else
             //            {
-            //                string argini_section55 = "Option";
-            //                string argini_entry55 = "BattleAnimation";
-            //                string argini_data24 = "Off";
-            //                GeneralLib.WriteIni(argini_section55, argini_entry55, argini_data24);
+            //                GeneralLib.WriteIni("Option", "BattleAnimation", "Off");
             //            }
 
             //            // 拡大戦闘アニメ
-            //            string argini_section56 = "Option";
-            //            string argini_entry56 = "ExtendedAnimation";
-            //            buf = Strings.LCase(GeneralLib.ReadIni(argini_section56, argini_entry56));
+            //            buf = Strings.LCase(GeneralLib.ReadIni("Option", "ExtendedAnimation"));
             //            if (!string.IsNullOrEmpty(buf))
             //            {
             //                if (buf == "on")
@@ -550,16 +415,11 @@ namespace SRCCore
             //            else
             //            {
             //                ExtendedAnimation = true;
-            //                string argini_section57 = "Option";
-            //                string argini_entry57 = "ExtendedAnimation";
-            //                string argini_data25 = "On";
-            //                GeneralLib.WriteIni(argini_section57, argini_entry57, argini_data25);
+            //                GeneralLib.WriteIni("Option", "ExtendedAnimation", "On");
             //            }
 
             //            // 武器準備アニメ
-            //            string argini_section58 = "Option";
-            //            string argini_entry58 = "WeaponAnimation";
-            //            buf = Strings.LCase(GeneralLib.ReadIni(argini_section58, argini_entry58));
+            //            buf = Strings.LCase(GeneralLib.ReadIni("Option", "WeaponAnimation"));
             //            if (!string.IsNullOrEmpty(buf))
             //            {
             //                if (buf == "on")
@@ -574,16 +434,11 @@ namespace SRCCore
             //            else
             //            {
             //                WeaponAnimation = true;
-            //                string argini_section59 = "Option";
-            //                string argini_entry59 = "WeaponAnimation";
-            //                string argini_data26 = "On";
-            //                GeneralLib.WriteIni(argini_section59, argini_entry59, argini_data26);
+            //                GeneralLib.WriteIni("Option", "WeaponAnimation", "On");
             //            }
 
             //            // 移動アニメ
-            //            string argini_section60 = "Option";
-            //            string argini_entry60 = "MoveAnimation";
-            //            buf = Strings.LCase(GeneralLib.ReadIni(argini_section60, argini_entry60));
+            //            buf = Strings.LCase(GeneralLib.ReadIni("Option", "MoveAnimation"));
             //            if (!string.IsNullOrEmpty(buf))
             //            {
             //                if (buf == "on")
@@ -598,16 +453,11 @@ namespace SRCCore
             //            else
             //            {
             //                MoveAnimation = true;
-            //                string argini_section61 = "Option";
-            //                string argini_entry61 = "MoveAnimation";
-            //                string argini_data27 = "On";
-            //                GeneralLib.WriteIni(argini_section61, argini_entry61, argini_data27);
+            //                GeneralLib.WriteIni("Option", "MoveAnimation", "On");
             //            }
 
             //            // メッセージ速度を設定
-            //            string argini_section62 = "Option";
-            //            string argini_entry62 = "MessageWait";
-            //            buf = GeneralLib.ReadIni(argini_section62, argini_entry62);
+            //            buf = GeneralLib.ReadIni("Option", "MessageWait");
             //            if (Information.IsNumeric(buf))
             //            {
             //                GUI.MessageWait = Conversions.ToInteger(buf);
@@ -619,16 +469,11 @@ namespace SRCCore
             //            else
             //            {
             //                GUI.MessageWait = 700;
-            //                string argini_section63 = "Option";
-            //                string argini_entry63 = "MessageWait";
-            //                string argini_data28 = "700";
-            //                GeneralLib.WriteIni(argini_section63, argini_entry63, argini_data28);
+            //                GeneralLib.WriteIni("Option", "MessageWait", "700");
             //            }
 
             //            // マス目を表示するかどうか
-            //            string argini_section64 = "Option";
-            //            string argini_entry64 = "Square";
-            //            buf = GeneralLib.ReadIni(argini_section64, argini_entry64);
+            //            buf = GeneralLib.ReadIni("Option", "Square");
             //            if (!string.IsNullOrEmpty(buf))
             //            {
             //                if (Strings.LCase(buf) == "on")
@@ -643,16 +488,11 @@ namespace SRCCore
             //            else
             //            {
             //                ShowSquareLine = false;
-            //                string argini_section65 = "Option";
-            //                string argini_entry65 = "Square";
-            //                string argini_data29 = "Off";
-            //                GeneralLib.WriteIni(argini_section65, argini_entry65, argini_data29);
+            //                GeneralLib.WriteIni("Option", "Square", "Off");
             //            }
 
             //            // 敵ターンにＢＧＭを変更するかどうか
-            //            string argini_section66 = "Option";
-            //            string argini_entry66 = "KeepEnemyBGM";
-            //            buf = GeneralLib.ReadIni(argini_section66, argini_entry66);
+            //            buf = GeneralLib.ReadIni("Option", "KeepEnemyBGM");
             //            if (!string.IsNullOrEmpty(buf))
             //            {
             //                if (Strings.LCase(buf) == "on")
@@ -667,31 +507,20 @@ namespace SRCCore
             //            else
             //            {
             //                KeepEnemyBGM = false;
-            //                string argini_section67 = "Option";
-            //                string argini_entry67 = "KeepEnemyBGM";
-            //                string argini_data30 = "Off";
-            //                GeneralLib.WriteIni(argini_section67, argini_entry67, argini_data30);
+            //                GeneralLib.WriteIni("Option", "KeepEnemyBGM", "Off");
             //            }
 
             //            // 音源のリセットデータの種類
-            //            string argini_section68 = "Option";
-            //            string argini_entry68 = "MidiReset";
-            //            MidiResetType = GeneralLib.ReadIni(argini_section68, argini_entry68);
+            //            MidiResetType = GeneralLib.ReadIni("Option", "MidiReset");
 
             //            // 自動反撃モード
-            //            string argini_section69 = "Option";
-            //            string argini_entry69 = "AutoDefense";
-            //            buf = GeneralLib.ReadIni(argini_section69, argini_entry69);
+            //            buf = GeneralLib.ReadIni("Option", "AutoDefense");
             //            if (string.IsNullOrEmpty(buf))
             //            {
-            //                string argini_section70 = "Option";
-            //                string argini_entry70 = "AutoDeffence";
-            //                buf = GeneralLib.ReadIni(argini_section70, argini_entry70);
+            //                buf = GeneralLib.ReadIni("Option", "AutoDeffence");
             //                if (!string.IsNullOrEmpty(buf))
             //                {
-            //                    string argini_section71 = "Option";
-            //                    string argini_entry71 = "AutoDefense";
-            //                    GeneralLib.WriteIni(argini_section71, argini_entry71, buf);
+            //                    GeneralLib.WriteIni("Option", "AutoDefense", buf);
             //                }
             //            }
 
@@ -709,16 +538,11 @@ namespace SRCCore
             //            else
             //            {
             //                GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked = false;
-            //                string argini_section72 = "Option";
-            //                string argini_entry72 = "AutoDefense";
-            //                string argini_data31 = "Off";
-            //                GeneralLib.WriteIni(argini_section72, argini_entry72, argini_data31);
+            //                GeneralLib.WriteIni("Option", "AutoDefense", "Off");
             //            }
 
             //            // カーソル自動移動
-            //            string argini_section73 = "Option";
-            //            string argini_entry73 = "AutoMoveCursor";
-            //            buf = GeneralLib.ReadIni(argini_section73, argini_entry73);
+            //            buf = GeneralLib.ReadIni("Option", "AutoMoveCursor");
             //            if (!string.IsNullOrEmpty(buf))
             //            {
             //                if (Strings.LCase(buf) == "on")
@@ -733,19 +557,14 @@ namespace SRCCore
             //            else
             //            {
             //                AutoMoveCursor = true;
-            //                string argini_section74 = "Option";
-            //                string argini_entry74 = "AutoMoveCursor";
-            //                string argini_data32 = "On";
-            //                GeneralLib.WriteIni(argini_section74, argini_entry74, argini_data32);
+            //                GeneralLib.WriteIni("Option", "AutoMoveCursor", "On");
             //            }
 
             // 各ウィンドウをロード (メインウィンドウは先にロード済み)
             GUI.LoadForms();
 
             //            // 画像バッファの枚数
-            //            string argini_section75 = "Option";
-            //            string argini_entry75 = "ImageBufferNum";
-            //            buf = GeneralLib.ReadIni(argini_section75, argini_entry75);
+            //            buf = GeneralLib.ReadIni("Option", "ImageBufferNum");
             //            if (Information.IsNumeric(buf))
             //            {
             //                ImageBufferSize = Conversions.Toint(buf);
@@ -759,19 +578,14 @@ namespace SRCCore
             //            {
             //                // デフォルトは64枚
             //                ImageBufferSize = 64;
-            //                string argini_section76 = "Option";
-            //                string argini_entry76 = "ImageBufferNum";
-            //                string argini_data33 = "64";
-            //                GeneralLib.WriteIni(argini_section76, argini_entry76, argini_data33);
+            //                GeneralLib.WriteIni("Option", "ImageBufferNum", "64");
             //            }
 
             //            // 画像バッファを作成
             //            GUI.MakePicBuf();
 
             //            // 画像バッファの最大サイズ
-            //            string argini_section77 = "Option";
-            //            string argini_entry77 = "MaxImageBufferSize";
-            //            buf = GeneralLib.ReadIni(argini_section77, argini_entry77);
+            //            buf = GeneralLib.ReadIni("Option", "MaxImageBufferSize");
             //            if (Information.IsNumeric(buf))
             //            {
             //                MaxImageBufferByteSize = (Conversions.ToDouble(buf) * 1024d * 1024d);
@@ -785,16 +599,11 @@ namespace SRCCore
             //            {
             //                // デフォルトは8MB
             //                MaxImageBufferByteSize = 8 * 1024 * 1024;
-            //                string argini_section78 = "Option";
-            //                string argini_entry78 = "MaxImageBufferSize";
-            //                string argini_data34 = "8";
-            //                GeneralLib.WriteIni(argini_section78, argini_entry78, argini_data34);
+            //                GeneralLib.WriteIni("Option", "MaxImageBufferSize", "8");
             //            }
 
             //            // 拡大画像を画像バッファに保存するか
-            //            string argini_section79 = "Option";
-            //            string argini_entry79 = "KeepStretchedImage";
-            //            buf = GeneralLib.ReadIni(argini_section79, argini_entry79);
+            //            buf = GeneralLib.ReadIni("Option", "KeepStretchedImage");
             //            if (!string.IsNullOrEmpty(buf))
             //            {
             //                if (Strings.LCase(buf) == "on")
@@ -810,26 +619,18 @@ namespace SRCCore
             //            else if (Conversions.ToBoolean(IsBitBltFasterThanStretchBlt()))
             //            {
             //                KeepStretchedImage = true;
-            //                string argini_section80 = "Option";
-            //                string argini_entry80 = "KeepStretchedImage";
-            //                string argini_data35 = "On";
-            //                GeneralLib.WriteIni(argini_section80, argini_entry80, argini_data35);
+            //                GeneralLib.WriteIni("Option", "KeepStretchedImage", "On");
             //            }
             //            else
             //            {
             //                KeepStretchedImage = false;
-            //                string argini_section81 = "Option";
-            //                string argini_entry81 = "KeepStretchedImage";
-            //                string argini_data36 = "Off";
-            //                GeneralLib.WriteIni(argini_section81, argini_entry81, argini_data36);
+            //                GeneralLib.WriteIni("Option", "KeepStretchedImage", "Off");
             //            }
 
             //            // 透過描画にUseTransparentBltを使用するか
             //            if (GeneralLib.GetWinVersion() >= 500)
             //            {
-            //                string argini_section82 = "Option";
-            //                string argini_entry82 = "UseTransparentBlt";
-            //                buf = GeneralLib.ReadIni(argini_section82, argini_entry82);
+            //                buf = GeneralLib.ReadIni("Option", "UseTransparentBlt");
             //                if (!string.IsNullOrEmpty(buf))
             //                {
             //                    if (Strings.LCase(buf) == "on")
@@ -844,10 +645,7 @@ namespace SRCCore
             //                else
             //                {
             //                    UseTransparentBlt = true;
-            //                    string argini_section83 = "Option";
-            //                    string argini_entry83 = "UseTransparentBlt";
-            //                    string argini_data37 = "On";
-            //                    GeneralLib.WriteIni(argini_section83, argini_entry83, argini_data37);
+            //                    GeneralLib.WriteIni("Option", "UseTransparentBlt", "On");
             //                }
             //            }
 
@@ -871,16 +669,13 @@ namespace SRCCore
             //            // エリアスデータをロード
             //            bool localFileExists1() { string argfname = AppPath + @"Data\System\alias.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-            //            string argfname2 = ScenarioPath + @"Data\System\alias.txt";
-            //            if (GeneralLib.FileExists(argfname2))
+            //            if (GeneralLib.FileExists(ScenarioPath + @"Data\System\alias.txt"))
             //            {
-            //                string argfname = ScenarioPath + @"Data\System\alias.txt";
-            //                ALDList.Load(argfname);
+            //                ALDList.Load(ScenarioPath + @"Data\System\alias.txt");
             //            }
             //            else if (localFileExists1())
             //            {
-            //                string argfname1 = AppPath + @"Data\System\alias.txt";
-            //                ALDList.Load(argfname1);
+            //                ALDList.Load(AppPath + @"Data\System\alias.txt");
             //            }
 
             // スペシャルパワーデータをロード
@@ -904,16 +699,13 @@ namespace SRCCore
             //            // 汎用アイテムデータをロード
             //            bool localFileExists5() { string argfname = AppPath + @"Data\System\item.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-            //            string argfname10 = ScenarioPath + @"Data\System\item.txt";
-            //            if (GeneralLib.FileExists(argfname10))
+            //            if (GeneralLib.FileExists(ScenarioPath + @"Data\System\item.txt"))
             //            {
-            //                string argfname8 = ScenarioPath + @"Data\System\item.txt";
-            //                IDList.Load(argfname8);
+            //                IDList.Load(ScenarioPath + @"Data\System\item.txt");
             //            }
             //            else if (localFileExists5())
             //            {
-            //                string argfname9 = AppPath + @"Data\System\item.txt";
-            //                IDList.Load(argfname9);
+            //                IDList.Load(AppPath + @"Data\System\item.txt");
             //            }
             // 地形データをロード
             string appTerrainPath = FileSystem.PathCombine(AppPath, "Data", "System", "terrain.txt");
@@ -955,9 +747,7 @@ namespace SRCCore
 
             //    // ダイアログの初期フォルダを設定
             //    i = 0;
-            //    string argini_section40 = "Log";
-            //    string argini_entry40 = "LastFolder";
-            //    ScenarioPath = GeneralLib.ReadIni(argini_section40, argini_entry40);
+            //    ScenarioPath = GeneralLib.ReadIni("Log", "LastFolder");
 
             //    if (string.IsNullOrEmpty(ScenarioPath))
             //    {
@@ -1003,9 +793,7 @@ namespace SRCCore
             //    }
 
             //    // 拡張データのフォルダを設定
-            //    string argini_section41 = "Option";
-            //    string argini_entry41 = "ExtDataPath";
-            //    ExtDataPath = GeneralLib.ReadIni(argini_section41, argini_entry41);
+            //    ExtDataPath = GeneralLib.ReadIni("Option", "ExtDataPath");
             //    if (Strings.Len(ExtDataPath) > 0)
             //    {
             //        if (Strings.Right(ExtDataPath, 1) != @"\")
@@ -1014,9 +802,7 @@ namespace SRCCore
             //        }
             //    }
 
-            //    string argini_section42 = "Option";
-            //    string argini_entry42 = "ExtDataPath2";
-            //    ExtDataPath2 = GeneralLib.ReadIni(argini_section42, argini_entry42);
+            //    ExtDataPath2 = GeneralLib.ReadIni("Option", "ExtDataPath2");
             //    if (Strings.Len(ExtDataPath2) > 0)
             //    {
             //        if (Strings.Right(ExtDataPath2, 1) != @"\")
@@ -1043,15 +829,7 @@ namespace SRCCore
             //    Sound.ResetMidiSearchPath();
 
             //    // プレイヤーにロードするファイルを尋ねる
-            //    string argdtitle = "シナリオ／セーブファイルの指定";
-            //    string argdefault_file = "";
-            //    string argftype = "ｲﾍﾞﾝﾄﾃﾞｰﾀ";
-            //    string argfsuffix = "eve";
-            //    string argftype2 = "ｾｰﾌﾞﾃﾞｰﾀ";
-            //    string argfsuffix2 = "src";
-            //    string argftype3 = "";
-            //    string argfsuffix3 = "";
-            //    fname = FileDialog.LoadFileDialog(argdtitle, ScenarioPath, argdefault_file, i, argftype, argfsuffix, argftype2, argfsuffix2, ftype3: argftype3, fsuffix3: argfsuffix3);
+            //    fname = FileDialog.LoadFileDialog("シナリオ／セーブファイルの指定", ScenarioPath, "", i, "ｲﾍﾞﾝﾄﾃﾞｰﾀ", "eve", "ｲﾍﾞﾝﾄﾃﾞｰﾀ"2, "eve"2, ftype3: "ｲﾍﾞﾝﾄﾃﾞｰﾀ"3, fsuffix3: "eve"3);
 
             //    // ファイルが指定されなかった場合はそのまま終了
             //    if (string.IsNullOrEmpty(fname))
@@ -1086,9 +864,7 @@ namespace SRCCore
             //    // ADD START MARGE
             //    // シナリオパスが決定した段階で拡張データフォルダパスを再設定するように変更
             //    // 拡張データのフォルダを設定
-            //    string argini_section43 = "Option";
-            //    string argini_entry43 = "ExtDataPath";
-            //    ExtDataPath = GeneralLib.ReadIni(argini_section43, argini_entry43);
+            //    ExtDataPath = GeneralLib.ReadIni("Option", "ExtDataPath");
             //    if (Strings.Len(ExtDataPath) > 0)
             //    {
             //        if (Strings.Right(ExtDataPath, 1) != @"\")
@@ -1097,9 +873,7 @@ namespace SRCCore
             //        }
             //    }
 
-            //    string argini_section44 = "Option";
-            //    string argini_entry44 = "ExtDataPath2";
-            //    ExtDataPath2 = GeneralLib.ReadIni(argini_section44, argini_entry44);
+            //    ExtDataPath2 = GeneralLib.ReadIni("Option", "ExtDataPath2");
             //    if (Strings.Len(ExtDataPath2) > 0)
             //    {
             //        if (Strings.Right(ExtDataPath2, 1) != @"\")
@@ -1143,17 +917,14 @@ namespace SRCCore
             //fname = ScenarioPath + FileSystem.Dir(fname);
             //if (!GeneralLib.FileExists(fname))
             //{
-            //    string argmsg12 = "指定したファイルが存在しません";
-            //    GUI.ErrorMessage(argmsg12);
+            //    GUI.ErrorMessage("指定したファイルが存在しません");
             //    TerminateSRC();
             //}
 
             //if (Strings.InStr(fname, "不要ファイル削除") == 0 & Strings.InStr(fname, "必須修正") == 0)
             //{
             //    // 開いたフォルダをSrc.iniにセーブしておく
-            //    string argini_section47 = "Log";
-            //    string argini_entry47 = "LastFolder";
-            //    GeneralLib.WriteIni(argini_section47, argini_entry47, ScenarioPath);
+            //    GeneralLib.WriteIni("Log", "LastFolder", ScenarioPath);
             //}
         }
 
@@ -1190,16 +961,13 @@ namespace SRCCore
                 //    InterMission.InterMissionCommand(true);
                 //    if (!IsSubStage)
                 //    {
-                //        string argexpr = "次ステージ";
-                //        if (string.IsNullOrEmpty(Expression.GetValueAsString(argexpr)))
+                //        if (string.IsNullOrEmpty(Expression.GetValueAsString("次ステージ")))
                 //        {
-                //            string argmsg14 = "次のステージのファイル名が設定されていません";
-                //            GUI.ErrorMessage(argmsg14);
+                //            GUI.ErrorMessage("次のステージのファイル名が設定されていません");
                 //            TerminateSRC();
                 //        }
 
-                //        string argexpr1 = "次ステージ";
-                //        StartScenario(Expression.GetValueAsString(argexpr1));
+                //        StartScenario(Expression.GetValueAsString("次ステージ"));
                 //    }
                 //    else
                 //    {
@@ -1210,8 +978,7 @@ namespace SRCCore
                 //{
                 //    // 中断データの読み込み
                 //    GUI.LockGUI();
-                //    bool argquick_load = false;
-                //    RestoreData(fname, argquick_load);
+                //    RestoreData(fname, false);
 
                 //    // 画面を書き直してステータスを表示
                 //    GUI.RedrawScreen();
@@ -1226,8 +993,7 @@ namespace SRCCore
             }
             else
             {
-                string argmsg15 = "「" + fname + "」はSRC用のファイルではありません！" + Constants.vbCr + Constants.vbLf + "拡張子が「.eve」のイベントファイル、" + "または拡張子が「.src」のセーブデータファイルを指定して下さい。";
-                GUI.ErrorMessage(argmsg15);
+                GUI.ErrorMessage("「" + fname + "」はSRC用のファイルではありません！" + Constants.vbCr + Constants.vbLf + "拡張子が「.eve」のイベントファイル、" + "または拡張子が「.src」のセーブデータファイルを指定して下さい。");
                 TerminateSRC();
             }
         }

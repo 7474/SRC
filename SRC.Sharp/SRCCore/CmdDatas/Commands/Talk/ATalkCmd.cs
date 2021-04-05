@@ -1,4 +1,4 @@
-﻿using SRCCore.Events;
+using SRCCore.Events;
 using SRCCore.Exceptions;
 
 namespace SRCCore.CmdDatas.Commands
@@ -177,9 +177,7 @@ namespace SRCCore.CmdDatas.Commands
                                         // TODO Impl
                                         //if (!My.MyProject.Forms.frmMessage.Visible)
                                         //{
-                                        //    Unit argu1 = null;
-                                        //    Unit argu2 = null;
-                                        //    GUI.OpenMessageForm(u1: argu1, u2: argu2);
+                                        //    GUI.OpenMessageForm(u1: null, u2: null);
                                         //}
 
                                         // メッセージウィンドウのパイロット画像を以前指定された

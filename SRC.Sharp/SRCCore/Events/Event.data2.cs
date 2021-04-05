@@ -1,4 +1,4 @@
-﻿using SRCCore.Maps;
+using SRCCore.Maps;
 using System;
 using System.Linq;
 
@@ -55,10 +55,8 @@ namespace SRCCore.Events
         //            withBlock.Remove(1);
         //    }
 
-        //    string argvname = "次ステージ";
-        //    Expression.DefineGlobalVariable(argvname);
-        //    string argvname1 = "セーブデータファイル名";
-        //    Expression.DefineGlobalVariable(argvname1);
+        //    Expression.DefineGlobalVariable("次ステージ");
+        //    Expression.DefineGlobalVariable("セーブデータファイル名");
         //}
 
         //// 一時中断用データをファイルにセーブする
@@ -244,8 +242,7 @@ namespace SRCCore.Events
         //                buf = EventData[i];
         //                if (Strings.Right(buf, 1) == ":")
         //                {
-        //                    string arglname = Strings.Left(buf, Strings.Len(buf) - 1);
-        //                    AddLabel(arglname, i);
+        //                    AddLabel(Strings.Left(buf, Strings.Len(buf) - 1), i);
         //                }
         //            }
 
@@ -372,9 +369,7 @@ namespace SRCCore.Events
         //        {
         //            is_number = false;
         //            vvalue = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-        //            string args2 = "\"\"";
-        //            string args3 = "\"";
-        //            GeneralLib.ReplaceString(vvalue, args2, args3);
+        //            GeneralLib.ReplaceString(vvalue, "\"\"", "\"");
         //        }
         //        else
         //        {
@@ -393,8 +388,7 @@ namespace SRCCore.Events
         //                {
         //                    // 個々の能力定義
         //                    aname = Strings.Mid(vname, idx + 1, Strings.Len(vname) - idx - 1);
-        //                    object argIndex1 = aname;
-        //                    if (SRC.ALDList.IsDefined(argIndex1))
+        //                    if (SRC.ALDList.IsDefined(aname))
         //                    {
         //                        AliasDataType localItem() { object argIndex1 = aname; var ret = SRC.ALDList.Item(argIndex1); return ret; }
 
@@ -413,8 +407,7 @@ namespace SRCCore.Events
         //                    for (j = 1; j <= loopTo2; j++)
         //                    {
         //                        aname = GeneralLib.LIndex(vvalue, j);
-        //                        object argIndex2 = aname;
-        //                        if (SRC.ALDList.IsDefined(argIndex2))
+        //                        if (SRC.ALDList.IsDefined(aname))
         //                        {
         //                            AliasDataType localItem1() { object argIndex1 = aname; var ret = SRC.ALDList.Item(argIndex1); return ret; }
 
@@ -599,9 +592,7 @@ namespace SRCCore.Events
         //        {
         //            is_number = false;
         //            vvalue = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-        //            string args2 = "\"\"";
-        //            string args3 = "\"";
-        //            GeneralLib.ReplaceString(vvalue, args2, args3);
+        //            GeneralLib.ReplaceString(vvalue, "\"\"", "\"");
         //        }
         //        else
         //        {

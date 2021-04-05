@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -161,11 +161,9 @@ namespace SRCCore.Models
             //// アニメデータが用意されていない場合は Data\System\animation.txt を読み込む
             //if (Count() == 0)
             //{
-            //    string argfname1 = SRC.AppPath + @"Data\System\animation.txt";
-            //    if (GeneralLib.FileExists(argfname1))
+            //    if (GeneralLib.FileExists(SRC.AppPath + @"Data\System\animation.txt"))
             //    {
-            //        string argfname = SRC.AppPath + @"Data\System\animation.txt";
-            //        Load(argfname);
+            //        Load(SRC.AppPath + @"Data\System\animation.txt");
             //    }
             //}
 
@@ -181,91 +179,57 @@ namespace SRCCore.Models
 
             //if (Event_Renamed.FindNormalLabel("戦闘アニメ_回避発動") > 0)
             //{
-            //    string argmsg_situation = "回避";
-            //    Unit argu = null;
-            //    if (string.IsNullOrEmpty(md.SelectMessage(argmsg_situation, u: argu)))
+            //    if (string.IsNullOrEmpty(md.SelectMessage("回避", u: null)))
             //    {
-            //        string argsit = "回避";
-            //        string argmsg = "回避";
-            //        md.AddMessage(argsit, argmsg);
+            //        md.AddMessage("回避", "回避");
             //    }
             //}
 
-            //string arglname1 = "戦闘アニメ_切り払い発動";
-            //if (Event_Renamed.FindNormalLabel(arglname1) > 0)
+            //if (Event_Renamed.FindNormalLabel("戦闘アニメ_切り払い発動") > 0)
             //{
-            //    string argmsg_situation1 = "切り払い";
-            //    Unit argu1 = null;
-            //    if (string.IsNullOrEmpty(md.SelectMessage(argmsg_situation1, u: argu1)))
+            //    if (string.IsNullOrEmpty(md.SelectMessage("切り払い", u: null)))
             //    {
-            //        string argsit1 = "切り払い";
-            //        string argmsg1 = "切り払い";
-            //        md.AddMessage(argsit1, argmsg1);
+            //        md.AddMessage("切り払い", "切り払い");
             //    }
             //}
 
-            //string arglname2 = "戦闘アニメ_迎撃発動";
-            //if (Event_Renamed.FindNormalLabel(arglname2) > 0)
+            //if (Event_Renamed.FindNormalLabel("戦闘アニメ_迎撃発動") > 0)
             //{
-            //    string argmsg_situation2 = "迎撃";
-            //    Unit argu2 = null;
-            //    if (string.IsNullOrEmpty(md.SelectMessage(argmsg_situation2, u: argu2)))
+            //    if (string.IsNullOrEmpty(md.SelectMessage("迎撃", u: null)))
             //    {
-            //        string argsit2 = "迎撃";
-            //        string argmsg2 = "迎撃";
-            //        md.AddMessage(argsit2, argmsg2);
+            //        md.AddMessage("迎撃", "迎撃");
             //    }
             //}
 
-            //string arglname3 = "戦闘アニメ_ダミー発動";
-            //if (Event_Renamed.FindNormalLabel(arglname3) > 0)
+            //if (Event_Renamed.FindNormalLabel("戦闘アニメ_ダミー発動") > 0)
             //{
-            //    string argmsg_situation3 = "ダミー";
-            //    Unit argu3 = null;
-            //    if (string.IsNullOrEmpty(md.SelectMessage(argmsg_situation3, u: argu3)))
+            //    if (string.IsNullOrEmpty(md.SelectMessage("ダミー", u: null)))
             //    {
-            //        string argsit3 = "ダミー";
-            //        string argmsg3 = "ダミー";
-            //        md.AddMessage(argsit3, argmsg3);
+            //        md.AddMessage("ダミー", "ダミー");
             //    }
             //}
 
-            //string arglname4 = "戦闘アニメ_修理装置発動";
-            //if (Event_Renamed.FindNormalLabel(arglname4) > 0)
+            //if (Event_Renamed.FindNormalLabel("戦闘アニメ_修理装置発動") > 0)
             //{
-            //    string argmsg_situation4 = "修理";
-            //    Unit argu4 = null;
-            //    if (string.IsNullOrEmpty(md.SelectMessage(argmsg_situation4, u: argu4)))
+            //    if (string.IsNullOrEmpty(md.SelectMessage("修理", u: null)))
             //    {
-            //        string argsit4 = "修理";
-            //        string argmsg4 = "修理装置";
-            //        md.AddMessage(argsit4, argmsg4);
+            //        md.AddMessage("修理", "修理装置");
             //    }
             //}
 
-            //string arglname5 = "戦闘アニメ_補給装置発動";
-            //if (Event_Renamed.FindNormalLabel(arglname5) > 0)
+            //if (Event_Renamed.FindNormalLabel("戦闘アニメ_補給装置発動") > 0)
             //{
-            //    string argmsg_situation5 = "補給";
-            //    Unit argu5 = null;
-            //    if (string.IsNullOrEmpty(md.SelectMessage(argmsg_situation5, u: argu5)))
+            //    if (string.IsNullOrEmpty(md.SelectMessage("補給", u: null)))
             //    {
-            //        string argsit5 = "補給";
-            //        string argmsg5 = "補給装置";
-            //        md.AddMessage(argsit5, argmsg5);
+            //        md.AddMessage("補給", "補給装置");
             //    }
             //}
 
-            //string arglname6 = "戦闘アニメ_終了発動";
-            //if (Event_Renamed.FindNormalLabel(arglname6) > 0)
+            //if (Event_Renamed.FindNormalLabel("戦闘アニメ_終了発動") > 0)
             //{
-            //    string argmsg_situation6 = "終了";
-            //    Unit argu6 = null;
-            //    if (string.IsNullOrEmpty(md.SelectMessage(argmsg_situation6, u: argu6)))
+            //    if (string.IsNullOrEmpty(md.SelectMessage("終了", u: null)))
             //    {
-            //        string argsit6 = "終了";
-            //        string argmsg6 = "終了";
-            //        md.AddMessage(argsit6, argmsg6);
+            //        md.AddMessage("終了", "終了");
             //    }
             //}
         }

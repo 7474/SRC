@@ -1,4 +1,4 @@
-﻿using SRCCore.Events;
+using SRCCore.Events;
 
 namespace SRCCore.CmdDatas.Commands
 {

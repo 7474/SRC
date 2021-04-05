@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using SRCCore.CmdDatas;
 using SRCCore.CmdDatas.Commands;
 using SRCCore.Expressions;
@@ -79,19 +79,14 @@ namespace SRCCore.Events
 
             // デバッグモードの設定
             // TODO Impl
-            //string argini_section = "Option";
-            //string argini_entry = "DebugMode";
-            //if (Strings.LCase(GeneralLib.ReadIni(argini_section, argini_entry)) == "on")
+            //if (Strings.LCase(GeneralLib.ReadIni("Option", "DebugMode")) == "on")
             //{
-            //    string argoname = "デバッグ";
-            //    if (!Expression.IsOptionDefined(argoname))
+            //    if (!Expression.IsOptionDefined("デバッグ"))
             //    {
-            //        string argvname = "Option(デバッグ)";
-            //        Expression.DefineGlobalVariable(argvname);
+            //        Expression.DefineGlobalVariable("Option(デバッグ)");
             //    }
 
-            //    string argvname1 = "Option(デバッグ)";
-            //    Expression.SetVariableAsLong(argvname1, 1);
+            //    Expression.SetVariableAsLong("Option(デバッグ)", 1);
             //}
 
             // システム側のイベントデータのロード
@@ -110,9 +105,7 @@ namespace SRCCore.Events
 
                 // 汎用戦闘アニメ用インクルードファイルをダウンロード
                 // TODO Impl
-                //string argini_section1 = "Option";
-                //string argini_entry1 = "BattleAnimation";
-                //if (Strings.LCase(GeneralLib.ReadIni(argini_section1, argini_entry1)) != "off")
+                //if (Strings.LCase(GeneralLib.ReadIni("Option", "BattleAnimation")) != "off")
                 //{
                 //    SRC.BattleAnimation = true;
                 //}
@@ -167,9 +160,7 @@ namespace SRCCore.Events
 
                     // 汎用戦闘アニメ用インクルードファイルをダウンロード
                     // TODO Impl
-                    //string argini_section2 = "Option";
-                    //string argini_entry2 = "BattleAnimation";
-                    //if (Strings.LCase(GeneralLib.ReadIni(argini_section2, argini_entry2)) != "off")
+                    //if (Strings.LCase(GeneralLib.ReadIni("Option", "BattleAnimation")) != "off")
                     //{
                     //    SRC.BattleAnimation = true;
                     //}
@@ -1118,96 +1109,71 @@ namespace SRCCore.Events
             if (!SRC.IsLocalDataLoaded || new_titles.Any())
             {
                 // TODO Impl
-                //string argfname36 = SRC.ScenarioPath + @"Data\alias.txt";
-                //if (GeneralLib.FileExists(argfname36))
+                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\alias.txt"))
                 //{
-                //    string argfname35 = SRC.ScenarioPath + @"Data\alias.txt";
-                //    SRC.ALDList.Load(argfname35);
+                //    SRC.ALDList.Load(SRC.ScenarioPath + @"Data\alias.txt");
                 //}
 
                 //bool localFileExists23() { string argfname = SRC.ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                //string argfname39 = SRC.ScenarioPath + @"Data\sp.txt";
-                //if (GeneralLib.FileExists(argfname39))
+                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\sp.txt"))
                 //{
-                //    string argfname37 = SRC.ScenarioPath + @"Data\sp.txt";
-                //    SRC.SPDList.Load(argfname37);
+                //    SRC.SPDList.Load(SRC.ScenarioPath + @"Data\sp.txt");
                 //}
                 //else if (localFileExists23())
                 //{
-                //    string argfname38 = SRC.ScenarioPath + @"Data\mind.txt";
-                //    SRC.SPDList.Load(argfname38);
+                //    SRC.SPDList.Load(SRC.ScenarioPath + @"Data\mind.txt");
                 //}
 
-                //string argfname41 = SRC.ScenarioPath + @"Data\pilot.txt";
-                //if (GeneralLib.FileExists(argfname41))
+                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\pilot.txt"))
                 //{
-                //    string argfname40 = SRC.ScenarioPath + @"Data\pilot.txt";
-                //    SRC.PDList.Load(argfname40);
+                //    SRC.PDList.Load(SRC.ScenarioPath + @"Data\pilot.txt");
                 //}
 
-                //string argfname43 = SRC.ScenarioPath + @"Data\non_pilot.txt";
-                //if (GeneralLib.FileExists(argfname43))
+                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\non_pilot.txt"))
                 //{
-                //    string argfname42 = SRC.ScenarioPath + @"Data\non_pilot.txt";
-                //    SRC.NPDList.Load(argfname42);
+                //    SRC.NPDList.Load(SRC.ScenarioPath + @"Data\non_pilot.txt");
                 //}
 
-                //string argfname45 = SRC.ScenarioPath + @"Data\robot.txt";
-                //if (GeneralLib.FileExists(argfname45))
+                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\robot.txt"))
                 //{
-                //    string argfname44 = SRC.ScenarioPath + @"Data\robot.txt";
-                //    SRC.UDList.Load(argfname44);
+                //    SRC.UDList.Load(SRC.ScenarioPath + @"Data\robot.txt");
                 //}
 
-                //string argfname47 = SRC.ScenarioPath + @"Data\unit.txt";
-                //if (GeneralLib.FileExists(argfname47))
+                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\unit.txt"))
                 //{
-                //    string argfname46 = SRC.ScenarioPath + @"Data\unit.txt";
-                //    SRC.UDList.Load(argfname46);
+                //    SRC.UDList.Load(SRC.ScenarioPath + @"Data\unit.txt");
                 //}
 
                 //GUI.DisplayLoadingProgress();
-                //string argfname49 = SRC.ScenarioPath + @"Data\pilot_message.txt";
-                //if (GeneralLib.FileExists(argfname49))
+                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\pilot_message.txt"))
                 //{
-                //    string argfname48 = SRC.ScenarioPath + @"Data\pilot_message.txt";
-                //    SRC.MDList.Load(argfname48);
+                //    SRC.MDList.Load(SRC.ScenarioPath + @"Data\pilot_message.txt");
                 //}
 
-                //string argfname51 = SRC.ScenarioPath + @"Data\pilot_dialog.txt";
-                //if (GeneralLib.FileExists(argfname51))
+                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\pilot_dialog.txt"))
                 //{
-                //    string argfname50 = SRC.ScenarioPath + @"Data\pilot_dialog.txt";
-                //    SRC.DDList.Load(argfname50);
+                //    SRC.DDList.Load(SRC.ScenarioPath + @"Data\pilot_dialog.txt");
                 //}
 
-                //string argfname53 = SRC.ScenarioPath + @"Data\effect.txt";
-                //if (GeneralLib.FileExists(argfname53))
+                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\effect.txt"))
                 //{
-                //    string argfname52 = SRC.ScenarioPath + @"Data\effect.txt";
-                //    SRC.EDList.Load(argfname52);
+                //    SRC.EDList.Load(SRC.ScenarioPath + @"Data\effect.txt");
                 //}
 
-                //string argfname55 = SRC.ScenarioPath + @"Data\animation.txt";
-                //if (GeneralLib.FileExists(argfname55))
+                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\animation.txt"))
                 //{
-                //    string argfname54 = SRC.ScenarioPath + @"Data\animation.txt";
-                //    SRC.ADList.Load(argfname54);
+                //    SRC.ADList.Load(SRC.ScenarioPath + @"Data\animation.txt");
                 //}
 
-                //string argfname57 = SRC.ScenarioPath + @"Data\ext_animation.txt";
-                //if (GeneralLib.FileExists(argfname57))
+                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\ext_animation.txt"))
                 //{
-                //    string argfname56 = SRC.ScenarioPath + @"Data\ext_animation.txt";
-                //    SRC.EADList.Load(argfname56);
+                //    SRC.EADList.Load(SRC.ScenarioPath + @"Data\ext_animation.txt");
                 //}
 
-                //string argfname59 = SRC.ScenarioPath + @"Data\item.txt";
-                //if (GeneralLib.FileExists(argfname59))
+                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\item.txt"))
                 //{
-                //    string argfname58 = SRC.ScenarioPath + @"Data\item.txt";
-                //    SRC.IDList.Load(argfname58);
+                //    SRC.IDList.Load(SRC.ScenarioPath + @"Data\item.txt");
                 //}
 
                 GUI.DisplayLoadingProgress();
@@ -1221,11 +1187,7 @@ namespace SRCCore.Events
             if (GeneralLib.FileExists(mapFileName))
             {
                 Map.LoadMapData(mapFileName);
-                string argdraw_mode = "";
-                string argdraw_option = "";
-                int argfilter_color = 0;
-                double argfilter_trans_par = 0d;
-                GUI.SetupBackground(draw_mode: argdraw_mode, draw_option: argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
+                GUI.SetupBackground(draw_mode: "", draw_option: "", filter_color: 0, filter_trans_par: 0d);
                 GUI.RedrawScreen();
                 GUI.DisplayLoadingProgress();
             }
@@ -1279,26 +1241,22 @@ namespace SRCCore.Events
                                 // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                                 if (Strings.Len(FileSystem.Dir(SRC.ScenarioPath + fname2)) > 0)
                                 {
-                                    string argfname = SRC.ScenarioPath + fname2;
-                                    LoadEventData2(argfname, source);
+                                    LoadEventData2(SRC.ScenarioPath + fname2, source);
                                 }
                                 // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                                 else if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath + fname2)) > 0)
                                 {
-                                    string argfname1 = SRC.ExtDataPath + fname2;
-                                    LoadEventData2(argfname1, source);
+                                    LoadEventData2(SRC.ExtDataPath + fname2, source);
                                 }
                                 // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                                 else if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath2 + fname2)) > 0)
                                 {
-                                    string argfname2 = SRC.ExtDataPath2 + fname2;
-                                    LoadEventData2(argfname2, source);
+                                    LoadEventData2(SRC.ExtDataPath2 + fname2, source);
                                 }
                                 // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                                 else if (Strings.Len(FileSystem.Dir(SRC.AppPath + fname2)) > 0)
                                 {
-                                    string argfname3 = SRC.AppPath + fname2;
-                                    LoadEventData2(argfname3, source);
+                                    LoadEventData2(SRC.AppPath + fname2, source);
                                 }
                             }
                         }
@@ -1309,8 +1267,7 @@ namespace SRCCore.Events
             {
                 SRC.Log.LogError(ex.Message, ex);
                 // XXX
-                string argmsg1 = fname + "のロード中にエラーが発生しました" + Constants.vbCr + SrcFormatter.Format(lineNumber) + "行目のイベントデータが不正です";
-                GUI.ErrorMessage(argmsg1);
+                GUI.ErrorMessage(fname + "のロード中にエラーが発生しました" + Constants.vbCr + SrcFormatter.Format(lineNumber) + "行目のイベントデータが不正です");
                 SRC.TerminateSRC();
                 throw;
             }

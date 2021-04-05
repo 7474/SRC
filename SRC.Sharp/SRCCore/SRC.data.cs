@@ -1,4 +1,4 @@
-﻿using SRCCore.Exceptions;
+using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.VB;
 using System.Collections.Generic;
@@ -36,8 +36,7 @@ namespace SRCCore
             fpath = SearchDataFolder(new_title);
             if (Strings.Len(fpath) == 0)
             {
-                string argmsg = "データ「" + new_title + "」のフォルダが見つかりません";
-                GUI.ErrorMessage(argmsg);
+                GUI.ErrorMessage("データ「" + new_title + "」のフォルダが見つかりません");
                 TerminateSRC();
             };
             LoadDataDirectory(fpath);
@@ -45,8 +44,7 @@ namespace SRCCore
             return;
             //ErrorHandler:
             //    ;
-            //    string argmsg1 = "Src.ini内のExtDataPathの値が不正です";
-            //    GUI.ErrorMessage(ref argmsg1);
+            //    GUI.ErrorMessage(ref "Src.ini内のExtDataPathの値が不正です");
             //    TerminateSRC();
         }
 
@@ -111,25 +109,19 @@ namespace SRCCore
                 DDList.Load(pilotDialogFilePath);
             }
 
-            //string argfname18 = fpath + @"\effect.txt";
-            //if (GeneralLib.FileExists(ref argfname18))
+            //if (GeneralLib.FileExists(ref fpath + @"\effect.txt"))
             //{
-            //    string argfname17 = fpath + @"\effect.txt";
-            //    EDList.Load(ref argfname17);
+            //    EDList.Load(ref fpath + @"\effect.txt");
             //}
 
-            //string argfname20 = fpath + @"\animation.txt";
-            //if (GeneralLib.FileExists(ref argfname20))
+            //if (GeneralLib.FileExists(ref fpath + @"\animation.txt"))
             //{
-            //    string argfname19 = fpath + @"\animation.txt";
-            //    ADList.Load(ref argfname19);
+            //    ADList.Load(ref fpath + @"\animation.txt");
             //}
 
-            //string argfname22 = fpath + @"\ext_animation.txt";
-            //if (GeneralLib.FileExists(ref argfname22))
+            //if (GeneralLib.FileExists(ref fpath + @"\ext_animation.txt"))
             //{
-            //    string argfname21 = fpath + @"\ext_animation.txt";
-            //    EADList.Load(ref argfname21);
+            //    EADList.Load(ref fpath + @"\ext_animation.txt");
             //}
 
             var itemFilePath = FileSystem.PathCombine(fpath, "item.txt");

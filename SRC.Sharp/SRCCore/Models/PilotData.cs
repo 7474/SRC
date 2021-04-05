@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -96,8 +96,7 @@ namespace SRCCore.Models
                 // TODO Impl
                 //if (Strings.InStr(NicknameRet, "主人公") == 1 | Strings.InStr(NicknameRet, "ヒロイン") == 1)
                 //{
-                //    string argexpr = NicknameRet + "愛称";
-                //    NicknameRet = Expression.GetValueAsString(argexpr);
+                //    NicknameRet = Expression.GetValueAsString(NicknameRet + "愛称");
                 //}
 
                 //Expression.ReplaceSubExpression(NicknameRet);
@@ -120,18 +119,15 @@ namespace SRCCore.Models
                 // TODO Impl
                 //if (Strings.InStr(KanaNameRet, "主人公") == 1 | Strings.InStr(KanaNameRet, "ヒロイン") == 1 | Strings.InStr(KanaNameRet, "ひろいん") == 1)
                 //{
-                //    string argvar_name = KanaNameRet + "読み仮名";
-                //    if (Expression.IsVariableDefined(argvar_name))
+                //    if (Expression.IsVariableDefined(KanaNameRet + "読み仮名"))
                 //    {
-                //        string argexpr = KanaNameRet + "読み仮名";
-                //        KanaNameRet = Expression.GetValueAsString(argexpr);
+                //        KanaNameRet = Expression.GetValueAsString(KanaNameRet + "読み仮名");
                 //    }
                 //    else
                 //    {
                 //        string localGetValueAsString() { string argexpr = KanaNameRet + "愛称"; var ret = Expression.GetValueAsString(argexpr); return ret; }
 
-                //        string argstr_Renamed = localGetValueAsString();
-                //        KanaNameRet = GeneralLib.StrToHiragana(argstr_Renamed);
+                //        KanaNameRet = GeneralLib.StrToHiragana(localGetValueAsString());
                 //    }
                 //}
                 //Expression.ReplaceSubExpression(KanaNameRet);
@@ -664,14 +660,12 @@ namespace SRCCore.Models
 
             // Imple
             //エリアスが定義されている？
-            //object argIndex2 = ftype;
-            //if (SRC.ALDList.IsDefined(argIndex2))
+            //if (SRC.ALDList.IsDefined(ftype))
             //{
             //    if (GeneralLib.LIndex(fdata, 1) != "解説")
             //    {
-            //        object argIndex1 = ftype;
             //        {
-            //            var withBlock = SRC.ALDList.Item(argIndex1);
+            //            var withBlock = SRC.ALDList.Item(ftype);
             //            var loopTo = withBlock.Count;
             //            for (i = 1; i <= loopTo; i++)
             //            {
@@ -736,9 +730,7 @@ namespace SRCCore.Models
             //                    if (withBlock.get_AliasLevelIsMultMod(i))
             //                    {
             //                        buf = fd.StrData;
-            //                        string args2 = "Lv1";
-            //                        string args3 = "Lv" + SrcFormatter.Format(flevel);
-            //                        GeneralLib.ReplaceString(buf, args2, args3);
+            //                        GeneralLib.ReplaceString(buf, "Lv1", "Lv" + SrcFormatter.Format(flevel));
             //                        fd.StrData = buf;
             //                    }
             //                }

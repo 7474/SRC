@@ -1,4 +1,4 @@
-﻿using SRCCore.Lib;
+using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
 using System;
@@ -44,57 +44,47 @@ namespace SRCCore
             //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //    if (Strings.Len(FileSystem.Dir(ScenarioPath + "Date", FileAttribute.Directory)) > 0)
             //    {
-            //        string argmsg = "シナリオ側のDataフォルダ名がDateになっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Date" + Constants.vbCr + Constants.vbLf + "フォルダ名をDataに直してください。";
-            //        GUI.ErrorMessage(argmsg);
+            //        GUI.ErrorMessage("シナリオ側のDataフォルダ名がDateになっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Date" + Constants.vbCr + Constants.vbLf + "フォルダ名をDataに直してください。");
             //        TerminateSRC();
             //    }
             //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //    if (Strings.Len(FileSystem.Dir(ScenarioPath + "Ｄａｔａ", FileAttribute.Directory)) > 0)
             //    {
-            //        string argmsg1 = "シナリオ側のDataフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｄａｔａ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。";
-            //        GUI.ErrorMessage(argmsg1);
+            //        GUI.ErrorMessage("シナリオ側のDataフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｄａｔａ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
             //        TerminateSRC();
             //    }
             //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //    if (Strings.Len(FileSystem.Dir(ScenarioPath + "Ｂｉｔｍａｐ", FileAttribute.Directory)) > 0)
             //    {
-            //        string argmsg2 = "シナリオ側のBitmapフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｂｉｔｍａｐ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。";
-            //        GUI.ErrorMessage(argmsg2);
+            //        GUI.ErrorMessage("シナリオ側のBitmapフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｂｉｔｍａｐ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
             //        TerminateSRC();
             //    }
             //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //    if (Strings.Len(FileSystem.Dir(ScenarioPath + "Ｌｉｂ", FileAttribute.Directory)) > 0)
             //    {
-            //        string argmsg3 = "シナリオ側のLibフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｌｉｂ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。";
-            //        GUI.ErrorMessage(argmsg3);
+            //        GUI.ErrorMessage("シナリオ側のLibフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｌｉｂ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
             //        TerminateSRC();
             //    }
             //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //    if (Strings.Len(FileSystem.Dir(ScenarioPath + "Ｍｉｄｉ", FileAttribute.Directory)) > 0)
             //    {
-            //        string argmsg4 = "シナリオ側のMidiフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｍｉｄｉ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。";
-            //        GUI.ErrorMessage(argmsg4);
+            //        GUI.ErrorMessage("シナリオ側のMidiフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｍｉｄｉ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
             //        TerminateSRC();
             //    }
             //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //    if (Strings.Len(FileSystem.Dir(ScenarioPath + "Ｓｏｕｎｄ", FileAttribute.Directory)) > 0)
             //    {
-            //        string argmsg5 = "シナリオ側のSoundフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｓｏｕｎｄ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。";
-            //        GUI.ErrorMessage(argmsg5);
+            //        GUI.ErrorMessage("シナリオ側のSoundフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｓｏｕｎｄ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
             //        TerminateSRC();
             //    }
 
             //    // 読み込むイベントファイル名に合わせて各種システム変数を設定
-            //    string argvname1 = "次ステージ";
-            //    if (!Expression.IsGlobalVariableDefined(argvname1))
+            //    if (!Expression.IsGlobalVariableDefined("次ステージ"))
             //    {
-            //        string argvname = "次ステージ";
-            //        Expression.DefineGlobalVariable(argvname);
+            //        Expression.DefineGlobalVariable("次ステージ");
             //    }
 
-            //    string argvname2 = "次ステージ";
-            //    string argnew_value = "";
-            //    Expression.SetVariableAsString(argvname2, argnew_value);
+            //    Expression.SetVariableAsString("次ステージ", "");
             //    var loopTo = Strings.Len(fname);
             //    for (i = 1; i <= loopTo; i++)
             //    {
@@ -104,19 +94,13 @@ namespace SRCCore
             //        }
             //    }
 
-            //    string argvname3 = "ステージ";
-            //    string argnew_value1 = Strings.Mid(fname, Strings.Len(fname) - i + 2);
-            //    Expression.SetVariableAsString(argvname3, argnew_value1);
-            //    string argvname5 = "セーブデータファイル名";
-            //    if (!Expression.IsGlobalVariableDefined(argvname5))
+            //    Expression.SetVariableAsString("ステージ", Strings.Mid(fname, Strings.Len(fname) - i + 2));
+            //    if (!Expression.IsGlobalVariableDefined("セーブデータファイル名"))
             //    {
-            //        string argvname4 = "セーブデータファイル名";
-            //        Expression.DefineGlobalVariable(argvname4);
+            //        Expression.DefineGlobalVariable("セーブデータファイル名");
             //    }
 
-            //    string argvname6 = "セーブデータファイル名";
-            //    string argnew_value2 = Strings.Mid(fname, Strings.Len(fname) - i + 2, i - 5) + "までクリア.src";
-            //    Expression.SetVariableAsString(argvname6, argnew_value2);
+            //    Expression.SetVariableAsString("セーブデータファイル名", Strings.Mid(fname, Strings.Len(fname) - i + 2, i - 5) + "までクリア.src");
 
             //    // ウィンドウのタイトルにシナリオファイル名を表示
             //    GUI.MainForm.Text = GUI.MainForm.Text + " - " + Strings.Mid(fname, Strings.Len(fname) - i + 2, i - 5);
@@ -201,8 +185,7 @@ namespace SRCCore
             //// リスタート用にデータをセーブ
             //if (Strings.InStr(fname, @"\Lib\ユニットステータス表示.eve") == 0 & Strings.InStr(fname, @"\Lib\パイロットステータス表示.eve") == 0)
             //{
-            //    string argfname = ScenarioPath + "_リスタート.src";
-            //    DumpData(argfname);
+            //    DumpData(ScenarioPath + "_リスタート.src");
             //}
 
             //// スタートイベントが始まった場合は通常のステージとみなす
@@ -306,8 +289,7 @@ namespace SRCCore
                             case "出撃":
                             case "格納":
                                 {
-                                    string argstype = "敵ターン";
-                                    currentU.RemoveSpecialPowerInEffect(argstype);
+                                    currentU.RemoveSpecialPowerInEffect("敵ターン");
                                     break;
                                 }
                         }
@@ -437,8 +419,7 @@ namespace SRCCore
                         case "出撃":
                         case "格納":
                             {
-                                string argstype1 = "敵ターン";
-                                currentUnit.RemoveSpecialPowerInEffect(argstype1);
+                                currentUnit.RemoveSpecialPowerInEffect("敵ターン");
                                 break;
                             }
                     }
@@ -516,8 +497,7 @@ namespace SRCCore
                 // ターン数を表示
                 if (Turn > 1 & Expression.IsOptionDefined("デバッグ"))
                 {
-                    string argmsg = "ターン" + SrcFormatter.Format(Turn);
-                    GUI.DisplayTelop(argmsg);
+                    GUI.DisplayTelop("ターン" + SrcFormatter.Format(Turn));
                 }
 
                 // 通常のステージでは母艦ユニットまたはレベルがもっとも高い
@@ -863,8 +843,7 @@ namespace SRCCore
             ScenarioFileName = fname;
             if (!Event.IsEventDefined("プロローグ"))
             {
-                string argmsg = fname + "中にプロローグイベントが定義されていません";
-                GUI.ErrorMessage(argmsg);
+                GUI.ErrorMessage(fname + "中にプロローグイベントが定義されていません");
                 TerminateSRC();
             }
 
@@ -912,8 +891,7 @@ namespace SRCCore
             ScenarioFileName = fname;
             if (!Event.IsEventDefined("プロローグ"))
             {
-                string argmsg = fname + "中にプロローグイベントが定義されていません";
-                GUI.ErrorMessage(argmsg);
+                GUI.ErrorMessage(fname + "中にプロローグイベントが定義されていません");
                 TerminateSRC();
             }
 
@@ -954,9 +932,7 @@ namespace SRCCore
             //GeneralLib.timeEndPeriod(1);
 
             //// フルスクリーンモードを使っていた場合は解像度を元に戻す
-            //string argini_section = "Option";
-            //string argini_entry = "FullScreen";
-            //if (GeneralLib.ReadIni(argini_section, argini_entry) == "On")
+            //if (GeneralLib.ReadIni("Option", "FullScreen") == "On")
             //{
             //    GUI.ChangeDisplaySize(0, 0);
             //}

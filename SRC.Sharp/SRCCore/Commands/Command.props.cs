@@ -1,4 +1,4 @@
-﻿using SRCCore.Events;
+using SRCCore.Events;
 using SRCCore.Pilots;
 using SRCCore.Units;
 using System.Collections.Generic;

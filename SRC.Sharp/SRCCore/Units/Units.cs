@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -336,8 +336,7 @@ namespace SRCCore.Units
         //                var loopTo = u.CountUnitOnBoard();
         //                for (i = 1; i <= loopTo; i++)
         //                {
-        //                    object argIndex1 = 1;
-        //                    u.UnloadUnit(argIndex1);
+        //                    u.UnloadUnit(1);
         //                }
         //            }
 
@@ -372,9 +371,7 @@ namespace SRCCore.Units
         //            // 破壊された味方ユニットがあれば修理
         //            if (flag)
         //            {
-        //                Unit argu1 = null;
-        //                Unit argu2 = null;
-        //                GUI.OpenMessageForm(u1: argu1, u2: argu2);
+        //                GUI.OpenMessageForm(u1: null, u2: null);
         //                prev_money = SRC.Money;
         //                foreach (Unit currentU2 in colUnits)
         //                {
@@ -384,8 +381,7 @@ namespace SRCCore.Units
         //                        goto NextDestroyedUnit;
         //                    }
 
-        //                    string argfname = "召喚ユニット";
-        //                    if (u.IsFeatureAvailable(argfname))
+        //                    if (u.IsFeatureAvailable("召喚ユニット"))
         //                    {
         //                        goto NextDestroyedUnit;
         //                    }
@@ -422,21 +418,18 @@ namespace SRCCore.Units
         //                    u.Status_Renamed = "待機";
         //                    if (!u.IsHero())
         //                    {
-        //                        string argpname = "システム";
-        //                        GUI.DisplayMessage(argpname, u.Nickname + "を修理した;修理費 = " + SrcFormatter.Format(u.Value));
+        //                        GUI.DisplayMessage("システム", u.Nickname + "を修理した;修理費 = " + SrcFormatter.Format(u.Value));
         //                    }
         //                    else
         //                    {
-        //                        string argpname1 = "システム";
-        //                        GUI.DisplayMessage(argpname1, u.Nickname + "を治療した;治療費 = " + SrcFormatter.Format(u.Value));
+        //                        GUI.DisplayMessage("システム", u.Nickname + "を治療した;治療費 = " + SrcFormatter.Format(u.Value));
         //                    }
 
         //                NextDestroyedUnit:
         //                    ;
         //                }
 
-        //                string argpname2 = "システム";
-        //                GUI.DisplayMessage(argpname2, "合計 = " + SrcFormatter.Format(prev_money - SRC.Money));
+        //                GUI.DisplayMessage("システム", "合計 = " + SrcFormatter.Format(prev_money - SRC.Money));
         //                GUI.CloseMessageForm();
         //            }
 
@@ -464,32 +457,25 @@ namespace SRCCore.Units
         //                    u = currentU4;
         //                    if (u.Party0 == "味方" & u.Status_Renamed != "他形態" & u.Status_Renamed != "旧主形態" & u.Status_Renamed != "旧形態")
         //                    {
-        //                        string argfname1 = "ノーマルモード";
-        //                        string argfname2 = "パーツ合体";
-        //                        if (u.IsFeatureAvailable(argfname1))
+        //                        if (u.IsFeatureAvailable("ノーマルモード"))
         //                        {
         //                            string localLIndex() { object argIndex1 = "ノーマルモード"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-        //                            string argnew_form = localLIndex();
-        //                            u.Transform(argnew_form);
+        //                            u.Transform(localLIndex());
         //                        }
-        //                        else if (u.IsFeatureAvailable(argfname2))
+        //                        else if (u.IsFeatureAvailable("パーツ合体"))
         //                        {
-        //                            object argIndex2 = "パーツ合体";
-        //                            string arglist = u.FeatureData(argIndex2);
-        //                            if (GeneralLib.LLength(arglist) == 2)
+        //                            if (GeneralLib.LLength(u.FeatureData(argIndex2)) == 2)
         //                            {
         //                                string localLIndex1() { object argIndex1 = "パーツ合体"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
 
-        //                                string argnew_form1 = localLIndex1();
-        //                                u.Transform(argnew_form1);
+        //                                u.Transform(localLIndex1());
         //                            }
         //                            else
         //                            {
         //                                string localLIndex2() { object argIndex1 = "パーツ合体"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-        //                                string argnew_form2 = localLIndex2();
-        //                                u.Transform(argnew_form2);
+        //                                u.Transform(localLIndex2());
         //                            }
         //                        }
         //                    }
@@ -499,8 +485,7 @@ namespace SRCCore.Units
         //                foreach (Unit currentU5 in colUnits)
         //                {
         //                    u = currentU5;
-        //                    string argfname3 = "分離";
-        //                    if (!u.IsFeatureAvailable(argfname3))
+        //                    if (!u.IsFeatureAvailable("分離"))
         //                    {
         //                        goto NextLoop1;
         //                    }
@@ -522,36 +507,27 @@ namespace SRCCore.Units
 
         //                    int localLLength() { object argIndex1 = "分離"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LLength(arglist); return ret; }
 
-        //                    string argfname4 = "制限時間";
-        //                    if (localLLength() > 3 & !u.IsFeatureAvailable(argfname4))
+        //                    if (localLLength() > 3 & !u.IsFeatureAvailable("制限時間"))
         //                    {
         //                        goto NextLoop1;
         //                    }
 
-        //                    string argfname5 = "主形態";
-        //                    if (u.IsFeatureAvailable(argfname5))
+        //                    if (u.IsFeatureAvailable("主形態"))
         //                    {
         //                        goto NextLoop1;
         //                    }
 
         //                    // パイロットが足らない場合は分離を行わない
         //                    n = 0;
-        //                    object argIndex6 = "分離";
-        //                    string arglist2 = u.FeatureData(argIndex6);
-        //                    var loopTo1 = GeneralLib.LLength(arglist2);
+        //                    var loopTo1 = GeneralLib.LLength(u.FeatureData(argIndex6));
         //                    for (j = 2; j <= loopTo1; j++)
         //                    {
-        //                        object argIndex3 = "分離";
-        //                        string arglist1 = u.FeatureData(argIndex3);
-        //                        uname = GeneralLib.LIndex(arglist1, j);
-        //                        object argIndex5 = uname;
-        //                        if (SRC.UDList.IsDefined(argIndex5))
+        //                        uname = GeneralLib.LIndex(u.FeatureData(argIndex3), j);
+        //                        if (SRC.UDList.IsDefined(uname))
         //                        {
-        //                            object argIndex4 = uname;
         //                            {
-        //                                var withBlock = SRC.UDList.Item(argIndex4);
-        //                                string argfname6 = "召喚ユニット";
-        //                                if (!withBlock.IsFeatureAvailable(argfname6))
+        //                                var withBlock = SRC.UDList.Item(uname);
+        //                                if (!withBlock.IsFeatureAvailable("召喚ユニット"))
         //                                {
         //                                    n = (n + withBlock.PilotNum);
         //                                }
@@ -565,14 +541,10 @@ namespace SRCCore.Units
         //                    }
 
         //                    // 分離先の形態が利用可能？
-        //                    object argIndex8 = "分離";
-        //                    string arglist4 = u.FeatureData(argIndex8);
-        //                    var loopTo2 = GeneralLib.LLength(arglist4);
+        //                    var loopTo2 = GeneralLib.LLength(u.FeatureData(argIndex8));
         //                    for (j = 2; j <= loopTo2; j++)
         //                    {
-        //                        object argIndex7 = "分離";
-        //                        string arglist3 = u.FeatureData(argIndex7);
-        //                        uname = GeneralLib.LIndex(arglist3, j);
+        //                        uname = GeneralLib.LIndex(u.FeatureData(argIndex7), j);
         //                        bool localIsDefined() { object argIndex1 = uname; var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
         //                        if (!localIsDefined())
@@ -600,14 +572,12 @@ namespace SRCCore.Units
         //                    u = currentU6;
         //                    if (u.Party0 == "味方" & u.Status_Renamed != "他形態" & u.Status_Renamed != "旧主形態" & u.Status_Renamed != "旧形態")
         //                    {
-        //                        string argfname9 = "合体";
-        //                        if (u.IsFeatureAvailable(argfname9))
+        //                        if (u.IsFeatureAvailable("合体"))
         //                        {
         //                            var loopTo3 = u.CountFeature();
         //                            for (j = 1; j <= loopTo3; j++)
         //                            {
-        //                                object argIndex9 = j;
-        //                                if (u.Feature(argIndex9) != "合体")
+        //                                if (u.Feature(j) != "合体")
         //                                {
         //                                    goto NextLoop2;
         //                                }
@@ -615,8 +585,7 @@ namespace SRCCore.Units
         //                                // 合体後の形態が利用可能？
         //                                string localFeatureData() { object argIndex1 = j; var ret = u.FeatureData(argIndex1); return ret; }
 
-        //                                string arglist5 = localFeatureData();
-        //                                uname = GeneralLib.LIndex(arglist5, 2);
+        //                                uname = GeneralLib.LIndex(localFeatureData(), 2);
         //                                bool localIsDefined1() { object argIndex1 = uname; var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
         //                                if (!localIsDefined1())
@@ -624,16 +593,14 @@ namespace SRCCore.Units
         //                                    goto NextLoop2;
         //                                }
 
-        //                                object argIndex10 = uname;
         //                                {
-        //                                    var withBlock1 = SRC.UList.Item(argIndex10);
+        //                                    var withBlock1 = SRC.UList.Item(uname);
         //                                    if (u.Status_Renamed == "待機" & withBlock1.CurrentForm().Status_Renamed == "離脱")
         //                                    {
         //                                        goto NextLoop2;
         //                                    }
 
-        //                                    string argfname7 = "制限時間";
-        //                                    if (withBlock1.IsFeatureAvailable(argfname7))
+        //                                    if (withBlock1.IsFeatureAvailable("制限時間"))
         //                                    {
         //                                        goto NextLoop2;
         //                                    }
@@ -642,8 +609,7 @@ namespace SRCCore.Units
 
         //                                    int localLLength1() { string arglist = hs7335ed59602e416aa1b2600f4949cf4c(); var ret = GeneralLib.LLength(arglist); return ret; }
 
-        //                                    string argfname8 = "主形態";
-        //                                    if (!withBlock1.IsFeatureAvailable(argfname8) & localLLength1() == 3)
+        //                                    if (!withBlock1.IsFeatureAvailable("主形態") & localLLength1() == 3)
         //                                    {
         //                                        goto NextLoop2;
         //                                    }
@@ -652,14 +618,12 @@ namespace SRCCore.Units
         //                                // 合体のパートナーが利用可能？
         //                                string localFeatureData3() { object argIndex1 = j; var ret = u.FeatureData(argIndex1); return ret; }
 
-        //                                string arglist7 = localFeatureData3();
-        //                                var loopTo4 = GeneralLib.LLength(arglist7);
+        //                                var loopTo4 = GeneralLib.LLength(localFeatureData3());
         //                                for (k = 3; k <= loopTo4; k++)
         //                                {
         //                                    string localFeatureData2() { object argIndex1 = j; var ret = u.FeatureData(argIndex1); return ret; }
 
-        //                                    string arglist6 = localFeatureData2();
-        //                                    uname = GeneralLib.LIndex(arglist6, k);
+        //                                    uname = GeneralLib.LIndex(localFeatureData2(), k);
         //                                    bool localIsDefined2() { object argIndex1 = uname; var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
         //                                    if (!localIsDefined2())
@@ -667,9 +631,8 @@ namespace SRCCore.Units
         //                                        goto NextLoop2;
         //                                    }
 
-        //                                    object argIndex11 = uname;
         //                                    {
-        //                                        var withBlock2 = SRC.UList.Item(argIndex11);
+        //                                        var withBlock2 = SRC.UList.Item(uname);
         //                                        if (u.Status_Renamed == "待機")
         //                                        {
         //                                            if (withBlock2.CurrentForm().Status_Renamed != "待機")
@@ -689,8 +652,7 @@ namespace SRCCore.Units
 
         //                                string localLIndex3() { string arglist = hs1e082bda318043228d140b6ae8f6a2c1(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
 
-        //                                string arguname = localLIndex3();
-        //                                u.Combine(arguname);
+        //                                u.Combine(localLIndex3());
         //                                break;
         //                            NextLoop2:
         //                                ;
@@ -705,18 +667,15 @@ namespace SRCCore.Units
         //                    u = currentU7;
         //                    if (u.Party0 == "味方" & u.Status_Renamed != "他形態" & u.Status_Renamed != "旧主形態" & u.Status_Renamed != "旧形態")
         //                    {
-        //                        string argfname10 = "変形";
-        //                        if (u.IsFeatureAvailable(argfname10))
+        //                        if (u.IsFeatureAvailable("変形"))
         //                        {
         //                            uname = u.Name;
-        //                            object argIndex12 = "変形";
-        //                            buf = u.FeatureData(argIndex12);
+        //                            buf = u.FeatureData("変形");
         //                            var loopTo5 = GeneralLib.LLength(buf);
         //                            for (j = 2; j <= loopTo5; j++)
         //                            {
         //                                uname2 = GeneralLib.LIndex(buf, j);
-        //                                object argIndex13 = uname2;
-        //                                if (SRC.UDList.IsDefined(argIndex13))
+        //                                if (SRC.UDList.IsDefined(uname2))
         //                                {
         //                                    UnitData localItem1() { object argIndex1 = uname2; var ret = SRC.UDList.Item(argIndex1); return ret; }
 
@@ -729,8 +688,7 @@ namespace SRCCore.Units
         //                                }
         //                                else
         //                                {
-        //                                    string argmsg = uname + "の変形先ユニット「" + uname2 + "」のデータが定義されていません。";
-        //                                    GUI.ErrorMessage(argmsg);
+        //                                    GUI.ErrorMessage(uname + "の変形先ユニット「" + uname2 + "」のデータが定義されていません。");
         //                                }
         //                            }
 
@@ -747,16 +705,11 @@ namespace SRCCore.Units
         //            foreach (Unit currentU8 in colUnits)
         //            {
         //                u = currentU8;
-        //                string argfname11 = "暴走時パイロット";
-        //                if (u.IsFeatureAvailable(argfname11))
+        //                if (u.IsFeatureAvailable("暴走時パイロット"))
         //                {
-        //                    object argIndex16 = "暴走時パイロット";
-        //                    object argIndex17 = u.FeatureData(argIndex16);
-        //                    if (SRC.PList.IsDefined(argIndex17))
+        //                    if (SRC.PList.IsDefined(u.FeatureData(argIndex16)))
         //                    {
-        //                        object argIndex14 = "暴走時パイロット";
-        //                        object argIndex15 = u.FeatureData(argIndex14);
-        //                        SRC.PList.Delete(argIndex15);
+        //                        SRC.PList.Delete(u.FeatureData(argIndex14));
         //                    }
         //                }
         //            }
@@ -767,11 +720,9 @@ namespace SRCCore.Units
         //                u = currentU9;
         //                if (u.CountPilot() > 0)
         //                {
-        //                    object argIndex19 = 1;
-        //                    if (u.Pilot(argIndex19).Nickname0 == "パイロット不在")
+        //                    if (u.Pilot(1).Nickname0 == "パイロット不在")
         //                    {
-        //                        object argIndex18 = 1;
-        //                        u.DeletePilot(argIndex18);
+        //                        u.DeletePilot(1);
         //                    }
         //                }
         //            }
@@ -791,14 +742,12 @@ namespace SRCCore.Units
         //            {
         //                u = currentU11;
         //                // 召喚ユニットは必ず破棄
-        //                string argfname12 = "召喚ユニット";
-        //                if (u.IsFeatureAvailable(argfname12))
+        //                if (u.IsFeatureAvailable("召喚ユニット"))
         //                {
         //                    u.Status_Renamed = "破棄";
         //                }
         //                // ダミーユニットを破棄
-        //                string argfname13 = "ダミーユニット";
-        //                if (u.IsFeatureAvailable(argfname13))
+        //                if (u.IsFeatureAvailable("ダミーユニット"))
         //                {
         //                    u.Status_Renamed = "破棄";
         //                }
@@ -815,8 +764,7 @@ namespace SRCCore.Units
         //                        localItem3().Exist = false;
         //                    }
 
-        //                    object argIndex20 = u.ID;
-        //                    Delete(argIndex20);
+        //                    Delete("パーツ合体"0);
         //                }
         //            }
 
@@ -908,8 +856,7 @@ namespace SRCCore.Units
 
         //                if (!localIsDefined())
         //                {
-        //                    string argmsg = Name + "のデータが定義されていません";
-        //                    GUI.ErrorMessage(argmsg);
+        //                    GUI.ErrorMessage(Name + "のデータが定義されていません");
         //                    SRC.TerminateSRC();
         //                    Environment.Exit(0);
         //                }
@@ -985,9 +932,8 @@ namespace SRCCore.Units
         //                    SRC.ConvertUnitID(ID);
         //                }
 
-        //                object argIndex6 = ID;
         //                {
-        //                    var withBlock = Item(argIndex6);
+        //                    var withBlock = Item(ID);
         //                    // OtherForm
         //                    FileSystem.Input(SRC.SaveDataFileNumber, num2);
         //                    var loopTo1 = num2;
@@ -995,13 +941,11 @@ namespace SRCCore.Units
         //                    {
         //                        FileSystem.Input(SRC.SaveDataFileNumber, ID2);
         //                        SRC.ConvertUnitID(ID2);
-        //                        object argIndex1 = ID2;
-        //                        if (IsDefined(argIndex1))
+        //                        if (IsDefined(ID2))
         //                        {
         //                            Unit localItem() { object argIndex1 = ID2; var ret = Item(argIndex1); return ret; }
 
-        //                            var argu = localItem();
-        //                            withBlock.AddOtherForm(argu);
+        //                            withBlock.AddOtherForm(localItem());
         //                        }
         //                    }
 
@@ -1011,13 +955,11 @@ namespace SRCCore.Units
         //                    for (j = 1; j <= loopTo2; j++)
         //                    {
         //                        FileSystem.Input(SRC.SaveDataFileNumber, ID2);
-        //                        object argIndex3 = ID2;
-        //                        if (SRC.PList.IsDefined(argIndex3))
+        //                        if (SRC.PList.IsDefined(ID2))
         //                        {
         //                            Pilot localItem1() { object argIndex1 = ID2; var ret = SRC.PList.Item(argIndex1); return ret; }
 
-        //                            var argp = localItem1();
-        //                            withBlock.AddPilot(argp);
+        //                            withBlock.AddPilot(localItem1());
         //                            if (withBlock.Status_Renamed == "離脱")
         //                            {
         //                                Pilot localItem2() { object argIndex1 = ID2; var ret = SRC.PList.Item(argIndex1); return ret; }
@@ -1028,13 +970,11 @@ namespace SRCCore.Units
         //                        else
         //                        {
         //                            ID2 = Strings.Left(ID2, Strings.InStr(ID2, "(") - 1);
-        //                            object argIndex2 = ID2;
-        //                            if (SRC.PList.IsDefined(argIndex2))
+        //                            if (SRC.PList.IsDefined(ID2))
         //                            {
         //                                Pilot localItem3() { object argIndex1 = ID2; var ret = SRC.PList.Item(argIndex1); return ret; }
 
-        //                                var argp1 = localItem3();
-        //                                withBlock.AddPilot(argp1);
+        //                                withBlock.AddPilot(localItem3());
         //                                if (withBlock.Status_Renamed == "離脱")
         //                                {
         //                                    Pilot localItem4() { object argIndex1 = ID2; var ret = SRC.PList.Item(argIndex1); return ret; }
@@ -1051,13 +991,11 @@ namespace SRCCore.Units
         //                    for (j = 1; j <= loopTo3; j++)
         //                    {
         //                        FileSystem.Input(SRC.SaveDataFileNumber, ID2);
-        //                        object argIndex4 = ID2;
-        //                        if (SRC.PList.IsDefined(argIndex4))
+        //                        if (SRC.PList.IsDefined(ID2))
         //                        {
         //                            Pilot localItem5() { object argIndex1 = ID2; var ret = SRC.PList.Item(argIndex1); return ret; }
 
-        //                            var argp2 = localItem5();
-        //                            withBlock.AddSupport(argp2);
+        //                            withBlock.AddSupport(localItem5());
         //                            if (withBlock.Status_Renamed == "離脱")
         //                            {
         //                                Pilot localItem6() { object argIndex1 = ID2; var ret = SRC.PList.Item(argIndex1); return ret; }
@@ -1075,8 +1013,7 @@ namespace SRCCore.Units
         //                        FileSystem.Input(SRC.SaveDataFileNumber, ID2);
         //                        bool localIsDefined() { object argIndex1 = ID2; var ret = SRC.IDList.IsDefined(argIndex1); return ret; }
 
-        //                        object argIndex5 = ID2;
-        //                        if (SRC.IList.IsDefined(argIndex5))
+        //                        if (SRC.IList.IsDefined(ID2))
         //                        {
         //                            Item localItem8() { object argIndex1 = ID2; var ret = SRC.IList.Item(argIndex1); return ret; }
 
@@ -1084,14 +1021,12 @@ namespace SRCCore.Units
         //                            {
         //                                Item localItem7() { object argIndex1 = ID2; var ret = SRC.IList.Item(argIndex1); return ret; }
 
-        //                                var argitm = localItem7();
-        //                                withBlock.CurrentForm().AddItem0(argitm);
+        //                                withBlock.CurrentForm().AddItem0(localItem7());
         //                            }
         //                        }
         //                        else if (localIsDefined())
         //                        {
-        //                            var argitm1 = SRC.IList.Add(ID2);
-        //                            withBlock.CurrentForm().AddItem0(argitm1);
+        //                            withBlock.CurrentForm().AddItem0(SRC.IList.Add(ID2));
         //                        }
         //                    }
         //                }
@@ -1268,8 +1203,7 @@ namespace SRCCore.Units
         //                        localItem().Exist = false;
         //                    }
 
-        //                    object argIndex1 = u.ID;
-        //                    Delete(argIndex1);
+        //                    Delete(u.ID);
         //                }
         //            }
         //        }

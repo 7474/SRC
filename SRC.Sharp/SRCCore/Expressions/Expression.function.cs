@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -318,8 +318,7 @@ namespace SRCCore.Expressions
             //                        if (ret == 0)
             //                        {
             //                            // 式で指定されている？
-            //                            string arglname = GetValueAsString(@params[1], is_term[1]);
-            //                            ret = Event.FindNormalLabel(arglname);
+            //                            ret = Event.FindNormalLabel(GetValueAsString(@params[1], is_term[1]));
             //                            if (ret == 0)
             //                            {
             //                                Event.DisplayEventErrorMessage(Event.CurrentLineNum, "指定されたサブルーチン「" + @params[1] + "」が見つかりません");
@@ -511,8 +510,7 @@ namespace SRCCore.Expressions
 
             //                case "lindex":
             //                    {
-            //                        string arglist = GetValueAsString(@params[1], is_term[1]);
-            //                        str_result = GeneralLib.ListIndex(arglist, GetValueAsLong(@params[2], is_term[2]));
+            //                        str_result = GeneralLib.ListIndex(GetValueAsString(@params[1], is_term[1]), GetValueAsLong(@params[2], is_term[2]));
 
             //                        // 全体が()で囲まれている場合は()を外す
             //                        if (Strings.Left(str_result, 1) == "(" & Strings.Right(str_result, 1) == ")")
@@ -535,8 +533,7 @@ namespace SRCCore.Expressions
 
             //                case "llength":
             //                    {
-            //                        string arglist1 = GetValueAsString(@params[1], is_term[1]);
-            //                        i = GeneralLib.ListLength(arglist1);
+            //                        i = GeneralLib.ListLength(GetValueAsString(@params[1], is_term[1]));
             //                        if (etype == ValueType.StringType)
             //                        {
             //                            str_result = GeneralLib.FormatNum((double)i);
@@ -587,8 +584,7 @@ namespace SRCCore.Expressions
             //                                    pname = GetValueAsString(@params[1], is_term[1]);
             //                                    bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex6 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex6))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem2() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
@@ -596,9 +592,8 @@ namespace SRCCore.Expressions
             //                                    }
             //                                    else if (localIsDefined())
             //                                    {
-            //                                        object argIndex5 = (object)pname;
             //                                        {
-            //                                            var withBlock2 = SRC.PList.Item(argIndex5);
+            //                                            var withBlock2 = SRC.PList.Item((object)pname);
             //                                            if (withBlock2.Unit is object)
             //                                            {
             //                                                {
@@ -652,8 +647,7 @@ namespace SRCCore.Expressions
             //                                    pname = GetValueAsString(@params[1], is_term[1]);
             //                                    bool localIsDefined1() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex8 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex8))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem21() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
@@ -661,9 +655,8 @@ namespace SRCCore.Expressions
             //                                    }
             //                                    else if (localIsDefined1())
             //                                    {
-            //                                        object argIndex7 = (object)pname;
             //                                        {
-            //                                            var withBlock4 = SRC.PList.Item(argIndex7);
+            //                                            var withBlock4 = SRC.PList.Item((object)pname);
             //                                            if (withBlock4.Unit is object)
             //                                            {
             //                                                str_result = withBlock4.Unit.Area;
@@ -738,26 +731,22 @@ namespace SRCCore.Expressions
             //                                    buf = GetValueAsString(@params[2], is_term[2]);
             //                                    bool localIsDefined2() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex12 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex12))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem22() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
-            //                                        object argIndex9 = (object)buf;
-            //                                        if (localItem22().IsConditionSatisfied(argIndex9))
+            //                                        if (localItem22().IsConditionSatisfied((object)buf))
             //                                        {
             //                                            num_result = 1d;
             //                                        }
             //                                    }
             //                                    else if (localIsDefined2())
             //                                    {
-            //                                        object argIndex11 = (object)pname;
             //                                        {
-            //                                            var withBlock5 = SRC.PList.Item(argIndex11);
+            //                                            var withBlock5 = SRC.PList.Item((object)pname);
             //                                            if (withBlock5.Unit is object)
             //                                            {
-            //                                                object argIndex10 = (object)buf;
-            //                                                if (withBlock5.Unit.IsConditionSatisfied(argIndex10))
+            //                                                if (withBlock5.Unit.IsConditionSatisfied((object)buf))
             //                                                {
             //                                                    num_result = 1d;
             //                                                }
@@ -773,8 +762,7 @@ namespace SRCCore.Expressions
             //                                    if (Event.SelectedUnitForEvent is object)
             //                                    {
             //                                        buf = GetValueAsString(@params[1], is_term[1]);
-            //                                        object argIndex13 = (object)buf;
-            //                                        if (Event.SelectedUnitForEvent.IsConditionSatisfied(argIndex13))
+            //                                        if (Event.SelectedUnitForEvent.IsConditionSatisfied((object)buf))
             //                                        {
             //                                            num_result = 1d;
             //                                        }
@@ -891,8 +879,7 @@ namespace SRCCore.Expressions
             //                                    pname = GetValueAsString(@params[1], is_term[1]);
             //                                    bool localIsDefined3() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex15 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex15))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem23() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
@@ -915,9 +902,8 @@ namespace SRCCore.Expressions
             //                                    }
             //                                    else
             //                                    {
-            //                                        object argIndex14 = (object)pname;
             //                                        {
-            //                                            var withBlock6 = SRC.PList.Item(argIndex14);
+            //                                            var withBlock6 = SRC.PList.Item((object)pname);
             //                                            if (withBlock6.Unit is object)
             //                                            {
             //                                                num = withBlock6.Unit.CountItem();
@@ -976,20 +962,17 @@ namespace SRCCore.Expressions
             //                            case 1:
             //                                {
             //                                    pname = GetValueAsString(@params[1], is_term[1]);
-            //                                    object argIndex18 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex18))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
-            //                                        object argIndex16 = (object)pname;
             //                                        {
-            //                                            var withBlock7 = SRC.UList.Item2(argIndex16);
+            //                                            var withBlock7 = SRC.UList.Item2((object)pname);
             //                                            num_result = (double)(withBlock7.CountPilot() + withBlock7.CountSupport());
             //                                        }
             //                                    }
             //                                    else
             //                                    {
-            //                                        object argIndex17 = (object)pname;
             //                                        {
-            //                                            var withBlock8 = SRC.PList.Item(argIndex17);
+            //                                            var withBlock8 = SRC.PList.Item((object)pname);
             //                                            if (withBlock8.Unit is object)
             //                                            {
             //                                                {
@@ -1057,12 +1040,10 @@ namespace SRCCore.Expressions
 
             //                                    Pilot localItem1() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
-            //                                    object argIndex20 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex20))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
-            //                                        object argIndex19 = (object)pname;
             //                                        {
-            //                                            var withBlock11 = SRC.UList.Item2(argIndex19);
+            //                                            var withBlock11 = SRC.UList.Item2((object)pname);
             //                                            num_result = (double)(100 * (withBlock11.MaxHP - withBlock11.HP) / withBlock11.MaxHP);
             //                                        }
             //                                    }
@@ -1151,8 +1132,7 @@ namespace SRCCore.Expressions
             //                                    dir_path = fname;
             //                                    if (num == FileAttribute.Directory)
             //                                    {
-            //                                        string argstr2 = @"\";
-            //                                        i = GeneralLib.InStr2(fname, argstr2);
+            //                                        i = GeneralLib.InStr2(fname, @"\");
             //                                        if (i > 0)
             //                                        {
             //                                            dir_path = Strings.Left(fname, i);
@@ -1344,8 +1324,7 @@ namespace SRCCore.Expressions
             //                                    pname = GetValueAsString(@params[1], is_term[1]);
             //                                    bool localIsDefined5() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex22 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex22))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem24() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
@@ -1353,9 +1332,8 @@ namespace SRCCore.Expressions
             //                                    }
             //                                    else if (localIsDefined5())
             //                                    {
-            //                                        object argIndex21 = (object)pname;
             //                                        {
-            //                                            var withBlock14 = SRC.PList.Item(argIndex21);
+            //                                            var withBlock14 = SRC.PList.Item((object)pname);
             //                                            if (withBlock14.Unit is object)
             //                                            {
             //                                                num_result = (double)withBlock14.Unit.EN;
@@ -1637,8 +1615,7 @@ namespace SRCCore.Expressions
             //                                    pname = GetValueAsString(@params[1], is_term[1]);
             //                                    bool localIsDefined6() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex24 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex24))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem25() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
@@ -1646,9 +1623,8 @@ namespace SRCCore.Expressions
             //                                    }
             //                                    else if (localIsDefined6())
             //                                    {
-            //                                        object argIndex23 = (object)pname;
             //                                        {
-            //                                            var withBlock16 = SRC.PList.Item(argIndex23);
+            //                                            var withBlock16 = SRC.PList.Item((object)pname);
             //                                            if (withBlock16.Unit is object)
             //                                            {
             //                                                num_result = (double)withBlock16.Unit.HP;
@@ -1691,13 +1667,11 @@ namespace SRCCore.Expressions
             //                            case 1:
             //                                {
             //                                    var tmp1 = list;
-            //                                    object argIndex26 = (object)tmp1[1];
-            //                                    if (SRC.PList.IsDefined(argIndex26))
+            //                                    if (SRC.PList.IsDefined((object)tmp1[1]))
             //                                    {
             //                                        var tmp = list;
-            //                                        object argIndex25 = (object)tmp[1];
             //                                        {
-            //                                            var withBlock17 = SRC.PList.Item(argIndex25);
+            //                                            var withBlock17 = SRC.PList.Item((object)tmp[1]);
             //                                            if (withBlock17.Unit is null)
             //                                            {
             //                                                flag = false;
@@ -1734,13 +1708,11 @@ namespace SRCCore.Expressions
             //                                {
             //                                    pname = GeneralLib.ListIndex(expr, 2);
             //                                    var tmp3 = list;
-            //                                    object argIndex28 = (object)tmp3[2];
-            //                                    if (SRC.PList.IsDefined(argIndex28))
+            //                                    if (SRC.PList.IsDefined((object)tmp3[2]))
             //                                    {
             //                                        var tmp2 = list;
-            //                                        object argIndex27 = (object)tmp2[2];
             //                                        {
-            //                                            var withBlock19 = SRC.PList.Item(argIndex27);
+            //                                            var withBlock19 = SRC.PList.Item((object)tmp2[2]);
             //                                            if (withBlock19.Unit is null)
             //                                            {
             //                                                flag = true;
@@ -1931,12 +1903,10 @@ namespace SRCCore.Expressions
             //                                    buf = GetValueAsString(@params[2], is_term[2]);
 
             //                                    // エリアスが定義されている？
-            //                                    object argIndex30 = (object)buf;
-            //                                    if (SRC.ALDList.IsDefined(argIndex30))
+            //                                    if (SRC.ALDList.IsDefined((object)buf))
             //                                    {
-            //                                        object argIndex29 = (object)buf;
             //                                        {
-            //                                            var withBlock21 = SRC.ALDList.Item(argIndex29);
+            //                                            var withBlock21 = SRC.ALDList.Item((object)buf);
             //                                            var loopTo7 = withBlock21.Count;
             //                                            for (i = 1; i <= loopTo7; i++)
             //                                            {
@@ -1958,8 +1928,7 @@ namespace SRCCore.Expressions
 
             //                                    bool localIsDefined7() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex32 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex32))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem26() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
@@ -1970,9 +1939,8 @@ namespace SRCCore.Expressions
             //                                    }
             //                                    else if (localIsDefined7())
             //                                    {
-            //                                        object argIndex31 = (object)pname;
             //                                        {
-            //                                            var withBlock22 = SRC.PList.Item(argIndex31);
+            //                                            var withBlock22 = SRC.PList.Item((object)pname);
             //                                            if (withBlock22.Unit is object)
             //                                            {
             //                                                if (withBlock22.Unit.IsFeatureAvailable(buf))
@@ -1991,8 +1959,7 @@ namespace SRCCore.Expressions
             //                                    buf = GetValueAsString(@params[1], is_term[1]);
 
             //                                    // エリアスが定義されている？
-            //                                    object argIndex33 = (object)buf;
-            //                                    if (SRC.ALDList.IsDefined(argIndex33))
+            //                                    if (SRC.ALDList.IsDefined((object)buf))
             //                                    {
             //                                        AliasDataType localItem3() { object argIndex1 = (object)buf; var ret = SRC.ALDList.Item(argIndex1); return ret; }
 
@@ -2035,8 +2002,7 @@ namespace SRCCore.Expressions
             //                                    {
             //                                        case "パイロット":
             //                                            {
-            //                                                object argIndex34 = (object)pname;
-            //                                                if (SRC.PList.IsDefined(argIndex34))
+            //                                                if (SRC.PList.IsDefined((object)pname))
             //                                                {
             //                                                    Pilot localItem4() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
@@ -2051,8 +2017,7 @@ namespace SRCCore.Expressions
 
             //                                        case "ユニット":
             //                                            {
-            //                                                object argIndex35 = (object)pname;
-            //                                                if (SRC.UList.IsDefined(argIndex35))
+            //                                                if (SRC.UList.IsDefined((object)pname))
             //                                                {
             //                                                    Unit localItem5() { object argIndex1 = (object)pname; var ret = SRC.UList.Item(argIndex1); return ret; }
 
@@ -2067,8 +2032,7 @@ namespace SRCCore.Expressions
 
             //                                        case "アイテム":
             //                                            {
-            //                                                object argIndex36 = (object)pname;
-            //                                                if (SRC.IList.IsDefined(argIndex36))
+            //                                                if (SRC.IList.IsDefined((object)pname))
             //                                                {
             //                                                    num_result = 1d;
             //                                                }
@@ -2086,8 +2050,7 @@ namespace SRCCore.Expressions
 
             //                                    bool localIsDefined9() { object argIndex1 = (object)pname; var ret = SRC.IList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex37 = (object)pname;
-            //                                    if (SRC.PList.IsDefined(argIndex37))
+            //                                    if (SRC.PList.IsDefined((object)pname))
             //                                    {
             //                                        Pilot localItem6() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
@@ -2136,26 +2099,22 @@ namespace SRCCore.Expressions
             //                                    pname = GetValueAsString(@params[1], is_term[1]);
             //                                    bool localIsDefined10() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex39 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex39))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem27() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
-            //                                        string arginame = GetValueAsString(@params[2], is_term[2]);
-            //                                        if (localItem27().IsEquiped(arginame))
+            //                                        if (localItem27().IsEquiped(GetValueAsString(@params[2], is_term[2])))
             //                                        {
             //                                            num_result = 1d;
             //                                        }
             //                                    }
             //                                    else if (localIsDefined10())
             //                                    {
-            //                                        object argIndex38 = (object)pname;
             //                                        {
-            //                                            var withBlock23 = SRC.PList.Item(argIndex38);
+            //                                            var withBlock23 = SRC.PList.Item((object)pname);
             //                                            if (withBlock23.Unit is object)
             //                                            {
-            //                                                string arginame1 = GetValueAsString(@params[2], is_term[2]);
-            //                                                if (withBlock23.Unit.IsEquiped(arginame1))
+            //                                                if (withBlock23.Unit.IsEquiped(GetValueAsString(@params[2], is_term[2])))
             //                                                {
             //                                                    num_result = 1d;
             //                                                }
@@ -2170,8 +2129,7 @@ namespace SRCCore.Expressions
             //                                {
             //                                    if (Event.SelectedUnitForEvent is object)
             //                                    {
-            //                                        string arginame2 = GetValueAsString(@params[1], is_term[1]);
-            //                                        if (Event.SelectedUnitForEvent.IsEquiped(arginame2))
+            //                                        if (Event.SelectedUnitForEvent.IsEquiped(GetValueAsString(@params[1], is_term[1])))
             //                                        {
             //                                            num_result = 1d;
             //                                        }
@@ -2236,8 +2194,7 @@ namespace SRCCore.Expressions
 
             //                case "isnumeric":
             //                    {
-            //                        string argstr_Renamed = GetValueAsString(@params[1], is_term[1]);
-            //                        if (GeneralLib.IsNumber(argstr_Renamed))
+            //                        if (GeneralLib.IsNumber(GetValueAsString(@params[1], is_term[1])))
             //                        {
             //                            if (etype == ValueType.StringType)
             //                            {
@@ -2266,8 +2223,7 @@ namespace SRCCore.Expressions
 
             //                case "isvardefined":
             //                    {
-            //                        string argvar_name = Strings.Trim(Strings.Mid(expr, 14, Strings.Len(expr) - 14));
-            //                        if (IsVariableDefined(argvar_name))
+            //                        if (IsVariableDefined(Strings.Trim(Strings.Mid(expr, 14, Strings.Len(expr) - 14))))
             //                        {
             //                            if (etype == ValueType.StringType)
             //                            {
@@ -2307,13 +2263,11 @@ namespace SRCCore.Expressions
 
             //                                    Pilot localItem12() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
-            //                                    object argIndex41 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex41))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        i = GetValueAsLong(@params[2], is_term[2]);
-            //                                        object argIndex40 = (object)pname;
             //                                        {
-            //                                            var withBlock24 = SRC.UList.Item2(argIndex40);
+            //                                            var withBlock24 = SRC.UList.Item2((object)pname);
             //                                            if (1 <= i & i <= withBlock24.CountItem())
             //                                            {
             //                                                Item localItem8() { object argIndex1 = (object)i; var ret = withBlock24.Item(argIndex1); return ret; }
@@ -2399,13 +2353,11 @@ namespace SRCCore.Expressions
 
             //                                    Pilot localItem18() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
-            //                                    object argIndex43 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex43))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        i = GetValueAsLong(@params[2], is_term[2]);
-            //                                        object argIndex42 = (object)pname;
             //                                        {
-            //                                            var withBlock27 = SRC.UList.Item2(argIndex42);
+            //                                            var withBlock27 = SRC.UList.Item2((object)pname);
             //                                            if (1 <= i & i <= withBlock27.CountItem())
             //                                            {
             //                                                Item localItem14() { object argIndex1 = (object)i; var ret = withBlock27.Item(argIndex1); return ret; }
@@ -2554,8 +2506,7 @@ namespace SRCCore.Expressions
             //                                    pname = GetValueAsString(@params[1], is_term[1]);
             //                                    bool localIsDefined13() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex44 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex44))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem28() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
@@ -2758,8 +2709,7 @@ namespace SRCCore.Expressions
             //                                    pname = GetValueAsString(@params[1], is_term[1]);
             //                                    bool localIsDefined14() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex45 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex45))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem29() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
@@ -2822,8 +2772,7 @@ namespace SRCCore.Expressions
 
             //                                    bool localIsDefined19() { object argIndex1 = (object)buf; var ret = SRC.IDList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex46 = (object)buf;
-            //                                    if (SRC.PList.IsDefined(argIndex46))
+            //                                    if (SRC.PList.IsDefined((object)buf))
             //                                    {
             //                                        Pilot localItem31() { object argIndex1 = (object)buf; var ret = SRC.PList.Item(argIndex1); return ret; }
 
@@ -2903,8 +2852,7 @@ namespace SRCCore.Expressions
             //                                    pname = GetValueAsString(@params[1], is_term[1]);
             //                                    bool localIsDefined20() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex47 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex47))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem210() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
@@ -2942,13 +2890,11 @@ namespace SRCCore.Expressions
             //                            case 2:
             //                                {
             //                                    uname = GetValueAsString(@params[1], is_term[1]);
-            //                                    object argIndex49 = (object)uname;
-            //                                    if (SRC.UList.IsDefined(argIndex49))
+            //                                    if (SRC.UList.IsDefined((object)uname))
             //                                    {
             //                                        i = GetValueAsLong(@params[2], is_term[2]);
-            //                                        object argIndex48 = (object)uname;
             //                                        {
-            //                                            var withBlock32 = SRC.UList.Item(argIndex48);
+            //                                            var withBlock32 = SRC.UList.Item((object)uname);
             //                                            if (0 < i & i <= withBlock32.CountPilot())
             //                                            {
             //                                                Pilot localPilot() { object argIndex1 = (object)i; var ret = withBlock32.Pilot(argIndex1); return ret; }
@@ -2996,9 +2942,8 @@ namespace SRCCore.Expressions
             //                                    }
             //                                    else if (localIsDefined21())
             //                                    {
-            //                                        object argIndex50 = (object)uname;
             //                                        {
-            //                                            var withBlock34 = SRC.UList.Item(argIndex50);
+            //                                            var withBlock34 = SRC.UList.Item((object)uname);
             //                                            if (withBlock34.CountPilot() > 0)
             //                                            {
             //                                                str_result = withBlock34.MainPilot().Name;
@@ -3037,13 +2982,11 @@ namespace SRCCore.Expressions
             //                            case 2:
             //                                {
             //                                    uname = GetValueAsString(@params[1], is_term[1]);
-            //                                    object argIndex52 = (object)uname;
-            //                                    if (SRC.UList.IsDefined(argIndex52))
+            //                                    if (SRC.UList.IsDefined((object)uname))
             //                                    {
             //                                        i = GetValueAsLong(@params[2], is_term[2]);
-            //                                        object argIndex51 = (object)uname;
             //                                        {
-            //                                            var withBlock36 = SRC.UList.Item(argIndex51);
+            //                                            var withBlock36 = SRC.UList.Item((object)uname);
             //                                            if (0 < i & i <= withBlock36.CountPilot())
             //                                            {
             //                                                Pilot localPilot2() { object argIndex1 = (object)i; var ret = withBlock36.Pilot(argIndex1); return ret; }
@@ -3091,9 +3034,8 @@ namespace SRCCore.Expressions
             //                                    }
             //                                    else if (localIsDefined22())
             //                                    {
-            //                                        object argIndex53 = (object)uname;
             //                                        {
-            //                                            var withBlock38 = SRC.UList.Item(argIndex53);
+            //                                            var withBlock38 = SRC.UList.Item((object)uname);
             //                                            if (withBlock38.CountPilot() > 0)
             //                                            {
             //                                                str_result = withBlock38.MainPilot().ID;
@@ -3134,8 +3076,7 @@ namespace SRCCore.Expressions
             //                                    pname = GetValueAsString(@params[1], is_term[1]);
             //                                    bool localIsDefined23() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex54 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex54))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem211() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
@@ -3200,8 +3141,7 @@ namespace SRCCore.Expressions
             //                                    pname = GetValueAsString(@params[1], is_term[1]);
             //                                    bool localIsDefined24() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex56 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex56))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem212() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
@@ -3213,9 +3153,8 @@ namespace SRCCore.Expressions
             //                                    }
             //                                    else
             //                                    {
-            //                                        object argIndex55 = (object)pname;
             //                                        {
-            //                                            var withBlock40 = SRC.PList.Item(argIndex55);
+            //                                            var withBlock40 = SRC.PList.Item((object)pname);
             //                                            if (withBlock40.Unit is object)
             //                                            {
             //                                                num_result = (double)withBlock40.Unit.Rank;
@@ -3416,8 +3355,7 @@ namespace SRCCore.Expressions
             //                        Pilot localItem40() { object argIndex1 = (object)pname2; var ret = SRC.PList.Item(argIndex1); return ret; }
 
             //                        pname2 = localItem40().Name;
-            //                        string argexpr = "関係:" + pname + ":" + pname2;
-            //                        num_result = (double)GetValueAsLong(argexpr);
+            //                        num_result = (double)GetValueAsLong("関係:" + pname + ":" + pname2);
             //                        if (etype == ValueType.StringType)
             //                        {
             //                            str_result = GeneralLib.FormatNum(num_result);
@@ -3440,9 +3378,7 @@ namespace SRCCore.Expressions
             //                                    buf = GetValueAsString(@params[1], is_term[1]);
             //                                    num = GetValueAsLong(@params[4], is_term[4]);
             //                                    buf2 = Strings.Right(buf, Strings.Len(buf) - num + 1);
-            //                                    string args2 = GetValueAsString(@params[2], is_term[2]);
-            //                                    string args3 = GetValueAsString(@params[3], is_term[3]);
-            //                                    GeneralLib.ReplaceString(buf2, args2, args3);
+            //                                    GeneralLib.ReplaceString(buf2, GetValueAsString(@params[2], is_term[2]), GetValueAsString(@params[3], is_term[3]));
             //                                    str_result = Strings.Left(buf, num - 1) + buf2;
             //                                    break;
             //                                }
@@ -3453,9 +3389,7 @@ namespace SRCCore.Expressions
             //                                    num = GetValueAsLong(@params[4], is_term[4]);
             //                                    num2 = GetValueAsLong(@params[5], is_term[5]);
             //                                    buf2 = Strings.Mid(buf, num, num2);
-            //                                    string args21 = GetValueAsString(@params[2], is_term[2]);
-            //                                    string args31 = GetValueAsString(@params[3], is_term[3]);
-            //                                    GeneralLib.ReplaceString(buf2, args21, args31);
+            //                                    GeneralLib.ReplaceString(buf2, GetValueAsString(@params[2], is_term[2]), GetValueAsString(@params[3], is_term[3]));
             //                                    str_result = Strings.Left(buf, num - 1) + buf2 + Strings.Right(buf, Strings.Len(buf) - (num + num2 - 1) - 1);
             //                                    break;
             //                                }
@@ -3463,9 +3397,7 @@ namespace SRCCore.Expressions
             //                            default:
             //                                {
             //                                    str_result = GetValueAsString(@params[1], is_term[1]);
-            //                                    string args22 = GetValueAsString(@params[2], is_term[2]);
-            //                                    string args32 = GetValueAsString(@params[3], is_term[3]);
-            //                                    GeneralLib.ReplaceString(str_result, args22, args32);
+            //                                    GeneralLib.ReplaceString(str_result, GetValueAsString(@params[2], is_term[2]), GetValueAsString(@params[3], is_term[3]));
             //                                    break;
             //                                }
             //                        }
@@ -3629,8 +3561,7 @@ namespace SRCCore.Expressions
             //                                    buf = GetValueAsString(@params[2], is_term[2]);
 
             //                                    // エリアスが定義されている？
-            //                                    object argIndex57 = (object)buf;
-            //                                    if (SRC.ALDList.IsDefined(argIndex57))
+            //                                    if (SRC.ALDList.IsDefined((object)buf))
             //                                    {
             //                                        AliasDataType localItem41() { object argIndex1 = (object)buf; var ret = SRC.ALDList.Item(argIndex1); return ret; }
 
@@ -3639,22 +3570,17 @@ namespace SRCCore.Expressions
 
             //                                    bool localIsDefined27() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex60 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex60))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem213() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
-            //                                        object argIndex58 = (object)buf;
-            //                                        string argref_mode = "";
-            //                                        num_result = localItem213().MainPilot().SkillLevel(argIndex58, ref_mode: argref_mode);
+            //                                        num_result = localItem213().MainPilot().SkillLevel((object)buf, ref_mode: "");
             //                                    }
             //                                    else if (localIsDefined27())
             //                                    {
             //                                        Pilot localItem42() { object argIndex1 = (object)pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
-            //                                        object argIndex59 = (object)buf;
-            //                                        string argref_mode1 = "";
-            //                                        num_result = localItem42().SkillLevel(argIndex59, ref_mode: argref_mode1);
+            //                                        num_result = localItem42().SkillLevel((object)buf, ref_mode: "");
             //                                    }
 
             //                                    break;
@@ -3665,8 +3591,7 @@ namespace SRCCore.Expressions
             //                                    buf = GetValueAsString(@params[1], is_term[1]);
 
             //                                    // エリアスが定義されている？
-            //                                    object argIndex61 = (object)buf;
-            //                                    if (SRC.ALDList.IsDefined(argIndex61))
+            //                                    if (SRC.ALDList.IsDefined((object)buf))
             //                                    {
             //                                        AliasDataType localItem43() { object argIndex1 = (object)buf; var ret = SRC.ALDList.Item(argIndex1); return ret; }
 
@@ -3675,9 +3600,7 @@ namespace SRCCore.Expressions
 
             //                                    if (Event.SelectedUnitForEvent is object)
             //                                    {
-            //                                        object argIndex62 = (object)buf;
-            //                                        string argref_mode2 = "";
-            //                                        num_result = Event.SelectedUnitForEvent.MainPilot().SkillLevel(argIndex62, ref_mode: argref_mode2);
+            //                                        num_result = Event.SelectedUnitForEvent.MainPilot().SkillLevel((object)buf, ref_mode: "");
             //                                    }
 
             //                                    break;
@@ -3706,8 +3629,7 @@ namespace SRCCore.Expressions
             //                                    pname = GetValueAsString(@params[1], is_term[1]);
             //                                    bool localIsDefined28() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex63 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex63))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem214() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
@@ -3758,8 +3680,7 @@ namespace SRCCore.Expressions
             //                                    buf = GetValueAsString(@params[2], is_term[2]);
             //                                    bool localIsDefined29() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex65 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex65))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem215() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
@@ -3770,9 +3691,8 @@ namespace SRCCore.Expressions
             //                                    }
             //                                    else if (localIsDefined29())
             //                                    {
-            //                                        object argIndex64 = (object)pname;
             //                                        {
-            //                                            var withBlock41 = SRC.PList.Item(argIndex64);
+            //                                            var withBlock41 = SRC.PList.Item((object)pname);
             //                                            if (withBlock41.Unit is object)
             //                                            {
             //                                                if (withBlock41.Unit.IsSpecialPowerInEffect(buf))
@@ -3839,8 +3759,7 @@ namespace SRCCore.Expressions
             //                                    pname = GetValueAsString(@params[1], is_term[1]);
             //                                    bool localIsDefined30() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex67 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex67))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem216() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
@@ -3848,9 +3767,8 @@ namespace SRCCore.Expressions
             //                                    }
             //                                    else if (localIsDefined30())
             //                                    {
-            //                                        object argIndex66 = (object)pname;
             //                                        {
-            //                                            var withBlock42 = SRC.PList.Item(argIndex66);
+            //                                            var withBlock42 = SRC.PList.Item((object)pname);
             //                                            if (withBlock42.Unit is object)
             //                                            {
             //                                                str_result = withBlock42.Unit.Status_Renamed;
@@ -3945,20 +3863,15 @@ namespace SRCCore.Expressions
             //                            case 2:
             //                                {
             //                                    pname = GetValueAsString(@params[2], is_term[2]);
-            //                                    object argIndex68 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex68))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem217() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
-            //                                        string argtname = GetValueAsString(@params[1], is_term[1]);
-            //                                        var argu = localItem217();
-            //                                        str_result = Term(argtname, argu);
+            //                                        str_result = Term(GetValueAsString(@params[1], is_term[1]), localItem217());
             //                                    }
             //                                    else
             //                                    {
-            //                                        string argtname1 = GetValueAsString(@params[1], is_term[1]);
-            //                                        Unit argu1 = null;
-            //                                        str_result = Term(argtname1, u: argu1);
+            //                                        str_result = Term(GetValueAsString(@params[1], is_term[1]), u: null);
             //                                    }
 
             //                                    break;
@@ -3966,9 +3879,7 @@ namespace SRCCore.Expressions
 
             //                            case 1:
             //                                {
-            //                                    string argtname2 = GetValueAsString(@params[1], is_term[1]);
-            //                                    Unit argu2 = null;
-            //                                    str_result = Term(argtname2, u: argu2);
+            //                                    str_result = Term(GetValueAsString(@params[1], is_term[1]), u: null);
             //                                    break;
             //                                }
             //                        }
@@ -4025,8 +3936,7 @@ namespace SRCCore.Expressions
             //                                    pname = GetValueAsString(@params[1], is_term[1]);
             //                                    bool localIsDefined31() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex70 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex70))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem218() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
@@ -4034,9 +3944,8 @@ namespace SRCCore.Expressions
             //                                    }
             //                                    else if (localIsDefined31())
             //                                    {
-            //                                        object argIndex69 = (object)pname;
             //                                        {
-            //                                            var withBlock43 = SRC.PList.Item(argIndex69);
+            //                                            var withBlock43 = SRC.PList.Item((object)pname);
             //                                            if (withBlock43.Unit is object)
             //                                            {
             //                                                str_result = withBlock43.Unit.Name;
@@ -4071,8 +3980,7 @@ namespace SRCCore.Expressions
             //                                    pname = GetValueAsString(@params[1], is_term[1]);
             //                                    bool localIsDefined32() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-            //                                    object argIndex72 = (object)pname;
-            //                                    if (SRC.UList.IsDefined2(argIndex72))
+            //                                    if (SRC.UList.IsDefined2((object)pname))
             //                                    {
             //                                        Unit localItem219() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
@@ -4080,9 +3988,8 @@ namespace SRCCore.Expressions
             //                                    }
             //                                    else if (localIsDefined32())
             //                                    {
-            //                                        object argIndex71 = (object)pname;
             //                                        {
-            //                                            var withBlock44 = SRC.PList.Item(argIndex71);
+            //                                            var withBlock44 = SRC.PList.Item((object)pname);
             //                                            if (withBlock44.Unit is object)
             //                                            {
             //                                                str_result = withBlock44.Unit.ID;
@@ -4174,9 +4081,8 @@ namespace SRCCore.Expressions
             //                                    }
             //                                    else if (localIsDefined35())
             //                                    {
-            //                                        object argIndex77 = (object)pname;
             //                                        {
-            //                                            var withBlock47 = SRC.PList.Item(argIndex77);
+            //                                            var withBlock47 = SRC.PList.Item((object)pname);
             //                                            if (withBlock47.Unit is object)
             //                                            {
             //                                                num_result = (double)withBlock47.Unit.x;
@@ -4239,9 +4145,8 @@ namespace SRCCore.Expressions
             //                                    }
             //                                    else if (localIsDefined36())
             //                                    {
-            //                                        object argIndex78 = (object)pname;
             //                                        {
-            //                                            var withBlock48 = SRC.PList.Item(argIndex78);
+            //                                            var withBlock48 = SRC.PList.Item((object)pname);
             //                                            if (withBlock48.Unit is object)
             //                                            {
             //                                                num_result = (double)withBlock48.Unit.y;
@@ -4689,44 +4594,19 @@ namespace SRCCore.Expressions
             //                        {
             //                            case 2:
             //                                {
-            //                                    string argdtitle = "ファイルを開く";
-            //                                    string argdefault_file = "";
-            //                                    string argftype = GetValueAsString(@params[1], is_term[1]);
-            //                                    string argfsuffix = GetValueAsString(@params[2], is_term[2]);
-            //                                    string argftype2 = "";
-            //                                    string argfsuffix2 = "";
-            //                                    string argftype3 = "";
-            //                                    string argfsuffix3 = "";
-            //                                    str_result = FileDialog.LoadFileDialog(argdtitle, SRC.ScenarioPath, argdefault_file, 2, argftype, argfsuffix, ftype2: argftype2, fsuffix2: argfsuffix2, ftype3: argftype3, fsuffix3: argfsuffix3);
+            //                                    str_result = FileDialog.LoadFileDialog("ファイルを開く", SRC.ScenarioPath, "", 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: GetValueAsString(@params[1], is_term[1])2, fsuffix2: GetValueAsString(@params[2], is_term[2])2, ftype3: GetValueAsString(@params[1], is_term[1])3, fsuffix3: GetValueAsString(@params[2], is_term[2])3);
             //                                    break;
             //                                }
 
             //                            case 3:
             //                                {
-            //                                    string argdtitle1 = "ファイルを開く";
-            //                                    string argdefault_file1 = GetValueAsString(@params[3], is_term[3]);
-            //                                    string argftype1 = GetValueAsString(@params[1], is_term[1]);
-            //                                    string argfsuffix1 = GetValueAsString(@params[2], is_term[2]);
-            //                                    string argftype21 = "";
-            //                                    string argfsuffix21 = "";
-            //                                    string argftype31 = "";
-            //                                    string argfsuffix31 = "";
-            //                                    str_result = FileDialog.LoadFileDialog(argdtitle1, SRC.ScenarioPath, argdefault_file1, 2, argftype1, argfsuffix1, ftype2: argftype21, fsuffix2: argfsuffix21, ftype3: argftype31, fsuffix3: argfsuffix31);
+            //                                    str_result = FileDialog.LoadFileDialog("ファイルを開く", SRC.ScenarioPath, GetValueAsString(@params[3], is_term[3]), 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: ""1, fsuffix2: ""1, ftype3: ""1, fsuffix3: ""1);
             //                                    break;
             //                                }
 
             //                            case 4:
             //                                {
-            //                                    string argdtitle2 = "ファイルを開く";
-            //                                    string argfpath = SRC.ScenarioPath + GetValueAsString(@params[4], is_term[4]);
-            //                                    string argdefault_file2 = GetValueAsString(@params[3], is_term[3]);
-            //                                    string argftype4 = GetValueAsString(@params[1], is_term[1]);
-            //                                    string argfsuffix4 = GetValueAsString(@params[2], is_term[2]);
-            //                                    string argftype22 = "";
-            //                                    string argfsuffix22 = "";
-            //                                    string argftype32 = "";
-            //                                    string argfsuffix32 = "";
-            //                                    str_result = FileDialog.LoadFileDialog(argdtitle2, argfpath, argdefault_file2, 2, argftype4, argfsuffix4, ftype2: argftype22, fsuffix2: argfsuffix22, ftype3: argftype32, fsuffix3: argfsuffix32);
+            //                                    str_result = FileDialog.LoadFileDialog("ファイルを開く", SRC.ScenarioPath + GetValueAsString(@params[4], is_term[4]), GetValueAsString(@params[3], is_term[3]), 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
             //                                    break;
             //                                }
             //                        }
@@ -4769,44 +4649,19 @@ namespace SRCCore.Expressions
             //                        {
             //                            case 2:
             //                                {
-            //                                    string argdtitle3 = "ファイルを保存";
-            //                                    string argdefault_file3 = "";
-            //                                    string argftype5 = GetValueAsString(@params[1], is_term[1]);
-            //                                    string argfsuffix5 = GetValueAsString(@params[2], is_term[2]);
-            //                                    string argftype23 = "";
-            //                                    string argfsuffix23 = "";
-            //                                    string argftype33 = "";
-            //                                    string argfsuffix33 = "";
-            //                                    str_result = FileDialog.SaveFileDialog(argdtitle3, SRC.ScenarioPath, argdefault_file3, 2, argftype5, argfsuffix5, ftype2: argftype23, fsuffix2: argfsuffix23, ftype3: argftype33, fsuffix3: argfsuffix33);
+            //                                    str_result = FileDialog.SaveFileDialog("ファイルを保存", SRC.ScenarioPath, "", 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
             //                                    break;
             //                                }
 
             //                            case 3:
             //                                {
-            //                                    string argdtitle4 = "ファイルを保存";
-            //                                    string argdefault_file4 = GetValueAsString(@params[3], is_term[3]);
-            //                                    string argftype6 = GetValueAsString(@params[1], is_term[1]);
-            //                                    string argfsuffix6 = GetValueAsString(@params[2], is_term[2]);
-            //                                    string argftype24 = "";
-            //                                    string argfsuffix24 = "";
-            //                                    string argftype34 = "";
-            //                                    string argfsuffix34 = "";
-            //                                    str_result = FileDialog.SaveFileDialog(argdtitle4, SRC.ScenarioPath, argdefault_file4, 2, argftype6, argfsuffix6, ftype2: argftype24, fsuffix2: argfsuffix24, ftype3: argftype34, fsuffix3: argfsuffix34);
+            //                                    str_result = FileDialog.SaveFileDialog("ファイルを保存", SRC.ScenarioPath, GetValueAsString(@params[3], is_term[3]), 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
             //                                    break;
             //                                }
 
             //                            case 4:
             //                                {
-            //                                    string argdtitle5 = "ファイルを保存";
-            //                                    string argfpath1 = SRC.ScenarioPath + GetValueAsString(@params[4], is_term[4]);
-            //                                    string argdefault_file5 = GetValueAsString(@params[3], is_term[3]);
-            //                                    string argftype7 = GetValueAsString(@params[1], is_term[1]);
-            //                                    string argfsuffix7 = GetValueAsString(@params[2], is_term[2]);
-            //                                    string argftype25 = "";
-            //                                    string argfsuffix25 = "";
-            //                                    string argftype35 = "";
-            //                                    string argfsuffix35 = "";
-            //                                    str_result = FileDialog.SaveFileDialog(argdtitle5, argfpath1, argdefault_file5, 2, argftype7, argfsuffix7, ftype2: argftype25, fsuffix2: argfsuffix25, ftype3: argftype35, fsuffix3: argfsuffix35);
+            //                                    str_result = FileDialog.SaveFileDialog("ファイルを保存", SRC.ScenarioPath + GetValueAsString(@params[4], is_term[4]), GetValueAsString(@params[3], is_term[3]), 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
             //                                    break;
             //                                }
             //                        }

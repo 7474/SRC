@@ -1,4 +1,4 @@
-﻿using SRCCore.Events;
+using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Units;
 using System;
@@ -74,8 +74,7 @@ namespace SRCCore.CmdDatas.Commands
                         {
                             if ((u.Name ?? "") == (uname ?? "") & (u.Party0 ?? "") == (p.Party ?? "") & u.Status != "破棄")
                             {
-                                string argfname = "ダミーユニット";
-                                if (p.IsSupport(u) & !u.IsFeatureAvailable(argfname))
+                                if (p.IsSupport(u) & !u.IsFeatureAvailable("ダミーユニット"))
                                 {
                                     p.Ride(u.CurrentForm());
                                     return EventData.NextID;

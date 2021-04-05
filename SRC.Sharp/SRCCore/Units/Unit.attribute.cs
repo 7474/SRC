@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -23,8 +23,7 @@ namespace SRCCore.Units
             int slen;
 
             // 全属性に有効な場合
-            string argstring2 = "全";
-            if (GeneralLib.InStrNotNest(strAbsorb, argstring2) > 0)
+            if (GeneralLib.InStrNotNest(strAbsorb, "全") > 0)
             {
                 AbsorbRet = true;
                 return AbsorbRet;
@@ -33,8 +32,7 @@ namespace SRCCore.Units
             // 無属性は物理攻撃に分類される
             if (Strings.Len(aname) == 0)
             {
-                string argstring21 = "物";
-                if (GeneralLib.InStrNotNest(strAbsorb, argstring21) > 0)
+                if (GeneralLib.InStrNotNest(strAbsorb, "物") > 0)
                 {
                     AbsorbRet = true;
                 }
@@ -53,9 +51,7 @@ namespace SRCCore.Units
                 {
                     case "物":
                         {
-                            string argstring22 = "魔";
-                            string argstring23 = "精";
-                            if (GeneralLib.InStrNotNest(aname, argstring22) == 0 & GeneralLib.InStrNotNest(aname, argstring23) == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 & GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
                                 AbsorbRet = true;
                                 break;
@@ -67,15 +63,9 @@ namespace SRCCore.Units
                     case "魔":
                         {
                             // 魔法武器以外の魔属性なら特性が有効
-                            string argstring29 = "魔";
-                            if (GeneralLib.InStrNotNest(aname, argstring29) > 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") > 0)
                             {
-                                string argstring24 = "魔武";
-                                string argstring25 = "魔突";
-                                string argstring26 = "魔接";
-                                string argstring27 = "魔銃";
-                                string argstring28 = "魔実";
-                                if (GeneralLib.InStrNotNest(aname, argstring24) == 0 & GeneralLib.InStrNotNest(aname, argstring25) == 0 & GeneralLib.InStrNotNest(aname, argstring26) == 0 & GeneralLib.InStrNotNest(aname, argstring27) == 0 & GeneralLib.InStrNotNest(aname, argstring28) == 0)
+                                if (GeneralLib.InStrNotNest(aname, "魔武") == 0 & GeneralLib.InStrNotNest(aname, "魔突") == 0 & GeneralLib.InStrNotNest(aname, "魔接") == 0 & GeneralLib.InStrNotNest(aname, "魔銃") == 0 & GeneralLib.InStrNotNest(aname, "魔実") == 0)
                                 {
                                     AbsorbRet = true;
                                     break;
@@ -112,8 +102,7 @@ namespace SRCCore.Units
             int slen;
 
             // 全属性に有効な場合
-            string argstring2 = "全";
-            if (GeneralLib.InStrNotNest(strImmune, argstring2) > 0)
+            if (GeneralLib.InStrNotNest(strImmune, "全") > 0)
             {
                 ImmuneRet = true;
                 return ImmuneRet;
@@ -122,8 +111,7 @@ namespace SRCCore.Units
             // 無属性は物理攻撃に分類される
             if (Strings.Len(aname) == 0)
             {
-                string argstring21 = "物";
-                if (GeneralLib.InStrNotNest(strImmune, argstring21) > 0)
+                if (GeneralLib.InStrNotNest(strImmune, "物") > 0)
                 {
                     ImmuneRet = true;
                 }
@@ -142,9 +130,7 @@ namespace SRCCore.Units
                 {
                     case "物":
                         {
-                            string argstring22 = "魔";
-                            string argstring23 = "精";
-                            if (GeneralLib.InStrNotNest(aname, argstring22) == 0 & GeneralLib.InStrNotNest(aname, argstring23) == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 & GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
                                 ImmuneRet = true;
                                 break;
@@ -156,13 +142,7 @@ namespace SRCCore.Units
                     case "魔":
                         {
                             // 魔法武器以外の魔属性なら特性が有効
-                            string argstring24 = "魔";
-                            string argstring25 = "魔武";
-                            string argstring26 = "魔突";
-                            string argstring27 = "魔接";
-                            string argstring28 = "魔銃";
-                            string argstring29 = "魔実";
-                            if (GeneralLib.InStrNotNest(aname, argstring24) > 0 & GeneralLib.InStrNotNest(aname, argstring25) == 0 & GeneralLib.InStrNotNest(aname, argstring26) == 0 & GeneralLib.InStrNotNest(aname, argstring27) == 0 & GeneralLib.InStrNotNest(aname, argstring28) == 0 & GeneralLib.InStrNotNest(aname, argstring29) == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") > 0 & GeneralLib.InStrNotNest(aname, "魔武") == 0 & GeneralLib.InStrNotNest(aname, "魔突") == 0 & GeneralLib.InStrNotNest(aname, "魔接") == 0 & GeneralLib.InStrNotNest(aname, "魔銃") == 0 & GeneralLib.InStrNotNest(aname, "魔実") == 0)
                             {
                                 ImmuneRet = true;
                                 break;
@@ -198,8 +178,7 @@ namespace SRCCore.Units
             int slen;
 
             // 全属性に有効な場合
-            string argstring2 = "全";
-            if (GeneralLib.InStrNotNest(strResist, argstring2) > 0)
+            if (GeneralLib.InStrNotNest(strResist, "全") > 0)
             {
                 ResistRet = true;
                 return ResistRet;
@@ -208,8 +187,7 @@ namespace SRCCore.Units
             // 無属性は物理攻撃に分類される
             if (Strings.Len(aname) == 0)
             {
-                string argstring21 = "物";
-                if (GeneralLib.InStrNotNest(strResist, argstring21) > 0)
+                if (GeneralLib.InStrNotNest(strResist, "物") > 0)
                 {
                     ResistRet = true;
                 }
@@ -228,9 +206,7 @@ namespace SRCCore.Units
                 {
                     case "物":
                         {
-                            string argstring22 = "魔";
-                            string argstring23 = "精";
-                            if (GeneralLib.InStrNotNest(aname, argstring22) == 0 & GeneralLib.InStrNotNest(aname, argstring23) == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 & GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
                                 ResistRet = true;
                                 break;
@@ -242,13 +218,7 @@ namespace SRCCore.Units
                     case "魔":
                         {
                             // 魔法武器以外の魔属性なら特性が有効
-                            string argstring24 = "魔";
-                            string argstring25 = "魔武";
-                            string argstring26 = "魔突";
-                            string argstring27 = "魔接";
-                            string argstring28 = "魔銃";
-                            string argstring29 = "魔実";
-                            if (GeneralLib.InStrNotNest(aname, argstring24) > 0 & GeneralLib.InStrNotNest(aname, argstring25) == 0 & GeneralLib.InStrNotNest(aname, argstring26) == 0 & GeneralLib.InStrNotNest(aname, argstring27) == 0 & GeneralLib.InStrNotNest(aname, argstring28) == 0 & GeneralLib.InStrNotNest(aname, argstring29) == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") > 0 & GeneralLib.InStrNotNest(aname, "魔武") == 0 & GeneralLib.InStrNotNest(aname, "魔突") == 0 & GeneralLib.InStrNotNest(aname, "魔接") == 0 & GeneralLib.InStrNotNest(aname, "魔銃") == 0 & GeneralLib.InStrNotNest(aname, "魔実") == 0)
                             {
                                 ResistRet = true;
                                 break;
@@ -284,8 +254,7 @@ namespace SRCCore.Units
             int slen;
 
             // 全属性に有効な場合
-            string argstring2 = "全";
-            if (GeneralLib.InStrNotNest(strWeakness, argstring2) > 0)
+            if (GeneralLib.InStrNotNest(strWeakness, "全") > 0)
             {
                 WeaknessRet = true;
                 return WeaknessRet;
@@ -293,8 +262,7 @@ namespace SRCCore.Units
 
             if (Strings.Len(aname) == 0)
             {
-                string argstring21 = "物";
-                if (GeneralLib.InStrNotNest(strWeakness, argstring21) > 0)
+                if (GeneralLib.InStrNotNest(strWeakness, "物") > 0)
                 {
                     WeaknessRet = true;
                 }
@@ -312,9 +280,7 @@ namespace SRCCore.Units
                 {
                     case "物":
                         {
-                            string argstring22 = "魔";
-                            string argstring23 = "精";
-                            if (GeneralLib.InStrNotNest(aname, argstring22) == 0 & GeneralLib.InStrNotNest(aname, argstring23) == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 & GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
                                 WeaknessRet = true;
                                 break;
@@ -350,8 +316,7 @@ namespace SRCCore.Units
             int slen;
 
             // 全属性に有効な場合
-            string argstring2 = "全";
-            if (GeneralLib.InStrNotNest(strEffective, argstring2) > 0)
+            if (GeneralLib.InStrNotNest(strEffective, "全") > 0)
             {
                 EffectiveRet = true;
                 return EffectiveRet;
@@ -359,8 +324,7 @@ namespace SRCCore.Units
 
             if (Strings.Len(aname) == 0)
             {
-                string argstring21 = "物";
-                if (GeneralLib.InStrNotNest(strEffective, argstring21) > 0)
+                if (GeneralLib.InStrNotNest(strEffective, "物") > 0)
                 {
                     EffectiveRet = true;
                 }
@@ -378,9 +342,7 @@ namespace SRCCore.Units
                 {
                     case "物":
                         {
-                            string argstring22 = "魔";
-                            string argstring23 = "精";
-                            if (GeneralLib.InStrNotNest(aname, argstring22) == 0 & GeneralLib.InStrNotNest(aname, argstring23) == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 & GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
                                 EffectiveRet = true;
                                 break;
@@ -412,8 +374,7 @@ namespace SRCCore.Units
         {
             bool SpecialEffectImmuneRet = default;
             // 全属性に有効な場合
-            string argstring2 = "全";
-            if (GeneralLib.InStrNotNest(strSpecialEffectImmune, argstring2) > 0)
+            if (GeneralLib.InStrNotNest(strSpecialEffectImmune, "全") > 0)
             {
                 SpecialEffectImmuneRet = true;
                 return SpecialEffectImmuneRet;
@@ -468,14 +429,12 @@ namespace SRCCore.Units
             // 無属性の攻撃は物理攻撃に分類される
             if (Strings.Len(aclass2) == 0)
             {
-                string argstring2 = "物";
-                if (GeneralLib.InStrNotNest(aclass1, argstring2) > 0)
+                if (GeneralLib.InStrNotNest(aclass1, "物") > 0)
                 {
                     IsAttributeClassifiedRet = true;
                 }
 
-                string argstring21 = "!";
-                if (GeneralLib.InStrNotNest(aclass1, argstring21) > 0)
+                if (GeneralLib.InStrNotNest(aclass1, "!") > 0)
                 {
                     IsAttributeClassifiedRet = !IsAttributeClassifiedRet;
                 }
@@ -492,9 +451,7 @@ namespace SRCCore.Units
                 {
                     case "物":
                         {
-                            string argstring22 = "魔";
-                            string argstring23 = "精";
-                            if (GeneralLib.InStrNotNest(aclass2, argstring22) == 0 & GeneralLib.InStrNotNest(aclass2, argstring23) == 0)
+                            if (GeneralLib.InStrNotNest(aclass2, "魔") == 0 & GeneralLib.InStrNotNest(aclass2, "精") == 0)
                             {
                                 IsAttributeClassifiedRet = true;
                                 break;
@@ -506,15 +463,9 @@ namespace SRCCore.Units
                     case "魔":
                         {
                             // 魔法武器以外の魔属性なら特性が有効
-                            string argstring29 = "魔";
-                            if (GeneralLib.InStrNotNest(aclass2, argstring29) > 0)
+                            if (GeneralLib.InStrNotNest(aclass2, "魔") > 0)
                             {
-                                string argstring24 = "魔武";
-                                string argstring25 = "魔突";
-                                string argstring26 = "魔接";
-                                string argstring27 = "魔銃";
-                                string argstring28 = "魔実";
-                                if (GeneralLib.InStrNotNest(aclass2, argstring24) == 0 & GeneralLib.InStrNotNest(aclass2, argstring25) == 0 & GeneralLib.InStrNotNest(aclass2, argstring26) == 0 & GeneralLib.InStrNotNest(aclass2, argstring27) == 0 & GeneralLib.InStrNotNest(aclass2, argstring28) == 0)
+                                if (GeneralLib.InStrNotNest(aclass2, "魔武") == 0 & GeneralLib.InStrNotNest(aclass2, "魔突") == 0 & GeneralLib.InStrNotNest(aclass2, "魔接") == 0 & GeneralLib.InStrNotNest(aclass2, "魔銃") == 0 & GeneralLib.InStrNotNest(aclass2, "魔実") == 0)
                                 {
                                     IsAttributeClassifiedRet = true;
                                 }

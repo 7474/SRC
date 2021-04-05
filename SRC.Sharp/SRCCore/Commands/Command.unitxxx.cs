@@ -1,4 +1,4 @@
-﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
@@ -47,39 +47,25 @@ namespace SRCCore.Commands
             //{
             //    var withBlock = SelectedUnit;
             //    // チャージのメッセージを表示
-            //    string argmain_situation = "チャージ";
-            //    if (withBlock.IsMessageDefined(argmain_situation))
+            //    if (withBlock.IsMessageDefined("チャージ"))
             //    {
-            //        Unit argu1 = null;
-            //        Unit argu2 = null;
-            //        GUI.OpenMessageForm(u1: argu1, u2: argu2);
-            //        string argSituation = "チャージ";
-            //        string argmsg_mode = "";
-            //        withBlock.PilotMessage(argSituation, msg_mode: argmsg_mode);
+            //        GUI.OpenMessageForm(u1: null, u2: null);
+            //        withBlock.PilotMessage("チャージ", msg_mode: "");
             //        GUI.CloseMessageForm();
             //    }
 
             //    // アニメ表示を行う
-            //    string argmain_situation3 = "チャージ";
-            //    string argsub_situation2 = "";
-            //    string argmain_situation4 = "チャージ";
-            //    string argsub_situation3 = "";
-            //    if (withBlock.IsAnimationDefined(argmain_situation3, sub_situation: argsub_situation2))
+            //    if (withBlock.IsAnimationDefined("チャージ", sub_situation: ""))
             //    {
-            //        string argmain_situation1 = "チャージ";
-            //        string argsub_situation = "";
-            //        withBlock.PlayAnimation(argmain_situation1, sub_situation: argsub_situation);
+            //        withBlock.PlayAnimation("チャージ", sub_situation: "");
             //    }
-            //    else if (withBlock.IsSpecialEffectDefined(argmain_situation4, sub_situation: argsub_situation3))
+            //    else if (withBlock.IsSpecialEffectDefined("チャージ", sub_situation: ""))
             //    {
-            //        string argmain_situation2 = "チャージ";
-            //        string argsub_situation1 = "";
-            //        withBlock.SpecialEffect(argmain_situation2, sub_situation: argsub_situation1);
+            //        withBlock.SpecialEffect("チャージ", sub_situation: "");
             //    }
             //    else
             //    {
-            //        string argwave_name = "Charge.wav";
-            //        Sound.PlayWave(argwave_name);
+            //        Sound.PlayWave("Charge.wav");
             //    }
 
             //    // チャージ攻撃のパートナーを探す
@@ -87,15 +73,11 @@ namespace SRCCore.Commands
             //    var loopTo = withBlock.CountWeapon();
             //    for (i = 1; i <= loopTo; i++)
             //    {
-            //        string argattr = "Ｃ";
-            //        string argattr1 = "合";
-            //        if (withBlock.IsWeaponClassifiedAs(i, argattr) & withBlock.IsWeaponClassifiedAs(i, argattr1))
+            //        if (withBlock.IsWeaponClassifiedAs(i, "Ｃ") & withBlock.IsWeaponClassifiedAs(i, "合"))
             //        {
-            //            string argref_mode = "チャージ";
-            //            if (withBlock.IsWeaponAvailable(i, argref_mode))
+            //            if (withBlock.IsWeaponAvailable(i, "チャージ"))
             //            {
-            //                string argctype_Renamed = "武装";
-            //                withBlock.CombinationPartner(argctype_Renamed, i, partners);
+            //                withBlock.CombinationPartner("武装", i, partners);
             //                break;
             //            }
             //        }
@@ -106,15 +88,11 @@ namespace SRCCore.Commands
             //        var loopTo1 = withBlock.CountAbility();
             //        for (i = 1; i <= loopTo1; i++)
             //        {
-            //            string argattr2 = "Ｃ";
-            //            string argattr3 = "合";
-            //            if (withBlock.IsAbilityClassifiedAs(i, argattr2) & withBlock.IsAbilityClassifiedAs(i, argattr3))
+            //            if (withBlock.IsAbilityClassifiedAs(i, "Ｃ") & withBlock.IsAbilityClassifiedAs(i, "合"))
             //            {
-            //                string argref_mode1 = "チャージ";
-            //                if (withBlock.IsAbilityAvailable(i, argref_mode1))
+            //                if (withBlock.IsAbilityAvailable(i, "チャージ"))
             //                {
-            //                    string argctype_Renamed1 = "アビリティ";
-            //                    withBlock.CombinationPartner(argctype_Renamed1, i, partners);
+            //                    withBlock.CombinationPartner("アビリティ", i, partners);
             //                    break;
             //                }
             //            }
@@ -122,9 +100,7 @@ namespace SRCCore.Commands
             //    }
 
             //    // ユニットの状態をチャージ中に
-            //    string argcname = "チャージ";
-            //    string argcdata = "";
-            //    withBlock.AddCondition(argcname, 1, cdata: argcdata);
+            //    withBlock.AddCondition("チャージ", 1, cdata: "");
 
             //    // チャージ攻撃のパートナーもチャージ中にする
             //    var loopTo2 = Information.UBound(partners);
@@ -132,9 +108,7 @@ namespace SRCCore.Commands
             //    {
             //        {
             //            var withBlock1 = partners[i];
-            //            string argcname1 = "チャージ";
-            //            string argcdata1 = "";
-            //            withBlock1.AddCondition(argcname1, 1, cdata: argcdata1);
+            //            withBlock1.AddCondition("チャージ", 1, cdata: "");
             //        }
             //    }
             //}
@@ -177,8 +151,7 @@ namespace SRCCore.Commands
             //// 会話可能なユニットを表示
             //{
             //    var withBlock = SelectedUnit;
-            //    string arguparty = "";
-            //    Map.AreaInRange(withBlock.x, withBlock.y, 1, 1, arguparty);
+            //    Map.AreaInRange(withBlock.x, withBlock.y, 1, 1, "");
             //    var loopTo = Map.MapWidth;
             //    for (i = 1; i <= loopTo; i++)
             //    {
@@ -211,8 +184,7 @@ namespace SRCCore.Commands
             //{
             //    if (t is object)
             //    {
-            //        string argcursor_mode = "ユニット選択";
-            //        GUI.MoveCursorPos(argcursor_mode, t);
+            //        GUI.MoveCursorPos("ユニット選択", t);
             //        Status.DisplayUnitStatus(t);
             //    }
             //}
@@ -235,8 +207,7 @@ namespace SRCCore.Commands
             //GUI.LockGUI();
             //if (SelectedUnit.CountPilot() > 0)
             //{
-            //    object argIndex1 = 1;
-            //    p = SelectedUnit.Pilot(argIndex1);
+            //    p = SelectedUnit.Pilot(1);
             //}
             //else
             //{
@@ -297,10 +268,7 @@ namespace SRCCore.Commands
             //}
 
             //// 命令する行動パターンを選択
-            //string arglb_caption = "命令";
-            //string arglb_info = "行動パターン";
-            //string arglb_mode = "";
-            //ret = GUI.ListBox(arglb_caption, list, arglb_info, lb_mode: arglb_mode);
+            //ret = GUI.ListBox("命令", list, "行動パターン", lb_mode: "");
 
             //// 選択された行動パターンに応じてターゲット領域を表示
             //switch (ret)
@@ -338,8 +306,7 @@ namespace SRCCore.Commands
             //    case 3: // 攻撃
             //        {
             //            SelectedCommand = "攻撃命令";
-            //            string arguparty = "味方の敵";
-            //            Map.AreaWithUnit(arguparty);
+            //            Map.AreaWithUnit("味方の敵");
             //            Map.MaskData[SelectedUnit.x, SelectedUnit.y] = true;
             //            GUI.MaskScreen();
             //            CommandState = "ターゲット選択";
@@ -349,8 +316,7 @@ namespace SRCCore.Commands
             //    case 4: // 護衛
             //        {
             //            SelectedCommand = "護衛命令";
-            //            string arguparty1 = "味方";
-            //            Map.AreaWithUnit(arguparty1);
+            //            Map.AreaWithUnit("味方");
             //            Map.MaskData[SelectedUnit.x, SelectedUnit.y] = true;
             //            GUI.MaskScreen();
             //            CommandState = "ターゲット選択";
