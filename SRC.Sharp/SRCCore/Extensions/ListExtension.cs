@@ -1,4 +1,5 @@
 
+using SRCCore.Lib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,11 @@ namespace SRCCore.Extensions
             {
                 list.Remove(item);
             }
+        }
+
+        public static T Dice<T>(this IList<T> list)
+        {
+            return list[GeneralLib.Dice(list.Count) - 1];
         }
     }
 }
