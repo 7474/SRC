@@ -23,8 +23,8 @@ namespace SRCCore.Units
             throw new NotImplementedException();
             //int GetExpRet = default;
             //var xp = default(int);
-            //short j, i, n;
-            //short prev_level;
+            //int j, i, n;
+            //int prev_level;
             //string[] prev_stype;
             //string[] prev_sname;
             //double[] prev_slevel;
@@ -72,10 +72,10 @@ namespace SRCCore.Units
             //}
 
             //// ユニットに乗っているパイロット総数を計算
-            //n = (short)(CountPilot() + CountSupport());
+            //n = (int)(CountPilot() + CountSupport());
             //if (IsFeatureAvailable("追加サポート"))
             //{
-            //    n = (short)(n + 1);
+            //    n = (int)(n + 1);
             //}
 
             //// 各パイロットが経験値を入手
@@ -86,7 +86,7 @@ namespace SRCCore.Units
             //    {
             //        p = Pilot(i);
             //    }
-            //    else if (i <= (short)(CountPilot() + CountSupport()))
+            //    else if (i <= (int)(CountPilot() + CountSupport()))
             //    {
             //        p = Support(i - CountPilot());
             //    }
@@ -167,7 +167,7 @@ namespace SRCCore.Units
             //    }
 
             //    // 対象のパイロットのレベル差による修正
-            //    switch ((short)(t.MainPilot().Level - p.Level))
+            //    switch ((int)(t.MainPilot().Level - p.Level))
             //    {
             //        case var @case when @case > 7:
             //            {
@@ -332,7 +332,7 @@ namespace SRCCore.Units
             //                    case "スペシャルパワー自動発動":
             //                    case "ハンター":
             //                        {
-            //                            var loopTo4 = (short)Information.UBound(prev_stype);
+            //                            var loopTo4 = (int)Information.UBound(prev_stype);
             //                            for (j = 1; j <= loopTo4; j++)
             //                            {
             //                                if ((stype ?? "") == (prev_stype[j] ?? ""))
@@ -354,7 +354,7 @@ namespace SRCCore.Units
 
             //                    default:
             //                        {
-            //                            var loopTo5 = (short)Information.UBound(prev_stype);
+            //                            var loopTo5 = (int)Information.UBound(prev_stype);
             //                            for (j = 1; j <= loopTo5; j++)
             //                            {
             //                                if ((stype ?? "") == (prev_stype[j] ?? ""))
@@ -388,7 +388,7 @@ namespace SRCCore.Units
             //            for (i = 1; i <= loopTo6; i++)
             //            {
             //                sname = withBlock1.get_SpecialPower(i);
-            //                var loopTo7 = (short)Information.UBound(prev_special_power);
+            //                var loopTo7 = (int)Information.UBound(prev_special_power);
             //                for (j = 1; j <= loopTo7; j++)
             //                {
             //                    if ((sname ?? "") == (prev_special_power[j] ?? ""))
@@ -474,7 +474,7 @@ namespace SRCCore.Units
 
         // ユニットに乗っているパイロットの気力をnumだけ増減
         // is_event:イベントによる気力増減(性格を無視して気力操作)
-        public void IncreaseMorale(short num, bool is_event = false)
+        public void IncreaseMorale(int num, bool is_event = false)
         {
             throw new NotImplementedException();
             //Pilot p;
@@ -488,7 +488,7 @@ namespace SRCCore.Units
             //    var withBlock = MainPilot();
             //    if (withBlock.Personality != "機械" | is_event)
             //    {
-            //        withBlock.Morale = (short)(withBlock.Morale + num);
+            //        withBlock.Morale = (int)(withBlock.Morale + num);
             //    }
             //}
 
@@ -498,7 +498,7 @@ namespace SRCCore.Units
             //    p = currentP;
             //    if ((MainPilot().ID ?? "") != (p.ID ?? "") & (p.Personality != "機械" | is_event))
             //    {
-            //        p.Morale = (short)(p.Morale + num);
+            //        p.Morale = (int)(p.Morale + num);
             //    }
             //}
 
@@ -508,7 +508,7 @@ namespace SRCCore.Units
             //    p = currentP1;
             //    if (p.Personality != "機械" | is_event)
             //    {
-            //        p.Morale = (short)(p.Morale + num);
+            //        p.Morale = (int)(p.Morale + num);
             //    }
             //}
 
@@ -519,7 +519,7 @@ namespace SRCCore.Units
             //        var withBlock1 = AdditionalSupport();
             //        if (withBlock1.Personality != "機械" | is_event)
             //        {
-            //            withBlock1.Morale = (short)(withBlock1.Morale + num);
+            //            withBlock1.Morale = (int)(withBlock1.Morale + num);
             //        }
             //    }
             //}
@@ -528,7 +528,7 @@ namespace SRCCore.Units
         // ユニットが破壊された時の処理
         public void Die(bool without_update = false)
         {
-            //    short i, j;
+            //    int i, j;
             //    string pname;
             HP = 0;
             Status = "破壊";
@@ -617,7 +617,7 @@ namespace SRCCore.Units
         public void SuicidalExplosion(bool is_event = false)
         {
             throw new NotImplementedException();
-            //    short i, j;
+            //    int i, j;
             //    int prev_hp;
             //    Unit u, t;
             //    int dmg, tdmg;

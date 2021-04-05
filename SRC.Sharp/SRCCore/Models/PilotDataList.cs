@@ -242,7 +242,6 @@ namespace SRCCore.Models
                                 case "-":
                                     {
                                         pd.KanaName = GeneralLib.StrToHiragana(pd.Nickname);
-                                        pd.Nickname = argstr_Renamed;
                                         pd.Sex = buf2;
                                         break;
                                     }
@@ -271,7 +270,6 @@ namespace SRCCore.Models
                                     {
                                         SRC.AddDataError(reader.InvalidData(@"読み仮名の設定が抜けています。", data_name));
                                         pd.KanaName = GeneralLib.StrToHiragana(pd.Nickname);
-                                        pd.Nickname = argstr_Renamed1;
                                         break;
                                     }
 
@@ -309,7 +307,6 @@ namespace SRCCore.Models
                     default:
                         {
                             pd.KanaName = GeneralLib.StrToHiragana(pd.Nickname);
-                            pd.Nickname = argstr_Renamed2;
                             break;
                         }
                 }

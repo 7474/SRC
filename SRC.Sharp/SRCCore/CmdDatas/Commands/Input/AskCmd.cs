@@ -31,6 +31,7 @@ namespace SRCCore.CmdDatas.Commands
             //GUI.ListItemFlag = new bool[1];
 
             // 表示オプションの処理
+            var argIndex = ArgNum;
             while (ArgNum > 1)
             {
                 switch (GetArg(argIndex) ?? "")

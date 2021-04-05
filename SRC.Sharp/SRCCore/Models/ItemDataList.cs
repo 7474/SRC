@@ -195,7 +195,6 @@ namespace SRCCore.Models
                 else
                 {
                     nd.KanaName = GeneralLib.StrToHiragana(nd.Nickname);
-                    nd.Nickname = argstr_Renamed;
                 }
 
                 // アイテムクラス

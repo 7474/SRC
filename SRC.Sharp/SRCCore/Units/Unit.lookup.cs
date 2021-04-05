@@ -393,7 +393,7 @@ namespace SRCCore.Units
                 {
                     if (GeneralLib.LLength(p.SkillData("先手必勝")) == 2)
                     {
-                        if (p.Morale >= GeneralLib.StrToLng(GeneralLib.LIndex(arglist, 2)))
+                        if (p.Morale >= GeneralLib.StrToLng(GeneralLib.LIndex("先手必勝", 2)))
                         {
                             MaxCounterAttackRet = 1000;
                         }

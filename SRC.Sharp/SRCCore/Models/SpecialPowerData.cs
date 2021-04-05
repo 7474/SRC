@@ -41,6 +41,10 @@ namespace SRCCore.Models
         public string Comment;
 
         private SRC SRC;
+        private Commands.Command Commands => SRC.Commands;
+        private Expressions.Expression Expression => SRC.Expression;
+        private Events.Event Event => SRC.Event;
+        private IGUI GUI => SRC.GUI;
         public SpecialPowerData(SRC src)
         {
             SRC = src;
@@ -530,7 +534,7 @@ namespace SRCCore.Models
             //    var loopTo1 = CountEffect();
             //    for (i = 1; i <= loopTo1; i++)
             //    {
-            //        switch (EffectType(i) ?? "")
+            //        switch (effect.strEffectType ?? "")
             //        {
             //            case "ＨＰ回復":
             //            case "ＨＰ増加":
@@ -741,7 +745,7 @@ namespace SRCCore.Models
             //            case "スペシャルパワー":
             //            case "精神コマンド":
             //                {
-            //                    bool localIsSpecialPowerInEffect() { string argsname = EffectData(i); var ret = t.IsSpecialPowerInEffect(argsname); return ret; }
+            //                    bool localIsSpecialPowerInEffect() { string argsname = effect.strEffectData; var ret = t.IsSpecialPowerInEffect(argsname); return ret; }
 
             //                    if (!localIsSpecialPowerInEffect())
             //                    {
@@ -975,6 +979,8 @@ namespace SRCCore.Models
             //            Unit my_unit;
 
             var is_invalid = false;
+            var displayed_string = false;
+            var need_update = false;
 
             // 同じ追加パイロットを持つユニットが複数いる場合、パイロットのUnitが
             // 変化してしまうことがあるため、元のUnitを記録しておく
@@ -1090,7 +1096,7 @@ namespace SRCCore.Models
                             {
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    if (!My.MyProject.Forms.frmMessage.Visible)
+                                    if (!GUI.MainFormVisible)
                                     {
                                         GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
@@ -1099,7 +1105,7 @@ namespace SRCCore.Models
                                         GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
-                                else if (!My.MyProject.Forms.frmMessage.Visible)
+                                else if (!GUI.MainFormVisible)
                                 {
                                     GUI.OpenMessageForm(t, Commands.SelectedUnit);
                                 }
@@ -1112,10 +1118,10 @@ namespace SRCCore.Models
                             }
 
                             // ＨＰを回復させる
-                            tmp = t.HP;
-                            if (EffectType(i) == "ＨＰ増加")
+                            var tmp = t.HP;
+                            if (effect.strEffectType == "ＨＰ増加")
                             {
-                                t.HP = (t.HP + 1000d * effect.dblEffectLevel);
+                                t.HP = (int)(t.HP + 1000d * effect.dblEffectLevel);
                             }
                             else
                             {
@@ -1181,7 +1187,7 @@ namespace SRCCore.Models
                             {
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    if (!My.MyProject.Forms.frmMessage.Visible)
+                                    if (!GUI.MainFormVisible)
                                     {
                                         GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
@@ -1190,7 +1196,7 @@ namespace SRCCore.Models
                                         GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
-                                else if (!My.MyProject.Forms.frmMessage.Visible)
+                                else if (!GUI.MainFormVisible)
                                 {
                                     GUI.OpenMessageForm(t, Commands.SelectedUnit);
                                 }
@@ -1203,10 +1209,10 @@ namespace SRCCore.Models
                             }
 
                             // ＥＮを回復させる
-                            tmp = t.EN;
-                            if (EffectType(i) == "ＥＮ増加")
+                            var tmp = t.EN;
+                            if (effect.strEffectType == "ＥＮ増加")
                             {
-                                t.EN = (t.EN + 10d * effect.dblEffectLevel);
+                                t.EN = (int)(t.EN + 10d * effect.dblEffectLevel);
                             }
                             else
                             {
@@ -1272,7 +1278,7 @@ namespace SRCCore.Models
                             {
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    if (!My.MyProject.Forms.frmMessage.Visible)
+                                    if (!GUI.MainFormVisible)
                                     {
                                         GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
@@ -1281,7 +1287,7 @@ namespace SRCCore.Models
                                         GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
-                                else if (!My.MyProject.Forms.frmMessage.Visible)
+                                else if (!GUI.MainFormVisible)
                                 {
                                     GUI.OpenMessageForm(t, Commands.SelectedUnit);
                                 }
@@ -1296,48 +1302,48 @@ namespace SRCCore.Models
                             // 霊力を回復させる
                             {
                                 var withBlock2 = t.MainPilot();
-                                tmp = withBlock2.Plana;
-                                if (EffectType(i) == "霊力増加")
+                                var tmp = withBlock2.Plana;
+                                if (effect.strEffectType == "霊力増加")
                                 {
-                                    withBlock2.Plana = (withBlock2.Plana + 10d * effect.dblEffectLevel);
+                                    withBlock2.Plana = (int)(withBlock2.Plana + 10d * effect.dblEffectLevel);
                                 }
                                 else
                                 {
-                                    withBlock2.Plana = (withBlock2.Plana + (long)(withBlock2.MaxPlana() * effect.dblEffectLevel) / 10L);
+                                    withBlock2.Plana = (int)(withBlock2.Plana + (long)(withBlock2.MaxPlana() * effect.dblEffectLevel) / 10L);
                                 }
-                            }
 
-                            if (!is_event)
-                            {
-                                if (!displayed_string)
+                                if (!is_event)
                                 {
-                                    if (effect.dblEffectLevel >= 0d)
+                                    if (!displayed_string)
                                     {
-                                        GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(t.MainPilot().Plana - tmp));
+                                        if (effect.dblEffectLevel >= 0d)
+                                        {
+                                            GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(t.MainPilot().Plana - tmp));
+                                        }
+                                        else
+                                        {
+                                            GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(t.MainPilot().Plana - tmp));
+                                        }
+                                    }
+
+                                    displayed_string = true;
+                                    if (ReferenceEquals(t, Commands.SelectedUnit))
+                                    {
+                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                     else
                                     {
-                                        GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(t.MainPilot().Plana - tmp));
+                                        GUI.UpdateMessageForm(t, Commands.SelectedUnit);
                                     }
-                                }
 
-                                displayed_string = true;
-                                if (ReferenceEquals(t, Commands.SelectedUnit))
-                                {
-                                    GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
-                                }
-                                else
-                                {
-                                    GUI.UpdateMessageForm(t, Commands.SelectedUnit);
-                                }
-
-                                if (effect.dblEffectLevel >= 0d)
-                                {
-                                    GUI.DisplaySysMessage(t.Nickname + "の" + t.MainPilot().SkillName0("霊力") + "が" + SrcFormatter.Format(t.MainPilot().Plana - tmp) + "回復した。");
-                                }
-                                else
-                                {
-                                    GUI.DisplaySysMessage(t.Nickname + "の" + t.MainPilot().SkillName0("霊力") + "が" + SrcFormatter.Format(tmp - t.MainPilot().Plana) + "減少した。");
+                                    if (effect.dblEffectLevel >= 0d)
+                                    {
+                                        GUI.DisplaySysMessage(t.Nickname + "の" + t.MainPilot().SkillName0("霊力") + "が" + SrcFormatter.Format(t.MainPilot().Plana - tmp) + "回復した。");
+                                    }
+                                    else
+                                    {
+                                        GUI.DisplaySysMessage(t.Nickname + "の" + t.MainPilot().SkillName0("霊力") + "が" + SrcFormatter.Format(tmp - t.MainPilot().Plana) + "減少した。");
+                                    }
                                 }
                             }
 
@@ -1360,7 +1366,7 @@ namespace SRCCore.Models
                             {
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    if (!My.MyProject.Forms.frmMessage.Visible)
+                                    if (!GUI.MainFormVisible)
                                     {
                                         GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
@@ -1369,7 +1375,7 @@ namespace SRCCore.Models
                                         GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
-                                else if (!My.MyProject.Forms.frmMessage.Visible)
+                                else if (!GUI.MainFormVisible)
                                 {
                                     GUI.OpenMessageForm(t, Commands.SelectedUnit);
                                 }
@@ -1381,148 +1387,149 @@ namespace SRCCore.Models
                                 GUI.Sleep(150);
                             }
 
-                            // 回復対象となるパイロット数を算出
-                            n = (t.CountPilot() + t.CountSupport());
-                            if (t.IsFeatureAvailable("追加サポート"))
-                            {
-                                n = (n + 1);
-                            }
+                            // TODO Impl SP回復
+                            //// 回復対象となるパイロット数を算出
+                            //n = (t.CountPilot() + t.CountSupport());
+                            //if (t.IsFeatureAvailable("追加サポート"))
+                            //{
+                            //    n = (n + 1);
+                            //}
 
-                            // ＳＰを回復
-                            if (n == 1)
-                            {
-                                // メインパイロットのみのＳＰを回復
-                                tmp = t.MainPilot().SP;
-                                t.MainPilot().SP = (t.MainPilot().SP + 10d * effect.dblEffectLevel);
-                                if (!is_event)
-                                {
-                                    if (!displayed_string)
-                                    {
-                                        if (effect.dblEffectLevel >= 0d)
-                                        {
-                                            GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(t.MainPilot().SP - tmp));
-                                        }
-                                        else
-                                        {
-                                            GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(t.MainPilot().SP - tmp));
-                                        }
-                                    }
+                            //// ＳＰを回復
+                            //if (n == 1)
+                            //{
+                            //    // メインパイロットのみのＳＰを回復
+                            //    tmp = t.MainPilot().SP;
+                            //    t.MainPilot().SP = (t.MainPilot().SP + 10d * effect.dblEffectLevel);
+                            //    if (!is_event)
+                            //    {
+                            //        if (!displayed_string)
+                            //        {
+                            //            if (effect.dblEffectLevel >= 0d)
+                            //            {
+                            //                GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(t.MainPilot().SP - tmp));
+                            //            }
+                            //            else
+                            //            {
+                            //                GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(t.MainPilot().SP - tmp));
+                            //            }
+                            //        }
 
-                                    displayed_string = true;
-                                    if (effect.dblEffectLevel >= 0d)
-                                    {
-                                        GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(t.MainPilot().SP - tmp) + "回復した。");
-                                    }
-                                    else
-                                    {
-                                        GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - t.MainPilot().SP) + "減少した。");
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                // メインパイロットのＳＰを回復
-                                tmp = t.MainPilot().SP;
-                                t.MainPilot().SP = (t.MainPilot().SP + 2d * effect.dblEffectLevel + (long)(10d * effect.dblEffectLevel) / n);
-                                if (!is_event)
-                                {
-                                    if (!displayed_string)
-                                    {
-                                        if (effect.dblEffectLevel >= 0d)
-                                        {
-                                            GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(t.MainPilot().SP - tmp));
-                                        }
-                                        else
-                                        {
-                                            GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(t.MainPilot().SP - tmp));
-                                        }
-                                    }
+                            //        displayed_string = true;
+                            //        if (effect.dblEffectLevel >= 0d)
+                            //        {
+                            //            GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(t.MainPilot().SP - tmp) + "回復した。");
+                            //        }
+                            //        else
+                            //        {
+                            //            GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - t.MainPilot().SP) + "減少した。");
+                            //        }
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    // メインパイロットのＳＰを回復
+                            //    tmp = t.MainPilot().SP;
+                            //    t.MainPilot().SP = (t.MainPilot().SP + 2d * effect.dblEffectLevel + (long)(10d * effect.dblEffectLevel) / n);
+                            //    if (!is_event)
+                            //    {
+                            //        if (!displayed_string)
+                            //        {
+                            //            if (effect.dblEffectLevel >= 0d)
+                            //            {
+                            //                GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(t.MainPilot().SP - tmp));
+                            //            }
+                            //            else
+                            //            {
+                            //                GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(t.MainPilot().SP - tmp));
+                            //            }
+                            //        }
 
-                                    displayed_string = true;
-                                    if (effect.dblEffectLevel >= 0d)
-                                    {
-                                        GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(t.MainPilot().SP - tmp) + "回復した。");
-                                    }
-                                    else
-                                    {
-                                        GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - t.MainPilot().SP) + "減少した。");
-                                    }
-                                }
+                            //        displayed_string = true;
+                            //        if (effect.dblEffectLevel >= 0d)
+                            //        {
+                            //            GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(t.MainPilot().SP - tmp) + "回復した。");
+                            //        }
+                            //        else
+                            //        {
+                            //            GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - t.MainPilot().SP) + "減少した。");
+                            //        }
+                            //    }
 
-                                // サブパイロットのＳＰを回復
-                                var loopTo2 = t.CountPilot();
-                                for (j = 2; j <= loopTo2; j++)
-                                {
-                                    {
-                                        var withBlock3 = t.Pilot(j);
-                                        tmp = withBlock3.SP;
-                                        withBlock3.SP = (withBlock3.SP + 2d * effect.dblEffectLevel + (long)(10d * effect.dblEffectLevel) / n);
-                                        if (!is_event)
-                                        {
-                                            if (withBlock3.SP != tmp)
-                                            {
-                                                if (effect.dblEffectLevel >= 0d)
-                                                {
-                                                    GUI.DisplaySysMessage(withBlock3.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(withBlock3.SP - tmp) + "回復した。");
-                                                }
-                                                else
-                                                {
-                                                    GUI.DisplaySysMessage(withBlock3.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - withBlock3.SP) + "減少した。");
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
+                            //    // サブパイロットのＳＰを回復
+                            //    var loopTo2 = t.CountPilot();
+                            //    for (j = 2; j <= loopTo2; j++)
+                            //    {
+                            //        {
+                            //            var withBlock3 = t.Pilot(j);
+                            //            tmp = withBlock3.SP;
+                            //            withBlock3.SP = (withBlock3.SP + 2d * effect.dblEffectLevel + (long)(10d * effect.dblEffectLevel) / n);
+                            //            if (!is_event)
+                            //            {
+                            //                if (withBlock3.SP != tmp)
+                            //                {
+                            //                    if (effect.dblEffectLevel >= 0d)
+                            //                    {
+                            //                        GUI.DisplaySysMessage(withBlock3.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(withBlock3.SP - tmp) + "回復した。");
+                            //                    }
+                            //                    else
+                            //                    {
+                            //                        GUI.DisplaySysMessage(withBlock3.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - withBlock3.SP) + "減少した。");
+                            //                    }
+                            //                }
+                            //            }
+                            //        }
+                            //    }
 
-                                // サポートパイロットのＳＰを回復
-                                var loopTo3 = t.CountSupport();
-                                for (j = 1; j <= loopTo3; j++)
-                                {
-                                    {
-                                        var withBlock4 = t.Support(j);
-                                        tmp = withBlock4.SP;
-                                        withBlock4.SP = (withBlock4.SP + 2d * effect.dblEffectLevel + (long)(10d * effect.dblEffectLevel) / n);
-                                        if (!is_event)
-                                        {
-                                            if (withBlock4.SP != tmp)
-                                            {
-                                                if (effect.dblEffectLevel >= 0d)
-                                                {
-                                                    GUI.DisplaySysMessage(withBlock4.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(withBlock4.SP - tmp) + "回復した。");
-                                                }
-                                                else
-                                                {
-                                                    GUI.DisplaySysMessage(withBlock4.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - withBlock4.SP) + "減少した。");
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
+                            //    // サポートパイロットのＳＰを回復
+                            //    var loopTo3 = t.CountSupport();
+                            //    for (j = 1; j <= loopTo3; j++)
+                            //    {
+                            //        {
+                            //            var withBlock4 = t.Support(j);
+                            //            tmp = withBlock4.SP;
+                            //            withBlock4.SP = (withBlock4.SP + 2d * effect.dblEffectLevel + (long)(10d * effect.dblEffectLevel) / n);
+                            //            if (!is_event)
+                            //            {
+                            //                if (withBlock4.SP != tmp)
+                            //                {
+                            //                    if (effect.dblEffectLevel >= 0d)
+                            //                    {
+                            //                        GUI.DisplaySysMessage(withBlock4.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(withBlock4.SP - tmp) + "回復した。");
+                            //                    }
+                            //                    else
+                            //                    {
+                            //                        GUI.DisplaySysMessage(withBlock4.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - withBlock4.SP) + "減少した。");
+                            //                    }
+                            //                }
+                            //            }
+                            //        }
+                            //    }
 
-                                // 追加サポートパイロットのＳＰを回復
-                                if (t.IsFeatureAvailable("追加サポート"))
-                                {
-                                    {
-                                        var withBlock5 = t.AdditionalSupport();
-                                        tmp = withBlock5.SP;
-                                        withBlock5.SP = (withBlock5.SP + 2d * effect.dblEffectLevel + (long)(10d * effect.dblEffectLevel) / n);
-                                        if (!is_event)
-                                        {
-                                            if (withBlock5.SP != tmp)
-                                            {
-                                                if (effect.dblEffectLevel >= 0d)
-                                                {
-                                                    GUI.DisplaySysMessage(withBlock5.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(withBlock5.SP - tmp) + "回復した。");
-                                                }
-                                                else
-                                                {
-                                                    GUI.DisplaySysMessage(withBlock5.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - withBlock5.SP) + "減少した。");
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            //    // 追加サポートパイロットのＳＰを回復
+                            //    if (t.IsFeatureAvailable("追加サポート"))
+                            //    {
+                            //        {
+                            //            var withBlock5 = t.AdditionalSupport();
+                            //            tmp = withBlock5.SP;
+                            //            withBlock5.SP = (withBlock5.SP + 2d * effect.dblEffectLevel + (long)(10d * effect.dblEffectLevel) / n);
+                            //            if (!is_event)
+                            //            {
+                            //                if (withBlock5.SP != tmp)
+                            //                {
+                            //                    if (effect.dblEffectLevel >= 0d)
+                            //                    {
+                            //                        GUI.DisplaySysMessage(withBlock5.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(withBlock5.SP - tmp) + "回復した。");
+                            //                    }
+                            //                    else
+                            //                    {
+                            //                        GUI.DisplaySysMessage(withBlock5.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - withBlock5.SP) + "減少した。");
+                            //                    }
+                            //                }
+                            //            }
+                            //        }
+                            //    }
+                            //}
 
                             if (!is_event)
                             {
@@ -1537,17 +1544,88 @@ namespace SRCCore.Models
 
                     case "装填":
                         {
-                            // 効果が適用可能かどうか判定
-                            var loopTo4 = t.CountWeapon();
-                            for (j = 1; j <= loopTo4; j++)
-                            {
-                                if (t.Bullet(j) < t.MaxBullet(j))
-                                {
-                                    break;
-                                }
-                            }
+                            throw new NotImplementedException();
+                            // TODO Impl 装填
+                            //// 効果が適用可能かどうか判定
+                            //var loopTo4 = t.CountWeapon();
+                            //for (j = 1; j <= loopTo4; j++)
+                            //{
+                            //    if (t.Bullet(j) < t.MaxBullet(j))
+                            //    {
+                            //        break;
+                            //    }
+                            //}
 
-                            if (j > t.CountWeapon())
+                            //if (j > t.CountWeapon())
+                            //{
+                            //    goto NextEffect;
+                            //}
+
+                            //if (!is_event)
+                            //{
+                            //    if (ReferenceEquals(t, Commands.SelectedUnit))
+                            //    {
+                            //        if (!GUI.MainFormVisible)
+                            //        {
+                            //            GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
+                            //        }
+                            //        else
+                            //        {
+                            //            GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
+                            //        }
+                            //    }
+                            //    else if (!GUI.MainFormVisible)
+                            //    {
+                            //        GUI.OpenMessageForm(t, Commands.SelectedUnit);
+                            //    }
+                            //    else
+                            //    {
+                            //        GUI.UpdateMessageForm(t, Commands.SelectedUnit);
+                            //    }
+                            //}
+
+                            //// 弾薬を補給
+                            //t.BulletSupply();
+                            //if (!is_event)
+                            //{
+                            //    GUI.DisplaySysMessage(t.Nickname + "の弾数が全快した。");
+                            //}
+
+                            //break;
+                        }
+
+                    case "状態回復":
+                        {
+                            if (t.ConditionLifetime("攻撃不能") <= 0
+                                && t.ConditionLifetime("移動不能") <= 0
+                                && t.ConditionLifetime("装甲劣化") <= 0
+                                && t.ConditionLifetime("混乱") <= 0
+                                && t.ConditionLifetime("魅了") <= 0
+                                && t.ConditionLifetime("憑依") <= 0
+                                && t.ConditionLifetime("石化") <= 0
+                                && t.ConditionLifetime("凍結") <= 0
+                                && t.ConditionLifetime("麻痺") <= 0
+                                && t.ConditionLifetime("睡眠") <= 0
+                                && t.ConditionLifetime("毒") <= 0
+                                && t.ConditionLifetime("盲目") <= 0
+                                && t.ConditionLifetime("撹乱") <= 0
+                                && t.ConditionLifetime("恐怖") <= 0
+                                && t.ConditionLifetime("沈黙") <= 0
+                                && t.ConditionLifetime("ゾンビ") <= 0
+                                && t.ConditionLifetime("回復不能") <= 0
+                                && t.ConditionLifetime("オーラ使用不能") <= 0
+                                && t.ConditionLifetime("超能力使用不能") <= 0
+                                && t.ConditionLifetime("同調率使用不能") <= 0
+                                && t.ConditionLifetime("超感覚使用不能") <= 0
+                                && t.ConditionLifetime("知覚強化使用不能") <= 0
+                                && t.ConditionLifetime("霊力使用不能") <= 0
+                                && t.ConditionLifetime("術使用不能") <= 0
+                                && t.ConditionLifetime("技使用不能") <= 0
+                                // 弱、効属性は状態回復から除外。
+                                && t.Conditions.Where(x => Strings.Right(x.Name, 6) == "属性使用不能").All(x =>
+                                {
+                                    return t.ConditionLifetime(x.Name) <= 0;
+                                }))
                             {
                                 goto NextEffect;
                             }
@@ -1556,7 +1634,7 @@ namespace SRCCore.Models
                             {
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    if (!My.MyProject.Forms.frmMessage.Visible)
+                                    if (!GUI.MainFormVisible)
                                     {
                                         GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
@@ -1565,72 +1643,7 @@ namespace SRCCore.Models
                                         GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
-                                else if (!My.MyProject.Forms.frmMessage.Visible)
-                                {
-                                    GUI.OpenMessageForm(t, Commands.SelectedUnit);
-                                }
-                                else
-                                {
-                                    GUI.UpdateMessageForm(t, Commands.SelectedUnit);
-                                }
-                            }
-
-                            // 弾薬を補給
-                            t.BulletSupply();
-                            if (!is_event)
-                            {
-                                GUI.DisplaySysMessage(t.Nickname + "の弾数が全快した。");
-                            }
-
-                            break;
-                        }
-
-                    case "状態回復":
-                        {
-                            if (t.ConditionLifetime("攻撃不能") <= 0 && t.ConditionLifetime("移動不能") <= 0 && t.ConditionLifetime("装甲劣化") <= 0 && t.ConditionLifetime("混乱") <= 0 && t.ConditionLifetime("魅了") <= 0 && t.ConditionLifetime("憑依") <= 0 && t.ConditionLifetime("石化") <= 0 && t.ConditionLifetime("凍結") <= 0 && t.ConditionLifetime("麻痺") <= 0 && t.ConditionLifetime("睡眠") <= 0 && t.ConditionLifetime("毒") <= 0 && t.ConditionLifetime("盲目") <= 0 && t.ConditionLifetime("撹乱") <= 0 && t.ConditionLifetime("恐怖") <= 0 && t.ConditionLifetime("沈黙") <= 0 && t.ConditionLifetime("ゾンビ") <= 0 && t.ConditionLifetime("回復不能") <= 0 && t.ConditionLifetime("オーラ使用不能") <= 0 && t.ConditionLifetime("超能力使用不能") <= 0 && t.ConditionLifetime("同調率使用不能") <= 0 && t.ConditionLifetime("超感覚使用不能") <= 0 && t.ConditionLifetime("知覚強化使用不能") <= 0 && t.ConditionLifetime("霊力使用不能") <= 0 && t.ConditionLifetime("術使用不能") <= 0 && t.ConditionLifetime("技使用不能") <= 0)
-                            {
-                                var loopTo5 = t.CountCondition();
-                                for (j = 1; j <= loopTo5; j++)
-                                {
-                                    string localCondition2() { object argIndex1 = j; var ret = t.Condition(argIndex1); return ret; }
-
-                                    if (Strings.Len(localCondition2()) > 6)
-                                    {
-                                        // 弱、効属性は状態回復から除外。
-                                        string localCondition1() { object argIndex1 = j; var ret = t.Condition(argIndex1); return ret; }
-
-                                        if (Strings.Right(localCondition1(), 6) == "属性使用不能")
-                                        {
-                                            string localCondition() { object argIndex1 = j; var ret = t.Condition(argIndex1); return ret; }
-
-                                            if (t.ConditionLifetime(localCondition()) > 0)
-                                            {
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-
-                                if (j > t.CountCondition())
-                                {
-                                    goto NextEffect;
-                                }
-                            }
-
-                            if (!is_event)
-                            {
-                                if (ReferenceEquals(t, Commands.SelectedUnit))
-                                {
-                                    if (!My.MyProject.Forms.frmMessage.Visible)
-                                    {
-                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
-                                    }
-                                    else
-                                    {
-                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
-                                    }
-                                }
-                                else if (!My.MyProject.Forms.frmMessage.Visible)
+                                else if (!GUI.MainFormVisible)
                                 {
                                     GUI.OpenMessageForm(t, Commands.SelectedUnit);
                                 }
@@ -1766,28 +1779,14 @@ namespace SRCCore.Models
                                 t.DeleteCondition("技使用不能");
                             }
 
-                            var loopTo6 = t.CountCondition();
-                            for (j = 1; j <= loopTo6; j++)
+                            // 弱、効属性は状態回復から除外。
+                            foreach (var condition in t.Conditions.Where(x => Strings.Right(x.Name, 6) == "属性使用不能").Where(x =>
                             {
-                                string localCondition6() { object argIndex1 = j; var ret = t.Condition(argIndex1); return ret; }
+                                return t.ConditionLifetime(x.Name) > 0;
+                            }).ToList())
+                            {
 
-                                if (Strings.Len(localCondition6()) > 6)
-                                {
-                                    // 弱、効属性は状態回復から除外。
-                                    string localCondition5() { object argIndex1 = j; var ret = t.Condition(argIndex1); return ret; }
-
-                                    if (Strings.Right(localCondition5(), 6) == "属性使用不能")
-                                    {
-                                        string localCondition4() { object argIndex1 = j; var ret = t.Condition(argIndex1); return ret; }
-
-                                        if (t.ConditionLifetime(localCondition4()) > 0)
-                                        {
-                                            string localCondition3() { object argIndex1 = j; var ret = t.Condition(argIndex1); return ret; }
-
-                                            t.DeleteCondition(localCondition3());
-                                        }
-                                    }
-                                }
+                                t.DeleteCondition(condition.Name);
                             }
 
                             if (!is_event)
@@ -1813,7 +1812,7 @@ namespace SRCCore.Models
                             // なければ特にメッセージは表示しない (効果は見れば分かるので)
                             if (!is_event)
                             {
-                                if (My.MyProject.Forms.frmMessage.Visible)
+                                if (GUI.MainFormVisible)
                                 {
                                     if (ReferenceEquals(t, Commands.SelectedUnit))
                                     {
@@ -1845,7 +1844,7 @@ namespace SRCCore.Models
                             {
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    if (!My.MyProject.Forms.frmMessage.Visible)
+                                    if (!GUI.MainFormVisible)
                                     {
                                         GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
@@ -1854,7 +1853,7 @@ namespace SRCCore.Models
                                         GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
-                                else if (!My.MyProject.Forms.frmMessage.Visible)
+                                else if (!GUI.MainFormVisible)
                                 {
                                     GUI.OpenMessageForm(t, Commands.SelectedUnit);
                                 }
@@ -1872,13 +1871,13 @@ namespace SRCCore.Models
                     case "スペシャルパワー":
                     case "精神コマンド":
                         {
-                            if (SRC.SPDList.IsDefined(EffectData(i)))
+                            if (SRC.SPDList.IsDefined(effect.strEffectData))
                             {
-                                t.MakeSpecialPowerInEffect(EffectData(i), my_unit.MainPilot().ID);
+                                t.MakeSpecialPowerInEffect(effect.strEffectData, my_unit.MainPilot().ID);
                             }
                             else
                             {
-                                GUI.ErrorMessage("スペシャルパワー「" + Name + "」で使われているスペシャルパワー「" + EffectData(i) + "」は定義されていません。");
+                                GUI.ErrorMessage("スペシャルパワー「" + Name + "」で使われているスペシャルパワー「" + effect.strEffectData + "」は定義されていません。");
                             }
 
                             break;
@@ -1897,8 +1896,8 @@ namespace SRCCore.Models
                             }
 
                             // 気力を増加させる
-                            tmp = t.MainPilot().Morale;
-                            t.IncreaseMorale((10d * effect.dblEffectLevel));
+                            var tmp = t.MainPilot().Morale;
+                            t.IncreaseMorale((int)(10d * effect.dblEffectLevel));
                             if (!is_event)
                             {
                                 if (!displayed_string)
@@ -1927,8 +1926,8 @@ namespace SRCCore.Models
                             }
 
                             // 気力を低下させる
-                            tmp = t.MainPilot().Morale;
-                            t.IncreaseMorale((-10 * effect.dblEffectLevel));
+                            var tmp = t.MainPilot().Morale;
+                            t.IncreaseMorale((int)(-10 * effect.dblEffectLevel));
                             if (!is_event)
                             {
                                 if (TargetType == "敵" | TargetType == "全敵")
@@ -1957,7 +1956,7 @@ namespace SRCCore.Models
                             {
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    if (!My.MyProject.Forms.frmMessage.Visible)
+                                    if (!GUI.MainFormVisible)
                                     {
                                         GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
@@ -1966,7 +1965,7 @@ namespace SRCCore.Models
                                         GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
-                                else if (!My.MyProject.Forms.frmMessage.Visible)
+                                else if (!GUI.MainFormVisible)
                                 {
                                     GUI.OpenMessageForm(t, Commands.SelectedUnit);
                                 }
@@ -1977,8 +1976,8 @@ namespace SRCCore.Models
                             }
 
                             // ダメージを与える
-                            tmp = t.HP;
-                            t.HP = GeneralLib.MaxLng(t.HP - 10 * GeneralLib.Dice((10d * effect.dblEffectLevel)), 10);
+                            var tmp = t.HP;
+                            t.HP = GeneralLib.MaxLng(t.HP - 10 * GeneralLib.Dice((int)(10d * effect.dblEffectLevel)), 10);
                             if (TargetType == "全敵")
                             {
                                 GUI.Sleep(150);
@@ -2029,7 +2028,7 @@ namespace SRCCore.Models
                             {
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    if (!My.MyProject.Forms.frmMessage.Visible)
+                                    if (!GUI.MainFormVisible)
                                     {
                                         GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
@@ -2038,7 +2037,7 @@ namespace SRCCore.Models
                                         GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
-                                else if (!My.MyProject.Forms.frmMessage.Visible)
+                                else if (!GUI.MainFormVisible)
                                 {
                                     GUI.OpenMessageForm(t, Commands.SelectedUnit);
                                 }
@@ -2049,8 +2048,9 @@ namespace SRCCore.Models
                             }
 
                             // ＨＰを減少させる
-                            tmp = t.HP;
-                            t.HP = (t.HP - (long)(t.HP * effect.dblEffectLevel) / 10L);
+                            var tmp = t.HP;
+                            // XXX キャスト位置、ダメージを切り捨てでいいか。
+                            t.HP = (t.HP - (int)(t.HP * effect.dblEffectLevel / 10L));
                             if (TargetType == "全敵")
                             {
                                 GUI.Sleep(150);
@@ -2108,7 +2108,7 @@ namespace SRCCore.Models
                             {
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    if (!My.MyProject.Forms.frmMessage.Visible)
+                                    if (!GUI.MainFormVisible)
                                     {
                                         GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
@@ -2117,7 +2117,7 @@ namespace SRCCore.Models
                                         GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
-                                else if (!My.MyProject.Forms.frmMessage.Visible)
+                                else if (!GUI.MainFormVisible)
                                 {
                                     GUI.OpenMessageForm(t, Commands.SelectedUnit);
                                 }
@@ -2128,8 +2128,8 @@ namespace SRCCore.Models
                             }
 
                             // ＥＮを減少させる
-                            tmp = t.EN;
-                            t.EN = (t.EN - (long)(t.EN * effect.dblEffectLevel) / 10L);
+                            var tmp = t.EN;
+                            t.EN = (t.EN - (int)((t.EN * effect.dblEffectLevel) / 10L));
                             if (TargetType == "全敵")
                             {
                                 GUI.Sleep(150);
@@ -2171,29 +2171,28 @@ namespace SRCCore.Models
                                 if (!t.IsConditionSatisfied("識別済み"))
                                 {
                                     t.AddCondition("識別済み", -1, 0d, "非表示");
-                                    Status.DisplayUnitStatus(t);
+                                    SRC.GUIStatus.DisplayUnitStatus(t);
                                 }
                             }
 
                             if (t.IsConditionSatisfied("ユニット情報隠蔽"))
                             {
                                 t.DeleteCondition("ユニット情報隠蔽");
-                                Status.DisplayUnitStatus(t);
+                                SRC.GUIStatus.DisplayUnitStatus(t);
                             }
 
-                            if (!My.MyProject.Forms.frmMessage.Visible)
+                            if (!GUI.MainFormVisible)
                             {
                                 GUI.OpenMessageForm(u1: null, u2: null);
                             }
 
                             GUI.DisplayMessage("システム", Expression.Term("ＨＰ", t, 6) + "：" + SrcFormatter.Format(t.HP) + "/" + SrcFormatter.Format(t.MaxHP) + ";" + Expression.Term("ＥＮ", t, 6) + "：" + SrcFormatter.Format(t.EN) + "/" + SrcFormatter.Format(t.MaxEN) + ";" + Expression.Term("資金", t, 6) + "：" + SrcFormatter.Format(t.Value / 2) + ";" + "経験値：" + SrcFormatter.Format(t.ExpValue + t.MainPilot().ExpValue));
+                            var msg = "";
                             if (t.IsFeatureAvailable("アイテム所有"))
                             {
                                 if (SRC.IDList.IsDefined(t.FeatureData("アイテム所有")))
                                 {
-                                    ItemData localItem() { object argIndex1 = "アイテム所有"; object argIndex2 = t.FeatureData(argIndex1); var ret = SRC.IDList.Item(argIndex2); return ret; }
-
-                                    msg = localItem().Nickname + "を盗むことが出来る。;";
+                                    msg = SRC.IDList.Item(t.FeatureData("アイテム所有")).Nickname + "を盗むことが出来る。;";
                                 }
                                 else
                                 {
@@ -2210,9 +2209,7 @@ namespace SRCCore.Models
                                         msg = msg + "また、";
                                     }
 
-                                    ItemData localItem1() { object argIndex1 = "レアアイテム所有"; object argIndex2 = t.FeatureData(argIndex1); var ret = SRC.IDList.Item(argIndex2); return ret; }
-
-                                    msg = msg + "まれに" + localItem1().Nickname + "を盗むことが出来る。;";
+                                    msg = msg + "まれに" + SRC.IDList.Item(t.FeatureData("レアアイテム所有")).Nickname + "を盗むことが出来る。;";
                                 }
                                 else
                                 {
@@ -2237,7 +2234,7 @@ namespace SRCCore.Models
                         {
                             GUI.OpenMessageForm(t, u2: null);
                             t.SuicidalExplosion();
-                            return ApplyRet;
+                            return false;
                         }
 
                     case "復活":
@@ -2252,11 +2249,10 @@ namespace SRCCore.Models
                                 // 破壊後に他のパイロットの力で復活する場合
 
                                 // 復活時は通常形態に戻る
+                                int n;
                                 if (t.IsFeatureAvailable("ノーマルモード"))
                                 {
-                                    string localLIndex() { object argIndex1 = "ノーマルモード"; string arglist = t.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
-
-                                    t.Transform(localLIndex());
+                                    t.Transform(t.FeatureData("ノーマルモード"));
                                     t = t.CurrentForm();
                                     n = 0;
                                 }
@@ -2287,7 +2283,7 @@ namespace SRCCore.Models
                                 GUI.RedrawScreen();
                             }
 
-                            if (!My.MyProject.Forms.frmMessage.Visible)
+                            if (!GUI.MainFormVisible)
                             {
                                 GUI.OpenMessageForm(u1: null, u2: null);
                             }
@@ -2297,11 +2293,12 @@ namespace SRCCore.Models
                                 t.PilotMessage("復活", msg_mode: "");
                             }
 
-                            if (t.IsAnimationDefined("復活", sub_situation: ""))
-                            {
-                                t.PlayAnimation("復活", sub_situation: "");
-                            }
-                            else
+                            // TODO Impl Animation
+                            //if (t.IsAnimationDefined("復活", sub_situation: ""))
+                            //{
+                            //    t.PlayAnimation("復活", sub_situation: "");
+                            //}
+                            //else
                             {
                                 t.SpecialEffect("復活", sub_situation: "");
                             }
@@ -2317,7 +2314,7 @@ namespace SRCCore.Models
                             Event.SelectedUnitForEvent = my_unit.CurrentForm();
                             Event.SelectedTargetForEvent = t.CurrentForm();
                             // 指定されたサブルーチンを実行
-                            Expression.GetValueAsString("Call(" + EffectData(i) + ")");
+                            Expression.GetValueAsString("Call(" + effect.strEffectData + ")");
                             break;
                         }
                 }
@@ -2341,8 +2338,7 @@ namespace SRCCore.Models
                 SRC.PList.UpdateSupportMod(t.CurrentForm());
             }
 
-            ApplyRet = displayed_string;
-            return ApplyRet;
+            return displayed_string;
         }
 
 

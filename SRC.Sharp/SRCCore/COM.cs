@@ -171,7 +171,7 @@ namespace SRCCore
                 if (!selectedUnit.IsAlly(Commands.SelectedTarget))
                 {
                     // ユニットが敵の場合はそのユニットを狙う
-                    w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動可能", out 0, out 0);
+                    w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動可能", out _, out _);
                     if (w == 0)
                     {
                         dst_x = Commands.SelectedTarget.x;
@@ -302,7 +302,7 @@ namespace SRCCore
                 // 既にターゲットを選択している場合は攻撃方法を再選択
                 if (w > 0)
                 {
-                    w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動可能", out 0, out 0);
+                    w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動可能", out _, out _);
                     if (w == 0)
                     {
                         // 変形の結果、攻撃できなくなってしまった……
@@ -813,7 +813,7 @@ namespace SRCCore
 
                         // 移動のために選択していた武器が使えなくなったり、合体技が使える
                         // ようになったりすることがあるので、武器を再度選択
-                        w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動後", out 0, out 0);
+                        w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動後", out _, out _);
                         selectedWeapon = selectedUnit.Weapon(w);
                         if (w == 0)
                         {
@@ -2189,7 +2189,7 @@ namespace SRCCore
                 // テレポート能力を使える場合は優先的に使用
                 if (GeneralLib.LLength(selectedUnit.FeatureData("テレポート")) == 2)
                 {
-                    tmp = Conversions.ToInteger(GeneralLib.LIndex(arglist, 2));
+                    tmp = Conversions.ToInteger(GeneralLib.LIndex("テレポート", 2));
                 }
                 else
                 {
@@ -2207,7 +2207,7 @@ namespace SRCCore
                 // ジャンプ能力を使う？
                 if (GeneralLib.LLength(selectedUnit.FeatureData("ジャンプ")) == 2)
                 {
-                    tmp = Conversions.ToInteger(GeneralLib.LIndex(arglist1, 2));
+                    tmp = Conversions.ToInteger(GeneralLib.LIndex("ジャンプ", 2));
                 }
                 else
                 {
@@ -2613,11 +2613,11 @@ namespace SRCCore
                         {
                             if (moved)
                             {
-                                w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動後", out 0, out 0);
+                                w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動後", out _, out _);
                             }
                             else
                             {
-                                w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動可能", out 0, out 0);
+                                w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動可能", out _, out _);
                             }
 
                             if (w > 0)
@@ -2649,11 +2649,11 @@ namespace SRCCore
                                 // 移動先の場所にいる敵を優先して排除
                                 if (moved)
                                 {
-                                    w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動後", out 0, out 0);
+                                    w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動後", out _, out _);
                                 }
                                 else
                                 {
-                                    w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動可能", out 0, out 0);
+                                    w = SelectWeapon(Commands.SelectedUnit, Commands.SelectedTarget, "移動可能", out _, out _);
                                 }
 
                                 if (w > 0)

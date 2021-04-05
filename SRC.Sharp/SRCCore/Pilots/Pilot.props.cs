@@ -6,6 +6,7 @@ using SRCCore.Models;
 using SRCCore.Units;
 using SRCCore.VB;
 using System;
+using System.Linq;
 
 namespace SRCCore.Pilots
 {
@@ -31,20 +32,20 @@ namespace SRCCore.Pilots
         }
         // TODO Impl
         //    string NicknameRet = default;
-        //    short idx;
+        //    int idx;
         //    Unit u;
         //    string uname = default, vname;
         //    NicknameRet = Nickname0;
 
         //    // 愛称変更
-        //    if (Unit_Renamed is null)
+        //    if (Unit is null)
         //    {
         //        Expression.ReplaceSubExpression(NicknameRet);
         //        return default;
         //    }
 
         //    {
-        //        var withBlock = Unit_Renamed;
+        //        var withBlock = Unit;
         //        if (withBlock.CountPilot() > 0)
         //        {
         //            if (!ReferenceEquals(withBlock.MainPilot(), this))
@@ -54,7 +55,7 @@ namespace SRCCore.Pilots
         //            }
         //        }
 
-        //        u = Unit_Renamed;
+        //        u = Unit;
 
         //        // パイロットステータスコマンド中の場合はユニットを検索する必要がある
         //        if (withBlock.Name == "ステータス表示用ダミーユニット")
@@ -64,7 +65,7 @@ namespace SRCCore.Pilots
         //            if (Expression.IsLocalVariableDefined(vname))
         //            {
         //                // UPGRADE_WARNING: オブジェクト LocalVariableList.Item(vname).NumericValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectNotEqual(Event_Renamed.LocalVariableList[vname].NumericValue, 1, false)))
+        //                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectNotEqual(Event.LocalVariableList[vname].NumericValue, 1, false)))
         //                {
         //                    return default;
         //                }
@@ -78,7 +79,7 @@ namespace SRCCore.Pilots
         //            if (Expression.IsLocalVariableDefined(vname))
         //            {
         //                // UPGRADE_WARNING: オブジェクト LocalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                uname = Conversions.ToString(Event_Renamed.LocalVariableList[vname].StringValue);
+        //                uname = Conversions.ToString(Event.LocalVariableList[vname].StringValue);
         //            }
 
         //            if (string.IsNullOrEmpty(uname))
@@ -94,7 +95,7 @@ namespace SRCCore.Pilots
         //            if (withBlock1.IsFeatureAvailable("パイロット愛称"))
         //            {
         //                NicknameRet = withBlock1.FeatureData("パイロット愛称");
-        //                idx = (short)Strings.InStr(NicknameRet, "$(愛称)");
+        //                idx = (int)Strings.InStr(NicknameRet, "$(愛称)");
         //                if (idx > 0)
         //                {
         //                    NicknameRet = Strings.Left(NicknameRet, idx - 1) + Data.Nickname + Strings.Mid(NicknameRet, idx + 5);
@@ -112,10 +113,10 @@ namespace SRCCore.Pilots
         //    }
 
         //    // 愛称内の式置換のため、デフォルトユニットを一時的に変更する
-        //    u = Event_Renamed.SelectedUnitForEvent;
-        //    Event_Renamed.SelectedUnitForEvent = Unit_Renamed;
+        //    u = Event.SelectedUnitForEvent;
+        //    Event.SelectedUnitForEvent = Unit;
         //    Expression.ReplaceSubExpression(NicknameRet);
-        //    Event_Renamed.SelectedUnitForEvent = u;
+        //    Event.SelectedUnitForEvent = u;
         //    return NicknameRet;
         //}
 
@@ -126,20 +127,20 @@ namespace SRCCore.Pilots
             get { return Nickname0; }
         }
         //string KanaNameRet = default;
-        //        short idx;
+        //        int idx;
         //        Unit u;
         //        string uname = default, vname;
         //        KanaNameRet = Data.KanaName;
 
         //        // 愛称変更
-        //        if (Unit_Renamed is null)
+        //        if (Unit is null)
         //        {
         //            Expression.ReplaceSubExpression(KanaNameRet);
         //            return default;
         //        }
 
         //        {
-        //            var withBlock = Unit_Renamed;
+        //            var withBlock = Unit;
         //            if (withBlock.CountPilot() > 0)
         //            {
         //                if (!ReferenceEquals(withBlock.MainPilot(), this))
@@ -149,7 +150,7 @@ namespace SRCCore.Pilots
         //                }
         //            }
 
-        //            u = Unit_Renamed;
+        //            u = Unit;
 
         //            // パイロットステータスコマンド中の場合はユニットを検索する必要がある
         //            if (withBlock.Name == "ステータス表示用ダミーユニット")
@@ -159,7 +160,7 @@ namespace SRCCore.Pilots
         //                if (Expression.IsLocalVariableDefined(vname))
         //                {
         //                    // UPGRADE_WARNING: オブジェクト LocalVariableList.Item(vname).NumericValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectNotEqual(Event_Renamed.LocalVariableList[vname].NumericValue, 1, false)))
+        //                    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectNotEqual(Event.LocalVariableList[vname].NumericValue, 1, false)))
         //                    {
         //                        return default;
         //                    }
@@ -173,7 +174,7 @@ namespace SRCCore.Pilots
         //                if (Expression.IsLocalVariableDefined(vname))
         //                {
         //                    // UPGRADE_WARNING: オブジェクト LocalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                    uname = Conversions.ToString(Event_Renamed.LocalVariableList[vname].StringValue);
+        //                    uname = Conversions.ToString(Event.LocalVariableList[vname].StringValue);
         //                }
 
         //                if (string.IsNullOrEmpty(uname))
@@ -189,7 +190,7 @@ namespace SRCCore.Pilots
         //                if (withBlock1.IsFeatureAvailable("パイロット読み仮名"))
         //                {
         //                    KanaNameRet = withBlock1.FeatureData("パイロット読み仮名");
-        //                    idx = (short)Strings.InStr(KanaNameRet, "$(読み仮名)");
+        //                    idx = (int)Strings.InStr(KanaNameRet, "$(読み仮名)");
         //                    if (idx > 0)
         //                    {
         //                        KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + Data.KanaName + Strings.Mid(KanaNameRet, idx + 5);
@@ -198,7 +199,7 @@ namespace SRCCore.Pilots
         //                else if (withBlock1.IsFeatureAvailable("パイロット愛称"))
         //                {
         //                    KanaNameRet = withBlock1.FeatureData("パイロット愛称");
-        //                    idx = (short)Strings.InStr(KanaNameRet, "$(愛称)");
+        //                    idx = (int)Strings.InStr(KanaNameRet, "$(愛称)");
         //                    if (idx > 0)
         //                    {
         //                        KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + Data.Nickname + Strings.Mid(KanaNameRet, idx + 5);
@@ -210,10 +211,10 @@ namespace SRCCore.Pilots
         //        }
 
         //        // 読み仮名内の式置換のため、デフォルトユニットを一時的に変更する
-        //        u = Event_Renamed.SelectedUnitForEvent;
-        //        Event_Renamed.SelectedUnitForEvent = Unit_Renamed;
+        //        u = Event.SelectedUnitForEvent;
+        //        Event.SelectedUnitForEvent = Unit;
         //        Expression.ReplaceSubExpression(KanaNameRet);
-        //        Event_Renamed.SelectedUnitForEvent = u;
+        //        Event.SelectedUnitForEvent = u;
         //        return KanaNameRet;
         //    }
         //}
@@ -225,10 +226,10 @@ namespace SRCCore.Pilots
         //    {
         //        string SexRet = default;
         //        SexRet = Data.Sex;
-        //        if (Unit_Renamed is object)
+        //        if (Unit is object)
         //        {
         //            {
-        //                var withBlock = Unit_Renamed;
+        //                var withBlock = Unit;
         //                if (withBlock.IsFeatureAvailable("性別"))
         //                {
         //                    SexRet = withBlock.FeatureData("性別");
@@ -240,68 +241,47 @@ namespace SRCCore.Pilots
         //    }
         //}
 
-        //// 搭乗するユニットのクラス
-        //// UPGRADE_NOTE: Class は Class_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        //public string Class_Renamed
-        //{
-        //    get
-        //    {
-        //        string Class_RenamedRet = default;
-        //        Class_RenamedRet = Data.Class_Renamed;
-        //        return Class_RenamedRet;
-        //    }
-        //}
+        // 搭乗するユニットのクラス
+        public string Class => Data.Class;
 
-        //// 倒したときに得られる経験値
-        //public short ExpValue
-        //{
-        //    get
-        //    {
-        //        short ExpValueRet = default;
-        //        ExpValueRet = Data.ExpValue;
-        //        return ExpValueRet;
-        //    }
-        //}
+        // 倒したときに得られる経験値
+        public int ExpValue => Data.ExpValue;
 
-        //// 性格
-        //public string Personality
-        //{
-        //    get
-        //    {
-        //        string PersonalityRet = default;
-        //        PersonalityRet = Data.Personality;
+        // 性格
+        public string Personality
+        {
+            get
+            {
+                string PersonalityRet = Data.Personality;
 
-        //        // ユニットに乗っている？
-        //        if (Unit_Renamed is null)
-        //        {
-        //            return default;
-        //        }
+                // ユニットに乗っている？
+                if (Unit is null)
+                {
+                    return PersonalityRet;
+                }
 
-        //        {
-        //            var withBlock = Unit_Renamed;
-        //            // アイテム用特殊能力「性格変更」
-        //            if (withBlock.IsFeatureAvailable("性格変更"))
-        //            {
-        //                PersonalityRet = withBlock.FeatureData("性格変更");
-        //                return default;
-        //            }
+                // アイテム用特殊能力「性格変更」
+                if (Unit.IsFeatureAvailable("性格変更"))
+                {
+                    PersonalityRet = Unit.FeatureData("性格変更");
+                    return PersonalityRet;
+                }
 
-        //            // 追加パイロットの性格を優先させる
-        //            if (!IsAdditionalPilot)
-        //            {
-        //                if (withBlock.CountPilot() > 0)
-        //                {
-        //                    if (ReferenceEquals(withBlock.Pilot(1), this))
-        //                    {
-        //                        PersonalityRet = withBlock.MainPilot().Data.Personality;
-        //                    }
-        //                }
-        //            }
-        //        }
+                // 追加パイロットの性格を優先させる
+                if (!IsAdditionalPilot)
+                {
+                    if (Unit.CountPilot() > 0)
+                    {
+                        if (ReferenceEquals(Unit.Pilots.First(), this))
+                        {
+                            PersonalityRet = Unit.MainPilot().Data.Personality;
+                        }
+                    }
+                }
 
-        //        return PersonalityRet;
-        //    }
-        //}
+                return PersonalityRet;
+            }
+        }
 
         //// ビットマップ
         //public string get_Bitmap(bool use_orig)
@@ -319,13 +299,13 @@ namespace SRCCore.Pilots
         //    }
 
         //    // パイロット画像変更
-        //    if (Unit_Renamed is null)
+        //    if (Unit is null)
         //    {
         //        return default;
         //    }
 
         //    {
-        //        var withBlock = Unit_Renamed;
+        //        var withBlock = Unit;
         //        if (withBlock.CountPilot() > 0)
         //        {
         //            if (!ReferenceEquals(withBlock.MainPilot(), this))
@@ -334,7 +314,7 @@ namespace SRCCore.Pilots
         //            }
         //        }
 
-        //        u = Unit_Renamed;
+        //        u = Unit;
 
         //        // パイロットステータスコマンド中の場合はユニットを検索する必要がある
         //        if (withBlock.Name == "ステータス表示用ダミーユニット")
@@ -344,7 +324,7 @@ namespace SRCCore.Pilots
         //            if (Expression.IsLocalVariableDefined(vname))
         //            {
         //                // UPGRADE_WARNING: オブジェクト LocalVariableList.Item(vname).NumericValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectNotEqual(Event_Renamed.LocalVariableList[vname].NumericValue, 1, false)))
+        //                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectNotEqual(Event.LocalVariableList[vname].NumericValue, 1, false)))
         //                {
         //                    return default;
         //                }
@@ -358,7 +338,7 @@ namespace SRCCore.Pilots
         //            if (Expression.IsLocalVariableDefined(vname))
         //            {
         //                // UPGRADE_WARNING: オブジェクト LocalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                uname = Conversions.ToString(Event_Renamed.LocalVariableList[vname].StringValue);
+        //                uname = Conversions.ToString(Event.LocalVariableList[vname].StringValue);
         //            }
 
         //            if (string.IsNullOrEmpty(uname))
@@ -401,10 +381,10 @@ namespace SRCCore.Pilots
         //        }
 
         //        // 能力コピーで変身した場合はメッセージもコピー元パイロットのものを使う
-        //        if (Unit_Renamed is object)
+        //        if (Unit is object)
         //        {
         //            {
-        //                var withBlock = Unit_Renamed;
+        //                var withBlock = Unit;
         //                if (withBlock.IsConditionSatisfied("メッセージ"))
         //                {
         //                    MessageTypeRet = GeneralLib.LIndex(withBlock.ConditionData(argIndex2), 2);
@@ -418,26 +398,26 @@ namespace SRCCore.Pilots
 
 
         //// 防御力
-        //public short Defense
+        //public int Defense
         //{
         //    get
         //    {
-        //        short DefenseRet = default;
+        //        int DefenseRet = default;
         //        if (Expression.IsOptionDefined("防御力成長") | Expression.IsOptionDefined("防御力レベルアップ"))
         //        {
-        //            DefenseRet = (short)(100d + 5d * SkillLevel("耐久", ref_mode: ""));
+        //            DefenseRet = (int)(100d + 5d * SkillLevel("耐久", ref_mode: ""));
         //            if (Expression.IsOptionDefined("防御力低成長"))
         //            {
-        //                DefenseRet = (short)(DefenseRet + (long)(Level * (1d + 2d * SkillLevel("防御成長", ref_mode: ""))) / 2L);
+        //                DefenseRet = (int)(DefenseRet + (long)(Level * (1d + 2d * SkillLevel("防御成長", ref_mode: ""))) / 2L);
         //            }
         //            else
         //            {
-        //                DefenseRet = (short)(DefenseRet + Conversion.Int(Level * (1d + SkillLevel("防御成長", ref_mode: ""))));
+        //                DefenseRet = (int)(DefenseRet + Conversion.Int(Level * (1d + SkillLevel("防御成長", ref_mode: ""))));
         //            }
         //        }
         //        else
         //        {
-        //            DefenseRet = (short)(100d + 5d * SkillLevel("耐久", ref_mode: ""));
+        //            DefenseRet = (int)(100d + 5d * SkillLevel("耐久", ref_mode: ""));
         //        }
 
         //        return DefenseRet;
