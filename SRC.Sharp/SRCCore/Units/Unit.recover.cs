@@ -78,7 +78,7 @@ namespace SRCCore.Units
                 cf.Mode = "通常";
 
                 // 他形態も回復
-                foreach(var of in OtherForms)
+                foreach (var of in OtherForms)
                 {
                     of.HP = of.MaxHP;
                     of.EN = of.MaxEN;
@@ -149,20 +149,20 @@ namespace SRCCore.Units
         // ＨＰを percent ％回復
         public void RecoverHP(double percent)
         {
-            //    HP = (int)(HP + MaxHP * percent / 100d);
-            //    if (HP <= 0)
-            //    {
-            //        HP = 1;
-            //    }
+            HP = (int)(HP + MaxHP * percent / 100d);
+            if (HP <= 0)
+            {
+                HP = 1;
+            }
 
-            //    // 特殊能力「不安定」による暴走チェック
-            //    if (IsFeatureAvailable("不安定"))
-            //    {
-            //        if (HP <= MaxHP / 4 & !IsConditionSatisfied("暴走"))
-            //        {
-            //            AddCondition("暴走", -1, cdata: "");
-            //        }
-            //    }
+            // 特殊能力「不安定」による暴走チェック
+            if (IsFeatureAvailable("不安定"))
+            {
+                if (HP <= MaxHP / 4 && !IsConditionSatisfied("暴走"))
+                {
+                    AddCondition("暴走", -1, cdata: "");
+                }
+            }
         }
 
         // ＥＮを percent ％回復

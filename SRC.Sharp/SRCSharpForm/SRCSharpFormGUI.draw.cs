@@ -1227,5 +1227,44 @@ namespace SRCSharpForm
                 g.Dispose();
             }
         }
+
+        private Font sysFont = new Font("ＭＳ Ｐ明朝", 9, FontStyle.Bold, GraphicsUnit.Point);
+        private Font battleAnimeFont = new Font("ＭＳ Ｐ明朝", 8, FontStyle.Regular, GraphicsUnit.Point);
+        private Brush sysFontColor = Brushes.Black;
+        private Brush sysFontBackColor = Brushes.White;
+        public void DrawSysString(int X, int Y, string msg, bool without_refresh)
+        {
+            // 表示位置が画面外？
+            if (X < MapX - MainWidth / 2 | MapX + MainWidth / 2 < X | Y < MapY - MainHeight / 2 | MapY + MainHeight / 2 < Y)
+            {
+                return;
+            }
+
+            SaveScreen();
+            using (var g = Graphics.FromImage(MainForm.MainBuffer))
+            {
+                // フォント設定をシステム用に切り替え
+                var font = SRC.BattleAnimation ? battleAnimeFont : sysFont;
+
+                // メッセージの書き込み
+                var msgSize = g.MeasureString(msg, font);
+                var tx = MapToPixelX(X) + (frmMain.MapCellPx - msgSize.Width) / 2 - 1;
+                var ty = MapToPixelY(Y + 1) - msgSize.Height;
+
+                g.FillRectangle(sysFontBackColor, tx, ty, msgSize.Width, msgSize.Height);
+                g.DrawString(msg, font, sysFontColor, tx, ty);
+            }
+            // 表示を更新
+            if (!without_refresh)
+            {
+                // XXX 画面更新回り
+                MainForm.UpdateScreen();
+            }
+
+            PaintedAreaX1 = (short)GeneralLib.MinLng(PaintedAreaX1, MapToPixelX(X) - 4);
+            PaintedAreaY1 = (short)GeneralLib.MaxLng(PaintedAreaY1, MapToPixelY(Y) + 16);
+            PaintedAreaX2 = (short)GeneralLib.MinLng(PaintedAreaX2, MapToPixelX(X) + 36);
+            PaintedAreaY2 = (short)GeneralLib.MaxLng(PaintedAreaY2, MapToPixelY(Y) + 32);
+        }
     }
 }

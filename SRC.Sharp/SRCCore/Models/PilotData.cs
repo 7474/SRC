@@ -544,15 +544,12 @@ namespace SRCCore.Models
             var sp = SpecialPowers.FirstOrDefault(x => x.Name == sname);
             int SpecialPowerCostRet = sp?.SPConsumption ?? 0;
 
-            // TODO Impl
-            //// パイロットデータ側でＳＰ消費量が定義されていなければ
-            //// デフォルトの値を使う
-            //if (SpecialPowerCostRet == 0)
-            //{
-            //    SpecialPowerData localItem() { object argIndex1 = sname; var ret = SRC.SPDList.Item(argIndex1); return ret; }
-
-            //    SpecialPowerCostRet = localItem().SPConsumption;
-            //}
+            // パイロットデータ側でＳＰ消費量が定義されていなければ
+            // デフォルトの値を使う
+            if (SpecialPowerCostRet == 0)
+            {
+                SpecialPowerCostRet = SRC.SPDList.Item(sname).SPConsumption;
+            }
 
             return SpecialPowerCostRet;
         }
