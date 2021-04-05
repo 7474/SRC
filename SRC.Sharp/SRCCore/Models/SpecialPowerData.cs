@@ -971,13 +971,6 @@ namespace SRCCore.Models
         // 実行後にウェイトが必要かどうかを返す
         public bool Apply(Pilot p, Unit t, bool is_event = false, bool as_instant = false)
         {
-            //            bool ApplyRet = default;
-            //            int j, i, n;
-            //            int tmp;
-            //            bool need_update = default, is_invalid = default, displayed_string = default;
-            //            string msg = default, ncond;
-            //            Unit my_unit;
-
             var is_invalid = false;
             var displayed_string = false;
             var need_update = false;
@@ -1069,8 +1062,6 @@ namespace SRCCore.Models
             // これ以降は持続効果が即効であるスペシャルパワーの処理
 
             // 個々の効果を適用
-            //var loopTo1 = CountEffect();
-            //for (i = 1; i <= loopTo1; i++)
             foreach (var effect in Effects)
             {
                 switch (effect.strEffectType)
@@ -1096,7 +1087,7 @@ namespace SRCCore.Models
                             {
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    if (!GUI.MainFormVisible)
+                                    if (!GUI.MessageFormVisible)
                                     {
                                         GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
@@ -1105,7 +1096,7 @@ namespace SRCCore.Models
                                         GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
-                                else if (!GUI.MainFormVisible)
+                                else if (!GUI.MessageFormVisible)
                                 {
                                     GUI.OpenMessageForm(t, Commands.SelectedUnit);
                                 }
@@ -1187,7 +1178,7 @@ namespace SRCCore.Models
                             {
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    if (!GUI.MainFormVisible)
+                                    if (!GUI.MessageFormVisible)
                                     {
                                         GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
@@ -1196,7 +1187,7 @@ namespace SRCCore.Models
                                         GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
-                                else if (!GUI.MainFormVisible)
+                                else if (!GUI.MessageFormVisible)
                                 {
                                     GUI.OpenMessageForm(t, Commands.SelectedUnit);
                                 }
@@ -1278,7 +1269,7 @@ namespace SRCCore.Models
                             {
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    if (!GUI.MainFormVisible)
+                                    if (!GUI.MessageFormVisible)
                                     {
                                         GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
@@ -1287,7 +1278,7 @@ namespace SRCCore.Models
                                         GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
-                                else if (!GUI.MainFormVisible)
+                                else if (!GUI.MessageFormVisible)
                                 {
                                     GUI.OpenMessageForm(t, Commands.SelectedUnit);
                                 }
@@ -1366,7 +1357,7 @@ namespace SRCCore.Models
                             {
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    if (!GUI.MainFormVisible)
+                                    if (!GUI.MessageFormVisible)
                                     {
                                         GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
@@ -1375,7 +1366,7 @@ namespace SRCCore.Models
                                         GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
-                                else if (!GUI.MainFormVisible)
+                                else if (!GUI.MessageFormVisible)
                                 {
                                     GUI.OpenMessageForm(t, Commands.SelectedUnit);
                                 }
@@ -1565,7 +1556,7 @@ namespace SRCCore.Models
                             //{
                             //    if (ReferenceEquals(t, Commands.SelectedUnit))
                             //    {
-                            //        if (!GUI.MainFormVisible)
+                            //        if (!GUI.MessageFormVisible)
                             //        {
                             //            GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                             //        }
@@ -1574,7 +1565,7 @@ namespace SRCCore.Models
                             //            GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                             //        }
                             //    }
-                            //    else if (!GUI.MainFormVisible)
+                            //    else if (!GUI.MessageFormVisible)
                             //    {
                             //        GUI.OpenMessageForm(t, Commands.SelectedUnit);
                             //    }
@@ -1634,7 +1625,7 @@ namespace SRCCore.Models
                             {
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    if (!GUI.MainFormVisible)
+                                    if (!GUI.MessageFormVisible)
                                     {
                                         GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
@@ -1643,7 +1634,7 @@ namespace SRCCore.Models
                                         GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
-                                else if (!GUI.MainFormVisible)
+                                else if (!GUI.MessageFormVisible)
                                 {
                                     GUI.OpenMessageForm(t, Commands.SelectedUnit);
                                 }
@@ -1812,7 +1803,7 @@ namespace SRCCore.Models
                             // なければ特にメッセージは表示しない (効果は見れば分かるので)
                             if (!is_event)
                             {
-                                if (GUI.MainFormVisible)
+                                if (GUI.MessageFormVisible)
                                 {
                                     if (ReferenceEquals(t, Commands.SelectedUnit))
                                     {
@@ -1844,7 +1835,7 @@ namespace SRCCore.Models
                             {
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    if (!GUI.MainFormVisible)
+                                    if (!GUI.MessageFormVisible)
                                     {
                                         GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
@@ -1853,7 +1844,7 @@ namespace SRCCore.Models
                                         GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
-                                else if (!GUI.MainFormVisible)
+                                else if (!GUI.MessageFormVisible)
                                 {
                                     GUI.OpenMessageForm(t, Commands.SelectedUnit);
                                 }
@@ -1956,7 +1947,7 @@ namespace SRCCore.Models
                             {
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    if (!GUI.MainFormVisible)
+                                    if (!GUI.MessageFormVisible)
                                     {
                                         GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
@@ -1965,7 +1956,7 @@ namespace SRCCore.Models
                                         GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
-                                else if (!GUI.MainFormVisible)
+                                else if (!GUI.MessageFormVisible)
                                 {
                                     GUI.OpenMessageForm(t, Commands.SelectedUnit);
                                 }
@@ -2028,7 +2019,7 @@ namespace SRCCore.Models
                             {
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    if (!GUI.MainFormVisible)
+                                    if (!GUI.MessageFormVisible)
                                     {
                                         GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
@@ -2037,7 +2028,7 @@ namespace SRCCore.Models
                                         GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
-                                else if (!GUI.MainFormVisible)
+                                else if (!GUI.MessageFormVisible)
                                 {
                                     GUI.OpenMessageForm(t, Commands.SelectedUnit);
                                 }
@@ -2108,7 +2099,7 @@ namespace SRCCore.Models
                             {
                                 if (ReferenceEquals(t, Commands.SelectedUnit))
                                 {
-                                    if (!GUI.MainFormVisible)
+                                    if (!GUI.MessageFormVisible)
                                     {
                                         GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
                                     }
@@ -2117,7 +2108,7 @@ namespace SRCCore.Models
                                         GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
                                     }
                                 }
-                                else if (!GUI.MainFormVisible)
+                                else if (!GUI.MessageFormVisible)
                                 {
                                     GUI.OpenMessageForm(t, Commands.SelectedUnit);
                                 }
@@ -2181,7 +2172,7 @@ namespace SRCCore.Models
                                 SRC.GUIStatus.DisplayUnitStatus(t);
                             }
 
-                            if (!GUI.MainFormVisible)
+                            if (!GUI.MessageFormVisible)
                             {
                                 GUI.OpenMessageForm(u1: null, u2: null);
                             }
@@ -2283,7 +2274,7 @@ namespace SRCCore.Models
                                 GUI.RedrawScreen();
                             }
 
-                            if (!GUI.MainFormVisible)
+                            if (!GUI.MessageFormVisible)
                             {
                                 GUI.OpenMessageForm(u1: null, u2: null);
                             }

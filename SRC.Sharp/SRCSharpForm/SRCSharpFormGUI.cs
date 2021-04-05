@@ -1917,11 +1917,6 @@ namespace SRCSharpForm
             throw new NotImplementedException();
         }
 
-        public void DrawSysString(int X, int Y, string msg, bool without_refresh)
-        {
-            throw new NotImplementedException();
-        }
-
         public void SaveScreen()
         {
             if (!ScreenIsSaved)

@@ -10,9 +10,7 @@ namespace SRCCore.Units
         // ステータスを全回復
         public void FullRecover()
         {
-            // XXX
             Update();
-            //    short i, j;
 
             // パイロットのステータスを全回復
             foreach (var p in Pilots)
@@ -24,15 +22,13 @@ namespace SRCCore.Units
                 p.FullRecover();
             }
 
-            //    if (IsFeatureAvailable("追加パイロット"))
-            //    {
-            //        if (SRC.PList.IsDefined(FeatureData(argIndex1)))
-            //        {
-            //            Pilot localItem() { object "追加パイロット" = "追加パイロット"; object argIndex2 = FeatureData("追加パイロット"); var ret = SRC.PList.Item(argIndex2); return ret; }
-
-            //            localItem().FullRecover();
-            //        }
-            //    }
+            if (IsFeatureAvailable("追加パイロット"))
+            {
+                if (SRC.PList.IsDefined(FeatureData("追加パイロット")))
+                {
+                    SRC.PList.Item(FeatureData("追加パイロット")).FullRecover();
+                }
+            }
 
             {
                 var cf = CurrentForm();
@@ -78,7 +74,7 @@ namespace SRCCore.Units
                 cf.Mode = "通常";
 
                 // 他形態も回復
-                foreach(var of in OtherForms)
+                foreach (var of in OtherForms)
                 {
                     of.HP = of.MaxHP;
                     of.EN = of.MaxEN;
@@ -95,11 +91,10 @@ namespace SRCCore.Units
         // ＥＮ＆弾数を回復
         public void FullSupply()
         {
-            //    short i, j;
+            // ＥＮ回復
+            EN = MaxEN;
 
-            //    // ＥＮ回復
-            //    EN = MaxEN;
-
+            // TODO Impl
             //    // 弾数回復
             //    var loopTo = CountWeapon();
             //    for (i = 1; i <= loopTo; i++)
@@ -108,21 +103,17 @@ namespace SRCCore.Units
             //    for (i = 1; i <= loopTo1; i++)
             //        dblStock[i] = 1d;
 
-            //    // 他形態も回復
-            //    var loopTo2 = CountOtherForm();
-            //    for (i = 1; i <= loopTo2; i++)
-            //    {
-            //        {
-            //            var withBlock = OtherForm(i);
-            //            withBlock.EN = withBlock.MaxEN;
-            //            var loopTo3 = withBlock.CountWeapon();
-            //            for (j = 1; j <= loopTo3; j++)
-            //                withBlock.SetBullet(j, withBlock.MaxBullet(j));
-            //            var loopTo4 = withBlock.CountAbility();
-            //            for (j = 1; j <= loopTo4; j++)
-            //                withBlock.SetStock(j, withBlock.MaxStock(j));
-            //        }
-            //    }
+            // 他形態も回復
+            foreach(var of in OtherForms)
+            {
+                of.EN = of.MaxEN;
+                //var loopTo3 = withBlock.CountWeapon();
+                //for (j = 1; j <= loopTo3; j++)
+                //    withBlock.SetBullet(j, withBlock.MaxBullet(j));
+                //var loopTo4 = withBlock.CountAbility();
+                //for (j = 1; j <= loopTo4; j++)
+                //    withBlock.SetStock(j, withBlock.MaxStock(j));
+            }
         }
 
         // 弾数のみを回復
@@ -149,20 +140,20 @@ namespace SRCCore.Units
         // ＨＰを percent ％回復
         public void RecoverHP(double percent)
         {
-            //    HP = (int)(HP + MaxHP * percent / 100d);
-            //    if (HP <= 0)
-            //    {
-            //        HP = 1;
-            //    }
+            HP = (int)(HP + MaxHP * percent / 100d);
+            if (HP <= 0)
+            {
+                HP = 1;
+            }
 
-            //    // 特殊能力「不安定」による暴走チェック
-            //    if (IsFeatureAvailable("不安定"))
-            //    {
-            //        if (HP <= MaxHP / 4 & !IsConditionSatisfied("暴走"))
-            //        {
-            //            AddCondition("暴走", -1, cdata: "");
-            //        }
-            //    }
+            // 特殊能力「不安定」による暴走チェック
+            if (IsFeatureAvailable("不安定"))
+            {
+                if (HP <= MaxHP / 4 && !IsConditionSatisfied("暴走"))
+                {
+                    AddCondition("暴走", -1, cdata: "");
+                }
+            }
         }
 
         // ＥＮを percent ％回復

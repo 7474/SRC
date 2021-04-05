@@ -1,4 +1,5 @@
 using SRCCore.Exceptions;
+using SRCCore.Lib;
 using SRCCore.Pilots;
 using System;
 using System.Collections.Generic;
@@ -853,28 +854,28 @@ namespace SRCCore.Units
         //    return SyncLevelRet;
         //}
 
-        //// ユニットの霊力レベル
-        //public double PlanaLevel(bool no_limit = false)
-        //{
-        //    double PlanaLevelRet = default;
-        //    if (CountPilot() == 0)
-        //    {
-        //        return PlanaLevelRet;
-        //    }
+        // ユニットの霊力レベル
+        public double PlanaLevel(bool no_limit = false)
+        {
+            double PlanaLevelRet = default;
+            if (CountPilot() == 0)
+            {
+                return PlanaLevelRet;
+            }
 
-        //    PlanaLevelRet = MainPilot().Plana;
+            PlanaLevelRet = MainPilot().Plana;
 
-        //    // 霊力変換器レベルによる制限
-        //    if (IsFeatureAvailable("霊力変換器") & !no_limit)
-        //    {
-        //        if (IsFeatureLevelSpecified("霊力変換器"))
-        //        {
-        //            PlanaLevelRet = GeneralLib.MinDbl(PlanaLevelRet, FeatureLevel("霊力変換器"));
-        //        }
-        //    }
+            // 霊力変換器レベルによる制限
+            if (IsFeatureAvailable("霊力変換器") & !no_limit)
+            {
+                if (IsFeatureLevelSpecified("霊力変換器"))
+                {
+                    PlanaLevelRet = Math.Min(PlanaLevelRet, FeatureLevel("霊力変換器"));
+                }
+            }
 
-        //    return PlanaLevelRet;
-        //}
+            return PlanaLevelRet;
+        }
 
         //// パイロット全員からパイロット能力名を検索
         //public string SkillName0(string sname)
