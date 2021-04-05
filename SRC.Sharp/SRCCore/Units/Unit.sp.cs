@@ -1,6 +1,7 @@
 using SRCCore.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SRCCore.Units
@@ -51,52 +52,21 @@ namespace SRCCore.Units
         // ユニットがスペシャルパワー sname の影響下にあるかどうか
         public bool IsSpecialPowerInEffect(string sname)
         {
-            return false;
-            //            bool IsSpecialPowerInEffectRet = default;
-            //            Condition cnd;
-            //            if (colSpecialPowerInEffect.Count == 0)
-            //            {
-            //                return IsSpecialPowerInEffectRet;
-            //            };
-            //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 137362
-
-
-            //            Input:
-
-            //                    On Error GoTo ErrorHandler
-
-            //             */
-            //            cnd = (Condition)colSpecialPowerInEffect[sname];
-            //            IsSpecialPowerInEffectRet = true;
-            //            return IsSpecialPowerInEffectRet;
-            //        ErrorHandler:
-            //            ;
+            return colSpecialPowerInEffect.List.Any(x => x.Name == sname);
         }
 
         // ユニットがスペシャルパワー効果 sptype の影響下にあるかどうか
         public bool IsUnderSpecialPowerEffect(string sptype)
         {
-            bool IsUnderSpecialPowerEffectRet = default;
-            //int i;
-            //foreach (Condition cnd in colSpecialPowerInEffect)
-            //{
-            //    {
-            //        var withBlock = SRC.SPDList.Item(cnd.Name);
-            //        var loopTo = withBlock.CountEffect();
-            //        for (i = 1; i <= loopTo; i++)
-            //        {
-            //            if ((withBlock.EffectType(i) ?? "") == (sptype ?? ""))
-            //            {
-            //                IsUnderSpecialPowerEffectRet = true;
-            //                return IsUnderSpecialPowerEffectRet;
-            //            }
-            //        }
-            //    }
-            //}
-
-            IsUnderSpecialPowerEffectRet = false;
-            return IsUnderSpecialPowerEffectRet;
+            foreach (Condition cnd in colSpecialPowerInEffect.List)
+            {
+                var spd = SRC.SPDList.Item(cnd.Name);
+                if (spd.Effects.Any(x => x.strEffectType == sptype))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         // 影響下にあるスペシャルパワーの総数

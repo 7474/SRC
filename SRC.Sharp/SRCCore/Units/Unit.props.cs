@@ -390,77 +390,76 @@ namespace SRCCore.Units
                     return 0;
                 }
 
-                // TODO
-                //// 特殊状態による移動力修正
-                //if (IsUnderSpecialPowerEffect("移動力強化"))
-                //{
-                //    SpeedRet = (int)(SpeedRet + SpecialPowerEffectLevel("移動力強化"));
-                //}
-                //else if (IsConditionSatisfied("移動力ＵＰ"))
-                //{
-                //    if (Expression.IsOptionDefined("大型マップ"))
-                //    {
-                //        SpeedRet = (int)(SpeedRet + 2);
-                //    }
-                //    else
-                //    {
-                //        SpeedRet = (int)(SpeedRet + 1);
-                //    }
-                //}
+                // 特殊状態による移動力修正
+                if (IsUnderSpecialPowerEffect("移動力強化"))
+                {
+                    SpeedRet = (int)(SpeedRet + SpecialPowerEffectLevel("移動力強化"));
+                }
+                else if (IsConditionSatisfied("移動力ＵＰ"))
+                {
+                    if (Expression.IsOptionDefined("大型マップ"))
+                    {
+                        SpeedRet = SpeedRet + 2;
+                    }
+                    else
+                    {
+                        SpeedRet = SpeedRet + 1;
+                    }
+                }
 
-                //if (IsConditionSatisfied("移動力ＤＯＷＮ"))
-                //{
-                //    SpeedRet = (int)GeneralLib.MaxLng(SpeedRet / 2, 1);
-                //}
+                if (IsConditionSatisfied("移動力ＤＯＷＮ"))
+                {
+                    SpeedRet = GeneralLib.MaxLng(SpeedRet / 2, 1);
+                }
 
-                //// 霊力による移動力ＵＰ
-                //if (IsFeatureAvailable("霊力変換器"))
-                //{
-                //    if (CountPilot() > 0)
-                //    {
-                //        SpeedRet = (int)(SpeedRet + Conversion.Int(0.01d * PlanaLevel()));
-                //    }
-                //}
+                // 霊力による移動力ＵＰ
+                if (IsFeatureAvailable("霊力変換器"))
+                {
+                    if (CountPilot() > 0)
+                    {
+                        SpeedRet = (int)(SpeedRet + 0.01d * PlanaLevel());
+                    }
+                }
 
-                //// スペシャルパワーによる移動力低下
-                //if (IsUnderSpecialPowerEffect("移動力低下"))
-                //{
-                //    SpeedRet = (int)GeneralLib.MaxLng(SpeedRet / 2, 1);
-                //}
+                // スペシャルパワーによる移動力低下
+                if (IsUnderSpecialPowerEffect("移動力低下"))
+                {
+                    SpeedRet = GeneralLib.MaxLng(SpeedRet / 2, 1);
+                }
 
-                //// 移動不能の場合は移動力０
-                //if (IsConditionSatisfied("移動不能"))
-                //{
-                //    SpeedRet = 0;
-                //}
+                // 移動不能の場合は移動力０
+                if (IsConditionSatisfied("移動不能"))
+                {
+                    SpeedRet = 0;
+                }
 
-                //// ＥＮ切れにより移動できない場合
-                //if (Status_Renamed == "出撃")
-                //{
-                //    switch (Area ?? "")
-                //    {
-                //        case "空中":
-                //        case "宇宙":
-                //            {
-                //                if (EN < 5)
-                //                {
-                //                    SpeedRet = 0;
-                //                }
+                // ＥＮ切れにより移動できない場合
+                if (Status == "出撃")
+                {
+                    switch (Area ?? "")
+                    {
+                        case "空中":
+                        case "宇宙":
+                            {
+                                if (EN < 5)
+                                {
+                                    SpeedRet = 0;
+                                }
 
-                //                break;
-                //            }
+                                break;
+                            }
 
-                //        case "地中":
-                //            {
-                //                if (EN < 10)
-                //                {
-                //                    SpeedRet = 0;
-                //                }
+                        case "地中":
+                            {
+                                if (EN < 10)
+                                {
+                                    SpeedRet = 0;
+                                }
 
-                //                break;
-                //            }
-                //    }
-                //}
+                                break;
+                            }
+                    }
+                }
 
                 return SpeedRet;
             }
