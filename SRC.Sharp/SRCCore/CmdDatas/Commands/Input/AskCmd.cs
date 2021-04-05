@@ -32,7 +32,7 @@ namespace SRCCore.CmdDatas.Commands
 
             // 表示オプションの処理
             var argIndex = ArgNum;
-            while (ArgNum > 1)
+            while (argIndex > 1)
             {
                 switch (GetArg(argIndex) ?? "")
                 {

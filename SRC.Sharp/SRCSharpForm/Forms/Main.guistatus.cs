@@ -342,8 +342,8 @@ namespace SRCSharpForm
                     g.TextRenderingHint = StatusTextRenderingHint;
                     var uStatus = $"HP:{u.HP}/{u.MaxHP} EN:{u.EN}/{u.MaxEN}";
                     g.DrawString(
-                        uStatus +
-                        Environment.NewLine +
+                        uStatus + Environment.NewLine +
+                        u.SpecialPowerInEffect() + Environment.NewLine +
                         sb.ToString(),
                         StatusFont,
                         StatusNormalStringBrush,

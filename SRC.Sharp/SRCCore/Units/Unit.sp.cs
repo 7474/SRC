@@ -110,7 +110,7 @@ namespace SRCCore.Units
         {
             try
             {
-                var cnd = colSpecialPowerInEffect[Index - 1];
+                var cnd = colSpecialPowerInEffect[Index];
                 return SRC.SPDList.Item(cnd.Name);
             }
             catch
@@ -229,7 +229,7 @@ namespace SRCCore.Units
         // スペシャルパワー sname の効果を取り除く
         public void RemoveSpecialPowerInEffect2(int Index)
         {
-            colSpecialPowerInEffect.Remove(colSpecialPowerInEffect[Index - 1]);
+            colSpecialPowerInEffect.Remove(colSpecialPowerInEffect[Index]);
         }
 
         // 全てのスペシャルパワーの効果を取り除く

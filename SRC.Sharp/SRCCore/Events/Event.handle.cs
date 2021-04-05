@@ -202,18 +202,18 @@ namespace SRCCore.Events
                     break;
             }
 
-            //if (CallDepth > MaxCallDepth)
-            //{
-            //    GUI.ErrorMessage("サブルーチンの呼び出し階層が" + SrcFormatter.Format(MaxCallDepth) + "を超えているため、イベントの処理が出来ません");
-            //    CallDepth = MaxCallDepth;
-            //    return;
-            //}
+            if (CallDepth > MaxCallDepth)
+            {
+                GUI.ErrorMessage("サブルーチンの呼び出し階層が" + SrcFormatter.Format(MaxCallDepth) + "を超えているため、イベントの処理が出来ません");
+                CallDepth = MaxCallDepth;
+                return;
+            }
 
             // 現在の状態を保存
             ArgIndexStack[CallDepth] = ArgIndex;
             VarIndexStack[CallDepth] = VarIndex;
             ForIndexStack[CallDepth] = ForIndex;
-            // TODO Impl
+            // TODO Impl SaveBasePoint
             //SaveBasePoint();
 
             // 呼び出し階層数をインクリメント
@@ -365,23 +365,23 @@ namespace SRCCore.Events
                 }
             };
 
-            //if (CallDepth >= 0)
-            //{
-            //    // 呼び出し階層数を元に戻す
-            //    // （サブルーチン内でExitが呼ばれることがあるので単純に-1出来ない）
-            //    CallDepth = prev_call_depth;
+            if (CallDepth >= 0)
+            {
+                // 呼び出し階層数を元に戻す
+                // （サブルーチン内でExitが呼ばれることがあるので単純に-1出来ない）
+                CallDepth = prev_call_depth;
 
-            //    // イベント実行前の状態に復帰
-            //    ArgIndex = ArgIndexStack[CallDepth];
-            //    VarIndex = VarIndexStack[CallDepth];
-            //    ForIndex = ForIndexStack[CallDepth];
-            //}
-            //else
-            //{
-            //    ArgIndex = 0;
-            //    VarIndex = 0;
-            //    ForIndex = 0;
-            //}
+                // イベント実行前の状態に復帰
+                ArgIndex = ArgIndexStack[CallDepth];
+                VarIndex = VarIndexStack[CallDepth];
+                ForIndex = ForIndexStack[CallDepth];
+            }
+            else
+            {
+                ArgIndex = 0;
+                VarIndex = 0;
+                ForIndex = 0;
+            }
 
             //// イベントキューを元に戻す
             //Array.Resize(EventQue, GeneralLib.MinLng(event_que_idx - 1, Information.UBound(EventQue)) + 1);

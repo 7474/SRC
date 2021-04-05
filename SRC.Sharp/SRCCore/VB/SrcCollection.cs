@@ -22,7 +22,11 @@ namespace SRCCore.VB
 
         public IList<V> List => list.AsReadOnly();
 
-        // 1オフセット
+        /// <summary>
+        /// 1オフセット
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public V this[int index]
         {
             get => list[index - 1];
