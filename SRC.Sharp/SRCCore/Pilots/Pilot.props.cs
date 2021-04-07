@@ -284,85 +284,79 @@ namespace SRCCore.Pilots
             }
         }
 
-        //// ビットマップ
-        //public string get_Bitmap(bool use_orig)
-        //{
-        //    string BitmapRet = default;
-        //    Unit u;
-        //    string uname = default, vname;
-        //    if (use_orig)
-        //    {
-        //        BitmapRet = Data.Bitmap0;
-        //    }
-        //    else
-        //    {
-        //        BitmapRet = Data.Bitmap;
-        //    }
+        // ビットマップ
+        public string get_Bitmap(bool use_orig)
+        {
+            string BitmapRet;
+            if (use_orig)
+            {
+                BitmapRet = Data.Bitmap0;
+            }
+            else
+            {
+                BitmapRet = Data.Bitmap;
+            }
 
-        //    // パイロット画像変更
-        //    if (Unit is null)
-        //    {
-        //        return default;
-        //    }
+            // パイロット画像変更
+            if (Unit is null)
+            {
+                return BitmapRet;
+            }
 
-        //    {
-        //        var withBlock = Unit;
-        //        if (withBlock.CountPilot() > 0)
-        //        {
-        //            if (!ReferenceEquals(withBlock.MainPilot(), this))
-        //            {
-        //                return default;
-        //            }
-        //        }
+            if (Unit.CountPilot() > 0)
+            {
+                if (!ReferenceEquals(Unit.MainPilot(), this))
+                {
+                    return BitmapRet;
+                }
+            }
 
-        //        u = Unit;
+            var u = Unit;
 
-        //        // パイロットステータスコマンド中の場合はユニットを検索する必要がある
-        //        if (withBlock.Name == "ステータス表示用ダミーユニット")
-        //        {
-        //            // メインパイロットかどうかチェック
-        //            vname = "搭乗順番[" + ID + "]";
-        //            if (Expression.IsLocalVariableDefined(vname))
-        //            {
-        //                // UPGRADE_WARNING: オブジェクト LocalVariableList.Item(vname).NumericValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectNotEqual(Event.LocalVariableList[vname].NumericValue, 1, false)))
-        //                {
-        //                    return default;
-        //                }
-        //            }
-        //            else
-        //            {
-        //                return default;
-        //            }
+            // パイロットステータスコマンド中の場合はユニットを検索する必要がある
+            if (Unit.Name == "ステータス表示用ダミーユニット")
+            {
+                // メインパイロットかどうかチェック
+                var vname = "搭乗順番[" + ID + "]";
+                if (Expression.IsLocalVariableDefined(vname))
+                {
+                    if (Event.LocalVariableList[vname].NumericValue != 1d)
+                    {
+                        return BitmapRet;
+                    }
+                }
+                else
+                {
+                    return BitmapRet;
+                }
 
-        //            vname = "搭乗ユニット[" + ID + "]";
-        //            if (Expression.IsLocalVariableDefined(vname))
-        //            {
-        //                // UPGRADE_WARNING: オブジェクト LocalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                uname = Conversions.ToString(Event.LocalVariableList[vname].StringValue);
-        //            }
+                var uname = "";
+                vname = "搭乗ユニット[" + ID + "]";
+                if (Expression.IsLocalVariableDefined(vname))
+                {
+                    uname = Conversions.ToString(Event.LocalVariableList[vname].StringValue);
+                }
 
-        //            if (string.IsNullOrEmpty(uname))
-        //            {
-        //                return default;
-        //            }
+                if (string.IsNullOrEmpty(uname))
+                {
+                    return BitmapRet;
+                }
 
-        //            u = SRC.UList.Item(uname);
-        //        }
+                u = SRC.UList.Item(uname);
+            }
 
-        //        if (u.IsConditionSatisfied("パイロット画像"))
-        //        {
-        //            BitmapRet = GeneralLib.LIndex(u.ConditionData(argIndex2), 2);
-        //        }
+            if (u.IsConditionSatisfied("パイロット画像"))
+            {
+                BitmapRet = GeneralLib.LIndex(u.Condition("パイロット画像").StrData, 2);
+            }
 
-        //        if (u.IsFeatureAvailable("パイロット画像"))
-        //        {
-        //            BitmapRet = u.FeatureData("パイロット画像");
-        //        }
-        //    }
+            if (u.IsFeatureAvailable("パイロット画像"))
+            {
+                BitmapRet = u.FeatureData("パイロット画像");
+            }
 
-        //    return BitmapRet;
-        //}
+            return BitmapRet;
+        }
 
         // ＢＧＭ
         public string BGM => Data.BGM;

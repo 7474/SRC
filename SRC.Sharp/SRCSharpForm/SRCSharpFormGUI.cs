@@ -1013,18 +1013,13 @@ namespace SRCSharpForm
             {
                 // どのキャラ画像を使うか？
                 var fname = "-.bmp";
-                // TODO
-                //if (SRC.PList.IsDefined(pname))
-                //{
-                //    Pilot localItem() { object argIndex1 = pname; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-                //    pnickname = localItem().get_Nickname(false);
-                //    Pilot localItem1() { object argIndex1 = pname; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-                //    fname = localItem1().get_Bitmap(false);
-                //}
-                //else
-                if (SRC.PDList.IsDefined(pname))
+                if (SRC.PList.IsDefined(pname))
+                {
+                    var p = SRC.PList.Item(pname);
+                    pnickname = p.get_Nickname(false);
+                    fname = p.get_Bitmap(false);
+                }
+                else if (SRC.PDList.IsDefined(pname))
                 {
                     var pd = SRC.PDList.Item(pname);
                     pnickname = pd.Nickname;
