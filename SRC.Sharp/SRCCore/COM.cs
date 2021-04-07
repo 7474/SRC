@@ -2498,14 +2498,14 @@ namespace SRCCore
                     {
                         case "テレポート":
                             {
-                                // TODO Impl
-                                //if (selectedUnit.IsMessageDefined("テレポート"))
-                                //{
-                                //    GUI.OpenMessageForm(u1: null, u2: null);
-                                //    selectedUnit.PilotMessage("テレポート", msg_mode: "");
-                                //    GUI.CloseMessageForm();
-                                //}
+                                if (selectedUnit.IsMessageDefined("テレポート"))
+                                {
+                                    GUI.OpenMessageForm(u1: null, u2: null);
+                                    selectedUnit.PilotMessage("テレポート", msg_mode: "");
+                                    GUI.CloseMessageForm();
+                                }
 
+                                // TODO Impl
                                 //bool localIsSpecialEffectDefined() { string argmain_situation = "テレポート"; object argIndex1 = "テレポート"; string argsub_situation = selectedUnit.FeatureName(argIndex1); var ret = selectedUnit.IsSpecialEffectDefined(argmain_situation, argsub_situation); return ret; }
 
                                 //if (selectedUnit.IsAnimationDefined("テレポート", selectedUnit.FeatureName("テレポート")))
@@ -2533,14 +2533,14 @@ namespace SRCCore
 
                         case "ジャンプ":
                             {
-                                // TODO Impl
-                                //if (selectedUnit.IsMessageDefined("ジャンプ"))
-                                //{
-                                //    GUI.OpenMessageForm(u1: null, u2: null);
-                                //    selectedUnit.PilotMessage("ジャンプ", msg_mode: "");
-                                //    GUI.CloseMessageForm();
-                                //}
+                                if (selectedUnit.IsMessageDefined("ジャンプ"))
+                                {
+                                    GUI.OpenMessageForm(u1: null, u2: null);
+                                    selectedUnit.PilotMessage("ジャンプ", msg_mode: "");
+                                    GUI.CloseMessageForm();
+                                }
 
+                                // TODO Impl
                                 //bool localIsSpecialEffectDefined1() { string argmain_situation = "ジャンプ"; object argIndex1 = "ジャンプ"; string argsub_situation = selectedUnit.FeatureName(argIndex1); var ret = selectedUnit.IsSpecialEffectDefined(argmain_situation, argsub_situation); return ret; }
 
                                 //if (selectedUnit.IsAnimationDefined("ジャンプ", selectedUnit.FeatureName("ジャンプ")))
