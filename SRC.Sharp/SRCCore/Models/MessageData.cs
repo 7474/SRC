@@ -14,6 +14,7 @@ namespace SRCCore.Models
     public interface ISituationItem
     {
         string Situation { get; }
+        bool IsAvailable(Unit u, bool ignore_condition);
     }
 
     public class MessageDataItem : ISituationItem
@@ -25,6 +26,12 @@ namespace SRCCore.Models
         {
             Situation = situation;
             Message = message;
+        }
+
+        public bool IsAvailable(Unit u, bool ignore_condition)
+        {
+            // XXX MessageDataItem#IsAvailable 常に真でいいか
+            return true;
         }
     }
 

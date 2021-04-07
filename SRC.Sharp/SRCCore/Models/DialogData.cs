@@ -62,7 +62,7 @@ namespace SRCCore.Models
         public Dialog SelectDialog(string msg_situation, Unit u, bool ignore_condition = false)
         {
             // Impl ignore_condition
-            return Items.SelectMessage(SRC, msg_situation, u);
+            return Items.SelectMessage(SRC, msg_situation, u, ignore_condition);
         }
         //    Dialog SelectDialogRet = default;
         //    string[] situations;

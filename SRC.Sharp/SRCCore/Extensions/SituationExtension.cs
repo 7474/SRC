@@ -12,7 +12,7 @@ namespace SRCCore.Extensions
     public static class SituationExtension
     {
         // ユニット u のシチュエーション msg_situation におけるメッセージを選択
-        public static T SelectMessage<T>(this IList<T> Items, SRC SRC, string msg_situation, Unit u = null)
+        public static T SelectMessage<T>(this IList<T> Items, SRC SRC, string msg_situation, Unit u = null, bool ignore_condition = false)
             where T : ISituationItem
         {
             // シチュエーションを設定
@@ -75,7 +75,10 @@ namespace SRCCore.Extensions
             }
 
             // メッセージの候補リスト第一次審査
-            var list0 = Items.Where(m => situations.Any(s => m.Situation.StartsWith(s))).ToList();
+            var list0 = Items
+                .Where(m => m.IsAvailable(u, ignore_condition))
+                .Where(m => situations.Any(s => m.Situation.StartsWith(s)))
+                .ToList();
 
             if (!list0.Any())
             {

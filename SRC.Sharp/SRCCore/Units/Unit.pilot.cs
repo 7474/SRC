@@ -331,6 +331,9 @@ namespace SRCCore.Units
         public IEnumerable<Pilot> SubPilots => colPilot.List.Skip(1);
         public IEnumerable<Pilot> Supports => colSupport.List;
 
+        public IEnumerable<Pilot> MainPilots => Enumerable.Empty<Pilot>()
+            .Append(MainPilot())
+            .Concat(SubPilots);
         public IEnumerable<Pilot> AllPilots => Enumerable.Empty<Pilot>()
             .Append(MainPilot())
             .Concat(SubPilots)

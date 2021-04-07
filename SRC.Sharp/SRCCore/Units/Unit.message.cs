@@ -418,60 +418,37 @@ namespace SRCCore.Units
                 }
             }
 
-            // TODO ダイアログデータを使って判定
             // ダイアログデータを使って判定
             var pnames = new List<string>();
-            pnames.Add(MainPilot().MessageType);
-            //pnames.Add(MainPilot().MessageType);
-            //pnames.Add(MainPilot().MessageType);
-            //if (IsFeatureAvailable("追加パイロット"))
-            //{
-            //    pnames.Add(Pilot(1).MessageType;
-            //}
-
-            //var loopTo3 = CountPilot();
-            //for (i = 2; i <= loopTo3; i++)
-            //{
-            //    Pilot localPilot() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
-
-            //    pnames[1] = pnames[1] + " " + localPilot().MessageType;
-            //    Pilot localPilot1() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
-
-            //    pnames[2] = pnames[2] + " " + localPilot1().MessageType;
-            //}
-
-            //var loopTo4 = CountSupport();
-            //for (i = 1; i <= loopTo4; i++)
-            //{
-            //    Pilot localSupport() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
-
-            //    pnames[1] = pnames[1] + " " + localSupport().MessageType;
-            //}
-
-            //if (IsFeatureAvailable("追加サポート"))
-            //{
-            //    pnames[1] = pnames[1] + " " + AdditionalSupport().MessageType;
-            //}
-
-            //if ((Situation ?? "") == (Commands.SelectedSpecialPower ?? ""))
-            //{
-            //    pnames[3] = Commands.SelectedPilot.MessageType;
-            //}
-
-            //var loopTo5 = Information.UBound(pnames);
-            //for (i = 1; i <= loopTo5; i++)
-            foreach (var pname in pnames)
+            // [0] パイロット全員とサポート全員が指定されている
+            pnames.Add(string.Join(" ", AllPilots.Select(x => x.MessageType)));
+            // [1] パイロット全員が指定されている
+            pnames.Add(string.Join(" ", MainPilots.Select(x => x.MessageType)));
+            // [2] メインパイロットが指定されている
+            if (Situation == Commands.SelectedSpecialPower)
             {
-                //// 追加パイロットにメッセージデータがあればそちらを優先
-                //if (i == 4)
-                //{
-                //    bool localIsDefined1() { object argIndex1 = MainPilot().MessageType; var ret = SRC.MDList.IsDefined(argIndex1); MainPilot().MessageType = Conversions.ToString(argIndex1); return ret; }
-
-                //    if (localIsDefined1())
-                //    {
-                //        break;
-                //    }
-                //}
+                pnames.Add(Commands.SelectedPilot.MessageType);
+            }
+            else
+            {
+                pnames.Add(MainPilot().MessageType);
+            }
+            // [3]
+            if (IsFeatureAvailable("追加パイロット"))
+            {
+                pnames.Add(Pilots.First().MessageType);
+            }
+            for (var i = 0; i < pnames.Count; i++)
+            {
+                var pname = pnames[i];
+                // 追加パイロットにメッセージデータがあればそちらを優先
+                if (i == pnames.Count - 1)
+                {
+                    if (SRC.MDList.IsDefined(MainPilot().MessageType))
+                    {
+                        break;
+                    }
+                }
 
                 if (SRC.DDList.IsDefined(pname))
                 {
@@ -1107,63 +1084,37 @@ namespace SRCCore.Units
                 return true;
             }
 
-            // TODO Impl ダイアログデータを使って判定
-            //// ダイアログデータを使って判定
-            //{
-            //    var withBlock = MainPilot();
-            //    pnames[1] = withBlock.MessageType;
-            //    pnames[2] = withBlock.MessageType;
-            //    pnames[3] = withBlock.MessageType;
-            //}
+            var pnames = new List<string>();
+            // [0] パイロット全員とサポート全員が指定されている
+            pnames.Add(string.Join(" ", AllPilots.Select(x => x.MessageType)));
+            // [1] パイロット全員が指定されている
+            pnames.Add(string.Join(" ", MainPilots.Select(x => x.MessageType)));
+            // [2] メインパイロットが指定されている
+            if (!string.IsNullOrEmpty(main_situation) && main_situation == Commands.SelectedSpecialPower)
+            {
+                pnames.Add(Commands.SelectedPilot.MessageType);
+            }
+            else
+            {
+                pnames.Add(MainPilot().MessageType);
+            }
+            // [3]
+            if (IsFeatureAvailable("追加パイロット"))
+            {
+                pnames.Add(Pilots.First().MessageType);
+            }
 
-            //pnames[4] = Pilot(1).MessageType;
-            //var loopTo = CountPilot();
-            //for (i = 2; i <= loopTo; i++)
-            //{
-            //    {
-            //        var withBlock1 = Pilot(i);
-            //        pnames[1] = pnames[1] + " " + withBlock1.MessageType;
-            //        pnames[2] = pnames[2] + " " + withBlock1.MessageType;
-            //    }
-            //}
-
-            //var loopTo1 = CountSupport();
-            //for (i = 1; i <= loopTo1; i++)
-            //{
-            //    Pilot localSupport() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
-
-            //    pnames[1] = pnames[1] + " " + localSupport().MessageType;
-            //}
-
-            //if (IsFeatureAvailable("追加サポート"))
-            //{
-            //    pnames[1] = pnames[1] + " " + AdditionalSupport().MessageType;
-            //}
-
-            //if (!string.IsNullOrEmpty(main_situation))
-            //{
-            //    if ((main_situation ?? "") == (Commands.SelectedSpecialPower ?? ""))
-            //    {
-            //        pnames[3] = Commands.SelectedPilot.MessageType;
-            //    }
-            //}
-
-            //for (i = 1; i <= 4; i++)
-            //{
-            //    var tmp1 = pnames;
-            //    if (SRC.DDList.IsDefined(tmp1[i]))
-            //    {
-            //        var tmp = pnames;
-            //        {
-            //            var withBlock2 = SRC.DDList.Item(tmp[i]);
-            //            if (withBlock2.SelectDialog(main_situation, this, ignore_condition) is object)
-            //            {
-            //                IsMessageDefinedRet = true;
-            //                return IsMessageDefinedRet;
-            //            }
-            //        }
-            //    }
-            //}
+            foreach (var pname in pnames)
+            {
+                if (SRC.DDList.IsDefined(pname))
+                {
+                    var dd = SRC.DDList.Item(pname);
+                    if (dd.SelectDialog(main_situation, this, ignore_condition) != null)
+                    {
+                        return true;
+                    }
+                }
+            }
 
             // メッセージデータを使って判定
             var msg = "";
