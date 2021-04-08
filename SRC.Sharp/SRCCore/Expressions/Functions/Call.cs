@@ -73,9 +73,11 @@ namespace SRCCore.Expressions.Functions
             var cur_depth = SRC.Event.CallDepth;
 
             // 引数をスタックに積む
+            for (var i = 1; i <= pcount; i++)
+            {
+                SRC.Event.ArgStack[SRC.Event.ArgIndex + i] = @params[i];
+            }
             SRC.Event.ArgIndex = (SRC.Event.ArgIndex + pcount - 1);
-            for (var i = 2; i <= pcount; i++)
-                SRC.Event.ArgStack[SRC.Event.ArgIndex - i + 2] = @params[i];
 
             // サブルーチン本体を実行
             do
