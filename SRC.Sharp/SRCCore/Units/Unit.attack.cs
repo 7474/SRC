@@ -90,7 +90,7 @@ namespace SRCCore.Units
             //}
 
             // パイロットのセリフを表示するかどうかを判定
-            if (attack_mode == "マップ攻撃" | attack_mode == "反射" | attack_mode == "当て身技" | attack_mode == "自動反撃")
+            if (attack_mode == "マップ攻撃" || attack_mode == "反射" || attack_mode == "当て身技" || attack_mode == "自動反撃")
             {
                 be_quiet = true;
             }
@@ -353,30 +353,27 @@ namespace SRCCore.Units
                 {
                     PilotMessage(wname, "攻撃");
                 }
+
+                // 攻撃アニメ
+                if (IsDefense() && IsAnimationDefined(wname + "(反撃)", ""))
+                {
+                    PlayAnimation(wname + "(反撃)", sub_situation: "");
+                }
+                else if (IsAnimationDefined(wname + "(攻撃)")
+                    || IsAnimationDefined(wname, sub_situation: ""))
+                {
+                    PlayAnimation(wname + "(攻撃)", sub_situation: "");
+                }
+                else if (IsSpecialEffectDefined(wname, sub_situation: ""))
+                {
+                    SpecialEffect(wname, sub_situation: "");
+                }
+                else if (!Sound.IsWavePlayed)
+                {
+                    // TODO Impl Effect
+                    //Effect.AttackEffect(this, w);
+                }
             }
-
-            //    // 攻撃アニメ
-            //    bool localIsAnimationDefined() { string argmain_situation = wname + "(反撃)"; string argsub_situation = ""; var ret = IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-            //    bool localIsAnimationDefined1() { string argmain_situation = wname + "(攻撃)"; string argsub_situation = ""; var ret = IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-            //    if (IsDefense() && localIsAnimationDefined())
-            //    {
-            //        PlayAnimation(wname + "(反撃)", sub_situation: "");
-            //    }
-            //    else if (localIsAnimationDefined1() | IsAnimationDefined(wname, sub_situation: ""))
-            //    {
-            //        PlayAnimation(wname + "(攻撃)", sub_situation: "");
-            //    }
-            //    else if (IsSpecialEffectDefined(wname, sub_situation: ""))
-            //    {
-            //        SpecialEffect(wname, sub_situation: "");
-            //    }
-            //    else if (!Sound.IsWavePlayed)
-            //    {
-            //        Effect.AttackEffect(this, w);
-            //    }
-            //}
             //else if (attack_mode == "自動反撃")
             //{
             //    // 攻撃アニメ
@@ -388,7 +385,7 @@ namespace SRCCore.Units
             //    {
             //        PlayAnimation(wname + "(反撃)", sub_situation: "");
             //    }
-            //    else if (localIsAnimationDefined3() | IsAnimationDefined(wname, sub_situation: ""))
+            //    else if (localIsAnimationDefined3() || IsAnimationDefined(wname, sub_situation: ""))
             //    {
             //        PlayAnimation(wname + "(攻撃)", sub_situation: "");
             //    }
@@ -488,7 +485,7 @@ namespace SRCCore.Units
             //    }
 
             //    // ジャンプ攻撃
-            //    if (t.Area == "空中" && (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "突") | IsWeaponClassifiedAs(w, "接")) && !IsTransAvailable("空"))
+            //    if (t.Area == "空中" && (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "突") || IsWeaponClassifiedAs(w, "接")) && !IsTransAvailable("空"))
             //    {
             //        msg = msg + "ジャンプし、";
             //    }
@@ -497,13 +494,13 @@ namespace SRCCore.Units
             //    {
             //        msg = msg + "再度";
             //    }
-            //    else if (attack_mode == "カウンター" | attack_mode == "先制攻撃")
+            //    else if (attack_mode == "カウンター" || attack_mode == "先制攻撃")
             //    {
             //        msg = "先制攻撃！;" + msg + "先手を取り";
             //    }
 
             //    // 攻撃の種類によってメッセージを切り替え
-            //    if (Strings.Right(wnickname, 2) == "攻撃" | Strings.Right(wnickname, 4) == "アタック" | wnickname == "突撃")
+            //    if (Strings.Right(wnickname, 2) == "攻撃" || Strings.Right(wnickname, 4) == "アタック" || wnickname == "突撃")
             //    {
             //        msg = msg + "[" + wnickname + "]をかけた。;";
             //    }
@@ -530,11 +527,11 @@ namespace SRCCore.Units
             //    {
             //        msg = msg + "[" + t.Nickname + "]の技を習得しようと試みた。;";
             //    }
-            //    else if (IsWeaponClassifiedAs(w, "実") && (Strings.InStr(wnickname, "ミサイル") > 0 | Strings.InStr(wnickname, "ロケット") > 0))
+            //    else if (IsWeaponClassifiedAs(w, "実") && (Strings.InStr(wnickname, "ミサイル") > 0 || Strings.InStr(wnickname, "ロケット") > 0))
             //    {
             //        msg = msg + "[" + wnickname + "]を発射した。;";
             //    }
-            //    else if (Strings.Right(wnickname, 1) == "息" | Strings.Right(wnickname, 3) == "ブレス" | Strings.Right(wnickname, 2) == "光線" | Strings.Right(wnickname, 1) == "光" | Strings.Right(wnickname, 3) == "ビーム" | Strings.Right(wnickname, 4) == "レーザー")
+            //    else if (Strings.Right(wnickname, 1) == "息" || Strings.Right(wnickname, 3) == "ブレス" || Strings.Right(wnickname, 2) == "光線" || Strings.Right(wnickname, 1) == "光" || Strings.Right(wnickname, 3) == "ビーム" || Strings.Right(wnickname, 4) == "レーザー")
             //    {
             //        msg = msg + "[" + wnickname + "]を放った。;";
             //    }
@@ -613,7 +610,7 @@ namespace SRCCore.Units
             //}
 
             //// スペシャルパワー「必殺」「瀕死」
-            //if (IsUnderSpecialPowerEffect("絶対破壊") | IsUnderSpecialPowerEffect("絶対瀕死"))
+            //if (IsUnderSpecialPowerEffect("絶対破壊") || IsUnderSpecialPowerEffect("絶対瀕死"))
             //{
             //    if (!be_quiet)
             //    {
@@ -622,7 +619,7 @@ namespace SRCCore.Units
 
             //    bool localIsSpecialEffectDefined1() { string argmain_situation = wname + "(命中)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //    if (IsAnimationDefined(wname + "(命中)", sub_situation: "") | IsAnimationDefined(wname, sub_situation: ""))
+            //    if (IsAnimationDefined(wname + "(命中)", sub_situation: "") || IsAnimationDefined(wname, sub_situation: ""))
             //    {
             //        PlayAnimation(wname + "(命中)", sub_situation: "");
             //    }
@@ -643,7 +640,7 @@ namespace SRCCore.Units
             //        // Else
             //        // dmg = 0
             //        // End If
-            //        if (Expression.IsOptionDefined("ダメージ下限解除") | Expression.IsOptionDefined("ダメージ下限１"))
+            //        if (Expression.IsOptionDefined("ダメージ下限解除") || Expression.IsOptionDefined("ダメージ下限１"))
             //        {
             //            if (t.HP > 1)
             //            {
@@ -848,7 +845,7 @@ namespace SRCCore.Units
             //        su.Update();
 
             // メッセージウィンドウの表示を入れ替え
-            if (Party == "味方" | Party == "ＮＰＣ")
+            if (Party == "味方" || Party == "ＮＰＣ")
             {
                 GUI.UpdateMessageForm(su, this);
             }
@@ -998,7 +995,7 @@ namespace SRCCore.Units
             //}
 
             //// 受けの処理
-            //if (CheckParryFeature(w, t, tx, ty, attack_mode, def_mode, dmg, msg, be_quiet | use_protect_msg))
+            //if (CheckParryFeature(w, t, tx, ty, attack_mode, def_mode, dmg, msg, be_quiet || use_protect_msg))
             //{
             //    dmg = 0;
             //    goto EndAttack;
@@ -1030,7 +1027,7 @@ namespace SRCCore.Units
             //CheckShieldFeature(w, t, dmg, be_quiet, use_shield, use_shield_msg);
 
             //// 防御能力の処理
-            //if (CheckDefenseFeature(w, t, tx, ty, attack_mode, def_mode, dmg, msg, be_quiet | use_protect_msg, is_penetrated))
+            //if (CheckDefenseFeature(w, t, tx, ty, attack_mode, def_mode, dmg, msg, be_quiet || use_protect_msg, is_penetrated))
             //{
             //    if (!be_quiet)
             //    {
@@ -1051,7 +1048,7 @@ namespace SRCCore.Units
 
             //bool localIsSpecialEffectDefined3() { string argmain_situation = wname + "(命中)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //if (IsAnimationDefined(wname + "(命中)", sub_situation: "") | IsAnimationDefined(wname, sub_situation: ""))
+            //if (IsAnimationDefined(wname + "(命中)", sub_situation: "") || IsAnimationDefined(wname, sub_situation: ""))
             //{
             //    PlayAnimation(wname + "(命中)", sub_situation: "");
             //}
@@ -1094,7 +1091,7 @@ namespace SRCCore.Units
             //if (su is null && def_mode != "援護防御")
             //{
             //    // 吹き飛ばし
-            //    if (IsWeaponClassifiedAs(w, "吹") | IsWeaponClassifiedAs(w, "Ｋ"))
+            //    if (IsWeaponClassifiedAs(w, "吹") || IsWeaponClassifiedAs(w, "Ｋ"))
             //    {
             //        CheckBlowAttack(w, t, dmg, msg, attack_mode, def_mode, critical_type);
             //    }
@@ -1205,7 +1202,7 @@ namespace SRCCore.Units
             }
 
             //// 都合により破壊させない場合
-            //if (IsUnderSpecialPowerEffect("てかげん") && this.MainPilot().Technique > t.MainPilot().Technique && Strings.InStr(attack_mode, "援護攻撃") == 0 | t.IsConditionSatisfied("不死身"))
+            //if (IsUnderSpecialPowerEffect("てかげん") && this.MainPilot().Technique > t.MainPilot().Technique && Strings.InStr(attack_mode, "援護攻撃") == 0 || t.IsConditionSatisfied("不死身"))
             //{
             //    if (t.HP <= 10)
             //    {
@@ -1255,7 +1252,7 @@ namespace SRCCore.Units
             //}
 
             //// クリティカル時メッセージ
-            //if (is_critical | Strings.Len(critical_type) > 0)
+            //if (is_critical || Strings.Len(critical_type) > 0)
             //{
             //    if (!be_quiet)
             //    {
@@ -1274,7 +1271,7 @@ namespace SRCCore.Units
             //    }
             //    else
             //    {
-            //        Effect.CriticalEffect(critical_type, w, use_support_guard | use_protect_msg);
+            //        Effect.CriticalEffect(critical_type, w, use_support_guard || use_protect_msg);
             //    }
             //}
 
@@ -1320,7 +1317,7 @@ namespace SRCCore.Units
                 }
 
                 //// ダメージ量表示前にカットインは一旦消去しておく
-                //if (!Expression.IsOptionDefined("戦闘中画面初期化無効") | attack_mode == "マップ攻撃")
+                //if (!Expression.IsOptionDefined("戦闘中画面初期化無効") || attack_mode == "マップ攻撃")
                 //{
                 //    if (GUI.IsPictureVisible)
                 //    {
@@ -1330,7 +1327,7 @@ namespace SRCCore.Units
                 //}
 
                 //// ダメージ量をマップウィンドウに表示
-                //if (!Expression.IsOptionDefined("ダメージ表示無効") | attack_mode == "マップ攻撃")
+                //if (!Expression.IsOptionDefined("ダメージ表示無効") || attack_mode == "マップ攻撃")
                 //{
                 //    if (IsAnimationDefined(wname + "(ダメージ表示)", sub_situation: ""))
                 //    {
@@ -1342,7 +1339,7 @@ namespace SRCCore.Units
                 //    }
                 //    else
                 //    {
-                //        if (!SRC.BattleAnimation | WeaponPower(w, "") > 0 | dmg > 0)
+                //        if (!SRC.BattleAnimation || WeaponPower(w, "") > 0 || dmg > 0)
                 //        {
                 //            if (!SRC.BattleAnimation && su is object)
                 //            {
@@ -1359,7 +1356,7 @@ namespace SRCCore.Units
                 //// 自動反撃発動
                 //if (t.HP > 0)
                 //{
-                //    CheckAutoAttack(w, t, attack_mode, def_mode, dmg, be_quiet | use_protect_msg);
+                //    CheckAutoAttack(w, t, attack_mode, def_mode, dmg, be_quiet || use_protect_msg);
                 //    if (Status_Renamed != "出撃")
                 //    {
                 //        goto EndAttack;
@@ -1486,7 +1483,7 @@ namespace SRCCore.Units
                 //        }
                 //    }
                 //}
-                //else if ((dmg <= 0.05d * t.MaxHP && t.HP >= 0.25d * t.MaxHP | dmg <= 10) && Strings.Len(critical_type) == 0)
+                //else if ((dmg <= 0.05d * t.MaxHP && t.HP >= 0.25d * t.MaxHP || dmg <= 10) && Strings.Len(critical_type) == 0)
                 //{
                 //    // ダメージが非常に小さい
                 //    if (t.IsAnimationDefined("ダメージ小", sub_situation: ""))
@@ -1542,7 +1539,7 @@ namespace SRCCore.Units
                     {
                         // 破壊時メッセージは既に表示している
                     }
-                    else if ((dmg <= 0.05d * t.MaxHP && t.HP >= 0.25d * t.MaxHP | dmg <= 10) && Strings.Len(critical_type) == 0)
+                    else if ((dmg <= 0.05d * t.MaxHP && t.HP >= 0.25d * t.MaxHP || dmg <= 10) && Strings.Len(critical_type) == 0)
                     {
                         // ダメージが非常に小さい
                         t.PilotMessage("ダメージ小", msg_mode: "");
@@ -1694,7 +1691,7 @@ namespace SRCCore.Units
                 //                GUI.DisplaySysMessage(msg + t.Nickname + "は習得可能な技を持っていなかった。");
                 //            }
                 //        }
-                //        else if (IsWeaponClassifiedAs(w, "写") | IsWeaponClassifiedAs(w, "化"))
+                //        else if (IsWeaponClassifiedAs(w, "写") || IsWeaponClassifiedAs(w, "化"))
                 //        {
                 //        }
                 //        // 能力コピーの判定はこれから
@@ -2613,12 +2610,12 @@ namespace SRCCore.Units
                 //    var withBlock9 = CurrentForm();
                 //    if (Expression.IsOptionDefined("ユニット情報隠蔽"))
                 //    {
-                //        if (withBlock9.Party0 == "敵" | withBlock9.Party0 == "中立")
+                //        if (withBlock9.Party0 == "敵" || withBlock9.Party0 == "中立")
                 //        {
                 //            withBlock9.AddCondition("識別済み", -1, 0d, "非表示");
                 //        }
 
-                //        if (t.Party0 == "敵" | t.Party0 == "中立")
+                //        if (t.Party0 == "敵" || t.Party0 == "中立")
                 //        {
                 //            t.AddCondition("識別済み", -1, 0d, "非表示");
                 //        }
@@ -3036,7 +3033,7 @@ namespace SRCCore.Units
                 //        }
                 //    }
                 //}
-                //else if (is_hit && (IsWeaponClassifiedAs(w, "写") | IsWeaponClassifiedAs(w, "化")) && (dmg > 0 | !IsWeaponClassifiedAs(w, "殺")))
+                //else if (is_hit && (IsWeaponClassifiedAs(w, "写") || IsWeaponClassifiedAs(w, "化")) && (dmg > 0 || !IsWeaponClassifiedAs(w, "殺")))
                 //{
                 //    CheckMetamorphAttack(w, t, def_mode);
                 //}
@@ -3096,7 +3093,7 @@ namespace SRCCore.Units
                 //}
 
                 //// カットインは消去しておく
-                //if (!Expression.IsOptionDefined("戦闘中画面初期化無効") | attack_mode == "マップ攻撃")
+                //if (!Expression.IsOptionDefined("戦闘中画面初期化無効") || attack_mode == "マップ攻撃")
                 //{
                 //    if (GUI.IsPictureVisible)
                 //    {
