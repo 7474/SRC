@@ -77,9 +77,10 @@ namespace SRCCore.Units
         }
 
         // 特殊状態
-        public string Condition(string Index)
+        public Condition Condition(string Index)
         {
-            return colCondition[Index].Name;
+            //return colCondition[Index].Name;
+            return colCondition[Index];
         }
 
         // 特殊状態の残りターン数

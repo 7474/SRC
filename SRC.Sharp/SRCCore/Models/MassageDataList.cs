@@ -26,7 +26,7 @@ namespace SRCCore.Models
         // メッセージデータの追加
         public MessageData Add(string mname)
         {
-            var new_md = new MessageData();
+            var new_md = new MessageData(SRC);
             new_md.Name = mname;
             colMessageDataList.Add(new_md, mname);
             return new_md;

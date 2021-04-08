@@ -119,13 +119,12 @@ namespace SRCCore.Commands
                         }
 
                         unit.Update();
-                        // XXX
-                        //if (unit.IsMessageDefined(unit.Area))
-                        //{
-                        //    GUI.OpenMessageForm(u1: null, u2: null);
-                        //    unit.PilotMessage(unit.Area, msg_mode: "");
-                        //    GUI.CloseMessageForm();
-                        //}
+                        if (unit.IsMessageDefined(unit.Area))
+                        {
+                            GUI.OpenMessageForm(u1: null, u2: null);
+                            unit.PilotMessage(unit.Area, msg_mode: "");
+                            GUI.CloseMessageForm();
+                        }
 
                         GUI.PaintUnitBitmap(SelectedUnit);
                         CommandState = "ユニット選択";
@@ -146,13 +145,12 @@ namespace SRCCore.Commands
                         }
 
                         unit.Update();
-                        // XXX
-                        //if (unit.IsMessageDefined(unit.Area))
-                        //{
-                        //    GUI.OpenMessageForm(u1: null, u2: null);
-                        //    unit.PilotMessage(unit.Area, msg_mode: "");
-                        //    GUI.CloseMessageForm();
-                        //}
+                        if (unit.IsMessageDefined(unit.Area))
+                        {
+                            GUI.OpenMessageForm(u1: null, u2: null);
+                            unit.PilotMessage(unit.Area, msg_mode: "");
+                            GUI.CloseMessageForm();
+                        }
 
                         GUI.PaintUnitBitmap(SelectedUnit);
                         CommandState = "ユニット選択";
@@ -165,13 +163,12 @@ namespace SRCCore.Commands
                         GUI.LockGUI();
                         unit.Area = "地中";
                         unit.Update();
-                        // XXX
-                        //if (unit.IsMessageDefined(unit.Area))
-                        //{
-                        //    GUI.OpenMessageForm(u1: null, u2: null);
-                        //    unit.PilotMessage(unit.Area, msg_mode: "");
-                        //    GUI.CloseMessageForm();
-                        //}
+                        if (unit.IsMessageDefined(unit.Area))
+                        {
+                            GUI.OpenMessageForm(u1: null, u2: null);
+                            unit.PilotMessage(unit.Area, msg_mode: "");
+                            GUI.CloseMessageForm();
+                        }
 
                         GUI.PaintUnitBitmap(SelectedUnit);
                         CommandState = "ユニット選択";
@@ -184,13 +181,12 @@ namespace SRCCore.Commands
                         GUI.LockGUI();
                         unit.Area = "水中";
                         unit.Update();
-                        // XXX
-                        //if (unit.IsMessageDefined(unit.Area))
-                        //{
-                        //    GUI.OpenMessageForm(u1: null, u2: null);
-                        //    unit.PilotMessage(unit.Area, msg_mode: "");
-                        //    GUI.CloseMessageForm();
-                        //}
+                        if (unit.IsMessageDefined(unit.Area))
+                        {
+                            GUI.OpenMessageForm(u1: null, u2: null);
+                            unit.PilotMessage(unit.Area, msg_mode: "");
+                            GUI.CloseMessageForm();
+                        }
 
                         GUI.PaintUnitBitmap(SelectedUnit);
                         CommandState = "ユニット選択";

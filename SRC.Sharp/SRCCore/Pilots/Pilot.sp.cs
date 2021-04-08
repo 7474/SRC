@@ -388,21 +388,18 @@ namespace SRCCore.Pilots
             SRC.GUIStatus.ClearUnitStatus();
             Commands.SelectedPilot = this;
 
-            // TODO Impl
-            //// スペシャルパワー使用メッセージ
-            //SpecialPowerData localItem() { object argIndex1 = sname; var ret = SRC.SPDList.Item(argIndex1); return ret; }
-
-            //SpecialPowerData localItem1() { object argIndex1 = sname; var ret = SRC.SPDList.Item(argIndex1); return ret; }
-
-            //if (Conversions.ToBoolean(Operators.AndObject(Operators.AndObject(sp_mod != 2d, !localItem().IsEffectAvailable("復活")), !localItem1().IsEffectAvailable("復活"1))))
-            //{
-            //    if (Unit.IsMessageDefined(sname))
-            //    {
-            //        GUI.OpenMessageForm(u1: null, u2: null);
-            //        Unit.PilotMessage(sname, msg_mode: "");
-            //        GUI.CloseMessageForm();
-            //    }
-            //}
+            // スペシャルパワー使用メッセージ
+            if (sp_mod != 2d
+                && !SRC.SPDList.Item(sname).IsEffectAvailable("復活")
+                && !SRC.SPDList.Item(sname).IsEffectAvailable("自爆"))
+            {
+                if (Unit.IsMessageDefined(sname))
+                {
+                    GUI.OpenMessageForm(u1: null, u2: null);
+                    Unit.PilotMessage(sname, msg_mode: "");
+                    GUI.CloseMessageForm();
+                }
+            }
 
             // 同じ追加パイロットを持つユニットが複数いる場合、パイロットのUnitが
             // 変化してしまうことがあるため、元のUnitを記録しておく

@@ -96,6 +96,10 @@ namespace SRCCore.Units
 
         // 搭乗しているパイロット
         private SrcCollection<Pilot> colPilot = new SrcCollection<Pilot>();
+        /// <summary>
+        /// 搭乗しているパイロット。MainPilot を解決していない点に留意すること。
+        /// MainPilot を解決したリストを必要とする場合は <see cref="MainPilots" /> を参照する。
+        /// </summary>
         public IList<Pilot> Pilots => colPilot.List;
 
         // 搭乗しているサポートパイロット
