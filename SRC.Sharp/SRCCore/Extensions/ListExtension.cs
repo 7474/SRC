@@ -8,13 +8,10 @@ namespace SRCCore.Extensions
 {
     public static class ListExtension
     {
-        public static void RemoveItem<T>(this IList<T> list, Func<T, bool> predicate)
+        public static IList<T> RemoveItem<T>(this IList<T> list, Func<T, bool> predicate)
         {
-            var item = list.FirstOrDefault(predicate);
-            if (item != null)
-            {
-                list.Remove(item);
-            }
+            list.Where(predicate).ToList().ForEach(item => list.Remove(item));
+            return list;
         }
 
         public static T Dice<T>(this IList<T> list)
