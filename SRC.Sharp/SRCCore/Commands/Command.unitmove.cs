@@ -342,8 +342,6 @@ namespace SRCCore.Commands
         }
 
         // 「ジャンプ」コマンドを終了
-        // MOD START MARGE
-        // Public Sub FinishJumpCommand()
         private void FinishJumpCommand()
         {
             // MOD END MARGE

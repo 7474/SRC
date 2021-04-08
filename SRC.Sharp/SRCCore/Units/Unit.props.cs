@@ -246,7 +246,7 @@ namespace SRCCore.Units
                                 }
                         }
                     }
-                    while (i > 0);
+                    while (i > 1);
                 }
 
                 return Class0Ret;

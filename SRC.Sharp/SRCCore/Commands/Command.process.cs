@@ -2206,15 +2206,15 @@ namespace SRCCore.Commands
                         GUI.IsGUILocked = false;
                         return;
 
-                    //case "テレポート":
-                    //        FinishTeleportCommand();
-                    //        GUI.IsGUILocked = false;
-                    //        return;
+                    case "テレポート":
+                        FinishTeleportCommand();
+                        GUI.IsGUILocked = false;
+                        return;
 
-                    //case "ジャンプ":
-                    //        FinishJumpCommand();
-                    //        GUI.IsGUILocked = false;
-                    //        return;
+                    case "ジャンプ":
+                        FinishJumpCommand();
+                        GUI.IsGUILocked = false;
+                        return;
 
                     //case "マップ攻撃":
                     //        MapAttackCommand();
