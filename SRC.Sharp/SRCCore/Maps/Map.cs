@@ -2680,7 +2680,6 @@ namespace SRCCore.Maps
                 }
             }
 
-
             // 算出された必要移動力を元に進入可能か判定
             for (var i = 1; i <= MapWidth; i++)
             {
@@ -2709,123 +2708,7 @@ namespace SRCCore.Maps
                         continue;
                     }
 
-                    // TODO
-                    switch (u2.Party0 ?? "")
-                    {
-                        case "味方":
-                            {
-                                if (u2.IsFeatureAvailable("母艦"))
-                                {
-                                    // 母艦に着艦？
-                                    if (!currentUnit.IsFeatureAvailable("母艦") && u2.Area != "地中")
-                                    {
-                                        if (!currentUnit.IsFeatureAvailable("格納不可"))
-                                        {
-                                            MaskData[i, j] = false;
-                                        }
-                                    }
-                                }
-                                else if (currentUnit.IsFeatureAvailable("合体") && u2.IsFeatureAvailable("合体"))
-                                {
-                                    // ２体合体？
-                                    MaskData[i, j] = true;
-                                    // TODO Impl
-                                    //var loopTo61 = currentUnit.CountFeature();
-                                    //for (k = 1; k <= loopTo61; k++)
-                                    //{
-                                    //    if (currentUnit.Feature() == "合体" && !string.IsNullOrEmpty(currentUnit.FeatureName()))
-                                    //    {
-                                    //        buf = currentUnit.FeatureData(k);
-                                    //        bool localIsDefined() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-                                    //        bool localIsDefined1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-                                    //        if (GeneralLib.LLength(buf) == 3 & localIsDefined() & localIsDefined1())
-                                    //        {
-                                    //            {
-                                    //                var withBlock5 = SRC.UList.Item(GeneralLib.LIndex(buf, 2));
-                                    //                if (withBlock5.IsConditionSatisfied("行動不能"))
-                                    //                {
-                                    //                    break;
-                                    //                }
-
-                                    //                if (withBlock5.Status == "破棄")
-                                    //                {
-                                    //                    break;
-                                    //                }
-                                    //            }
-
-                                    //            Unit localItem() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
-
-                                    //            if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
-                                    //            {
-                                    //                MaskData[i, j] = false;
-                                    //                break;
-                                    //            }
-                                    //            else if ((u2.Name ?? "") == (localItem().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable("合体制限"))
-                                    //            {
-                                    //                MaskData[i, j] = false;
-                                    //                break;
-                                    //            }
-                                    //        }
-                                    //    }
-                                    //}
-                                }
-
-                                break;
-                            }
-
-                        case "ＮＰＣ":
-                            {
-                                if (currentUnit.IsFeatureAvailable("合体") && u2.IsFeatureAvailable("合体"))
-                                {
-                                    // ２体合体？
-                                    MaskData[i, j] = true;
-                                    //var loopTo62 = currentUnit.CountFeature();
-                                    //for (k = 1; k <= loopTo62; k++)
-                                    //{
-                                    //    if (currentUnit.Feature(k) == "合体")
-                                    //    {
-                                    //        buf = currentUnit.FeatureData(k);
-                                    //        bool localIsDefined2() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-                                    //        bool localIsDefined3() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-                                    //        if (GeneralLib.LLength(buf) == 3 & localIsDefined2() & localIsDefined3())
-                                    //        {
-                                    //            {
-                                    //                var withBlock6 = SRC.UList.Item(GeneralLib.LIndex(buf, 2));
-                                    //                if (withBlock6.IsConditionSatisfied("行動不能"))
-                                    //                {
-                                    //                    break;
-                                    //                }
-
-                                    //                if (withBlock6.Status == "破棄")
-                                    //                {
-                                    //                    break;
-                                    //                }
-                                    //            }
-
-                                    //            Unit localItem1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
-
-                                    //            if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
-                                    //            {
-                                    //                MaskData[i, j] = false;
-                                    //                break;
-                                    //            }
-                                    //            else if ((u2.Name ?? "") == (localItem1().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable("合体制限"))
-                                    //            {
-                                    //                MaskData[i, j] = false;
-                                    //                break;
-                                    //            }
-                                    //        }
-                                    //    }
-                                    //}
-                                }
-
-                                break;
-                            }
-                    }
+                    MaskAlreadyUnitExist(currentUnit, i, j, u2);
                 }
             }
 
@@ -3081,11 +2964,132 @@ namespace SRCCore.Maps
             MaskData[currentUnit.x, currentUnit.y] = false;
         }
 
+        private void MaskAlreadyUnitExist(Unit currentUnit, int x, int y, Unit u2)
+        {
+            // TODO Impl MaskAlreadyUnitExist
+            switch (u2.Party0 ?? "")
+            {
+                case "味方":
+                    {
+                        if (u2.IsFeatureAvailable("母艦"))
+                        {
+                            // 母艦に着艦？
+                            if (!currentUnit.IsFeatureAvailable("母艦") && u2.Area != "地中")
+                            {
+                                if (!currentUnit.IsFeatureAvailable("格納不可"))
+                                {
+                                    MaskData[x, y] = false;
+                                }
+                            }
+                        }
+                        else if (currentUnit.IsFeatureAvailable("合体") && u2.IsFeatureAvailable("合体"))
+                        {
+                            // ２体合体？
+                            MaskData[x, y] = true;
+                            // TODO Impl
+                            //var loopTo61 = currentUnit.CountFeature();
+                            //for (k = 1; k <= loopTo61; k++)
+                            //{
+                            //    if (currentUnit.Feature() == "合体" && !string.IsNullOrEmpty(currentUnit.FeatureName()))
+                            //    {
+                            //        buf = currentUnit.FeatureData(k);
+                            //        bool localIsDefined() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
+
+                            //        bool localIsDefined1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
+
+                            //        if (GeneralLib.LLength(buf) == 3 & localIsDefined() & localIsDefined1())
+                            //        {
+                            //            {
+                            //                var withBlock5 = SRC.UList.Item(GeneralLib.LIndex(buf, 2));
+                            //                if (withBlock5.IsConditionSatisfied("行動不能"))
+                            //                {
+                            //                    break;
+                            //                }
+
+                            //                if (withBlock5.Status == "破棄")
+                            //                {
+                            //                    break;
+                            //                }
+                            //            }
+
+                            //            Unit localItem() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
+
+                            //            if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
+                            //            {
+                            //                MaskData[i, j] = false;
+                            //                break;
+                            //            }
+                            //            else if ((u2.Name ?? "") == (localItem().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable("合体制限"))
+                            //            {
+                            //                MaskData[i, j] = false;
+                            //                break;
+                            //            }
+                            //        }
+                            //    }
+                            //}
+                        }
+
+                        break;
+                    }
+
+                case "ＮＰＣ":
+                    {
+                        if (currentUnit.IsFeatureAvailable("合体") && u2.IsFeatureAvailable("合体"))
+                        {
+                            // ２体合体？
+                            MaskData[x, y] = true;
+                            //var loopTo62 = currentUnit.CountFeature();
+                            //for (k = 1; k <= loopTo62; k++)
+                            //{
+                            //    if (currentUnit.Feature(k) == "合体")
+                            //    {
+                            //        buf = currentUnit.FeatureData(k);
+                            //        bool localIsDefined2() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
+
+                            //        bool localIsDefined3() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
+
+                            //        if (GeneralLib.LLength(buf) == 3 & localIsDefined2() & localIsDefined3())
+                            //        {
+                            //            {
+                            //                var withBlock6 = SRC.UList.Item(GeneralLib.LIndex(buf, 2));
+                            //                if (withBlock6.IsConditionSatisfied("行動不能"))
+                            //                {
+                            //                    break;
+                            //                }
+
+                            //                if (withBlock6.Status == "破棄")
+                            //                {
+                            //                    break;
+                            //                }
+                            //            }
+
+                            //            Unit localItem1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
+
+                            //            if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
+                            //            {
+                            //                MaskData[i, j] = false;
+                            //                break;
+                            //            }
+                            //            else if ((u2.Name ?? "") == (localItem1().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable("合体制限"))
+                            //            {
+                            //                MaskData[i, j] = false;
+                            //                break;
+                            //            }
+                            //        }
+                            //    }
+                            //}
+                        }
+
+                        break;
+                    }
+            }
+        }
         private void FillMoveCost(Unit u, int[,] move_cost, string move_area, int x1, int y1, int x2, int y2)
         {
             // 移動能力の可否を調べておく
             var is_trans_available_on_ground = u.IsTransAvailable("陸") && u.get_Adaption(2) != 0;
             var is_trans_available_in_water = u.IsTransAvailable("水") && u.get_Adaption(3) != 0;
+            var is_trans_available_in_sky = u.IsTransAvailable("空") && u.get_Adaption(1) != 0;
             var is_adaptable_in_water = Strings.Mid(u.Data.Adaption, 3, 1) != "-" || u.IsFeatureAvailable("水中移動");
             var is_adaptable_in_space = Strings.Mid(u.Data.Adaption, 4, 1) != "-" || u.IsFeatureAvailable("宇宙移動");
             var is_trans_available_on_water = u.IsFeatureAvailable("水上移動") || u.IsFeatureAvailable("ホバー移動");
@@ -3759,9 +3763,8 @@ namespace SRCCore.Maps
 
         // ユニット u がテレポートして移動できる範囲を選択
         // 最大距離 lv を指定可能。(省略時は移動力＋テレポートレベル)
-        public void AreaInTeleport(Unit u, int lv = 0)
+        public void AreaInTeleport(Unit currentUnit, int lv = 0)
         {
-            throw new NotImplementedException();
             //bool is_trans_available_on_ground;
             //bool is_trans_available_in_water;
             //var is_trans_available_on_water = default(bool);
@@ -3773,25 +3776,16 @@ namespace SRCCore.Maps
             //int n, j, i, k, r;
             //string buf;
             //Unit u2;
-            //// 移動能力の可否を調べておく
-            //is_trans_available_on_ground = u.IsTransAvailable("陸") & u.get_Adaption(2) != 0;
-            //is_trans_available_in_water = u.IsTransAvailable("水") & u.get_Adaption(3) != 0;
-            //is_trans_available_in_sky = u.IsTransAvailable("空") & u.get_Adaption(1) != 0;
-            //if (Strings.Mid(u.Data.Adaption, 3, 1) != "-" | u.IsFeatureAvailable("水中移動"))
-            //{
-            //    is_adaptable_in_water = true;
-            //}
+            // 移動能力の可否を調べておく
+            var is_trans_available_on_ground = currentUnit.IsTransAvailable("陸") && currentUnit.get_Adaption(2) != 0;
+            var is_trans_available_in_water = currentUnit.IsTransAvailable("水") && currentUnit.get_Adaption(3) != 0;
+            var is_trans_available_in_sky = currentUnit.IsTransAvailable("空") && currentUnit.get_Adaption(1) != 0;
+            var is_adaptable_in_water = Strings.Mid(currentUnit.Data.Adaption, 3, 1) != "-" || currentUnit.IsFeatureAvailable("水中移動");
+            var is_adaptable_in_space = Strings.Mid(currentUnit.Data.Adaption, 4, 1) != "-" || currentUnit.IsFeatureAvailable("宇宙移動");
+            var is_trans_available_on_water = currentUnit.IsFeatureAvailable("水上移動") || currentUnit.IsFeatureAvailable("ホバー移動");
+            var adopted_terrain = GeneralLib.ToL(currentUnit.FeatureData("地形適応")).Skip(1).ToList();
 
-            //if (Strings.Mid(u.Data.Adaption, 4, 1) != "-" | u.IsFeatureAvailable("宇宙移動"))
-            //{
-            //    is_adaptable_in_space = true;
-            //}
-
-            //if (u.IsFeatureAvailable("水上移動") | u.IsFeatureAvailable("ホバー移動"))
-            //{
-            //    is_trans_available_on_water = true;
-            //}
-
+            // TODO Ref FillMoveCost
             //// 移動制限
             //allowed_terrains = new string[1];
             //if (u.IsFeatureAvailable("移動制限"))
@@ -3824,378 +3818,263 @@ namespace SRCCore.Maps
             //    }
             //}
 
-            //// テレポートによる移動距離を算出
-            //if (lv > 0)
-            //{
-            //    r = lv;
-            //}
-            //else
-            //{
-            //    r = (u.Speed + u.FeatureLevel("テレポート"));
-            //}
+            // テレポートによる移動距離を算出
+            int r;
+            if (lv > 0)
+            {
+                r = lv;
+            }
+            else
+            {
+                r = (int)(currentUnit.Speed + currentUnit.FeatureLevel("テレポート"));
+            }
 
-            //if (u.IsConditionSatisfied("移動不能"))
-            //{
-            //    r = 0;
-            //}
+            if (currentUnit.IsConditionSatisfied("移動不能"))
+            {
+                r = 0;
+            }
 
-            //// 選択解除
-            //var loopTo2 = MapWidth;
-            //for (i = 1; i <= loopTo2; i++)
-            //{
-            //    var loopTo3 = MapHeight;
-            //    for (j = 1; j <= loopTo3; j++)
-            //        MaskData[i, j] = true;
-            //}
+            // 選択解除
+            for (var i = 1; i <= MapWidth; i++)
+            {
+                for (var j = 1; j <= MapHeight; j++)
+                {
+                    MaskData[i, j] = true;
+                }
+            }
 
-            //// 移動可能な地点を調べる
-            //var loopTo4 = Math.Min(MapWidth, u.x + r);
-            //for (i = Math.Max(1, u.x - r); i <= loopTo4; i++)
-            //{
-            //    var loopTo5 = Math.Min(MapHeight, u.y + r);
-            //    for (j = Math.Max(1, u.y - r); j <= loopTo5; j++)
-            //    {
-            //        // 移動範囲内？
-            //        if ((Math.Abs((u.x - i)) + Math.Abs((u.y - j))) > r)
-            //        {
-            //            goto NextLoop;
-            //        }
+            // 移動可能な地点を調べる
+            var loopTo4 = Math.Min(MapWidth, currentUnit.x + r);
+            for (var i = Math.Max(1, currentUnit.x - r); i <= loopTo4; i++)
+            {
+                var loopTo5 = Math.Min(MapHeight, currentUnit.y + r);
+                for (var j = Math.Max(1, currentUnit.y - r); j <= loopTo5; j++)
+                {
+                    // 移動範囲内？
+                    if ((Math.Abs((currentUnit.x - i)) + Math.Abs((currentUnit.y - j))) > r)
+                    {
+                        goto NextLoop;
+                    }
 
-            //        u2 = MapDataForUnit[i, j];
-            //        if (u2 is null)
-            //        {
-            //            // ユニットがいない地点は地形から進入可能かチェック
-            //            MaskData[i, j] = false;
-            //            switch (u.Area ?? "")
-            //            {
-            //                case "地上":
-            //                    {
-            //                        switch (TerrainClass(i, j) ?? "")
-            //                        {
-            //                            case "空":
-            //                                {
-            //                                    MaskData[i, j] = true;
-            //                                    break;
-            //                                }
+                    var u2 = MapDataForUnit[i, j];
+                    if (u2 is null)
+                    {
+                        // ユニットがいない地点は地形から進入可能かチェック
+                        MaskData[i, j] = false;
+                        switch (currentUnit.Area ?? "")
+                        {
+                            case "地上":
+                                {
+                                    switch (Terrain(i, j).Class ?? "")
+                                    {
+                                        case "空":
+                                            {
+                                                MaskData[i, j] = true;
+                                                break;
+                                            }
 
-            //                            case "水":
-            //                                {
-            //                                    if (!is_adaptable_in_water & !is_trans_available_on_water & !is_trans_available_in_water)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
+                                        case "水":
+                                            {
+                                                if (!is_adaptable_in_water & !is_trans_available_on_water & !is_trans_available_in_water)
+                                                {
+                                                    MaskData[i, j] = true;
+                                                }
 
-            //                                    break;
-            //                                }
+                                                break;
+                                            }
 
-            //                            case "深水":
-            //                                {
-            //                                    if (!is_trans_available_on_water & !is_trans_available_in_water)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
+                                        case "深水":
+                                            {
+                                                if (!is_trans_available_on_water & !is_trans_available_in_water)
+                                                {
+                                                    MaskData[i, j] = true;
+                                                }
 
-            //                                    break;
-            //                                }
+                                                break;
+                                            }
 
-            //                            case "宇宙":
-            //                                {
-            //                                    if (!is_adaptable_in_space)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
+                                        case "宇宙":
+                                            {
+                                                if (!is_adaptable_in_space)
+                                                {
+                                                    MaskData[i, j] = true;
+                                                }
 
-            //                                    break;
-            //                                }
-            //                        }
+                                                break;
+                                            }
+                                    }
 
-            //                        break;
-            //                    }
+                                    break;
+                                }
 
-            //                case "水中":
-            //                    {
-            //                        switch (TerrainClass(i, j) ?? "")
-            //                        {
-            //                            case "空":
-            //                                {
-            //                                    MaskData[i, j] = true;
-            //                                    break;
-            //                                }
+                            case "水中":
+                                {
+                                    switch (Terrain(i, j).Class ?? "")
+                                    {
+                                        case "空":
+                                            {
+                                                MaskData[i, j] = true;
+                                                break;
+                                            }
 
-            //                            case "深水":
-            //                                {
-            //                                    if (!is_trans_available_on_water & !is_trans_available_in_water)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
+                                        case "深水":
+                                            {
+                                                if (!is_trans_available_on_water & !is_trans_available_in_water)
+                                                {
+                                                    MaskData[i, j] = true;
+                                                }
 
-            //                                    break;
-            //                                }
+                                                break;
+                                            }
 
-            //                            case "宇宙":
-            //                                {
-            //                                    if (!is_adaptable_in_space)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
+                                        case "宇宙":
+                                            {
+                                                if (!is_adaptable_in_space)
+                                                {
+                                                    MaskData[i, j] = true;
+                                                }
 
-            //                                    break;
-            //                                }
-            //                        }
+                                                break;
+                                            }
+                                    }
 
-            //                        break;
-            //                    }
+                                    break;
+                                }
 
-            //                case "空中":
-            //                    {
-            //                        switch (TerrainClass(i, j) ?? "")
-            //                        {
-            //                            case "空":
-            //                                {
-            //                                    if (TerrainMoveCost(i, j) > 100)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
+                            case "空中":
+                                {
+                                    switch (Terrain(i, j).Class ?? "")
+                                    {
+                                        case "空":
+                                            {
+                                                if (Terrain(i, j).MoveCost > 100)
+                                                {
+                                                    MaskData[i, j] = true;
+                                                }
 
-            //                                    break;
-            //                                }
+                                                break;
+                                            }
 
-            //                            case "宇宙":
-            //                                {
-            //                                    if (!is_adaptable_in_space)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
+                                        case "宇宙":
+                                            {
+                                                if (!is_adaptable_in_space)
+                                                {
+                                                    MaskData[i, j] = true;
+                                                }
 
-            //                                    break;
-            //                                }
-            //                        }
+                                                break;
+                                            }
+                                    }
 
-            //                        break;
-            //                    }
+                                    break;
+                                }
 
-            //                case "地中":
-            //                    {
-            //                        if (TerrainClass(i, j) != "陸")
-            //                        {
-            //                            MaskData[i, j] = true;
-            //                        }
+                            case "地中":
+                                {
+                                    if (Terrain(i, j).Class != "陸")
+                                    {
+                                        MaskData[i, j] = true;
+                                    }
 
-            //                        break;
-            //                    }
+                                    break;
+                                }
 
-            //                case "宇宙":
-            //                    {
-            //                        switch (TerrainClass(i, j) ?? "")
-            //                        {
-            //                            case "陸":
-            //                            case "屋内":
-            //                                {
-            //                                    if (!is_trans_available_in_sky & !is_trans_available_on_ground)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
+                            case "宇宙":
+                                {
+                                    switch (Terrain(i, j).Class ?? "")
+                                    {
+                                        case "陸":
+                                        case "屋内":
+                                            {
+                                                if (!is_trans_available_in_sky & !is_trans_available_on_ground)
+                                                {
+                                                    MaskData[i, j] = true;
+                                                }
 
-            //                                    break;
-            //                                }
+                                                break;
+                                            }
 
-            //                            case "空":
-            //                                {
-            //                                    if (!is_trans_available_in_sky | TerrainMoveCost(i, j) > 100)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
+                                        case "空":
+                                            {
+                                                if (!is_trans_available_in_sky | Terrain(i, j).MoveCost > 100)
+                                                {
+                                                    MaskData[i, j] = true;
+                                                }
 
-            //                                    break;
-            //                                }
+                                                break;
+                                            }
 
-            //                            case "水":
-            //                                {
-            //                                    if (!is_trans_available_in_water & !is_trans_available_on_water & !is_adaptable_in_water)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
+                                        case "水":
+                                            {
+                                                if (!is_trans_available_in_water & !is_trans_available_on_water & !is_adaptable_in_water)
+                                                {
+                                                    MaskData[i, j] = true;
+                                                }
 
-            //                                    break;
-            //                                }
+                                                break;
+                                            }
 
-            //                            case "深水":
-            //                                {
-            //                                    if (!is_trans_available_on_water & !is_trans_available_in_water)
-            //                                    {
-            //                                        MaskData[i, j] = true;
-            //                                    }
+                                        case "深水":
+                                            {
+                                                if (!is_trans_available_on_water & !is_trans_available_in_water)
+                                                {
+                                                    MaskData[i, j] = true;
+                                                }
 
-            //                                    break;
-            //                                }
-            //                        }
+                                                break;
+                                            }
+                                    }
 
-            //                        break;
-            //                    }
-            //            }
+                                    break;
+                                }
+                        }
 
-            //            // 移動制限
-            //            if (Information.UBound(allowed_terrains) > 0)
-            //            {
-            //                var loopTo6 = Information.UBound(allowed_terrains);
-            //                for (k = 2; k <= loopTo6; k++)
-            //                {
-            //                    if ((TerrainName(i, j) ?? "") == (allowed_terrains[k] ?? ""))
-            //                    {
-            //                        break;
-            //                    }
-            //                }
+                        //// 移動制限
+                        //if (Information.UBound(allowed_terrains) > 0)
+                        //{
+                        //    var loopTo6 = Information.UBound(allowed_terrains);
+                        //    for (k = 2; k <= loopTo6; k++)
+                        //    {
+                        //        if ((TerrainName(i, j) ?? "") == (allowed_terrains[k] ?? ""))
+                        //        {
+                        //            break;
+                        //        }
+                        //    }
 
-            //                if (k > Information.UBound(allowed_terrains))
-            //                {
-            //                    MaskData[i, j] = true;
-            //                }
-            //            }
+                        //    if (k > Information.UBound(allowed_terrains))
+                        //    {
+                        //        MaskData[i, j] = true;
+                        //    }
+                        //}
 
-            //            // 進入不可
-            //            var loopTo7 = Information.UBound(prohibited_terrains);
-            //            for (k = 2; k <= loopTo7; k++)
-            //            {
-            //                if ((TerrainName(i, j) ?? "") == (prohibited_terrains[k] ?? ""))
-            //                {
-            //                    MaskData[i, j] = true;
-            //                    break;
-            //                }
-            //            }
+                        //// 進入不可
+                        //var loopTo7 = Information.UBound(prohibited_terrains);
+                        //for (k = 2; k <= loopTo7; k++)
+                        //{
+                        //    if ((TerrainName(i, j) ?? "") == (prohibited_terrains[k] ?? ""))
+                        //    {
+                        //        MaskData[i, j] = true;
+                        //        break;
+                        //    }
+                        //}
 
-            //            goto NextLoop;
-            //        }
+                        goto NextLoop;
+                    }
 
-            //        // 合体＆着艦するのは味方のみ
-            //        if (u.Party0 != "味方")
-            //        {
-            //            goto NextLoop;
-            //        }
+                    // 合体＆着艦するのは味方のみ
+                    if (currentUnit.Party0 != "味方")
+                    {
+                        goto NextLoop;
+                    }
 
-            //        switch (u2.Party0 ?? "")
-            //        {
-            //            case "味方":
-            //                {
-            //                    if (u2.IsFeatureAvailable("母艦"))
-            //                    {
-            //                        // 母艦に着艦？
-            //                        if (!u.IsFeatureAvailable("母艦") & !u.IsFeatureAvailable("格納不可") & u2.Area != "地中" & !u2.IsDisabled("母艦"))
-            //                        {
-            //                            MaskData[i, j] = false;
-            //                        }
-            //                    }
-            //                    else if (u.IsFeatureAvailable("合体") & u2.IsFeatureAvailable("合体"))
-            //                    {
-            //                        // ２体合体？
-            //                        MaskData[i, j] = true;
-            //                        var loopTo8 = u.CountFeature();
-            //                        for (k = 1; k <= loopTo8; k++)
-            //                        {
-            //                            string localFeature() { object argIndex1 = k; var ret = u.Feature(argIndex1); return ret; }
+                    MaskAlreadyUnitExist(currentUnit, i, j, u2);
+                NextLoop:
+                    ;
+                }
+            }
 
-            //                            string localFeatureName() { object argIndex1 = k; var ret = u.FeatureName(argIndex1); return ret; }
-
-            //                            if (localFeature() == "合体" & !string.IsNullOrEmpty(localFeatureName()))
-            //                            {
-            //                                buf = u.FeatureData(k);
-            //                                bool localIsDefined() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-            //                                bool localIsDefined1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-            //                                if (GeneralLib.LLength(buf) == 3 & localIsDefined() & localIsDefined1())
-            //                                {
-            //                                    {
-            //                                        var withBlock = SRC.UList.Item(GeneralLib.LIndex(buf, 2));
-            //                                        if (withBlock.IsConditionSatisfied("行動不能"))
-            //                                        {
-            //                                            break;
-            //                                        }
-
-            //                                        if (withBlock.Status == "破棄")
-            //                                        {
-            //                                            break;
-            //                                        }
-            //                                    }
-
-            //                                    Unit localItem() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
-
-            //                                    if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
-            //                                    {
-            //                                        MaskData[i, j] = false;
-            //                                        break;
-            //                                    }
-            //                                    else if ((u2.Name ?? "") == (localItem().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable("合体制限"))
-            //                                    {
-            //                                        MaskData[i, j] = false;
-            //                                        break;
-            //                                    }
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case "ＮＰＣ":
-            //                {
-            //                    if (u.IsFeatureAvailable("合体") & u2.IsFeatureAvailable("合体"))
-            //                    {
-            //                        // ２体合体？
-            //                        MaskData[i, j] = true;
-            //                        var loopTo9 = u.CountFeature();
-            //                        for (k = 1; k <= loopTo9; k++)
-            //                        {
-            //                            if (u.Feature(k) == "合体")
-            //                            {
-            //                                buf = u.FeatureData(k);
-            //                                bool localIsDefined2() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-            //                                bool localIsDefined3() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-            //                                if (GeneralLib.LLength(buf) == 3 & localIsDefined2() & localIsDefined3())
-            //                                {
-            //                                    {
-            //                                        var withBlock1 = SRC.UList.Item(GeneralLib.LIndex(buf, 2));
-            //                                        if (withBlock1.IsConditionSatisfied("行動不能"))
-            //                                        {
-            //                                            break;
-            //                                        }
-
-            //                                        if (withBlock1.Status == "破棄")
-            //                                        {
-            //                                            break;
-            //                                        }
-            //                                    }
-
-            //                                    Unit localItem1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
-
-            //                                    if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
-            //                                    {
-            //                                        MaskData[i, j] = false;
-            //                                        break;
-            //                                    }
-            //                                    else if ((u2.Name ?? "") == (localItem1().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable("合体制限"))
-            //                                    {
-            //                                        MaskData[i, j] = false;
-            //                                        break;
-            //                                    }
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-
-            //                    break;
-            //                }
-            //        }
-
-            //    NextLoop:
-            //        ;
-            //    }
-            //}
-
-            //// 現在いる場所は常に進入可能
-            //MaskData[u.x, u.y] = false;
+            // 現在いる場所は常に進入可能
+            MaskData[currentUnit.x, currentUnit.y] = false;
         }
 
         // ユニット u のＭ移武器、アビリティのターゲット座標選択用
