@@ -14,6 +14,7 @@ namespace SRCCore.Expressions
     {
         protected SRC SRC { get; }
         private Event Event => SRC.Event;
+        private Commands.Command Commands => SRC.Commands;
 
         public Expression(SRC src)
         {

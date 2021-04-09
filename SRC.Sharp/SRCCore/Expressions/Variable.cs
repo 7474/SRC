@@ -71,324 +71,306 @@ namespace SRCCore.Expressions
             // TODO Impl
             switch (vname ?? "")
             {
-                //    case "対象ユニット":
-                //    case "対象パイロット":
-                //        {
-                //            if (Event.SelectedUnitForEvent is object)
-                //            {
-                //                {
-                //                    var withBlock3 = Event.SelectedUnitForEvent;
-                //                    if (withBlock3.CountPilot() > 0)
-                //                    {
-                //                        str_result = withBlock3.MainPilot().ID;
-                //                    }
-                //                    else
-                //                    {
-                //                        str_result = "";
-                //                    }
-                //                }
-                //            }
-                //            else
-                //            {
-                //                str_result = "";
-                //            }
+                case "対象ユニット":
+                case "対象パイロット":
+                    {
+                        if (Event.SelectedUnitForEvent is object)
+                        {
+                            {
+                                var withBlock3 = Event.SelectedUnitForEvent;
+                                if (withBlock3.CountPilot() > 0)
+                                {
+                                    str_result = withBlock3.MainPilot().ID;
+                                }
+                                else
+                                {
+                                    str_result = "";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            str_result = "";
+                        }
 
-                //            GetVariableRet = ValueType.StringType;
-                //            return GetVariableRet;
-                //        }
+                        GetVariableRet = ValueType.StringType;
+                        return GetVariableRet;
+                    }
 
-                //    case "相手ユニット":
-                //    case "相手パイロット":
-                //        {
-                //            if (Event.SelectedTargetForEvent is object)
-                //            {
-                //                {
-                //                    var withBlock4 = Event.SelectedTargetForEvent;
-                //                    if (withBlock4.CountPilot() > 0)
-                //                    {
-                //                        str_result = withBlock4.MainPilot().ID;
-                //                    }
-                //                    else
-                //                    {
-                //                        str_result = "";
-                //                    }
-                //                }
-                //            }
-                //            else
-                //            {
-                //                str_result = "";
-                //            }
+                case "相手ユニット":
+                case "相手パイロット":
+                    {
+                        if (Event.SelectedTargetForEvent is object)
+                        {
+                            {
+                                var withBlock4 = Event.SelectedTargetForEvent;
+                                if (withBlock4.CountPilot() > 0)
+                                {
+                                    str_result = withBlock4.MainPilot().ID;
+                                }
+                                else
+                                {
+                                    str_result = "";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            str_result = "";
+                        }
 
-                //            GetVariableRet = ValueType.StringType;
-                //            return GetVariableRet;
-                //        }
+                        GetVariableRet = ValueType.StringType;
+                        return GetVariableRet;
+                    }
 
-                //    case "対象ユニットＩＤ":
-                //        {
-                //            if (Event.SelectedUnitForEvent is object)
-                //            {
-                //                str_result = Event.SelectedUnitForEvent.ID;
-                //            }
-                //            else
-                //            {
-                //                str_result = "";
-                //            }
+                case "対象ユニットＩＤ":
+                    {
+                        if (Event.SelectedUnitForEvent is object)
+                        {
+                            str_result = Event.SelectedUnitForEvent.ID;
+                        }
+                        else
+                        {
+                            str_result = "";
+                        }
 
-                //            GetVariableRet = ValueType.StringType;
-                //            return GetVariableRet;
-                //        }
+                        GetVariableRet = ValueType.StringType;
+                        return GetVariableRet;
+                    }
 
-                //    case "相手ユニットＩＤ":
-                //        {
-                //            if (Event.SelectedTargetForEvent is object)
-                //            {
-                //                str_result = Event.SelectedTargetForEvent.ID;
-                //            }
-                //            else
-                //            {
-                //                str_result = "";
-                //            }
+                case "相手ユニットＩＤ":
+                    {
+                        if (Event.SelectedTargetForEvent is object)
+                        {
+                            str_result = Event.SelectedTargetForEvent.ID;
+                        }
+                        else
+                        {
+                            str_result = "";
+                        }
 
-                //            GetVariableRet = ValueType.StringType;
-                //            return GetVariableRet;
-                //        }
+                        GetVariableRet = ValueType.StringType;
+                        return GetVariableRet;
+                    }
 
-                //    case "対象ユニット使用武器":
-                //        {
-                //            str_result = "";
-                //            if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedUnit))
-                //            {
-                //                {
-                //                    var withBlock5 = Event.SelectedUnitForEvent;
-                //                    if (Commands.SelectedWeapon > 0)
-                //                    {
-                //                        str_result = Commands.SelectedWeaponName;
-                //                    }
-                //                    else
-                //                    {
-                //                        str_result = "";
-                //                    }
-                //                }
-                //            }
-                //            else if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedTarget))
-                //            {
-                //                {
-                //                    var withBlock6 = Event.SelectedUnitForEvent;
-                //                    if (Commands.SelectedTWeapon > 0)
-                //                    {
-                //                        str_result = Commands.SelectedTWeaponName;
-                //                    }
-                //                    else
-                //                    {
-                //                        str_result = Commands.SelectedDefenseOption;
-                //                    }
-                //                }
-                //            }
+                case "対象ユニット使用武器":
+                    {
+                        str_result = "";
+                        if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedUnit))
+                        {
+                            {
+                                var withBlock5 = Event.SelectedUnitForEvent;
+                                if (Commands.SelectedWeapon > 0)
+                                {
+                                    str_result = Commands.SelectedWeaponName;
+                                }
+                                else
+                                {
+                                    str_result = "";
+                                }
+                            }
+                        }
+                        else if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedTarget))
+                        {
+                            {
+                                var withBlock6 = Event.SelectedUnitForEvent;
+                                if (Commands.SelectedTWeapon > 0)
+                                {
+                                    str_result = Commands.SelectedTWeaponName;
+                                }
+                                else
+                                {
+                                    str_result = Commands.SelectedDefenseOption;
+                                }
+                            }
+                        }
 
-                //            GetVariableRet = ValueType.StringType;
-                //            return GetVariableRet;
-                //        }
+                        GetVariableRet = ValueType.StringType;
+                        return GetVariableRet;
+                    }
 
-                //    case "相手ユニット使用武器":
-                //        {
-                //            str_result = "";
-                //            if (ReferenceEquals(Event.SelectedTargetForEvent, Commands.SelectedTarget))
-                //            {
-                //                {
-                //                    var withBlock7 = Event.SelectedTargetForEvent;
-                //                    if (Commands.SelectedTWeapon > 0)
-                //                    {
-                //                        str_result = Commands.SelectedTWeaponName;
-                //                    }
-                //                    else
-                //                    {
-                //                        str_result = Commands.SelectedDefenseOption;
-                //                    }
-                //                }
-                //            }
-                //            else if (ReferenceEquals(Event.SelectedTargetForEvent, Commands.SelectedUnit))
-                //            {
-                //                {
-                //                    var withBlock8 = Event.SelectedTargetForEvent;
-                //                    if (Commands.SelectedWeapon > 0)
-                //                    {
-                //                        str_result = Commands.SelectedWeaponName;
-                //                    }
-                //                    else
-                //                    {
-                //                        str_result = "";
-                //                    }
-                //                }
-                //            }
+                case "相手ユニット使用武器":
+                    {
+                        str_result = "";
+                        if (ReferenceEquals(Event.SelectedTargetForEvent, Commands.SelectedTarget))
+                        {
+                            {
+                                var withBlock7 = Event.SelectedTargetForEvent;
+                                if (Commands.SelectedTWeapon > 0)
+                                {
+                                    str_result = Commands.SelectedTWeaponName;
+                                }
+                                else
+                                {
+                                    str_result = Commands.SelectedDefenseOption;
+                                }
+                            }
+                        }
+                        else if (ReferenceEquals(Event.SelectedTargetForEvent, Commands.SelectedUnit))
+                        {
+                            {
+                                var withBlock8 = Event.SelectedTargetForEvent;
+                                if (Commands.SelectedWeapon > 0)
+                                {
+                                    str_result = Commands.SelectedWeaponName;
+                                }
+                                else
+                                {
+                                    str_result = "";
+                                }
+                            }
+                        }
 
-                //            GetVariableRet = ValueType.StringType;
-                //            return GetVariableRet;
-                //        }
+                        GetVariableRet = ValueType.StringType;
+                        return GetVariableRet;
+                    }
 
-                //    case "対象ユニット使用武器番号":
-                //        {
-                //            str_result = "";
-                //            if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedUnit))
-                //            {
-                //                {
-                //                    var withBlock9 = Event.SelectedUnitForEvent;
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(Commands.SelectedWeapon);
-                //                        GetVariableRet = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = Commands.SelectedWeapon;
-                //                        GetVariableRet = ValueType.NumericType;
-                //                    }
-                //                }
-                //            }
-                //            else if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedTarget))
-                //            {
-                //                {
-                //                    var withBlock10 = Event.SelectedUnitForEvent;
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(Commands.SelectedTWeapon);
-                //                        GetVariableRet = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = Commands.SelectedTWeapon;
-                //                        GetVariableRet = ValueType.NumericType;
-                //                    }
-                //                }
-                //            }
+                case "対象ユニット使用武器番号":
+                    {
+                        str_result = "";
+                        if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedUnit))
+                        {
+                            if (etype == ValueType.StringType)
+                            {
+                                str_result = SrcFormatter.Format(Commands.SelectedWeapon);
+                                GetVariableRet = ValueType.StringType;
+                            }
+                            else
+                            {
+                                num_result = Commands.SelectedWeapon;
+                                GetVariableRet = ValueType.NumericType;
+                            }
+                        }
+                        else if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedTarget))
+                        {
+                            if (etype == ValueType.StringType)
+                            {
+                                str_result = SrcFormatter.Format(Commands.SelectedTWeapon);
+                                GetVariableRet = ValueType.StringType;
+                            }
+                            else
+                            {
+                                num_result = Commands.SelectedTWeapon;
+                                GetVariableRet = ValueType.NumericType;
+                            }
+                        }
 
-                //            return GetVariableRet;
-                //        }
+                        return GetVariableRet;
+                    }
 
-                //    case "相手ユニット使用武器番号":
-                //        {
-                //            str_result = "";
-                //            if (ReferenceEquals(Event.SelectedTargetForEvent, Commands.SelectedTarget))
-                //            {
-                //                {
-                //                    var withBlock11 = Event.SelectedTargetForEvent;
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(Commands.SelectedTWeapon);
-                //                        GetVariableRet = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = Commands.SelectedTWeapon;
-                //                        GetVariableRet = ValueType.NumericType;
-                //                    }
-                //                }
-                //            }
-                //            else if (ReferenceEquals(Event.SelectedTargetForEvent, Commands.SelectedUnit))
-                //            {
-                //                {
-                //                    var withBlock12 = Event.SelectedTargetForEvent;
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(Commands.SelectedWeapon);
-                //                        GetVariableRet = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = Commands.SelectedWeapon;
-                //                        GetVariableRet = ValueType.NumericType;
-                //                    }
-                //                }
-                //            }
+                case "相手ユニット使用武器番号":
+                    {
+                        str_result = "";
+                        if (ReferenceEquals(Event.SelectedTargetForEvent, Commands.SelectedTarget))
+                        {
+                            if (etype == ValueType.StringType)
+                            {
+                                str_result = SrcFormatter.Format(Commands.SelectedTWeapon);
+                                GetVariableRet = ValueType.StringType;
+                            }
+                            else
+                            {
+                                num_result = Commands.SelectedTWeapon;
+                                GetVariableRet = ValueType.NumericType;
+                            }
+                        }
+                        else if (ReferenceEquals(Event.SelectedTargetForEvent, Commands.SelectedUnit))
+                        {
+                            if (etype == ValueType.StringType)
+                            {
+                                str_result = SrcFormatter.Format(Commands.SelectedWeapon);
+                                GetVariableRet = ValueType.StringType;
+                            }
+                            else
+                            {
+                                num_result = Commands.SelectedWeapon;
+                                GetVariableRet = ValueType.NumericType;
+                            }
+                        }
 
-                //            return GetVariableRet;
-                //        }
+                        return GetVariableRet;
+                    }
 
-                //    case "対象ユニット使用アビリティ":
-                //        {
-                //            str_result = "";
-                //            if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedUnit))
-                //            {
-                //                {
-                //                    var withBlock13 = Event.SelectedUnitForEvent;
-                //                    if (Commands.SelectedAbility > 0)
-                //                    {
-                //                        str_result = Commands.SelectedAbilityName;
-                //                    }
-                //                    else
-                //                    {
-                //                        str_result = "";
-                //                    }
-                //                }
-                //            }
+                case "対象ユニット使用アビリティ":
+                    {
+                        str_result = "";
+                        if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedUnit))
+                        {
+                            if (Commands.SelectedAbility > 0)
+                            {
+                                str_result = Commands.SelectedAbilityName;
+                            }
+                            else
+                            {
+                                str_result = "";
+                            }
+                        }
 
-                //            GetVariableRet = ValueType.StringType;
-                //            return GetVariableRet;
-                //        }
+                        GetVariableRet = ValueType.StringType;
+                        return GetVariableRet;
+                    }
 
-                //    case "対象ユニット使用アビリティ番号":
-                //        {
-                //            str_result = "";
-                //            if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedUnit))
-                //            {
-                //                {
-                //                    var withBlock14 = Event.SelectedUnitForEvent;
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(Commands.SelectedAbility);
-                //                        GetVariableRet = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = Commands.SelectedAbility;
-                //                        GetVariableRet = ValueType.NumericType;
-                //                    }
-                //                }
-                //            }
+                case "対象ユニット使用アビリティ番号":
+                    {
+                        str_result = "";
+                        if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedUnit))
+                        {
+                            if (etype == ValueType.StringType)
+                            {
+                                str_result = SrcFormatter.Format(Commands.SelectedAbility);
+                                GetVariableRet = ValueType.StringType;
+                            }
+                            else
+                            {
+                                num_result = Commands.SelectedAbility;
+                                GetVariableRet = ValueType.NumericType;
+                            }
+                        }
 
-                //            return GetVariableRet;
-                //        }
+                        return GetVariableRet;
+                    }
 
-                //    case "対象ユニット使用スペシャルパワー":
-                //        {
-                //            str_result = "";
-                //            if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedUnit))
-                //            {
-                //                str_result = Commands.SelectedSpecialPower;
-                //            }
+                case "対象ユニット使用スペシャルパワー":
+                    {
+                        str_result = "";
+                        if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedUnit))
+                        {
+                            str_result = Commands.SelectedSpecialPower;
+                        }
 
-                //            GetVariableRet = ValueType.StringType;
-                //            return GetVariableRet;
-                //        }
+                        GetVariableRet = ValueType.StringType;
+                        return GetVariableRet;
+                    }
 
-                //    case "サポートアタックユニットＩＤ":
-                //        {
-                //            if (Commands.SupportAttackUnit is object)
-                //            {
-                //                str_result = Commands.SupportAttackUnit.ID;
-                //            }
-                //            else
-                //            {
-                //                str_result = "";
-                //            }
+                case "サポートアタックユニットＩＤ":
+                    {
+                        if (Commands.SupportAttackUnit is object)
+                        {
+                            str_result = Commands.SupportAttackUnit.ID;
+                        }
+                        else
+                        {
+                            str_result = "";
+                        }
 
-                //            GetVariableRet = ValueType.StringType;
-                //            return GetVariableRet;
-                //        }
+                        GetVariableRet = ValueType.StringType;
+                        return GetVariableRet;
+                    }
 
-                //    case "サポートガードユニットＩＤ":
-                //        {
-                //            if (Commands.SupportGuardUnit is object)
-                //            {
-                //                str_result = Commands.SupportGuardUnit.ID;
-                //            }
-                //            else
-                //            {
-                //                str_result = "";
-                //            }
+                case "サポートガードユニットＩＤ":
+                    {
+                        if (Commands.SupportGuardUnit is object)
+                        {
+                            str_result = Commands.SupportGuardUnit.ID;
+                        }
+                        else
+                        {
+                            str_result = "";
+                        }
 
-                //            GetVariableRet = ValueType.StringType;
-                //            return GetVariableRet;
-                //        }
+                        GetVariableRet = ValueType.StringType;
+                        return GetVariableRet;
+                    }
 
                 case "選択":
                     if (etype == ValueType.NumericType)
@@ -404,44 +386,44 @@ namespace SRCCore.Expressions
 
                     return GetVariableRet;
 
-                //    case "ターン数":
-                //        {
-                //            if (etype == ValueType.StringType)
-                //            {
-                //                str_result = VB.Compatibility.VB6.Support.Format(SRC.Turn);
-                //                GetVariableRet = ValueType.StringType;
-                //            }
-                //            else
-                //            {
-                //                num_result = SRC.Turn;
-                //                GetVariableRet = ValueType.NumericType;
-                //            }
+                case "ターン数":
+                    {
+                        if (etype == ValueType.StringType)
+                        {
+                            str_result = SrcFormatter.Format(SRC.Turn);
+                            GetVariableRet = ValueType.StringType;
+                        }
+                        else
+                        {
+                            num_result = SRC.Turn;
+                            GetVariableRet = ValueType.NumericType;
+                        }
 
-                //            return GetVariableRet;
-                //        }
+                        return GetVariableRet;
+                    }
 
-                //    case "総ターン数":
-                //        {
-                //            if (etype == ValueType.StringType)
-                //            {
-                //                str_result = VB.Compatibility.VB6.Support.Format(SRC.TotalTurn);
-                //                GetVariableRet = ValueType.StringType;
-                //            }
-                //            else
-                //            {
-                //                num_result = SRC.TotalTurn;
-                //                GetVariableRet = ValueType.NumericType;
-                //            }
+                case "総ターン数":
+                    {
+                        if (etype == ValueType.StringType)
+                        {
+                            str_result = SrcFormatter.Format(SRC.TotalTurn);
+                            GetVariableRet = ValueType.StringType;
+                        }
+                        else
+                        {
+                            num_result = SRC.TotalTurn;
+                            GetVariableRet = ValueType.NumericType;
+                        }
 
-                //            return GetVariableRet;
-                //        }
+                        return GetVariableRet;
+                    }
 
-                //    case "フェイズ":
-                //        {
-                //            str_result = SRC.Stage;
-                //            GetVariableRet = ValueType.StringType;
-                //            return GetVariableRet;
-                //        }
+                case "フェイズ":
+                    {
+                        str_result = SRC.Stage;
+                        GetVariableRet = ValueType.StringType;
+                        return GetVariableRet;
+                    }
 
                 //    case "味方数":
                 //        {
@@ -457,7 +439,7 @@ namespace SRCCore.Expressions
 
                 //            if (etype == ValueType.StringType)
                 //            {
-                //                str_result = VB.Compatibility.VB6.Support.Format(num);
+                //                str_result = SrcFormatter.Format(num);
                 //                GetVariableRet = ValueType.StringType;
                 //            }
                 //            else
@@ -483,7 +465,7 @@ namespace SRCCore.Expressions
 
                 //            if (etype == ValueType.StringType)
                 //            {
-                //                str_result = VB.Compatibility.VB6.Support.Format(num);
+                //                str_result = SrcFormatter.Format(num);
                 //                GetVariableRet = ValueType.StringType;
                 //            }
                 //            else
@@ -509,7 +491,7 @@ namespace SRCCore.Expressions
 
                 //            if (etype == ValueType.StringType)
                 //            {
-                //                str_result = VB.Compatibility.VB6.Support.Format(num);
+                //                str_result = SrcFormatter.Format(num);
                 //                GetVariableRet = ValueType.StringType;
                 //            }
                 //            else
@@ -535,7 +517,7 @@ namespace SRCCore.Expressions
 
                 //            if (etype == ValueType.StringType)
                 //            {
-                //                str_result = VB.Compatibility.VB6.Support.Format(num);
+                //                str_result = SrcFormatter.Format(num);
                 //                GetVariableRet = ValueType.StringType;
                 //            }
                 //            else
@@ -584,7 +566,7 @@ namespace SRCCore.Expressions
 
                 //                        if (etype == ValueType.StringType)
                 //                        {
-                //                            str_result = VB.Compatibility.VB6.Support.Format(num);
+                //                            str_result = SrcFormatter.Format(num);
                 //                            GetVariableRet = ValueType.StringType;
                 //                        }
                 //                        else
@@ -616,7 +598,7 @@ namespace SRCCore.Expressions
                 //                        num = (Event.ArgIndex - Event.ArgIndexStack[i - 1]);
                 //                        if (etype == ValueType.StringType)
                 //                        {
-                //                            str_result = VB.Compatibility.VB6.Support.Format(num);
+                //                            str_result = SrcFormatter.Format(num);
                 //                            GetVariableRet = ValueType.StringType;
                 //                        }
                 //                        else
@@ -632,7 +614,7 @@ namespace SRCCore.Expressions
                 //                    {
                 //                        if (etype == ValueType.StringType)
                 //                        {
-                //                            str_result = VB.Compatibility.VB6.Support.Format(Event.BaseX);
+                //                            str_result = SrcFormatter.Format(Event.BaseX);
                 //                            GetVariableRet = ValueType.StringType;
                 //                        }
                 //                        else
@@ -648,7 +630,7 @@ namespace SRCCore.Expressions
                 //                    {
                 //                        if (etype == ValueType.StringType)
                 //                        {
-                //                            str_result = VB.Compatibility.VB6.Support.Format(Event.BaseY);
+                //                            str_result = SrcFormatter.Format(Event.BaseY);
                 //                            GetVariableRet = ValueType.StringType;
                 //                        }
                 //                        else
@@ -678,7 +660,7 @@ namespace SRCCore.Expressions
                 //                    {
                 //                        if (etype == ValueType.StringType)
                 //                        {
-                //                            str_result = VB.Compatibility.VB6.Support.Format(GUI.MouseX);
+                //                            str_result = SrcFormatter.Format(GUI.MouseX);
                 //                            GetVariableRet = ValueType.StringType;
                 //                        }
                 //                        else
@@ -694,7 +676,7 @@ namespace SRCCore.Expressions
                 //                    {
                 //                        if (etype == ValueType.StringType)
                 //                        {
-                //                            str_result = VB.Compatibility.VB6.Support.Format(GUI.MouseY);
+                //                            str_result = SrcFormatter.Format(GUI.MouseY);
                 //                            GetVariableRet = ValueType.StringType;
                 //                        }
                 //                        else
@@ -737,7 +719,7 @@ namespace SRCCore.Expressions
                 //            {
                 //                if (etype == ValueType.StringType)
                 //                {
-                //                    str_result = VB.Compatibility.VB6.Support.Format(BCVariable.AttackExp);
+                //                    str_result = SrcFormatter.Format(BCVariable.AttackExp);
                 //                    GetVariableRet = ValueType.StringType;
                 //                }
                 //                else
@@ -772,7 +754,7 @@ namespace SRCCore.Expressions
                 //            {
                 //                if (etype == ValueType.StringType)
                 //                {
-                //                    str_result = VB.Compatibility.VB6.Support.Format(BCVariable.WeaponNumber);
+                //                    str_result = SrcFormatter.Format(BCVariable.WeaponNumber);
                 //                    GetVariableRet = ValueType.StringType;
                 //                }
                 //                else
@@ -788,7 +770,7 @@ namespace SRCCore.Expressions
                 //            {
                 //                if (etype == ValueType.StringType)
                 //                {
-                //                    str_result = VB.Compatibility.VB6.Support.Format(BCVariable.TerrainAdaption);
+                //                    str_result = SrcFormatter.Format(BCVariable.TerrainAdaption);
                 //                    GetVariableRet = ValueType.StringType;
                 //                }
                 //                else
@@ -804,7 +786,7 @@ namespace SRCCore.Expressions
                 //            {
                 //                if (etype == ValueType.StringType)
                 //                {
-                //                    str_result = VB.Compatibility.VB6.Support.Format(BCVariable.WeaponPower);
+                //                    str_result = SrcFormatter.Format(BCVariable.WeaponPower);
                 //                    GetVariableRet = ValueType.StringType;
                 //                }
                 //                else
@@ -820,7 +802,7 @@ namespace SRCCore.Expressions
                 //            {
                 //                if (etype == ValueType.StringType)
                 //                {
-                //                    str_result = VB.Compatibility.VB6.Support.Format(BCVariable.SizeMod);
+                //                    str_result = SrcFormatter.Format(BCVariable.SizeMod);
                 //                    GetVariableRet = ValueType.StringType;
                 //                }
                 //                else
@@ -836,7 +818,7 @@ namespace SRCCore.Expressions
                 //            {
                 //                if (etype == ValueType.StringType)
                 //                {
-                //                    str_result = VB.Compatibility.VB6.Support.Format(BCVariable.Armor);
+                //                    str_result = SrcFormatter.Format(BCVariable.Armor);
                 //                    GetVariableRet = ValueType.StringType;
                 //                }
                 //                else
@@ -852,7 +834,7 @@ namespace SRCCore.Expressions
                 //            {
                 //                if (etype == ValueType.StringType)
                 //                {
-                //                    str_result = VB.Compatibility.VB6.Support.Format(BCVariable.LastVariable);
+                //                    str_result = SrcFormatter.Format(BCVariable.LastVariable);
                 //                    GetVariableRet = ValueType.StringType;
                 //                }
                 //                else
@@ -868,7 +850,7 @@ namespace SRCCore.Expressions
                 //            {
                 //                if (etype == ValueType.StringType)
                 //                {
-                //                    str_result = VB.Compatibility.VB6.Support.Format(BCVariable.AttackVariable);
+                //                    str_result = SrcFormatter.Format(BCVariable.AttackVariable);
                 //                    GetVariableRet = ValueType.StringType;
                 //                }
                 //                else
@@ -884,7 +866,7 @@ namespace SRCCore.Expressions
                 //            {
                 //                if (etype == ValueType.StringType)
                 //                {
-                //                    str_result = VB.Compatibility.VB6.Support.Format(BCVariable.DffenceVariable);
+                //                    str_result = SrcFormatter.Format(BCVariable.DffenceVariable);
                 //                    GetVariableRet = ValueType.StringType;
                 //                }
                 //                else
@@ -900,7 +882,7 @@ namespace SRCCore.Expressions
                 //            {
                 //                if (etype == ValueType.StringType)
                 //                {
-                //                    str_result = VB.Compatibility.VB6.Support.Format(BCVariable.CommonEnemy);
+                //                    str_result = SrcFormatter.Format(BCVariable.CommonEnemy);
                 //                    GetVariableRet = ValueType.StringType;
                 //                }
                 //                else
@@ -932,7 +914,7 @@ namespace SRCCore.Expressions
 
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(num);
+                //                        str_result = SrcFormatter.Format(num);
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
@@ -948,7 +930,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(withBlock16.Defense);
+                //                        str_result = SrcFormatter.Format(withBlock16.Defense);
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
@@ -964,7 +946,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(withBlock16.Level);
+                //                        str_result = SrcFormatter.Format(withBlock16.Level);
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
@@ -980,7 +962,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(withBlock16.Exp);
+                //                        str_result = SrcFormatter.Format(withBlock16.Exp);
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
@@ -996,7 +978,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(withBlock16.SP);
+                //                        str_result = SrcFormatter.Format(withBlock16.SP);
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
@@ -1012,7 +994,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(withBlock16.Plana);
+                //                        str_result = SrcFormatter.Format(withBlock16.Plana);
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
@@ -1028,7 +1010,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(withBlock16.Infight);
+                //                        str_result = SrcFormatter.Format(withBlock16.Infight);
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
@@ -1044,7 +1026,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(withBlock16.Shooting);
+                //                        str_result = SrcFormatter.Format(withBlock16.Shooting);
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
@@ -1060,7 +1042,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(withBlock16.Hit);
+                //                        str_result = SrcFormatter.Format(withBlock16.Hit);
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
@@ -1076,7 +1058,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(withBlock16.Dodge);
+                //                        str_result = SrcFormatter.Format(withBlock16.Dodge);
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
@@ -1092,7 +1074,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(withBlock16.Technique);
+                //                        str_result = SrcFormatter.Format(withBlock16.Technique);
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
@@ -1108,7 +1090,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(withBlock16.Intuition);
+                //                        str_result = SrcFormatter.Format(withBlock16.Intuition);
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
@@ -1131,7 +1113,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(withBlock17.MaxHP);
+                //                        str_result = SrcFormatter.Format(withBlock17.MaxHP);
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
@@ -1147,7 +1129,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(withBlock17.HP);
+                //                        str_result = SrcFormatter.Format(withBlock17.HP);
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
@@ -1163,7 +1145,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(withBlock17.MaxEN);
+                //                        str_result = SrcFormatter.Format(withBlock17.MaxEN);
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
@@ -1179,7 +1161,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(withBlock17.EN);
+                //                        str_result = SrcFormatter.Format(withBlock17.EN);
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
@@ -1195,7 +1177,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(withBlock17.Speed);
+                //                        str_result = SrcFormatter.Format(withBlock17.Speed);
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
@@ -1211,7 +1193,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(withBlock17.get_Armor(""));
+                //                        str_result = SrcFormatter.Format(withBlock17.get_Armor(""));
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
@@ -1227,7 +1209,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    if (etype == ValueType.StringType)
                 //                    {
-                //                        str_result = VB.Compatibility.VB6.Support.Format(withBlock17.get_Mobility(""));
+                //                        str_result = SrcFormatter.Format(withBlock17.get_Mobility(""));
                 //                        GetVariableRet = ValueType.StringType;
                 //                    }
                 //                    else
