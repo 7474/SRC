@@ -44,7 +44,7 @@ namespace SRCCore.Expressions
             new Tan(),
             // String
             //new Format(),
-            //new InStr(),
+            new InStr(),
             //new InStrRev(),
             new IsNumeric(),
             //new Left(),
@@ -322,34 +322,6 @@ namespace SRCCore.Expressions
             //                        else
             //                        {
             //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-
-            //                        return CallFunctionRet;
-            //                    }
-
-            //                case "instr":
-            //                    {
-            //                        if (pcount == 2)
-            //                        {
-            //                            i = Strings.InStr(GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]));
-            //                        }
-            //                        else
-            //                        {
-            //                            // params(3)が指定されている場合は、それを検索開始位置似設定
-            //                            // VBのInStrは引数1が開始位置になりますが、現仕様との兼ね合いを考え、
-            //                            // eve上では引数3に設定するようにしています
-            //                            i = Strings.InStr(GetValueAsLong(@params[3], is_term[3]), GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]));
-            //                        }
-
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum((double)i);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            num_result = (double)i;
-            //                            CallFunctionRet = ValueType.NumericType;
             //                        }
 
             //                        return CallFunctionRet;

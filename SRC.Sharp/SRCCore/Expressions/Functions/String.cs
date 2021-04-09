@@ -1,4 +1,5 @@
 using SRCCore.Lib;
+using SRCCore.VB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,43 @@ namespace SRCCore.Expressions.Functions
     // LeftB(文字列,バイト数)
     // MidB(文字列,位置[,バイト数])
     // RightB(文字列,バイト数)
+    public class InStr : AFunction
+    {
+        public override ValueType Invoke(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        {
+            str_result = "";
+            num_result = 0d;
+
+            int i;
+            if (pcount == 2)
+            {
+                i = Strings.InStr(
+                    SRC.Expression.GetValueAsString(@params[1], is_term[1]),
+                    SRC.Expression.GetValueAsString(@params[2], is_term[2]));
+            }
+            else
+            {
+                // params(3)が指定されている場合は、それを検索開始位置似設定
+                // VBのInStrは引数1が開始位置になりますが、現仕様との兼ね合いを考え、
+                // eve上では引数3に設定するようにしています
+                i = Strings.InStr(
+                    SRC.Expression.GetValueAsLong(@params[3], is_term[3]),
+                    SRC.Expression.GetValueAsString(@params[1], is_term[1]),
+                    SRC.Expression.GetValueAsString(@params[2], is_term[2]));
+            }
+
+
+            if (etype == ValueType.StringType)
+            {
+                str_result = GeneralLib.FormatNum(i);
+                return ValueType.StringType;
+            }
+            else
+            {
+                return ValueType.NumericType;
+            }
+        }
+    }
     public class IsNumeric : AFunction
     {
         public override ValueType Invoke(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
