@@ -1,17 +1,10 @@
 // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
 using SRCCore.Lib;
-using SRCCore.Pilots;
-using SRCCore.Units;
 using SRCCore.VB;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SRCCore.Expressions
 {
@@ -610,37 +603,37 @@ namespace SRCCore.Expressions
                 //                        return GetVariableRet;
                 //                    }
 
-                //                case "basex":
-                //                    {
-                //                        if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = SrcFormatter.Format(Event.BaseX);
-                //                            GetVariableRet = ValueType.StringType;
-                //                        }
-                //                        else
-                //                        {
-                //                            num_result = Event.BaseX;
-                //                            GetVariableRet = ValueType.NumericType;
-                //                        }
+                case "basex":
+                    {
+                        if (etype == ValueType.StringType)
+                        {
+                            str_result = SrcFormatter.Format(Event.BaseX);
+                            GetVariableRet = ValueType.StringType;
+                        }
+                        else
+                        {
+                            num_result = Event.BaseX;
+                            GetVariableRet = ValueType.NumericType;
+                        }
 
-                //                        return GetVariableRet;
-                //                    }
+                        return GetVariableRet;
+                    }
 
-                //                case "basey":
-                //                    {
-                //                        if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = SrcFormatter.Format(Event.BaseY);
-                //                            GetVariableRet = ValueType.StringType;
-                //                        }
-                //                        else
-                //                        {
-                //                            num_result = Event.BaseY;
-                //                            GetVariableRet = ValueType.NumericType;
-                //                        }
+                case "basey":
+                    {
+                        if (etype == ValueType.StringType)
+                        {
+                            str_result = SrcFormatter.Format(Event.BaseY);
+                            GetVariableRet = ValueType.StringType;
+                        }
+                        else
+                        {
+                            num_result = Event.BaseY;
+                            GetVariableRet = ValueType.NumericType;
+                        }
 
-                //                        return GetVariableRet;
-                //                    }
+                        return GetVariableRet;
+                    }
 
                 //                case "extdatapath":
                 //                    {
@@ -2080,7 +2073,6 @@ namespace SRCCore.Expressions
                 // XXX 配列の取得
                 foreach (var v in Event.SubLocalVars())
                 {
-
                     if ((vname ?? "") == (v.Name ?? "") | Strings.InStr(v.Name, vname2) == 1)
                     {
                         v.Name = "";

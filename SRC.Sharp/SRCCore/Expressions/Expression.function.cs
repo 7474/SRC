@@ -41,7 +41,28 @@ namespace SRCCore.Expressions
             new RoundDown(),
             new Sin(),
             new Sqr(),
-            new Tan()
+            new Tan(),
+            // String
+            //new Format(),
+            //new InStr(),
+            //new InStrRev(),
+            new IsNumeric(),
+            //new Left(),
+            //new Len(),
+            //new LSet(),
+            //new Mid(),
+            //new Replace(),
+            //new Right(),
+            //new RSet(),
+            //new StrComp(),
+            //new String(),
+            //new Wide(),
+            //new InStrB(),
+            //new InStrRevB(),
+            //new LenB(),
+            //new LeftB(),
+            //new MidB(),
+            //new RightB(),
         }.ToDictionary(x => x.Name.ToLower());
 
         // 式を関数呼び出しとして構文解析し、実行
@@ -823,22 +844,6 @@ namespace SRCCore.Expressions
             //                                }
             //                        }
 
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
-            //                        return CallFunctionRet;
-            //                    }
-
-            //                case "cos":
-            //                    {
-            //                        num_result = Math.Cos(GetValueAsDouble(@params[1], is_term[1]));
             //                        if (etype == ValueType.StringType)
             //                        {
             //                            str_result = GeneralLib.FormatNum(num_result);
@@ -1700,22 +1705,6 @@ namespace SRCCore.Expressions
             //                        return CallFunctionRet;
             //                    }
 
-            //                case "int":
-            //                    {
-            //                        num_result = Conversion.Int(GetValueAsDouble(@params[1], is_term[1]));
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
-            //                        return CallFunctionRet;
-            //                    }
-
             //                case "isavailable":
             //                    {
             //                        switch (pcount)
@@ -2015,34 +2004,6 @@ namespace SRCCore.Expressions
             //                        return CallFunctionRet;
             //                    }
 
-            //                case "isnumeric":
-            //                    {
-            //                        if (GeneralLib.IsNumber(GetValueAsString(@params[1], is_term[1])))
-            //                        {
-            //                            if (etype == ValueType.StringType)
-            //                            {
-            //                                str_result = "1";
-            //                                CallFunctionRet = ValueType.StringType;
-            //                            }
-            //                            else
-            //                            {
-            //                                num_result = 1d;
-            //                                CallFunctionRet = ValueType.NumericType;
-            //                            }
-            //                        }
-            //                        else if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = "0";
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            num_result = 0d;
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
-            //                        return CallFunctionRet;
-            //                    }
 
             //                case "isvardefined":
             //                    {
