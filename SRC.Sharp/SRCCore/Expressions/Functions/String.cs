@@ -29,7 +29,7 @@ namespace SRCCore.Expressions.Functions
     // RightB(文字列,バイト数)
     public class InStr : AFunction
     {
-        public override ValueType Invoke(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
             num_result = 0d;
@@ -66,7 +66,7 @@ namespace SRCCore.Expressions.Functions
     }
     public class IsNumeric : AFunction
     {
-        public override ValueType Invoke(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
             num_result = 0d;

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using SRCCore.Lib;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ namespace SRCCore.Expressions.Functions
 {
     public class X : AFunction
     {
-        public override ValueType Invoke(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
             num_result = 0d;
@@ -74,7 +75,7 @@ namespace SRCCore.Expressions.Functions
 
     public class Y : AFunction
     {
-        public override ValueType Invoke(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
             num_result = 0d;
@@ -141,7 +142,7 @@ namespace SRCCore.Expressions.Functions
 
     public class WX : AFunction
     {
-        public override ValueType Invoke(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
             num_result = 0d;
@@ -199,7 +200,7 @@ namespace SRCCore.Expressions.Functions
 
     public class WY : AFunction
     {
-        public override ValueType Invoke(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
             num_result = 0d;

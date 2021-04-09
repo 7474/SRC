@@ -8,7 +8,7 @@ namespace SRCCore.Expressions.Functions
 {
     public class Args : AFunction
     {
-        public override ValueType Invoke(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             var CallFunctionRet = ValueType.UndefinedType;
             str_result = "";
