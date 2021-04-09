@@ -26,6 +26,8 @@ namespace SRCCore.Expressions
             new Functions.Unit(),
             new X(),
             new Y(),
+            new WX(),
+            new WY(),
         }.ToDictionary(x => x.Name.ToLower());
 
         // 式を関数呼び出しとして構文解析し、実行
@@ -3892,133 +3894,6 @@ namespace SRCCore.Expressions
             //                        return CallFunctionRet;
             //                    }
             //                // ADD  END  240a
-            //                case "wx":
-            //                    {
-            //                        switch (pcount)
-            //                        {
-            //                            case 1:
-            //                                {
-            //                                    pname = GetValueAsString(@params[1], is_term[1]);
-            //                                    bool localIsDefined210() { object argIndex1 = (object)pname; var ret = SRC.UList.IsDefined2(argIndex1); return ret; }
-
-            //                                    bool localIsDefined35() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
-
-            //                                    if (GeneralLib.IsNumber(pname))
-            //                                    {
-            //                                        num_result = (double)GeneralLib.StrToLng(pname);
-            //                                    }
-            //                                    else if (pname == "目標地点")
-            //                                    {
-            //                                        num_result = (double)Commands.SelectedX;
-            //                                    }
-            //                                    else if (localIsDefined210())
-            //                                    {
-            //                                        Unit localItem222() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
-
-            //                                        num_result = (double)localItem222().x;
-            //                                    }
-            //                                    else if (localIsDefined35())
-            //                                    {
-            //                                        {
-            //                                            var withBlock47 = SRC.PList.Item((object)pname);
-            //                                            if (withBlock47.Unit is object)
-            //                                            {
-            //                                                num_result = (double)withBlock47.Unit.x;
-            //                                            }
-            //                                        }
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case 0:
-            //                                {
-            //                                    if (Event.SelectedUnitForEvent is object)
-            //                                    {
-            //                                        num_result = (double)Event.SelectedUnitForEvent.x;
-            //                                    }
-
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        num_result = (double)GUI.MapToPixelX(num_result);
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
-            //                        return CallFunctionRet;
-            //                    }
-
-            //                case "wy":
-            //                    {
-            //                        switch (pcount)
-            //                        {
-            //                            case 1:
-            //                                {
-            //                                    pname = GetValueAsString(@params[1], is_term[1]);
-            //                                    bool localIsDefined211() { object argIndex1 = (object)pname; var ret = SRC.UList.IsDefined2(argIndex1); return ret; }
-
-            //                                    bool localIsDefined36() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
-
-            //                                    if (GeneralLib.IsNumber(pname))
-            //                                    {
-            //                                        num_result = (double)GeneralLib.StrToLng(pname);
-            //                                    }
-            //                                    else if (pname == "目標地点")
-            //                                    {
-            //                                        num_result = (double)Commands.SelectedY;
-            //                                    }
-            //                                    else if (localIsDefined211())
-            //                                    {
-            //                                        Unit localItem223() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
-
-            //                                        num_result = (double)localItem223().y;
-            //                                    }
-            //                                    else if (localIsDefined36())
-            //                                    {
-            //                                        {
-            //                                            var withBlock48 = SRC.PList.Item((object)pname);
-            //                                            if (withBlock48.Unit is object)
-            //                                            {
-            //                                                num_result = (double)withBlock48.Unit.y;
-            //                                            }
-            //                                        }
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case 0:
-            //                                {
-            //                                    if (Event.SelectedUnitForEvent is object)
-            //                                    {
-            //                                        num_result = (double)Event.SelectedUnitForEvent.y;
-            //                                    }
-
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        num_result = (double)GUI.MapToPixelY(num_result);
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
-            //                        return CallFunctionRet;
-            //                    }
 
             //                case "wide":
             //                    {
