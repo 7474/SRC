@@ -571,37 +571,37 @@ namespace SRCCore.Expressions
                 //                        return GetVariableRet;
                 //                    }
 
-                //                case "argnum":
-                //                    {
-                //                        // UpVarの呼び出し回数を累計
-                //                        num = Event.UpVarLevel;
-                //                        i = Event.CallDepth;
-                //                        while (num > 0)
-                //                        {
-                //                            i = (i - num);
-                //                            if (i < 1)
-                //                            {
-                //                                i = 1;
-                //                                break;
-                //                            }
+                case "argnum":
+                    {
+                        // UpVarの呼び出し回数を累計
+                        var num = Event.UpVarLevel;
+                        var i = Event.CallDepth;
+                        while (num > 0)
+                        {
+                            i = (i - num);
+                            if (i < 1)
+                            {
+                                i = 1;
+                                break;
+                            }
 
-                //                            num = Event.UpVarLevelStack[i];
-                //                        }
+                            num = Event.UpVarLevelStack[i];
+                        }
 
-                //                        num = (Event.ArgIndex - Event.ArgIndexStack[i - 1]);
-                //                        if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = SrcFormatter.Format(num);
-                //                            GetVariableRet = ValueType.StringType;
-                //                        }
-                //                        else
-                //                        {
-                //                            num_result = num;
-                //                            GetVariableRet = ValueType.NumericType;
-                //                        }
+                        num = (Event.ArgIndex - Event.ArgIndexStack[i - 1]);
+                        if (etype == ValueType.StringType)
+                        {
+                            str_result = SrcFormatter.Format(num);
+                            GetVariableRet = ValueType.StringType;
+                        }
+                        else
+                        {
+                            num_result = num;
+                            GetVariableRet = ValueType.NumericType;
+                        }
 
-                //                        return GetVariableRet;
-                //                    }
+                        return GetVariableRet;
+                    }
 
                 case "basex":
                     {
