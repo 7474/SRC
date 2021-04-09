@@ -39,7 +39,7 @@ namespace SRCCore.Expressions.Functions
             var baseIndex = SRC.Event.ArgIndexStack[i - 1];
             if (baseIndex + num <= SRC.Event.ArgIndex)
             {
-                str_result = SRC.Event.ArgStack[];
+                str_result = SRC.Event.ArgStack[baseIndex + num];
             }
 
             if (etype == ValueType.NumericType)
