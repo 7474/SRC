@@ -77,7 +77,7 @@ namespace SRCCore.Expressions.Functions
             {
                 SRC.Event.ArgStack[SRC.Event.ArgIndex + i] = @params[i];
             }
-            SRC.Event.ArgIndex = (SRC.Event.ArgIndex + pcount - 1);
+            SRC.Event.ArgIndex = (SRC.Event.ArgIndex + pcount);
 
             // サブルーチン本体を実行
             do
