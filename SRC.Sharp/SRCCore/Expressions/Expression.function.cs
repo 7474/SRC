@@ -28,6 +28,20 @@ namespace SRCCore.Expressions
             new Y(),
             new WX(),
             new WY(),
+            // Math
+            new Abs(),
+            new Atn(),
+            new Cos(),
+            new Int(),
+            new Max(),
+            new Min(),
+            new Functions.Random(),
+            new Round(),
+            new RoundUp(),
+            new RoundDown(),
+            new Sin(),
+            new Sqr(),
+            new Tan()
         }.ToDictionary(x => x.Name.ToLower());
 
         // 式を関数呼び出しとして構文解析し、実行
@@ -399,21 +413,6 @@ namespace SRCCore.Expressions
             //                    }
 
             //                // これ以降はアルファベット順
-            //                case "abs":
-            //                    {
-            //                        num_result = Math.Abs(GetValueAsDouble(@params[1], is_term[1]));
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
-            //                        return CallFunctionRet;
-            //                    }
 
             //                case "action":
             //                    {
@@ -525,22 +524,6 @@ namespace SRCCore.Expressions
             //                case "asc":
             //                    {
             //                        num_result = (double)Strings.Asc(GetValueAsString(@params[1], is_term[1]));
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
-            //                        return CallFunctionRet;
-            //                    }
-
-            //                case "atn":
-            //                    {
-            //                        num_result = Math.Atan(GetValueAsDouble(@params[1], is_term[1]));
             //                        if (etype == ValueType.StringType)
             //                        {
             //                            str_result = GeneralLib.FormatNum(num_result);
