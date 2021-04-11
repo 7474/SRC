@@ -23,8 +23,10 @@ namespace SRCCore
 
         private SRC SRC { get; }
         private IGUI GUI => SRC.GUI;
+        private Maps.Map Map => SRC.Map;
         private Events.Event Event => SRC.Event;
         private Expressions.Expression Expression => SRC.Expression;
+        private Sound Sound => SRC.Sound;
 
         public Effect(SRC src)
         {
@@ -144,7 +146,11 @@ namespace SRCCore
             {
                 var withBlock = u;
                 // まず準備アニメ表示の際にフェイスアップを表示するか決定する
-                if (withBlock.CountWeapon() >= 4 && w >= withBlock.CountWeapon() - 1 && withBlock.Weapon(w).Power >= 1800 && (withBlock.Weapon(w).Bullet > 0 && withBlock.Weapon(w).Bullet <= 4 || withBlock.Weapon(w).ENConsumption >= 35))
+                if (withBlock.CountWeapon() >= 4
+                    && w.WeaponNo() >= withBlock.CountWeapon() - 1
+                    && w.UpdatedWeaponData.Power >= 1800
+                    && (w.UpdatedWeaponData.Bullet > 0 && w.UpdatedWeaponData.Bullet <= 4
+                        || w.UpdatedWeaponData.ENConsumption >= 35))
                 {
                     // ４つ以上の武器を持つユニットがそのユニットの最高威力
                     // もしくは２番目に強力な武器を使用し、
@@ -167,8 +173,8 @@ namespace SRCCore
                     goto SkipWeaponAnimation;
                 }
 
-                wname = withBlock.WeaponNickname(w);
-                wclass = withBlock.Weapon(w).Class;
+                wname = w.WeaponNickname();
+                wclass = w.UpdatedWeaponData.Class;
             }
 
             // 武器準備のアニメーションを非表示にするオプションを選択している？
@@ -195,7 +201,7 @@ namespace SRCCore
 
             // これから武器の種類を判定
 
-            if (GeneralLib.InStrNotNest(wclass, "武") == 0 && GeneralLib.InStrNotNest(wclass, "武"1) == 0 && GeneralLib.InStrNotNest(wclass, "武"2) == 0 && GeneralLib.InStrNotNest(wclass, "武"3) == 0)
+            if (GeneralLib.InStrNotNest(wclass, "武") == 0 && GeneralLib.InStrNotNest(wclass, "武", 1) == 0 && GeneralLib.InStrNotNest(wclass, "武", 2) == 0 && GeneralLib.InStrNotNest(wclass, "武", 3) == 0)
             {
                 goto SkipInfightWeapon;
             }
@@ -204,7 +210,7 @@ namespace SRCCore
             wtype = CheckWeaponType(wname, wclass);
             if (wtype == "手裏剣")
             {
-                // 手裏剣は構えずにいきなり投げたほうがかっこいいと思うので
+                // 手裏剣は構えずにいきなり投げたほうがかっこいいと思うのでy
                 return;
             }
 
@@ -216,30 +222,31 @@ namespace SRCCore
             // 詳細が分からなかった武器
             if (GeneralLib.InStrNotNest(wclass, "武") > 0)
             {
-                // 装備しているアイテムから武器を検索
-                var loopTo = u.CountItem();
-                for (i = 1; i <= loopTo; i++)
-                {
-                    {
-                        var withBlock1 = u.Item(i);
-                        if (withBlock1.Activated && (withBlock1.Part() == "両手" || withBlock1.Part() == "片手" || withBlock1.Part() == "武器"))
-                        {
-                            wtype = CheckWeaponType(withBlock1.Nickname(), "");
-                            if (!string.IsNullOrEmpty(wtype))
-                            {
-                                goto FoundWeaponType;
-                            }
+                // TODO Impl item
+                //// 装備しているアイテムから武器を検索
+                //var loopTo = u.CountItem();
+                //for (i = 1; i <= loopTo; i++)
+                //{
+                //    {
+                //        var withBlock1 = u.Item(i);
+                //        if (withBlock1.Activated && (withBlock1.Part() == "両手" || withBlock1.Part() == "片手" || withBlock1.Part() == "武器"))
+                //        {
+                //            wtype = CheckWeaponType(withBlock1.Nickname(), "");
+                //            if (!string.IsNullOrEmpty(wtype))
+                //            {
+                //                goto FoundWeaponType;
+                //            }
 
-                            wtype = CheckWeaponType(withBlock1.Class0(), "");
-                            if (!string.IsNullOrEmpty(wtype))
-                            {
-                                goto FoundWeaponType;
-                            }
+                //            wtype = CheckWeaponType(withBlock1.Class0(), "");
+                //            if (!string.IsNullOrEmpty(wtype))
+                //            {
+                //                goto FoundWeaponType;
+                //            }
 
-                            break;
-                        }
-                    }
-                }
+                //            break;
+                //        }
+                //    }
+                //}
 
                 goto SkipShootingWeapon;
             }
@@ -1102,8 +1109,8 @@ namespace SRCCore
 
             // フラグをクリア
             Sound.IsWavePlayed = false;
-            wname = u.WeaponNickname(w);
-            wclass = u.Weapon(w).Class;
+            wname = w.WeaponNickname();
+            wclass = w.UpdatedWeaponData.Class;
             if (GeneralLib.InStrNotNest(wclass, "武") > 0 || GeneralLib.InStrNotNest(wclass, "突") > 0)
             {
                 if (Strings.InStr(wname, "ビーム") > 0 || Strings.InStr(wname, "プラズマ") > 0 || Strings.InStr(wname, "レーザー") > 0 || Strings.InStr(wname, "ブラスター") > 0 || Strings.InStr(wname, "高周波") > 0 || Strings.InStr(wname, "電磁") > 0 || wname == "セイバー" || wname == "ライトセイバー" || wname == "ランサー")
@@ -1141,7 +1148,7 @@ namespace SRCCore
             string wtype = default, wname, wclass, wtype0 = default;
             string cname = default, aname, bmpname = default, cname0 = default;
             string sname = default, sname0 = default;
-            var attack_times = default;
+            int attack_times = default;
             var double_weapon = default(bool);
             var double_attack = default(bool);
             var combo_attack = default(bool);
@@ -1155,8 +1162,8 @@ namespace SRCCore
                 return;
             }
 
-            wname = u.WeaponNickname(w);
-            wclass = u.Weapon(w).Class;
+            wname = w.WeaponNickname();
+            wclass = w.UpdatedWeaponData.Class;
 
             // 二刀流？
             if (Strings.InStr(wname, "ダブル") > 0 || Strings.InStr(wname, "ツイン") > 0 || Strings.InStr(wname, "デュアル") > 0 || Strings.InStr(wname, "双") > 0 || Strings.InStr(wname, "二刀") > 0 || Strings.InStr(wname, "２連") > 0 || Strings.InStr(wname, "二連") > 0 || Strings.InStr(wname, "連装") > 0)
@@ -1213,7 +1220,6 @@ namespace SRCCore
                         {
                             wtype = WeaponInHand + "突撃";
                             goto FoundWeaponType;
-                            break;
                         }
                 }
             }
@@ -1441,75 +1447,76 @@ namespace SRCCore
             // 詳細が分からなかった武器
             if (GeneralLib.InStrNotNest(wclass, "武") > 0)
             {
-                // 装備しているアイテムから武器を検索
-                var loopTo = u.CountItem();
-                for (i = 1; i <= loopTo; i++)
-                {
-                    {
-                        var withBlock = u.Item(i);
-                        if (withBlock.Activated && (withBlock.Part() == "両手" || withBlock.Part() == "片手" || withBlock.Part() == "武器"))
-                        {
-                            wtype = CheckWeaponType(withBlock.Nickname(), "");
-                            if (string.IsNullOrEmpty(wtype))
-                            {
-                                wtype = CheckWeaponType(withBlock.Class0(), "");
-                            }
+                // TODO Impl item
+                //// 装備しているアイテムから武器を検索
+                //var loopTo = u.CountItem();
+                //for (i = 1; i <= loopTo; i++)
+                //{
+                //    {
+                //        var withBlock = u.Item(i);
+                //        if (withBlock.Activated && (withBlock.Part() == "両手" || withBlock.Part() == "片手" || withBlock.Part() == "武器"))
+                //        {
+                //            wtype = CheckWeaponType(withBlock.Nickname(), "");
+                //            if (string.IsNullOrEmpty(wtype))
+                //            {
+                //                wtype = CheckWeaponType(withBlock.Class0(), "");
+                //            }
 
-                            break;
-                        }
-                    }
-                }
+                //            break;
+                //        }
+                //    }
+                //}
 
-                switch (wtype ?? "")
-                {
-                    case "スピア":
-                    case "ランス":
-                    case "トライデント":
-                    case "和槍":
-                    case "エストック":
-                        {
-                            if (combo_attack)
-                            {
-                                wtype = "乱突";
-                            }
-                            else if (double_attack)
-                            {
-                                wtype = "連突";
-                            }
-                            else
-                            {
-                                wtype = "刺突";
-                            }
+                //switch (wtype ?? "")
+                //{
+                //    case "スピア":
+                //    case "ランス":
+                //    case "トライデント":
+                //    case "和槍":
+                //    case "エストック":
+                //        {
+                //            if (combo_attack)
+                //            {
+                //                wtype = "乱突";
+                //            }
+                //            else if (double_attack)
+                //            {
+                //                wtype = "連突";
+                //            }
+                //            else
+                //            {
+                //                wtype = "刺突";
+                //            }
 
-                            break;
-                        }
+                //            break;
+                //        }
 
-                    default:
-                        {
-                            if (combo_attack)
-                            {
-                                wtype = "白兵乱撃";
-                            }
-                            else if (double_attack)
-                            {
-                                wtype = "白兵連撃";
-                            }
-                            else if (Strings.InStr(wname, "回転") > 0)
-                            {
-                                wtype = "白兵回転";
-                            }
-                            else if (GeneralLib.InStrNotNest(wclass, "Ｊ") > 0)
-                            {
-                                wtype = "振り上げ";
-                            }
-                            else
-                            {
-                                wtype = "白兵武器";
-                            }
+                //    default:
+                //        {
+                //            if (combo_attack)
+                //            {
+                //                wtype = "白兵乱撃";
+                //            }
+                //            else if (double_attack)
+                //            {
+                //                wtype = "白兵連撃";
+                //            }
+                //            else if (Strings.InStr(wname, "回転") > 0)
+                //            {
+                //                wtype = "白兵回転";
+                //            }
+                //            else if (GeneralLib.InStrNotNest(wclass, "Ｊ") > 0)
+                //            {
+                //                wtype = "振り上げ";
+                //            }
+                //            else
+                //            {
+                //                wtype = "白兵武器";
+                //            }
 
-                            break;
-                        }
-                }
+                //            break;
+                //        }
+                //}
 
                 goto FoundWeaponType;
             }
@@ -1973,7 +1980,7 @@ namespace SRCCore
 
             if (Strings.InStr(wname, "爆弾") > 0 || Strings.InStr(wname, "爆撃") > 0 || Strings.InStr(wname, "爆雷") > 0)
             {
-                if (u.Weapon(w).MaxRange == 1)
+                if (w.UpdatedWeaponData.MaxRange == 1)
                 {
                     wtype = "投下爆弾";
                 }
@@ -2054,7 +2061,7 @@ namespace SRCCore
             {
                 if (GeneralLib.InStrNotNest(wclass, "実") == 0)
                 {
-                    if (u.Weapon(w).MaxRange == 1)
+                    if (w.UpdatedWeaponData.MaxRange == 1)
                     {
                         wtype = "破壊光線";
                         sname = "Thunder.wav";
@@ -2260,7 +2267,7 @@ namespace SRCCore
                 goto FoundWeaponType;
             }
 
-            if (u.IsSpellWeapon(w) || GeneralLib.InStrNotNest(wclass, "魔") > 0)
+            if (w.IsSpellWeapon() || GeneralLib.InStrNotNest(wclass, "魔") > 0)
             {
                 // wtype = "魔法放射"
                 // cname = SpellColor(wname, wclass)
@@ -2697,11 +2704,11 @@ namespace SRCCore
                 return;
             }
 
-            wname = u.WeaponNickname(w);
-            wclass = u.Weapon(w).Class;
+            wname = w.WeaponNickname();
+            wclass = w.UpdatedWeaponData.Class;
 
             // 効果音が必要ないもの
-            if (u.IsWeaponClassifiedAs(w, "武") || u.IsWeaponClassifiedAs(w, "突") || u.IsWeaponClassifiedAs(w, "接"))
+            if (w.IsWeaponClassifiedAs("武") || w.IsWeaponClassifiedAs("突") || w.IsWeaponClassifiedAs("接"))
             {
                 return;
             }
@@ -3052,7 +3059,7 @@ namespace SRCCore
         {
             string wtype = default, wname, wclass, wtype0 = default;
             string cname = default, aname, sname = default;
-            var attack_times = default;
+            int attack_times = default;
             var double_weapon = default(bool);
             var double_attack = default(bool);
             var combo_attack = default(bool);
@@ -3065,14 +3072,14 @@ namespace SRCCore
                 return;
             }
 
-            wname = u.WeaponNickname(w);
-            wclass = u.Weapon(w).Class;
+            wname = w.WeaponNickname();
+            wclass = w.UpdatedWeaponData.Class;
 
             // マップ攻撃の場合は武器にかかわらずダメージを使う
             if (GeneralLib.InStrNotNest(wclass, "Ｍ") > 0)
             {
                 // 攻撃力0の攻撃の場合は「ダメージ」のアニメを使用しない
-                if (u.WeaponPower(w, "") == 0)
+                if (w.WeaponPower("") == 0)
                 {
                     return;
                 }
@@ -3128,7 +3135,6 @@ namespace SRCCore
                         {
                             wtype = WeaponInHand + "突撃";
                             goto FoundWeaponType;
-                            break;
                         }
                 }
             }
@@ -3492,87 +3498,88 @@ namespace SRCCore
             // 詳細が分からなかった武器
             if (GeneralLib.InStrNotNest(wclass, "武") > 0)
             {
-                // 装備しているアイテムから武器を検索
-                var loopTo = u.CountItem();
-                for (i = 1; i <= loopTo; i++)
-                {
-                    {
-                        var withBlock = u.Item(i);
-                        if (withBlock.Activated && (withBlock.Part() == "両手" || withBlock.Part() == "片手" || withBlock.Part() == "武器"))
-                        {
-                            wtype = CheckWeaponType(withBlock.Nickname(), "");
-                            if (string.IsNullOrEmpty(wtype))
-                            {
-                                wtype = CheckWeaponType(withBlock.Class0(), "");
-                            }
+                // TODO Impl item
+                //// 装備しているアイテムから武器を検索
+                //var loopTo = u.CountItem();
+                //for (i = 1; i <= loopTo; i++)
+                //{
+                //    {
+                //        var withBlock = u.Item(i);
+                //        if (withBlock.Activated && (withBlock.Part() == "両手" || withBlock.Part() == "片手" || withBlock.Part() == "武器"))
+                //        {
+                //            wtype = CheckWeaponType(withBlock.Nickname(), "");
+                //            if (string.IsNullOrEmpty(wtype))
+                //            {
+                //                wtype = CheckWeaponType(withBlock.Class0(), "");
+                //            }
 
-                            break;
-                        }
-                    }
-                }
+                //            break;
+                //        }
+                //    }
+                //}
 
-                switch (wtype ?? "")
-                {
-                    case "スピア":
-                    case "ランス":
-                    case "トライデント":
-                    case "和槍":
-                    case "エストック":
-                        {
-                            if (combo_attack)
-                            {
-                                wtype = "乱突";
-                            }
-                            else if (double_attack)
-                            {
-                                wtype = "連突";
-                            }
-                            else
-                            {
-                                wtype = "刺突";
-                            }
+                //switch (wtype ?? "")
+                //{
+                //    case "スピア":
+                //    case "ランス":
+                //    case "トライデント":
+                //    case "和槍":
+                //    case "エストック":
+                //        {
+                //            if (combo_attack)
+                //            {
+                //                wtype = "乱突";
+                //            }
+                //            else if (double_attack)
+                //            {
+                //                wtype = "連突";
+                //            }
+                //            else
+                //            {
+                //                wtype = "刺突";
+                //            }
 
-                            break;
-                        }
+                //            break;
+                //        }
 
-                    default:
-                        {
-                            if (combo_attack)
-                            {
-                                wtype = "斬撃乱舞";
-                            }
-                            else if (double_weapon)
-                            {
-                                wtype = "ダブル斬撃";
-                            }
-                            else if (double_attack)
-                            {
-                                wtype = "連斬撃";
-                            }
-                            else if (GeneralLib.InStrNotNest(wclass, "火") > 0)
-                            {
-                                wtype = "炎斬撃";
-                            }
-                            else if (GeneralLib.InStrNotNest(wclass, "雷") > 0)
-                            {
-                                wtype = "雷斬撃";
-                            }
-                            else if (GeneralLib.InStrNotNest(wclass, "冷") > 0)
-                            {
-                                wtype = "凍斬撃";
-                            }
-                            else if (GeneralLib.InStrNotNest(wclass, "Ｊ") > 0)
-                            {
-                                wtype = "斬り上げ";
-                            }
-                            else
-                            {
-                                wtype = "斬撃";
-                            }
+                //    default:
+                //        {
+                //            if (combo_attack)
+                //            {
+                //                wtype = "斬撃乱舞";
+                //            }
+                //            else if (double_weapon)
+                //            {
+                //                wtype = "ダブル斬撃";
+                //            }
+                //            else if (double_attack)
+                //            {
+                //                wtype = "連斬撃";
+                //            }
+                //            else if (GeneralLib.InStrNotNest(wclass, "火") > 0)
+                //            {
+                //                wtype = "炎斬撃";
+                //            }
+                //            else if (GeneralLib.InStrNotNest(wclass, "雷") > 0)
+                //            {
+                //                wtype = "雷斬撃";
+                //            }
+                //            else if (GeneralLib.InStrNotNest(wclass, "冷") > 0)
+                //            {
+                //                wtype = "凍斬撃";
+                //            }
+                //            else if (GeneralLib.InStrNotNest(wclass, "Ｊ") > 0)
+                //            {
+                //                wtype = "斬り上げ";
+                //            }
+                //            else
+                //            {
+                //                wtype = "斬撃";
+                //            }
 
-                            break;
-                        }
-                }
+                //            break;
+                //        }
+                //}
 
                 goto FoundWeaponType;
             }
@@ -3656,7 +3663,9 @@ namespace SRCCore
                 goto FoundWeaponType;
             }
 
-            if (Conversions.ToBoolean(Conversions.ToInteger(Strings.InStr(wname, "ガトリング") > 0) || Strings.InStr(wname, "チェーンガン") || Strings.InStr(wname, "ガンランチャー")))
+            if (Strings.InStr(wname, "ガトリング") > 0
+                || Strings.InStr(wname, "チェーンガン") > 0
+                || Strings.InStr(wname, "ガンランチャー") > 0)
             {
                 wtype = "ガトリング";
                 goto FoundWeaponType;
@@ -3940,7 +3949,10 @@ namespace SRCCore
                 goto FoundWeaponType;
             }
 
-            if (Conversions.ToBoolean(Conversions.ToInteger(Strings.InStr(wname, "トルネード") > 0) || Strings.InStr(wname, "サイクロン") || Conversions.ToInteger(Strings.InStr(wname, "竜巻") > 0) || Conversions.ToInteger(Strings.InStr(wname, "渦巻") > 0)))
+            if (Strings.InStr(wname, "トルネード") > 0
+                || Strings.InStr(wname, "サイクロン") > 0
+                || Strings.InStr(wname, "竜巻") > 0
+                || Strings.InStr(wname, "渦巻") > 0)
             {
                 wtype = "竜巻";
                 goto FoundWeaponType;
@@ -4060,7 +4072,7 @@ namespace SRCCore
             }
 
             // 攻撃力0の攻撃の場合は「ダメージ」のアニメを使用しない
-            if (u.WeaponPower(w, "") == 0)
+            if (w.WeaponPower("") == 0)
             {
                 return;
             }
@@ -4173,8 +4185,8 @@ namespace SRCCore
                 return;
             }
 
-            wname = u.WeaponNickname(w);
-            wclass = u.Weapon(w).Class;
+            wname = w.WeaponNickname();
+            wclass = w.UpdatedWeaponData.Class;
 
             // 効果音の再生回数
             num = CountAttack(u, w);
@@ -4455,8 +4467,8 @@ namespace SRCCore
         {
             string wname, wclass;
             string sname;
-            wname = u.WeaponNickname(w);
-            wclass = u.Weapon(w).Class;
+            wname = w.WeaponNickname();
+            wclass = w.UpdatedWeaponData.Class;
 
             // 特殊効果が指定されていればそれを使用
             if (u.IsSpecialEffectDefined(wname + "(回避)", sub_situation: ""))
@@ -4483,11 +4495,13 @@ namespace SRCCore
             }
 
             // 風切り音が必要かどうか判定
-            if (Conversions.ToBoolean(GeneralLib.InStrNotNest(wclass, "武") || GeneralLib.InStrNotNest(wclass, "突") || GeneralLib.InStrNotNest(wclass, "武"2)))
+            if (GeneralLib.InStrNotNest(wclass, "武") > 0
+                || GeneralLib.InStrNotNest(wclass, "突") > 0
+                || GeneralLib.InStrNotNest(wclass, "武", 2) > 0)
             {
                 Sound.PlayWave("Swing.wav");
             }
-            else if (Conversions.ToBoolean(GeneralLib.InStrNotNest(wclass, "実")))
+            else if (GeneralLib.InStrNotNest(wclass, "実") > 0)
             {
                 if (Strings.InStr(wname, "鞭") > 0 || Strings.InStr(wname, "ムチ") > 0 || Strings.InStr(wname, "ウイップ") > 0 || Strings.InStr(wname, "チェーン") > 0 || Strings.InStr(wname, "ロッド") > 0 || Strings.InStr(wname, "テンタク") > 0 || Strings.InStr(wname, "テイル") > 0 || Strings.InStr(wname, "尾") > 0 || Strings.InStr(wname, "触手") > 0 || Strings.InStr(wname, "触腕") > 0 || Strings.InStr(wname, "舌") > 0 || Strings.InStr(wname, "巻き") > 0 || Strings.InStr(wname, "糸") > 0)
                 {
@@ -4510,8 +4524,8 @@ namespace SRCCore
                 return;
             }
 
-            wname = u.WeaponNickname(w);
-            wclass = u.Weapon(w).Class;
+            wname = w.WeaponNickname();
+            wclass = w.UpdatedWeaponData.Class;
 
             // 効果音生成回数を設定
             num = CountAttack(u, w);
@@ -4521,15 +4535,29 @@ namespace SRCCore
             }
 
             // 命中音を設定
-            if (Conversions.ToBoolean(GeneralLib.InStrNotNest(wclass, "銃") || GeneralLib.InStrNotNest(wclass, "格") || GeneralLib.InStrNotNest(wclass, "武") || GeneralLib.InStrNotNest(wclass, "突") || Conversions.Toint(Strings.InStr(wname, "弓") > 0) || Conversions.Toint(Strings.InStr(wname, "アロー") > 0) || Conversions.Toint(Strings.InStr(wname, "ロングボウ") > 0) || Conversions.Toint(Strings.InStr(wname, "ショートボウ") > 0) || Conversions.Toint(Strings.InStr(wname, "ボーガン") > 0) || Conversions.Toint(Strings.InStr(wname, "ボウガン") > 0) || Conversions.Toint(Strings.InStr(wname, "針") > 0) || Conversions.Toint(Strings.InStr(wname, "ニードル") > 0) || Conversions.Toint(Strings.InStr(wname, "ランサー") > 0) || Conversions.Toint(Strings.InStr(wname, "ダガー") > 0) || Conversions.Toint(Strings.InStr(wname, "剣") > 0)))
+            if (GeneralLib.InStrNotNest(wclass, "銃") > 0
+                || GeneralLib.InStrNotNest(wclass, "格") > 0
+                || GeneralLib.InStrNotNest(wclass, "武") > 0
+                || GeneralLib.InStrNotNest(wclass, "突") > 0
+                || Strings.InStr(wname, "弓") > 0
+                || Strings.InStr(wname, "アロー") > 0
+                || Strings.InStr(wname, "ロングボウ") > 0
+                || Strings.InStr(wname, "ショートボウ") > 0
+                || Strings.InStr(wname, "ボーガン") > 0
+                || Strings.InStr(wname, "ボウガン") > 0
+                || Strings.InStr(wname, "針") > 0
+                || Strings.InStr(wname, "ニードル") > 0
+                || Strings.InStr(wname, "ランサー") > 0
+                || Strings.InStr(wname, "ダガー") > 0
+                || Strings.InStr(wname, "剣") > 0)
             {
                 sname = "Sword.wav";
             }
-            else if (Conversions.ToBoolean(GeneralLib.InStrNotNest(wclass, "実")))
+            else if (GeneralLib.InStrNotNest(wclass, "実") > 0)
             {
                 sname = "Explode(Small).wav";
             }
-            else if (Conversions.ToBoolean(GeneralLib.InStrNotNest(wclass, "Ｂ")))
+            else if (GeneralLib.InStrNotNest(wclass, "Ｂ") > 0)
             {
                 sname = "BeamCoat.wav";
             }
@@ -4603,7 +4631,7 @@ namespace SRCCore
             }
 
             {
-                var withBlock = u.Weapon(w);
+                var withBlock = w.UpdatedWeaponData;
                 wname = withBlock.Nickname();
                 wclass = withBlock.Class;
             }
@@ -4647,7 +4675,7 @@ namespace SRCCore
                     sname = "";
                     if (aname == "ショッククリティカル")
                     {
-                        if (Commands.SelectedUnit.IsWeaponClassifiedAs(w, "冷"))
+                        if (w.IsWeaponClassifiedAs("冷"))
                         {
                             // 冷気による攻撃で行動不能になった場合は効果音をオフ
                             sname = "-.wav";
@@ -4681,7 +4709,7 @@ namespace SRCCore
             }
 
             // 連続攻撃の場合、命中数が指定されたならそちらにあわせる
-            if (hit_count > 0 && Strings.InStr(u.Weapon(w).Class, "連") > 0)
+            if (hit_count > 0 && Strings.InStr(w.UpdatedWeaponData.Class, "連") > 0)
             {
                 CountAttackRet = hit_count;
                 return CountAttackRet;
@@ -4695,13 +4723,13 @@ namespace SRCCore
         {
             int CountAttack0Ret = default;
             string wname, wclass;
-            wname = u.WeaponNickname(w);
-            wclass = u.Weapon(w).Class;
+            wname = w.WeaponNickname();
+            wclass = w.UpdatedWeaponData.Class;
 
             // 連続攻撃の場合は攻撃回数にあわせる
             if (GeneralLib.InStrNotNest(wclass, "連") > 0)
             {
-                CountAttack0Ret = u.WeaponLevel(w, "連");
+                CountAttack0Ret = (int)w.WeaponLevel("連");
                 return CountAttack0Ret;
             }
 
@@ -5097,7 +5125,7 @@ namespace SRCCore
                 return SpellColorRet;
             }
 
-            if (Conversions.ToBoolean(Strings.InStr(wname, "サン")))
+            if (Strings.InStr(wname, "サン") > 0)
             {
                 SpellColorRet = "橙";
                 return SpellColorRet;
@@ -5110,480 +5138,438 @@ namespace SRCCore
         public void DieAnimation(Unit u)
         {
             int i;
-            var PT = default(GUI.POINTAPI);
-            string fname = default, draw_mode;
+            string fname, draw_mode;
             GUI.EraseUnitBitmap(u.x, u.y);
 
             // 人間ユニットでない場合は爆発を表示
             if (!u.IsHero())
             {
                 ExplodeAnimation(u.Size, u.x, u.y);
-                u.Size = argtsize;
                 return;
             }
 
-            GUI.GetCursorPos(PT);
+            // TODO Impl DieAnimation
+            //GUI.GetCursorPos(PT);
 
-            // メッセージウインドウ上でマウスボタンを押した場合
-            if (ReferenceEquals(Form.ActiveForm, My.MyProject.Forms.m_frmMessage))
-            {
-                {
-                    var withBlock = My.MyProject.Forms.frmMessage;
-                    if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
-                    {
-                        if ((GUI.GetAsyncKeyState(GUI.RButtonID) && 0x8000) != 0)
-                        {
-                            // 右ボタンで爆発スキップ
-                            return;
-                        }
-                    }
-                }
-            }
+            //// メッセージウインドウ上でマウスボタンを押した場合
+            //if (ReferenceEquals(Form.ActiveForm, My.MyProject.Forms.m_frmMessage))
+            //{
+            //    {
+            //        var withBlock = My.MyProject.Forms.frmMessage;
+            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
+            //        {
+            //            if ((GUI.GetAsyncKeyState(GUI.RButtonID) && 0x8000) != 0)
+            //            {
+            //                // 右ボタンで爆発スキップ
+            //                return;
+            //            }
+            //        }
+            //    }
+            //}
 
-            // メインウインドウ上でマウスボタンを押した場合
-            if (ReferenceEquals(Form.ActiveForm, GUI.MainForm))
-            {
-                {
-                    var withBlock1 = GUI.MainForm;
-                    if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
-                    {
-                        if ((GUI.GetAsyncKeyState(GUI.RButtonID) && 0x8000) != 0)
-                        {
-                            // 右ボタンで爆発スキップ
-                            return;
-                        }
-                    }
-                }
-            }
+            //// メインウインドウ上でマウスボタンを押した場合
+            //if (ReferenceEquals(Form.ActiveForm, GUI.MainForm))
+            //{
+            //    {
+            //        var withBlock1 = GUI.MainForm;
+            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
+            //        {
+            //            if ((GUI.GetAsyncKeyState(GUI.RButtonID) && 0x8000) != 0)
+            //            {
+            //                // 右ボタンで爆発スキップ
+            //                return;
+            //            }
+            //        }
+            //    }
+            //}
 
-            // 倒れる音
-            switch (u.Area ?? "")
-            {
-                case "地上":
-                    {
-                        Sound.PlayWave("FallDown.wav");
-                        break;
-                    }
+            //// 倒れる音
+            //switch (u.Area ?? "")
+            //{
+            //    case "地上":
+            //        {
+            //            Sound.PlayWave("FallDown.wav");
+            //            break;
+            //        }
 
-                case "空中":
-                    {
-                        if (GUI.MessageWait > 0)
-                        {
-                            Sound.PlayWave("Bomb.wav");
-                            GUI.Sleep(500);
-                        }
+            //    case "空中":
+            //        {
+            //            if (GUI.MessageWait > 0)
+            //            {
+            //                Sound.PlayWave("Bomb.wav");
+            //                GUI.Sleep(500);
+            //            }
 
-                        if (Map.TerrainClass(u.x, u.y) == "水" || Map.TerrainClass(u.x, u.y) == "深海")
-                        {
-                            Sound.PlayWave("Splash.wav");
-                        }
-                        else
-                        {
-                            Sound.PlayWave("FallDown.wav");
-                        }
+            //            if (Map.TerrainClass(u.x, u.y) == "水" || Map.TerrainClass(u.x, u.y) == "深海")
+            //            {
+            //                Sound.PlayWave("Splash.wav");
+            //            }
+            //            else
+            //            {
+            //                Sound.PlayWave("FallDown.wav");
+            //            }
 
-                        break;
-                    }
-            }
+            //            break;
+            //        }
+            //}
 
-            // ユニット消滅のアニメーション
+            //// ユニット消滅のアニメーション
 
-            // メッセージがウエイト無しならアニメーションもスキップ
-            if (GUI.MessageWait == 0)
-            {
-                return;
-            }
+            //// メッセージがウエイト無しならアニメーションもスキップ
+            //if (GUI.MessageWait == 0)
+            //{
+            //    return;
+            //}
 
-            switch (u.Party0 ?? "")
-            {
-                case "味方":
-                case "ＮＰＣ":
-                    {
-                        fname = @"Bitmap\Anime\Common\EFFECT_Tile(Ally)";
-                        break;
-                    }
+            //switch (u.Party0 ?? "")
+            //{
+            //    case "味方":
+            //    case "ＮＰＣ":
+            //        {
+            //            fname = @"Bitmap\Anime\Common\EFFECT_Tile(Ally)";
+            //            break;
+            //        }
 
-                case "敵":
-                    {
-                        fname = @"Bitmap\Anime\Common\EFFECT_Tile(Enemy)";
-                        break;
-                    }
+            //    case "敵":
+            //        {
+            //            fname = @"Bitmap\Anime\Common\EFFECT_Tile(Enemy)";
+            //            break;
+            //        }
 
-                case "中立":
-                    {
-                        fname = @"Bitmap\Anime\Common\EFFECT_Tile(Neutral)";
-                        break;
-                    }
-            }
+            //    case "中立":
+            //        {
+            //            fname = @"Bitmap\Anime\Common\EFFECT_Tile(Neutral)";
+            //            break;
+            //        }
+            //}
 
-            if (GeneralLib.FileExists(SRC.ScenarioPath + fname + ".bmp"))
-            {
-                fname = SRC.ScenarioPath + fname;
-            }
-            else
-            {
-                fname = SRC.AppPath + fname;
-            }
+            //if (GeneralLib.FileExists(SRC.ScenarioPath + fname + ".bmp"))
+            //{
+            //    fname = SRC.ScenarioPath + fname;
+            //}
+            //else
+            //{
+            //    fname = SRC.AppPath + fname;
+            //}
 
-            bool localFileExists() { string argfname = fname + "01.bmp"; var ret = GeneralLib.FileExists(argfname); return ret; }
+            //bool localFileExists() { string argfname = fname + "01.bmp"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-            if (!localFileExists())
-            {
-                return;
-            }
+            //if (!localFileExists())
+            //{
+            //    return;
+            //}
 
-            switch (Map.MapDrawMode ?? "")
-            {
-                case "夜":
-                    {
-                        draw_mode = "暗";
-                        break;
-                    }
+            //switch (Map.MapDrawMode ?? "")
+            //{
+            //    case "夜":
+            //        {
+            //            draw_mode = "暗";
+            //            break;
+            //        }
 
-                default:
-                    {
-                        draw_mode = Map.MapDrawMode;
-                        break;
-                    }
-            }
+            //    default:
+            //        {
+            //            draw_mode = Map.MapDrawMode;
+            //            break;
+            //        }
+            //}
 
-            for (i = 1; i <= 6; i++)
-            {
-                GUI.DrawPicture(fname + ".bmp", GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, draw_mode);
-                GUI.DrawPicture(@"Unit\" + u.get_Bitmap(false), GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, "透過 " + draw_mode);
-                GUI.DrawPicture(fname + "0" + SrcFormatter.Format(i) + ".bmp", GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, "透過 " + draw_mode);
-                GUI.UpdateScreen();
-                GUI.Sleep(50);
-            }
+            //for (i = 1; i <= 6; i++)
+            //{
+            //    GUI.DrawPicture(fname + ".bmp", GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, draw_mode);
+            //    GUI.DrawPicture(@"Unit\" + u.get_Bitmap(false), GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, "透過 " + draw_mode);
+            //    GUI.DrawPicture(fname + "0" + SrcFormatter.Format(i) + ".bmp", GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, "透過 " + draw_mode);
+            //    GUI.UpdateScreen();
+            //    GUI.Sleep(50);
+            //}
 
             GUI.ClearPicture();
             GUI.UpdateScreen();
         }
 
+        private bool init_explode_animation;
+        private string explode_image_path;
         // 爆発アニメーションを表示する
         public void ExplodeAnimation(string tsize, int tx, int ty)
         {
-            int i;
-            var PT = default(GUI.POINTAPI);
-            ;
-#error Cannot convert LocalDeclarationStatementSyntax - see comment for details
-            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: StaticKeyword not supported!
-               場所 ICSharpCode.CodeConverter.CSharp.SyntaxKindExtensions.ConvertToken(SyntaxKind t, TokenContext context)
-               場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.ConvertModifier(SyntaxToken m, TokenContext context)
-               場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.<ConvertModifiersCore>d__43.MoveNext()
-               場所 System.Linq.Enumerable.<ConcatIterator>d__59`1.MoveNext()
-               場所 System.Linq.Enumerable.WhereEnumerableIterator`1.MoveNext()
-               場所 System.Linq.Buffer`1..ctor(IEnumerable`1 source)
-               場所 System.Linq.OrderedEnumerable`1.<GetEnumerator>d__1.MoveNext()
-               場所 Microsoft.CodeAnalysis.SyntaxTokenList.CreateNode(IEnumerable`1 tokens)
-               場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.ConvertModifiers(SyntaxNode node, IReadOnlyCollection`1 modifiers, TokenContext context, Boolean isVariableOrConst, SyntaxKind[] extraCsModifierKinds)
-               場所 ICSharpCode.CodeConverter.CSharp.MethodBodyExecutableStatementVisitor.<VisitLocalDeclarationStatement>d__31.MoveNext()
-            --- 直前に例外がスローされた場所からのスタック トレースの終わり ---
-               場所 ICSharpCode.CodeConverter.CSharp.HoistedNodeStateVisitor.<AddLocalVariablesAsync>d__6.MoveNext()
-            --- 直前に例外がスローされた場所からのスタック トレースの終わり ---
-               場所 ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.<DefaultVisitInnerAsync>d__3.MoveNext()
+            // TODO Impl ExplodeAnimation
+            //int i;
+            //int explode_image_num;
+            //var PT = default(GUI.POINTAPI);
 
-            Input:
-                    init_explode_animation As Boolean
+            //// 初めて実行する際に、爆発用画像があるフォルダをチェック
+            //if (!init_explode_animation)
+            //{
+            //    // 爆発用画像のパス
+            //    bool localFileExists() { string argfname = SRC.ScenarioPath + @"Bitmap\Event\Explode01.bmp"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-             */
-            ;
-#error Cannot convert LocalDeclarationStatementSyntax - see comment for details
-            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: StaticKeyword not supported!
-               場所 ICSharpCode.CodeConverter.CSharp.SyntaxKindExtensions.ConvertToken(SyntaxKind t, TokenContext context)
-               場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.ConvertModifier(SyntaxToken m, TokenContext context)
-               場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.<ConvertModifiersCore>d__43.MoveNext()
-               場所 System.Linq.Enumerable.<ConcatIterator>d__59`1.MoveNext()
-               場所 System.Linq.Enumerable.WhereEnumerableIterator`1.MoveNext()
-               場所 System.Linq.Buffer`1..ctor(IEnumerable`1 source)
-               場所 System.Linq.OrderedEnumerable`1.<GetEnumerator>d__1.MoveNext()
-               場所 Microsoft.CodeAnalysis.SyntaxTokenList.CreateNode(IEnumerable`1 tokens)
-               場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.ConvertModifiers(SyntaxNode node, IReadOnlyCollection`1 modifiers, TokenContext context, Boolean isVariableOrConst, SyntaxKind[] extraCsModifierKinds)
-               場所 ICSharpCode.CodeConverter.CSharp.MethodBodyExecutableStatementVisitor.<VisitLocalDeclarationStatement>d__31.MoveNext()
-            --- 直前に例外がスローされた場所からのスタック トレースの終わり ---
-               場所 ICSharpCode.CodeConverter.CSharp.HoistedNodeStateVisitor.<AddLocalVariablesAsync>d__6.MoveNext()
-            --- 直前に例外がスローされた場所からのスタック トレースの終わり ---
-               場所 ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.<DefaultVisitInnerAsync>d__3.MoveNext()
+            //    bool localFileExists1() { string argfname = SRC.AppPath + @"Bitmap\Anime\Explode\EFFECT_Explode01.bmp"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-            Input:
-                    explode_image_path As String
+            //    if (GeneralLib.FileExists(SRC.ScenarioPath + @"Bitmap\Anime\Explode\EFFECT_Explode01.bmp"))
+            //    {
+            //        explode_image_path = SRC.ScenarioPath + @"Bitmap\Anime\Explode\EFFECT_Explode";
+            //    }
+            //    else if (localFileExists())
+            //    {
+            //        explode_image_path = SRC.ScenarioPath + @"Bitmap\Event\Explode";
+            //    }
+            //    else if (localFileExists1())
+            //    {
+            //        explode_image_path = SRC.AppPath + @"Bitmap\Anime\Explode\EFFECT_Explode";
+            //    }
+            //    else
+            //    {
+            //        explode_image_path = SRC.AppPath + @"Bitmap\Event\Explode";
+            //    }
 
-             */
-            ;
+            //    // 爆発用画像の個数
+            //    i = 2;
+            //    while (GeneralLib.FileExists(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp"))
+            //        i = (i + 1);
+            //    explode_image_num = (i - 1);
+            //}
 
-            // 初めて実行する際に、爆発用画像があるフォルダをチェック
-            if (!init_explode_animation)
-            {
-                // 爆発用画像のパス
-                bool localFileExists() { string argfname = SRC.ScenarioPath + @"Bitmap\Event\Explode01.bmp"; var ret = GeneralLib.FileExists(argfname); return ret; }
+            //GUI.GetCursorPos(PT);
 
-                bool localFileExists1() { string argfname = SRC.AppPath + @"Bitmap\Anime\Explode\EFFECT_Explode01.bmp"; var ret = GeneralLib.FileExists(argfname); return ret; }
+            //// メッセージウインドウ上でマウスボタンを押した場合
+            //if (ReferenceEquals(Form.ActiveForm, My.MyProject.Forms.m_frmMessage))
+            //{
+            //    {
+            //        var withBlock = My.MyProject.Forms.frmMessage;
+            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
+            //        {
+            //            if ((GUI.GetAsyncKeyState(GUI.RButtonID) && 0x8000) != 0)
+            //            {
+            //                // 右ボタンで爆発スキップ
+            //                return;
+            //            }
+            //        }
+            //    }
+            //}
 
-                if (GeneralLib.FileExists(SRC.ScenarioPath + @"Bitmap\Anime\Explode\EFFECT_Explode01.bmp"))
-                {
-                    explode_image_path = SRC.ScenarioPath + @"Bitmap\Anime\Explode\EFFECT_Explode";
-                }
-                else if (localFileExists())
-                {
-                    explode_image_path = SRC.ScenarioPath + @"Bitmap\Event\Explode";
-                }
-                else if (localFileExists1())
-                {
-                    explode_image_path = SRC.AppPath + @"Bitmap\Anime\Explode\EFFECT_Explode";
-                }
-                else
-                {
-                    explode_image_path = SRC.AppPath + @"Bitmap\Event\Explode";
-                }
+            //// メインウインドウ上でマウスボタンを押した場合
+            //if (ReferenceEquals(Form.ActiveForm, GUI.MainForm))
+            //{
+            //    {
+            //        var withBlock1 = GUI.MainForm;
+            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
+            //        {
+            //            if ((GUI.GetAsyncKeyState(GUI.RButtonID) && 0x8000) != 0)
+            //            {
+            //                // 右ボタンで爆発スキップ
+            //                return;
+            //            }
+            //        }
+            //    }
+            //}
 
-                // 爆発用画像の個数
-                i = 2;
-                while (GeneralLib.FileExists(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp"))
-                    i = (i + 1);
-                explode_image_num = (i - 1);
-            }
+            //// 爆発音
+            //switch (tsize ?? "")
+            //{
+            //    case "XL":
+            //    case "LL":
+            //        {
+            //            Sound.PlayWave("Explode(Far).wav");
+            //            break;
+            //        }
 
-            GUI.GetCursorPos(PT);
+            //    case "L":
+            //    case "M":
+            //    case "S":
+            //    case "SS":
+            //        {
+            //            Sound.PlayWave("Explode.wav");
+            //            break;
+            //        }
+            //}
 
-            // メッセージウインドウ上でマウスボタンを押した場合
-            if (ReferenceEquals(Form.ActiveForm, My.MyProject.Forms.m_frmMessage))
-            {
-                {
-                    var withBlock = My.MyProject.Forms.frmMessage;
-                    if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
-                    {
-                        if ((GUI.GetAsyncKeyState(GUI.RButtonID) && 0x8000) != 0)
-                        {
-                            // 右ボタンで爆発スキップ
-                            return;
-                        }
-                    }
-                }
-            }
+            //// メッセージがウエイト無しなら爆発もスキップ
+            //if (GUI.MessageWait == 0)
+            //{
+            //    return;
+            //}
 
-            // メインウインドウ上でマウスボタンを押した場合
-            if (ReferenceEquals(Form.ActiveForm, GUI.MainForm))
-            {
-                {
-                    var withBlock1 = GUI.MainForm;
-                    if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
-                    {
-                        if ((GUI.GetAsyncKeyState(GUI.RButtonID) && 0x8000) != 0)
-                        {
-                            // 右ボタンで爆発スキップ
-                            return;
-                        }
-                    }
-                }
-            }
+            //// 爆発の表示
+            //if (Strings.InStr(explode_image_path, @"\Anime\") > 0)
+            //{
+            //    // 戦闘アニメ版の画像を使用
+            //    switch (tsize ?? "")
+            //    {
+            //        case "XL":
+            //            {
+            //                var loopTo = explode_image_num;
+            //                for (i = 1; i <= loopTo; i++)
+            //                {
+            //                    GUI.ClearPicture();
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 64, GUI.MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(130);
+            //                }
 
-            // 爆発音
-            switch (tsize ?? "")
-            {
-                case "XL":
-                case "LL":
-                    {
-                        Sound.PlayWave("Explode(Far).wav");
-                        break;
-                    }
+            //                break;
+            //            }
 
-                case "L":
-                case "M":
-                case "S":
-                case "SS":
-                    {
-                        Sound.PlayWave("Explode.wav");
-                        break;
-                    }
-            }
+            //        case "LL":
+            //            {
+            //                var loopTo1 = explode_image_num;
+            //                for (i = 1; i <= loopTo1; i++)
+            //                {
+            //                    GUI.ClearPicture();
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 56, GUI.MapToPixelY(ty) - 56, 144, 144, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(100);
+            //                }
 
-            // メッセージがウエイト無しなら爆発もスキップ
-            if (GUI.MessageWait == 0)
-            {
-                return;
-            }
+            //                break;
+            //            }
 
-            // 爆発の表示
-            if (Strings.InStr(explode_image_path, @"\Anime\") > 0)
-            {
-                // 戦闘アニメ版の画像を使用
-                switch (tsize ?? "")
-                {
-                    case "XL":
-                        {
-                            var loopTo = explode_image_num;
-                            for (i = 1; i <= loopTo; i++)
-                            {
-                                GUI.ClearPicture();
-                                GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 64, GUI.MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, "透過");
-                                GUI.UpdateScreen();
-                                GUI.Sleep(130);
-                            }
+            //        case "L":
+            //            {
+            //                var loopTo2 = explode_image_num;
+            //                for (i = 1; i <= loopTo2; i++)
+            //                {
+            //                    GUI.ClearPicture();
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 48, GUI.MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(70);
+            //                }
 
-                            break;
-                        }
+            //                break;
+            //            }
 
-                    case "LL":
-                        {
-                            var loopTo1 = explode_image_num;
-                            for (i = 1; i <= loopTo1; i++)
-                            {
-                                GUI.ClearPicture();
-                                GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 56, GUI.MapToPixelY(ty) - 56, 144, 144, 0, 0, 0, 0, "透過");
-                                GUI.UpdateScreen();
-                                GUI.Sleep(100);
-                            }
+            //        case "M":
+            //            {
+            //                var loopTo3 = explode_image_num;
+            //                for (i = 1; i <= loopTo3; i++)
+            //                {
+            //                    GUI.ClearPicture();
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 40, GUI.MapToPixelY(ty) - 40, 112, 112, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(50);
+            //                }
 
-                            break;
-                        }
+            //                break;
+            //            }
 
-                    case "L":
-                        {
-                            var loopTo2 = explode_image_num;
-                            for (i = 1; i <= loopTo2; i++)
-                            {
-                                GUI.ClearPicture();
-                                GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 48, GUI.MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, "透過");
-                                GUI.UpdateScreen();
-                                GUI.Sleep(70);
-                            }
+            //        case "S":
+            //            {
+            //                var loopTo4 = explode_image_num;
+            //                for (i = 1; i <= loopTo4; i++)
+            //                {
+            //                    GUI.ClearPicture();
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 24, GUI.MapToPixelY(ty) - 24, 80, 80, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(40);
+            //                }
 
-                            break;
-                        }
+            //                break;
+            //            }
 
-                    case "M":
-                        {
-                            var loopTo3 = explode_image_num;
-                            for (i = 1; i <= loopTo3; i++)
-                            {
-                                GUI.ClearPicture();
-                                GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 40, GUI.MapToPixelY(ty) - 40, 112, 112, 0, 0, 0, 0, "透過");
-                                GUI.UpdateScreen();
-                                GUI.Sleep(50);
-                            }
+            //        case "SS":
+            //            {
+            //                var loopTo5 = explode_image_num;
+            //                for (i = 1; i <= loopTo5; i++)
+            //                {
+            //                    GUI.ClearPicture();
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 8, GUI.MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(40);
+            //                }
 
-                            break;
-                        }
+            //                break;
+            //            }
+            //    }
 
-                    case "S":
-                        {
-                            var loopTo4 = explode_image_num;
-                            for (i = 1; i <= loopTo4; i++)
-                            {
-                                GUI.ClearPicture();
-                                GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 24, GUI.MapToPixelY(ty) - 24, 80, 80, 0, 0, 0, 0, "透過");
-                                GUI.UpdateScreen();
-                                GUI.Sleep(40);
-                            }
+            //    GUI.ClearPicture();
+            //    GUI.UpdateScreen();
+            //}
+            //else
+            //{
+            //    // 汎用イベント画像版の画像を使用
+            //    switch (tsize ?? "")
+            //    {
+            //        case "XL":
+            //            {
+            //                var loopTo6 = explode_image_num;
+            //                for (i = 1; i <= loopTo6; i++)
+            //                {
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 64, GUI.MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(130);
+            //                }
 
-                            break;
-                        }
+            //                break;
+            //            }
 
-                    case "SS":
-                        {
-                            var loopTo5 = explode_image_num;
-                            for (i = 1; i <= loopTo5; i++)
-                            {
-                                GUI.ClearPicture();
-                                GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 8, GUI.MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, "透過");
-                                GUI.UpdateScreen();
-                                GUI.Sleep(40);
-                            }
+            //        case "LL":
+            //            {
+            //                var loopTo7 = explode_image_num;
+            //                for (i = 1; i <= loopTo7; i++)
+            //                {
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 48, GUI.MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(100);
+            //                }
 
-                            break;
-                        }
-                }
+            //                break;
+            //            }
 
-                GUI.ClearPicture();
-                GUI.UpdateScreen();
-            }
-            else
-            {
-                // 汎用イベント画像版の画像を使用
-                switch (tsize ?? "")
-                {
-                    case "XL":
-                        {
-                            var loopTo6 = explode_image_num;
-                            for (i = 1; i <= loopTo6; i++)
-                            {
-                                GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 64, GUI.MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, "透過");
-                                GUI.UpdateScreen();
-                                GUI.Sleep(130);
-                            }
+            //        case "L":
+            //            {
+            //                var loopTo8 = explode_image_num;
+            //                for (i = 1; i <= loopTo8; i++)
+            //                {
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 32, GUI.MapToPixelY(ty) - 32, 96, 96, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(70);
+            //                }
 
-                            break;
-                        }
+            //                break;
+            //            }
 
-                    case "LL":
-                        {
-                            var loopTo7 = explode_image_num;
-                            for (i = 1; i <= loopTo7; i++)
-                            {
-                                GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 48, GUI.MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, "透過");
-                                GUI.UpdateScreen();
-                                GUI.Sleep(100);
-                            }
+            //        case "M":
+            //            {
+            //                var loopTo9 = explode_image_num;
+            //                for (i = 1; i <= loopTo9; i++)
+            //                {
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 16, GUI.MapToPixelY(ty) - 16, 64, 64, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(50);
+            //                }
 
-                            break;
-                        }
+            //                break;
+            //            }
 
-                    case "L":
-                        {
-                            var loopTo8 = explode_image_num;
-                            for (i = 1; i <= loopTo8; i++)
-                            {
-                                GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 32, GUI.MapToPixelY(ty) - 32, 96, 96, 0, 0, 0, 0, "透過");
-                                GUI.UpdateScreen();
-                                GUI.Sleep(70);
-                            }
+            //        case "S":
+            //            {
+            //                var loopTo10 = explode_image_num;
+            //                for (i = 1; i <= loopTo10; i++)
+            //                {
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 8, GUI.MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(40);
+            //                }
 
-                            break;
-                        }
+            //                break;
+            //            }
 
-                    case "M":
-                        {
-                            var loopTo9 = explode_image_num;
-                            for (i = 1; i <= loopTo9; i++)
-                            {
-                                GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 16, GUI.MapToPixelY(ty) - 16, 64, 64, 0, 0, 0, 0, "透過");
-                                GUI.UpdateScreen();
-                                GUI.Sleep(50);
-                            }
+            //        case "SS":
+            //            {
+            //                var loopTo11 = explode_image_num;
+            //                for (i = 1; i <= loopTo11; i++)
+            //                {
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx), GUI.MapToPixelY(ty), 32, 32, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(40);
+            //                }
 
-                            break;
-                        }
+            //                break;
+            //            }
+            //    }
 
-                    case "S":
-                        {
-                            var loopTo10 = explode_image_num;
-                            for (i = 1; i <= loopTo10; i++)
-                            {
-                                GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 8, GUI.MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, "透過");
-                                GUI.UpdateScreen();
-                                GUI.Sleep(40);
-                            }
-
-                            break;
-                        }
-
-                    case "SS":
-                        {
-                            var loopTo11 = explode_image_num;
-                            for (i = 1; i <= loopTo11; i++)
-                            {
-                                GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx), GUI.MapToPixelY(ty), 32, 32, 0, 0, 0, 0, "透過");
-                                GUI.UpdateScreen();
-                                GUI.Sleep(40);
-                            }
-
-                            break;
-                        }
-                }
-
-                GUI.ClearPicture();
-                GUI.UpdateScreen();
-            }
+            //    GUI.ClearPicture();
+            //    GUI.UpdateScreen();
+            //}
         }
 
         // 攻撃無効化時の特殊効果とメッセージを表示する
