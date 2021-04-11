@@ -422,7 +422,6 @@ namespace SRCCore.Units
                                 }
 
                                 goto NextAnime;
-                                break;
                             }
 
                         case "keep":
@@ -508,7 +507,6 @@ namespace SRCCore.Units
                                     {
                                         // 表示をキャンセル
                                         goto NextAnime;
-                                        break;
                                     }
 
                                 case "(攻撃)":

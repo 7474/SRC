@@ -528,42 +528,39 @@ namespace SRCCore.Units
         // ユニットが破壊された時の処理
         public void Die(bool without_update = false)
         {
-            //    int i, j;
-            //    string pname;
             HP = 0;
             Status = "破壊";
 
-            // TODO Impl
-            //// 破壊をキャンセルし、破壊イベント内で処理をしたい場合
-            //if (IsConditionSatisfied("破壊キャンセル"))
-            //{
-            //    DeleteCondition("破壊キャンセル");
-            //    goto SkipExplode;
-            //}
+            // 破壊をキャンセルし、破壊イベント内で処理をしたい場合
+            if (IsConditionSatisfied("破壊キャンセル"))
+            {
+                DeleteCondition("破壊キャンセル");
+                goto SkipExplode;
+            }
 
             Map.MapDataForUnit[x, y] = null;
 
-            //    // 爆発表示
-            //    GUI.ClearPicture();
-            //    if (IsAnimationDefined("脱出", sub_situation: ""))
-            //    {
-            //        GUI.EraseUnitBitmap(x, y, false);
-            //        PlayAnimation("脱出", sub_situation: "");
-            //    }
-            //    else if (IsSpecialEffectDefined("脱出", sub_situation: ""))
-            //    {
-            //        GUI.EraseUnitBitmap(x, y, false);
-            //        SpecialEffect("脱出", sub_situation: "");
-            //    }
-            //    else
-            //    {
-            //        Effect.DieAnimation(this);
-            //    }
+            // 爆発表示
+            GUI.ClearPicture();
+            if (IsAnimationDefined("脱出", sub_situation: ""))
+            {
+                GUI.EraseUnitBitmap(x, y, false);
+                PlayAnimation("脱出", sub_situation: "");
+            }
+            else if (IsSpecialEffectDefined("脱出", sub_situation: ""))
+            {
+                GUI.EraseUnitBitmap(x, y, false);
+                SpecialEffect("脱出", sub_situation: "");
+            }
+            else
+            {
+                Effect.DieAnimation(this);
+            }
 
-            //SkipExplode:
-            //    ;
+        SkipExplode:
+            ;
 
-
+            // TODO Impl Die
             //    // 召喚したユニットを解放
             //    DismissServant();
 

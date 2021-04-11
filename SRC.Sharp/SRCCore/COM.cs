@@ -24,6 +24,7 @@ namespace SRCCore
         private Events.Event Event => SRC.Event;
         private Expressions.Expression Expression => SRC.Expression;
         private Sound Sound => SRC.Sound;
+        private Effect Effect => SRC.Effect;
 
         public COM(SRC src)
         {
@@ -2505,25 +2506,22 @@ namespace SRCCore
                                     GUI.CloseMessageForm();
                                 }
 
-                                // TODO Impl
-                                //bool localIsSpecialEffectDefined() { string argmain_situation = "テレポート"; object argIndex1 = "テレポート"; string argsub_situation = selectedUnit.FeatureName(argIndex1); var ret = selectedUnit.IsSpecialEffectDefined(argmain_situation, argsub_situation); return ret; }
-
-                                //if (selectedUnit.IsAnimationDefined("テレポート", selectedUnit.FeatureName("テレポート")))
-                                //{
-                                //    selectedUnit.PlayAnimation("テレポート", selectedUnit.FeatureName("テレポート"));
-                                //}
-                                //else if (localIsSpecialEffectDefined())
-                                //{
-                                //    selectedUnit.SpecialEffect("テレポート", selectedUnit.FeatureName("テレポート"));
-                                //}
-                                //else if (SRC.BattleAnimation)
-                                //{
-                                //    Effect.ShowAnimation("テレポート発動 Whiz.wav " + selectedUnit.FeatureName0("テレポート"));
-                                //}
-                                //else
-                                //{
-                                //    Sound.PlayWave("Whiz.wav");
-                                //}
+                                if (selectedUnit.IsAnimationDefined("テレポート", selectedUnit.FeatureName("テレポート")))
+                                {
+                                    selectedUnit.PlayAnimation("テレポート", selectedUnit.FeatureName("テレポート"));
+                                }
+                                else if (selectedUnit.IsSpecialEffectDefined("テレポート", selectedUnit.FeatureName("テレポート")))
+                                {
+                                    selectedUnit.SpecialEffect("テレポート", selectedUnit.FeatureName("テレポート"));
+                                }
+                                else if (SRC.BattleAnimation)
+                                {
+                                    Effect.ShowAnimation("テレポート発動 Whiz.wav " + selectedUnit.FeatureName0("テレポート"));
+                                }
+                                else
+                                {
+                                    Sound.PlayWave("Whiz.wav");
+                                }
 
                                 selectedUnit.Move(new_x, new_y, true, false, true);
                                 Commands.SelectedUnitMoveCost = 1000;

@@ -275,8 +275,6 @@ namespace SRCCore.Units
             if (!be_quiet)
             {
                 // 攻撃準備の効果音
-                bool localIsSpecialEffectDefined() { string argmain_situation = wname + "(準備)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
                 if (IsAnimationDefined(wname + "(準備)", sub_situation: ""))
                 {
                     PlayAnimation(wname + "(準備)", sub_situation: "");
@@ -289,11 +287,10 @@ namespace SRCCore.Units
                 {
                     SpecialEffect(wname + "(準備)", sub_situation: "");
                 }
-                // TODO Effect
-                //else
-                //{
-                //    Effect.PrepareWeaponEffect(this, w);
-                //}
+                else
+                {
+                    Effect.PrepareWeaponEffect(this, w);
+                }
 
                 // 攻撃メッセージの前に出力されるメッセージ
                 if (second_attack)
@@ -369,8 +366,7 @@ namespace SRCCore.Units
                     }
                     else if (!Sound.IsWavePlayed)
                     {
-                        // TODO Impl Effect
-                        //Effect.AttackEffect(this, w);
+                        Effect.AttackEffect(this, w);
                     }
                 }
                 //else if (attack_mode == "自動反撃")

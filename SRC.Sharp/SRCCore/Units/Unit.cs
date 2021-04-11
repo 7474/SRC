@@ -19,6 +19,7 @@ namespace SRCCore.Units
         private Commands.Command Commands => SRC.Commands;
         private Expressions.Expression Expression => SRC.Expression;
         private Sound Sound => SRC.Sound;
+        private Effect Effect => SRC.Effect;
 
         public Unit(SRC src)
         {
