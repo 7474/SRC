@@ -12,5 +12,17 @@ namespace SRCCore.VB
         {
             return "" + value;
         }
+
+        public static string Format(int value, string format)
+        {
+            try
+            {
+                return value.ToString(format);
+            }
+            catch
+            {
+                return Format(value);
+            }
+        }
     }
 }
