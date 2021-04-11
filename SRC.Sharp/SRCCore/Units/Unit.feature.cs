@@ -12,15 +12,13 @@ namespace SRCCore.Units
     {
         public IList<Models.FeatureData> Features => colFeature.List;
 
-        //        // 特殊能力
-        //        public string Feature(string Index)
-        //        {
-        //            string FeatureRet = default;
-        //            FeatureData fd;
-        //            fd = (FeatureData);
-        //            FeatureRet = fd.Name;
-        //            return FeatureRet;
-        //        }
+        // 特殊能力
+        public FeatureData Feature(string Index)
+        {
+            // XXX 参照先はNameだった
+            //FeatureRet = fd.Name;
+            return colFeature[Index];
+        }
 
         // 特殊能力の名称
         public string FeatureName(string Index)
