@@ -27,6 +27,7 @@ namespace SRCCore
             string fpath;
 
             // ロードのインジケータ表示を行う
+            // XXX frmNowLoading
             //if (My.MyProject.Forms.frmNowLoading.Visible)
             //{
             GUI.DisplayLoadingProgress();
@@ -109,20 +110,23 @@ namespace SRCCore
                 DDList.Load(pilotDialogFilePath);
             }
 
-            //if (GeneralLib.FileExists(ref fpath + @"\effect.txt"))
-            //{
-            //    EDList.Load(ref fpath + @"\effect.txt");
-            //}
+            var effectFilePath = FileSystem.PathCombine(fpath, "effect.txt");
+            if (GeneralLib.FileExists(effectFilePath))
+            {
+                EDList.Load(effectFilePath, true);
+            }
 
-            //if (GeneralLib.FileExists(ref fpath + @"\animation.txt"))
-            //{
-            //    ADList.Load(ref fpath + @"\animation.txt");
-            //}
+            var animationFilePath = FileSystem.PathCombine(fpath, "animation.txt");
+            if (GeneralLib.FileExists(animationFilePath))
+            {
+                ADList.Load(animationFilePath, false);
+            }
 
-            //if (GeneralLib.FileExists(ref fpath + @"\ext_animation.txt"))
-            //{
-            //    EADList.Load(ref fpath + @"\ext_animation.txt");
-            //}
+            var ext_animationFilePath = FileSystem.PathCombine(fpath, "ext_animation.txt");
+            if (GeneralLib.FileExists(ext_animationFilePath))
+            {
+                EADList.Load(ext_animationFilePath, false);
+            }
 
             var itemFilePath = FileSystem.PathCombine(fpath, "item.txt");
             if (GeneralLib.FileExists(itemFilePath))

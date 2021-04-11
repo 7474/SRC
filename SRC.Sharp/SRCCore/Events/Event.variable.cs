@@ -33,7 +33,7 @@ namespace SRCCore.Events
 
         public VarData SubLocalVar(string vname)
         {
-            return SubLocalVars().FirstOrDefault(x => x.Name == vname);
+            return SubLocalVars().FirstOrDefault(x => x.Name.ToLower() == vname.ToLower());
         }
     }
 }

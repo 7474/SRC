@@ -114,7 +114,8 @@ namespace SRCCore
         // スペシャルパワーアニメを表示するか
         public bool SpecialPowerAnimation;
         // 戦闘アニメを表示するか
-        public bool BattleAnimation;
+        // TODO Impl
+        public bool BattleAnimation = true;
         // 武器準備アニメを表示するか
         public bool WeaponAnimation;
         // 拡大戦闘アニメを表示するか

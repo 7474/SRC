@@ -276,7 +276,7 @@ namespace SRCCore.CmdDatas
                         return new EndIfCmd(src, data);
 
                     case "incr":
-                        return new NotImplementedCmd(src, data);
+                        return new IncrCmd(src, data);
 
                     case "increasemorale":
                         return new NotImplementedCmd(src, data);
@@ -540,7 +540,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "sunset":
-                        return new NotImplementedCmd(src, data);
+                        return new UnSetCmd(src, data);
 
                     case "swap":
                         return new NotImplementedCmd(src, data);

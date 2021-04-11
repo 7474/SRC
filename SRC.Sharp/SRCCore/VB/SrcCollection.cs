@@ -35,7 +35,7 @@ namespace SRCCore.VB
 
         public V this[string key]
         {
-            get => (V)dict[key];
+            get => (V)dict[key.ToLower()];
             set => throw new NotImplementedException();
         }
 
@@ -60,18 +60,18 @@ namespace SRCCore.VB
         }
         public void Add(V value, string key)
         {
-            Add(key, value);
+            Add(key.ToLower(), value);
         }
         public void Add(string key, V value)
         {
             // TODO 既存だった時の振る舞いどうなってんねん
-            dict.Add(key, value);
+            dict.Add(key.ToLower(), value);
             UpdateList();
         }
 
         public void Add(KeyValuePair<string, V> item)
         {
-            Add(item.Key, item.Value);
+            Add(item.Key.ToLower(), item.Value);
         }
 
         public void Clear()
@@ -92,7 +92,7 @@ namespace SRCCore.VB
 
         public bool ContainsKey(string key)
         {
-            return dict.Contains(key);
+            return dict.Contains(key.ToLower());
         }
 
         public void CopyTo(V[] array, int arrayIndex)
@@ -137,7 +137,7 @@ namespace SRCCore.VB
         {
             if (ContainsKey(key))
             {
-                dict.Remove(key);
+                dict.Remove(key.ToLower());
                 UpdateList();
                 return true;
             }
@@ -146,7 +146,7 @@ namespace SRCCore.VB
 
         public bool Remove(KeyValuePair<string, V> item)
         {
-            return Remove(item.Key);
+            return Remove(item.Key.ToLower());
         }
 
         public void RemoveAt(int index)

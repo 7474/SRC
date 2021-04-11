@@ -21,9 +21,48 @@ namespace SRCCore.Expressions
         // === 関数に関する処理 ===
 
         private IDictionary<string, IFunction> systemFunctionMap = new IFunction[] {
+            new Args(),
+            new Call(),
             new Functions.Unit(),
             new X(),
             new Y(),
+            new WX(),
+            new WY(),
+            // Math
+            new Abs(),
+            new Atn(),
+            new Cos(),
+            new Int(),
+            new Max(),
+            new Min(),
+            new Functions.Random(),
+            new Round(),
+            new RoundUp(),
+            new RoundDown(),
+            new Sin(),
+            new Sqr(),
+            new Tan(),
+            // String
+            //new Format(),
+            new InStr(),
+            //new InStrRev(),
+            new IsNumeric(),
+            //new Left(),
+            //new Len(),
+            //new LSet(),
+            //new Mid(),
+            //new Replace(),
+            //new Right(),
+            //new RSet(),
+            //new StrComp(),
+            //new String(),
+            //new Wide(),
+            //new InStrB(),
+            //new InStrRevB(),
+            //new LenB(),
+            //new LeftB(),
+            //new MidB(),
+            //new RightB(),
         }.ToDictionary(x => x.Name.ToLower());
 
         // 式を関数呼び出しとして構文解析し、実行
@@ -268,170 +307,6 @@ namespace SRCCore.Expressions
             //switch (Strings.LCase(fname) ?? "")
             //{
             //                // 多用される関数を先に判定
-            //                case "args":
-            //                    {
-            //                        // UpVarコマンドの呼び出し回数を累計
-            //                        num = Event.UpVarLevel;
-            //                        i = Event.CallDepth;
-            //                        while (num > 0)
-            //                        {
-            //                            i = (i - num);
-            //                            if (i < 1)
-            //                            {
-            //                                i = 1;
-            //                                break;
-            //                            }
-
-            //                            num = Event.UpVarLevelStack[i];
-            //                        }
-
-            //                        if (i < 1)
-            //                        {
-            //                            i = 1;
-            //                        }
-
-            //                        // 引数の範囲内に納まっているかチェック
-            //                        num = GetValueAsLong(@params[1], is_term[1]);
-            //                        if (num <= (Event.ArgIndex - Event.ArgIndexStack[i - 1]))
-            //                        {
-            //                            str_result = Event.ArgStack[Event.ArgIndex - num + 1];
-            //                        }
-
-            //                        if (etype == ValueType.NumericType)
-            //                        {
-            //                            num_result = GeneralLib.StrToDbl(str_result);
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-
-            //                        return CallFunctionRet;
-            //                    }
-
-            //                case "call":
-            //                    {
-            //                        // サブルーチンの場所は？
-            //                        // まずはサブルーチン名が式でないと仮定して検索
-            //                        ret = Event.FindNormalLabel(@params[1]);
-            //                        if (ret == 0)
-            //                        {
-            //                            // 式で指定されている？
-            //                            ret = Event.FindNormalLabel(GetValueAsString(@params[1], is_term[1]));
-            //                            if (ret == 0)
-            //                            {
-            //                                Event.DisplayEventErrorMessage(Event.CurrentLineNum, "指定されたサブルーチン「" + @params[1] + "」が見つかりません");
-            //                                return CallFunctionRet;
-            //                            }
-            //                        }
-
-            //                        ret = ret + 1;
-
-            //                        // 呼び出し階層をチェック
-            //                        if (Event.CallDepth > Event.MaxCallDepth)
-            //                        {
-            //                            Event.CallDepth = Event.MaxCallDepth;
-            //                            Event.DisplayEventErrorMessage(Event.CurrentLineNum, GeneralLib.FormatNum((double)Event.MaxCallDepth) + "階層を越えるサブルーチンの呼び出しは出来ません");
-            //                            return CallFunctionRet;
-            //                        }
-
-            //                        // 引数用スタックが溢れないかチェック
-            //                        if ((Event.ArgIndex + pcount) > Event.MaxArgIndex)
-            //                        {
-            //                            Event.DisplayEventErrorMessage(Event.CurrentLineNum, "サブルーチンの引数の総数が" + GeneralLib.FormatNum((double)Event.MaxArgIndex) + "個を超えています");
-            //                            return CallFunctionRet;
-            //                        }
-
-            //                        // 引数を評価しておく
-            //                        var loopTo1 = pcount;
-            //                        for (i = 2; i <= loopTo1; i++)
-            //                            @params[i] = GetValueAsString(@params[i], is_term[i]);
-
-            //                        // 現在の状態を保存
-            //                        Event.CallStack[Event.CallDepth] = Event.CurrentLineNum;
-            //                        Event.ArgIndexStack[Event.CallDepth] = Event.ArgIndex;
-            //                        Event.VarIndexStack[Event.CallDepth] = Event.VarIndex;
-            //                        Event.ForIndexStack[Event.CallDepth] = Event.ForIndex;
-
-            //                        // UpVarが実行された場合、UpVar実行数は累計する
-            //                        if (Event.UpVarLevel > 0)
-            //                        {
-            //                            Event.UpVarLevelStack[Event.CallDepth] = (Event.UpVarLevel + Event.UpVarLevelStack[Event.CallDepth - 1]);
-            //                        }
-            //                        else
-            //                        {
-            //                            Event.UpVarLevelStack[Event.CallDepth] = 0;
-            //                        }
-
-            //                        // UpVarの階層数を初期化
-            //                        Event.UpVarLevel = 0;
-
-            //                        // 呼び出し階層数をインクリメント
-            //                        Event.CallDepth = (Event.CallDepth + 1);
-            //                        cur_depth = Event.CallDepth;
-
-            //                        // 引数をスタックに積む
-            //                        Event.ArgIndex = (Event.ArgIndex + pcount - 1);
-            //                        var loopTo2 = pcount;
-            //                        for (i = 2; i <= loopTo2; i++)
-            //                            Event.ArgStack[Event.ArgIndex - i + 2] = @params[i];
-
-            //                        // サブルーチン本体を実行
-            //                        do
-            //                        {
-            //                            Event.CurrentLineNum = ret;
-            //                            if (Event.CurrentLineNum > Information.UBound(Event.EventCmd))
-            //                            {
-            //                                break;
-            //                            }
-
-            //                            {
-            //                                var withBlock = Event.EventCmd[Event.CurrentLineNum];
-            //                                if (cur_depth == Event.CallDepth & withBlock.Name == Event.CmdType.ReturnCmd)
-            //                                {
-            //                                    break;
-            //                                }
-
-            //                                ret = withBlock.Exec();
-            //                            }
-            //                        }
-            //                        while (ret > 0);
-
-            //                        // 返り値
-            //                        {
-            //                            var withBlock1 = Event.EventCmd[Event.CurrentLineNum];
-            //                            if (withBlock1.ArgNum == 2)
-            //                            {
-            //                                str_result = withBlock1.GetArgAsString(2);
-            //                            }
-            //                            else
-            //                            {
-            //                                str_result = "";
-            //                            }
-            //                        }
-
-            //                        // 呼び出し階層数をデクリメント
-            //                        Event.CallDepth = (Event.CallDepth - 1);
-
-            //                        // サブルーチン実行前の状態に復帰
-            //                        Event.CurrentLineNum = Event.CallStack[Event.CallDepth];
-            //                        Event.ArgIndex = Event.ArgIndexStack[Event.CallDepth];
-            //                        Event.VarIndex = Event.VarIndexStack[Event.CallDepth];
-            //                        Event.ForIndex = Event.ForIndexStack[Event.CallDepth];
-            //                        Event.UpVarLevel = Event.UpVarLevelStack[Event.CallDepth];
-            //                        if (etype == ValueType.NumericType)
-            //                        {
-            //                            num_result = GeneralLib.StrToDbl(str_result);
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-
-            //                        return CallFunctionRet;
-            //                    }
 
             //                case "info":
             //                    {
@@ -447,34 +322,6 @@ namespace SRCCore.Expressions
             //                        else
             //                        {
             //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-
-            //                        return CallFunctionRet;
-            //                    }
-
-            //                case "instr":
-            //                    {
-            //                        if (pcount == 2)
-            //                        {
-            //                            i = Strings.InStr(GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]));
-            //                        }
-            //                        else
-            //                        {
-            //                            // params(3)が指定されている場合は、それを検索開始位置似設定
-            //                            // VBのInStrは引数1が開始位置になりますが、現仕様との兼ね合いを考え、
-            //                            // eve上では引数3に設定するようにしています
-            //                            i = Strings.InStr(GetValueAsLong(@params[3], is_term[3]), GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]));
-            //                        }
-
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum((double)i);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            num_result = (double)i;
-            //                            CallFunctionRet = ValueType.NumericType;
             //                        }
 
             //                        return CallFunctionRet;
@@ -559,21 +406,6 @@ namespace SRCCore.Expressions
             //                    }
 
             //                // これ以降はアルファベット順
-            //                case "abs":
-            //                    {
-            //                        num_result = Math.Abs(GetValueAsDouble(@params[1], is_term[1]));
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
-            //                        return CallFunctionRet;
-            //                    }
 
             //                case "action":
             //                    {
@@ -685,22 +517,6 @@ namespace SRCCore.Expressions
             //                case "asc":
             //                    {
             //                        num_result = (double)Strings.Asc(GetValueAsString(@params[1], is_term[1]));
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
-            //                        return CallFunctionRet;
-            //                    }
-
-            //                case "atn":
-            //                    {
-            //                        num_result = Math.Atan(GetValueAsDouble(@params[1], is_term[1]));
             //                        if (etype == ValueType.StringType)
             //                        {
             //                            str_result = GeneralLib.FormatNum(num_result);
@@ -1000,22 +816,6 @@ namespace SRCCore.Expressions
             //                                }
             //                        }
 
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
-            //                        return CallFunctionRet;
-            //                    }
-
-            //                case "cos":
-            //                    {
-            //                        num_result = Math.Cos(GetValueAsDouble(@params[1], is_term[1]));
             //                        if (etype == ValueType.StringType)
             //                        {
             //                            str_result = GeneralLib.FormatNum(num_result);
@@ -1877,22 +1677,6 @@ namespace SRCCore.Expressions
             //                        return CallFunctionRet;
             //                    }
 
-            //                case "int":
-            //                    {
-            //                        num_result = Conversion.Int(GetValueAsDouble(@params[1], is_term[1]));
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
-            //                        return CallFunctionRet;
-            //                    }
-
             //                case "isavailable":
             //                    {
             //                        switch (pcount)
@@ -2192,34 +1976,6 @@ namespace SRCCore.Expressions
             //                        return CallFunctionRet;
             //                    }
 
-            //                case "isnumeric":
-            //                    {
-            //                        if (GeneralLib.IsNumber(GetValueAsString(@params[1], is_term[1])))
-            //                        {
-            //                            if (etype == ValueType.StringType)
-            //                            {
-            //                                str_result = "1";
-            //                                CallFunctionRet = ValueType.StringType;
-            //                            }
-            //                            else
-            //                            {
-            //                                num_result = 1d;
-            //                                CallFunctionRet = ValueType.NumericType;
-            //                            }
-            //                        }
-            //                        else if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = "0";
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            num_result = 0d;
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
-            //                        return CallFunctionRet;
-            //                    }
 
             //                case "isvardefined":
             //                    {
@@ -4054,133 +3810,6 @@ namespace SRCCore.Expressions
             //                        return CallFunctionRet;
             //                    }
             //                // ADD  END  240a
-            //                case "wx":
-            //                    {
-            //                        switch (pcount)
-            //                        {
-            //                            case 1:
-            //                                {
-            //                                    pname = GetValueAsString(@params[1], is_term[1]);
-            //                                    bool localIsDefined210() { object argIndex1 = (object)pname; var ret = SRC.UList.IsDefined2(argIndex1); return ret; }
-
-            //                                    bool localIsDefined35() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
-
-            //                                    if (GeneralLib.IsNumber(pname))
-            //                                    {
-            //                                        num_result = (double)GeneralLib.StrToLng(pname);
-            //                                    }
-            //                                    else if (pname == "目標地点")
-            //                                    {
-            //                                        num_result = (double)Commands.SelectedX;
-            //                                    }
-            //                                    else if (localIsDefined210())
-            //                                    {
-            //                                        Unit localItem222() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
-
-            //                                        num_result = (double)localItem222().x;
-            //                                    }
-            //                                    else if (localIsDefined35())
-            //                                    {
-            //                                        {
-            //                                            var withBlock47 = SRC.PList.Item((object)pname);
-            //                                            if (withBlock47.Unit is object)
-            //                                            {
-            //                                                num_result = (double)withBlock47.Unit.x;
-            //                                            }
-            //                                        }
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case 0:
-            //                                {
-            //                                    if (Event.SelectedUnitForEvent is object)
-            //                                    {
-            //                                        num_result = (double)Event.SelectedUnitForEvent.x;
-            //                                    }
-
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        num_result = (double)GUI.MapToPixelX(num_result);
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
-            //                        return CallFunctionRet;
-            //                    }
-
-            //                case "wy":
-            //                    {
-            //                        switch (pcount)
-            //                        {
-            //                            case 1:
-            //                                {
-            //                                    pname = GetValueAsString(@params[1], is_term[1]);
-            //                                    bool localIsDefined211() { object argIndex1 = (object)pname; var ret = SRC.UList.IsDefined2(argIndex1); return ret; }
-
-            //                                    bool localIsDefined36() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
-
-            //                                    if (GeneralLib.IsNumber(pname))
-            //                                    {
-            //                                        num_result = (double)GeneralLib.StrToLng(pname);
-            //                                    }
-            //                                    else if (pname == "目標地点")
-            //                                    {
-            //                                        num_result = (double)Commands.SelectedY;
-            //                                    }
-            //                                    else if (localIsDefined211())
-            //                                    {
-            //                                        Unit localItem223() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
-
-            //                                        num_result = (double)localItem223().y;
-            //                                    }
-            //                                    else if (localIsDefined36())
-            //                                    {
-            //                                        {
-            //                                            var withBlock48 = SRC.PList.Item((object)pname);
-            //                                            if (withBlock48.Unit is object)
-            //                                            {
-            //                                                num_result = (double)withBlock48.Unit.y;
-            //                                            }
-            //                                        }
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case 0:
-            //                                {
-            //                                    if (Event.SelectedUnitForEvent is object)
-            //                                    {
-            //                                        num_result = (double)Event.SelectedUnitForEvent.y;
-            //                                    }
-
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        num_result = (double)GUI.MapToPixelY(num_result);
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
-            //                        return CallFunctionRet;
-            //                    }
 
             //                case "wide":
             //                    {
