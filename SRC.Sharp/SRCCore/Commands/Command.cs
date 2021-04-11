@@ -18,6 +18,7 @@ namespace SRCCore.Commands
         private Maps.Map Map => SRC.Map;
         private Expressions.Expression Expression => SRC.Expression;
         private Sound Sound => SRC.Sound;
+        private Effect Effect => SRC.Effect;
         private COM COM => SRC.COM;
 
         public Command(SRC src)

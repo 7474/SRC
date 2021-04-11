@@ -287,11 +287,10 @@ namespace SRCCore.Units
                 {
                     SpecialEffect(wname + "(準備)", sub_situation: "");
                 }
-                // TODO Effect
-                //else
-                //{
-                //    Effect.PrepareWeaponEffect(this, w);
-                //}
+                else
+                {
+                    Effect.PrepareWeaponEffect(this, w);
+                }
 
                 // 攻撃メッセージの前に出力されるメッセージ
                 if (second_attack)
@@ -367,8 +366,7 @@ namespace SRCCore.Units
                     }
                     else if (!Sound.IsWavePlayed)
                     {
-                        // TODO Impl Effect
-                        //Effect.AttackEffect(this, w);
+                        Effect.AttackEffect(this, w);
                     }
                 }
                 //else if (attack_mode == "自動反撃")

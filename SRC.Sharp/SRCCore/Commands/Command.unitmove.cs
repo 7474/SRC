@@ -209,23 +209,20 @@ namespace SRCCore.Commands
                     GUI.CloseMessageForm();
                 }
 
-                //// アニメ表示
-                // TODO Impl アニメ表示
-                //bool localIsSpecialEffectDefined() { string argmain_situation = "テレポート"; object argIndex1 = "テレポート"; string argsub_situation = u.FeatureName(argIndex1); var ret = u.IsSpecialEffectDefined(argmain_situation, argsub_situation); return ret; }
-
-                //if (u.IsAnimationDefined("テレポート", u.FeatureName(argIndex6)))
-                //{
-                //    u.PlayAnimation("テレポート", u.FeatureName("テレポート"));
-                //}
-                //else if (localIsSpecialEffectDefined())
-                //{
-                //    u.SpecialEffect("テレポート", u.FeatureName("テレポート"));
-                //}
-                //else if (SRC.BattleAnimation)
-                //{
-                //    Effect.ShowAnimation("テレポート発動 Whiz.wav " + u.FeatureName0("テレポート"));
-                //}
-                //else
+                // アニメ表示
+                if (u.IsAnimationDefined("テレポート", u.FeatureName("テレポート")))
+                {
+                    u.PlayAnimation("テレポート", u.FeatureName("テレポート"));
+                }
+                else if (u.IsSpecialEffectDefined("テレポート", u.FeatureName("テレポート")))
+                {
+                    u.SpecialEffect("テレポート", u.FeatureName("テレポート"));
+                }
+                else if (SRC.BattleAnimation)
+                {
+                    Effect.ShowAnimation("テレポート発動 Whiz.wav " + u.FeatureName0("テレポート"));
+                }
+                else
                 {
                     Sound.PlayWave("Whiz.wav");
                 }
