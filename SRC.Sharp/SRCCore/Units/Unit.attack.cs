@@ -275,8 +275,6 @@ namespace SRCCore.Units
             if (!be_quiet)
             {
                 // 攻撃準備の効果音
-                bool localIsSpecialEffectDefined() { string argmain_situation = wname + "(準備)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
                 if (IsAnimationDefined(wname + "(準備)", sub_situation: ""))
                 {
                     PlayAnimation(wname + "(準備)", sub_situation: "");
