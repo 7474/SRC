@@ -200,8 +200,11 @@ namespace SRCCore
             }
 
             // これから武器の種類を判定
-
-            if (GeneralLib.InStrNotNest(wclass, "武") == 0 && GeneralLib.InStrNotNest(wclass, "武", 1) == 0 && GeneralLib.InStrNotNest(wclass, "武", 2) == 0 && GeneralLib.InStrNotNest(wclass, "武", 3) == 0)
+            // XXX この辺の置換壊れてるのでなおす。
+            if (GeneralLib.InStrNotNest(wclass, "武") == 0
+                && GeneralLib.InStrNotNest(wclass, "突") == 0
+                && GeneralLib.InStrNotNest(wclass, "接") == 0
+                && GeneralLib.InStrNotNest(wclass, "実") == 0)
             {
                 goto SkipInfightWeapon;
             }
