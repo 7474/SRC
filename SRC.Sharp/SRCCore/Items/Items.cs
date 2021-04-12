@@ -2,17 +2,9 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
-using SRCCore.Lib;
-using SRCCore.Maps;
-using SRCCore.Models;
-using SRCCore.Pilots;
-using SRCCore.Units;
 using SRCCore.VB;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace SRCCore.Items
 {
@@ -127,7 +119,7 @@ namespace SRCCore.Items
             foreach (Item currentIt1 in colItems)
             {
                 it = currentIt1;
-                if (it.Unit is string)
+                if (it.Unit != null)
                 {
                     it.Unit = SRC.UList.Item((string)it.Unit.ID);
                 }

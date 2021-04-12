@@ -3,11 +3,13 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
-using Microsoft.VisualBasic;
 using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.Units;
 using SRCCore.VB;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.Items
 {
@@ -24,7 +26,8 @@ namespace SRCCore.Items
         public bool Exist;
         // アイテムが効力を発揮できているか？ (必要技能や武器クラス＆防具クラスを満たしているか？)
         public bool Activated;
-        
+        public IList<FeatureData> Features => Data.Features;
+
         private SRC SRC { get; }
         private Events.Event Event => SRC.Event;
         private Expressions.Expression Expression => SRC.Expression;
@@ -396,122 +399,112 @@ namespace SRCCore.Items
                 return IsAvailableRet;
             }
             // 必要技能をチェック
-            var loopTo2 = CountFeature();
-            for (i = 1; i <= loopTo2; i++)
+            foreach (var fd in Features)
             {
-                switch (Feature(i) ?? "")
+                switch (fd.Name)
                 {
                     case "必要技能":
                         {
-                            string localFeatureData1() { string argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
-
-                            bool localIsNecessarySkillSatisfied() { string argnabilities = hs6a6e2af77d324e3587224eb7d4498ee9(); Pilot argp = null; var ret = u.IsNecessarySkillSatisfied(argnabilities, p: argp); return ret; }
-
-                            if (!localIsNecessarySkillSatisfied())
+                            if (!u.IsNecessarySkillSatisfied(fd.Data))
                             {
                                 // アイテム自身により必要技能に指定された能力が封印されていた場合は
                                 // 必要技能を満たしていると判定させるため、チェックする必要がある。
-
-                                var loopTo3 = u.CountItem();
-                                for (j = 1; j <= loopTo3; j++)
+                                foreach (var itm in u.ItemList)
                                 {
-                                    Item localItem() { string argIndex1 = j; var ret = u.Item(argIndex1); return ret; }
-
-                                    if (ReferenceEquals(this, localItem()))
+                                    if (ReferenceEquals(this, itm))
                                     {
                                         break;
                                     }
                                 }
 
-                                if (j > u.CountItem())
+                                if (!u.ItemList.Any(x => x == this))
                                 {
                                     // 既に装備しているのでなければ装備しない
                                     IsAvailableRet = false;
                                     return IsAvailableRet;
                                 }
 
-                                if (u.CountPilot() > 0)
-                                {
-                                    string localFeatureData() { string argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
+                                // TODO Impl 必要技能
+                                //if (u.CountPilot() > 0)
+                                //{
+                                //    sname = u.MainPilot().SkillType(fd.Data);
+                                //}
+                                //else
+                                //{
+                                //    sname = fd.Data;
+                                //}
 
-                                    sname = u.MainPilot().SkillType(localFeatureData());
-                                }
-                                else
-                                {
-                                    sname = FeatureData(i);
-                                }
+                                //// 必要技能が「～装備」？
+                                //if (Strings.Right(sname, 2) == "装備")
+                                //{
+                                //    if ((Strings.Left(sname, Strings.Len(sname) - 2) ?? "") == (Name ?? "") || (Strings.Left(sname, Strings.Len(sname) - 2) ?? "") == (Class0() ?? ""))
+                                //    {
+                                //        goto NextLoop;
+                                //    }
+                                //}
 
-                                // 必要技能が「～装備」？
-                                if (Strings.Right(sname, 2) == "装備")
-                                {
-                                    if ((Strings.Left(sname, Strings.Len(sname) - 2) ?? "") == (Name ?? "") || (Strings.Left(sname, Strings.Len(sname) - 2) ?? "") == (Class0() ?? ""))
-                                    {
-                                        goto NextLoop;
-                                    }
-                                }
+                                //// 封印する能力が必要技能になっている？
+                                //var loopTo4 = CountFeature();
+                                //for (j = 1; j <= loopTo4; j++)
+                                //{
+                                //    switch (Feature(j) ?? "")
+                                //    {
+                                //        case "パイロット能力付加":
+                                //        case "パイロット能力強化":
+                                //            {
+                                //                break;
+                                //            }
 
-                                // 封印する能力が必要技能になっている？
-                                var loopTo4 = CountFeature();
-                                for (j = 1; j <= loopTo4; j++)
-                                {
-                                    switch (Feature(j) ?? "")
-                                    {
-                                        case "パイロット能力付加":
-                                        case "パイロット能力強化":
-                                            {
-                                                break;
-                                            }
+                                //        default:
+                                //            {
+                                //                goto NextLoop1;
+                                //                break;
+                                //            }
+                                //    }
 
-                                        default:
-                                            {
-                                                goto NextLoop1;
-                                                break;
-                                            }
-                                    }
+                                //    // 封印する能力名
+                                //    fdata = FeatureData(j);
+                                //    if (Strings.Left(fdata, 1) == "\"")
+                                //    {
+                                //        fdata = Strings.Mid(fdata, 2, Strings.Len(fdata) - 2);
+                                //    }
 
-                                    // 封印する能力名
-                                    fdata = FeatureData(j);
-                                    if (Strings.Left(fdata, 1) == "\"")
-                                    {
-                                        fdata = Strings.Mid(fdata, 2, Strings.Len(fdata) - 2);
-                                    }
+                                //    if (Strings.InStr(fdata, "=") > 0)
+                                //    {
+                                //        fdata = Strings.Left(fdata, Strings.InStr(fdata, "=") - 1);
+                                //    }
 
-                                    if (Strings.InStr(fdata, "=") > 0)
-                                    {
-                                        fdata = Strings.Left(fdata, Strings.InStr(fdata, "=") - 1);
-                                    }
+                                //    // 必要技能と封印する能力が一致している？
+                                //    if ((fdata ?? "") == (sname ?? ""))
+                                //    {
+                                //        goto NextLoop;
+                                //    }
 
-                                    // 必要技能と封印する能力が一致している？
-                                    if ((fdata ?? "") == (sname ?? ""))
-                                    {
-                                        goto NextLoop;
-                                    }
+                                //    if (u.CountPilot() > 0)
+                                //    {
+                                //        if (SRC.ALDList.IsDefined(fdata))
+                                //        {
+                                //            {
+                                //                var withBlock = SRC.ALDList.Item(fdata);
+                                //                var loopTo5 = withBlock.Count;
+                                //                for (k = 1; k <= loopTo5; k++)
+                                //                {
+                                //                    if ((withBlock.get_AliasType(k) ?? "") == (sname ?? ""))
+                                //                    {
+                                //                        goto NextLoop;
+                                //                    }
+                                //                }
+                                //            }
+                                //        }
+                                //        else if ((u.MainPilot().SkillType(fdata) ?? "") == (sname ?? ""))
+                                //        {
+                                //            goto NextLoop;
+                                //        }
+                                //    }
 
-                                    if (u.CountPilot() > 0)
-                                    {
-                                        if (SRC.ALDList.IsDefined(fdata))
-                                        {
-                                            {
-                                                var withBlock = SRC.ALDList.Item(fdata);
-                                                var loopTo5 = withBlock.Count;
-                                                for (k = 1; k <= loopTo5; k++)
-                                                {
-                                                    if ((withBlock.get_AliasType(k) ?? "") == (sname ?? ""))
-                                                    {
-                                                        goto NextLoop;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        else if ((u.MainPilot().SkillType(fdata) ?? "") == (sname ?? ""))
-                                        {
-                                            goto NextLoop;
-                                        }
-                                    }
-
-                                NextLoop1:
-                                    ;
-                                }
+                                //NextLoop1:
+                                //    ;
+                                //}
 
                                 // 必要技能が満たされていなかった
                                 IsAvailableRet = false;
@@ -523,113 +516,107 @@ namespace SRCCore.Items
 
                     case "不必要技能":
                         {
-                            string localFeatureData3() { string argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
-
-                            if (u.IsNecessarySkillSatisfied(localFeatureData3(), p: null))
+                            if (u.IsNecessarySkillSatisfied(fd.Data))
                             {
                                 // アイテム自身により不必要技能が満たされている場合は不必要技能を
                                 // 無視させるため、チェックする必要がある。
-
-                                var loopTo6 = u.CountItem();
-                                for (j = 1; j <= loopTo6; j++)
+                                foreach (var itm in u.ItemList)
                                 {
-                                    Item localItem1() { string argIndex1 = j; var ret = u.Item(argIndex1); return ret; }
-
-                                    if (ReferenceEquals(this, localItem1()))
+                                    if (ReferenceEquals(this, itm))
                                     {
                                         break;
                                     }
                                 }
 
-                                if (j > u.CountItem())
+                                if (!u.ItemList.Any(x => x == this))
                                 {
                                     // 既に装備しているのでなければ装備しない
                                     IsAvailableRet = false;
                                     return IsAvailableRet;
                                 }
+                                // TODO Impl 不必要技能
+                                //if (u.CountPilot() > 0)
+                                //{
+                                //    string localFeatureData2() { string argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
-                                if (u.CountPilot() > 0)
-                                {
-                                    string localFeatureData2() { string argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
+                                //    sname = u.MainPilot().SkillType(localFeatureData2());
+                                //}
+                                //else
+                                //{
+                                //    sname = fd.Data;
+                                //}
 
-                                    sname = u.MainPilot().SkillType(localFeatureData2());
-                                }
-                                else
-                                {
-                                    sname = FeatureData(i);
-                                }
+                                //// 不必要技能が「～装備」？
+                                //if (Strings.Right(sname, 2) == "装備")
+                                //{
+                                //    if ((Strings.Left(sname, Strings.Len(sname) - 2) ?? "") == (Name ?? "") || (Strings.Left(sname, Strings.Len(sname) - 2) ?? "") == (Class0() ?? ""))
+                                //    {
+                                //        goto NextLoop;
+                                //    }
+                                //}
 
-                                // 不必要技能が「～装備」？
-                                if (Strings.Right(sname, 2) == "装備")
-                                {
-                                    if ((Strings.Left(sname, Strings.Len(sname) - 2) ?? "") == (Name ?? "") || (Strings.Left(sname, Strings.Len(sname) - 2) ?? "") == (Class0() ?? ""))
-                                    {
-                                        goto NextLoop;
-                                    }
-                                }
+                                //// 付加する能力が不必要技能になっている？
+                                //var loopTo7 = CountFeature();
+                                //for (j = 1; j <= loopTo7; j++)
+                                //{
+                                //    switch (Feature(j) ?? "")
+                                //    {
+                                //        case "パイロット能力付加":
+                                //        case "パイロット能力強化":
+                                //            {
+                                //                break;
+                                //            }
 
-                                // 付加する能力が不必要技能になっている？
-                                var loopTo7 = CountFeature();
-                                for (j = 1; j <= loopTo7; j++)
-                                {
-                                    switch (Feature(j) ?? "")
-                                    {
-                                        case "パイロット能力付加":
-                                        case "パイロット能力強化":
-                                            {
-                                                break;
-                                            }
+                                //        default:
+                                //            {
+                                //                goto NextLoop2;
+                                //                break;
+                                //            }
+                                //    }
 
-                                        default:
-                                            {
-                                                goto NextLoop2;
-                                                break;
-                                            }
-                                    }
+                                //    // 付加する能力名
+                                //    fdata = FeatureData(j);
+                                //    if (Strings.Left(fdata, 1) == "\"")
+                                //    {
+                                //        fdata = Strings.Mid(fdata, 2, Strings.Len(fdata) - 2);
+                                //    }
 
-                                    // 付加する能力名
-                                    fdata = FeatureData(j);
-                                    if (Strings.Left(fdata, 1) == "\"")
-                                    {
-                                        fdata = Strings.Mid(fdata, 2, Strings.Len(fdata) - 2);
-                                    }
+                                //    if (Strings.InStr(fdata, "=") > 0)
+                                //    {
+                                //        fdata = Strings.Left(fdata, Strings.InStr(fdata, "=") - 1);
+                                //    }
 
-                                    if (Strings.InStr(fdata, "=") > 0)
-                                    {
-                                        fdata = Strings.Left(fdata, Strings.InStr(fdata, "=") - 1);
-                                    }
+                                //    // 必要技能と付加する能力が一致している？
+                                //    if ((fdata ?? "") == (sname ?? ""))
+                                //    {
+                                //        goto NextLoop;
+                                //    }
 
-                                    // 必要技能と付加する能力が一致している？
-                                    if ((fdata ?? "") == (sname ?? ""))
-                                    {
-                                        goto NextLoop;
-                                    }
+                                //    if (u.CountPilot() > 0)
+                                //    {
+                                //        if (SRC.ALDList.IsDefined(fdata))
+                                //        {
+                                //            {
+                                //                var withBlock1 = SRC.ALDList.Item(fdata);
+                                //                var loopTo8 = withBlock1.Count;
+                                //                for (k = 1; k <= loopTo8; k++)
+                                //                {
+                                //                    if ((withBlock1.get_AliasType(k) ?? "") == (sname ?? ""))
+                                //                    {
+                                //                        goto NextLoop;
+                                //                    }
+                                //                }
+                                //            }
+                                //        }
+                                //        else if ((u.MainPilot().SkillType(fdata) ?? "") == (sname ?? ""))
+                                //        {
+                                //            goto NextLoop;
+                                //        }
+                                //    }
 
-                                    if (u.CountPilot() > 0)
-                                    {
-                                        if (SRC.ALDList.IsDefined(fdata))
-                                        {
-                                            {
-                                                var withBlock1 = SRC.ALDList.Item(fdata);
-                                                var loopTo8 = withBlock1.Count;
-                                                for (k = 1; k <= loopTo8; k++)
-                                                {
-                                                    if ((withBlock1.get_AliasType(k) ?? "") == (sname ?? ""))
-                                                    {
-                                                        goto NextLoop;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        else if ((u.MainPilot().SkillType(fdata) ?? "") == (sname ?? ""))
-                                        {
-                                            goto NextLoop;
-                                        }
-                                    }
-
-                                NextLoop2:
-                                    ;
-                                }
+                                //NextLoop2:
+                                //    ;
+                                //}
 
                                 // 不必要技能が満たされていた
                                 IsAvailableRet = false;
@@ -651,61 +638,65 @@ namespace SRCCore.Items
         // 一時中断用データをファイルにセーブする
         public void Dump()
         {
-            FileSystem.WriteLine(SRC.SaveDataFileNumber, Name, ID, Exist);
-            if (Unit is null)
-            {
-                FileSystem.WriteLine(SRC.SaveDataFileNumber, "-");
-            }
-            else
-            {
-                FileSystem.WriteLine(SRC.SaveDataFileNumber, Unit.ID);
-            }
+            throw new NotImplementedException();
+            //FileSystem.WriteLine(SRC.SaveDataFileNumber, Name, ID, Exist);
+            //if (Unit is null)
+            //{
+            //    FileSystem.WriteLine(SRC.SaveDataFileNumber, "-");
+            //}
+            //else
+            //{
+            //    FileSystem.WriteLine(SRC.SaveDataFileNumber, Unit.ID);
+            //}
         }
 
         // 一時中断用データをファイルからロードする
         public void Restore()
         {
-            var sbuf = default(string);
-            var bbuf = default(bool);
+            throw new NotImplementedException();
+            //var sbuf = default(string);
+            //var bbuf = default(bool);
 
-            // Name, ID, Exist
-            FileSystem.Input(SRC.SaveDataFileNumber, sbuf);
-            Name = sbuf;
-            FileSystem.Input(SRC.SaveDataFileNumber, sbuf);
-            ID = sbuf;
-            FileSystem.Input(SRC.SaveDataFileNumber, bbuf);
-            Exist = bbuf;
+            //// Name, ID, Exist
+            //FileSystem.Input(SRC.SaveDataFileNumber, sbuf);
+            //Name = sbuf;
+            //FileSystem.Input(SRC.SaveDataFileNumber, sbuf);
+            //ID = sbuf;
+            //FileSystem.Input(SRC.SaveDataFileNumber, bbuf);
+            //Exist = bbuf;
 
-            // Unit
-            sbuf = FileSystem.LineInput(SRC.SaveDataFileNumber);
+            //// Unit
+            //sbuf = FileSystem.LineInput(SRC.SaveDataFileNumber);
         }
 
         // 一時中断用データのリンク情報をファイルからロードする
         public void RestoreLinkInfo()
         {
-            string sbuf;
+            throw new NotImplementedException();
+            //string sbuf;
 
-            // Name, ID, Exist
-            sbuf = FileSystem.LineInput(SRC.SaveDataFileNumber);
+            //// Name, ID, Exist
+            //sbuf = FileSystem.LineInput(SRC.SaveDataFileNumber);
 
-            // Unit
-            FileSystem.Input(SRC.SaveDataFileNumber, sbuf);
-            if (SRC.UList.IsDefined(sbuf))
-            {
-                Unit = SRC.UList.Item(sbuf);
-            }
+            //// Unit
+            //FileSystem.Input(SRC.SaveDataFileNumber, sbuf);
+            //if (SRC.UList.IsDefined(sbuf))
+            //{
+            //    Unit = SRC.UList.Item(sbuf);
+            //}
         }
 
         // '一時中断用データのパラメータ情報をファイルからロードする
         public void RestoreParameter()
         {
-            string sbuf;
+            throw new NotImplementedException();
+            //string sbuf;
 
-            // Name, ID, Exist
-            sbuf = FileSystem.LineInput(SRC.SaveDataFileNumber);
+            //// Name, ID, Exist
+            //sbuf = FileSystem.LineInput(SRC.SaveDataFileNumber);
 
-            // Unit
-            sbuf = FileSystem.LineInput(SRC.SaveDataFileNumber);
+            //// Unit
+            //sbuf = FileSystem.LineInput(SRC.SaveDataFileNumber);
         }
     }
 }
