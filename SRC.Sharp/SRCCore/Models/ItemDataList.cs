@@ -201,7 +201,7 @@ namespace SRCCore.Models
                 ret = Strings.InStr(buf, ",");
                 buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
                 buf = Strings.Mid(buf, ret + 1);
-                nd.Class_Renamed = buf2;
+                nd.Class = buf2;
 
                 // 装備個所
                 buf2 = Strings.Trim(buf);

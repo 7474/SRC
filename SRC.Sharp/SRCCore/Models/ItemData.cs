@@ -14,8 +14,7 @@ namespace SRCCore.Models
         // 名称
         public string Name;
         // クラス
-        // UPGRADE_NOTE: Class は Class_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        public string Class_Renamed;
+        public string Class;
         // 装備個所
         public string Part;
         // ＨＰ修正値
@@ -349,10 +348,9 @@ namespace SRCCore.Models
         }
 
         // 特殊能力
-        public string Feature(string Index)
+        public FeatureData Feature(string Index)
         {
-            // XXX 例外処理要らんの？
-            return colFeature[Index].Name;
+            return colFeature[Index];
         }
 
         // 特殊能力の名称

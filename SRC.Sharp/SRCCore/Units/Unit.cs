@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Items;
 using SRCCore.Maps;
 using SRCCore.Models;
 using SRCCore.Pilots;
@@ -116,8 +117,9 @@ namespace SRCCore.Units
         private SrcCollection<Unit> colUnitOnBoard = new SrcCollection<Unit>();
         public IList<Unit> UnitOnBoards => colUnitOnBoard.List;
 
-        //// 装備しているアイテム
-        //private Collection colItem = new Collection();
+        // 装備しているアイテム
+        private SrcCollection<Item> colItem = new SrcCollection<Item>();
+        public IList<Item> ItemList => colItem.List;
 
         // 現在の特殊ステータス
         private SrcCollection<Condition> colCondition = new SrcCollection<Condition>();
