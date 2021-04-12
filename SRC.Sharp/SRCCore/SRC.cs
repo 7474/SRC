@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 using Microsoft.Extensions.Logging;
+using SRCCore.Config;
 using SRCCore.Events;
 using SRCCore.Expressions;
 using SRCCore.Filesystem;
@@ -101,39 +102,37 @@ namespace SRCCore
         public bool IsQuickSaveDataAvailable;
 
         // システムオプション
-        // マス目の表示をするか
-        public bool ShowSquareLine;
-        // 敵フェイズにはＢＧＭを変更しないか
-        public bool KeepEnemyBGM;
-        // 拡張データフォルダへのパス
-        public string ExtDataPath = "";
-        public string ExtDataPath2 = "";
-        // MIDI音源リセットの種類
-        public string MidiResetType;
-        // 自動防御モードを使うか
-        public bool AutoMoveCursor;
-        // スペシャルパワーアニメを表示するか
-        public bool SpecialPowerAnimation;
-        // 戦闘アニメを表示するか
-        // TODO Impl
-        public bool BattleAnimation = true;
-        // 武器準備アニメを表示するか
-        public bool WeaponAnimation;
-        // 拡大戦闘アニメを表示するか
-        public bool ExtendedAnimation;
-        // 移動アニメを表示するか
-        public bool MoveAnimation = true;
-        // 画像バッファの枚数
-        public int ImageBufferSize;
-        // 画像バッファの最大バイト数
-        public int MaxImageBufferByteSize;
-        // 拡大画像を画像バッファに保存するか
-        public bool KeepStretchedImage;
-        // 透過描画にTransparentBltを使うか
-        public bool UseTransparentBlt;
+        public ISystemConfig SystemConfig { get; set; }
 
+        // マス目の表示をするか
+        public bool ShowSquareLine => SystemConfig.ShowSquareLine;
+        // 敵フェイズにはＢＧＭを変更しないか
+        public bool KeepEnemyBGM => SystemConfig.KeepEnemyBGM;
+        // 拡張データフォルダへのパス
+        public string ExtDataPath => SystemConfig.ExtDataPath;
+        public string ExtDataPath2 => SystemConfig.ExtDataPath2;
+        // MIDI音源リセットの種類
+        public string MidiResetType => SystemConfig.MidiResetType;
+        // 自動防御モードを使うか
+        public bool AutoMoveCursor => SystemConfig.AutoMoveCursor;
+        // スペシャルパワーアニメを表示するか
+        public bool SpecialPowerAnimation => SystemConfig.SpecialPowerAnimation;
+        // 戦闘アニメを表示するか
+        public bool BattleAnimation => SystemConfig.BattleAnimation;
+        // 武器準備アニメを表示するか
+        public bool WeaponAnimation => SystemConfig.WeaponAnimation;
+        // 拡大戦闘アニメを表示するか
+        public bool ExtendedAnimation => SystemConfig.ExtendedAnimation;
+        // 移動アニメを表示するか
+        public bool MoveAnimation => SystemConfig.MoveAnimation;
+        // 画像バッファの枚数
+        public int ImageBufferSize => SystemConfig.ImageBufferSize;
+        // 画像バッファの最大バイト数
+        public int MaxImageBufferByteSize => SystemConfig.MaxImageBufferByteSize;
+        // 拡大画像を画像バッファに保存するか
+        public bool KeepStretchedImage => SystemConfig.KeepStretchedImage;
         // SRC.exeのある場所
-        public string AppPath = "";
+        public string AppPath => SystemConfig.AppPath;
 
         public SRC()
         {
@@ -172,6 +171,9 @@ namespace SRCCore
 
             PList = new Pilots.Pilots(this);
             UList = new Units.Units(this);
+
+            // XXX 別な実装をするならコンストラクタでは設定しない
+            SystemConfig = new LocalFileConfig();
         }
 
         public void LogDebug(string message = "", params string[] param)

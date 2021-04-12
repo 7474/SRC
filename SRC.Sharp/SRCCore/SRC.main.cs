@@ -22,9 +22,6 @@ namespace SRCCore
             //                Environment.Exit(0);
             //            }
 
-            // SRC.exeのある場所を調べる
-            // XXX 取れない環境あるかも
-            AppPath = AppContext.BaseDirectory;
 
             // SRCが正しくインストールされているかをチェック
             ValidateEnvironment();
