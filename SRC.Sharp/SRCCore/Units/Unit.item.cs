@@ -1,8 +1,10 @@
 using SRCCore.Items;
+using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SRCCore.Units
@@ -841,19 +843,16 @@ namespace SRCCore.Units
                             return ItemSlotSizeRet;
                         }
 
-                        var loopTo = CountFeature();
-                        for (i = 1; i <= loopTo; i++)
+                        foreach (var fd in Features)
                         {
-                            if (Feature(i) == "ハードポイント")
+                            if (fd.Name == "ハードポイント")
                             {
-                                switch (FeatureData(i) ?? "")
+                                switch (fd.Data)
                                 {
                                     case "強化パーツ":
                                     case "アイテム":
                                         {
-                                            double localFeatureLevel() { string argIndex1 = i; var ret = FeatureLevel(argIndex1); return ret; }
-
-                                            ItemSlotSizeRet = (ItemSlotSizeRet + localFeatureLevel());
+                                            ItemSlotSizeRet = ((int)(ItemSlotSizeRet + fd.FeatureLevel));
                                             break;
                                         }
                                 }
@@ -871,16 +870,13 @@ namespace SRCCore.Units
                             return ItemSlotSizeRet;
                         }
 
-                        var loopTo1 = CountFeature();
-                        for (i = 1; i <= loopTo1; i++)
+                        foreach (var fd in Features)
                         {
-                            if (Feature(i) == "ハードポイント")
+                            if (fd.Name == "ハードポイント")
                             {
-                                if ((FeatureData(i) ?? "") == (ipart ?? ""))
+                                if (fd.Data == ipart)
                                 {
-                                    double localFeatureLevel1() { string argIndex1 = i; var ret = FeatureLevel(argIndex1); return ret; }
-
-                                    ItemSlotSizeRet = (ItemSlotSizeRet + localFeatureLevel1());
+                                    ItemSlotSizeRet = ((int)(ItemSlotSizeRet + fd.FeatureLevel));
                                 }
                             }
                         }
@@ -895,22 +891,7 @@ namespace SRCCore.Units
         // アイテム iname を装備しているか？
         public bool IsEquiped(string iname)
         {
-            bool IsEquipedRet = default;
-            int i;
-            IsEquipedRet = false;
-            var loopTo = CountItem();
-            for (i = 1; i <= loopTo; i++)
-            {
-                Item localItem() { string argIndex1 = i; var ret = Item(argIndex1); return ret; }
-
-                if ((localItem().Name ?? "") == (iname ?? ""))
-                {
-                    IsEquipedRet = true;
-                    return IsEquipedRet;
-                }
-            }
-
-            return IsEquipedRet;
+            return ItemList.Any(x => x.Name == iname);
         }
 
         // 装備可能な武器クラス
@@ -951,7 +932,7 @@ namespace SRCCore.Units
             string eclass0, uclass, eclass;
             int i, j;
             // 既に装備済みのアイテムは装備できない
-            if (it.Unit is string)
+            if (it.Unit != null)
             {
                 if (it.Unit.ID == ID)
                 {
@@ -1040,45 +1021,40 @@ namespace SRCCore.Units
                         }
 
                         // 一部の形態でのみ利用可能な武器の判定
-                        var loopTo1 = CountOtherForm();
-                        for (i = 1; i <= loopTo1; i++)
+                        foreach (var of in OtherForms)
                         {
+                            uclass = of.Class0;
+                            eclass = of.WeaponProficiency();
+                            var loopTo2 = GeneralLib.LLength(eclass);
+                            for (j = 1; j <= loopTo2; j++)
                             {
-                                var withBlock = OtherForm(i);
-                                uclass = withBlock.Class0;
-                                eclass = withBlock.WeaponProficiency();
-                                var loopTo2 = GeneralLib.LLength(eclass);
-                                for (j = 1; j <= loopTo2; j++)
+                                eclass0 = GeneralLib.LIndex(eclass, j);
+                                if ((iclass ?? "") == (eclass0 ?? ""))
                                 {
-                                    eclass0 = GeneralLib.LIndex(eclass, j);
-                                    if ((iclass ?? "") == (eclass0 ?? ""))
+                                    IsAbleToEquipRet = true;
+                                    return IsAbleToEquipRet;
+                                }
+                                else if (Strings.InStr(iclass, "専用)") > 0)
+                                {
+                                    // ユニットクラス、ユニット名による専用指定？
+                                    if (Strings.InStr(iclass, eclass0 + "(") == 1 && (Strings.InStr(iclass, "(" + uclass + "専用)") > 0 || Strings.InStr(iclass, "(" + of.Name + "専用)") > 0 || Strings.InStr(iclass, "(" + of.Nickname + "専用)") > 0))
                                     {
                                         IsAbleToEquipRet = true;
                                         return IsAbleToEquipRet;
                                     }
-                                    else if (Strings.InStr(iclass, "専用)") > 0)
+
+                                    // 性別による専用指定？
+                                    if (CountPilot() > 0)
                                     {
-                                        // ユニットクラス、ユニット名による専用指定？
-                                        if (Strings.InStr(iclass, eclass0 + "(") == 1 && (Strings.InStr(iclass, "(" + uclass + "専用)") > 0 || Strings.InStr(iclass, "(" + withBlock.Name + "専用)") > 0 || Strings.InStr(iclass, "(" + withBlock.Nickname + "専用)") > 0))
+                                        if ((iclass ?? "") == (eclass0 + "(" + MainPilot().Sex + "専用)" ?? ""))
                                         {
                                             IsAbleToEquipRet = true;
                                             return IsAbleToEquipRet;
-                                        }
-
-                                        // 性別による専用指定？
-                                        if (CountPilot() > 0)
-                                        {
-                                            if ((iclass ?? "") == (eclass0 + "(" + MainPilot().Sex + "専用)" ?? ""))
-                                            {
-                                                IsAbleToEquipRet = true;
-                                                return IsAbleToEquipRet;
-                                            }
                                         }
                                     }
                                 }
                             }
                         }
-
                         break;
                     }
 
@@ -1118,39 +1094,35 @@ namespace SRCCore.Units
                         }
 
                         // 一部の形態でのみ利用可能な防具の判定
-                        var loopTo4 = CountOtherForm();
-                        for (i = 1; i <= loopTo4; i++)
+                        foreach (var of in OtherForms)
                         {
+                            uclass = of.Class0;
+                            eclass = of.ArmorProficiency();
+                            var loopTo5 = GeneralLib.LLength(eclass);
+                            for (j = 1; j <= loopTo5; j++)
                             {
-                                var withBlock1 = OtherForm(i);
-                                uclass = withBlock1.Class0;
-                                eclass = withBlock1.ArmorProficiency();
-                                var loopTo5 = GeneralLib.LLength(eclass);
-                                for (j = 1; j <= loopTo5; j++)
+                                eclass0 = GeneralLib.LIndex(eclass, j);
+                                if ((iclass ?? "") == (eclass0 ?? ""))
                                 {
-                                    eclass0 = GeneralLib.LIndex(eclass, j);
-                                    if ((iclass ?? "") == (eclass0 ?? ""))
+                                    IsAbleToEquipRet = true;
+                                    return IsAbleToEquipRet;
+                                }
+                                else if (Strings.InStr(iclass, "専用)") > 0)
+                                {
+                                    // ユニットクラス、ユニット名による専用指定？
+                                    if (Strings.InStr(iclass, eclass0 + "(") == 1 && (Strings.InStr(iclass, "(" + uclass + "専用)") > 0 || Strings.InStr(iclass, "(" + of.Name + "専用)") > 0 || Strings.InStr(iclass, "(" + of.Nickname + "専用)") > 0))
                                     {
                                         IsAbleToEquipRet = true;
                                         return IsAbleToEquipRet;
                                     }
-                                    else if (Strings.InStr(iclass, "専用)") > 0)
+
+                                    // 性別による専用指定？
+                                    if (CountPilot() > 0)
                                     {
-                                        // ユニットクラス、ユニット名による専用指定？
-                                        if (Strings.InStr(iclass, eclass0 + "(") == 1 && (Strings.InStr(iclass, "(" + uclass + "専用)") > 0 || Strings.InStr(iclass, "(" + withBlock1.Name + "専用)") > 0 || Strings.InStr(iclass, "(" + withBlock1.Nickname + "専用)") > 0))
+                                        if ((iclass ?? "") == (eclass0 + "(" + MainPilot().Sex + "専用)" ?? ""))
                                         {
                                             IsAbleToEquipRet = true;
                                             return IsAbleToEquipRet;
-                                        }
-
-                                        // 性別による専用指定？
-                                        if (CountPilot() > 0)
-                                        {
-                                            if ((iclass ?? "") == (eclass0 + "(" + MainPilot().Sex + "専用)" ?? ""))
-                                            {
-                                                IsAbleToEquipRet = true;
-                                                return IsAbleToEquipRet;
-                                            }
                                         }
                                     }
                                 }
@@ -1198,16 +1170,12 @@ namespace SRCCore.Units
                         }
 
                         // 他の形態の名前で専用指定されている？
-                        var loopTo6 = CountOtherForm();
-                        for (i = 1; i <= loopTo6; i++)
+                        foreach (var of in OtherForms)
                         {
+                            if (Strings.InStr(iclass, "(" + of.Class0 + "専用)") > 0 || Strings.InStr(iclass, "(" + of.Name + "専用)") > 0 || Strings.InStr(iclass, "(" + of.Nickname + "専用)") > 0)
                             {
-                                var withBlock2 = OtherForm(i);
-                                if (Strings.InStr(iclass, "(" + withBlock2.Class0 + "専用)") > 0 || Strings.InStr(iclass, "(" + withBlock2.Name + "専用)") > 0 || Strings.InStr(iclass, "(" + withBlock2.Nickname + "専用)") > 0)
-                                {
-                                    IsAbleToEquipRet = true;
-                                    return IsAbleToEquipRet;
-                                }
+                                IsAbleToEquipRet = true;
+                                return IsAbleToEquipRet;
                             }
                         }
 
@@ -1241,25 +1209,19 @@ namespace SRCCore.Units
                         }
 
                         // 他の形態の名前で専用指定されている？
-                        var loopTo7 = CountOtherForm();
-                        for (i = 1; i <= loopTo7; i++)
+                        foreach (var of in OtherForms)
                         {
+                            if (Strings.InStr(iclass, "(" + of.Class0 + "専用)") > 0 || Strings.InStr(iclass, "(" + of.Name + "専用)") > 0 || Strings.InStr(iclass, "(" + of.Nickname + "専用)") > 0)
                             {
-                                var withBlock3 = OtherForm(i);
-                                if (Strings.InStr(iclass, "(" + withBlock3.Class0 + "専用)") > 0 || Strings.InStr(iclass, "(" + withBlock3.Name + "専用)") > 0 || Strings.InStr(iclass, "(" + withBlock3.Nickname + "専用)") > 0)
-                                {
-                                    IsAbleToEquipRet = true;
-                                    return IsAbleToEquipRet;
-                                }
+                                IsAbleToEquipRet = true;
+                                return IsAbleToEquipRet;
                             }
                         }
 
                         break;
                     }
             }
-
-            IsAbleToEquipRet = false;
-            return IsAbleToEquipRet;
+            return false;
         }
     }
 }

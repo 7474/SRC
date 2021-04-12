@@ -119,6 +119,7 @@ namespace SRCCore.Units
 
         // 装備しているアイテム
         private SrcCollection<Item> colItem = new SrcCollection<Item>();
+        public IList<Item> ItemList => colItem.List;
 
         // 現在の特殊ステータス
         private SrcCollection<Condition> colCondition = new SrcCollection<Condition>();
