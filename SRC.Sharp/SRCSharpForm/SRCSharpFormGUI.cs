@@ -167,7 +167,7 @@ namespace SRCSharpForm
             //    default:
             //        {
             //            MainWidth = 15;
-            //            GeneralLib.WriteIni("Option", "NewGUI", "Off");
+            //            SystemConfig.SetItem("Option", "NewGUI", "Off");
             //            break;
             //        }
             //}

@@ -403,7 +403,7 @@ namespace Project1
                 default:
                     {
                         MainWidth = 15;
-                        GeneralLib.WriteIni(ref "Option", ref "NewGUI", ref "Off");
+                        SystemConfig.SetItem(ref "Option", ref "NewGUI", ref "Off");
                         break;
                     }
             }

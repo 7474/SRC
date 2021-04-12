@@ -14,6 +14,11 @@ namespace SRCCore
         public const int CH_BGM = 1;
 
         BGMStatus BGMStatus { get; }
+        /// <summary>
+        /// min: 0.0
+        /// max: 1.0
+        /// </summary>
+        float SoundVolume { get; set; }
 
         // XXX 今呼んでない。
         void Initialize();

@@ -1,9 +1,8 @@
 using System;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 using SRCCore;
 using SRCCore.Lib;
+using SRCCore.VB;
 
 namespace SRCSharpForm
 {
@@ -19,9 +18,10 @@ namespace SRCSharpForm
 
 
         // MP3Volumeを記録
-        private short SavedMP3Volume;
+        private float SavedMP3Volume;
 
         public SRCCore.SRC SRC;
+        private Sound Sound => SRC.Sound;
         private ISystemConfig SystemConfig => SRC.SystemConfig;
 
         // 戦闘アニメOn・Off切り替え
@@ -44,17 +44,8 @@ namespace SRCSharpForm
         // キャンセルボタンが押された
         private void cmdCancel_Click(object eventSender, EventArgs eventArgs)
         {
-            //var IsMP3Supported = default(object);
-            //// ダイアログを閉じる
-            //Hide();
-
-            //// MP3音量のみその場で変更しているので元に戻す必要がある
-            //Sound.MP3Volume = SavedMP3Volume;
-            //// UPGRADE_WARNING: オブジェクト IsMP3Supported の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //if (Conversions.ToBoolean(IsMP3Supported))
-            //{
-            //    VBMP3.vbmp3_setVolume(Sound.MP3Volume, Sound.MP3Volume);
-            //}
+            // MP3音量のみその場で変更しているので元に戻す必要がある
+            Sound.Player.SoundVolume = SavedMP3Volume;
             Close();
         }
 
@@ -103,7 +94,7 @@ namespace SRCSharpForm
             //        }
             //}
 
-            //GeneralLib.WriteIni(ref "Option", ref "MessageWait", ref SrcFormatter.Format(GUI.MessageWait));
+            //SystemConfig.SetItem("Option", "MessageWait", SrcFormatter.Format(GUI.MessageWait));
 
             // 戦闘アニメ表示
             if ((int)chkBattleAnimation.CheckState == 1)
@@ -156,7 +147,7 @@ namespace SRCSharpForm
             }
 
             // マウスカーソルの自動移動
-            if (Conversions.ToBoolean(chkAutoMoveCursor.CheckState))
+            if (chkAutoMoveCursor.Checked)
             {
                 SystemConfig.AutoMoveCursor = true;
             }
@@ -166,7 +157,7 @@ namespace SRCSharpForm
             }
 
             // マス目の表示
-            if (Conversions.ToBoolean(chkShowSquareLine.CheckState))
+            if (chkShowSquareLine.Checked)
             {
                 SystemConfig.ShowSquareLine = true;
             }
@@ -175,18 +166,18 @@ namespace SRCSharpForm
                 SystemConfig.ShowSquareLine = false;
             }
 
-            //// 味方フェイズ開始時のターン表示
-            //if (Conversions.ToBoolean(chkShowTurn.CheckState))
-            //{
-            //    GeneralLib.WriteIni(ref "Option", ref "Turn", ref "On");
-            //}
-            //else
-            //{
-            //    GeneralLib.WriteIni(ref "Option", ref "Turn", ref "Off");
-            //}
+            // 味方フェイズ開始時のターン表示
+            if (chkShowTurn.Checked)
+            {
+                SystemConfig.SetItem("Option", "Turn", "On");
+            }
+            else
+            {
+                SystemConfig.SetItem("Option", "Turn", "Off");
+            }
 
             // 敵フェイズ中にＢＧＭを変更しない
-            if (Conversions.ToBoolean(chkKeepEnemyBGM.CheckState))
+            if (chkKeepEnemyBGM.Checked)
             {
                 SystemConfig.KeepEnemyBGM = true;
             }
@@ -195,24 +186,13 @@ namespace SRCSharpForm
                 SystemConfig.KeepEnemyBGM = false;
             }
 
-            //// MIDI演奏にDirectMusicを使用する
-            //if (Conversions.ToBoolean(chkUseDirectMusic.CheckState))
-            //{
-            //    GeneralLib.WriteIni(ref "Option", ref "UseDirectMusic", ref "On");
-            //}
-            //else
-            //{
-            //    GeneralLib.WriteIni(ref "Option", ref "UseDirectMusic", ref "Off");
-            //}
-
             //// MIDI音源リセットの種類
             //SystemConfig.MidiResetType = cboMidiReset.Text;
-            //GeneralLib.WriteIni(ref "Option", ref "MidiReset", ref cboMidiReset.Text);
+            //SystemConfig.SetItem("Option", "MidiReset", cboMidiReset.Text);
             //cboMidiReset.Text = argini_data21;
 
-            //// MP3再生音量
-            //GeneralLib.WriteIni(ref "Option", ref "MP3Volume", ref SrcFormatter.Format(Sound.MP3Volume));
-
+            // MP3再生音量
+            SystemConfig.SetItem("Option", "MP3Volume", SrcFormatter.Format((int)(Sound.Player.SoundVolume * 100)));
             SystemConfig.Save();
 
             // ダイアログを閉じる
@@ -280,7 +260,7 @@ namespace SRCSharpForm
             }
 
             //bool localFileExists() { string argfname = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve"; 
-            //    var ret = GeneralLib.FileExists(ref argfname); 
+            //    var ret = GeneralLib.FileExists(argfname); 
             //    return ret; }
 
             //if (!localFileExists())
@@ -367,7 +347,7 @@ namespace SRCSharpForm
             }
 
             //// 味方フェイズ開始時のターン表示
-            //if (Strings.LCase(GeneralLib.ReadIni(ref "Option", ref "Turn")) == "on")
+            //if (Strings.LCase(GeneralLib.ReadIni("Option", "Turn")) == "on")
             //{
             //    chkShowTurn.CheckState = CheckState.Checked;
             //}
@@ -387,7 +367,7 @@ namespace SRCSharpForm
             //}
 
             //// MIDI演奏にDirectMusicを使用する
-            //if (Strings.LCase(GeneralLib.ReadIni(ref "Option", ref "UseDirectMusic")) == "on")
+            //if (Strings.LCase(GeneralLib.ReadIni("Option", "UseDirectMusic")) == "on")
             //{
             //    chkUseDirectMusic.CheckState = CheckState.Checked;
             //}
@@ -403,59 +383,39 @@ namespace SRCSharpForm
             //cboMidiReset.Items.Add("XG");
             //cboMidiReset.Text = SRC.MidiResetType;
 
-            //// MP3音量
-            //SavedMP3Volume = Sound.MP3Volume;
-            //txtMP3Volume.Text = SrcFormatter.Format(Sound.MP3Volume);
+            // MP3音量
+            SavedMP3Volume = Sound.Player.SoundVolume;
+            txtMP3Volume.Text = SrcFormatter.Format((int)(Sound.Player.SoundVolume * 100));
         }
 
         // MP3音量変更
         private void hscMP3Volume_Change(int newScrollValue)
         {
-            //var IsMP3Supported = default(object);
-            //Sound.MP3Volume = (short)newScrollValue;
-            //txtMP3Volume.Text = SrcFormatter.Format(Sound.MP3Volume);
-            //// UPGRADE_WARNING: オブジェクト IsMP3Supported の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //if (Conversions.ToBoolean(IsMP3Supported))
-            //{
-            //    VBMP3.vbmp3_setVolume(Sound.MP3Volume, Sound.MP3Volume);
-            //}
+            Sound.Player.SoundVolume = newScrollValue / 100f;
+            txtMP3Volume.Text = SrcFormatter.Format(newScrollValue);
         }
 
-        private void hscMP3Volume_Scroll_Renamed(int newScrollValue)
+        private void hscMP3Volume_Scroll(int newScrollValue)
         {
-            //var IsMP3Supported = default(object);
-            //Sound.MP3Volume = (short)newScrollValue;
-            //txtMP3Volume.Text = SrcFormatter.Format(Sound.MP3Volume);
-            //// UPGRADE_WARNING: オブジェクト IsMP3Supported の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //if (Conversions.ToBoolean(IsMP3Supported))
-            //{
-            //    VBMP3.vbmp3_setVolume(Sound.MP3Volume, Sound.MP3Volume);
-            //}
+            Sound.Player.SoundVolume = newScrollValue / 100f;
+            txtMP3Volume.Text = SrcFormatter.Format(newScrollValue);
         }
 
         private void txtMP3Volume_TextChanged(object eventSender, EventArgs eventArgs)
         {
-            //var IsMP3Supported = default(object);
-            //Sound.MP3Volume = (short)GeneralLib.StrToLng(ref txtMP3Volume.Text);
-            //txtMP3Volume.Text = argexpr;
-            //if (Sound.MP3Volume < 0)
-            //{
-            //    Sound.MP3Volume = 0;
-            //    txtMP3Volume.Text = "0";
-            //}
-            //else if (Sound.MP3Volume > 100)
-            //{
-            //    Sound.MP3Volume = 100;
-            //    txtMP3Volume.Text = "100";
-            //}
+            var volume = GeneralLib.StrToLng(txtMP3Volume.Text);
+            if (volume < 0)
+            {
+                volume = 0;
+                txtMP3Volume.Text = "0";
+            }
+            else if (volume > 100)
+            {
+                volume = 100;
+                txtMP3Volume.Text = "100";
+            }
 
-            //hscMP3Volume.Value = Sound.MP3Volume;
-
-            //// UPGRADE_WARNING: オブジェクト IsMP3Supported の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //if (Conversions.ToBoolean(IsMP3Supported))
-            //{
-            //    VBMP3.vbmp3_setVolume(Sound.MP3Volume, Sound.MP3Volume);
-            //}
+            hscMP3Volume.Value = volume;
         }
 
         private void hscMP3Volume_Scroll(object eventSender, ScrollEventArgs eventArgs)
@@ -464,7 +424,7 @@ namespace SRCSharpForm
             {
                 case ScrollEventType.ThumbTrack:
                     {
-                        hscMP3Volume_Scroll_Renamed(eventArgs.NewValue);
+                        hscMP3Volume_Scroll(eventArgs.NewValue);
                         break;
                     }
 

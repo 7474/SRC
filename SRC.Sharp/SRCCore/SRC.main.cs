@@ -220,18 +220,18 @@ namespace SRCCore
             //                            // DirectMusicが使用可能かどうかで設定を切り替え
             //                            if (Sound.UseDirectMusic)
             //                            {
-            //                                GeneralLib.WriteIni("Option", "UseDirectMusic", "On");
+            //                                SystemConfig.SetItem("Option", "UseDirectMusic", "On");
             //                            }
             //                            else
             //                            {
-            //                                GeneralLib.WriteIni("Option", "UseDirectMusic", "Off");
+            //                                SystemConfig.SetItem("Option", "UseDirectMusic", "Off");
             //                            }
             //                        }
             //                        else
             //                        {
             //                            // NT系OSでなければMCIを使う
             //                            Sound.UseMCI = true;
-            //                            GeneralLib.WriteIni("Option", "UseDirectMusic", "Off");
+            //                            SystemConfig.SetItem("Option", "UseDirectMusic", "Off");
             //                        }
 
             //                        break;
@@ -240,14 +240,14 @@ namespace SRCCore
 
             //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("Option", "MIDIPortID")))
             //            {
-            //                GeneralLib.WriteIni("Option", "MIDIPortID", "0");
+            //                SystemConfig.SetItem("Option", "MIDIPortID", "0");
             //            }
 
             //            // MP3の再生音量
             //            buf = GeneralLib.ReadIni("Option", "MP3Volume");
             //            if (string.IsNullOrEmpty(buf))
             //            {
-            //                GeneralLib.WriteIni("Option", "MP3Volume", "50");
+            //                SystemConfig.SetItem("Option", "MP3Volume", "50");
             //                Sound.MP3Volume = 50;
             //            }
             //            else
@@ -255,12 +255,12 @@ namespace SRCCore
             //                Sound.MP3Volume = GeneralLib.StrToLng(buf);
             //                if (Sound.MP3Volume < 0)
             //                {
-            //                    GeneralLib.WriteIni("Option", "MP3Volume", "0");
+            //                    SystemConfig.SetItem("Option", "MP3Volume", "0");
             //                    Sound.MP3Volume = 0;
             //                }
             //                else if (Sound.MP3Volume > 100)
             //                {
-            //                    GeneralLib.WriteIni("Option", "MP3Volume", "100");
+            //                    SystemConfig.SetItem("Option", "MP3Volume", "100");
             //                    Sound.MP3Volume = 100;
             //                }
             //            }
@@ -269,75 +269,75 @@ namespace SRCCore
             //            buf = GeneralLib.ReadIni("Option", "MP3OutputBlock");
             //            if (string.IsNullOrEmpty(buf))
             //            {
-            //                GeneralLib.WriteIni("Option", "MP3OutputBlock", "20");
+            //                SystemConfig.SetItem("Option", "MP3OutputBlock", "20");
             //            }
 
             //            // MP3の入力直後のスリープ時間
             //            buf = GeneralLib.ReadIni("Option", "MP3InputSleep");
             //            if (string.IsNullOrEmpty(buf))
             //            {
-            //                GeneralLib.WriteIni("Option", "MP3InputSleep", "5");
+            //                SystemConfig.SetItem("Option", "MP3InputSleep", "5");
             //            }
 
             //            // ＢＧＭ用MIDIファイル設定
             //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Opening")))
             //            {
-            //                GeneralLib.WriteIni("BGM", "Opening", "Opening.mid");
+            //                SystemConfig.SetItem("BGM", "Opening", "Opening.mid");
             //            }
 
             //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Map1")))
             //            {
-            //                GeneralLib.WriteIni("BGM", "Map1", "Map1.mid");
+            //                SystemConfig.SetItem("BGM", "Map1", "Map1.mid");
             //            }
 
             //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Map2")))
             //            {
-            //                GeneralLib.WriteIni("BGM", "Map2", "Map2.mid");
+            //                SystemConfig.SetItem("BGM", "Map2", "Map2.mid");
             //            }
 
             //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Map3")))
             //            {
-            //                GeneralLib.WriteIni("BGM", "Map3", "Map3.mid");
+            //                SystemConfig.SetItem("BGM", "Map3", "Map3.mid");
             //            }
 
             //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Map4")))
             //            {
-            //                GeneralLib.WriteIni("BGM", "Map4", "Map4.mid");
+            //                SystemConfig.SetItem("BGM", "Map4", "Map4.mid");
             //            }
 
             //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Map5")))
             //            {
-            //                GeneralLib.WriteIni("BGM", "Map5", "Map5.mid");
+            //                SystemConfig.SetItem("BGM", "Map5", "Map5.mid");
             //            }
 
             //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Map6")))
             //            {
-            //                GeneralLib.WriteIni("BGM", "Map6", "Map6.mid");
+            //                SystemConfig.SetItem("BGM", "Map6", "Map6.mid");
             //            }
 
             //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Briefing")))
             //            {
-            //                GeneralLib.WriteIni("BGM", "Briefing", "Briefing.mid");
+            //                SystemConfig.SetItem("BGM", "Briefing", "Briefing.mid");
             //            }
 
             //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Intermission")))
             //            {
-            //                GeneralLib.WriteIni("BGM", "Intermission", "Intermission.mid");
+            //                SystemConfig.SetItem("BGM", "Intermission", "Intermission.mid");
             //            }
 
             //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "Subtitle")))
             //            {
-            //                GeneralLib.WriteIni("BGM", "Subtitle", "Subtitle.mid");
+            //                SystemConfig.SetItem("BGM", "Subtitle", "Subtitle.mid");
             //            }
 
             //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "End")))
             //            {
-            //                GeneralLib.WriteIni("BGM", "End", "End.mid");
+            //                SystemConfig.SetItem("BGM", "End", "End.mid");
             //            }
 
             //            if (string.IsNullOrEmpty(GeneralLib.ReadIni("BGM", "default")))
             //            {
-            //                GeneralLib.WriteIni("BGM", "default", "default.mid");
+            //                SystemConfig.SetItem("BGM", "default", "default.mid");
             //            }
         }
 
@@ -350,7 +350,7 @@ namespace SRCCore
             //                buf = GeneralLib.ReadIni("Option", "MindEffect");
             //                if (!string.IsNullOrEmpty(buf))
             //                {
-            //                    GeneralLib.WriteIni("Option", "SpecialPowerAnimation", buf);
+            //                    SystemConfig.SetItem("Option", "SpecialPowerAnimation", buf);
             //                }
             //            }
 
@@ -367,11 +367,11 @@ namespace SRCCore
             //            }
             //            else if (SpecialPowerAnimation)
             //            {
-            //                GeneralLib.WriteIni("Option", "SpecialPowerAnimation", "On");
+            //                SystemConfig.SetItem("Option", "SpecialPowerAnimation", "On");
             //            }
             //            else
             //            {
-            //                GeneralLib.WriteIni("Option", "SpecialPowerAnimation", "Off");
+            //                SystemConfig.SetItem("Option", "SpecialPowerAnimation", "Off");
             //            }
 
             //            // 戦闘アニメ
@@ -389,11 +389,11 @@ namespace SRCCore
             //            }
             //            else if (BattleAnimation)
             //            {
-            //                GeneralLib.WriteIni("Option", "BattleAnimation", "On");
+            //                SystemConfig.SetItem("Option", "BattleAnimation", "On");
             //            }
             //            else
             //            {
-            //                GeneralLib.WriteIni("Option", "BattleAnimation", "Off");
+            //                SystemConfig.SetItem("Option", "BattleAnimation", "Off");
             //            }
 
             //            // 拡大戦闘アニメ
@@ -412,7 +412,7 @@ namespace SRCCore
             //            else
             //            {
             //                ExtendedAnimation = true;
-            //                GeneralLib.WriteIni("Option", "ExtendedAnimation", "On");
+            //                SystemConfig.SetItem("Option", "ExtendedAnimation", "On");
             //            }
 
             //            // 武器準備アニメ
@@ -431,7 +431,7 @@ namespace SRCCore
             //            else
             //            {
             //                WeaponAnimation = true;
-            //                GeneralLib.WriteIni("Option", "WeaponAnimation", "On");
+            //                SystemConfig.SetItem("Option", "WeaponAnimation", "On");
             //            }
 
             //            // 移動アニメ
@@ -450,7 +450,7 @@ namespace SRCCore
             //            else
             //            {
             //                MoveAnimation = true;
-            //                GeneralLib.WriteIni("Option", "MoveAnimation", "On");
+            //                SystemConfig.SetItem("Option", "MoveAnimation", "On");
             //            }
 
             //            // メッセージ速度を設定
@@ -466,7 +466,7 @@ namespace SRCCore
             //            else
             //            {
             //                GUI.MessageWait = 700;
-            //                GeneralLib.WriteIni("Option", "MessageWait", "700");
+            //                SystemConfig.SetItem("Option", "MessageWait", "700");
             //            }
 
             //            // マス目を表示するかどうか
@@ -485,7 +485,7 @@ namespace SRCCore
             //            else
             //            {
             //                ShowSquareLine = false;
-            //                GeneralLib.WriteIni("Option", "Square", "Off");
+            //                SystemConfig.SetItem("Option", "Square", "Off");
             //            }
 
             //            // 敵ターンにＢＧＭを変更するかどうか
@@ -504,7 +504,7 @@ namespace SRCCore
             //            else
             //            {
             //                KeepEnemyBGM = false;
-            //                GeneralLib.WriteIni("Option", "KeepEnemyBGM", "Off");
+            //                SystemConfig.SetItem("Option", "KeepEnemyBGM", "Off");
             //            }
 
             //            // 音源のリセットデータの種類
@@ -517,7 +517,7 @@ namespace SRCCore
             //                buf = GeneralLib.ReadIni("Option", "AutoDeffence");
             //                if (!string.IsNullOrEmpty(buf))
             //                {
-            //                    GeneralLib.WriteIni("Option", "AutoDefense", buf);
+            //                    SystemConfig.SetItem("Option", "AutoDefense", buf);
             //                }
             //            }
 
@@ -535,7 +535,7 @@ namespace SRCCore
             //            else
             //            {
             //                GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked = false;
-            //                GeneralLib.WriteIni("Option", "AutoDefense", "Off");
+            //                SystemConfig.SetItem("Option", "AutoDefense", "Off");
             //            }
 
             //            // カーソル自動移動
@@ -554,7 +554,7 @@ namespace SRCCore
             //            else
             //            {
             //                AutoMoveCursor = true;
-            //                GeneralLib.WriteIni("Option", "AutoMoveCursor", "On");
+            //                SystemConfig.SetItem("Option", "AutoMoveCursor", "On");
             //            }
 
             // 各ウィンドウをロード (メインウィンドウは先にロード済み)
@@ -575,7 +575,7 @@ namespace SRCCore
             //            {
             //                // デフォルトは64枚
             //                ImageBufferSize = 64;
-            //                GeneralLib.WriteIni("Option", "ImageBufferNum", "64");
+            //                SystemConfig.SetItem("Option", "ImageBufferNum", "64");
             //            }
 
             //            // 画像バッファを作成
@@ -596,7 +596,7 @@ namespace SRCCore
             //            {
             //                // デフォルトは8MB
             //                MaxImageBufferByteSize = 8 * 1024 * 1024;
-            //                GeneralLib.WriteIni("Option", "MaxImageBufferSize", "8");
+            //                SystemConfig.SetItem("Option", "MaxImageBufferSize", "8");
             //            }
 
             //            // 拡大画像を画像バッファに保存するか
@@ -616,12 +616,12 @@ namespace SRCCore
             //            else if (Conversions.ToBoolean(IsBitBltFasterThanStretchBlt()))
             //            {
             //                KeepStretchedImage = true;
-            //                GeneralLib.WriteIni("Option", "KeepStretchedImage", "On");
+            //                SystemConfig.SetItem("Option", "KeepStretchedImage", "On");
             //            }
             //            else
             //            {
             //                KeepStretchedImage = false;
-            //                GeneralLib.WriteIni("Option", "KeepStretchedImage", "Off");
+            //                SystemConfig.SetItem("Option", "KeepStretchedImage", "Off");
             //            }
 
             //            // 透過描画にUseTransparentBltを使用するか
@@ -642,7 +642,7 @@ namespace SRCCore
             //                else
             //                {
             //                    UseTransparentBlt = true;
-            //                    GeneralLib.WriteIni("Option", "UseTransparentBlt", "On");
+            //                    SystemConfig.SetItem("Option", "UseTransparentBlt", "On");
             //                }
             //            }
 
@@ -921,7 +921,7 @@ namespace SRCCore
             //if (Strings.InStr(fname, "不要ファイル削除") == 0 & Strings.InStr(fname, "必須修正") == 0)
             //{
             //    // 開いたフォルダをSrc.iniにセーブしておく
-            //    GeneralLib.WriteIni("Log", "LastFolder", ScenarioPath);
+            //    SystemConfig.SetItem("Log", "LastFolder", ScenarioPath);
             //}
         }
 

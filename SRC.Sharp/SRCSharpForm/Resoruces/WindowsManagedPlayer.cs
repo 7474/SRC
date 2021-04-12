@@ -1,5 +1,6 @@
 using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Devices;
+using Microsoft.Extensions.Logging;
 using NAudio.Wave;
 using SRCCore;
 using System;
@@ -52,6 +53,37 @@ namespace SRCSharpForm.Resoruces
                     return BGMStatus.Playing;
                 }
                 return BGMStatus.Stopped;
+            }
+        }
+        public float SoundVolume
+        {
+            get => volume; set
+            {
+                if (volume == value)
+                {
+                    return;
+                }
+                volume = value;
+                // XXX Impl Volume
+                foreach (var waveChannel in outputMap.Values)
+                {
+                    try
+                    {
+                        waveChannel.outputDevice.Volume = volume;
+                    }
+                    catch (Exception ex)
+                    {
+                        Program.Log.LogWarning(ex, ex.Message);
+                    }
+                }
+                try
+                {
+                    midiOutput.Volume = new Volume((ushort)(Volume.FullLeft.LeftVolume * volume));
+                }
+                catch (Exception ex)
+                {
+                    Program.Log.LogWarning(ex, ex.Message);
+                }
             }
         }
 

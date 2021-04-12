@@ -62,11 +62,11 @@ namespace SRCCore.Commands
                 //GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked = !GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked;
                 //if (GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked)
                 //{
-                //    GeneralLib.WriteIni("Option", "AutoDefense", "On");
+                //    SystemConfig.SetItem("Option", "AutoDefense", "On");
                 //}
                 //else
                 //{
-                //    GeneralLib.WriteIni("Option", "AutoDefense", "Off");
+                //    SystemConfig.SetItem("Option", "AutoDefense", "Off");
                 //}
                 //break;
 
