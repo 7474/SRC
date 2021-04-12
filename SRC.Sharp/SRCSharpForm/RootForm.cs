@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using SRCCore.Config;
 using SRCCore.Filesystem;
 using SRCSharpForm.Resoruces;
 using System;
@@ -17,6 +18,15 @@ namespace SRCSharpForm
             SRC = new SRCCore.SRC();
             SRC.FileSystem = new LocalFileSystem();
             SRC.Sound.Player = new WindowsManagedPlayer();
+            SRC.SystemConfig = new LocalFileConfig();
+            try
+            {
+                SRC.SystemConfig.Load();
+            }
+            catch
+            {
+                SRC.SystemConfig.Save();
+            }
 
             SRC.GUI = new SRCSharpFormGUI(SRC);
         }

@@ -23,6 +23,8 @@ namespace SRCCore.Config
         public int ImageBufferSize { get; set; }
         public int MaxImageBufferByteSize { get; set; }
         public bool KeepStretchedImage { get; set; }
+
+        [JsonIgnore]
         public string AppPath { get; set; }
 
         public List<ConfigSection> Sections { get; set; }
@@ -33,6 +35,8 @@ namespace SRCCore.Config
 
             // SRC.exeのある場所を調べる
             AppPath = AppContext.BaseDirectory;
+            ExtDataPath = "";
+            ExtDataPath2 = "";
         }
 
         public string GetItem(string section, string name)
