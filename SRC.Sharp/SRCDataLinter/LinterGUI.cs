@@ -122,6 +122,11 @@ namespace SRCDataLinter
             throw new NotImplementedException();
         }
 
+        public void Configure()
+        {
+            throw new NotImplementedException();
+        }
+
         public GuiDialogResult Confirm(string message, string title, GuiConfirmOption option)
         {
             throw new NotImplementedException();

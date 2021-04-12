@@ -2196,5 +2196,15 @@ namespace SRCSharpForm
                 return res == DialogResult.OK ? GuiDialogResult.Ok : GuiDialogResult.Cancel;
             }
         }
+
+        public void Configure()
+        {
+            using (var dialog = new frmConfiguration())
+            {
+                dialog.SRC = SRC;
+                dialog.StartPosition = FormStartPosition.CenterParent;
+                dialog.ShowDialog(MainForm);
+            }
+        }
     }
 }

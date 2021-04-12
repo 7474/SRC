@@ -20,7 +20,7 @@ namespace SRCDataLinter
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
             var SRC = new SRCCore.SRC();
-            SRC.AppPath = AppContext.BaseDirectory;
+            SRC.SystemConfig.AppPath = AppContext.BaseDirectory;
             SRC.ScenarioPath = Environment.CurrentDirectory;
             SRC.GUI = new LinterGUI();
             SRC.FileSystem = new LocalFileSystem();

@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.CompilerServices;
 
-namespace Project1
+namespace SRCSharpForm
 {
     [DesignerGenerated()]
     internal partial class frmConfiguration
