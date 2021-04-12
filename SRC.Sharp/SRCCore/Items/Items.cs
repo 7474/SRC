@@ -138,149 +138,151 @@ namespace SRCCore.Items
         // データをファイルにセーブ
         public void Save()
         {
-            short i;
-            FileSystem.WriteLine(SRC.SaveDataFileNumber, (string)IDCount);
-            FileSystem.WriteLine(SRC.SaveDataFileNumber, (string)Count());
-            var loopTo = Count();
-            for (i = 1; i <= loopTo; i++)
-            {
-                {
-                    var withBlock = Item(i);
-                    FileSystem.WriteLine(SRC.SaveDataFileNumber, withBlock.Name);
-                    if (withBlock.Unit is null)
-                    {
-                        FileSystem.WriteLine(SRC.SaveDataFileNumber, withBlock.ID, "-");
-                    }
-                    else
-                    {
-                        FileSystem.WriteLine(SRC.SaveDataFileNumber, withBlock.ID, withBlock.Unit.ID);
-                    }
-                }
-            }
+            throw new NotImplementedException();
+            //short i;
+            //FileSystem.WriteLine(SRC.SaveDataFileNumber, (string)IDCount);
+            //FileSystem.WriteLine(SRC.SaveDataFileNumber, (string)Count());
+            //var loopTo = Count();
+            //for (i = 1; i <= loopTo; i++)
+            //{
+            //    {
+            //        var withBlock = Item(i);
+            //        FileSystem.WriteLine(SRC.SaveDataFileNumber, withBlock.Name);
+            //        if (withBlock.Unit is null)
+            //        {
+            //            FileSystem.WriteLine(SRC.SaveDataFileNumber, withBlock.ID, "-");
+            //        }
+            //        else
+            //        {
+            //            FileSystem.WriteLine(SRC.SaveDataFileNumber, withBlock.ID, withBlock.Unit.ID);
+            //        }
+            //    }
+            //}
         }
 
         // データをファイルからロード
         public void Load()
         {
-            var num = default(short);
-            Item new_item;
-            var iname = default(string);
-            var iid = default(string);
-            short i;
-            var dummy = default(string);
-            if (FileSystem.EOF(SRC.SaveDataFileNumber))
-            {
-                return;
-            }
+            throw new NotImplementedException();
+            //var num = default(short);
+            //Item new_item;
+            //var iname = default(string);
+            //var iid = default(string);
+            //short i;
+            //var dummy = default(string);
+            //if (FileSystem.EOF(SRC.SaveDataFileNumber))
+            //{
+            //    return;
+            //}
 
-            FileSystem.Input(SRC.SaveDataFileNumber, IDCount);
-            FileSystem.Input(SRC.SaveDataFileNumber, num);
-            var loopTo = num;
-            for (i = 1; i <= loopTo; i++)
-            {
-                new_item = new Item();
-                // Name
-                FileSystem.Input(SRC.SaveDataFileNumber, iname);
-                // ID, Unit
-                FileSystem.Input(SRC.SaveDataFileNumber, iid);
-                FileSystem.Input(SRC.SaveDataFileNumber, dummy);
-                bool localIsDefined() { string argIndex1 = iname; var ret = SRC.IDList.IsDefined(argIndex1); return ret; }
+            //FileSystem.Input(SRC.SaveDataFileNumber, IDCount);
+            //FileSystem.Input(SRC.SaveDataFileNumber, num);
+            //var loopTo = num;
+            //for (i = 1; i <= loopTo; i++)
+            //{
+            //    new_item = new Item();
+            //    // Name
+            //    FileSystem.Input(SRC.SaveDataFileNumber, iname);
+            //    // ID, Unit
+            //    FileSystem.Input(SRC.SaveDataFileNumber, iid);
+            //    FileSystem.Input(SRC.SaveDataFileNumber, dummy);
+            //    bool localIsDefined() { string argIndex1 = iname; var ret = SRC.IDList.IsDefined(argIndex1); return ret; }
 
-                if (!localIsDefined())
-                {
-                    GUI.ErrorMessage(iname + "のデータが定義されていません");
-                    Sound.StopBGM();
-                    Environment.Exit(0);
-                }
+            //    if (!localIsDefined())
+            //    {
+            //        GUI.ErrorMessage(iname + "のデータが定義されていません");
+            //        Sound.StopBGM();
+            //        Environment.Exit(0);
+            //    }
 
-                new_item.Name = iname;
-                new_item.ID = iid;
-                colItems.Add(new_item, iid);
-            }
+            //    new_item.Name = iname;
+            //    new_item.ID = iid;
+            //    colItems.Add(new_item, iid);
+            //}
         }
 
         // リンク情報をファイルからロード
         public void LoadLinkInfo()
         {
-            short num = default, i;
-            string dummy;
-            if (FileSystem.EOF(SRC.SaveDataFileNumber))
-            {
-                return;
-            }
+            throw new NotImplementedException();
+            //short num = default, i;
+            //string dummy;
+            //if (FileSystem.EOF(SRC.SaveDataFileNumber))
+            //{
+            //    return;
+            //}
 
-            // IDCount
-            dummy = FileSystem.LineInput(SRC.SaveDataFileNumber);
-            FileSystem.Input(SRC.SaveDataFileNumber, num);
-            var loopTo = num;
-            for (i = 1; i <= loopTo; i++)
-            {
-                // Name
-                dummy = FileSystem.LineInput(SRC.SaveDataFileNumber);
-                // ID, Unit
-                dummy = FileSystem.LineInput(SRC.SaveDataFileNumber);
-            }
+            //// IDCount
+            //dummy = FileSystem.LineInput(SRC.SaveDataFileNumber);
+            //FileSystem.Input(SRC.SaveDataFileNumber, num);
+            //var loopTo = num;
+            //for (i = 1; i <= loopTo; i++)
+            //{
+            //    // Name
+            //    dummy = FileSystem.LineInput(SRC.SaveDataFileNumber);
+            //    // ID, Unit
+            //    dummy = FileSystem.LineInput(SRC.SaveDataFileNumber);
+            //}
         }
 
 
         // 一時中断用データをファイルにセーブする
         public void Dump()
         {
-            FileSystem.WriteLine(SRC.SaveDataFileNumber, (string)Count());
-            foreach (Item it in colItems)
-                it.Dump();
+            throw new NotImplementedException();
+            //FileSystem.WriteLine(SRC.SaveDataFileNumber, (string)Count());
+            //foreach (Item it in colItems)
+            //    it.Dump();
         }
 
         // 一時中断用データをファイルからロードする
         public void Restore()
         {
-            short i, num = default;
-            Item it;
-            {
-                var withBlock = colItems;
-                var loopTo = (short)withBlock.Count;
-                for (i = 1; i <= loopTo; i++)
-                    withBlock.Remove(1);
-            }
+            throw new NotImplementedException();
+            //short i, num = default;
+            //Item it;
+            //{
+            //    var withBlock = colItems;
+            //    var loopTo = (short)withBlock.Count;
+            //    for (i = 1; i <= loopTo; i++)
+            //        withBlock.Remove(1);
+            //}
 
-            FileSystem.Input(SRC.SaveDataFileNumber, num);
-            var loopTo1 = num;
-            for (i = 1; i <= loopTo1; i++)
-            {
-                it = new Item();
-                it.Restore();
-                colItems.Add(it, it.ID);
-            }
+            //FileSystem.Input(SRC.SaveDataFileNumber, num);
+            //var loopTo1 = num;
+            //for (i = 1; i <= loopTo1; i++)
+            //{
+            //    it = new Item();
+            //    it.Restore();
+            //    colItems.Add(it, it.ID);
+            //}
         }
 
         // 一時中断用データのリンク情報をファイルからロードする
         public void RestoreLinkInfo()
         {
-            var num = default(short);
-            FileSystem.Input(SRC.SaveDataFileNumber, num);
-            foreach (Item it in colItems)
-                it.RestoreLinkInfo();
+            throw new NotImplementedException();
+            //var num = default(short);
+            //FileSystem.Input(SRC.SaveDataFileNumber, num);
+            //foreach (Item it in colItems)
+            //    it.RestoreLinkInfo();
         }
 
         // 一時中断用データのパラメータ情報をファイルからロードする
         public void RestoreParameter()
         {
-            var num = default(short);
-            FileSystem.Input(SRC.SaveDataFileNumber, num);
-            foreach (Item it in colItems)
-                it.RestoreParameter();
+            throw new NotImplementedException();
+            //var num = default(short);
+            //FileSystem.Input(SRC.SaveDataFileNumber, num);
+            //foreach (Item it in colItems)
+            //    it.RestoreParameter();
         }
 
 
         // リストをクリア
         public void Clear()
         {
-            short i;
-            var loopTo = Count();
-            for (i = 1; i <= loopTo; i++)
-            {
-                Delete(1);
-            }
+            colItems.Clear();
         }
     }
 }
