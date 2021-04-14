@@ -1,0 +1,18 @@
+{
+  "ShowSquareLine": true,
+  "Sections": [
+    {
+      "Name": "TestSection1",
+      "Items": [
+        {
+          "Name": "TestName1",
+          "Value": "TestValue1"
+        },
+        {
+          "Name": "TestName2",
+          "Value": "TestValue2"
+        }
+      ]
+    }
+  ]
+}

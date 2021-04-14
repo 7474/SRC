@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.CompilerServices;
 
-namespace Project1
+namespace SRCSharpForm
 {
     [DesignerGenerated()]
     internal partial class frmConfiguration
@@ -95,7 +95,6 @@ namespace Project1
         }
 
         public ComboBox cboMidiReset;
-        public CheckBox chkUseDirectMusic;
         private Button _cmdCancel;
 
         public Button cmdCancel
@@ -189,387 +188,302 @@ namespace Project1
         [DebuggerStepThrough()]
         private void InitializeComponent()
         {
-            var resources = new System.Resources.ResourceManager(typeof(frmConfiguration));
-            components = new System.ComponentModel.Container();
-            ToolTip1 = new ToolTip(components);
-            chkExtendedAnimation = new CheckBox();
-            chkMoveAnimation = new CheckBox();
-            chkWeaponAnimation = new CheckBox();
-            _txtMP3Volume = new TextBox();
-            _txtMP3Volume.TextChanged += new EventHandler(txtMP3Volume_TextChanged);
-            _hscMP3Volume = new HScrollBar();
-            _hscMP3Volume.Scroll += new ScrollEventHandler(hscMP3Volume_Scroll);
-            cboMidiReset = new ComboBox();
-            chkUseDirectMusic = new CheckBox();
-            _cmdCancel = new Button();
-            _cmdCancel.Click += new EventHandler(cmdCancel_Click);
-            _cmdOK = new Button();
-            _cmdOK.Click += new EventHandler(cmdOK_Click);
-            chkKeepEnemyBGM = new CheckBox();
-            cboMessageSpeed = new ComboBox();
-            chkAutoMoveCursor = new CheckBox();
-            chkShowSquareLine = new CheckBox();
-            chkShowTurn = new CheckBox();
-            chkSpecialPowerAnimation = new CheckBox();
-            _chkBattleAnimation = new CheckBox();
-            _chkBattleAnimation.CheckStateChanged += new EventHandler(chkBattleAnimation_CheckStateChanged);
-            labMP3Volume = new Label();
-            labMidiReset = new Label();
-            labMessageSpeed = new Label();
-            SuspendLayout();
-            ToolTip1.Active = true;
-            BackColor = Color.FromArgb(192, 192, 192);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            Text = "設定変更";
-            ClientSize = new Size(346, 405);
-            Location = new Point(3, 29);
-            ForeColor = Color.Black;
-            Icon = (Icon)resources.GetObject("frmConfiguration.Icon");
-            MaximizeBox = false;
-            MinimizeBox = false;
-            ShowInTaskbar = false;
-            StartPosition = FormStartPosition.WindowsDefaultLocation;
-            AutoScaleMode = AutoScaleMode.Font;
-            ControlBox = true;
-            Enabled = true;
-            KeyPreview = false;
-            Cursor = Cursors.Default;
-            RightToLeft = RightToLeft.No;
-            HelpButton = false;
-            WindowState = FormWindowState.Normal;
-            Name = "frmConfiguration";
-            chkExtendedAnimation.BackColor = Color.FromArgb(192, 192, 192);
-            chkExtendedAnimation.Text = "戦闘アニメの拡張機能を使用する";
-            chkExtendedAnimation.ForeColor = Color.Black;
-            chkExtendedAnimation.Size = new Size(233, 33);
-            chkExtendedAnimation.Location = new Point(48, 64);
-            chkExtendedAnimation.TabIndex = 18;
-            chkExtendedAnimation.CheckAlign = ContentAlignment.MiddleLeft;
-            chkExtendedAnimation.FlatStyle = FlatStyle.Standard;
-            chkExtendedAnimation.CausesValidation = true;
-            chkExtendedAnimation.Enabled = true;
-            chkExtendedAnimation.Cursor = Cursors.Default;
-            chkExtendedAnimation.RightToLeft = RightToLeft.No;
-            chkExtendedAnimation.Appearance = Appearance.Normal;
-            chkExtendedAnimation.TabStop = true;
-            chkExtendedAnimation.CheckState = CheckState.Unchecked;
-            chkExtendedAnimation.Visible = true;
-            chkExtendedAnimation.Name = "chkExtendedAnimation";
-            chkMoveAnimation.BackColor = Color.FromArgb(192, 192, 192);
-            chkMoveAnimation.Text = "移動アニメを表示する";
-            chkMoveAnimation.ForeColor = Color.Black;
-            chkMoveAnimation.Size = new Size(249, 25);
-            chkMoveAnimation.Location = new Point(32, 152);
-            chkMoveAnimation.TabIndex = 17;
-            chkMoveAnimation.CheckAlign = ContentAlignment.MiddleLeft;
-            chkMoveAnimation.FlatStyle = FlatStyle.Standard;
-            chkMoveAnimation.CausesValidation = true;
-            chkMoveAnimation.Enabled = true;
-            chkMoveAnimation.Cursor = Cursors.Default;
-            chkMoveAnimation.RightToLeft = RightToLeft.No;
-            chkMoveAnimation.Appearance = Appearance.Normal;
-            chkMoveAnimation.TabStop = true;
-            chkMoveAnimation.CheckState = CheckState.Unchecked;
-            chkMoveAnimation.Visible = true;
-            chkMoveAnimation.Name = "chkMoveAnimation";
-            chkWeaponAnimation.BackColor = Color.FromArgb(192, 192, 192);
-            chkWeaponAnimation.Text = "武器準備アニメを自動選択表示する";
-            chkWeaponAnimation.ForeColor = Color.Black;
-            chkWeaponAnimation.Size = new Size(233, 33);
-            chkWeaponAnimation.Location = new Point(48, 96);
-            chkWeaponAnimation.TabIndex = 16;
-            chkWeaponAnimation.CheckAlign = ContentAlignment.MiddleLeft;
-            chkWeaponAnimation.FlatStyle = FlatStyle.Standard;
-            chkWeaponAnimation.CausesValidation = true;
-            chkWeaponAnimation.Enabled = true;
-            chkWeaponAnimation.Cursor = Cursors.Default;
-            chkWeaponAnimation.RightToLeft = RightToLeft.No;
-            chkWeaponAnimation.Appearance = Appearance.Normal;
-            chkWeaponAnimation.TabStop = true;
-            chkWeaponAnimation.CheckState = CheckState.Unchecked;
-            chkWeaponAnimation.Visible = true;
-            chkWeaponAnimation.Name = "chkWeaponAnimation";
-            _txtMP3Volume.AutoSize = false;
-            _txtMP3Volume.TextAlign = HorizontalAlignment.Center;
-            _txtMP3Volume.BackColor = Color.White;
-            _txtMP3Volume.Font = new Font("ＭＳ Ｐゴシック", 9.75f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
-            _txtMP3Volume.ForeColor = Color.Black;
-            _txtMP3Volume.Size = new Size(33, 19);
-            _txtMP3Volume.Location = new Point(87, 327);
-            _txtMP3Volume.TabIndex = 11;
-            _txtMP3Volume.Text = "100";
-            _txtMP3Volume.AcceptsReturn = true;
-            _txtMP3Volume.CausesValidation = true;
-            _txtMP3Volume.Enabled = true;
-            _txtMP3Volume.HideSelection = true;
-            _txtMP3Volume.ReadOnly = false;
-            _txtMP3Volume.MaxLength = 0;
-            _txtMP3Volume.Cursor = Cursors.IBeam;
-            _txtMP3Volume.Multiline = false;
-            _txtMP3Volume.RightToLeft = RightToLeft.No;
-            _txtMP3Volume.ScrollBars = ScrollBars.None;
-            _txtMP3Volume.TabStop = true;
-            _txtMP3Volume.Visible = true;
-            _txtMP3Volume.BorderStyle = BorderStyle.Fixed3D;
-            _txtMP3Volume.Name = "_txtMP3Volume";
-            _hscMP3Volume.Size = new Size(153, 17);
-            _hscMP3Volume.LargeChange = 10;
-            _hscMP3Volume.Location = new Point(128, 328);
-            _hscMP3Volume.Maximum = 109;
-            _hscMP3Volume.TabIndex = 12;
-            _hscMP3Volume.Value = 50;
-            _hscMP3Volume.CausesValidation = true;
-            _hscMP3Volume.Enabled = true;
-            _hscMP3Volume.Minimum = 0;
-            _hscMP3Volume.Cursor = Cursors.Default;
-            _hscMP3Volume.RightToLeft = RightToLeft.No;
-            _hscMP3Volume.SmallChange = 1;
-            _hscMP3Volume.TabStop = true;
-            _hscMP3Volume.Visible = true;
-            _hscMP3Volume.Name = "_hscMP3Volume";
-            cboMidiReset.BackColor = Color.White;
-            cboMidiReset.ForeColor = Color.Black;
-            cboMidiReset.Size = new Size(115, 20);
-            cboMidiReset.Location = new Point(168, 296);
-            cboMidiReset.TabIndex = 10;
-            cboMidiReset.CausesValidation = true;
-            cboMidiReset.Enabled = true;
-            cboMidiReset.IntegralHeight = true;
-            cboMidiReset.Cursor = Cursors.Default;
-            cboMidiReset.RightToLeft = RightToLeft.No;
-            cboMidiReset.Sorted = false;
-            cboMidiReset.DropDownStyle = ComboBoxStyle.DropDown;
-            cboMidiReset.TabStop = true;
-            cboMidiReset.Visible = true;
-            cboMidiReset.Name = "cboMidiReset";
-            chkUseDirectMusic.BackColor = Color.FromArgb(192, 192, 192);
-            chkUseDirectMusic.Text = "MIDI演奏にDirectMusicを使用する (要再起動)";
-            chkUseDirectMusic.ForeColor = Color.Black;
-            chkUseDirectMusic.Size = new Size(281, 25);
-            chkUseDirectMusic.Location = new Point(32, 272);
-            chkUseDirectMusic.TabIndex = 9;
-            chkUseDirectMusic.CheckAlign = ContentAlignment.MiddleLeft;
-            chkUseDirectMusic.FlatStyle = FlatStyle.Standard;
-            chkUseDirectMusic.CausesValidation = true;
-            chkUseDirectMusic.Enabled = true;
-            chkUseDirectMusic.Cursor = Cursors.Default;
-            chkUseDirectMusic.RightToLeft = RightToLeft.No;
-            chkUseDirectMusic.Appearance = Appearance.Normal;
-            chkUseDirectMusic.TabStop = true;
-            chkUseDirectMusic.CheckState = CheckState.Unchecked;
-            chkUseDirectMusic.Visible = true;
-            chkUseDirectMusic.Name = "chkUseDirectMusic";
-            _cmdCancel.TextAlign = ContentAlignment.MiddleCenter;
-            _cmdCancel.BackColor = Color.FromArgb(192, 192, 192);
-            _cmdCancel.Text = "キャンセル";
-            _cmdCancel.Size = new Size(97, 25);
-            _cmdCancel.Location = new Point(216, 360);
-            _cmdCancel.TabIndex = 14;
-            _cmdCancel.CausesValidation = true;
-            _cmdCancel.Enabled = true;
-            _cmdCancel.ForeColor = SystemColors.ControlText;
-            _cmdCancel.Cursor = Cursors.Default;
-            _cmdCancel.RightToLeft = RightToLeft.No;
-            _cmdCancel.TabStop = true;
-            _cmdCancel.Name = "_cmdCancel";
-            _cmdOK.TextAlign = ContentAlignment.MiddleCenter;
-            _cmdOK.BackColor = Color.FromArgb(192, 192, 192);
-            _cmdOK.Text = "OK";
-            _cmdOK.Size = new Size(97, 25);
-            _cmdOK.Location = new Point(112, 360);
-            _cmdOK.TabIndex = 13;
-            _cmdOK.CausesValidation = true;
-            _cmdOK.Enabled = true;
-            _cmdOK.ForeColor = SystemColors.ControlText;
-            _cmdOK.Cursor = Cursors.Default;
-            _cmdOK.RightToLeft = RightToLeft.No;
-            _cmdOK.TabStop = true;
-            _cmdOK.Name = "_cmdOK";
-            chkKeepEnemyBGM.BackColor = Color.FromArgb(192, 192, 192);
-            chkKeepEnemyBGM.Text = "敵フェイズ中にＢＧＭを変更しない";
-            chkKeepEnemyBGM.ForeColor = Color.Black;
-            chkKeepEnemyBGM.Size = new Size(249, 25);
-            chkKeepEnemyBGM.Location = new Point(32, 248);
-            chkKeepEnemyBGM.TabIndex = 8;
-            chkKeepEnemyBGM.CheckAlign = ContentAlignment.MiddleLeft;
-            chkKeepEnemyBGM.FlatStyle = FlatStyle.Standard;
-            chkKeepEnemyBGM.CausesValidation = true;
-            chkKeepEnemyBGM.Enabled = true;
-            chkKeepEnemyBGM.Cursor = Cursors.Default;
-            chkKeepEnemyBGM.RightToLeft = RightToLeft.No;
-            chkKeepEnemyBGM.Appearance = Appearance.Normal;
-            chkKeepEnemyBGM.TabStop = true;
-            chkKeepEnemyBGM.CheckState = CheckState.Unchecked;
-            chkKeepEnemyBGM.Visible = true;
-            chkKeepEnemyBGM.Name = "chkKeepEnemyBGM";
-            cboMessageSpeed.BackColor = Color.White;
-            cboMessageSpeed.ForeColor = Color.Black;
-            cboMessageSpeed.Size = new Size(137, 20);
-            cboMessageSpeed.Location = new Point(144, 16);
-            cboMessageSpeed.TabIndex = 2;
-            cboMessageSpeed.CausesValidation = true;
-            cboMessageSpeed.Enabled = true;
-            cboMessageSpeed.IntegralHeight = true;
-            cboMessageSpeed.Cursor = Cursors.Default;
-            cboMessageSpeed.RightToLeft = RightToLeft.No;
-            cboMessageSpeed.Sorted = false;
-            cboMessageSpeed.DropDownStyle = ComboBoxStyle.DropDown;
-            cboMessageSpeed.TabStop = true;
-            cboMessageSpeed.Visible = true;
-            cboMessageSpeed.Name = "cboMessageSpeed";
-            chkAutoMoveCursor.BackColor = Color.FromArgb(192, 192, 192);
-            chkAutoMoveCursor.Text = "マウスカーソルを自動的に移動する";
-            chkAutoMoveCursor.ForeColor = Color.Black;
-            chkAutoMoveCursor.Size = new Size(249, 25);
-            chkAutoMoveCursor.Location = new Point(32, 176);
-            chkAutoMoveCursor.TabIndex = 5;
-            chkAutoMoveCursor.CheckAlign = ContentAlignment.MiddleLeft;
-            chkAutoMoveCursor.FlatStyle = FlatStyle.Standard;
-            chkAutoMoveCursor.CausesValidation = true;
-            chkAutoMoveCursor.Enabled = true;
-            chkAutoMoveCursor.Cursor = Cursors.Default;
-            chkAutoMoveCursor.RightToLeft = RightToLeft.No;
-            chkAutoMoveCursor.Appearance = Appearance.Normal;
-            chkAutoMoveCursor.TabStop = true;
-            chkAutoMoveCursor.CheckState = CheckState.Unchecked;
-            chkAutoMoveCursor.Visible = true;
-            chkAutoMoveCursor.Name = "chkAutoMoveCursor";
-            chkShowSquareLine.BackColor = Color.FromArgb(192, 192, 192);
-            chkShowSquareLine.Text = "マス目を表示する (要再起動)";
-            chkShowSquareLine.ForeColor = Color.Black;
-            chkShowSquareLine.Size = new Size(265, 25);
-            chkShowSquareLine.Location = new Point(32, 200);
-            chkShowSquareLine.TabIndex = 6;
-            chkShowSquareLine.CheckAlign = ContentAlignment.MiddleLeft;
-            chkShowSquareLine.FlatStyle = FlatStyle.Standard;
-            chkShowSquareLine.CausesValidation = true;
-            chkShowSquareLine.Enabled = true;
-            chkShowSquareLine.Cursor = Cursors.Default;
-            chkShowSquareLine.RightToLeft = RightToLeft.No;
-            chkShowSquareLine.Appearance = Appearance.Normal;
-            chkShowSquareLine.TabStop = true;
-            chkShowSquareLine.CheckState = CheckState.Unchecked;
-            chkShowSquareLine.Visible = true;
-            chkShowSquareLine.Name = "chkShowSquareLine";
-            chkShowTurn.BackColor = Color.FromArgb(192, 192, 192);
-            chkShowTurn.Text = "味方フェイズ開始時にターン表示を行う";
-            chkShowTurn.ForeColor = Color.Black;
-            chkShowTurn.Size = new Size(249, 25);
-            chkShowTurn.Location = new Point(32, 224);
-            chkShowTurn.TabIndex = 7;
-            chkShowTurn.CheckAlign = ContentAlignment.MiddleLeft;
-            chkShowTurn.FlatStyle = FlatStyle.Standard;
-            chkShowTurn.CausesValidation = true;
-            chkShowTurn.Enabled = true;
-            chkShowTurn.Cursor = Cursors.Default;
-            chkShowTurn.RightToLeft = RightToLeft.No;
-            chkShowTurn.Appearance = Appearance.Normal;
-            chkShowTurn.TabStop = true;
-            chkShowTurn.CheckState = CheckState.Unchecked;
-            chkShowTurn.Visible = true;
-            chkShowTurn.Name = "chkShowTurn";
-            chkSpecialPowerAnimation.BackColor = Color.FromArgb(192, 192, 192);
-            chkSpecialPowerAnimation.Text = "スペシャルパワーアニメを表示する";
-            chkSpecialPowerAnimation.ForeColor = Color.Black;
-            chkSpecialPowerAnimation.Size = new Size(249, 25);
-            chkSpecialPowerAnimation.Location = new Point(32, 128);
-            chkSpecialPowerAnimation.TabIndex = 4;
-            chkSpecialPowerAnimation.CheckAlign = ContentAlignment.MiddleLeft;
-            chkSpecialPowerAnimation.FlatStyle = FlatStyle.Standard;
-            chkSpecialPowerAnimation.CausesValidation = true;
-            chkSpecialPowerAnimation.Enabled = true;
-            chkSpecialPowerAnimation.Cursor = Cursors.Default;
-            chkSpecialPowerAnimation.RightToLeft = RightToLeft.No;
-            chkSpecialPowerAnimation.Appearance = Appearance.Normal;
-            chkSpecialPowerAnimation.TabStop = true;
-            chkSpecialPowerAnimation.CheckState = CheckState.Unchecked;
-            chkSpecialPowerAnimation.Visible = true;
-            chkSpecialPowerAnimation.Name = "chkSpecialPowerAnimation";
-            _chkBattleAnimation.BackColor = Color.FromArgb(192, 192, 192);
-            _chkBattleAnimation.Text = "戦闘アニメを表示する";
-            _chkBattleAnimation.ForeColor = Color.Black;
-            _chkBattleAnimation.Size = new Size(249, 25);
-            _chkBattleAnimation.Location = new Point(32, 40);
-            _chkBattleAnimation.TabIndex = 3;
-            _chkBattleAnimation.CheckAlign = ContentAlignment.MiddleLeft;
-            _chkBattleAnimation.FlatStyle = FlatStyle.Standard;
-            _chkBattleAnimation.CausesValidation = true;
-            _chkBattleAnimation.Enabled = true;
-            _chkBattleAnimation.Cursor = Cursors.Default;
-            _chkBattleAnimation.RightToLeft = RightToLeft.No;
-            _chkBattleAnimation.Appearance = Appearance.Normal;
-            _chkBattleAnimation.TabStop = true;
-            _chkBattleAnimation.CheckState = CheckState.Unchecked;
-            _chkBattleAnimation.Visible = true;
-            _chkBattleAnimation.Name = "_chkBattleAnimation";
-            labMP3Volume.Text = "MP3音量";
-            labMP3Volume.ForeColor = Color.Black;
-            labMP3Volume.Size = new Size(49, 17);
-            labMP3Volume.Location = new Point(33, 330);
-            labMP3Volume.TabIndex = 15;
-            labMP3Volume.TextAlign = ContentAlignment.TopLeft;
-            labMP3Volume.BackColor = Color.Transparent;
-            labMP3Volume.Enabled = true;
-            labMP3Volume.Cursor = Cursors.Default;
-            labMP3Volume.RightToLeft = RightToLeft.No;
-            labMP3Volume.UseMnemonic = true;
-            labMP3Volume.Visible = true;
-            labMP3Volume.AutoSize = false;
-            labMP3Volume.BorderStyle = BorderStyle.None;
-            labMP3Volume.Name = "labMP3Volume";
-            labMidiReset.Text = "MIDI音源リセットの種類";
-            labMidiReset.ForeColor = Color.Black;
-            labMidiReset.Size = new Size(192, 17);
-            labMidiReset.Location = new Point(33, 301);
-            labMidiReset.TabIndex = 1;
-            labMidiReset.TextAlign = ContentAlignment.TopLeft;
-            labMidiReset.BackColor = Color.Transparent;
-            labMidiReset.Enabled = true;
-            labMidiReset.Cursor = Cursors.Default;
-            labMidiReset.RightToLeft = RightToLeft.No;
-            labMidiReset.UseMnemonic = true;
-            labMidiReset.Visible = true;
-            labMidiReset.AutoSize = false;
-            labMidiReset.BorderStyle = BorderStyle.None;
-            labMidiReset.Name = "labMidiReset";
-            labMessageSpeed.Text = "メッセージスピード";
-            labMessageSpeed.Font = new Font("ＭＳ Ｐゴシック", 9.75f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
-            labMessageSpeed.ForeColor = Color.Black;
-            labMessageSpeed.Size = new Size(129, 17);
-            labMessageSpeed.Location = new Point(33, 20);
-            labMessageSpeed.TabIndex = 0;
-            labMessageSpeed.TextAlign = ContentAlignment.TopLeft;
-            labMessageSpeed.BackColor = Color.Transparent;
-            labMessageSpeed.Enabled = true;
-            labMessageSpeed.Cursor = Cursors.Default;
-            labMessageSpeed.RightToLeft = RightToLeft.No;
-            labMessageSpeed.UseMnemonic = true;
-            labMessageSpeed.Visible = true;
-            labMessageSpeed.AutoSize = false;
-            labMessageSpeed.BorderStyle = BorderStyle.None;
-            labMessageSpeed.Name = "labMessageSpeed";
-            Controls.Add(chkExtendedAnimation);
-            Controls.Add(chkMoveAnimation);
-            Controls.Add(chkWeaponAnimation);
-            Controls.Add(_txtMP3Volume);
-            Controls.Add(_hscMP3Volume);
-            Controls.Add(cboMidiReset);
-            Controls.Add(chkUseDirectMusic);
-            Controls.Add(_cmdCancel);
-            Controls.Add(_cmdOK);
-            Controls.Add(chkKeepEnemyBGM);
-            Controls.Add(cboMessageSpeed);
-            Controls.Add(chkAutoMoveCursor);
-            Controls.Add(chkShowSquareLine);
-            Controls.Add(chkShowTurn);
-            Controls.Add(chkSpecialPowerAnimation);
-            Controls.Add(_chkBattleAnimation);
-            Controls.Add(labMP3Volume);
-            Controls.Add(labMidiReset);
-            Controls.Add(labMessageSpeed);
-            Load += new EventHandler(frmConfiguration_Load);
-            ResumeLayout(false);
-            PerformLayout();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmConfiguration));
+            this.ToolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.chkExtendedAnimation = new System.Windows.Forms.CheckBox();
+            this.chkMoveAnimation = new System.Windows.Forms.CheckBox();
+            this.chkWeaponAnimation = new System.Windows.Forms.CheckBox();
+            this._txtMP3Volume = new System.Windows.Forms.TextBox();
+            this._hscMP3Volume = new System.Windows.Forms.HScrollBar();
+            this.cboMidiReset = new System.Windows.Forms.ComboBox();
+            this._cmdCancel = new System.Windows.Forms.Button();
+            this._cmdOK = new System.Windows.Forms.Button();
+            this.chkKeepEnemyBGM = new System.Windows.Forms.CheckBox();
+            this.cboMessageSpeed = new System.Windows.Forms.ComboBox();
+            this.chkAutoMoveCursor = new System.Windows.Forms.CheckBox();
+            this.chkShowSquareLine = new System.Windows.Forms.CheckBox();
+            this.chkShowTurn = new System.Windows.Forms.CheckBox();
+            this.chkSpecialPowerAnimation = new System.Windows.Forms.CheckBox();
+            this._chkBattleAnimation = new System.Windows.Forms.CheckBox();
+            this.labMP3Volume = new System.Windows.Forms.Label();
+            this.labMidiReset = new System.Windows.Forms.Label();
+            this.labMessageSpeed = new System.Windows.Forms.Label();
+            this.SuspendLayout();
+            // 
+            // chkExtendedAnimation
+            // 
+            this.chkExtendedAnimation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.chkExtendedAnimation.Cursor = System.Windows.Forms.Cursors.Default;
+            this.chkExtendedAnimation.ForeColor = System.Drawing.Color.Black;
+            this.chkExtendedAnimation.Location = new System.Drawing.Point(48, 64);
+            this.chkExtendedAnimation.Name = "chkExtendedAnimation";
+            this.chkExtendedAnimation.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.chkExtendedAnimation.Size = new System.Drawing.Size(233, 33);
+            this.chkExtendedAnimation.TabIndex = 18;
+            this.chkExtendedAnimation.Text = "戦闘アニメの拡張機能を使用する";
+            this.chkExtendedAnimation.UseVisualStyleBackColor = false;
+            // 
+            // chkMoveAnimation
+            // 
+            this.chkMoveAnimation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.chkMoveAnimation.Cursor = System.Windows.Forms.Cursors.Default;
+            this.chkMoveAnimation.ForeColor = System.Drawing.Color.Black;
+            this.chkMoveAnimation.Location = new System.Drawing.Point(32, 152);
+            this.chkMoveAnimation.Name = "chkMoveAnimation";
+            this.chkMoveAnimation.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.chkMoveAnimation.Size = new System.Drawing.Size(249, 25);
+            this.chkMoveAnimation.TabIndex = 17;
+            this.chkMoveAnimation.Text = "移動アニメを表示する";
+            this.chkMoveAnimation.UseVisualStyleBackColor = false;
+            // 
+            // chkWeaponAnimation
+            // 
+            this.chkWeaponAnimation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.chkWeaponAnimation.Cursor = System.Windows.Forms.Cursors.Default;
+            this.chkWeaponAnimation.ForeColor = System.Drawing.Color.Black;
+            this.chkWeaponAnimation.Location = new System.Drawing.Point(48, 96);
+            this.chkWeaponAnimation.Name = "chkWeaponAnimation";
+            this.chkWeaponAnimation.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.chkWeaponAnimation.Size = new System.Drawing.Size(233, 33);
+            this.chkWeaponAnimation.TabIndex = 16;
+            this.chkWeaponAnimation.Text = "武器準備アニメを自動選択表示する";
+            this.chkWeaponAnimation.UseVisualStyleBackColor = false;
+            // 
+            // _txtMP3Volume
+            // 
+            this._txtMP3Volume.AcceptsReturn = true;
+            this._txtMP3Volume.BackColor = System.Drawing.Color.White;
+            this._txtMP3Volume.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this._txtMP3Volume.Font = new System.Drawing.Font("ＭＳ Ｐゴシック", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this._txtMP3Volume.ForeColor = System.Drawing.Color.Black;
+            this._txtMP3Volume.Location = new System.Drawing.Point(87, 327);
+            this._txtMP3Volume.MaxLength = 0;
+            this._txtMP3Volume.Name = "_txtMP3Volume";
+            this._txtMP3Volume.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this._txtMP3Volume.Size = new System.Drawing.Size(33, 19);
+            this._txtMP3Volume.TabIndex = 11;
+            this._txtMP3Volume.Text = "100";
+            this._txtMP3Volume.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this._txtMP3Volume.TextChanged += new System.EventHandler(this.txtMP3Volume_TextChanged);
+            // 
+            // _hscMP3Volume
+            // 
+            this._hscMP3Volume.Cursor = System.Windows.Forms.Cursors.Default;
+            this._hscMP3Volume.Location = new System.Drawing.Point(128, 328);
+            this._hscMP3Volume.Maximum = 109;
+            this._hscMP3Volume.Name = "_hscMP3Volume";
+            this._hscMP3Volume.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this._hscMP3Volume.Size = new System.Drawing.Size(153, 17);
+            this._hscMP3Volume.TabIndex = 12;
+            this._hscMP3Volume.TabStop = true;
+            this._hscMP3Volume.Value = 50;
+            this._hscMP3Volume.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hscMP3Volume_Scroll);
+            // 
+            // cboMidiReset
+            // 
+            this.cboMidiReset.BackColor = System.Drawing.Color.White;
+            this.cboMidiReset.Cursor = System.Windows.Forms.Cursors.Default;
+            this.cboMidiReset.ForeColor = System.Drawing.Color.Black;
+            this.cboMidiReset.Location = new System.Drawing.Point(168, 296);
+            this.cboMidiReset.Name = "cboMidiReset";
+            this.cboMidiReset.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.cboMidiReset.Size = new System.Drawing.Size(115, 23);
+            this.cboMidiReset.TabIndex = 10;
+            // 
+            // _cmdCancel
+            // 
+            this._cmdCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this._cmdCancel.Cursor = System.Windows.Forms.Cursors.Default;
+            this._cmdCancel.ForeColor = System.Drawing.SystemColors.ControlText;
+            this._cmdCancel.Location = new System.Drawing.Point(216, 360);
+            this._cmdCancel.Name = "_cmdCancel";
+            this._cmdCancel.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this._cmdCancel.Size = new System.Drawing.Size(97, 25);
+            this._cmdCancel.TabIndex = 14;
+            this._cmdCancel.Text = "キャンセル";
+            this._cmdCancel.UseVisualStyleBackColor = false;
+            this._cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
+            // 
+            // _cmdOK
+            // 
+            this._cmdOK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this._cmdOK.Cursor = System.Windows.Forms.Cursors.Default;
+            this._cmdOK.ForeColor = System.Drawing.SystemColors.ControlText;
+            this._cmdOK.Location = new System.Drawing.Point(112, 360);
+            this._cmdOK.Name = "_cmdOK";
+            this._cmdOK.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this._cmdOK.Size = new System.Drawing.Size(97, 25);
+            this._cmdOK.TabIndex = 13;
+            this._cmdOK.Text = "OK";
+            this._cmdOK.UseVisualStyleBackColor = false;
+            this._cmdOK.Click += new System.EventHandler(this.cmdOK_Click);
+            // 
+            // chkKeepEnemyBGM
+            // 
+            this.chkKeepEnemyBGM.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.chkKeepEnemyBGM.Cursor = System.Windows.Forms.Cursors.Default;
+            this.chkKeepEnemyBGM.ForeColor = System.Drawing.Color.Black;
+            this.chkKeepEnemyBGM.Location = new System.Drawing.Point(32, 248);
+            this.chkKeepEnemyBGM.Name = "chkKeepEnemyBGM";
+            this.chkKeepEnemyBGM.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.chkKeepEnemyBGM.Size = new System.Drawing.Size(249, 25);
+            this.chkKeepEnemyBGM.TabIndex = 8;
+            this.chkKeepEnemyBGM.Text = "敵フェイズ中にＢＧＭを変更しない";
+            this.chkKeepEnemyBGM.UseVisualStyleBackColor = false;
+            // 
+            // cboMessageSpeed
+            // 
+            this.cboMessageSpeed.BackColor = System.Drawing.Color.White;
+            this.cboMessageSpeed.Cursor = System.Windows.Forms.Cursors.Default;
+            this.cboMessageSpeed.ForeColor = System.Drawing.Color.Black;
+            this.cboMessageSpeed.Location = new System.Drawing.Point(144, 16);
+            this.cboMessageSpeed.Name = "cboMessageSpeed";
+            this.cboMessageSpeed.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.cboMessageSpeed.Size = new System.Drawing.Size(137, 23);
+            this.cboMessageSpeed.TabIndex = 2;
+            // 
+            // chkAutoMoveCursor
+            // 
+            this.chkAutoMoveCursor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.chkAutoMoveCursor.Cursor = System.Windows.Forms.Cursors.Default;
+            this.chkAutoMoveCursor.ForeColor = System.Drawing.Color.Black;
+            this.chkAutoMoveCursor.Location = new System.Drawing.Point(32, 176);
+            this.chkAutoMoveCursor.Name = "chkAutoMoveCursor";
+            this.chkAutoMoveCursor.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.chkAutoMoveCursor.Size = new System.Drawing.Size(249, 25);
+            this.chkAutoMoveCursor.TabIndex = 5;
+            this.chkAutoMoveCursor.Text = "マウスカーソルを自動的に移動する";
+            this.chkAutoMoveCursor.UseVisualStyleBackColor = false;
+            // 
+            // chkShowSquareLine
+            // 
+            this.chkShowSquareLine.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.chkShowSquareLine.Cursor = System.Windows.Forms.Cursors.Default;
+            this.chkShowSquareLine.ForeColor = System.Drawing.Color.Black;
+            this.chkShowSquareLine.Location = new System.Drawing.Point(32, 200);
+            this.chkShowSquareLine.Name = "chkShowSquareLine";
+            this.chkShowSquareLine.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.chkShowSquareLine.Size = new System.Drawing.Size(265, 25);
+            this.chkShowSquareLine.TabIndex = 6;
+            this.chkShowSquareLine.Text = "マス目を表示する (要再起動)";
+            this.chkShowSquareLine.UseVisualStyleBackColor = false;
+            // 
+            // chkShowTurn
+            // 
+            this.chkShowTurn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.chkShowTurn.Cursor = System.Windows.Forms.Cursors.Default;
+            this.chkShowTurn.ForeColor = System.Drawing.Color.Black;
+            this.chkShowTurn.Location = new System.Drawing.Point(32, 224);
+            this.chkShowTurn.Name = "chkShowTurn";
+            this.chkShowTurn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.chkShowTurn.Size = new System.Drawing.Size(249, 25);
+            this.chkShowTurn.TabIndex = 7;
+            this.chkShowTurn.Text = "味方フェイズ開始時にターン表示を行う";
+            this.chkShowTurn.UseVisualStyleBackColor = false;
+            // 
+            // chkSpecialPowerAnimation
+            // 
+            this.chkSpecialPowerAnimation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.chkSpecialPowerAnimation.Cursor = System.Windows.Forms.Cursors.Default;
+            this.chkSpecialPowerAnimation.ForeColor = System.Drawing.Color.Black;
+            this.chkSpecialPowerAnimation.Location = new System.Drawing.Point(32, 128);
+            this.chkSpecialPowerAnimation.Name = "chkSpecialPowerAnimation";
+            this.chkSpecialPowerAnimation.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.chkSpecialPowerAnimation.Size = new System.Drawing.Size(249, 25);
+            this.chkSpecialPowerAnimation.TabIndex = 4;
+            this.chkSpecialPowerAnimation.Text = "スペシャルパワーアニメを表示する";
+            this.chkSpecialPowerAnimation.UseVisualStyleBackColor = false;
+            // 
+            // _chkBattleAnimation
+            // 
+            this._chkBattleAnimation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this._chkBattleAnimation.Cursor = System.Windows.Forms.Cursors.Default;
+            this._chkBattleAnimation.ForeColor = System.Drawing.Color.Black;
+            this._chkBattleAnimation.Location = new System.Drawing.Point(32, 40);
+            this._chkBattleAnimation.Name = "_chkBattleAnimation";
+            this._chkBattleAnimation.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this._chkBattleAnimation.Size = new System.Drawing.Size(249, 25);
+            this._chkBattleAnimation.TabIndex = 3;
+            this._chkBattleAnimation.Text = "戦闘アニメを表示する";
+            this._chkBattleAnimation.UseVisualStyleBackColor = false;
+            this._chkBattleAnimation.CheckStateChanged += new System.EventHandler(this.chkBattleAnimation_CheckStateChanged);
+            // 
+            // labMP3Volume
+            // 
+            this.labMP3Volume.BackColor = System.Drawing.Color.Transparent;
+            this.labMP3Volume.Cursor = System.Windows.Forms.Cursors.Default;
+            this.labMP3Volume.ForeColor = System.Drawing.Color.Black;
+            this.labMP3Volume.Location = new System.Drawing.Point(33, 330);
+            this.labMP3Volume.Name = "labMP3Volume";
+            this.labMP3Volume.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.labMP3Volume.Size = new System.Drawing.Size(49, 17);
+            this.labMP3Volume.TabIndex = 15;
+            this.labMP3Volume.Text = "MP3音量";
+            // 
+            // labMidiReset
+            // 
+            this.labMidiReset.BackColor = System.Drawing.Color.Transparent;
+            this.labMidiReset.Cursor = System.Windows.Forms.Cursors.Default;
+            this.labMidiReset.ForeColor = System.Drawing.Color.Black;
+            this.labMidiReset.Location = new System.Drawing.Point(33, 301);
+            this.labMidiReset.Name = "labMidiReset";
+            this.labMidiReset.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.labMidiReset.Size = new System.Drawing.Size(192, 17);
+            this.labMidiReset.TabIndex = 1;
+            this.labMidiReset.Text = "MIDI音源リセットの種類";
+            // 
+            // labMessageSpeed
+            // 
+            this.labMessageSpeed.BackColor = System.Drawing.Color.Transparent;
+            this.labMessageSpeed.Cursor = System.Windows.Forms.Cursors.Default;
+            this.labMessageSpeed.Font = new System.Drawing.Font("ＭＳ Ｐゴシック", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labMessageSpeed.ForeColor = System.Drawing.Color.Black;
+            this.labMessageSpeed.Location = new System.Drawing.Point(33, 20);
+            this.labMessageSpeed.Name = "labMessageSpeed";
+            this.labMessageSpeed.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.labMessageSpeed.Size = new System.Drawing.Size(129, 17);
+            this.labMessageSpeed.TabIndex = 0;
+            this.labMessageSpeed.Text = "メッセージスピード";
+            // 
+            // frmConfiguration
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.ClientSize = new System.Drawing.Size(346, 405);
+            this.Controls.Add(this.chkExtendedAnimation);
+            this.Controls.Add(this.chkMoveAnimation);
+            this.Controls.Add(this.chkWeaponAnimation);
+            this.Controls.Add(this._txtMP3Volume);
+            this.Controls.Add(this._hscMP3Volume);
+            this.Controls.Add(this.cboMidiReset);
+            this.Controls.Add(this._cmdCancel);
+            this.Controls.Add(this._cmdOK);
+            this.Controls.Add(this.chkKeepEnemyBGM);
+            this.Controls.Add(this.cboMessageSpeed);
+            this.Controls.Add(this.chkAutoMoveCursor);
+            this.Controls.Add(this.chkShowSquareLine);
+            this.Controls.Add(this.chkShowTurn);
+            this.Controls.Add(this.chkSpecialPowerAnimation);
+            this.Controls.Add(this._chkBattleAnimation);
+            this.Controls.Add(this.labMP3Volume);
+            this.Controls.Add(this.labMidiReset);
+            this.Controls.Add(this.labMessageSpeed);
+            this.Cursor = System.Windows.Forms.Cursors.Default;
+            this.ForeColor = System.Drawing.Color.Black;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Location = new System.Drawing.Point(3, 29);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "frmConfiguration";
+            this.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.ShowInTaskbar = false;
+            this.Text = "設定変更";
+            this.Load += new System.EventHandler(this.frmConfiguration_Load);
+            this.ResumeLayout(false);
+
         }
         /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
     }

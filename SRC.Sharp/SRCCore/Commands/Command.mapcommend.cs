@@ -62,22 +62,17 @@ namespace SRCCore.Commands
                 //GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked = !GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked;
                 //if (GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked)
                 //{
-                //    GeneralLib.WriteIni("Option", "AutoDefense", "On");
+                //    SystemConfig.SetItem("Option", "AutoDefense", "On");
                 //}
                 //else
                 //{
-                //    GeneralLib.WriteIni("Option", "AutoDefense", "Off");
+                //    SystemConfig.SetItem("Option", "AutoDefense", "Off");
                 //}
                 //break;
 
-                //case ConfigurationCmdID: // 設定変更
-                //    Load(My.MyProject.Forms.frmConfiguration);
-                //    My.MyProject.Forms.frmConfiguration.Left = SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(My.MyProject.Forms.frmConfiguration.Width)) / 2d);
-                //    My.MyProject.Forms.frmConfiguration.Top = SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(My.MyProject.Forms.frmConfiguration.Height)) / 3d);
-                //    My.MyProject.Forms.frmConfiguration.ShowDialog();
-                //    My.MyProject.Forms.frmConfiguration.Close();
-                //    My.MyProject.Forms.frmConfiguration = null;
-                //    break;
+                case ConfigurationCmdID: // 設定変更
+                    GUI.Configure();
+                    break;
 
                 //case RestartCmdID: // リスタート
                 //    RestartCommand();

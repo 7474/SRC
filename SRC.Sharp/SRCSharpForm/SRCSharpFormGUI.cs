@@ -167,7 +167,7 @@ namespace SRCSharpForm
             //    default:
             //        {
             //            MainWidth = 15;
-            //            GeneralLib.WriteIni("Option", "NewGUI", "Off");
+            //            SystemConfig.SetItem("Option", "NewGUI", "Off");
             //            break;
             //        }
             //}
@@ -2194,6 +2194,16 @@ namespace SRCSharpForm
                 var res = dialog.ShowDialog();
                 value = dialog.InputText;
                 return res == DialogResult.OK ? GuiDialogResult.Ok : GuiDialogResult.Cancel;
+            }
+        }
+
+        public void Configure()
+        {
+            using (var dialog = new frmConfiguration())
+            {
+                dialog.SRC = SRC;
+                dialog.StartPosition = FormStartPosition.CenterParent;
+                dialog.ShowDialog(MainForm);
             }
         }
     }

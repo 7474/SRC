@@ -1,10 +1,11 @@
 using System;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
+using SRCCore;
+using SRCCore.Config;
 using SRCCore.Lib;
+using SRCCore.VB;
 
-namespace Project1
+namespace SRCSharpForm
 {
     internal partial class frmConfiguration : Form
     {
@@ -18,7 +19,12 @@ namespace Project1
 
 
         // MP3Volumeを記録
-        private short SavedMP3Volume;
+        private float SavedMP3Volume;
+
+        public SRCCore.SRC SRC;
+        private Sound Sound => SRC.Sound;
+        // XXX 型
+        private LocalFileConfig SystemConfig => SRC.SystemConfig as LocalFileConfig;
 
         // 戦闘アニメOn・Off切り替え
         // UPGRADE_WARNING: イベント chkBattleAnimation.CheckStateChanged は、フォームが初期化されたときに発生します。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="88B12AE1-6DE0-48A0-86F1-60C0686C026A"' をクリックしてください。
@@ -40,17 +46,9 @@ namespace Project1
         // キャンセルボタンが押された
         private void cmdCancel_Click(object eventSender, EventArgs eventArgs)
         {
-            //var IsMP3Supported = default(object);
-            //// ダイアログを閉じる
-            //Hide();
-
-            //// MP3音量のみその場で変更しているので元に戻す必要がある
-            //Sound.MP3Volume = SavedMP3Volume;
-            //// UPGRADE_WARNING: オブジェクト IsMP3Supported の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //if (Conversions.ToBoolean(IsMP3Supported))
-            //{
-            //    VBMP3.vbmp3_setVolume(Sound.MP3Volume, Sound.MP3Volume);
-            //}
+            // MP3音量のみその場で変更しているので元に戻す必要がある
+            Sound.Player.SoundVolume = SavedMP3Volume;
+            Close();
         }
 
         // OKボタンが押された
@@ -98,134 +96,109 @@ namespace Project1
             //        }
             //}
 
-            //GeneralLib.WriteIni(ref "Option", ref "MessageWait", ref SrcFormatter.Format(GUI.MessageWait));
+            //SystemConfig.SetItem("Option", "MessageWait", SrcFormatter.Format(GUI.MessageWait));
 
-            //// 戦闘アニメ表示
-            //if ((int)chkBattleAnimation.CheckState == 1)
-            //{
-            //    SRC.BattleAnimation = true;
-            //    GeneralLib.WriteIni(ref "Option", ref "BattleAnimation", ref "On");
-            //}
-            //else
-            //{
-            //    SRC.BattleAnimation = false;
-            //    GeneralLib.WriteIni(ref "Option", ref "BattleAnimation", ref "Off");
-            //}
+            // 戦闘アニメ表示
+            if ((int)chkBattleAnimation.CheckState == 1)
+            {
+                SystemConfig.BattleAnimation = true;
+            }
+            else
+            {
+                SystemConfig.BattleAnimation = false;
+            }
 
-            //// 拡大戦闘アニメ表示
-            //if ((int)chkExtendedAnimation.CheckState == 1)
-            //{
-            //    SRC.ExtendedAnimation = true;
-            //    GeneralLib.WriteIni(ref "Option", ref "ExtendedAnimation", ref "On");
-            //}
-            //else
-            //{
-            //    SRC.ExtendedAnimation = false;
-            //    GeneralLib.WriteIni(ref "Option", ref "Extendednimation", ref "Off");
-            //}
+            // 拡大戦闘アニメ表示
+            if ((int)chkExtendedAnimation.CheckState == 1)
+            {
+                SystemConfig.ExtendedAnimation = true;
+            }
+            else
+            {
+                SystemConfig.ExtendedAnimation = false;
+            }
 
-            //// 武器準備アニメ表示
-            //if ((int)chkWeaponAnimation.CheckState == 1)
-            //{
-            //    SRC.WeaponAnimation = true;
-            //    GeneralLib.WriteIni(ref "Option", ref "WeaponAnimation", ref "On");
-            //}
-            //else
-            //{
-            //    SRC.WeaponAnimation = false;
-            //    GeneralLib.WriteIni(ref "Option", ref "WeaponAnimation", ref "Off");
-            //}
+            // 武器準備アニメ表示
+            if ((int)chkWeaponAnimation.CheckState == 1)
+            {
+                SystemConfig.WeaponAnimation = true;
+            }
+            else
+            {
+                SystemConfig.WeaponAnimation = false;
+            }
 
-            //// 移動アニメ表示
-            //if ((int)chkMoveAnimation.CheckState == 1)
-            //{
-            //    SRC.MoveAnimation = true;
-            //    GeneralLib.WriteIni(ref "Option", ref "MoveAnimation", ref "On");
-            //}
-            //else
-            //{
-            //    SRC.MoveAnimation = false;
-            //    GeneralLib.WriteIni(ref "Option", ref "MoveAnimation", ref "Off");
-            //}
+            // 移動アニメ表示
+            if ((int)chkMoveAnimation.CheckState == 1)
+            {
+                SystemConfig.MoveAnimation = true;
+            }
+            else
+            {
+                SystemConfig.MoveAnimation = false;
+            }
 
-            //// スペシャルパワーアニメ表示
-            //if ((int)chkSpecialPowerAnimation.CheckState == 1)
-            //{
-            //    SRC.SpecialPowerAnimation = true;
-            //    GeneralLib.WriteIni(ref "Option", ref "SpecialPowerAnimation", ref "On");
-            //}
-            //else
-            //{
-            //    SRC.SpecialPowerAnimation = false;
-            //    GeneralLib.WriteIni(ref "Option", ref "SpecialPowerAnimation", ref "Off");
-            //}
+            // スペシャルパワーアニメ表示
+            if ((int)chkSpecialPowerAnimation.CheckState == 1)
+            {
+                SystemConfig.SpecialPowerAnimation = true;
+            }
+            else
+            {
+                SystemConfig.SpecialPowerAnimation = false;
+            }
 
-            //// マウスカーソルの自動移動
-            //if (Conversions.ToBoolean(chkAutoMoveCursor.CheckState))
-            //{
-            //    SRC.AutoMoveCursor = true;
-            //    GeneralLib.WriteIni(ref "Option", ref "AutoMoveCursor", ref "On");
-            //}
-            //else
-            //{
-            //    SRC.AutoMoveCursor = false;
-            //    GeneralLib.WriteIni(ref "Option", ref "AutoMoveCursor", ref "Off");
-            //}
+            // マウスカーソルの自動移動
+            if (chkAutoMoveCursor.Checked)
+            {
+                SystemConfig.AutoMoveCursor = true;
+            }
+            else
+            {
+                SystemConfig.AutoMoveCursor = false;
+            }
 
-            //// マス目の表示
-            //if (Conversions.ToBoolean(chkShowSquareLine.CheckState))
-            //{
-            //    SRC.ShowSquareLine = true;
-            //    GeneralLib.WriteIni(ref "Option", ref "Square", ref "On");
-            //}
-            //else
-            //{
-            //    SRC.ShowSquareLine = false;
-            //    GeneralLib.WriteIni(ref "Option", ref "Square", ref "Off");
-            //}
+            // マス目の表示
+            if (chkShowSquareLine.Checked)
+            {
+                SystemConfig.ShowSquareLine = true;
+            }
+            else
+            {
+                SystemConfig.ShowSquareLine = false;
+            }
 
-            //// 味方フェイズ開始時のターン表示
-            //if (Conversions.ToBoolean(chkShowTurn.CheckState))
-            //{
-            //    GeneralLib.WriteIni(ref "Option", ref "Turn", ref "On");
-            //}
-            //else
-            //{
-            //    GeneralLib.WriteIni(ref "Option", ref "Turn", ref "Off");
-            //}
+            // 味方フェイズ開始時のターン表示
+            if (chkShowTurn.Checked)
+            {
+                SystemConfig.SetItem("Option", "Turn", "On");
+            }
+            else
+            {
+                SystemConfig.SetItem("Option", "Turn", "Off");
+            }
 
-            //// 敵フェイズ中にＢＧＭを変更しない
-            //if (Conversions.ToBoolean(chkKeepEnemyBGM.CheckState))
-            //{
-            //    SRC.KeepEnemyBGM = true;
-            //    GeneralLib.WriteIni(ref "Option", ref "KeepEnemyBGM", ref "On");
-            //}
-            //else
-            //{
-            //    SRC.KeepEnemyBGM = false;
-            //    GeneralLib.WriteIni(ref "Option", ref "KeepEnemyBGM", ref "Off");
-            //}
-
-            //// MIDI演奏にDirectMusicを使用する
-            //if (Conversions.ToBoolean(chkUseDirectMusic.CheckState))
-            //{
-            //    GeneralLib.WriteIni(ref "Option", ref "UseDirectMusic", ref "On");
-            //}
-            //else
-            //{
-            //    GeneralLib.WriteIni(ref "Option", ref "UseDirectMusic", ref "Off");
-            //}
+            // 敵フェイズ中にＢＧＭを変更しない
+            if (chkKeepEnemyBGM.Checked)
+            {
+                SystemConfig.KeepEnemyBGM = true;
+            }
+            else
+            {
+                SystemConfig.KeepEnemyBGM = false;
+            }
 
             //// MIDI音源リセットの種類
-            //SRC.MidiResetType = cboMidiReset.Text;
-            //GeneralLib.WriteIni(ref "Option", ref "MidiReset", ref cboMidiReset.Text);
+            //SystemConfig.MidiResetType = cboMidiReset.Text;
+            //SystemConfig.SetItem("Option", "MidiReset", cboMidiReset.Text);
             //cboMidiReset.Text = argini_data21;
 
-            //// MP3再生音量
-            //GeneralLib.WriteIni(ref "Option", ref "MP3Volume", ref SrcFormatter.Format(Sound.MP3Volume));
+            // MP3再生音量
+            SystemConfig.SoundVolume = (int)(Sound.Player.SoundVolume * 100);
+            SystemConfig.Save();
 
             // ダイアログを閉じる
-            Hide();
+            Close();
         }
 
         private void frmConfiguration_Load(object eventSender, EventArgs eventArgs)
@@ -278,103 +251,105 @@ namespace Project1
             //        }
             //}
 
-            //// 戦闘アニメ表示
-            //if (SRC.BattleAnimation)
-            //{
-            //    chkBattleAnimation.CheckState = CheckState.Checked;
-            //}
-            //else
-            //{
-            //    chkBattleAnimation.CheckState = CheckState.Unchecked;
-            //}
+            // 戦闘アニメ表示
+            if (SRC.BattleAnimation)
+            {
+                chkBattleAnimation.CheckState = CheckState.Checked;
+            }
+            else
+            {
+                chkBattleAnimation.CheckState = CheckState.Unchecked;
+            }
 
-            //bool localFileExists() { string argfname = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+            //bool localFileExists() { string argfname = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve"; 
+            //    var ret = GeneralLib.FileExists(argfname); 
+            //    return ret; }
 
             //if (!localFileExists())
             //{
             //    chkBattleAnimation.CheckState = CheckState.Indeterminate; // 無効
             //}
 
-            //// 拡張戦闘アニメ表示
-            //if (SRC.ExtendedAnimation)
-            //{
-            //    chkExtendedAnimation.CheckState = CheckState.Checked;
-            //}
-            //else
-            //{
-            //    chkExtendedAnimation.CheckState = CheckState.Unchecked;
-            //}
+            // 拡張戦闘アニメ表示
+            if (SRC.ExtendedAnimation)
+            {
+                chkExtendedAnimation.CheckState = CheckState.Checked;
+            }
+            else
+            {
+                chkExtendedAnimation.CheckState = CheckState.Unchecked;
+            }
 
-            //if ((int)chkBattleAnimation.CheckState == 1)
-            //{
-            //    chkExtendedAnimation.Enabled = true;
-            //}
-            //else
-            //{
-            //    chkExtendedAnimation.Enabled = false;
-            //}
+            if ((int)chkBattleAnimation.CheckState == 1)
+            {
+                chkExtendedAnimation.Enabled = true;
+            }
+            else
+            {
+                chkExtendedAnimation.Enabled = false;
+            }
 
-            //// 武器準備アニメ表示
-            //if (SRC.WeaponAnimation)
-            //{
-            //    chkWeaponAnimation.CheckState = CheckState.Checked;
-            //}
-            //else
-            //{
-            //    chkWeaponAnimation.CheckState = CheckState.Unchecked;
-            //}
+            // 武器準備アニメ表示
+            if (SRC.WeaponAnimation)
+            {
+                chkWeaponAnimation.CheckState = CheckState.Checked;
+            }
+            else
+            {
+                chkWeaponAnimation.CheckState = CheckState.Unchecked;
+            }
 
-            //if ((int)chkBattleAnimation.CheckState == 1)
-            //{
-            //    chkWeaponAnimation.Enabled = true;
-            //}
-            //else
-            //{
-            //    chkWeaponAnimation.Enabled = false;
-            //}
+            if ((int)chkBattleAnimation.CheckState == 1)
+            {
+                chkWeaponAnimation.Enabled = true;
+            }
+            else
+            {
+                chkWeaponAnimation.Enabled = false;
+            }
 
-            //// 移動アニメ表示
-            //if (SRC.MoveAnimation)
-            //{
-            //    chkMoveAnimation.CheckState = CheckState.Checked;
-            //}
-            //else
-            //{
-            //    chkMoveAnimation.CheckState = CheckState.Unchecked;
-            //}
+            // 移動アニメ表示
+            if (SRC.MoveAnimation)
+            {
+                chkMoveAnimation.CheckState = CheckState.Checked;
+            }
+            else
+            {
+                chkMoveAnimation.CheckState = CheckState.Unchecked;
+            }
 
-            //// スペシャルパワーアニメ表示
-            //if (SRC.SpecialPowerAnimation)
-            //{
-            //    chkSpecialPowerAnimation.CheckState = CheckState.Checked;
-            //}
-            //else
-            //{
-            //    chkSpecialPowerAnimation.CheckState = CheckState.Unchecked;
-            //}
+            // スペシャルパワーアニメ表示
+            if (SRC.SpecialPowerAnimation)
+            {
+                chkSpecialPowerAnimation.CheckState = CheckState.Checked;
+            }
+            else
+            {
+                chkSpecialPowerAnimation.CheckState = CheckState.Unchecked;
+            }
 
-            //// マウスカーソルの自動移動
-            //if (SRC.AutoMoveCursor)
-            //{
-            //    chkAutoMoveCursor.CheckState = CheckState.Checked;
-            //}
-            //else
-            //{
-            //    chkAutoMoveCursor.CheckState = CheckState.Unchecked;
-            //}
+            // マウスカーソルの自動移動
+            if (SRC.AutoMoveCursor)
+            {
+                chkAutoMoveCursor.CheckState = CheckState.Checked;
+            }
+            else
+            {
+                chkAutoMoveCursor.CheckState = CheckState.Unchecked;
+            }
 
-            //// マス目の表示
-            //if (SRC.ShowSquareLine)
-            //{
-            //    chkShowSquareLine.CheckState = CheckState.Checked;
-            //}
-            //else
-            //{
-            //    chkShowSquareLine.CheckState = CheckState.Unchecked;
-            //}
+            // マス目の表示
+            if (SRC.ShowSquareLine)
+            {
+                chkShowSquareLine.CheckState = CheckState.Checked;
+            }
+            else
+            {
+                chkShowSquareLine.CheckState = CheckState.Unchecked;
+            }
 
             //// 味方フェイズ開始時のターン表示
-            //if (Strings.LCase(GeneralLib.ReadIni(ref "Option", ref "Turn")) == "on")
+            //if (Strings.LCase(GeneralLib.ReadIni("Option", "Turn")) == "on")
             //{
             //    chkShowTurn.CheckState = CheckState.Checked;
             //}
@@ -394,7 +369,7 @@ namespace Project1
             //}
 
             //// MIDI演奏にDirectMusicを使用する
-            //if (Strings.LCase(GeneralLib.ReadIni(ref "Option", ref "UseDirectMusic")) == "on")
+            //if (Strings.LCase(GeneralLib.ReadIni("Option", "UseDirectMusic")) == "on")
             //{
             //    chkUseDirectMusic.CheckState = CheckState.Checked;
             //}
@@ -410,63 +385,39 @@ namespace Project1
             //cboMidiReset.Items.Add("XG");
             //cboMidiReset.Text = SRC.MidiResetType;
 
-            //// MP3音量
-            //SavedMP3Volume = Sound.MP3Volume;
-            //txtMP3Volume.Text = SrcFormatter.Format(Sound.MP3Volume);
+            // MP3音量
+            SavedMP3Volume = Sound.Player.SoundVolume;
+            txtMP3Volume.Text = SrcFormatter.Format((int)(Sound.Player.SoundVolume * 100));
         }
 
         // MP3音量変更
-        // UPGRADE_NOTE: hscMP3Volume.Change はイベントからプロシージャに変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="4E2DC008-5EDA-4547-8317-C9316952674F"' をクリックしてください。
-        // UPGRADE_WARNING: HScrollBar イベント hscMP3Volume.Change には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
         private void hscMP3Volume_Change(int newScrollValue)
         {
-            //var IsMP3Supported = default(object);
-            //Sound.MP3Volume = (short)newScrollValue;
-            //txtMP3Volume.Text = SrcFormatter.Format(Sound.MP3Volume);
-            //// UPGRADE_WARNING: オブジェクト IsMP3Supported の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //if (Conversions.ToBoolean(IsMP3Supported))
-            //{
-            //    VBMP3.vbmp3_setVolume(Sound.MP3Volume, Sound.MP3Volume);
-            //}
+            Sound.Player.SoundVolume = newScrollValue / 100f;
+            txtMP3Volume.Text = SrcFormatter.Format(newScrollValue);
         }
 
-        // UPGRADE_NOTE: hscMP3Volume.Scroll はイベントからプロシージャに変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="4E2DC008-5EDA-4547-8317-C9316952674F"' をクリックしてください。
-        private void hscMP3Volume_Scroll_Renamed(int newScrollValue)
+        private void hscMP3Volume_Scroll(int newScrollValue)
         {
-            //var IsMP3Supported = default(object);
-            //Sound.MP3Volume = (short)newScrollValue;
-            //txtMP3Volume.Text = SrcFormatter.Format(Sound.MP3Volume);
-            //// UPGRADE_WARNING: オブジェクト IsMP3Supported の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //if (Conversions.ToBoolean(IsMP3Supported))
-            //{
-            //    VBMP3.vbmp3_setVolume(Sound.MP3Volume, Sound.MP3Volume);
-            //}
+            Sound.Player.SoundVolume = newScrollValue / 100f;
+            txtMP3Volume.Text = SrcFormatter.Format(newScrollValue);
         }
 
-        // UPGRADE_WARNING: イベント txtMP3Volume.TextChanged は、フォームが初期化されたときに発生します。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="88B12AE1-6DE0-48A0-86F1-60C0686C026A"' をクリックしてください。
         private void txtMP3Volume_TextChanged(object eventSender, EventArgs eventArgs)
         {
-            //var IsMP3Supported = default(object);
-            //Sound.MP3Volume = (short)GeneralLib.StrToLng(ref txtMP3Volume.Text);
-            //txtMP3Volume.Text = argexpr;
-            //if (Sound.MP3Volume < 0)
-            //{
-            //    Sound.MP3Volume = 0;
-            //    txtMP3Volume.Text = "0";
-            //}
-            //else if (Sound.MP3Volume > 100)
-            //{
-            //    Sound.MP3Volume = 100;
-            //    txtMP3Volume.Text = "100";
-            //}
+            var volume = GeneralLib.StrToLng(txtMP3Volume.Text);
+            if (volume < 0)
+            {
+                volume = 0;
+                txtMP3Volume.Text = "0";
+            }
+            else if (volume > 100)
+            {
+                volume = 100;
+                txtMP3Volume.Text = "100";
+            }
 
-            //hscMP3Volume.Value = Sound.MP3Volume;
-
-            //// UPGRADE_WARNING: オブジェクト IsMP3Supported の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //if (Conversions.ToBoolean(IsMP3Supported))
-            //{
-            //    VBMP3.vbmp3_setVolume(Sound.MP3Volume, Sound.MP3Volume);
-            //}
+            hscMP3Volume.Value = volume;
         }
 
         private void hscMP3Volume_Scroll(object eventSender, ScrollEventArgs eventArgs)
@@ -475,7 +426,7 @@ namespace Project1
             {
                 case ScrollEventType.ThumbTrack:
                     {
-                        hscMP3Volume_Scroll_Renamed(eventArgs.NewValue);
+                        hscMP3Volume_Scroll(eventArgs.NewValue);
                         break;
                     }
 

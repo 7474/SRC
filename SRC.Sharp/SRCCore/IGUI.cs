@@ -303,6 +303,7 @@ namespace SRCCore
         // === 確認ダイアログ ===
         GuiDialogResult Confirm(string message, string title, GuiConfirmOption option);
         GuiDialogResult Input(string message, string title, string defaultValue, out string value);
+        void Configure();
     }
 
     public enum GuiStatus

@@ -117,7 +117,7 @@ namespace SRCCore.Events
                 if (!battleAnimeIncludeLoaded)
                 {
                     // 戦闘アニメ表示切り替えコマンドを非表示に
-                    SRC.BattleAnimation = false;
+                    SRC.SystemConfig.BattleAnimation = false;
                 }
 
                 // システム側のイベントデータの総行数＆ファイル数を記録しておく
@@ -174,7 +174,7 @@ namespace SRCCore.Events
                     if (!battleAnimeIncludeLoaded)
                     {
                         // 戦闘アニメ表示切り替えコマンドを非表示に
-                        SRC.BattleAnimation = false;
+                        SRC.SystemConfig.BattleAnimation = false;
                     }
                 }
 

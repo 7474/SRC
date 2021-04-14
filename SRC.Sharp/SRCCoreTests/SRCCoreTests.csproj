@@ -20,4 +20,10 @@
     <ProjectReference Include="..\SRCCore\SRCCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="srcs.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

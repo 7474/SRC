@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using SRCCore.Config;
 using SRCCore.Filesystem;
 using SRCSharpForm.Resoruces;
 using System;
@@ -17,6 +18,18 @@ namespace SRCSharpForm
             SRC = new SRCCore.SRC();
             SRC.FileSystem = new LocalFileSystem();
             SRC.Sound.Player = new WindowsManagedPlayer();
+            var config = new LocalFileConfig();
+            SRC.SystemConfig = config;
+            try
+            {
+                SRC.SystemConfig.Load();
+            }
+            catch
+            {
+                SRC.SystemConfig.Save();
+            }
+            // XXX 単位変更をこんな感じでやるのは下策だなー
+            SRC.Sound.Player.SoundVolume = config.SoundVolume / 100f;
 
             SRC.GUI = new SRCSharpFormGUI(SRC);
         }
