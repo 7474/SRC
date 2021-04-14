@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace SRCCore.Config
 {
+    // TODO 項目の説明を設定ファイルに書けるようする
+    // XXX 説明をどこでエントリーするか？　別にJSONでなくてもいい。
     public class LocalFileConfig : ISystemConfig
     {
         public bool ShowSquareLine { get; set; }
@@ -24,8 +25,12 @@ namespace SRCCore.Config
         public int MaxImageBufferByteSize { get; set; }
         public bool KeepStretchedImage { get; set; }
 
+        // XXX Configの余地ないしConfigのプロパティではないかもな。
         [JsonIgnore]
         public string AppPath { get; set; }
+
+        //
+        public int SoundVolume { get; set; }
 
         public List<ConfigSection> Sections { get; set; }
 
@@ -37,6 +42,8 @@ namespace SRCCore.Config
             AppPath = AppContext.BaseDirectory;
             ExtDataPath = "";
             ExtDataPath2 = "";
+
+            SoundVolume = 50;
         }
 
         public string GetItem(string section, string name)
