@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using SRCCore;
+using SRCCore.Config;
 using SRCCore.Lib;
 using SRCCore.VB;
 
@@ -22,7 +23,8 @@ namespace SRCSharpForm
 
         public SRCCore.SRC SRC;
         private Sound Sound => SRC.Sound;
-        private ISystemConfig SystemConfig => SRC.SystemConfig;
+        // XXX 型
+        private LocalFileConfig SystemConfig => SRC.SystemConfig as LocalFileConfig;
 
         // 戦闘アニメOn・Off切り替え
         // UPGRADE_WARNING: イベント chkBattleAnimation.CheckStateChanged は、フォームが初期化されたときに発生します。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="88B12AE1-6DE0-48A0-86F1-60C0686C026A"' をクリックしてください。
@@ -192,7 +194,7 @@ namespace SRCSharpForm
             //cboMidiReset.Text = argini_data21;
 
             // MP3再生音量
-            SystemConfig.SetItem("Option", "MP3Volume", SrcFormatter.Format((int)(Sound.Player.SoundVolume * 100)));
+            SystemConfig.SoundVolume = (int)(Sound.Player.SoundVolume * 100);
             SystemConfig.Save();
 
             // ダイアログを閉じる
