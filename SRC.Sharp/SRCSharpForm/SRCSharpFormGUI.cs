@@ -970,29 +970,35 @@ namespace SRCSharpForm
 
         public void DisplayMessage(string pname, string msg, string msg_mode)
         {
-            // TODO 完全に仮実装
-            string pnickname;
-            string left_margin;
-            DisplayMessagePilot(pname, msg_mode, out pnickname, out left_margin);
-
-            var tmpMsg = msg;
-            Expression.FormatMessage(ref tmpMsg);
-
-            frmMessage.picMessage.ClearImage(defaultBgColor);
-            PrintMessage(tmpMsg, false);
-            frmMessage.picMessage.Refresh();
-            Application.DoEvents();
-
-            // 次のメッセージ待ち
-            IsFormClicked = false;
-            while (!IsFormClicked)
+            ResetMessage();
+            try
             {
-                if (IsRButtonPressed(true))
-                {
-                    break;
-                }
-                Thread.Sleep(100);
+                string pnickname;
+                string left_margin;
+                DisplayMessagePilot(pname, msg_mode, out pnickname, out left_margin);
+
+                var tmpMsg = msg;
+                Expression.FormatMessage(ref tmpMsg);
+
+                PrintMessage(tmpMsg, false);
+                frmMessage.picMessage.Refresh();
                 Application.DoEvents();
+
+                // 次のメッセージ待ち
+                IsFormClicked = false;
+                while (!IsFormClicked)
+                {
+                    if (IsRButtonPressed(true))
+                    {
+                        break;
+                    }
+                    Thread.Sleep(100);
+                    Application.DoEvents();
+                }
+            }
+            finally
+            {
+                ResetMessage();
             }
         }
 
@@ -1099,16 +1105,27 @@ namespace SRCSharpForm
             }
         }
 
-        private Brush defaultBgColor = Brushes.White;
         private Font defaultFont = new Font("ＭＳ Ｐ明朝", 12, FontStyle.Regular, GraphicsUnit.Point);
+        private Brush defaultBgColor = Brushes.White;
         private Brush defaultFontColor = Brushes.Black;
+
+        private Font currentMessageFont;
+        private Brush currentMessageFontColor;
+        private PointF currentMessagePoint;
+
+        private void ResetMessage()
+        {
+            frmMessage.picMessage.ClearImage(defaultBgColor);
+
+            currentMessageFont = defaultFont;
+            currentMessageFontColor = defaultFontColor;
+            currentMessagePoint = new PointF(1, 1);
+        }
+
         public void PrintMessage(string msg, bool is_sys_msg)
         {
             // XXX 改行を処理できてない
             using var g = Graphics.FromImage(frmMessage.picMessage.NewImageIfNull().Image);
-            var currentFont = defaultFont;
-            var currentFontColor = defaultFontColor;
-            var currentPoint = new PointF(1, 1);
             var max_y = 1f;
 
             string cname;
@@ -1132,7 +1149,7 @@ namespace SRCSharpForm
                                 {
                                     // エスケープシーケンス開始
                                     // それまでの文字列を出力
-                                    currentPoint = PrintMessage(Strings.Mid(msg, head, i - head), g, currentFont, currentFontColor, currentPoint);
+                                    currentMessagePoint = PrintMessage(Strings.Mid(msg, head, i - head), g, currentMessageFont, currentMessageFontColor, currentMessagePoint);
                                     head = (i + 1);
                                     goto NextChar;
                                 }
@@ -1147,7 +1164,7 @@ namespace SRCSharpForm
                                 {
                                     // エスケープシーケンス終了
                                     // エスケープシーケンスを出力
-                                    currentPoint = PrintMessage(Strings.Mid(msg, head, i - head), g, currentFont, currentFontColor, currentPoint);
+                                    currentMessagePoint = PrintMessage(Strings.Mid(msg, head, i - head), g, currentMessageFont, currentMessageFontColor, currentMessagePoint);
                                     head = (i + 1);
                                     goto NextChar;
                                 }
@@ -1167,7 +1184,7 @@ namespace SRCSharpForm
                                 // タグ開始
                                 in_tag = true;
                                 // それまでの文字列を出力
-                                currentPoint = PrintMessage(Strings.Mid(msg, head, i - head), g, currentFont, currentFontColor, currentPoint);
+                                currentMessagePoint = PrintMessage(Strings.Mid(msg, head, i - head), g, currentMessageFont, currentMessageFontColor, currentMessagePoint);
                                 head = (i + 1);
                                 goto NextChar;
                             }
@@ -1190,81 +1207,81 @@ namespace SRCSharpForm
                                 {
                                     case "b":
                                         {
-                                            currentFont = currentFont.Bold();
+                                            currentMessageFont = currentMessageFont.Bold();
                                             break;
                                         }
 
                                     case "/b":
                                         {
-                                            currentFont = currentFont.UnBold();
+                                            currentMessageFont = currentMessageFont.UnBold();
                                             break;
                                         }
 
                                     case "i":
                                         {
-                                            currentFont = currentFont.Italic();
+                                            currentMessageFont = currentMessageFont.Italic();
                                             break;
                                         }
 
                                     case "/i":
                                         {
-                                            currentFont = currentFont.UnItalic();
+                                            currentMessageFont = currentMessageFont.UnItalic();
                                             break;
                                         }
 
                                     case "big":
                                         {
-                                            currentFont = currentFont.ReSize(currentFont.SizeInPoints + 2f);
-                                            if (currentPoint.Y + currentFont.GetHeight(g) > max_y)
+                                            currentMessageFont = currentMessageFont.ReSize(currentMessageFont.SizeInPoints + 2f);
+                                            if (currentMessagePoint.Y + currentMessageFont.GetHeight(g) > max_y)
                                             {
-                                                max_y = currentPoint.Y + currentFont.GetHeight(g);
+                                                max_y = currentMessagePoint.Y + currentMessageFont.GetHeight(g);
                                             }
                                             break;
                                         }
 
                                     case "/big":
                                         {
-                                            currentFont = currentFont.ReSize(currentFont.SizeInPoints - 2f);
+                                            currentMessageFont = currentMessageFont.ReSize(currentMessageFont.SizeInPoints - 2f);
                                             break;
                                         }
 
                                     case "small":
                                         {
-                                            currentFont = currentFont.ReSize(currentFont.SizeInPoints - 2f);
-                                            if (currentPoint.Y + currentFont.GetHeight(g) > max_y)
+                                            currentMessageFont = currentMessageFont.ReSize(currentMessageFont.SizeInPoints - 2f);
+                                            if (currentMessagePoint.Y + currentMessageFont.GetHeight(g) > max_y)
                                             {
-                                                max_y = currentPoint.Y + currentFont.GetHeight(g);
+                                                max_y = currentMessagePoint.Y + currentMessageFont.GetHeight(g);
                                             }
                                             break;
                                         }
 
                                     case "/small":
                                         {
-                                            currentFont = currentFont.ReSize(currentFont.SizeInPoints + 2f);
+                                            currentMessageFont = currentMessageFont.ReSize(currentMessageFont.SizeInPoints + 2f);
                                             break;
                                         }
 
                                     case "/color":
                                         {
-                                            currentFontColor = defaultFontColor;
+                                            currentMessageFontColor = defaultFontColor;
                                             break;
                                         }
 
                                     case "/size":
                                         {
-                                            currentFont = currentFont.ReSize(defaultFont.SizeInPoints);
+                                            currentMessageFont = currentMessageFont.ReSize(defaultFont.SizeInPoints);
                                             break;
                                         }
 
                                     case "lt":
                                         {
-                                            currentPoint = PrintMessage("<", g, currentFont, currentFontColor, currentPoint);
+                                            currentMessagePoint = PrintMessage("<", g, currentMessageFont, currentMessageFontColor, currentMessagePoint);
                                             break;
                                         }
 
                                     case "gt":
                                         {
-                                            currentPoint = PrintMessage(">", g, currentFont, currentFontColor, currentPoint);
+                                            currentMessagePoint = PrintMessage(">", g, currentMessageFont, currentMessageFontColor, currentMessagePoint);
                                             break;
                                         }
 
@@ -1277,67 +1294,67 @@ namespace SRCSharpForm
                                                 switch (cname ?? "")
                                                 {
                                                     case "black":
-                                                        currentFontColor = Brushes.Black;
+                                                        currentMessageFontColor = Brushes.Black;
                                                         break;
 
                                                     case "gray":
-                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x80, 0x80, 0x80));
+                                                        currentMessageFontColor = new SolidBrush(Color.FromArgb(0x80, 0x80, 0x80));
                                                         break;
 
                                                     case "silver":
-                                                        currentFontColor = new SolidBrush(Color.FromArgb(0xC0, 0xC0, 0xC0));
+                                                        currentMessageFontColor = new SolidBrush(Color.FromArgb(0xC0, 0xC0, 0xC0));
                                                         break;
 
                                                     case "white":
-                                                        currentFontColor = Brushes.White;
+                                                        currentMessageFontColor = Brushes.White;
                                                         break;
 
                                                     case "red":
-                                                        currentFontColor = Brushes.Red;
+                                                        currentMessageFontColor = Brushes.Red;
                                                         break;
 
                                                     case "yellow":
-                                                        currentFontColor = Brushes.Yellow;
+                                                        currentMessageFontColor = Brushes.Yellow;
                                                         break;
 
                                                     case "lime":
-                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x0, 0xFF, 0x0));
+                                                        currentMessageFontColor = new SolidBrush(Color.FromArgb(0x0, 0xFF, 0x0));
                                                         break;
 
                                                     case "aqua":
-                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x0, 0xFF, 0xFF));
+                                                        currentMessageFontColor = new SolidBrush(Color.FromArgb(0x0, 0xFF, 0xFF));
                                                         break;
 
                                                     case "blue":
-                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x0, 0x0, 0xFF));
+                                                        currentMessageFontColor = new SolidBrush(Color.FromArgb(0x0, 0x0, 0xFF));
                                                         break;
 
                                                     case "fuchsia":
-                                                        currentFontColor = new SolidBrush(Color.FromArgb(0xFF, 0x0, 0xFF));
+                                                        currentMessageFontColor = new SolidBrush(Color.FromArgb(0xFF, 0x0, 0xFF));
                                                         break;
 
                                                     case "maroon":
-                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x80, 0x0, 0x0));
+                                                        currentMessageFontColor = new SolidBrush(Color.FromArgb(0x80, 0x0, 0x0));
                                                         break;
 
                                                     case "olive":
-                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x80, 0x80, 0x0));
+                                                        currentMessageFontColor = new SolidBrush(Color.FromArgb(0x80, 0x80, 0x0));
                                                         break;
 
                                                     case "green":
-                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x0, 0x80, 0x0));
+                                                        currentMessageFontColor = new SolidBrush(Color.FromArgb(0x0, 0x80, 0x0));
                                                         break;
 
                                                     case "teal":
-                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x0, 0x80, 0x80));
+                                                        currentMessageFontColor = new SolidBrush(Color.FromArgb(0x0, 0x80, 0x80));
                                                         break;
 
                                                     case "navy":
-                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x0, 0x0, 0x80));
+                                                        currentMessageFontColor = new SolidBrush(Color.FromArgb(0x0, 0x0, 0x80));
                                                         break;
 
                                                     case "purple":
-                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x80, 0x0, 0x80));
+                                                        currentMessageFontColor = new SolidBrush(Color.FromArgb(0x80, 0x0, 0x80));
                                                         break;
 
                                                         // TODO Impl color code
@@ -1368,17 +1385,17 @@ namespace SRCSharpForm
                                                 // サイズ設定
                                                 if (Information.IsNumeric(Strings.Mid(tag, 6)))
                                                 {
-                                                    currentFont = currentFont.ReSize(Conversions.ToInteger(Strings.Mid(tag, 6)));
-                                                    if (currentPoint.Y + currentFont.GetHeight(g) > max_y)
+                                                    currentMessageFont = currentMessageFont.ReSize(Conversions.ToInteger(Strings.Mid(tag, 6)));
+                                                    if (currentMessagePoint.Y + currentMessageFont.GetHeight(g) > max_y)
                                                     {
-                                                        max_y = currentPoint.Y + currentFont.GetHeight(g);
+                                                        max_y = currentMessagePoint.Y + currentMessageFont.GetHeight(g);
                                                     }
                                                 }
                                             }
                                             else
                                             {
                                                 // タグではないのでそのまま書き出す
-                                                currentPoint = PrintMessage(Strings.Mid(msg, head - 1, i - head + 2), g, currentFont, currentFontColor, currentPoint);
+                                                currentMessagePoint = PrintMessage(Strings.Mid(msg, head - 1, i - head + 2), g, currentMessageFont, currentMessageFontColor, currentMessagePoint);
                                             }
 
                                             break;
@@ -1409,32 +1426,32 @@ namespace SRCSharpForm
                 if (Strings.Right(msg, 1) == "」")
                 {
                     // 最後の括弧の位置は一番大きなサイズの文字に合わせる
-                        currentPoint = PrintMessage(Strings.Mid(msg, head, Strings.Len(msg) - head), g, currentFont, currentFontColor, currentPoint);
-                        var m = Strings.Mid(msg, head);
-                        g.DrawString(m, currentFont, currentFontColor, currentPoint.X, max_y - currentFont.GetHeight(g));
-                        currentPoint = currentPoint.AddX(MessageLen(m, g, currentFont).Width);
+                    currentMessagePoint = PrintMessage(Strings.Mid(msg, head, Strings.Len(msg) - head), g, currentMessageFont, currentMessageFontColor, currentMessagePoint);
+                    var m = Strings.Mid(msg, head);
+                    g.DrawString(m, currentMessageFont, currentMessageFontColor, currentMessagePoint.X, max_y - currentMessageFont.GetHeight(g));
+                    currentMessagePoint = currentMessagePoint.AddX(MessageLen(m, g, currentMessageFont).Width);
                 }
                 else
                 {
-                    currentPoint = PrintMessage(Strings.Mid(msg, head), g, currentFont, currentFontColor, currentPoint);
+                    currentMessagePoint = PrintMessage(Strings.Mid(msg, head), g, currentMessageFont, currentMessageFontColor, currentMessagePoint);
                 }
             }
             else
             {
                 // 未出力の文字列がない場合は改行のみ
-                currentPoint = currentPoint.AddX(currentFont.GetHeight(g));
+                currentMessagePoint = currentMessagePoint.AddX(currentMessageFont.GetHeight(g));
             }
 
             // 改行後の位置は一番大きなサイズの文字に合わせる
-            if (max_y > currentPoint.Y)
+            if (max_y > currentMessagePoint.Y)
             {
-                currentPoint.Y = max_y + 1;
+                currentMessagePoint.Y = max_y + 1;
             }
             else
             {
-                currentPoint.Y = currentPoint.Y + 1;
+                currentMessagePoint.Y = currentMessagePoint.Y + 1;
             }
-            currentPoint.X = 1;
+            currentMessagePoint.X = 1;
         }
 
         private PointF PrintMessage(string msg, Graphics g, Font currentFont, Brush currentFontColor, PointF currentPoint)
@@ -1486,41 +1503,48 @@ namespace SRCSharpForm
 
         public void DisplaySysMessage(string msg, bool short_wait)
         {
-            // TODO Impl
-            MessageWait = 700;
-            string pnickname;
-            string left_margin;
-            DisplayMessagePilot("システム", "", out pnickname, out left_margin);
-
-            frmMessage.picMessage.ClearImage(defaultBgColor);
-            PrintMessage(msg, true);
-            frmMessage.picMessage.Refresh();
-            Application.DoEvents();
-
-            var lnum = msg.Length;
-            var wait_time = (int)((0.8d + 0.5d * lnum) * MessageWait);
-            if (short_wait)
+            ResetMessage();
+            try
             {
-                wait_time = wait_time / 2;
-            }
-            IsFormClicked = false;
-            var start_time = GeneralLib.timeGetTime();
-            while (start_time + wait_time > GeneralLib.timeGetTime())
-            {
-                // 左ボタンが押されたらメッセージ送り
-                if (IsFormClicked)
-                {
-                    break;
-                }
+                // TODO Impl
+                MessageWait = 700;
+                string pnickname;
+                string left_margin;
+                DisplayMessagePilot("システム", "", out pnickname, out left_margin);
 
-                // 右ボタンを押されていたら早送り
-                if (IsRButtonPressed())
-                {
-                    break;
-                }
-
-                Sleep(20);
+                PrintMessage(msg, true);
+                frmMessage.picMessage.Refresh();
                 Application.DoEvents();
+
+                var lnum = msg.Length;
+                var wait_time = (int)((0.8d + 0.5d * lnum) * MessageWait);
+                if (short_wait)
+                {
+                    wait_time = wait_time / 2;
+                }
+                IsFormClicked = false;
+                var start_time = GeneralLib.timeGetTime();
+                while (start_time + wait_time > GeneralLib.timeGetTime())
+                {
+                    // 左ボタンが押されたらメッセージ送り
+                    if (IsFormClicked)
+                    {
+                        break;
+                    }
+
+                    // 右ボタンを押されていたら早送り
+                    if (IsRButtonPressed())
+                    {
+                        break;
+                    }
+
+                    Sleep(20);
+                    Application.DoEvents();
+                }
+            }
+            finally
+            {
+                ResetMessage();
             }
         }
 
