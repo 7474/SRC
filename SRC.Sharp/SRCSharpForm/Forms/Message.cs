@@ -23,11 +23,6 @@ namespace SRCSharpForm
             picMessage.Image = null;
         }
 
-        public void SetMessage(string message)
-        {
-            labKariText.Text = message;
-        }
-
         // フォーム上をクリック
         private void frmMessage_Click(object eventSender, EventArgs eventArgs)
         {

@@ -311,8 +311,8 @@ namespace SRCSharpForm
                 frmMessage.Height = frmMessage.Height - frmMessage.ClientRectangle.Height + 84;
                 frmMessage.picFace.Top = 8;
                 frmMessage.picFace.Left = 8;
-                frmMessage.labKariText.Top = 7;
-                frmMessage.labKariText.Left = 84;
+                frmMessage.picMessage.Top = 7;
+                frmMessage.picMessage.Left = 84;
             }
             else if (u2 is null)
             {
@@ -358,8 +358,8 @@ namespace SRCSharpForm
                 frmMessage.Height = frmMessage.Height - frmMessage.ClientRectangle.Height + 118;
                 frmMessage.picFace.Top = 42;
                 frmMessage.picFace.Left = 8;
-                frmMessage.labKariText.Top = 41;
-                frmMessage.labKariText.Left = 84;
+                frmMessage.picMessage.Top = 41;
+                frmMessage.picMessage.Left = 84;
             }
             else
             {
@@ -386,8 +386,6 @@ namespace SRCSharpForm
                 frmMessage.picFace.Left = 8;
                 frmMessage.picMessage.Top = 41;
                 frmMessage.picMessage.Left = 84;
-                frmMessage.labKariText.Top = 41;
-                frmMessage.labKariText.Left = 84;
             }
         }
 
@@ -980,7 +978,9 @@ namespace SRCSharpForm
             var tmpMsg = msg;
             Expression.FormatMessage(ref tmpMsg);
 
-            frmMessage.SetMessage(tmpMsg);
+            frmMessage.picMessage.ClearImage(defaultBgColor);
+            PrintMessage(tmpMsg, false);
+            frmMessage.picMessage.Refresh();
             Application.DoEvents();
 
             // 次のメッセージ待ち
@@ -1099,11 +1099,13 @@ namespace SRCSharpForm
             }
         }
 
+        private Brush defaultBgColor = Brushes.White;
         private Font defaultFont = new Font("ＭＳ Ｐ明朝", 12, FontStyle.Regular, GraphicsUnit.Point);
         private Brush defaultFontColor = Brushes.Black;
         public void PrintMessage(string msg, bool is_sys_msg)
         {
-            using var g = frmMessage.picMessage.NewImageIfNull().CreateGraphics();
+            // XXX 改行を処理できてない
+            using var g = Graphics.FromImage(frmMessage.picMessage.NewImageIfNull().Image);
             var currentFont = defaultFont;
             var currentFontColor = defaultFontColor;
             var currentPoint = new PointF(1, 1);
@@ -1130,9 +1132,7 @@ namespace SRCSharpForm
                                 {
                                     // エスケープシーケンス開始
                                     // それまでの文字列を出力
-                                    var m = Strings.Mid(msg, head, i - head);
-                                    g.DrawString(m, currentFont, currentFontColor, currentPoint);
-                                    currentPoint = currentPoint.AddX(MessageLen(m, g, currentFont).Width);
+                                    currentPoint = PrintMessage(Strings.Mid(msg, head, i - head), g, currentFont, currentFontColor, currentPoint);
                                     head = (i + 1);
                                     goto NextChar;
                                 }
@@ -1147,9 +1147,7 @@ namespace SRCSharpForm
                                 {
                                     // エスケープシーケンス終了
                                     // エスケープシーケンスを出力
-                                    var m = Strings.Mid(msg, head, i - head);
-                                    g.DrawString(m, currentFont, currentFontColor, currentPoint);
-                                    currentPoint = currentPoint.AddX(MessageLen(m, g, currentFont).Width);
+                                    currentPoint = PrintMessage(Strings.Mid(msg, head, i - head), g, currentFont, currentFontColor, currentPoint);
                                     head = (i + 1);
                                     goto NextChar;
                                 }
@@ -1169,9 +1167,7 @@ namespace SRCSharpForm
                                 // タグ開始
                                 in_tag = true;
                                 // それまでの文字列を出力
-                                var m = Strings.Mid(msg, head, i - head);
-                                g.DrawString(m, currentFont, currentFontColor, currentPoint);
-                                currentPoint = currentPoint.AddX(MessageLen(m, g, currentFont).Width);
+                                currentPoint = PrintMessage(Strings.Mid(msg, head, i - head), g, currentFont, currentFontColor, currentPoint);
                                 head = (i + 1);
                                 goto NextChar;
                             }
@@ -1262,15 +1258,13 @@ namespace SRCSharpForm
 
                                     case "lt":
                                         {
-                                            g.DrawString("<", currentFont, currentFontColor, currentPoint);
-                                            currentPoint = currentPoint.AddX(MessageLen("<", g, currentFont).Width);
+                                            currentPoint = PrintMessage("<", g, currentFont, currentFontColor, currentPoint);
                                             break;
                                         }
 
                                     case "gt":
                                         {
-                                            g.DrawString(">", currentFont, currentFontColor, currentPoint);
-                                            currentPoint = currentPoint.AddX(MessageLen(">", g, currentFont).Width);
+                                            currentPoint = PrintMessage(">", g, currentFont, currentFontColor, currentPoint);
                                             break;
                                         }
 
@@ -1384,9 +1378,7 @@ namespace SRCSharpForm
                                             else
                                             {
                                                 // タグではないのでそのまま書き出す
-                                                var m = Strings.Mid(msg, head - 1, i - head + 2);
-                                                g.DrawString(m, currentFont, currentFontColor, currentPoint);
-                                                currentPoint = currentPoint.AddX(MessageLen(m, g, currentFont).Width);
+                                                currentPoint = PrintMessage(Strings.Mid(msg, head - 1, i - head + 2), g, currentFont, currentFontColor, currentPoint);
                                             }
 
                                             break;
@@ -1417,22 +1409,14 @@ namespace SRCSharpForm
                 if (Strings.Right(msg, 1) == "」")
                 {
                     // 最後の括弧の位置は一番大きなサイズの文字に合わせる
-                    {
-                        var m = Strings.Mid(msg, head, Strings.Len(msg) - head);
-                        g.DrawString(m, currentFont, currentFontColor, currentPoint);
-                        currentPoint = currentPoint.AddX(MessageLen(m, g, currentFont).Width);
-                    }
-                    {
+                        currentPoint = PrintMessage(Strings.Mid(msg, head, Strings.Len(msg) - head), g, currentFont, currentFontColor, currentPoint);
                         var m = Strings.Mid(msg, head);
                         g.DrawString(m, currentFont, currentFontColor, currentPoint.X, max_y - currentFont.GetHeight(g));
                         currentPoint = currentPoint.AddX(MessageLen(m, g, currentFont).Width);
-                    }
                 }
                 else
                 {
-                    var m = Strings.Mid(msg, head);
-                    g.DrawString(m, currentFont, currentFontColor, currentPoint);
-                    currentPoint = currentPoint.AddX(MessageLen(m, g, currentFont).Width);
+                    currentPoint = PrintMessage(Strings.Mid(msg, head), g, currentFont, currentFontColor, currentPoint);
                 }
             }
             else
@@ -1451,6 +1435,12 @@ namespace SRCSharpForm
                 currentPoint.Y = currentPoint.Y + 1;
             }
             currentPoint.X = 1;
+        }
+
+        private PointF PrintMessage(string msg, Graphics g, Font currentFont, Brush currentFontColor, PointF currentPoint)
+        {
+            g.DrawString(msg, currentFont, currentFontColor, currentPoint);
+            return currentPoint.AddX(MessageLen(msg, g, currentFont).Width);
         }
 
         // メッセージ幅を計算(タグを無視して)
@@ -1502,7 +1492,9 @@ namespace SRCSharpForm
             string left_margin;
             DisplayMessagePilot("システム", "", out pnickname, out left_margin);
 
-            frmMessage.SetMessage(msg);
+            frmMessage.picMessage.ClearImage(defaultBgColor);
+            PrintMessage(msg, true);
+            frmMessage.picMessage.Refresh();
             Application.DoEvents();
 
             var lnum = msg.Length;

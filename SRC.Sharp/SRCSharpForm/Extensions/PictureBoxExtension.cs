@@ -14,6 +14,14 @@ namespace SRCSharpForm.Extensions
             return pic;
         }
 
+        public static PictureBox ClearImage(this PictureBox pic, Brush brush)
+        {
+            NewImageIfNull(pic);
+            using var g = Graphics.FromImage(pic.Image);
+            g.FillRectangle(brush, g.VisibleClipBounds);
+            return pic;
+        }
+
         public static void DrawBar(this PictureBox pic, float ratio, Brush back, Brush fore)
         {
             NewImageIfNull(pic);
