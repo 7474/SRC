@@ -1099,9 +1099,358 @@ namespace SRCSharpForm
             }
         }
 
+        private Font defaultFont = new Font("ＭＳ Ｐ明朝", 12, FontStyle.Regular, GraphicsUnit.Point);
+        private Brush defaultFontColor = Brushes.Black;
         public void PrintMessage(string msg, bool is_sys_msg)
         {
-            throw new NotImplementedException();
+            using var g = frmMessage.picMessage.NewImageIfNull().CreateGraphics();
+            var currentFont = defaultFont;
+            var currentFontColor = defaultFontColor;
+            var currentPoint = new PointF(1, 1);
+            var max_y = 1f;
+
+            string cname;
+            var in_tag = false;
+            var escape_depth = 0;
+            var head = 1;
+            var loopTo = Strings.Len(msg);
+            for (var i = 1; i <= loopTo; i++)
+            {
+                var ch = Strings.Mid(msg, i, 1);
+
+                // システムメッセージの時のみエスケープシーケンスの処理を行う
+                if (is_sys_msg)
+                {
+                    switch (ch ?? "")
+                    {
+                        case "[":
+                            {
+                                escape_depth = (escape_depth + 1);
+                                if (escape_depth == 1)
+                                {
+                                    // エスケープシーケンス開始
+                                    // それまでの文字列を出力
+                                    var m = Strings.Mid(msg, head, i - head);
+                                    g.DrawString(m, currentFont, currentFontColor, currentPoint);
+                                    currentPoint = currentPoint.AddX(MessageLen(m, g, currentFont).Width);
+                                    head = (i + 1);
+                                    goto NextChar;
+                                }
+
+                                break;
+                            }
+
+                        case "]":
+                            {
+                                escape_depth = (escape_depth - 1);
+                                if (escape_depth == 0)
+                                {
+                                    // エスケープシーケンス終了
+                                    // エスケープシーケンスを出力
+                                    var m = Strings.Mid(msg, head, i - head);
+                                    g.DrawString(m, currentFont, currentFontColor, currentPoint);
+                                    currentPoint = currentPoint.AddX(MessageLen(m, g, currentFont).Width);
+                                    head = (i + 1);
+                                    goto NextChar;
+                                }
+
+                                break;
+                            }
+                    }
+                }
+
+                // タグの処理
+                switch (ch ?? "")
+                {
+                    case "<":
+                        {
+                            if (!in_tag & escape_depth == 0)
+                            {
+                                // タグ開始
+                                in_tag = true;
+                                // それまでの文字列を出力
+                                var m = Strings.Mid(msg, head, i - head);
+                                g.DrawString(m, currentFont, currentFontColor, currentPoint);
+                                currentPoint = currentPoint.AddX(MessageLen(m, g, currentFont).Width);
+                                head = (i + 1);
+                                goto NextChar;
+                            }
+
+                            break;
+                        }
+
+                    case ">":
+                        {
+                            if (in_tag)
+                            {
+                                // タグ終了
+                                in_tag = false;
+
+                                // タグの切り出し
+                                var tag = Strings.LCase(Strings.Mid(msg, head, i - head));
+
+                                // タグに合わせて各種処理を行う
+                                switch (tag ?? "")
+                                {
+                                    case "b":
+                                        {
+                                            currentFont = currentFont.Bold();
+                                            break;
+                                        }
+
+                                    case "/b":
+                                        {
+                                            currentFont = currentFont.UnBold();
+                                            break;
+                                        }
+
+                                    case "i":
+                                        {
+                                            currentFont = currentFont.Italic();
+                                            break;
+                                        }
+
+                                    case "/i":
+                                        {
+                                            currentFont = currentFont.UnItalic();
+                                            break;
+                                        }
+
+                                    case "big":
+                                        {
+                                            currentFont = currentFont.ReSize(currentFont.SizeInPoints + 2f);
+                                            if (currentPoint.Y + currentFont.GetHeight(g) > max_y)
+                                            {
+                                                max_y = currentPoint.Y + currentFont.GetHeight(g);
+                                            }
+                                            break;
+                                        }
+
+                                    case "/big":
+                                        {
+                                            currentFont = currentFont.ReSize(currentFont.SizeInPoints - 2f);
+                                            break;
+                                        }
+
+                                    case "small":
+                                        {
+                                            currentFont = currentFont.ReSize(currentFont.SizeInPoints - 2f);
+                                            if (currentPoint.Y + currentFont.GetHeight(g) > max_y)
+                                            {
+                                                max_y = currentPoint.Y + currentFont.GetHeight(g);
+                                            }
+                                            break;
+                                        }
+
+                                    case "/small":
+                                        {
+                                            currentFont = currentFont.ReSize(currentFont.SizeInPoints + 2f);
+                                            break;
+                                        }
+
+                                    case "/color":
+                                        {
+                                            currentFontColor = defaultFontColor;
+                                            break;
+                                        }
+
+                                    case "/size":
+                                        {
+                                            currentFont = currentFont.ReSize(defaultFont.SizeInPoints);
+                                            break;
+                                        }
+
+                                    case "lt":
+                                        {
+                                            g.DrawString("<", currentFont, currentFontColor, currentPoint);
+                                            currentPoint = currentPoint.AddX(MessageLen("<", g, currentFont).Width);
+                                            break;
+                                        }
+
+                                    case "gt":
+                                        {
+                                            g.DrawString(">", currentFont, currentFontColor, currentPoint);
+                                            currentPoint = currentPoint.AddX(MessageLen(">", g, currentFont).Width);
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            if (Strings.InStr(tag, "color=") == 1)
+                                            {
+                                                // 色設定
+                                                cname = Expression.GetValueAsString(Strings.Mid(tag, 7));
+                                                switch (cname ?? "")
+                                                {
+                                                    case "black":
+                                                        currentFontColor = Brushes.Black;
+                                                        break;
+
+                                                    case "gray":
+                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x80, 0x80, 0x80));
+                                                        break;
+
+                                                    case "silver":
+                                                        currentFontColor = new SolidBrush(Color.FromArgb(0xC0, 0xC0, 0xC0));
+                                                        break;
+
+                                                    case "white":
+                                                        currentFontColor = Brushes.White;
+                                                        break;
+
+                                                    case "red":
+                                                        currentFontColor = Brushes.Red;
+                                                        break;
+
+                                                    case "yellow":
+                                                        currentFontColor = Brushes.Yellow;
+                                                        break;
+
+                                                    case "lime":
+                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x0, 0xFF, 0x0));
+                                                        break;
+
+                                                    case "aqua":
+                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x0, 0xFF, 0xFF));
+                                                        break;
+
+                                                    case "blue":
+                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x0, 0x0, 0xFF));
+                                                        break;
+
+                                                    case "fuchsia":
+                                                        currentFontColor = new SolidBrush(Color.FromArgb(0xFF, 0x0, 0xFF));
+                                                        break;
+
+                                                    case "maroon":
+                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x80, 0x0, 0x0));
+                                                        break;
+
+                                                    case "olive":
+                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x80, 0x80, 0x0));
+                                                        break;
+
+                                                    case "green":
+                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x0, 0x80, 0x0));
+                                                        break;
+
+                                                    case "teal":
+                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x0, 0x80, 0x80));
+                                                        break;
+
+                                                    case "navy":
+                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x0, 0x0, 0x80));
+                                                        break;
+
+                                                    case "purple":
+                                                        currentFontColor = new SolidBrush(Color.FromArgb(0x80, 0x0, 0x80));
+                                                        break;
+
+                                                        // TODO Impl color code
+                                                        //default:
+                                                        //    {
+                                                        //        if (Strings.Asc(cname) == 35) // #
+                                                        //        {
+                                                        //            buf = new string(Conversions.ToChar(Constants.vbNullChar), 8);
+                                                        //            StringType.MidStmtStr(ref buf, 1, 2, "&H");
+                                                        //            var midTmp = Strings.Mid(cname, 6, 2);
+                                                        //            StringType.MidStmtStr(ref buf, 3, 2, midTmp);
+                                                        //            var midTmp1 = Strings.Mid(cname, 4, 2);
+                                                        //            StringType.MidStmtStr(ref buf, 5, 2, midTmp1);
+                                                        //            var midTmp2 = Strings.Mid(cname, 2, 2);
+                                                        //            StringType.MidStmtStr(ref buf, 7, 2, midTmp2);
+                                                        //            if (Information.IsNumeric(buf))
+                                                        //            {
+                                                        //                p.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(buf));
+                                                        //            }
+                                                        //        }
+
+                                                        //        break;
+                                                        //    }
+                                                }
+                                            }
+                                            else if (Strings.InStr(tag, "size=") == 1)
+                                            {
+                                                // サイズ設定
+                                                if (Information.IsNumeric(Strings.Mid(tag, 6)))
+                                                {
+                                                    currentFont = currentFont.ReSize(Conversions.ToInteger(Strings.Mid(tag, 6)));
+                                                    if (currentPoint.Y + currentFont.GetHeight(g) > max_y)
+                                                    {
+                                                        max_y = currentPoint.Y + currentFont.GetHeight(g);
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                // タグではないのでそのまま書き出す
+                                                var m = Strings.Mid(msg, head - 1, i - head + 2);
+                                                g.DrawString(m, currentFont, currentFontColor, currentPoint);
+                                                currentPoint = currentPoint.AddX(MessageLen(m, g, currentFont).Width);
+                                            }
+
+                                            break;
+                                        }
+                                }
+
+                                head = (i + 1);
+                                goto NextChar;
+                            }
+
+                            break;
+                        }
+                }
+
+            NextChar:
+                ;
+            }
+
+            // 終了していないタグ、もしくはエスケープシーケンスはただの文字列と見なす
+            if (in_tag | escape_depth > 0)
+            {
+                head = (head - 1);
+            }
+
+            // 未出力の文字列を出力する
+            if (head <= Strings.Len(msg))
+            {
+                if (Strings.Right(msg, 1) == "」")
+                {
+                    // 最後の括弧の位置は一番大きなサイズの文字に合わせる
+                    {
+                        var m = Strings.Mid(msg, head, Strings.Len(msg) - head);
+                        g.DrawString(m, currentFont, currentFontColor, currentPoint);
+                        currentPoint = currentPoint.AddX(MessageLen(m, g, currentFont).Width);
+                    }
+                    {
+                        var m = Strings.Mid(msg, head);
+                        g.DrawString(m, currentFont, currentFontColor, currentPoint.X, max_y - currentFont.GetHeight(g));
+                        currentPoint = currentPoint.AddX(MessageLen(m, g, currentFont).Width);
+                    }
+                }
+                else
+                {
+                    var m = Strings.Mid(msg, head);
+                    g.DrawString(m, currentFont, currentFontColor, currentPoint);
+                    currentPoint = currentPoint.AddX(MessageLen(m, g, currentFont).Width);
+                }
+            }
+            else
+            {
+                // 未出力の文字列がない場合は改行のみ
+                currentPoint = currentPoint.AddX(currentFont.GetHeight(g));
+            }
+
+            // 改行後の位置は一番大きなサイズの文字に合わせる
+            if (max_y > currentPoint.Y)
+            {
+                currentPoint.Y = max_y + 1;
+            }
+            else
+            {
+                currentPoint.Y = currentPoint.Y + 1;
+            }
+            currentPoint.X = 1;
         }
 
         // メッセージ幅を計算(タグを無視して)

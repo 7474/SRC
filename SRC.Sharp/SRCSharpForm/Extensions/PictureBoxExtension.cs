@@ -5,12 +5,13 @@ namespace SRCSharpForm.Extensions
 {
     public static class PictureBoxExtension
     {
-        public static void NewImageIfNull(this PictureBox pic)
+        public static PictureBox NewImageIfNull(this PictureBox pic)
         {
             if (pic.Image == null)
             {
                 pic.Image = new Bitmap(pic.ClientSize.Width, pic.ClientSize.Height);
             }
+            return pic;
         }
 
         public static void DrawBar(this PictureBox pic, float ratio, Brush back, Brush fore)
