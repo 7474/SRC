@@ -1104,9 +1104,39 @@ namespace SRCSharpForm
             throw new NotImplementedException();
         }
 
-        public int MessageLen(string msg)
+        // メッセージ幅を計算(タグを無視して)
+        private SizeF MessageLen(string msg, Graphics g, Font font)
         {
-            throw new NotImplementedException();
+            // タグが存在する？
+            var ret = Strings.InStr(msg, "<");
+            if (ret == 0)
+            {
+                return g.MeasureString(msg, font);
+            }
+
+            var buf = "";
+            // タグを除いたメッセージを作成
+            while (ret > 0)
+            {
+                buf = buf + Strings.Left(msg, ret - 1);
+                msg = Strings.Mid(msg, ret + 1);
+                ret = Strings.InStr(msg, ">");
+                if (ret > 0)
+                {
+                    msg = Strings.Mid(msg, ret + 1);
+                }
+                else
+                {
+                    msg = "";
+                }
+
+                ret = Strings.InStr(msg, "<");
+            }
+
+            buf = buf + msg;
+
+            // タグ抜きメッセージのピクセル幅を計算
+            return g.MeasureString(buf, font);
         }
 
         public void DisplayBattleMessage(string pname, string msg, string msg_mode)

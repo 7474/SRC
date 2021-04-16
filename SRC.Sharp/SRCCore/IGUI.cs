@@ -136,8 +136,6 @@ namespace SRCCore
         void DisplayMessage(string pname, string msg, string msg_mode = "");
         // メッセージウィンドウに文字列を書き込む
         void PrintMessage(string msg, bool is_sys_msg = false);
-        // メッセージ幅を計算(タグを無視して)
-        int MessageLen(string msg);
         // メッセージウィンドウに戦闘メッセージを表示
         void DisplayBattleMessage(string pname, string msg, string msg_mode = "");
         // システムによるメッセージを表示
