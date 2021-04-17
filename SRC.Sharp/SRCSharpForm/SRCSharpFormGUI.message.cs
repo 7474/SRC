@@ -2576,27 +2576,139 @@ namespace SRCSharpForm
             }
         }
 
-        public void DisplaySysMessage(string msg, bool int_wait)
+        public void DisplaySysMessage(string msg, bool short_wait)
         {
             ResetMessage();
             try
             {
-                // TODO Impl
-                MessageWait = 700;
-                string pnickname;
-                string left_margin;
-                DisplayMessagePilot("システム", "", out pnickname, out left_margin);
+                // メッセージウィンドウが閉じられていれば表示しない
+                // XXX 元はWindowState見てたけれどどうかな
+                if (!MessageFormVisible)
+                {
+                    return;
+                }
 
-                PrintMessage(msg, true);
-                frmMessage.picMessage.Refresh();
-                Application.DoEvents();
+                // ウィンドウのキャプションを設定
+                frmMessage.SetMessageModeCaption(false);
 
-                var lnum = msg.Length;
-                var wait_time = ((0.8d + 0.5d * lnum) * MessageWait);
-                if (int_wait)
+                // メッセージ内の式を置換
+                Expression.FormatMessage(ref msg);
+
+                // メッセージを表示
+                var in_tag = false;
+                var lnum = 0;
+                var line_head = 1;
+                var loopTo = Strings.Len(msg);
+                for (var i = 1; i <= loopTo; i++)
+                {
+                    var ch = Strings.Mid(msg, i, 1);
+
+                    // 「;」の場合は必ず改行
+                    if (ch == ";")
+                    {
+                        if (line_head != i)
+                        {
+                            var buf = Strings.Mid(msg, line_head, i - line_head);
+                            PrintMessage(buf, true);
+                            lnum = (lnum + 1);
+                        }
+
+                        line_head = (i + 1);
+                        goto NextLoop;
+                    }
+
+                    // タグ内では改行しない
+                    if (ch == "<")
+                    {
+                        in_tag = true;
+                        goto NextLoop;
+                    }
+                    else if (ch == ">")
+                    {
+                        in_tag = false;
+                    }
+                    else if (in_tag)
+                    {
+                        goto NextLoop;
+                    }
+
+                    // 禁則処理
+                    if (ch == "。" || ch == "、")
+                    {
+                        goto NextLoop;
+                    }
+
+                    if (i < Strings.Len(msg))
+                    {
+                        if (Strings.Mid(msg, i + 1, 1) == "。" || Strings.Mid(msg, i + 1, 1) == "、")
+                        {
+                            goto NextLoop;
+                        }
+                    }
+
+                    if (MessageLen(Strings.Mid(msg, line_head)).Width < 0.95d * messageArea.Width)
+                    {
+                        // 全体が一行に収まる場合
+                        goto NextLoop;
+                    }
+
+                    if (GeneralLib.IsSpace(ch) && MessageLen(Strings.Mid(msg, line_head, i - line_head)).Width > 0.5d * messageArea.Width)
+                    {
+                        var buf = Strings.Mid(msg, line_head, i - line_head);
+                        PrintMessage(buf, true);
+                        lnum = (lnum + 1);
+                        line_head = (i + 1);
+                    }
+                    else if (MessageLen(Strings.Mid(msg, line_head, i - line_head + 1)).Width > 0.95d * messageArea.Width)
+                    {
+                        var buf = Strings.Mid(msg, line_head, i - line_head + 1);
+                        PrintMessage(buf, true);
+                        lnum = (lnum + 1);
+                        line_head = (i + 1);
+                    }
+                    else if (ch == "[")
+                    {
+                        // []で囲まれた文字列内では改行しない
+                        var loopTo1 = Strings.Len(msg);
+                        var j = 1;
+                        for (j = i; j <= loopTo1; j++)
+                        {
+                            if (Strings.Mid(msg, j, 1) == "]")
+                            {
+                                break;
+                            }
+                        }
+
+                        if (MessageLen(Strings.Mid(msg, line_head, j - line_head)).Width > 0.95d * messageArea.Width)
+                        {
+                            var buf = Strings.Mid(msg, line_head, i - line_head);
+                            PrintMessage(buf, true);
+                            lnum = (lnum + 1);
+                            line_head = i;
+                        }
+                    }
+
+                NextLoop:
+                    ;
+                }
+                {
+                    var buf = Strings.Mid(msg, line_head);
+                    PrintMessage(buf, true);
+                    lnum = (lnum + 1);
+                }
+                // フォント設定を元に戻す
+                ResetFont();
+
+                // ウェイトを計算
+                var wait_time = (int)((0.8d + 0.5d * lnum) * MessageWait);
+                if (short_wait)
                 {
                     wait_time = wait_time / 2;
                 }
+
+                Application.DoEvents();
+
+                // 待ち時間が切れるまで待機
                 IsFormClicked = false;
                 var start_time = GeneralLib.timeGetTime();
                 while (start_time + wait_time > GeneralLib.timeGetTime())

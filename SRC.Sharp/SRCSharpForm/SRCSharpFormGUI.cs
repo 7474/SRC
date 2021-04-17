@@ -111,6 +111,9 @@ namespace SRCSharpForm
         public SRCSharpFormGUI(SRC src)
         {
             SRC = src;
+
+            // TODO Impl 初期設定
+            MessageWait = 700;
         }
 
         public void LoadMainFormAndRegisterFlash()
