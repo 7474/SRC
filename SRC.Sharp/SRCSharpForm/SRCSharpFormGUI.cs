@@ -1776,27 +1776,21 @@ namespace SRCSharpForm
                                                         currentMessageFontColor = new SolidBrush(Color.FromArgb(0x80, 0x0, 0x80));
                                                         break;
 
-                                                        // TODO Impl color code
-                                                        //default:
-                                                        //    {
-                                                        //        if (Strings.Asc(cname) == 35) // #
-                                                        //        {
-                                                        //            buf = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-                                                        //            StringType.MidStmtStr(buf, 1, 2, "&H");
-                                                        //            var midTmp = Strings.Mid(cname, 6, 2);
-                                                        //            StringType.MidStmtStr(buf, 3, 2, midTmp);
-                                                        //            var midTmp1 = Strings.Mid(cname, 4, 2);
-                                                        //            StringType.MidStmtStr(buf, 5, 2, midTmp1);
-                                                        //            var midTmp2 = Strings.Mid(cname, 2, 2);
-                                                        //            StringType.MidStmtStr(buf, 7, 2, midTmp2);
-                                                        //            if (Information.IsNumeric(buf))
-                                                        //            {
-                                                        //                p.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(buf));
-                                                        //            }
-                                                        //        }
-
-                                                        //        break;
-                                                        //    }
+                                                    default:
+                                                        {
+                                                            if (Strings.Asc(cname) == 35 && cname.Length == 7) // #
+                                                            {
+                                                                try
+                                                                {
+                                                                    currentMessageFontColor = new SolidBrush(ColorTranslator.FromHtml(cname));
+                                                                }
+                                                                catch (Exception)
+                                                                {
+                                                                    throw new Exception($"色の指定が不正です。[{cname}]");
+                                                                }
+                                                            }
+                                                            break;
+                                                        }
                                                 }
                                             }
                                             else if (Strings.InStr(tag, "size=") == 1)
