@@ -1325,7 +1325,7 @@ namespace SRCSharpForm
         {
             messageArea = frmMessage.picMessage.Size;
             frmMessage.picMessage.ClearImage(defaultBgColor);
-            currentMessagePoint = new PointF(1, 1);
+            currentMessagePoint = new PointF(0, 0);
         }
 
         private void ResetMessage()
@@ -1336,7 +1336,7 @@ namespace SRCSharpForm
 
         private void CRMessage()
         {
-            currentMessagePoint = new PointF(1, currentMessagePoint.Y);
+            currentMessagePoint = new PointF(0, currentMessagePoint.Y);
         }
 
         private void RefreshMessage()
