@@ -1202,10 +1202,9 @@ namespace SRCSharpForm
                 }
 
                 // 次回の書き込みのため、X座標位置を設定し直す
-                // XXX 改行って高さどうなん？
                 currentDrawStringPoint = new PointF(
                     X != Constants.DEFAULT_LEVEL ? X : prev_cx,
-                    without_cr ? ty : ty + msgSize.Height);
+                    without_cr ? ty : ty + currentDrawFont.GetHeight(g));
 
                 //// フォントのスムージングに関する設定を元に戻す
                 //if (font_smoothing == 0)
