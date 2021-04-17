@@ -158,30 +158,11 @@ namespace SRCCore.Lib
             return larray.Length;
         }
 
-        //        // 文字列 ch が空白かどうか調べる
-        //        public static bool IsSpace(string ch)
-        //        {
-        //            bool IsSpaceRet = default;
-        //            if (Strings.Len(ch) == 0)
-        //            {
-        //                IsSpaceRet = true;
-        //                return IsSpaceRet;
-        //            }
-
-        //            switch (Strings.Asc(ch))
-        //            {
-        //                case 9:
-        //                case 13:
-        //                case 32:
-        //                case 160:
-        //                    {
-        //                        IsSpaceRet = true;
-        //                        break;
-        //                    }
-        //            }
-
-        //            return IsSpaceRet;
-        //        }
+        // 文字列 ch が空白かどうか調べる
+        public static bool IsSpace(string ch)
+        {
+            return string.IsNullOrWhiteSpace(ch);
+        }
 
         //        // リスト list に要素 str を追加
         //        // UPGRADE_NOTE: str は str_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。

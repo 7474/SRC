@@ -1089,9 +1089,9 @@ namespace SRCSharpForm
         }
 
         // ＭＳ Ｐ明朝、16pt、Bold、白色
-        private Font currentFont = new Font("ＭＳ Ｐ明朝", 16, FontStyle.Bold, GraphicsUnit.Point);
-        private Brush currentFontColor = Brushes.White;
-        private PointF currentStringPoint = new PointF();
+        private Font currentDrawFont = new Font("ＭＳ Ｐ明朝", 16, FontStyle.Bold, GraphicsUnit.Point);
+        private Brush currentDrawFontColor = Brushes.White;
+        private PointF currentDrawStringPoint = new PointF();
 
         public void DrawString(string msg, int X, int Y, bool without_cr = false)
         {
@@ -1153,10 +1153,10 @@ namespace SRCSharpForm
                 //    SetSystemParametersInfo(SPI_SETFONTSMOOTHING, 1, 0, 0);
                 //}
                 // 現在のX位置を記録しておく
-                var prev_cx = currentStringPoint.X;
-                float tx = currentStringPoint.X;
-                float ty = currentStringPoint.Y;
-                var msgSize = g.MeasureString(msg, currentFont);
+                var prev_cx = currentDrawStringPoint.X;
+                float tx = currentDrawStringPoint.X;
+                float ty = currentDrawStringPoint.Y;
+                var msgSize = g.MeasureString(msg, currentDrawFont);
                 // 書き込み先の座標を求める
                 if (HCentering)
                 {
@@ -1176,7 +1176,7 @@ namespace SRCSharpForm
                     ty = Y;
                 }
 
-                g.DrawString(msg, currentFont, currentFontColor, tx, ty);
+                g.DrawString(msg, currentDrawFont, currentDrawFontColor, tx, ty);
 
                 // 背景書き込みの場合
                 if (PermanentStringMode)
@@ -1197,15 +1197,14 @@ namespace SRCSharpForm
                     // picMain(1)にも描画
                     using (var gBack = Graphics.FromImage(MainForm.MainBufferBack))
                     {
-                        gBack.DrawString(msg, currentFont, currentFontColor, tx, ty);
+                        gBack.DrawString(msg, currentDrawFont, currentDrawFontColor, tx, ty);
                     }
                 }
 
                 // 次回の書き込みのため、X座標位置を設定し直す
-                // XXX 改行って高さどうなん？
-                currentStringPoint = new PointF(
+                currentDrawStringPoint = new PointF(
                     X != Constants.DEFAULT_LEVEL ? X : prev_cx,
-                    without_cr ? ty : ty + msgSize.Height);
+                    without_cr ? ty : ty + currentDrawFont.GetHeight(g));
 
                 //// フォントのスムージングに関する設定を元に戻す
                 //if (font_smoothing == 0)

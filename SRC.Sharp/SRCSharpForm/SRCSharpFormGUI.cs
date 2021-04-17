@@ -6,11 +6,11 @@ using SRCCore.Units;
 using SRCCore.VB;
 using SRCSharpForm.Extensions;
 using SRCSharpForm.Forms;
+using SRCSharpForm.Lib;
 using SRCSharpForm.Resoruces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -100,15 +100,20 @@ namespace SRCSharpForm
 
         private ImageBuffer imageBuffer;
 
-
         private SRCCore.SRC SRC;
+        private SRCCore.Events.Event Event => SRC.Event;
         private SRCCore.Expressions.Expression Expression => SRC.Expression;
         private SRCCore.Maps.Map Map => SRC.Map;
-        private SRCCore.Commands.Command Commands => SRC.Commands;
+        private Command Commands => SRC.Commands;
+        private Sound Sound => SRC.Sound;
+        private Effect Effect => SRC.Effect;
 
         public SRCSharpFormGUI(SRC src)
         {
             SRC = src;
+
+            // TODO Impl 初期設定
+            MessageWait = 700;
         }
 
         public void LoadMainFormAndRegisterFlash()
@@ -218,940 +223,6 @@ namespace SRCSharpForm
         private double LeftUnitHPRatio;
         private double RightUnitENRatio;
         private double LeftUnitENRatio;
-
-        public void OpenMessageForm(Unit u1, Unit u2)
-        {
-            // ユニット表示を伴う場合はキャプションから「(自動送り)」を削除
-            if (u1 is object)
-            {
-                if (frmMessage.Text == "メッセージ (自動送り)")
-                {
-                    frmMessage.Text = "メッセージ";
-                }
-            }
-
-            // メッセージウィンドウを強制的に最小化解除
-            if (frmMessage.WindowState != FormWindowState.Normal)
-            {
-                frmMessage.WindowState = FormWindowState.Normal;
-                frmMessage.Show(MainForm);
-                frmMessage.Activate();
-            }
-
-            SetMessageWindowUnit(u1, u2);
-
-            // メッセージウィンドウの位置設定
-            if (MainForm.Visible && MainForm.WindowState != FormWindowState.Minimized)
-            {
-                // メインウィンドウが表示されていればメインウィンドウの下端に合わせて表示
-                if (!frmMessage.Visible)
-                {
-                    if (MainWidth == 15)
-                    {
-                        frmMessage.Left = MainForm.Left;
-                    }
-                    else
-                    {
-                        frmMessage.Left = MainForm.Left - (MainForm.Width - frmMessage.Width) / 2;
-                    }
-
-                    if (MessageWindowIsOut)
-                    {
-                        frmMessage.Top = MainForm.Top + MainForm.Height;// - 350;
-                    }
-                    else
-                    {
-                        frmMessage.Top = MainForm.Top + MainForm.Height - frmMessage.Height;
-                    }
-                }
-            }
-            else
-            {
-                //// メインウィンドウが表示されていない場合は画面中央に表示
-                //frmMessage.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(frmMessage.Width)) / 2d);
-                //frmMessage.Top = (int)SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(frmMessage.Height)) / 2d);
-            }
-
-            // ウィンドウをクリアしておく
-            ClearMessageForm();
-
-            // ウィンドウを表示
-            if (!frmMessage.Visible)
-            {
-                frmMessage.Show(MainForm);
-            }
-
-            // 常に手前に表示する
-            frmMessage.TopMost = true;
-
-            Application.DoEvents();
-        }
-
-        private void SetMessageWindowUnit(Unit u1, Unit u2)
-        {
-            if (u1 is null)
-            {
-                // ユニット表示なし
-                frmMessage.labHP1.Visible = false;
-                frmMessage.labHP2.Visible = false;
-                frmMessage.labEN1.Visible = false;
-                frmMessage.labEN2.Visible = false;
-                frmMessage.picHP1.Visible = false;
-                frmMessage.picHP2.Visible = false;
-                frmMessage.picEN1.Visible = false;
-                frmMessage.picEN2.Visible = false;
-                frmMessage.txtHP1.Visible = false;
-                frmMessage.txtHP2.Visible = false;
-                frmMessage.txtEN1.Visible = false;
-                frmMessage.txtEN2.Visible = false;
-                frmMessage.picUnit1.Visible = false;
-                frmMessage.picUnit2.Visible = false;
-                // XXX 余白
-                frmMessage.Width = frmMessage.Width - frmMessage.ClientRectangle.Width + 508;
-                frmMessage.Height = frmMessage.Height - frmMessage.ClientRectangle.Height + 84;
-                frmMessage.picFace.Top = 8;
-                frmMessage.picFace.Left = 8;
-                frmMessage.labKariText.Top = 7;
-                frmMessage.labKariText.Left = 84;
-            }
-            else if (u2 is null)
-            {
-                // ユニット表示１体のみ
-                if (u1.Party == "味方" | u1.Party == "ＮＰＣ")
-                {
-                    frmMessage.labHP1.Visible = false;
-                    frmMessage.labEN1.Visible = false;
-                    frmMessage.picHP1.Visible = false;
-                    frmMessage.picEN1.Visible = false;
-                    frmMessage.txtHP1.Visible = false;
-                    frmMessage.txtEN1.Visible = false;
-                    frmMessage.picUnit1.Visible = false;
-                    frmMessage.labHP2.Visible = true;
-                    frmMessage.labEN2.Visible = true;
-                    frmMessage.picHP2.Visible = true;
-                    frmMessage.picEN2.Visible = true;
-                    frmMessage.txtHP2.Visible = true;
-                    frmMessage.txtEN2.Visible = true;
-                    frmMessage.picUnit2.Visible = true;
-                }
-                else
-                {
-                    frmMessage.labHP1.Visible = true;
-                    frmMessage.labEN1.Visible = true;
-                    frmMessage.picHP1.Visible = true;
-                    frmMessage.picEN1.Visible = true;
-                    frmMessage.txtHP1.Visible = true;
-                    frmMessage.txtEN1.Visible = true;
-                    frmMessage.picUnit1.Visible = true;
-                    frmMessage.labHP2.Visible = false;
-                    frmMessage.labEN2.Visible = false;
-                    frmMessage.picHP2.Visible = false;
-                    frmMessage.picEN2.Visible = false;
-                    frmMessage.txtHP2.Visible = false;
-                    frmMessage.txtEN2.Visible = false;
-                    frmMessage.picUnit2.Visible = false;
-                }
-
-                UpdateMessageForm(u1, null);
-                // XXX 余白
-                frmMessage.Width = frmMessage.Width - frmMessage.ClientRectangle.Width + 508;
-                frmMessage.Height = frmMessage.Height - frmMessage.ClientRectangle.Height + 118;
-                frmMessage.picFace.Top = 42;
-                frmMessage.picFace.Left = 8;
-                frmMessage.labKariText.Top = 41;
-                frmMessage.labKariText.Left = 84;
-            }
-            else
-            {
-                // ユニットを２体表示
-                frmMessage.labHP1.Visible = true;
-                frmMessage.labHP2.Visible = true;
-                frmMessage.labEN1.Visible = true;
-                frmMessage.labEN2.Visible = true;
-                frmMessage.picHP1.Visible = true;
-                frmMessage.picHP2.Visible = true;
-                frmMessage.picEN1.Visible = true;
-                frmMessage.picEN2.Visible = true;
-                frmMessage.txtHP1.Visible = true;
-                frmMessage.txtHP2.Visible = true;
-                frmMessage.txtEN1.Visible = true;
-                frmMessage.txtEN2.Visible = true;
-                frmMessage.picUnit1.Visible = true;
-                frmMessage.picUnit2.Visible = true;
-                UpdateMessageForm(u1, u2);
-                // XXX 余白
-                frmMessage.Width = frmMessage.Width - frmMessage.ClientRectangle.Width + 508;
-                frmMessage.Height = frmMessage.Height - frmMessage.ClientRectangle.Height + 118;
-                frmMessage.picFace.Top = 42;
-                frmMessage.picFace.Left = 8;
-                frmMessage.picMessage.Top = 41;
-                frmMessage.picMessage.Left = 84;
-                frmMessage.labKariText.Top = 41;
-                frmMessage.labKariText.Left = 84;
-            }
-        }
-
-        public void CloseMessageForm()
-        {
-            frmMessage.Hide();
-            Application.DoEvents();
-        }
-
-        public void ClearMessageForm()
-        {
-            DisplayedPilot = "";
-            RightUnit = null;
-            LeftUnit = null;
-
-            frmMessage.ClearForm();
-            Application.DoEvents();
-        }
-
-
-        private Brush BarBackBrush = new SolidBrush(Color.FromArgb(0xc0, 0, 0));
-        private Brush BarForeBrush = new SolidBrush(Color.FromArgb(0, 0xc0, 0));
-        public void UpdateMessageForm(Unit u1, Unit u2)
-        {
-            Unit lu, ru;
-            // ウィンドウにユニット情報が表示されていない場合はそのまま終了
-            if (frmMessage.Visible)
-            {
-                if (!frmMessage.picUnit1.Visible & !frmMessage.picUnit2.Visible)
-                {
-                    return;
-                }
-            }
-
-            // luを左に表示するユニット、ruを右に表示するユニットに設定
-            // XXX IsNothing と Null の差分とか考慮してねー。裏技的だが null, null 指定でそうすることができなくもない。
-            //if (Information.IsNothing(u2))
-            if (u2 is null)
-            {
-                // １体のユニットのみ表示
-                if (u1.Party == "味方" | u1.Party == "ＮＰＣ")
-                {
-                    lu = null;
-                    ru = u1;
-                }
-                else
-                {
-                    lu = u1;
-                    ru = null;
-                }
-            }
-            else if (u2 is null)
-            {
-                // 反射攻撃
-                // 前回表示されたユニットをそのまま使用
-                lu = LeftUnit;
-                ru = RightUnit;
-            }
-            else if ((ReferenceEquals(u2, LeftUnit) | ReferenceEquals(u1, RightUnit)) & !ReferenceEquals(LeftUnit, RightUnit))
-            {
-                lu = u2;
-                ru = u1;
-            }
-            else
-            {
-                lu = u1;
-                ru = u2;
-            }
-
-            // 現在表示されている順番に応じてユニットの入れ替え
-            if (ReferenceEquals(lu, RightUnit) && ReferenceEquals(ru, LeftUnit) && !ReferenceEquals(LeftUnit, RightUnit))
-            {
-                lu = LeftUnit;
-                ru = RightUnit;
-            }
-
-            // 表示するユニットのＧＵＩ部品を表示
-            if (lu != null)
-            {
-                if (!frmMessage.labHP1.Visible)
-                {
-                    frmMessage.labHP1.Visible = true;
-                    frmMessage.labEN1.Visible = true;
-                    frmMessage.picHP1.Visible = true;
-                    frmMessage.picEN1.Visible = true;
-                    frmMessage.txtHP1.Visible = true;
-                    frmMessage.txtEN1.Visible = true;
-                    frmMessage.picUnit1.Visible = true;
-                }
-            }
-
-            if (ru != null)
-            {
-                if (!frmMessage.labHP2.Visible)
-                {
-                    frmMessage.labHP2.Visible = true;
-                    frmMessage.labEN2.Visible = true;
-                    frmMessage.picHP2.Visible = true;
-                    frmMessage.picEN2.Visible = true;
-                    frmMessage.txtHP2.Visible = true;
-                    frmMessage.txtEN2.Visible = true;
-                    frmMessage.picUnit2.Visible = true;
-                }
-            }
-
-            string buf;
-            // 未表示のユニットを表示する
-            if (lu != null && !ReferenceEquals(lu, LeftUnit))
-            {
-                // 左のユニットが未表示なので表示する
-
-                // ユニット画像
-                frmMessage.picUnit1.NewImageIfNull();
-                using (var g = Graphics.FromImage(frmMessage.picUnit1.Image))
-                {
-                    MainForm.DrawUnit(g, Map.CellAtPoint(lu.x, lu.y), lu, new Rectangle(0, 0, frmMessage.picUnit1.Width, frmMessage.picUnit1.Height));
-                }
-                // TODO BitmapID
-                //if (lu.BitmapID > 0)
-                //{
-
-                //    if (string.IsNullOrEmpty(Map.MapDrawMode))
-                //    {
-                //        ret = BitBlt(frmMessage.picUnit1.hDC, 0, 0, 32, 32, MainForm.picUnitBitmap.hDC, 32 * ((int)lu.BitmapID % 15), 96 * ((int)lu.BitmapID / 15), SRCCOPY);
-                //    }
-                //    else
-                //    {
-                //        LoadUnitBitmap(lu, frmMessage.picUnit1, 0, 0, true, fname: "");
-                //        frmMessage.picUnit1 = argpic;
-                //    }
-                //}
-                //else
-                //{
-                //    // 非表示のユニットの場合はユニットのいる地形タイルを表示
-                //    ret = BitBlt(frmMessage.picUnit1.hDC, 0, 0, 32, 32, MainForm.picBack.hDC, 32 * ((int)lu.x - 1), 32 * ((int)lu.y - 1), SRCCOPY);
-                //}
-
-                frmMessage.picUnit1.Refresh();
-
-                // ＨＰ名称
-                if (lu.IsConditionSatisfied("データ不明"))
-                {
-                    frmMessage.labHP1.Text = Expression.Term("HP", null);
-                }
-                else
-                {
-                    frmMessage.labHP1.Text = Expression.Term("HP", lu);
-                }
-
-                // ＨＰ数値
-                if (lu.IsConditionSatisfied("データ不明"))
-                {
-                    frmMessage.txtHP1.Text = "?????/?????";
-                }
-                else
-                {
-                    if (lu.HP < 100000)
-                    {
-                        buf = GeneralLib.LeftPaddedString(SrcFormatter.Format(lu.HP), GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxHP)), 5));
-                    }
-                    else
-                    {
-                        buf = "?????";
-                    }
-
-                    if (lu.MaxHP < 100000)
-                    {
-                        buf = buf + "/" + SrcFormatter.Format(lu.MaxHP);
-                    }
-                    else
-                    {
-                        buf = buf + "/?????";
-                    }
-
-                    frmMessage.txtHP1.Text = buf;
-                }
-
-                // ＨＰゲージ
-                frmMessage.picHP1.DrawBar((float)lu.HP / lu.MaxHP, BarBackBrush, BarForeBrush);
-
-                // ＥＮ名称
-                if (lu.IsConditionSatisfied("データ不明"))
-                {
-                    frmMessage.labEN1.Text = Expression.Term("EN", null);
-                }
-                else
-                {
-                    frmMessage.labEN1.Text = Expression.Term("EN", lu);
-                }
-
-                // ＥＮ数値
-                if (lu.IsConditionSatisfied("データ不明"))
-                {
-                    frmMessage.txtEN1.Text = "???/???";
-                }
-                else
-                {
-                    if (lu.EN < 1000)
-                    {
-                        buf = GeneralLib.LeftPaddedString(SrcFormatter.Format(lu.EN), GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxEN)), 3));
-                    }
-                    else
-                    {
-                        buf = "???";
-                    }
-
-                    if (lu.MaxEN < 1000)
-                    {
-                        buf = buf + "/" + SrcFormatter.Format(lu.MaxEN);
-                    }
-                    else
-                    {
-                        buf = buf + "/???";
-                    }
-
-                    frmMessage.txtEN1.Text = buf;
-                }
-
-                // ＥＮゲージ
-                frmMessage.picEN1.DrawBar((float)lu.EN / lu.MaxEN, BarBackBrush, BarForeBrush);
-
-                // 表示内容を記録
-                LeftUnit = lu;
-                LeftUnitHPRatio = lu.HP / (double)lu.MaxHP;
-                LeftUnitENRatio = lu.EN / (double)lu.MaxEN;
-            }
-
-            if (ru != null && !ReferenceEquals(RightUnit, ru))
-            {
-                // 右のユニットが未表示なので表示する
-
-                // ユニット画像
-                frmMessage.picUnit2.NewImageIfNull();
-                using (var g = Graphics.FromImage(frmMessage.picUnit2.Image))
-                {
-                    MainForm.DrawUnit(g, Map.CellAtPoint(ru.x, ru.y), ru, new Rectangle(0, 0, frmMessage.picUnit2.Width, frmMessage.picUnit2.Height));
-                }
-                // TODO BitmapID
-                //if (ru.BitmapID > 0)
-                //{
-                //    if (string.IsNullOrEmpty(Map.MapDrawMode))
-                //    {
-                //        ret = BitBlt(frmMessage.picUnit2.hDC, 0, 0, 32, 32, MainForm.picUnitBitmap.hDC, 32 * ((int)ru.BitmapID % 15), 96 * ((int)ru.BitmapID / 15), SRCCOPY);
-                //    }
-                //    else
-                //    {
-                //        LoadUnitBitmap(ru, frmMessage.picUnit2, 0, 0, true, fname: "");
-                //        frmMessage.picUnit2 = argpic1;
-                //    }
-                //}
-                //else
-                //{
-                //    // 非表示のユニットの場合はユニットのいる地形タイルを表示
-                //    ret = BitBlt(frmMessage.picUnit2.hDC, 0, 0, 32, 32, MainForm.picBack.hDC, 32 * ((int)ru.x - 1), 32 * ((int)ru.y - 1), SRCCOPY);
-                //}
-
-                frmMessage.picUnit2.Refresh();
-
-                // ＨＰ数値
-                if (ru.IsConditionSatisfied("データ不明"))
-                {
-                    frmMessage.labHP2.Text = Expression.Term("HP", null);
-                }
-                else
-                {
-                    frmMessage.labHP2.Text = Expression.Term("HP", ru);
-                }
-
-                // ＨＰ数値
-                if (ru.IsConditionSatisfied("データ不明"))
-                {
-                    frmMessage.txtHP2.Text = "?????/?????";
-                }
-                else
-                {
-                    if (ru.HP < 100000)
-                    {
-                        buf = GeneralLib.LeftPaddedString(SrcFormatter.Format(ru.HP), GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxHP)), 5));
-                    }
-                    else
-                    {
-                        buf = "?????";
-                    }
-
-                    if (ru.MaxHP < 100000)
-                    {
-                        buf = buf + "/" + SrcFormatter.Format(ru.MaxHP);
-                    }
-                    else
-                    {
-                        buf = buf + "/?????";
-                    }
-
-                    frmMessage.txtHP2.Text = buf;
-                }
-
-                // ＨＰゲージ
-                frmMessage.picHP2.DrawBar((float)ru.HP / ru.MaxHP, BarBackBrush, BarForeBrush);
-
-                // ＥＮ名称
-                if (ru.IsConditionSatisfied("データ不明"))
-                {
-                    frmMessage.labEN2.Text = Expression.Term("EN", null);
-                }
-                else
-                {
-                    frmMessage.labEN2.Text = Expression.Term("EN", ru);
-                }
-
-                // ＥＮ数値
-                if (ru.IsConditionSatisfied("データ不明"))
-                {
-                    frmMessage.txtEN2.Text = "???/???";
-                }
-                else
-                {
-                    if (ru.EN < 1000)
-                    {
-                        buf = GeneralLib.LeftPaddedString(SrcFormatter.Format(ru.EN), GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxEN)), 3));
-                    }
-                    else
-                    {
-                        buf = "???";
-                    }
-
-                    if (ru.MaxEN < 1000)
-                    {
-                        buf = buf + "/" + SrcFormatter.Format(ru.MaxEN);
-                    }
-                    else
-                    {
-                        buf = buf + "/???";
-                    }
-
-                    frmMessage.txtEN2.Text = buf;
-                }
-
-                // ＥＮゲージ
-                frmMessage.picEN2.DrawBar((float)ru.EN / ru.MaxEN, BarBackBrush, BarForeBrush);
-
-                // 表示内容を記録
-                RightUnit = ru;
-                RightUnitHPRatio = ru.HP / (double)ru.MaxHP;
-                RightUnitENRatio = ru.EN / (double)ru.MaxEN;
-            }
-
-            // 前回の表示からのＨＰ、ＥＮの変化をアニメ表示
-
-            // 変化がない場合はアニメ表示の必要がないのでチェックしておく
-            var num = 0;
-            if (lu != null)
-            {
-                if (lu.HP / (double)lu.MaxHP != LeftUnitHPRatio || lu.EN / (double)lu.MaxEN != LeftUnitENRatio)
-                {
-                    num = 8;
-                }
-            }
-
-            if (ru != null)
-            {
-                // XXX これ常に真になるんじゃないか？　それによって常にバーアニメしてた？
-                //if (ru.HP != RightUnitHPRatio | ru.EN != RightUnitENRatio)
-                if (ru.HP / (double)ru.MaxHP != RightUnitHPRatio || ru.EN / (double)ru.MaxEN != RightUnitENRatio)
-                {
-                    num = 8;
-                }
-            }
-
-            // 右ボタンが押されている場合はアニメーション表示を短縮化
-            if (num > 0)
-            {
-                if (IsRButtonPressed())
-                {
-                    num = 2;
-                }
-            }
-
-            for (var i = 1; i <= num; i++)
-            {
-                // 左側のユニット
-                if (lu != null)
-                {
-                    // ＨＰ
-                    if (lu.HP / (double)lu.MaxHP != LeftUnitHPRatio)
-                    {
-                        var tmp = (int)((lu.MaxHP * LeftUnitHPRatio * (num - i) + lu.HP * i) / num);
-                        if (lu.IsConditionSatisfied("データ不明"))
-                        {
-                            frmMessage.txtHP1.Text = "?????/?????";
-                        }
-                        else
-                        {
-                            if (lu.HP < 100000)
-                            {
-                                buf = GeneralLib.LeftPaddedString(SrcFormatter.Format(tmp), GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxHP)), 5));
-                            }
-                            else
-                            {
-                                buf = "?????";
-                            }
-
-                            if (lu.MaxHP < 100000)
-                            {
-                                buf = buf + "/" + SrcFormatter.Format(lu.MaxHP);
-                            }
-                            else
-                            {
-                                buf = buf + "/?????";
-                            }
-
-                            frmMessage.txtHP1.Text = buf;
-                        }
-
-                        frmMessage.picHP1.DrawBar((float)tmp / lu.MaxHP, BarBackBrush, BarForeBrush);
-                    }
-
-                    // ＥＮ
-                    if (lu.EN / (double)lu.MaxEN != LeftUnitENRatio)
-                    {
-                        var tmp = (int)((lu.MaxEN * LeftUnitENRatio * (num - i) + lu.EN * i) / num);
-                        if (lu.IsConditionSatisfied("データ不明"))
-                        {
-                            frmMessage.txtEN1.Text = "???/???";
-                        }
-                        else
-                        {
-                            if (lu.EN < 1000)
-                            {
-                                buf = GeneralLib.LeftPaddedString(SrcFormatter.Format(tmp), GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(lu.MaxEN)), 3));
-                            }
-                            else
-                            {
-                                buf = "???";
-                            }
-
-                            if (lu.MaxEN < 1000)
-                            {
-                                buf = buf + "/" + SrcFormatter.Format(lu.MaxEN);
-                            }
-                            else
-                            {
-                                buf = buf + "/???";
-                            }
-
-                            frmMessage.txtEN1.Text = buf;
-                        }
-
-                        frmMessage.picEN1.DrawBar((float)tmp / lu.MaxEN, BarBackBrush, BarForeBrush);
-                    }
-                }
-
-                // 右側のユニット
-                if (ru != null)
-                {
-                    // ＨＰ
-                    if (ru.HP / (double)ru.MaxHP != RightUnitHPRatio)
-                    {
-                        var tmp = (int)((long)(ru.MaxHP * RightUnitHPRatio * (num - i) + ru.HP * i) / num);
-                        if (ru.IsConditionSatisfied("データ不明"))
-                        {
-                            frmMessage.txtHP2.Text = "?????/?????";
-                        }
-                        else
-                        {
-                            if (ru.HP < 100000)
-                            {
-                                buf = GeneralLib.LeftPaddedString(SrcFormatter.Format(tmp), GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxHP)), 5));
-                            }
-                            else
-                            {
-                                buf = "?????";
-                            }
-
-                            if (ru.MaxHP < 100000)
-                            {
-                                buf = buf + "/" + SrcFormatter.Format(ru.MaxHP);
-                            }
-                            else
-                            {
-                                buf = buf + "/?????";
-                            }
-
-                            frmMessage.txtHP2.Text = buf;
-                        }
-
-                        frmMessage.picHP2.DrawBar((float)tmp / ru.MaxHP, BarBackBrush, BarForeBrush);
-                    }
-
-                    // ＥＮ
-                    if (ru.EN / (double)ru.MaxEN != RightUnitENRatio)
-                    {
-                        var tmp = (int)((ru.MaxEN * RightUnitENRatio * (num - i) + ru.EN * i) / num);
-                        if (ru.IsConditionSatisfied("データ不明"))
-                        {
-                            frmMessage.txtEN2.Text = "???/???";
-                        }
-                        else
-                        {
-                            if (ru.EN < 1000)
-                            {
-                                buf = GeneralLib.LeftPaddedString(SrcFormatter.Format(tmp), GeneralLib.MinLng(Strings.Len(SrcFormatter.Format(ru.MaxEN)), 3));
-                            }
-                            else
-                            {
-                                buf = "???";
-                            }
-
-                            if (ru.MaxEN < 1000)
-                            {
-                                buf = buf + "/" + SrcFormatter.Format(ru.MaxEN);
-                            }
-                            else
-                            {
-                                buf = buf + "/???";
-                            }
-
-                            frmMessage.txtEN2.Text = buf;
-                        }
-
-                        frmMessage.picEN2.DrawBar((float)tmp / ru.MaxEN, BarBackBrush, BarForeBrush);
-                    }
-                }
-
-                // リフレッシュ
-                if (lu != null)
-                {
-                    if (lu.HP / (double)lu.MaxHP != LeftUnitHPRatio)
-                    {
-                        frmMessage.picHP1.Refresh();
-                        frmMessage.txtHP1.Refresh();
-                    }
-
-                    if (lu.EN / (double)lu.MaxEN != LeftUnitENRatio)
-                    {
-                        frmMessage.picEN1.Refresh();
-                        frmMessage.txtEN1.Refresh();
-                    }
-                }
-
-                if (ru != null)
-                {
-                    if (ru.HP / (double)ru.MaxHP != RightUnitHPRatio)
-                    {
-                        frmMessage.picHP2.Refresh();
-                        frmMessage.txtHP2.Refresh();
-                    }
-
-                    if (ru.EN / (double)ru.MaxEN != RightUnitENRatio)
-                    {
-                        frmMessage.picEN2.Refresh();
-                        frmMessage.txtEN2.Refresh();
-                    }
-                }
-
-                Sleep(20);
-            }
-
-            // 表示内容を記録
-            if (lu != null)
-            {
-                LeftUnitHPRatio = lu.HP / (double)lu.MaxHP;
-                LeftUnitENRatio = lu.EN / (double)lu.MaxEN;
-            }
-
-            if (ru != null)
-            {
-                RightUnitHPRatio = ru.HP / (double)ru.MaxHP;
-                RightUnitENRatio = ru.EN / (double)ru.MaxEN;
-            }
-            Application.DoEvents();
-        }
-
-        public void SaveMessageFormStatus()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void KeepMessageFormStatus()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DisplayMessage(string pname, string msg, string msg_mode)
-        {
-            // TODO 完全に仮実装
-            string pnickname;
-            string left_margin;
-            DisplayMessagePilot(pname, msg_mode, out pnickname, out left_margin);
-
-            var tmpMsg = msg;
-            Expression.FormatMessage(ref tmpMsg);
-
-            frmMessage.SetMessage(tmpMsg);
-            Application.DoEvents();
-
-            // 次のメッセージ待ち
-            IsFormClicked = false;
-            while (!IsFormClicked)
-            {
-                if (IsRButtonPressed(true))
-                {
-                    break;
-                }
-                Thread.Sleep(100);
-                Application.DoEvents();
-            }
-        }
-
-        private void DisplayMessagePilot(string pname, string msg_mode, out string pnickname, out string left_margin)
-        {
-            pnickname = "";
-            left_margin = "";
-            // キャラ表示の描き換え
-            if (pname == "システム")
-            {
-                // 「システム」
-                frmMessage.picFace.Image = null;
-                frmMessage.picFace.Refresh();
-                DisplayedPilot = "";
-                left_margin = "";
-            }
-            else if (!string.IsNullOrEmpty(pname))
-            {
-                // どのキャラ画像を使うか？
-                var fname = "-.bmp";
-                if (SRC.PList.IsDefined(pname))
-                {
-                    var p = SRC.PList.Item(pname);
-                    pnickname = p.get_Nickname(false);
-                    fname = p.get_Bitmap(false);
-                }
-                else if (SRC.PDList.IsDefined(pname))
-                {
-                    var pd = SRC.PDList.Item(pname);
-                    pnickname = pd.Nickname;
-                    fname = pd.Bitmap;
-                }
-                else if (SRC.NPDList.IsDefined(pname))
-                {
-                    var pd = SRC.NPDList.Item(pname);
-                    pnickname = pd.Nickname;
-                    fname = pd.Bitmap;
-                }
-
-                // キャラ画像の表示
-                if (fname != "-.bmp")
-                {
-                    fname = SRC.FileSystem.PathCombine("Pilot", fname);
-                    if ((DisplayedPilot ?? "") != (fname ?? "") || (DisplayMode ?? "") != (msg_mode ?? ""))
-                    {
-                        if (DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, "メッセージ " + msg_mode))
-                        {
-                            frmMessage.picFace.Refresh();
-                            DisplayedPilot = fname;
-                            DisplayMode = msg_mode;
-                        }
-                        else
-                        {
-                            frmMessage.picFace.Image = null;
-                            frmMessage.picFace.Refresh();
-                            DisplayedPilot = "";
-                            DisplayMode = "";
-
-                            // TODO
-                            //// パイロット画像が存在しないことを記録しておく
-                            //if (SRC.PList.IsDefined(pname))
-                            //{
-                            //    {
-                            //        var withBlock = SRC.PList.Item(pname);
-                            //        if ((withBlock.get_Bitmap(false) ?? "") == (withBlock.Data.Bitmap ?? ""))
-                            //        {
-                            //            withBlock.Data.IsBitmapMissing = true;
-                            //        }
-                            //    }
-                            //}
-                            //else if (SRC.PDList.IsDefined(pname))
-                            //{
-                            //    PilotData localItem6() { object argIndex1 = pname; var ret = SRC.PDList.Item(argIndex1); return ret; }
-
-                            //    localItem6().IsBitmapMissing = true;
-                            //}
-                            //else if (SRC.NPDList.IsDefined(pname))
-                            //{
-                            //    NonPilotData localItem7() { object argIndex1 = pname; var ret = SRC.NPDList.Item(argIndex1); return ret; }
-
-                            //    localItem7().IsBitmapMissing = true;
-                            //}
-                        }
-                    }
-                }
-                else
-                {
-                    frmMessage.picFace.Image = null;
-                    frmMessage.picFace.Refresh();
-                    DisplayedPilot = "";
-                    DisplayMode = "";
-                }
-
-                // TODO
-                left_margin = "  ";
-                //if (Expression.IsOptionDefined("会話パイロット名改行"))
-                //{
-                //    left_margin = " ";
-                //}
-                //else
-                //{
-                //    left_margin = "  ";
-                //}
-            }
-        }
-
-        public void PrintMessage(string msg, bool is_sys_msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int MessageLen(string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DisplayBattleMessage(string pname, string msg, string msg_mode)
-        {
-            // XXX バイパスしてあるだけ
-            DisplayMessage(pname, msg, msg_mode);
-        }
-
-        public void DisplaySysMessage(string msg, bool short_wait)
-        {
-            // TODO Impl
-            MessageWait = 700;
-            string pnickname;
-            string left_margin;
-            DisplayMessagePilot("システム", "", out pnickname, out left_margin);
-
-            frmMessage.SetMessage(msg);
-            Application.DoEvents();
-
-            var lnum = msg.Length;
-            var wait_time = (int)((0.8d + 0.5d * lnum) * MessageWait);
-            if (short_wait)
-            {
-                wait_time = wait_time / 2;
-            }
-            IsFormClicked = false;
-            var start_time = GeneralLib.timeGetTime();
-            while (start_time + wait_time > GeneralLib.timeGetTime())
-            {
-                // 左ボタンが押されたらメッセージ送り
-                if (IsFormClicked)
-                {
-                    break;
-                }
-
-                // 右ボタンを押されていたら早送り
-                if (IsRButtonPressed())
-                {
-                    break;
-                }
-
-                Sleep(20);
-                Application.DoEvents();
-            }
-        }
 
         public void ClearScrean()
         {
@@ -1403,7 +474,7 @@ namespace SRCSharpForm
             //                        break;
             //                    }
             //                }
-            //                else if (withBlock.Weapon((i - j)).ENConsumption == 0 & withBlock.Weapon(warray[i - j]).Bullet == 0)
+            //                else if (withBlock.Weapon((i - j)).ENConsumption == 0 && withBlock.Weapon(warray[i - j]).Bullet == 0)
             //                {
             //                    break;
             //                }
@@ -1419,7 +490,7 @@ namespace SRCSharpForm
 
             //list = new string[1];
             //wlist = new short[1];
-            //if (lb_mode == "移動前" | lb_mode == "移動後" | lb_mode == "一覧")
+            //if (lb_mode == "移動前" || lb_mode == "移動後" || lb_mode == "一覧")
             //{
             //    // 通常の武器選択時の表示
             //    var loopTo4 = u.CountWeapon();
@@ -1592,7 +663,7 @@ namespace SRCSharpForm
             //        ;
             //    }
 
-            //    if (lb_mode == "移動前" | lb_mode == "移動後")
+            //    if (lb_mode == "移動前" || lb_mode == "移動後")
             //    {
             //        if (u.LookForSupportAttack(null) is object)
             //        {
@@ -1630,7 +701,7 @@ namespace SRCSharpForm
             //        {
             //            Application.DoEvents();
             //            // 右ボタンでのダブルクリックの実現
-            //            if ((GetAsyncKeyState(RButtonID) & 0x8000) == 0)
+            //            if ((GetAsyncKeyState(RButtonID) && 0x8000) == 0)
             //            {
             //                is_rbutton_released = true;
             //            }
@@ -1725,7 +796,7 @@ namespace SRCSharpForm
             //                // ダメージを与えられる
             //                ListItemFlag[Information.UBound(list) + 1] = false;
             //            }
-            //            else if (!withBlock3.IsNormalWeapon(w) & withBlock3.CriticalProbability(w, Commands.SelectedUnit) > 0)
+            //            else if (!withBlock3.IsNormalWeapon(w) && withBlock3.CriticalProbability(w, Commands.SelectedUnit) > 0)
             //            {
             //                // 特殊効果を与えられる
             //                ListItemFlag[Information.UBound(list) + 1] = false;
@@ -2053,7 +1124,7 @@ namespace SRCSharpForm
         public bool IsRButtonPressed(bool ignore_message_wait = false)
         {
             // メッセージがウエイト無しならスキップ
-            if (!ignore_message_wait & MessageWait == 0)
+            if (!ignore_message_wait && MessageWait == 0)
             {
                 return true;
             }
@@ -2069,9 +1140,9 @@ namespace SRCSharpForm
             //    GetCursorPos(PT);
             //    {
             //        var withBlock = MainForm;
-            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X & PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX() & (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
+            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
             //        {
-            //            if ((GetAsyncKeyState(RButtonID) & 0x8000) != 0)
+            //            if ((GetAsyncKeyState(RButtonID) && 0x8000) != 0)
             //            {
             //                // 右ボタンでスキップ
             //                return true;
@@ -2085,9 +1156,9 @@ namespace SRCSharpForm
             //    GetCursorPos(PT);
             //    {
             //        var withBlock1 = My.MyProject.Forms.frmMessage;
-            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X & PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() & (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
+            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
             //        {
-            //            if ((GetAsyncKeyState(RButtonID) & 0x8000) != 0)
+            //            if ((GetAsyncKeyState(RButtonID) && 0x8000) != 0)
             //            {
             //                // 右ボタンでスキップ
             //                return true;

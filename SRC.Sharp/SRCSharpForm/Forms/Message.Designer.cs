@@ -75,7 +75,6 @@ namespace SRCSharpForm
             this.labEN2 = new System.Windows.Forms.Label();
             this.labEN1 = new System.Windows.Forms.Label();
             this.labHP1 = new System.Windows.Forms.Label();
-            this.labKariText = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picFace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picUnit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picUnit2)).BeginInit();
@@ -314,23 +313,12 @@ namespace SRCSharpForm
             this.labHP1.TabIndex = 1;
             this.labHP1.Text = "HP";
             // 
-            // labKariText
-            // 
-            this.labKariText.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.labKariText.Location = new System.Drawing.Point(85, 43);
-            this.labKariText.Name = "labKariText";
-            this.labKariText.Size = new System.Drawing.Size(416, 70);
-            this.labKariText.TabIndex = 16;
-            this.labKariText.Click += new System.EventHandler(this.labKariText_Click);
-            this.labKariText.DoubleClick += new System.EventHandler(this.labKariText_DoubleClick);
-            // 
             // frmMessage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.ClientSize = new System.Drawing.Size(508, 118);
-            this.Controls.Add(this.labKariText);
             this.Controls.Add(this.picFace);
             this.Controls.Add(this.picUnit1);
             this.Controls.Add(this.picUnit2);
@@ -375,8 +363,6 @@ namespace SRCSharpForm
             this.PerformLayout();
 
         }
-
-        public Label labKariText;
         /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
     }
 }
