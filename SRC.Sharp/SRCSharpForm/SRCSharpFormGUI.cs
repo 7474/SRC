@@ -6,11 +6,11 @@ using SRCCore.Units;
 using SRCCore.VB;
 using SRCSharpForm.Extensions;
 using SRCSharpForm.Forms;
+using SRCSharpForm.Lib;
 using SRCSharpForm.Resoruces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -317,7 +317,7 @@ namespace SRCSharpForm
             else if (u2 is null)
             {
                 // ユニット表示１体のみ
-                if (u1.Party == "味方" | u1.Party == "ＮＰＣ")
+                if (u1.Party == "味方" || u1.Party == "ＮＰＣ")
                 {
                     frmMessage.labHP1.Visible = false;
                     frmMessage.labEN1.Visible = false;
@@ -405,7 +405,6 @@ namespace SRCSharpForm
             Application.DoEvents();
         }
 
-
         private Brush BarBackBrush = new SolidBrush(Color.FromArgb(0xc0, 0, 0));
         private Brush BarForeBrush = new SolidBrush(Color.FromArgb(0, 0xc0, 0));
         public void UpdateMessageForm(Unit u1, Unit u2)
@@ -414,7 +413,7 @@ namespace SRCSharpForm
             // ウィンドウにユニット情報が表示されていない場合はそのまま終了
             if (frmMessage.Visible)
             {
-                if (!frmMessage.picUnit1.Visible & !frmMessage.picUnit2.Visible)
+                if (!frmMessage.picUnit1.Visible && !frmMessage.picUnit2.Visible)
                 {
                     return;
                 }
@@ -426,7 +425,7 @@ namespace SRCSharpForm
             if (u2 is null)
             {
                 // １体のユニットのみ表示
-                if (u1.Party == "味方" | u1.Party == "ＮＰＣ")
+                if (u1.Party == "味方" || u1.Party == "ＮＰＣ")
                 {
                     lu = null;
                     ru = u1;
@@ -444,7 +443,7 @@ namespace SRCSharpForm
                 lu = LeftUnit;
                 ru = RightUnit;
             }
-            else if ((ReferenceEquals(u2, LeftUnit) | ReferenceEquals(u1, RightUnit)) & !ReferenceEquals(LeftUnit, RightUnit))
+            else if ((ReferenceEquals(u2, LeftUnit) || ReferenceEquals(u1, RightUnit)) && !ReferenceEquals(LeftUnit, RightUnit))
             {
                 lu = u2;
                 ru = u1;
@@ -747,7 +746,7 @@ namespace SRCSharpForm
             if (ru != null)
             {
                 // XXX これ常に真になるんじゃないか？　それによって常にバーアニメしてた？
-                //if (ru.HP != RightUnitHPRatio | ru.EN != RightUnitENRatio)
+                //if (ru.HP != RightUnitHPRatio || ru.EN != RightUnitENRatio)
                 if (ru.HP / (double)ru.MaxHP != RightUnitHPRatio || ru.EN / (double)ru.MaxEN != RightUnitENRatio)
                 {
                     num = 8;
@@ -968,8 +967,9 @@ namespace SRCSharpForm
             throw new NotImplementedException();
         }
 
-        public void DisplayMessage(string pname, string msg, string msg_mode)
+        public void DisplayMessage(string pname, string msg_org, string msg_mode)
         {
+            var msg = msg_org;
             ResetMessage();
             try
             {
@@ -977,24 +977,422 @@ namespace SRCSharpForm
                 string left_margin;
                 DisplayMessagePilot(pname, msg_mode, out pnickname, out left_margin);
 
-                var tmpMsg = msg;
-                Expression.FormatMessage(ref tmpMsg);
+                // メッセージ中の式置換を処理
+                Expression.FormatMessage(ref msg);
+                msg = Strings.Trim(msg);
 
-                PrintMessage(tmpMsg, false);
-                frmMessage.picMessage.Refresh();
-                Application.DoEvents();
-
-                // 次のメッセージ待ち
-                IsFormClicked = false;
-                while (!IsFormClicked)
+                // 末尾に強制改行が入っている場合は取り除く
+                while (Strings.Right(msg, 1) == ";")
                 {
-                    if (IsRButtonPressed(true))
-                    {
-                        break;
-                    }
-                    Thread.Sleep(100);
-                    Application.DoEvents();
+                    msg = Strings.Left(msg, Strings.Len(msg) - 1);
                 }
+
+                // メッセージが空の場合はキャラ表示の描き換えのみ行う
+                if (string.IsNullOrEmpty(msg))
+                {
+                    return;
+                }
+
+                var is_character_message = false;
+                switch (pname ?? "")
+                {
+                    // そのまま使用
+                    case "システム":
+                        {
+                            break;
+                        }
+
+                    case var @case when @case == "":
+                        {
+                            // 基本的にはそのまま使用するが、せりふ表示の代用の場合は
+                            // せりふ表示用の処理を行う
+                            var i = 0;
+                            if (Strings.InStr(msg, "「") > 0 && Strings.Right(msg, 1) == "」")
+                            {
+                                i = Strings.InStr(msg, "「");
+                            }
+                            else if (Strings.InStr(msg, "『") > 0 && Strings.Right(msg, 1) == "』")
+                            {
+                                i = Strings.InStr(msg, "『");
+                            }
+                            else if (Strings.InStr(msg, "(") > 0 && Strings.Right(msg, 1) == ")")
+                            {
+                                i = Strings.InStr(msg, "(");
+                            }
+                            else if (Strings.InStr(msg, "（") > 0 && Strings.Right(msg, 1) == "）")
+                            {
+                                i = Strings.InStr(msg, "（");
+                            }
+
+                            if (i > 1)
+                            {
+                                var pcheck = Strings.Trim(Strings.Left(msg, i - 1));
+                                if (i < 8 || SRC.PDList.IsDefined(pcheck) || SRC.NPDList.IsDefined(pcheck))
+                                {
+                                    is_character_message = true;
+                                    if (!GeneralLib.IsSpace(Strings.Mid(msg, i - 1, 1)))
+                                    {
+                                        // "「"の前に半角スペースを挿入
+                                        msg = Strings.Left(msg, i - 1) + " " + Strings.Mid(msg, i);
+                                    }
+                                }
+                            }
+                            break;
+                        }
+
+                    default:
+                        {
+                            is_character_message = true;
+                            if ((Strings.Left(msg, 1) == "(" || Strings.Left(msg, 1) == "（") && (Strings.Right(msg, 1) == ")" || Strings.Right(msg, 1) == "）"))
+                            {
+                                // モノローグ
+                                msg = Strings.Mid(msg, 2, Strings.Len(msg) - 2);
+                                msg = string.Join("",
+                                    pnickname,
+                                    Expression.IsOptionDefined("会話パイロット名改行") ? ";" : " ",
+                                    "（", msg, "）"
+                                );
+                            }
+                            else if (Strings.Left(msg, 1) == "『" && Strings.Right(msg, 1) == "』")
+                            {
+                                msg = Strings.Mid(msg, 2, Strings.Len(msg) - 2);
+                                msg = string.Join("",
+                                    pnickname,
+                                    Expression.IsOptionDefined("会話パイロット名改行") ? ";" : " ",
+                                    "『", msg, "』"
+                                );
+                            }
+                            else
+                            {
+                                // せりふ
+                                msg = string.Join("",
+                                    pnickname,
+                                    Expression.IsOptionDefined("会話パイロット名改行") ? ";" : " ",
+                                    "「", msg, "」"
+                                );
+                            }
+                            break;
+                        }
+                }
+
+                // 強制改行の位置を設定
+                var mesConfig = new MessageConfig();
+                if (Expression.IsOptionDefined("改行時余白短縮"))
+                {
+                    mesConfig.ConfigureShortSpace();
+                }
+
+                // メッセージを分割
+                var messageParts = msg.Split(':').ToList();
+                var messages = Enumerable.Range(1, messageParts.Count)
+                    .Select(x => string.Join("", messageParts.Take(x)))
+                    .ToList();
+
+                // XXX 使ってないよなぁ？
+                //// メッセージ長判定のため、元のメッセージを再構築
+                //msg = string.Join("", messages);
+
+                // メッセージの表示
+                {
+                    var msg_head = 1;
+                    var prev_lnum = 0;
+                    var i = -1;
+                    while (++i < messages.Count)
+                    {
+                        var buf = messages[i];
+                        var lnum = 0;
+                        var line_head = msg_head;
+                        var in_tag = false;
+
+                        ResetMessageArea();
+                        if (msg_head == 1)
+                        {
+                            ResetFont();
+                        }
+                        // メッセージの途中から表示
+                        else if (is_character_message)
+                        {
+                            PrintString("  ");
+                        }
+
+                        var counter = msg_head;
+                        var loopTo2 = Strings.Len(buf);
+                        for (var j = counter; j <= loopTo2; j++)
+                        {
+                            var ch = Strings.Mid(buf, j, 1);
+
+                            // ";"では必ず改行
+                            if (ch == ";")
+                            {
+                                if (j != line_head)
+                                {
+                                    PrintMessage(Strings.Mid(buf, line_head, j - line_head), false);
+                                    lnum = (lnum + 1);
+                                    if (is_character_message && (lnum > 1 && Expression.IsOptionDefined("会話パイロット名改行") || lnum > 0 && !Expression.IsOptionDefined("会話パイロット名改行")))
+                                    {
+                                        PrintString(left_margin);
+                                    }
+                                }
+
+                                line_head = (j + 1);
+                                goto NextLoop;
+                            }
+
+                            // タグ内では改行しない
+                            if (ch == "<")
+                            {
+                                in_tag = true;
+                                goto NextLoop;
+                            }
+                            else if (ch == ">")
+                            {
+                                in_tag = false;
+                            }
+                            else if (in_tag)
+                            {
+                                goto NextLoop;
+                            }
+
+                            // メッセージが途切れてしまう場合は必ず改行
+                            if (MessageLen(Strings.Mid(buf, line_head, j - line_head)).Width > 0.95d * messageArea.Width)
+                            {
+                                PrintMessage(Strings.Mid(buf, line_head, j - line_head + 1), false);
+                                lnum = (lnum + 1);
+                                if (is_character_message && (lnum > 1 && Expression.IsOptionDefined("会話パイロット名改行") || lnum > 0 && !Expression.IsOptionDefined("会話パイロット名改行")))
+                                {
+                                    PrintString(left_margin);
+                                }
+
+                                line_head = (j + 1);
+                                goto NextLoop;
+                            }
+
+                            // 禁則処理
+                            switch (Strings.Mid(buf, j + 1, 1) ?? "")
+                            {
+                                case "。":
+                                case "、":
+                                case "…":
+                                case "‥":
+                                case "・":
+                                case "･":
+                                case "～":
+                                case "ー":
+                                case "－":
+                                case "！":
+                                case "？":
+                                case "」":
+                                case "』":
+                                case "）":
+                                case ")":
+                                case " ":
+                                case ";":
+                                    {
+                                        goto NextLoop;
+                                    }
+                            }
+
+                            switch (Strings.Mid(buf, j + 2, 1) ?? "")
+                            {
+                                case "。":
+                                case "、":
+                                case "…":
+                                case "‥":
+                                case "・":
+                                case "･":
+                                case "～":
+                                case "ー":
+                                case "－":
+                                case "！":
+                                case "？":
+                                case "」":
+                                case "』":
+                                case "）":
+                                case ")":
+                                case " ":
+                                case ";":
+                                    {
+                                        goto NextLoop;
+                                    }
+                            }
+
+                            if (Strings.Mid(buf, j + 3, 1) == ";")
+                            {
+                                goto NextLoop;
+                            }
+
+                            // 改行の判定
+                            if (MessageLen(Strings.Mid(messages[i], line_head)).Width < 0.95d * messageArea.Width)
+                            {
+                                // 全体が一行に収まる場合
+                                goto NextLoop;
+                            }
+
+                            switch (ch ?? "")
+                            {
+                                case "。":
+                                    {
+                                        if (MessageLen(Strings.Mid(buf, line_head, j - line_head)).Width > mesConfig.BrThresholdKuten * messageArea.Width)
+                                        {
+                                            PrintMessage(Strings.Mid(buf, line_head, j - line_head + 1), false);
+                                            lnum = (lnum + 1);
+                                            if (is_character_message && (lnum > 1 && Expression.IsOptionDefined("会話パイロット名改行") || lnum > 0 && !Expression.IsOptionDefined("会話パイロット名改行")))
+                                            {
+                                                PrintString(left_margin);
+                                            }
+
+                                            line_head = (j + 1);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "、":
+                                    {
+                                        if (MessageLen(Strings.Mid(buf, line_head, j - line_head)).Width > mesConfig.BrThresholdTouten * messageArea.Width)
+                                        {
+                                            PrintMessage(Strings.Mid(buf, line_head, j - line_head + 1), false);
+                                            lnum = (lnum + 1);
+                                            if (is_character_message && (lnum > 1 && Expression.IsOptionDefined("会話パイロット名改行") || lnum > 0 && !Expression.IsOptionDefined("会話パイロット名改行")))
+                                            {
+                                                PrintString(left_margin);
+                                            }
+
+                                            line_head = (j + 1);
+                                        }
+
+                                        break;
+                                    }
+
+                                case " ":
+                                    {
+                                        ch = Strings.Mid(buf, j - 1, 1);
+                                        // スペースが文の区切りに使われているかどうか判定
+                                        if (pname != "システム" && (ch == "！" || ch == "？" || ch == "…" || ch == "‥" || ch == "・" || ch == "･" || ch == "～"))
+                                        {
+                                            // 文の区切り
+                                            if (MessageLen(Strings.Mid(buf, line_head, j - line_head)).Width > mesConfig.BrThresholdKuten * messageArea.Width)
+                                            {
+                                                PrintMessage(Strings.Mid(buf, line_head, j - line_head + 1), false);
+                                                lnum = (lnum + 1);
+                                                if (is_character_message && (lnum > 1 && Expression.IsOptionDefined("会話パイロット名改行") || lnum > 0 && !Expression.IsOptionDefined("会話パイロット名改行")))
+                                                {
+                                                    PrintString(left_margin);
+                                                }
+
+                                                line_head = (j + 1);
+                                            }
+                                        }
+                                        // 単なる空白
+                                        else if (MessageLen(Strings.Mid(buf, line_head, j - line_head)).Width > mesConfig.BrThresholdOver * messageArea.Width)
+                                        {
+                                            PrintMessage(Strings.Mid(buf, line_head, j - line_head + 1), false);
+                                            lnum = (lnum + 1);
+                                            if (is_character_message && (lnum > 1 && Expression.IsOptionDefined("会話パイロット名改行") || lnum > 0 && !Expression.IsOptionDefined("会話パイロット名改行")))
+                                            {
+                                                PrintString(left_margin);
+                                            }
+
+                                            line_head = (j + 1);
+                                        }
+
+                                        break;
+                                    }
+
+                                default:
+                                    {
+                                        if (MessageLen(Strings.Mid(buf, line_head, j - line_head)).Width > mesConfig.BrThresholdOver * messageArea.Width)
+                                        {
+                                            PrintMessage(Strings.Mid(buf, line_head, j - line_head + 1), false);
+                                            lnum = (lnum + 1);
+                                            if (is_character_message && (lnum > 1 && Expression.IsOptionDefined("会話パイロット名改行") || lnum > 0 && !Expression.IsOptionDefined("会話パイロット名改行")))
+                                            {
+                                                PrintString(left_margin);
+                                            }
+
+                                            line_head = (j + 1);
+                                        }
+
+                                        break;
+                                    }
+                            }
+
+                        NextLoop:
+                            ;
+                            if (lnum == 4)
+                            {
+                                if (j < Strings.Len(buf))
+                                {
+                                    msg_head = line_head;
+                                    i = (i - 1);
+                                    break;
+                                }
+                            }
+                        }
+                        // 残りの部分を表示
+                        if (lnum < 4)
+                        {
+                            if (Strings.Len(buf) >= line_head)
+                            {
+                                PrintMessage(Strings.Mid(buf, line_head), false);
+                            }
+                        }
+                        RefreshMessage();
+
+                        Application.DoEvents();
+                        if (MessageWait > 10000)
+                        {
+                            AutoMessageMode = false;
+                        }
+
+                        // ウィンドウのキャプションを設定
+                        frmMessage.SetMessageModeCaption(AutoMessageMode);
+
+                        // 次のメッセージ表示までの時間を設定(自動メッセージ送り用)
+                        var start_time = GeneralLib.timeGetTime();
+                        var wait_time = (lnum - prev_lnum + 2) * (MessageWait + 250);
+
+                        // 次のメッセージ待ち
+                        IsFormClicked = false;
+                        var is_automode = AutoMessageMode;
+                        while (!IsFormClicked)
+                        {
+                            if (AutoMessageMode)
+                            {
+                                if (start_time + wait_time < GeneralLib.timeGetTime())
+                                {
+                                    break;
+                                }
+                            }
+
+                            if (IsRButtonPressed(true))
+                            {
+                                break;
+                            }
+                            Thread.Sleep(100);
+                            Application.DoEvents();
+
+                            // 自動送りモードが切り替えられた場合
+                            if (is_automode != AutoMessageMode)
+                            {
+                                IsFormClicked = false;
+                                is_automode = AutoMessageMode;
+                                frmMessage.SetMessageModeCaption(AutoMessageMode);
+                            }
+                        }
+
+                        // ウェイト計算用に既に表示した行数を記録
+                        if (lnum < 4)
+                        {
+                            prev_lnum = lnum;
+                        }
+                        else
+                        {
+                            prev_lnum = 0;
+                        }
+                    }
+                }
+                // XXX 画像が見つからなかった時のエラー処理
             }
             finally
             {
@@ -1113,20 +1511,41 @@ namespace SRCSharpForm
         private Brush currentMessageFontColor;
         private PointF currentMessagePoint;
 
-        private void ResetMessage()
-        {
-            frmMessage.picMessage.ClearImage(defaultBgColor);
+        private Size messageArea;
 
+        private void ResetFont()
+        {
             currentMessageFont = defaultFont;
             currentMessageFontColor = defaultFontColor;
+        }
+
+        private void ResetMessageArea()
+        {
+            messageArea = frmMessage.picMessage.Size;
+            frmMessage.picMessage.ClearImage(defaultBgColor);
             currentMessagePoint = new PointF(1, 1);
+        }
+
+        private void ResetMessage()
+        {
+            ResetMessageArea();
+            ResetFont();
+        }
+
+        private void CRMessage()
+        {
+            currentMessagePoint = new PointF(1, currentMessagePoint.Y);
+        }
+
+        private void RefreshMessage()
+        {
+            frmMessage.picMessage.Refresh();
         }
 
         public void PrintMessage(string msg, bool is_sys_msg)
         {
-            // XXX 改行を処理できてない
             using var g = Graphics.FromImage(frmMessage.picMessage.NewImageIfNull().Image);
-            var max_y = 1f;
+            var max_y = currentMessagePoint.Y + currentMessageFont.GetHeight(g);
 
             string cname;
             var in_tag = false;
@@ -1149,7 +1568,7 @@ namespace SRCSharpForm
                                 {
                                     // エスケープシーケンス開始
                                     // それまでの文字列を出力
-                                    currentMessagePoint = PrintMessage(Strings.Mid(msg, head, i - head), g, currentMessageFont, currentMessageFontColor, currentMessagePoint);
+                                    PrintString(Strings.Mid(msg, head, i - head), g);
                                     head = (i + 1);
                                     goto NextChar;
                                 }
@@ -1164,7 +1583,7 @@ namespace SRCSharpForm
                                 {
                                     // エスケープシーケンス終了
                                     // エスケープシーケンスを出力
-                                    currentMessagePoint = PrintMessage(Strings.Mid(msg, head, i - head), g, currentMessageFont, currentMessageFontColor, currentMessagePoint);
+                                    PrintString(Strings.Mid(msg, head, i - head), g);
                                     head = (i + 1);
                                     goto NextChar;
                                 }
@@ -1179,12 +1598,12 @@ namespace SRCSharpForm
                 {
                     case "<":
                         {
-                            if (!in_tag & escape_depth == 0)
+                            if (!in_tag && escape_depth == 0)
                             {
                                 // タグ開始
                                 in_tag = true;
                                 // それまでの文字列を出力
-                                currentMessagePoint = PrintMessage(Strings.Mid(msg, head, i - head), g, currentMessageFont, currentMessageFontColor, currentMessagePoint);
+                                PrintString(Strings.Mid(msg, head, i - head), g);
                                 head = (i + 1);
                                 goto NextChar;
                             }
@@ -1275,13 +1694,13 @@ namespace SRCSharpForm
 
                                     case "lt":
                                         {
-                                            currentMessagePoint = PrintMessage("<", g, currentMessageFont, currentMessageFontColor, currentMessagePoint);
+                                            PrintString("<", g);
                                             break;
                                         }
 
                                     case "gt":
                                         {
-                                            currentMessagePoint = PrintMessage(">", g, currentMessageFont, currentMessageFontColor, currentMessagePoint);
+                                            PrintString(">", g);
                                             break;
                                         }
 
@@ -1363,13 +1782,13 @@ namespace SRCSharpForm
                                                         //        if (Strings.Asc(cname) == 35) // #
                                                         //        {
                                                         //            buf = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-                                                        //            StringType.MidStmtStr(ref buf, 1, 2, "&H");
+                                                        //            StringType.MidStmtStr(buf, 1, 2, "&H");
                                                         //            var midTmp = Strings.Mid(cname, 6, 2);
-                                                        //            StringType.MidStmtStr(ref buf, 3, 2, midTmp);
+                                                        //            StringType.MidStmtStr(buf, 3, 2, midTmp);
                                                         //            var midTmp1 = Strings.Mid(cname, 4, 2);
-                                                        //            StringType.MidStmtStr(ref buf, 5, 2, midTmp1);
+                                                        //            StringType.MidStmtStr(buf, 5, 2, midTmp1);
                                                         //            var midTmp2 = Strings.Mid(cname, 2, 2);
-                                                        //            StringType.MidStmtStr(ref buf, 7, 2, midTmp2);
+                                                        //            StringType.MidStmtStr(buf, 7, 2, midTmp2);
                                                         //            if (Information.IsNumeric(buf))
                                                         //            {
                                                         //                p.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(buf));
@@ -1395,7 +1814,7 @@ namespace SRCSharpForm
                                             else
                                             {
                                                 // タグではないのでそのまま書き出す
-                                                currentMessagePoint = PrintMessage(Strings.Mid(msg, head - 1, i - head + 2), g, currentMessageFont, currentMessageFontColor, currentMessagePoint);
+                                                PrintString(Strings.Mid(msg, head - 1, i - head + 2), g);
                                             }
 
                                             break;
@@ -1415,7 +1834,7 @@ namespace SRCSharpForm
             }
 
             // 終了していないタグ、もしくはエスケープシーケンスはただの文字列と見なす
-            if (in_tag | escape_depth > 0)
+            if (in_tag || escape_depth > 0)
             {
                 head = (head - 1);
             }
@@ -1426,20 +1845,21 @@ namespace SRCSharpForm
                 if (Strings.Right(msg, 1) == "」")
                 {
                     // 最後の括弧の位置は一番大きなサイズの文字に合わせる
-                    currentMessagePoint = PrintMessage(Strings.Mid(msg, head, Strings.Len(msg) - head), g, currentMessageFont, currentMessageFontColor, currentMessagePoint);
-                    var m = Strings.Mid(msg, head);
-                    g.DrawString(m, currentMessageFont, currentMessageFontColor, currentMessagePoint.X, max_y - currentMessageFont.GetHeight(g));
-                    currentMessagePoint = currentMessagePoint.AddX(MessageLen(m, g, currentMessageFont).Width);
+                    PrintString(Strings.Mid(msg, head, Strings.Len(msg) - head), g);
+                    currentMessagePoint = new PointF(currentMessagePoint.X, max_y - currentMessageFont.GetHeight(g));
+                    PrintString(Strings.Right(msg, 1), g);
+                    currentMessagePoint = currentMessagePoint.AddY(currentMessageFont.GetHeight(g));
                 }
                 else
                 {
-                    currentMessagePoint = PrintMessage(Strings.Mid(msg, head), g, currentMessageFont, currentMessageFontColor, currentMessagePoint);
+                    PrintString(Strings.Mid(msg, head), g);
+                    currentMessagePoint = currentMessagePoint.AddY(currentMessageFont.GetHeight(g));
                 }
             }
             else
             {
                 // 未出力の文字列がない場合は改行のみ
-                currentMessagePoint = currentMessagePoint.AddX(currentMessageFont.GetHeight(g));
+                currentMessagePoint = currentMessagePoint.AddY(currentMessageFont.GetHeight(g));
             }
 
             // 改行後の位置は一番大きなサイズの文字に合わせる
@@ -1451,13 +1871,26 @@ namespace SRCSharpForm
             {
                 currentMessagePoint.Y = currentMessagePoint.Y + 1;
             }
-            currentMessagePoint.X = 1;
+            CRMessage();
         }
 
-        private PointF PrintMessage(string msg, Graphics g, Font currentFont, Brush currentFontColor, PointF currentPoint)
+        private void PrintString(string msg)
         {
-            g.DrawString(msg, currentFont, currentFontColor, currentPoint);
-            return currentPoint.AddX(MessageLen(msg, g, currentFont).Width);
+            using var g = Graphics.FromImage(frmMessage.picMessage.NewImageIfNull().Image);
+            PrintString(msg, g);
+        }
+
+        private void PrintString(string msg, Graphics g)
+        {
+            g.DrawString(msg, currentMessageFont, currentMessageFontColor, currentMessagePoint);
+            currentMessagePoint = currentMessagePoint.AddX(MessageLen(msg, g, currentMessageFont).Width);
+        }
+
+        private SizeF MessageLen(string msg)
+        {
+            // XXX MessageLen の取り回し
+            using var g = Graphics.FromImage(frmMessage.picMessage.NewImageIfNull().Image);
+            return MessageLen(msg, g, currentMessageFont);
         }
 
         // メッセージ幅を計算(タグを無視して)
@@ -1798,7 +2231,7 @@ namespace SRCSharpForm
             //                        break;
             //                    }
             //                }
-            //                else if (withBlock.Weapon((i - j)).ENConsumption == 0 & withBlock.Weapon(warray[i - j]).Bullet == 0)
+            //                else if (withBlock.Weapon((i - j)).ENConsumption == 0 && withBlock.Weapon(warray[i - j]).Bullet == 0)
             //                {
             //                    break;
             //                }
@@ -1814,7 +2247,7 @@ namespace SRCSharpForm
 
             //list = new string[1];
             //wlist = new short[1];
-            //if (lb_mode == "移動前" | lb_mode == "移動後" | lb_mode == "一覧")
+            //if (lb_mode == "移動前" || lb_mode == "移動後" || lb_mode == "一覧")
             //{
             //    // 通常の武器選択時の表示
             //    var loopTo4 = u.CountWeapon();
@@ -1987,7 +2420,7 @@ namespace SRCSharpForm
             //        ;
             //    }
 
-            //    if (lb_mode == "移動前" | lb_mode == "移動後")
+            //    if (lb_mode == "移動前" || lb_mode == "移動後")
             //    {
             //        if (u.LookForSupportAttack(null) is object)
             //        {
@@ -2025,7 +2458,7 @@ namespace SRCSharpForm
             //        {
             //            Application.DoEvents();
             //            // 右ボタンでのダブルクリックの実現
-            //            if ((GetAsyncKeyState(RButtonID) & 0x8000) == 0)
+            //            if ((GetAsyncKeyState(RButtonID) && 0x8000) == 0)
             //            {
             //                is_rbutton_released = true;
             //            }
@@ -2120,7 +2553,7 @@ namespace SRCSharpForm
             //                // ダメージを与えられる
             //                ListItemFlag[Information.UBound(list) + 1] = false;
             //            }
-            //            else if (!withBlock3.IsNormalWeapon(w) & withBlock3.CriticalProbability(w, Commands.SelectedUnit) > 0)
+            //            else if (!withBlock3.IsNormalWeapon(w) && withBlock3.CriticalProbability(w, Commands.SelectedUnit) > 0)
             //            {
             //                // 特殊効果を与えられる
             //                ListItemFlag[Information.UBound(list) + 1] = false;
@@ -2448,7 +2881,7 @@ namespace SRCSharpForm
         public bool IsRButtonPressed(bool ignore_message_wait = false)
         {
             // メッセージがウエイト無しならスキップ
-            if (!ignore_message_wait & MessageWait == 0)
+            if (!ignore_message_wait && MessageWait == 0)
             {
                 return true;
             }
@@ -2464,9 +2897,9 @@ namespace SRCSharpForm
             //    GetCursorPos(PT);
             //    {
             //        var withBlock = MainForm;
-            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X & PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX() & (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
+            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
             //        {
-            //            if ((GetAsyncKeyState(RButtonID) & 0x8000) != 0)
+            //            if ((GetAsyncKeyState(RButtonID) && 0x8000) != 0)
             //            {
             //                // 右ボタンでスキップ
             //                return true;
@@ -2480,9 +2913,9 @@ namespace SRCSharpForm
             //    GetCursorPos(PT);
             //    {
             //        var withBlock1 = My.MyProject.Forms.frmMessage;
-            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X & PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() & (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
+            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
             //        {
-            //            if ((GetAsyncKeyState(RButtonID) & 0x8000) != 0)
+            //            if ((GetAsyncKeyState(RButtonID) && 0x8000) != 0)
             //            {
             //                // 右ボタンでスキップ
             //                return true;

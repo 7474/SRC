@@ -1,13 +1,12 @@
 // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
-// 再頒布または改変することができます。zzzzz
-using System;
-using System.Drawing;
-using System.Windows.Forms;
+// 再頒布または改変することができます。
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using SRCCore;
+using System;
+using System.Windows.Forms;
 
 namespace SRCSharpForm
 {
@@ -21,6 +20,18 @@ namespace SRCSharpForm
         {
             picFace.Image = null;
             picMessage.Image = null;
+        }
+
+        public void SetMessageModeCaption(bool isAuto)
+        {
+            if (isAuto)
+            {
+                Text = "メッセージ (自動送り)";
+            }
+            else
+            {
+                Text = "メッセージ";
+            }
         }
 
         // フォーム上をクリック
