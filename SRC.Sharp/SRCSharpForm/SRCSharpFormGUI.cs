@@ -1882,7 +1882,7 @@ namespace SRCSharpForm
 
         private SizeF MessageLen(string msg)
         {
-            // XXX MessageLen の取り回し
+            // XXX Graphics の取り回し
             using var g = Graphics.FromImage(frmMessage.picMessage.NewImageIfNull().Image);
             return MessageLen(msg, g, currentMessageFont);
         }
