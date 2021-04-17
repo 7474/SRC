@@ -100,11 +100,13 @@ namespace SRCSharpForm
 
         private ImageBuffer imageBuffer;
 
-
         private SRCCore.SRC SRC;
+        private SRCCore.Events.Event Event => SRC.Event;
         private SRCCore.Expressions.Expression Expression => SRC.Expression;
         private SRCCore.Maps.Map Map => SRC.Map;
-        private SRCCore.Commands.Command Commands => SRC.Commands;
+        private Command Commands => SRC.Commands;
+        private Sound Sound => SRC.Sound;
+        private Effect Effect => SRC.Effect;
 
         public SRCSharpFormGUI(SRC src)
         {
