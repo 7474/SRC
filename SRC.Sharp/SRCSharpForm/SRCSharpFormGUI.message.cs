@@ -1,15 +1,10 @@
-using Microsoft.Extensions.Logging;
 using SRCCore;
-using SRCCore.Commands;
 using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
 using SRCSharpForm.Extensions;
-using SRCSharpForm.Forms;
 using SRCSharpForm.Lib;
-using SRCSharpForm.Resoruces;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
@@ -1342,6 +1337,11 @@ namespace SRCSharpForm
             currentMessagePoint = new PointF(0, currentMessagePoint.Y);
         }
 
+        private void LFMessage(Graphics g)
+        {
+            currentMessagePoint = currentMessagePoint.AddY(currentMessageFont.GetHeight(g));
+        }
+
         private void RefreshMessage()
         {
             frmMessage.picMessage.Refresh();
@@ -1647,18 +1647,18 @@ namespace SRCSharpForm
                     PrintString(Strings.Mid(msg, head, Strings.Len(msg) - head), g);
                     currentMessagePoint = new PointF(currentMessagePoint.X, max_y - currentMessageFont.GetHeight(g));
                     PrintString(Strings.Right(msg, 1), g);
-                    currentMessagePoint = currentMessagePoint.AddY(currentMessageFont.GetHeight(g));
+                    LFMessage(g);
                 }
                 else
                 {
                     PrintString(Strings.Mid(msg, head), g);
-                    currentMessagePoint = currentMessagePoint.AddY(currentMessageFont.GetHeight(g));
+                    LFMessage(g);
                 }
             }
             else
             {
                 // 未出力の文字列がない場合は改行のみ
-                currentMessagePoint = currentMessagePoint.AddY(currentMessageFont.GetHeight(g));
+                LFMessage(g);
             }
 
             // 改行後の位置は一番大きなサイズの文字に合わせる
