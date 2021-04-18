@@ -285,7 +285,7 @@ namespace SRCCore.CmdDatas
                         return new InputCmd(src, data);
 
                     case "intermissioncommand":
-                        return new NotImplementedCmd(src, data);
+                        return new IntermissionCommandCmd(src, data);
 
                     case "item":
                         return new NotImplementedCmd(src, data);
