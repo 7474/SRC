@@ -1679,6 +1679,12 @@ namespace SRCSharpForm
         private void PrintString(string msg, Graphics g)
         {
             g.DrawString(msg, currentMessageFont, currentMessageFontColor, currentMessagePoint);
+            // XXX https://github.com/7474/SRC/issues/154
+            //TextRenderer.DrawText(g,
+            //    msg,
+            //    currentMessageFont,
+            //    new Point((int)currentMessagePoint.X, (int)currentMessagePoint.Y),
+            //    (currentMessageFontColor as SolidBrush).Color);
             currentMessagePoint = currentMessagePoint.AddX(MessageLen(msg, g, currentMessageFont).Width);
         }
 
@@ -1692,35 +1698,44 @@ namespace SRCSharpForm
         // メッセージ幅を計算(タグを無視して)
         private SizeF MessageLen(string msg, Graphics g, Font font)
         {
+            string buf;
             // タグが存在する？
             var ret = Strings.InStr(msg, "<");
             if (ret == 0)
             {
-                return g.MeasureString(msg, font);
+                buf = msg;
             }
-
-            var buf = "";
-            // タグを除いたメッセージを作成
-            while (ret > 0)
+            else
             {
-                buf = buf + Strings.Left(msg, ret - 1);
-                msg = Strings.Mid(msg, ret + 1);
-                ret = Strings.InStr(msg, ">");
-                if (ret > 0)
+                buf = "";
+                // タグを除いたメッセージを作成
+                while (ret > 0)
                 {
+                    buf = buf + Strings.Left(msg, ret - 1);
                     msg = Strings.Mid(msg, ret + 1);
-                }
-                else
-                {
-                    msg = "";
+                    ret = Strings.InStr(msg, ">");
+                    if (ret > 0)
+                    {
+                        msg = Strings.Mid(msg, ret + 1);
+                    }
+                    else
+                    {
+                        msg = "";
+                    }
+
+                    ret = Strings.InStr(msg, "<");
                 }
 
-                ret = Strings.InStr(msg, "<");
+                buf = buf + msg;
             }
-
-            buf = buf + msg;
 
             // タグ抜きメッセージのピクセル幅を計算
+            // 十分な余白がある場合の外接サイズを取得しているつもり
+            // See. MeasureString remark.
+            //var nonStyle = g.MeasureString(buf, font);
+            //var gDefault = g.MeasureString(buf, font, messageArea.Width * 2, StringFormat.GenericDefault);
+            //var gTypographic = g.MeasureString(buf, font, messageArea.Width * 2, StringFormat.GenericTypographic);
+            //return g.MeasureString(buf, font, messageArea.Width * 2, StringFormat.GenericTypographic);
             return g.MeasureString(buf, font);
         }
 
