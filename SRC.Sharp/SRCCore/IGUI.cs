@@ -329,6 +329,22 @@ namespace SRCCore
     }
     public class ListBoxItem
     {
+        public ListBoxItem()
+        {
+        }
+
+        public ListBoxItem(string text)
+        {
+            Text = text;
+            ListItemID = text;
+        }
+
+        public ListBoxItem(string text, string id)
+        {
+            Text = text;
+            ListItemID = id;
+        }
+
         // 表示するテキスト
         public string Text { get; set; }
 
