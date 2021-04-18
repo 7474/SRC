@@ -1305,6 +1305,9 @@ namespace SRCSharpForm
             }
         }
 
+        private StringFormat messageMeasureFormat = new StringFormat(
+            StringFormatFlags.NoClip |  StringFormatFlags.FitBlackBox | StringFormatFlags.LineLimit
+            );
         private Font defaultFont = new Font("ＭＳ Ｐ明朝", 12, FontStyle.Regular, GraphicsUnit.Point);
         private Brush defaultBgColor = Brushes.White;
         private Brush defaultFontColor = Brushes.Black;
@@ -1732,9 +1735,10 @@ namespace SRCSharpForm
             // タグ抜きメッセージのピクセル幅を計算
             // 十分な余白がある場合の外接サイズを取得しているつもり
             // See. MeasureString remark.
-            //var nonStyle = g.MeasureString(buf, font);
-            //var gDefault = g.MeasureString(buf, font, messageArea.Width * 2, StringFormat.GenericDefault);
-            //var gTypographic = g.MeasureString(buf, font, messageArea.Width * 2, StringFormat.GenericTypographic);
+            var nonStyle = g.MeasureString(buf, font);
+            var gDefault = g.MeasureString(buf, font, messageArea.Width * 2, StringFormat.GenericDefault);
+            var gTypographic = g.MeasureString(buf, font, messageArea.Width * 2, StringFormat.GenericTypographic);
+            var gMyFormat = g.MeasureString(buf, font, messageArea.Width * 2, messageMeasureFormat);
             //return g.MeasureString(buf, font, messageArea.Width * 2, StringFormat.GenericTypographic);
             return g.MeasureString(buf, font);
         }
