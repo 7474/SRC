@@ -43,26 +43,26 @@ namespace SRCCore
             Sound.BossBGM = false;
             Sound.ChangeBGM(Sound.BGMName("Intermission"));
 
-            //// マップをクリア
-            //var loopTo = Map.MapWidth;
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    var loopTo1 = Map.MapHeight;
-            //    for (j = 1; j <= loopTo1; j++)
-            //        // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        Map.MapDataForUnit[i, j] = null;
-            //}
+            // マップをクリア
+            // XXX Map.ClearMap(); していれば要らんのでは
+            var loopTo = Map.MapWidth;
+            for (var i = 1; i <= loopTo; i++)
+            {
+                var loopTo1 = Map.MapHeight;
+                for (var j = 1; j <= loopTo1; j++)
+                    Map.MapDataForUnit[i, j] = null;
+            }
 
-            //// 各種データをアップデート
-            //if (!skip_update)
-            //{
-            //    SRC.UList.Update();
-            //    SRC.PList.Update();
-            //    SRC.IList.Update();
-            //}
+            // 各種データをアップデート
+            if (!skip_update)
+            {
+                SRC.UList.Update();
+                SRC.PList.Update();
+                SRC.IList.Update();
+            }
 
-            //Event.ClearEventData();
-            //Map.ClearMap();
+            Event.ClearEventData();
+            Map.ClearMap();
 
             // 選択用ダイアログを拡大
             //GUI.EnlargeListBoxHeight();
@@ -115,39 +115,22 @@ namespace SRCCore
                     cmd_list.Add(new ListBoxItem("アイテム交換"));
                 }
 
-                //換装コマンド
-                //foreach (Unit currentU1 in SRC.UList)
-                //{
-                //    u = currentU1;
-                //    if (u.Party0 == "味方" & u.Status == "待機")
-                //    {
-                //        if (u.IsFeatureAvailable("換装"))
-                //        {
-                //            var loopTo2 = GeneralLib.LLength(u.FeatureData(argIndex1));
-                //            for (i = 1; i <= loopTo2; i++)
-                //            {
-                //                string localLIndex() { object "換装" = "換装"; string arglist = u.FeatureData("換装"); var ret = GeneralLib.LIndex(arglist, i); return ret; }
-
-                //                Unit localOtherForm() { object argIndex1 = (object)hs2400bc4ce27a4e82838570740e7e2b83(); var ret = u.OtherForm(argIndex1); return ret; }
-
-                //                if (localOtherForm().IsAvailable())
-                //                {
-                //                    break;
-                //                }
-                //            }
-
-                //            int localLLength() { object argIndex1 = "換装"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LLength(arglist); return ret; }
-
-                //            if (i <= localLLength())
-                //            {
-                //                Array.Resize(cmd_list, Information.UBound(cmd_list) + 1 + 1);
-                //                Array.Resize(GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
-                //                cmd_list[Information.UBound(cmd_list)] = "換装";
-                //                break;
-                //            }
-                //        }
-                //    }
-                //}
+                // 換装コマンド
+                foreach (var u in SRC.UList.Items)
+                {
+                    if (u.Party0 == "味方" && u.Status == "待機")
+                    {
+                        if (u.IsFeatureAvailable("換装"))
+                        {
+                            var fd = u.Feature("換装");
+                            if (fd.DataL.Any(x => u.OtherForm(x).IsAvailable()))
+                            {
+                                cmd_list.Add(new ListBoxItem("換装"));
+                                break;
+                            }
+                        }
+                    }
+                }
 
                 // パイロットステータスコマンド
                 if (!Expression.IsOptionDefined("等身大基準"))
@@ -554,7 +537,7 @@ namespace SRCCore
         //            {
         //                {
         //                    var withBlock1 = withBlock.Item(k);
-        //                    if ((withBlock1.Class() != "固定" | !withBlock1.IsFeatureAvailable("非表示")) & withBlock1.Part() != "非表示")
+        //                    if ((withBlock1.Class() != "固定" | !withBlock1.IsFeatureAvailable("非表示")) && withBlock1.Part() != "非表示")
         //                    {
         //                        GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock1.Nickname() + " ";
         //                    }
@@ -1251,7 +1234,7 @@ namespace SRCCore
         //        {
         //            int localLLength() { object argIndex1 = "分離"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LLength(arglist); return ret; }
 
-        //            if (localLLength() == 3 & !withBlock.IsFeatureAvailable("主形態") | withBlock.IsFeatureAvailable("制限時間"))
+        //            if (localLLength() == 3 && !withBlock.IsFeatureAvailable("主形態") | withBlock.IsFeatureAvailable("制限時間"))
         //            {
         //                RankUpCostRet = 999999999;
         //                return RankUpCostRet;
@@ -1660,7 +1643,7 @@ namespace SRCCore
         //                if (!is_support)
         //                {
         //                    // ３人乗り以上は乗り降り不可
-        //                    if (withBlock.Unit.Data.PilotNum != 1 & Math.Abs(withBlock.Unit.Data.PilotNum) != 2)
+        //                    if (withBlock.Unit.Data.PilotNum != 1 && Math.Abs(withBlock.Unit.Data.PilotNum) != 2)
         //                    {
         //                        goto NextLoop;
         //                    }
@@ -1693,7 +1676,7 @@ namespace SRCCore
         //                        {
         //                            {
         //                                var withBlock2 = withBlock1.Item(k);
-        //                                if ((withBlock2.Class() != "固定" | !withBlock2.IsFeatureAvailable("非表示")) & withBlock2.Part() != "非表示")
+        //                                if ((withBlock2.Class() != "固定" | !withBlock2.IsFeatureAvailable("非表示")) && withBlock2.Part() != "非表示")
         //                                {
         //                                    GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock2.Nickname() + " ";
         //                                }
@@ -1778,7 +1761,7 @@ namespace SRCCore
         //                    {
         //                        {
         //                            var withBlock4 = withBlock3.Item(k);
-        //                            if ((withBlock4.Class() != "固定" | !withBlock4.IsFeatureAvailable("非表示")) & withBlock4.Part() != "非表示")
+        //                            if ((withBlock4.Class() != "固定" | !withBlock4.IsFeatureAvailable("非表示")) && withBlock4.Part() != "非表示")
         //                            {
         //                                GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock4.Nickname() + " ";
         //                            }
@@ -2000,7 +1983,7 @@ namespace SRCCore
         //            // サポートキャラでなければ乗り換えられるパイロット数に制限がある
         //            if (!p.IsSupport(u))
         //            {
-        //                if (withBlock8.Data.PilotNum != 1 & Math.Abs(withBlock8.Data.PilotNum) != 2)
+        //                if (withBlock8.Data.PilotNum != 1 && Math.Abs(withBlock8.Data.PilotNum) != 2)
         //                {
         //                    goto NextUnit;
         //                }
@@ -2008,7 +1991,7 @@ namespace SRCCore
 
         //            if (withBlock8.CountPilot() > 0)
         //            {
-        //                if (Expression.IsGlobalVariableDefined("Fix(" + withBlock8.Pilot(1).Name + ")") & !p.IsSupport(u))
+        //                if (Expression.IsGlobalVariableDefined("Fix(" + withBlock8.Pilot(1).Name + ")") && !p.IsSupport(u))
         //                {
         //                    // Fixコマンドでパイロットが固定されたユニットはサポートでない
         //                    // 限り乗り換え不可
@@ -2054,7 +2037,7 @@ namespace SRCCore
         //                {
         //                    {
         //                        var withBlock9 = withBlock8.Item(j);
-        //                        if ((withBlock9.Class() != "固定" | !withBlock9.IsFeatureAvailable("非表示")) & withBlock9.Part() != "非表示")
+        //                        if ((withBlock9.Class() != "固定" | !withBlock9.IsFeatureAvailable("非表示")) && withBlock9.Part() != "非表示")
         //                        {
         //                            GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock9.Nickname() + " ";
         //                        }
@@ -2089,7 +2072,7 @@ namespace SRCCore
         //                {
         //                    {
         //                        var withBlock10 = withBlock8.Item(j);
-        //                        if ((withBlock10.Class() != "固定" | !withBlock10.IsFeatureAvailable("非表示")) & withBlock10.Part() != "非表示")
+        //                        if ((withBlock10.Class() != "固定" | !withBlock10.IsFeatureAvailable("非表示")) && withBlock10.Part() != "非表示")
         //                        {
         //                            GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock10.Nickname() + " ";
         //                        }
@@ -2514,7 +2497,7 @@ namespace SRCCore
         //            {
         //                {
         //                    var withBlock1 = withBlock.Item(i);
-        //                    if ((withBlock1.Class() != "固定" | !withBlock1.IsFeatureAvailable("非表示")) & withBlock1.Part() != "非表示")
+        //                    if ((withBlock1.Class() != "固定" | !withBlock1.IsFeatureAvailable("非表示")) && withBlock1.Part() != "非表示")
         //                    {
         //                        GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock1.Nickname() + " ";
         //                        if (withBlock1.Part() == "強化パーツ" | withBlock1.Part() == "アイテム")
@@ -3012,7 +2995,7 @@ namespace SRCCore
         //                var loopTo21 = Information.UBound(tmp_part_list);
         //                for (i = 1; i <= loopTo21; i++)
         //                {
-        //                    if ((tmp_part_list[i] ?? "") == (selected_part ?? "") | (selected_part == "片手" | selected_part == "両手" | selected_part == "盾") & (tmp_part_list[i] == "右手" | tmp_part_list[i] == "左手") | (selected_part == "肩" | selected_part == "両肩") & (tmp_part_list[i] == "右肩" | tmp_part_list[i] == "左肩") | (selected_part == "アイテム" | selected_part == "強化パーツ") & (tmp_part_list[i] == "アイテム" | tmp_part_list[i] == "強化パーツ"))
+        //                    if ((tmp_part_list[i] ?? "") == (selected_part ?? "") | (selected_part == "片手" | selected_part == "両手" | selected_part == "盾") && (tmp_part_list[i] == "右手" | tmp_part_list[i] == "左手") | (selected_part == "肩" | selected_part == "両肩") && (tmp_part_list[i] == "右肩" | tmp_part_list[i] == "左肩") | (selected_part == "アイテム" | selected_part == "強化パーツ") && (tmp_part_list[i] == "アイテム" | tmp_part_list[i] == "強化パーツ"))
         //                    {
         //                        Array.Resize(part_list, Information.UBound(part_list) + 1 + 1);
         //                        part_list[Information.UBound(part_list)] = tmp_part_list[i];
@@ -3042,7 +3025,7 @@ namespace SRCCore
         //            {
         //                {
         //                    var withBlock8 = withBlock7.Item(i);
-        //                    if (withBlock8.Class() == "固定" & withBlock8.IsFeatureAvailable("非表示"))
+        //                    if (withBlock8.Class() == "固定" && withBlock8.IsFeatureAvailable("非表示"))
         //                    {
         //                        goto NextEquipedItem;
         //                    }
@@ -3133,7 +3116,7 @@ namespace SRCCore
         //                                    var loopTo23 = Information.UBound(part_list);
         //                                    for (j = 1; j <= loopTo23; j++)
         //                                    {
-        //                                        if ((part_list[j] == "強化パーツ" | part_list[j] == "アイテム") & string.IsNullOrEmpty(part_item[j]))
+        //                                        if ((part_list[j] == "強化パーツ" | part_list[j] == "アイテム") && string.IsNullOrEmpty(part_item[j]))
         //                                        {
         //                                            part_item[j] = withBlock8.ID;
         //                                            var loopTo24 = (j + withBlock8.Size() - 1);
@@ -3156,7 +3139,7 @@ namespace SRCCore
         //                                    var loopTo25 = Information.UBound(part_list);
         //                                    for (j = 1; j <= loopTo25; j++)
         //                                    {
-        //                                        if ((part_list[j] ?? "") == (withBlock8.Part() ?? "") & string.IsNullOrEmpty(part_item[j]))
+        //                                        if ((part_list[j] ?? "") == (withBlock8.Part() ?? "") && string.IsNullOrEmpty(part_item[j]))
         //                                        {
         //                                            part_item[j] = withBlock8.ID;
         //                                            var loopTo26 = (j + withBlock8.Size() - 1);
@@ -3175,7 +3158,7 @@ namespace SRCCore
         //                                    }
         //                                }
 
-        //                                if (j > Information.UBound(part_list) & string.IsNullOrEmpty(selected_part))
+        //                                if (j > Information.UBound(part_list) && string.IsNullOrEmpty(selected_part))
         //                                {
         //                                    Array.Resize(part_list, Information.UBound(part_list) + 1 + 1);
         //                                    Array.Resize(part_item, Information.UBound(part_list) + 1);
@@ -3263,7 +3246,7 @@ namespace SRCCore
 
         //            // 交換するアイテムを選択
         //            caption_str = "装備個所を選択 ： " + withBlock7.Nickname;
-        //            if (withBlock7.CountPilot() > 0 & !Expression.IsOptionDefined("等身大基準"))
+        //            if (withBlock7.CountPilot() > 0 && !Expression.IsOptionDefined("等身大基準"))
         //            {
         //                caption_str = caption_str + " (" + withBlock7.MainPilot().get_Nickname(false) + ")";
         //            }
@@ -3282,7 +3265,7 @@ namespace SRCCore
         //            {
         //                list[Information.UBound(list)] = "▽全て外す▽";
         //                caption_str = "外すアイテムを選択 ： " + withBlock7.Nickname;
-        //                if (withBlock7.CountPilot() > 0 & !Expression.IsOptionDefined("等身大基準"))
+        //                if (withBlock7.CountPilot() > 0 && !Expression.IsOptionDefined("等身大基準"))
         //                {
         //                    caption_str = caption_str + " (" + withBlock7.MainPilot().get_Nickname(false) + ")";
         //                }
@@ -3311,7 +3294,7 @@ namespace SRCCore
         //                        var loopTo30 = (Information.UBound(list) - 1);
         //                        for (i = 1; i <= loopTo30; i++)
         //                        {
-        //                            if (!GUI.ListItemFlag[i] & !string.IsNullOrEmpty(id_list[i]))
+        //                            if (!GUI.ListItemFlag[i] && !string.IsNullOrEmpty(id_list[i]))
         //                            {
         //                                var tmp6 = id_list;
         //                                withBlock7.DeleteItem(tmp6[i], false);
@@ -3452,7 +3435,7 @@ namespace SRCCore
 
         //                            string localFeatureData() { object argIndex1 = i; var ret = withBlock7.FeatureData(argIndex1); return ret; }
 
-        //                            if (localFeature() == "ハードポイント" & (localFeatureData() ?? "") == (ipart ?? ""))
+        //                            if (localFeature() == "ハードポイント" && (localFeatureData() ?? "") == (ipart ?? ""))
         //                            {
         //                                double localFeatureLevel() { object argIndex1 = i; var ret = withBlock7.FeatureLevel(argIndex1); return ret; }
 
@@ -3524,7 +3507,7 @@ namespace SRCCore
         //                                            {
         //                                                if (u.IsFeatureAvailable("両手持ち"))
         //                                                {
-        //                                                    if (!is_right_hand_available & !is_left_hand_available)
+        //                                                    if (!is_right_hand_available && !is_left_hand_available)
         //                                                    {
         //                                                        goto NextItem;
         //                                                    }
@@ -3575,7 +3558,7 @@ namespace SRCCore
         //                                            {
         //                                                if (u.IsFeatureAvailable("両手持ち"))
         //                                                {
-        //                                                    if (!is_right_hand_available & !is_left_hand_available)
+        //                                                    if (!is_right_hand_available && !is_left_hand_available)
         //                                                    {
         //                                                        goto NextItem;
         //                                                    }
@@ -3612,7 +3595,7 @@ namespace SRCCore
         //                            case "左肩":
         //                            case "肩":
         //                                {
-        //                                    if (withBlock14.Part() != "両肩" & withBlock14.Part() != "肩")
+        //                                    if (withBlock14.Part() != "両肩" && withBlock14.Part() != "肩")
         //                                    {
         //                                        goto NextItem;
         //                                    }
@@ -3631,7 +3614,7 @@ namespace SRCCore
         //                            case "強化パーツ":
         //                            case "アイテム":
         //                                {
-        //                                    if (withBlock14.Part() != "強化パーツ" & withBlock14.Part() != "アイテム")
+        //                                    if (withBlock14.Part() != "強化パーツ" && withBlock14.Part() != "アイテム")
         //                                    {
         //                                        goto NextItem;
         //                                    }
@@ -3806,7 +3789,7 @@ namespace SRCCore
 
         //                // 装備するアイテムの種類を選択
         //                caption_str = "装備するアイテムを選択 ： " + withBlock7.Nickname;
-        //                if (withBlock7.CountPilot() > 0 & !Expression.IsOptionDefined("等身大基準"))
+        //                if (withBlock7.CountPilot() > 0 && !Expression.IsOptionDefined("等身大基準"))
         //                {
         //                    caption_str = caption_str + " (" + withBlock7.MainPilot().get_Nickname(false) + ")";
         //                }
@@ -3828,7 +3811,7 @@ namespace SRCCore
         //                    it = currentIt2;
         //                    {
         //                        var withBlock18 = it;
-        //                        if ((withBlock18.Name ?? "") == (iname ?? "") & withBlock18.Exist)
+        //                        if ((withBlock18.Name ?? "") == (iname ?? "") && withBlock18.Exist)
         //                        {
         //                            if (withBlock18.Unit is null)
         //                            {
@@ -3897,7 +3880,7 @@ namespace SRCCore
         //                            Array.Resize(list, Information.UBound(list) + 1 + 1);
         //                            Array.Resize(id_list, Information.UBound(list) + 1);
         //                            Array.Resize(GUI.ListItemComment, Information.UBound(list) + 1);
-        //                            if (!Expression.IsOptionDefined("等身大基準") & withBlock19.CountPilot() > 0)
+        //                            if (!Expression.IsOptionDefined("等身大基準") && withBlock19.CountPilot() > 0)
         //                            {
         //                                string localRightPaddedString2() { string argbuf = withBlock19.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, 36); withBlock19.Nickname0 = argbuf; return ret; }
 
@@ -3914,7 +3897,7 @@ namespace SRCCore
         //                            {
         //                                {
         //                                    var withBlock20 = withBlock19.Item(i);
-        //                                    if ((withBlock20.Class() != "固定" | !withBlock20.IsFeatureAvailable("非表示")) & withBlock20.Part() != "非表示")
+        //                                    if ((withBlock20.Class() != "固定" | !withBlock20.IsFeatureAvailable("非表示")) && withBlock20.Part() != "非表示")
         //                                    {
         //                                        GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock20.Nickname() + " ";
         //                                    }
@@ -3936,7 +3919,7 @@ namespace SRCCore
         //                Item localItem8() { var tmp = id_list; object argIndex1 = tmp[1]; var ret = SRC.IList.Item(argIndex1); return ret; }
 
         //                caption_str = localItem8().Nickname() + "の入手先を選択 ： " + withBlock7.Nickname;
-        //                if (withBlock7.CountPilot() > 0 & !Expression.IsOptionDefined("等身大基準"))
+        //                if (withBlock7.CountPilot() > 0 && !Expression.IsOptionDefined("等身大基準"))
         //                {
         //                    caption_str = caption_str + " (" + withBlock7.MainPilot().get_Nickname(false) + ")";
         //                }
@@ -4149,7 +4132,7 @@ namespace SRCCore
         //            {
         //                {
         //                    var withBlock1 = withBlock.Item(k);
-        //                    if ((withBlock1.Class() != "固定" | !withBlock1.IsFeatureAvailable("非表示")) & withBlock1.Part() != "非表示")
+        //                    if ((withBlock1.Class() != "固定" | !withBlock1.IsFeatureAvailable("非表示")) && withBlock1.Part() != "非表示")
         //                    {
         //                        GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock1.Nickname() + " ";
         //                    }
@@ -4283,7 +4266,7 @@ namespace SRCCore
         //                    var loopTo6 = withBlock4.CountWeapon();
         //                    for (j = 1; j <= loopTo6; j++)
         //                    {
-        //                        if (withBlock4.IsWeaponMastered(j) & !withBlock4.IsDisabled(withBlock4.Weapon(j).Name) & !withBlock4.IsWeaponClassifiedAs(j, "合"))
+        //                        if (withBlock4.IsWeaponMastered(j) && !withBlock4.IsDisabled(withBlock4.Weapon(j).Name) && !withBlock4.IsWeaponClassifiedAs(j, "合"))
         //                        {
         //                            if (withBlock4.WeaponPower(j, "") > max_value)
         //                            {
@@ -4301,7 +4284,7 @@ namespace SRCCore
         //                    var loopTo7 = withBlock4.CountWeapon();
         //                    for (j = 1; j <= loopTo7; j++)
         //                    {
-        //                        if (withBlock4.IsWeaponMastered(j) & !withBlock4.IsDisabled(withBlock4.Weapon(j).Name) & !withBlock4.IsWeaponClassifiedAs(j, "合"))
+        //                        if (withBlock4.IsWeaponMastered(j) && !withBlock4.IsDisabled(withBlock4.Weapon(j).Name) && !withBlock4.IsWeaponClassifiedAs(j, "合"))
         //                        {
         //                            if (withBlock4.WeaponMaxRange(j) > max_value)
         //                            {
