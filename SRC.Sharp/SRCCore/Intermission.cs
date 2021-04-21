@@ -65,7 +65,7 @@ namespace SRCCore
             Map.ClearMap();
 
             // 選択用ダイアログを拡大
-            //GUI.EnlargeListBoxHeight();
+            GUI.EnlargeListBoxHeight();
             while (true)
             {
                 // 利用可能なインターミッションコマンドを選択
@@ -170,7 +170,7 @@ namespace SRCCore
                 GUI.TopItem = 1;
                 string arglb_caption = "インターミッション： 総ターン数"
                     + SrcFormatter.Format(SRC.TotalTurn) + " "
-                    //+ Expression.Term("資金", u: argu)
+                    + Expression.Term("資金")
                     + SrcFormatter.Format(SRC.Money);
                 var ret = GUI.ListBox(new ListBoxArgs()
                 {
@@ -190,9 +190,9 @@ namespace SRCCore
                             "次ステージ",
                             GuiConfirmOption.OkCancel | GuiConfirmOption.Question) == GuiDialogResult.Ok)
                         {
-                            //SRC.UList.Update(); // 追加パイロットを消去
+                            SRC.UList.Update(); // 追加パイロットを消去
                             GUI.CloseListBox();
-                            //GUI.ReduceListBoxHeight();
+                            GUI.ReduceListBoxHeight();
                             Sound.StopBGM();
                             return;
                         }
@@ -274,7 +274,7 @@ namespace SRCCore
                             GuiConfirmOption.OkCancel | GuiConfirmOption.Question) == GuiDialogResult.Ok)
                         {
                             GUI.CloseListBox();
-                            //GUI.ReduceListBoxHeight();
+                            GUI.ReduceListBoxHeight();
                             SRC.ExitGame();
                         }
 
@@ -345,9 +345,9 @@ namespace SRCCore
                                 Sound.KeepBGM = false;
                                 Sound.BossBGM = false;
                                 Sound.ChangeBGM(Sound.BGMName("Intermission"));
-                                //SRC.UList.Update();
-                                //SRC.PList.Update();
-                                //SRC.IList.Update();
+                                SRC.UList.Update();
+                                SRC.PList.Update();
+                                SRC.IList.Update();
                                 Event.ClearEventData();
                                 if (Map.MapWidth > 1)
                                 {
