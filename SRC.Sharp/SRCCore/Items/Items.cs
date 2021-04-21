@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace SRCCore.Items
 {
-    internal class Items
+    public class Items
     {
         // アイテムＩＤ作成用カウンタ
         private int IDCount;

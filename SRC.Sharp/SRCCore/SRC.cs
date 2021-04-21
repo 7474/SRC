@@ -62,8 +62,8 @@ namespace SRCCore
         public Pilots.Pilots PList;
         // ユニットのリスト
         public Units.Units UList;
-        //// アイテムのリスト
-        //public Items IList = new Items();
+        // アイテムのリスト
+        public Items.Items IList;
 
         // イベントファイル名
         public string ScenarioFileName = "";
@@ -171,6 +171,7 @@ namespace SRCCore
 
             PList = new Pilots.Pilots(this);
             UList = new Units.Units(this);
+            IList = new Items.Items(this);
 
             // XXX 別な実装をするならコンストラクタでは設定しない
             SystemConfig = new LocalFileConfig();
