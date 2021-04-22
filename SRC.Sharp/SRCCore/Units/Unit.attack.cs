@@ -393,7 +393,7 @@ namespace SRCCore.Units
                 if (attack_mode != "マップ攻撃" && attack_mode != "反射")
                 {
                     // 武器使用による弾数＆ＥＮの消費
-                    UseWeapon(w);
+                    w.UseWeapon();
                     // 武器使用によるＥＮ消費の表示
                     GUI.UpdateMessageForm(this, t);
                 }

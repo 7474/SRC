@@ -2311,5 +2311,159 @@ namespace SRCCore.Units
             //    FullSupply();
             //    Mode = "通常";
         }
+
+
+        // 弾数・使用回数共有の処理
+        public void SyncBullet()
+        {
+            // TODO Impl SyncBullet
+            //int j, a, w, i, k;
+            //int lv, idx;
+
+            //// 共属性武器の処理
+            //var loopTo = CountWeapon();
+            //for (w = 1; w <= loopTo; w++)
+            //{
+            //    if (IsWeaponClassifiedAs(w, "共"))
+            //    {
+            //        lv = WeaponLevel(w, "共");
+            //        // 弾数を合わせる
+            //        var loopTo1 = CountWeapon();
+            //        for (i = 1; i <= loopTo1; i++)
+            //        {
+            //            if (w != i & IsWeaponClassifiedAs(i, "共") & lv == WeaponLevel(i, "共") & MaxBullet(w) > 0)
+            //            {
+            //                if (MaxBullet(i) > MaxBullet(w))
+            //                {
+            //                    SetBullet(i, GeneralLib.MinLng(Bullet(i), (MaxBullet(i) * Bullet(w)) / MaxBullet(w)));
+            //                }
+            //                else
+            //                {
+            //                    SetBullet(i, GeneralLib.MinLng(Bullet(i), (MaxBullet(i) * Bullet(w) / (double)MaxBullet(w) + 0.49999d)));
+            //                }
+            //            }
+            //        }
+            //        // アビリティの使用回数を合わせる
+            //        var loopTo2 = CountAbility();
+            //        for (i = 1; i <= loopTo2; i++)
+            //        {
+            //            if (IsAbilityClassifiedAs(i, "共") & lv == AbilityLevel(i, "共") & MaxBullet(w) > 0)
+            //            {
+            //                if (MaxStock(i) > MaxBullet(w))
+            //                {
+            //                    SetStock(i, GeneralLib.MinLng(Stock(i), (MaxStock(i) * Bullet(w)) / MaxBullet(w)));
+            //                }
+            //                else
+            //                {
+            //                    SetStock(i, GeneralLib.MinLng(Stock(i), (MaxStock(i) * Bullet(w) / (double)MaxBullet(w) + 0.49999d)));
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+
+            //// 共属性アビリティの処理
+            //var loopTo3 = CountAbility();
+            //for (a = 1; a <= loopTo3; a++)
+            //{
+            //    if (IsAbilityClassifiedAs(a, "共"))
+            //    {
+            //        lv = AbilityLevel(a, "共");
+            //        // 使用回数を合わせる
+            //        var loopTo4 = CountAbility();
+            //        for (i = 1; i <= loopTo4; i++)
+            //        {
+            //            if (a != i & IsAbilityClassifiedAs(i, "共") & lv == AbilityLevel(i, "共") & MaxStock(a) > 0)
+            //            {
+            //                if (MaxStock(i) > MaxStock(a))
+            //                {
+            //                    SetStock(i, GeneralLib.MinLng(Stock(i), (MaxStock(i) * Stock(a)) / MaxStock(a)));
+            //                }
+            //                else
+            //                {
+            //                    SetStock(i, GeneralLib.MinLng(Stock(i), (MaxStock(i) * Stock(a) / (double)MaxStock(a) + 0.49999d)));
+            //                }
+            //            }
+            //        }
+            //        // 弾数を合わせる
+            //        var loopTo5 = CountWeapon();
+            //        for (i = 1; i <= loopTo5; i++)
+            //        {
+            //            if (IsWeaponClassifiedAs(i, "共") & lv == WeaponLevel(i, "共") & MaxStock(a) > 0)
+            //            {
+            //                if (MaxBullet(i) > MaxStock(a))
+            //                {
+            //                    SetBullet(i, GeneralLib.MinLng(Bullet(i), (MaxBullet(i) * Stock(a)) / MaxStock(a)));
+            //                }
+            //                else
+            //                {
+            //                    SetBullet(i, GeneralLib.MinLng(Bullet(i), (MaxBullet(i) * Stock(a) / (double)MaxStock(a) + 0.49999d)));
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+
+            //// 斉属性武器の処理
+            //var loopTo6 = CountWeapon();
+            //for (w = 1; w <= loopTo6; w++)
+            //{
+            //    if (IsWeaponClassifiedAs(w, "斉"))
+            //    {
+            //        // 弾数を合わせる
+            //        var loopTo7 = CountWeapon();
+            //        for (i = 1; i <= loopTo7; i++)
+            //        {
+            //            if (w != i & MaxBullet(i) > 0)
+            //            {
+            //                SetBullet(w, GeneralLib.MinLng(Bullet(w), (MaxBullet(w) * Bullet(i) / (double)MaxBullet(i) + 0.49999d)));
+            //            }
+            //        }
+            //    }
+            //}
+
+            //// 他の形態の弾数も変更
+            //int counter;
+            //var loopTo8 = CountOtherForm();
+            //for (i = 1; i <= loopTo8; i++)
+            //{
+            //    {
+            //        var withBlock = OtherForm(i);
+            //        idx = 1;
+            //        var loopTo9 = CountWeapon();
+            //        for (j = 1; j <= loopTo9; j++)
+            //        {
+            //            counter = idx;
+            //            var loopTo10 = withBlock.CountWeapon();
+            //            for (k = counter; k <= loopTo10; k++)
+            //            {
+            //                if ((Weapon(j).Name ?? "") == (withBlock.Weapon(k).Name ?? "") & MaxBullet(j) > 0 & withBlock.MaxBullet(k) > 0)
+            //                {
+            //                    withBlock.SetBullet(k, ((withBlock.MaxBullet(k) * Bullet(j)) / MaxBullet(j)));
+            //                    idx = (k + 1);
+            //                    break;
+            //                }
+            //            }
+            //        }
+
+            //        idx = 1;
+            //        var loopTo11 = CountAbility();
+            //        for (j = 1; j <= loopTo11; j++)
+            //        {
+            //            counter = idx;
+            //            var loopTo12 = withBlock.CountAbility();
+            //            for (k = counter; k <= loopTo12; k++)
+            //            {
+            //                if ((Ability(j).Name ?? "") == (withBlock.Ability(k).Name ?? "") & MaxStock(j) > 0 & withBlock.MaxStock(k) > 0)
+            //                {
+            //                    withBlock.SetStock(k, ((withBlock.MaxStock(k) * Stock(j)) / MaxStock(j)));
+            //                    idx = (k + 1);
+            //                    break;
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+        }
     }
 }
