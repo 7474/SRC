@@ -5094,6 +5094,107 @@ namespace SRCCore.Units
             //return ExpDamageRet;
         }
 
+        // 武器の使用によるＥＮ、弾薬の消費等を行う
+        public void UseWeapon()
+        {
+            int i, lv;
+            double hp_ratio, en_ratio;
+
+            // ＥＮ消費
+            if (this.Weapon(w).ENConsumption > 0)
+            {
+                EN = EN - WeaponENConsumption(w);
+            }
+
+            // 弾数消費
+            if (this.Weapon(w).Bullet > 0 & !IsWeaponClassifiedAs(w, "永"))
+            {
+                SetBullet(w, (Bullet(w) - 1));
+
+                // 全弾一斉発射
+                if (IsWeaponClassifiedAs(w, "斉"))
+                {
+                    var loopTo = Information.UBound(dblBullet);
+                    for (i = 1; i <= loopTo; i++)
+                        SetBullet(i, GeneralLib.MinLng((MaxBullet(i) * dblBullet[w]), Bullet(i)));
+                }
+                else
+                {
+                    var loopTo1 = Information.UBound(dblBullet);
+                    for (i = 1; i <= loopTo1; i++)
+                    {
+                        if (IsWeaponClassifiedAs(i, "斉"))
+                        {
+                            SetBullet(i, GeneralLib.MinLng((MaxBullet(i) * dblBullet[w] + 0.49999d), Bullet(i)));
+                        }
+                    }
+                }
+
+                // 弾数・使用回数共有の処理
+                SyncBullet();
+            }
+
+            if (IsWeaponClassifiedAs(w, "消"))
+            {
+                AddCondition("消耗", 1, cdata: "");
+            }
+
+            if (IsWeaponClassifiedAs(w, "尽"))
+            {
+                EN = 0;
+            }
+
+            if (IsWeaponClassifiedAs(w, "Ｃ") & IsConditionSatisfied("チャージ完了"))
+            {
+                DeleteCondition("チャージ完了");
+            }
+
+            if (WeaponLevel(w, "Ａ") > 0d)
+            {
+                AddCondition(WeaponNickname(w) + "充填中", WeaponLevel(w, "Ａ"), cdata: "");
+            }
+
+            if (IsWeaponClassifiedAs(w, "気"))
+            {
+                IncreaseMorale((-5 * WeaponLevel(w, "気")));
+            }
+
+            if (IsWeaponClassifiedAs(w, "霊"))
+            {
+                hp_ratio = 100 * HP / (double)MaxHP;
+                en_ratio = 100 * EN / (double)MaxEN;
+                MainPilot().Plana = (this.MainPilot().Plana - 5d * WeaponLevel(w, "霊"));
+                HP = (MaxHP * hp_ratio / 100d);
+                EN = (MaxEN * en_ratio / 100d);
+            }
+            else if (IsWeaponClassifiedAs(w, "プ"))
+            {
+                hp_ratio = 100 * HP / (double)MaxHP;
+                en_ratio = 100 * EN / (double)MaxEN;
+                MainPilot().Plana = (this.MainPilot().Plana - 5d * WeaponLevel(w, "プ"));
+                HP = (MaxHP * hp_ratio / 100d);
+                EN = (MaxEN * en_ratio / 100d);
+            }
+
+            if (Party == "味方")
+            {
+                if (IsWeaponClassifiedAs(w, "銭"))
+                {
+                    SRC.IncrMoney(-GeneralLib.MaxLng(WeaponLevel(w, "銭"), 1) * Value / 10);
+                }
+            }
+
+            if (IsWeaponClassifiedAs(w, "失"))
+            {
+                HP = GeneralLib.MaxLng((HP - (long)(MaxHP * WeaponLevel(w, "失")) / 10L), 0);
+            }
+
+            // '合体技は１ターンに１回だけ使用可能
+            // If IsWeaponClassifiedAs(w, "合") Then
+            // AddCondition "合体技使用不可", 1, 0, "非表示"
+            // End If
+        }
+
         // 弾数
         public int Bullet()
         {

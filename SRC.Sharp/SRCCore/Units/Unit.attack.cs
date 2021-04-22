@@ -251,25 +251,25 @@ namespace SRCCore.Units
                 }
             }
 
-            //// 攻撃種類のアニメ表示
-            //if (SRC.BattleAnimation)
-            //{
-            //    switch (attack_mode ?? "")
-            //    {
-            //        case "援護攻撃":
-            //        case "同時援護攻撃":
-            //            {
-            //                Effect.ShowAnimation("援護攻撃発動");
-            //                break;
-            //            }
+            // 攻撃種類のアニメ表示
+            if (SRC.BattleAnimation)
+            {
+                switch (attack_mode ?? "")
+                {
+                    case "援護攻撃":
+                    case "同時援護攻撃":
+                        {
+                            Effect.ShowAnimation("援護攻撃発動");
+                            break;
+                        }
 
-            //        case "カウンター":
-            //            {
-            //                Effect.ShowAnimation("カウンター発動");
-            //                break;
-            //            }
-            //    }
-            //}
+                    case "カウンター":
+                        {
+                            Effect.ShowAnimation("カウンター発動");
+                            break;
+                        }
+                }
+            }
 
             // 攻撃側のメッセージ表示
             if (!be_quiet)
@@ -369,36 +369,31 @@ namespace SRCCore.Units
                         Effect.AttackEffect(this, w);
                     }
                 }
-                //else if (attack_mode == "自動反撃")
-                //{
-                //    // 攻撃アニメ
-                //    bool localIsAnimationDefined2() { string argmain_situation = wname + "(反撃)"; string argsub_situation = ""; var ret = IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-                //    bool localIsAnimationDefined3() { string argmain_situation = wname + "(攻撃)"; string argsub_situation = ""; var ret = IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-                //    if (IsDefense() && localIsAnimationDefined2())
-                //    {
-                //        PlayAnimation(wname + "(反撃)", sub_situation: "");
-                //    }
-                //    else if (localIsAnimationDefined3() || IsAnimationDefined(wname, sub_situation: ""))
-                //    {
-                //        PlayAnimation(wname + "(攻撃)", sub_situation: "");
-                //    }
-                //    else if (IsSpecialEffectDefined(wname, sub_situation: ""))
-                //    {
-                //        SpecialEffect(wname, sub_situation: "");
-                //    }
-                //    else if (!Sound.IsWavePlayed)
-                //    {
-                //        Effect.AttackEffect(this, w);
-                //    }
-                //}
+                else if (attack_mode == "自動反撃")
+                {
+                    // 攻撃アニメ
+                    if (IsDefense() && IsAnimationDefined(wname + "(反撃)", ""))
+                    {
+                        PlayAnimation(wname + "(反撃)", sub_situation: "");
+                    }
+                    else if (IsAnimationDefined(wname + "(攻撃)", "") || IsAnimationDefined(wname, sub_situation: ""))
+                    {
+                        PlayAnimation(wname + "(攻撃)", sub_situation: "");
+                    }
+                    else if (IsSpecialEffectDefined(wname, sub_situation: ""))
+                    {
+                        SpecialEffect(wname, sub_situation: "");
+                    }
+                    else if (!Sound.IsWavePlayed)
+                    {
+                        Effect.AttackEffect(this, w);
+                    }
+                }
 
                 if (attack_mode != "マップ攻撃" && attack_mode != "反射")
                 {
-                    // TODO Impl
-                    //// 武器使用による弾数＆ＥＮの消費
-                    //UseWeapon(w);
+                    // 武器使用による弾数＆ＥＮの消費
+                    UseWeapon(w);
                     // 武器使用によるＥＮ消費の表示
                     GUI.UpdateMessageForm(this, t);
                 }
