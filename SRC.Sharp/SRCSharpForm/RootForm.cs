@@ -54,5 +54,15 @@ namespace SRCSharpForm
             // TODO 引数を参照して指定があればそれを読む。
             LoadGameFile();
         }
+
+        private void btnSelectFile_Click(object sender, EventArgs e)
+        {
+            LoadGameFile();
+        }
+
+        private void btnConfigure_Click(object sender, EventArgs e)
+        {
+            SRC.GUI.Configure();
+        }
     }
 }
