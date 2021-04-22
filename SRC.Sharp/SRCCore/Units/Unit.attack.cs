@@ -594,83 +594,75 @@ namespace SRCCore.Units
                         }
                 }
 
-                //// スペシャルパワー「必殺」「瀕死」
-                //if (IsUnderSpecialPowerEffect("絶対破壊") || IsUnderSpecialPowerEffect("絶対瀕死"))
-                //{
-                //    if (!be_quiet)
-                //    {
-                //        PilotMessage(wname + "(命中)", msg_mode: "");
-                //    }
+                // スペシャルパワー「必殺」「瀕死」
+                if (IsUnderSpecialPowerEffect("絶対破壊") || IsUnderSpecialPowerEffect("絶対瀕死"))
+                {
+                    if (!be_quiet)
+                    {
+                        PilotMessage(wname + "(命中)", msg_mode: "");
+                    }
 
-                //    bool localIsSpecialEffectDefined1() { string argmain_situation = wname + "(命中)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+                    if (IsAnimationDefined(wname + "(命中)", sub_situation: "") || IsAnimationDefined(wname, sub_situation: ""))
+                    {
+                        PlayAnimation(wname + "(命中)", sub_situation: "");
+                    }
+                    else if (IsSpecialEffectDefined(wname + "(命中)", ""))
+                    {
+                        SpecialEffect(wname + "(命中)", sub_situation: "");
+                    }
+                    else if (!Sound.IsWavePlayed)
+                    {
+                        Effect.HitEffect(this, w, t);
+                    }
 
-                //    if (IsAnimationDefined(wname + "(命中)", sub_situation: "") || IsAnimationDefined(wname, sub_situation: ""))
-                //    {
-                //        PlayAnimation(wname + "(命中)", sub_situation: "");
-                //    }
-                //    else if (localIsSpecialEffectDefined1())
-                //    {
-                //        SpecialEffect(wname + "(命中)", sub_situation: "");
-                //    }
-                //    else if (!Sound.IsWavePlayed)
-                //    {
-                //        Effect.HitEffect(this, w, t);
-                //    }
+                    if (IsUnderSpecialPowerEffect("絶対瀕死"))
+                    {
+                        if (Expression.IsOptionDefined("ダメージ下限解除") || Expression.IsOptionDefined("ダメージ下限１"))
+                        {
+                            if (t.HP > 1)
+                            {
+                                dmg = t.HP - 1;
+                            }
+                            else
+                            {
+                                dmg = 0;
+                            }
+                        }
+                        else if (t.HP > 10)
+                        {
+                            dmg = t.HP - 10;
+                        }
+                        else
+                        {
+                            dmg = 0;
+                        }
+                    }
 
-                //    if (IsUnderSpecialPowerEffect("絶対瀕死"))
-                //    {
-                //        // MOD START MARGE
-                //        // If t.HP > 10 Then
-                //        // dmg = t.HP - 10
-                //        // Else
-                //        // dmg = 0
-                //        // End If
-                //        if (Expression.IsOptionDefined("ダメージ下限解除") || Expression.IsOptionDefined("ダメージ下限１"))
-                //        {
-                //            if (t.HP > 1)
-                //            {
-                //                dmg = t.HP - 1;
-                //            }
-                //            else
-                //            {
-                //                dmg = 0;
-                //            }
-                //        }
-                //        else if (t.HP > 10)
-                //        {
-                //            dmg = t.HP - 10;
-                //        }
-                //        else
-                //        {
-                //            dmg = 0;
-                //        }
-                //    }
-                //    // MOD END MARGE
+                    else
+                    {
+                        dmg = t.HP;
+                    }
 
-                //    else
-                //    {
-                //        dmg = t.HP;
-                //    }
+                    goto ApplyDamage;
+                }
 
-                //    goto ApplyDamage;
-                //}
-
-                //// 回避能力の処理
-                //if (prob > 0)
-                //{
-                //    if (w.CheckDodgeFeature(t, tx, ty, attack_mode, def_mode, dmg, be_quiet))
-                //    {
-                //        dmg = 0;
-                //        goto EndAttack;
-                //    }
-                //}
+                // 回避能力の処理
+                if (prob > 0)
+                {
+                    // TODO Impl CheckDodgeFeature
+                    //if (CheckDodgeFeature(w, t, tx, ty, attack_mode, def_mode, dmg, be_quiet))
+                    //{
+                    //    dmg = 0;
+                    //    goto EndAttack;
+                    //}
+                }
 
                 // 攻撃回数を求める
                 if (w.IsWeaponClassifiedAs("連"))
                 {
                     attack_num = (int)w.WeaponLevel("連");
-                    // TODO レベル取得してないから0除算しちゃうの回避しておく
-                    attack_num = Math.Max(attack_num, 1);
+                    //// TODO レベル取得してないから0除算しちゃうの回避しておく
+                    //attack_num = Math.Max(attack_num, 1);
                 }
                 else
                 {
@@ -1221,47 +1213,47 @@ namespace SRCCore.Units
                 }
 
 
-                //// 確実に発生する特殊効果
-                //int prev_en;
-                //if (w.IsWeaponClassifiedAs("減") && !t.SpecialEffectImmune("減"))
-                //{
-                //    msg = msg + wnickname + "が[" + t.Nickname + "]の" + Expression.Term("ＥＮ", t) + "を低下させた。;";
-                //    t.EN = GeneralLib.MaxLng((t.EN - t.MaxEN * (dmg / (double)t.MaxHP)), 0);
-                //}
-                //else if (w.IsWeaponClassifiedAs("奪") && !t.SpecialEffectImmune("奪"))
-                //{
-                //    msg = msg + Nickname + "は[" + t.Nickname + "]の" + Expression.Term("ＥＮ", t) + "を吸収した。;";
-                //    prev_en = t.EN;
-                //    t.EN = GeneralLib.MaxLng((t.EN - t.MaxEN * (dmg / (double)t.MaxHP)), 0);
-                //    EN = EN + (prev_en - t.EN) / 2;
-                //}
+            //// 確実に発生する特殊効果
+            //int prev_en;
+            //if (w.IsWeaponClassifiedAs("減") && !t.SpecialEffectImmune("減"))
+            //{
+            //    msg = msg + wnickname + "が[" + t.Nickname + "]の" + Expression.Term("ＥＮ", t) + "を低下させた。;";
+            //    t.EN = GeneralLib.MaxLng((t.EN - t.MaxEN * (dmg / (double)t.MaxHP)), 0);
+            //}
+            //else if (w.IsWeaponClassifiedAs("奪") && !t.SpecialEffectImmune("奪"))
+            //{
+            //    msg = msg + Nickname + "は[" + t.Nickname + "]の" + Expression.Term("ＥＮ", t) + "を吸収した。;";
+            //    prev_en = t.EN;
+            //    t.EN = GeneralLib.MaxLng((t.EN - t.MaxEN * (dmg / (double)t.MaxHP)), 0);
+            //    EN = EN + (prev_en - t.EN) / 2;
+            //}
 
-                //// クリティカル時メッセージ
-                //if (is_critical || Strings.Len(critical_type) > 0)
-                //{
-                //    if (!be_quiet)
-                //    {
-                //        PilotMessage(wname + "(クリティカル)", msg_mode: "");
-                //    }
+            //// クリティカル時メッセージ
+            //if (is_critical || Strings.Len(critical_type) > 0)
+            //{
+            //    if (!be_quiet)
+            //    {
+            //        PilotMessage(wname + "(クリティカル)", msg_mode: "");
+            //    }
 
-                //    bool localIsSpecialEffectDefined4() { string argmain_situation = wname + "(クリティカル)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+            //    bool localIsSpecialEffectDefined4() { string argmain_situation = wname + "(クリティカル)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-                //    if (IsAnimationDefined(wname + "(クリティカル)", sub_situation: ""))
-                //    {
-                //        PlayAnimation(wname + "(クリティカル)", sub_situation: "");
-                //    }
-                //    else if (localIsSpecialEffectDefined4())
-                //    {
-                //        SpecialEffect(wname + "(クリティカル)", sub_situation: "");
-                //    }
-                //    else
-                //    {
-                //        Effect.CriticalEffect(critical_type, w, use_support_guard || use_protect_msg);
-                //    }
-                //}
+            //    if (IsAnimationDefined(wname + "(クリティカル)", sub_situation: ""))
+            //    {
+            //        PlayAnimation(wname + "(クリティカル)", sub_situation: "");
+            //    }
+            //    else if (localIsSpecialEffectDefined4())
+            //    {
+            //        SpecialEffect(wname + "(クリティカル)", sub_situation: "");
+            //    }
+            //    else
+            //    {
+            //        Effect.CriticalEffect(critical_type, w, use_support_guard || use_protect_msg);
+            //    }
+            //}
 
-                //ApplyDamage:
-                //;
+            ApplyDamage:
+                ;
 
                 // XXX 仮メッセージ
                 GUI.DisplaySysMessage(
