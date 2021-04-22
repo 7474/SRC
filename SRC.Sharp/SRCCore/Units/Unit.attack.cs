@@ -34,7 +34,7 @@ namespace SRCCore.Units
             string msg, buf;
             int k, i, j, num;
             Unit su = default, orig_t;
-            Unit[] partners;
+            //Unit[] partners;
             int tx, ty;
             string tarea;
             int prev_x = default, prev_y = default;
@@ -156,73 +156,68 @@ namespace SRCCore.Units
                 }
             }
 
-            //partners = new Unit[1];
-            //Commands.SelectedPartners = new Unit[1];
-            //if (attack_mode != "マップ攻撃" && attack_mode != "反射" && !second_attack)
-            //{
-            //    if (w.IsWeaponClassifiedAs("合"))
-            //    {
-            //        // 合体技の場合にパートナーをハイライト表示
-            //        if (WeaponMaxRange(w) == 1)
-            //        {
-            //            CombinationPartner("武装", w, partners, tx, ty);
-            //        }
-            //        else
-            //        {
-            //            CombinationPartner("武装", w, partners);
-            //        }
+            IList<Unit> partners = new List<Unit>();
+            Commands.SelectedPartners = new Unit[0];
+            if (attack_mode != "マップ攻撃" && attack_mode != "反射" && !second_attack)
+            {
+                if (w.IsWeaponClassifiedAs("合"))
+                {
+                    // 合体技の場合にパートナーをハイライト表示
+                    if (w.WeaponMaxRange() == 1)
+                    {
+                        partners = w.CombinationPartner("武装", tx, ty);
+                    }
+                    else
+                    {
+                        partners = w.CombinationPartner("武装");
+                    }
 
-            //        var loopTo = Information.UBound(partners);
-            //        for (i = 1; i <= loopTo; i++)
-            //        {
-            //            {
-            //                var withBlock = partners[i];
-            //                Map.MaskData[withBlock.x, withBlock.y] = false;
-            //            }
-            //        }
+                    foreach (var pu in partners)
+                    {
+                        Map.MaskData[pu.x, pu.y] = false;
+                    }
 
-            //        if (!SRC.BattleAnimation)
-            //        {
-            //            GUI.MaskScreen();
-            //        }
-            //    }
-            //    else if (!is_critical && dmg > 0 && Strings.InStr(attack_mode, "援護攻撃") == 0)
-            //    {
-            //        // 連携攻撃が発動するかを判定
-            //        // （連携攻撃は合体技では発動しない）
-            //        if (this.Weapon(w).MaxRange > 1)
-            //        {
-            //            su = LookForAttackHelp(x, y);
-            //        }
-            //        else
-            //        {
-            //            su = LookForAttackHelp(tx, ty);
-            //        }
+                    if (!SRC.BattleAnimation)
+                    {
+                        GUI.MaskScreen();
+                    }
+                }
+                else if (!is_critical && dmg > 0 && Strings.InStr(attack_mode, "援護攻撃") == 0)
+                {
+                    // 連携攻撃が発動するかを判定
+                    // （連携攻撃は合体技では発動しない）
+                    if (w.UpdatedWeaponData.MaxRange > 1)
+                    {
+                        su = LookForAttackHelp(x, y);
+                    }
+                    else
+                    {
+                        su = LookForAttackHelp(tx, ty);
+                    }
 
-            //        if (su is object)
-            //        {
-            //            // 連携攻撃発動
-            //            Map.MaskData[su.x, su.y] = false;
-            //            if (!SRC.BattleAnimation)
-            //            {
-            //                GUI.MaskScreen();
-            //            }
+                    if (su != null)
+                    {
+                        // 連携攻撃発動
+                        Map.MaskData[su.x, su.y] = false;
+                        if (!SRC.BattleAnimation)
+                        {
+                            GUI.MaskScreen();
+                        }
 
-            //            if (IsMessageDefined("連携攻撃(" + su.MainPilot().Name + ")", true))
-            //            {
-            //                PilotMessage("連携攻撃(" + su.MainPilot().Name + ")", msg_mode: "");
-            //            }
-            //            else
-            //            {
-            //                PilotMessage("連携攻撃(" + su.MainPilot().get_Nickname(false) + ")", msg_mode: "");
-            //            }
+                        if (IsMessageDefined("連携攻撃(" + su.MainPilot().Name + ")", true))
+                        {
+                            PilotMessage("連携攻撃(" + su.MainPilot().Name + ")", msg_mode: "");
+                        }
+                        else
+                        {
+                            PilotMessage("連携攻撃(" + su.MainPilot().get_Nickname(false) + ")", msg_mode: "");
+                        }
 
-            //            is_critical = true;
-            //            // UPGRADE_NOTE: オブジェクト su をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //            su = null;
-            //        }
-            //    }
-            //}
+                        is_critical = true;
+                        su = null;
+                    }
+                }
+            }
 
             // クリティカルならダメージ1.5倍
             if (is_critical)
@@ -416,188 +411,188 @@ namespace SRCCore.Units
                     prob = (prob / 2);
                 }
 
-                //// 攻撃を行ったことについてのシステムメッセージ
-                //if (!be_quiet)
-                //{
-                //    switch (Information.UBound(partners))
-                //    {
-                //        case 0:
-                //            {
-                //                // 通常攻撃
-                //                msg = Nickname + "は";
-                //                break;
-                //            }
+                // 攻撃を行ったことについてのシステムメッセージ
+                if (!be_quiet)
+                {
+                    switch (partners.Count)
+                    {
+                        case 0:
+                            {
+                                // 通常攻撃
+                                msg = Nickname + "は";
+                                break;
+                            }
 
-                //        case 1:
-                //            {
-                //                // ２体合体攻撃
-                //                if ((Nickname ?? "") != (partners[1].Nickname ?? ""))
-                //                {
-                //                    msg = Nickname + "は[" + partners[1].Nickname + "]と共に";
-                //                }
-                //                else if ((MainPilot().get_Nickname(false) ?? "") != (partners[1].MainPilot().get_Nickname(false) ?? ""))
-                //                {
-                //                    msg = MainPilot().get_Nickname(false) + "と[" + partners[1].MainPilot().get_Nickname(false) + "]は";
-                //                }
-                //                else
-                //                {
-                //                    msg = Nickname + "達は";
-                //                }
+                        case 1:
+                            {
+                                // ２体合体攻撃
+                                if ((Nickname ?? "") != (partners[1].Nickname ?? ""))
+                                {
+                                    msg = Nickname + "は[" + partners[1].Nickname + "]と共に";
+                                }
+                                else if ((MainPilot().get_Nickname(false) ?? "") != (partners[1].MainPilot().get_Nickname(false) ?? ""))
+                                {
+                                    msg = MainPilot().get_Nickname(false) + "と[" + partners[1].MainPilot().get_Nickname(false) + "]は";
+                                }
+                                else
+                                {
+                                    msg = Nickname + "達は";
+                                }
 
-                //                break;
-                //            }
+                                break;
+                            }
 
-                //        case 2:
-                //            {
-                //                // ３体合体攻撃
-                //                if ((Nickname ?? "") != (partners[1].Nickname ?? ""))
-                //                {
-                //                    msg = Nickname + "は[" + partners[1].Nickname + "]、[" + partners[2].Nickname + "]と共に";
-                //                }
-                //                else if ((MainPilot().get_Nickname(false) ?? "") != (partners[1].MainPilot().get_Nickname(false) ?? ""))
-                //                {
-                //                    msg = MainPilot().get_Nickname(false) + "は[" + partners[1].MainPilot().get_Nickname(false) + "]、[" + partners[2].MainPilot().get_Nickname(false) + "]と共に";
-                //                }
-                //                else
-                //                {
-                //                    msg = Nickname + "達は";
-                //                }
+                        case 2:
+                            {
+                                // ３体合体攻撃
+                                if ((Nickname ?? "") != (partners[1].Nickname ?? ""))
+                                {
+                                    msg = Nickname + "は[" + partners[1].Nickname + "]、[" + partners[2].Nickname + "]と共に";
+                                }
+                                else if ((MainPilot().get_Nickname(false) ?? "") != (partners[1].MainPilot().get_Nickname(false) ?? ""))
+                                {
+                                    msg = MainPilot().get_Nickname(false) + "は[" + partners[1].MainPilot().get_Nickname(false) + "]、[" + partners[2].MainPilot().get_Nickname(false) + "]と共に";
+                                }
+                                else
+                                {
+                                    msg = Nickname + "達は";
+                                }
 
-                //                break;
-                //            }
+                                break;
+                            }
 
-                //        default:
-                //            {
-                //                // ３体以上による合体攻撃
-                //                msg = Nickname + "達は";
-                //                break;
-                //            }
-                //    }
+                        default:
+                            {
+                                // ３体以上による合体攻撃
+                                msg = Nickname + "達は";
+                                break;
+                            }
+                    }
 
-                //    // ジャンプ攻撃
-                //    if (t.Area == "空中" && (w.IsWeaponClassifiedAs("武") || w.IsWeaponClassifiedAs("突") || w.IsWeaponClassifiedAs("接")) && !IsTransAvailable("空"))
-                //    {
-                //        msg = msg + "ジャンプし、";
-                //    }
+                    // ジャンプ攻撃
+                    if (t.Area == "空中" && (w.IsWeaponClassifiedAs("武") || w.IsWeaponClassifiedAs("突") || w.IsWeaponClassifiedAs("接")) && !IsTransAvailable("空"))
+                    {
+                        msg = msg + "ジャンプし、";
+                    }
 
-                //    if (second_attack)
-                //    {
-                //        msg = msg + "再度";
-                //    }
-                //    else if (attack_mode == "カウンター" || attack_mode == "先制攻撃")
-                //    {
-                //        msg = "先制攻撃！;" + msg + "先手を取り";
-                //    }
+                    if (second_attack)
+                    {
+                        msg = msg + "再度";
+                    }
+                    else if (attack_mode == "カウンター" || attack_mode == "先制攻撃")
+                    {
+                        msg = "先制攻撃！;" + msg + "先手を取り";
+                    }
 
-                //    // 攻撃の種類によってメッセージを切り替え
-                //    if (Strings.Right(wnickname, 2) == "攻撃" || Strings.Right(wnickname, 4) == "アタック" || wnickname == "突撃")
-                //    {
-                //        msg = msg + "[" + wnickname + "]をかけた。;";
-                //    }
-                //    else if (IsSpellWeapon(w))
-                //    {
-                //        if (Strings.Right(wnickname, 2) == "呪文")
-                //        {
-                //            msg = msg + "[" + wnickname + "]を唱えた。;";
-                //        }
-                //        else if (Strings.Right(wnickname, 2) == "の杖")
-                //        {
-                //            msg = msg + "[" + Strings.Left(wnickname, Strings.Len(wnickname) - 2) + "]の呪文を唱えた。;";
-                //        }
-                //        else
-                //        {
-                //            msg = msg + "[" + wnickname + "]の呪文を唱えた。;";
-                //        }
-                //    }
-                //    else if (w.IsWeaponClassifiedAs("盗"))
-                //    {
-                //        msg = msg + "[" + t.Nickname + "]の持ち物を盗もうとした。;";
-                //    }
-                //    else if (w.IsWeaponClassifiedAs("習"))
-                //    {
-                //        msg = msg + "[" + t.Nickname + "]の技を習得しようと試みた。;";
-                //    }
-                //    else if (w.IsWeaponClassifiedAs("実") && (Strings.InStr(wnickname, "ミサイル") > 0 || Strings.InStr(wnickname, "ロケット") > 0))
-                //    {
-                //        msg = msg + "[" + wnickname + "]を発射した。;";
-                //    }
-                //    else if (Strings.Right(wnickname, 1) == "息" || Strings.Right(wnickname, 3) == "ブレス" || Strings.Right(wnickname, 2) == "光線" || Strings.Right(wnickname, 1) == "光" || Strings.Right(wnickname, 3) == "ビーム" || Strings.Right(wnickname, 4) == "レーザー")
-                //    {
-                //        msg = msg + "[" + wnickname + "]を放った。;";
-                //    }
-                //    else if (Strings.Right(wnickname, 1) == "歌")
-                //    {
-                //        msg = msg + "[" + wnickname + "]を歌った。;";
-                //    }
-                //    else if (Strings.Right(wnickname, 2) == "踊り")
-                //    {
-                //        msg = msg + "[" + wnickname + "]を踊った。;";
-                //    }
-                //    else
-                //    {
-                //        msg = msg + "[" + wnickname + "]で攻撃をかけた。;";
-                //    }
+                    // 攻撃の種類によってメッセージを切り替え
+                    if (Strings.Right(wnickname, 2) == "攻撃" || Strings.Right(wnickname, 4) == "アタック" || wnickname == "突撃")
+                    {
+                        msg = msg + "[" + wnickname + "]をかけた。;";
+                    }
+                    else if (w.IsSpellWeapon())
+                    {
+                        if (Strings.Right(wnickname, 2) == "呪文")
+                        {
+                            msg = msg + "[" + wnickname + "]を唱えた。;";
+                        }
+                        else if (Strings.Right(wnickname, 2) == "の杖")
+                        {
+                            msg = msg + "[" + Strings.Left(wnickname, Strings.Len(wnickname) - 2) + "]の呪文を唱えた。;";
+                        }
+                        else
+                        {
+                            msg = msg + "[" + wnickname + "]の呪文を唱えた。;";
+                        }
+                    }
+                    else if (w.IsWeaponClassifiedAs("盗"))
+                    {
+                        msg = msg + "[" + t.Nickname + "]の持ち物を盗もうとした。;";
+                    }
+                    else if (w.IsWeaponClassifiedAs("習"))
+                    {
+                        msg = msg + "[" + t.Nickname + "]の技を習得しようと試みた。;";
+                    }
+                    else if (w.IsWeaponClassifiedAs("実") && (Strings.InStr(wnickname, "ミサイル") > 0 || Strings.InStr(wnickname, "ロケット") > 0))
+                    {
+                        msg = msg + "[" + wnickname + "]を発射した。;";
+                    }
+                    else if (Strings.Right(wnickname, 1) == "息" || Strings.Right(wnickname, 3) == "ブレス" || Strings.Right(wnickname, 2) == "光線" || Strings.Right(wnickname, 1) == "光" || Strings.Right(wnickname, 3) == "ビーム" || Strings.Right(wnickname, 4) == "レーザー")
+                    {
+                        msg = msg + "[" + wnickname + "]を放った。;";
+                    }
+                    else if (Strings.Right(wnickname, 1) == "歌")
+                    {
+                        msg = msg + "[" + wnickname + "]を歌った。;";
+                    }
+                    else if (Strings.Right(wnickname, 2) == "踊り")
+                    {
+                        msg = msg + "[" + wnickname + "]を踊った。;";
+                    }
+                    else
+                    {
+                        msg = msg + "[" + wnickname + "]で攻撃をかけた。;";
+                    }
 
-                //    // 命中率＆ＣＴ率表示
-                //    if (is_event)
-                //    {
-                //        // イベントによる攻撃の場合は命中率をスペシャルパワーの影響を含めずに表示
-                //        if (def_mode == "回避")
-                //        {
-                //            buf = "命中率 = " + GeneralLib.MinLng(w.HitProbability(t, false) / 2, 100) + "％" + "（" + SrcFormatter.Format(w.CriticalProbability(t, def_mode)) + "％）";
-                //        }
-                //        else
-                //        {
-                //            buf = "命中率 = " + GeneralLib.MinLng(w.HitProbability(t, false), 100) + "％" + "（" + SrcFormatter.Format(w.CriticalProbability(t, def_mode)) + "％）";
-                //        }
-                //    }
-                //    else
-                //    {
-                //        buf = "命中率 = " + GeneralLib.MinLng(prob, 100) + "％" + "（" + SrcFormatter.Format(w.CriticalProbability(t, def_mode)) + "％）";
-                //    }
+                    // 命中率＆ＣＴ率表示
+                    if (is_event)
+                    {
+                        // イベントによる攻撃の場合は命中率をスペシャルパワーの影響を含めずに表示
+                        if (def_mode == "回避")
+                        {
+                            buf = "命中率 = " + GeneralLib.MinLng(w.HitProbability(t, false) / 2, 100) + "％" + "（" + SrcFormatter.Format(w.CriticalProbability(t, def_mode)) + "％）";
+                        }
+                        else
+                        {
+                            buf = "命中率 = " + GeneralLib.MinLng(w.HitProbability(t, false), 100) + "％" + "（" + SrcFormatter.Format(w.CriticalProbability(t, def_mode)) + "％）";
+                        }
+                    }
+                    else
+                    {
+                        buf = "命中率 = " + GeneralLib.MinLng(prob, 100) + "％" + "（" + SrcFormatter.Format(w.CriticalProbability(t, def_mode)) + "％）";
+                    }
 
-                //    // 攻撃解説表示
-                //    if (IsSysMessageDefined(wname, sub_situation: ""))
-                //    {
-                //        // 「武器名(解説)」のメッセージを使用
-                //        SysMessage(wname, "", buf);
-                //    }
-                //    else if (IsSysMessageDefined("攻撃", sub_situation: ""))
-                //    {
-                //        // 「攻撃(解説)」のメッセージを使用
-                //        SysMessage("攻撃", "", buf);
-                //    }
-                //    else
-                //    {
-                //        GUI.DisplaySysMessage(msg + buf, SRC.BattleAnimation);
-                //    }
-                //}
+                    // 攻撃解説表示
+                    if (IsSysMessageDefined(wname, sub_situation: ""))
+                    {
+                        // 「武器名(解説)」のメッセージを使用
+                        SysMessage(wname, "", buf);
+                    }
+                    else if (IsSysMessageDefined("攻撃", sub_situation: ""))
+                    {
+                        // 「攻撃(解説)」のメッセージを使用
+                        SysMessage("攻撃", "", buf);
+                    }
+                    else
+                    {
+                        GUI.DisplaySysMessage(msg + buf, SRC.BattleAnimation);
+                    }
+                }
 
-                //msg = "";
+                msg = "";
 
-                //// 防御方法を表示
-                //switch (def_mode ?? "")
-                //{
-                //    case "回避":
-                //        {
-                //            if (t.IsConditionSatisfied("踊り"))
-                //            {
-                //                msg = t.Nickname + "は踊っている。;";
-                //            }
-                //            else
-                //            {
-                //                msg = t.Nickname + "は回避運動をとった。;";
-                //            }
+                // 防御方法を表示
+                switch (def_mode ?? "")
+                {
+                    case "回避":
+                        {
+                            if (t.IsConditionSatisfied("踊り"))
+                            {
+                                msg = t.Nickname + "は踊っている。;";
+                            }
+                            else
+                            {
+                                msg = t.Nickname + "は回避運動をとった。;";
+                            }
 
-                //            break;
-                //        }
+                            break;
+                        }
 
-                //    case "防御":
-                //        {
-                //            msg = t.Nickname + "は防御行動をとった。;";
-                //            break;
-                //        }
-                //}
+                    case "防御":
+                        {
+                            msg = t.Nickname + "は防御行動をとった。;";
+                            break;
+                        }
+                }
 
                 //// スペシャルパワー「必殺」「瀕死」
                 //if (IsUnderSpecialPowerEffect("絶対破壊") || IsUnderSpecialPowerEffect("絶対瀕死"))

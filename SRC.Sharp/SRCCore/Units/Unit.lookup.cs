@@ -48,7 +48,8 @@ namespace SRCCore.Units
         // (tx,ty)の地点の周囲に「連携攻撃」を行ってくれるユニットがいるかどうかを判定
         public Unit LookForAttackHelp(int tx, int ty)
         {
-            throw new NotImplementedException();
+            return null;
+            // TODO Impl LookForAttackHelp
             //Unit LookForAttackHelpRet = default;
             //Unit u;
             //int i;

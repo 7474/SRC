@@ -7,6 +7,7 @@ using SRCCore.Maps;
 using SRCCore.Models;
 using SRCCore.VB;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SRCCore.Units
@@ -5242,9 +5243,10 @@ namespace SRCCore.Units
         }
 
         // 合体技のパートナーを探す
-        public void CombinationPartner(string ctype_Renamed, Unit[] partners, int tx = 0, int ty = 0, bool check_formation = false)
+        public IList<Unit> CombinationPartner(string ctype_Renamed, int tx = 0, int ty = 0, bool check_formation = false)
         {
-            throw new NotImplementedException();
+            return new List<Unit>();
+            // TODO Impl CombinationPartner
             //Unit u;
             //string uname;
             //int j, i, k;
