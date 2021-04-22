@@ -184,8 +184,8 @@ namespace SRCCore.Pilots
         public void Update()
         {
             Pilot p;
-            int i;
-            foreach (Pilot currentP in colPilots)
+            // XXX Clone List
+            foreach (Pilot currentP in colPilots.List.ToList())
             {
                 p = currentP;
                 if (p.Party != "味方" || !p.Alive)
