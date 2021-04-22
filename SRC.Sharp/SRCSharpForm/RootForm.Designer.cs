@@ -32,6 +32,8 @@ namespace SRCSharpForm
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RootForm));
             this.label1 = new System.Windows.Forms.Label();
             this.labTitle = new System.Windows.Forms.Label();
+            this.btnSelectFile = new System.Windows.Forms.Button();
+            this.btnConfigure = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -55,17 +57,39 @@ namespace SRCSharpForm
             this.labTitle.TabIndex = 7;
             this.labTitle.Text = "SRC#Form";
             // 
-            // SRCSharpForm
+            // btnSelectFile
+            // 
+            this.btnSelectFile.Location = new System.Drawing.Point(12, 166);
+            this.btnSelectFile.Name = "btnSelectFile";
+            this.btnSelectFile.Size = new System.Drawing.Size(75, 23);
+            this.btnSelectFile.TabIndex = 9;
+            this.btnSelectFile.Text = "ファイル選択";
+            this.btnSelectFile.UseVisualStyleBackColor = true;
+            this.btnSelectFile.Click += new System.EventHandler(this.btnSelectFile_Click);
+            // 
+            // btnConfigure
+            // 
+            this.btnConfigure.Location = new System.Drawing.Point(93, 166);
+            this.btnConfigure.Name = "btnConfigure";
+            this.btnConfigure.Size = new System.Drawing.Size(75, 23);
+            this.btnConfigure.TabIndex = 10;
+            this.btnConfigure.Text = "設定";
+            this.btnConfigure.UseVisualStyleBackColor = true;
+            this.btnConfigure.Click += new System.EventHandler(this.btnConfigure_Click);
+            // 
+            // RootForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(304, 201);
+            this.Controls.Add(this.btnConfigure);
+            this.Controls.Add(this.btnSelectFile);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.labTitle);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "SRCSharpForm";
+            this.Name = "RootForm";
             this.Text = "SRC#Form";
             this.Shown += new System.EventHandler(this.SRCSharpForm_Shown);
             this.ResumeLayout(false);
@@ -77,6 +101,8 @@ namespace SRCSharpForm
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labTitle;
+        private System.Windows.Forms.Button btnSelectFile;
+        private System.Windows.Forms.Button btnConfigure;
     }
 }
 

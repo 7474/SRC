@@ -673,47 +673,17 @@ namespace SRCCore.Events
                                 error_found = true;
                             }
 
-                            var i = command.ArgNum;
-                            while (i > 1)
+                            var opts = new string[]
                             {
-                                switch (command.GetArg(i) ?? "")
-                                {
-                                    case "通常":
-                                        {
-                                            break;
-                                        }
-
-                                    case "拡大":
-                                        {
-                                            break;
-                                        }
-
-                                    case "連続表示":
-                                        {
-                                            break;
-                                        }
-
-                                    case "キャンセル可":
-                                        {
-                                            break;
-                                        }
-
-                                    case "終了":
-                                        {
-                                            i = 3;
-                                            break;
-                                        }
-
-                                    default:
-                                        {
-                                            break;
-                                        }
-                                }
-
-                                i = i - 1;
-                            }
-
-                            if (i < 3)
+                                "通常",
+                                "拡大",
+                                "連続表示",
+                                "キャンセル可",
+                                "終了",
+                            };
+                            if (command.ArgNum < 3 
+                                || command.GetArgs().ToList()
+                                    .FindIndex(x => opts.Contains(x.strArg)) < 3)
                             {
                                 cmdStack.Push(CmdType.AskCmd);
                                 cmdPosStack.Push(command.EventData.ID);
@@ -846,7 +816,7 @@ namespace SRCCore.Events
                                     case CmdType.AskCmd:
                                     case CmdType.QuestionCmd:
                                         {
-                                            DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                                            DisplayEventErrorMessage(cmdPosStack.Peek(), "Talk/AutoTalk/Ask/Questionに対応するEndがありません");
                                             cmdStack.Pop();
                                             cmdPosStack.Pop();
                                             error_found = true;

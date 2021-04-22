@@ -81,6 +81,11 @@ namespace SRCCore.CmdDatas
 
         protected abstract int ExecInternal();
 
+        public IEnumerable<CmdArgument> GetArgs()
+        {
+            return Enumerable.Range(1, ArgNum).Select(x => GetArgRaw(x));
+        }
+
         // idx番目の引数を返す
         public CmdArgument GetArgRaw(int idx)
         {

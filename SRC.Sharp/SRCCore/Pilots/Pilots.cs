@@ -180,85 +180,71 @@ namespace SRCCore.Pilots
             return Item2(Index) != null;
         }
 
-        //        // リストのアップデート
-        //        public void Update()
-        //        {
-        //            Pilot p;
-        //            int i;
-        //            foreach (Pilot currentP in colPilots)
-        //            {
-        //                p = currentP;
-        //                if (p.Party != "味方" | !p.Alive)
-        //                {
-        //                    // 味方でないパイロットや破棄されたパイロットは削除
-        //                    Delete(p.ID);
-        //                }
-        //                else if (p.IsAdditionalPilot)
-        //                {
-        //                    // 追加パイロットは削除
-        //                    if (p.Unit_Renamed is object)
-        //                    {
-        //                        {
-        //                            var withBlock = p.Unit_Renamed;
-        //                            // UPGRADE_NOTE: オブジェクト p.Unit.pltAdditionalPilot をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-        //                            withBlock.pltAdditionalPilot = null;
-        //                            var loopTo = withBlock.CountOtherForm();
-        //                            for (i = 1; i <= loopTo; i++)
-        //                            {
-        //                                // UPGRADE_NOTE: オブジェクト p.Unit.OtherForm().pltAdditionalPilot をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-        //                                Unit localOtherForm() { object argIndex1 = i; var ret = withBlock.OtherForm(argIndex1); return ret; }
+        // リストのアップデート
+        public void Update()
+        {
+            Pilot p;
+            // XXX Clone List
+            foreach (Pilot currentP in colPilots.List.ToList())
+            {
+                p = currentP;
+                if (p.Party != "味方" || !p.Alive)
+                {
+                    // 味方でないパイロットや破棄されたパイロットは削除
+                    Delete(p.ID);
+                }
+                else if (p.IsAdditionalPilot)
+                {
+                    // 追加パイロットは削除
+                    if (p.Unit is object)
+                    {
+                        var u = p.Unit;
+                        u.pltAdditionalPilot = null;
+                        foreach (var of in u.OtherForms)
+                        {
+                            of.pltAdditionalPilot = null;
+                        }
+                    }
 
-        //                                localOtherForm().pltAdditionalPilot = null;
-        //                            }
-        //                        }
-        //                    }
+                    Delete(p.ID);
+                }
+                else if (p.IsAdditionalSupport)
+                {
+                    // 追加サポートは削除
+                    if (p.Unit is object)
+                    {
+                        var u = p.Unit;
+                        u.pltAdditionalSupport = null;
+                        foreach (var of in u.OtherForms)
+                        {
+                            of.pltAdditionalSupport = null;
+                        }
+                    }
 
-        //                    Delete(p.ID);
-        //                }
-        //                else if (p.IsAdditionalSupport)
-        //                {
-        //                    // 追加サポートは削除
-        //                    if (p.Unit_Renamed is object)
-        //                    {
-        //                        {
-        //                            var withBlock1 = p.Unit_Renamed;
-        //                            // UPGRADE_NOTE: オブジェクト p.Unit.pltAdditionalSupport をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-        //                            withBlock1.pltAdditionalSupport = null;
-        //                            var loopTo1 = withBlock1.CountOtherForm();
-        //                            for (i = 1; i <= loopTo1; i++)
-        //                            {
-        //                                // UPGRADE_NOTE: オブジェクト p.Unit.OtherForm().pltAdditionalSupport をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-        //                                Unit localOtherForm1() { object argIndex1 = i; var ret = withBlock1.OtherForm(argIndex1); return ret; }
+                    Delete(p.ID);
+                }
+                else if (p.Nickname0 == "パイロット不在")
+                {
+                    // ダミーパイロットは削除
+                    Delete(p.ID);
+                }
+                else if (p.Unit != null)
+                {
+                    if (p.Unit.IsFeatureAvailable("召喚ユニット"))
+                    {
+                        // 召喚ユニットの追加パイロットも削除
+                        Delete(p.ID);
+                    }
+                }
+            }
 
-        //                                localOtherForm1().pltAdditionalSupport = null;
-        //                            }
-        //                        }
-        //                    }
-
-        //                    Delete(p.ID);
-        //                }
-        //                else if (p.Nickname0 == "パイロット不在")
-        //                {
-        //                    // ダミーパイロットは削除
-        //                    Delete(p.ID);
-        //                }
-        //                else if (p.Unit_Renamed is object)
-        //                {
-        //                    if (p.Unit_Renamed.IsFeatureAvailable("召喚ユニット"))
-        //                    {
-        //                        // 召喚ユニットの追加パイロットも削除
-        //                        Delete(p.ID);
-        //                    }
-        //                }
-        //            }
-
-        //            // 残ったパイロットを全回復
-        //            foreach (Pilot currentP1 in colPilots)
-        //            {
-        //                p = currentP1;
-        //                p.FullRecover();
-        //            }
-        //        }
+            // 残ったパイロットを全回復
+            foreach (Pilot currentP1 in colPilots)
+            {
+                p = currentP1;
+                p.FullRecover();
+            }
+        }
 
         //        // ファイルにデータをセーブ
         //        public void Save()
@@ -293,7 +279,7 @@ namespace SRCCore.Pilots
         //                    }
 
         //                    FileSystem.WriteLine(SRC.SaveDataFileNumber, p.Level, p.Exp);
-        //                    if (p.Unit_Renamed is null)
+        //                    if (p.Unit is null)
         //                    {
         //                        if (p.Away)
         //                        {
@@ -306,7 +292,7 @@ namespace SRCCore.Pilots
         //                    }
         //                    else
         //                    {
-        //                        FileSystem.WriteLine(SRC.SaveDataFileNumber, p.Unit_Renamed.ID);
+        //                        FileSystem.WriteLine(SRC.SaveDataFileNumber, p.Unit.ID);
         //                    }
         //                }
         //            }
@@ -447,13 +433,13 @@ namespace SRCCore.Pilots
         //                    {
         //                        Pilot localItem2() { object argIndex1 = pname; var ret = Item(argIndex1); return ret; }
 
-        //                        localItem2().Unit_Renamed = u;
+        //                        localItem2().Unit = u;
         //                    }
         //                    else
         //                    {
         //                        Pilot localItem3() { object argIndex1 = GeneralLib.LIndex(pname, 2); var ret = Item(argIndex1); return ret; }
 
-        //                        localItem3().Unit_Renamed = u;
+        //                        localItem3().Unit = u;
         //                    }
         //                }
         //                else

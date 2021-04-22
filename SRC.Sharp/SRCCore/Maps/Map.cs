@@ -690,7 +690,7 @@ namespace SRCCore.Maps
         // マップデータをクリア
         public void ClearMap()
         {
-            throw new NotImplementedException();
+            // TODO Impl ClearMap
             //int ret;
             //MapFileName = "";
             //MapWidth = 1;
