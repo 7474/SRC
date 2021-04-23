@@ -31,7 +31,6 @@ namespace SRCCore.Units
             bool use_protect_msg;
             bool use_support_guard;
             string wname, wnickname;
-            string fname, uname = default;
             string msg, buf;
             int k, i, j, num;
             Unit su = default, orig_t;
@@ -1117,7 +1116,7 @@ namespace SRCCore.Units
                                 GUI.UpdateMessageForm(this, null);
                             }
 
-                            fname = t.FeatureName0("エネルギーシールド");
+                            var fname = t.FeatureName0("エネルギーシールド");
                             if (!be_quiet)
                             {
                                 if (t.IsMessageDefined("攻撃無効化(" + fname + ")"))
@@ -1355,7 +1354,7 @@ namespace SRCCore.Units
                         {
                             if (separate_parts)
                             {
-                                fname = t.FeatureName("パーツ分離");
+                                var fname = t.FeatureName("パーツ分離");
                                 if (t.IsMessageDefined("破壊時分離(" + t.Name + ")"))
                                 {
                                     t.PilotMessage("破壊時分離(" + t.Name + ")", msg_mode: "");
@@ -1508,7 +1507,7 @@ namespace SRCCore.Units
                     {
                         if (t.IsFeatureAvailable("シールド"))
                         {
-                            fname = t.FeatureName("シールド");
+                            var fname = t.FeatureName("シールド");
                             if (t.IsSysMessageDefined("シールド防御", fname))
                             {
                                 t.SysMessage("シールド防御", fname, add_msg: "");
@@ -1521,7 +1520,7 @@ namespace SRCCore.Units
                         else if (t.IsFeatureAvailable("エネルギーシールド") && t.EN > 5 && !w.IsWeaponClassifiedAs("無") && !IsUnderSpecialPowerEffect("防御能力無効化"))
                         {
                             t.EN = t.EN - 5;
-                            fname = t.FeatureName("エネルギーシールド");
+                            var fname = t.FeatureName("エネルギーシールド");
                             if (t.IsSysMessageDefined("シールド防御", fname))
                             {
                                 t.SysMessage("シールド防御", fname, add_msg: "");
@@ -1533,7 +1532,7 @@ namespace SRCCore.Units
                         }
                         else if (t.IsFeatureAvailable("小型シールド"))
                         {
-                            fname = t.FeatureName("小型シールド");
+                            var fname = t.FeatureName("小型シールド");
                             if (t.IsSysMessageDefined("シールド防御", fname))
                             {
                                 t.SysMessage("シールド防御", fname, add_msg: "");
@@ -1545,7 +1544,7 @@ namespace SRCCore.Units
                         }
                         else if (t.IsFeatureAvailable("大型シールド"))
                         {
-                            fname = t.FeatureName("大型シールド");
+                            var fname = t.FeatureName("大型シールド");
                             if (t.IsSysMessageDefined("シールド防御", fname))
                             {
                                 t.SysMessage("シールド防御", fname, add_msg: "");
@@ -1557,7 +1556,7 @@ namespace SRCCore.Units
                         }
                         else if (t.IsFeatureAvailable("アクティブシールド"))
                         {
-                            fname = t.FeatureName("アクティブシールド");
+                            var fname = t.FeatureName("アクティブシールド");
                             if (t.IsSysMessageDefined("シールド防御", fname))
                             {
                                 t.SysMessage("シールド防御", fname, add_msg: "");
@@ -1600,6 +1599,7 @@ namespace SRCCore.Units
                                 if (t.IsFeatureAvailable("ラーニング可能技"))
                                 {
                                     buf = t.FeatureData("ラーニング可能技");
+                                    string fname;
                                     switch (GeneralLib.LIndex(buf, 2) ?? "")
                                     {
                                         case "表示":
@@ -1953,7 +1953,7 @@ namespace SRCCore.Units
                         // ユニット破壊によるパーツ分離
                         if (separate_parts)
                         {
-                            uname = GeneralLib.LIndex(t.FeatureData("パーツ分離"), 2);
+                            var uname = GeneralLib.LIndex(t.FeatureData("パーツ分離"), 2);
                             if (!t.IsHero())
                             {
                                 if (SRC.BattleAnimation)
@@ -1966,7 +1966,7 @@ namespace SRCCore.Units
                                 }
                             }
 
-                            fname = t.FeatureName("パーツ分離");
+                            var fname = t.FeatureName("パーツ分離");
                             if (t.IsAnimationDefined("破壊時分離(" + t.Name + ")", sub_situation: ""))
                             {
                                 t.PlayAnimation("破壊時分離(" + t.Name + ")", sub_situation: "");
@@ -2451,7 +2451,7 @@ namespace SRCCore.Units
                                 {
                                     if (cf.IsFeatureAvailable("パーツ分離"))
                                     {
-                                        uname = GeneralLib.LIndex(cf.FeatureData("パーツ分離"), 2);
+                                        var uname = GeneralLib.LIndex(cf.FeatureData("パーツ分離"), 2);
 
                                         if (cf.OtherForm(uname).IsAbleToEnter(cf.x, cf.y))
                                         {
@@ -2481,7 +2481,7 @@ namespace SRCCore.Units
                                     // XXX 変形技
                                     if (cf.IsFeatureAvailable("変形技"))
                                     {
-                                        uname = "";
+                                        var uname = "";
                                         var fd = cf.Features.FirstOrDefault(x => x.Name == "変形技" && x.DataL[0] == wname);
                                         if (fd != null)
                                         {
@@ -2506,7 +2506,7 @@ namespace SRCCore.Units
                                     }
                                     else if (cf.IsFeatureAvailable("ノーマルモード"))
                                     {
-                                        uname = GeneralLib.LIndex(cf.FeatureData("ノーマルモード"), 1);
+                                        var uname = GeneralLib.LIndex(cf.FeatureData("ノーマルモード"), 1);
                                         if (cf.OtherForm(uname).IsAbleToEnter(cf.x, cf.y))
                                         {
                                             cf.Transform(uname);
@@ -2565,6 +2565,7 @@ namespace SRCCore.Units
                                 {
                                     if (cf.IsFeatureAvailable("パーツ分離"))
                                     {
+                                        var uname = GeneralLib.LIndex(cf.FeatureData("パーツ分離"), 1);
                                         if (cf.OtherForm(uname).IsAbleToEnter(cf.x, cf.y))
                                         {
                                             cf.Transform(uname);
@@ -2592,7 +2593,7 @@ namespace SRCCore.Units
                                 {
                                     if (cf.IsFeatureAvailable("ノーマルモード"))
                                     {
-                                        uname = GeneralLib.LIndex(cf.FeatureData("ノーマルモード"), 1);
+                                        var uname = GeneralLib.LIndex(cf.FeatureData("ノーマルモード"), 1);
 
                                         if (cf.OtherForm(uname).IsAbleToEnter(cf.x, cf.y))
                                         {
@@ -2610,249 +2611,238 @@ namespace SRCCore.Units
                     // ＨＰ消費攻撃による自殺
                     // 変形技
 
-                    //// 能力コピー
-                    //if (CurrentForm().Status == "破壊")
-                    //{
-                    //}
-                    //else if (w.IsWeaponClassifiedAs("自"))
-                    //{
-                    //    if (IsFeatureAvailable("パーツ分離"))
-                    //    {
-                    //        uname = GeneralLib.LIndex(FeatureData(argIndex63), 2);
-                    //        Unit localOtherForm9() { object argIndex1 = uname; var ret = OtherForm(argIndex1); return ret; }
+                    // 能力コピー
+                    if (CurrentForm().Status == "破壊")
+                    {
+                    }
+                    else if (w.IsWeaponClassifiedAs("自"))
+                    {
+                        if (IsFeatureAvailable("パーツ分離"))
+                        {
+                            var uname = GeneralLib.LIndex(FeatureData("パーツ分離"), 2);
 
-                    //        if (localOtherForm9().IsAbleToEnter(x, y))
-                    //        {
-                    //            Transform(uname);
-                    //            {
-                    //                var withBlock13 = CurrentForm();
-                    //                withBlock13.HP = withBlock13.MaxHP;
-                    //                withBlock13.UsedAction = withBlock13.MaxAction();
-                    //            }
+                            if (OtherForm(uname).IsAbleToEnter(x, y))
+                            {
+                                Transform(uname);
+                                {
+                                    var withBlock13 = CurrentForm();
+                                    withBlock13.HP = withBlock13.MaxHP;
+                                    withBlock13.UsedAction = withBlock13.MaxAction();
+                                }
 
-                    //            fname = FeatureName("パーツ分離");
-                    //            bool localIsSysMessageDefined3() { string argmain_situation = "破壊時分離(" + fname + ")"; string argsub_situation = ""; var ret = IsSysMessageDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+                                var fname = FeatureName("パーツ分離");
+                                if (IsSysMessageDefined("破壊時分離(" + Name + ")", sub_situation: ""))
+                                {
+                                    SysMessage("破壊時分離(" + Name + ")", sub_situation: "", add_msg: "");
+                                }
+                                else if (IsSysMessageDefined("破壊時分離(" + fname + ")"))
+                                {
+                                    SysMessage("破壊時分離(" + fname + ")", sub_situation: "", add_msg: "");
+                                }
+                                else if (IsSysMessageDefined("破壊時分離", sub_situation: ""))
+                                {
+                                    SysMessage("破壊時分離", sub_situation: "", add_msg: "");
+                                }
+                                else if (IsSysMessageDefined("分離(" + Name + ")"))
+                                {
+                                    SysMessage("分離(" + Name + ")", sub_situation: "", add_msg: "");
+                                }
+                                else if (IsSysMessageDefined("分離(" + fname + ")"))
+                                {
+                                    SysMessage("分離(" + fname + ")", sub_situation: "", add_msg: "");
+                                }
+                                else if (IsSysMessageDefined("分離", sub_situation: ""))
+                                {
+                                    SysMessage("分離", sub_situation: "", add_msg: "");
+                                }
+                                else
+                                {
+                                    GUI.DisplaySysMessage(Nickname + "は破壊されたパーツを分離させた。");
+                                }
+                            }
+                            else
+                            {
+                                Die();
+                            }
+                        }
+                        else
+                        {
+                            Die();
+                        }
+                    }
+                    else if (w.IsWeaponClassifiedAs("失") && HP == 0)
+                    {
+                        Die();
+                    }
+                    else if (w.IsWeaponClassifiedAs("変"))
+                    {
+                        if (IsFeatureAvailable("変形技"))
+                        {
+                            var loopTo7 = CountFeature();
+                            for (i = 1; i <= loopTo7; i++)
+                            {
+                                string localFeature1() { object argIndex1 = i; var ret = Feature(argIndex1); return ret; }
 
-                    //            bool localIsSysMessageDefined4() { string argmain_situation = "分離(" + Name + ")"; string argsub_situation = ""; var ret = IsSysMessageDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+                                string localFeatureData3() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
-                    //            bool localIsSysMessageDefined5() { string argmain_situation = "分離(" + fname + ")"; string argsub_situation = ""; var ret = IsSysMessageDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+                                string localLIndex2() { string arglist = hsd78be329e21a495e9d12e8227830c1b1(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                    //            if (IsSysMessageDefined("破壊時分離(" + Name + ")", sub_situation: ""))
-                    //            {
-                    //                SysMessage("破壊時分離(" + Name + ")", sub_situation: "", add_msg: "");
-                    //            }
-                    //            else if (localIsSysMessageDefined3())
-                    //            {
-                    //                SysMessage("破壊時分離(" + fname + ")", sub_situation: "", add_msg: "");
-                    //            }
-                    //            else if (IsSysMessageDefined("破壊時分離", sub_situation: ""))
-                    //            {
-                    //                SysMessage("破壊時分離", sub_situation: "", add_msg: "");
-                    //            }
-                    //            else if (localIsSysMessageDefined4())
-                    //            {
-                    //                SysMessage("分離(" + Name + ")", sub_situation: "", add_msg: "");
-                    //            }
-                    //            else if (localIsSysMessageDefined5())
-                    //            {
-                    //                SysMessage("分離(" + fname + ")", sub_situation: "", add_msg: "");
-                    //            }
-                    //            else if (IsSysMessageDefined("分離", sub_situation: ""))
-                    //            {
-                    //                SysMessage("分離", sub_situation: "", add_msg: "");
-                    //            }
-                    //            else
-                    //            {
-                    //                GUI.DisplaySysMessage(Nickname + "は破壊されたパーツを分離させた。");
-                    //            }
-                    //        }
-                    //        else
-                    //        {
-                    //            Die();
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        Die();
-                    //    }
-                    //}
-                    //else if (w.IsWeaponClassifiedAs("失") && HP == 0)
-                    //{
-                    //    Die();
-                    //}
-                    //else if (w.IsWeaponClassifiedAs("変"))
-                    //{
-                    //    if (IsFeatureAvailable("変形技"))
-                    //    {
-                    //        var loopTo7 = CountFeature();
-                    //        for (i = 1; i <= loopTo7; i++)
-                    //        {
-                    //            string localFeature1() { object argIndex1 = i; var ret = Feature(argIndex1); return ret; }
+                                if (localFeature1() == "変形技" && (localLIndex2() ?? "") == (wname ?? ""))
+                                {
+                                    string localFeatureData2() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
-                    //            string localFeatureData3() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
+                                    uname = GeneralLib.LIndex(localFeatureData2(), 2);
+                                    Unit localOtherForm10() { object argIndex1 = uname; var ret = OtherForm(argIndex1); return ret; }
 
-                    //            string localLIndex2() { string arglist = hsd78be329e21a495e9d12e8227830c1b1(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
+                                    if (localOtherForm10().IsAbleToEnter(x, y))
+                                    {
+                                        Transform(uname);
+                                    }
 
-                    //            if (localFeature1() == "変形技" && (localLIndex2() ?? "") == (wname ?? ""))
-                    //            {
-                    //                string localFeatureData2() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
+                                    break;
+                                }
+                            }
 
-                    //                uname = GeneralLib.LIndex(localFeatureData2(), 2);
-                    //                Unit localOtherForm10() { object argIndex1 = uname; var ret = OtherForm(argIndex1); return ret; }
+                            if ((uname ?? "") != (CurrentForm().Name ?? ""))
+                            {
+                                if (IsFeatureAvailable("ノーマルモード"))
+                                {
+                                    uname = GeneralLib.LIndex(FeatureData("ノーマルモード"), 1);
+                                    if (OtherForm(uname).IsAbleToEnter(x, y))
+                                    {
+                                        Transform(uname);
+                                    }
+                                }
+                            }
+                        }
+                        else if (IsFeatureAvailable("ノーマルモード"))
+                        {
+                            uname = GeneralLib.LIndex(FeatureData(argIndex66), 1);
+                            Unit localOtherForm12() { object argIndex1 = uname; var ret = OtherForm(argIndex1); return ret; }
 
-                    //                if (localOtherForm10().IsAbleToEnter(x, y))
-                    //                {
-                    //                    Transform(uname);
-                    //                }
+                            if (localOtherForm12().IsAbleToEnter(x, y))
+                            {
+                                Transform(uname);
+                            }
+                        }
+                    }
 
-                    //                break;
-                    //            }
-                    //        }
+                    // アイテムを消費
+                    else if (Weapon(w).IsItem() && Bullet(w) == 0 && MaxBullet(w) > 0)
+                    {
+                        // アイテムを削除
+                        num = Data.CountWeapon();
+                        num = (num + MainPilot().Data.CountWeapon());
+                        var loopTo8 = CountPilot();
+                        for (i = 2; i <= loopTo8; i++)
+                        {
+                            Pilot localPilot2() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
 
-                    //        if ((uname ?? "") != (CurrentForm().Name ?? ""))
-                    //        {
-                    //            if (IsFeatureAvailable("ノーマルモード"))
-                    //            {
-                    //                uname = GeneralLib.LIndex(FeatureData(argIndex65), 1);
-                    //                Unit localOtherForm11() { object argIndex1 = uname; var ret = OtherForm(argIndex1); return ret; }
+                            num = (num + localPilot2().Data.CountWeapon());
+                        }
 
-                    //                if (localOtherForm11().IsAbleToEnter(x, y))
-                    //                {
-                    //                    Transform(uname);
-                    //                }
-                    //            }
-                    //        }
-                    //    }
-                    //    else if (IsFeatureAvailable("ノーマルモード"))
-                    //    {
-                    //        uname = GeneralLib.LIndex(FeatureData(argIndex66), 1);
-                    //        Unit localOtherForm12() { object argIndex1 = uname; var ret = OtherForm(argIndex1); return ret; }
+                        var loopTo9 = CountSupport();
+                        for (i = 2; i <= loopTo9; i++)
+                        {
+                            Pilot localSupport2() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
 
-                    //        if (localOtherForm12().IsAbleToEnter(x, y))
-                    //        {
-                    //            Transform(uname);
-                    //        }
-                    //    }
-                    //}
+                            num = (num + localSupport2().Data.CountWeapon());
+                        }
 
-                    //// アイテムを消費
-                    //else if (Weapon(w).IsItem() && Bullet(w) == 0 && MaxBullet(w) > 0)
-                    //{
-                    //    // アイテムを削除
-                    //    num = Data.CountWeapon();
-                    //    num = (num + MainPilot().Data.CountWeapon());
-                    //    var loopTo8 = CountPilot();
-                    //    for (i = 2; i <= loopTo8; i++)
-                    //    {
-                    //        Pilot localPilot2() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
+                        if (IsFeatureAvailable("追加サポート"))
+                        {
+                            num = (num + AdditionalSupport().Data.CountWeapon());
+                        }
 
-                    //        num = (num + localPilot2().Data.CountWeapon());
-                    //    }
+                        foreach (Item itm in colItem)
+                        {
+                            num = (num + itm.CountWeapon());
+                            if (w <= num)
+                            {
+                                itm.Exist = false;
+                                DeleteItem((object)itm.ID);
+                                break;
+                            }
+                        }
+                    }
+                    else if (is_hit && (w.IsWeaponClassifiedAs("写") || w.IsWeaponClassifiedAs("化")) && (dmg > 0 || w.!IsWeaponClassifiedAs("殺")))
+                    {
+                        w.CheckMetamorphAttack(t, def_mode);
+                    }
 
-                    //    var loopTo9 = CountSupport();
-                    //    for (i = 2; i <= loopTo9; i++)
-                    //    {
-                    //        Pilot localSupport2() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
+                    {
+                        var withBlock14 = CurrentForm();
+                        // スペシャルパワーの効果を削除
+                        if (Strings.InStr(attack_mode, "援護攻撃") == 0)
+                        {
+                            if (withBlock14.IsUnderSpecialPowerEffect("攻撃後消耗"))
+                            {
+                                withBlock14.AddCondition("消耗", 1, cdata: "");
+                            }
 
-                    //        num = (num + localSupport2().Data.CountWeapon());
-                    //    }
+                            withBlock14.RemoveSpecialPowerInEffect("攻撃");
+                            if (is_hit)
+                            {
+                                withBlock14.RemoveSpecialPowerInEffect("命中");
+                            }
+                        }
 
-                    //    if (IsFeatureAvailable("追加サポート"))
-                    //    {
-                    //        num = (num + AdditionalSupport().Data.CountWeapon());
-                    //    }
+                        // 戦闘アニメで変更されたユニット画像を元に戻す
+                        if (withBlock14.IsConditionSatisfied("ユニット画像"))
+                        {
+                            withBlock14.DeleteCondition("ユニット画像");
+                            withBlock14.BitmapID = GUI.MakeUnitBitmap(CurrentForm());
+                            GUI.PaintUnitBitmap(CurrentForm());
+                        }
 
-                    //    foreach (Item itm in colItem)
-                    //    {
-                    //        num = (num + itm.CountWeapon());
-                    //        if (w <= num)
-                    //        {
-                    //            itm.Exist = false;
-                    //            DeleteItem((object)itm.ID);
-                    //            break;
-                    //        }
-                    //    }
-                    //}
-                    //else if (is_hit && (w.IsWeaponClassifiedAs("写") || w.IsWeaponClassifiedAs("化")) && (dmg > 0 || w.!IsWeaponClassifiedAs("殺")))
-                    //{
-                    //    w.CheckMetamorphAttack(t, def_mode);
-                    //}
+                        if (withBlock14.IsConditionSatisfied("非表示付加"))
+                        {
+                            withBlock14.DeleteCondition("非表示付加");
+                            withBlock14.BitmapID = GUI.MakeUnitBitmap(CurrentForm());
+                            GUI.PaintUnitBitmap(CurrentForm());
+                        }
 
-                    //{
-                    //    var withBlock14 = CurrentForm();
-                    //    // スペシャルパワーの効果を削除
-                    //    if (Strings.InStr(attack_mode, "援護攻撃") == 0)
-                    //    {
-                    //        if (withBlock14.IsUnderSpecialPowerEffect("攻撃後消耗"))
-                    //        {
-                    //            withBlock14.AddCondition("消耗", 1, cdata: "");
-                    //        }
+                        var loopTo10 = Information.UBound(partners);
+                        for (i = 1; i <= loopTo10; i++)
+                        {
+                            {
+                                var withBlock15 = partners[i].CurrentForm();
+                                if (withBlock15.IsConditionSatisfied("ユニット画像"))
+                                {
+                                    withBlock15.DeleteCondition("ユニット画像");
+                                    withBlock15.BitmapID = GUI.MakeUnitBitmap(partners[i].CurrentForm());
+                                    GUI.PaintUnitBitmap(partners[i].CurrentForm());
+                                }
 
-                    //        withBlock14.RemoveSpecialPowerInEffect("攻撃");
-                    //        if (is_hit)
-                    //        {
-                    //            withBlock14.RemoveSpecialPowerInEffect("命中");
-                    //        }
-                    //    }
+                                if (withBlock15.IsConditionSatisfied("非表示付加"))
+                                {
+                                    withBlock15.DeleteCondition("非表示付加");
+                                    withBlock15.BitmapID = GUI.MakeUnitBitmap(partners[i].CurrentForm());
+                                    GUI.PaintUnitBitmap(partners[i].CurrentForm());
+                                }
+                            }
+                        }
+                    }
 
-                    //    // 戦闘アニメで変更されたユニット画像を元に戻す
-                    //    if (withBlock14.IsConditionSatisfied("ユニット画像"))
-                    //    {
-                    //        withBlock14.DeleteCondition("ユニット画像");
-                    //        withBlock14.BitmapID = GUI.MakeUnitBitmap(CurrentForm());
-                    //        GUI.PaintUnitBitmap(CurrentForm());
-                    //    }
+                    // カットインは消去しておく
+                    if (!Expression.IsOptionDefined("戦闘中画面初期化無効") || attack_mode == "マップ攻撃")
+                    {
+                        if (GUI.IsPictureVisible)
+                        {
+                            GUI.ClearPicture();
+                            GUI.RefreshScreen();
+                        }
+                    }
 
-                    //    if (withBlock14.IsConditionSatisfied("非表示付加"))
-                    //    {
-                    //        withBlock14.DeleteCondition("非表示付加");
-                    //        withBlock14.BitmapID = GUI.MakeUnitBitmap(CurrentForm());
-                    //        GUI.PaintUnitBitmap(CurrentForm());
-                    //    }
-
-                    //    var loopTo10 = Information.UBound(partners);
-                    //    for (i = 1; i <= loopTo10; i++)
-                    //    {
-                    //        {
-                    //            var withBlock15 = partners[i].CurrentForm();
-                    //            if (withBlock15.IsConditionSatisfied("ユニット画像"))
-                    //            {
-                    //                withBlock15.DeleteCondition("ユニット画像");
-                    //                withBlock15.BitmapID = GUI.MakeUnitBitmap(partners[i].CurrentForm());
-                    //                GUI.PaintUnitBitmap(partners[i].CurrentForm());
-                    //            }
-
-                    //            if (withBlock15.IsConditionSatisfied("非表示付加"))
-                    //            {
-                    //                withBlock15.DeleteCondition("非表示付加");
-                    //                withBlock15.BitmapID = GUI.MakeUnitBitmap(partners[i].CurrentForm());
-                    //                GUI.PaintUnitBitmap(partners[i].CurrentForm());
-                    //            }
-                    //        }
-                    //    }
-                    //}
-
-                    //// カットインは消去しておく
-                    //if (!Expression.IsOptionDefined("戦闘中画面初期化無効") || attack_mode == "マップ攻撃")
-                    //{
-                    //    if (GUI.IsPictureVisible)
-                    //    {
-                    //        GUI.ClearPicture();
-                    //        GUI.MainForm.picMain(0).Refresh();
-                    //    }
-                    //}
-
-                    //// ADD START MARGE
-                    //// 戦闘アニメ終了処理
-                    //if (IsAnimationDefined(wname + "(終了)", sub_situation: ""))
-                    //{
-                    //    PlayAnimation(wname + "(終了)", sub_situation: "");
-                    //}
-                    //else if (IsAnimationDefined("終了", sub_situation: ""))
-                    //{
-                    //    PlayAnimation("終了", sub_situation: "");
-                    //}
-                    //// ADD END MARGE
+                    // 戦闘アニメ終了処理
+                    if (IsAnimationDefined(wname + "(終了)", sub_situation: ""))
+                    {
+                        PlayAnimation(wname + "(終了)", sub_situation: "");
+                    }
+                    else if (IsAnimationDefined("終了", sub_situation: ""))
+                    {
+                        PlayAnimation("終了", sub_situation: "");
+                    }
                 }
                 // ユニット選択を解除
                 Commands.RestoreSelections();
