@@ -1502,850 +1502,676 @@ namespace SRCCore.Units
                         }
                     }
 
-                    //// シールド防御
-                    //if (use_shield && t.HP > 0)
-                    //{
-                    //    if (t.IsFeatureAvailable("シールド"))
-                    //    {
-                    //        fname = t.FeatureName("シールド");
-                    //        if (t.IsSysMessageDefined("シールド防御", fname))
-                    //        {
-                    //            t.SysMessage("シールド防御", fname, add_msg: "");
-                    //        }
-                    //        else
-                    //        {
-                    //            msg = msg + t.Nickname + "は[" + fname + "]で防御した。;";
-                    //        }
-                    //    }
-                    //    else if (t.IsFeatureAvailable("エネルギーシールド") && t.EN > 5 && w.!IsWeaponClassifiedAs("無") && !IsUnderSpecialPowerEffect("防御能力無効化"))
-                    //    {
-                    //        t.EN = t.EN - 5;
-                    //        fname = t.FeatureName("エネルギーシールド");
-                    //        if (t.IsSysMessageDefined("シールド防御", fname))
-                    //        {
-                    //            t.SysMessage("シールド防御", fname, add_msg: "");
-                    //        }
-                    //        else
-                    //        {
-                    //            msg = msg + t.Nickname + "は[" + fname + "]を展開した。;";
-                    //        }
-                    //    }
-                    //    else if (t.IsFeatureAvailable("小型シールド"))
-                    //    {
-                    //        fname = t.FeatureName("小型シールド");
-                    //        if (t.IsSysMessageDefined("シールド防御", fname))
-                    //        {
-                    //            t.SysMessage("シールド防御", fname, add_msg: "");
-                    //        }
-                    //        else
-                    //        {
-                    //            msg = msg + t.Nickname + "は[" + fname + "]で防御した。;";
-                    //        }
-                    //    }
-                    //    else if (t.IsFeatureAvailable("大型シールド"))
-                    //    {
-                    //        fname = t.FeatureName("大型シールド");
-                    //        if (t.IsSysMessageDefined("シールド防御", fname))
-                    //        {
-                    //            t.SysMessage("シールド防御", fname, add_msg: "");
-                    //        }
-                    //        else
-                    //        {
-                    //            msg = msg + t.Nickname + "は[" + fname + "]で防御した。;";
-                    //        }
-                    //    }
-                    //    else if (t.IsFeatureAvailable("アクティブシールド"))
-                    //    {
-                    //        fname = t.FeatureName("アクティブシールド");
-                    //        if (t.IsSysMessageDefined("シールド防御", fname))
-                    //        {
-                    //            t.SysMessage("シールド防御", fname, add_msg: "");
-                    //        }
-                    //        else if (!t.IsHero())
-                    //        {
-                    //            msg = msg + t.Nickname + "の[" + fname + "]が機体を守った。;";
-                    //        }
-                    //        else
-                    //        {
-                    //            msg = msg + fname + "が[" + t.Nickname + "]を守った。;";
-                    //        }
-                    //    }
-                    //}
+                    // シールド防御
+                    if (use_shield && t.HP > 0)
+                    {
+                        if (t.IsFeatureAvailable("シールド"))
+                        {
+                            fname = t.FeatureName("シールド");
+                            if (t.IsSysMessageDefined("シールド防御", fname))
+                            {
+                                t.SysMessage("シールド防御", fname, add_msg: "");
+                            }
+                            else
+                            {
+                                msg = msg + t.Nickname + "は[" + fname + "]で防御した。;";
+                            }
+                        }
+                        else if (t.IsFeatureAvailable("エネルギーシールド") && t.EN > 5 && !w.IsWeaponClassifiedAs("無") && !IsUnderSpecialPowerEffect("防御能力無効化"))
+                        {
+                            t.EN = t.EN - 5;
+                            fname = t.FeatureName("エネルギーシールド");
+                            if (t.IsSysMessageDefined("シールド防御", fname))
+                            {
+                                t.SysMessage("シールド防御", fname, add_msg: "");
+                            }
+                            else
+                            {
+                                msg = msg + t.Nickname + "は[" + fname + "]を展開した。;";
+                            }
+                        }
+                        else if (t.IsFeatureAvailable("小型シールド"))
+                        {
+                            fname = t.FeatureName("小型シールド");
+                            if (t.IsSysMessageDefined("シールド防御", fname))
+                            {
+                                t.SysMessage("シールド防御", fname, add_msg: "");
+                            }
+                            else
+                            {
+                                msg = msg + t.Nickname + "は[" + fname + "]で防御した。;";
+                            }
+                        }
+                        else if (t.IsFeatureAvailable("大型シールド"))
+                        {
+                            fname = t.FeatureName("大型シールド");
+                            if (t.IsSysMessageDefined("シールド防御", fname))
+                            {
+                                t.SysMessage("シールド防御", fname, add_msg: "");
+                            }
+                            else
+                            {
+                                msg = msg + t.Nickname + "は[" + fname + "]で防御した。;";
+                            }
+                        }
+                        else if (t.IsFeatureAvailable("アクティブシールド"))
+                        {
+                            fname = t.FeatureName("アクティブシールド");
+                            if (t.IsSysMessageDefined("シールド防御", fname))
+                            {
+                                t.SysMessage("シールド防御", fname, add_msg: "");
+                            }
+                            else if (!t.IsHero())
+                            {
+                                msg = msg + t.Nickname + "の[" + fname + "]が機体を守った。;";
+                            }
+                            else
+                            {
+                                msg = msg + fname + "が[" + t.Nickname + "]を守った。;";
+                            }
+                        }
+                    }
 
-                    //// ターゲットが生き残った場合の処理
-                    //if (t.HP > 0)
-                    //{
-                    //    if (dmg == 0)
-                    //    {
-                    //        if (Strings.Len(critical_type) > 0)
-                    //        {
-                    //            GUI.DisplaySysMessage(msg);
-                    //        }
-                    //        else if (w.IsWeaponClassifiedAs("盗"))
-                    //        {
-                    //            // 盗み失敗
-                    //            if (t.IsConditionSatisfied("すかんぴん"))
-                    //            {
-                    //                GUI.DisplaySysMessage(msg + t.Nickname + "は盗める物を持っていなかった。");
-                    //            }
-                    //            else
-                    //            {
-                    //                GUI.DisplaySysMessage(msg + t.Nickname + "は素早く持ち物を守った。");
-                    //            }
-                    //        }
-                    //        else if (w.IsWeaponClassifiedAs("習"))
-                    //        {
-                    //            // ラーニング失敗
-                    //            if (t.IsFeatureAvailable("ラーニング可能技"))
-                    //            {
-                    //                buf = t.FeatureData("ラーニング可能技");
-                    //                switch (GeneralLib.LIndex(buf, 2) ?? "")
-                    //                {
-                    //                    case "表示":
-                    //                    case var @case when @case == "":
-                    //                        {
-                    //                            fname = GeneralLib.LIndex(buf, 1);
-                    //                            break;
-                    //                        }
+                    // ターゲットが生き残った場合の処理
+                    if (t.HP > 0)
+                    {
+                        if (dmg == 0)
+                        {
+                            if (Strings.Len(critical_type) > 0)
+                            {
+                                GUI.DisplaySysMessage(msg);
+                            }
+                            else if (w.IsWeaponClassifiedAs("盗"))
+                            {
+                                // 盗み失敗
+                                if (t.IsConditionSatisfied("すかんぴん"))
+                                {
+                                    GUI.DisplaySysMessage(msg + t.Nickname + "は盗める物を持っていなかった。");
+                                }
+                                else
+                                {
+                                    GUI.DisplaySysMessage(msg + t.Nickname + "は素早く持ち物を守った。");
+                                }
+                            }
+                            else if (w.IsWeaponClassifiedAs("習"))
+                            {
+                                // ラーニング失敗
+                                if (t.IsFeatureAvailable("ラーニング可能技"))
+                                {
+                                    buf = t.FeatureData("ラーニング可能技");
+                                    switch (GeneralLib.LIndex(buf, 2) ?? "")
+                                    {
+                                        case "表示":
+                                        case var @case when @case == "":
+                                            {
+                                                fname = GeneralLib.LIndex(buf, 1);
+                                                break;
+                                            }
 
-                    //                    default:
-                    //                        {
-                    //                            fname = GeneralLib.LIndex(buf, 2);
-                    //                            break;
-                    //                        }
-                    //                }
+                                        default:
+                                            {
+                                                fname = GeneralLib.LIndex(buf, 2);
+                                                break;
+                                            }
+                                    }
 
-                    //                if (MainPilot().IsSkillAvailable(GeneralLib.LIndex(buf, 1)))
-                    //                {
-                    //                    GUI.DisplaySysMessage(msg + MainPilot().get_Nickname(false) + "は「" + fname + "」を既に習得していた。");
-                    //                }
-                    //                else
-                    //                {
-                    //                    GUI.DisplaySysMessage(msg + MainPilot().get_Nickname(false) + "は「" + fname + "」を習得出来なかった。");
-                    //                }
-                    //            }
-                    //            else
-                    //            {
-                    //                GUI.DisplaySysMessage(msg + t.Nickname + "は習得可能な技を持っていなかった。");
-                    //            }
-                    //        }
-                    //        else if (w.IsWeaponClassifiedAs("写") || w.IsWeaponClassifiedAs("化"))
-                    //        {
-                    //        }
-                    //        // 能力コピーの判定はこれから
-                    //        else
-                    //        {
-                    //            GUI.DisplaySysMessage(msg + t.Nickname + "は攻撃による影響を受けなかった。");
-                    //        }
-                    //    }
-                    //    else if (t.IsConditionSatisfied("データ不明"))
-                    //    {
-                    //        if (attack_num > 1)
-                    //        {
-                    //            msg = msg + SrcFormatter.Format(hit_count) + "回命中し、";
-                    //        }
+                                    if (MainPilot().IsSkillAvailable(GeneralLib.LIndex(buf, 1)))
+                                    {
+                                        GUI.DisplaySysMessage(msg + MainPilot().get_Nickname(false) + "は「" + fname + "」を既に習得していた。");
+                                    }
+                                    else
+                                    {
+                                        GUI.DisplaySysMessage(msg + MainPilot().get_Nickname(false) + "は「" + fname + "」を習得出来なかった。");
+                                    }
+                                }
+                                else
+                                {
+                                    GUI.DisplaySysMessage(msg + t.Nickname + "は習得可能な技を持っていなかった。");
+                                }
+                            }
+                            else if (w.IsWeaponClassifiedAs("写") || w.IsWeaponClassifiedAs("化"))
+                            {
+                            }
+                            // 能力コピーの判定はこれから
+                            else
+                            {
+                                GUI.DisplaySysMessage(msg + t.Nickname + "は攻撃による影響を受けなかった。");
+                            }
+                        }
+                        else if (t.IsConditionSatisfied("データ不明"))
+                        {
+                            if (attack_num > 1)
+                            {
+                                msg = msg + SrcFormatter.Format(hit_count) + "回命中し、";
+                            }
 
-                    //        GUI.DisplaySysMessage(msg + t.Nickname + "は[" + SrcFormatter.Format(dmg) + "]のダメージを受けた。");
-                    //    }
-                    //    else
-                    //    {
-                    //        if (attack_num > 1)
-                    //        {
-                    //            msg = msg + SrcFormatter.Format(hit_count) + "回命中し、";
-                    //        }
+                            GUI.DisplaySysMessage(msg + t.Nickname + "は[" + SrcFormatter.Format(dmg) + "]のダメージを受けた。");
+                        }
+                        else
+                        {
+                            if (attack_num > 1)
+                            {
+                                msg = msg + SrcFormatter.Format(hit_count) + "回命中し、";
+                            }
 
-                    //        GUI.DisplaySysMessage(msg + t.Nickname + "は[" + SrcFormatter.Format(dmg) + "]のダメージを受けた。;" + "残りＨＰは" + SrcFormatter.Format(t.HP) + "（損傷率 = " + SrcFormatter.Format(100 * (t.MaxHP - t.HP) / t.MaxHP) + "％）");
-                    //    }
+                            GUI.DisplaySysMessage(msg + t.Nickname + "は[" + SrcFormatter.Format(dmg) + "]のダメージを受けた。;" + "残りＨＰは" + SrcFormatter.Format(t.HP) + "（損傷率 = " + SrcFormatter.Format(100 * (t.MaxHP - t.HP) / t.MaxHP) + "％）");
+                        }
 
-                    //    // 特殊能力「不安定」による暴走チェック
-                    //    if (t.IsFeatureAvailable("不安定"))
-                    //    {
-                    //        if (t.HP <= t.MaxHP / 4 && !t.IsConditionSatisfied("暴走"))
-                    //        {
-                    //            t.AddCondition("暴走", -1, cdata: "");
-                    //            t.Update();
-                    //            if (t.IsHero())
-                    //            {
-                    //                GUI.DisplaySysMessage(t.Nickname + "は暴走した。");
-                    //            }
-                    //            else
-                    //            {
-                    //                if (Strings.Len(t.FeatureName("不安定")) > 0)
-                    //                {
-                    //                    GUI.DisplaySysMessage(t.Nickname + "は[" + t.FeatureName("不安定") + "]の暴走のために制御不能に陥った。");
-                    //                }
-                    //                else
-                    //                {
-                    //                    GUI.DisplaySysMessage(t.Nickname + "は制御不能に陥った。");
-                    //                }
-                    //            }
-                    //        }
-                    //    }
+                        // 特殊能力「不安定」による暴走チェック
+                        if (t.IsFeatureAvailable("不安定"))
+                        {
+                            if (t.HP <= t.MaxHP / 4 && !t.IsConditionSatisfied("暴走"))
+                            {
+                                t.AddCondition("暴走", -1, cdata: "");
+                                t.Update();
+                                if (t.IsHero())
+                                {
+                                    GUI.DisplaySysMessage(t.Nickname + "は暴走した。");
+                                }
+                                else
+                                {
+                                    if (Strings.Len(t.FeatureName("不安定")) > 0)
+                                    {
+                                        GUI.DisplaySysMessage(t.Nickname + "は[" + t.FeatureName("不安定") + "]の暴走のために制御不能に陥った。");
+                                    }
+                                    else
+                                    {
+                                        GUI.DisplaySysMessage(t.Nickname + "は制御不能に陥った。");
+                                    }
+                                }
+                            }
+                        }
 
-                    //    // ダメージを受ければ眠りからさめる
-                    //    if (t.IsConditionSatisfied("睡眠") && w.!IsWeaponClassifiedAs("眠"))
-                    //    {
-                    //        t.DeleteCondition("睡眠");
-                    //        GUI.DisplaySysMessage(t.Nickname + "は眠りから覚めた。");
-                    //    }
+                        // ダメージを受ければ眠りからさめる
+                        if (t.IsConditionSatisfied("睡眠") && !w.IsWeaponClassifiedAs("眠"))
+                        {
+                            t.DeleteCondition("睡眠");
+                            GUI.DisplaySysMessage(t.Nickname + "は眠りから覚めた。");
+                        }
 
-                    //    // ダメージを受けると凍結解除
-                    //    if (t.IsConditionSatisfied("凍結") && w.!IsWeaponClassifiedAs("凍"))
-                    //    {
-                    //        t.DeleteCondition("凍結");
-                    //        GUI.DisplaySysMessage(t.Nickname + "は凍結状態から開放された。");
-                    //    }
-                    //}
+                        // ダメージを受けると凍結解除
+                        if (t.IsConditionSatisfied("凍結") && !w.IsWeaponClassifiedAs("凍"))
+                        {
+                            t.DeleteCondition("凍結");
+                            GUI.DisplaySysMessage(t.Nickname + "は凍結状態から開放された。");
+                        }
+                    }
 
                     //// 破壊された場合の処理
                     int morale_mod;
                     if (t.HP == 0)
                     {
-                        //    if (attack_num > 1)
-                        //    {
-                        //        msg = msg + SrcFormatter.Format(hit_count) + "回命中し、";
-                        //    }
-
-                        //    if (t.IsSysMessageDefined("破壊", sub_situation: ""))
-                        //    {
-                        //        t.SysMessage("破壊", sub_situation: "", add_msg: "");
-                        //    }
-                        //    else if (t.IsHero())
-                        //    {
-                        //        GUI.DisplaySysMessage(msg + t.Nickname + "は[" + SrcFormatter.Format(dmg) + "]のダメージを受け倒された。");
-                        //    }
-                        //    else
-                        //    {
-                        //        GUI.DisplaySysMessage(msg + t.Nickname + "は[" + SrcFormatter.Format(dmg) + "]のダメージを受け破壊された。");
-                        //    }
-
-                        //    // 復活するかどうかのチェックを行う
-
-                        //    // スペシャルパワー「復活」
-                        //    if (t.IsUnderSpecialPowerEffect("復活"))
-                        //    {
-                        //        t.RemoveSpecialPowerInEffect("破壊");
-                        //        goto Resurrect;
-                        //    }
-
-                        //    // パイロット用特殊能力「英雄」＆「再生」
-                        //    if (!is_event && !IsUnderSpecialPowerEffect("絶対破壊"))
-                        //    {
-                        //        if (GeneralLib.Dice(16) <= t.MainPilot().SkillLevel("英雄", ref_mode: ""))
-                        //        {
-                        //            t.HP = t.MaxHP / 2;
-                        //            t.IncreaseMorale(10);
-                        //            if (t.IsMessageDefined("復活"))
-                        //            {
-                        //                t.PilotMessage("復活", msg_mode: "");
-                        //            }
-
-                        //            if (t.IsAnimationDefined("復活", sub_situation: ""))
-                        //            {
-                        //                t.PlayAnimation("復活", sub_situation: "");
-                        //            }
-                        //            else
-                        //            {
-                        //                t.SpecialEffect("復活", sub_situation: "");
-                        //            }
-
-                        //            buf = t.MainPilot().SkillName0("英雄");
-                        //            if (buf == "非表示")
-                        //            {
-                        //                buf = "英雄";
-                        //            }
-
-                        //            if (t.IsSysMessageDefined("復活", buf))
-                        //            {
-                        //                t.SysMessage("復活", buf, add_msg: "");
-                        //            }
-                        //            else
-                        //            {
-                        //                GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の熱き" + buf + "の心が[" + t.Nickname + "]を復活させた！");
-                        //            }
-
-                        //            goto Resurrect;
-                        //        }
-
-                        //        // 浄化の適用
-                        //        if (t.MainPilot().IsSkillAvailable("再生"))
-                        //        {
-                        //            if (w.IsWeaponClassifiedAs("浄"))
-                        //            {
-                        //                if (MainPilot().IsSkillAvailable("浄化"))
-                        //                {
-                        //                    bool localIsMessageDefined7() { string argmain_situation = "浄解(" + wname + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
-
-                        //                    if (IsMessageDefined("浄化(" + wname + ")"))
-                        //                    {
-                        //                        PilotMessage("浄化(" + wname + ")", msg_mode: "");
-                        //                        if (IsAnimationDefined("浄化", wname))
-                        //                        {
-                        //                            PlayAnimation("浄化", wname);
-                        //                        }
-                        //                        else
-                        //                        {
-                        //                            SpecialEffect("浄化", wname);
-                        //                        }
-                        //                    }
-                        //                    else if (IsMessageDefined("浄化"))
-                        //                    {
-                        //                        PilotMessage("浄化", msg_mode: "");
-                        //                        if (IsAnimationDefined("浄化", wname))
-                        //                        {
-                        //                            PlayAnimation("浄化", wname);
-                        //                        }
-                        //                        else
-                        //                        {
-                        //                            SpecialEffect("浄化", wname);
-                        //                        }
-                        //                    }
-                        //                    else if (localIsMessageDefined7())
-                        //                    {
-                        //                        PilotMessage("浄解(" + wname + ")", msg_mode: "");
-                        //                        if (IsAnimationDefined("浄解", wname))
-                        //                        {
-                        //                            PlayAnimation("浄解", wname);
-                        //                        }
-                        //                        else
-                        //                        {
-                        //                            SpecialEffect("浄解", wname);
-                        //                        }
-                        //                    }
-                        //                    else if (IsMessageDefined("浄解"))
-                        //                    {
-                        //                        PilotMessage("浄解", msg_mode: "");
-                        //                        if (IsAnimationDefined("浄解", wname))
-                        //                        {
-                        //                            PlayAnimation("浄解", wname);
-                        //                        }
-                        //                        else
-                        //                        {
-                        //                            SpecialEffect("浄解", wname);
-                        //                        }
-                        //                    }
-
-                        //                    if (IsSysMessageDefined("浄化", sub_situation: ""))
-                        //                    {
-                        //                        SysMessage("浄化", sub_situation: "", add_msg: "");
-                        //                    }
-                        //                    else
-                        //                    {
-                        //                        GUI.DisplaySysMessage(MainPilot().get_Nickname(false) + "は浄化を行って[" + t.Nickname + "]の復活を防いだ。");
-                        //                    }
-
-                        //                    goto Cure;
-                        //                }
-
-                        //                var loopTo2 = CountPilot();
-                        //                for (i = 2; i <= loopTo2; i++)
-                        //                {
-                        //                    Pilot localPilot1() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
-
-                        //                    if (localPilot1().IsSkillAvailable("浄化"))
-                        //                    {
-                        //                        bool localIsMessageDefined8() { string argmain_situation = "浄解(" + wname + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
-
-                        //                        if (IsMessageDefined("浄化(" + wname + ")"))
-                        //                        {
-                        //                            PilotMessage("浄化(" + wname + ")", msg_mode: "");
-                        //                            if (IsAnimationDefined("浄化", wname))
-                        //                            {
-                        //                                PlayAnimation("浄化", wname);
-                        //                            }
-                        //                            else
-                        //                            {
-                        //                                SpecialEffect("浄化", wname);
-                        //                            }
-                        //                        }
-                        //                        else if (IsMessageDefined("浄化"))
-                        //                        {
-                        //                            PilotMessage("浄化", msg_mode: "");
-                        //                            if (IsAnimationDefined("浄化", wname))
-                        //                            {
-                        //                                PlayAnimation("浄化", wname);
-                        //                            }
-                        //                            else
-                        //                            {
-                        //                                SpecialEffect("浄化", wname);
-                        //                            }
-                        //                        }
-                        //                        else if (localIsMessageDefined8())
-                        //                        {
-                        //                            PilotMessage("浄解(" + wname + ")", msg_mode: "");
-                        //                            if (IsAnimationDefined("浄解", wname))
-                        //                            {
-                        //                                PlayAnimation("浄解", wname);
-                        //                            }
-                        //                            else
-                        //                            {
-                        //                                SpecialEffect("浄解", wname);
-                        //                            }
-                        //                        }
-                        //                        else if (IsMessageDefined("浄解"))
-                        //                        {
-                        //                            PilotMessage("浄解", msg_mode: "");
-                        //                            if (IsAnimationDefined("浄解", wname))
-                        //                            {
-                        //                                PlayAnimation("浄解", wname);
-                        //                            }
-                        //                            else
-                        //                            {
-                        //                                SpecialEffect("浄解", wname);
-                        //                            }
-                        //                        }
-
-                        //                        if (IsSysMessageDefined("浄化", sub_situation: ""))
-                        //                        {
-                        //                            SysMessage("浄化", sub_situation: "", add_msg: "");
-                        //                        }
-                        //                        else
-                        //                        {
-                        //                            Pilot localPilot() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
-
-                        //                            GUI.DisplaySysMessage(localPilot().get_Nickname(false) + "は浄化を行って[" + t.Nickname + "]の復活を防いだ。");
-                        //                        }
-
-                        //                        goto Cure;
-                        //                    }
-                        //                }
-
-                        //                var loopTo3 = CountSupport();
-                        //                for (i = 1; i <= loopTo3; i++)
-                        //                {
-                        //                    Pilot localSupport1() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
-
-                        //                    if (localSupport1().IsSkillAvailable("浄化"))
-                        //                    {
-                        //                        bool localIsMessageDefined9() { string argmain_situation = "浄解(" + wname + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
-
-                        //                        if (IsMessageDefined("浄化(" + wname + ")"))
-                        //                        {
-                        //                            PilotMessage("浄化(" + wname + ")", msg_mode: "");
-                        //                            if (IsAnimationDefined("浄化", wname))
-                        //                            {
-                        //                                PlayAnimation("浄化", wname);
-                        //                            }
-                        //                            else
-                        //                            {
-                        //                                SpecialEffect("浄化", wname);
-                        //                            }
-                        //                        }
-                        //                        else if (IsMessageDefined("浄化"))
-                        //                        {
-                        //                            PilotMessage("浄化", msg_mode: "");
-                        //                            if (IsAnimationDefined("浄化", wname))
-                        //                            {
-                        //                                PlayAnimation("浄化", wname);
-                        //                            }
-                        //                            else
-                        //                            {
-                        //                                SpecialEffect("浄化", wname);
-                        //                            }
-                        //                        }
-                        //                        else if (localIsMessageDefined9())
-                        //                        {
-                        //                            PilotMessage("浄解(" + wname + ")", msg_mode: "");
-                        //                            if (IsAnimationDefined("浄解", wname))
-                        //                            {
-                        //                                PlayAnimation("浄解", wname);
-                        //                            }
-                        //                            else
-                        //                            {
-                        //                                SpecialEffect("浄解", wname);
-                        //                            }
-                        //                        }
-                        //                        else if (IsMessageDefined("浄解"))
-                        //                        {
-                        //                            PilotMessage("浄解", msg_mode: "");
-                        //                            if (IsAnimationDefined("浄解", wname))
-                        //                            {
-                        //                                PlayAnimation("浄解", wname);
-                        //                            }
-                        //                            else
-                        //                            {
-                        //                                SpecialEffect("浄解", wname);
-                        //                            }
-                        //                        }
-
-                        //                        if (IsSysMessageDefined("浄化", sub_situation: ""))
-                        //                        {
-                        //                            SysMessage("浄化", sub_situation: "", add_msg: "");
-                        //                        }
-                        //                        else
-                        //                        {
-                        //                            Pilot localSupport() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
-
-                        //                            GUI.DisplaySysMessage(localSupport().get_Nickname(false) + "は浄化を行って[" + t.Nickname + "]の復活を防いだ。");
-                        //                        }
-
-                        //                        goto Cure;
-                        //                    }
-                        //                }
-
-                        //                if (IsHero())
-                        //                {
-                        //                    bool localIsMessageDefined10() { string argmain_situation = "浄解(" + wname + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
-
-                        //                    if (IsMessageDefined("浄化(" + wname + ")"))
-                        //                    {
-                        //                        PilotMessage("浄化(" + wname + ")", msg_mode: "");
-                        //                        if (IsAnimationDefined("浄化", wname))
-                        //                        {
-                        //                            PlayAnimation("浄化", wname);
-                        //                        }
-                        //                        else
-                        //                        {
-                        //                            SpecialEffect("浄化", wname);
-                        //                        }
-
-                        //                        GUI.DisplaySysMessage(MainPilot().get_Nickname(false) + "は浄化を行って[" + t.Nickname + "]の復活を防いだ。");
-                        //                    }
-                        //                    else if (IsMessageDefined("浄化"))
-                        //                    {
-                        //                        PilotMessage("浄化", msg_mode: "");
-                        //                        if (IsAnimationDefined("浄化", wname))
-                        //                        {
-                        //                            PlayAnimation("浄化", wname);
-                        //                        }
-                        //                        else
-                        //                        {
-                        //                            SpecialEffect("浄化", wname);
-                        //                        }
-
-                        //                        GUI.DisplaySysMessage(MainPilot().get_Nickname(false) + "は浄化を行って[" + t.Nickname + "]の復活を防いだ。");
-                        //                    }
-                        //                    else if (localIsMessageDefined10())
-                        //                    {
-                        //                        PilotMessage("浄解(" + wname + ")", msg_mode: "");
-                        //                        if (IsAnimationDefined("浄解", wname))
-                        //                        {
-                        //                            PlayAnimation("浄解", wname);
-                        //                        }
-                        //                        else
-                        //                        {
-                        //                            SpecialEffect("浄解", wname);
-                        //                        }
-
-                        //                        GUI.DisplaySysMessage(MainPilot().get_Nickname(false) + "は浄化を行って[" + t.Nickname + "]の復活を防いだ。");
-                        //                    }
-                        //                    else if (IsMessageDefined("浄解"))
-                        //                    {
-                        //                        PilotMessage("浄解", msg_mode: "");
-                        //                        if (IsAnimationDefined("浄解", wname))
-                        //                        {
-                        //                            PlayAnimation("浄解", wname);
-                        //                        }
-                        //                        else
-                        //                        {
-                        //                            SpecialEffect("浄解", wname);
-                        //                        }
-
-                        //                        if (IsSysMessageDefined("浄化", sub_situation: ""))
-                        //                        {
-                        //                            SysMessage("浄化", sub_situation: "", add_msg: "");
-                        //                        }
-                        //                        else
-                        //                        {
-                        //                            GUI.DisplaySysMessage(MainPilot().get_Nickname(false) + "は浄化を行って[" + t.Nickname + "]の復活を防いだ。");
-                        //                        }
-                        //                    }
-
-                        //                    goto Cure;
-                        //                }
-                        //            }
-
-                        //            if (GeneralLib.Dice(16) <= t.MainPilot().SkillLevel("再生", ref_mode: ""))
-                        //            {
-                        //                t.HP = t.MaxHP / 2;
-                        //                if (t.IsMessageDefined("復活"))
-                        //                {
-                        //                    t.PilotMessage("復活", msg_mode: "");
-                        //                }
-
-                        //                if (t.IsAnimationDefined("復活", sub_situation: ""))
-                        //                {
-                        //                    t.PlayAnimation("復活", sub_situation: "");
-                        //                }
-                        //                else
-                        //                {
-                        //                    t.SpecialEffect("復活", sub_situation: "");
-                        //                }
-
-                        //                buf = t.MainPilot().SkillName0("再生");
-                        //                if (buf == "非表示")
-                        //                {
-                        //                    buf = "再生";
-                        //                }
-
-                        //                if (t.IsSysMessageDefined("再生", buf))
-                        //                {
-                        //                    t.SysMessage("再生", buf, add_msg: "");
-                        //                }
-                        //                else
-                        //                {
-                        //                    GUI.DisplaySysMessage(t.Nickname + "は" + buf + "の力で一瞬にして復活した！");
-                        //                }
-
-                        //                goto Resurrect;
-                        //            }
-                        //        }
-                        //    }
-
-                        //Cure:
-                        //    ;
-
-
-                        //    // ユニット破壊によるパーツ分離
-                        //    if (separate_parts)
-                        //    {
-                        //        uname = GeneralLib.LIndex(t.FeatureData("パーツ分離"), 2);
-                        //        if (!t.IsHero())
-                        //        {
-                        //            if (SRC.BattleAnimation)
-                        //            {
-                        //                Effect.ExplodeAnimation(t.Size, t.x, t.y);
-                        //                t.Size = argtsize;
-                        //            }
-                        //            else
-                        //            {
-                        //                Sound.PlayWave("Explode.wav");
-                        //            }
-                        //        }
-
-                        //        fname = t.FeatureName("パーツ分離");
-                        //        bool localIsAnimationDefined4() { string argmain_situation = "破壊時分離(" + fname + ")"; string argsub_situation = ""; var ret = t.IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-                        //        bool localIsSpecialEffectDefined5() { string argmain_situation = "破壊時分離(" + t.Name + ")"; string argsub_situation = ""; var ret = t.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-                        //        bool localIsSpecialEffectDefined6() { string argmain_situation = "破壊時分離(" + fname + ")"; string argsub_situation = ""; var ret = t.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-                        //        bool localIsAnimationDefined5() { string argmain_situation = "分離(" + t.Name + ")"; string argsub_situation = ""; var ret = t.IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-                        //        bool localIsAnimationDefined6() { string argmain_situation = "分離(" + fname + ")"; string argsub_situation = ""; var ret = t.IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-                        //        bool localIsSpecialEffectDefined7() { string argmain_situation = "分離(" + t.Name + ")"; string argsub_situation = ""; var ret = t.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-                        //        bool localIsSpecialEffectDefined8() { string argmain_situation = "分離(" + fname + ")"; string argsub_situation = ""; var ret = t.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-                        //        if (t.IsAnimationDefined("破壊時分離(" + t.Name + ")", sub_situation: ""))
-                        //        {
-                        //            t.PlayAnimation("破壊時分離(" + t.Name + ")", sub_situation: "");
-                        //        }
-                        //        else if (localIsAnimationDefined4())
-                        //        {
-                        //            t.PlayAnimation("破壊時分離(" + fname + ")", sub_situation: "");
-                        //        }
-                        //        else if (t.IsAnimationDefined("破壊時分離", sub_situation: ""))
-                        //        {
-                        //            t.PlayAnimation("破壊時分離", sub_situation: "");
-                        //        }
-                        //        else if (localIsSpecialEffectDefined5())
-                        //        {
-                        //            t.SpecialEffect("破壊時分離(" + t.Name + ")", sub_situation: "");
-                        //        }
-                        //        else if (localIsSpecialEffectDefined6())
-                        //        {
-                        //            t.SpecialEffect("破壊時分離(" + fname + ")", sub_situation: "");
-                        //        }
-                        //        else if (t.IsSpecialEffectDefined("破壊時分離", sub_situation: ""))
-                        //        {
-                        //            t.SpecialEffect("破壊時分離", sub_situation: "");
-                        //        }
-                        //        else if (localIsAnimationDefined5())
-                        //        {
-                        //            t.PlayAnimation("分離(" + t.Name + ")", sub_situation: "");
-                        //        }
-                        //        else if (localIsAnimationDefined6())
-                        //        {
-                        //            t.PlayAnimation("分離(" + fname + ")", sub_situation: "");
-                        //        }
-                        //        else if (t.IsAnimationDefined("分離", sub_situation: ""))
-                        //        {
-                        //            t.PlayAnimation("分離", sub_situation: "");
-                        //        }
-                        //        else if (localIsSpecialEffectDefined7())
-                        //        {
-                        //            t.SpecialEffect("分離(" + t.Name + ")", sub_situation: "");
-                        //        }
-                        //        else if (localIsSpecialEffectDefined8())
-                        //        {
-                        //            t.SpecialEffect("分離(" + fname + ")", sub_situation: "");
-                        //        }
-                        //        else
-                        //        {
-                        //            t.SpecialEffect("分離", sub_situation: "");
-                        //        }
-
-                        //        t.Transform(uname);
-                        //        {
-                        //            var withBlock4 = t.CurrentForm();
-                        //            withBlock4.HP = withBlock4.MaxHP;
-                        //            // 自分から攻撃して破壊された時には行動数を0に
-                        //            if ((withBlock4.Party ?? "") == (SRC.Stage ?? ""))
-                        //            {
-                        //                withBlock4.UsedAction = withBlock4.MaxAction();
-                        //            }
-                        //        }
-
-                        //        bool localIsSysMessageDefined() { string argmain_situation = "破壊時分離(" + fname + ")"; string argsub_situation = ""; var ret = t.IsSysMessageDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-                        //        bool localIsSysMessageDefined1() { string argmain_situation = "分離(" + t.Name + ")"; string argsub_situation = ""; var ret = t.IsSysMessageDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-                        //        bool localIsSysMessageDefined2() { string argmain_situation = "分離(" + fname + ")"; string argsub_situation = ""; var ret = t.IsSysMessageDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-                        //        if (t.IsSysMessageDefined("破壊時分離(" + t.Name + ")", sub_situation: ""))
-                        //        {
-                        //            t.SysMessage("破壊時分離(" + t.Name + ")", sub_situation: "", add_msg: "");
-                        //        }
-                        //        else if (localIsSysMessageDefined())
-                        //        {
-                        //            t.SysMessage("破壊時分離(" + fname + ")", sub_situation: "", add_msg: "");
-                        //        }
-                        //        else if (t.IsSysMessageDefined("破壊時分離", sub_situation: ""))
-                        //        {
-                        //            t.SysMessage("破壊時分離", sub_situation: "", add_msg: "");
-                        //        }
-                        //        else if (localIsSysMessageDefined1())
-                        //        {
-                        //            t.SysMessage("分離(" + t.Name + ")", sub_situation: "", add_msg: "");
-                        //        }
-                        //        else if (localIsSysMessageDefined2())
-                        //        {
-                        //            t.SysMessage("分離(" + fname + ")", sub_situation: "", add_msg: "");
-                        //        }
-                        //        else if (t.IsSysMessageDefined("分離", sub_situation: ""))
-                        //        {
-                        //            t.SysMessage("分離", sub_situation: "", add_msg: "");
-                        //        }
-                        //        else if (t.IsHero())
-                        //        {
-                        //            Unit localOtherForm2() { object argIndex1 = uname; var ret = t.OtherForm(argIndex1); return ret; }
-
-                        //            if ((t.Nickname ?? "") != (localOtherForm2().Nickname ?? ""))
-                        //            {
-                        //                Unit localOtherForm1() { object argIndex1 = uname; var ret = t.OtherForm(argIndex1); return ret; }
-
-                        //                GUI.DisplaySysMessage(t.Nickname + "は" + localOtherForm1().Nickname + "に変化した。");
-                        //            }
-                        //            else
-                        //            {
-                        //                GUI.DisplaySysMessage(t.Nickname + "は変化し、蘇った。");
-                        //            }
-                        //        }
-                        //        else
-                        //        {
-                        //            GUI.DisplaySysMessage(t.Nickname + "は破壊されたパーツを分離させた。");
-                        //        }
-
-                        //        t = t.CurrentForm();
-                        //        Commands.SelectedTarget = t;
-                        //        Event.SelectedTargetForEvent = t;
-                        //        goto Resurrect;
-                        //    }
-
-                        //    // ユニット破壊による気力の変動
-                        //    if (attack_mode != "マップ攻撃")
-                        //    {
-                        //        // 敵を破壊したユニットのパイロットはトータルで気力+4
-                        //        if (Strings.InStr(attack_mode, "援護攻撃") > 0)
-                        //        {
-                        //            Commands.AttackUnit.CurrentForm().IncreaseMorale(3);
-                        //        }
-                        //        else
-                        //        {
-                        //            IncreaseMorale(3);
-                        //        }
-
-                        //        // それ以外のパイロット
-                        //        foreach (Pilot p in SRC.PList)
-                        //        {
-                        //            // 出撃中のパイロットのみが対象
-                        //            if (p.Unit == null)
-                        //            {
-                        //                goto NextPilot;
-                        //            }
-
-                        //            if (p.Unit.Status != "出撃")
-                        //            {
-                        //                goto NextPilot;
-                        //            }
-
-                        //            if ((p.Party ?? "") == (Party ?? ""))
-                        //            {
-                        //                // 敵を破壊したユニットの陣営のパイロットは気力+1
-                        //                if (p.Personality != "機械")
-                        //                {
-                        //                    p.Morale = (p.Morale + 1);
-                        //                }
-                        //            }
-                        //            else if ((p.Party ?? "") == (t.Party ?? ""))
-                        //            {
-                        //                // 破壊されたユニットの陣営のパイロットは性格に応じて気力を変化
-                        //                switch (p.Personality ?? "")
-                        //                {
-                        //                    case "超強気":
-                        //                        {
-                        //                            morale_mod = 2;
-                        //                            break;
-                        //                        }
-
-                        //                    case "強気":
-                        //                        {
-                        //                            morale_mod = 1;
-                        //                            break;
-                        //                        }
-
-                        //                    case "弱気":
-                        //                        {
-                        //                            morale_mod = -1;
-                        //                            break;
-                        //                        }
-
-                        //                    default:
-                        //                        {
-                        //                            morale_mod = 0;
-                        //                            break;
-                        //                        }
-                        //                }
-
-                        //                // 味方の場合の気力変化量はオプションで変化する
-                        //                if (p.Party == "味方" && Expression.IsOptionDefined("破壊時味方気力変化５倍"))
-                        //                {
-                        //                    p.Morale = (p.Morale + 5 * morale_mod);
-                        //                }
-                        //                else
-                        //                {
-                        //                    p.Morale = (p.Morale + morale_mod);
-                        //                }
-                        //            }
-
-                        //        NextPilot:
-                        //            ;
-                        //        }
-                        //    }
-
-                        //    // 脱出メッセージの表示
-                        //    bool localIsEventDefined() { string arglname = "破壊 " + t.MainPilot().ID; var ret = Event.IsEventDefined(arglname, true); return ret; }
-
-                        //    if (t.IsMessageDefined("脱出") && !is_event && !localIsEventDefined())
-                        //    {
-                        //        t.PilotMessage("脱出", msg_mode: "");
-                        //    }
-
-                        //    // 戦闘アニメ表示を使わない場合はかばったユニットを元の位置に戻しておく
-                        //    if (!SRC.BattleAnimation)
-                        //    {
-                        //        if (su != null)
-                        //        {
-                        //            {
-                        //                var withBlock5 = su;
-                        //                withBlock5.x = prev_x;
-                        //                withBlock5.y = prev_y;
-                        //                withBlock5.Area = prev_area;
-                        //            }
-                        //        }
-                        //    }
+                        if (attack_num > 1)
+                        {
+                            msg = msg + SrcFormatter.Format(hit_count) + "回命中し、";
+                        }
+
+                        if (t.IsSysMessageDefined("破壊", sub_situation: ""))
+                        {
+                            t.SysMessage("破壊", sub_situation: "", add_msg: "");
+                        }
+                        else if (t.IsHero())
+                        {
+                            GUI.DisplaySysMessage(msg + t.Nickname + "は[" + SrcFormatter.Format(dmg) + "]のダメージを受け倒された。");
+                        }
+                        else
+                        {
+                            GUI.DisplaySysMessage(msg + t.Nickname + "は[" + SrcFormatter.Format(dmg) + "]のダメージを受け破壊された。");
+                        }
+
+                        // 復活するかどうかのチェックを行う
+
+                        // スペシャルパワー「復活」
+                        if (t.IsUnderSpecialPowerEffect("復活"))
+                        {
+                            t.RemoveSpecialPowerInEffect("破壊");
+                            goto Resurrect;
+                        }
+
+                        // パイロット用特殊能力「英雄」＆「再生」
+                        if (!is_event && !IsUnderSpecialPowerEffect("絶対破壊"))
+                        {
+                            if (GeneralLib.Dice(16) <= t.MainPilot().SkillLevel("英雄", ref_mode: ""))
+                            {
+                                t.HP = t.MaxHP / 2;
+                                t.IncreaseMorale(10);
+                                if (t.IsMessageDefined("復活"))
+                                {
+                                    t.PilotMessage("復活", msg_mode: "");
+                                }
+
+                                if (t.IsAnimationDefined("復活", sub_situation: ""))
+                                {
+                                    t.PlayAnimation("復活", sub_situation: "");
+                                }
+                                else
+                                {
+                                    t.SpecialEffect("復活", sub_situation: "");
+                                }
+
+                                buf = t.MainPilot().SkillName0("英雄");
+                                if (buf == "非表示")
+                                {
+                                    buf = "英雄";
+                                }
+
+                                if (t.IsSysMessageDefined("復活", buf))
+                                {
+                                    t.SysMessage("復活", buf, add_msg: "");
+                                }
+                                else
+                                {
+                                    GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の熱き" + buf + "の心が[" + t.Nickname + "]を復活させた！");
+                                }
+
+                                goto Resurrect;
+                            }
+
+                            // 浄化の適用
+                            if (t.MainPilot().IsSkillAvailable("再生"))
+                            {
+                                if (w.IsWeaponClassifiedAs("浄"))
+                                {
+                                    foreach (var p in AllPilots)
+                                    {
+                                        if (p.IsSkillAvailable("浄化"))
+                                        {
+                                            if (IsMessageDefined("浄化(" + wname + ")"))
+                                            {
+                                                PilotMessage("浄化(" + wname + ")", msg_mode: "");
+                                                if (IsAnimationDefined("浄化", wname))
+                                                {
+                                                    PlayAnimation("浄化", wname);
+                                                }
+                                                else
+                                                {
+                                                    SpecialEffect("浄化", wname);
+                                                }
+                                            }
+                                            else if (IsMessageDefined("浄化"))
+                                            {
+                                                PilotMessage("浄化", msg_mode: "");
+                                                if (IsAnimationDefined("浄化", wname))
+                                                {
+                                                    PlayAnimation("浄化", wname);
+                                                }
+                                                else
+                                                {
+                                                    SpecialEffect("浄化", wname);
+                                                }
+                                            }
+                                            else if (IsMessageDefined("浄解(" + wname + ")"))
+                                            {
+                                                PilotMessage("浄解(" + wname + ")", msg_mode: "");
+                                                if (IsAnimationDefined("浄解", wname))
+                                                {
+                                                    PlayAnimation("浄解", wname);
+                                                }
+                                                else
+                                                {
+                                                    SpecialEffect("浄解", wname);
+                                                }
+                                            }
+                                            else if (IsMessageDefined("浄解"))
+                                            {
+                                                PilotMessage("浄解", msg_mode: "");
+                                                if (IsAnimationDefined("浄解", wname))
+                                                {
+                                                    PlayAnimation("浄解", wname);
+                                                }
+                                                else
+                                                {
+                                                    SpecialEffect("浄解", wname);
+                                                }
+                                            }
+
+                                            if (IsSysMessageDefined("浄化", sub_situation: ""))
+                                            {
+                                                SysMessage("浄化", sub_situation: "", add_msg: "");
+                                            }
+                                            else
+                                            {
+                                                GUI.DisplaySysMessage(p.get_Nickname(false) + "は浄化を行って[" + t.Nickname + "]の復活を防いだ。");
+                                            }
+
+                                            goto Cure;
+                                        }
+                                    }
+
+                                    if (IsHero())
+                                    {
+                                        if (IsMessageDefined("浄化(" + wname + ")"))
+                                        {
+                                            PilotMessage("浄化(" + wname + ")", msg_mode: "");
+                                            if (IsAnimationDefined("浄化", wname))
+                                            {
+                                                PlayAnimation("浄化", wname);
+                                            }
+                                            else
+                                            {
+                                                SpecialEffect("浄化", wname);
+                                            }
+
+                                            GUI.DisplaySysMessage(MainPilot().get_Nickname(false) + "は浄化を行って[" + t.Nickname + "]の復活を防いだ。");
+                                        }
+                                        else if (IsMessageDefined("浄化"))
+                                        {
+                                            PilotMessage("浄化", msg_mode: "");
+                                            if (IsAnimationDefined("浄化", wname))
+                                            {
+                                                PlayAnimation("浄化", wname);
+                                            }
+                                            else
+                                            {
+                                                SpecialEffect("浄化", wname);
+                                            }
+
+                                            GUI.DisplaySysMessage(MainPilot().get_Nickname(false) + "は浄化を行って[" + t.Nickname + "]の復活を防いだ。");
+                                        }
+                                        else if (IsMessageDefined("浄解(" + wname + ")"))
+                                        {
+                                            PilotMessage("浄解(" + wname + ")", msg_mode: "");
+                                            if (IsAnimationDefined("浄解", wname))
+                                            {
+                                                PlayAnimation("浄解", wname);
+                                            }
+                                            else
+                                            {
+                                                SpecialEffect("浄解", wname);
+                                            }
+
+                                            GUI.DisplaySysMessage(MainPilot().get_Nickname(false) + "は浄化を行って[" + t.Nickname + "]の復活を防いだ。");
+                                        }
+                                        else if (IsMessageDefined("浄解"))
+                                        {
+                                            PilotMessage("浄解", msg_mode: "");
+                                            if (IsAnimationDefined("浄解", wname))
+                                            {
+                                                PlayAnimation("浄解", wname);
+                                            }
+                                            else
+                                            {
+                                                SpecialEffect("浄解", wname);
+                                            }
+
+                                            if (IsSysMessageDefined("浄化", sub_situation: ""))
+                                            {
+                                                SysMessage("浄化", sub_situation: "", add_msg: "");
+                                            }
+                                            else
+                                            {
+                                                GUI.DisplaySysMessage(MainPilot().get_Nickname(false) + "は浄化を行って[" + t.Nickname + "]の復活を防いだ。");
+                                            }
+                                        }
+
+                                        goto Cure;
+                                    }
+                                }
+
+                                if (GeneralLib.Dice(16) <= t.MainPilot().SkillLevel("再生", ref_mode: ""))
+                                {
+                                    t.HP = t.MaxHP / 2;
+                                    if (t.IsMessageDefined("復活"))
+                                    {
+                                        t.PilotMessage("復活", msg_mode: "");
+                                    }
+
+                                    if (t.IsAnimationDefined("復活", sub_situation: ""))
+                                    {
+                                        t.PlayAnimation("復活", sub_situation: "");
+                                    }
+                                    else
+                                    {
+                                        t.SpecialEffect("復活", sub_situation: "");
+                                    }
+
+                                    buf = t.MainPilot().SkillName0("再生");
+                                    if (buf == "非表示")
+                                    {
+                                        buf = "再生";
+                                    }
+
+                                    if (t.IsSysMessageDefined("再生", buf))
+                                    {
+                                        t.SysMessage("再生", buf, add_msg: "");
+                                    }
+                                    else
+                                    {
+                                        GUI.DisplaySysMessage(t.Nickname + "は" + buf + "の力で一瞬にして復活した！");
+                                    }
+
+                                    goto Resurrect;
+                                }
+                            }
+                        }
+
+                    Cure:
+                        ;
+
+
+                        // ユニット破壊によるパーツ分離
+                        if (separate_parts)
+                        {
+                            uname = GeneralLib.LIndex(t.FeatureData("パーツ分離"), 2);
+                            if (!t.IsHero())
+                            {
+                                if (SRC.BattleAnimation)
+                                {
+                                    Effect.ExplodeAnimation(t.Size, t.x, t.y);
+                                }
+                                else
+                                {
+                                    Sound.PlayWave("Explode.wav");
+                                }
+                            }
+
+                            fname = t.FeatureName("パーツ分離");
+                            if (t.IsAnimationDefined("破壊時分離(" + t.Name + ")", sub_situation: ""))
+                            {
+                                t.PlayAnimation("破壊時分離(" + t.Name + ")", sub_situation: "");
+                            }
+                            else if (t.IsAnimationDefined("破壊時分離(" + fname + ")"))
+                            {
+                                t.PlayAnimation("破壊時分離(" + fname + ")", sub_situation: "");
+                            }
+                            else if (t.IsAnimationDefined("破壊時分離", sub_situation: ""))
+                            {
+                                t.PlayAnimation("破壊時分離", sub_situation: "");
+                            }
+                            else if (t.IsSpecialEffectDefined("破壊時分離(" + t.Name + ")"))
+                            {
+                                t.SpecialEffect("破壊時分離(" + t.Name + ")", sub_situation: "");
+                            }
+                            else if (t.IsSpecialEffectDefined("破壊時分離(" + fname + ")"))
+                            {
+                                t.SpecialEffect("破壊時分離(" + fname + ")", sub_situation: "");
+                            }
+                            else if (t.IsSpecialEffectDefined("破壊時分離", sub_situation: ""))
+                            {
+                                t.SpecialEffect("破壊時分離", sub_situation: "");
+                            }
+                            else if (t.IsAnimationDefined("分離(" + t.Name + ")"))
+                            {
+                                t.PlayAnimation("分離(" + t.Name + ")", sub_situation: "");
+                            }
+                            else if (t.IsAnimationDefined("分離(" + fname + ")"))
+                            {
+                                t.PlayAnimation("分離(" + fname + ")", sub_situation: "");
+                            }
+                            else if (t.IsAnimationDefined("分離", sub_situation: ""))
+                            {
+                                t.PlayAnimation("分離", sub_situation: "");
+                            }
+                            else if (t.IsSpecialEffectDefined("分離(" + t.Name + ")"))
+                            {
+                                t.SpecialEffect("分離(" + t.Name + ")", sub_situation: "");
+                            }
+                            else if (t.IsSpecialEffectDefined("分離(" + fname + ")"))
+                            {
+                                t.SpecialEffect("分離(" + fname + ")", sub_situation: "");
+                            }
+                            else
+                            {
+                                t.SpecialEffect("分離", sub_situation: "");
+                            }
+
+                            t.Transform(uname);
+                            {
+                                var withBlock4 = t.CurrentForm();
+                                withBlock4.HP = withBlock4.MaxHP;
+                                // 自分から攻撃して破壊された時には行動数を0に
+                                if ((withBlock4.Party ?? "") == (SRC.Stage ?? ""))
+                                {
+                                    withBlock4.UsedAction = withBlock4.MaxAction();
+                                }
+                            }
+
+                            if (t.IsSysMessageDefined("破壊時分離(" + t.Name + ")", sub_situation: ""))
+                            {
+                                t.SysMessage("破壊時分離(" + t.Name + ")", sub_situation: "", add_msg: "");
+                            }
+                            else if (t.IsSysMessageDefined("破壊時分離(" + fname + ")"))
+                            {
+                                t.SysMessage("破壊時分離(" + fname + ")", sub_situation: "", add_msg: "");
+                            }
+                            else if (t.IsSysMessageDefined("破壊時分離", sub_situation: ""))
+                            {
+                                t.SysMessage("破壊時分離", sub_situation: "", add_msg: "");
+                            }
+                            else if (t.IsSysMessageDefined("分離(" + t.Name + ")"))
+                            {
+                                t.SysMessage("分離(" + t.Name + ")", sub_situation: "", add_msg: "");
+                            }
+                            else if (t.IsSysMessageDefined("分離(" + fname + ")"))
+                            {
+                                t.SysMessage("分離(" + fname + ")", sub_situation: "", add_msg: "");
+                            }
+                            else if (t.IsSysMessageDefined("分離", sub_situation: ""))
+                            {
+                                t.SysMessage("分離", sub_situation: "", add_msg: "");
+                            }
+                            else if (t.IsHero())
+                            {
+                                if ((t.Nickname ?? "") != (t.OtherForm(uname).Nickname ?? ""))
+                                {
+                                    GUI.DisplaySysMessage(t.Nickname + "は" + t.OtherForm(uname).Nickname + "に変化した。");
+                                }
+                                else
+                                {
+                                    GUI.DisplaySysMessage(t.Nickname + "は変化し、蘇った。");
+                                }
+                            }
+                            else
+                            {
+                                GUI.DisplaySysMessage(t.Nickname + "は破壊されたパーツを分離させた。");
+                            }
+
+                            t = t.CurrentForm();
+                            Commands.SelectedTarget = t;
+                            Event.SelectedTargetForEvent = t;
+                            goto Resurrect;
+                        }
+
+                        // ユニット破壊による気力の変動
+                        if (attack_mode != "マップ攻撃")
+                        {
+                            // 敵を破壊したユニットのパイロットはトータルで気力+4
+                            if (Strings.InStr(attack_mode, "援護攻撃") > 0)
+                            {
+                                Commands.AttackUnit.CurrentForm().IncreaseMorale(3);
+                            }
+                            else
+                            {
+                                IncreaseMorale(3);
+                            }
+
+                            // それ以外のパイロット
+                            foreach (Pilot p in SRC.PList.Items)
+                            {
+                                // 出撃中のパイロットのみが対象
+                                if (p.Unit == null)
+                                {
+                                    goto NextPilot;
+                                }
+
+                                if (p.Unit.Status != "出撃")
+                                {
+                                    goto NextPilot;
+                                }
+
+                                if ((p.Party ?? "") == (Party ?? ""))
+                                {
+                                    // 敵を破壊したユニットの陣営のパイロットは気力+1
+                                    if (p.Personality != "機械")
+                                    {
+                                        p.Morale = (p.Morale + 1);
+                                    }
+                                }
+                                else if ((p.Party ?? "") == (t.Party ?? ""))
+                                {
+                                    // 破壊されたユニットの陣営のパイロットは性格に応じて気力を変化
+                                    switch (p.Personality ?? "")
+                                    {
+                                        case "超強気":
+                                            {
+                                                morale_mod = 2;
+                                                break;
+                                            }
+
+                                        case "強気":
+                                            {
+                                                morale_mod = 1;
+                                                break;
+                                            }
+
+                                        case "弱気":
+                                            {
+                                                morale_mod = -1;
+                                                break;
+                                            }
+
+                                        default:
+                                            {
+                                                morale_mod = 0;
+                                                break;
+                                            }
+                                    }
+
+                                    // 味方の場合の気力変化量はオプションで変化する
+                                    if (p.Party == "味方" && Expression.IsOptionDefined("破壊時味方気力変化５倍"))
+                                    {
+                                        p.Morale = (p.Morale + 5 * morale_mod);
+                                    }
+                                    else
+                                    {
+                                        p.Morale = (p.Morale + morale_mod);
+                                    }
+                                }
+
+                            NextPilot:
+                                ;
+                            }
+                        }
+
+                        // 脱出メッセージの表示
+                        if (t.IsMessageDefined("脱出") && !is_event && !Event.IsEventDefined("破壊 " + t.MainPilot().ID, true))
+                        {
+                            t.PilotMessage("脱出", msg_mode: "");
+                        }
+
+                        // 戦闘アニメ表示を使わない場合はかばったユニットを元の位置に戻しておく
+                        if (!SRC.BattleAnimation)
+                        {
+                            if (su != null)
+                            {
+                                {
+                                    var withBlock5 = su;
+                                    withBlock5.x = prev_x;
+                                    withBlock5.y = prev_y;
+                                    withBlock5.Area = prev_area;
+                                }
+                            }
+                        }
 
                         // ユニットを破壊
                         t.Die();
