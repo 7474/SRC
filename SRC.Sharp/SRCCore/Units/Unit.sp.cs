@@ -115,7 +115,7 @@ namespace SRCCore.Units
         }
 
         // スペシャルパワーのデータ
-        public string SpecialPowerData(string Index)
+        public string SpecialPowerData(int Index)
         {
             try
             {
@@ -164,7 +164,7 @@ namespace SRCCore.Units
                 // が来るまで効果を削除しない
                 if (stype == "敵ターン")
                 {
-                    string spd = SpecialPowerData(sd.Name);
+                    string spd = SpecialPowerData(i);
                     if (SRC.PList.IsDefined(spd))
                     {
                         var p = SRC.PList.Item(spd);

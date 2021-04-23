@@ -2706,6 +2706,7 @@ namespace SRCSharpForm
                     wait_time = wait_time / 2;
                 }
 
+                RefreshMessage();
                 Application.DoEvents();
 
                 // 待ち時間が切れるまで待機

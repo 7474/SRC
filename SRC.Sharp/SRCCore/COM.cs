@@ -503,7 +503,7 @@ namespace SRCCore
                     // サポートガードされる？
                     if (selectedUnit.MainPilot().TacticalTechnique() >= 150)
                     {
-                        if (u.LookForSupportGuard(Commands.SelectedUnit, tmp_w) is object)
+                        if (u.LookForSupportGuard(Commands.SelectedUnit, Commands.SelectedUnit.Weapon(tmp_w)) != null)
                         {
                             // 相手を破壊することは出来ない
                             prob = 0;

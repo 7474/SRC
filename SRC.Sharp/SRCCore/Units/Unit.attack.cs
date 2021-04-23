@@ -649,12 +649,11 @@ namespace SRCCore.Units
                 // 回避能力の処理
                 if (prob > 0)
                 {
-                    // TODO Impl CheckDodgeFeature
-                    //if (CheckDodgeFeature(w, t, tx, ty, attack_mode, def_mode, dmg, be_quiet))
-                    //{
-                    //    dmg = 0;
-                    //    goto EndAttack;
-                    //}
+                    if (CheckDodgeFeature(w, t, tx, ty, attack_mode, def_mode, dmg, be_quiet))
+                    {
+                        dmg = 0;
+                        goto EndAttack;
+                    }
                 }
 
                 // 攻撃回数を求める
@@ -684,28 +683,26 @@ namespace SRCCore.Units
                 // 攻撃回避時の処理
                 if (hit_count == 0)
                 {
-                    //    bool localIsSpecialEffectDefined2() { string argmain_situation = wname + "(回避)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-                    //    if (IsAnimationDefined(wname + "(回避)", sub_situation: ""))
-                    //    {
-                    //        PlayAnimation(wname + "(回避)", sub_situation: "");
-                    //    }
-                    //    else if (localIsSpecialEffectDefined2())
-                    //    {
-                    //        SpecialEffect(wname + "(回避)", sub_situation: "");
-                    //    }
-                    //    else if (t.IsAnimationDefined("回避", sub_situation: ""))
-                    //    {
-                    //        t.PlayAnimation("回避", sub_situation: "");
-                    //    }
-                    //    else if (t.IsSpecialEffectDefined("回避", sub_situation: ""))
-                    //    {
-                    //        t.SpecialEffect("回避", sub_situation: "");
-                    //    }
-                    //    else
-                    //    {
-                    //        Effect.DodgeEffect(this, w);
-                    //    }
+                    if (IsAnimationDefined(wname + "(回避)", sub_situation: ""))
+                    {
+                        PlayAnimation(wname + "(回避)", sub_situation: "");
+                    }
+                    else if (IsSpecialEffectDefined(wname + "(回避)", ""))
+                    {
+                        SpecialEffect(wname + "(回避)", sub_situation: "");
+                    }
+                    else if (t.IsAnimationDefined("回避", sub_situation: ""))
+                    {
+                        t.PlayAnimation("回避", sub_situation: "");
+                    }
+                    else if (t.IsSpecialEffectDefined("回避", sub_situation: ""))
+                    {
+                        t.SpecialEffect("回避", sub_situation: "");
+                    }
+                    else
+                    {
+                        Effect.DodgeEffect(this, w);
+                    }
 
                     if (!be_quiet)
                     {
@@ -713,315 +710,294 @@ namespace SRCCore.Units
                         PilotMessage(wname + "(回避)", msg_mode: "");
                     }
 
-                    //    if (t.IsSysMessageDefined("回避", sub_situation: ""))
-                    //    {
-                    //        t.SysMessage("回避", sub_situation: "", add_msg: "");
-                    //    }
-                    //    else
-                    //    {
-                    //        switch (def_mode ?? "")
-                    //        {
-                    //            case "回避":
-                    //                {
-                    //                    if (t.IsConditionSatisfied("踊り"))
-                    //                    {
-                    //                        GUI.DisplaySysMessage(t.Nickname + "は激しく踊りながら攻撃をかわした。");
-                    //                    }
-                    //                    else
-                    //                    {
-                    //                        GUI.DisplaySysMessage(t.Nickname + "は回避運動をとり、攻撃をかわした。");
-                    //                    }
+                    if (t.IsSysMessageDefined("回避", sub_situation: ""))
+                    {
+                        t.SysMessage("回避", sub_situation: "", add_msg: "");
+                    }
+                    else
+                    {
+                        switch (def_mode ?? "")
+                        {
+                            case "回避":
+                                {
+                                    if (t.IsConditionSatisfied("踊り"))
+                                    {
+                                        GUI.DisplaySysMessage(t.Nickname + "は激しく踊りながら攻撃をかわした。");
+                                    }
+                                    else
+                                    {
+                                        GUI.DisplaySysMessage(t.Nickname + "は回避運動をとり、攻撃をかわした。");
+                                    }
 
-                    //                    break;
-                    //                }
+                                    break;
+                                }
 
-                    //            case "防御":
-                    //                {
-                    //                    GUI.DisplaySysMessage(t.Nickname + "は防御行動をとったが、攻撃は外れた。");
-                    //                    break;
-                    //                }
+                            case "防御":
+                                {
+                                    GUI.DisplaySysMessage(t.Nickname + "は防御行動をとったが、攻撃は外れた。");
+                                    break;
+                                }
 
-                    //            default:
-                    //                {
-                    //                    GUI.DisplaySysMessage(t.Nickname + "は攻撃をかわした。");
-                    //                    break;
-                    //                }
-                    //        }
-                    //    }
+                            default:
+                                {
+                                    GUI.DisplaySysMessage(t.Nickname + "は攻撃をかわした。");
+                                    break;
+                                }
+                        }
+                    }
 
                     goto EndAttack;
                 }
 
-                //// 敵ユニットがかばわれた場合の処理
-                //if (su is null)
-                //{
-                //    use_support_guard = false;
-                //    if (t.IsUnderSpecialPowerEffect("みがわり"))
-                //    {
-                //        // スペシャルパワー「みがわり」
-                //        i = 1;
-                //        while (i <= t.CountSpecialPower())
-                //        {
-                //            // UPGRADE_WARNING: オブジェクト t.SpecialPower(i).IsEffectAvailable(みがわり) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //            SpecialPowerData localSpecialPower() { object argIndex1 = i; var ret = t.SpecialPower(argIndex1); return ret; }
-
-                //            if (Conversions.ToBoolean(localSpecialPower().IsEffectAvailable("みがわり")))
-                //            {
-                //                string localSpecialPowerData1() { object argIndex1 = i; var ret = t.SpecialPowerData(argIndex1); return ret; }
-
-                //                if (SRC.PList.IsDefined(localSpecialPowerData1()))
-                //                {
-                //                    string localSpecialPowerData() { object argIndex1 = i; var ret = t.SpecialPowerData(argIndex1); return ret; }
-
-                //                    Pilot localItem() { object argIndex1 = (object)hs40b56b80c15841019d507de2a6e31457(); var ret = SRC.PList.Item(argIndex1); return ret; }
-
-                //                    su = localItem().Unit;
-                //                    t.RemoveSpecialPowerInEffect("みがわり");
-                //                    i = (i - 1);
-                //                    if (su is object)
-                //                    {
-                //                        su = su.CurrentForm();
-                //                        if (su.Status != "出撃")
-                //                        {
-                //                            // UPGRADE_NOTE: オブジェクト su をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                //                            su = null;
-                //                        }
-                //                    }
-                //                }
-                //            }
-
-                //            i = (i + 1);
-                //        }
-                //    }
-                //    else if (!is_event && def_mode != "マップ攻撃" && def_mode != "援護防御")
-                //    {
-                //        if (t.IsDefense())
-                //        {
-                //            // サポートガード
-                //            if (Commands.UseSupportGuard)
-                //            {
-                //                su = t.LookForSupportGuard(this, w);
-                //                if (su is object)
-                //                {
-                //                    use_support_guard = true;
-                //                    // サポートガードの残り回数を減らす
-                //                    su.UsedSupportGuard = (su.UsedSupportGuard + 1);
-                //                }
-                //            }
-                //        }
-
-                //        if (su is null)
-                //        {
-                //            // かばう
-                //            su = t.LookForGuardHelp(this, w, is_critical);
-                //        }
-                //    }
-
-                //    if (su is object)
-                //    {
-                //        su.Update();
-
-                // メッセージウィンドウの表示を入れ替え
-                if (Party == "味方" || Party == "ＮＰＣ")
+                // 敵ユニットがかばわれた場合の処理
+                if (su == null)
                 {
-                    GUI.UpdateMessageForm(su, this);
+                    use_support_guard = false;
+                    if (t.IsUnderSpecialPowerEffect("みがわり"))
+                    {
+                        // スペシャルパワー「みがわり」
+                        i = 1;
+                        while (i <= t.CountSpecialPower())
+                        {
+                            if (t.SpecialPower(i).IsEffectAvailable("みがわり"))
+                            {
+                                if (SRC.PList.IsDefined(t.SpecialPowerData(i)))
+                                {
+                                    su = SRC.PList.Item(t.SpecialPowerData(i)).Unit;
+                                    t.RemoveSpecialPowerInEffect("みがわり");
+                                    i = (i - 1);
+                                    if (su != null)
+                                    {
+                                        su = su.CurrentForm();
+                                        if (su.Status != "出撃")
+                                        {
+                                            su = null;
+                                        }
+                                    }
+                                }
+                            }
+                            i = (i + 1);
+                        }
+                    }
+                    else if (!is_event && def_mode != "マップ攻撃" && def_mode != "援護防御")
+                    {
+                        if (t.IsDefense())
+                        {
+                            // サポートガード
+                            if (Commands.UseSupportGuard)
+                            {
+                                su = t.LookForSupportGuard(this, w);
+                                if (su != null)
+                                {
+                                    use_support_guard = true;
+                                    // サポートガードの残り回数を減らす
+                                    su.UsedSupportGuard = (su.UsedSupportGuard + 1);
+                                }
+                            }
+                        }
+
+                        if (su == null)
+                        {
+                            // かばう
+                            su = t.LookForGuardHelp(this, w, is_critical);
+                        }
+                    }
+
+                    if (su != null)
+                    {
+                        su.Update();
+
+                        // メッセージウィンドウの表示を入れ替え
+                        if (Party == "味方" || Party == "ＮＰＣ")
+                        {
+                            GUI.UpdateMessageForm(su, this);
+                        }
+                        else
+                        {
+                            GUI.UpdateMessageForm(this, su);
+                        }
+
+                        if (!SRC.BattleAnimation)
+                        {
+                            // 身代わりになるユニットをハイライト表示
+                            if (Map.MaskData[su.x, su.y])
+                            {
+                                Map.MaskData[su.x, su.y] = false;
+                                GUI.MaskScreen();
+                                Map.MaskData[su.x, su.y] = true;
+                            }
+                        }
+
+                        // かばう際のメッセージ
+                        if (use_support_guard)
+                        {
+                            if (su.IsMessageDefined("サポートガード(" + t.MainPilot().Name + ")"))
+                            {
+                                su.PilotMessage("サポートガード(" + t.MainPilot().Name + ")", msg_mode: "");
+                            }
+                            else if (su.IsMessageDefined("サポートガード(" + t.MainPilot().get_Nickname(false) + ")"))
+                            {
+                                su.PilotMessage("サポートガード(" + t.MainPilot().get_Nickname(false) + ")", msg_mode: "");
+                            }
+                            else if (su.IsMessageDefined("サポートガード"))
+                            {
+                                su.PilotMessage("サポートガード", msg_mode: "");
+                            }
+                        }
+                        else if (su.IsMessageDefined("かばう(" + t.MainPilot().Name + ")"))
+                        {
+                            su.PilotMessage("かばう(" + t.MainPilot().Name + ")", msg_mode: "");
+                            use_protect_msg = true;
+                        }
+                        else if (su.IsMessageDefined("かばう(" + t.MainPilot().get_Nickname(false) + ")"))
+                        {
+                            su.PilotMessage("かばう(" + t.MainPilot().get_Nickname(false) + ")", msg_mode: "");
+                            use_protect_msg = true;
+                        }
+
+                        msg = su.MainPilot().get_Nickname(false) + "は[" + t.MainPilot().get_Nickname(false) + "]をかばった。;";
+
+                        // 身代わりになるユニットをターゲットの位置まで移動
+                        {
+                            var withBlock2 = su;
+                            // アニメ表示
+                            if (SRC.BattleAnimation)
+                            {
+                                if (su.IsAnimationDefined("サポートガード開始", sub_situation: ""))
+                                {
+                                    su.PlayAnimation("サポートガード開始", sub_situation: "");
+                                }
+                                else if (!GUI.IsRButtonPressed())
+                                {
+                                    if (use_support_guard)
+                                    {
+                                        GUI.MoveUnitBitmap(su, withBlock2.x, withBlock2.y, tx, ty, 80, 4);
+                                    }
+                                    else
+                                    {
+                                        GUI.MoveUnitBitmap(su, withBlock2.x, withBlock2.y, tx, ty, 50);
+                                    }
+                                }
+                            }
+
+                            Map.MapDataForUnit[withBlock2.x, withBlock2.y] = null;
+                            prev_x = withBlock2.x;
+                            prev_y = withBlock2.y;
+                            prev_area = withBlock2.Area;
+                            withBlock2.x = tx;
+                            withBlock2.y = ty;
+                            withBlock2.Area = tarea;
+                            Map.MapDataForUnit[withBlock2.x, withBlock2.y] = su;
+                        }
+
+                        // ターゲットを再設定
+                        t = su;
+                        Commands.SelectedTarget = t;
+                        Event.SelectedTargetForEvent = t;
+                    }
                 }
-                else
+
+                if (su != null)
                 {
-                    GUI.UpdateMessageForm(this, su);
+                    // ダメージを再計算
+                    {
+                        prev_hp = t.HP;
+                        dmg = w.Damage(t, true);
+                        if (is_critical)
+                        {
+                            if (Expression.IsOptionDefined("ダメージ倍率低下"))
+                            {
+                                if (w.IsWeaponClassifiedAs("痛"))
+                                {
+                                    dmg = (int)((1d + 0.1d * (w.WeaponLevel("痛") + 2d)) * dmg);
+                                }
+                                else
+                                {
+                                    dmg = (int)(1.2d * dmg);
+                                }
+                            }
+                            else
+                            {
+                                if (w.IsWeaponClassifiedAs("痛"))
+                                {
+                                    dmg = (int)((1d + 0.25d * (w.WeaponLevel("痛") + 2d)) * dmg);
+                                }
+                                else
+                                {
+                                    dmg = (int)(1.5d * dmg);
+                                }
+                            }
+                        }
+                    }
+
+                    // かばう場合は常に全弾命中
+                    hit_count = attack_num;
+
+                    // 常に防御モードに設定
+                    def_mode = "防御";
+
+                    // サポートガードを行うユニットに関する情報を記録
+                    if (IsDefense())
+                    {
+                        Commands.SupportGuardUnit2 = su;
+                        Commands.SupportGuardUnitHPRatio2 = su.HP / (double)su.MaxHP;
+                    }
+                    else
+                    {
+                        Commands.SupportGuardUnit = su;
+                        Commands.SupportGuardUnitHPRatio = su.HP / (double)su.MaxHP;
+                    }
                 }
 
-                //        if (!SRC.BattleAnimation)
-                //        {
-                //            // 身代わりになるユニットをハイライト表示
-                //            if (Map.MaskData[su.x, su.y])
-                //            {
-                //                Map.MaskData[su.x, su.y] = false;
-                //                GUI.MaskScreen();
-                //                Map.MaskData[su.x, su.y] = true;
-                //            }
-                //        }
+                // 受けの処理
+                if (CheckParryFeature(w, t, tx, ty, attack_mode, def_mode, dmg, msg, be_quiet || use_protect_msg))
+                {
+                    dmg = 0;
+                    goto EndAttack;
+                }
 
-                //        // かばう際のメッセージ
-                //        bool localIsMessageDefined2() { string argmain_situation = "かばう(" + t.MainPilot().Name + ")"; var ret = su.IsMessageDefined(argmain_situation); return ret; }
+                // 防御＆かばう時はダメージを半減
+                if (!w.IsWeaponClassifiedAs("殺"))
+                {
+                    if (def_mode == "防御" && !t.IsUnderSpecialPowerEffect("無防備") && !t.IsFeatureAvailable("防御不可"))
+                    {
+                        dmg = dmg / 2;
+                    }
+                }
 
-                //        bool localIsMessageDefined3() { string argmain_situation = "かばう(" + t.MainPilot().get_Nickname(false) + ")"; var ret = su.IsMessageDefined(argmain_situation); return ret; }
-
-                //        if (use_support_guard)
-                //        {
-                //            bool localIsMessageDefined1() { string argmain_situation = "サポートガード(" + t.MainPilot().get_Nickname(false) + ")"; var ret = su.IsMessageDefined(argmain_situation); return ret; }
-
-                //            if (su.IsMessageDefined("サポートガード(" + t.MainPilot().Name + ")"))
-                //            {
-                //                su.PilotMessage("サポートガード(" + t.MainPilot().Name + ")", msg_mode: "");
-                //            }
-                //            else if (localIsMessageDefined1())
-                //            {
-                //                su.PilotMessage("サポートガード(" + t.MainPilot().get_Nickname(false) + ")", msg_mode: "");
-                //            }
-                //            else if (su.IsMessageDefined("サポートガード"))
-                //            {
-                //                su.PilotMessage("サポートガード", msg_mode: "");
-                //            }
-                //        }
-                //        else if (localIsMessageDefined2())
-                //        {
-                //            su.PilotMessage("かばう(" + t.MainPilot().Name + ")", msg_mode: "");
-                //            use_protect_msg = true;
-                //        }
-                //        else if (localIsMessageDefined3())
-                //        {
-                //            su.PilotMessage("かばう(" + t.MainPilot().get_Nickname(false) + ")", msg_mode: "");
-                //            use_protect_msg = true;
-                //        }
-
-                //        msg = su.MainPilot().get_Nickname(false) + "は[" + t.MainPilot().get_Nickname(false) + "]をかばった。;";
-
-                //        // 身代わりになるユニットをターゲットの位置まで移動
-                //        {
-                //            var withBlock2 = su;
-                //            // アニメ表示
-                //            if (SRC.BattleAnimation)
-                //            {
-                //                if (su.IsAnimationDefined("サポートガード開始", sub_situation: ""))
-                //                {
-                //                    su.PlayAnimation("サポートガード開始", sub_situation: "");
-                //                }
-                //                else if (!GUI.IsRButtonPressed())
-                //                {
-                //                    if (use_support_guard)
-                //                    {
-                //                        GUI.MoveUnitBitmap(su, withBlock2.x, withBlock2.y, tx, ty, 80, 4);
-                //                    }
-                //                    else
-                //                    {
-                //                        GUI.MoveUnitBitmap(su, withBlock2.x, withBlock2.y, tx, ty, 50);
-                //                    }
-                //                }
-                //            }
-
-                //            // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                //            Map.MapDataForUnit[withBlock2.x, withBlock2.y] = null;
-                //            prev_x = withBlock2.x;
-                //            prev_y = withBlock2.y;
-                //            prev_area = withBlock2.Area;
-                //            withBlock2.x = tx;
-                //            withBlock2.y = ty;
-                //            withBlock2.Area = tarea;
-                //            Map.MapDataForUnit[withBlock2.x, withBlock2.y] = su;
-                //        }
-
-                //        // ターゲットを再設定
-                //        t = su;
-                //        Commands.SelectedTarget = t;
-                //        Event.SelectedTargetForEvent = t;
-                //    }
-                //}
-
-                //if (su is object)
-                //{
-                //    // ダメージを再計算
-                //    {
-                //        var withBlock3 = t;
-                //        prev_hp = withBlock3.HP;
-                //        dmg = w.Damage(t, true);
-                //        if (is_critical)
-                //        {
-                //            if (Expression.IsOptionDefined("ダメージ倍率低下"))
-                //            {
-                //                if (w.IsWeaponClassifiedAs("痛"))
-                //                {
-                //                    dmg = ((1d + 0.1d * (w.WeaponLevel("痛") + 2d)) * dmg);
-                //                }
-                //                else
-                //                {
-                //                    dmg = (1.2d * dmg);
-                //                }
-                //            }
-                //            else
-                //            {
-                //                if (w.IsWeaponClassifiedAs("痛"))
-                //                {
-                //                    dmg = ((1d + 0.25d * (w.WeaponLevel("痛") + 2d)) * dmg);
-                //                }
-                //                else
-                //                {
-                //                    dmg = (1.5d * dmg);
-                //                }
-                //            }
-                //        }
-                //    }
-
-                //    // かばう場合は常に全弾命中
-                //    hit_count = attack_num;
-
-                //    // 常に防御モードに設定
-                //    def_mode = "防御";
-
-                //    // サポートガードを行うユニットに関する情報を記録
-                //    if (IsDefense())
-                //    {
-                //        Commands.SupportGuardUnit2 = su;
-                //        Commands.SupportGuardUnitHPRatio2 = su.HP / (double)su.MaxHP;
-                //    }
-                //    else
-                //    {
-                //        Commands.SupportGuardUnit = su;
-                //        Commands.SupportGuardUnitHPRatio = su.HP / (double)su.MaxHP;
-                //    }
-                //}
-
-                //// 受けの処理
-                //if (w.CheckParryFeature(t, tx, ty, attack_mode, def_mode, dmg, msg, be_quiet || use_protect_msg))
-                //{
-                //    dmg = 0;
-                //    goto EndAttack;
-                //}
-
-                //// 防御＆かばう時はダメージを半減
-                //if (w.!IsWeaponClassifiedAs("殺"))
-                //{
-                //    if (def_mode == "防御" && !t.IsUnderSpecialPowerEffect("無防備") && !t.IsFeatureAvailable("防御不可"))
-                //    {
-                //        dmg = dmg / 2;
-                //    }
-                //}
-
-                //// ダミー
-                //if (w.CheckDummyFeature(t, be_quiet))
-                //{
-                //    dmg = 0;
-                //    goto EndAttack;
-                //}
+                // ダミー
+                if (CheckDummyFeature(w, t, be_quiet))
+                {
+                    dmg = 0;
+                    goto EndAttack;
+                }
 
                 // これ以降は命中時の処理
+                is_hit = true;
 
-                // XXX 仮に hit_count 見てる
-                is_hit = hit_count > 0;
-                //is_hit = true;
+                // シールド防御判定
+                // XXX dmg 書き換えてそう
+                CheckShieldFeature(w, t, dmg, be_quiet, use_shield, use_shield_msg);
 
-                //// シールド防御判定
-                //CheckShieldFeature(w, t, dmg, be_quiet, use_shield, use_shield_msg);
+                // 防御能力の処理
+                if (CheckDefenseFeature(w, t, tx, ty, attack_mode, def_mode, dmg, msg, be_quiet || use_protect_msg, is_penetrated))
+                {
+                    if (!be_quiet)
+                    {
+                        PilotMessage(wname + "(攻撃無効化)", msg_mode: "");
+                    }
 
-                //// 防御能力の処理
-                //if (w.CheckDefenseFeature(t, tx, ty, attack_mode, def_mode, dmg, msg, be_quiet || use_protect_msg, is_penetrated))
-                //{
-                //    if (!be_quiet)
-                //    {
-                //        PilotMessage(wname + "(攻撃無効化)", msg_mode: "");
-                //    }
+                    dmg = 0;
+                    goto EndAttack;
+                }
 
-                //    dmg = 0;
-                //    goto EndAttack;
-                //}
-
-                //// 命中時の特殊効果を表示。
-                //// 防御能力の処理を先に行うのは攻撃無効化の特殊効果を優先させるため。
-                //Sound.IsWavePlayed = false;
-                //if (!be_quiet)
-                //{
-                //    PilotMessage(wname + "(命中)", msg_mode: "");
-                //}
+                // 命中時の特殊効果を表示。
+                // 防御能力の処理を先に行うのは攻撃無効化の特殊効果を優先させるため。
+                Sound.IsWavePlayed = false;
+                if (!be_quiet)
+                {
+                    PilotMessage(wname + "(命中)", msg_mode: "");
+                }
 
                 //bool localIsSpecialEffectDefined3() { string argmain_situation = wname + "(命中)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
@@ -1065,7 +1041,7 @@ namespace SRCCore.Units
                 //}
 
                 //// ターゲット位置を変更する攻撃はサポートガードの場合は無効
-                //if (su is null && def_mode != "援護防御")
+                //if (su == null && def_mode != "援護防御")
                 //{
                 //    // 吹き飛ばし
                 //    if (w.IsWeaponClassifiedAs("吹") || w.IsWeaponClassifiedAs("Ｋ"))
@@ -1318,7 +1294,7 @@ namespace SRCCore.Units
                     //    {
                     //        if (!SRC.BattleAnimation || w.WeaponPower("") > 0 || dmg > 0)
                     //        {
-                    //            if (!SRC.BattleAnimation && su is object)
+                    //            if (!SRC.BattleAnimation && su != null)
                     //            {
                     //                GUI.DrawSysString(prev_x, prev_y, SrcFormatter.Format(dmg));
                     //            }
@@ -2300,7 +2276,7 @@ namespace SRCCore.Units
                         //        foreach (Pilot p in SRC.PList)
                         //        {
                         //            // 出撃中のパイロットのみが対象
-                        //            if (p.Unit is null)
+                        //            if (p.Unit == null)
                         //            {
                         //                goto NextPilot;
                         //            }
@@ -2375,7 +2351,7 @@ namespace SRCCore.Units
                         //    // 戦闘アニメ表示を使わない場合はかばったユニットを元の位置に戻しておく
                         //    if (!SRC.BattleAnimation)
                         //    {
-                        //        if (su is object)
+                        //        if (su != null)
                         //        {
                         //            {
                         //                var withBlock5 = su;
@@ -2453,7 +2429,7 @@ namespace SRCCore.Units
 
                     //// サポートガードを行ったユニットは破壊処理の前に以前の位置に復帰させる
                     //int sx, sy;
-                    //if (su is object)
+                    //if (su != null)
                     //{
                     //    su = su.CurrentForm();
                     //    {
