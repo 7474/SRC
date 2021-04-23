@@ -668,6 +668,8 @@ namespace SRCSharpForm
         // フォームを閉じる
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // 他所でキャンセルされていたら処理しない
+            if (e.Cancel) { return; }
             var IsErrorMessageVisible = default(bool);
 
             //// エラーメッセージのダイアログは一番上に重ねられるため消去する必要がある
