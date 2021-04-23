@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Items;
 using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.Models;
@@ -32,7 +33,7 @@ namespace SRCCore.Units
             bool use_support_guard;
             string wname, wnickname;
             string msg, buf;
-            int k, i, j, num;
+            int k, i, j;
             Unit su = default, orig_t;
             //Unit[] partners;
             int tx, ty;
@@ -2678,28 +2679,14 @@ namespace SRCCore.Units
                     {
                         if (IsFeatureAvailable("変形技"))
                         {
-                            var loopTo7 = CountFeature();
-                            for (i = 1; i <= loopTo7; i++)
+                            var uname = "";
+                            var fd = Features.FirstOrDefault(x => x.Name == "変形技" && x.DataL[0] == wname);
+                            if (fd != null)
                             {
-                                string localFeature1() { object argIndex1 = i; var ret = Feature(argIndex1); return ret; }
-
-                                string localFeatureData3() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
-
-                                string localLIndex2() { string arglist = hsd78be329e21a495e9d12e8227830c1b1(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
-
-                                if (localFeature1() == "変形技" && (localLIndex2() ?? "") == (wname ?? ""))
+                                uname = fd.DataL[1];
+                                if (OtherForm(uname).IsAbleToEnter(x, y))
                                 {
-                                    string localFeatureData2() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
-
-                                    uname = GeneralLib.LIndex(localFeatureData2(), 2);
-                                    Unit localOtherForm10() { object argIndex1 = uname; var ret = OtherForm(argIndex1); return ret; }
-
-                                    if (localOtherForm10().IsAbleToEnter(x, y))
-                                    {
-                                        Transform(uname);
-                                    }
-
-                                    break;
+                                    Transform(uname);
                                 }
                             }
 
@@ -2717,10 +2704,9 @@ namespace SRCCore.Units
                         }
                         else if (IsFeatureAvailable("ノーマルモード"))
                         {
-                            uname = GeneralLib.LIndex(FeatureData(argIndex66), 1);
-                            Unit localOtherForm12() { object argIndex1 = uname; var ret = OtherForm(argIndex1); return ret; }
+                            var uname = GeneralLib.LIndex(FeatureData("ノーマルモード"), 1);
 
-                            if (localOtherForm12().IsAbleToEnter(x, y))
+                            if (OtherForm(uname).IsAbleToEnter(x, y))
                             {
                                 Transform(uname);
                             }
@@ -2728,97 +2714,79 @@ namespace SRCCore.Units
                     }
 
                     // アイテムを消費
-                    else if (Weapon(w).IsItem() && Bullet(w) == 0 && MaxBullet(w) > 0)
+                    else if (w.UpdatedWeaponData.IsItem() && w.Bullet() == 0 && w.MaxBullet() > 0)
                     {
                         // アイテムを削除
-                        num = Data.CountWeapon();
-                        num = (num + MainPilot().Data.CountWeapon());
-                        var loopTo8 = CountPilot();
-                        for (i = 2; i <= loopTo8; i++)
+                        var num = Data.CountWeapon();
+                        num += AllPilots.Sum(x => x.Data.CountWeapon());
+
+                        foreach (Item itm in colItem.List)
                         {
-                            Pilot localPilot2() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
-
-                            num = (num + localPilot2().Data.CountWeapon());
-                        }
-
-                        var loopTo9 = CountSupport();
-                        for (i = 2; i <= loopTo9; i++)
-                        {
-                            Pilot localSupport2() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
-
-                            num = (num + localSupport2().Data.CountWeapon());
-                        }
-
-                        if (IsFeatureAvailable("追加サポート"))
-                        {
-                            num = (num + AdditionalSupport().Data.CountWeapon());
-                        }
-
-                        foreach (Item itm in colItem)
-                        {
+                            // XXX もうちょいいいアイテムの特定ができそう、武器が何由来かを持っておけばよさそう
                             num = (num + itm.CountWeapon());
-                            if (w <= num)
+                            if (w.WeaponNo() <= num)
                             {
                                 itm.Exist = false;
-                                DeleteItem((object)itm.ID);
+                                DeleteItem(itm);
                                 break;
                             }
                         }
                     }
-                    else if (is_hit && (w.IsWeaponClassifiedAs("写") || w.IsWeaponClassifiedAs("化")) && (dmg > 0 || w.!IsWeaponClassifiedAs("殺")))
+                    else if (is_hit && (w.IsWeaponClassifiedAs("写")
+                        || w.IsWeaponClassifiedAs("化")) && (dmg > 0
+                        || !w.IsWeaponClassifiedAs("殺")))
                     {
-                        w.CheckMetamorphAttack(t, def_mode);
+                        CheckMetamorphAttack(w, t, def_mode);
                     }
 
                     {
-                        var withBlock14 = CurrentForm();
+                        var cf = CurrentForm();
                         // スペシャルパワーの効果を削除
                         if (Strings.InStr(attack_mode, "援護攻撃") == 0)
                         {
-                            if (withBlock14.IsUnderSpecialPowerEffect("攻撃後消耗"))
+                            if (cf.IsUnderSpecialPowerEffect("攻撃後消耗"))
                             {
-                                withBlock14.AddCondition("消耗", 1, cdata: "");
+                                cf.AddCondition("消耗", 1, cdata: "");
                             }
 
-                            withBlock14.RemoveSpecialPowerInEffect("攻撃");
+                            cf.RemoveSpecialPowerInEffect("攻撃");
                             if (is_hit)
                             {
-                                withBlock14.RemoveSpecialPowerInEffect("命中");
+                                cf.RemoveSpecialPowerInEffect("命中");
                             }
                         }
 
                         // 戦闘アニメで変更されたユニット画像を元に戻す
-                        if (withBlock14.IsConditionSatisfied("ユニット画像"))
+                        if (cf.IsConditionSatisfied("ユニット画像"))
                         {
-                            withBlock14.DeleteCondition("ユニット画像");
-                            withBlock14.BitmapID = GUI.MakeUnitBitmap(CurrentForm());
+                            cf.DeleteCondition("ユニット画像");
+                            cf.BitmapID = GUI.MakeUnitBitmap(CurrentForm());
                             GUI.PaintUnitBitmap(CurrentForm());
                         }
 
-                        if (withBlock14.IsConditionSatisfied("非表示付加"))
+                        if (cf.IsConditionSatisfied("非表示付加"))
                         {
-                            withBlock14.DeleteCondition("非表示付加");
-                            withBlock14.BitmapID = GUI.MakeUnitBitmap(CurrentForm());
+                            cf.DeleteCondition("非表示付加");
+                            cf.BitmapID = GUI.MakeUnitBitmap(CurrentForm());
                             GUI.PaintUnitBitmap(CurrentForm());
                         }
 
-                        var loopTo10 = Information.UBound(partners);
-                        for (i = 1; i <= loopTo10; i++)
+                        foreach (var partner in partners)
                         {
                             {
-                                var withBlock15 = partners[i].CurrentForm();
-                                if (withBlock15.IsConditionSatisfied("ユニット画像"))
+                                var pcf = partner.CurrentForm();
+                                if (pcf.IsConditionSatisfied("ユニット画像"))
                                 {
-                                    withBlock15.DeleteCondition("ユニット画像");
-                                    withBlock15.BitmapID = GUI.MakeUnitBitmap(partners[i].CurrentForm());
-                                    GUI.PaintUnitBitmap(partners[i].CurrentForm());
+                                    pcf.DeleteCondition("ユニット画像");
+                                    pcf.BitmapID = GUI.MakeUnitBitmap(partner.CurrentForm());
+                                    GUI.PaintUnitBitmap(partner.CurrentForm());
                                 }
 
-                                if (withBlock15.IsConditionSatisfied("非表示付加"))
+                                if (pcf.IsConditionSatisfied("非表示付加"))
                                 {
-                                    withBlock15.DeleteCondition("非表示付加");
-                                    withBlock15.BitmapID = GUI.MakeUnitBitmap(partners[i].CurrentForm());
-                                    GUI.PaintUnitBitmap(partners[i].CurrentForm());
+                                    pcf.DeleteCondition("非表示付加");
+                                    pcf.BitmapID = GUI.MakeUnitBitmap(partner.CurrentForm());
+                                    GUI.PaintUnitBitmap(partner.CurrentForm());
                                 }
                             }
                         }

@@ -334,10 +334,17 @@ namespace SRCCore.Units
         public IEnumerable<Pilot> MainPilots => Enumerable.Empty<Pilot>()
             .Append(MainPilot())
             .Concat(SubPilots);
+        /// <summary>
+        /// 全てのパイロット
+        /// MainPilotを解決、追加サポート含む
+        /// TODO 使用している個所でもともと追加サポートを処理していたか精査
+        /// </summary>
         public IEnumerable<Pilot> AllPilots => Enumerable.Empty<Pilot>()
             .Append(MainPilot())
             .Concat(SubPilots)
-            .Concat(Supports);
+            .Concat(Supports)
+            .Append(AdditionalSupport())
+            .Where(x => x != null);
 
         // サポートパイロットを追加
         public void AddSupport(Pilot p)
@@ -398,7 +405,8 @@ namespace SRCCore.Units
         // 追加サポート
         public Pilot AdditionalSupport()
         {
-            throw new NotImplementedException();
+            return null;
+            // TODO Impl AdditionalSupport
             //    Pilot AdditionalSupportRet = default;
             //    string pname;
             //    Pilot p;

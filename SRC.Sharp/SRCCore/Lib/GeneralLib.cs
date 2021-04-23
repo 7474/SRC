@@ -119,7 +119,7 @@ namespace SRCCore.Lib
 
         public static IList<string> ToL(string list)
         {
-            return list.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            return (list ?? "").Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
         }
 
         public static string LNormalize(string list)
