@@ -504,24 +504,16 @@ namespace SRCCore.Maps
         // マップファイル fname のデータをロード
         public void LoadMapData(string fname)
         {
-            try
+            if (string.IsNullOrEmpty(fname) || !GeneralLib.FileExists(fname))
+            {
+                // ファイルが存在しない場合
+                SetupStatusView();
+            }
+            else
             {
                 using (var stream = SRC.FileSystem.Open(fname))
                 {
                     LoadMapData(fname, stream);
-                }
-            }
-            catch (Exception ex)
-            {
-                // ファイルが存在しない場合
-                if (string.IsNullOrEmpty(fname) || !GeneralLib.FileExists(fname))
-                {
-                    SRC.Log.LogInformation(ex.Message);
-                    SetupStatusView();
-                }
-                else
-                {
-                    throw;
                 }
             }
         }
