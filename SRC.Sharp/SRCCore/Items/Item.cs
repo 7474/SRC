@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using Newtonsoft.Json;
 using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.Units;
@@ -18,17 +19,23 @@ namespace SRCCore.Items
     {
         // 識別子
         public string ID;
+
+        public string ItemName { get; set; }
         // アイテムデータへのポインタ
-        public ItemData Data;
+        [JsonIgnore]
+        public ItemData Data { get => SRC.IDList.Item(ItemName); set { ItemName = value?.Name; } }
+
+        public string UnitId { get; set; }
         // アイテムを装備しているユニット
-        public Unit Unit;
+        [JsonIgnore]
+        public Unit Unit { get => SRC.UList.Item(UnitId); set { UnitId = value?.ID; } }
         // アイテムが存在しているか？ (RemoveItemされていないか？)
         public bool Exist;
         // アイテムが効力を発揮できているか？ (必要技能や武器クラス＆防具クラスを満たしているか？)
         public bool Activated;
         public IList<FeatureData> Features => Data.Features;
 
-        private SRC SRC { get; }
+        private SRC SRC;
         private Events.Event Event => SRC.Event;
         private Expressions.Expression Expression => SRC.Expression;
         public Item(SRC src)
@@ -39,6 +46,11 @@ namespace SRCCore.Items
             Activated = true;
             Data = null;
             Unit = null;
+        }
+
+        public void Restore(SRC src)
+        {
+            SRC = src;
         }
 
         // 名称
@@ -632,71 +644,6 @@ namespace SRCCore.Items
             }
 
             return IsAvailableRet;
-        }
-
-
-        // 一時中断用データをファイルにセーブする
-        public void Dump()
-        {
-            throw new NotImplementedException();
-            //FileSystem.WriteLine(SRC.SaveDataFileNumber, Name, ID, Exist);
-            //if (Unit is null)
-            //{
-            //    FileSystem.WriteLine(SRC.SaveDataFileNumber, "-");
-            //}
-            //else
-            //{
-            //    FileSystem.WriteLine(SRC.SaveDataFileNumber, Unit.ID);
-            //}
-        }
-
-        // 一時中断用データをファイルからロードする
-        public void Restore()
-        {
-            throw new NotImplementedException();
-            //var sbuf = default(string);
-            //var bbuf = default(bool);
-
-            //// Name, ID, Exist
-            //FileSystem.Input(SRC.SaveDataFileNumber, sbuf);
-            //Name = sbuf;
-            //FileSystem.Input(SRC.SaveDataFileNumber, sbuf);
-            //ID = sbuf;
-            //FileSystem.Input(SRC.SaveDataFileNumber, bbuf);
-            //Exist = bbuf;
-
-            //// Unit
-            //sbuf = FileSystem.LineInput(SRC.SaveDataFileNumber);
-        }
-
-        // 一時中断用データのリンク情報をファイルからロードする
-        public void RestoreLinkInfo()
-        {
-            throw new NotImplementedException();
-            //string sbuf;
-
-            //// Name, ID, Exist
-            //sbuf = FileSystem.LineInput(SRC.SaveDataFileNumber);
-
-            //// Unit
-            //FileSystem.Input(SRC.SaveDataFileNumber, sbuf);
-            //if (SRC.UList.IsDefined(sbuf))
-            //{
-            //    Unit = SRC.UList.Item(sbuf);
-            //}
-        }
-
-        // '一時中断用データのパラメータ情報をファイルからロードする
-        public void RestoreParameter()
-        {
-            throw new NotImplementedException();
-            //string sbuf;
-
-            //// Name, ID, Exist
-            //sbuf = FileSystem.LineInput(SRC.SaveDataFileNumber);
-
-            //// Unit
-            //sbuf = FileSystem.LineInput(SRC.SaveDataFileNumber);
         }
     }
 }

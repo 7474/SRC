@@ -1,66 +1,88 @@
+using Newtonsoft.Json;
+using SRCCore.Expressions;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace SRCCore
 {
+    public class SRCSaveData
+    {
+        public string Version { get; set; }
+        public IList<string> Titles { get; set; }
+        public string NextStage { get; set; }
+        public int TotalTurn { get; set; }
+        public int Money { get; set; }
+
+        // XXX 列挙時の順番がDictionaryだと問題になるかも
+        public IDictionary<string, VarData> GlobalVariableList;
+
+        public Items.Items IList { get; set; }
+    }
+
     public partial class SRC
     {
         // データをセーブ
-        public void SaveData(string fname)
+        //public void SaveData(string fname)
+        //{
+        //}
+        public void SaveData(Stream stream)
         {
-            throw new NotImplementedException();
-            //try
-            //{
-            //    int i;
-            //    int num;
-            //    SaveDataFileNumber = FileSystem.FreeFile();
-            //    FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Output, OpenAccess.Write);
+            try
+            {
+                var data = new SRCSaveData()
+                {
+                    // XXX EntryなのかCoreなのか
+                    Version = Assembly.GetEntryAssembly().GetName().Version.ToString(),
+                    Titles = Titles,
+                    NextStage = Expression.GetValueAsString("次ステージ"),
+                    TotalTurn = TotalTurn,
+                    Money = Money,
+                    GlobalVariableList = Event.GlobalVariableList,
+                    //PList.Save();
+                    //UList.Save();
+                    IList = IList,
+                };
 
-            //    {
-            //        var withBlock = App;
-            //        num = 10000 * My.MyProject.Application.Info.Version.Major + 100 * My.MyProject.Application.Info.Version.Minor + My.MyProject.Application.Info.Version.Revision;
-            //    }
-
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)num);
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)Information.UBound(Titles));
-            //    var loopTo = Information.UBound(Titles);
-            //    for (i = 1; i <= loopTo; i++)
-            //        FileSystem.WriteLine(SaveDataFileNumber, Titles[i]);
-            //    FileSystem.WriteLine(SaveDataFileNumber, Expression.GetValueAsString("次ステージ"));
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)TotalTurn);
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)Money);
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)0); // パーツ用のダミー
-            //    Event_Renamed.SaveGlobalVariables();
-            //    PList.Save();
-            //    UList.Save();
-            //    IList.Save();
-            //    FileSystem.FileClose(SaveDataFileNumber);
-            //}
-            //catch
-            //{
-            //    GUI.ErrorMessage("セーブ中にエラーが発生しました");
-            //}
+                stream.Write(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data)));
+            }
+            catch
+            {
+                GUI.ErrorMessage("セーブ中にエラーが発生しました");
+            }
         }
 
         // データをロード
-        public void LoadData(string fname)
+        public void LoadData(Stream stream)
         {
-            throw new NotImplementedException();
-            //    int i, num = default;
-            //    var fname2 = default(string);
-            //    var dummy = default(string);
-            //    SaveDataFileNumber = FileSystem.FreeFile();
-            //    FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Input);
-            //    FileSystem.Input(SaveDataFileNumber, SaveDataVersion);
-            //    if (SaveDataVersion > 10000)
-            //    {
-            //        FileSystem.Input(SaveDataFileNumber, num);
-            //    }
-            //    else
-            //    {
-            //        num = SaveDataVersion;
-            //    }
+            try
+            {
+                // XXX Version プロパティだけのオブジェクトでバージョンチェックなど
+                var data = JsonConvert.DeserializeObject<SRCSaveData>((new StreamReader(stream).ReadToEnd()));
+
+                Titles = data.Titles;
+                Expression.SetVariableAsString("次ステージ", data.NextStage);
+                TotalTurn = data.TotalTurn;
+                Money = data.Money;
+                Event.GlobalVariableList = data.GlobalVariableList;
+                //PList.Save();
+                //UList.Save();
+                IList = data.IList;
+
+                foreach(var title in Titles)
+                {
+                    IncludeData(title);
+                }
+
+                IList.Restore(this);
+            }
+            catch
+            {
+                GUI.ErrorMessage("ロード中にエラーが発生しました");
+                TerminateSRC();
+            }
 
             //    GUI.SetLoadImageSize((num * 2 + 5));
             //    Titles = new string[(num + 1)];

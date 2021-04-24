@@ -927,61 +927,43 @@ namespace SRCCore
 
         private void ExecuteFile(string fname)
         {
-            if (Strings.LCase(Strings.Right(fname, 4)) == ".src")
+            if (Strings.LCase(Strings.Right(fname, 5)) == ".srcs")
             {
-                // TODO Impl
-                //SaveDataFileNumber = FileSystem.FreeFile();
-                //FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Input);
-                //// 第１項目を読み込み
-                //FileSystem.Input(SaveDataFileNumber, buf);
-                //// 第１項目はセーブデータバージョン？
-                //if (Information.IsNumeric(buf))
-                //{
-                //    if (Conversions.ToInteger(buf) > 10000)
-                //    {
-                //        // バージョンデータであれば第２項目を読み込み
-                //        FileSystem.Input(SaveDataFileNumber, buf);
-                //    }
-                //}
+                using (var stream = File.OpenRead(fname))
+                {
+                    // セーブデータの読み込み
+                    GUI.OpenNowLoadingForm();
+                    LoadData(stream);
+                    GUI.CloseNowLoadingForm();
 
-                //FileSystem.FileClose(SaveDataFileNumber);
+                    // インターミッション
+                    new InterMission(this).InterMissionCommand(true);
+                    if (!IsSubStage)
+                    {
+                        if (string.IsNullOrEmpty(Expression.GetValueAsString("次ステージ")))
+                        {
+                            GUI.ErrorMessage("次のステージのファイル名が設定されていません");
+                            TerminateSRC();
+                        }
 
-                //// データの種類を判定
-                //if (Information.IsNumeric(buf))
-                //{
-                //    // セーブデータの読み込み
-                //    GUI.OpenNowLoadingForm();
-                //    LoadData(fname);
-                //    GUI.CloseNowLoadingForm();
+                        StartScenario(Expression.GetValueAsString("次ステージ"));
+                    }
+                    else
+                    {
+                        IsSubStage = false;
+                    }
+                }
+            }
+            else if (Strings.LCase(Strings.Right(fname, 6)) == ".srcsq")
+            {
+                // 中断データの読み込み
+                GUI.LockGUI();
+                RestoreData(fname, false);
 
-                //    // インターミッション
-                //    InterMission.InterMissionCommand(true);
-                //    if (!IsSubStage)
-                //    {
-                //        if (string.IsNullOrEmpty(Expression.GetValueAsString("次ステージ")))
-                //        {
-                //            GUI.ErrorMessage("次のステージのファイル名が設定されていません");
-                //            TerminateSRC();
-                //        }
-
-                //        StartScenario(Expression.GetValueAsString("次ステージ"));
-                //    }
-                //    else
-                //    {
-                //        IsSubStage = false;
-                //    }
-                //}
-                //else
-                //{
-                //    // 中断データの読み込み
-                //    GUI.LockGUI();
-                //    RestoreData(fname, false);
-
-                //    // 画面を書き直してステータスを表示
-                //    GUI.RedrawScreen();
-                //    Status.DisplayGlobalStatus();
-                //    GUI.UnlockGUI();
-                //}
+                // 画面を書き直してステータスを表示
+                GUI.RedrawScreen();
+                GUIStatus.DisplayGlobalStatus();
+                GUI.UnlockGUI();
             }
             else if (Strings.LCase(Strings.Right(fname, 4)) == ".eve")
             {

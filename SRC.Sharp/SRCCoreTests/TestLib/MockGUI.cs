@@ -3,6 +3,7 @@ using SRCCore.Commands;
 using SRCCore.Units;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace SRCCoreTests.TestLib
 {
@@ -312,6 +313,11 @@ namespace SRCCoreTests.TestLib
             throw new NotImplementedException();
         }
 
+        public Stream OpenQuikSaveStream(FileAccess fileAccess)
+        {
+            throw new NotImplementedException();
+        }
+
         public void OpenTitleForm()
         {
             throw new NotImplementedException();
@@ -378,6 +384,11 @@ namespace SRCCoreTests.TestLib
         }
 
         public void SaveScreen()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Stream SelectSaveStream()
         {
             throw new NotImplementedException();
         }
