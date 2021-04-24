@@ -317,7 +317,7 @@ namespace SRCCore.Commands
         // 「ハイパーモード」コマンド
         private void HyperModeCommand()
         {
-            throw new NotImplementedException();
+            // TODO Impl HyperModeCommand
             //// MOD END MARGE
             //string uname, fname;
             //int i;
