@@ -57,7 +57,7 @@ namespace SRCCore.CmdDatas.Commands
             var key_type = GetArgAsString(2);
             if (key_type != "名称")
             {
-                pilot_list = target_pilot_list.OrderBy(p =>
+                pilot_list = target_pilot_list.OrderByDescending(p =>
                 {
                     switch (key_type)
                     {

@@ -117,7 +117,7 @@ namespace SRCCore.Events
                     };
                 }).ToList();
             var unit_list = target_unit_list
-                .OrderBy(x => key_type != "名称" ? x.Key : 0)
+                .OrderByDescending(x => key_type != "名称" ? x.Key : 0)
                 .OrderBy(x => key_type == "名称" ? x.StrKey : "")
                 .ToList();
 
