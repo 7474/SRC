@@ -1,24 +1,17 @@
 using SRCCore.Maps;
+using SRCCore.Units;
+using SRCCore.VB;
+using System.Linq;
 
 namespace SRCCore.Events
 {
     public partial class Event
     {
-        // ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“ƒRƒ}ƒ“ƒhuƒ†ƒjƒbƒgƒŠƒXƒgv‚É‚¨‚¯‚éƒ†ƒjƒbƒgƒŠƒXƒg‚ğì¬‚·‚é
-        public static void MakeUnitList([Optional, DefaultParameterValue("")] ref string smode)
+        private string key_type = "";
+        // ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã‚³ãƒãƒ³ãƒ‰ã€Œãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã€ã«ãŠã‘ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã‚’ä½œæˆã™ã‚‹
+        public void MakeUnitList(string smode = "")
         {
-            Unit u;
-            Pilot p;
-            short xx, yy;
-            var key_list = default(int[]);
-            short max_item;
-            int max_value;
-            string max_str;
-            Unit[] unit_list;
-            short i, j;
-            ;
-
-            // ƒŠƒXƒg‚Ìƒ\[ƒg€–Ú‚ğİ’è
+            // ãƒªã‚¹ãƒˆã®ã‚½ãƒ¼ãƒˆé …ç›®ã‚’è¨­å®š
             if (!string.IsNullOrEmpty(smode))
             {
                 key_type = smode;
@@ -26,495 +19,277 @@ namespace SRCCore.Events
 
             if (string.IsNullOrEmpty(key_type))
             {
-                key_type = "‚g‚o";
+                key_type = "ï¼¨ï¼°";
             }
 
-            // ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ»Œv‚É
-            // UPGRADE_WARNING: Screen ƒvƒƒpƒeƒB Screen.MousePointer ‚É‚ÍV‚µ‚¢“®ì‚ªŠÜ‚Ü‚ê‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-            Cursor.Current = Cursors.WaitCursor;
+            // ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç ‚æ™‚è¨ˆã«
+            GUI.ChangeStatus(GuiStatus.WaitCursor);
 
-            // ‚ ‚ç‚©‚¶‚ß“P‘Ş‚³‚¹‚Ä‚¨‚­
-            foreach (Unit currentU in SRC.UList)
+            // ã‚ã‚‰ã‹ã˜ã‚æ’¤é€€ã•ã›ã¦ãŠã
+            foreach (Unit u in SRC.UList.Items)
             {
-                u = currentU;
+                if (u.Status == "å‡ºæ’ƒ")
                 {
-                    var withBlock = u;
-                    if (withBlock.Status_Renamed == "oŒ‚")
-                    {
-                        withBlock.Escape();
-                    }
+                    u.Escape();
                 }
             }
 
-            // ƒ}ƒbƒv‚ğƒNƒŠƒA
-            string argfname = "";
-            Map.LoadMapData(ref argfname);
-            string argdraw_mode = "";
-            string argdraw_option = "ƒXƒe[ƒ^ƒX";
-            int argfilter_color = 0;
-            double argfilter_trans_par = 0d;
-            GUI.SetupBackground(ref argdraw_mode, ref argdraw_option, filter_color: ref argfilter_color, filter_trans_par: ref argfilter_trans_par);
+            // ãƒãƒƒãƒ—ã‚’ã‚¯ãƒªã‚¢
+            Map.LoadMapData("");
+            GUI.SetupBackground("", "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹", filter_color: 0, filter_trans_par: 0d);
 
-            // ƒ†ƒjƒbƒgˆê——‚ğì¬
-            if (key_type != "–¼Ì")
-            {
-                // ”z—ñì¬
-                unit_list = new Unit[(SRC.UList.Count() + 1)];
-                key_list = new int[(SRC.UList.Count() + 1)];
-                i = 0;
-                foreach (Unit currentU1 in SRC.UList)
+            // ãƒ¦ãƒ‹ãƒƒãƒˆä¸€è¦§ã‚’ä½œæˆ
+            var target_unit_list = SRC.UList.Items
+                .Where(u => u.Status == "å‡ºæ’ƒ" || u.Status == "å¾…æ©Ÿ")
+                .Select(u =>
                 {
-                    u = currentU1;
+                    int key = 0;
+                    // ã‚½ãƒ¼ãƒˆã™ã‚‹é …ç›®ã«ã‚ã‚ã›ã¦ã‚½ãƒ¼ãƒˆã®éš›ã®å„ªå…ˆåº¦ã‚’æ±ºå®š
+                    switch (key_type ?? "")
                     {
-                        var withBlock1 = u;
-                        if (withBlock1.Status_Renamed == "oŒ‚" | withBlock1.Status_Renamed == "‘Ò‹@")
-                        {
-                            i = (short)(i + 1);
-                            unit_list[i] = u;
+                        case "ãƒ©ãƒ³ã‚¯":
+                            key = u.Rank;
+                            break;
+                        case "ï¼¨ï¼°":
+                            key = u.HP;
+                            break;
+                        case "ï¼¥ï¼®":
+                            key = u.EN;
+                            break;
+                        case "è£…ç”²":
+                            key = u.get_Armor("");
+                            break;
+                        case "é‹å‹•æ€§":
+                            key = u.get_Mobility("");
+                            break;
+                        case "ç§»å‹•åŠ›":
+                            key = u.Speed;
+                            break;
+                        case "æœ€å¤§æ”»æ’ƒåŠ›":
+                            key = u.Weapons.Where(w => w.IsWeaponMastered()
+                                    && !u.IsDisabled(w.Name)
+                                    && w.IsWeaponClassifiedAs("åˆ"))
+                                .Select(w => w.WeaponPower(""))
+                                .Append(0)
+                                .Max();
+                            break;
 
-                            // ƒ\[ƒg‚·‚é€–Ú‚É‚ ‚í‚¹‚Äƒ\[ƒg‚ÌÛ‚Ì—Dæ“x‚ğŒˆ’è
-                            switch (key_type ?? "")
-                            {
-                                case "ƒ‰ƒ“ƒN":
-                                    {
-                                        key_list[i] = withBlock1.Rank;
-                                        break;
-                                    }
-
-                                case "‚g‚o":
-                                    {
-                                        key_list[i] = withBlock1.HP;
-                                        break;
-                                    }
-
-                                case "‚d‚m":
-                                    {
-                                        key_list[i] = withBlock1.EN;
-                                        break;
-                                    }
-
-                                case "‘•b":
-                                    {
-                                        key_list[i] = withBlock1.get_Armor("");
-                                        break;
-                                    }
-
-                                case "‰^“®«":
-                                    {
-                                        key_list[i] = withBlock1.get_Mobility("");
-                                        break;
-                                    }
-
-                                case "ˆÚ“®—Í":
-                                    {
-                                        key_list[i] = withBlock1.Speed;
-                                        break;
-                                    }
-
-                                case "Å‘åUŒ‚—Í":
-                                    {
-                                        var loopTo = withBlock1.CountWeapon();
-                                        for (j = 1; j <= loopTo; j++)
-                                        {
-                                            string argattr = "‡";
-                                            if (withBlock1.IsWeaponMastered(j) & !withBlock1.IsDisabled(ref withBlock1.Weapon(j).Name) & !withBlock1.IsWeaponClassifiedAs(j, ref argattr))
-                                            {
-                                                string argtarea1 = "";
-                                                if (withBlock1.WeaponPower(j, ref argtarea1) > key_list[i])
-                                                {
-                                                    string argtarea = "";
-                                                    key_list[i] = withBlock1.WeaponPower(j, ref argtarea);
-                                                }
-                                            }
-                                        }
-
-                                        break;
-                                    }
-
-                                case "Å’·Ë’ö":
-                                    {
-                                        var loopTo1 = withBlock1.CountWeapon();
-                                        for (j = 1; j <= loopTo1; j++)
-                                        {
-                                            string argattr1 = "‡";
-                                            if (withBlock1.IsWeaponMastered(j) & !withBlock1.IsDisabled(ref withBlock1.Weapon(j).Name) & !withBlock1.IsWeaponClassifiedAs(j, ref argattr1))
-                                            {
-                                                if (withBlock1.WeaponMaxRange(j) > key_list[i])
-                                                {
-                                                    key_list[i] = withBlock1.WeaponMaxRange(j);
-                                                }
-                                            }
-                                        }
-
-                                        break;
-                                    }
-
-                                case "ƒŒƒxƒ‹":
-                                    {
-                                        key_list[i] = withBlock1.MainPilot().Level;
-                                        break;
-                                    }
-
-                                case "‚r‚o":
-                                    {
-                                        key_list[i] = withBlock1.MainPilot().MaxSP;
-                                        break;
-                                    }
-
-                                case "Ši“¬":
-                                    {
-                                        key_list[i] = withBlock1.MainPilot().Infight;
-                                        break;
-                                    }
-
-                                case "ËŒ‚":
-                                    {
-                                        key_list[i] = withBlock1.MainPilot().Shooting;
-                                        break;
-                                    }
-
-                                case "–½’†":
-                                    {
-                                        key_list[i] = withBlock1.MainPilot().Hit;
-                                        break;
-                                    }
-
-                                case "‰ñ”ğ":
-                                    {
-                                        key_list[i] = withBlock1.MainPilot().Dodge;
-                                        break;
-                                    }
-
-                                case "‹Z—Ê":
-                                    {
-                                        key_list[i] = withBlock1.MainPilot().Technique;
-                                        break;
-                                    }
-
-                                case "”½‰":
-                                    {
-                                        key_list[i] = withBlock1.MainPilot().Intuition;
-                                        break;
-                                    }
-                            }
-                        }
+                        case "æœ€é•·å°„ç¨‹":
+                            key = u.Weapons.Where(w => w.IsWeaponMastered()
+                                    && !u.IsDisabled(w.Name)
+                                    && w.IsWeaponClassifiedAs("åˆ"))
+                                .Select(w => w.WeaponMaxRange())
+                                .Append(0)
+                                .Max();
+                            break;
+                        case "ãƒ¬ãƒ™ãƒ«":
+                            key = u.MainPilot().Level;
+                            break;
+                        case "ï¼³ï¼°":
+                            key = u.MainPilot().MaxSP;
+                            break;
+                        case "æ ¼é—˜":
+                            key = u.MainPilot().Infight;
+                            break;
+                        case "å°„æ’ƒ":
+                            key = u.MainPilot().Shooting;
+                            break;
+                        case "å‘½ä¸­":
+                            key = u.MainPilot().Hit;
+                            break;
+                        case "å›é¿":
+                            key = u.MainPilot().Dodge;
+                            break;
+                        case "æŠ€é‡":
+                            key = u.MainPilot().Technique;
+                            break;
+                        case "åå¿œ":
+                            key = u.MainPilot().Intuition;
+                            break;
                     }
-                }
-
-                Array.Resize(ref unit_list, i + 1);
-                Array.Resize(ref key_list, i + 1);
-
-                // ƒ\[ƒg
-                var loopTo2 = (short)(Information.UBound(key_list) - 1);
-                for (i = 1; i <= loopTo2; i++)
-                {
-                    max_item = i;
-                    max_value = key_list[i];
-                    var loopTo3 = (short)Information.UBound(unit_list);
-                    for (j = (short)(i + 1); j <= loopTo3; j++)
+                    return new
                     {
-                        if (key_list[j] > max_value)
-                        {
-                            max_item = j;
-                            max_value = key_list[j];
-                        }
-                    }
+                        Unit = u,
+                        Key = key,
+                        StrKey = Expression.IsOptionDefined("ç­‰èº«å¤§åŸºæº–")
+                            ? u.MainPilot().KanaName
+                            : u.KanaName,
+                    };
+                }).ToList();
+            var unit_list = target_unit_list
+                .OrderBy(x => key_type != "åç§°" ? x.Key : 0)
+                .OrderBy(x => key_type == "åç§°" ? x.StrKey : "")
+                .ToList();
 
-                    if (max_item != i)
-                    {
-                        u = unit_list[i];
-                        unit_list[i] = unit_list[max_item];
-                        unit_list[max_item] = u;
-                        max_value = key_list[max_item];
-                        key_list[max_item] = key_list[i];
-                        key_list[i] = max_value;
-                    }
-                }
-            }
-            else
-            {
-                // ”z—ñì¬
-                unit_list = new Unit[(SRC.UList.Count() + 1)];
-                var strkey_list = new object[(SRC.UList.Count() + 1)];
-                i = 0;
-                foreach (Unit currentU2 in SRC.UList)
-                {
-                    u = currentU2;
-                    {
-                        var withBlock2 = u;
-                        if (withBlock2.Status_Renamed == "oŒ‚" | withBlock2.Status_Renamed == "‘Ò‹@")
-                        {
-                            i = (short)(i + 1);
-                            unit_list[i] = u;
-                            string argoname = "“™g‘åŠî€";
-                            if (Expression.IsOptionDefined(ref argoname))
-                            {
-                                // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg strkey_list(i) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-                                strkey_list[i] = withBlock2.MainPilot().KanaName;
-                            }
-                            else
-                            {
-                                // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg strkey_list(i) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-                                strkey_list[i] = withBlock2.KanaName;
-                            }
-                        }
-                    }
-                }
-
-                Array.Resize(ref unit_list, i + 1);
-                Array.Resize(ref strkey_list, i + 1);
-
-                // ƒ\[ƒg
-                var loopTo4 = (short)(Information.UBound(strkey_list) - 1);
-                for (i = 1; i <= loopTo4; i++)
-                {
-                    max_item = i;
-                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg strkey_list(i) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-                    max_str = Conversions.ToString(strkey_list[i]);
-                    var loopTo5 = (short)Information.UBound(strkey_list);
-                    for (j = (short)(i + 1); j <= loopTo5; j++)
-                    {
-                        // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg strkey_list() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-                        if (Strings.StrComp(Conversions.ToString(strkey_list[j]), max_str, (CompareMethod)1) == -1)
-                        {
-                            max_item = j;
-                            // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg strkey_list(j) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-                            max_str = Conversions.ToString(strkey_list[j]);
-                        }
-                    }
-
-                    if (max_item != i)
-                    {
-                        u = unit_list[i];
-                        unit_list[i] = unit_list[max_item];
-                        unit_list[max_item] = u;
-
-                        // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg strkey_list(i) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-                        // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg strkey_list(max_item) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-                        strkey_list[max_item] = strkey_list[i];
-                    }
-                }
-            }
-
-            // Font Regular 9pt ”wŒi
-            // UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-            {
-                var withBlock3 = GUI.MainForm.picMain(0).Font;
-                // UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-                withBlock3.Size = 9;
-                // UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-                withBlock3.Bold = false;
-                // UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-                withBlock3.Italic = false;
-            }
+            // TODO ãƒ•ã‚©ãƒ³ãƒˆ
+            //// Font Regular 9pt èƒŒæ™¯
+            //{
+            //    var withBlock3 = GUI.MainForm.picMain(0).Font;
+            //    withBlock3.Size = 9;
+            //    withBlock3.Bold = false;
+            //    withBlock3.Italic = false;
+            //}
 
             GUI.PermanentStringMode = true;
             GUI.HCentering = false;
             GUI.VCentering = false;
 
-            // ƒ†ƒjƒbƒg‚ÌƒŠƒXƒg‚ğì¬
-            xx = 1;
-            yy = 1;
-            var loopTo6 = (short)Information.UBound(unit_list);
-            for (i = 1; i <= loopTo6; i++)
+            // ãƒ¦ãƒ‹ãƒƒãƒˆã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
+            var xx = 1;
+            var yy = 1;
+            foreach (var item in unit_list)
             {
-                u = unit_list[i];
+                var u = item.Unit;
+                // ãƒ¦ãƒ‹ãƒƒãƒˆå‡ºæ’ƒä½ç½®ã‚’æŠ˜ã‚Šè¿”ã™
+                if (xx > 15)
                 {
-                    var withBlock4 = u;
-                    // ƒ†ƒjƒbƒgoŒ‚ˆÊ’u‚ğÜ‚è•Ô‚·
-                    if (xx > 15)
+                    xx = 1;
+                    yy = (short)(yy + 1);
+                    if (yy > 40)
                     {
-                        xx = 1;
-                        yy = (short)(yy + 1);
-                        if (yy > 40)
+                        // ãƒ¦ãƒ‹ãƒƒãƒˆæ•°ãŒå¤šã™ãã‚‹ãŸã‚ã€ä¸€éƒ¨ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒè¡¨ç¤ºå‡ºæ¥ã¾ã›ã‚“
+                        break;
+                    }
+                }
+
+                // ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã£ã¦ã„ãªã„å ´åˆã¯ãƒ€ãƒŸãƒ¼ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’ä¹—ã›ã‚‹
+                if (u.CountPilot() == 0)
+                {
+                var    p = SRC.PList.Add("ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºç”¨ãƒ€ãƒŸãƒ¼ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ(ã‚¶ã‚³)", 1, "å‘³æ–¹", gid: "");
+                    p.Ride(u);
+                }
+
+                // å‡ºæ’ƒ
+                u.UsedAction = 0;
+                u.StandBy(xx, yy);
+
+                // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ“ä½œã§ããªã„ã‚ˆã†ã«
+                u.AddCondition("éæ“ä½œ", -1, cdata: "");
+
+                // ãƒ¦ãƒ‹ãƒƒãƒˆã®æ„›ç§°ã‚’è¡¨ç¤º
+                GUI.DrawString((string)u.Nickname, 32 * xx + 2, 32 * yy - 31);
+
+                // ã‚½ãƒ¼ãƒˆé …ç›®ã«ã‚ã‚ã›ã¦ãƒ¦ãƒ‹ãƒƒãƒˆã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’è¡¨ç¤º
+                switch (key_type ?? "")
+                {
+                    case "ãƒ©ãƒ³ã‚¯":
                         {
-                            // ƒ†ƒjƒbƒg”‚ª‘½‚·‚¬‚é‚½‚ßAˆê•”‚ÌƒpƒCƒƒbƒg‚ª•\¦o—ˆ‚Ü‚¹‚ñ
+                            GUI.DrawString("RK" + SrcFormatter.Format(item.Key) + " " + Expression.Term("HP", u) + SrcFormatter.Format(u.HP) + " " + Expression.Term("EN", u) + SrcFormatter.Format(u.EN), 32 * xx + 2, 32 * yy - 15);
                             break;
                         }
-                    }
 
-                    // ƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚È‚¢ê‡‚Íƒ_ƒ~[ƒpƒCƒƒbƒg‚ğæ‚¹‚é
-                    if (withBlock4.CountPilot() == 0)
-                    {
-                        string argpname = "ƒXƒe[ƒ^ƒX•\¦—pƒ_ƒ~[ƒpƒCƒƒbƒg(ƒUƒR)";
-                        string argpparty = "–¡•û";
-                        string arggid = "";
-                        p = SRC.PList.Add(ref argpname, 1, ref argpparty, gid: ref arggid);
-                        p.Ride(ref u);
-                    }
+                    case "ï¼¨ï¼°":
+                    case "ï¼¥ï¼®":
+                    case "åç§°":
+                        {
+                            GUI.DrawString(Expression.Term("HP", u) + SrcFormatter.Format(u.HP) + " " + Expression.Term("EN", u) + SrcFormatter.Format(u.EN), 32 * xx + 2, 32 * yy - 15);
+                            break;
+                        }
 
-                    // oŒ‚
-                    withBlock4.UsedAction = 0;
-                    withBlock4.StandBy(xx, yy);
+                    case "è£…ç”²":
+                        {
+                            GUI.DrawString(Expression.Term("è£…ç”²", u) + SrcFormatter.Format(item.Key), 32 * xx + 2, 32 * yy - 15);
+                            break;
+                        }
 
-                    // ƒvƒŒƒCƒ„[‚ª‘€ì‚Å‚«‚È‚¢‚æ‚¤‚É
-                    string argcname = "”ñ‘€ì";
-                    string argcdata = "";
-                    withBlock4.AddCondition(ref argcname, -1, cdata: ref argcdata);
+                    case "é‹å‹•æ€§":
+                        {
+                            GUI.DrawString(Expression.Term("é‹å‹•æ€§", u) + SrcFormatter.Format(item.Key), 32 * xx + 2, 32 * yy - 15);
+                            break;
+                        }
 
-                    // ƒ†ƒjƒbƒg‚Ìˆ¤Ì‚ğ•\¦
-                    string argmsg = withBlock4.Nickname;
-                    GUI.DrawString(ref argmsg, 32 * xx + 2, 32 * yy - 31);
-                    withBlock4.Nickname = argmsg;
+                    case "ç§»å‹•åŠ›":
+                        {
+                            GUI.DrawString(Expression.Term("ç§»å‹•åŠ›", u) + SrcFormatter.Format(item.Key), 32 * xx + 2, 32 * yy - 15);
+                            break;
+                        }
 
-                    // ƒ\[ƒg€–Ú‚É‚ ‚í‚¹‚Äƒ†ƒjƒbƒg‚ÌƒXƒe[ƒ^ƒX‚ğ•\¦
-                    switch (key_type ?? "")
-                    {
-                        case "ƒ‰ƒ“ƒN":
+                    case "æœ€å¤§æ”»æ’ƒåŠ›":
+                        {
+                            GUI.DrawString("æ”»æ’ƒåŠ›" + SrcFormatter.Format(item.Key), 32 * xx + 2, 32 * yy - 15);
+                            break;
+                        }
+
+                    case "æœ€é•·å°„ç¨‹":
+                        {
+                            GUI.DrawString("å°„ç¨‹" + SrcFormatter.Format(item.Key), 32 * xx + 2, 32 * yy - 15);
+                            break;
+                        }
+
+                    case "ãƒ¬ãƒ™ãƒ«":
+                        {
+                            GUI.DrawString("Lv" + SrcFormatter.Format(item.Key), 32 * xx + 2, 32 * yy - 15);
+                            break;
+                        }
+
+                    case "ï¼³ï¼°":
+                        {
+                            GUI.DrawString(Expression.Term("SP", u) + SrcFormatter.Format(item.Key), 32 * xx + 2, 32 * yy - 15);
+                            break;
+                        }
+
+                    case "æ ¼é—˜":
+                        {
+                            GUI.DrawString(Expression.Term("æ ¼é—˜", u) + SrcFormatter.Format(item.Key), 32 * xx + 2, 32 * yy - 15);
+                            break;
+                        }
+
+                    case "å°„æ’ƒ":
+                        {
+                            if (u.MainPilot().HasMana())
                             {
-                                string argtname = "HP";
-                                string argtname1 = "EN";
-                                string argmsg1 = "RK" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]) + " " + Expression.Term(ref argtname, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.HP) + " " + Expression.Term(ref argtname1, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.EN);
-                                GUI.DrawString(ref argmsg1, 32 * xx + 2, 32 * yy - 15);
-                                break;
+                                GUI.DrawString(Expression.Term("é­”åŠ›", u) + SrcFormatter.Format(item.Key), 32 * xx + 2, 32 * yy - 15);
+                            }
+                            else
+                            {
+                                GUI.DrawString(Expression.Term("å°„æ’ƒ", u) + SrcFormatter.Format(item.Key), 32 * xx + 2, 32 * yy - 15);
                             }
 
-                        case "‚g‚o":
-                        case "‚d‚m":
-                        case "–¼Ì":
-                            {
-                                string argtname2 = "HP";
-                                string argtname3 = "EN";
-                                string argmsg2 = Expression.Term(ref argtname2, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.HP) + " " + Expression.Term(ref argtname3, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.EN);
-                                GUI.DrawString(ref argmsg2, 32 * xx + 2, 32 * yy - 15);
-                                break;
-                            }
+                            break;
+                        }
 
-                        case "‘•b":
-                            {
-                                string argtname4 = "‘•b";
-                                string argmsg3 = Expression.Term(ref argtname4, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg3, 32 * xx + 2, 32 * yy - 15);
-                                break;
-                            }
+                    case "å‘½ä¸­":
+                        {
+                            GUI.DrawString(Expression.Term("å‘½ä¸­", u) + SrcFormatter.Format(item.Key), 32 * xx + 2, 32 * yy - 15);
+                            break;
+                        }
 
-                        case "‰^“®«":
-                            {
-                                string argtname5 = "‰^“®«";
-                                string argmsg4 = Expression.Term(ref argtname5, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg4, 32 * xx + 2, 32 * yy - 15);
-                                break;
-                            }
+                    case "å›é¿":
+                        {
+                            GUI.DrawString(Expression.Term("å›é¿", u) + SrcFormatter.Format(item.Key), 32 * xx + 2, 32 * yy - 15);
+                            break;
+                        }
 
-                        case "ˆÚ“®—Í":
-                            {
-                                string argtname6 = "ˆÚ“®—Í";
-                                string argmsg5 = Expression.Term(ref argtname6, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg5, 32 * xx + 2, 32 * yy - 15);
-                                break;
-                            }
+                    case "æŠ€é‡":
+                        {
+                            GUI.DrawString(Expression.Term("æŠ€é‡", u) + SrcFormatter.Format(item.Key), 32 * xx + 2, 32 * yy - 15);
+                            break;
+                        }
 
-                        case "Å‘åUŒ‚—Í":
-                            {
-                                string argmsg6 = "UŒ‚—Í" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg6, 32 * xx + 2, 32 * yy - 15);
-                                break;
-                            }
-
-                        case "Å’·Ë’ö":
-                            {
-                                string argmsg7 = "Ë’ö" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg7, 32 * xx + 2, 32 * yy - 15);
-                                break;
-                            }
-
-                        case "ƒŒƒxƒ‹":
-                            {
-                                string argmsg8 = "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg8, 32 * xx + 2, 32 * yy - 15);
-                                break;
-                            }
-
-                        case "‚r‚o":
-                            {
-                                string argtname7 = "SP";
-                                string argmsg9 = Expression.Term(ref argtname7, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg9, 32 * xx + 2, 32 * yy - 15);
-                                break;
-                            }
-
-                        case "Ši“¬":
-                            {
-                                string argtname8 = "Ši“¬";
-                                string argmsg10 = Expression.Term(ref argtname8, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg10, 32 * xx + 2, 32 * yy - 15);
-                                break;
-                            }
-
-                        case "ËŒ‚":
-                            {
-                                if (withBlock4.MainPilot().HasMana())
-                                {
-                                    string argtname9 = "–‚—Í";
-                                    string argmsg11 = Expression.Term(ref argtname9, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                    GUI.DrawString(ref argmsg11, 32 * xx + 2, 32 * yy - 15);
-                                }
-                                else
-                                {
-                                    string argtname10 = "ËŒ‚";
-                                    string argmsg12 = Expression.Term(ref argtname10, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                    GUI.DrawString(ref argmsg12, 32 * xx + 2, 32 * yy - 15);
-                                }
-
-                                break;
-                            }
-
-                        case "–½’†":
-                            {
-                                string argtname11 = "–½’†";
-                                string argmsg13 = Expression.Term(ref argtname11, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg13, 32 * xx + 2, 32 * yy - 15);
-                                break;
-                            }
-
-                        case "‰ñ”ğ":
-                            {
-                                string argtname12 = "‰ñ”ğ";
-                                string argmsg14 = Expression.Term(ref argtname12, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg14, 32 * xx + 2, 32 * yy - 15);
-                                break;
-                            }
-
-                        case "‹Z—Ê":
-                            {
-                                string argtname13 = "‹Z—Ê";
-                                string argmsg15 = Expression.Term(ref argtname13, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg15, 32 * xx + 2, 32 * yy - 15);
-                                break;
-                            }
-
-                        case "”½‰":
-                            {
-                                string argtname14 = "”½‰";
-                                string argmsg16 = Expression.Term(ref argtname14, ref u) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(key_list[i]);
-                                GUI.DrawString(ref argmsg16, 32 * xx + 2, 32 * yy - 15);
-                                break;
-                            }
-                    }
-
-                    // •\¦ˆÊ’u‚ğ‰E‚É5ƒ}ƒX‚¸‚ç‚·
-                    xx = (short)(xx + 5);
+                    case "åå¿œ":
+                        {
+                            GUI.DrawString(Expression.Term("åå¿œ", u) + SrcFormatter.Format(item.Key), 32 * xx + 2, 32 * yy - 15);
+                            break;
+                        }
                 }
+
+                // è¡¨ç¤ºä½ç½®ã‚’å³ã«5ãƒã‚¹ãšã‚‰ã™
+                xx = xx + 5;
             }
 
-            // ƒtƒHƒ“ƒg‚Ìİ’è‚ğ–ß‚µ‚Ä‚¨‚­
-            // UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-            {
-                var withBlock5 = GUI.MainForm.picMain(0).Font;
-                // UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-                withBlock5.Size = 16;
-                // UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-                withBlock5.Bold = true;
-                // UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-                withBlock5.Italic = false;
-            }
+            //// ãƒ•ã‚©ãƒ³ãƒˆã®è¨­å®šã‚’æˆ»ã—ã¦ãŠã
+            //{
+            //    var withBlock5 = GUI.MainForm.picMain(0).Font;
+            //    withBlock5.Size = 16;
+            //    withBlock5.Bold = true;
+            //    withBlock5.Italic = false;
+            //}
 
             GUI.PermanentStringMode = false;
             GUI.RedrawScreen();
 
-            // ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
-            // UPGRADE_WARNING: Screen ƒvƒƒpƒeƒB Screen.MousePointer ‚É‚ÍV‚µ‚¢“®ì‚ªŠÜ‚Ü‚ê‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-            Cursor.Current = Cursors.Default;
+            // ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å…ƒã«æˆ»ã™
+            GUI.ChangeStatus(GuiStatus.Default);
         }
     }
 }
