@@ -2,6 +2,10 @@
 {
     public class MessageConfig
     {
+        public static readonly float BrThresholdLimit = 0.95f;
+        // XXX 用途がMinimumでいいのかは微妙
+        public static readonly float BrThresholdMinimum = 0.5f;
+
         // メッセージ長の超過による改行の位置
         public float BrThresholdOver { get; private set; }
         // "。"," "による改行の位置
