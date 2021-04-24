@@ -68,7 +68,7 @@ namespace SRCCore.Events
                         case "最大攻撃力":
                             key = u.Weapons.Where(w => w.IsWeaponMastered()
                                     && !u.IsDisabled(w.Name)
-                                    && w.IsWeaponClassifiedAs("合"))
+                                    && !w.IsWeaponClassifiedAs("合"))
                                 .Select(w => w.WeaponPower(""))
                                 .Append(0)
                                 .Max();
@@ -77,7 +77,7 @@ namespace SRCCore.Events
                         case "最長射程":
                             key = u.Weapons.Where(w => w.IsWeaponMastered()
                                     && !u.IsDisabled(w.Name)
-                                    && w.IsWeaponClassifiedAs("合"))
+                                    && !w.IsWeaponClassifiedAs("合"))
                                 .Select(w => w.WeaponMaxRange())
                                 .Append(0)
                                 .Max();
