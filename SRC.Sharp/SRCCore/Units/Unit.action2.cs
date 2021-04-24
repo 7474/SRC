@@ -440,11 +440,10 @@ namespace SRCCore.Units
                 p.Party = new_party;
             }
 
-            // TODO Impl
-            //if (IsFeatureAvailable("追加サポート"))
-            //{
-            //    AdditionalSupport().Party = new_party;
-            //}
+            if (IsFeatureAvailable("追加サポート"))
+            {
+                AdditionalSupport().Party = new_party;
+            }
 
             // 他形態の陣営を変更
             foreach (var of in OtherForms)
@@ -476,53 +475,52 @@ namespace SRCCore.Units
         // is_event:イベントによる気力増減(性格を無視して気力操作)
         public void IncreaseMorale(int num, bool is_event = false)
         {
-            throw new NotImplementedException();
-            //Pilot p;
-            //if (CountPilot() == 0)
-            //{
-            //    return;
-            //}
+            Pilot p;
+            if (CountPilot() == 0)
+            {
+                return;
+            }
 
-            //// メインパイロット
-            //{
-            //    var withBlock = MainPilot();
-            //    if (withBlock.Personality != "機械" | is_event)
-            //    {
-            //        withBlock.Morale = (int)(withBlock.Morale + num);
-            //    }
-            //}
+            // メインパイロット
+            {
+                var withBlock = MainPilot();
+                if (withBlock.Personality != "機械" | is_event)
+                {
+                    withBlock.Morale = withBlock.Morale + num;
+                }
+            }
 
-            //// サブパイロット
-            //foreach (Pilot currentP in colPilot)
-            //{
-            //    p = currentP;
-            //    if ((MainPilot().ID ?? "") != (p.ID ?? "") & (p.Personality != "機械" | is_event))
-            //    {
-            //        p.Morale = (int)(p.Morale + num);
-            //    }
-            //}
+            // サブパイロット
+            foreach (Pilot currentP in colPilot)
+            {
+                p = currentP;
+                if ((MainPilot().ID ?? "") != (p.ID ?? "") & (p.Personality != "機械" | is_event))
+                {
+                    p.Morale = p.Morale + num;
+                }
+            }
 
-            //// サポート
-            //foreach (Pilot currentP1 in colSupport)
-            //{
-            //    p = currentP1;
-            //    if (p.Personality != "機械" | is_event)
-            //    {
-            //        p.Morale = (int)(p.Morale + num);
-            //    }
-            //}
+            // サポート
+            foreach (Pilot currentP1 in colSupport)
+            {
+                p = currentP1;
+                if (p.Personality != "機械" | is_event)
+                {
+                    p.Morale = p.Morale + num;
+                }
+            }
 
-            //// 追加サポート
-            //if (IsFeatureAvailable("追加サポート"))
-            //{
-            //    {
-            //        var withBlock1 = AdditionalSupport();
-            //        if (withBlock1.Personality != "機械" | is_event)
-            //        {
-            //            withBlock1.Morale = (int)(withBlock1.Morale + num);
-            //        }
-            //    }
-            //}
+            // 追加サポート
+            if (IsFeatureAvailable("追加サポート"))
+            {
+                {
+                    var withBlock1 = AdditionalSupport();
+                    if (withBlock1.Personality != "機械" | is_event)
+                    {
+                        withBlock1.Morale = withBlock1.Morale + num;
+                    }
+                }
+            }
         }
 
         // ユニットが破壊された時の処理

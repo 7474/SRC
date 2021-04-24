@@ -48,7 +48,8 @@ namespace SRCCore.Units
         // (tx,ty)の地点の周囲に「連携攻撃」を行ってくれるユニットがいるかどうかを判定
         public Unit LookForAttackHelp(int tx, int ty)
         {
-            throw new NotImplementedException();
+            return null;
+            // TODO Impl LookForAttackHelp
             //Unit LookForAttackHelpRet = default;
             //Unit u;
             //int i;
@@ -153,9 +154,10 @@ namespace SRCCore.Units
         }
 
         // tからの攻撃に対して「かばう」を行ってくれるユニットがいるかどうか判定
-        public Unit LookForGuardHelp(Unit t, int tw, bool is_critical)
+        public Unit LookForGuardHelp(Unit t, UnitWeapon tw, bool is_critical)
         {
-            throw new NotImplementedException();
+            return null;
+            // TODO Impl LookForGuardHelp
             //Unit LookForGuardHelpRet = default;
             //Unit u;
             //int i;
@@ -631,7 +633,7 @@ namespace SRCCore.Units
 
         // ユニット t からの攻撃に対して周囲にサポートガードを行ってくれるユニットが
         // いるかどうかを判定
-        public Unit LookForSupportGuard(Unit t, int tw)
+        public Unit LookForSupportGuard(Unit t, UnitWeapon tw)
         {
             return null;
             // TODO Impl

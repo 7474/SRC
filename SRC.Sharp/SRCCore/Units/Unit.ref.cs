@@ -21409,7 +21409,6 @@ namespace Project1
             }
         }
 
-
         // 追加攻撃のチェック
         public void CheckAdditionalAttack(int w, Unit t, bool be_quiet, string attack_mode, string def_mode, int dmg)
         {
@@ -21650,34 +21649,6 @@ namespace Project1
 
                 i = (i + 1);
             }
-        }
-
-        // 特殊能力 fdata1 と fdata2 が同じ名称か判定
-        // 「中和」「相殺」用
-        private bool IsSameCategory(string fdata1, string fdata2)
-        {
-            bool IsSameCategoryRet = default;
-            string fc1, fc2;
-            fc1 = GeneralLib.LIndex(fdata1, 1);
-            // レベル指定を除く
-            if (Strings.InStr(fc1, "Lv") > 0)
-            {
-                fc1 = Strings.Left(fc1, Strings.InStr(fc1, "Lv") - 1);
-            }
-
-            fc2 = GeneralLib.LIndex(fdata2, 1);
-            // レベル指定を除く
-            if (Strings.InStr(fc2, "Lv") > 0)
-            {
-                fc2 = Strings.Left(fc2, Strings.InStr(fc2, "Lv") - 1);
-            }
-
-            if ((fc1 ?? "") == (fc2 ?? ""))
-            {
-                IsSameCategoryRet = true;
-            }
-
-            return IsSameCategoryRet;
         }
 
         // クリティカルによる特殊効果
@@ -23977,6 +23948,33 @@ namespace Project1
             return CheckMetamorphAttackRet;
         }
 
+        // 特殊能力 fdata1 と fdata2 が同じ名称か判定
+        // 「中和」「相殺」用
+        private bool IsSameCategory(string fdata1, string fdata2)
+        {
+            bool IsSameCategoryRet = default;
+            string fc1, fc2;
+            fc1 = GeneralLib.LIndex(fdata1, 1);
+            // レベル指定を除く
+            if (Strings.InStr(fc1, "Lv") > 0)
+            {
+                fc1 = Strings.Left(fc1, Strings.InStr(fc1, "Lv") - 1);
+            }
+
+            fc2 = GeneralLib.LIndex(fdata2, 1);
+            // レベル指定を除く
+            if (Strings.InStr(fc2, "Lv") > 0)
+            {
+                fc2 = Strings.Left(fc2, Strings.InStr(fc2, "Lv") - 1);
+            }
+
+            if ((fc1 ?? "") == (fc2 ?? ""))
+            {
+                IsSameCategoryRet = true;
+            }
+
+            return IsSameCategoryRet;
+        }
 
         // マップ攻撃 w で (tx,ty) を攻撃
         public void MapAttack(int w, int tx, int ty, bool is_event = false)
