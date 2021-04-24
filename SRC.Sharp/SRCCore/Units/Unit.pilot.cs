@@ -343,6 +343,13 @@ namespace SRCCore.Units
             .Concat(Supports)
             .Append(AdditionalSupport())
             .Where(x => x != null);
+        /// <summary>
+        /// 全てのパイロット
+        /// MainPilotを未解決、追加サポートは含まない
+        /// </summary>
+        public IEnumerable<Pilot> AllRawPilots => Pilots
+                    .Concat(Supports);
+
 
         // サポートパイロットを追加
         public void AddSupport(Pilot p)

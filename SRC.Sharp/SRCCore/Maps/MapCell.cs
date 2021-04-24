@@ -7,6 +7,17 @@ namespace SRCCore.Maps
         // レイヤー無しの固定値
         public const int NO_LAYER_NUM = 10000;
 
+        public static readonly MapCell EmptyCell = new MapCell
+        {
+            TerrainType = Map.MAX_TERRAIN_DATA_NUM,
+            BitmapNo = 0,
+            LayerType = NO_LAYER_NUM,
+            LayerBitmapNo = 0,
+            BoxType = BoxTypes.Under,
+            UnderTerrain = new TerrainData(),
+            UpperTerrain = new TerrainData(),
+        };
+
         public int X { get; set; }
         public int Y { get; set; }
 

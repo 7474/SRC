@@ -504,53 +504,42 @@ namespace SRCCore.Maps
         // マップファイル fname のデータをロード
         public void LoadMapData(string fname)
         {
-            try
+            if (string.IsNullOrEmpty(fname) || !GeneralLib.FileExists(fname))
+            {
+                // ファイルが存在しない場合
+                SetupStatusView();
+            }
+            else
             {
                 using (var stream = SRC.FileSystem.Open(fname))
                 {
                     LoadMapData(fname, stream);
                 }
             }
-            catch (FileNotFoundException ex)
+        }
+
+        private void SetupStatusView()
+        {
+            MapFileName = "";
+            if (Strings.InStr(SRC.ScenarioFileName, "ステータス表示.") > 0
+                || Strings.InStr(SRC.ScenarioFileName, "ランキング.") > 0)
             {
-                SRC.Log.LogError(ex.Message, ex);
-                // TODO Impl
-                //    // ファイルが存在しない場合
-                //    if (string.IsNullOrEmpty(fname) | !GeneralLib.FileExists(fname))
-                //    {
-                //        MapFileName = "";
-                //        if (Strings.InStr(SRC.ScenarioFileName, "ステータス表示.") > 0 | Strings.InStr(SRC.ScenarioFileName, "ランキング.") > 0)
-                //        {
-                //            SetMapSize(GUI.MainWidth, 40);
-                //        }
-                //        else
-                //        {
-                //            SetMapSize(GUI.MainWidth, GUI.MainHeight);
-                //        }
+                SetMapSize(GUI.MainWidth, 40);
+            }
+            else
+            {
+                SetMapSize(GUI.MainWidth, GUI.MainHeight);
+            }
 
-                //        var loopTo = MapWidth;
-                //        for (i = 1; i <= loopTo; i++)
-                //        {
-                //            var loopTo1 = MapHeight;
-                //            for (j = 1; j <= loopTo1; j++)
-                //            {
-                //                // MOD START 240a
-                //                // MapData(i, j, 0) = MAX_TERRAIN_DATA_NUM
-                //                // MapData(i, j, 1) = 0
-                //                // ファイルが無い場合
-                //                MapData[i, j, MapDataIndex.TerrainType] = MAX_TERRAIN_DATA_NUM;
-                //                MapData[i, j, MapDataIndex.BitmapNo] = 0;
-                //                MapData[i, j, MapDataIndex.LayerType] = NO_LAYER_NUM;
-                //                MapData[i, j, MapDataIndex.LayerBitmapNo] = NO_LAYER_NUM;
-                //                MapData[i, j, MapDataIndex.BoxType] = BoxTypes.Under;
-                //                // MOD  END  240a
-                //            }
-                //        }
-
-                //        return;
-                //    };
+            for (var i = 1; i <= MapWidth; i++)
+            {
+                for (var j = 1; j <= MapHeight; j++)
+                {
+                    MapData[i, j] = MapCell.EmptyCell;
+                }
             }
         }
+
         public void LoadMapData(string fname, Stream stream)
         {
             // ファイル名を記録しておく

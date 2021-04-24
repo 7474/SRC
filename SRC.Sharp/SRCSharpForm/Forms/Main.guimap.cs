@@ -454,6 +454,7 @@ namespace SRCSharpForm
             }
 
             // XXX BitmapMissing
+            // TODO 対象画像の解決
             var image = imageBuffer.GetTransparent(SRC.FileSystem.PathCombine("Unit", u.CurrentForm().Data.Bitmap));
             if (image != null)
             {
