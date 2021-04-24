@@ -28,10 +28,12 @@ namespace SRCSharpForm
             {
                 SRC.SystemConfig.Save();
             }
+            // TODO 設定の反映処理を設ける
             // XXX 単位変更をこんな感じでやるのは下策だなー
             SRC.Sound.Player.SoundVolume = config.SoundVolume / 100f;
 
             SRC.GUI = new SRCSharpFormGUI(SRC);
+            SRC.GUI.MessageWait = 700;
         }
 
         private void LoadGameFile()
