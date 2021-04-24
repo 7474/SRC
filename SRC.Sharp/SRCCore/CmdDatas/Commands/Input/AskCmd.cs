@@ -32,7 +32,8 @@ namespace SRCCore.CmdDatas.Commands
 
             // 表示オプションの処理
             var argIndex = ArgNum;
-            while (argIndex > 1)
+            var breakLoop = false;
+            while (argIndex > 1 && !breakLoop)
             {
                 switch (GetArg(argIndex) ?? "")
                 {
@@ -52,24 +53,25 @@ namespace SRCCore.CmdDatas.Commands
                         enable_rbutton_cancel = true;
                         break;
 
-                    // TODO Impl
-                    //case "終了":
-                    //        My.MyProject.Forms.frmListBox.Hide();
-                    //        if (SRC.AutoMoveCursor)
-                    //        {
-                    //            GUI.RestoreCursorPos();
-                    //        }
-
-                    //        GUI.ReduceListBoxHeight();
-                    //        ExecAskCmdRet = LineNum + 1;
-                    //        return ExecAskCmdRet;
-                    //return EventData.ID + 1;
+                    case "終了":
+                        //TODO Impl
+                        //My.MyProject.Forms.frmListBox.Hide();
+                        if (SRC.AutoMoveCursor)
+                        {
+                            GUI.RestoreCursorPos();
+                        }
+                        GUI.ReduceListBoxHeight();
+                        return EventData.NextID;
 
                     default:
+                        breakLoop = true;
                         break;
                 }
 
-                argIndex = argIndex - 1;
+                if (!breakLoop)
+                {
+                    argIndex = argIndex - 1;
+                }
             }
 
             var answerList = new List<ListBoxItem>();
@@ -120,137 +122,139 @@ namespace SRCCore.CmdDatas.Commands
                             throw new EventErrorException(this, "AskとEndが対応していません");
                         }
 
-                        ExecAskCmdRet = hitEndCmd.EventData.ID + 1;
+                        ExecAskCmdRet = hitEndCmd.EventData.NextID;
                         break;
                     }
 
                 // 選択肢を配列で指定する場合
                 case 3:
                     // TODO Impl
-                    // XXX 配列参照すんのこんなに面倒くさいの？
                     cancelResult = "";
-                    //var vname = GetArg(2);
+                    var vname = GetArg(2);
                     msg = GetArgAsString(3);
 
-                    //// 配列の検索
-                    //if (Expression.IsSubLocalVariableDefined(vname))
-                    //{
-                    //    if (Strings.Left(vname, 1) == "$")
-                    //    {
-                    //        vname = Strings.Mid(vname, 2) + "[";
-                    //    }
-                    //    else
-                    //    {
-                    //        vname = vname + "[";
-                    //    }
+                    // 配列の検索
+                    if (Expression.IsSubLocalVariableDefined(vname))
+                    {
+                        if (Strings.Left(vname, 1) == "$")
+                        {
+                            vname = Strings.Mid(vname, 2) + "[";
+                        }
+                        else
+                        {
+                            vname = vname + "[";
+                        }
 
-                    //    var loopTo1 = Event.VarIndex;
-                    //    for (argIndex = Event.VarIndexStack[Event.CallDepth - 1] + 1; argIndex <= loopTo1; argIndex++)
-                    //    {
-                    //        {
-                    //            var withBlock = Event.VarStack[argIndex];
-                    //            if (Strings.InStr(withBlock.Name, vname) == 1)
-                    //            {
-                    //                if (withBlock.VariableType == Expression.ValueType.StringType)
-                    //                {
-                    //                    buf = withBlock.StringValue;
-                    //                }
-                    //                else
-                    //                {
-                    //                    buf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)withBlock.NumericValue);
-                    //                }
+                        var loopTo1 = Event.VarIndex;
+                        for (argIndex = Event.VarIndexStack[Event.CallDepth - 1] + 1; argIndex <= loopTo1; argIndex++)
+                        {
+                            {
+                                var v = Event.VarStack[argIndex];
+                                if (Strings.InStr(v.Name, vname) == 1)
+                                {
+                                    string buf;
+                                    if (v.VariableType == Expressions.ValueType.StringType)
+                                    {
+                                        buf = v.StringValue;
+                                    }
+                                    else
+                                    {
+                                        buf = SrcFormatter.Format(v.NumericValue);
+                                    }
 
-                    //                if (Strings.Len(buf) > 0)
-                    //                {
-                    //                    Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-                    //                    Array.Resize(ref GUI.ListItemID, Information.UBound(list) + 1);
-                    //                    Array.Resize(ref GUI.ListItemFlag, Information.UBound(list) + 1);
-                    //                    Expression.FormatMessage(ref buf);
-                    //                    list[Information.UBound(list)] = buf;
-                    //                    GUI.ListItemID[Information.UBound(list)] = Strings.Mid(withBlock.Name, Strings.Len(vname) + 1, Strings.Len(withBlock.Name) - Strings.Len(vname) - 1);
-                    //                    GUI.ListItemFlag[Information.UBound(list)] = false;
-                    //                }
-                    //            }
-                    //        }
-                    //    }
-                    //}
-                    //else if (Expression.IsLocalVariableDefined(ref vname))
-                    //{
-                    //    if (Strings.Left(vname, 1) == "$")
-                    //    {
-                    //        vname = Strings.Mid(vname, 2) + "[";
-                    //    }
-                    //    else
-                    //    {
-                    //        vname = vname + "[";
-                    //    }
+                                    if (Strings.Len(buf) > 0)
+                                    {
+                                        Expression.FormatMessage(ref buf);
+                                        answerList.Add(new ListBoxItem
+                                        {
+                                            Text = buf,
+                                            ListItemID = "" + Strings.Mid(v.Name, Strings.Len(vname) + 1, Strings.Len(v.Name) - Strings.Len(vname) - 1),
+                                            ListItemFlag = false,
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (Expression.IsLocalVariableDefined(vname))
+                    {
+                        if (Strings.Left(vname, 1) == "$")
+                        {
+                            vname = Strings.Mid(vname, 2) + "[";
+                        }
+                        else
+                        {
+                            vname = vname + "[";
+                        }
 
-                    //    foreach (VarData currentVar in Event.LocalVariableList)
-                    //    {
-                    //        var = currentVar;
-                    //        if (Strings.InStr(var.Name, vname) == 1)
-                    //        {
-                    //            if (var.VariableType == Expression.ValueType.StringType)
-                    //            {
-                    //                buf = var.StringValue;
-                    //            }
-                    //            else
-                    //            {
-                    //                buf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)var.NumericValue);
-                    //            }
+                        // TODO 列挙順確認しないとだめかも
+                        foreach (VarData v in Event.LocalVariableList.Values)
+                        {
+                            if (Strings.InStr(v.Name, vname) == 1)
+                            {
+                                string buf;
+                                if (v.VariableType == Expressions.ValueType.StringType)
+                                {
+                                    buf = v.StringValue;
+                                }
+                                else
+                                {
+                                    buf = SrcFormatter.Format(v.NumericValue);
+                                }
 
-                    //            if (Strings.Len(buf) > 0)
-                    //            {
-                    //                Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-                    //                Array.Resize(ref GUI.ListItemID, Information.UBound(list) + 1);
-                    //                Array.Resize(ref GUI.ListItemFlag, Information.UBound(list) + 1);
-                    //                Expression.FormatMessage(ref buf);
-                    //                list[Information.UBound(list)] = buf;
-                    //                GUI.ListItemID[Information.UBound(list)] = Strings.Mid(var.Name, Strings.Len(vname) + 1, Strings.Len(var.Name) - Strings.Len(vname) - 1);
-                    //                GUI.ListItemFlag[Information.UBound(list)] = false;
-                    //            }
-                    //        }
-                    //    }
-                    //}
-                    //else if (Expression.IsGlobalVariableDefined(ref vname))
-                    //{
-                    //    if (Strings.Left(vname, 1) == "$")
-                    //    {
-                    //        vname = Strings.Mid(vname, 2) + "[";
-                    //    }
-                    //    else
-                    //    {
-                    //        vname = vname + "[";
-                    //    }
+                                if (Strings.Len(buf) > 0)
+                                {
+                                    Expression.FormatMessage(ref buf);
+                                    answerList.Add(new ListBoxItem
+                                    {
+                                        Text = buf,
+                                        ListItemID = "" + Strings.Mid(v.Name, Strings.Len(vname) + 1, Strings.Len(v.Name) - Strings.Len(vname) - 1),
+                                        ListItemFlag = false,
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    else if (Expression.IsGlobalVariableDefined(vname))
+                    {
+                        if (Strings.Left(vname, 1) == "$")
+                        {
+                            vname = Strings.Mid(vname, 2) + "[";
+                        }
+                        else
+                        {
+                            vname = vname + "[";
+                        }
 
-                    //    foreach (VarData currentVar1 in Event.GlobalVariableList)
-                    //    {
-                    //        var = currentVar1;
-                    //        if (Strings.InStr(var.Name, vname) == 1)
-                    //        {
-                    //            if (var.VariableType == Expression.ValueType.StringType)
-                    //            {
-                    //                buf = var.StringValue;
-                    //            }
-                    //            else
-                    //            {
-                    //                buf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)var.NumericValue);
-                    //            }
+                        // TODO 列挙順確認しないとだめかも
+                        foreach (VarData v in Event.GlobalVariableList.Values)
+                        {
+                            string buf;
+                            if (Strings.InStr(v.Name, vname) == 1)
+                            {
+                                if (v.VariableType == Expressions.ValueType.StringType)
+                                {
+                                    buf = v.StringValue;
+                                }
+                                else
+                                {
+                                    buf = SrcFormatter.Format(v.NumericValue);
+                                }
 
-                    //            if (Strings.Len(buf) > 0)
-                    //            {
-                    //                Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-                    //                Array.Resize(ref GUI.ListItemID, Information.UBound(list) + 1);
-                    //                Array.Resize(ref GUI.ListItemFlag, Information.UBound(list) + 1);
-                    //                Expression.FormatMessage(ref buf);
-                    //                list[Information.UBound(list)] = buf;
-                    //                GUI.ListItemID[Information.UBound(list)] = Strings.Mid(var.Name, Strings.Len(vname) + 1, Strings.Len(var.Name) - Strings.Len(vname) - 1);
-                    //                GUI.ListItemFlag[Information.UBound(list)] = false;
-                    //            }
-                    //        }
-                    //    }
-                    //}
-                    ExecAskCmdRet = EventData.ID + 1;
+                                if (Strings.Len(buf) > 0)
+                                {
+                                    Expression.FormatMessage(ref buf);
+                                    answerList.Add(new ListBoxItem
+                                    {
+                                        Text = buf,
+                                        ListItemID = "" + Strings.Mid(v.Name, Strings.Len(vname) + 1, Strings.Len(v.Name) - Strings.Len(vname) - 1),
+                                        ListItemFlag = false,
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    ExecAskCmdRet = EventData.NextID;
                     break;
 
                 default:
