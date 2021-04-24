@@ -321,10 +321,10 @@ namespace SRCCore.CmdDatas
                         return new LocalCmd(src, data);
 
                     case "makepilotlist":
-                        return new NotImplementedCmd(src, data);
+                        return new MakePilotListCmd(src, data);
 
                     case "makeunitlist":
-                        return new NotImplementedCmd(src, data);
+                        return new MakeUnitListCmd(src, data);
 
                     case "mapability":
                         return new NotImplementedCmd(src, data);
