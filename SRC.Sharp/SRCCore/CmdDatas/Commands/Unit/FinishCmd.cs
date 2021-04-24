@@ -1,8 +1,6 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
-using SRCCore.Pilots;
 using SRCCore.Units;
-using SRCCore.VB;
 
 namespace SRCCore.CmdDatas.Commands
 {

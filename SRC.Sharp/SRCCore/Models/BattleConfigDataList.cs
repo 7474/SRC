@@ -4,7 +4,6 @@
 // 再頒布または改変することができます。
 using SRCCore.Lib;
 using SRCCore.VB;
-using System.Collections.Generic;
 using System.IO;
 
 namespace SRCCore.Models

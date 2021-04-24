@@ -2,7 +2,6 @@ using SRCCore;
 using SRCCore.Maps;
 using SRCSharpForm.Resoruces;
 using System.Drawing;
-using System.IO;
 
 namespace SRCSharpForm
 {

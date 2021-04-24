@@ -1,9 +1,9 @@
-using System;
-using System.Windows.Forms;
 using SRCCore;
 using SRCCore.Config;
 using SRCCore.Lib;
 using SRCCore.VB;
+using System;
+using System.Windows.Forms;
 
 namespace SRCSharpForm
 {

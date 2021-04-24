@@ -4,8 +4,6 @@
 // 再頒布または改変することができます。
 using SRCCore.Units;
 using SRCCore.VB;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 

@@ -1,15 +1,10 @@
-using Microsoft.Extensions.Logging;
 using SRCCore;
-using SRCCore.Commands;
 using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
 using SRCSharpForm.Extensions;
-using SRCSharpForm.Forms;
 using SRCSharpForm.Lib;
-using SRCSharpForm.Resoruces;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
@@ -955,7 +950,7 @@ namespace SRCSharpForm
                             }
 
                             // メッセージが途切れてしまう場合は必ず改行
-                            if (MessageLen(Strings.Mid(buf, line_head, j - line_head)).Width > 0.95d * messageArea.Width)
+                            if (MessageLen(Strings.Mid(buf, line_head, j - line_head)).Width > MessageConfig.BrThresholdLimit * messageArea.Width)
                             {
                                 PrintMessage(Strings.Mid(buf, line_head, j - line_head + 1), false);
                                 lnum = (lnum + 1);
@@ -1023,7 +1018,7 @@ namespace SRCSharpForm
                             }
 
                             // 改行の判定
-                            if (MessageLen(Strings.Mid(messages[i], line_head)).Width < 0.95d * messageArea.Width)
+                            if (MessageLen(Strings.Mid(messages[i], line_head)).Width < MessageConfig.BrThresholdLimit * messageArea.Width)
                             {
                                 // 全体が一行に収まる場合
                                 goto NextLoop;
@@ -2328,7 +2323,7 @@ namespace SRCSharpForm
                         }
 
                         // メッセージが途切れてしまう場合は必ず改行
-                        if (MessageLen(Strings.Mid(buf, line_head, j - line_head)).Width > 0.95d * messageArea.Width)
+                        if (MessageLen(Strings.Mid(buf, line_head, j - line_head)).Width > MessageConfig.BrThresholdLimit * messageArea.Width)
                         {
                             PrintMessage(Strings.Mid(buf, line_head, j - line_head + 1), !is_char_message);
                             lnum = (lnum + 1);
@@ -2396,7 +2391,7 @@ namespace SRCSharpForm
                         }
 
                         // 改行の判定
-                        if (MessageLen(Strings.Mid(message, line_head)).Width < 0.95d * messageArea.Width)
+                        if (MessageLen(Strings.Mid(message, line_head)).Width < MessageConfig.BrThresholdLimit * messageArea.Width)
                         {
                             // 全体が一行に収まる場合
                             goto NextLoop;
@@ -2646,20 +2641,20 @@ namespace SRCSharpForm
                         }
                     }
 
-                    if (MessageLen(Strings.Mid(msg, line_head)).Width < 0.95d * messageArea.Width)
+                    if (MessageLen(Strings.Mid(msg, line_head)).Width < MessageConfig.BrThresholdLimit * messageArea.Width)
                     {
                         // 全体が一行に収まる場合
                         goto NextLoop;
                     }
 
-                    if (GeneralLib.IsSpace(ch) && MessageLen(Strings.Mid(msg, line_head, i - line_head)).Width > 0.5d * messageArea.Width)
+                    if (GeneralLib.IsSpace(ch) && MessageLen(Strings.Mid(msg, line_head, i - line_head)).Width > MessageConfig.BrThresholdMinimum * messageArea.Width)
                     {
                         var buf = Strings.Mid(msg, line_head, i - line_head);
                         PrintMessage(buf, true);
                         lnum = (lnum + 1);
                         line_head = (i + 1);
                     }
-                    else if (MessageLen(Strings.Mid(msg, line_head, i - line_head + 1)).Width > 0.95d * messageArea.Width)
+                    else if (MessageLen(Strings.Mid(msg, line_head, i - line_head + 1)).Width > MessageConfig.BrThresholdLimit * messageArea.Width)
                     {
                         var buf = Strings.Mid(msg, line_head, i - line_head + 1);
                         PrintMessage(buf, true);
@@ -2679,7 +2674,7 @@ namespace SRCSharpForm
                             }
                         }
 
-                        if (MessageLen(Strings.Mid(msg, line_head, j - line_head)).Width > 0.95d * messageArea.Width)
+                        if (MessageLen(Strings.Mid(msg, line_head, j - line_head)).Width > MessageConfig.BrThresholdLimit * messageArea.Width)
                         {
                             var buf = Strings.Mid(msg, line_head, i - line_head);
                             PrintMessage(buf, true);

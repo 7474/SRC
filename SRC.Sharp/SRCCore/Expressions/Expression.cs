@@ -6,7 +6,6 @@
 
 using Newtonsoft.Json;
 using SRCCore.Events;
-using System;
 
 namespace SRCCore.Expressions
 {

@@ -1,5 +1,3 @@
-using SRCCore.Maps;
-using System;
 using System.Linq;
 
 namespace SRCCore.Events

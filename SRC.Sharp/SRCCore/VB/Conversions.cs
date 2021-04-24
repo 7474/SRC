@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace SRCCore.VB
 {
     // VBの Microsoft.VisualBasic.Conversions のうちSRCで使用していたものの仮実装。

@@ -3,11 +3,8 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 using SRCCore.Extensions;
-using SRCCore.Lib;
 using SRCCore.Units;
-using SRCCore.VB;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SRCCore.Models
 {

@@ -1,14 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using SRCCore.CmdDatas;
 using SRCCore.Expressions;
-using SRCCore.Extensions;
-using SRCCore.Units;
-using SRCCore.VB;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.Events
 {
