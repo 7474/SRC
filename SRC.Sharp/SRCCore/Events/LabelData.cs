@@ -5,7 +5,6 @@
 using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.VB;
-using System;
 
 namespace SRCCore.Events
 {

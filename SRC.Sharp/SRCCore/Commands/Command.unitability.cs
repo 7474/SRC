@@ -4,7 +4,6 @@
 // 再頒布または改変することができます。
 
 using SRCCore.Units;
-using SRCCore.VB;
 using System;
 
 namespace SRCCore.Commands

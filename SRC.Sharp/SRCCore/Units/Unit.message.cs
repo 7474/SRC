@@ -4,11 +4,9 @@
 // 再頒布または改変することができます。
 using SRCCore.Extensions;
 using SRCCore.Lib;
-using SRCCore.Maps;
 using SRCCore.Models;
 using SRCCore.Pilots;
 using SRCCore.VB;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

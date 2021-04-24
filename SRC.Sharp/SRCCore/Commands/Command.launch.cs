@@ -4,9 +4,7 @@
 // 再頒布または改変することができます。
 
 using SRCCore.Lib;
-using SRCCore.Units;
 using SRCCore.VB;
-using System;
 using System.Linq;
 
 namespace SRCCore.Commands

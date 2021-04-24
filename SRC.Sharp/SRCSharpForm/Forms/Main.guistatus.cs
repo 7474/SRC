@@ -7,7 +7,6 @@ using SRCSharpForm.Extensions;
 using System;
 using System.Drawing;
 using System.Drawing.Text;
-using System.IO;
 using System.Text;
 
 namespace SRCSharpForm

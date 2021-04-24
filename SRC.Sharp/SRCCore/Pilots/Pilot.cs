@@ -5,7 +5,6 @@
 using SRCCore.Models;
 using SRCCore.Units;
 using SRCCore.VB;
-using System;
 
 namespace SRCCore.Pilots
 {

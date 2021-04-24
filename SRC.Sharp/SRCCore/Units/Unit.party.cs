@@ -1,6 +1,4 @@
 using SRCCore.Lib;
-using SRCCore.VB;
-using System;
 
 namespace SRCCore.Units
 {

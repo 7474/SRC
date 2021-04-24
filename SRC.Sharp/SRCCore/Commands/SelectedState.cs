@@ -1,8 +1,5 @@
 using SRCCore.Pilots;
 using SRCCore.Units;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SRCCore.Commands
 {
