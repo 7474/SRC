@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.CompilerServices;
-using SRCSharpForm.FormLib;
 
 namespace SRCSharpForm
 {
@@ -53,8 +52,8 @@ namespace SRCSharpForm
         public PictureBox picPilotStatus;
         public PictureBox picUnitStatus;
         public PictureBox picUnitBitmap;
-        public SrcHScrollBar HScrollBar;
-        public SrcVScrollBar VScrollBar;
+        public HScrollBar HScrollBar;
+        public VScrollBar VScrollBar;
         public PictureBox picMask;
         public PictureBox picTmp;
         public PictureBox picBack;
@@ -86,8 +85,8 @@ namespace SRCSharpForm
             this.picPilotStatus = new System.Windows.Forms.PictureBox();
             this.picUnitStatus = new System.Windows.Forms.PictureBox();
             this.picUnitBitmap = new System.Windows.Forms.PictureBox();
-            this.HScrollBar = new SRCSharpForm.FormLib.SrcHScrollBar();
-            this.VScrollBar = new SRCSharpForm.FormLib.SrcVScrollBar();
+            this.HScrollBar = new System.Windows.Forms.HScrollBar();
+            this.VScrollBar = new System.Windows.Forms.VScrollBar();
             this.picMask = new System.Windows.Forms.PictureBox();
             this.picTmp = new System.Windows.Forms.PictureBox();
             this.picBack = new System.Windows.Forms.PictureBox();
