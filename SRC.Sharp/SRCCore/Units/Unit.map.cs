@@ -832,6 +832,8 @@ namespace SRCCore.Units
         // マップ上から脱出
         public void Escape(string smode = "")
         {
+            Status = "待機";
+            // TODO Impl Escape
             //    Unit u;
             //    int i, j;
 
