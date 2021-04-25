@@ -954,11 +954,11 @@ namespace SRCCore
                     }
                 }
             }
-            else if (Strings.LCase(Strings.Right(fname, 6)) == ".srcsq")
+            else if (Strings.LCase(Strings.Right(fname, 5)) == ".srcq")
             {
                 // 中断データの読み込み
                 GUI.LockGUI();
-                RestoreData(fname, false);
+                RestoreData(fname, SRCSaveKind.Suspend);
 
                 // 画面を書き直してステータスを表示
                 GUI.RedrawScreen();

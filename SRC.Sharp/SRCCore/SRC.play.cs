@@ -180,15 +180,17 @@ namespace SRCCore
             GUI.IsPictureVisible = false;
             GUI.IsCursorVisible = false;
             Stage = "味方";
-            //Sound.StopBGM();
+            Sound.StopBGM();
 
-            //// リスタート用にデータをセーブ
-            //if (Strings.InStr(fname, @"\Lib\ユニットステータス表示.eve") == 0 & Strings.InStr(fname, @"\Lib\パイロットステータス表示.eve") == 0)
-            //{
-            //    DumpData(ScenarioPath + "_リスタート.src");
-            //}
+            // リスタート用にデータをセーブ
+            // XXX パスセパレータマッチ
+            if (Strings.InStr(fname, @"\Lib\ユニットステータス表示.eve") == 0
+                && Strings.InStr(fname, @"\Lib\パイロットステータス表示.eve") == 0)
+            {
+                DumpData(Path.Combine(ScenarioPath, "_リスタート.srcq"), SRCSaveKind.Restart);
+            }
 
-            //// スタートイベントが始まった場合は通常のステージとみなす
+            // スタートイベントが始まった場合は通常のステージとみなす
             IsSubStage = false;
             GUIStatus.ClearUnitStatus();
             if (!GUI.MainFormVisible)
@@ -219,11 +221,9 @@ namespace SRCCore
         // 陣営upartyのフェイズを実行
         public void StartTurn(string uparty)
         {
-            // TODO ImplS
-            //int num, i, phase;
-            //Unit u;
+            // TODO Impl
             Stage = uparty;
-            //Sound.BossBGM = false;
+            Sound.BossBGM = false;
             if (uparty == "味方")
             {
                 do

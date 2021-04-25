@@ -6,6 +6,7 @@
 using Newtonsoft.Json;
 using SRCCore.VB;
 using System;
+using System.IO;
 using System.Linq;
 
 namespace SRCCore.Commands
@@ -29,9 +30,9 @@ namespace SRCCore.Commands
                     EndTurnCommand();
                     break;
 
-                //case DumpCmdID: // 中断
-                //    DumpCommand();
-                //    break;
+                case DumpCmdID: // 中断
+                    DumpCommand();
+                    break;
 
                 //case UnitListCmdID: // 部隊表
                 //    UnitListCommand();
@@ -74,17 +75,17 @@ namespace SRCCore.Commands
                     GUI.Configure();
                     break;
 
-                //case RestartCmdID: // リスタート
-                //    RestartCommand();
-                //    break;
+                case RestartCmdID: // リスタート
+                    RestartCommand();
+                    break;
 
-                //case QuickLoadCmdID: // クイックロード
-                //    QuickLoadCommand();
-                //    break;
+                case QuickLoadCmdID: // クイックロード
+                    QuickLoadCommand();
+                    break;
 
-                //case QuickSaveCmdID: // クイックセーブ
-                //    QuickSaveCommand();
-                //    break;
+                case QuickSaveCmdID: // クイックセーブ
+                    QuickSaveCommand();
+                    break;
 
                 default:
                     throw new NotSupportedException(JsonConvert.SerializeObject(command));
@@ -863,138 +864,123 @@ namespace SRCCore.Commands
         //    }
         //}
 
-        //// リスタートコマンド
-        //// MOD START MARGE
-        //// Public Sub RestartCommand()
-        //private void RestartCommand()
-        //{
-        //    // MOD END MARGE
-        //    int ret;
+        // リスタートコマンド
+        private void RestartCommand()
+        {
+            int ret;
 
-        //    // リスタートを行うか確認
-        //    ret = Interaction.MsgBox("リスタートしますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "リスタート");
-        //    if (ret == MsgBoxResult.Cancel)
-        //    {
-        //        return;
-        //    }
+            //// リスタートを行うか確認
+            //ret = Interaction.MsgBox("リスタートしますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "リスタート");
+            //if (ret == MsgBoxResult.Cancel)
+            //{
+            //    return;
+            //}
 
-        //    GUI.LockGUI();
-        //    SRC.RestoreData(SRC.ScenarioPath + "_リスタート.src", true);
-        //    GUI.UnlockGUI();
-        //}
+            GUI.LockGUI();
+            SRC.RestoreData(Path.Combine(SRC.ScenarioPath, "_リスタート.srcq"), SRCSaveKind.Restart);
+            GUI.UnlockGUI();
+        }
 
-        //// クイックロードコマンド
-        //// MOD START MARGE
-        //// Public Sub QuickLoadCommand()
-        //private void QuickLoadCommand()
-        //{
-        //    // MOD END MARGE
-        //    int ret;
+        // クイックロードコマンド
+        private void QuickLoadCommand()
+        {
+            int ret;
 
-        //    // ロードを行うか確認
-        //    ret = Interaction.MsgBox("データをロードしますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "クイックロード");
-        //    if (ret == MsgBoxResult.Cancel)
-        //    {
-        //        return;
-        //    }
+            //// ロードを行うか確認
+            //ret = Interaction.MsgBox("データをロードしますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "クイックロード");
+            //if (ret == MsgBoxResult.Cancel)
+            //{
+            //    return;
+            //}
 
-        //    GUI.LockGUI();
-        //    SRC.RestoreData(SRC.ScenarioPath + "_クイックセーブ.src", true);
+            GUI.LockGUI();
+            SRC.RestoreData(Path.Combine(SRC.ScenarioPath, "_クイックセーブ.srcq"), SRCSaveKind.Quik);
 
-        //    // 画面を書き直してステータスを表示
-        //    GUI.RedrawScreen();
-        //    Status.DisplayGlobalStatus();
-        //    GUI.UnlockGUI();
-        //}
+            // 画面を書き直してステータスを表示
+            GUI.RedrawScreen();
+            Status.DisplayGlobalStatus();
+            GUI.UnlockGUI();
+        }
 
-        //// クイックセーブコマンド
-        //// MOD START MARGE
-        //// Public Sub QuickSaveCommand()
-        //private void QuickSaveCommand()
-        //{
-        //    // MOD END MARGE
+        // クイックセーブコマンド
+        private void QuickSaveCommand()
+        {
+            GUI.LockGUI();
 
-        //    GUI.LockGUI();
+            // マウスカーソルを砂時計に
+            GUI.ChangeStatus(GuiStatus.WaitCursor);
 
-        //    // マウスカーソルを砂時計に
-        //    // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
-        //    Cursor.Current = Cursors.WaitCursor;
+            // 中断データをセーブ
+            SRC.DumpData(Path.Combine(SRC.ScenarioPath, "_クイックセーブ.srcq"), SRCSaveKind.Quik);
+            GUI.UnlockGUI();
 
-        //    // 中断データをセーブ
-        //    SRC.DumpData(SRC.ScenarioPath + "_クイックセーブ.src");
-        //    GUI.UnlockGUI();
-
-        //    // マウスカーソルを元に戻す
-        //    // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
-        //    Cursor.Current = Cursors.Default;
-        //}
+            // マウスカーソルを元に戻す
+            GUI.ChangeStatus(GuiStatus.Default);
+        }
 
 
-        //// プレイを中断し、中断用データをセーブする
-        //// MOD START MARGE
-        //// Public Sub DumpCommand()
-        //private void DumpCommand()
-        //{
-        //    // MOD END MARGE
-        //    string fname, save_path = default;
-        //    int ret, i;
+        // プレイを中断し、中断用データをセーブする
+        private void DumpCommand()
+        {
+            throw new NotImplementedException();
+            //string fname, save_path = default;
+            //int ret, i;
 
-        //    // プレイを中断するか確認
-        //    ret = Interaction.MsgBox("プレイを中断しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "中断");
-        //    if (ret == MsgBoxResult.Cancel)
-        //    {
-        //        return;
-        //    }
+            //// プレイを中断するか確認
+            //ret = Interaction.MsgBox("プレイを中断しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "中断");
+            //if (ret == MsgBoxResult.Cancel)
+            //{
+            //    return;
+            //}
 
-        //    // 中断データをセーブするファイル名を決定
-        //    var loopTo = Strings.Len(SRC.ScenarioFileName);
-        //    for (i = 1; i <= loopTo; i++)
-        //    {
-        //        if (Strings.Mid(SRC.ScenarioFileName, Strings.Len(SRC.ScenarioFileName) - i + 1, 1) == @"\")
-        //        {
-        //            break;
-        //        }
-        //    }
+            //// 中断データをセーブするファイル名を決定
+            //var loopTo = Strings.Len(SRC.ScenarioFileName);
+            //for (i = 1; i <= loopTo; i++)
+            //{
+            //    if (Strings.Mid(SRC.ScenarioFileName, Strings.Len(SRC.ScenarioFileName) - i + 1, 1) == @"\")
+            //    {
+            //        break;
+            //    }
+            //}
 
-        //    fname = Strings.Mid(SRC.ScenarioFileName, Strings.Len(SRC.ScenarioFileName) - i + 2, i - 5);
-        //    fname = fname + "を中断.src";
-        //    fname = FileDialog.SaveFileDialog("データセーブ", SRC.ScenarioPath, fname, 2, "ｾｰﾌﾞﾃﾞｰﾀ", "src", ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
-        //    if (string.IsNullOrEmpty(fname))
-        //    {
-        //        // キャンセル
-        //        return;
-        //    }
+            //fname = Strings.Mid(SRC.ScenarioFileName, Strings.Len(SRC.ScenarioFileName) - i + 2, i - 5);
+            //fname = fname + "を中断.src";
+            //fname = FileDialog.SaveFileDialog("データセーブ", SRC.ScenarioPath, fname, 2, "ｾｰﾌﾞﾃﾞｰﾀ", "src", ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
+            //if (string.IsNullOrEmpty(fname))
+            //{
+            //    // キャンセル
+            //    return;
+            //}
 
-        //    // セーブ先はシナリオフォルダ？
-        //    if (Strings.InStr(fname, @"\") > 0)
-        //    {
-        //        save_path = Strings.Left(fname, GeneralLib.InStr2(fname, @"\"));
-        //    }
-        //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-        //    if ((FileSystem.Dir(save_path) ?? "") != (FileSystem.Dir(SRC.ScenarioPath) ?? ""))
-        //    {
-        //        if (Interaction.MsgBox("セーブファイルはシナリオフォルダにないと読み込めません。" + Constants.vbCr + Constants.vbLf + "このままセーブしますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question)) != 1)
-        //        {
-        //            return;
-        //        }
-        //    }
+            //// セーブ先はシナリオフォルダ？
+            //if (Strings.InStr(fname, @"\") > 0)
+            //{
+            //    save_path = Strings.Left(fname, GeneralLib.InStr2(fname, @"\"));
+            //}
+            //// UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
+            //if ((FileSystem.Dir(save_path) ?? "") != (FileSystem.Dir(SRC.ScenarioPath) ?? ""))
+            //{
+            //    if (Interaction.MsgBox("セーブファイルはシナリオフォルダにないと読み込めません。" + Constants.vbCr + Constants.vbLf + "このままセーブしますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question)) != 1)
+            //    {
+            //        return;
+            //    }
+            //}
 
-        //    // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
-        //    Cursor.Current = Cursors.WaitCursor; // マウスカーソルを砂時計に
-        //    GUI.LockGUI();
+            //// UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
+            //Cursor.Current = Cursors.WaitCursor; // マウスカーソルを砂時計に
+            //GUI.LockGUI();
 
-        //    // 中断データをセーブ
-        //    SRC.DumpData(fname);
+            //// 中断データをセーブ
+            //SRC.DumpData(fname);
 
-        //    // マウスカーソルを元に戻す
-        //    // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
-        //    Cursor.Current = Cursors.Default;
-        //    GUI.MainForm.Hide();
+            //// マウスカーソルを元に戻す
+            //// UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
+            //Cursor.Current = Cursors.Default;
+            //GUI.MainForm.Hide();
 
-        //    // ゲームを終了
-        //    SRC.ExitGame();
-        //}
-
+            //// ゲームを終了
+            //SRC.ExitGame();
+        }
 
         //// 全体マップの表示
         //// MOD START MARGE
