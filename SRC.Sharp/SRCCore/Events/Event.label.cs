@@ -479,7 +479,11 @@ namespace SRCCore.Events
                 }
                 else
                 {
-                    colEventLabelList.Add(new_label, lname2 + "(" + SrcFormatter.Format(eventDataId) + ")");
+                    var lname3 = lname2 + "(" + SrcFormatter.Format(eventDataId) + ")";
+                    if (!IsLabelDefined(lname3))
+                    {
+                        colEventLabelList.Add(new_label, lname3);
+                    }
                 }
             }
         }

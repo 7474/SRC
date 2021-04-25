@@ -310,17 +310,14 @@ namespace SRCCore
 
                 // XXX Version プロパティだけのオブジェクトでバージョンチェックなど
                 var data = JsonConvert.DeserializeObject<SRCQuikSaveData>((new StreamReader(stream).ReadToEnd()));
-                //        SaveDataVersion = Conversions.ToInteger(fname2);
-                //    // ウィンドウのタイトルを設定
-                //    if ((ScenarioFileName ?? "") != (ScenarioPath + fname2 ?? ""))
-                //    {
-                //        GUI.MainForm.Text = "SRC - " + Strings.Left(fname2, Strings.Len(fname2) - 4);
-                //        ScenarioFileName = ScenarioPath + fname2;
-                //        scenario_file_is_different = true;
-                //    }
-                // TODO scenario_file_is_different
-                var scenario_file_is_different = true;
-                GUI.SetLoadImageSize((data.Titles.Count * 2 + 5));
+                //SaveDataVersion = Conversions.ToInteger(fname2);
+                var scenario_file_is_different = !FileSystem.RelativePathEuqals(ScenarioPath, ScenarioFileName, data.ScenarioFileName);
+                if (scenario_file_is_different)
+                {
+                    // TODO Impl ウィンドウのタイトルを設定
+                    // ウィンドウのタイトルを設定
+                    //GUI.MainFormText = "SRC - " + Strings.Left(fname2, Strings.Len(fname2) - 4);
+                }
                 Titles = data.Titles;
                 TotalTurn = data.TotalTurn;
                 Money = data.Money;
@@ -329,11 +326,9 @@ namespace SRCCore
                 UList = data.UList;
                 IList = data.IList;
                 //
-                ScenarioFileName = data.ScenarioFileName;
+                ScenarioFileName = FileSystem.ToAbsolutePath(ScenarioPath, data.ScenarioFileName);
                 Turn = data.Turn;
                 Event.LocalVariableList = data.LocalVariableList;
-                //DisableEventLabels = Event.colEventLabelList.List.Select(x => x.Data).ToList(),
-                //AdditionalEventFileNames = Event.AdditionalEventFileNames.ToList(),
 
                 // 使用するデータをロード
                 if (!quick_load)
@@ -424,7 +419,6 @@ namespace SRCCore
                     }
                 }
 
-                // TODO Impl RestoreEventData
                 Event.Restore(data);
                 PList.Restore(this);
                 UList.Restore(this);

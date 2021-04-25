@@ -340,7 +340,6 @@ namespace SRCCore.Events
                             else
                             {
                                 AddLabel(labelName, line.ID);
-
                             }
                             break;
                         }
