@@ -14,7 +14,6 @@ namespace SRCCore.VB
     public class SrcCollection<V> : IDictionary<string, V>
     {
         private List<V> list;
-        [JsonProperty]
         private OrderedDictionary dict;
 
         public SrcCollection()
@@ -44,8 +43,8 @@ namespace SRCCore.VB
 
         public V this[string key]
         {
-            get => (V)dict[key.ToLower()];
-            set => throw new NotImplementedException();
+            get => ContainsKey(key) ? (V)dict[key.ToLower()] : default(V);
+            set => Add(value, key);
         }
 
         public int Count => dict.Count;
@@ -101,7 +100,7 @@ namespace SRCCore.VB
 
         public bool ContainsKey(string key)
         {
-            return dict.Contains(key.ToLower());
+            return key == null ? false : dict.Contains(key.ToLower());
         }
 
         public void CopyTo(V[] array, int arrayIndex)
