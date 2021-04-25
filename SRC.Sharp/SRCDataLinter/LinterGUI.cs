@@ -388,7 +388,7 @@ namespace SRCDataLinter
             throw new NotImplementedException();
         }
 
-        public Stream SelectSaveStream()
+        public Stream SelectSaveStream(SRCSaveKind saveKind, string defaultName)
         {
             throw new NotImplementedException();
         }

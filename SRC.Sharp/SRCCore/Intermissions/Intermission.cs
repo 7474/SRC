@@ -194,7 +194,7 @@ namespace SRCCore
                         break;
 
                     case "データセーブ":
-                        using (var saveStream = GUI.SelectSaveStream())
+                        using (var saveStream = GUI.SelectSaveStream(SRCSaveKind.Normal))
                         {
                             if (saveStream != null)
                             {

@@ -1273,7 +1273,7 @@ namespace SRCSharpForm
             }
         }
 
-        public Stream SelectSaveStream()
+        public Stream SelectSaveStream(SRCSaveKind saveKind, string defaultName)
         {
             // TODO Impl データセーブ
             //// 一旦「常に手前に表示」を解除
@@ -1282,12 +1282,15 @@ namespace SRCSharpForm
             //    ret = GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -2, 0, 0, 0, 0, 0x3);
             //}
 
+            var ext = saveKind == SRCSaveKind.Normal ? "srcs" : "srcq";
             string fname;
             using (var fsd = new SaveFileDialog())
             {
-                fsd.Filter = "save files (*.srcs)|*.srcs";
+                fsd.Filter = $"save files (*.{ext})|*.{ext}";
                 fsd.InitialDirectory = SRC.ScenarioPath;
-                fsd.FileName = Expression.GetValueAsString("セーブデータファイル名");
+                fsd.FileName = string.IsNullOrEmpty(defaultName)
+                    ? Expression.GetValueAsString("セーブデータファイル名")
+                    : defaultName;
 
                 var res = fsd.ShowDialog();
                 if (res == DialogResult.OK)

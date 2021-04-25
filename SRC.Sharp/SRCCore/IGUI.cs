@@ -305,7 +305,7 @@ namespace SRCCore
         void Configure();
 
         // === セーブ ===
-        Stream SelectSaveStream();
+        Stream SelectSaveStream(SRCSaveKind saveKind, string defaultName = null);
         Stream OpenQuikSaveStream(FileAccess fileAccess);
     }
 
