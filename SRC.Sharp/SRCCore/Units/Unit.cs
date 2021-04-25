@@ -119,6 +119,7 @@ namespace SRCCore.Units
         public int UsedCounterAttack;
 
         // ユニット名称
+        [JsonProperty]
         private string strName;
         // 陣営
         [JsonProperty]
