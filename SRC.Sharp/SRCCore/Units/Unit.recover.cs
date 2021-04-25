@@ -2252,8 +2252,7 @@ namespace SRCCore.Units
         }
 
         // データをリセット
-        // UPGRADE_NOTE: Reset は Reset_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        public void Reset_Renamed()
+        public void Reset()
         {
             //    short i;
             //    string pname;

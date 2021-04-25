@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using SRCCore.Expressions;
+using SRCCore.Units;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -64,8 +65,7 @@ namespace SRCCore
             {
                 // XXX Version プロパティだけのオブジェクトでバージョンチェックなど
                 var data = JsonConvert.DeserializeObject<SRCSaveData>((new StreamReader(stream).ReadToEnd()));
-
-                //    GUI.SetLoadImageSize((num * 2 + 5));
+                GUI.SetLoadImageSize((data.Titles.Count * 2 + 5));
                 Titles = data.Titles;
                 if (!Expression.IsGlobalVariableDefined("次ステージ"))
                 {
@@ -151,8 +151,8 @@ namespace SRCCore
                 //        IDList.Load(ScenarioPath + @"Data\item.txt");
                 //    }
 
-                //    GUI.DisplayLoadingProgress();
-                //    IsLocalDataLoaded = true;
+                GUI.DisplayLoadingProgress();
+                IsLocalDataLoaded = true;
 
                 PList.Restore(this);
                 UList.Restore(this);
@@ -163,41 +163,22 @@ namespace SRCCore
                 IList.Update();
 
                 //    // リンクデータを処理するため、セーブファイルを一旦閉じてから再度読み込み
-
-                //    SaveDataFileNumber = FileSystem.FreeFile();
-                //    FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Input);
-                //    if (SaveDataVersion > 10000)
-                //    {
-                //        FileSystem.Input(SaveDataFileNumber, dummy);
-                //    }
-
-                //    FileSystem.Input(SaveDataFileNumber, num);
-                //    Titles = new string[(num + 1)];
-                //    var loopTo1 = num;
-                //    for (i = 1; i <= loopTo1; i++)
-                //        FileSystem.Input(SaveDataFileNumber, Titles[i]);
-                //    FileSystem.Input(SaveDataFileNumber, dummy);
-                //    FileSystem.Input(SaveDataFileNumber, TotalTurn);
-                //    FileSystem.Input(SaveDataFileNumber, Money);
-                //    FileSystem.Input(SaveDataFileNumber, num); // パーツ用のダミー
-                //    FileSystem.Input(SaveDataFileNumber, num); // パーツ用のダミー
-                //    var loopTo2 = num;
-                //    for (i = 1; i <= loopTo2; i++)
-                //        dummy = FileSystem.LineInput(SaveDataFileNumber);
                 //    PList.LoadLinkInfo();
                 //    UList.LoadLinkInfo();
                 //    IList.LoadLinkInfo();
                 //    FileSystem.FileClose(SaveDataFileNumber);
-                //    GUI.DisplayLoadingProgress();
+                GUI.DisplayLoadingProgress();
 
-                //    // ユニットの状態を回復
-                //    foreach (Unit u in UList)
-                //        u.Reset_Renamed();
-                //    GUI.DisplayLoadingProgress();
+                // ユニットの状態を回復
+                foreach (Unit u in UList.Items)
+                {
+                    u.Reset();
+                }
+                GUI.DisplayLoadingProgress();
 
-                //    // 追加されたシステム側イベントデータの読み込み
-                //    Event_Renamed.LoadEventData("", load_mode: "");
-                //    GUI.DisplayLoadingProgress();
+                // 追加されたシステム側イベントデータの読み込み
+                Event.LoadEventData("", load_mode: "");
+                GUI.DisplayLoadingProgress();
             }
             catch
             {
