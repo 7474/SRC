@@ -1285,7 +1285,7 @@ namespace SRCSharpForm
             string fname;
             using (var fsd = new SaveFileDialog())
             {
-                fsd.Filter = "save files (*.src)|*.src";
+                fsd.Filter = "save files (*.srcs)|*.srcs";
                 fsd.InitialDirectory = SRC.ScenarioPath;
                 fsd.FileName = Expression.GetValueAsString("セーブデータファイル名");
 
@@ -1323,8 +1323,8 @@ namespace SRCSharpForm
                     return null;
                 }
             }
-
-            return File.OpenWrite(fname);
+            return new FileInfo(fname).Open(FileMode.Create);
+            //return File.OpenWrite(fname);
         }
 
         public Stream OpenQuikSaveStream(FileAccess fileAccess)
