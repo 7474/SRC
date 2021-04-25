@@ -19,11 +19,14 @@ namespace SRCCore
         // XXX 列挙時の順番がDictionaryだと問題になるかも
         public IDictionary<string, VarData> GlobalVariableList;
 
+        public Pilots.Pilots PList { get; set; }
+        public Units.Units UList { get; set; }
         public Items.Items IList { get; set; }
     }
 
     public partial class SRC
     {
+        // TODO セーブ・ロードの精査（まだとりあえず保存できるだけ）
         // データをセーブ
         //public void SaveData(string fname)
         //{
@@ -41,12 +44,12 @@ namespace SRCCore
                     TotalTurn = TotalTurn,
                     Money = Money,
                     GlobalVariableList = Event.GlobalVariableList,
-                    //PList.Save();
-                    //UList.Save();
+                    PList = PList,
+                    UList = UList,
                     IList = IList,
                 };
 
-                stream.Write(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data)));
+                stream.Write(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data, Formatting.Indented)));
             }
             catch
             {
@@ -63,20 +66,30 @@ namespace SRCCore
                 var data = JsonConvert.DeserializeObject<SRCSaveData>((new StreamReader(stream).ReadToEnd()));
 
                 Titles = data.Titles;
+                if (!Expression.IsGlobalVariableDefined("次ステージ"))
+                {
+                    Expression.DefineGlobalVariable("次ステージ");
+                }
                 Expression.SetVariableAsString("次ステージ", data.NextStage);
                 TotalTurn = data.TotalTurn;
                 Money = data.Money;
                 Event.GlobalVariableList = data.GlobalVariableList;
-                //PList.Save();
-                //UList.Save();
+                PList = data.PList;
+                UList = data.UList;
                 IList = data.IList;
 
-                foreach(var title in Titles)
+                foreach (var title in Titles)
                 {
                     IncludeData(title);
                 }
 
+                PList.Restore(this);
+                UList.Restore(this);
                 IList.Restore(this);
+
+                PList.Update();
+                UList.Update();
+                IList.Update();
             }
             catch
             {

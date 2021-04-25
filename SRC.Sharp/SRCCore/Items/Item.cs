@@ -15,23 +15,27 @@ using System.Linq;
 namespace SRCCore.Items
 {
     // 作成されたアイテムのクラス
+    [JsonObject(MemberSerialization.OptIn)]
     public class Item
     {
         // 識別子
+        [JsonProperty]
         public string ID;
 
+        [JsonProperty]
         public string ItemName { get; set; }
         // アイテムデータへのポインタ
-        [JsonIgnore]
         public ItemData Data { get => SRC.IDList.Item(ItemName); set { ItemName = value?.Name; } }
 
+        [JsonProperty]
         public string UnitId { get; set; }
         // アイテムを装備しているユニット
-        [JsonIgnore]
         public Unit Unit { get => SRC.UList.Item(UnitId); set { UnitId = value?.ID; } }
         // アイテムが存在しているか？ (RemoveItemされていないか？)
+        [JsonProperty]
         public bool Exist;
         // アイテムが効力を発揮できているか？ (必要技能や武器クラス＆防具クラスを満たしているか？)
+        [JsonProperty]
         public bool Activated;
         public IList<FeatureData> Features => Data.Features;
 

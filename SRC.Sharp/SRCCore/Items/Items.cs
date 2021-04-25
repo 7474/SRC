@@ -9,6 +9,7 @@ using System.Collections.Generic;
 
 namespace SRCCore.Items
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class Items
     {
         // アイテムＩＤ作成用カウンタ
@@ -18,7 +19,6 @@ namespace SRCCore.Items
         // アイテム一覧
         [JsonProperty]
         private SrcCollection<Item> colItems = new SrcCollection<Item>();
-        [JsonIgnore]
         public IList<Item> List => colItems.List;
 
         private SRC SRC;
