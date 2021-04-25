@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using Newtonsoft.Json;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,13 @@ namespace SRCCore.Items
     public class Items
     {
         // アイテムＩＤ作成用カウンタ
+        [JsonProperty]
         private int IDCount;
 
         // アイテム一覧
+        [JsonProperty]
         private SrcCollection<Item> colItems = new SrcCollection<Item>();
+        [JsonIgnore]
         public IList<Item> List => colItems.List;
 
         private SRC SRC;

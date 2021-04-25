@@ -1,9 +1,11 @@
+using Newtonsoft.Json;
 using SRCCore.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace SRCCore.VB
 {
@@ -12,12 +14,19 @@ namespace SRCCore.VB
     public class SrcCollection<V> : IDictionary<string, V>
     {
         private List<V> list;
+        [JsonProperty]
         private OrderedDictionary dict;
 
         public SrcCollection()
         {
             dict = new OrderedDictionary();
             list = new List<V>();
+        }
+
+        [OnDeserialized]
+        private void Restore(StreamingContext context)
+        {
+            UpdateList();
         }
 
         public IList<V> List => list.AsReadOnly();
