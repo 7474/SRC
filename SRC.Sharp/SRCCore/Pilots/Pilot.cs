@@ -48,6 +48,7 @@ namespace SRCCore.Pilots
         public string Party;
         [JsonProperty]
         public string UnitId { get; set; }
+        // XXX こうしてるところシリアライズの時だけID解決のほうがいいかな。
         // 搭乗しているユニット
         // 未搭乗時は Nothing
         public Unit Unit { get => SRC.UList.Item(UnitId); set { UnitId = value?.ID; } }

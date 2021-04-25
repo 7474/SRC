@@ -65,6 +65,7 @@ namespace SRCCore
                 // XXX Version プロパティだけのオブジェクトでバージョンチェックなど
                 var data = JsonConvert.DeserializeObject<SRCSaveData>((new StreamReader(stream).ReadToEnd()));
 
+                //    GUI.SetLoadImageSize((num * 2 + 5));
                 Titles = data.Titles;
                 if (!Expression.IsGlobalVariableDefined("次ステージ"))
                 {
@@ -82,6 +83,76 @@ namespace SRCCore
                 {
                     IncludeData(title);
                 }
+                // XXX Dataフォルダ直下って読んでる？
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\alias.txt"))
+                //    {
+                //        ALDList.Load(ScenarioPath + @"Data\alias.txt");
+                //    }
+
+                //    bool localFileExists() { string argfname = ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
+
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\sp.txt"))
+                //    {
+                //        SPDList.Load(ScenarioPath + @"Data\sp.txt");
+                //    }
+                //    else if (localFileExists())
+                //    {
+                //        SPDList.Load(ScenarioPath + @"Data\mind.txt");
+                //    }
+
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot.txt"))
+                //    {
+                //        PDList.Load(ScenarioPath + @"Data\pilot.txt");
+                //    }
+
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\non_pilot.txt"))
+                //    {
+                //        NPDList.Load(ScenarioPath + @"Data\non_pilot.txt");
+                //    }
+
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\robot.txt"))
+                //    {
+                //        UDList.Load(ScenarioPath + @"Data\robot.txt");
+                //    }
+
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\unit.txt"))
+                //    {
+                //        UDList.Load(ScenarioPath + @"Data\unit.txt");
+                //    }
+
+                //    GUI.DisplayLoadingProgress();
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_message.txt"))
+                //    {
+                //        MDList.Load(ScenarioPath + @"Data\pilot_message.txt");
+                //    }
+
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_dialog.txt"))
+                //    {
+                //        DDList.Load(ScenarioPath + @"Data\pilot_dialog.txt");
+                //    }
+
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\effect.txt"))
+                //    {
+                //        EDList.Load(ScenarioPath + @"Data\effect.txt");
+                //    }
+
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\animation.txt"))
+                //    {
+                //        ADList.Load(ScenarioPath + @"Data\animation.txt");
+                //    }
+
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\ext_animation.txt"))
+                //    {
+                //        EADList.Load(ScenarioPath + @"Data\ext_animation.txt");
+                //    }
+
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\item.txt"))
+                //    {
+                //        IDList.Load(ScenarioPath + @"Data\item.txt");
+                //    }
+
+                //    GUI.DisplayLoadingProgress();
+                //    IsLocalDataLoaded = true;
 
                 PList.Restore(this);
                 UList.Restore(this);
@@ -90,149 +161,49 @@ namespace SRCCore
                 PList.Update();
                 UList.Update();
                 IList.Update();
+
+                //    // リンクデータを処理するため、セーブファイルを一旦閉じてから再度読み込み
+
+                //    SaveDataFileNumber = FileSystem.FreeFile();
+                //    FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Input);
+                //    if (SaveDataVersion > 10000)
+                //    {
+                //        FileSystem.Input(SaveDataFileNumber, dummy);
+                //    }
+
+                //    FileSystem.Input(SaveDataFileNumber, num);
+                //    Titles = new string[(num + 1)];
+                //    var loopTo1 = num;
+                //    for (i = 1; i <= loopTo1; i++)
+                //        FileSystem.Input(SaveDataFileNumber, Titles[i]);
+                //    FileSystem.Input(SaveDataFileNumber, dummy);
+                //    FileSystem.Input(SaveDataFileNumber, TotalTurn);
+                //    FileSystem.Input(SaveDataFileNumber, Money);
+                //    FileSystem.Input(SaveDataFileNumber, num); // パーツ用のダミー
+                //    FileSystem.Input(SaveDataFileNumber, num); // パーツ用のダミー
+                //    var loopTo2 = num;
+                //    for (i = 1; i <= loopTo2; i++)
+                //        dummy = FileSystem.LineInput(SaveDataFileNumber);
+                //    PList.LoadLinkInfo();
+                //    UList.LoadLinkInfo();
+                //    IList.LoadLinkInfo();
+                //    FileSystem.FileClose(SaveDataFileNumber);
+                //    GUI.DisplayLoadingProgress();
+
+                //    // ユニットの状態を回復
+                //    foreach (Unit u in UList)
+                //        u.Reset_Renamed();
+                //    GUI.DisplayLoadingProgress();
+
+                //    // 追加されたシステム側イベントデータの読み込み
+                //    Event_Renamed.LoadEventData("", load_mode: "");
+                //    GUI.DisplayLoadingProgress();
             }
             catch
             {
                 GUI.ErrorMessage("ロード中にエラーが発生しました");
                 TerminateSRC();
             }
-
-            //    GUI.SetLoadImageSize((num * 2 + 5));
-            //    Titles = new string[(num + 1)];
-            //    var loopTo = num;
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        FileSystem.Input(SaveDataFileNumber, Titles[i]);
-            //        IncludeData(Titles[i]);
-            //    }
-
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\alias.txt"))
-            //    {
-            //        ALDList.Load(ScenarioPath + @"Data\alias.txt");
-            //    }
-
-            //    bool localFileExists() { string argfname = ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\sp.txt"))
-            //    {
-            //        SPDList.Load(ScenarioPath + @"Data\sp.txt");
-            //    }
-            //    else if (localFileExists())
-            //    {
-            //        SPDList.Load(ScenarioPath + @"Data\mind.txt");
-            //    }
-
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot.txt"))
-            //    {
-            //        PDList.Load(ScenarioPath + @"Data\pilot.txt");
-            //    }
-
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\non_pilot.txt"))
-            //    {
-            //        NPDList.Load(ScenarioPath + @"Data\non_pilot.txt");
-            //    }
-
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\robot.txt"))
-            //    {
-            //        UDList.Load(ScenarioPath + @"Data\robot.txt");
-            //    }
-
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\unit.txt"))
-            //    {
-            //        UDList.Load(ScenarioPath + @"Data\unit.txt");
-            //    }
-
-            //    GUI.DisplayLoadingProgress();
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_message.txt"))
-            //    {
-            //        MDList.Load(ScenarioPath + @"Data\pilot_message.txt");
-            //    }
-
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_dialog.txt"))
-            //    {
-            //        DDList.Load(ScenarioPath + @"Data\pilot_dialog.txt");
-            //    }
-
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\effect.txt"))
-            //    {
-            //        EDList.Load(ScenarioPath + @"Data\effect.txt");
-            //    }
-
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\animation.txt"))
-            //    {
-            //        ADList.Load(ScenarioPath + @"Data\animation.txt");
-            //    }
-
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\ext_animation.txt"))
-            //    {
-            //        EADList.Load(ScenarioPath + @"Data\ext_animation.txt");
-            //    }
-
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\item.txt"))
-            //    {
-            //        IDList.Load(ScenarioPath + @"Data\item.txt");
-            //    }
-
-            //    GUI.DisplayLoadingProgress();
-            //    IsLocalDataLoaded = true;
-            //    FileSystem.Input(SaveDataFileNumber, fname2);
-            //    FileSystem.Input(SaveDataFileNumber, TotalTurn);
-            //    FileSystem.Input(SaveDataFileNumber, Money);
-            //    FileSystem.Input(SaveDataFileNumber, num); // パーツ用のダミー
-            //    Event_Renamed.LoadGlobalVariables();
-            //    if (!Expression.IsGlobalVariableDefined("次ステージ"))
-            //    {
-            //        Expression.DefineGlobalVariable("次ステージ");
-            //    }
-
-            //    Expression.SetVariableAsString("次ステージ", fname2);
-            //    PList.Load();
-            //    UList.Load();
-            //    IList.Load();
-            //    FileSystem.FileClose(SaveDataFileNumber);
-
-            //    // リンクデータを処理するため、セーブファイルを一旦閉じてから再度読み込み
-
-            //    SaveDataFileNumber = FileSystem.FreeFile();
-            //    FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Input);
-            //    if (SaveDataVersion > 10000)
-            //    {
-            //        FileSystem.Input(SaveDataFileNumber, dummy);
-            //    }
-
-            //    FileSystem.Input(SaveDataFileNumber, num);
-            //    Titles = new string[(num + 1)];
-            //    var loopTo1 = num;
-            //    for (i = 1; i <= loopTo1; i++)
-            //        FileSystem.Input(SaveDataFileNumber, Titles[i]);
-            //    FileSystem.Input(SaveDataFileNumber, dummy);
-            //    FileSystem.Input(SaveDataFileNumber, TotalTurn);
-            //    FileSystem.Input(SaveDataFileNumber, Money);
-            //    FileSystem.Input(SaveDataFileNumber, num); // パーツ用のダミー
-            //    FileSystem.Input(SaveDataFileNumber, num); // パーツ用のダミー
-            //    var loopTo2 = num;
-            //    for (i = 1; i <= loopTo2; i++)
-            //        dummy = FileSystem.LineInput(SaveDataFileNumber);
-            //    PList.LoadLinkInfo();
-            //    UList.LoadLinkInfo();
-            //    IList.LoadLinkInfo();
-            //    FileSystem.FileClose(SaveDataFileNumber);
-            //    GUI.DisplayLoadingProgress();
-
-            //    // ユニットの状態を回復
-            //    foreach (Unit u in UList)
-            //        u.Reset_Renamed();
-            //    GUI.DisplayLoadingProgress();
-
-            //    // 追加されたシステム側イベントデータの読み込み
-            //    Event_Renamed.LoadEventData("", load_mode: "");
-            //    GUI.DisplayLoadingProgress();
-            //    return;
-            //ErrorHandler:
-            //    ;
-            //    GUI.ErrorMessage("ロード中にエラーが発生しました");
-            //    FileSystem.FileClose(SaveDataFileNumber);
-            //    TerminateSRC();
         }
 
         // 一時中断用データをファイルにセーブする

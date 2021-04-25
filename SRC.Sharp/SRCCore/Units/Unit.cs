@@ -9,6 +9,7 @@ using SRCCore.Models;
 using SRCCore.Pilots;
 using SRCCore.VB;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.Units
 {
@@ -35,6 +36,24 @@ namespace SRCCore.Units
         public void Restore(SRC src)
         {
             SRC = src;
+
+            linkData.OtherFormIds.ForEach(x => colOtherForm.Add(SRC.UList.Item(x), x));
+            linkData.PilotIds.ForEach(x => colPilot.Add(SRC.PList.Item(x), x));
+            linkData.SupportIds.ForEach(x => colSupport.Add(SRC.PList.Item(x), x));
+            linkData.ItemIds.ForEach(x => colItem.Add(SRC.IList.Item(x), x));
+        }
+        private SaveData linkData;
+        [JsonProperty]
+        private SaveData LinkData
+        {
+            get => linkData = new SaveData
+            {
+                OtherFormIds = OtherForms.Select(x => x.ID).ToList(),
+                PilotIds = Pilots.Select(x => x.ID).ToList(),
+                SupportIds = Supports.Select(x => x.ID).ToList(),
+                ItemIds = ItemList.Select(x => x.ID).ToList(),
+            };
+            set => linkData = value;
         }
 
         // データ
@@ -209,5 +228,16 @@ namespace SRCCore.Units
 
         // 追加サポート
         public Pilot pltAdditionalSupport;
+
+        [JsonObject(MemberSerialization.OptOut)]
+        public class SaveData
+        {
+            public List<string> OtherFormIds { get; set; }
+            public List<string> PilotIds { get; set; }
+            public List<string> SupportIds { get; set; }
+            public List<string> ItemIds { get; set; }
+
+            // TODO クイックセーブ分
+        }
     }
 }
