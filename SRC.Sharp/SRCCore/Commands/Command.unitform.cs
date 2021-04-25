@@ -653,7 +653,7 @@ namespace SRCCore.Commands
 
                     if (!u.OtherForm(tname).IsAbleToEnter(u.x, u.y))
                     {
-                        GUI.Confirm("この地形では分離できません", "", GuiConfirmOption.Ok);
+                        GUI.Confirm("この地形では分離できません", "分離", GuiConfirmOption.Ok);
                         GUI.UnlockGUI();
                         CancelCommand();
                         return;

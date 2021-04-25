@@ -107,7 +107,7 @@ namespace SRCCore.Commands
                     "行動していないユニットが" + SrcFormatter.Format(stillActionUnits.Count) + "体あります"
                     + Environment.NewLine
                     + "このターンを終了しますか？",
-                    "",
+                    "終了",
                     GuiConfirmOption.OkCancel | GuiConfirmOption.Question
                     );
                 if (ret == GuiDialogResult.Cancel)
@@ -869,12 +869,12 @@ namespace SRCCore.Commands
         {
             int ret;
 
-            //// リスタートを行うか確認
-            //ret = Interaction.MsgBox("リスタートしますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "リスタート");
-            //if (ret == MsgBoxResult.Cancel)
-            //{
-            //    return;
-            //}
+            // リスタートを行うか確認
+            var suspendRes = GUI.Confirm("リスタートしますか？", "リスタート", GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
+            if (suspendRes != GuiDialogResult.Ok)
+            {
+                return;
+            }
 
             GUI.LockGUI();
             SRC.RestoreData(Path.Combine(SRC.ScenarioPath, "_リスタート.srcq"), SRCSaveKind.Restart);
@@ -884,14 +884,12 @@ namespace SRCCore.Commands
         // クイックロードコマンド
         private void QuickLoadCommand()
         {
-            int ret;
-
-            //// ロードを行うか確認
-            //ret = Interaction.MsgBox("データをロードしますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "クイックロード");
-            //if (ret == MsgBoxResult.Cancel)
-            //{
-            //    return;
-            //}
+            // ロードを行うか確認
+            var suspendRes = GUI.Confirm("データをロードしますか？", "クイックロード", GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
+            if (suspendRes != GuiDialogResult.Ok)
+            {
+                return;
+            }
 
             GUI.LockGUI();
             SRC.RestoreData(Path.Combine(SRC.ScenarioPath, "_クイックセーブ.srcq"), SRCSaveKind.Quik);
