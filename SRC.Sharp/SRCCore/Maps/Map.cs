@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.Models;
@@ -16,6 +17,7 @@ using System.Linq;
 namespace SRCCore.Maps
 {
     // マップデータに関する各種処理を行うモジュール
+    [JsonObject(MemberSerialization.OptIn)]
     public class Map
     {
         protected SRC SRC { get; }
@@ -27,35 +29,90 @@ namespace SRCCore.Maps
         {
             SRC = src;
         }
+        public void Restore(Map data)
+        {
+            // XXX シリアライズから復元するのか保存用データクラス作るのかはっきりしたほうがよさそう
+            //// マップファイル名, マップ描画方法
+            //FileSystem.Input(SRC.SaveDataFileNumber, sbuf1);
+            //FileSystem.Input(SRC.SaveDataFileNumber, sbuf2);
+            //if (Strings.InStr(sbuf1, ":") == 0)
+            //{
+            //    sbuf1 = SRC.ScenarioPath + sbuf1;
+            //}
+            //if ((sbuf1 ?? "") != (MapFileName ?? ""))
+            //{
+            //    MapFileName = sbuf1;
+            //    is_map_changed = true;
+            //}
+            MapFileName = data.MapFileName;
+            MapDrawMode = data.MapDrawMode;
+            MapDrawIsMapOnly = data.MapDrawIsMapOnly;
+            IsMapDirty = data.IsMapDirty;
+
+            // マップ幅, マップ高さ
+            var mw = data.MapWidth;
+            var mh = data.MapHeight;
+            SetMapSize(mw, mh);
+
+            // 各地形
+
+            // 表示位置
+            // SetupBackgroundでMapX,MapYが書き換えられてしまうため、この位置で
+            // 値を参照する必要がある。
+            // TODO Impl 表示位置
+            //GUI.MapX = data.MapX;
+            //GUI.MapY = data.MapY;
+
+            // ユニット配置
+            foreach (Unit u in SRC.UList.Items)
+            {
+                if (u.Status == "出撃")
+                {
+                    MapDataForUnit[u.x, u.y] = u;
+                }
+            }
+
+            MapData = data.MapData;
+            MapData.All.ToList().ForEach(cell => cell.Restore(SRC));
+        }
 
         // 管理可能な地形データの総数
         public const int MAX_TERRAIN_DATA_NUM = 2000;
 
         // マップファイル名
+        [JsonProperty]
         public string MapFileName;
         // XXX
         public bool IsStatusView => string.IsNullOrEmpty(MapFileName);
         // マップの横サイズ
+        [JsonProperty]
         public int MapWidth;
         // マップの縦サイズ
+        [JsonProperty]
         public int MapHeight;
 
+        // XXX この辺完全に未精査
         // マップの描画モード
+        [JsonProperty]
         public string MapDrawMode;
         // フィルタ色
+        [JsonProperty]
         public int MapDrawFilterColor;
         // フィルタの透過度
+        [JsonProperty]
         public double MapDrawFilterTransPercent;
         // フィルタやSepiaコマンドなどでユニットの色を変更するか
+        [JsonProperty]
         public bool MapDrawIsMapOnly;
 
         // マップに画像の書き込みがなされたか
         public bool IsMapDirty;
 
         // マップデータを記録する配列
+        [JsonProperty]
         public Src2DArray<MapCell> MapData;
 
-        public Src2DArray<MapImageFileType> MapImageFileTypeData;
+        //public Src2DArray<MapImageFileType> MapImageFileTypeData;
 
         // マップ上に存在するユニットを記録する配列
         public Src2DArray<Unit> MapDataForUnit;

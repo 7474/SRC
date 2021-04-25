@@ -4,6 +4,7 @@ using SRCCore.Units;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -38,7 +39,7 @@ namespace SRCCore
         public string ScenarioFileName { get; set; }
         public int Turn { get; set; }
         //    Event.DumpEventData();
-        //    Map.DumpMapData();
+        public Maps.Map Map { get; set; }
 
         //    // Midi じゃなくて midi じゃないと検索失敗するようになってるので。
         //    if (Strings.InStr(Strings.LCase(Sound.BGMFileName), @"\midi\") > 0)
@@ -252,6 +253,7 @@ namespace SRCCore
                     // QuikSave
                     ScenarioFileName = ScenarioFileName,
                     Turn = Turn,
+                    Map = Map,
                 };
 
                 stream.Write(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data, Formatting.Indented)));
@@ -416,12 +418,13 @@ namespace SRCCore
                 // TODO Impl RestoreEventData
                 //Event.RestoreEventData();
                 PList.Restore(this);
-                IList.Restore(this);
                 UList.Restore(this);
+                IList.Restore(this);
+                Map.Restore(data.Map);
 
-                PList.Update();
-                UList.Update();
-                IList.Update();
+                // XXX 仮処理
+                UList.Items.ToList().ForEach(x => x.Update());
+                PList.Items.ToList().ForEach(x => x.Update());
 
                 //    // MOD START 240a
                 //    // RestoreMapData
@@ -461,8 +464,6 @@ namespace SRCCore
                     GUI.DisplayLoadingProgress();
                 }
 
-                //    FileSystem.FileClose(SaveDataFileNumber);
-
                 //    // リンクデータを処理するため、セーブファイルを一旦閉じてから再度読み込み
                 //    Event.SkipEventData();
                 //    PList.RestoreLinkInfo();
@@ -480,23 +481,24 @@ namespace SRCCore
                 //    UList.RestoreParameter();
                 //    PList.UpdateSupportMod();
 
-                //    // 背景書き換え
-                //    int map_x, map_y;
-                //    if (Map.IsMapDirty)
-                //    {
-                //        map_x = GUI.MapX;
-                //        map_y = GUI.MapY;
-                //        GUI.SetupBackground(Map.MapDrawMode, "非同期", filter_color: 0, filter_trans_par: 0d);
-                //        GUI.MapX = map_x;
-                //        GUI.MapY = map_y;
+                // 背景書き換え
+                // XXX 常に書き換えでない理由何かある？
+                //if (Map.IsMapDirty)
+                //{
+                int map_x, map_y;
+                map_x = GUI.MapX;
+                map_y = GUI.MapY;
+                GUI.SetupBackground(Map.MapDrawMode, "非同期", filter_color: 0, filter_trans_par: 0d);
+                GUI.MapX = map_x;
+                GUI.MapY = map_y;
 
-                //        // 再開イベントによるマップ画像の書き換え処理を行う
-                //        Event.HandleEvent("再開");
-                //        Map.IsMapDirty = false;
-                //    }
+                // 再開イベントによるマップ画像の書き換え処理を行う
+                Event.HandleEvent("再開");
+                Map.IsMapDirty = false;
+                //}
 
-                //    Commands.SelectedUnit = null;
-                //    Commands.SelectedTarget = null;
+                Commands.SelectedUnit = null;
+                Commands.SelectedTarget = null;
 
                 //    // ユニット画像生成
                 //    foreach (Unit u in UList)

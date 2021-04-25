@@ -131,9 +131,11 @@ namespace SRCCore.Units
         private int intBossRank;
         // ＨＰ
         private int lngMaxHP;
+        [JsonProperty]
         private int lngHP;
         // ＥＮ
         private int intMaxEN;
+        [JsonProperty]
         private int intEN;
         // 装甲
         private int lngArmor;

@@ -931,20 +931,22 @@ namespace SRCCore.Commands
 
             // 中断データをセーブするファイル名を決定
             var fname = Path.GetFileNameWithoutExtension(SRC.ScenarioFileName) + "を中断.srcq";
-            var saveStream = GUI.SelectSaveStream(SRCSaveKind.Suspend, fname);
-            if (saveStream == null)
+            // XXX Streamを取った結果ファイル目が消え失せてしまった
+            using (var saveStream = GUI.SelectSaveStream(SRCSaveKind.Suspend, fname))
             {
-                // キャンセル
-                return;
+                if (saveStream == null)
+                {
+                    // キャンセル
+                    return;
+                }
+
+                // マウスカーソルを砂時計に
+                GUI.ChangeStatus(GuiStatus.WaitCursor);
+                GUI.LockGUI();
+
+                // 中断データをセーブ
+                SRC.DumpData(saveStream, SRCSaveKind.Suspend);
             }
-
-            // マウスカーソルを砂時計に
-            GUI.ChangeStatus(GuiStatus.WaitCursor);
-            GUI.LockGUI();
-
-            // 中断データをセーブ
-            SRC.DumpData(fname, SRCSaveKind.Suspend);
-
             // マウスカーソルを元に戻す
             GUI.ChangeStatus(GuiStatus.Default);
             GUI.MainFormHide();

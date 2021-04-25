@@ -1,7 +1,9 @@
+using Newtonsoft.Json;
 using SRCCore.Models;
 
 namespace SRCCore.Maps
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class MapCell
     {
         // レイヤー無しの固定値
@@ -14,25 +16,32 @@ namespace SRCCore.Maps
             LayerType = NO_LAYER_NUM,
             LayerBitmapNo = 0,
             BoxType = BoxTypes.Under,
-            UnderTerrain = new TerrainData(),
-            UpperTerrain = new TerrainData(),
+            UnderTerrain = TerrainData.EmptyTerrain,
+            UpperTerrain = TerrainData.EmptyTerrain,
         };
 
+        [JsonProperty]
         public int X { get; set; }
+        [JsonProperty]
         public int Y { get; set; }
 
         // 地形の種類
+        [JsonProperty]
         public int TerrainType { get; set; }
         public TerrainData UnderTerrain { get; set; }
         // ビットマップの番号
+        [JsonProperty]
         public int BitmapNo { get; set; }
         // マップ上層レイヤーデータ
         // 地形の種類。未設定はNO_LAYER_NUM
+        [JsonProperty]
         public int LayerType { get; set; }
         public TerrainData UpperTerrain { get; set; }
         // ビットマップの番号。未設定はNO_LAYER_NUM
+        [JsonProperty]
         public int LayerBitmapNo { get; set; }
         // マスのデータタイプ。1:下層 2:上層 3:上層データのみ 4:上層見た目のみ
+        [JsonProperty]
         public BoxTypes BoxType { get; set; }
 
         public TerrainData Terrain
@@ -60,6 +69,11 @@ namespace SRCCore.Maps
             LayerType = NO_LAYER_NUM;
             LayerBitmapNo = NO_LAYER_NUM;
             BoxType = BoxTypes.Under;
+        }
+        public void Restore(SRC src)
+        {
+            UnderTerrain = src.TDList.Item(TerrainType);
+            UpperTerrain = src.TDList.Item(LayerType);
         }
     }
 }

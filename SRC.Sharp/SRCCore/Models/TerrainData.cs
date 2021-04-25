@@ -11,6 +11,8 @@ namespace SRCCore.Models
     // 地形データのクラス
     public class TerrainData
     {
+        public static readonly TerrainData EmptyTerrain = new TerrainData();
+
         // 識別番号
         public int ID = -1;
         // 名称
