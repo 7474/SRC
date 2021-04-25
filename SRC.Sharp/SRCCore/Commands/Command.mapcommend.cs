@@ -922,64 +922,35 @@ namespace SRCCore.Commands
         // プレイを中断し、中断用データをセーブする
         private void DumpCommand()
         {
-            throw new NotImplementedException();
-            //string fname, save_path = default;
-            //int ret, i;
+            // プレイを中断するか確認
+            var suspendRes = GUI.Confirm("プレイを中断しますか？", "中断", GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
+            if (suspendRes != GuiDialogResult.Ok)
+            {
+                return;
+            }
 
-            //// プレイを中断するか確認
-            //ret = Interaction.MsgBox("プレイを中断しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "中断");
-            //if (ret == MsgBoxResult.Cancel)
-            //{
-            //    return;
-            //}
+            // 中断データをセーブするファイル名を決定
+            var fname = Path.GetFileNameWithoutExtension(SRC.ScenarioFileName) + "を中断.srcq";
+            var saveStream = GUI.SelectSaveStream(SRCSaveKind.Suspend, fname);
+            if (saveStream == null)
+            {
+                // キャンセル
+                return;
+            }
 
-            //// 中断データをセーブするファイル名を決定
-            //var loopTo = Strings.Len(SRC.ScenarioFileName);
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    if (Strings.Mid(SRC.ScenarioFileName, Strings.Len(SRC.ScenarioFileName) - i + 1, 1) == @"\")
-            //    {
-            //        break;
-            //    }
-            //}
+            // マウスカーソルを砂時計に
+            GUI.ChangeStatus(GuiStatus.WaitCursor);
+            GUI.LockGUI();
 
-            //fname = Strings.Mid(SRC.ScenarioFileName, Strings.Len(SRC.ScenarioFileName) - i + 2, i - 5);
-            //fname = fname + "を中断.src";
-            //fname = FileDialog.SaveFileDialog("データセーブ", SRC.ScenarioPath, fname, 2, "ｾｰﾌﾞﾃﾞｰﾀ", "src", ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
-            //if (string.IsNullOrEmpty(fname))
-            //{
-            //    // キャンセル
-            //    return;
-            //}
+            // 中断データをセーブ
+            SRC.DumpData(fname, SRCSaveKind.Suspend);
 
-            //// セーブ先はシナリオフォルダ？
-            //if (Strings.InStr(fname, @"\") > 0)
-            //{
-            //    save_path = Strings.Left(fname, GeneralLib.InStr2(fname, @"\"));
-            //}
-            //// UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //if ((FileSystem.Dir(save_path) ?? "") != (FileSystem.Dir(SRC.ScenarioPath) ?? ""))
-            //{
-            //    if (Interaction.MsgBox("セーブファイルはシナリオフォルダにないと読み込めません。" + Constants.vbCr + Constants.vbLf + "このままセーブしますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question)) != 1)
-            //    {
-            //        return;
-            //    }
-            //}
+            // マウスカーソルを元に戻す
+            GUI.ChangeStatus(GuiStatus.Default);
+            GUI.MainFormHide();
 
-            //// UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
-            //Cursor.Current = Cursors.WaitCursor; // マウスカーソルを砂時計に
-            //GUI.LockGUI();
-
-            //// 中断データをセーブ
-            //SRC.DumpData(fname);
-
-            //// マウスカーソルを元に戻す
-            //// UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
-            //Cursor.Current = Cursors.Default;
-            //GUI.MainForm.Hide();
-
-            //// ゲームを終了
-            //SRC.ExitGame();
+            // ゲームを終了
+            SRC.ExitGame();
         }
 
         //// 全体マップの表示
