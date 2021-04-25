@@ -34,7 +34,7 @@ namespace SRCCore
         public Items.Items IList { get; set; }
     }
 
-    public class SRCQuikSaveData : SRCSaveData
+    public class SRCSuspendData : SRCSaveData
     {
         public string ScenarioFileName { get; set; }
         public int Turn { get; set; }
@@ -240,7 +240,7 @@ namespace SRCCore
         {
             try
             {
-                var data = new SRCQuikSaveData()
+                var data = new SRCSuspendData()
                 {
                     // XXX EntryなのかCoreなのか
                     Version = Assembly.GetEntryAssembly().GetName().Version.ToString(),
@@ -309,7 +309,7 @@ namespace SRCCore
                 }
 
                 // XXX Version プロパティだけのオブジェクトでバージョンチェックなど
-                var data = JsonConvert.DeserializeObject<SRCQuikSaveData>((new StreamReader(stream).ReadToEnd()));
+                var data = JsonConvert.DeserializeObject<SRCSuspendData>((new StreamReader(stream).ReadToEnd()));
                 //SaveDataVersion = Conversions.ToInteger(fname2);
                 var scenario_file_is_different = !FileSystem.RelativePathEuqals(ScenarioPath, ScenarioFileName, data.ScenarioFileName);
                 if (scenario_file_is_different)

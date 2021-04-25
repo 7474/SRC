@@ -28,7 +28,7 @@ namespace SRCCore.Maps
         {
             SRC = src;
         }
-        public void Restore(SRCQuikSaveData data)
+        public void Restore(SRCSuspendData data)
         {
             var map = data.Map;
             // XXX シリアライズから復元するのか保存用データクラス作るのかはっきりしたほうがよさそう

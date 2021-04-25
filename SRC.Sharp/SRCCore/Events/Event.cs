@@ -13,7 +13,7 @@ namespace SRCCore.Events
         {
             SRC = src;
         }
-        public void Restore(SRCQuikSaveData data)
+        public void Restore(SRCSuspendData data)
         {
             // Requireコマンドで追加されたイベントファイル
             foreach (var fname in data.AdditionalEventFileNames)
