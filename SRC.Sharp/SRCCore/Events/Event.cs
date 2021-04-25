@@ -13,5 +13,23 @@ namespace SRCCore.Events
         {
             SRC = src;
         }
+        public void Restore(SRCQuikSaveData data)
+        {
+            // Requireコマンドで追加されたイベントファイル
+            foreach (var fname in data.AdditionalEventFileNames)
+            {
+                if (!EventFileNames.Contains(fname))
+                {
+                    LoadEventData2(fname, EventDataSource.Scenario);
+                }
+            }
+            RegisterLabel();
+
+            // イベント用ラベルを設定
+            foreach (var lab in colEventLabelList.List)
+            {
+                lab.Enable = !data.DisableEventLabels.Contains(lab.Data);
+            }
+        }
     }
 }

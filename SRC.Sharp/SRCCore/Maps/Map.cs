@@ -2,7 +2,6 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SRCCore.Exceptions;
 using SRCCore.Lib;
@@ -29,8 +28,9 @@ namespace SRCCore.Maps
         {
             SRC = src;
         }
-        public void Restore(Map data)
+        public void Restore(SRCQuikSaveData data)
         {
+            var map = data.Map;
             // XXX シリアライズから復元するのか保存用データクラス作るのかはっきりしたほうがよさそう
             //// マップファイル名, マップ描画方法
             //FileSystem.Input(SRC.SaveDataFileNumber, sbuf1);
@@ -44,14 +44,14 @@ namespace SRCCore.Maps
             //    MapFileName = sbuf1;
             //    is_map_changed = true;
             //}
-            MapFileName = data.MapFileName;
-            MapDrawMode = data.MapDrawMode;
-            MapDrawIsMapOnly = data.MapDrawIsMapOnly;
-            IsMapDirty = data.IsMapDirty;
+            MapFileName = map.MapFileName;
+            MapDrawMode = map.MapDrawMode;
+            MapDrawIsMapOnly = map.MapDrawIsMapOnly;
+            IsMapDirty = map.IsMapDirty;
 
             // マップ幅, マップ高さ
-            var mw = data.MapWidth;
-            var mh = data.MapHeight;
+            var mw = map.MapWidth;
+            var mh = map.MapHeight;
             SetMapSize(mw, mh);
 
             // 各地形
@@ -72,7 +72,7 @@ namespace SRCCore.Maps
                 }
             }
 
-            MapData = data.MapData;
+            MapData = map.MapData;
             MapData.All.ToList().ForEach(cell => cell.Restore(SRC));
         }
 

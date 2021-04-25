@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
+using SRCCore.Events;
 using SRCCore.Expressions;
 using SRCCore.Units;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -38,7 +38,10 @@ namespace SRCCore
     {
         public string ScenarioFileName { get; set; }
         public int Turn { get; set; }
-        //    Event.DumpEventData();
+        // XXX 列挙時の順番がDictionaryだと問題になるかも
+        public IDictionary<string, VarData> LocalVariableList { get; set; }
+        public IList<string> DisableEventLabels { get; set; }
+        public IList<string> AdditionalEventFileNames { get; set; }
         public Maps.Map Map { get; set; }
 
         //    // Midi じゃなくて midi じゃないと検索失敗するようになってるので。
@@ -253,6 +256,9 @@ namespace SRCCore
                     // QuikSave
                     ScenarioFileName = ScenarioFileName,
                     Turn = Turn,
+                    LocalVariableList = Event.LocalVariableList,
+                    DisableEventLabels = Event.colEventLabelList.List.Select(x => x.Data).ToList(),
+                    AdditionalEventFileNames = Event.AdditionalEventFileNames.ToList(),
                     Map = Map,
                 };
 
@@ -325,6 +331,9 @@ namespace SRCCore
                 //
                 ScenarioFileName = data.ScenarioFileName;
                 Turn = data.Turn;
+                Event.LocalVariableList = data.LocalVariableList;
+                //DisableEventLabels = Event.colEventLabelList.List.Select(x => x.Data).ToList(),
+                //AdditionalEventFileNames = Event.AdditionalEventFileNames.ToList(),
 
                 // 使用するデータをロード
                 if (!quick_load)
@@ -416,11 +425,11 @@ namespace SRCCore
                 }
 
                 // TODO Impl RestoreEventData
-                //Event.RestoreEventData();
+                Event.Restore(data);
                 PList.Restore(this);
                 UList.Restore(this);
                 IList.Restore(this);
-                Map.Restore(data.Map);
+                Map.Restore(data);
 
                 // XXX 仮処理
                 UList.Items.ToList().ForEach(x => x.Update());
