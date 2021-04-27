@@ -25,6 +25,7 @@ namespace SRCCore
         private Expressions.Expression Expression => SRC.Expression;
         private Sound Sound => SRC.Sound;
         private Effect Effect => SRC.Effect;
+        private ISystemConfig SystemConfig => SRC.SystemConfig;
 
         public COM(SRC src)
         {
@@ -962,7 +963,7 @@ namespace SRCCore
                 //        def_mode = "防御";
                 //    }
                 //}
-                //else if (Commands.SelectedTarget.Party == "味方" & !GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked)
+                //else if (Commands.SelectedTarget.Party == "味方" & !SystemConfig.AutoDefense)
                 //{
                 //    // 味方ユニットによる手動反撃を行う場合
 
@@ -5783,7 +5784,7 @@ namespace SRCCore
                     //    }
 
                     //    // 手動反撃時のサポートアタック以外は残弾数が少ない武器を使用しない
-                    //    if (amode != "サポートアタック" | GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked)
+                    //    if (amode != "サポートアタック" | SystemConfig.AutoDefense)
                     //    {
                     //        if (!selectedWeapon.IsWeaponClassifiedAs("永"))
                     //        {
@@ -7098,12 +7099,11 @@ namespace SRCCore
                 {
                     if (u.Party == "味方")
                     {
-                        // TODO Impl
-                        //// 自動反撃モードかどうか
-                        //if (GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked)
-                        //{
-                        //    goto NextWeapon;
-                        //}
+                        // 自動反撃モードかどうか
+                        if (SystemConfig.AutoDefense)
+                        {
+                            goto NextWeapon;
+                        }
                     }
                     // 敵ユニットは相手を倒せるときにしかＥＮ消耗攻撃を使わない
                     else if (destroy_prob == 0 & u.BossRank < 0)

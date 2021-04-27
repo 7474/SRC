@@ -38,6 +38,9 @@ namespace SRCCore
         bool KeepStretchedImage { get; set; }
         // XXX /この辺はSRCのコア的にはどうでもいい
 
+        // Optionセクションから展開したもの
+        bool AutoDefense { get; set; }
+
         // XXX この辺に依存する処理はあんまり嬉しくない
         // SRC.exeのある場所
         string AppPath { get; set; }

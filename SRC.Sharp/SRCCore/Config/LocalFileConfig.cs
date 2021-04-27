@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SRCCore.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,6 +34,7 @@ namespace SRCCore.Config
         public int SoundVolume { get; set; }
 
         public List<ConfigSection> Sections { get; set; }
+        public bool AutoDefense { get => this.GetFlag("Option", "AutoDefense"); set => this.SetFlag("Option", "AutoDefense", value); }
 
         public LocalFileConfig()
         {
