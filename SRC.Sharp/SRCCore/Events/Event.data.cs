@@ -233,7 +233,6 @@ namespace SRCCore.Events
                 LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath, "Data", "include.eve"), EventDataSource.Scenario);
                 LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath2, "Data", "include.eve"), EventDataSource.Scenario);
                 LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.AppPath, "Data", "include.eve"), EventDataSource.Scenario);
-
             }
 
             // XXX 多分要らん
@@ -249,33 +248,7 @@ namespace SRCCore.Events
             //}
 
             // ラベルの登録
-            foreach (var line in EventData)
-            {
-                buf = line.Data;
-                switch (Strings.Right(buf, 1) ?? "")
-                {
-                    case ":":
-                        {
-                            string labelName = Strings.Left(buf, Strings.Len(buf) - 1);
-                            if (line.IsSystemData)
-                            {
-                                AddSysLabel(labelName, line.ID);
-                            }
-                            else
-                            {
-                                AddLabel(labelName, line.ID);
-
-                            }
-                            break;
-                        }
-
-                    case "：":
-                        {
-                            DisplayEventErrorMessage(line.ID, "ラベルの末尾が全角文字になっています");
-                            break;
-                        }
-                }
-            }
+            RegisterLabel();
 
             // XXX 多分要らん
             //// コマンドデータ配列を設定
@@ -348,6 +321,36 @@ namespace SRCCore.Events
             }
 
             LoadData(fname, new_titles);
+        }
+
+        private void RegisterLabel()
+        {
+            foreach (var line in EventData)
+            {
+                var lbuf = line.Data;
+                switch (Strings.Right(lbuf, 1) ?? "")
+                {
+                    case ":":
+                        {
+                            string labelName = Strings.Left(lbuf, Strings.Len(lbuf) - 1);
+                            if (line.IsSystemData)
+                            {
+                                AddSysLabel(labelName, line.ID);
+                            }
+                            else
+                            {
+                                AddLabel(labelName, line.ID);
+                            }
+                            break;
+                        }
+
+                    case "：":
+                        {
+                            DisplayEventErrorMessage(line.ID, "ラベルの末尾が全角文字になっています");
+                            break;
+                        }
+                }
+            }
         }
 
         private void ParseCommand()
@@ -680,7 +683,7 @@ namespace SRCCore.Events
                                 "キャンセル可",
                                 "終了",
                             };
-                            if (command.ArgNum < 3 
+                            if (command.ArgNum < 3
                                 || command.GetArgs().ToList()
                                     .FindIndex(x => opts.Contains(x.strArg)) < 3)
                             {

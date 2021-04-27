@@ -1,630 +1,564 @@
-using System;
+using Newtonsoft.Json;
+using SRCCore.Events;
+using SRCCore.Expressions;
+using SRCCore.Units;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace SRCCore
 {
+    public enum SRCSaveKind
+    {
+        Normal,
+        Suspend,
+        Quik,
+        Restart,
+    }
+    public class SRCSaveData
+    {
+        public string Version { get; set; }
+        public SRCSaveKind Kind { get; set; }
+        public IList<string> Titles { get; set; }
+        public string NextStage { get; set; }
+        public int TotalTurn { get; set; }
+        public int Money { get; set; }
+
+        // XXX 列挙時の順番がDictionaryだと問題になるかも
+        public IDictionary<string, VarData> GlobalVariableList;
+
+        public Pilots.Pilots PList { get; set; }
+        public Units.Units UList { get; set; }
+        public Items.Items IList { get; set; }
+    }
+
+    public class SRCSuspendData : SRCSaveData
+    {
+        public string ScenarioFileName { get; set; }
+        public int Turn { get; set; }
+        // XXX 列挙時の順番がDictionaryだと問題になるかも
+        public IDictionary<string, VarData> LocalVariableList { get; set; }
+        public IList<string> DisableEventLabels { get; set; }
+        public IList<string> AdditionalEventFileNames { get; set; }
+        public Maps.Map Map { get; set; }
+
+        public string BGMFileName { get; set; }
+        public bool RepeatMode { get; set; }
+        public bool KeepBGM { get; set; }
+        public bool BossBGM { get; set; }
+
+        //    FileSystem.WriteLine(SaveDataFileNumber, (object)GeneralLib.RndSeed);
+        //    FileSystem.WriteLine(SaveDataFileNumber, (object)GeneralLib.RndIndex);
+    }
+
     public partial class SRC
     {
+        // TODO セーブ・ロードの精査（まだとりあえず保存できるだけ）
         // データをセーブ
-        public void SaveData(string fname)
+        public void SaveData(Stream stream)
         {
-            throw new NotImplementedException();
-            //try
-            //{
-            //    int i;
-            //    int num;
-            //    SaveDataFileNumber = FileSystem.FreeFile();
-            //    FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Output, OpenAccess.Write);
+            try
+            {
+                var data = new SRCSaveData()
+                {
+                    // XXX EntryなのかCoreなのか
+                    Version = Assembly.GetEntryAssembly().GetName().Version.ToString(),
+                    Kind = SRCSaveKind.Normal,
+                    Titles = Titles,
+                    NextStage = Expression.GetValueAsString("次ステージ"),
+                    TotalTurn = TotalTurn,
+                    Money = Money,
+                    GlobalVariableList = Event.GlobalVariableList,
+                    PList = PList,
+                    UList = UList,
+                    IList = IList,
+                };
 
-            //    {
-            //        var withBlock = App;
-            //        num = 10000 * My.MyProject.Application.Info.Version.Major + 100 * My.MyProject.Application.Info.Version.Minor + My.MyProject.Application.Info.Version.Revision;
-            //    }
-
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)num);
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)Information.UBound(Titles));
-            //    var loopTo = Information.UBound(Titles);
-            //    for (i = 1; i <= loopTo; i++)
-            //        FileSystem.WriteLine(SaveDataFileNumber, Titles[i]);
-            //    FileSystem.WriteLine(SaveDataFileNumber, Expression.GetValueAsString("次ステージ"));
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)TotalTurn);
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)Money);
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)0); // パーツ用のダミー
-            //    Event_Renamed.SaveGlobalVariables();
-            //    PList.Save();
-            //    UList.Save();
-            //    IList.Save();
-            //    FileSystem.FileClose(SaveDataFileNumber);
-            //}
-            //catch
-            //{
-            //    GUI.ErrorMessage("セーブ中にエラーが発生しました");
-            //}
+                stream.Write(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data, Formatting.Indented)));
+            }
+            catch
+            {
+                GUI.ErrorMessage("セーブ中にエラーが発生しました");
+            }
         }
 
         // データをロード
-        public void LoadData(string fname)
+        public void LoadData(Stream stream)
         {
-            throw new NotImplementedException();
-            //    int i, num = default;
-            //    var fname2 = default(string);
-            //    var dummy = default(string);
-            //    SaveDataFileNumber = FileSystem.FreeFile();
-            //    FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Input);
-            //    FileSystem.Input(SaveDataFileNumber, SaveDataVersion);
-            //    if (SaveDataVersion > 10000)
-            //    {
-            //        FileSystem.Input(SaveDataFileNumber, num);
-            //    }
-            //    else
-            //    {
-            //        num = SaveDataVersion;
-            //    }
+            try
+            {
+                // XXX Version プロパティだけのオブジェクトでバージョンチェックなど
+                var data = JsonConvert.DeserializeObject<SRCSaveData>((new StreamReader(stream).ReadToEnd()));
+                GUI.SetLoadImageSize((data.Titles.Count * 2 + 5));
+                Titles = data.Titles;
+                if (!Expression.IsGlobalVariableDefined("次ステージ"))
+                {
+                    Expression.DefineGlobalVariable("次ステージ");
+                }
+                Expression.SetVariableAsString("次ステージ", data.NextStage);
+                TotalTurn = data.TotalTurn;
+                Money = data.Money;
+                Event.GlobalVariableList = data.GlobalVariableList;
+                PList = data.PList;
+                UList = data.UList;
+                IList = data.IList;
 
-            //    GUI.SetLoadImageSize((num * 2 + 5));
-            //    Titles = new string[(num + 1)];
-            //    var loopTo = num;
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        FileSystem.Input(SaveDataFileNumber, Titles[i]);
-            //        IncludeData(Titles[i]);
-            //    }
+                foreach (var title in Titles)
+                {
+                    IncludeData(title);
+                }
+                // XXX Dataフォルダ直下って読んでる？
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\alias.txt"))
+                //    {
+                //        ALDList.Load(ScenarioPath + @"Data\alias.txt");
+                //    }
 
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\alias.txt"))
-            //    {
-            //        ALDList.Load(ScenarioPath + @"Data\alias.txt");
-            //    }
+                //    bool localFileExists() { string argfname = ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-            //    bool localFileExists() { string argfname = ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\sp.txt"))
+                //    {
+                //        SPDList.Load(ScenarioPath + @"Data\sp.txt");
+                //    }
+                //    else if (localFileExists())
+                //    {
+                //        SPDList.Load(ScenarioPath + @"Data\mind.txt");
+                //    }
 
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\sp.txt"))
-            //    {
-            //        SPDList.Load(ScenarioPath + @"Data\sp.txt");
-            //    }
-            //    else if (localFileExists())
-            //    {
-            //        SPDList.Load(ScenarioPath + @"Data\mind.txt");
-            //    }
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot.txt"))
+                //    {
+                //        PDList.Load(ScenarioPath + @"Data\pilot.txt");
+                //    }
 
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot.txt"))
-            //    {
-            //        PDList.Load(ScenarioPath + @"Data\pilot.txt");
-            //    }
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\non_pilot.txt"))
+                //    {
+                //        NPDList.Load(ScenarioPath + @"Data\non_pilot.txt");
+                //    }
 
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\non_pilot.txt"))
-            //    {
-            //        NPDList.Load(ScenarioPath + @"Data\non_pilot.txt");
-            //    }
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\robot.txt"))
+                //    {
+                //        UDList.Load(ScenarioPath + @"Data\robot.txt");
+                //    }
 
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\robot.txt"))
-            //    {
-            //        UDList.Load(ScenarioPath + @"Data\robot.txt");
-            //    }
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\unit.txt"))
+                //    {
+                //        UDList.Load(ScenarioPath + @"Data\unit.txt");
+                //    }
 
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\unit.txt"))
-            //    {
-            //        UDList.Load(ScenarioPath + @"Data\unit.txt");
-            //    }
+                //    GUI.DisplayLoadingProgress();
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_message.txt"))
+                //    {
+                //        MDList.Load(ScenarioPath + @"Data\pilot_message.txt");
+                //    }
 
-            //    GUI.DisplayLoadingProgress();
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_message.txt"))
-            //    {
-            //        MDList.Load(ScenarioPath + @"Data\pilot_message.txt");
-            //    }
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_dialog.txt"))
+                //    {
+                //        DDList.Load(ScenarioPath + @"Data\pilot_dialog.txt");
+                //    }
 
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_dialog.txt"))
-            //    {
-            //        DDList.Load(ScenarioPath + @"Data\pilot_dialog.txt");
-            //    }
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\effect.txt"))
+                //    {
+                //        EDList.Load(ScenarioPath + @"Data\effect.txt");
+                //    }
 
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\effect.txt"))
-            //    {
-            //        EDList.Load(ScenarioPath + @"Data\effect.txt");
-            //    }
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\animation.txt"))
+                //    {
+                //        ADList.Load(ScenarioPath + @"Data\animation.txt");
+                //    }
 
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\animation.txt"))
-            //    {
-            //        ADList.Load(ScenarioPath + @"Data\animation.txt");
-            //    }
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\ext_animation.txt"))
+                //    {
+                //        EADList.Load(ScenarioPath + @"Data\ext_animation.txt");
+                //    }
 
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\ext_animation.txt"))
-            //    {
-            //        EADList.Load(ScenarioPath + @"Data\ext_animation.txt");
-            //    }
+                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\item.txt"))
+                //    {
+                //        IDList.Load(ScenarioPath + @"Data\item.txt");
+                //    }
 
-            //    if (GeneralLib.FileExists(ScenarioPath + @"Data\item.txt"))
-            //    {
-            //        IDList.Load(ScenarioPath + @"Data\item.txt");
-            //    }
+                GUI.DisplayLoadingProgress();
+                IsLocalDataLoaded = true;
 
-            //    GUI.DisplayLoadingProgress();
-            //    IsLocalDataLoaded = true;
-            //    FileSystem.Input(SaveDataFileNumber, fname2);
-            //    FileSystem.Input(SaveDataFileNumber, TotalTurn);
-            //    FileSystem.Input(SaveDataFileNumber, Money);
-            //    FileSystem.Input(SaveDataFileNumber, num); // パーツ用のダミー
-            //    Event_Renamed.LoadGlobalVariables();
-            //    if (!Expression.IsGlobalVariableDefined("次ステージ"))
-            //    {
-            //        Expression.DefineGlobalVariable("次ステージ");
-            //    }
+                PList.Restore(this);
+                UList.Restore(this);
+                IList.Restore(this);
 
-            //    Expression.SetVariableAsString("次ステージ", fname2);
-            //    PList.Load();
-            //    UList.Load();
-            //    IList.Load();
-            //    FileSystem.FileClose(SaveDataFileNumber);
+                PList.Update();
+                UList.Update();
+                IList.Update();
 
-            //    // リンクデータを処理するため、セーブファイルを一旦閉じてから再度読み込み
+                //    // リンクデータを処理するため、セーブファイルを一旦閉じてから再度読み込み
+                //    PList.LoadLinkInfo();
+                //    UList.LoadLinkInfo();
+                //    IList.LoadLinkInfo();
+                //    FileSystem.FileClose(SaveDataFileNumber);
+                GUI.DisplayLoadingProgress();
 
-            //    SaveDataFileNumber = FileSystem.FreeFile();
-            //    FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Input);
-            //    if (SaveDataVersion > 10000)
-            //    {
-            //        FileSystem.Input(SaveDataFileNumber, dummy);
-            //    }
+                // ユニットの状態を回復
+                foreach (Unit u in UList.Items)
+                {
+                    u.Reset();
+                }
+                GUI.DisplayLoadingProgress();
 
-            //    FileSystem.Input(SaveDataFileNumber, num);
-            //    Titles = new string[(num + 1)];
-            //    var loopTo1 = num;
-            //    for (i = 1; i <= loopTo1; i++)
-            //        FileSystem.Input(SaveDataFileNumber, Titles[i]);
-            //    FileSystem.Input(SaveDataFileNumber, dummy);
-            //    FileSystem.Input(SaveDataFileNumber, TotalTurn);
-            //    FileSystem.Input(SaveDataFileNumber, Money);
-            //    FileSystem.Input(SaveDataFileNumber, num); // パーツ用のダミー
-            //    FileSystem.Input(SaveDataFileNumber, num); // パーツ用のダミー
-            //    var loopTo2 = num;
-            //    for (i = 1; i <= loopTo2; i++)
-            //        dummy = FileSystem.LineInput(SaveDataFileNumber);
-            //    PList.LoadLinkInfo();
-            //    UList.LoadLinkInfo();
-            //    IList.LoadLinkInfo();
-            //    FileSystem.FileClose(SaveDataFileNumber);
-            //    GUI.DisplayLoadingProgress();
+                // 追加されたシステム側イベントデータの読み込み
+                Event.LoadEventData("", load_mode: "");
+                GUI.DisplayLoadingProgress();
+            }
+            catch
+            {
+                GUI.ErrorMessage("ロード中にエラーが発生しました");
+                TerminateSRC();
+            }
+        }
 
-            //    // ユニットの状態を回復
-            //    foreach (Unit u in UList)
-            //        u.Reset_Renamed();
-            //    GUI.DisplayLoadingProgress();
-
-            //    // 追加されたシステム側イベントデータの読み込み
-            //    Event_Renamed.LoadEventData("", load_mode: "");
-            //    GUI.DisplayLoadingProgress();
-            //    return;
-            //ErrorHandler:
-            //    ;
-            //    GUI.ErrorMessage("ロード中にエラーが発生しました");
-            //    FileSystem.FileClose(SaveDataFileNumber);
-            //    TerminateSRC();
+        public void DumpData(string fname, SRCSaveKind saveKind)
+        {
+            // XXX FileName
+            LastSaveDataFileName = fname;
+            using (var stream = new FileInfo(fname).Open(FileMode.Create))
+            {
+                DumpData(stream, saveKind);
+            }
         }
 
         // 一時中断用データをファイルにセーブする
-        public void DumpData(string fname)
+        public void DumpData(Stream stream, SRCSaveKind saveKind)
         {
-            throw new NotImplementedException();
-            //    int i;
-            //    int num;
-            //    ;
+            try
+            {
+                var data = new SRCSuspendData()
+                {
+                    // XXX EntryなのかCoreなのか
+                    Version = Assembly.GetEntryAssembly().GetName().Version.ToString(),
+                    Kind = saveKind,
+                    Titles = Titles,
+                    NextStage = Expression.GetValueAsString("次ステージ"),
+                    TotalTurn = TotalTurn,
+                    Money = Money,
+                    GlobalVariableList = Event.GlobalVariableList,
+                    PList = PList,
+                    UList = UList,
+                    IList = IList,
+                    // QuikSave
+                    ScenarioFileName = ScenarioFileName,
+                    Turn = Turn,
+                    LocalVariableList = Event.LocalVariableList,
+                    DisableEventLabels = Event.colEventLabelList.List.Select(x => x.Data).ToList(),
+                    AdditionalEventFileNames = Event.AdditionalEventFileNames.ToList(),
+                    Map = Map,
+                    // TODO ファイルパスの正規化
+                    BGMFileName = Sound.BGMFileName,
+                    RepeatMode = Sound.RepeatMode,
+                    KeepBGM = Sound.KeepBGM,
+                    BossBGM = Sound.BossBGM,
+                };
 
-            //    // 中断データをセーブ
-            //    SaveDataFileNumber = FileSystem.FreeFile();
-            //    FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Output, OpenAccess.Write);
+                stream.Write(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data, Formatting.Indented)));
+                if (saveKind == SRCSaveKind.Restart)
+                {
+                    IsRestartSaveDataAvailable = true;
+                }
+                else if (saveKind == SRCSaveKind.Quik)
+                {
+                    IsQuickSaveDataAvailable = true;
+                }
+            }
+            catch
+            {
+                GUI.ErrorMessage("セーブ中にエラーが発生しました");
+            }
 
-            //    {
-            //        var withBlock = App;
-            //        num = 10000 * My.MyProject.Application.Info.Version.Major + 100 * My.MyProject.Application.Info.Version.Minor + My.MyProject.Application.Info.Version.Revision;
-            //    }
-
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)num);
-            //    FileSystem.WriteLine(SaveDataFileNumber, Strings.Mid(ScenarioFileName, Strings.Len(ScenarioPath) + 1));
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)Information.UBound(Titles));
-            //    var loopTo = Information.UBound(Titles);
-            //    for (i = 1; i <= loopTo; i++)
-            //        FileSystem.WriteLine(SaveDataFileNumber, Titles[i]);
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)Turn);
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)TotalTurn);
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)Money);
-            //    Event_Renamed.DumpEventData();
-            //    PList.Dump();
-            //    IList.Dump();
-            //    UList.Dump();
-            //    Map.DumpMapData();
-
-            //    // Midi じゃなくて midi じゃないと検索失敗するようになってるので。
-            //    if (Strings.InStr(Strings.LCase(Sound.BGMFileName), @"\midi\") > 0)
-            //    {
-            //        FileSystem.WriteLine(SaveDataFileNumber, Strings.Mid(Sound.BGMFileName, Strings.InStr(Strings.LCase(Sound.BGMFileName), @"\midi\") + 6));
-            //    }
-            //    else if (Strings.InStr(Sound.BGMFileName, @"\") > 0)
-            //    {
-            //        FileSystem.WriteLine(SaveDataFileNumber, Strings.Mid(Sound.BGMFileName, Strings.InStr(Sound.BGMFileName, @"\") + 1));
-            //    }
-            //    else
-            //    {
-            //        FileSystem.WriteLine(SaveDataFileNumber, Sound.BGMFileName);
-            //    }
-
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)Sound.RepeatMode);
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)Sound.KeepBGM);
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)Sound.BossBGM);
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)GeneralLib.RndSeed);
-            //    FileSystem.WriteLine(SaveDataFileNumber, (object)GeneralLib.RndIndex);
-            //    FileSystem.FileClose(SaveDataFileNumber);
-            //    LastSaveDataFileName = fname;
-            //    if (Strings.InStr(fname, @"\_リスタート.src") > 0)
-            //    {
-            //        IsRestartSaveDataAvailable = true;
-            //    }
-            //    else if (Strings.InStr(fname, @"\_クイックセーブ.src") > 0)
-            //    {
-            //        IsQuickSaveDataAvailable = true;
-            //    }
-
-            //    return;
-            //ErrorHandler:
-            //    ;
-            //    GUI.ErrorMessage("セーブ中にエラーが発生しました");
-            //    FileSystem.FileClose(SaveDataFileNumber);
         }
 
-        // 一時中断用データをロード
-        public void RestoreData(string fname, bool quick_load)
+        public void RestoreData(string fname, SRCSaveKind saveKind)
         {
-            throw new NotImplementedException();
-            //    int i, num = default;
-            //    var fname2 = default(string);
-            //    string dummy;
-            //    var scenario_file_is_different = default(bool);
-            //    ;
+            // XXX FileName
+            LastSaveDataFileName = fname;
+            using (var stream = File.OpenRead(fname))
+            {
+                RestoreData(stream, saveKind);
+            }
+        }
+        // 一時中断用データをロード
+        public void RestoreData(Stream stream, SRCSaveKind saveKind)
+        {
+            var quick_load = saveKind == SRCSaveKind.Quik || saveKind == SRCSaveKind.Restart;
+            try
+            {
+                // マウスカーソルを砂時計に
+                GUI.ChangeStatus(GuiStatus.WaitCursor);
+                if (quick_load)
+                {
+                    if (Expression.IsOptionDefined("デバッグ"))
+                    {
+                        Event.LoadEventData(ScenarioFileName, "クイックロード");
+                    }
+                }
+                if (!quick_load)
+                {
+                    GUI.OpenNowLoadingForm();
+                }
 
-            //    // マウスカーソルを砂時計に
-            //    // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
-            //    Cursor.Current = Cursors.WaitCursor;
-            //    if (quick_load)
-            //    {
-            //        if (Expression.IsOptionDefined("デバッグ"))
-            //        {
-            //            Event_Renamed.LoadEventData(ScenarioFileName, "クイックロード");
-            //        }
-            //    }
+                // XXX Version プロパティだけのオブジェクトでバージョンチェックなど
+                var data = JsonConvert.DeserializeObject<SRCSuspendData>((new StreamReader(stream).ReadToEnd()));
+                //SaveDataVersion = Conversions.ToInteger(fname2);
+                var scenario_file_is_different = !FileSystem.RelativePathEuqals(ScenarioPath, ScenarioFileName, data.ScenarioFileName);
+                if (scenario_file_is_different)
+                {
+                    // TODO Impl ウィンドウのタイトルを設定
+                    // ウィンドウのタイトルを設定
+                    //GUI.MainFormText = "SRC - " + Strings.Left(fname2, Strings.Len(fname2) - 4);
+                }
+                Titles = data.Titles;
+                TotalTurn = data.TotalTurn;
+                Money = data.Money;
+                Event.GlobalVariableList = data.GlobalVariableList;
+                PList = data.PList;
+                UList = data.UList;
+                IList = data.IList;
+                //
+                ScenarioFileName = FileSystem.ToAbsolutePath(ScenarioPath, data.ScenarioFileName);
+                Turn = data.Turn;
+                Event.LocalVariableList = data.LocalVariableList;
 
-            //    if (!quick_load)
-            //    {
-            //        GUI.OpenNowLoadingForm();
-            //    }
+                // 使用するデータをロード
+                if (!quick_load)
+                {
+                    GUI.SetLoadImageSize(data.Titles.Count * 2 + 5);
+                    foreach (var title in Titles)
+                    {
+                        IncludeData(title);
+                    }
 
-            //    SaveDataFileNumber = FileSystem.FreeFile();
-            //    FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Input);
-            //    FileSystem.Input(SaveDataFileNumber, fname2);
-            //    if (Information.IsNumeric(fname2))
-            //    {
-            //        SaveDataVersion = Conversions.ToInteger(fname2);
-            //        FileSystem.Input(SaveDataFileNumber, fname2);
-            //    }
-            //    else
-            //    {
-            //        SaveDataVersion = 1;
-            //    }
+                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\alias.txt"))
+                    //{
+                    //    ALDList.Load(ScenarioPath + @"Data\alias.txt");
+                    //}
 
-            //    // ウィンドウのタイトルを設定
-            //    if ((ScenarioFileName ?? "") != (ScenarioPath + fname2 ?? ""))
-            //    {
-            //        GUI.MainForm.Text = "SRC - " + Strings.Left(fname2, Strings.Len(fname2) - 4);
-            //        ScenarioFileName = ScenarioPath + fname2;
-            //        scenario_file_is_different = true;
-            //    }
+                    //bool localFileExists() { string argfname = ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-            //    FileSystem.Input(SaveDataFileNumber, num);
+                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\sp.txt"))
+                    //{
+                    //    SPDList.Load(ScenarioPath + @"Data\sp.txt");
+                    //}
+                    //else if (localFileExists())
+                    //{
+                    //    SPDList.Load(ScenarioPath + @"Data\mind.txt");
+                    //}
 
-            //    // 使用するデータをロード
-            //    if (!quick_load)
-            //    {
-            //        GUI.SetLoadImageSize((num * 2 + 5));
-            //        Titles = new string[(num + 1)];
-            //        var loopTo = num;
-            //        for (i = 1; i <= loopTo; i++)
-            //        {
-            //            FileSystem.Input(SaveDataFileNumber, Titles[i]);
-            //            IncludeData(Titles[i]);
-            //        }
+                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot.txt"))
+                    //{
+                    //    PDList.Load(ScenarioPath + @"Data\pilot.txt");
+                    //}
 
-            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\alias.txt"))
-            //        {
-            //            ALDList.Load(ScenarioPath + @"Data\alias.txt");
-            //        }
+                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\non_pilot.txt"))
+                    //{
+                    //    NPDList.Load(ScenarioPath + @"Data\non_pilot.txt");
+                    //}
 
-            //        bool localFileExists() { string argfname = ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
+                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\robot.txt"))
+                    //{
+                    //    UDList.Load(ScenarioPath + @"Data\robot.txt");
+                    //}
 
-            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\sp.txt"))
-            //        {
-            //            SPDList.Load(ScenarioPath + @"Data\sp.txt");
-            //        }
-            //        else if (localFileExists())
-            //        {
-            //            SPDList.Load(ScenarioPath + @"Data\mind.txt");
-            //        }
+                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\unit.txt"))
+                    //{
+                    //    UDList.Load(ScenarioPath + @"Data\unit.txt");
+                    //}
 
-            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot.txt"))
-            //        {
-            //            PDList.Load(ScenarioPath + @"Data\pilot.txt");
-            //        }
+                    //GUI.DisplayLoadingProgress();
+                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_message.txt"))
+                    //{
+                    //    MDList.Load(ScenarioPath + @"Data\pilot_message.txt");
+                    //}
 
-            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\non_pilot.txt"))
-            //        {
-            //            NPDList.Load(ScenarioPath + @"Data\non_pilot.txt");
-            //        }
+                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_dialog.txt"))
+                    //{
+                    //    DDList.Load(ScenarioPath + @"Data\pilot_dialog.txt");
+                    //}
 
-            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\robot.txt"))
-            //        {
-            //            UDList.Load(ScenarioPath + @"Data\robot.txt");
-            //        }
+                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\effect.txt"))
+                    //{
+                    //    EDList.Load(ScenarioPath + @"Data\effect.txt");
+                    //}
 
-            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\unit.txt"))
-            //        {
-            //            UDList.Load(ScenarioPath + @"Data\unit.txt");
-            //        }
+                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\animation.txt"))
+                    //{
+                    //    ADList.Load(ScenarioPath + @"Data\animation.txt");
+                    //}
 
-            //        GUI.DisplayLoadingProgress();
-            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_message.txt"))
-            //        {
-            //            MDList.Load(ScenarioPath + @"Data\pilot_message.txt");
-            //        }
+                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\ext_animation.txt"))
+                    //{
+                    //    EADList.Load(ScenarioPath + @"Data\ext_animation.txt");
+                    //}
 
-            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_dialog.txt"))
-            //        {
-            //            DDList.Load(ScenarioPath + @"Data\pilot_dialog.txt");
-            //        }
+                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\item.txt"))
+                    //{
+                    //    IDList.Load(ScenarioPath + @"Data\item.txt");
+                    //}
 
-            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\effect.txt"))
-            //        {
-            //            EDList.Load(ScenarioPath + @"Data\effect.txt");
-            //        }
+                    GUI.DisplayLoadingProgress();
+                    IsLocalDataLoaded = true;
+                    Event.LoadEventData(ScenarioFileName, "リストア");
+                    GUI.DisplayLoadingProgress();
+                }
+                else
+                {
+                    if (scenario_file_is_different)
+                    {
+                        Event.LoadEventData(ScenarioFileName, "リストア");
+                    }
+                }
 
-            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\animation.txt"))
-            //        {
-            //            ADList.Load(ScenarioPath + @"Data\animation.txt");
-            //        }
+                Event.Restore(data);
+                PList.Restore(this);
+                UList.Restore(this);
+                IList.Restore(this);
+                Map.Restore(data);
 
-            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\ext_animation.txt"))
-            //        {
-            //            EADList.Load(ScenarioPath + @"Data\ext_animation.txt");
-            //        }
+                // XXX 仮処理
+                UList.Items.ToList().ForEach(x => x.Update());
+                PList.Items.ToList().ForEach(x => x.Update());
 
-            //        if (GeneralLib.FileExists(ScenarioPath + @"Data\item.txt"))
-            //        {
-            //            IDList.Load(ScenarioPath + @"Data\item.txt");
-            //        }
+                // ＢＧＭ関連の設定を復元
+                // TODO パスの正規化
+                var bgmFile = Sound.SearchMidiFile("(" + Path.GetFileName(data.BGMFileName) + ")");
+                if (!string.IsNullOrEmpty(bgmFile))
+                {
+                    // BGMが必ず切り替わる状態で変更してから関連設定を復元する
+                    Sound.KeepBGM = false;
+                    Sound.BossBGM = false;
+                    Sound.ChangeBGM(bgmFile);
+                }
+                else
+                {
+                    Sound.StopBGM();
+                }
+                Sound.RepeatMode = data.RepeatMode;
+                Sound.KeepBGM = data.KeepBGM;
+                Sound.BossBGM = data.BossBGM;
 
-            //        GUI.DisplayLoadingProgress();
-            //        IsLocalDataLoaded = true;
-            //        Event_Renamed.LoadEventData(ScenarioFileName, "リストア");
-            //        GUI.DisplayLoadingProgress();
-            //    }
-            //    else
-            //    {
-            //        var loopTo1 = num;
-            //        for (i = 1; i <= loopTo1; i++)
-            //            dummy = FileSystem.LineInput(SaveDataFileNumber);
-            //        if (scenario_file_is_different)
-            //        {
-            //            Event_Renamed.LoadEventData(ScenarioFileName, "リストア");
-            //        }
-            //    }
+                //    // 乱数系列を復元
+                //    if (!Expression.IsOptionDefined("デバッグ") & !Expression.IsOptionDefined("乱数系列非保存") & !FileSystem.EOF(SaveDataFileNumber))
+                //    {
+                //        FileSystem.Input(SaveDataFileNumber, GeneralLib.RndSeed);
+                //        GeneralLib.RndReset();
+                //        FileSystem.Input(SaveDataFileNumber, GeneralLib.RndIndex);
+                //    }
 
-            //    FileSystem.Input(SaveDataFileNumber, Turn);
-            //    FileSystem.Input(SaveDataFileNumber, TotalTurn);
-            //    FileSystem.Input(SaveDataFileNumber, Money);
-            //    Event_Renamed.RestoreEventData();
-            //    PList.Restore();
-            //    IList.Restore();
-            //    UList.Restore();
+                if (!quick_load)
+                {
+                    GUI.DisplayLoadingProgress();
+                }
 
-            //    // MOD START 240a
-            //    // RestoreMapData
-            //    // 'ＢＧＭ関連の設定を復元
-            //    // Input #SaveDataFileNumber, fname2
-            //    // マップデータの互換性維持のため、RestoreMapDataでＢＧＭ関連の１行目まで読み込んで戻り値にした
-            //    fname2 = Map.RestoreMapData();
-            //    // MOD  END  240a
-            //    fname2 = Sound.SearchMidiFile("(" + fname2 + ")");
-            //    if (!string.IsNullOrEmpty(fname2))
-            //    {
-            //        Sound.KeepBGM = false;
-            //        Sound.BossBGM = false;
-            //        Sound.ChangeBGM(fname2);
-            //        FileSystem.Input(SaveDataFileNumber, Sound.RepeatMode);
-            //        FileSystem.Input(SaveDataFileNumber, Sound.KeepBGM);
-            //        FileSystem.Input(SaveDataFileNumber, Sound.BossBGM);
-            //    }
-            //    else
-            //    {
-            //        Sound.StopBGM();
-            //        dummy = FileSystem.LineInput(SaveDataFileNumber);
-            //        dummy = FileSystem.LineInput(SaveDataFileNumber);
-            //        dummy = FileSystem.LineInput(SaveDataFileNumber);
-            //    }
+                //    // リンクデータを処理するため、セーブファイルを一旦閉じてから再度読み込み
+                //    Event.SkipEventData();
+                //    PList.RestoreLinkInfo();
+                //    IList.RestoreLinkInfo();
+                //    UList.RestoreLinkInfo();
+                //    FileSystem.FileClose(SaveDataFileNumber);
 
-            //    // 乱数系列を復元
-            //    if (!Expression.IsOptionDefined("デバッグ") & !Expression.IsOptionDefined("乱数系列非保存") & !FileSystem.EOF(SaveDataFileNumber))
-            //    {
-            //        FileSystem.Input(SaveDataFileNumber, GeneralLib.RndSeed);
-            //        GeneralLib.RndReset();
-            //        FileSystem.Input(SaveDataFileNumber, GeneralLib.RndIndex);
-            //    }
+                //    // パラメータ情報を処理するため、セーブファイルを一旦閉じてから再度読み込み。
+                //    // 霊力やＨＰ、ＥＮといったパラメータは最大値が特殊能力で変動するため、
+                //    // 特殊能力の設定が終わってから改めて設定してやる必要がある。
 
-            //    if (!quick_load)
-            //    {
-            //        GUI.DisplayLoadingProgress();
-            //    }
+                //    Event.SkipEventData();
+                //    PList.RestoreParameter();
+                //    IList.RestoreParameter();
+                //    UList.RestoreParameter();
+                //    PList.UpdateSupportMod();
 
-            //    FileSystem.FileClose(SaveDataFileNumber);
+                // 背景書き換え
+                // XXX 常に書き換えでない理由何かある？
+                //if (Map.IsMapDirty)
+                //{
+                int map_x, map_y;
+                map_x = GUI.MapX;
+                map_y = GUI.MapY;
+                GUI.SetupBackground(Map.MapDrawMode, "非同期", filter_color: 0, filter_trans_par: 0d);
+                GUI.MapX = map_x;
+                GUI.MapY = map_y;
 
-            //    // リンクデータを処理するため、セーブファイルを一旦閉じてから再度読み込み
+                // 再開イベントによるマップ画像の書き換え処理を行う
+                Event.HandleEvent("再開");
+                Map.IsMapDirty = false;
+                //}
 
-            //    SaveDataFileNumber = FileSystem.FreeFile();
-            //    FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Input);
+                Commands.SelectedUnit = null;
+                Commands.SelectedTarget = null;
 
-            //    // SaveDataVersion
-            //    if (SaveDataVersion > 10000)
-            //    {
-            //        dummy = FileSystem.LineInput(SaveDataFileNumber);
-            //    }
+                //    // ユニット画像生成
+                //    foreach (Unit u in UList)
+                //    {
+                //        {
+                //            var withBlock = u;
+                //            if (withBlock.BitmapID == 0)
+                //            {
+                //                withBlock.BitmapID = GUI.MakeUnitBitmap(u);
+                //            }
+                //        }
+                //    }
 
-            //    // ScenarioFileName
-            //    dummy = FileSystem.LineInput(SaveDataFileNumber);
+                // 画面更新
+                GUI.Center(GUI.MapX, GUI.MapY);
+                if (!quick_load)
+                {
+                    GUI.DisplayLoadingProgress();
+                }
 
-            //    // 使用するデータ名
-            //    FileSystem.Input(SaveDataFileNumber, num);
-            //    var loopTo2 = num;
-            //    for (i = 1; i <= loopTo2; i++)
-            //        dummy = FileSystem.LineInput(SaveDataFileNumber);
+                if (!quick_load)
+                {
+                    GUI.CloseNowLoadingForm();
+                }
 
-            //    // Turn
-            //    dummy = FileSystem.LineInput(SaveDataFileNumber);
-            //    // TotalTurn
-            //    dummy = FileSystem.LineInput(SaveDataFileNumber);
-            //    // Money
-            //    dummy = FileSystem.LineInput(SaveDataFileNumber);
-            //    Event_Renamed.SkipEventData();
-            //    PList.RestoreLinkInfo();
-            //    IList.RestoreLinkInfo();
-            //    UList.RestoreLinkInfo();
-            //    FileSystem.FileClose(SaveDataFileNumber);
+                if (!quick_load)
+                {
+                    GUI.MainFormShow();
+                }
 
-            //    // パラメータ情報を処理するため、セーブファイルを一旦閉じてから再度読み込み。
-            //    // 霊力やＨＰ、ＥＮといったパラメータは最大値が特殊能力で変動するため、
-            //    // 特殊能力の設定が終わってから改めて設定してやる必要がある。
+                // マウスカーソルを元に戻す
+                GUI.ChangeStatus(GuiStatus.Default);
+                GUIStatus.ClearUnitStatus();
+                if (!GUI.MainFormVisible)
+                {
+                    GUI.MainFormShow();
+                    GUI.RefreshScreen();
+                }
 
-            //    SaveDataFileNumber = FileSystem.FreeFile();
-            //    FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Input);
+                GUI.RedrawScreen();
+                if (Turn == 0)
+                {
+                    Event.HandleEvent("スタート");
 
-            //    // SaveDataVersion
-            //    if (SaveDataVersion > 10000)
-            //    {
-            //        dummy = FileSystem.LineInput(SaveDataFileNumber);
-            //    }
-
-            //    // ScenarioFileName
-            //    dummy = FileSystem.LineInput(SaveDataFileNumber);
-
-            //    // 使用するデータ名
-            //    FileSystem.Input(SaveDataFileNumber, num);
-            //    var loopTo3 = num;
-            //    for (i = 1; i <= loopTo3; i++)
-            //        dummy = FileSystem.LineInput(SaveDataFileNumber);
-
-            //    // Turn
-            //    dummy = FileSystem.LineInput(SaveDataFileNumber);
-            //    // TotalTurn
-            //    dummy = FileSystem.LineInput(SaveDataFileNumber);
-            //    // Money
-            //    dummy = FileSystem.LineInput(SaveDataFileNumber);
-            //    Event_Renamed.SkipEventData();
-            //    PList.RestoreParameter();
-            //    IList.RestoreParameter();
-            //    UList.RestoreParameter();
-            //    PList.UpdateSupportMod();
-
-            //    // 背景書き換え
-            //    int map_x, map_y;
-            //    if (Map.IsMapDirty)
-            //    {
-            //        map_x = GUI.MapX;
-            //        map_y = GUI.MapY;
-            //        GUI.SetupBackground(Map.MapDrawMode, "非同期", filter_color: 0, filter_trans_par: 0d);
-            //        GUI.MapX = map_x;
-            //        GUI.MapY = map_y;
-
-            //        // 再開イベントによるマップ画像の書き換え処理を行う
-            //        Event_Renamed.HandleEvent("再開");
-            //        Map.IsMapDirty = false;
-            //    }
-
-            //    // UPGRADE_NOTE: オブジェクト SelectedUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //    Commands.SelectedUnit = null;
-            //    // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //    Commands.SelectedTarget = null;
-
-            //    // ユニット画像生成
-            //    foreach (Unit u in UList)
-            //    {
-            //        {
-            //            var withBlock = u;
-            //            if (withBlock.BitmapID == 0)
-            //            {
-            //                withBlock.BitmapID = GUI.MakeUnitBitmap(u);
-            //            }
-            //        }
-            //    }
-
-            //    // 画面更新
-            //    GUI.Center(GUI.MapX, GUI.MapY);
-            //    FileSystem.FileClose(SaveDataFileNumber);
-            //    if (!quick_load)
-            //    {
-            //        GUI.DisplayLoadingProgress();
-            //    }
-
-            //    if (!quick_load)
-            //    {
-            //        GUI.CloseNowLoadingForm();
-            //    }
-
-            //    if (!quick_load)
-            //    {
-            //        GUI.MainForm.Show();
-            //    }
-
-            //    // マウスカーソルを元に戻す
-            //    // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
-            //    Cursor.Current = Cursors.Default;
-            //    Status.ClearUnitStatus();
-            //    if (!GUI.MainForm.Visible)
-            //    {
-            //        GUI.MainForm.Show();
-            //        GUI.MainForm.Refresh();
-            //    }
-
-            //    GUI.RedrawScreen();
-            //    if (Turn == 0)
-            //    {
-            //        Event_Renamed.HandleEvent("スタート");
-
-            //        // MOD START MARGE
-            //        // StartTurn "味方"
-            //        // スタートイベントから次のステージが開始された場合、StartTurnが上のHandleEventで
-            //        // 実行されてしまう。
-            //        // 味方ターンの処理が２重起動されるのを防ぐため、Turnをチェックしてから起動する
-            //        if (Turn == 0)
-            //        {
-            //            StartTurn("味方");
-            //        }
-            //    }
-            //    // MOD END MARGE
-            //    else
-            //    {
-            //        Commands.CommandState = "ユニット選択";
-            //        Stage = "味方";
-            //    }
-
-            //    LastSaveDataFileName = fname;
-            //    if (Strings.InStr(fname, @"\_リスタート.src") > 0)
-            //    {
-            //        IsRestartSaveDataAvailable = true;
-            //    }
-            //    else if (Strings.InStr(fname, @"\_クイックセーブ.src") > 0)
-            //    {
-            //        IsQuickSaveDataAvailable = true;
-            //    }
-
-            //    return;
-            //ErrorHandler:
-            //    ;
-            //    GUI.ErrorMessage("ロード中にエラーが発生しました");
-            //    FileSystem.FileClose(SaveDataFileNumber);
-            //    TerminateSRC();
+                    // スタートイベントから次のステージが開始された場合、StartTurnが上のHandleEventで
+                    // 実行されてしまう。
+                    // 味方ターンの処理が２重起動されるのを防ぐため、Turnをチェックしてから起動する
+                    if (Turn == 0)
+                    {
+                        StartTurn("味方");
+                    }
+                }
+                else
+                {
+                    Commands.CommandState = "ユニット選択";
+                    Stage = "味方";
+                }
+                if (saveKind == SRCSaveKind.Restart)
+                {
+                    IsRestartSaveDataAvailable = true;
+                }
+                else if (saveKind == SRCSaveKind.Quik)
+                {
+                    IsQuickSaveDataAvailable = true;
+                }
+            }
+            catch
+            {
+                GUI.ErrorMessage("ロード中にエラーが発生しました");
+                TerminateSRC();
+            }
         }
     }
 }

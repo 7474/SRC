@@ -7,6 +7,7 @@ using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.Pilots;
 using SRCCore.VB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -659,8 +660,8 @@ namespace SRCCore.Units
                 if (w.IsWeaponClassifiedAs("連"))
                 {
                     attack_num = (int)w.WeaponLevel("連");
-                    //// TODO レベル取得してないから0除算しちゃうの回避しておく
-                    //attack_num = Math.Max(attack_num, 1);
+                    // TODO レベル取得してないから0除算しちゃうの回避しておく
+                    attack_num = Math.Max(attack_num, 1);
                 }
                 else
                 {

@@ -1,12 +1,14 @@
 using Microsoft.Extensions.Logging;
 using SRCCore;
 using SRCCore.Commands;
+using SRCCore.Lib;
 using SRCCore.Units;
 using SRCSharpForm.Forms;
 using SRCSharpForm.Resoruces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -1269,6 +1271,68 @@ namespace SRCSharpForm
                 dialog.StartPosition = FormStartPosition.CenterParent;
                 dialog.ShowDialog(MainForm);
             }
+        }
+
+        public Stream SelectSaveStream(SRCSaveKind saveKind, string defaultName)
+        {
+            // TODO Impl データセーブ
+            //// 一旦「常に手前に表示」を解除
+            //if (My.MyProject.Forms.frmListBox.Visible)
+            //{
+            //    ret = GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -2, 0, 0, 0, 0, 0x3);
+            //}
+
+            var ext = saveKind == SRCSaveKind.Normal ? "srcs" : "srcq";
+            string fname;
+            using (var fsd = new SaveFileDialog())
+            {
+                fsd.Filter = $"save files (*.{ext})|*.{ext}";
+                fsd.InitialDirectory = SRC.ScenarioPath;
+                fsd.FileName = string.IsNullOrEmpty(defaultName)
+                    ? Expression.GetValueAsString("セーブデータファイル名")
+                    : defaultName;
+
+                var res = fsd.ShowDialog();
+                if (res == DialogResult.OK)
+                {
+                    fname = fsd.FileName;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            //// 再び「常に手前に表示」
+            //if (My.MyProject.Forms.frmListBox.Visible)
+            //{
+            //    ret = GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -1, 0, 0, 0, 0, 0x3);
+            //}
+
+            // キャンセル？
+            if (string.IsNullOrEmpty(fname))
+            {
+                return null;
+            }
+
+            // セーブ先はシナリオフォルダ？
+            var save_path = Path.GetDirectoryName(fname);
+            if (FileSystem.Dir(save_path, FileAttribute.Directory) != FileSystem.Dir(SRC.ScenarioPath, FileAttribute.Directory))
+            {
+                if (Confirm("セーブファイルはシナリオフォルダにないと読み込めません。" + Constants.vbCr + Constants.vbLf + "このままセーブしますか？",
+                    "セーブ",
+                    GuiConfirmOption.OkCancel | GuiConfirmOption.Question) != GuiDialogResult.Ok)
+                {
+                    return null;
+                }
+            }
+            return new FileInfo(fname).Open(FileMode.Create);
+            //return File.OpenWrite(fname);
+        }
+
+        public Stream OpenQuikSaveStream(FileAccess fileAccess)
+        {
+            throw new NotImplementedException();
         }
     }
 }

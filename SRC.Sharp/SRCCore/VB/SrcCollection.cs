@@ -1,9 +1,11 @@
+using Newtonsoft.Json;
 using SRCCore.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace SRCCore.VB
 {
@@ -18,6 +20,12 @@ namespace SRCCore.VB
         {
             dict = new OrderedDictionary();
             list = new List<V>();
+        }
+
+        [OnDeserialized]
+        private void Restore(StreamingContext context)
+        {
+            UpdateList();
         }
 
         public IList<V> List => list.AsReadOnly();
@@ -35,8 +43,8 @@ namespace SRCCore.VB
 
         public V this[string key]
         {
-            get => (V)dict[key.ToLower()];
-            set => throw new NotImplementedException();
+            get => ContainsKey(key) ? (V)dict[key.ToLower()] : default(V);
+            set => Add(value, key);
         }
 
         public int Count => dict.Count;
@@ -92,7 +100,7 @@ namespace SRCCore.VB
 
         public bool ContainsKey(string key)
         {
-            return dict.Contains(key.ToLower());
+            return key == null ? false : dict.Contains(key.ToLower());
         }
 
         public void CopyTo(V[] array, int arrayIndex)

@@ -40,7 +40,7 @@ namespace SRCSharpForm
         {
             using (var fbd = new OpenFileDialog())
             {
-                fbd.Filter = "event files (*.eve)|*.eve|save files (*.src)|*.src";
+                fbd.Filter = "SRC# files (*.eve;*.srcs;*srcsq)|*.eve;*.srcs;*.srcq|event files (*.eve)|*.eve|save files (*.srcs;*srcsq)|*.srcs;*.srcq";
 
                 var res = fbd.ShowDialog();
                 if (res == DialogResult.OK)

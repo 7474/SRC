@@ -6,6 +6,7 @@
 using SRCCore.Commands;
 using SRCCore.Units;
 using System.Collections.Generic;
+using System.IO;
 
 namespace SRCCore
 {
@@ -302,6 +303,10 @@ namespace SRCCore
         GuiDialogResult Confirm(string message, string title, GuiConfirmOption option);
         GuiDialogResult Input(string message, string title, string defaultValue, out string value);
         void Configure();
+
+        // === セーブ ===
+        Stream SelectSaveStream(SRCSaveKind saveKind, string defaultName = null);
+        Stream OpenQuikSaveStream(FileAccess fileAccess);
     }
 
     public enum GuiStatus

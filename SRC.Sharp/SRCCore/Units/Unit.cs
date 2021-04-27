@@ -2,18 +2,21 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using Newtonsoft.Json;
 using SRCCore.Items;
 using SRCCore.Maps;
 using SRCCore.Models;
 using SRCCore.Pilots;
 using SRCCore.VB;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.Units
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public partial class Unit
     {
-        private SRC SRC { get; }
+        private SRC SRC;
         private Map Map => SRC.Map;
         private IGUI GUI => SRC.GUI;
         private Events.Event Event => SRC.Event;
@@ -27,10 +30,40 @@ namespace SRCCore.Units
             SRC = src;
         }
 
+        [JsonConstructor]
+        private Unit() { }
+
+        public void Restore(SRC src)
+        {
+            SRC = src;
+
+            linkData.OtherFormIds.ForEach(x => colOtherForm.Add(SRC.UList.Item(x), x));
+            linkData.PilotIds.ForEach(x => colPilot.Add(SRC.PList.Item(x), x));
+            linkData.SupportIds.ForEach(x => colSupport.Add(SRC.PList.Item(x), x));
+            linkData.ItemIds.ForEach(x => colItem.Add(SRC.IList.Item(x), x));
+        }
+        private SaveData linkData;
+        [JsonProperty]
+        private SaveData LinkData
+        {
+            get => linkData = new SaveData
+            {
+                OtherFormIds = OtherForms.Select(x => x.ID).ToList(),
+                PilotIds = Pilots.Select(x => x.ID).ToList(),
+                SupportIds = Supports.Select(x => x.ID).ToList(),
+                ItemIds = ItemList.Select(x => x.ID).ToList(),
+            };
+            set => linkData = value;
+        }
+
         // データ
-        public UnitData Data;
+        [JsonProperty]
+        public string UnitName { get; set; }
+        // データ
+        public UnitData Data { get => SRC.UDList.Item(UnitName); set { UnitName = value?.Name; } }
 
         // 識別用ＩＤ
+        [JsonProperty]
         public string ID;
 
         // ビットマップID
@@ -38,17 +71,22 @@ namespace SRCCore.Units
         public int BitmapID;
 
         // Ｘ座標
+        [JsonProperty]
         public int x;
         // Ｙ座標
+        [JsonProperty]
         public int y;
 
         // ユニットの場所（地上、水上、水中、空中、地中、宇宙）
+        [JsonProperty]
         public string Area;
 
         // 使用済み行動数
+        [JsonProperty]
         public int UsedAction;
 
         // 思考モード
+        [JsonProperty]
         private string strMode;
 
         // ステータス
@@ -60,34 +98,45 @@ namespace SRCCore.Units
         // 待機：待機中
         // 旧形態：分離ユニットが合体前に取っていた形態
         // 離脱：Leaveコマンドにより戦線を離脱。Organizeコマンドでも表示されない
+        [JsonProperty]
         public string Status;
 
         // ユニットに対して使用されているスペシャルパワー
         private SrcCollection<Condition> colSpecialPowerInEffect = new SrcCollection<Condition>();
 
         // サポートアタック＆ガードの使用回数
+        [JsonProperty]
         public int UsedSupportAttack;
+        [JsonProperty]
         public int UsedSupportGuard;
 
         // 同時援護攻撃の使用回数
+        [JsonProperty]
         public int UsedSyncAttack;
 
         // カウンター攻撃の使用回数
+        [JsonProperty]
         public int UsedCounterAttack;
 
         // ユニット名称
+        [JsonProperty]
         private string strName;
         // 陣営
+        [JsonProperty]
         private string strParty;
         // ユニットランク
+        [JsonProperty]
         private int intRank;
         // ボスランク
+        [JsonProperty]
         private int intBossRank;
         // ＨＰ
         private int lngMaxHP;
+        [JsonProperty]
         private int lngHP;
         // ＥＮ
         private int intMaxEN;
+        [JsonProperty]
         private int intEN;
         // 装甲
         private int lngArmor;
@@ -182,5 +231,16 @@ namespace SRCCore.Units
 
         // 追加サポート
         public Pilot pltAdditionalSupport;
+
+        [JsonObject(MemberSerialization.OptOut)]
+        public class SaveData
+        {
+            public List<string> OtherFormIds { get; set; }
+            public List<string> PilotIds { get; set; }
+            public List<string> SupportIds { get; set; }
+            public List<string> ItemIds { get; set; }
+
+            // TODO クイックセーブ分
+        }
     }
 }

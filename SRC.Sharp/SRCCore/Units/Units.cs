@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using Newtonsoft.Json;
 using SRCCore.VB;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +10,19 @@ using System.Linq;
 namespace SRCCore.Units
 {
     // 全ユニットのデータを管理するリストのクラス
+    [JsonObject(MemberSerialization.OptIn)]
     public partial class Units
     {
         // ユニットＩＤ作成用カウンタ
+        [JsonProperty]
         public int IDCount = 0;
 
         // ユニット一覧
+        [JsonProperty]
         private SrcCollection<Unit> colUnits = new SrcCollection<Unit>();
         public IList<Unit> Items => colUnits.List;
 
-        protected SRC SRC { get; }
+        protected SRC SRC;
         private IGUI GUI => SRC.GUI;
 
         public Units(SRC src)
@@ -26,10 +30,18 @@ namespace SRCCore.Units
             SRC = src;
         }
 
+        public void Restore(SRC src)
+        {
+            SRC = src;
+            foreach(var u in Items)
+            {
+                u.Restore(src);
+            }
+        }
+
         // ユニットリストに新しいユニットを追加
         public Unit Add(string uname, int urank, string uparty)
         {
-
             // ユニットデータが定義されている？
             if (!SRC.UDList.IsDefined(uname))
             {

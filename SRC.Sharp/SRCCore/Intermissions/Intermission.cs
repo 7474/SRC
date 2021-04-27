@@ -194,50 +194,15 @@ namespace SRCCore
                         break;
 
                     case "データセーブ":
+                        using (var saveStream = GUI.SelectSaveStream(SRCSaveKind.Normal))
                         {
-                            // TODO Impl データセーブ
-                            //// 一旦「常に手前に表示」を解除
-                            //if (My.MyProject.Forms.frmListBox.Visible)
-                            //{
-                            //    ret = GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -2, 0, 0, 0, 0, 0x3);
-                            //}
-
-                            //fname = FileDialog.SaveFileDialog("データセーブ", SRC.ScenarioPath, Expression.GetValueAsString(argexpr1), 2, "ｾｰﾌﾞﾃﾞｰﾀ", "src", ftype2: "ｾｰﾌﾞﾃﾞｰﾀ"2, fsuffix2: "src"2, ftype3: "ｾｰﾌﾞﾃﾞｰﾀ"3, fsuffix3: "src"3);
-
-                            //// 再び「常に手前に表示」
-                            //if (My.MyProject.Forms.frmListBox.Visible)
-                            //{
-                            //    ret = GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -1, 0, 0, 0, 0, 0x3);
-                            //}
-
-                            //// キャンセル？
-                            //if (string.IsNullOrEmpty(fname))
-                            //{
-                            //    goto NextLoop;
-                            //}
-
-                            //// セーブ先はシナリオフォルダ？
-                            //if (Strings.InStr(fname, @"\") > 0)
-                            //{
-                            //    save_path = Strings.Left(fname, GeneralLib.InStr2(fname, @"\"));
-                            //}
-                            //// UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-                            //if ((FileSystem.Dir(save_path) ?? "") != (FileSystem.Dir(SRC.ScenarioPath) ?? ""))
-                            //{
-                            //    if (Interaction.MsgBox("セーブファイルはシナリオフォルダにないと読み込めません。" + Constants.vbCr + Constants.vbLf + "このままセーブしますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question)) != 1)
-                            //    {
-                            //        goto NextLoop;
-                            //    }
-                            //}
-
-                            //if (!string.IsNullOrEmpty(fname))
-                            //{
-                            //    SRC.UList.Update(); // 追加パイロットを消去
-                            //    SRC.SaveData(fname);
-                            //}
-
-                            break;
+                            if (saveStream != null)
+                            {
+                                SRC.UList.Update(); // 追加パイロットを消去
+                                SRC.SaveData(saveStream);
+                            }
                         }
+                        break;
 
                     case "機体改造":
                     case "ユニットの強化":

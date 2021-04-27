@@ -31,7 +31,9 @@ namespace SRCCore.Models
         // 地形データリストから指定したデータを取り出す
         public TerrainData Item(int ID)
         {
-            return TerrainList[ID];
+            return ID >= 0 && ID < TerrainList.Length 
+                ? TerrainList[ID]
+                : TerrainData.EmptyTerrain;
         }
 
         //// 指定したデータの名称
