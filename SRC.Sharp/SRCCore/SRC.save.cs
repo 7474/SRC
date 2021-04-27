@@ -44,23 +44,11 @@ namespace SRCCore
         public IList<string> AdditionalEventFileNames { get; set; }
         public Maps.Map Map { get; set; }
 
-        //    // Midi じゃなくて midi じゃないと検索失敗するようになってるので。
-        //    if (Strings.InStr(Strings.LCase(Sound.BGMFileName), @"\midi\") > 0)
-        //    {
-        //        FileSystem.WriteLine(SaveDataFileNumber, Strings.Mid(Sound.BGMFileName, Strings.InStr(Strings.LCase(Sound.BGMFileName), @"\midi\") + 6));
-        //    }
-        //    else if (Strings.InStr(Sound.BGMFileName, @"\") > 0)
-        //    {
-        //        FileSystem.WriteLine(SaveDataFileNumber, Strings.Mid(Sound.BGMFileName, Strings.InStr(Sound.BGMFileName, @"\") + 1));
-        //    }
-        //    else
-        //    {
-        //        FileSystem.WriteLine(SaveDataFileNumber, Sound.BGMFileName);
-        //    }
+        public string BGMFileName { get; set; }
+        public bool RepeatMode { get; set; }
+        public bool KeepBGM { get; set; }
+        public bool BossBGM { get; set; }
 
-        //    FileSystem.WriteLine(SaveDataFileNumber, (object)Sound.RepeatMode);
-        //    FileSystem.WriteLine(SaveDataFileNumber, (object)Sound.KeepBGM);
-        //    FileSystem.WriteLine(SaveDataFileNumber, (object)Sound.BossBGM);
         //    FileSystem.WriteLine(SaveDataFileNumber, (object)GeneralLib.RndSeed);
         //    FileSystem.WriteLine(SaveDataFileNumber, (object)GeneralLib.RndIndex);
     }
@@ -260,6 +248,11 @@ namespace SRCCore
                     DisableEventLabels = Event.colEventLabelList.List.Select(x => x.Data).ToList(),
                     AdditionalEventFileNames = Event.AdditionalEventFileNames.ToList(),
                     Map = Map,
+                    // TODO ファイルパスの正規化
+                    BGMFileName = Sound.BGMFileName,
+                    RepeatMode = Sound.RepeatMode,
+                    KeepBGM = Sound.KeepBGM,
+                    BossBGM = Sound.BossBGM,
                 };
 
                 stream.Write(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data, Formatting.Indented)));
@@ -429,30 +422,23 @@ namespace SRCCore
                 UList.Items.ToList().ForEach(x => x.Update());
                 PList.Items.ToList().ForEach(x => x.Update());
 
-                //    // MOD START 240a
-                //    // RestoreMapData
-                //    // 'ＢＧＭ関連の設定を復元
-                //    // Input #SaveDataFileNumber, fname2
-                //    // マップデータの互換性維持のため、RestoreMapDataでＢＧＭ関連の１行目まで読み込んで戻り値にした
-                //    fname2 = Map.RestoreMapData();
-                //    // MOD  END  240a
-                //    fname2 = Sound.SearchMidiFile("(" + fname2 + ")");
-                //    if (!string.IsNullOrEmpty(fname2))
-                //    {
-                //        Sound.KeepBGM = false;
-                //        Sound.BossBGM = false;
-                //        Sound.ChangeBGM(fname2);
-                //        FileSystem.Input(SaveDataFileNumber, Sound.RepeatMode);
-                //        FileSystem.Input(SaveDataFileNumber, Sound.KeepBGM);
-                //        FileSystem.Input(SaveDataFileNumber, Sound.BossBGM);
-                //    }
-                //    else
-                //    {
-                //        Sound.StopBGM();
-                //        dummy = FileSystem.LineInput(SaveDataFileNumber);
-                //        dummy = FileSystem.LineInput(SaveDataFileNumber);
-                //        dummy = FileSystem.LineInput(SaveDataFileNumber);
-                //    }
+                // ＢＧＭ関連の設定を復元
+                // TODO パスの正規化
+                var bgmFile = Sound.SearchMidiFile("(" + Path.GetFileName(data.BGMFileName) + ")");
+                if (!string.IsNullOrEmpty(bgmFile))
+                {
+                    // BGMが必ず切り替わる状態で変更してから関連設定を復元する
+                    Sound.KeepBGM = false;
+                    Sound.BossBGM = false;
+                    Sound.ChangeBGM(bgmFile);
+                }
+                else
+                {
+                    Sound.StopBGM();
+                }
+                Sound.RepeatMode = data.RepeatMode;
+                Sound.KeepBGM = data.KeepBGM;
+                Sound.BossBGM = data.BossBGM;
 
                 //    // 乱数系列を復元
                 //    if (!Expression.IsOptionDefined("デバッグ") & !Expression.IsOptionDefined("乱数系列非保存") & !FileSystem.EOF(SaveDataFileNumber))
