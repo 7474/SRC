@@ -236,6 +236,7 @@ namespace SRCSharpForm
                 mnuMapCommandItem_Click
                 )
             {
+                Checked = x.IsChecked,
                 Width = 172,
                 Tag = x,
             }).ToArray());

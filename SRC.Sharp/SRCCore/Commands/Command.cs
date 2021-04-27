@@ -20,6 +20,7 @@ namespace SRCCore.Commands
         private Sound Sound => SRC.Sound;
         private Effect Effect => SRC.Effect;
         private COM COM => SRC.COM;
+        private ISystemConfig SystemConfig => SRC.SystemConfig;
 
         public Command(SRC src)
         {
