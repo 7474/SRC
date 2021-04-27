@@ -62,6 +62,7 @@ namespace SRCCore.Commands
 
                 case AutoDefenseCmdID: // 自動反撃モード
                     SystemConfig.AutoDefense = !SystemConfig.AutoDefense;
+                    SystemConfig.Save();
                     break;
 
                 case ConfigurationCmdID: // 設定変更
