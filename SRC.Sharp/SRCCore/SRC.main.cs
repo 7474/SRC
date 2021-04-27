@@ -525,16 +525,16 @@ namespace SRCCore
             //            {
             //                if (Strings.LCase(buf) == "on")
             //                {
-            //                    GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked = true;
+            //                    SystemConfig.AutoDefense = true;
             //                }
             //                else
             //                {
-            //                    GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked = false;
+            //                    SystemConfig.AutoDefense = false;
             //                }
             //            }
             //            else
             //            {
-            //                GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked = false;
+            //                SystemConfig.AutoDefense = false;
             //                SystemConfig.SetItem("Option", "AutoDefense", "Off");
             //            }
 

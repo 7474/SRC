@@ -588,7 +588,7 @@ namespace SRCCore.Units
 
             //            // 自動反撃の場合、味方ユニットは残弾数が少ない武器を使用しない
             //            // UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //            if (GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked)
+            //            if (SystemConfig.AutoDefense)
             //            {
             //                if (!u.IsWeaponClassifiedAs(w, "永"))
             //                {
@@ -675,7 +675,7 @@ namespace SRCCore.Units
             //// かばう必要がない？
             //// 手動反撃で味方の場合はダメージにかかわらず常にかばう
             //// UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //if (Party != "味方" | GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked)
+            //if (Party != "味方" | SystemConfig.AutoDefense)
             //{
             //    if (t.IsNormalWeapon(tw))
             //    {

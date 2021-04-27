@@ -4678,7 +4678,7 @@ namespace SRCCore.Expressions
 
             //                case "AutoDeffence":
             //                    {
-            //                        if (GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked)
+            //                        if (SystemConfig.AutoDefense)
             //                        {
             //                            EvalInfoFuncRet = "On";
             //                        }

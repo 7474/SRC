@@ -4,6 +4,7 @@
 // 再頒布または改変することができます。
 
 using Newtonsoft.Json;
+using SRCCore.Extensions;
 using SRCCore.VB;
 using System;
 using System.IO;
@@ -59,17 +60,10 @@ namespace SRCCore.Commands
                     GUI.UnlockGUI();
                     break;
 
-                //case AutoDefenseCmdID: // 自動反撃モード
-                //GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked = !GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked;
-                //if (GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked)
-                //{
-                //    SystemConfig.SetItem("Option", "AutoDefense", "On");
-                //}
-                //else
-                //{
-                //    SystemConfig.SetItem("Option", "AutoDefense", "Off");
-                //}
-                //break;
+                case AutoDefenseCmdID: // 自動反撃モード
+                    SystemConfig.AutoDefense = !SystemConfig.AutoDefense;
+                    SystemConfig.Save();
+                    break;
 
                 case ConfigurationCmdID: // 設定変更
                     GUI.Configure();
