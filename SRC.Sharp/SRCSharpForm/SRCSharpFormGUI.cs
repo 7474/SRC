@@ -1317,7 +1317,7 @@ namespace SRCSharpForm
 
             // セーブ先はシナリオフォルダ？
             var save_path = Path.GetDirectoryName(fname);
-            if ((FileSystem.Dir(save_path) ?? "") != (FileSystem.Dir(SRC.ScenarioPath) ?? ""))
+            if (FileSystem.Dir(save_path, FileAttribute.Directory) != FileSystem.Dir(SRC.ScenarioPath, FileAttribute.Directory))
             {
                 if (Confirm("セーブファイルはシナリオフォルダにないと読み込めません。" + Constants.vbCr + Constants.vbLf + "このままセーブしますか？",
                     "セーブ",
