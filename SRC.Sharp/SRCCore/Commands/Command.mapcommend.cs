@@ -43,9 +43,9 @@ namespace SRCCore.Commands
                 //    SearchSpecialPowerCommand();
                 //    break;
 
-                //case GlobalMapCmdID: // 全体マップ
-                //    GlobalMapCommand();
-                //    break;
+                case GlobalMapCmdID: // 全体マップ
+                    GlobalMapCommand();
+                    break;
 
                 case OperationObjectCmdID: // 作戦目的
                     GUI.LockGUI();
@@ -947,151 +947,12 @@ namespace SRCCore.Commands
             SRC.ExitGame();
         }
 
-        //// 全体マップの表示
-        //// MOD START MARGE
-        //// Public Sub GlobalMapCommand()
-        //private void GlobalMapCommand()
-        //{
-        //    // MOD END MARGE
-        //    PictureBox pic;
-        //    int xx, yy;
-        //    int num = default, num2 = default;
-        //    int mwidth, mheight;
-        //    int ret, smode;
-        //    Unit u;
-        //    int i, j;
-        //    bool prev_mode;
-        //    GUI.LockGUI();
-        //    {
-        //        var withBlock = GUI.MainForm;
-        //        // 見やすいように背景を設定
-        //        withBlock.picMain(0).BackColor = 0xC0C0C0;
-        //        withBlock.picMain(0) = Image.FromFile("");
-
-        //        // マップの縦横の比率を元に縮小マップの大きさを決める
-        //        if (Map.MapWidth > Map.MapHeight)
-        //        {
-        //            mwidth = 300;
-        //            mheight = 300 * Map.MapHeight / Map.MapWidth;
-        //        }
-        //        else
-        //        {
-        //            mheight = 300;
-        //            mwidth = 300 * Map.MapWidth / Map.MapHeight;
-        //        }
-
-        //        // マップの全体画像を作成
-        //        pic = withBlock.picTmp;
-        //        pic.Image = Image.FromFile("");
-        //        pic.Width = SrcFormatter.TwipsToPixelsX(GUI.MapPWidth);
-        //        pic.Height = SrcFormatter.TwipsToPixelsY(GUI.MapPHeight);
-        //        ret = GUI.BitBlt(pic.hDC, 0, 0, GUI.MapPWidth, GUI.MapPHeight, withBlock.picBack.hDC, 0, 0, GUI.SRCCOPY);
-        //        var loopTo = Map.MapWidth;
-        //        for (i = 1; i <= loopTo; i++)
-        //        {
-        //            xx = (32 * (i - 1));
-        //            var loopTo1 = Map.MapHeight;
-        //            for (j = 1; j <= loopTo1; j++)
-        //            {
-        //                yy = (32 * (j - 1));
-        //                u = Map.MapDataForUnit[i, j];
-        //                if (u is object)
-        //                {
-        //                    if (u.BitmapID > 0)
-        //                    {
-        //                        if (u.Action > 0 | u.IsFeatureAvailable("地形ユニット"))
-        //                        {
-        //                            // ユニット
-        //                            ret = GUI.BitBlt(pic.hDC, xx, yy, 32, 32, withBlock.picUnitBitmap.hDC, 32 * (u.BitmapID % 15), 96 * (u.BitmapID / 15), GUI.SRCCOPY);
-        //                        }
-        //                        else
-        //                        {
-        //                            // 行動済のユニット
-        //                            ret = GUI.BitBlt(pic.hDC, xx, yy, 32, 32, withBlock.picUnitBitmap.hDC, 32 * (u.BitmapID % 15), 96 * (u.BitmapID / 15) + 32, GUI.SRCCOPY);
-        //                        }
-
-        //                        // ユニットのいる場所に合わせて表示を変更
-        //                        switch (u.Area ?? "")
-        //                        {
-        //                            case "空中":
-        //                                {
-        //                                    pic.Line(xx, yy + 28); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-        //                                    break;
-        //                                }
-
-        //                            case "水中":
-        //                                {
-        //                                    pic.Line(xx, yy + 3); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-        //                                    break;
-        //                                }
-
-        //                            case "地中":
-        //                                {
-        //                                    pic.Line(xx, yy + 28); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-        //                                    pic.Line(xx, yy + 3); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-        //                                    break;
-        //                                }
-
-        //                            case "宇宙":
-        //                                {
-        //                                    if (Map.TerrainClass(i, j) == "月面")
-        //                                    {
-        //                                        pic.Line(xx, yy + 28); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-        //                                    }
-
-        //                                    break;
-        //                                }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-
-        //        // マップ全体を縮小して描画
-        //        smode = GUI.GetStretchBltMode(withBlock.picMain(0).hDC);
-        //        ret = GUI.SetStretchBltMode(withBlock.picMain(0).hDC, GUI.STRETCH_DELETESCANS);
-        //        ret = GUI.StretchBlt(withBlock.picMain(0).hDC, (GUI.MainPWidth - mwidth) / 2, (GUI.MainPHeight - mheight) / 2, mwidth, mheight, pic.hDC, 0, 0, GUI.MapPWidth, GUI.MapPHeight, GUI.SRCCOPY);
-        //        ret = GUI.SetStretchBltMode(withBlock.picMain(0).hDC, smode);
-
-        //        // マップ全体画像を破棄
-        //        pic.Image = Image.FromFile("");
-        //        pic.Width = SrcFormatter.TwipsToPixelsX(32d);
-        //        pic.Height = SrcFormatter.TwipsToPixelsY(32d);
-
-        //        // 画面を更新
-        //        withBlock.picMain(0).Refresh();
-        //    }
-
-        //    // 味方ユニット数、敵ユニット数のカウント
-        //    foreach (Unit currentU in SRC.UList)
-        //    {
-        //        u = currentU;
-        //        if (u.Status_Renamed == "出撃" | u.Status_Renamed == "格納")
-        //        {
-        //            if (u.Party0 == "味方" | u.Party0 == "ＮＰＣ")
-        //            {
-        //                num = (num + 1);
-        //            }
-        //            else
-        //            {
-        //                num2 = (num2 + 1);
-        //            }
-        //        }
-        //    }
-
-        //    // 各ユニット数の表示
-        //    prev_mode = GUI.AutoMessageMode;
-        //    GUI.AutoMessageMode = false;
-        //    GUI.OpenMessageForm(u1: null, u2: null);
-        //    GUI.DisplayMessage("システム", "味方ユニット： " + SrcFormatter.Format(num) + ";" + "敵ユニット  ： " + SrcFormatter.Format(num2));
-        //    GUI.CloseMessageForm();
-        //    GUI.AutoMessageMode = prev_mode;
-
-        //    // 画面を元に戻す
-        //    GUI.MainForm.picMain(0).BackColor = 0xFFFFFF;
-        //    GUI.RefreshScreen();
-        //    GUI.UnlockGUI();
-        //}
-
+        // 全体マップの表示
+        private void GlobalMapCommand()
+        {
+            GUI.LockGUI();
+            GUI.DisplayGlobalMap();
+            GUI.UnlockGUI();
+        }
     }
 }

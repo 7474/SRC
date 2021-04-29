@@ -143,6 +143,11 @@ namespace SRCDataLinter
             throw new NotImplementedException();
         }
 
+        public void DisplayGlobalMap()
+        {
+            throw new NotImplementedException();
+        }
+
         public void DisplayLoadingProgress()
         {
             throw new NotImplementedException();

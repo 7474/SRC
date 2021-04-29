@@ -601,6 +601,58 @@ namespace SRCSharpForm
             }
         }
 
+
+        public void DisplayGlobalMap()
+        {
+            int mwidth, mheight;
+
+            // マップの縦横の比率を元に縮小マップの大きさを決める
+            if (Map.MapWidth > Map.MapHeight)
+            {
+                mwidth = 300;
+                mheight = 300 * Map.MapHeight / Map.MapWidth;
+            }
+            else
+            {
+                mheight = 300;
+                mwidth = 300 * Map.MapWidth / Map.MapHeight;
+            }
+            using (var buf = new Bitmap(Map.MapWidth * MapCellPx, Map.MapHeight * MapCellPx))
+            using (var bufG = Graphics.FromImage(buf))
+            using (var g = _picMain_0.CreateGraphics())
+            {
+                // マップの全体画像を作成
+                bufG.DrawImage(picBack.Image, 0, 0);
+                for (var i = 0; i < Map.MapWidth; i++)
+                {
+                    var xx = MapCellPx * i;
+                    for (var j = 0; j < Map.MapHeight; j++)
+                    {
+                        var yy = MapCellPx * j;
+                        var cell = Map.MapData[1 + i, 1 + j];
+                        var u = Map.MapDataForUnit[1 + i, 1 + j];
+
+                        if (u != null)
+                        {
+                            var destRect = new Rectangle(xx, yy, MapCellPx, MapCellPx);
+                            var fromRect = new Rectangle(MapCellPx * i, MapCellPx * j, MapCellPx, MapCellPx);
+                            DrawUnit(bufG, cell, u, destRect);
+                        }
+                    }
+                }
+
+                // 見やすいように背景を設定
+                g.FillRectangle(Brushes.Black, 0, 0, MainPWidth, MainPHeight);
+
+                // マップ全体を縮小して描画
+                g.DrawImage(buf,
+                    new Rectangle((MapPWidth - mwidth) / 2, (MapPHeight - mheight) / 2, mheight, mwidth),
+                    new Rectangle(0, 0, buf.Width, buf.Height),
+                    GraphicsUnit.Pixel);
+            }
+            _picMain_0.Update();
+        }
+
         private bool IsInsideWindow(int x, int y)
         {
             return x >= GUI.MapX - (GUI.MainWidth + 1) / 2

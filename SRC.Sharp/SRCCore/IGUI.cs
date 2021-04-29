@@ -307,6 +307,9 @@ namespace SRCCore
         // === セーブ ===
         Stream SelectSaveStream(SRCSaveKind saveKind, string defaultName = null);
         Stream OpenQuikSaveStream(FileAccess fileAccess);
+
+        // === マップコマンド ===
+        void DisplayGlobalMap();
     }
 
     public enum GuiStatus
