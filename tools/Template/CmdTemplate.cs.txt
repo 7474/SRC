@@ -1,0 +1,18 @@
+﻿using SRCCore.Events;
+using System;
+
+namespace SRCCore.CmdDatas.Commands
+{
+    public class {0}Cmd : CmdData
+    {
+        public {0}Cmd(SRC src, EventDataLine eventData) : base(src, CmdType.{0}Cmd, eventData)
+        {
+        }
+
+        protected override int ExecInternal()
+        {
+            throw new NotImplementedException();
+            //return EventData.NextID;
+        }
+    }
+}
