@@ -39,7 +39,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "array":
-                        return new NotImplementedCmd(src, data);
+                        return new ArrayCmd(src, data);
 
                     case "ask":
                         return new AskCmd(src, data);
@@ -150,7 +150,7 @@ namespace SRCCore.CmdDatas
                         return new ContinueCmd(src, data);
 
                     case "copyarray":
-                        return new NotImplementedCmd(src, data);
+                        return new CopyArrayCmd(src, data);
 
                     case "copyfile":
                         return new NotImplementedCmd(src, data);
@@ -252,7 +252,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "global":
-                        return new NotImplementedCmd(src, data);
+                        return new GlobalCmd(src, data);
 
                     case "goto":
                         return new GotoCmd(src, data);
@@ -486,24 +486,25 @@ namespace SRCCore.CmdDatas
 
                     case "setskill":
                         return new NotImplementedCmd(src, data);
+
                     case "setability":
                         return new NotImplementedCmd(src, data);
 
                     case "setstatus":
                         return new NotImplementedCmd(src, data);
-                    //// ADD START 240a
+
                     case "setstatusstringcolor":
                         return new NotImplementedCmd(src, data);
-                    //// ADD  END
+
                     case "setstock":
                         return new NotImplementedCmd(src, data);
-                    //// ADD START 240a
+
                     case "setwindowcolor":
                         return new NotImplementedCmd(src, data);
 
                     case "setwindowframewidth":
                         return new NotImplementedCmd(src, data);
-                    //// ADD  END
+
                     case "show":
                         return new NotImplementedCmd(src, data);
 
@@ -517,7 +518,7 @@ namespace SRCCore.CmdDatas
                         return new SkipCmd(src, data);
 
                     case "sort":
-                        return new NotImplementedCmd(src, data);
+                        return new SortCmd(src, data);
 
                     case "specialpower":
                         return new NotImplementedCmd(src, data);
@@ -543,7 +544,7 @@ namespace SRCCore.CmdDatas
                         return new UnSetCmd(src, data);
 
                     case "swap":
-                        return new NotImplementedCmd(src, data);
+                        return new SwapCmd(src, data);
 
                     case "switch":
                         return new SwitchCmd(src, data);
