@@ -2,51 +2,6 @@ using SRCCore.Lib;
 
 namespace SRCCore.Expressions.Functions
 {
-
-    public class Args : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Args
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
-    public class Call : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Call
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
     public class Info : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
@@ -179,27 +134,6 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Abs : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Abs
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
 
     public class Action : AFunction
     {
@@ -253,28 +187,6 @@ namespace SRCCore.Expressions.Functions
             num_result = 0d;
 
             // TODO Impl Asc
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
-    public class Atn : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Atn
 
             if (etype == ValueType.StringType)
             {
@@ -407,28 +319,6 @@ namespace SRCCore.Expressions.Functions
             num_result = 0d;
 
             // TODO Impl Countpilot
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
-    public class Cos : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Cos
 
             if (etype == ValueType.StringType)
             {
@@ -715,28 +605,6 @@ namespace SRCCore.Expressions.Functions
             num_result = 0d;
 
             // TODO Impl Instrrevb
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
-    public class Int : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Int
 
             if (etype == ValueType.StringType)
             {
@@ -1059,28 +927,6 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Lcase : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Lcase
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
     public class Lset : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
@@ -1102,27 +948,6 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-
-    public class Max : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Max
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
 
 
     public class Mid : AFunction
@@ -1168,27 +993,6 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-
-    public class Min : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Min
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
 
 
     public class Morale : AFunction
@@ -1331,28 +1135,6 @@ namespace SRCCore.Expressions.Functions
             num_result = 0d;
 
             // TODO Impl Plana
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
-    public class Random : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Random
 
             if (etype == ValueType.StringType)
             {
@@ -1542,29 +1324,6 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-
-    public class Round : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Round
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
     public class Rounddown : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
@@ -1617,28 +1376,6 @@ namespace SRCCore.Expressions.Functions
             num_result = 0d;
 
             // TODO Impl Rset
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
-    public class Sin : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Sin
 
             if (etype == ValueType.StringType)
             {
@@ -1741,28 +1478,6 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Sqr : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Sqr
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
     public class Status : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
@@ -1815,28 +1530,6 @@ namespace SRCCore.Expressions.Functions
             num_result = 0d;
 
             // TODO Impl String
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
-    public class Tan : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Tan
 
             if (etype == ValueType.StringType)
             {
@@ -1939,28 +1632,6 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Unit : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Unit
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
     public class Unitid : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
@@ -1969,50 +1640,6 @@ namespace SRCCore.Expressions.Functions
             num_result = 0d;
 
             // TODO Impl Unitid
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
-    public class X : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl X
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
-    public class Y : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Y
 
             if (etype == ValueType.StringType)
             {
