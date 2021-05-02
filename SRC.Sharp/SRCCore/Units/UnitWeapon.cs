@@ -6038,7 +6038,8 @@ namespace SRCCore.Units
         // 合体技攻撃に必要なパートナーが見つかるか？
         public bool IsCombinationAttackAvailable(bool check_formation = false)
         {
-            throw new NotImplementedException();
+            return false;
+            // TODO Impl IsCombinationAttackAvailable
             //bool IsCombinationAttackAvailableRet = default;
             //Unit[] partners;
             //partners = new Unit[1];
