@@ -1424,7 +1424,10 @@ namespace SRCCore.Units
                 // ユニット分
                 newWeapons.AddRange(Data.Weapons.Select(x => new UnitWeapon(SRC, this, x, prevWeapons)));
                 // メインパイロット、サブパイロット、サポート、追加サポート分
-                newWeapons.AddRange(AllPilots.SelectMany(p => p.Data.Weapons.Select(x => new UnitWeapon(SRC, this, x, prevWeapons))));
+                if (CountPilot() > 0)
+                {
+                    newWeapons.AddRange(AllPilots.SelectMany(p => p.Data.Weapons.Select(x => new UnitWeapon(SRC, this, x, prevWeapons))));
+                }
                 // アイテム分
                 newWeapons.AddRange(ItemList.SelectMany(itm => itm.Data.Weapons.Select(x => new UnitWeapon(SRC, this, x, prevWeapons))));
                 WData = newWeapons;
