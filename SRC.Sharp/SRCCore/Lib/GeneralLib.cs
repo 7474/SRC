@@ -471,21 +471,13 @@ namespace SRCCore.Lib
         // 文字列 buf の長さが length になるように左側にスペースを付加する
         public static string LeftPaddedString(string buf, int length)
         {
-            return buf;
-            // TODO 面倒くさいのでとりあえずパス
-            //string LeftPaddedStringRet = default;
-            //LeftPaddedStringRet = Strings.Space(MaxLng(length - LenB(Strings.StrConv(buf, vbFromUnicode)), 0)) + buf;
-            //return LeftPaddedStringRet;
+            return Strings.Space(MaxLng(length - StrWidth(buf), 0)) + buf;
         }
 
         // 文字列 buf の長さが length になるように右側にスペースを付加する
         public static string RightPaddedString(string buf, int length)
         {
-            return buf;
-            // TODO 面倒くさいのでとりあえずパス
-            //string RightPaddedStringRet = default;
-            //RightPaddedStringRet = buf + Strings.Space(MaxLng(length - LenB(Strings.StrConv(buf, vbFromUnicode)), 0));
-            //return RightPaddedStringRet;
+            return buf + Strings.Space(MaxLng(length - StrWidth(buf), 0));
         }
 
         // TODO 精査、 Byte length 系と統合する
