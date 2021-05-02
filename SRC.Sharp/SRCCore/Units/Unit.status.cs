@@ -1422,14 +1422,14 @@ namespace SRCCore.Units
                 var prevWeapons = WData?.CloneList() ?? new List<UnitWeapon>();
                 var newWeapons = new List<UnitWeapon>();
                 // ユニット分
-                newWeapons.AddRange(Data.Weapons.Select(x => new UnitWeapon(SRC, this, x, prevWeapons)));
+                newWeapons.AddRange(Data.Weapons.Select(x => UnitWeapon.NewOrRef(SRC, this, x, prevWeapons)));
                 // メインパイロット、サブパイロット、サポート、追加サポート分
                 if (CountPilot() > 0)
                 {
-                    newWeapons.AddRange(AllPilots.SelectMany(p => p.Data.Weapons.Select(x => new UnitWeapon(SRC, this, x, prevWeapons))));
+                    newWeapons.AddRange(AllPilots.SelectMany(p => p.Data.Weapons.Select(x => UnitWeapon.NewOrRef(SRC, this, x, prevWeapons))));
                 }
                 // アイテム分
-                newWeapons.AddRange(ItemList.SelectMany(itm => itm.Data.Weapons.Select(x => new UnitWeapon(SRC, this, x, prevWeapons))));
+                newWeapons.AddRange(ItemList.SelectMany(itm => itm.Data.Weapons.Select(x => UnitWeapon.NewOrRef(SRC, this, x, prevWeapons))));
                 WData = newWeapons;
             }
 
@@ -2163,6 +2163,5 @@ namespace SRCCore.Units
             //        }
             //    }
         }
-
     }
 }

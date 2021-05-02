@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using Newtonsoft.Json;
 using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.Models;
@@ -13,10 +14,11 @@ using System.Linq;
 namespace SRCCore.Units
 {
     // === 武器関連処理 ===
+    [JsonObject(MemberSerialization.OptIn)]
     public class UnitWeapon
     {
-        public Unit Unit { get; }
-        public WeaponData WeaponData { get; }
+        public Unit Unit { get; private set; }
+        public WeaponData WeaponData { get; private set; }
 
         private SRC SRC;
         private Events.Event Event => SRC.Event;
@@ -25,6 +27,7 @@ namespace SRCCore.Units
         private Commands.Command Commands => SRC.Commands;
 
         // 状態
+        [JsonProperty]
         private double dblBulletRate;
 
         // 更新後ステータス
@@ -48,25 +51,37 @@ namespace SRCCore.Units
         }
 
         // 武器
-        public UnitWeapon(SRC src, Unit u, WeaponData wd, IList<UnitWeapon> prevWeapons)
+        public UnitWeapon(SRC src, Unit u, WeaponData wd)
         {
             SRC = src;
 
+            Name = wd.Name;
             Unit = u;
             WeaponData = wd;
-
-            // 同一の武器を探し、存在すれば状態を引き継ぐ
-            var prevWeapon = prevWeapons.FirstOrDefault(x => x.Name == wd.Name);
-            if (prevWeapon != null)
+            InitProps();
+            SetBulletRate(1d);
+        }
+        [JsonConstructor]
+        private UnitWeapon() { }
+        public static UnitWeapon NewOrRef(SRC src, Unit u, WeaponData wd, IList<UnitWeapon> existWeapons)
+        {
+            var existWeapon = existWeapons.FirstOrDefault(x => x.Name == wd.Name);
+            if (existWeapon != null)
             {
-                dblBulletRate = prevWeapon.dblBulletRate;
+                existWeapon.SRC = src;
+                existWeapon.Unit = u;
+                existWeapon.WeaponData = wd;
+                existWeapon.InitProps();
+                return existWeapon;
             }
             else
             {
-                dblBulletRate = 1d;
+                return new UnitWeapon(src, u, wd);
             }
-
-            SetWeaponClass(wd.Class);
+        }
+        private void InitProps()
+        {
+            SetWeaponClass(WeaponData.Class);
             SetPowerCorrection(0);
             SetMaxRangeCorrection(0);
             SetPrecisionCorrection(0);
@@ -74,7 +89,8 @@ namespace SRCCore.Units
             SetMaxBulletRate(1d);
         }
 
-        public string Name => WeaponData.Name;
+        [JsonProperty]
+        public string Name { get; private set; }
 
         // 武器の愛称
         public string WeaponNickname()
@@ -5280,7 +5296,7 @@ namespace SRCCore.Units
         // 弾数を設定
         public void SetBullet(int new_bullet)
         {
-            if (new_bullet < 0)
+            if (new_bullet <= 0)
             {
                 SetBulletRate(0d);
             }
