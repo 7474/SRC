@@ -1,4 +1,5 @@
 using SRCCore.Exceptions;
+using SRCCore.Lib;
 using SRCCore.Pilots;
 using System;
 using System.Collections.Generic;
@@ -167,7 +168,7 @@ namespace SRCCore.Units
             //            MainPilotRet = pltAdditionalPilot;
             //            {
             //                var withBlock = pltAdditionalPilot;
-            //                if (withBlock.IsAdditionalPilot & !erenceEquals(withBlock.Unit_Renamed, this))
+            //                if (withBlock.IsAdditionalPilot && !erenceEquals(withBlock.Unit_Renamed, this))
             //                {
             //                    withBlock.Unit_Renamed = this;
             //                    withBlock.Party = Party0;
@@ -209,7 +210,7 @@ namespace SRCCore.Units
             //                    pltAdditionalPilot = localOtherForm().pltAdditionalPilot;
             //                    withBlock1.Party = Party0;
             //                    withBlock1.Unit_Renamed = this;
-            //                    if (withBlock1.IsAdditionalPilot & !erenceEquals(withBlock1.Unit_Renamed, this))
+            //                    if (withBlock1.IsAdditionalPilot && !erenceEquals(withBlock1.Unit_Renamed, this))
             //                    {
             //                        withBlock1.Level = Pilot(1).Level;
             //                        withBlock1.Exp = Pilot(1).Exp;
@@ -252,7 +253,7 @@ namespace SRCCore.Units
             //    if (SRC.PList.IsDefined(pname))
             //    {
             //        p = SRC.PList.Item(pname);
-            //        if (!p.IsAdditionalPilot | Strings.InStr(pname, "(ザコ)") == 0 & Strings.InStr(pname, "(汎用)") == 0)
+            //        if (!p.IsAdditionalPilot | Strings.InStr(pname, "(ザコ)") == 0 && Strings.InStr(pname, "(汎用)") == 0)
             //        {
             //            pltAdditionalPilot = p;
             //            {
@@ -465,7 +466,7 @@ namespace SRCCore.Units
             //    if (SRC.PList.IsDefined(pname))
             //    {
             //        p = SRC.PList.Item(pname);
-            //        if (!p.IsAdditionalSupport | Strings.InStr(pname, "(ザコ)") == 0 & Strings.InStr(pname, "(汎用)") == 0)
+            //        if (!p.IsAdditionalSupport | Strings.InStr(pname, "(ザコ)") == 0 && Strings.InStr(pname, "(汎用)") == 0)
             //        {
             //            pltAdditionalSupport = p;
             //            {
@@ -757,123 +758,123 @@ namespace SRCCore.Units
         //    return MaxSkillLevelRet;
         //}
 
-        //// ユニットのオーラ力レベル
-        //public double AuraLevel(bool no_limit = false)
-        //{
-        //    double AuraLevelRet = default;
-        //    switch (CountPilot())
-        //    {
-        //        case 0:
-        //            {
-        //                return AuraLevelRet;
-        //            }
+        // ユニットのオーラ力レベル
+        public double AuraLevel(bool no_limit = false)
+        {
+            double AuraLevelRet = default;
+            switch (CountPilot())
+            {
+                case 0:
+                    {
+                        return AuraLevelRet;
+                    }
 
-        //        case 1:
-        //            {
-        //                AuraLevelRet = MainPilot().SkillLevel("オーラ", _mode: "");
-        //                break;
-        //            }
+                case 1:
+                    {
+                        AuraLevelRet = MainPilot().SkillLevel("オーラ", ref_mode: "");
+                        break;
+                    }
 
-        //        default:
-        //            {
-        //                // パイロットが２名以上の場合は２人目のオーラ力を加算
-        //                AuraLevelRet = MainPilot().SkillLevel("オーラ", _mode: "") + Pilot(2).SkillLevel("オーラ", _mode: "") / 2d;
-        //                break;
-        //            }
-        //    }
+                default:
+                    {
+                        // パイロットが２名以上の場合は２人目のオーラ力を加算
+                        AuraLevelRet = MainPilot().SkillLevel("オーラ", ref_mode: "") + Pilots[1].SkillLevel("オーラ", ref_mode: "") / 2d;
+                        break;
+                    }
+            }
 
-        //    // サポートのオーラ力を加算
-        //    if (IsFeatureAvailable("追加サポート"))
-        //    {
-        //        AuraLevelRet = AuraLevelRet + AdditionalSupport().SkillLevel("オーラ", _mode: "") / 2d;
-        //    }
-        //    else if (CountSupport() > 0)
-        //    {
-        //        AuraLevelRet = AuraLevelRet + Support(1).SkillLevel("オーラ", _mode: "") / 2d;
-        //    }
+            // サポートのオーラ力を加算
+            if (IsFeatureAvailable("追加サポート"))
+            {
+                AuraLevelRet = AuraLevelRet + AdditionalSupport().SkillLevel("オーラ", ref_mode: "") / 2d;
+            }
+            else if (CountSupport() > 0)
+            {
+                AuraLevelRet = AuraLevelRet + Supports.First().SkillLevel("オーラ", ref_mode: "") / 2d;
+            }
 
-        //    // オーラ変換器レベルによる制限
-        //    if (IsFeatureAvailable("オーラ変換器") & !no_limit)
-        //    {
-        //        if (IsFeatureLevelSpecified("オーラ変換器"))
-        //        {
-        //            AuraLevelRet = GeneralLib.MinDbl(AuraLevelRet, FeatureLevel("オーラ変換器"));
-        //        }
-        //    }
+            // オーラ変換器レベルによる制限
+            if (IsFeatureAvailable("オーラ変換器") && !no_limit)
+            {
+                if (IsFeatureLevelSpecified("オーラ変換器"))
+                {
+                    AuraLevelRet = GeneralLib.MinDbl(AuraLevelRet, FeatureLevel("オーラ変換器"));
+                }
+            }
 
-        //    return AuraLevelRet;
-        //}
+            return AuraLevelRet;
+        }
 
-        //// ユニットの超能力レベル
-        //public double PsychicLevel(bool no_limit = false)
-        //{
-        //    double PsychicLevelRet = default;
-        //    switch (CountPilot())
-        //    {
-        //        case 0:
-        //            {
-        //                return PsychicLevelRet;
-        //            }
+        // ユニットの超能力レベル
+        public double PsychicLevel(bool no_limit = false)
+        {
+            double PsychicLevelRet = 0d;
+            switch (CountPilot())
+            {
+                case 0:
+                    {
+                        return PsychicLevelRet;
+                    }
 
-        //        case 1:
-        //            {
-        //                PsychicLevelRet = MainPilot().SkillLevel("超能力", _mode: "");
-        //                break;
-        //            }
+                case 1:
+                    {
+                        PsychicLevelRet = MainPilot().SkillLevel("超能力", ref_mode: "");
+                        break;
+                    }
 
-        //        default:
-        //            {
-        //                // パイロットが２名以上の場合は２人目の超能力を加算
-        //                PsychicLevelRet = MainPilot().SkillLevel("超能力", _mode: "") + Pilot(2).SkillLevel("超能力", _mode: "") / 2d;
-        //                break;
-        //            }
-        //    }
+                default:
+                    {
+                        // パイロットが２名以上の場合は２人目の超能力を加算
+                        PsychicLevelRet = MainPilot().SkillLevel("超能力", ref_mode: "") + Pilots[1].SkillLevel("超能力", ref_mode: "") / 2d;
+                        break;
+                    }
+            }
 
-        //    // サポートのオーラ力を加算
-        //    if (IsFeatureAvailable("追加サポート"))
-        //    {
-        //        PsychicLevelRet = PsychicLevelRet + AdditionalSupport().SkillLevel("超能力", _mode: "") / 2d;
-        //    }
-        //    else if (CountSupport() > 0)
-        //    {
-        //        // サポートの超能力を加算
-        //        PsychicLevelRet = PsychicLevelRet + Support(1).SkillLevel("超能力", _mode: "") / 2d;
-        //    }
+            // サポートの超能力を加算
+            if (IsFeatureAvailable("追加サポート"))
+            {
+                PsychicLevelRet = PsychicLevelRet + AdditionalSupport().SkillLevel("超能力", ref_mode: "") / 2d;
+            }
+            else if (CountSupport() > 0)
+            {
+                // サポートの超能力を加算
+                PsychicLevelRet = PsychicLevelRet + Supports.First().SkillLevel("超能力", ref_mode: "") / 2d;
+            }
 
-        //    // サイキックドライブによる制限
-        //    if (IsFeatureAvailable("サイキックドライブ") & !no_limit)
-        //    {
-        //        if (IsFeatureLevelSpecified("サイキックドライブ"))
-        //        {
-        //            PsychicLevelRet = GeneralLib.MinDbl(PsychicLevelRet, FeatureLevel("サイキックドライブ"));
-        //        }
-        //    }
+            // サイキックドライブによる制限
+            if (IsFeatureAvailable("サイキックドライブ") && !no_limit)
+            {
+                if (IsFeatureLevelSpecified("サイキックドライブ"))
+                {
+                    PsychicLevelRet = GeneralLib.MinDbl(PsychicLevelRet, FeatureLevel("サイキックドライブ"));
+                }
+            }
 
-        //    return PsychicLevelRet;
-        //}
+            return PsychicLevelRet;
+        }
 
-        //// ユニットの同調率
-        //public double SyncLevel(bool no_limit = false)
-        //{
-        //    double SyncLevelRet = default;
-        //    if (CountPilot() == 0)
-        //    {
-        //        return SyncLevelRet;
-        //    }
+        // ユニットの同調率
+        public double SyncLevel(bool no_limit = false)
+        {
+            double SyncLevelRet = default;
+            if (CountPilot() == 0)
+            {
+                return SyncLevelRet;
+            }
 
-        //    SyncLevelRet = MainPilot().SynchroRate();
+            SyncLevelRet = MainPilot().SynchroRate();
 
-        //    // シンクロドライブレベルによる制限
-        //    if (IsFeatureAvailable("シンクロドライブ") & !no_limit)
-        //    {
-        //        if (IsFeatureLevelSpecified("シンクロドライブ"))
-        //        {
-        //            SyncLevelRet = GeneralLib.MinDbl(SyncLevelRet, FeatureLevel("シンクロドライブ"));
-        //        }
-        //    }
+            // シンクロドライブレベルによる制限
+            if (IsFeatureAvailable("シンクロドライブ") && !no_limit)
+            {
+                if (IsFeatureLevelSpecified("シンクロドライブ"))
+                {
+                    SyncLevelRet = GeneralLib.MinDbl(SyncLevelRet, FeatureLevel("シンクロドライブ"));
+                }
+            }
 
-        //    return SyncLevelRet;
-        //}
+            return SyncLevelRet;
+        }
 
         // ユニットの霊力レベル
         public double PlanaLevel(bool no_limit = false)
@@ -887,7 +888,7 @@ namespace SRCCore.Units
             PlanaLevelRet = MainPilot().Plana;
 
             // 霊力変換器レベルによる制限
-            if (IsFeatureAvailable("霊力変換器") & !no_limit)
+            if (IsFeatureAvailable("霊力変換器") && !no_limit)
             {
                 if (IsFeatureLevelSpecified("霊力変換器"))
                 {

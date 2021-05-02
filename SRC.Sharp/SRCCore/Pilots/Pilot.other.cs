@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Lib;
 using SRCCore.Units;
 
 namespace SRCCore.Pilots
@@ -33,32 +34,32 @@ namespace SRCCore.Pilots
             Plana = MaxPlana();
         }
 
-        //// 同調率
-        //public int SynchroRate()
-        //{
-        //    int SynchroRateRet = default;
-        //    int lv;
-        //    if (!IsSkillAvailable("同調率"))
-        //    {
-        //        return SynchroRateRet;
-        //    }
+        // 同調率
+        public int SynchroRate()
+        {
+            int SynchroRateRet = default;
+            int lv;
+            if (!IsSkillAvailable("同調率"))
+            {
+                return SynchroRateRet;
+            }
 
-        //    // 同調率基本値
-        //    SynchroRateRet = SkillLevel("同調率", ref_mode: "");
+            // 同調率基本値
+            SynchroRateRet = (int)SkillLevel("同調率", ref_mode: "");
 
-        //    // レベルによる増加分
-        //    lv = GeneralLib.MinLng(Level, 100);
-        //    if (IsSkillAvailable("同調率成長"))
-        //    {
-        //        SynchroRateRet = (SynchroRateRet + (long)(lv * (10d + SkillLevel("同調率成長", ref_mode: ""))) / 10L);
-        //    }
-        //    else
-        //    {
-        //        SynchroRateRet = (SynchroRateRet + lv);
-        //    }
+            // レベルによる増加分
+            lv = GeneralLib.MinLng(Level, 100);
+            if (IsSkillAvailable("同調率成長"))
+            {
+                SynchroRateRet = (int)(SynchroRateRet + lv * (10d + SkillLevel("同調率成長", ref_mode: "")) / 10L);
+            }
+            else
+            {
+                SynchroRateRet = SynchroRateRet + lv;
+            }
 
-        //    return SynchroRateRet;
-        //}
+            return SynchroRateRet;
+        }
 
         //// 指揮範囲
         //public int CommandRange()

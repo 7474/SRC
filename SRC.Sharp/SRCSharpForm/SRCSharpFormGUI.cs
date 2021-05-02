@@ -910,12 +910,13 @@ namespace SRCSharpForm
             TopItem = -1;
             var list = weapons.Items.Select(x => new ListBoxItem()
             {
-                Text = $"{x.Weapon.Name}" +
-                    $" {x.Weapon.WeaponPower("")}" +
-                    $" {x.Weapon.WeaponPrecision()}" +
-                    $" {x.Weapon.WeaponCritical()}" +
-                    $" {x.Weapon.WeaponENConsumption()}" +
-                    $" {x.Weapon.UpdatedWeaponData.Adaption}" +
+                Text = $"{ GeneralLib.RightPaddedString(x.Weapon.Name, 28)}" +
+                    $" { GeneralLib.LeftPaddedString(x.Weapon.WeaponPower("") + "", 4)}" +
+                    $" { GeneralLib.LeftPaddedString(x.Weapon.WeaponPrecision() + "", 3)}" +
+                    $" { GeneralLib.LeftPaddedString(x.Weapon.WeaponCritical() + "", 3)}" +
+                    $" { GeneralLib.LeftPaddedString(x.Weapon.Bullet() + "", 3)}" +
+                    $" { GeneralLib.LeftPaddedString(x.Weapon.WeaponENConsumption() + "", 4)}" +
+                    $" {x.Weapon.WeaponData.Adaption}" +
                     $" {x.Weapon.WeaponClass()}",
                 ListItemComment = "",
                 ListItemFlag = !x.CanUse,

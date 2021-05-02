@@ -1,3 +1,4 @@
+using SRCCore.Lib;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
@@ -39,6 +40,16 @@ namespace SRCCore.Lib.Tests
         {
             Assert.AreEqual("100000000000000000000", GeneralLib.FormatNum(1e20));
             Assert.AreEqual("0.1", GeneralLib.FormatNum(1e-1));
+        }
+
+        [TestMethod()]
+        public void StrWidthTest()
+        {
+            Assert.AreEqual(0, GeneralLib.StrWidth(null));
+            Assert.AreEqual(0, GeneralLib.StrWidth(""));
+            Assert.AreEqual(3, GeneralLib.StrWidth("123"));
+            Assert.AreEqual(4, GeneralLib.StrWidth("1２3"));
+            Assert.AreEqual(6, GeneralLib.StrWidth("１２３"));
         }
     }
 }

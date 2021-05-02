@@ -146,9 +146,9 @@ namespace SRCCore
                 // まず準備アニメ表示の際にフェイスアップを表示するか決定する
                 if (withBlock.CountWeapon() >= 4
                     && w.WeaponNo() >= withBlock.CountWeapon() - 1
-                    && w.UpdatedWeaponData.Power >= 1800
-                    && (w.UpdatedWeaponData.Bullet > 0 && w.UpdatedWeaponData.Bullet <= 4
-                        || w.UpdatedWeaponData.ENConsumption >= 35))
+                    && w.WeaponData.Power >= 1800
+                    && (w.WeaponData.Bullet > 0 && w.WeaponData.Bullet <= 4
+                        || w.WeaponData.ENConsumption >= 35))
                 {
                     // ４つ以上の武器を持つユニットがそのユニットの最高威力
                     // もしくは２番目に強力な武器を使用し、
@@ -172,7 +172,7 @@ namespace SRCCore
                 }
 
                 wname = w.WeaponNickname();
-                wclass = w.UpdatedWeaponData.Class;
+                wclass = w.WeaponData.Class;
             }
 
             // 武器準備のアニメーションを非表示にするオプションを選択している？
@@ -1196,7 +1196,7 @@ namespace SRCCore
             // フラグをクリア
             Sound.IsWavePlayed = false;
             wname = w.WeaponNickname();
-            wclass = w.UpdatedWeaponData.Class;
+            wclass = w.WeaponData.Class;
             if (GeneralLib.InStrNotNest(wclass, "武") > 0
                 || GeneralLib.InStrNotNest(wclass, "突") > 0)
             {
@@ -1258,7 +1258,7 @@ namespace SRCCore
             }
 
             wname = w.WeaponNickname();
-            wclass = w.UpdatedWeaponData.Class;
+            wclass = w.WeaponData.Class;
 
             // 二刀流？
             if (Strings.InStr(wname, "ダブル") > 0
@@ -2213,7 +2213,7 @@ namespace SRCCore
                 || Strings.InStr(wname, "爆撃") > 0
                 || Strings.InStr(wname, "爆雷") > 0)
             {
-                if (w.UpdatedWeaponData.MaxRange == 1)
+                if (w.WeaponData.MaxRange == 1)
                 {
                     wtype = "投下爆弾";
                 }
@@ -2303,7 +2303,7 @@ namespace SRCCore
             {
                 if (GeneralLib.InStrNotNest(wclass, "実") == 0)
                 {
-                    if (w.UpdatedWeaponData.MaxRange == 1)
+                    if (w.WeaponData.MaxRange == 1)
                     {
                         wtype = "破壊光線";
                         sname = "Thunder.wav";
@@ -3023,7 +3023,7 @@ namespace SRCCore
             }
 
             wname = w.WeaponNickname();
-            wclass = w.UpdatedWeaponData.Class;
+            wclass = w.WeaponData.Class;
 
             // 効果音が必要ないもの
             if (w.IsWeaponClassifiedAs("武")
@@ -3538,7 +3538,7 @@ namespace SRCCore
             }
 
             wname = w.WeaponNickname();
-            wclass = w.UpdatedWeaponData.Class;
+            wclass = w.WeaponData.Class;
 
             // マップ攻撃の場合は武器にかかわらずダメージを使う
             if (GeneralLib.InStrNotNest(wclass, "Ｍ") > 0)
@@ -4926,7 +4926,7 @@ namespace SRCCore
             }
 
             wname = w.WeaponNickname();
-            wclass = w.UpdatedWeaponData.Class;
+            wclass = w.WeaponData.Class;
 
             // 効果音の再生回数
             num = CountAttack(u, w);
@@ -5374,7 +5374,7 @@ namespace SRCCore
             string wname, wclass;
             string sname;
             wname = w.WeaponNickname();
-            wclass = w.UpdatedWeaponData.Class;
+            wclass = w.WeaponData.Class;
 
             // 特殊効果が指定されていればそれを使用
             if (u.IsSpecialEffectDefined(wname + "(回避)", sub_situation: ""))
@@ -5443,7 +5443,7 @@ namespace SRCCore
             }
 
             wname = w.WeaponNickname();
-            wclass = w.UpdatedWeaponData.Class;
+            wclass = w.WeaponData.Class;
 
             // 効果音生成回数を設定
             num = CountAttack(u, w);
@@ -5552,7 +5552,7 @@ namespace SRCCore
             }
 
             {
-                var withBlock = w.UpdatedWeaponData;
+                var withBlock = w.WeaponData;
                 wname = withBlock.Nickname();
                 wclass = withBlock.Class;
             }
@@ -5630,7 +5630,7 @@ namespace SRCCore
             }
 
             // 連続攻撃の場合、命中数が指定されたならそちらにあわせる
-            if (hit_count > 0 && Strings.InStr(w.UpdatedWeaponData.Class, "連") > 0)
+            if (hit_count > 0 && Strings.InStr(w.WeaponData.Class, "連") > 0)
             {
                 CountAttackRet = hit_count;
                 return CountAttackRet;
@@ -5645,7 +5645,7 @@ namespace SRCCore
             int CountAttack0Ret = default;
             string wname, wclass;
             wname = w.WeaponNickname();
-            wclass = w.UpdatedWeaponData.Class;
+            wclass = w.WeaponData.Class;
 
             // 連続攻撃の場合は攻撃回数にあわせる
             if (GeneralLib.InStrNotNest(wclass, "連") > 0)

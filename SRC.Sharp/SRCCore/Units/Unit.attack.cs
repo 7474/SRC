@@ -186,7 +186,7 @@ namespace SRCCore.Units
                 {
                     // 連携攻撃が発動するかを判定
                     // （連携攻撃は合体技では発動しない）
-                    if (w.UpdatedWeaponData.MaxRange > 1)
+                    if (w.WeaponData.MaxRange > 1)
                     {
                         su = LookForAttackHelp(x, y);
                     }
@@ -2519,7 +2519,7 @@ namespace SRCCore.Units
                             else
                             {
                                 // 同名の武器がなかった場合は自分のデータを使って処理
-                                if (w.UpdatedWeaponData.ENConsumption > 0)
+                                if (w.WeaponData.ENConsumption > 0)
                                 {
                                     cf.EN = cf.EN - w.WeaponENConsumption();
                                 }
@@ -2713,7 +2713,7 @@ namespace SRCCore.Units
                     }
 
                     // アイテムを消費
-                    else if (w.UpdatedWeaponData.IsItem() && w.Bullet() == 0 && w.MaxBullet() > 0)
+                    else if (w.WeaponData.IsItem() && w.Bullet() == 0 && w.MaxBullet() > 0)
                     {
                         // アイテムを削除
                         var num = Data.CountWeapon();

@@ -201,6 +201,7 @@ namespace SRCCore.Units
         public string strSpecialEffectImmune;
 
         // 武器データ
+        [JsonProperty]
         private List<UnitWeapon> WData = new List<UnitWeapon>();
         public IList<UnitWeapon> Weapons => WData.AsReadOnly();
 

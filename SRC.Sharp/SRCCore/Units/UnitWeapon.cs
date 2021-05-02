@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using Newtonsoft.Json;
 using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.Models;
@@ -13,11 +14,11 @@ using System.Linq;
 namespace SRCCore.Units
 {
     // === 武器関連処理 ===
+    [JsonObject(MemberSerialization.OptIn)]
     public class UnitWeapon
     {
-        public Unit Unit { get; }
-        public WeaponData WeaponData { get; }
-        public WeaponData UpdatedWeaponData { get; private set; }
+        public Unit Unit { get; private set; }
+        public WeaponData WeaponData { get; private set; }
 
         private SRC SRC;
         private Events.Event Event => SRC.Event;
@@ -25,7 +26,16 @@ namespace SRCCore.Units
         private Expressions.Expression Expression => SRC.Expression;
         private Commands.Command Commands => SRC.Commands;
 
+        // 状態
+        [JsonProperty]
         private double dblBulletRate;
+
+        // 更新後ステータス
+        private string strWeaponClass;
+        private int lngWeaponPower;
+        private int intWeaponMaxRange;
+        private int intWeaponPrecision;
+        private int intWeaponCritical;
         private int intMaxBullet;
 
         // 近接武器か
@@ -45,16 +55,42 @@ namespace SRCCore.Units
         {
             SRC = src;
 
+            Name = wd.Name;
             Unit = u;
             WeaponData = wd;
-            // 既定値として入れておく
-            UpdatedWeaponData = wd;
-
-            dblBulletRate = 1d;
-            intMaxBullet = wd.Bullet;
+            InitProps();
+            SetBulletRate(1d);
+        }
+        [JsonConstructor]
+        private UnitWeapon() { }
+        public static UnitWeapon NewOrRef(SRC src, Unit u, WeaponData wd, IList<UnitWeapon> existWeapons)
+        {
+            var existWeapon = existWeapons.FirstOrDefault(x => x.Name == wd.Name);
+            if (existWeapon != null)
+            {
+                existWeapon.SRC = src;
+                existWeapon.Unit = u;
+                existWeapon.WeaponData = wd;
+                existWeapon.InitProps();
+                return existWeapon;
+            }
+            else
+            {
+                return new UnitWeapon(src, u, wd);
+            }
+        }
+        private void InitProps()
+        {
+            SetWeaponClass(WeaponData.Class);
+            SetPowerCorrection(0);
+            SetMaxRangeCorrection(0);
+            SetPrecisionCorrection(0);
+            SetCriticalCorrection(0);
+            SetMaxBulletRate(1d);
         }
 
-        public string Name => WeaponData.Name;
+        [JsonProperty]
+        public string Name { get; private set; }
 
         // 武器の愛称
         public string WeaponNickname()
@@ -79,7 +115,7 @@ namespace SRCCore.Units
             //int pat;
             //// 攻撃補正一時保存
             //double ed_atk;
-            int WeaponPowerRet = UpdatedWeaponData.Power;
+            int WeaponPowerRet = lngWeaponPower;
 
             // 「体」属性を持つ武器は残りＨＰに応じて攻撃力が増える
             if (IsWeaponClassifiedAs("体"))
@@ -275,6 +311,15 @@ namespace SRCCore.Units
             }
 
             return WeaponPowerRet;
+        }
+        public void SetPowerCorrection(int correction)
+        {
+            // もともと攻撃力が0の武器は0に固定
+            // 攻撃力の最高値は99999
+            // 最低値は1
+            lngWeaponPower = WeaponData.Power == 0
+                ? 0
+                : Math.Min(99999, Math.Max(1, WeaponData.Power + correction));
         }
 
         // 武器 w の地形 tarea におけるダメージ修正値
@@ -722,12 +767,12 @@ namespace SRCCore.Units
 
         public int WeaponMinRange()
         {
-            return UpdatedWeaponData.MinRange;
+            return WeaponData.MinRange;
         }
         // 武器 w の最大射程
         public int WeaponMaxRange()
         {
-            int WeaponMaxRangeRet = UpdatedWeaponData.MaxRange;
+            int WeaponMaxRangeRet = intWeaponMaxRange;
             return WeaponMaxRangeRet;
             // TODO Impl
             //// 最大射程がもともと１ならそれ以上変化しない
@@ -762,11 +807,15 @@ namespace SRCCore.Units
 
             //return WeaponMaxRangeRet;
         }
+        public void SetMaxRangeCorrection(int correction)
+        {
+            intWeaponMaxRange = Math.Max(WeaponMinRange(), WeaponData.MaxRange + correction);
+        }
 
         // 武器 w の消費ＥＮ
         public int WeaponENConsumption()
         {
-            int WeaponENConsumptionRet = UpdatedWeaponData.ENConsumption;
+            int WeaponENConsumptionRet = WeaponData.ENConsumption;
             return WeaponENConsumptionRet;
             // TODO Impl
             //// UPGRADE_NOTE: rate は rate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
@@ -948,19 +997,31 @@ namespace SRCCore.Units
         // 武器 w の命中率
         public int WeaponPrecision()
         {
-            return UpdatedWeaponData.Precision;
+            return intWeaponPrecision;
+        }
+        public void SetPrecisionCorrection(int correction)
+        {
+            intWeaponPrecision = WeaponData.Precision + correction;
         }
 
         // 武器 w のＣＴ率
         public int WeaponCritical()
         {
-            return UpdatedWeaponData.Critical;
+            return intWeaponCritical;
+        }
+        public void SetCriticalCorrection(int correction)
+        {
+            intWeaponCritical = WeaponData.Critical + correction;
         }
 
         // 武器 w の属性
         public string WeaponClass()
         {
-            return UpdatedWeaponData.Class;
+            return strWeaponClass;
+        }
+        public void SetWeaponClass(string wclass)
+        {
+            strWeaponClass = wclass;
         }
 
         // 武器 w が武器属性 attr を持っているかどうか
@@ -1308,9 +1369,9 @@ namespace SRCCore.Units
             {
                 var p = Unit.MainPilot();
                 // 必要気力
-                if (UpdatedWeaponData.NecessaryMorale > 0)
+                if (WeaponData.NecessaryMorale > 0)
                 {
-                    if (p.Morale < UpdatedWeaponData.NecessaryMorale)
+                    if (p.Morale < WeaponData.NecessaryMorale)
                     {
                         return false;
                     }
@@ -1407,7 +1468,7 @@ namespace SRCCore.Units
             }
 
             // 弾数が足りるか
-            if (UpdatedWeaponData.Bullet > 0)
+            if (WeaponData.Bullet > 0)
             {
                 if (Bullet() < 1)
                 {
@@ -1416,7 +1477,7 @@ namespace SRCCore.Units
             }
 
             // ＥＮが足りるか
-            if (UpdatedWeaponData.ENConsumption > 0)
+            if (WeaponData.ENConsumption > 0)
             {
                 if (Unit.EN < WeaponENConsumption())
                 {
@@ -1495,7 +1556,7 @@ namespace SRCCore.Units
                 {
                     foreach (var feature in Unit.Features
                         .Where(x => x.Name == "変形技")
-                        .Where(x => x.DataL.FirstOrDefault() == UpdatedWeaponData.Name))
+                        .Where(x => x.DataL.FirstOrDefault() == WeaponData.Name))
                     {
                         if (!Unit.OtherForm(feature.DataL.Skip(1).FirstOrDefault()).IsAbleToEnter(Unit.x, Unit.y))
                         {
@@ -1775,7 +1836,7 @@ namespace SRCCore.Units
 
                     if (IsTargetWithinRange(u))
                     {
-                        if (UpdatedWeaponData.Power > 0)
+                        if (WeaponData.Power > 0)
                         {
                             if (Damage(u, true) != 0)
                             {
@@ -1818,7 +1879,7 @@ namespace SRCCore.Units
             }
 
             // 最小射程チェック
-            if (distance < (UpdatedWeaponData.MinRange - range_mod))
+            if (distance < (WeaponData.MinRange - range_mod))
             {
                 return false;
             }
@@ -1899,7 +1960,7 @@ namespace SRCCore.Units
             }
 
             // 射程計算
-            min_range = UpdatedWeaponData.MinRange;
+            min_range = WeaponData.MinRange;
             max_range = WeaponMaxRange();
             // TODO Impl
             //// 敵がステルスの場合
@@ -5108,13 +5169,13 @@ namespace SRCCore.Units
             double hp_ratio, en_ratio;
 
             // ＥＮ消費
-            if (UpdatedWeaponData.ENConsumption > 0)
+            if (WeaponData.ENConsumption > 0)
             {
                 Unit.EN = Unit.EN - WeaponENConsumption();
             }
 
             // 弾数消費
-            if (UpdatedWeaponData.Bullet > 0 && !IsWeaponClassifiedAs("永"))
+            if (WeaponData.Bullet > 0 && !IsWeaponClassifiedAs("永"))
             {
                 SetBullet((Bullet() - 1));
 
@@ -5207,11 +5268,7 @@ namespace SRCCore.Units
         // 弾数
         public int Bullet()
         {
-            // TODO Impl
-            return 2;
-            //int BulletRet = default;
-            //BulletRet = (int)(dblBullet[w] * intMaxBullet[w]);
-            //return BulletRet;
+            return (int)(dblBulletRate * intMaxBullet);
         }
 
         // 最大弾数
@@ -5220,10 +5277,26 @@ namespace SRCCore.Units
             return intMaxBullet;
         }
 
+        // 増加率に合わせて弾数を修正
+        public void SetMaxBulletRate(double rate)
+        {
+            intMaxBullet = (int)(WeaponData.Bullet * rate);
+            // 最大値は99
+            if (intMaxBullet > 99)
+            {
+                intMaxBullet = 99;
+            }
+            // 最低値は0
+            if (intMaxBullet < 0)
+            {
+                intMaxBullet = 0;
+            }
+        }
+
         // 弾数を設定
         public void SetBullet(int new_bullet)
         {
-            if (new_bullet < 0)
+            if (new_bullet <= 0)
             {
                 SetBulletRate(0d);
             }
@@ -5240,6 +5313,112 @@ namespace SRCCore.Units
         private void SetBulletRate(double new_bullet_rate)
         {
             dblBulletRate = new_bullet_rate;
+        }
+
+
+        public bool IsMatchFeatureTarget(IList<string> targets)
+        {
+            UnitWeapon w = this;
+            var wname = w.Name;
+            var wnickname = w.WeaponNickname();
+            var wnskill = w.WeaponData.NecessarySkill;
+            var wclass = w.WeaponClass();
+
+            var flag = false;
+            var false_count = 0;
+
+            // 武器指定がない場合はすべての武器がマッチ
+            if (targets.Count == 0)
+            {
+                flag = true;
+            }
+
+            // 武器指定がある場合はそれぞれの指定をチェック
+            foreach (var wtypeData in targets)
+            {
+                var wtype = wtypeData;
+                bool with_not;
+                if (Strings.Left(wtype, 1) == "!")
+                {
+                    wtype = Strings.Mid(wtype, 2);
+                    with_not = true;
+                }
+                else
+                {
+                    with_not = false;
+                }
+
+                var found = false;
+                switch (wtype ?? "")
+                {
+                    case "全":
+                        {
+                            found = true;
+                            break;
+                        }
+
+                    case "物":
+                        {
+                            if (GeneralLib.InStrNotNest(wclass, "魔") == 0 || GeneralLib.InStrNotNest(wclass, "魔武") > 0 || GeneralLib.InStrNotNest(wclass, "魔突") > 0 || GeneralLib.InStrNotNest(wclass, "魔接") > 0 || GeneralLib.InStrNotNest(wclass, "魔銃") > 0 || GeneralLib.InStrNotNest(wclass, "魔実") > 0)
+                            {
+                                found = true;
+                            }
+
+                            break;
+                        }
+
+                    default:
+                        {
+                            if (GeneralLib.InStrNotNest(wclass, wtype) > 0 || (wname ?? "") == (wtype ?? "") || (wnickname ?? "") == (wtype ?? ""))
+                            {
+                                found = true;
+                            }
+                            else
+                            {
+                                var loopTo54 = GeneralLib.LLength(wnskill);
+                                for (var l = 1; l <= loopTo54; l++)
+                                {
+                                    var sname = GeneralLib.LIndex(wnskill, l);
+                                    if (Strings.InStr(sname, "Lv") > 0)
+                                    {
+                                        sname = Strings.Left(sname, Strings.InStr(sname, "Lv") - 1);
+                                    }
+
+                                    if ((sname ?? "") == (wtype ?? ""))
+                                    {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            break;
+                        }
+                }
+
+                if (with_not)
+                {
+                    // !指定あり
+                    if (found)
+                    {
+                        // 条件を満たした場合は適用しない
+                        flag = false;
+                        false_count = (false_count + 1);
+                    }
+                }
+                else if (found)
+                {
+                    // !指定無しの条件を満たした
+                    flag = true;
+                }
+                else
+                {
+                    // !指定無しの条件を満たさず
+                    false_count = (false_count + 1);
+                }
+            }
+
+            return flag || false_count == 0;
         }
 
         // 合体技のパートナーを探す
@@ -5851,7 +6030,7 @@ namespace SRCCore.Units
 
             //        // 見つかったパートナーを記録
             //        Array.Resize(partners, i + 1);
-            //        partners[i] = u;
+            //        partners = u;
             //        break;
             //    NextNeighbor:
             //        ;
@@ -5869,13 +6048,14 @@ namespace SRCCore.Units
             //Commands.SelectedPartners = new Unit[Information.UBound(partners) + 1];
             //var loopTo9 = Information.UBound(partners);
             //for (i = 1; i <= loopTo9; i++)
-            //    Commands.SelectedPartners[i] = partners[i];
+            //    Commands.SelectedPartners = partners;
         }
 
         // 合体技攻撃に必要なパートナーが見つかるか？
         public bool IsCombinationAttackAvailable(bool check_formation = false)
         {
-            throw new NotImplementedException();
+            return false;
+            // TODO Impl IsCombinationAttackAvailable
             //bool IsCombinationAttackAvailableRet = default;
             //Unit[] partners;
             //partners = new Unit[1];

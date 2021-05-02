@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SRCCore.Lib
 {
@@ -455,57 +456,48 @@ namespace SRCCore.Lib
             return Math.Min(a, b);
         }
 
-        //        // aとbの最大値を返す (Double)
-        //        public static double MaxDbl(double a, double b)
-        //        {
-        //            double MaxDblRet = default;
-        //            if (a > b)
-        //            {
-        //                MaxDblRet = a;
-        //            }
-        //            else
-        //            {
-        //                MaxDblRet = b;
-        //            }
+        // aとbの最大値を返す (Double)
+        public static double MaxDbl(double a, double b)
+        {
+            return Math.Max(a, b);
+        }
 
-        //            return MaxDblRet;
-        //        }
-
-        //        // aとbの最小値を返す (Double)
-        //        public static double MinDbl(double a, double b)
-        //        {
-        //            double MinDblRet = default;
-        //            if (a < b)
-        //            {
-        //                MinDblRet = a;
-        //            }
-        //            else
-        //            {
-        //                MinDblRet = b;
-        //            }
-
-        //            return MinDblRet;
-        //        }
-
+        // aとbの最小値を返す (Double)
+        public static double MinDbl(double a, double b)
+        {
+            return Math.Min(a, b);
+        }
 
         // 文字列 buf の長さが length になるように左側にスペースを付加する
         public static string LeftPaddedString(string buf, int length)
         {
-            return buf;
-            // TODO 面倒くさいのでとりあえずパス
-            //string LeftPaddedStringRet = default;
-            //LeftPaddedStringRet = Strings.Space(MaxLng(length - LenB(Strings.StrConv(buf, vbFromUnicode)), 0)) + buf;
-            //return LeftPaddedStringRet;
+            return Strings.Space(MaxLng(length - StrWidth(buf), 0)) + buf;
         }
 
         // 文字列 buf の長さが length になるように右側にスペースを付加する
         public static string RightPaddedString(string buf, int length)
         {
-            return buf;
-            // TODO 面倒くさいのでとりあえずパス
-            //string RightPaddedStringRet = default;
-            //RightPaddedStringRet = buf + Strings.Space(MaxLng(length - LenB(Strings.StrConv(buf, vbFromUnicode)), 0));
-            //return RightPaddedStringRet;
+            return buf + Strings.Space(MaxLng(length - StrWidth(buf), 0));
+        }
+
+        // TODO 精査、 Byte length 系と統合する
+        /// <summary>
+        /// 半角英数と半角カナ
+        /// </summary>
+        private static readonly Regex notHelfWidth = new Regex("[^ -ÿｰ-ﾟ]");
+        /// <summary>
+        /// 半角っぽい文字以外を2文字換算した文字数を返す。
+        /// </summary>
+        /// <param name="buf"></param>
+        /// <returns></returns>
+        public static int StrWidth(string buf)
+        {
+            if (string.IsNullOrEmpty(buf))
+            {
+                return 0;
+            }
+
+            return notHelfWidth.Replace(buf, "__").Length;
         }
 
         //        // Src.ini ファイルの ini_section から ini_entry の値を読み出す
