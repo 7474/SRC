@@ -455,37 +455,17 @@ namespace SRCCore.Lib
             return Math.Min(a, b);
         }
 
-        //        // aとbの最大値を返す (Double)
-        //        public static double MaxDbl(double a, double b)
-        //        {
-        //            double MaxDblRet = default;
-        //            if (a > b)
-        //            {
-        //                MaxDblRet = a;
-        //            }
-        //            else
-        //            {
-        //                MaxDblRet = b;
-        //            }
+        // aとbの最大値を返す (Double)
+        public static double MaxDbl(double a, double b)
+        {
+            return Math.Max(a, b);
+        }
 
-        //            return MaxDblRet;
-        //        }
-
-        //        // aとbの最小値を返す (Double)
-        //        public static double MinDbl(double a, double b)
-        //        {
-        //            double MinDblRet = default;
-        //            if (a < b)
-        //            {
-        //                MinDblRet = a;
-        //            }
-        //            else
-        //            {
-        //                MinDblRet = b;
-        //            }
-
-        //            return MinDblRet;
-        //        }
+        // aとbの最小値を返す (Double)
+        public static double MinDbl(double a, double b)
+        {
+            return Math.Min(a, b);
+        }
 
 
         // 文字列 buf の長さが length になるように左側にスペースを付加する

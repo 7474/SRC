@@ -18,5 +18,11 @@ namespace SRCCore.Extensions
         {
             return list[GeneralLib.Dice(list.Count) - 1];
         }
+
+        public static List<T> CloneList<T>(this IList<T> list)
+        {
+            // TODO 浅いコピーでクローンする実装の確認
+            return list.ToList();
+        }
     }
 }

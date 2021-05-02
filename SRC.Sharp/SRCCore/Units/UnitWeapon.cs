@@ -25,7 +25,15 @@ namespace SRCCore.Units
         private Expressions.Expression Expression => SRC.Expression;
         private Commands.Command Commands => SRC.Commands;
 
+        // 状態
         private double dblBulletRate;
+
+        // 更新後ステータス
+        private string strWeaponClass;
+        private int lngWeaponPower;
+        private int intWeaponMaxRange;
+        private int intWeaponPrecision;
+        private int intWeaponCritical;
         private int intMaxBullet;
 
         // 近接武器か
@@ -55,13 +63,18 @@ namespace SRCCore.Units
             if (prevWeapon != null)
             {
                 dblBulletRate = prevWeapon.dblBulletRate;
-                intMaxBullet = prevWeapon.intMaxBullet;
             }
             else
             {
                 dblBulletRate = 1d;
-                intMaxBullet = wd.Bullet;
             }
+
+            SetWeaponClass(wd.Class);
+            SetPowerCorrection(0);
+            SetMaxRangeCorrection(0);
+            SetPrecisionCorrection(0);
+            SetCriticalCorrection(0);
+            SetMaxBulletRate(1d);
         }
 
         public string Name => WeaponData.Name;
@@ -89,7 +102,7 @@ namespace SRCCore.Units
             //int pat;
             //// 攻撃補正一時保存
             //double ed_atk;
-            int WeaponPowerRet = UpdatedWeaponData.Power;
+            int WeaponPowerRet = lngWeaponPower;
 
             // 「体」属性を持つ武器は残りＨＰに応じて攻撃力が増える
             if (IsWeaponClassifiedAs("体"))
@@ -285,6 +298,15 @@ namespace SRCCore.Units
             }
 
             return WeaponPowerRet;
+        }
+        public void SetPowerCorrection(int correction)
+        {
+            // もともと攻撃力が0の武器は0に固定
+            // 攻撃力の最高値は99999
+            // 最低値は1
+            lngWeaponPower = WeaponData.Power == 0
+                ? 0
+                : Math.Min(99999, Math.Max(1, WeaponData.Power + correction));
         }
 
         // 武器 w の地形 tarea におけるダメージ修正値
@@ -737,7 +759,7 @@ namespace SRCCore.Units
         // 武器 w の最大射程
         public int WeaponMaxRange()
         {
-            int WeaponMaxRangeRet = UpdatedWeaponData.MaxRange;
+            int WeaponMaxRangeRet = intWeaponMaxRange;
             return WeaponMaxRangeRet;
             // TODO Impl
             //// 最大射程がもともと１ならそれ以上変化しない
@@ -771,6 +793,10 @@ namespace SRCCore.Units
             //}
 
             //return WeaponMaxRangeRet;
+        }
+        public void SetMaxRangeCorrection(int correction)
+        {
+            intWeaponMaxRange = Math.Max(WeaponMinRange(), WeaponData.MaxRange + correction);
         }
 
         // 武器 w の消費ＥＮ
@@ -958,19 +984,31 @@ namespace SRCCore.Units
         // 武器 w の命中率
         public int WeaponPrecision()
         {
-            return UpdatedWeaponData.Precision;
+            return intWeaponPrecision;
+        }
+        public void SetPrecisionCorrection(int correction)
+        {
+            intWeaponPrecision = WeaponData.Precision + correction;
         }
 
         // 武器 w のＣＴ率
         public int WeaponCritical()
         {
-            return UpdatedWeaponData.Critical;
+            return intWeaponCritical;
+        }
+        public void SetCriticalCorrection(int correction)
+        {
+            intWeaponCritical = WeaponData.Critical + correction;
         }
 
         // 武器 w の属性
         public string WeaponClass()
         {
-            return UpdatedWeaponData.Class;
+            return strWeaponClass;
+        }
+        public void SetWeaponClass(string wclass)
+        {
+            strWeaponClass = wclass;
         }
 
         // 武器 w が武器属性 attr を持っているかどうか
@@ -5272,7 +5310,7 @@ namespace SRCCore.Units
             var wnickname = w.WeaponNickname();
             var wnskill = w.UpdatedWeaponData.NecessarySkill;
             var wclass = w.WeaponClass();
-            
+
             var flag = false;
             var false_count = 0;
 
