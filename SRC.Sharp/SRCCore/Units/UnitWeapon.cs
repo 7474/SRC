@@ -41,7 +41,7 @@ namespace SRCCore.Units
         }
 
         // 武器
-        public UnitWeapon(SRC src, Unit u, WeaponData wd)
+        public UnitWeapon(SRC src, Unit u, WeaponData wd, IList<UnitWeapon> prevWeapons)
         {
             SRC = src;
 
@@ -50,8 +50,18 @@ namespace SRCCore.Units
             // 既定値として入れておく
             UpdatedWeaponData = wd;
 
-            dblBulletRate = 1d;
-            intMaxBullet = wd.Bullet;
+            // 同一の武器を探し、存在すれば状態を引き継ぐ
+            var prevWeapon = prevWeapons.FirstOrDefault(x => x.Name == wd.Name);
+            if (prevWeapon != null)
+            {
+                dblBulletRate = prevWeapon.dblBulletRate;
+                intMaxBullet = prevWeapon.intMaxBullet;
+            }
+            else
+            {
+                dblBulletRate = 1d;
+                intMaxBullet = wd.Bullet;
+            }
         }
 
         public string Name => WeaponData.Name;
@@ -5252,6 +5262,112 @@ namespace SRCCore.Units
         private void SetBulletRate(double new_bullet_rate)
         {
             dblBulletRate = new_bullet_rate;
+        }
+
+
+        public bool IsMatchFeatureTarget(IList<string> targets)
+        {
+            UnitWeapon w = this;
+            var wname = w.Name;
+            var wnickname = w.WeaponNickname();
+            var wnskill = w.UpdatedWeaponData.NecessarySkill;
+            var wclass = w.WeaponClass();
+            
+            var flag = false;
+            var false_count = 0;
+
+            // 武器指定がない場合はすべての武器がマッチ
+            if (targets.Count == 0)
+            {
+                flag = true;
+            }
+
+            // 武器指定がある場合はそれぞれの指定をチェック
+            foreach (var wtypeData in targets)
+            {
+                var wtype = wtypeData;
+                bool with_not;
+                if (Strings.Left(wtype, 1) == "!")
+                {
+                    wtype = Strings.Mid(wtype, 2);
+                    with_not = true;
+                }
+                else
+                {
+                    with_not = false;
+                }
+
+                var found = false;
+                switch (wtype ?? "")
+                {
+                    case "全":
+                        {
+                            found = true;
+                            break;
+                        }
+
+                    case "物":
+                        {
+                            if (GeneralLib.InStrNotNest(wclass, "魔") == 0 || GeneralLib.InStrNotNest(wclass, "魔武") > 0 || GeneralLib.InStrNotNest(wclass, "魔突") > 0 || GeneralLib.InStrNotNest(wclass, "魔接") > 0 || GeneralLib.InStrNotNest(wclass, "魔銃") > 0 || GeneralLib.InStrNotNest(wclass, "魔実") > 0)
+                            {
+                                found = true;
+                            }
+
+                            break;
+                        }
+
+                    default:
+                        {
+                            if (GeneralLib.InStrNotNest(wclass, wtype) > 0 || (wname ?? "") == (wtype ?? "") || (wnickname ?? "") == (wtype ?? ""))
+                            {
+                                found = true;
+                            }
+                            else
+                            {
+                                var loopTo54 = GeneralLib.LLength(wnskill);
+                                for (var l = 1; l <= loopTo54; l++)
+                                {
+                                    var sname = GeneralLib.LIndex(wnskill, l);
+                                    if (Strings.InStr(sname, "Lv") > 0)
+                                    {
+                                        sname = Strings.Left(sname, Strings.InStr(sname, "Lv") - 1);
+                                    }
+
+                                    if ((sname ?? "") == (wtype ?? ""))
+                                    {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            break;
+                        }
+                }
+
+                if (with_not)
+                {
+                    // !指定あり
+                    if (found)
+                    {
+                        // 条件を満たした場合は適用しない
+                        flag = false;
+                        false_count = (false_count + 1);
+                    }
+                }
+                else if (found)
+                {
+                    // !指定無しの条件を満たした
+                    flag = true;
+                }
+                else
+                {
+                    // !指定無しの条件を満たさず
+                    false_count = (false_count + 1);
+                }
+            }
+
+            return flag || false_count == 0;
         }
 
         // 合体技のパートナーを探す
