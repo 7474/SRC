@@ -2,28 +2,6 @@ using SRCCore.Lib;
 
 namespace SRCCore.Expressions.Functions
 {
-    public class Info : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Info
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
     public class Instrb : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
