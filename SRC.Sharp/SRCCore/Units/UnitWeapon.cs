@@ -5207,17 +5207,29 @@ namespace SRCCore.Units
         // 弾数
         public int Bullet()
         {
-            // TODO Impl
-            return 2;
-            //int BulletRet = default;
-            //BulletRet = (int)(dblBullet[w] * intMaxBullet[w]);
-            //return BulletRet;
+            return (int)(dblBulletRate * intMaxBullet);
         }
 
         // 最大弾数
         public int MaxBullet()
         {
             return intMaxBullet;
+        }
+
+        // 増加率に合わせて弾数を修正
+        public void SetMaxBulletRate(double rate)
+        {
+            intMaxBullet = (int)(UpdatedWeaponData.Bullet * rate);
+            // 最大値は99
+            if (intMaxBullet > 99)
+            {
+                intMaxBullet = 99;
+            }
+            // 最低値は0
+            if (intMaxBullet < 0)
+            {
+                intMaxBullet = 0;
+            }
         }
 
         // 弾数を設定
@@ -5851,7 +5863,7 @@ namespace SRCCore.Units
 
             //        // 見つかったパートナーを記録
             //        Array.Resize(partners, i + 1);
-            //        partners[i] = u;
+            //        partners = u;
             //        break;
             //    NextNeighbor:
             //        ;
@@ -5869,7 +5881,7 @@ namespace SRCCore.Units
             //Commands.SelectedPartners = new Unit[Information.UBound(partners) + 1];
             //var loopTo9 = Information.UBound(partners);
             //for (i = 1; i <= loopTo9; i++)
-            //    Commands.SelectedPartners[i] = partners[i];
+            //    Commands.SelectedPartners = partners;
         }
 
         // 合体技攻撃に必要なパートナーが見つかるか？
