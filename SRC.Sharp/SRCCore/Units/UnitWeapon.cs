@@ -17,7 +17,6 @@ namespace SRCCore.Units
     {
         public Unit Unit { get; }
         public WeaponData WeaponData { get; }
-        public WeaponData UpdatedWeaponData { get; private set; }
 
         private SRC SRC;
         private Events.Event Event => SRC.Event;
@@ -55,8 +54,6 @@ namespace SRCCore.Units
 
             Unit = u;
             WeaponData = wd;
-            // 既定値として入れておく
-            UpdatedWeaponData = wd;
 
             // 同一の武器を探し、存在すれば状態を引き継ぐ
             var prevWeapon = prevWeapons.FirstOrDefault(x => x.Name == wd.Name);
@@ -754,7 +751,7 @@ namespace SRCCore.Units
 
         public int WeaponMinRange()
         {
-            return UpdatedWeaponData.MinRange;
+            return WeaponData.MinRange;
         }
         // 武器 w の最大射程
         public int WeaponMaxRange()
@@ -802,7 +799,7 @@ namespace SRCCore.Units
         // 武器 w の消費ＥＮ
         public int WeaponENConsumption()
         {
-            int WeaponENConsumptionRet = UpdatedWeaponData.ENConsumption;
+            int WeaponENConsumptionRet = WeaponData.ENConsumption;
             return WeaponENConsumptionRet;
             // TODO Impl
             //// UPGRADE_NOTE: rate は rate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
@@ -1356,9 +1353,9 @@ namespace SRCCore.Units
             {
                 var p = Unit.MainPilot();
                 // 必要気力
-                if (UpdatedWeaponData.NecessaryMorale > 0)
+                if (WeaponData.NecessaryMorale > 0)
                 {
-                    if (p.Morale < UpdatedWeaponData.NecessaryMorale)
+                    if (p.Morale < WeaponData.NecessaryMorale)
                     {
                         return false;
                     }
@@ -1455,7 +1452,7 @@ namespace SRCCore.Units
             }
 
             // 弾数が足りるか
-            if (UpdatedWeaponData.Bullet > 0)
+            if (WeaponData.Bullet > 0)
             {
                 if (Bullet() < 1)
                 {
@@ -1464,7 +1461,7 @@ namespace SRCCore.Units
             }
 
             // ＥＮが足りるか
-            if (UpdatedWeaponData.ENConsumption > 0)
+            if (WeaponData.ENConsumption > 0)
             {
                 if (Unit.EN < WeaponENConsumption())
                 {
@@ -1543,7 +1540,7 @@ namespace SRCCore.Units
                 {
                     foreach (var feature in Unit.Features
                         .Where(x => x.Name == "変形技")
-                        .Where(x => x.DataL.FirstOrDefault() == UpdatedWeaponData.Name))
+                        .Where(x => x.DataL.FirstOrDefault() == WeaponData.Name))
                     {
                         if (!Unit.OtherForm(feature.DataL.Skip(1).FirstOrDefault()).IsAbleToEnter(Unit.x, Unit.y))
                         {
@@ -1823,7 +1820,7 @@ namespace SRCCore.Units
 
                     if (IsTargetWithinRange(u))
                     {
-                        if (UpdatedWeaponData.Power > 0)
+                        if (WeaponData.Power > 0)
                         {
                             if (Damage(u, true) != 0)
                             {
@@ -1866,7 +1863,7 @@ namespace SRCCore.Units
             }
 
             // 最小射程チェック
-            if (distance < (UpdatedWeaponData.MinRange - range_mod))
+            if (distance < (WeaponData.MinRange - range_mod))
             {
                 return false;
             }
@@ -1947,7 +1944,7 @@ namespace SRCCore.Units
             }
 
             // 射程計算
-            min_range = UpdatedWeaponData.MinRange;
+            min_range = WeaponData.MinRange;
             max_range = WeaponMaxRange();
             // TODO Impl
             //// 敵がステルスの場合
@@ -5156,13 +5153,13 @@ namespace SRCCore.Units
             double hp_ratio, en_ratio;
 
             // ＥＮ消費
-            if (UpdatedWeaponData.ENConsumption > 0)
+            if (WeaponData.ENConsumption > 0)
             {
                 Unit.EN = Unit.EN - WeaponENConsumption();
             }
 
             // 弾数消費
-            if (UpdatedWeaponData.Bullet > 0 && !IsWeaponClassifiedAs("永"))
+            if (WeaponData.Bullet > 0 && !IsWeaponClassifiedAs("永"))
             {
                 SetBullet((Bullet() - 1));
 
@@ -5267,7 +5264,7 @@ namespace SRCCore.Units
         // 増加率に合わせて弾数を修正
         public void SetMaxBulletRate(double rate)
         {
-            intMaxBullet = (int)(UpdatedWeaponData.Bullet * rate);
+            intMaxBullet = (int)(WeaponData.Bullet * rate);
             // 最大値は99
             if (intMaxBullet > 99)
             {
@@ -5308,7 +5305,7 @@ namespace SRCCore.Units
             UnitWeapon w = this;
             var wname = w.Name;
             var wnickname = w.WeaponNickname();
-            var wnskill = w.UpdatedWeaponData.NecessarySkill;
+            var wnskill = w.WeaponData.NecessarySkill;
             var wclass = w.WeaponClass();
 
             var flag = false;

@@ -915,7 +915,7 @@ namespace SRCSharpForm
                     $" {x.Weapon.WeaponPrecision()}" +
                     $" {x.Weapon.WeaponCritical()}" +
                     $" {x.Weapon.WeaponENConsumption()}" +
-                    $" {x.Weapon.UpdatedWeaponData.Adaption}" +
+                    $" {x.Weapon.WeaponData.Adaption}" +
                     $" {x.Weapon.WeaponClass()}",
                 ListItemComment = "",
                 ListItemFlag = !x.CanUse,
