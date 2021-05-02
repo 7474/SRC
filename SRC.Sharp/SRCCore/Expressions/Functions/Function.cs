@@ -46,71 +46,6 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Lindex : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Lindex
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
-    public class Llength : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Llength
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
-    public class List : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl List
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
 
 
     public class Action : AFunction
@@ -649,28 +584,6 @@ namespace SRCCore.Expressions.Functions
             num_result = 0d;
 
             // TODO Impl Isequiped
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
-    public class Lsearch : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Lsearch
 
             if (etype == ValueType.StringType)
             {
