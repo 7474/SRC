@@ -59,6 +59,11 @@ namespace SRCCore.Expressions
             //new LeftB(),
             //new MidB(),
             //new RightB(),
+            // List
+            new List(),
+            new LLength(),
+            new LIndex(),
+            new LSearch(),
         }.ToDictionary(x => x.Name.ToLower());
 
         // 式を関数呼び出しとして構文解析し、実行
