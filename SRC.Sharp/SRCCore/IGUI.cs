@@ -229,6 +229,8 @@ namespace SRCCore
         void DrawString(string msg, int X, int Y, bool without_cr = false);
         // メインウィンドウに文字列を表示 (システムメッセージ)
         void DrawSysString(int X, int Y, string msg, bool without_refresh = false);
+        // 文字列を表示した際のサイズを計る
+        SizeF MeasureString(string msg);
 
         // === 画像消去に関する処理 ===
 

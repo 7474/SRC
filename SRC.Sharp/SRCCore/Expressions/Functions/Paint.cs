@@ -1,8 +1,14 @@
 using SRCCore.Extensions;
 using SRCCore.Lib;
+using System.Drawing;
 
 namespace SRCCore.Expressions.Functions
 {
+    //Font文字列描画のフォント設定を返す
+    //RGB描画色を返す
+    //TextHeight指定した文字列を描画した際の高さをピクセル数で返す
+    //TextWidth指定した文字列を描画した際の幅をピクセル数で返す
+
     public class Font : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
@@ -107,33 +113,21 @@ namespace SRCCore.Expressions.Functions
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
-            str_result = "";
+            str_result = "#000000";
             num_result = 0d;
-
-            // TODO Impl Rgb
-            //                        buf = Conversion.Hex(Information.RGB(GetValueAsLong(@params[1], is_term[1]), GetValueAsLong(@params[2], is_term[2]), GetValueAsLong(@params[3], is_term[3])));
-            //                        var loopTo11 = (6 - Strings.Len(buf));
-            //                        for (i = 1; i <= loopTo11; i++)
-            //                            buf = "0" + buf;
-            //                        str_result = "#000000";
-            //                        var midTmp = Strings.Mid(buf, 5, 2);
-            //                        StringType.MidStmtStr(str_result, 2, 2, midTmp);
-            //                        var midTmp1 = Strings.Mid(buf, 3, 2);
-            //                        StringType.MidStmtStr(str_result, 4, 2, midTmp1);
-            //                        var midTmp2 = Strings.Mid(buf, 1, 2);
-            //                        StringType.MidStmtStr(str_result, 6, 2, midTmp2);
-            //                        CallFunctionRet = ValueType.StringType;
-            //                        return CallFunctionRet;
-
-            if (etype == ValueType.StringType)
+            try
             {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
+                str_result = Color.FromArgb(
+                    SRC.Expression.GetValueAsLong(@params[1], is_term[1]),
+                    SRC.Expression.GetValueAsLong(@params[2], is_term[2]),
+                    SRC.Expression.GetValueAsLong(@params[3], is_term[3])
+                    ).ToHexString();
             }
-            else
+            catch
             {
-                return ValueType.NumericType;
+                // ignore
             }
+            return ValueType.StringType;
         }
     }
 
@@ -144,18 +138,7 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Textheight
-            //                        num_result = GUI.MainForm.picMain(0).TextHeight(GetValueAsString(@params[1], is_term[1]));
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
+            num_result =SRC. GUI.MeasureString(SRC.Expression.GetValueAsString(@params[1], is_term[1])).Height;
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
@@ -175,19 +158,7 @@ namespace SRCCore.Expressions.Functions
         {
             str_result = "";
             num_result = 0d;
-
-            // TODO Impl Textwidth
-            //                        num_result = GUI.MainForm.picMain(0).TextWidth(GetValueAsString(@params[1], is_term[1]));
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
+            num_result = SRC.GUI.MeasureString(SRC.Expression.GetValueAsString(@params[1], is_term[1])).Width;
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
@@ -199,6 +170,4 @@ namespace SRCCore.Expressions.Functions
             }
         }
     }
-
-
 }

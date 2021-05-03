@@ -62,6 +62,11 @@ namespace SRCCore.Expressions
             new LLength(),
             new LIndex(),
             new LSearch(),
+            // Paint
+            new Font(),
+            new RGB(),
+            new TextHeight(),
+            new TextWidth(),
             // Time
             new Year(),
             new Month(),

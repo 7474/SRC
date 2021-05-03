@@ -283,6 +283,11 @@ namespace SRCCoreTests.TestLib
             throw new NotImplementedException();
         }
 
+        public SizeF MeasureString(string msg)
+        {
+            throw new NotImplementedException();
+        }
+
         public int MessageLen(string msg)
         {
             throw new NotImplementedException();
