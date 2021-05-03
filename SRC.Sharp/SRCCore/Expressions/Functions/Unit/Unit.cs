@@ -2,15 +2,12 @@ using SRCCore.Lib;
 
 namespace SRCCore.Expressions.Functions
 {
-    public class Action : AFunction
+    public class Action : AUnitFunction
     {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Action
-
+            num_result = unit?.Action ?? 0d;
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
@@ -24,27 +21,15 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Area : AFunction
+    public class Area : AUnitFunction
     {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
-            str_result = "";
+            str_result = unit?.Area ?? "";
             num_result = 0d;
-
-            // TODO Impl Area
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
+            return ValueType.StringType;
         }
     }
-
 
     public class Condition : AFunction
     {
