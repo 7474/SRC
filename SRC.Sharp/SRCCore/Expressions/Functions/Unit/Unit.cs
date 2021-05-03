@@ -130,14 +130,17 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class Damage : AFunction
+    public class Damage : AUnitFunction
     {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
-            num_result = 0d;
+            num_result = 100d;
 
-            // TODO Impl Damage
+            if(unit != null)
+            {
+                num_result = (100 * (unit.MaxHP - unit.HP) / unit.MaxHP);
+            }
 
             if (etype == ValueType.StringType)
             {
@@ -150,7 +153,6 @@ namespace SRCCore.Expressions.Functions
             }
         }
     }
-
 
     public class EN : AFunction
     {
