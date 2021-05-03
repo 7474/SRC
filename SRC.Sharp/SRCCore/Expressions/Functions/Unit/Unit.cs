@@ -106,15 +106,12 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class CountPilot : AFunction
+    public class CountPilot : AUnitFunction
     {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Countpilot
-
+            num_result = unit?.AllRawPilots.Count() ?? 0d;
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
@@ -126,7 +123,6 @@ namespace SRCCore.Expressions.Functions
             }
         }
     }
-
 
     public class Damage : AFunction
     {
