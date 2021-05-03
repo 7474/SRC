@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SRCCore.Extensions
+﻿namespace SRCCore.Extensions
 {
     public static class SystemConfigExtension
     {
