@@ -75,7 +75,14 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Relation
+            var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+            var pname2 = SRC.Expression.GetValueAsString(@params[2], is_term[2]);
+            var p1 = SRC.PList.Item(pname);
+            var p2 = SRC.PList.Item(pname2);
+            if (p1 != null && p2 != null)
+            {
+                num_result = SRC.Expression.GetValueAsLong("ŠÖŒW:" + p1.Name + ":" + p2.Name);
+            }
 
             if (etype == ValueType.StringType)
             {
