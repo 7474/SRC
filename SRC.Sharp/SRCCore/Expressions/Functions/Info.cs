@@ -4351,52 +4351,15 @@ namespace SRCCore.Expressions.Functions
 
                                         case "ビットマップ名":
                                             {
-                                                switch (SRC.Map.MapImageFileTypeData[mx, my])
-                                                {
-                                                    case SRC.Map.MapImageFileType.SeparateDirMapImageFileType:
-                                                        {
-                                                            str_result = SRC.TDList.Bitmap(SRC.Map.MapData[mx, my, SRC.Map.MapDataIndex.TerrainType]) + @"\" + SRC.TDList.Bitmap(SRC.Map.MapData[mx, my, SRC.Map.MapDataIndex.TerrainType]) + SrcFormatter.Format(SRC.Map.MapData[mx, my, SRC.Map.MapDataIndex.BitmapNo], "0000") + ".bmp";
-                                                            break;
-                                                        }
-
-                                                    case SRC.Map.MapImageFileType.FourFiguresMapImageFileType:
-                                                        {
-                                                            str_result = SRC.TDList.Bitmap(SRC.Map.MapData[mx, my, SRC.Map.MapDataIndex.TerrainType]) + SrcFormatter.Format(SRC.Map.MapData[mx, my, SRC.Map.MapDataIndex.BitmapNo], "0000") + ".bmp";
-                                                            break;
-                                                        }
-
-                                                    case SRC.Map.MapImageFileType.OldMapImageFileType:
-                                                        {
-                                                            str_result = SRC.TDList.Bitmap(SRC.Map.MapData[mx, my, SRC.Map.MapDataIndex.TerrainType]) + SrcFormatter.Format(SRC.Map.MapData[mx, my, SRC.Map.MapDataIndex.BitmapNo]) + ".bmp";
-                                                            break;
-                                                        }
-                                                }
+                                                // XXX 多分一度レンダリングしてないと取れない
+                                                str_result = SRC.Map.MapUnderImageFilePath[mx, my];
 
                                                 break;
                                             }
                                         case "レイヤービットマップ名":
                                             {
-                                                switch (SRC.Map.MapImageFileTypeData[mx, my])
-                                                {
-                                                    case SRC.Map.MapImageFileType.SeparateDirMapImageFileType:
-                                                        {
-                                                            str_result = SRC.TDList.Bitmap(SRC.Map.MapData[mx, my, SRC.Map.MapDataIndex.LayerType]) + @"\" + SRC.TDList.Bitmap(SRC.Map.MapData[mx, my, SRC.Map.MapDataIndex.LayerType]) + SrcFormatter.Format(SRC.Map.MapData[mx, my, SRC.Map.MapDataIndex.LayerBitmapNo], "0000") + ".bmp";
-                                                            break;
-                                                        }
-
-                                                    case SRC.Map.MapImageFileType.FourFiguresMapImageFileType:
-                                                        {
-                                                            str_result = SRC.TDList.Bitmap(SRC.Map.MapData[mx, my, SRC.Map.MapDataIndex.LayerType]) + SrcFormatter.Format(SRC.Map.MapData[mx, my, SRC.Map.MapDataIndex.LayerBitmapNo], "0000") + ".bmp";
-                                                            break;
-                                                        }
-
-                                                    case SRC.Map.MapImageFileType.OldMapImageFileType:
-                                                        {
-                                                            str_result = SRC.TDList.Bitmap(SRC.Map.MapData[mx, my, SRC.Map.MapDataIndex.LayerType]) + SrcFormatter.Format(SRC.Map.MapData[mx, my, SRC.Map.MapDataIndex.LayerBitmapNo]) + ".bmp";
-                                                            break;
-                                                        }
-                                                }
-
+                                                // XXX 未対応
+                                                str_result = SRC.Map.MapUpperImageFilePath[mx, my];
                                                 break;
                                             }
                                         case "ユニットＩＤ":
