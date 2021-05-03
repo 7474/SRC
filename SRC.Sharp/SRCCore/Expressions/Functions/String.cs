@@ -332,26 +332,11 @@ namespace SRCCore.Expressions.Functions
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
-            str_result = "";
+            str_result = Strings.StrConv(SRC.Expression.GetValueAsString(@params[1], is_term[1]), VbStrConv.Wide);
             num_result = 0d;
-
-            // TODO Impl Wide
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
+            return ValueType.StringType;
         }
     }
-
-
-
-
 
     public class InStrB : AFunction
     {
@@ -415,7 +400,6 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-
     public class LenB : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
@@ -437,7 +421,6 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-
     public class MidB : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
@@ -458,6 +441,7 @@ namespace SRCCore.Expressions.Functions
             }
         }
     }
+
     public class RightB : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
@@ -505,10 +489,7 @@ namespace SRCCore.Expressions.Functions
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Asc
-
+            num_result = Strings.Asc(SRC.Expression.GetValueAsString(@params[1], is_term[1]));
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
