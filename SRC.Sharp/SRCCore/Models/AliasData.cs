@@ -2,8 +2,10 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Lib;
 using SRCCore.VB;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.Models
 {
@@ -137,6 +139,24 @@ namespace SRCCore.Models
 
                 Elements.Add(elm);
             }
+        }
+
+        // 能力の置き換え名を取得する
+        public string ReplaceTypeName(string aname)
+        {
+            AliasDataType alias = this;
+            var aliasElem = alias.Elements.FirstOrDefault(x => GeneralLib.LIndex(x.strAliasData, 1) == aname);
+
+            if (aliasElem != null)
+            {
+                aname = aliasElem.strAliasType;
+            }
+            else
+            {
+                aname = alias.Elements.First().strAliasType;
+            }
+
+            return aname;
         }
     }
 }

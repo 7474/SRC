@@ -970,17 +970,7 @@ namespace SRCCore.Expressions.Functions
                         // エリアスが定義されている？
                         if (SRC.ALDList.IsDefined(aname))
                         {
-                            var alias = SRC.ALDList.Item(aname);
-                            var aliasElem = alias.Elements.FirstOrDefault(x => GeneralLib.LIndex(x.strAliasData, 1) == aname);
-
-                            if (aliasElem != null)
-                            {
-                                aname = aliasElem.strAliasType;
-                            }
-                            else
-                            {
-                                aname = alias.Elements.First().strAliasType;
-                            }
+                            aname = SRC.ALDList.Item(aname).ReplaceTypeName(aname);
                         }
 
                         if (u != null)
@@ -1060,17 +1050,7 @@ namespace SRCCore.Expressions.Functions
                         // エリアスが定義されている？
                         if (SRC.ALDList.IsDefined(aname))
                         {
-                            var alias = SRC.ALDList.Item(aname);
-                            var aliasElem = alias.Elements.FirstOrDefault(x => GeneralLib.LIndex(x.strAliasData, 1) == aname);
-
-                            if (aliasElem != null)
-                            {
-                                aname = aliasElem.strAliasType;
-                            }
-                            else
-                            {
-                                aname = alias.Elements.First().strAliasType;
-                            }
+                            aname = SRC.ALDList.Item(aname).ReplaceTypeName(aname);
                         }
 
                         if (u != null)

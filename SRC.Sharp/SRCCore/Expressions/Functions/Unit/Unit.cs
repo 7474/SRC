@@ -203,17 +203,7 @@ namespace SRCCore.Expressions.Functions
             // エリアスが定義されている？
             if (SRC.ALDList.IsDefined(name))
             {
-                var alias = SRC.ALDList.Item(name);
-                var aliasElem = alias.Elements.FirstOrDefault(x => GeneralLib.LIndex(x.strAliasData, 1) == name);
-
-                if (aliasElem != null)
-                {
-                    name = aliasElem.strAliasType;
-                }
-                else
-                {
-                    name = alias.Elements.First().strAliasType;
-                }
+                name = SRC.ALDList.Item(name).ReplaceTypeName(name);
             }
             num_result = unit?.IsFeatureAvailable(name) ?? false ? 1d : 0d;
             if (etype == ValueType.StringType)
