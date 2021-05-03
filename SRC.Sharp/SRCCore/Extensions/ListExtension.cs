@@ -24,5 +24,18 @@ namespace SRCCore.Extensions
             // TODO 浅いコピーでクローンする実装の確認
             return list.ToList();
         }
+
+        public static T SafeRefOneOffset<T>(this IList<T> list, int index)
+        {
+            var i = index - 1;
+            if (0 <= i && list.Count < i)
+            {
+                return list[i];
+            }
+            else
+            {
+                return default(T);
+            }
+        }
     }
 }

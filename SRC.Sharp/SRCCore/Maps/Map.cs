@@ -10,6 +10,7 @@ using SRCCore.Units;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -97,7 +98,7 @@ namespace SRCCore.Maps
         public string MapDrawMode;
         // フィルタ色
         [JsonProperty]
-        public int MapDrawFilterColor;
+        public Color MapDrawFilterColor;
         // フィルタの透過度
         [JsonProperty]
         public double MapDrawFilterTransPercent;

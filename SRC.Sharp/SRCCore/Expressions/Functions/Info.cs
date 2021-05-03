@@ -1,3 +1,4 @@
+using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.VB;
@@ -4093,13 +4094,11 @@ namespace SRCCore.Expressions.Functions
                     {
                         if (it != null)
                         {
-                            str_result = it.Data.Comment;
-                            GeneralLib.ReplaceString(str_result, Constants.vbCr + Constants.vbLf, " ");
+                            str_result = it.Data.Comment?.ReplaceNewLine(" ");
                         }
                         else if (itd != null)
                         {
-                            str_result = itd.Comment;
-                            GeneralLib.ReplaceString(str_result, Constants.vbCr + Constants.vbLf, " ");
+                            str_result = itd.Comment?.ReplaceNewLine(" ");
                         }
                         else if (spd != null)
                         {
@@ -4184,10 +4183,10 @@ namespace SRCCore.Expressions.Functions
                         if (spd != null)
                         {
                             idx = (idx + 1);
-                            i = GeneralLib.StrToLng(@params[idx]);
+                            var i = GeneralLib.StrToLng(@params[idx]);
                             if (1 <= i && i <= spd.CountEffect())
                             {
-                                str_result = spd.EffectType(i);
+                                str_result = spd.Effects.SafeRefOneOffset(i).strEffectType;
                             }
                         }
 
@@ -4199,10 +4198,10 @@ namespace SRCCore.Expressions.Functions
                         if (spd != null)
                         {
                             idx = (idx + 1);
-                            i = GeneralLib.StrToLng(@params[idx]);
+                            var i = GeneralLib.StrToLng(@params[idx]);
                             if (1 <= i && i <= spd.CountEffect())
                             {
-                                str_result = SrcFormatter.Format(spd.EffectLevel(i));
+                                str_result = SrcFormatter.Format(spd.Effects.SafeRefOneOffset(i).dblEffectLevel);
                             }
                         }
 
@@ -4214,10 +4213,10 @@ namespace SRCCore.Expressions.Functions
                         if (spd != null)
                         {
                             idx = (idx + 1);
-                            i = GeneralLib.StrToLng(@params[idx]);
+                            var i = GeneralLib.StrToLng(@params[idx]);
                             if (1 <= i && i <= spd.CountEffect())
                             {
-                                str_result = spd.EffectData(i);
+                                str_result = spd.Effects.SafeRefOneOffset(i).strEffectData;
                             }
                         }
 
@@ -4253,13 +4252,10 @@ namespace SRCCore.Expressions.Functions
                                 {
                                     if (!string.IsNullOrEmpty(SRC.Map.MapDrawMode))
                                     {
+                                        string buf;
                                         if (SRC.Map.MapDrawMode == "フィルタ")
                                         {
-                                            buf = Conversion.Hex(SRC.Map.MapDrawFilterColor);
-                                            var loopTo24 = (6 - Strings.Len(buf));
-                                            for (i = 1; i <= loopTo24; i++)
-                                                buf = "0" + buf;
-                                            buf = "#" + Strings.Mid(buf, 5, 2) + Strings.Mid(buf, 3, 2) + Strings.Mid(buf, 1, 2) + " " + (SRC.Map.MapDrawFilterTransPercent * 100d).ToString() + "%";
+                                            buf = SRC.Map.MapDrawFilterColor.ToHexString();
                                         }
                                         else
                                         {
@@ -4302,7 +4298,7 @@ namespace SRCCore.Expressions.Functions
 
                                     if (mx < 1 || SRC.Map.MapWidth < mx || my < 1 || SRC.Map.MapHeight < my)
                                     {
-                                        return str_result;
+                                        return ValueType.StringType;
                                     }
 
                                     idx = (idx + 1);
@@ -4310,14 +4306,14 @@ namespace SRCCore.Expressions.Functions
                                     {
                                         case "地形名":
                                             {
-                                                str_result = SRC.Map.TerrainName(mx, my);
+                                                str_result = SRC.Map.Terrain(mx, my).Name;
                                                 break;
                                             }
 
                                         case "地形タイプ":
                                         case "地形クラス":
                                             {
-                                                str_result = SRC.Map.TerrainClass(mx, my);
+                                                str_result = SRC.Map.Terrain(mx, my).Class;
                                                 break;
                                             }
 
@@ -4325,52 +4321,36 @@ namespace SRCCore.Expressions.Functions
                                             {
                                                 // 0.5刻みの移動コストを使えるようにするため、移動コストは
                                                 // 実際の２倍の値で記録されている
-                                                str_result = SrcFormatter.Format(SRC.Map.TerrainMoveCost(mx, my) / 2d);
+                                                str_result = SrcFormatter.Format(SRC.Map.Terrain(mx, my).MoveCost / 2d);
                                                 break;
                                             }
 
                                         case "回避修正":
                                             {
-                                                str_result = SrcFormatter.Format(SRC.Map.TerrainEffectForHit(mx, my));
+                                                str_result = SrcFormatter.Format(SRC.Map.Terrain(mx, my).HitMod);
                                                 break;
                                             }
 
                                         case "ダメージ修正":
                                             {
-                                                str_result = SrcFormatter.Format(SRC.Map.TerrainEffectForDamage(mx, my));
+                                                str_result = SrcFormatter.Format(SRC.Map.Terrain(mx, my).DamageMod);
                                                 break;
                                             }
 
                                         case "ＨＰ回復量":
                                             {
-                                                str_result = SrcFormatter.Format(SRC.Map.TerrainEffectForHPRecover(mx, my));
+                                                str_result = SrcFormatter.Format(SRC.Map.Terrain(mx, my).EffectForHPRecover());
                                                 break;
                                             }
 
                                         case "ＥＮ回復量":
                                             {
-                                                str_result = SrcFormatter.Format(SRC.Map.TerrainEffectForENRecover(mx, my));
+                                                str_result = SrcFormatter.Format(SRC.Map.Terrain(mx, my).EffectForENRecover());
                                                 break;
                                             }
 
                                         case "ビットマップ名":
                                             {
-                                                // MOD START 240a
-                                                // Select Case MapImageFileTypeData(mx, my)
-                                                // Case SeparateDirMapImageFileType
-                                                // EvalInfoFunc = _
-                                                // '                                        TDList.Bitmap(MapData(mx, my, 0)) && "\" && _
-                                                // '                                        TDList.Bitmap(MapData(mx, my, 0)) && _
-                                                // '                                        Format$(MapData(mx, my, 1), "0000") && ".bmp"
-                                                // Case FourFiguresMapImageFileType
-                                                // EvalInfoFunc = _
-                                                // '                                        TDList.Bitmap(MapData(mx, my, 0)) && _
-                                                // '                                        Format$(MapData(mx, my, 1), "0000") && ".bmp"
-                                                // Case OldMapImageFileType
-                                                // EvalInfoFunc = _
-                                                // '                                        TDList.Bitmap(MapData(mx, my, 0)) && _
-                                                // '                                        Format$(MapData(mx, my, 1)) && ".bmp"
-                                                // End Select
                                                 switch (SRC.Map.MapImageFileTypeData[mx, my])
                                                 {
                                                     case SRC.Map.MapImageFileType.SeparateDirMapImageFileType:
@@ -4394,8 +4374,6 @@ namespace SRCCore.Expressions.Functions
 
                                                 break;
                                             }
-                                        // MOD  END  240a
-                                        // ADD START 240a
                                         case "レイヤービットマップ名":
                                             {
                                                 switch (SRC.Map.MapImageFileTypeData[mx, my])
@@ -4421,7 +4399,6 @@ namespace SRCCore.Expressions.Functions
 
                                                 break;
                                             }
-                                        // ADD  END  240a
                                         case "ユニットＩＤ":
                                             {
                                                 if (SRC.Map.MapDataForUnit[mx, my] != null)
@@ -4464,7 +4441,6 @@ namespace SRCCore.Expressions.Functions
 
                                     break;
                                 }
-                            // ADD START MARGE
                             case "ExtendedAnimation":
                                 {
                                     if (SRC.ExtendedAnimation)
@@ -4478,7 +4454,6 @@ namespace SRCCore.Expressions.Functions
 
                                     break;
                                 }
-                            // ADD END MARGE
                             case "SpecialPowerAnimation":
                                 {
                                     if (SRC.SpecialPowerAnimation)
@@ -4509,25 +4484,10 @@ namespace SRCCore.Expressions.Functions
 
                             case "UseDirectMusic":
                                 {
-                                    if (Sound.UseDirectMusic)
-                                    {
-                                        str_result = "On";
-                                    }
-                                    else
-                                    {
-                                        str_result = "Off";
-                                    }
-
+                                    // SRC# に UseDirectMusic という概念はない
+                                    str_result = "Off";
                                     break;
                                 }
-                            // MOD START MARGE
-                            // Case "Turn", "Square", "KeepEnemyBGM", "MidiReset", _
-                            // '                    "AutoMoveCursor", "DebugMode", "LastFolder", _
-                            // '                    "MIDIPortID", "MP3Volume", _
-                            // '                    "BattleAnimation", "WeaponAnimation", "MoveAnimation", _
-                            // '                    "ImageBufferNum", "MaxImageBufferSize", "KeepStretchedImage", _
-                            // '                    "UseTransparentBlt"
-                            // 「NewGUI」で探しに来たらINIの状態を返す。「新ＧＵＩ」で探しに来たらOptionの状態を返す。
                             case "Turn":
                             case "Square":
                             case "KeepEnemyBGM":
@@ -4546,15 +4506,14 @@ namespace SRCCore.Expressions.Functions
                             case "UseTransparentBlt":
                             case "NewGUI":
                                 {
-                                    // MOD END MARGE
-                                    str_result = GeneralLib.ReadIni("Option", @params[idx]);
+                                    str_result = SRC.SystemConfig.GetItem("Option", @params[idx]);
                                     break;
                                 }
 
                             default:
                                 {
                                     // Optionコマンドのオプションを参照
-                                    if (IsOptionDefined(@params[idx]))
+                                    if (SRC.Expression.IsOptionDefined(@params[idx]))
                                     {
                                         str_result = "On";
                                     }
