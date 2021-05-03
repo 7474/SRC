@@ -87,6 +87,9 @@ namespace SRCSharpForm
         public int PaintedAreaY2 { get; set; }
         public bool IsCursorVisible { get; set; }
         public int BGColor { get; set; }
+        public Font CurrentPaintFont => currentDrawFont;
+        // XXX そもそもBrushでなくForeColor持っていたほうがいいかもしれない
+        public Color CurrentPaintColor => (currentDrawFontColor as SolidBrush).Color;
         int IGUI.TopItem { get; set; }
 
         private frmNowLoading frmNowLoading;

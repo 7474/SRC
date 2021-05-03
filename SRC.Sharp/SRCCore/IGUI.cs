@@ -6,6 +6,7 @@
 using SRCCore.Commands;
 using SRCCore.Units;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 
 namespace SRCCore
@@ -76,6 +77,9 @@ namespace SRCCore
         bool IsCursorVisible { get; set; }
         // 背景色
         int BGColor { get; set; }
+        // XXX Font への依存が厳しいようなら依存を切る
+        Font CurrentPaintFont { get; }
+        Color CurrentPaintColor { get; }
 
         // GUIから入力可能かどうか
         bool IsGUILocked { get; set; }

@@ -1,3 +1,4 @@
+using SRCCore.Extensions;
 using SRCCore.Lib;
 
 namespace SRCCore.Expressions.Functions
@@ -9,123 +10,98 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Font
-            //                        switch (GetValueAsString(@params[1], is_term[1]) ?? "")
-            //                        {
-            //                            case "フォント名":
-            //                                {
-            //                                    str_result = GUI.MainForm.picMain(0).Font.Name;
-            //                                    CallFunctionRet = ValueType.StringType;
-            //                                    break;
-            //                                }
-
-            //                            case "サイズ":
-            //                                {
-            //                                    num_result = GUI.MainForm.picMain(0).Font.Size;
-            //                                    if (etype == ValueType.StringType)
-            //                                    {
-            //                                        str_result = GeneralLib.FormatNum(num_result);
-            //                                        CallFunctionRet = ValueType.StringType;
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        CallFunctionRet = ValueType.NumericType;
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case "太字":
-            //                                {
-            //                                    if (GUI.MainForm.picMain(0).Font.Bold)
-            //                                    {
-            //                                        num_result = 1d;
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        num_result = 0d;
-            //                                    }
-
-            //                                    if (etype == ValueType.StringType)
-            //                                    {
-            //                                        str_result = GeneralLib.FormatNum(num_result);
-            //                                        CallFunctionRet = ValueType.StringType;
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        CallFunctionRet = ValueType.NumericType;
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case "斜体":
-            //                                {
-            //                                    if (GUI.MainForm.picMain(0).Font.Italic)
-            //                                    {
-            //                                        num_result = 1d;
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        num_result = 0d;
-            //                                    }
-
-            //                                    if (etype == ValueType.StringType)
-            //                                    {
-            //                                        str_result = GeneralLib.FormatNum(num_result);
-            //                                        CallFunctionRet = ValueType.StringType;
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        CallFunctionRet = ValueType.NumericType;
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case "色":
-            //                                {
-            //                                    str_result = Hex(GUI.MainForm.picMain(0).ForeColor);
-            //                                    var loopTo6 = (6 - Strings.Len(str_result));
-            //                                    for (i = 1; i <= loopTo6; i++)
-            //                                        str_result = "0" + str_result;
-            //                                    str_result = "#" + str_result;
-            //                                    CallFunctionRet = ValueType.StringType;
-            //                                    break;
-            //                                }
-
-            //                            case "書き込み":
-            //                                {
-            //                                    if (GUI.PermanentStringMode)
-            //                                    {
-            //                                        str_result = "背景";
-            //                                    }
-            //                                    else if (GUI.KeepStringMode)
-            //                                    {
-            //                                        str_result = "保持";
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        str_result = "通常";
-            //                                    }
-
-            //                                    CallFunctionRet = ValueType.StringType;
-            //                                    break;
-            //                                }
-            //                        }
-
-            if (etype == ValueType.StringType)
+            switch (SRC.Expression.GetValueAsString(@params[1], is_term[1]) ?? "")
             {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
+                case "フォント名":
+                    {
+                        str_result = SRC.GUI.CurrentPaintFont.Name;
+                        return ValueType.StringType;
+                    }
+
+                case "サイズ":
+                    {
+                        num_result = SRC.GUI.CurrentPaintFont.Size;
+                        if (etype == ValueType.StringType)
+                        {
+                            str_result = GeneralLib.FormatNum(num_result);
+                            return ValueType.StringType;
+                        }
+                        else
+                        {
+                            return ValueType.NumericType;
+                        }
+                    }
+
+                case "太字":
+                    {
+                        if (SRC.GUI.CurrentPaintFont.Bold)
+                        {
+                            num_result = 1d;
+                        }
+                        else
+                        {
+                            num_result = 0d;
+                        }
+
+                        if (etype == ValueType.StringType)
+                        {
+                            str_result = GeneralLib.FormatNum(num_result);
+                            return ValueType.StringType;
+                        }
+                        else
+                        {
+                            return ValueType.NumericType;
+                        }
+                    }
+
+                case "斜体":
+                    {
+                        if (SRC.GUI.CurrentPaintFont.Italic)
+                        {
+                            num_result = 1d;
+                        }
+                        else
+                        {
+                            num_result = 0d;
+                        }
+
+                        if (etype == ValueType.StringType)
+                        {
+                            str_result = GeneralLib.FormatNum(num_result);
+                            return ValueType.StringType;
+                        }
+                        else
+                        {
+                            return ValueType.NumericType;
+                        }
+                    }
+
+                case "色":
+                    {
+                        str_result = SRC.GUI.CurrentPaintColor.ToHexString();
+                        return ValueType.StringType;
+                    }
+
+                case "書き込み":
+                    {
+                        if (SRC.GUI.PermanentStringMode)
+                        {
+                            str_result = "背景";
+                        }
+                        else if (SRC.GUI.KeepStringMode)
+                        {
+                            str_result = "保持";
+                        }
+                        else
+                        {
+                            str_result = "通常";
+                        }
+                        return ValueType.StringType;
+                    }
             }
-            else
-            {
-                return ValueType.NumericType;
-            }
+            return ValueType.UndefinedType;
         }
     }
-
 
     public class RGB : AFunction
     {
