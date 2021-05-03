@@ -101,6 +101,7 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
+            // XXX å≥ÇÕ expr êÿÇËèoÇµÇƒÇΩÇØÇÍÇ«Ç»ÇÒÇ≈ÇæÇÎ
             var list = GeneralLib.ToList(@params[1]);
             var num = list.Count;
             var flag = false;
@@ -314,39 +315,28 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Isvardefined
-            //                        if (IsVariableDefined(Strings.Trim(Strings.Mid(expr, 14, Strings.Len(expr) - 14))))
-            //                        {
-            //                            if (etype == ValueType.StringType)
-            //                            {
-            //                                str_result = "1";
-            //                                CallFunctionRet = ValueType.StringType;
-            //                            }
-            //                            else
-            //                            {
-            //                                num_result = 1d;
-            //                                CallFunctionRet = ValueType.NumericType;
-            //                            }
-            //                        }
-            //                        else if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = "0";
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            num_result = 0d;
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
-
-            if (etype == ValueType.StringType)
+            // XXX å≥ÇÕ expr êÿÇËèoÇµÇƒÇΩÇØÇÍÇ«Ç»ÇÒÇ≈ÇæÇÎ
+            if (SRC.Expression.IsVariableDefined(Strings.Trim(@params[1])))
             {
-                str_result = GeneralLib.FormatNum(num_result);
+                if (etype == ValueType.StringType)
+                {
+                    str_result = "1";
+                    return ValueType.StringType;
+                }
+                else
+                {
+                    num_result = 1d;
+                    return ValueType.NumericType;
+                }
+            }
+            else if (etype == ValueType.StringType)
+            {
+                str_result = "0";
                 return ValueType.StringType;
             }
             else
             {
+                num_result = 0d;
                 return ValueType.NumericType;
             }
         }
