@@ -506,20 +506,10 @@ namespace SRCCore.Expressions.Functions
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
-            str_result = "";
             num_result = 0d;
-
-            // TODO Impl Chr
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
+            // XXX 文字コード
+            str_result = Conversions.ToString((char)SRC.Expression.GetValueAsLong(@params[1], is_term[1]));
+            return ValueType.StringType;
         }
     }
 
@@ -529,7 +519,6 @@ namespace SRCCore.Expressions.Functions
         {
             str_result = Strings.LCase(SRC.Expression.GetValueAsString(@params[1], is_term[1]));
             num_result = 0d;
-
             return ValueType.StringType;
         }
     }
@@ -538,20 +527,9 @@ namespace SRCCore.Expressions.Functions
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
-            str_result = "";
+            str_result = Strings.Trim(SRC.Expression.GetValueAsString(@params[1], is_term[1]));
             num_result = 0d;
-
-            // TODO Impl Trim
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
+            return ValueType.StringType;
         }
     }
 }
