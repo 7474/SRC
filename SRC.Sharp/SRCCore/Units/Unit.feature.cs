@@ -10,8 +10,20 @@ namespace SRCCore.Units
     {
         public IList<Models.FeatureData> Features => colFeature.List;
 
+        // 特殊能力の総数
+        public int CountFeature()
+        {
+            return colFeature.Count;
+        }
+
         // 特殊能力
         public FeatureData Feature(string Index)
+        {
+            // XXX 参照先はNameだった
+            //FeatureRet = fd.Name;
+            return colFeature[Index];
+        }
+        public FeatureData Feature(int Index)
         {
             // XXX 参照先はNameだった
             //FeatureRet = fd.Name;
@@ -20,6 +32,10 @@ namespace SRCCore.Units
 
         // 特殊能力の名称
         public string FeatureName(string Index)
+        {
+            return colFeature[Index].FeatureName(this);
+        }
+        public string FeatureName(int Index)
         {
             return colFeature[Index].FeatureName(this);
         }

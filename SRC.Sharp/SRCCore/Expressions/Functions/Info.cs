@@ -1,6 +1,7 @@
 using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.VB;
+using System.Linq;
 
 namespace SRCCore.Expressions.Functions
 {
@@ -121,35 +122,35 @@ namespace SRCCore.Expressions.Functions
             {
                 case "名称":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = u.Name;
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = ud.Name;
                         }
-                        else if (p is object)
+                        else if (p != null)
                         {
                             str_result = p.Name;
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = pd.Name;
                         }
-                        else if (nd is object)
+                        else if (nd != null)
                         {
                             str_result = nd.Name;
                         }
-                        else if (it is object)
+                        else if (it != null)
                         {
                             str_result = it.Name;
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             str_result = itd.Name;
                         }
-                        else if (spd is object)
+                        else if (spd != null)
                         {
                             str_result = spd.Name;
                         }
@@ -159,31 +160,31 @@ namespace SRCCore.Expressions.Functions
 
                 case "読み仮名":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = u.KanaName;
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = ud.KanaName;
                         }
-                        else if (p is object)
+                        else if (p != null)
                         {
                             str_result = p.KanaName;
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = pd.KanaName;
                         }
-                        else if (it is object)
+                        else if (it != null)
                         {
                             str_result = it.Data.KanaName;
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             str_result = itd.KanaName;
                         }
-                        else if (spd is object)
+                        else if (spd != null)
                         {
                             str_result = spd.KanaName;
                         }
@@ -193,31 +194,31 @@ namespace SRCCore.Expressions.Functions
 
                 case "愛称":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = u.Nickname0;
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = ud.Nickname;
                         }
-                        else if (p is object)
+                        else if (p != null)
                         {
                             str_result = p.get_Nickname(false);
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = pd.Nickname;
                         }
-                        else if (nd is object)
+                        else if (nd != null)
                         {
                             str_result = nd.Nickname;
                         }
-                        else if (it is object)
+                        else if (it != null)
                         {
                             str_result = it.Nickname();
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             str_result = itd.Nickname;
                         }
@@ -227,11 +228,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "性別":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = p.Sex;
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = pd.Sex;
                         }
@@ -241,19 +242,19 @@ namespace SRCCore.Expressions.Functions
                 case "ユニットクラス":
                 case "機体クラス":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = u.Class;
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = ud.Class;
                         }
-                        else if (p is object)
+                        else if (p != null)
                         {
                             str_result = p.Class;
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = pd.Class;
                         }
@@ -263,9 +264,9 @@ namespace SRCCore.Expressions.Functions
 
                 case "地形適応":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
-                            for (i = 1; i <= 4; i++)
+                            for (var i = 1; i <= 4; i++)
                             {
                                 switch (u.get_Adaption(i))
                                 {
@@ -307,15 +308,15 @@ namespace SRCCore.Expressions.Functions
                                 }
                             }
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = ud.Adaption;
                         }
-                        else if (p is object)
+                        else if (p != null)
                         {
                             str_result = p.Adaption;
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = pd.Adaption;
                         }
@@ -325,19 +326,19 @@ namespace SRCCore.Expressions.Functions
 
                 case "経験値":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = u.ExpValue.ToString();
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = ud.ExpValue.ToString();
                         }
-                        else if (p is object)
+                        else if (p != null)
                         {
                             str_result = p.ExpValue.ToString();
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = pd.ExpValue.ToString();
                         }
@@ -347,11 +348,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "格闘":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.Infight);
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = SrcFormatter.Format(pd.Infight);
                         }
@@ -361,11 +362,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "射撃":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.Shooting);
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = SrcFormatter.Format(pd.Shooting);
                         }
@@ -375,11 +376,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "命中":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.Hit);
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = SrcFormatter.Format(pd.Hit);
                         }
@@ -389,11 +390,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "回避":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.Dodge);
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = SrcFormatter.Format(pd.Dodge);
                         }
@@ -403,11 +404,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "技量":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.Technique);
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = SrcFormatter.Format(pd.Technique);
                         }
@@ -417,11 +418,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "反応":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.Intuition);
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = SrcFormatter.Format(pd.Intuition);
                         }
@@ -431,7 +432,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "防御":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.Defense);
                         }
@@ -441,7 +442,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "格闘基本値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.InfightBase);
                         }
@@ -451,7 +452,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "射撃基本値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.ShootingBase);
                         }
@@ -461,7 +462,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "命中基本値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.HitBase);
                         }
@@ -471,7 +472,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "回避基本値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.DodgeBase);
                         }
@@ -481,7 +482,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "技量基本値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.TechniqueBase);
                         }
@@ -491,7 +492,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "反応基本値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.IntuitionBase);
                         }
@@ -501,7 +502,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "格闘修正値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.InfightMod);
                         }
@@ -511,7 +512,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "射撃修正値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.ShootingMod);
                         }
@@ -521,7 +522,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "命中修正値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.HitMod);
                         }
@@ -531,7 +532,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "回避修正値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.DodgeMod);
                         }
@@ -541,7 +542,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "技量修正値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.TechniqueMod);
                         }
@@ -551,7 +552,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "反応修正値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.IntuitionMod);
                         }
@@ -561,7 +562,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "格闘支援修正値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.InfightMod2);
                         }
@@ -571,7 +572,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "射撃支援修正値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.ShootingMod2);
                         }
@@ -581,7 +582,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "命中支援修正値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.HitMod2);
                         }
@@ -591,7 +592,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "回避支援修正値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.DodgeMod2);
                         }
@@ -601,7 +602,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "技量支援修正値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.TechniqueMod2);
                         }
@@ -611,7 +612,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "反応支援修正値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.IntuitionMod2);
                         }
@@ -621,11 +622,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "性格":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = p.Personality;
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = pd.Personality;
                         }
@@ -635,18 +636,18 @@ namespace SRCCore.Expressions.Functions
 
                 case "最大ＳＰ":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.MaxSP);
-                            if (p.MaxSP == 0 && p.Unit is object)
+                            if (p.MaxSP == 0 && p.Unit != null)
                             {
                                 if (ReferenceEquals(p, p.Unit.MainPilot()))
                                 {
-                                    str_result = SrcFormatter.Format(p.Unit.Pilot(1).MaxSP);
+                                    str_result = SrcFormatter.Format(p.Unit.Pilots.First().MaxSP);
                                 }
                             }
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = SrcFormatter.Format(pd.SP);
                         }
@@ -656,18 +657,18 @@ namespace SRCCore.Expressions.Functions
 
                 case "ＳＰ":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.SP);
-                            if (p.MaxSP == 0 && p.Unit is object)
+                            if (p.MaxSP == 0 && p.Unit != null)
                             {
                                 if (ReferenceEquals(p, p.Unit.MainPilot()))
                                 {
-                                    str_result = SrcFormatter.Format(p.Unit.Pilot(1).SP);
+                                    str_result = SrcFormatter.Format(p.Unit.Pilots.First().SP);
                                 }
                             }
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = SrcFormatter.Format(pd.SP);
                         }
@@ -677,23 +678,23 @@ namespace SRCCore.Expressions.Functions
 
                 case "グラフィック":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = u.get_Bitmap(true);
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = ud.Bitmap0;
                         }
-                        else if (p is object)
+                        else if (p != null)
                         {
                             str_result = p.get_Bitmap(true);
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = pd.Bitmap0;
                         }
-                        else if (nd is object)
+                        else if (nd != null)
                         {
                             str_result = nd.Bitmap0;
                         }
@@ -703,11 +704,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "ＭＩＤＩ":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = p.BGM;
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = pd.BGM;
                         }
@@ -717,7 +718,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "レベル":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.Level);
                         }
@@ -727,7 +728,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "累積経験値":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.Exp);
                         }
@@ -737,7 +738,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "気力":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.Morale);
                         }
@@ -748,11 +749,11 @@ namespace SRCCore.Expressions.Functions
                 case "最大霊力":
                 case "最大プラーナ":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.MaxPlana());
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = SrcFormatter.Format(pd.SkillLevel(0, "霊力"));
                         }
@@ -763,11 +764,11 @@ namespace SRCCore.Expressions.Functions
                 case "霊力":
                 case "プラーナ":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.Plana);
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = SrcFormatter.Format(pd.SkillLevel(0, "霊力"));
                         }
@@ -778,11 +779,11 @@ namespace SRCCore.Expressions.Functions
                 case "同調率":
                 case "シンクロ率":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.SynchroRate());
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = SrcFormatter.Format(pd.SkillLevel(0, "同調率"));
                         }
@@ -794,29 +795,29 @@ namespace SRCCore.Expressions.Functions
                 case "精神コマンド":
                 case "精神":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
-                            if (p.MaxSP == 0 && p.Unit is object)
+                            if (p.MaxSP == 0 && p.Unit != null)
                             {
                                 if (ReferenceEquals(p, p.Unit.MainPilot()))
                                 {
-                                    p = p.Unit.Pilot(1);
+                                    p = p.Unit.Pilots.First();
                                 }
                             }
 
                             {
                                 var withBlock = p;
                                 var loopTo = withBlock.CountSpecialPower;
-                                for (i = 1; i <= loopTo; i++)
+                                for (var i = 1; i <= loopTo; i++)
                                     str_result = str_result + " " + withBlock.get_SpecialPower(i);
                             }
 
                             str_result = Strings.Trim(str_result);
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             var loopTo1 = pd.CountSpecialPower(100);
-                            for (i = 1; i <= loopTo1; i++)
+                            for (var i = 1; i <= loopTo1; i++)
                                 str_result = str_result + " " + pd.SpecialPower(100, i);
                             str_result = Strings.Trim(str_result);
                         }
@@ -827,13 +828,13 @@ namespace SRCCore.Expressions.Functions
                 case "スペシャルパワー所有":
                 case "精神コマンド所有":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
-                            if (p.MaxSP == 0 && p.Unit is object)
+                            if (p.MaxSP == 0 && p.Unit != null)
                             {
                                 if (ReferenceEquals(p, p.Unit.MainPilot()))
                                 {
-                                    p = p.Unit.Pilot(1);
+                                    p = p.Unit.Pilots.First();
                                 }
                             }
 
@@ -846,7 +847,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = "0";
                             }
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             if (pd.IsSpecialPowerAvailable(100, @params[idx + 1]))
                             {
@@ -864,19 +865,19 @@ namespace SRCCore.Expressions.Functions
                 case "スペシャルパワーコスト":
                 case "精神コマンドコスト":
                     {
-                        if (p is object)
+                        if (p != null)
                         {
-                            if (p.MaxSP == 0 && p.Unit is object)
+                            if (p.MaxSP == 0 && p.Unit != null)
                             {
                                 if (ReferenceEquals(p, p.Unit.MainPilot()))
                                 {
-                                    p = p.Unit.Pilot(1);
+                                    p = p.Unit.Pilots.First();
                                 }
                             }
 
                             str_result = SrcFormatter.Format(p.SpecialPowerCost(@params[idx + 1]));
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = SrcFormatter.Format(pd.SpecialPowerCost(@params[idx + 1]));
                         }
@@ -886,31 +887,27 @@ namespace SRCCore.Expressions.Functions
 
                 case "特殊能力数":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.CountFeature());
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = SrcFormatter.Format(ud.CountFeature());
                         }
-                        else if (p is object)
+                        else if (p != null)
                         {
                             str_result = p.CountSkill().ToString();
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
-                            int localLLength() { string arglist = pd.Skill(100); var ret = GeneralLib.LLength(arglist); return ret; }
-
-                            int localLLength1() { string arglist = pd.Skill(100); var ret = GeneralLib.LLength(arglist); return ret; }
-
-                            str_result = localLLength1().ToString();
+                            str_result = GeneralLib.LLength(pd.Skill(100)).ToString();
                         }
-                        else if (it is object)
+                        else if (it != null)
                         {
                             str_result = SrcFormatter.Format(it.CountFeature());
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             str_result = SrcFormatter.Format(itd.CountFeature());
                         }
@@ -920,46 +917,46 @@ namespace SRCCore.Expressions.Functions
 
                 case "特殊能力":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             if (GeneralLib.IsNumber(@params[idx + 1]))
                             {
-                                str_result = u.Feature(Conversions.ToIntegereger(@params[idx + 1]));
+                                str_result = u.Feature(Conversions.ToInteger(@params[idx + 1]))?.Name;
                             }
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             if (GeneralLib.IsNumber(@params[idx + 1]))
                             {
-                                str_result = ud.Feature(Conversions.ToInteger(@params[idx + 1]));
+                                str_result = ud.Feature(Conversions.ToInteger(@params[idx + 1]))?.Name;
                             }
                         }
-                        else if (p is object)
+                        else if (p != null)
                         {
                             if (GeneralLib.IsNumber(@params[idx + 1]))
                             {
                                 str_result = p.Skill(Conversions.ToInteger(@params[idx + 1]));
                             }
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             if (GeneralLib.IsNumber(@params[idx + 1]))
                             {
                                 str_result = GeneralLib.LIndex(pd.Skill(100), Conversions.ToInteger(@params[idx + 1]));
                             }
                         }
-                        else if (it is object)
+                        else if (it != null)
                         {
                             if (GeneralLib.IsNumber(@params[idx + 1]))
                             {
-                                str_result = it.Feature(Conversions.ToInteger(@params[idx + 1]));
+                                str_result = it.Feature(Conversions.ToInteger(@params[idx + 1]))?.Name;
                             }
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             if (GeneralLib.IsNumber(@params[idx + 1]))
                             {
-                                str_result = itd.Feature(Conversions.ToInteger(@params[idx + 1]));
+                                str_result = itd.Feature(Conversions.ToInteger(@params[idx + 1]))?.Name;
                             }
                         }
 
@@ -968,33 +965,25 @@ namespace SRCCore.Expressions.Functions
 
                 case "特殊能力名称":
                     {
-                        aname = @params[idx + 1];
+                        var aname = @params[idx + 1];
 
                         // エリアスが定義されている？
                         if (SRC.ALDList.IsDefined(aname))
                         {
+                            var alias = SRC.ALDList.Item(aname);
+                            var aliasElem = alias.Elements.FirstOrDefault(x => GeneralLib.LIndex(x.strAliasData, 1) == aname);
+
+                            if (aliasElem != null)
                             {
-                                var withBlock1 = SRC.ALDList.Item(aname);
-                                var loopTo2 = withBlock1.Count;
-                                for (i = 1; i <= loopTo2; i++)
-                                {
-                                    string localLIndex() { string arglist = withBlock1.get_AliasData(i); var ret = GeneralLib.LIndex(arglist, 1); withBlock1.get_AliasData(i) = arglist; return ret; }
-
-                                    if ((localLIndex() ?? "") == (aname ?? ""))
-                                    {
-                                        aname = withBlock1.get_AliasType(i);
-                                        break;
-                                    }
-                                }
-
-                                if (i > withBlock1.Count)
-                                {
-                                    aname = withBlock1.get_AliasType(1);
-                                }
+                                aname = aliasElem.strAliasType;
+                            }
+                            else
+                            {
+                                aname = alias.Elements.First().strAliasType;
                             }
                         }
 
-                        if (u is object)
+                        if (u != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1005,7 +994,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = u.FeatureName(aname);
                             }
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1016,7 +1005,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = ud.FeatureName(aname);
                             }
                         }
-                        else if (p is object)
+                        else if (p != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1027,20 +1016,18 @@ namespace SRCCore.Expressions.Functions
                                 str_result = p.SkillName(aname);
                             }
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
-                                string localLIndex1() { string arglist = pd.Skill(100); var ret = GeneralLib.LIndex(arglist, Conversions.ToInteger(aname)); return ret; }
-
-                                str_result = pd.SkillName(100, localLIndex1());
+                                str_result = pd.SkillName(100, GeneralLib.LIndex(pd.Skill(100), Conversions.ToInteger(aname)));
                             }
                             else
                             {
                                 str_result = pd.SkillName(100, aname);
                             }
                         }
-                        else if (it is object)
+                        else if (it != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1051,7 +1038,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = it.FeatureName(aname);
                             }
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1094,7 +1081,7 @@ namespace SRCCore.Expressions.Functions
                             }
                         }
 
-                        if (u is object)
+                        if (u != null)
                         {
                             if (u.IsFeatureAvailable(aname))
                             {
@@ -1105,7 +1092,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = "0";
                             }
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             if (ud.IsFeatureAvailable(aname))
                             {
@@ -1116,7 +1103,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = "0";
                             }
                         }
-                        else if (p is object)
+                        else if (p != null)
                         {
                             if (p.IsSkillAvailable(aname))
                             {
@@ -1127,7 +1114,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = "0";
                             }
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             if (pd.IsSkillAvailable(100, aname))
                             {
@@ -1138,7 +1125,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = "0";
                             }
                         }
-                        else if (it is object)
+                        else if (it != null)
                         {
                             if (it.IsFeatureAvailable(aname))
                             {
@@ -1149,7 +1136,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = "0";
                             }
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             if (itd.IsFeatureAvailable(aname))
                             {
@@ -1192,7 +1179,7 @@ namespace SRCCore.Expressions.Functions
                             }
                         }
 
-                        if (u is object)
+                        if (u != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1207,7 +1194,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = SrcFormatter.Format(localFeatureLevel1());
                             }
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1222,7 +1209,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = SrcFormatter.Format(localFeatureLevel3());
                             }
                         }
-                        else if (p is object)
+                        else if (p != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1237,7 +1224,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = SrcFormatter.Format(localSkillLevel1());
                             }
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1252,7 +1239,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = SrcFormatter.Format(pd.SkillLevel(100, aname));
                             }
                         }
-                        else if (it is object)
+                        else if (it != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1267,7 +1254,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = SrcFormatter.Format(localFeatureLevel5());
                             }
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1314,7 +1301,7 @@ namespace SRCCore.Expressions.Functions
                             }
                         }
 
-                        if (u is object)
+                        if (u != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1325,7 +1312,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = u.FeatureData(aname);
                             }
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1336,7 +1323,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = ud.FeatureData(aname);
                             }
                         }
-                        else if (p is object)
+                        else if (p != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1347,7 +1334,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = p.SkillData(aname);
                             }
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1360,7 +1347,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = pd.SkillData(100, aname);
                             }
                         }
-                        else if (it is object)
+                        else if (it != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1371,7 +1358,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = it.FeatureData(aname);
                             }
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1414,7 +1401,7 @@ namespace SRCCore.Expressions.Functions
                             }
                         }
 
-                        if (u is object)
+                        if (u != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1425,7 +1412,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = u.FeatureNecessarySkill(aname);
                             }
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1436,7 +1423,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = ud.FeatureNecessarySkill(aname);
                             }
                         }
-                        else if (it is object)
+                        else if (it != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1447,7 +1434,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = it.FeatureNecessarySkill(aname);
                             }
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1490,7 +1477,7 @@ namespace SRCCore.Expressions.Functions
                             }
                         }
 
-                        if (u is object)
+                        if (u != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
@@ -1501,15 +1488,15 @@ namespace SRCCore.Expressions.Functions
                                 str_result = Help.FeatureHelpMessage(u, aname, false);
                             }
 
-                            if (string.IsNullOrEmpty(str_result) && p is object)
+                            if (string.IsNullOrEmpty(str_result) && p != null)
                             {
                                 str_result = Help.SkillHelpMessage(p, aname);
                             }
                         }
-                        else if (p is object)
+                        else if (p != null)
                         {
                             str_result = Help.SkillHelpMessage(p, aname);
-                            if (string.IsNullOrEmpty(str_result) && u is object)
+                            if (string.IsNullOrEmpty(str_result) && u != null)
                             {
                                 if (GeneralLib.IsNumber(aname))
                                 {
@@ -1527,11 +1514,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "規定パイロット数":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.Data.PilotNum);
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = SrcFormatter.Format(ud.PilotNum);
                         }
@@ -1541,11 +1528,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "パイロット数":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.CountPilot());
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = SrcFormatter.Format(ud.PilotNum);
                         }
@@ -1555,7 +1542,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "サポート数":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.CountSupport());
                         }
@@ -1565,11 +1552,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "最大アイテム数":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.Data.ItemNum);
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = SrcFormatter.Format(ud.ItemNum);
                         }
@@ -1579,11 +1566,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "アイテム数":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.CountItem());
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = SrcFormatter.Format(ud.ItemNum);
                         }
@@ -1593,7 +1580,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "アイテム":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             if (GeneralLib.IsNumber(@params[idx + 1]))
                             {
@@ -1612,7 +1599,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "アイテムＩＤ":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             if (GeneralLib.IsNumber(@params[idx + 1]))
                             {
@@ -1631,11 +1618,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "移動可能地形":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = u.Transportation;
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = ud.Transportation;
                         }
@@ -1645,11 +1632,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "移動力":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.Speed);
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = SrcFormatter.Format(ud.Speed);
                         }
@@ -1659,11 +1646,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "サイズ":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = u.Size;
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = ud.Size;
                         }
@@ -1673,11 +1660,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "修理費":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = u.Value.ToString();
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = ud.Value.ToString();
                         }
@@ -1687,11 +1674,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "最大ＨＰ":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.MaxHP);
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = SrcFormatter.Format(ud.HP);
                         }
@@ -1701,11 +1688,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "ＨＰ":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.HP);
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = SrcFormatter.Format(ud.HP);
                         }
@@ -1715,11 +1702,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "最大ＥＮ":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.MaxEN);
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = SrcFormatter.Format(ud.EN);
                         }
@@ -1729,11 +1716,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "ＥＮ":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.EN);
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = SrcFormatter.Format(ud.EN);
                         }
@@ -1743,11 +1730,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "装甲":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.get_Armor(""));
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = SrcFormatter.Format(ud.Armor);
                         }
@@ -1757,11 +1744,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "運動性":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.get_Mobility(""));
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = SrcFormatter.Format(ud.Mobility);
                         }
@@ -1771,27 +1758,27 @@ namespace SRCCore.Expressions.Functions
 
                 case "武器数":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.CountWeapon());
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = SrcFormatter.Format(ud.CountWeapon());
                         }
-                        else if (p is object)
+                        else if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.Data.CountWeapon());
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = SrcFormatter.Format(pd.CountWeapon());
                         }
-                        else if (it is object)
+                        else if (it != null)
                         {
                             str_result = SrcFormatter.Format(it.CountWeapon());
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             str_result = SrcFormatter.Format(itd.CountWeapon());
                         }
@@ -1802,7 +1789,7 @@ namespace SRCCore.Expressions.Functions
                 case "武器":
                     {
                         idx = (idx + 1);
-                        if (u is object)
+                        if (u != null)
                         {
                             {
                                 var withBlock7 = u;
@@ -1973,7 +1960,7 @@ namespace SRCCore.Expressions.Functions
                                 }
                             }
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             // 何番目の武器かを判定
                             if (GeneralLib.IsNumber(@params[idx]))
@@ -2127,7 +2114,7 @@ namespace SRCCore.Expressions.Functions
                                 }
                             }
                         }
-                        else if (p is object)
+                        else if (p != null)
                         {
                             {
                                 var withBlock9 = p.Data;
@@ -2284,7 +2271,7 @@ namespace SRCCore.Expressions.Functions
                                 }
                             }
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             // 何番目の武器かを判定
                             if (GeneralLib.IsNumber(@params[idx]))
@@ -2438,7 +2425,7 @@ namespace SRCCore.Expressions.Functions
                                 }
                             }
                         }
-                        else if (it is object)
+                        else if (it != null)
                         {
                             // 何番目の武器かを判定
                             if (GeneralLib.IsNumber(@params[idx]))
@@ -2592,7 +2579,7 @@ namespace SRCCore.Expressions.Functions
                                 }
                             }
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             // 何番目の武器かを判定
                             if (GeneralLib.IsNumber(@params[idx]))
@@ -2752,27 +2739,27 @@ namespace SRCCore.Expressions.Functions
 
                 case "アビリティ数":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.CountAbility());
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             str_result = SrcFormatter.Format(ud.CountAbility());
                         }
-                        else if (p is object)
+                        else if (p != null)
                         {
                             str_result = SrcFormatter.Format(p.Data.CountAbility());
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             str_result = SrcFormatter.Format(pd.CountAbility());
                         }
-                        else if (it is object)
+                        else if (it != null)
                         {
                             str_result = SrcFormatter.Format(it.CountAbility());
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             str_result = SrcFormatter.Format(itd.CountAbility());
                         }
@@ -2783,7 +2770,7 @@ namespace SRCCore.Expressions.Functions
                 case "アビリティ":
                     {
                         idx = (idx + 1);
-                        if (u is object)
+                        if (u != null)
                         {
                             {
                                 var withBlock14 = u;
@@ -2989,7 +2976,7 @@ namespace SRCCore.Expressions.Functions
                                 }
                             }
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             // 何番目のアビリティかを判定
                             if (GeneralLib.IsNumber(@params[idx]))
@@ -3178,7 +3165,7 @@ namespace SRCCore.Expressions.Functions
                                 }
                             }
                         }
-                        else if (p is object)
+                        else if (p != null)
                         {
                             {
                                 var withBlock16 = p.Data;
@@ -3370,7 +3357,7 @@ namespace SRCCore.Expressions.Functions
                                 }
                             }
                         }
-                        else if (pd is object)
+                        else if (pd != null)
                         {
                             // 何番目のアビリティかを判定
                             if (GeneralLib.IsNumber(@params[idx]))
@@ -3559,7 +3546,7 @@ namespace SRCCore.Expressions.Functions
                                 }
                             }
                         }
-                        else if (it is object)
+                        else if (it != null)
                         {
                             // 何番目のアビリティかを判定
                             if (GeneralLib.IsNumber(@params[idx]))
@@ -3748,7 +3735,7 @@ namespace SRCCore.Expressions.Functions
                                 }
                             }
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             // 何番目のアビリティかを判定
                             if (GeneralLib.IsNumber(@params[idx]))
@@ -3943,7 +3930,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "ランク":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.Rank);
                         }
@@ -3953,7 +3940,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "ボスランク":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.BossRank);
                         }
@@ -3963,7 +3950,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "エリア":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = u.Area;
                         }
@@ -3973,7 +3960,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "思考モード":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = u.Mode;
                         }
@@ -3983,7 +3970,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "最大攻撃力":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             {
                                 var withBlock21 = u;
@@ -4003,7 +3990,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = SrcFormatter.Format(max_value);
                             }
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             max_value = 0;
                             var loopTo21 = ud.CountWeapon();
@@ -4032,7 +4019,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "最長射程":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             {
                                 var withBlock22 = u;
@@ -4052,7 +4039,7 @@ namespace SRCCore.Expressions.Functions
                                 str_result = SrcFormatter.Format(max_value);
                             }
                         }
-                        else if (ud is object)
+                        else if (ud != null)
                         {
                             max_value = 0;
                             var loopTo23 = ud.CountWeapon();
@@ -4081,7 +4068,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "残りサポートアタック数":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.MaxSupportAttack() - u.UsedSupportAttack);
                         }
@@ -4091,7 +4078,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "残りサポートガード数":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.MaxSupportGuard() - u.UsedSupportGuard);
                         }
@@ -4101,7 +4088,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "残り同時援護攻撃数":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.MaxSyncAttack() - u.UsedSyncAttack);
                         }
@@ -4111,7 +4098,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "残りカウンター攻撃数":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(u.MaxCounterAttack() - u.UsedCounterAttack);
                         }
@@ -4121,7 +4108,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "改造費":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(InterMission.RankUpCost(u));
                         }
@@ -4131,7 +4118,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "最大改造数":
                     {
-                        if (u is object)
+                        if (u != null)
                         {
                             str_result = SrcFormatter.Format(InterMission.MaxRank(u));
                         }
@@ -4141,11 +4128,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "アイテムクラス":
                     {
-                        if (it is object)
+                        if (it != null)
                         {
                             str_result = it.Class();
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             str_result = itd.Class;
                         }
@@ -4155,11 +4142,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "装備個所":
                     {
-                        if (it is object)
+                        if (it != null)
                         {
                             str_result = it.Part();
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             str_result = itd.Part;
                         }
@@ -4169,11 +4156,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "最大ＨＰ修正値":
                     {
-                        if (it is object)
+                        if (it != null)
                         {
                             str_result = SrcFormatter.Format(it.HP());
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             str_result = SrcFormatter.Format(itd.HP);
                         }
@@ -4183,11 +4170,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "最大ＥＮ修正値":
                     {
-                        if (it is object)
+                        if (it != null)
                         {
                             str_result = SrcFormatter.Format(it.EN());
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             str_result = SrcFormatter.Format(itd.EN);
                         }
@@ -4197,11 +4184,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "装甲修正値":
                     {
-                        if (it is object)
+                        if (it != null)
                         {
                             str_result = SrcFormatter.Format(it.Armor());
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             str_result = SrcFormatter.Format(itd.Armor);
                         }
@@ -4211,11 +4198,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "運動性修正値":
                     {
-                        if (it is object)
+                        if (it != null)
                         {
                             str_result = SrcFormatter.Format(it.Mobility());
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             str_result = SrcFormatter.Format(itd.Mobility);
                         }
@@ -4225,11 +4212,11 @@ namespace SRCCore.Expressions.Functions
 
                 case "移動力修正値":
                     {
-                        if (it is object)
+                        if (it != null)
                         {
                             str_result = SrcFormatter.Format(it.Speed());
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             str_result = SrcFormatter.Format(itd.Speed);
                         }
@@ -4240,17 +4227,17 @@ namespace SRCCore.Expressions.Functions
                 case "解説文":
                 case "コメント":
                     {
-                        if (it is object)
+                        if (it != null)
                         {
                             str_result = it.Data.Comment;
                             GeneralLib.ReplaceString(str_result, Constants.vbCr + Constants.vbLf, " ");
                         }
-                        else if (itd is object)
+                        else if (itd != null)
                         {
                             str_result = itd.Comment;
                             GeneralLib.ReplaceString(str_result, Constants.vbCr + Constants.vbLf, " ");
                         }
-                        else if (spd is object)
+                        else if (spd != null)
                         {
                             str_result = spd.Comment;
                         }
@@ -4260,7 +4247,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "短縮名":
                     {
-                        if (spd is object)
+                        if (spd != null)
                         {
                             str_result = spd.intName;
                         }
@@ -4270,7 +4257,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "消費ＳＰ":
                     {
-                        if (spd is object)
+                        if (spd != null)
                         {
                             str_result = SrcFormatter.Format(spd.SPConsumption);
                         }
@@ -4280,7 +4267,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "対象":
                     {
-                        if (spd is object)
+                        if (spd != null)
                         {
                             str_result = spd.TargetType;
                         }
@@ -4290,7 +4277,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "持続期間":
                     {
-                        if (spd is object)
+                        if (spd != null)
                         {
                             str_result = spd.Duration;
                         }
@@ -4300,7 +4287,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "適用条件":
                     {
-                        if (spd is object)
+                        if (spd != null)
                         {
                             str_result = spd.NecessaryCondition;
                         }
@@ -4310,7 +4297,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "アニメ":
                     {
-                        if (spd is object)
+                        if (spd != null)
                         {
                             str_result = spd.Animation;
                         }
@@ -4320,7 +4307,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "効果数":
                     {
-                        if (spd is object)
+                        if (spd != null)
                         {
                             str_result = SrcFormatter.Format(spd.CountEffect());
                         }
@@ -4330,7 +4317,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "効果タイプ":
                     {
-                        if (spd is object)
+                        if (spd != null)
                         {
                             idx = (idx + 1);
                             i = GeneralLib.StrToLng(@params[idx]);
@@ -4345,7 +4332,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "効果レベル":
                     {
-                        if (spd is object)
+                        if (spd != null)
                         {
                             idx = (idx + 1);
                             i = GeneralLib.StrToLng(@params[idx]);
@@ -4360,7 +4347,7 @@ namespace SRCCore.Expressions.Functions
 
                 case "効果データ":
                     {
-                        if (spd is object)
+                        if (spd != null)
                         {
                             idx = (idx + 1);
                             i = GeneralLib.StrToLng(@params[idx]);
@@ -4573,7 +4560,7 @@ namespace SRCCore.Expressions.Functions
                                         // ADD  END  240a
                                         case "ユニットＩＤ":
                                             {
-                                                if (SRC.Map.MapDataForUnit[mx, my] is object)
+                                                if (SRC.Map.MapDataForUnit[mx, my] != null)
                                                 {
                                                     str_result = SRC.Map.MapDataForUnit[mx, my].ID;
                                                 }
@@ -4720,6 +4707,7 @@ namespace SRCCore.Expressions.Functions
                     }
             }
 
+            str_result = str_result ?? "";
             if (etype == ValueType.NumericType)
             {
                 num_result = GeneralLib.StrToDbl(str_result);

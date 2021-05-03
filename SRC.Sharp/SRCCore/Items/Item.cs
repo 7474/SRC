@@ -213,13 +213,19 @@ namespace SRCCore.Items
         {
             return Data.Feature(Index);
         }
+        public FeatureData Feature(int Index)
+        {
+            return Data.Feature(Index);
+        }
 
         // 特殊能力の名称
         public string FeatureName(string Index)
         {
-            string FeatureNameRet = default;
-            FeatureNameRet = Data.FeatureName(Index);
-            return FeatureNameRet;
+            return Data.FeatureName(Index);
+        }
+        public string FeatureName(int Index)
+        {
+            return Data.FeatureName(Index);
         }
 
         // 特殊能力のレベル

@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Lib;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
@@ -388,6 +389,12 @@ namespace SRCCore.Models
             // XXX 元は Name を返却
             return colFeature[Index];
         }
+        public FeatureData Feature(int Index)
+        {
+            // XXX 参照先はNameだった
+            //FeatureRet = fd.Name;
+            return colFeature[Index];
+        }
 
         //// 特殊能力のデータ
         //public string FeatureData(int Index)
@@ -401,6 +408,15 @@ namespace SRCCore.Models
         //        return "";
         //    }
         //}
+        // 特殊能力の名称
+        public string FeatureName(string Index)
+        {
+            return colFeature[Index]?.FeatureNameWithLv() ?? "";
+        }
+        public string FeatureName(int Index)
+        {
+            return colFeature[Index]?.FeatureNameWithLv() ?? "";
+        }
 
         // 指定した特殊能力を持っているか？
         public bool IsFeatureAvailable(string fname)
