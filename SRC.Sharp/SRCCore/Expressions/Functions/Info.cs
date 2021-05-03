@@ -1287,74 +1287,56 @@ namespace SRCCore.Expressions.Functions
 
                 case "特殊能力必要技能":
                     {
-                        aname = @params[idx + 1];
+                        var aname = @params[idx + 1];
 
                         // エリアスが定義されている？
                         if (SRC.ALDList.IsDefined(aname))
                         {
-                            {
-                                var withBlock5 = SRC.ALDList.Item(aname);
-                                var loopTo6 = withBlock5.Count;
-                                for (i = 1; i <= loopTo6; i++)
-                                {
-                                    string localLIndex7() { string arglist = withBlock5.get_AliasData(i); var ret = GeneralLib.LIndex(arglist, 1); withBlock5.get_AliasData(i) = arglist; return ret; }
-
-                                    if ((localLIndex7() ?? "") == (aname ?? ""))
-                                    {
-                                        aname = withBlock5.get_AliasType(i);
-                                        break;
-                                    }
-                                }
-
-                                if (i > withBlock5.Count)
-                                {
-                                    aname = withBlock5.get_AliasType(1);
-                                }
-                            }
+                            aname = SRC.ALDList.Item(aname).ReplaceTypeName(aname);
                         }
 
                         if (u != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
-                                str_result = u.FeatureNecessarySkill(Conversions.ToInteger(aname));
+                                str_result = u.Feature(Conversions.ToInteger(aname))?.NecessarySkill ?? "";
                             }
                             else
                             {
-                                str_result = u.FeatureNecessarySkill(aname);
+                                str_result = u.Feature(aname)?.NecessarySkill ?? "";
                             }
                         }
                         else if (ud != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
-                                str_result = ud.FeatureNecessarySkill(Conversions.ToInteger(aname));
+                                str_result = ud.Feature(Conversions.ToInteger(aname))?.NecessarySkill ?? "";
                             }
                             else
                             {
-                                str_result = ud.FeatureNecessarySkill(aname);
+                                str_result = ud.Feature(aname)?.NecessarySkill ?? "";
                             }
                         }
                         else if (it != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
-                                str_result = it.FeatureNecessarySkill(Conversions.ToInteger(aname));
+                                str_result = it.Feature(Conversions.ToInteger(aname))?.NecessarySkill ?? "";
                             }
                             else
                             {
-                                str_result = it.FeatureNecessarySkill(aname);
+                                str_result = it.Feature(aname)?.NecessarySkill ?? "";
                             }
                         }
                         else if (itd != null)
                         {
                             if (GeneralLib.IsNumber(aname))
                             {
-                                str_result = itd.FeatureNecessarySkill(Conversions.ToInteger(aname));
+                                str_result = itd.Feature(Conversions.ToInteger(aname))?.NecessarySkill ?? "";
                             }
                             else
                             {
-                                str_result = itd.FeatureNecessarySkill(aname);
+                                str_result = itd.Feature(aname)?.NecessarySkill ?? "";
                             }
                         }
 
