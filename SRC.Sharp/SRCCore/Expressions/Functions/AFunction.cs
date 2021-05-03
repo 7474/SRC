@@ -43,16 +43,7 @@ namespace SRCCore.Expressions.Functions
                 else if (SRC.PList.IsDefined(pname))
                 {
                     var p = SRC.PList.Item(pname);
-                    if (p.Unit != null)
-                    {
-                        {
-                            var u = p.Unit;
-                            if (u.Status == "èoåÇ" || u.Status == "äiî[")
-                            {
-                                unit = u;
-                            }
-                        }
-                    }
+                    unit = p.Unit;
                 }
             }
 

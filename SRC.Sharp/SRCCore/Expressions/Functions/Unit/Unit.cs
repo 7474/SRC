@@ -8,7 +8,14 @@ namespace SRCCore.Expressions.Functions
         protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
-            num_result = unit?.Action ?? 0d;
+            num_result = 0d;
+            if (unit != null)
+            {
+                if (unit.Status == "èoåÇ" || unit.Status == "äiî[")
+                {
+                    num_result = unit.Action;
+                }
+            }
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
@@ -20,7 +27,6 @@ namespace SRCCore.Expressions.Functions
             }
         }
     }
-
 
     public class Area : AUnitFunction
     {
