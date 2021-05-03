@@ -1,4 +1,5 @@
 using SRCCore.Lib;
+using SRCCore.VB;
 
 namespace SRCCore.Expressions.Functions
 {
@@ -9,93 +10,76 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            //                        expr = Strings.Trim(expr);
-            //                        buf = Strings.Mid(expr, 7, Strings.Len(expr) - 7) + "[";
-            //                        num = 0;
+            var buf = @params[1] + "[";
+            var num = 0;
 
-            //                        // サブルーチンローカル変数を検索
-            //                        if (Event.CallDepth > 0)
-            //                        {
-            //                            var loopTo5 = Event.VarIndex;
-            //                            for (i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo5; i++)
-            //                            {
-            //                                if (Strings.InStr(Event.VarStack[i].Name, buf) == 1)
-            //                                {
-            //                                    num = (num + 1);
-            //                                }
-            //                            }
+            // サブルーチンローカル変数を検索
+            if (SRC.Event.CallDepth > 0)
+            {
+                var loopTo5 = SRC.Event.VarIndex;
+                for (var i = (SRC.Event.VarIndexStack[SRC.Event.CallDepth - 1] + 1); i <= loopTo5; i++)
+                {
+                    if (Strings.InStr(SRC.Event.VarStack[i].Name, buf) == 1)
+                    {
+                        num = (num + 1);
+                    }
+                }
 
-            //                            if (num > 0)
-            //                            {
-            //                                if (etype == ValueType.StringType)
-            //                                {
-            //                                    str_result = GeneralLib.FormatNum((double)num);
-            //                                    CallFunctionRet = ValueType.StringType;
-            //                                }
-            //                                else
-            //                                {
-            //                                    num_result = (double)num;
-            //                                    CallFunctionRet = ValueType.NumericType;
-            //                                }
+                if (num > 0)
+                {
+                    if (etype == ValueType.StringType)
+                    {
+                        str_result = GeneralLib.FormatNum(num);
+                        return ValueType.StringType;
+                    }
+                    else
+                    {
+                        num_result = num;
+                        return ValueType.NumericType;
+                    }
+                }
+            }
 
-            //                                return CallFunctionRet;
-            //                            }
-            //                        }
+            // ローカル変数を検索
+            foreach (VarData currentVar in SRC.Event.LocalVariableList.Values)
+            {
+                if (Strings.InStr(currentVar.Name, buf) == 1)
+                {
+                    num = (num + 1);
+                }
+            }
 
-            //                        // ローカル変数を検索
-            //                        foreach (VarData currentVar in Event.LocalVariableList)
-            //                        {
-            //                            var = currentVar;
-            //                            if (Strings.InStr(var.Name, buf) == 1)
-            //                            {
-            //                                num = (num + 1);
-            //                            }
-            //                        }
+            if (num > 0)
+            {
+                if (etype == ValueType.StringType)
+                {
+                    str_result = GeneralLib.FormatNum(num);
+                    return ValueType.StringType;
+                }
+                else
+                {
+                    num_result = num;
+                    return ValueType.NumericType;
+                }
+            }
 
-            //                        if (num > 0)
-            //                        {
-            //                            if (etype == ValueType.StringType)
-            //                            {
-            //                                str_result = GeneralLib.FormatNum((double)num);
-            //                                CallFunctionRet = ValueType.StringType;
-            //                            }
-            //                            else
-            //                            {
-            //                                num_result = (double)num;
-            //                                CallFunctionRet = ValueType.NumericType;
-            //                            }
-
-            //                            return CallFunctionRet;
-            //                        }
-
-            //                        // グローバル変数を検索
-            //                        foreach (VarData currentVar1 in Event.GlobalVariableList)
-            //                        {
-            //                            var = currentVar1;
-            //                            if (Strings.InStr(var.Name, buf) == 1)
-            //                            {
-            //                                num = (num + 1);
-            //                            }
-            //                        }
-
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum((double)num);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            num_result = (double)num;
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
+            // グローバル変数を検索
+            foreach (VarData currentVar1 in SRC.Event.GlobalVariableList.Values)
+            {
+                if (Strings.InStr(currentVar1.Name, buf) == 1)
+                {
+                    num = (num + 1);
+                }
+            }
 
             if (etype == ValueType.StringType)
             {
-                str_result = GeneralLib.FormatNum(num_result);
+                str_result = GeneralLib.FormatNum(num);
                 return ValueType.StringType;
             }
             else
             {
+                num_result = num;
                 return ValueType.NumericType;
             }
         }
@@ -122,7 +106,7 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class Iif : AFunction
+    public class IIf : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -143,7 +127,7 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class Isdefined : AFunction
+    public class IsDefined : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -164,7 +148,7 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class Isvardefined : AFunction
+    public class IsVarDefined : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -185,7 +169,7 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class Keystate : AFunction
+    public class KeyState : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {

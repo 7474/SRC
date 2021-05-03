@@ -17,8 +17,6 @@ namespace SRCCore.Expressions
         // === 関数に関する処理 ===
 
         private IDictionary<string, IFunction> systemFunctionMap = new IFunction[] {
-            new Args(),
-            new Call(),
             new Functions.Unit(),
             new X(),
             new Y(),
@@ -64,6 +62,17 @@ namespace SRCCore.Expressions
             new LLength(),
             new LIndex(),
             new LSearch(),
+            // Other
+            new Args(),
+            new Call(),
+            new Count(),
+            new Eval(),
+            new IIf(),
+            new IsDefined(),
+            new IsVarDefined(),
+            new KeyState(),
+            new Nickname(),
+            new Term(),
         }.ToDictionary(x => x.Name.ToLower());
 
         // 式を関数呼び出しとして構文解析し、実行
