@@ -1,4 +1,5 @@
 using SRCCore.Lib;
+using System.Linq;
 
 namespace SRCCore.Expressions.Functions
 {
@@ -88,15 +89,32 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class Skill : AFunction
+    public class Skill : APilotFunction
     {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override int OptionArgCount => 1;
+        protected override ValueType InvokeInternal(SRC SRC, Pilots.Pilot pilot, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
             num_result = 0d;
+            var name = pcount == 1
+                ? SRC.Expression.GetValueAsString(@params[1], is_term[1])
+                : SRC.Expression.GetValueAsString(@params[2], is_term[2]);
+            // エリアスが定義されている？
+            if (SRC.ALDList.IsDefined(name))
+            {
+                var alias = SRC.ALDList.Item(name);
+                var aliasElem = alias.Elements.FirstOrDefault(x => GeneralLib.LIndex(x.strAliasData, 1) == name);
 
-            // TODO Impl Skill
-
+                if (aliasElem != null)
+                {
+                    name = aliasElem.strAliasType;
+                }
+                else
+                {
+                    name = alias.Elements.First().strAliasType;
+                }
+            }
+            num_result = pilot?.SkillLevel(name) ?? 0d;
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
