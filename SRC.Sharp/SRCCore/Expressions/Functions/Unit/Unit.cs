@@ -1,4 +1,5 @@
 using SRCCore.Lib;
+using System.Linq;
 
 namespace SRCCore.Expressions.Functions
 {
@@ -58,15 +59,22 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class CountItem : AFunction
+    public class CountItem : AUnitFunction
     {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Countitem
-
+            num_result = unit?.CountItem() ?? 0d;
+            if (pcount == 1)
+            {
+                var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                if (pname == "–¢‘•”õ")
+                {
+                    num_result = SRC.IList.List.Count(itm => itm.Unit == null && itm.Exist);
+                }
+            }
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
