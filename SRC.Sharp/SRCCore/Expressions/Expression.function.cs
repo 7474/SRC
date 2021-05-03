@@ -17,6 +17,7 @@ namespace SRCCore.Expressions
         // === 関数に関する処理 ===
 
         private IDictionary<string, IFunction> systemFunctionMap = new IFunction[] {
+            new Info(),
             // Unit
             new Action(),
             new Area(),
