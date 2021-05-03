@@ -535,4 +535,46 @@ namespace SRCCore.Expressions.Functions
             return ValueType.StringType;
         }
     }
+
+    public class WindowWidth : AFunction
+    {
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        {
+            str_result = "";
+            num_result = 0d;
+
+            // TODO Impl Windowwidth
+
+            if (etype == ValueType.StringType)
+            {
+                str_result = GeneralLib.FormatNum(num_result);
+                return ValueType.StringType;
+            }
+            else
+            {
+                return ValueType.NumericType;
+            }
+        }
+    }
+
+    public class WindowHeight : AFunction
+    {
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        {
+            str_result = "";
+            num_result = 0d;
+
+            // TODO Impl Windowheight
+
+            if (etype == ValueType.StringType)
+            {
+                str_result = GeneralLib.FormatNum(num_result);
+                return ValueType.StringType;
+            }
+            else
+            {
+                return ValueType.NumericType;
+            }
+        }
+    }
 }
