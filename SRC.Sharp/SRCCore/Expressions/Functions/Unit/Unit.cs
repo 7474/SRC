@@ -280,24 +280,32 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class ItemID : AFunction
+    public class ItemID : AUnitFunction
     {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override int OptionArgCount => 1;
+        protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Itemid
-
-            if (etype == ValueType.StringType)
+            var index = pcount == 1
+                ? SRC.Expression.GetValueAsLong(@params[1], is_term[1])
+                : SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
+            if (pcount == 2)
             {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
+                var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                if (pname == "–¢‘•”õ")
+                {
+                    var items = SRC.IList.List.Where(itm => itm.Unit == null && itm.Exist).ToList();
+                    str_result = items.Count < index - 1 ? items[index - 1].ID : "";
+                    return ValueType.StringType;
+                }
             }
-            else
+            if (unit != null)
             {
-                return ValueType.NumericType;
+                str_result = unit.ItemList.Count < index - 1 ? unit.ItemList[index - 1].ID : "";
             }
+            return ValueType.StringType;
         }
     }
 
