@@ -57,6 +57,10 @@ namespace SRCCore.Units
         {
             return colFeature[Index]?.FeatureLevel ?? 0d;
         }
+        public double FeatureLevel(int Index)
+        {
+            return colFeature[Index]?.FeatureLevel ?? 0d;
+        }
 
         // 特殊能力のデータ
         public string FeatureData(string Index)
