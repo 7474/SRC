@@ -62,6 +62,16 @@ namespace SRCCore.Expressions
             new LLength(),
             new LIndex(),
             new LSearch(),
+            // Time
+            new Year(),
+            new Month(),
+            new Weekday(),
+            new Day(),
+            new Hour(),
+            new Minute(),
+            new Second(),
+            new DiffTime(),
+            new GetTime(),
             // Other
             new Args(),
             new Call(),

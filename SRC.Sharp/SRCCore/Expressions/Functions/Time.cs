@@ -1,4 +1,5 @@
 using SRCCore.Lib;
+using SRCCore.VB;
 using System;
 using System.Linq;
 
@@ -21,39 +22,30 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            //                        switch (pcount)
-            //                        {
-            //                            case 1:
-            //                                {
-            //                                    buf = GetValueAsString(@params[1], is_term[1]);
-            //                                    if (Information.IsDate(buf))
-            //                                    {
-            //                                        num_result = (double)DateAndTime.Year(Conversions.ToDate(buf));
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        num_result = 0d;
-            //                                    }
+            switch (pcount)
+            {
+                case 1:
+                    {
+                        var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                        DateTime dt;
+                        if (Conversions.TryToDateTime(buf, out dt))
+                        {
+                            num_result = dt.Year;
+                        }
+                        else
+                        {
+                            num_result = 0d;
+                        }
 
-            //                                    break;
-            //                                }
+                        break;
+                    }
 
-            //                            case 0:
-            //                                {
-            //                                    num_result = (double)DateAndTime.Year(DateAndTime.Now);
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
+                case 0:
+                    {
+                        num_result = Conversions.GetNow().Year;
+                        break;
+                    }
+            }
 
             if (etype == ValueType.StringType)
             {
@@ -74,41 +66,30 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Month
-            //                        switch (pcount)
-            //                        {
-            //                            case 1:
-            //                                {
-            //                                    buf = GetValueAsString(@params[1], is_term[1]);
-            //                                    if (Information.IsDate(buf))
-            //                                    {
-            //                                        num_result = (double)DateAndTime.Month(Conversions.ToDate(buf));
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        num_result = 0d;
-            //                                    }
+            switch (pcount)
+            {
+                case 1:
+                    {
+                        var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                        DateTime dt;
+                        if (Conversions.TryToDateTime(buf, out dt))
+                        {
+                            num_result = dt.Month;
+                        }
+                        else
+                        {
+                            num_result = 0d;
+                        }
 
-            //                                    break;
-            //                                }
+                        break;
+                    }
 
-            //                            case 0:
-            //                                {
-            //                                    num_result = (double)DateAndTime.Month(DateAndTime.Now);
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
+                case 0:
+                    {
+                        num_result = Conversions.GetNow().Month;
+                        break;
+                    }
+            }
 
             if (etype == ValueType.StringType)
             {
@@ -129,125 +110,42 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Weekday
-            //                        switch (pcount)
-            //                        {
-            //                            case 1:
-            //                                {
-            //                                    buf = GetValueAsString(@params[1], is_term[1]);
-            //                                    if (Information.IsDate(buf))
-            //                                    {
-            //                                        switch (DateAndTime.Weekday(Conversions.ToDate(buf)))
-            //                                        {
-            //                                            case FirstDayOfWeek.Sunday:
-            //                                                {
-            //                                                    str_result = "日曜";
-            //                                                    break;
-            //                                                }
-
-            //                                            case FirstDayOfWeek.Monday:
-            //                                                {
-            //                                                    str_result = "月曜";
-            //                                                    break;
-            //                                                }
-
-            //                                            case FirstDayOfWeek.Tuesday:
-            //                                                {
-            //                                                    str_result = "火曜";
-            //                                                    break;
-            //                                                }
-
-            //                                            case FirstDayOfWeek.Wednesday:
-            //                                                {
-            //                                                    str_result = "水曜";
-            //                                                    break;
-            //                                                }
-
-            //                                            case FirstDayOfWeek.Thursday:
-            //                                                {
-            //                                                    str_result = "木曜";
-            //                                                    break;
-            //                                                }
-
-            //                                            case FirstDayOfWeek.Friday:
-            //                                                {
-            //                                                    str_result = "金曜";
-            //                                                    break;
-            //                                                }
-
-            //                                            case FirstDayOfWeek.Saturday:
-            //                                                {
-            //                                                    str_result = "土曜";
-            //                                                    break;
-            //                                                }
-            //                                        }
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case 0:
-            //                                {
-            //                                    switch (DateAndTime.Weekday(DateAndTime.Now))
-            //                                    {
-            //                                        case FirstDayOfWeek.Sunday:
-            //                                            {
-            //                                                str_result = "日曜";
-            //                                                break;
-            //                                            }
-
-            //                                        case FirstDayOfWeek.Monday:
-            //                                            {
-            //                                                str_result = "月曜";
-            //                                                break;
-            //                                            }
-
-            //                                        case FirstDayOfWeek.Tuesday:
-            //                                            {
-            //                                                str_result = "火曜";
-            //                                                break;
-            //                                            }
-
-            //                                        case FirstDayOfWeek.Wednesday:
-            //                                            {
-            //                                                str_result = "水曜";
-            //                                                break;
-            //                                            }
-
-            //                                        case FirstDayOfWeek.Thursday:
-            //                                            {
-            //                                                str_result = "木曜";
-            //                                                break;
-            //                                            }
-
-            //                                        case FirstDayOfWeek.Friday:
-            //                                            {
-            //                                                str_result = "金曜";
-            //                                                break;
-            //                                            }
-
-            //                                        case FirstDayOfWeek.Saturday:
-            //                                            {
-            //                                                str_result = "土曜";
-            //                                                break;
-            //                                            }
-            //                                    }
-
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        CallFunctionRet = ValueType.StringType;
-
-            if (etype == ValueType.StringType)
+            DayOfWeek weekday;
+            switch (pcount)
             {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
+                case 1:
+                    {
+                        var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                        DateTime dt;
+                        if (Conversions.TryToDateTime(buf, out dt))
+                        {
+                            weekday = dt.DayOfWeek;
+                        }
+                        else
+                        {
+                            return ValueType.StringType;
+                        }
+
+                        break;
+                    }
+
+                default:
+                    {
+                        weekday = Conversions.GetNow().DayOfWeek;
+                        break;
+                    }
             }
-            else
+            switch (weekday)
             {
-                return ValueType.NumericType;
+                case DayOfWeek.Sunday: str_result = "日曜"; break;
+                case DayOfWeek.Monday: str_result = "月曜"; break;
+                case DayOfWeek.Tuesday: str_result = "火曜"; break;
+                case DayOfWeek.Wednesday: str_result = "水曜"; break;
+                case DayOfWeek.Thursday: str_result = "木曜"; break;
+                case DayOfWeek.Friday: str_result = "金曜"; break;
+                case DayOfWeek.Saturday: str_result = "土曜"; break;
             }
+            return ValueType.StringType;
         }
     }
 
@@ -258,41 +156,30 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Day
-            //                        switch (pcount)
-            //                        {
-            //                            case 1:
-            //                                {
-            //                                    buf = GetValueAsString(@params[1], is_term[1]);
-            //                                    if (Information.IsDate(buf))
-            //                                    {
-            //                                        num_result = (double)DateAndTime.Day(Conversions.ToDate(buf));
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        num_result = 0d;
-            //                                    }
+            switch (pcount)
+            {
+                case 1:
+                    {
+                        var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                        DateTime dt;
+                        if (Conversions.TryToDateTime(buf, out dt))
+                        {
+                            num_result = dt.Day;
+                        }
+                        else
+                        {
+                            num_result = 0d;
+                        }
 
-            //                                    break;
-            //                                }
+                        break;
+                    }
 
-            //                            case 0:
-            //                                {
-            //                                    num_result = (double)DateAndTime.Day(DateAndTime.Now);
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
+                case 0:
+                    {
+                        num_result = Conversions.GetNow().Day;
+                        break;
+                    }
+            }
 
             if (etype == ValueType.StringType)
             {
@@ -313,41 +200,30 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Hour
-            //                        switch (pcount)
-            //                        {
-            //                            case 1:
-            //                                {
-            //                                    buf = GetValueAsString(@params[1], is_term[1]);
-            //                                    if (Information.IsDate(buf))
-            //                                    {
-            //                                        num_result = (double)DateAndTime.Hour(Conversions.ToDate(buf));
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        num_result = 0d;
-            //                                    }
+            switch (pcount)
+            {
+                case 1:
+                    {
+                        var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                        DateTime dt;
+                        if (Conversions.TryToDateTime(buf, out dt))
+                        {
+                            num_result = dt.Hour;
+                        }
+                        else
+                        {
+                            num_result = 0d;
+                        }
 
-            //                                    break;
-            //                                }
+                        break;
+                    }
 
-            //                            case 0:
-            //                                {
-            //                                    num_result = (double)DateAndTime.Hour(DateAndTime.Now);
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
+                case 0:
+                    {
+                        num_result = Conversions.GetNow().Hour;
+                        break;
+                    }
+            }
 
             if (etype == ValueType.StringType)
             {
@@ -368,41 +244,30 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Minute
-            //                        switch (pcount)
-            //                        {
-            //                            case 1:
-            //                                {
-            //                                    buf = GetValueAsString(@params[1], is_term[1]);
-            //                                    if (Information.IsDate(buf))
-            //                                    {
-            //                                        num_result = (double)DateAndTime.Minute(Conversions.ToDate(buf));
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        num_result = 0d;
-            //                                    }
+            switch (pcount)
+            {
+                case 1:
+                    {
+                        var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                        DateTime dt;
+                        if (Conversions.TryToDateTime(buf, out dt))
+                        {
+                            num_result = dt.Minute;
+                        }
+                        else
+                        {
+                            num_result = 0d;
+                        }
 
-            //                                    break;
-            //                                }
+                        break;
+                    }
 
-            //                            case 0:
-            //                                {
-            //                                    num_result = (double)DateAndTime.Minute(DateAndTime.Now);
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
+                case 0:
+                    {
+                        num_result = Conversions.GetNow().Minute;
+                        break;
+                    }
+            }
 
             if (etype == ValueType.StringType)
             {
@@ -423,40 +288,30 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Second
-            //                        switch (pcount)
-            //                        {
-            //                            case 1:
-            //                                {
-            //                                    buf = GetValueAsString(@params[1], is_term[1]);
-            //                                    if (Information.IsDate(buf))
-            //                                    {
-            //                                        num_result = (double)DateAndTime.Second(Conversions.ToDate(buf));
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        num_result = 0d;
-            //                                    }
+            switch (pcount)
+            {
+                case 1:
+                    {
+                        var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                        DateTime dt;
+                        if (Conversions.TryToDateTime(buf, out dt))
+                        {
+                            num_result = dt.Second;
+                        }
+                        else
+                        {
+                            num_result = 0d;
+                        }
 
-            //                                    break;
-            //                                }
+                        break;
+                    }
 
-            //                            case 0:
-            //                                {
-            //                                    num_result = (double)DateAndTime.Second(DateAndTime.Now);
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
+                case 0:
+                    {
+                        num_result = Conversions.GetNow().Second;
+                        break;
+                    }
+            }
 
             if (etype == ValueType.StringType)
             {
@@ -470,60 +325,66 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class Difftime : AFunction
+    public class DiffTime : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Difftime
-            //                        if (pcount == 2)
-            //                        {
-            //                            if (@params[1] == "Now")
-            //                            {
-            //                                d1 = DateAndTime.Now;
-            //                            }
-            //                            else
-            //                            {
-            //                                buf = GetValueAsString(@params[1], is_term[1]);
-            //                                if (!Information.IsDate(buf))
-            //                                {
-            //                                    return CallFunctionRet;
-            //                                }
+            DateTime d1;
+            DateTime d2;
+            if (pcount == 2)
+            {
+                if (@params[1] == "Now")
+                {
+                    d1 = Conversions.GetNow();
+                }
+                else
+                {
+                    var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                    if (!Conversions.TryToDateTime(buf, out d1))
+                    {
+                        return ValueType.UndefinedType;
+                    }
+                }
 
-            //                                d1 = Conversions.ToDate(buf);
-            //                            }
+                if (@params[2] == "Now")
+                {
+                    d2 = Conversions.GetNow();
+                }
+                else
+                {
+                    var buf = SRC.Expression.GetValueAsString(@params[2], is_term[2]);
+                    if (!Conversions.TryToDateTime(buf, out d2))
+                    {
+                        return ValueType.UndefinedType;
+                    }
+                }
 
-            //                            if (@params[2] == "Now")
-            //                            {
-            //                                d2 = DateAndTime.Now;
-            //                            }
-            //                            else
-            //                            {
-            //                                buf = GetValueAsString(@params[2], is_term[2]);
-            //                                if (!Information.IsDate(buf))
-            //                                {
-            //                                    return CallFunctionRet;
-            //                                }
+                num_result = d2.Second - d1.Second;
+            }
 
-            //                                d2 = Conversions.ToDate(buf);
-            //                            }
+            if (etype == ValueType.StringType)
+            {
+                str_result = GeneralLib.FormatNum(num_result);
+                return ValueType.StringType;
+            }
+            else
+            {
+                return ValueType.NumericType;
+            }
+        }
+    }
 
-            //                            num_result = (double)DateAndTime.Second(DateTime.FromOADate(d2.ToOADate() - d1.ToOADate()));
-            //                        }
+    public class GetTime : AFunction
+    {
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        {
+            str_result = "";
+            num_result = 0d;
 
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
-
+            num_result = GeneralLib.timeGetTime();
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
