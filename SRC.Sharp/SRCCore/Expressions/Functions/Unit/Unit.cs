@@ -401,15 +401,12 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class Rank : AFunction
+    public class Rank : AUnitFunction
     {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Rank
-
+            num_result = unit?.Rank ?? 0d;
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
