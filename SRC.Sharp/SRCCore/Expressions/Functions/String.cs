@@ -254,28 +254,23 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-
     public class Right : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
-            str_result = "";
             num_result = 0d;
-
-            // TODO Impl Right
-
-            if (etype == ValueType.StringType)
+            str_result = Strings.Right(SRC.Expression. GetValueAsString(@params[1], is_term[1]), SRC.Expression.GetValueAsLong(@params[2], is_term[2]));
+            if (etype == ValueType.NumericType)
             {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
+                num_result = GeneralLib.StrToDbl(str_result);
+                return ValueType.NumericType;
             }
             else
             {
-                return ValueType.NumericType;
+                return ValueType.StringType;
             }
         }
     }
-
 
     public class RSet : AFunction
     {
