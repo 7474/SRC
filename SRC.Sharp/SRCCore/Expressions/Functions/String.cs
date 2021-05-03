@@ -290,10 +290,7 @@ namespace SRCCore.Expressions.Functions
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Strcomp
-
+            num_result = (double)Strings.StrComp(SRC.Expression.GetValueAsString(@params[1], is_term[1]), SRC.Expression.GetValueAsString(@params[2], is_term[2]));
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
@@ -305,7 +302,6 @@ namespace SRCCore.Expressions.Functions
             }
         }
     }
-
 
     public class String : AFunction
     {
