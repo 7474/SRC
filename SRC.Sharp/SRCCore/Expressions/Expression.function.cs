@@ -39,7 +39,6 @@ namespace SRCCore.Expressions
             new SpecialPower(),
             new Mind(),
             new Status(),
-            new X(),
             new Functions.Unit(),
             new UnitID(),
             new X(),
