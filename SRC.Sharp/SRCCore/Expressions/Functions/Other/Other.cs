@@ -509,44 +509,30 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Term
-            //                        switch (pcount)
-            //                        {
-            //                            case 2:
-            //                                {
-            //                                    pname = GetValueAsString(@params[2], is_term[2]);
-            //                                    if (SRC.UList.IsDefined2(pname))
-            //                                    {
-            //                                        Unit localItem217() { object argIndex1 = pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
-
-            //                                        str_result = Term(GetValueAsString(@params[1], is_term[1]), localItem217());
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        str_result = Term(GetValueAsString(@params[1], is_term[1]), u: null);
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case 1:
-            //                                {
-            //                                    str_result = Term(GetValueAsString(@params[1], is_term[1]), u: null);
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        CallFunctionRet = ValueType.StringType;
-
-            if (etype == ValueType.StringType)
+            switch (pcount)
             {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
+                case 2:
+                    {
+                        var pname = SRC.Expression.GetValueAsString(@params[2], is_term[2]);
+                        if (SRC.UList.IsDefined2(pname))
+                        {
+                            str_result = SRC.Expression.Term(SRC.Expression.GetValueAsString(@params[1], is_term[1]), SRC.UList.Item2(pname));
+                        }
+                        else
+                        {
+                            str_result = SRC.Expression.Term(SRC.Expression.GetValueAsString(@params[1], is_term[1]), u: null);
+                        }
+                        break;
+                    }
+
+                case 1:
+                    {
+                        str_result = SRC.Expression.Term(SRC.Expression.GetValueAsString(@params[1], is_term[1]), u: null);
+                        break;
+                    }
             }
-            else
-            {
-                return ValueType.NumericType;
-            }
+
+            return ValueType.StringType;
         }
     }
 }
