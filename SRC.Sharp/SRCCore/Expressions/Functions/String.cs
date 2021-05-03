@@ -91,15 +91,47 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Instrrev
+            var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+            var buf2 = SRC.Expression.GetValueAsString(@params[2], is_term[2]);
+            int i;
+            if (Strings.Len(buf2) > 0 & Strings.Len(buf) >= Strings.Len(buf2))
+            {
+                int num;
+                if (pcount == 2)
+                {
+                    num = Strings.Len(buf);
+                }
+                else
+                {
+                    num = SRC.Expression.GetValueAsLong(@params[3], is_term[3]);
+                }
+
+                i = (num - Strings.Len(buf2) + 1);
+                do
+                {
+                    var j = Strings.InStr(i, buf, buf2);
+                    if (i == j)
+                    {
+                        break;
+                    }
+
+                    i = (i - 1);
+                }
+                while (i != 0);
+            }
+            else
+            {
+                i = 0;
+            }
 
             if (etype == ValueType.StringType)
             {
-                str_result = GeneralLib.FormatNum(num_result);
+                str_result = GeneralLib.FormatNum((double)i);
                 return ValueType.StringType;
             }
             else
             {
+                num_result = (double)i;
                 return ValueType.NumericType;
             }
         }
@@ -175,7 +207,7 @@ namespace SRCCore.Expressions.Functions
             }
         }
     }
-    
+
     public class LSet : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
