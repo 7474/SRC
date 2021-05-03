@@ -1,95 +1,60 @@
-using SRCCore.Lib;
+using System.Text.RegularExpressions;
 
 namespace SRCCore.Expressions.Functions
 {
     //RegExp正規表現で文字列を検索
     //RegExpReplace正規表現で検索した文字列を置換
 
+    // XXX 全般に未疎通かつ互換性分からん
     public class RegExp : AFunction
     {
+        // XXX 現状状態はここに持っていて動作上の問題ないがそうじゃないだろという感じ
+        private MatchCollection lastMatch;
+        private int lastMatchIndex;
+
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Regexp
-            //                        ;
-            //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            //                        /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo RegExp_Error' at character 111360
-
-
-            //                        Input:
-            //                                        On Error GoTo RegExp_Error
-
-            //                         */
-            //                        if (RegEx is null)
-            //                        {
-            //                            RegEx = Interaction.CreateObject("VBScript.RegExp");
-            //                        }
-
-            //                        // RegExp(文字列, パターン[,大小区別あり|大小区別なし])
-            //                        buf = "";
-            //                        if (pcount > 0)
-            //                        {
-            //                            // 文字列全体を検索
-            //                            // UPGRADE_WARNING: オブジェクト RegEx.Global の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //                            RegEx.Global = (object)true;
-            //                            // 大文字小文字の区別（True=区別しない）
-            //                            // UPGRADE_WARNING: オブジェクト RegEx.IgnoreCase の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //                            RegEx.IgnoreCase = (object)false;
-            //                            if (pcount >= 3)
-            //                            {
-            //                                if (GetValueAsString(@params[3], is_term[3]) == "大小区別なし")
-            //                                {
-            //                                    // UPGRADE_WARNING: オブジェクト RegEx.IgnoreCase の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //                                    RegEx.IgnoreCase = (object)true;
-            //                                }
-            //                            }
-            //                            // 検索パターン
-            //                            // UPGRADE_WARNING: オブジェクト RegEx.Pattern の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //                            RegEx.Pattern = GetValueAsString(@params[2], is_term[2]);
-            //                            // UPGRADE_WARNING: オブジェクト RegEx.Execute の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //                            Matches = RegEx.Execute(GetValueAsString(@params[1], is_term[1]));
-            //                            // UPGRADE_WARNING: オブジェクト Matches.Count の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //                            if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(Matches.Count, 0, false)))
-            //                            {
-            //                                regexp_index = -1;
-            //                            }
-            //                            else
-            //                            {
-            //                                regexp_index = 0;
-            //                                // UPGRADE_WARNING: オブジェクト Matches() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //                                buf = Conversions.ToString(Expression.Matches((object)regexp_index));
-            //                            }
-            //                        }
-            //                        else if (regexp_index >= 0)
-            //                        {
-            //                            regexp_index = (regexp_index + 1);
-            //                            // UPGRADE_WARNING: オブジェクト Matches.Count の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //                            if (Conversions.ToBoolean(Operators.ConditionalCompareObjectLessEqual(regexp_index, Operators.SubtractObject(Matches.Count, 1), false)))
-            //                            {
-            //                                // UPGRADE_WARNING: オブジェクト Matches() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //                                buf = Conversions.ToString(Expression.Matches((object)regexp_index));
-            //                            }
-            //                        }
-
-            //                        str_result = buf;
-            //                        CallFunctionRet = ValueType.StringType;
-            //                        return CallFunctionRet;
-            //                    RegExp_Error:
-            //                        ;
-            //                        Event.DisplayEventErrorMessage(Event.CurrentLineNum, "VBScriptがインストールされていません");
-            //                        return CallFunctionRet;
-
-            if (etype == ValueType.StringType)
+            // RegExp(文字列, パターン[,大小区別あり|大小区別なし])
+            var result = "";
+            if (pcount > 0)
             {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
+                // 文字列全体を検索
+                // 大文字小文字の区別（True=区別しない）
+                var ignoreCase = false;
+                if (pcount >= 3)
+                {
+                    if (SRC.Expression.GetValueAsString(@params[3], is_term[3]) == "大小区別なし")
+                    {
+                        ignoreCase = true;
+                    }
+                }
+                // 検索パターン
+                var regex = new Regex(SRC.Expression.GetValueAsString(@params[2], is_term[2]), ignoreCase ? RegexOptions.IgnoreCase : RegexOptions.None);
+                lastMatch = regex.Matches(SRC.Expression.GetValueAsString(@params[1], is_term[1]));
+                if (lastMatch.Count == 0)
+                {
+                    lastMatch = null;
+                }
+                else
+                {
+                    lastMatchIndex = 0;
+                    result = lastMatch[lastMatchIndex].Value;
+                }
             }
-            else
+            else if (lastMatch != null)
             {
-                return ValueType.NumericType;
+                lastMatchIndex++;
+                if (lastMatch.Count > lastMatchIndex)
+                {
+                    result = lastMatch[lastMatchIndex].Value;
+                }
             }
+
+            str_result = result;
+            return ValueType.StringType;
         }
     }
 
@@ -100,65 +65,22 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Regexpreplace
-            //                // RegExpReplace(文字列, 検索パターン, 置換パターン[,大小区別あり|大小区別なし])
-
-            //                case "regexpreplace":
-            //                    {
-            //                        ;
-            //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            //                        /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo RegExpReplace...' at character 114835
-
-
-            //                        Input:
-            //                                        'RegExpReplace(文字列, 検索パターン, 置換パターン[,大小区別あり|大小区別なし])
-
-            //                                        On Error GoTo RegExpReplace_Error
-
-            //                         */
-            //                        if (RegEx is null)
-            //                        {
-            //                            RegEx = Interaction.CreateObject("VBScript.RegExp");
-            //                        }
-
-            //                        // 文字列全体を検索
-            //                        // UPGRADE_WARNING: オブジェクト RegEx.Global の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //                        RegEx.Global = (object)true;
-            //                        // 大文字小文字の区別（True=区別しない）
-            //                        // UPGRADE_WARNING: オブジェクト RegEx.IgnoreCase の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //                        RegEx.IgnoreCase = (object)false;
-            //                        if (pcount >= 4)
-            //                        {
-            //                            if (GetValueAsString(@params[4], is_term[4]) == "大小区別なし")
-            //                            {
-            //                                // UPGRADE_WARNING: オブジェクト RegEx.IgnoreCase の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //                                RegEx.IgnoreCase = (object)true;
-            //                            }
-            //                        }
-            //                        // 検索パターン
-            //                        // UPGRADE_WARNING: オブジェクト RegEx.Pattern の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //                        RegEx.Pattern = GetValueAsString(@params[2], is_term[2]);
-
-            //                        // 置換実行
-            //                        // UPGRADE_WARNING: オブジェクト RegEx.Replace の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //                        buf = Conversions.ToString(RegEx.Replace(GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[3], is_term[3])));
-            //                        str_result = buf;
-            //                        CallFunctionRet = ValueType.StringType;
-            //                        return CallFunctionRet;
-            //                    RegExpReplace_Error:
-            //                        ;
-            //                        Event.DisplayEventErrorMessage(Event.CurrentLineNum, "VBScriptがインストールされていません");
-            //                        return CallFunctionRet;
-
-            if (etype == ValueType.StringType)
+            // RegExpReplace(文字列, 検索パターン, 置換パターン[,大小区別あり|大小区別なし])
+            var ignoreCase = false;
+            if (pcount >= 3)
             {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
+                if (SRC.Expression.GetValueAsString(@params[4], is_term[4]) == "大小区別なし")
+                {
+                    ignoreCase = true;
+                }
             }
-            else
-            {
-                return ValueType.NumericType;
-            }
+            // 検索パターン
+            var regex = new Regex(SRC.Expression.GetValueAsString(@params[2], is_term[2]), ignoreCase ? RegexOptions.IgnoreCase : RegexOptions.None);
+
+            // 置換実行
+            str_result = regex.Replace(SRC.Expression.GetValueAsString(@params[1], is_term[1]), SRC.Expression.GetValueAsString(@params[3], is_term[3]));
+
+            return ValueType.StringType;
         }
     }
 }

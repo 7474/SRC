@@ -72,6 +72,9 @@ namespace SRCCore.Expressions
             new Second(),
             new DiffTime(),
             new GetTime(),
+            // Regexp
+            new RegExp(),
+            new RegExpReplace(),
             // Other
             new Args(),
             new Call(),
