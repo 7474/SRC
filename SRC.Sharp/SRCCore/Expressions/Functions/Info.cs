@@ -8,7 +8,6 @@ using System.Linq;
 
 namespace SRCCore.Expressions.Functions
 {
-    // TODO Impl Info
     public class Info : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
@@ -1668,25 +1667,20 @@ namespace SRCCore.Expressions.Functions
                         if (u != null)
                         {
                             // 何番目の武器かを判定
+                            var weapons = u.Weapons;
+                            UnitWeapon uw;
                             if (GeneralLib.IsNumber(@params[idx]))
                             {
-                                i = Conversions.ToInteger(@params[idx]);
+                                uw = weapons.SafeRefOneOffset(Conversions.ToInteger(@params[idx]));
                             }
                             else
                             {
-                                var loopTo8 = u.CountWeapon();
-                                for (i = 1; i <= loopTo8; i++)
-                                {
-                                    if ((@params[idx] ?? "") == (u.Weapon(i).Name ?? ""))
-                                    {
-                                        break;
-                                    }
-                                }
+                                uw = weapons.FirstOrDefault(x => x.Name == @params[idx]);
                             }
                             // 指定した武器を持っていない
-                            if (i <= 0 || u.CountWeapon() < i)
+                            if (uw == null)
                             {
-                                return str_result;
+                                return ValueType.StringType;
                             }
 
                             idx = (idx + 1);
@@ -1695,80 +1689,80 @@ namespace SRCCore.Expressions.Functions
                                 case var case1 when case1 == "":
                                 case "名称":
                                     {
-                                        str_result = u.Weapon(i).Name;
+                                        str_result = uw.Name;
                                         break;
                                     }
 
                                 case "攻撃力":
                                     {
-                                        str_result = SrcFormatter.Format(u.WeaponPower(i, ""));
+                                        str_result = SrcFormatter.Format(uw.WeaponPower(""));
                                         break;
                                     }
 
                                 case "射程":
                                 case "最大射程":
                                     {
-                                        str_result = SrcFormatter.Format(u.WeaponMaxRange(i));
+                                        str_result = SrcFormatter.Format(uw.WeaponMaxRange());
                                         break;
                                     }
 
                                 case "最小射程":
                                     {
-                                        str_result = SrcFormatter.Format(u.Weapon(i).MinRange);
+                                        str_result = SrcFormatter.Format(uw.WeaponMinRange());
                                         break;
                                     }
 
                                 case "命中率":
                                     {
-                                        str_result = SrcFormatter.Format(u.WeaponPrecision(i));
+                                        str_result = SrcFormatter.Format(uw.WeaponPrecision());
                                         break;
                                     }
 
                                 case "最大弾数":
                                     {
-                                        str_result = SrcFormatter.Format(u.MaxBullet(i));
+                                        str_result = SrcFormatter.Format(uw.MaxBullet());
                                         break;
                                     }
 
                                 case "弾数":
                                     {
-                                        str_result = SrcFormatter.Format(u.Bullet(i));
+                                        str_result = SrcFormatter.Format(uw.Bullet());
                                         break;
                                     }
 
                                 case "消費ＥＮ":
                                     {
-                                        str_result = SrcFormatter.Format(u.WeaponENConsumption(i));
+                                        str_result = SrcFormatter.Format(uw.WeaponENConsumption());
                                         break;
                                     }
 
                                 case "必要気力":
                                     {
-                                        str_result = SrcFormatter.Format(u.Weapon(i).NecessaryMorale);
+                                        str_result = SrcFormatter.Format(uw.WeaponData.NecessaryMorale);
                                         break;
                                     }
 
                                 case "地形適応":
                                     {
-                                        str_result = u.Weapon(i).Adaption;
+                                        str_result = uw.WeaponData.Adaption;
                                         break;
                                     }
 
                                 case "クリティカル率":
                                     {
-                                        str_result = SrcFormatter.Format(u.WeaponCritical(i));
+                                        str_result = SrcFormatter.Format(uw.WeaponCritical());
                                         break;
                                     }
 
                                 case "属性":
                                     {
-                                        str_result = u.WeaponClass(i);
+                                        str_result = uw.WeaponClass();
                                         break;
                                     }
 
                                 case "属性所有":
                                     {
-                                        if (u.IsWeaponClassifiedAs(i, @params[idx + 1]))
+                                        if (uw.IsWeaponClassifiedAs(@params[idx + 1]))
                                         {
                                             str_result = "1";
                                         }
@@ -1782,31 +1776,32 @@ namespace SRCCore.Expressions.Functions
 
                                 case "属性レベル":
                                     {
-                                        str_result = u.WeaponLevel(i, @params[idx + 1]).ToString();
+                                        str_result = uw.WeaponLevel(@params[idx + 1]).ToString();
                                         break;
                                     }
 
-                                case "属性名称":
-                                    {
-                                        str_result = Help.AttributeName(u, @params[idx + 1], false);
-                                        break;
-                                    }
+                                // TODO Impl Help
+                                //case "属性名称":
+                                //    {
+                                //        str_result = Help.AttributeName(u, @params[idx + 1], false);
+                                //        break;
+                                //    }
 
-                                case "属性解説":
-                                    {
-                                        str_result = Help.AttributeHelpMessage(u, @params[idx + 1], i, false);
-                                        break;
-                                    }
+                                //case "属性解説":
+                                //    {
+                                //        str_result = Help.AttributeHelpMessage(u, @params[idx + 1], i, false);
+                                //        break;
+                                //    }
 
                                 case "必要技能":
                                     {
-                                        str_result = u.Weapon(i).NecessarySkill;
+                                        str_result = uw.WeaponData.NecessarySkill;
                                         break;
                                     }
 
                                 case "使用可":
                                     {
-                                        if (u.IsWeaponAvailable(i, "ステータス"))
+                                        if (uw.IsWeaponAvailable("ステータス"))
                                         {
                                             str_result = "1";
                                         }
@@ -1820,7 +1815,7 @@ namespace SRCCore.Expressions.Functions
 
                                 case "修得":
                                     {
-                                        if (u.IsWeaponMastered(i))
+                                        if (uw.IsWeaponMastered())
                                         {
                                             str_result = "1";
                                         }
