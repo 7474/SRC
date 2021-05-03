@@ -313,28 +313,6 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Font : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Font
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
     public class Format : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
@@ -932,27 +910,6 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Rgb : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Rgb
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
 
     public class Right : AFunction
     {
@@ -1203,50 +1160,6 @@ namespace SRCCore.Expressions.Functions
             num_result = 0d;
 
             // TODO Impl String
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
-    public class Textheight : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Textheight
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
-    public class Textwidth : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Textwidth
 
             if (etype == ValueType.StringType)
             {
