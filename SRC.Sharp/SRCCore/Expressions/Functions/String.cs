@@ -1,5 +1,7 @@
 using SRCCore.Lib;
 using SRCCore.VB;
+using System;
+using System.Linq;
 
 namespace SRCCore.Expressions.Functions
 {
@@ -259,7 +261,7 @@ namespace SRCCore.Expressions.Functions
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             num_result = 0d;
-            str_result = Strings.Right(SRC.Expression. GetValueAsString(@params[1], is_term[1]), SRC.Expression.GetValueAsLong(@params[2], is_term[2]));
+            str_result = Strings.Right(SRC.Expression.GetValueAsString(@params[1], is_term[1]), SRC.Expression.GetValueAsLong(@params[2], is_term[2]));
             if (etype == ValueType.NumericType)
             {
                 num_result = GeneralLib.StrToDbl(str_result);
@@ -310,20 +312,21 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl String
+            var buf = SRC.Expression.GetValueAsString(@params[2], is_term[2]);
+            var num = SRC.Expression.GetValueAsLong(@params[1], is_term[1]);
+            str_result = string.Join("", Enumerable.Range(0, Math.Max(0, num)).Select(x => buf));
 
-            if (etype == ValueType.StringType)
+            if (etype == ValueType.NumericType)
             {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
+                num_result = GeneralLib.StrToDbl(str_result);
+                return ValueType.NumericType;
             }
             else
             {
-                return ValueType.NumericType;
+                return ValueType.StringType;
             }
         }
     }
-
 
     public class Wide : AFunction
     {
