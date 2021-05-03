@@ -223,100 +223,77 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            //                        pname = GetValueAsString(@params[1], is_term[1]);
-            //                        switch (pcount)
-            //                        {
-            //                            case 2:
-            //                                {
-            //                                    switch (GetValueAsString(@params[2], is_term[2]) ?? "")
-            //                                    {
-            //                                        case "パイロット":
-            //                                            {
-            //                                                if (SRC.PList.IsDefined(pname))
-            //                                                {
-            //                                                    Pilot localItem4() { object argIndex1 = pname; var ret = SRC.PList.Item(argIndex1); return ret; }
+            var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+            switch (pcount)
+            {
+                case 2:
+                    {
+                        switch (SRC.Expression.GetValueAsString(@params[2], is_term[2]) ?? "")
+                        {
+                            case "パイロット":
+                                {
+                                    if (SRC.PList.IsDefined(pname))
+                                    {
+                                        if (SRC.PList.Item(pname).Alive)
+                                        {
+                                            num_result = 1d;
+                                        }
+                                    }
 
-            //                                                    if (localItem4().Alive)
-            //                                                    {
-            //                                                        num_result = 1d;
-            //                                                    }
-            //                                                }
+                                    break;
+                                }
 
-            //                                                break;
-            //                                            }
+                            case "ユニット":
+                                {
+                                    if (SRC.UList.IsDefined(pname))
+                                    {
+                                        if (SRC.UList.Item(pname).Status != "破棄")
+                                        {
+                                            num_result = 1d;
+                                        }
+                                    }
 
-            //                                        case "ユニット":
-            //                                            {
-            //                                                if (SRC.UList.IsDefined(pname))
-            //                                                {
-            //                                                    Unit localItem5() { object argIndex1 = pname; var ret = SRC.UList.Item(argIndex1); return ret; }
+                                    break;
+                                }
 
-            //                                                    if (localItem5().Status != "破棄")
-            //                                                    {
-            //                                                        num_result = 1d;
-            //                                                    }
-            //                                                }
+                            case "アイテム":
+                                {
+                                    if (SRC.IList.IsDefined(pname))
+                                    {
+                                        num_result = 1d;
+                                    }
 
-            //                                                break;
-            //                                            }
+                                    break;
+                                }
+                        }
 
-            //                                        case "アイテム":
-            //                                            {
-            //                                                if (SRC.IList.IsDefined(pname))
-            //                                                {
-            //                                                    num_result = 1d;
-            //                                                }
+                        break;
+                    }
 
-            //                                                break;
-            //                                            }
-            //                                    }
+                case 1:
+                    {
+                        if (SRC.PList.IsDefined(pname))
+                        {
+                            if (SRC.PList.Item(pname).Alive)
+                            {
+                                num_result = 1d;
+                            }
+                        }
+                        else if (SRC.UList.IsDefined(pname))
+                        {
+                            if (SRC.UList.Item(pname).Status != "破棄")
+                            {
+                                num_result = 1d;
+                            }
+                        }
+                        else if (SRC.IList.IsDefined(pname))
+                        {
+                            num_result = 1d;
+                        }
 
-            //                                    break;
-            //                                }
-
-            //                            case 1:
-            //                                {
-            //                                    bool localIsDefined8() { object argIndex1 = pname; var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-            //                                    bool localIsDefined9() { object argIndex1 = pname; var ret = SRC.IList.IsDefined(argIndex1); return ret; }
-
-            //                                    if (SRC.PList.IsDefined(pname))
-            //                                    {
-            //                                        Pilot localItem6() { object argIndex1 = pname; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-            //                                        if (localItem6().Alive)
-            //                                        {
-            //                                            num_result = 1d;
-            //                                        }
-            //                                    }
-            //                                    else if (localIsDefined8())
-            //                                    {
-            //                                        Unit localItem7() { object argIndex1 = pname; var ret = SRC.UList.Item(argIndex1); return ret; }
-
-            //                                        if (localItem7().Status != "破棄")
-            //                                        {
-            //                                            num_result = 1d;
-            //                                        }
-            //                                    }
-            //                                    else if (localIsDefined9())
-            //                                    {
-            //                                        num_result = 1d;
-            //                                    }
-
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
-
+                        break;
+                    }
+            }
 
             if (etype == ValueType.StringType)
             {
