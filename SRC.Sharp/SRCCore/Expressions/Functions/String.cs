@@ -31,16 +31,17 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Format
-
-            if (etype == ValueType.StringType)
+            // XXX 元は String -> String フォーマット
+            // XXX 書式は多分合っていないのでヘルプ更新したほうが良いかも
+            str_result = SrcFormatter.Format(SRC.Expression.GetValueAsDouble(@params[1], is_term[1]), SRC.Expression.GetValueAsString(@params[2], is_term[2]));
+            if (etype == ValueType.NumericType)
             {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
+                num_result = GeneralLib.StrToDbl(str_result);
+                return ValueType.NumericType;
             }
             else
             {
-                return ValueType.NumericType;
+                return ValueType.StringType;
             }
         }
     }
