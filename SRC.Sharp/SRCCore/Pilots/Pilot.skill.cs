@@ -120,29 +120,35 @@ namespace SRCCore.Pilots
         // 現在のレベルにおける特殊能力 Index のレベル
         // データでレベル指定がない場合はレベル 1
         // 特殊能力が使用不能の場合はレベル 0
+        public double SkillLevel(int Index, string ref_mode = "")
+        {
+            SkillData sd = colSkill[Index];
+            return SkillLevel(null, ref_mode, sd);
+        }
         public double SkillLevel(string Index, string ref_mode = "")
         {
             SkillData sd = colSkill[Index];
+            return SkillLevel(Index, ref_mode, sd);
+        }
+        private double SkillLevel(string Index, string ref_mode, SkillData sd)
+        {
             string sname = sd?.Name;
             double SkillLevelRet = sd?.Level ?? 0;
             if (SkillLevelRet == Constants.DEFAULT_LEVEL)
             {
                 SkillLevelRet = 1d;
             }
-
             if (string.IsNullOrEmpty(sname))
             {
-                // XXX これ引数に数字で参照指定してた場合向けか？
-                if (Information.IsNumeric(Index))
+                if (string.IsNullOrEmpty(Index))
                 {
                     return SkillLevelRet;
                 }
                 else
                 {
-                    sname = Conversions.ToString(Index);
+                    sname = Index;
                 }
             }
-
             if (ref_mode == "修正値")
             {
                 SkillLevelRet = 0d;
@@ -308,13 +314,20 @@ namespace SRCCore.Pilots
         }
 
         // 特殊能力のデータ
+        public string SkillData(int Index)
+        {
+            var sd = colSkill[Index];
+            return SkillData(null, sd);
+        }
         public string SkillData(string Index)
         {
-            string SkillDataRet = default;
-            string sname;
             var sd = colSkill[Index];
-            sname = sd.Name;
-            SkillDataRet = sd?.StrData;
+            return SkillData(Index, sd);
+        }
+        private static string SkillData(string Index, SkillData sd)
+        {
+            string sname = sd.Name;
+            string SkillDataRet = sd?.StrData;
             return SkillDataRet;
             // TODO Impl
             //ErrorHandler:

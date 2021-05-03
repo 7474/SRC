@@ -67,6 +67,10 @@ namespace SRCCore.Units
         {
             return colFeature[Index]?.Data ?? "";
         }
+        public string FeatureData(int Index)
+        {
+            return colFeature[Index]?.Data ?? "";
+        }
 
         //        // 特殊能力の必要技能
         //        public string FeatureNecessarySkill(string Index)

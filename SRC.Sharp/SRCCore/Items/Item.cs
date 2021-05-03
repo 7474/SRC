@@ -230,17 +230,21 @@ namespace SRCCore.Items
         // 特殊能力のレベル
         public double FeatureLevel(string Index)
         {
-            double FeatureLevelRet = default;
-            FeatureLevelRet = Data.FeatureLevel(Index);
-            return FeatureLevelRet;
+            return Data.FeatureLevel(Index);
+        }
+        public double FeatureLevel(int Index)
+        {
+            return Data.FeatureLevel(Index);
         }
 
         // 特殊能力のデータ
         public string FeatureData(string Index)
         {
-            string FeatureDataRet = default;
-            FeatureDataRet = Data.FeatureData(Index);
-            return FeatureDataRet;
+            return Data.FeatureData(Index);
+        }
+        public string FeatureData(int Index)
+        {
+            return Data.FeatureData(Index);
         }
 
         // 特殊能力の必要技能

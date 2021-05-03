@@ -369,28 +369,23 @@ namespace SRCCore.Models
         // 特殊能力のレベル
         public double FeatureLevel(string Index)
         {
-            try
-            {
-                var level = colFeature[Index]?.Level ?? 0d;
-                return level == Constants.DEFAULT_LEVEL ? 1d : level;
-            }
-            catch
-            {
-                return 0d;
-            }
+            var level = colFeature[Index]?.Level ?? 0d;
+            return level == Constants.DEFAULT_LEVEL ? 1d : level;
+        }
+        public double FeatureLevel(int Index)
+        {
+            var level = colFeature[Index]?.Level ?? 0d;
+            return level == Constants.DEFAULT_LEVEL ? 1d : level;
         }
 
         // 特殊能力のデータ
         public string FeatureData(string Index)
         {
-            try
-            {
-                return colFeature[Index]?.StrData ?? "";
-            }
-            catch
-            {
-                return "";
-            }
+            return colFeature[Index]?.StrData ?? "";
+        }
+        public string FeatureData(int Index)
+        {
+            return colFeature[Index]?.StrData ?? "";
         }
 
         // 指定した特殊能力を持っているか？
