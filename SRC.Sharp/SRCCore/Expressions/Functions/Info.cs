@@ -2,6 +2,7 @@ using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.VB;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SRCCore.Expressions.Functions
@@ -2849,951 +2850,23 @@ namespace SRCCore.Expressions.Functions
                         }
                         else if (ud != null)
                         {
-                            // 何番目のアビリティかを判定
-                            if (GeneralLib.IsNumber(@params[idx]))
-                            {
-                                i = Conversions.ToInteger(@params[idx]);
-                            }
-                            else
-                            {
-                                var loopTo15 = ud.CountAbility();
-                                for (i = 1; i <= loopTo15; i++)
-                                {
-                                    AbilityData localAbility() { object argIndex1 = i; var ret = ud.Ability(argIndex1); return ret; }
-
-                                    if ((@params[idx] ?? "") == (localAbility().Name ?? ""))
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-                            // 指定したアビリティを持っていない
-                            if (i <= 0 || ud.CountAbility() < i)
-                            {
-                                return str_result;
-                            }
-
-                            idx = (idx + 1);
-                            {
-                                var withBlock15 = ud.Ability(i);
-                                switch (@params[idx] ?? "")
-                                {
-                                    case var case8 when case8 == "":
-                                    case "名称":
-                                        {
-                                            str_result = withBlock15.Name;
-                                            break;
-                                        }
-
-                                    case "効果数":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock15.CountEffect());
-                                            break;
-                                        }
-
-                                    case "効果タイプ":
-                                        {
-                                            // 何番目の効果かを判定
-                                            if (GeneralLib.IsNumber(@params[idx + 1]))
-                                            {
-                                                j = Conversions.ToInteger(@params[idx + 1]);
-                                            }
-
-                                            if (j <= 0 || withBlock15.CountEffect() < j)
-                                            {
-                                                return str_result;
-                                            }
-
-                                            str_result = withBlock15.EffectType(j);
-                                            break;
-                                        }
-
-                                    case "効果レベル":
-                                        {
-                                            // 何番目の効果かを判定
-                                            if (GeneralLib.IsNumber(@params[idx + 1]))
-                                            {
-                                                j = Conversions.ToInteger(@params[idx + 1]);
-                                            }
-
-                                            if (j <= 0 || withBlock15.CountEffect() < j)
-                                            {
-                                                return str_result;
-                                            }
-
-                                            double localEffectLevel1() { object argIndex1 = j; var ret = withBlock15.EffectLevel(argIndex1); return ret; }
-
-                                            str_result = SrcFormatter.Format(localEffectLevel1());
-                                            break;
-                                        }
-
-                                    case "効果データ":
-                                        {
-                                            // 何番目の効果かを判定
-                                            if (GeneralLib.IsNumber(@params[idx + 1]))
-                                            {
-                                                j = Conversions.ToInteger(@params[idx + 1]);
-                                            }
-
-                                            if (j <= 0 || withBlock15.CountEffect() < j)
-                                            {
-                                                return str_result;
-                                            }
-
-                                            str_result = withBlock15.EffectData(j);
-                                            break;
-                                        }
-
-                                    case "射程":
-                                    case "最大射程":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock15.MaxRange);
-                                            break;
-                                        }
-
-                                    case "最小射程":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock15.MinRange);
-                                            break;
-                                        }
-
-                                    case "最大使用回数":
-                                    case "使用回数":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock15.Stock);
-                                            break;
-                                        }
-
-                                    case "消費ＥＮ":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock15.ENConsumption);
-                                            break;
-                                        }
-
-                                    case "必要気力":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock15.NecessaryMorale);
-                                            break;
-                                        }
-
-                                    case "属性":
-                                        {
-                                            str_result = withBlock15.Class;
-                                            break;
-                                        }
-
-                                    case "属性所有":
-                                        {
-                                            if (GeneralLib.InStrNotNest(withBlock15.Class, @params[idx + 1]) > 0)
-                                            {
-                                                str_result = "1";
-                                            }
-                                            else
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "属性レベル":
-                                        {
-                                            j = GeneralLib.InStrNotNest(withBlock15.Class, @params[idx + 1] + "L");
-                                            if (j == 0)
-                                            {
-                                                str_result = "0";
-                                                return str_result;
-                                            }
-
-                                            str_result = "";
-                                            j = (j + Strings.Len(@params[idx + 1]) + 1);
-                                            do
-                                            {
-                                                str_result = str_result + Strings.Mid(withBlock15.Class, j, 1);
-                                                j = (j + 1);
-                                            }
-                                            while (GeneralLib.IsNumber(Strings.Mid(withBlock15.Class, j, 1)));
-                                            if (!GeneralLib.IsNumber(str_result))
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "必要技能":
-                                        {
-                                            str_result = withBlock15.NecessarySkill;
-                                            break;
-                                        }
-
-                                    case "使用可":
-                                    case "修得":
-                                        {
-                                            str_result = "1";
-                                            break;
-                                        }
-                                }
-                            }
+                            str_result = InfoAbilitiyData(@params, idx, ud.Abilities);
                         }
                         else if (p != null)
                         {
-                            {
-                                var withBlock16 = p.Data;
-                                // 何番目のアビリティかを判定
-                                if (GeneralLib.IsNumber(@params[idx]))
-                                {
-                                    i = Conversions.ToInteger(@params[idx]);
-                                }
-                                else
-                                {
-                                    var loopTo16 = withBlock16.CountAbility();
-                                    for (i = 1; i <= loopTo16; i++)
-                                    {
-                                        AbilityData localAbility1() { object argIndex1 = i; var ret = withBlock16.Ability(argIndex1); return ret; }
-
-                                        if ((@params[idx] ?? "") == (localAbility1().Name ?? ""))
-                                        {
-                                            break;
-                                        }
-                                    }
-                                }
-                                // 指定したアビリティを持っていない
-                                if (i <= 0 || withBlock16.CountAbility() < i)
-                                {
-                                    return str_result;
-                                }
-
-                                idx = (idx + 1);
-                                {
-                                    var withBlock17 = withBlock16.Ability(i);
-                                    switch (@params[idx] ?? "")
-                                    {
-                                        case var case9 when case9 == "":
-                                        case "名称":
-                                            {
-                                                str_result = withBlock17.Name;
-                                                break;
-                                            }
-
-                                        case "効果数":
-                                            {
-                                                str_result = SrcFormatter.Format(withBlock17.CountEffect());
-                                                break;
-                                            }
-
-                                        case "効果タイプ":
-                                            {
-                                                // 何番目の効果かを判定
-                                                if (GeneralLib.IsNumber(@params[idx + 1]))
-                                                {
-                                                    j = Conversions.ToInteger(@params[idx + 1]);
-                                                }
-
-                                                if (j <= 0 || withBlock17.CountEffect() < j)
-                                                {
-                                                    return str_result;
-                                                }
-
-                                                str_result = withBlock17.EffectType(j);
-                                                break;
-                                            }
-
-                                        case "効果レベル":
-                                            {
-                                                // 何番目の効果かを判定
-                                                if (GeneralLib.IsNumber(@params[idx + 1]))
-                                                {
-                                                    j = Conversions.ToInteger(@params[idx + 1]);
-                                                }
-
-                                                if (j <= 0 || withBlock17.CountEffect() < j)
-                                                {
-                                                    return str_result;
-                                                }
-
-                                                double localEffectLevel2() { object argIndex1 = j; var ret = withBlock17.EffectLevel(argIndex1); return ret; }
-
-                                                str_result = SrcFormatter.Format(localEffectLevel2());
-                                                break;
-                                            }
-
-                                        case "効果データ":
-                                            {
-                                                // 何番目の効果かを判定
-                                                if (GeneralLib.IsNumber(@params[idx + 1]))
-                                                {
-                                                    j = Conversions.ToInteger(@params[idx + 1]);
-                                                }
-
-                                                if (j <= 0 || withBlock17.CountEffect() < j)
-                                                {
-                                                    return str_result;
-                                                }
-
-                                                str_result = withBlock17.EffectData(j);
-                                                break;
-                                            }
-
-                                        case "射程":
-                                        case "最大射程":
-                                            {
-                                                str_result = SrcFormatter.Format(withBlock17.MaxRange);
-                                                break;
-                                            }
-
-                                        case "最小射程":
-                                            {
-                                                str_result = SrcFormatter.Format(withBlock17.MinRange);
-                                                break;
-                                            }
-
-                                        case "最大使用回数":
-                                        case "使用回数":
-                                            {
-                                                str_result = SrcFormatter.Format(withBlock17.Stock);
-                                                break;
-                                            }
-
-                                        case "消費ＥＮ":
-                                            {
-                                                str_result = SrcFormatter.Format(withBlock17.ENConsumption);
-                                                break;
-                                            }
-
-                                        case "必要気力":
-                                            {
-                                                str_result = SrcFormatter.Format(withBlock17.NecessaryMorale);
-                                                break;
-                                            }
-
-                                        case "属性":
-                                            {
-                                                str_result = withBlock17.Class;
-                                                break;
-                                            }
-
-                                        case "属性所有":
-                                            {
-                                                if (GeneralLib.InStrNotNest(withBlock17.Class, @params[idx + 1]) > 0)
-                                                {
-                                                    str_result = "1";
-                                                }
-                                                else
-                                                {
-                                                    str_result = "0";
-                                                }
-
-                                                break;
-                                            }
-
-                                        case "属性レベル":
-                                            {
-                                                j = GeneralLib.InStrNotNest(withBlock17.Class, @params[idx + 1] + "L");
-                                                if (j == 0)
-                                                {
-                                                    str_result = "0";
-                                                    return str_result;
-                                                }
-
-                                                str_result = "";
-                                                j = (j + Strings.Len(@params[idx + 1]) + 1);
-                                                do
-                                                {
-                                                    str_result = str_result + Strings.Mid(withBlock17.Class, j, 1);
-                                                    j = (j + 1);
-                                                }
-                                                while (GeneralLib.IsNumber(Strings.Mid(withBlock17.Class, j, 1)));
-                                                if (!GeneralLib.IsNumber(str_result))
-                                                {
-                                                    str_result = "0";
-                                                }
-
-                                                break;
-                                            }
-
-                                        case "必要技能":
-                                            {
-                                                str_result = withBlock17.NecessarySkill;
-                                                break;
-                                            }
-
-                                        case "使用可":
-                                        case "修得":
-                                            {
-                                                str_result = "1";
-                                                break;
-                                            }
-                                    }
-                                }
-                            }
+                            str_result = InfoAbilitiyData(@params, idx, p.Data.Abilities);
                         }
                         else if (pd != null)
                         {
-                            // 何番目のアビリティかを判定
-                            if (GeneralLib.IsNumber(@params[idx]))
-                            {
-                                i = Conversions.ToInteger(@params[idx]);
-                            }
-                            else
-                            {
-                                var loopTo17 = pd.CountAbility();
-                                for (i = 1; i <= loopTo17; i++)
-                                {
-                                    AbilityData localAbility2() { object argIndex1 = i; var ret = pd.Ability(argIndex1); return ret; }
-
-                                    if ((@params[idx] ?? "") == (localAbility2().Name ?? ""))
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-                            // 指定したアビリティを持っていない
-                            if (i <= 0 || pd.CountAbility() < i)
-                            {
-                                return str_result;
-                            }
-
-                            idx = (idx + 1);
-                            {
-                                var withBlock18 = pd.Ability(i);
-                                switch (@params[idx] ?? "")
-                                {
-                                    case var case10 when case10 == "":
-                                    case "名称":
-                                        {
-                                            str_result = withBlock18.Name;
-                                            break;
-                                        }
-
-                                    case "効果数":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock18.CountEffect());
-                                            break;
-                                        }
-
-                                    case "効果タイプ":
-                                        {
-                                            // 何番目の効果かを判定
-                                            if (GeneralLib.IsNumber(@params[idx + 1]))
-                                            {
-                                                j = Conversions.ToInteger(@params[idx + 1]);
-                                            }
-
-                                            if (j <= 0 || withBlock18.CountEffect() < j)
-                                            {
-                                                return str_result;
-                                            }
-
-                                            str_result = withBlock18.EffectType(j);
-                                            break;
-                                        }
-
-                                    case "効果レベル":
-                                        {
-                                            // 何番目の効果かを判定
-                                            if (GeneralLib.IsNumber(@params[idx + 1]))
-                                            {
-                                                j = Conversions.ToInteger(@params[idx + 1]);
-                                            }
-
-                                            if (j <= 0 || withBlock18.CountEffect() < j)
-                                            {
-                                                return str_result;
-                                            }
-
-                                            double localEffectLevel3() { object argIndex1 = j; var ret = withBlock18.EffectLevel(argIndex1); return ret; }
-
-                                            str_result = SrcFormatter.Format(localEffectLevel3());
-                                            break;
-                                        }
-
-                                    case "効果データ":
-                                        {
-                                            // 何番目の効果かを判定
-                                            if (GeneralLib.IsNumber(@params[idx + 1]))
-                                            {
-                                                j = Conversions.ToInteger(@params[idx + 1]);
-                                            }
-
-                                            if (j <= 0 || withBlock18.CountEffect() < j)
-                                            {
-                                                return str_result;
-                                            }
-
-                                            str_result = withBlock18.EffectData(j);
-                                            break;
-                                        }
-
-                                    case "射程":
-                                    case "最大射程":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock18.MaxRange);
-                                            break;
-                                        }
-
-                                    case "最小射程":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock18.MinRange);
-                                            break;
-                                        }
-
-                                    case "最大使用回数":
-                                    case "使用回数":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock18.Stock);
-                                            break;
-                                        }
-
-                                    case "消費ＥＮ":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock18.ENConsumption);
-                                            break;
-                                        }
-
-                                    case "必要気力":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock18.NecessaryMorale);
-                                            break;
-                                        }
-
-                                    case "属性":
-                                        {
-                                            str_result = withBlock18.Class;
-                                            break;
-                                        }
-
-                                    case "属性所有":
-                                        {
-                                            if (GeneralLib.InStrNotNest(withBlock18.Class, @params[idx + 1]) > 0)
-                                            {
-                                                str_result = "1";
-                                            }
-                                            else
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "属性レベル":
-                                        {
-                                            j = GeneralLib.InStrNotNest(withBlock18.Class, @params[idx + 1] + "L");
-                                            if (j == 0)
-                                            {
-                                                str_result = "0";
-                                                return str_result;
-                                            }
-
-                                            str_result = "";
-                                            j = (j + Strings.Len(@params[idx + 1]) + 1);
-                                            do
-                                            {
-                                                str_result = str_result + Strings.Mid(withBlock18.Class, j, 1);
-                                                j = (j + 1);
-                                            }
-                                            while (GeneralLib.IsNumber(Strings.Mid(withBlock18.Class, j, 1)));
-                                            if (!GeneralLib.IsNumber(str_result))
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "必要技能":
-                                        {
-                                            str_result = withBlock18.NecessarySkill;
-                                            break;
-                                        }
-
-                                    case "使用可":
-                                    case "修得":
-                                        {
-                                            str_result = "1";
-                                            break;
-                                        }
-                                }
-                            }
+                            str_result = InfoAbilitiyData(@params, idx, pd.Abilities);
                         }
                         else if (it != null)
                         {
-                            // 何番目のアビリティかを判定
-                            if (GeneralLib.IsNumber(@params[idx]))
-                            {
-                                i = Conversions.ToInteger(@params[idx]);
-                            }
-                            else
-                            {
-                                var loopTo18 = it.CountAbility();
-                                for (i = 1; i <= loopTo18; i++)
-                                {
-                                    AbilityData localAbility3() { object argIndex1 = i; var ret = it.Ability(argIndex1); return ret; }
-
-                                    if ((@params[idx] ?? "") == (localAbility3().Name ?? ""))
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-                            // 指定したアビリティを持っていない
-                            if (i <= 0 || it.CountAbility() < i)
-                            {
-                                return str_result;
-                            }
-
-                            idx = (idx + 1);
-                            {
-                                var withBlock19 = it.Ability(i);
-                                switch (@params[idx] ?? "")
-                                {
-                                    case var case11 when case11 == "":
-                                    case "名称":
-                                        {
-                                            str_result = withBlock19.Name;
-                                            break;
-                                        }
-
-                                    case "効果数":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock19.CountEffect());
-                                            break;
-                                        }
-
-                                    case "効果タイプ":
-                                        {
-                                            // 何番目の効果かを判定
-                                            if (GeneralLib.IsNumber(@params[idx + 1]))
-                                            {
-                                                j = Conversions.ToInteger(@params[idx + 1]);
-                                            }
-
-                                            if (j <= 0 || withBlock19.CountEffect() < j)
-                                            {
-                                                return str_result;
-                                            }
-
-                                            str_result = withBlock19.EffectType(j);
-                                            break;
-                                        }
-
-                                    case "効果レベル":
-                                        {
-                                            // 何番目の効果かを判定
-                                            if (GeneralLib.IsNumber(@params[idx + 1]))
-                                            {
-                                                j = Conversions.ToInteger(@params[idx + 1]);
-                                            }
-
-                                            if (j <= 0 || withBlock19.CountEffect() < j)
-                                            {
-                                                return str_result;
-                                            }
-
-                                            double localEffectLevel4() { object argIndex1 = j; var ret = withBlock19.EffectLevel(argIndex1); return ret; }
-
-                                            str_result = SrcFormatter.Format(localEffectLevel4());
-                                            break;
-                                        }
-
-                                    case "効果データ":
-                                        {
-                                            // 何番目の効果かを判定
-                                            if (GeneralLib.IsNumber(@params[idx + 1]))
-                                            {
-                                                j = Conversions.ToInteger(@params[idx + 1]);
-                                            }
-
-                                            if (j <= 0 || withBlock19.CountEffect() < j)
-                                            {
-                                                return str_result;
-                                            }
-
-                                            str_result = withBlock19.EffectData(j);
-                                            break;
-                                        }
-
-                                    case "射程":
-                                    case "最大射程":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock19.MaxRange);
-                                            break;
-                                        }
-
-                                    case "最小射程":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock19.MinRange);
-                                            break;
-                                        }
-
-                                    case "最大使用回数":
-                                    case "使用回数":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock19.Stock);
-                                            break;
-                                        }
-
-                                    case "消費ＥＮ":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock19.ENConsumption);
-                                            break;
-                                        }
-
-                                    case "必要気力":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock19.NecessaryMorale);
-                                            break;
-                                        }
-
-                                    case "属性":
-                                        {
-                                            str_result = withBlock19.Class;
-                                            break;
-                                        }
-
-                                    case "属性所有":
-                                        {
-                                            if (GeneralLib.InStrNotNest(withBlock19.Class, @params[idx + 1]) > 0)
-                                            {
-                                                str_result = "1";
-                                            }
-                                            else
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "属性レベル":
-                                        {
-                                            j = GeneralLib.InStrNotNest(withBlock19.Class, @params[idx + 1] + "L");
-                                            if (j == 0)
-                                            {
-                                                str_result = "0";
-                                                return str_result;
-                                            }
-
-                                            str_result = "";
-                                            j = (j + Strings.Len(@params[idx + 1]) + 1);
-                                            do
-                                            {
-                                                str_result = str_result + Strings.Mid(withBlock19.Class, j, 1);
-                                                j = (j + 1);
-                                            }
-                                            while (GeneralLib.IsNumber(Strings.Mid(withBlock19.Class, j, 1)));
-                                            if (!GeneralLib.IsNumber(str_result))
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "必要技能":
-                                        {
-                                            str_result = withBlock19.NecessarySkill;
-                                            break;
-                                        }
-
-                                    case "使用可":
-                                    case "修得":
-                                        {
-                                            str_result = "1";
-                                            break;
-                                        }
-                                }
-                            }
+                            str_result = InfoAbilitiyData(@params, idx, it.Abilities);
                         }
                         else if (itd != null)
                         {
-                            // 何番目のアビリティかを判定
-                            if (GeneralLib.IsNumber(@params[idx]))
-                            {
-                                i = Conversions.ToInteger(@params[idx]);
-                            }
-                            else
-                            {
-                                var loopTo19 = itd.CountAbility();
-                                for (i = 1; i <= loopTo19; i++)
-                                {
-                                    AbilityData localAbility4() { object argIndex1 = i; var ret = itd.Ability(argIndex1); return ret; }
-
-                                    if ((@params[idx] ?? "") == (localAbility4().Name ?? ""))
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-                            // 指定したアビリティを持っていない
-                            if (i <= 0 || itd.CountAbility() < i)
-                            {
-                                return str_result;
-                            }
-
-                            idx = (idx + 1);
-                            {
-                                var withBlock20 = itd.Ability(i);
-                                switch (@params[idx] ?? "")
-                                {
-                                    case var case12 when case12 == "":
-                                    case "名称":
-                                        {
-                                            str_result = withBlock20.Name;
-                                            break;
-                                        }
-
-                                    case "効果数":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock20.CountEffect());
-                                            break;
-                                        }
-
-                                    case "効果タイプ":
-                                        {
-                                            // 何番目の効果かを判定
-                                            if (GeneralLib.IsNumber(@params[idx + 1]))
-                                            {
-                                                j = Conversions.ToInteger(@params[idx + 1]);
-                                            }
-
-                                            if (j <= 0 || withBlock20.CountEffect() < j)
-                                            {
-                                                return str_result;
-                                            }
-
-                                            str_result = withBlock20.EffectType(j);
-                                            break;
-                                        }
-
-                                    case "効果レベル":
-                                        {
-                                            // 何番目の効果かを判定
-                                            if (GeneralLib.IsNumber(@params[idx + 1]))
-                                            {
-                                                j = Conversions.ToInteger(@params[idx + 1]);
-                                            }
-
-                                            if (j <= 0 || withBlock20.CountEffect() < j)
-                                            {
-                                                return str_result;
-                                            }
-
-                                            double localEffectLevel5() { object argIndex1 = j; var ret = withBlock20.EffectLevel(argIndex1); return ret; }
-
-                                            str_result = SrcFormatter.Format(localEffectLevel5());
-                                            break;
-                                        }
-
-                                    case "効果データ":
-                                        {
-                                            // 何番目の効果かを判定
-                                            if (GeneralLib.IsNumber(@params[idx + 1]))
-                                            {
-                                                j = Conversions.ToInteger(@params[idx + 1]);
-                                            }
-
-                                            if (j <= 0 || withBlock20.CountEffect() < j)
-                                            {
-                                                return str_result;
-                                            }
-
-                                            str_result = withBlock20.EffectData(j);
-                                            break;
-                                        }
-
-                                    case "射程":
-                                    case "最大射程":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock20.MaxRange);
-                                            break;
-                                        }
-
-                                    case "最小射程":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock20.MinRange);
-                                            break;
-                                        }
-
-                                    case "最大使用回数":
-                                    case "使用回数":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock20.Stock);
-                                            break;
-                                        }
-
-                                    case "消費ＥＮ":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock20.ENConsumption);
-                                            break;
-                                        }
-
-                                    case "必要気力":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock20.NecessaryMorale);
-                                            break;
-                                        }
-
-                                    case "属性":
-                                        {
-                                            str_result = withBlock20.Class;
-                                            break;
-                                        }
-
-                                    case "属性所有":
-                                        {
-                                            if (GeneralLib.InStrNotNest(withBlock20.Class, @params[idx + 1]) > 0)
-                                            {
-                                                str_result = "1";
-                                            }
-                                            else
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "属性レベル":
-                                        {
-                                            j = GeneralLib.InStrNotNest(withBlock20.Class, @params[idx + 1] + "L");
-                                            if (j == 0)
-                                            {
-                                                str_result = "0";
-                                                return str_result;
-                                            }
-
-                                            str_result = "";
-                                            j = (j + Strings.Len(@params[idx + 1]) + 1);
-                                            do
-                                            {
-                                                str_result = str_result + Strings.Mid(withBlock20.Class, j, 1);
-                                                j = (j + 1);
-                                            }
-                                            while (GeneralLib.IsNumber(Strings.Mid(withBlock20.Class, j, 1)));
-                                            if (!GeneralLib.IsNumber(str_result))
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "必要技能":
-                                        {
-                                            str_result = withBlock20.NecessarySkill;
-                                            break;
-                                        }
-
-                                    case "使用可":
-                                    case "修得":
-                                        {
-                                            str_result = "1";
-                                            break;
-                                        }
-                                }
-                            }
+                            str_result = InfoAbilitiyData(@params, idx, itd.Abilities);
                         }
 
                         break;
@@ -4453,6 +3526,169 @@ namespace SRCCore.Expressions.Functions
             {
                 return ValueType.StringType;
             }
+        }
+
+        private static string InfoAbilitiyData(string[] @params, int idx, IList<AbilityData> abilities)
+        {
+            // 何番目のアビリティかを判定
+            var str_result = "";
+            AbilityData ad;
+            if (GeneralLib.IsNumber(@params[idx]))
+            {
+                ad = abilities.SafeRefOneOffset(Conversions.ToInteger(@params[idx]));
+            }
+            else
+            {
+                var name = @params[idx];
+                ad = abilities.FirstOrDefault(x => x.Name == name);
+            }
+            // 指定したアビリティを持っていない
+            if (ad == null)
+            {
+                return "";
+            }
+
+            idx = (idx + 1);
+            switch (@params[idx] ?? "")
+            {
+                case var case12 when case12 == "":
+                case "名称":
+                    {
+                        str_result = ad.Name;
+                        break;
+                    }
+
+                case "効果数":
+                    {
+                        str_result = SrcFormatter.Format(ad.Effects.Count);
+                        break;
+                    }
+
+                case "効果タイプ":
+                    {
+                        // 何番目の効果かを判定
+                        if (GeneralLib.IsNumber(@params[idx + 1]))
+                        {
+                            var j = Conversions.ToInteger(@params[idx + 1]);
+                            str_result = ad.Effects.SafeRefOneOffset(j).EffectType;
+                        }
+                        break;
+                    }
+
+                case "効果レベル":
+                    {
+                        // 何番目の効果かを判定
+                        if (GeneralLib.IsNumber(@params[idx + 1]))
+                        {
+                            var j = Conversions.ToInteger(@params[idx + 1]);
+                            str_result = SrcFormatter.Format(ad.Effects.SafeRefOneOffset(j).Level);
+                        }
+                        break;
+                    }
+
+                case "効果データ":
+                    {
+                        // 何番目の効果かを判定
+                        if (GeneralLib.IsNumber(@params[idx + 1]))
+                        {
+                            var j = Conversions.ToInteger(@params[idx + 1]);
+                            str_result = ad.Effects.SafeRefOneOffset(j).Data;
+                        }
+                        break;
+                    }
+
+                case "射程":
+                case "最大射程":
+                    {
+                        str_result = SrcFormatter.Format(ad.MaxRange);
+                        break;
+                    }
+
+                case "最小射程":
+                    {
+                        str_result = SrcFormatter.Format(ad.MinRange);
+                        break;
+                    }
+
+                case "最大使用回数":
+                case "使用回数":
+                    {
+                        str_result = SrcFormatter.Format(ad.Stock);
+                        break;
+                    }
+
+                case "消費ＥＮ":
+                    {
+                        str_result = SrcFormatter.Format(ad.ENConsumption);
+                        break;
+                    }
+
+                case "必要気力":
+                    {
+                        str_result = SrcFormatter.Format(ad.NecessaryMorale);
+                        break;
+                    }
+
+                case "属性":
+                    {
+                        str_result = ad.Class;
+                        break;
+                    }
+
+                case "属性所有":
+                    {
+                        if (GeneralLib.InStrNotNest(ad.Class, @params[idx + 1]) > 0)
+                        {
+                            str_result = "1";
+                        }
+                        else
+                        {
+                            str_result = "0";
+                        }
+
+                        break;
+                    }
+
+                case "属性レベル":
+                    {
+                        var j = GeneralLib.InStrNotNest(ad.Class, @params[idx + 1] + "L");
+                        if (j == 0)
+                        {
+                            str_result = "0";
+                            return str_result;
+                        }
+
+                        str_result = "";
+                        j = (j + Strings.Len(@params[idx + 1]) + 1);
+                        do
+                        {
+                            str_result = str_result + Strings.Mid(ad.Class, j, 1);
+                            j = (j + 1);
+                        }
+                        while (GeneralLib.IsNumber(Strings.Mid(ad.Class, j, 1)));
+                        if (!GeneralLib.IsNumber(str_result))
+                        {
+                            str_result = "0";
+                        }
+
+                        break;
+                    }
+
+                case "必要技能":
+                    {
+                        str_result = ad.NecessarySkill;
+                        break;
+                    }
+
+                case "使用可":
+                case "修得":
+                    {
+                        str_result = "1";
+                        break;
+                    }
+            }
+
+            return str_result;
         }
     }
 }

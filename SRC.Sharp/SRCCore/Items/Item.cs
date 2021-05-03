@@ -25,6 +25,7 @@ namespace SRCCore.Items
         public string ItemName { get; set; }
         // アイテムデータへのポインタ
         public ItemData Data { get => SRC.IDList.Item(ItemName); set { ItemName = value?.Name; } }
+        public IList<AbilityData> Abilities => Data.Abilities;
 
         [JsonProperty]
         public string UnitId { get; set; }
