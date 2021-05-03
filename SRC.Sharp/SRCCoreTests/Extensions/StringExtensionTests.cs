@@ -31,5 +31,14 @@ namespace SRCCore.Extensions.Tests
             Assert.AreEqual("abc", "ho(abc)ge".InsideKakko());
             Assert.AreEqual("fuga(abc)", "(fuga(abc))".InsideKakko());
         }
+
+        [TestMethod()]
+        public void ReplaceNewLineTest()
+        {
+            Assert.AreEqual("123 456  789", @"123
+456
+
+789".ReplaceNewLine(" "));
+        }
     }
 }

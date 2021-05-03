@@ -13,7 +13,7 @@ namespace SRCCore.Expressions.Functions
             var buf = @params[1] + "[";
             var num = 0;
 
-            // ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚ğŒŸõ
+            // ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã‚’æ¤œç´¢
             if (SRC.Event.CallDepth > 0)
             {
                 var loopTo5 = SRC.Event.VarIndex;
@@ -40,7 +40,7 @@ namespace SRCCore.Expressions.Functions
                 }
             }
 
-            // ƒ[ƒJƒ‹•Ï”‚ğŒŸõ
+            // ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã‚’æ¤œç´¢
             foreach (VarData currentVar in SRC.Event.LocalVariableList.Values)
             {
                 if (Strings.InStr(currentVar.Name, buf) == 1)
@@ -63,7 +63,7 @@ namespace SRCCore.Expressions.Functions
                 }
             }
 
-            // ƒOƒ[ƒoƒ‹•Ï”‚ğŒŸõ
+            // ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã‚’æ¤œç´¢
             foreach (VarData currentVar1 in SRC.Event.GlobalVariableList.Values)
             {
                 if (Strings.InStr(currentVar1.Name, buf) == 1)
@@ -101,11 +101,11 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // XXX Œ³‚Í expr Ø‚èo‚µ‚Ä‚½‚¯‚ê‚Ç‚È‚ñ‚Å‚¾‚ë
+            // XXX å…ƒã¯ expr åˆ‡ã‚Šå‡ºã—ã¦ãŸã‘ã‚Œã©ãªã‚“ã§ã ã‚
             var list = GeneralLib.ToList(@params[1]);
             var num = list.Count;
             var flag = false;
-            // XXX ‚±‚ÌSwitch‰½‚ğˆÓ}‚µ‚½‚à‚Ì‚È‚Ì‚©•ª‚©‚ç‚ñBBB
+            // XXX ã“ã®Switchä½•ã‚’æ„å›³ã—ãŸã‚‚ã®ãªã®ã‹åˆ†ã‹ã‚‰ã‚“ã€‚ã€‚ã€‚
             switch (num)
             {
                 case 1:
@@ -122,7 +122,7 @@ namespace SRCCore.Expressions.Functions
                                 {
                                     {
                                         var withBlock18 = withBlock17.Unit;
-                                        if (withBlock18.Status == "oŒ‚" || withBlock18.Status == "Ši”[")
+                                        if (withBlock18.Status == "å‡ºæ’ƒ" || withBlock18.Status == "æ ¼ç´")
                                         {
                                             flag = true;
                                         }
@@ -158,7 +158,7 @@ namespace SRCCore.Expressions.Functions
                             {
                                 {
                                     var withBlock20 = withBlock19.Unit;
-                                    if (withBlock20.Status == "oŒ‚" || withBlock20.Status == "Ši”[")
+                                    if (withBlock20.Status == "å‡ºæ’ƒ" || withBlock20.Status == "æ ¼ç´")
                                     {
                                         flag = false;
                                     }
@@ -231,7 +231,7 @@ namespace SRCCore.Expressions.Functions
                     {
                         switch (SRC.Expression.GetValueAsString(@params[2], is_term[2]) ?? "")
                         {
-                            case "ƒpƒCƒƒbƒg":
+                            case "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ":
                                 {
                                     if (SRC.PList.IsDefined(pname))
                                     {
@@ -244,11 +244,11 @@ namespace SRCCore.Expressions.Functions
                                     break;
                                 }
 
-                            case "ƒ†ƒjƒbƒg":
+                            case "ãƒ¦ãƒ‹ãƒƒãƒˆ":
                                 {
                                     if (SRC.UList.IsDefined(pname))
                                     {
-                                        if (SRC.UList.Item(pname).Status != "”jŠü")
+                                        if (SRC.UList.Item(pname).Status != "ç ´æ£„")
                                         {
                                             num_result = 1d;
                                         }
@@ -257,7 +257,7 @@ namespace SRCCore.Expressions.Functions
                                     break;
                                 }
 
-                            case "ƒAƒCƒeƒ€":
+                            case "ã‚¢ã‚¤ãƒ†ãƒ ":
                                 {
                                     if (SRC.IList.IsDefined(pname))
                                     {
@@ -282,7 +282,7 @@ namespace SRCCore.Expressions.Functions
                         }
                         else if (SRC.UList.IsDefined(pname))
                         {
-                            if (SRC.UList.Item(pname).Status != "”jŠü")
+                            if (SRC.UList.Item(pname).Status != "ç ´æ£„")
                             {
                                 num_result = 1d;
                             }
@@ -315,7 +315,7 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // XXX Œ³‚Í expr Ø‚èo‚µ‚Ä‚½‚¯‚ê‚Ç‚È‚ñ‚Å‚¾‚ë
+            // XXX å…ƒã¯ expr åˆ‡ã‚Šå‡ºã—ã¦ãŸã‘ã‚Œã©ãªã‚“ã§ã ã‚
             if (SRC.Expression.IsVariableDefined(Strings.Trim(@params[1])))
             {
                 if (etype == ValueType.StringType)
@@ -349,16 +349,16 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Keystate GUI‚É‰¡—¬‚µ‚·‚é‚±‚Æ‚É‚È‚è‚»‚¤
+            // TODO Impl Keystate GUIã«æ¨ªæµã—ã™ã‚‹ã“ã¨ã«ãªã‚Šãã†
             //                        if (pcount != 1)
             //                        {
             //                            return CallFunctionRet;
             //                        }
 
-            //                        // ƒL[”Ô†
+            //                        // ã‚­ãƒ¼ç•ªå·
             //                        i = GetValueAsLong(@params[1], is_term[1]);
 
-            //                        // ¶—˜‚«İ’è‚É‘Î‰
+            //                        // å·¦åˆ©ãè¨­å®šã«å¯¾å¿œ
             //                        switch (i)
             //                        {
             //                            case Keys.LButton:
@@ -376,10 +376,10 @@ namespace SRCCore.Expressions.Functions
 
             //                        if (i == Keys.LButton || i == Keys.RButton)
             //                        {
-            //                            // ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚ğQÆ
+            //                            // ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã®ä½ç½®ã‚’å‚ç…§
             //                            GUI.GetCursorPos(PT);
 
-            //                            // ƒƒCƒ“ƒEƒCƒ“ƒhƒEã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚Ä‚¢‚éH
+            //                            // ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ä¸Šã§ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ã¦ã„ã‚‹ï¼Ÿ
             //                            if (ReferenceEquals(Form.ActiveForm, GUI.MainForm))
             //                            {
             //                                {
@@ -396,13 +396,13 @@ namespace SRCCore.Expressions.Functions
             //                                }
             //                            }
             //                        }
-            //                        // ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ªƒAƒNƒeƒBƒu‚É‚È‚Á‚Ä‚¢‚éH
+            //                        // ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ãªã£ã¦ã„ã‚‹ï¼Ÿ
             //                        else if (ReferenceEquals(Form.ActiveForm, GUI.MainForm))
             //                        {
             //                            in_window = true;
             //                        }
 
-            //                        // ƒEƒBƒ“ƒhƒE‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íí‚É0‚ğ•Ô‚·
+            //                        // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒé¸æŠã•ã‚Œã¦ã„ãªã„å ´åˆã¯å¸¸ã«0ã‚’è¿”ã™
             //                        if (!in_window)
             //                        {
             //                            num_result = 0d;
@@ -419,7 +419,7 @@ namespace SRCCore.Expressions.Functions
             //                            return CallFunctionRet;
             //                        }
 
-            //                        // ƒL[‚Ìó‘Ô‚ğQÆ
+            //                        // ã‚­ãƒ¼ã®çŠ¶æ…‹ã‚’å‚ç…§
             //                        if (Conversions.ToBoolean(GUI.GetAsyncKeyState(i) & 0x8000))
             //                        {
             //                            num_result = 1d;

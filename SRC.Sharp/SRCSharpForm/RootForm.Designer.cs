@@ -63,7 +63,7 @@ namespace SRCSharpForm
             this.btnSelectFile.Name = "btnSelectFile";
             this.btnSelectFile.Size = new System.Drawing.Size(75, 23);
             this.btnSelectFile.TabIndex = 9;
-            this.btnSelectFile.Text = "ÉtÉ@ÉCÉãëIë";
+            this.btnSelectFile.Text = "„Éï„Ç°„Ç§„É´ÈÅ∏Êäû";
             this.btnSelectFile.UseVisualStyleBackColor = true;
             this.btnSelectFile.Click += new System.EventHandler(this.btnSelectFile_Click);
             // 
@@ -73,7 +73,7 @@ namespace SRCSharpForm
             this.btnConfigure.Name = "btnConfigure";
             this.btnConfigure.Size = new System.Drawing.Size(75, 23);
             this.btnConfigure.TabIndex = 10;
-            this.btnConfigure.Text = "ê›íË";
+            this.btnConfigure.Text = "Ë®≠ÂÆö";
             this.btnConfigure.UseVisualStyleBackColor = true;
             this.btnConfigure.Click += new System.EventHandler(this.btnConfigure_Click);
             // 

@@ -2,7 +2,6 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
-using SRCCore.Lib;
 using SRCCore.VB;
 using System.Collections.Generic;
 
@@ -352,53 +351,41 @@ namespace SRCCore.Models
         {
             return colFeature[Index];
         }
+        public FeatureData Feature(int Index)
+        {
+            return colFeature[Index];
+        }
 
         // 特殊能力の名称
         public string FeatureName(string Index)
         {
-            string FeatureNameRet = default;
-            FeatureData fd = colFeature[Index];
-            if (Strings.Len(fd.StrData) > 0)
-            {
-                FeatureNameRet = GeneralLib.ListIndex(fd.StrData, 1);
-            }
-            else if (fd.Level != Constants.DEFAULT_LEVEL)
-            {
-                FeatureNameRet = fd.Name + "Lv" + SrcFormatter.Format(fd.Level);
-            }
-            else
-            {
-                FeatureNameRet = fd.Name;
-            }
-
-            return FeatureNameRet;
+            return colFeature[Index]?.FeatureNameWithLv() ?? "";
+        }
+        public string FeatureName(int Index)
+        {
+            return colFeature[Index]?.FeatureNameWithLv() ?? "";
         }
 
         // 特殊能力のレベル
         public double FeatureLevel(string Index)
         {
-            try
-            {
-                var level = colFeature[Index]?.Level ?? 0d;
-                return level == Constants.DEFAULT_LEVEL ? 1d : level;
-            }
-            catch
-            {
-                return 0d;
-            }
+            var level = colFeature[Index]?.Level ?? 0d;
+            return level == Constants.DEFAULT_LEVEL ? 1d : level;
+        }
+        public double FeatureLevel(int Index)
+        {
+            var level = colFeature[Index]?.Level ?? 0d;
+            return level == Constants.DEFAULT_LEVEL ? 1d : level;
         }
 
         // 特殊能力のデータ
         public string FeatureData(string Index)
         {
-            try
-            {
-                return colFeature[Index]?.StrData ?? "";
-            }
-            catch
-            {
-                return "";
-            }
+            return colFeature[Index]?.StrData ?? "";
+        }
+        public string FeatureData(int Index)
+        {
+            return colFeature[Index]?.StrData ?? "";
         }
 
         // 指定した特殊能力を持っているか？

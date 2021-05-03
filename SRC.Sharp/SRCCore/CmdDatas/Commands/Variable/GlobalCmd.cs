@@ -18,7 +18,7 @@ namespace SRCCore.CmdDatas.Commands
                 var vname = GetArg(i);
                 if (Strings.InStr(vname, "\"") > 0)
                 {
-                    throw new EventErrorException(this, "•Ï”–¼u" + vname + "v‚ª•s³‚Å‚·");
+                    throw new EventErrorException(this, "å¤‰æ•°åã€Œ" + vname + "ã€ãŒä¸æ­£ã§ã™");
                 }
 
                 if (Strings.Asc(vname) == 36) // $

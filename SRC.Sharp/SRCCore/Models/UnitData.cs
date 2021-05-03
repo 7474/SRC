@@ -388,19 +388,56 @@ namespace SRCCore.Models
             // XXX 元は Name を返却
             return colFeature[Index];
         }
+        public FeatureData Feature(int Index)
+        {
+            // XXX 参照先はNameだった
+            //FeatureRet = fd.Name;
+            return colFeature[Index];
+        }
 
-        //// 特殊能力のデータ
-        //public string FeatureData(int Index)
-        //{
-        //    try
-        //    {
-        //        return colFeature[Index]?.StrData ?? "";
-        //    }
-        //    catch
-        //    {
-        //        return "";
-        //    }
-        //}
+        // XXX このくらいなら Feature(string Index) に統合できる気はする
+        // 特殊能力のレベル
+        public double FeatureLevel(string Index)
+        {
+            return colFeature[Index]?.FeatureLevel ?? 0d;
+        }
+        public double FeatureLevel(int Index)
+        {
+            return colFeature[Index]?.FeatureLevel ?? 0d;
+        }
+
+        // 特殊能力のデータ
+        public string FeatureData(string Index)
+        {
+            try
+            {
+                return colFeature[Index]?.StrData ?? "";
+            }
+            catch
+            {
+                return "";
+            }
+        }
+        public string FeatureData(int Index)
+        {
+            try
+            {
+                return colFeature[Index]?.StrData ?? "";
+            }
+            catch
+            {
+                return "";
+            }
+        }
+        // 特殊能力の名称
+        public string FeatureName(string Index)
+        {
+            return colFeature[Index]?.FeatureNameWithLv() ?? "";
+        }
+        public string FeatureName(int Index)
+        {
+            return colFeature[Index]?.FeatureNameWithLv() ?? "";
+        }
 
         // 指定した特殊能力を持っているか？
         public bool IsFeatureAvailable(string fname)

@@ -4,10 +4,10 @@ using System.Drawing;
 
 namespace SRCCore.Expressions.Functions
 {
-    //Font•¶š—ñ•`‰æ‚ÌƒtƒHƒ“ƒgİ’è‚ğ•Ô‚·
-    //RGB•`‰æF‚ğ•Ô‚·
-    //TextHeightw’è‚µ‚½•¶š—ñ‚ğ•`‰æ‚µ‚½Û‚Ì‚‚³‚ğƒsƒNƒZƒ‹”‚Å•Ô‚·
-    //TextWidthw’è‚µ‚½•¶š—ñ‚ğ•`‰æ‚µ‚½Û‚Ì•‚ğƒsƒNƒZƒ‹”‚Å•Ô‚·
+    //Fontæ–‡å­—åˆ—æç”»ã®ãƒ•ã‚©ãƒ³ãƒˆè¨­å®šã‚’è¿”ã™
+    //RGBæç”»è‰²ã‚’è¿”ã™
+    //TextHeightæŒ‡å®šã—ãŸæ–‡å­—åˆ—ã‚’æç”»ã—ãŸéš›ã®é«˜ã•ã‚’ãƒ”ã‚¯ã‚»ãƒ«æ•°ã§è¿”ã™
+    //TextWidthæŒ‡å®šã—ãŸæ–‡å­—åˆ—ã‚’æç”»ã—ãŸéš›ã®å¹…ã‚’ãƒ”ã‚¯ã‚»ãƒ«æ•°ã§è¿”ã™
 
     public class Font : AFunction
     {
@@ -18,13 +18,13 @@ namespace SRCCore.Expressions.Functions
 
             switch (SRC.Expression.GetValueAsString(@params[1], is_term[1]) ?? "")
             {
-                case "ƒtƒHƒ“ƒg–¼":
+                case "ãƒ•ã‚©ãƒ³ãƒˆå":
                     {
                         str_result = SRC.GUI.CurrentPaintFont.Name;
                         return ValueType.StringType;
                     }
 
-                case "ƒTƒCƒY":
+                case "ã‚µã‚¤ã‚º":
                     {
                         num_result = SRC.GUI.CurrentPaintFont.Size;
                         if (etype == ValueType.StringType)
@@ -38,7 +38,7 @@ namespace SRCCore.Expressions.Functions
                         }
                     }
 
-                case "‘¾š":
+                case "å¤ªå­—":
                     {
                         if (SRC.GUI.CurrentPaintFont.Bold)
                         {
@@ -60,7 +60,7 @@ namespace SRCCore.Expressions.Functions
                         }
                     }
 
-                case "Î‘Ì":
+                case "æ–œä½“":
                     {
                         if (SRC.GUI.CurrentPaintFont.Italic)
                         {
@@ -82,25 +82,25 @@ namespace SRCCore.Expressions.Functions
                         }
                     }
 
-                case "F":
+                case "è‰²":
                     {
                         str_result = SRC.GUI.CurrentPaintColor.ToHexString();
                         return ValueType.StringType;
                     }
 
-                case "‘‚«‚İ":
+                case "æ›¸ãè¾¼ã¿":
                     {
                         if (SRC.GUI.PermanentStringMode)
                         {
-                            str_result = "”wŒi";
+                            str_result = "èƒŒæ™¯";
                         }
                         else if (SRC.GUI.KeepStringMode)
                         {
-                            str_result = "•Û";
+                            str_result = "ä¿æŒ";
                         }
                         else
                         {
-                            str_result = "’Êí";
+                            str_result = "é€šå¸¸";
                         }
                         return ValueType.StringType;
                     }

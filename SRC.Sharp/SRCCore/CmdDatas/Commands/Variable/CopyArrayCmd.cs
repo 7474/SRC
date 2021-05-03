@@ -15,16 +15,16 @@ namespace SRCCore.CmdDatas.Commands
         {
             if (ArgNum != 3)
             {
-                throw new EventErrorException(this, "CopyArrayƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·");
+                throw new EventErrorException(this, "CopyArrayã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™");
             }
 
-            // ƒRƒs[Œ³‚Ì•Ï”–¼
+            // ã‚³ãƒ”ãƒ¼å…ƒã®å¤‰æ•°å
             var name1 = GetArg(2);
             if (Strings.Left(name1, 1) == "$")
             {
                 name1 = Strings.Mid(name1, 2);
             }
-            // EvalŠÖ”
+            // Evalé–¢æ•°
             if (Strings.LCase(Strings.Left(name1, 5)) == "eval(")
             {
                 if (Strings.Right(name1, 1) == ")")
@@ -34,13 +34,13 @@ namespace SRCCore.CmdDatas.Commands
                 }
             }
 
-            // ƒRƒs[æ‚Ì•Ï”–¼
+            // ã‚³ãƒ”ãƒ¼å…ˆã®å¤‰æ•°å
             var name2 = GetArg(3);
             if (Strings.Left(name2, 1) == "$")
             {
                 name1 = Strings.Mid(name2, 2);
             }
-            // EvalŠÖ”
+            // Evalé–¢æ•°
             if (Strings.LCase(Strings.Left(name2, 5)) == "eval(")
             {
                 if (Strings.Right(name2, 1) == ")")
@@ -50,8 +50,8 @@ namespace SRCCore.CmdDatas.Commands
                 }
             }
 
-            // ƒRƒs[æ‚Ì•Ï”‚ğ‰Šú‰»
-            // ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚Ìê‡
+            // ã‚³ãƒ”ãƒ¼å…ˆã®å¤‰æ•°ã‚’åˆæœŸåŒ–
+            // ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å ´åˆ
             if (Expression.IsSubLocalVariableDefined(name2))
             {
                 Expression.UndefineVariable(name2);
@@ -63,24 +63,24 @@ namespace SRCCore.CmdDatas.Commands
                     withBlock.StringValue = "";
                 }
             }
-            // ƒ[ƒJƒ‹•Ï”‚Ìê‡
+            // ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å ´åˆ
             else if (Expression.IsLocalVariableDefined(name2))
             {
                 Expression.UndefineVariable(name2);
                 Expression.DefineLocalVariable(name2);
             }
-            // ƒOƒ[ƒoƒ‹•Ï”‚Ìê‡
+            // ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã®å ´åˆ
             else if (Expression.IsGlobalVariableDefined(name2))
             {
                 Expression.UndefineVariable(name2);
                 Expression.DefineGlobalVariable(name2);
             }
 
-            // ”z—ñ‚ğŒŸõ‚µA”z—ñ—v‘f‚ğŒ©‚Â‚¯‚é
+            // é…åˆ—ã‚’æ¤œç´¢ã—ã€é…åˆ—è¦ç´ ã‚’è¦‹ã¤ã‘ã‚‹
             var buf = "";
             if (Expression.IsSubLocalVariableDefined(name1))
             {
-                // ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹‚È”z—ñ‚É‘Î‚·‚éCopyArray
+                // ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«ãªé…åˆ—ã«å¯¾ã™ã‚‹CopyArray
                 var loopTo = Event.VarIndex;
                 for (var i = Event.VarIndexStack[Event.CallDepth - 1] + 1; i <= loopTo; i++)
                 {
@@ -102,8 +102,8 @@ namespace SRCCore.CmdDatas.Commands
             }
             else if (Expression.IsLocalVariableDefined(name1))
             {
-                // ƒ[ƒJƒ‹‚È”z—ñ‚É‘Î‚·‚éCopyArray
-                // XXX —ñ‹“‚Ì‡”Ô‚ªDictionary‚¾‚Æ–â‘è‚É‚È‚é‚©‚à
+                // ãƒ­ãƒ¼ã‚«ãƒ«ãªé…åˆ—ã«å¯¾ã™ã‚‹CopyArray
+                // XXX åˆ—æŒ™æ™‚ã®é †ç•ªãŒDictionaryã ã¨å•é¡Œã«ãªã‚‹ã‹ã‚‚
                 foreach (VarData currentVar in Event.LocalVariableList.Values)
                 {
                     var var = currentVar;
@@ -125,8 +125,8 @@ namespace SRCCore.CmdDatas.Commands
             }
             else if (Expression.IsGlobalVariableDefined(name1))
             {
-                // ƒOƒ[ƒoƒ‹‚È”z—ñ‚É‘Î‚·‚éCopyArray
-                // XXX —ñ‹“‚Ì‡”Ô‚ªDictionary‚¾‚Æ–â‘è‚É‚È‚é‚©‚à
+                // ã‚°ãƒ­ãƒ¼ãƒãƒ«ãªé…åˆ—ã«å¯¾ã™ã‚‹CopyArray
+                // XXX åˆ—æŒ™æ™‚ã®é †ç•ªãŒDictionaryã ã¨å•é¡Œã«ãªã‚‹ã‹ã‚‚
                 foreach (VarData currentVar1 in Event.GlobalVariableList.Values)
                 {
                     var var = currentVar1;

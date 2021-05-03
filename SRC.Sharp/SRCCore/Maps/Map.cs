@@ -10,6 +10,7 @@ using SRCCore.Units;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -97,7 +98,7 @@ namespace SRCCore.Maps
         public string MapDrawMode;
         // フィルタ色
         [JsonProperty]
-        public int MapDrawFilterColor;
+        public Color MapDrawFilterColor;
         // フィルタの透過度
         [JsonProperty]
         public double MapDrawFilterTransPercent;
@@ -113,6 +114,8 @@ namespace SRCCore.Maps
         public Src2DArray<MapCell> MapData;
 
         //public Src2DArray<MapImageFileType> MapImageFileTypeData;
+        public Src2DArray<string> MapUnderImageFilePath;
+        public Src2DArray<string> MapUpperImageFilePath;
 
         // マップ上に存在するユニットを記録する配列
         public Src2DArray<Unit> MapDataForUnit;
@@ -550,6 +553,8 @@ namespace SRCCore.Maps
                         {
                             // TODO ビットマップ名記録
                             //MapImageFileTypeData[tx, ty] = MapImageFileType.SeparateDirMapImageFileType;
+                            MapUnderImageFilePath[cell.X, cell.Y] = fpath;
+                            // MapUpperImageFilePath
                             return fpath;
                         }
                     }
@@ -720,6 +725,7 @@ namespace SRCCore.Maps
                     };
                 }
             }
+            MapUnderImageFilePath = new Src2DArray<string>(MapWidth, MapHeight);
             MapDataForUnit = new Src2DArray<Unit>(MapWidth, MapHeight);
             MaskData = new Src2DArray<bool>(MapWidth, MapHeight);
             TotalMoveCost = new int[MapWidth + 2, MapHeight + 2];

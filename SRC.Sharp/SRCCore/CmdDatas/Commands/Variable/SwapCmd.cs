@@ -12,19 +12,19 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            // TODO “®ìŠm”F
+            // TODO å‹•ä½œç¢ºèª
             var new_var1 = new VarData();
             var new_var2 = new VarData();
             VarData old_var1;
             VarData old_var2;
             if (ArgNum != 3)
             {
-                throw new EventErrorException(this, "SwapƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·");
+                throw new EventErrorException(this, "Swapã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™");
             }
             else
             {
-                // “ü‚ê‘Ö‚¦‚é‘O‚Ì•Ï”‚Ì’l‚ğ•Û‘¶
-                // ˆø”1‚Ì•Ï”
+                // å…¥ã‚Œæ›¿ãˆã‚‹å‰ã®å¤‰æ•°ã®å€¤ã‚’ä¿å­˜
+                // å¼•æ•°1ã®å¤‰æ•°
                 old_var1 = Expression.GetVariableObject(GetArg(2));
                 if (old_var1 is object)
                 {
@@ -36,7 +36,7 @@ namespace SRCCore.CmdDatas.Commands
                         withBlock.NumericValue = old_var1.NumericValue;
                     }
                 }
-                // ˆø”2‚Ì•Ï”
+                // å¼•æ•°2ã®å¤‰æ•°
                 old_var2 = Expression.GetVariableObject(GetArg(3));
                 if (old_var2 is object)
                 {
@@ -49,10 +49,10 @@ namespace SRCCore.CmdDatas.Commands
                     }
                 }
 
-                // ˆø”2‚Ì•Ï”‚ğˆø”1‚Ì•Ï”‚É‘ã“ü
+                // å¼•æ•°2ã®å¤‰æ•°ã‚’å¼•æ•°1ã®å¤‰æ•°ã«ä»£å…¥
                 {
                     var withBlock2 = old_var1;
-                    // ˆø”1‚ªƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚Ìê‡
+                    // å¼•æ•°1ãŒã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å ´åˆ
                     if (Event.CallDepth > 0)
                     {
                         var loopTo = Event.VarIndex;
@@ -72,7 +72,7 @@ namespace SRCCore.CmdDatas.Commands
                         }
                     }
 
-                    // ƒ[ƒJƒ‹E‚Ü‚½‚ÍƒOƒ[ƒoƒ‹•Ï”‚Ìê‡
+                    // ãƒ­ãƒ¼ã‚«ãƒ«ãƒ»ã¾ãŸã¯ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã®å ´åˆ
                     withBlock2.VariableType = new_var1.VariableType;
                     withBlock2.StringValue = new_var1.StringValue;
                     withBlock2.NumericValue = new_var1.NumericValue;
@@ -81,10 +81,10 @@ namespace SRCCore.CmdDatas.Commands
             Swap_Var2toVar1_End:
                 ;
 
-                // ˆø”1‚Ì•Ï”‚ğˆø”2‚Ì•Ï”‚É‘ã“ü
+                // å¼•æ•°1ã®å¤‰æ•°ã‚’å¼•æ•°2ã®å¤‰æ•°ã«ä»£å…¥
                 {
                     var withBlock4 = old_var2;
-                    // ˆø”2‚ªƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚Ìê‡
+                    // å¼•æ•°2ãŒã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å ´åˆ
                     if (Event.CallDepth > 0)
                     {
                         var loopTo1 = Event.VarIndex;
@@ -104,7 +104,7 @@ namespace SRCCore.CmdDatas.Commands
                         }
                     }
 
-                    // ƒ[ƒJƒ‹E‚Ü‚½‚ÍƒOƒ[ƒoƒ‹•Ï”‚Ìê‡
+                    // ãƒ­ãƒ¼ã‚«ãƒ«ãƒ»ã¾ãŸã¯ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã®å ´åˆ
                     withBlock4.VariableType = new_var2.VariableType;
                     withBlock4.StringValue = new_var2.StringValue;
                     withBlock4.NumericValue = new_var2.NumericValue;

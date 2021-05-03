@@ -210,5 +210,25 @@ namespace SRCCore.Models
 
             return resultName;
         }
+
+        public string FeatureNameWithLv()
+        {
+            var fd = this;
+            string FeatureNameRet = default;
+            if (Strings.Len(fd.StrData) > 0)
+            {
+                FeatureNameRet = GeneralLib.ListIndex(fd.StrData, 1);
+            }
+            else if (fd.Level > 0d)
+            {
+                FeatureNameRet = fd.Name + "Lv" + SrcFormatter.Format(fd.Level);
+            }
+            else
+            {
+                FeatureNameRet = fd.Name;
+            }
+
+            return FeatureNameRet;
+        }
     }
 }

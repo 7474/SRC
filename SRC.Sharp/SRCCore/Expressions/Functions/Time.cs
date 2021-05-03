@@ -1,7 +1,6 @@
 using SRCCore.Lib;
 using SRCCore.VB;
 using System;
-using System.Linq;
 
 namespace SRCCore.Expressions.Functions
 {

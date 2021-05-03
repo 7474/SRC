@@ -3,7 +3,7 @@ using System;
 
 namespace SRCCore.CmdDatas.Commands
 {
-    // •ª—Şã‚ÍƒpƒCƒƒbƒg‘€ìAƒ†ƒjƒbƒg‘€ì
+    // åˆ†é¡ä¸Šã¯ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ“ä½œã€ãƒ¦ãƒ‹ãƒƒãƒˆæ“ä½œ
     public class LeaveCmd : CmdData
     {
         public LeaveCmd(SRC src, EventDataLine eventData) : base(src, CmdType.LeaveCmd, eventData)

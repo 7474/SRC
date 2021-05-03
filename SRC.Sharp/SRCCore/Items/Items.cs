@@ -4,7 +4,6 @@
 // 再頒布または改変することができます。
 using Newtonsoft.Json;
 using SRCCore.VB;
-using System;
 using System.Collections.Generic;
 
 namespace SRCCore.Items

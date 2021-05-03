@@ -6139,6 +6139,12 @@ namespace SRCCore.Units
             //return IsCombinationAttackAvailableRet;
         }
 
+        public bool IsEnableForInfo()
+        {
+            return IsEnable()
+                && !IsWeaponClassifiedAs("合");
+        }
+
         public bool IsEnable()
         {
             // Disableコマンドで使用不可にされた武器以外が有効
@@ -6189,6 +6195,7 @@ namespace SRCCore.Units
                     throw new NotSupportedException();
             }
         }
+
     }
 
     public enum WeaponListMode

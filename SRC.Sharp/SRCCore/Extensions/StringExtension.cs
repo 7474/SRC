@@ -6,6 +6,7 @@ namespace SRCCore.Extensions
     {
         private static readonly Regex ArrayIndexRegex = new Regex("^.+?\\[(.+)\\]$");
         private static readonly Regex InsideKakkoRegex = new Regex("\\((.+)\\)");
+        private static readonly Regex NewLineRegex = new Regex("\r\n|\n|\r");
 
         public static string ArrayIndexByName(this string vname)
         {
@@ -25,6 +26,11 @@ namespace SRCCore.Extensions
                 return m.Groups[1].Value;
             }
             return "";
+        }
+
+        public static string ReplaceNewLine(this string str, string replace)
+        {
+            return NewLineRegex.Replace(str, replace);
         }
     }
 }

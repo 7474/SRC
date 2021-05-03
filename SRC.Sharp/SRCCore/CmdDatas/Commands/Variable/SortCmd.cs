@@ -1,9 +1,5 @@
 using SRCCore.Events;
-using SRCCore.Exceptions;
-using SRCCore.Expressions;
-using SRCCore.VB;
 using System;
-using System.Collections.Generic;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -17,7 +13,7 @@ namespace SRCCore.CmdDatas.Commands
         {
             throw new NotImplementedException();
 
-            // TODO ”z—ñ‘€ì‚Ìƒ†[ƒeƒBƒŠƒeƒBi‚¿‚å‚Á‚Æ‚¾‚é‚­‚È‚Á‚½j
+            // TODO é…åˆ—æ“ä½œã®ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£ï¼ˆã¡ã‚‡ã£ã¨ã ã‚‹ããªã£ãŸï¼‰
             //object ExecSortCmdRet = default;
             //short j, i, k;
             //bool isStringkey, isStringValue;
@@ -30,74 +26,74 @@ namespace SRCCore.CmdDatas.Commands
             //var var_buf = new object[3];
 
             // array_buf(opt, value)
-            // opt=0c”z—ñ‚Ì“Yš
-            // =1c•Ï”‚ÌValueTyep
-            // =2c•Ï”‚Ì’l
+            // opt=0â€¦é…åˆ—ã®æ·»å­—
+            // =1â€¦å¤‰æ•°ã®ValueTyep
+            // =2â€¦å¤‰æ•°ã®å€¤
 
             //if (ArgNum < 2)
             //{
-            //    throw new EventErrorException(this, "SortƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·");
+            //    throw new EventErrorException(this, "Sortã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™");
             //}
 
-            //// ‰Šú’l
-            //var isAscOrder = true; // ƒ\[ƒg‡‚ğ¸‡—İ’è
-            //var isStringkey = false; // ”z—ñ‚ÌƒCƒ“ƒfƒbƒNƒX‚ğ”’l‚Æ‚µ‚Äˆµ‚¤
-            //var isStringValue = false; // ”z—ñ‚Ì—v‘f‚ğ”’l‚Æ‚µ‚Äˆµ‚¤
-            //var isKeySort = false; // ƒCƒ“ƒfƒbƒNƒX‚Ì‚İ‚Ìƒ\[ƒg‚Å‚Í‚È‚¢
+            //// åˆæœŸå€¤
+            //var isAscOrder = true; // ã‚½ãƒ¼ãƒˆé †ã‚’æ˜‡é †ä¼¼è¨­å®š
+            //var isStringkey = false; // é…åˆ—ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’æ•°å€¤ã¨ã—ã¦æ‰±ã†
+            //var isStringValue = false; // é…åˆ—ã®è¦ç´ ã‚’æ•°å€¤ã¨ã—ã¦æ‰±ã†
+            //var isKeySort = false; // ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã¿ã®ã‚½ãƒ¼ãƒˆã§ã¯ãªã„
             //var loopTo = ArgNum;
             //for (var i = 3; i <= loopTo; i++)
             //{
             //    var buf = GetArgAsString(i);
             //    switch (buf ?? "")
             //    {
-            //        case "¸‡":
+            //        case "æ˜‡é †":
             //            {
             //                isAscOrder = true;
             //                break;
             //            }
 
-            //        case "~‡":
+            //        case "é™é †":
             //            {
             //                isAscOrder = false;
             //                break;
             //            }
 
-            //        case "”’l":
+            //        case "æ•°å€¤":
             //            {
             //                isStringValue = false;
             //                break;
             //            }
 
-            //        case "•¶š":
+            //        case "æ–‡å­—":
             //            {
             //                isStringValue = true;
             //                break;
             //            }
 
-            //        case "ƒCƒ“ƒfƒbƒNƒX‚Ì‚İ":
+            //        case "ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã¿":
             //            {
             //                isKeySort = true;
             //                break;
             //            }
 
-            //        case "•¶šƒCƒ“ƒfƒbƒNƒX":
+            //        case "æ–‡å­—ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹":
             //            {
             //                isStringkey = true;
             //                break;
             //            }
 
             //        default:
-            //            throw new EventErrorException(this, "SortƒRƒ}ƒ“ƒh‚É•s³‚ÈƒIƒvƒVƒ‡ƒ“u" + buf + "v‚ªg‚í‚ê‚Ä‚¢‚Ü‚·");
+            //            throw new EventErrorException(this, "Sortã‚³ãƒãƒ³ãƒ‰ã«ä¸æ­£ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ã€Œ" + buf + "ã€ãŒä½¿ã‚ã‚Œã¦ã„ã¾ã™");
             //    }
             //}
 
-            //// ƒ\[ƒg‚·‚é”z—ñ•Ï”–¼
+            //// ã‚½ãƒ¼ãƒˆã™ã‚‹é…åˆ—å¤‰æ•°å
             //var vname = GetArg(2);
             //if (Strings.Left(vname, 1) == "$")
             //{
             //    vname = Strings.Mid(vname, 2);
             //}
-            //// EvalŠÖ”
+            //// Evalé–¢æ•°
             //if (Strings.LCase(Strings.Left(vname, 5)) == "eval(")
             //{
             //    if (Strings.Right(vname, 1) == ")")
@@ -107,13 +103,13 @@ namespace SRCCore.CmdDatas.Commands
             //    }
             //}
 
-            //// ”z—ñ‚ğŒŸõ‚µA”z—ñ—v‘f‚ğŒ©‚Â‚¯‚é
+            //// é…åˆ—ã‚’æ¤œç´¢ã—ã€é…åˆ—è¦ç´ ã‚’è¦‹ã¤ã‘ã‚‹
             //var num = 0;
             //IList<VarData> array_buf = new List<VarData>();
             //if (Expression.IsSubLocalVariableDefined(vname))
             //{
-            //    // ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹‚È”z—ñ
-            //    // TODO ‚±‚±‚ÉŒÀ‚ç‚¸ VarIndexStack QÆŒ©’¼‚µ
+            //    // ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«ãªé…åˆ—
+            //    // TODO ã“ã“ã«é™ã‚‰ãš VarIndexStack å‚ç…§è¦‹ç›´ã—
             //    var loopTo1 = Event.VarIndex;
             //    for (var i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo1; i++)
             //    {
@@ -161,7 +157,7 @@ namespace SRCCore.CmdDatas.Commands
             //}
             //else if (Expression.IsLocalVariableDefined(vname))
             //{
-            //    // ƒ[ƒJƒ‹‚È”z—ñ
+            //    // ãƒ­ãƒ¼ã‚«ãƒ«ãªé…åˆ—
             //    foreach (VarData currentVar in Event.LocalVariableList)
             //    {
             //        var = currentVar;
@@ -180,12 +176,12 @@ namespace SRCCore.CmdDatas.Commands
 
             //            if (var.VariableType == Expression.ValueType.StringType)
             //            {
-            //                // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg value_buf ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ value_buf ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                value_buf = var.StringValue;
             //            }
             //            else
             //            {
-            //                // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg value_buf ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ value_buf ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                value_buf = var.NumericValue;
             //            }
 
@@ -194,12 +190,12 @@ namespace SRCCore.CmdDatas.Commands
             //                isStringValue = true;
             //            }
 
-            //            // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf(0, num) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //            // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf(0, num) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //            array_buf[0, num] = buf;
-            //            // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf(1, num) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //            // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf(1, num) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //            array_buf[1, num] = var.VariableType;
-            //            // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg value_buf ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-            //            // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf(2, num) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //            // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ value_buf ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
+            //            // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf(2, num) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //            array_buf[2, num] = value_buf;
             //            num = (num + 1);
             //        }
@@ -212,7 +208,7 @@ namespace SRCCore.CmdDatas.Commands
             //}
             //else if (Expression.IsGlobalVariableDefined(vname))
             //{
-            //    // ƒOƒ[ƒoƒ‹‚È”z—ñ
+            //    // ã‚°ãƒ­ãƒ¼ãƒãƒ«ãªé…åˆ—
             //    foreach (VarData currentVar1 in Event.GlobalVariableList)
             //    {
             //        var = currentVar1;
@@ -231,12 +227,12 @@ namespace SRCCore.CmdDatas.Commands
 
             //            if (var.VariableType == Expression.ValueType.StringType)
             //            {
-            //                // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg value_buf ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ value_buf ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                value_buf = var.StringValue;
             //            }
             //            else
             //            {
-            //                // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg value_buf ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ value_buf ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                value_buf = var.NumericValue;
             //            }
 
@@ -245,12 +241,12 @@ namespace SRCCore.CmdDatas.Commands
             //                isStringValue = true;
             //            }
 
-            //            // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf(0, num) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //            // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf(0, num) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //            array_buf[0, num] = buf;
-            //            // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf(1, num) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //            // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf(1, num) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //            array_buf[1, num] = var.VariableType;
-            //            // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg value_buf ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-            //            // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf(2, num) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //            // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ value_buf ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
+            //            // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf(2, num) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //            array_buf[2, num] = value_buf;
             //            num = (num + 1);
             //        }
@@ -265,8 +261,8 @@ namespace SRCCore.CmdDatas.Commands
             //num = (num - 1);
             //if (!isStringkey || isKeySort)
             //{
-            //    // “Yš‚ª”’l‚Ìê‡A‚Ü‚½‚ÍƒCƒ“ƒfƒbƒNƒX‚Ì‚İ‚Ìƒ\[ƒg‚Ìê‡A
-            //    // æ‚É“Yš‚Ì¸‡‚É•À‚Ñ‘Ö‚¦‚é
+            //    // æ·»å­—ãŒæ•°å€¤ã®å ´åˆã€ã¾ãŸã¯ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã¿ã®ã‚½ãƒ¼ãƒˆã®å ´åˆã€
+            //    // å…ˆã«æ·»å­—ã®æ˜‡é †ã«ä¸¦ã³æ›¿ãˆã‚‹
             //    var loopTo2 = (num - 1);
             //    for (i = 0; i <= loopTo2; i++)
             //    {
@@ -278,25 +274,25 @@ namespace SRCCore.CmdDatas.Commands
             //            {
             //                if (isAscOrder)
             //                {
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf(0, j) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf(0, j) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf() ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                    isSwap = Conversions.ToBoolean(Interaction.IIf(Strings.StrComp(array_buf[0, i], array_buf[0, j], CompareMethod.Text) == 1, true, false));
             //                }
             //                else
             //                {
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf(0, j) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf(0, j) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf() ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                    isSwap = Conversions.ToBoolean(Interaction.IIf(Strings.StrComp(array_buf[0, i], array_buf[0, j], CompareMethod.Text) == -1, true, false));
             //                }
             //            }
             //            else if (isAscOrder)
             //            {
-            //                // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf() ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                isSwap = Conversions.ToBoolean(Interaction.IIf(Conversions.ToDouble(array_buf[0, i]) > Conversions.ToDouble(array_buf[0, j]), true, false));
             //            }
             //            else
             //            {
-            //                // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf() ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                isSwap = Conversions.ToBoolean(Interaction.IIf(Conversions.ToDouble(array_buf[0, i]) < Conversions.ToDouble(array_buf[0, j]), true, false));
             //            }
 
@@ -304,14 +300,14 @@ namespace SRCCore.CmdDatas.Commands
             //            {
             //                for (k = 0; k <= 2; k++)
             //                {
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf(k, i) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg var_buf(k) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf(k, i) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ var_buf(k) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                    var_buf[k] = array_buf[k, i];
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf(k, j) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf(k, i) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf(k, j) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf(k, i) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                    array_buf[k, i] = array_buf[k, j];
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg var_buf(k) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf(k, j) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ var_buf(k) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf(k, j) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                    array_buf[k, j] = var_buf[k];
             //                }
             //            }
@@ -321,7 +317,7 @@ namespace SRCCore.CmdDatas.Commands
 
             //if (!isKeySort)
             //{
-            //    // ‰ü‚ß‚Ä—v‘f‚ğƒ\[ƒg
+            //    // æ”¹ã‚ã¦è¦ç´ ã‚’ã‚½ãƒ¼ãƒˆ
             //    var loopTo4 = (num - 1);
             //    for (i = 0; i <= loopTo4; i++)
             //    {
@@ -333,25 +329,25 @@ namespace SRCCore.CmdDatas.Commands
             //            {
             //                if (isAscOrder)
             //                {
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf(2, j) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf(2, j) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf() ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                    isSwap = Conversions.ToBoolean(Interaction.IIf(Strings.StrComp(array_buf[2, i], array_buf[2, j], CompareMethod.Text) == 1, true, false));
             //                }
             //                else
             //                {
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf(2, j) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf(2, j) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf() ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                    isSwap = Conversions.ToBoolean(Interaction.IIf(Strings.StrComp(array_buf[2, i], array_buf[2, j], CompareMethod.Text) == -1, true, false));
             //                }
             //            }
             //            else if (isAscOrder)
             //            {
-            //                // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf() ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                isSwap = Conversions.ToBoolean(Interaction.IIf(Conversions.ToDouble(array_buf[2, i]) > Conversions.ToDouble(array_buf[2, j]), true, false));
             //            }
             //            else
             //            {
-            //                // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf() ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                isSwap = Conversions.ToBoolean(Interaction.IIf(Conversions.ToDouble(array_buf[2, i]) < Conversions.ToDouble(array_buf[2, j]), true, false));
             //            }
 
@@ -359,14 +355,14 @@ namespace SRCCore.CmdDatas.Commands
             //            {
             //                for (k = Conversions.ToShort(Interaction.IIf(isStringkey, 0, 1)); k <= 2; k++)
             //                {
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf(k, i) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg var_buf(k) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf(k, i) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ var_buf(k) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                    var_buf[k] = array_buf[k, i];
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf(k, j) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf(k, i) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf(k, j) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf(k, i) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                    array_buf[k, i] = array_buf[k, j];
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg var_buf(k) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-            //                    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf(k, j) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ var_buf(k) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
+            //                    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf(k, j) ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                    array_buf[k, j] = var_buf[k];
             //                }
             //            }
@@ -374,21 +370,21 @@ namespace SRCCore.CmdDatas.Commands
             //    }
             //}
 
-            //// SRC•Ï”‚ÉÄ”z’u
+            //// SRCå¤‰æ•°ã«å†é…ç½®
             //var loopTo6 = num;
             //for (i = 0; i <= loopTo6; i++)
             //{
-            //    // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //    // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf() ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //    buf = vname + "[" + Conversions.ToString(array_buf[0, i]) + "]";
             //    Expression.UndefineVariable(buf);
             //    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(array_buf[1, i], Expression.ValueType.StringType, false)))
             //    {
-            //        // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //        // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf() ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //        Expression.SetVariable(buf, Expression.ValueType.StringType, Conversions.ToString(array_buf[2, i]), 0);
             //    }
             //    else
             //    {
-            //        // UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg array_buf() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //        // UPGRADE_WARNING: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ array_buf() ã®æ—¢å®šãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //        Expression.SetVariable(buf, Expression.ValueType.NumericType, "", Conversions.ToDouble(array_buf[2, i]));
             //    }
             //}

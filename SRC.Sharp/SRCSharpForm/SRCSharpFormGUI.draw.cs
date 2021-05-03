@@ -62,8 +62,7 @@ namespace SRCSharpForm
             bool on_msg_window = false;
             bool on_status_window = false;
             bool keep_picture = false;
-            // XXX Color?
-            int fcolor = 0;
+            Color fcolor = default;
             int angle = 0;
             var opts = GeneralLib.ToL(draw_option);
             for (var i = 0; i < opts.Count; i++)
@@ -241,13 +240,13 @@ namespace SRCSharpForm
                         }
                         else if (is_colorfilter)
                         {
-                            fcolor = Conversions.ToInteger(opt);
+                            fcolor = ColorTranslator.FromHtml(opt);
                             pic_option2 = pic_option2 + " フィルタ=" + opt;
                         }
                         else
                         {
-                            // XXX 変換したくない
-                            BGColor = ColorTranslator.FromOle(Conversions.ToInteger(opt));
+                            // XXX int（OLE時代）から整合性取ってない
+                            BGColor = ColorTranslator.FromHtml(opt);
                             pic_option2 = pic_option2 + " " + opt;
                         }
 

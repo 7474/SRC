@@ -3,7 +3,7 @@ using System;
 
 namespace SRCCore.CmdDatas.Commands
 {
-    // •ª—Şã‚ÍƒpƒCƒƒbƒg‘€ìAƒAƒCƒeƒ€‘€ì
+    // åˆ†é¡ä¸Šã¯ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ“ä½œã€ã‚¢ã‚¤ãƒ†ãƒ æ“ä½œ
     public class ReleaseCmd : CmdData
     {
         public ReleaseCmd(SRC src, EventDataLine eventData) : base(src, CmdType.ReleaseCmd, eventData)

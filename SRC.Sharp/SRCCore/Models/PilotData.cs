@@ -808,22 +808,11 @@ namespace SRCCore.Models
         // 特殊能力の名称
         public string FeatureName(string Index)
         {
-            string FeatureNameRet = default;
-            FeatureData fd = colFeature[Index];
-            if (Strings.Len(fd.StrData) > 0)
-            {
-                FeatureNameRet = GeneralLib.ListIndex(fd.StrData, 1);
-            }
-            else if (fd.Level != Constants.DEFAULT_LEVEL)
-            {
-                FeatureNameRet = fd.Name + "Lv" + SrcFormatter.Format(fd.Level);
-            }
-            else
-            {
-                FeatureNameRet = fd.Name;
-            }
-
-            return FeatureNameRet;
+            return colFeature[Index]?.FeatureNameWithLv() ?? "";
+        }
+        public string FeatureName(int Index)
+        {
+            return colFeature[Index]?.FeatureNameWithLv() ?? "";
         }
 
         // 特殊能力のレベル

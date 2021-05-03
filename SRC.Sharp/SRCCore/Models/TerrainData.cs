@@ -101,6 +101,16 @@ namespace SRCCore.Models
             return colFeature[Index];
         }
 
+        public int EffectForHPRecover()
+        {
+            return (int)(10 * FeatureLevel("ＨＰ回復"));
+        }
+
+        public int EffectForENRecover()
+        {
+            return (int)(10 * FeatureLevel("ＥＮ回復"));
+        }
+
         //// 地形効果の名称
         //public string FeatureName(string Index)
         //{
@@ -123,23 +133,24 @@ namespace SRCCore.Models
         //    return FeatureNameRet;
         //}
 
-        //// 地形効果のレベル
-        //public double FeatureLevel(string Index)
-        //{
-        //    double FeatureLevelRet = default;
-        //    FeatureData fd;
-        //    fd = (FeatureData)colFeature[Index];
-        //    FeatureLevelRet = fd.Level;
-        //    if (FeatureLevelRet == Constants.DEFAULT_LEVEL)
-        //    {
-        //        FeatureLevelRet = 1d;
-        //    }
-
-        //    return FeatureLevelRet;
-        //    ErrorHandler:
-        //    ;
-        //    FeatureLevelRet = 0d;
-        //}
+        // 地形効果のレベル
+        public double FeatureLevel(string Index)
+        {
+            FeatureData fd = colFeature[Index];
+            if (fd != null)
+            {
+                var FeatureLevelRet = fd.Level;
+                if (FeatureLevelRet == Constants.DEFAULT_LEVEL)
+                {
+                    FeatureLevelRet = 1d;
+                }
+                return FeatureLevelRet;
+            }
+            else
+            {
+                return 0d;
+            }
+        }
 
         //// 地形効果のデータ
         //public string FeatureData(string Index)

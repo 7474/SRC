@@ -8,7 +8,6 @@ using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.Units;
 using SRCCore.VB;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,6 +25,7 @@ namespace SRCCore.Items
         public string ItemName { get; set; }
         // アイテムデータへのポインタ
         public ItemData Data { get => SRC.IDList.Item(ItemName); set { ItemName = value?.Name; } }
+        public IList<AbilityData> Abilities => Data.Abilities;
 
         [JsonProperty]
         public string UnitId { get; set; }
@@ -213,29 +213,39 @@ namespace SRCCore.Items
         {
             return Data.Feature(Index);
         }
+        public FeatureData Feature(int Index)
+        {
+            return Data.Feature(Index);
+        }
 
         // 特殊能力の名称
         public string FeatureName(string Index)
         {
-            string FeatureNameRet = default;
-            FeatureNameRet = Data.FeatureName(Index);
-            return FeatureNameRet;
+            return Data.FeatureName(Index);
+        }
+        public string FeatureName(int Index)
+        {
+            return Data.FeatureName(Index);
         }
 
         // 特殊能力のレベル
         public double FeatureLevel(string Index)
         {
-            double FeatureLevelRet = default;
-            FeatureLevelRet = Data.FeatureLevel(Index);
-            return FeatureLevelRet;
+            return Data.FeatureLevel(Index);
+        }
+        public double FeatureLevel(int Index)
+        {
+            return Data.FeatureLevel(Index);
         }
 
         // 特殊能力のデータ
         public string FeatureData(string Index)
         {
-            string FeatureDataRet = default;
-            FeatureDataRet = Data.FeatureData(Index);
-            return FeatureDataRet;
+            return Data.FeatureData(Index);
+        }
+        public string FeatureData(int Index)
+        {
+            return Data.FeatureData(Index);
         }
 
         // 特殊能力の必要技能

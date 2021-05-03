@@ -2,13 +2,13 @@ using System.Text.RegularExpressions;
 
 namespace SRCCore.Expressions.Functions
 {
-    //RegExp³‹K•\Œ»‚Å•¶š—ñ‚ğŒŸõ
-    //RegExpReplace³‹K•\Œ»‚ÅŒŸõ‚µ‚½•¶š—ñ‚ğ’uŠ·
+    //RegExpæ­£è¦è¡¨ç¾ã§æ–‡å­—åˆ—ã‚’æ¤œç´¢
+    //RegExpReplaceæ­£è¦è¡¨ç¾ã§æ¤œç´¢ã—ãŸæ–‡å­—åˆ—ã‚’ç½®æ›
 
-    // XXX ‘S”Ê‚É–¢‘a’Ê‚©‚ÂŒİŠ·«•ª‚©‚ç‚ñ
+    // XXX å…¨èˆ¬ã«æœªç–é€šã‹ã¤äº’æ›æ€§åˆ†ã‹ã‚‰ã‚“
     public class RegExp : AFunction
     {
-        // XXX Œ»óó‘Ô‚Í‚±‚±‚É‚Á‚Ä‚¢‚Ä“®ìã‚Ì–â‘è‚È‚¢‚ª‚»‚¤‚¶‚á‚È‚¢‚¾‚ë‚Æ‚¢‚¤Š´‚¶
+        // XXX ç¾çŠ¶çŠ¶æ…‹ã¯ã“ã“ã«æŒã£ã¦ã„ã¦å‹•ä½œä¸Šã®å•é¡Œãªã„ãŒãã†ã˜ã‚ƒãªã„ã ã‚ã¨ã„ã†æ„Ÿã˜
         private MatchCollection lastMatch;
         private int lastMatchIndex;
 
@@ -17,21 +17,21 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // RegExp(•¶š—ñ, ƒpƒ^[ƒ“[,‘å¬‹æ•Ê‚ ‚è|‘å¬‹æ•Ê‚È‚µ])
+            // RegExp(æ–‡å­—åˆ—, ãƒ‘ã‚¿ãƒ¼ãƒ³[,å¤§å°åŒºåˆ¥ã‚ã‚Š|å¤§å°åŒºåˆ¥ãªã—])
             var result = "";
             if (pcount > 0)
             {
-                // •¶š—ñ‘S‘Ì‚ğŒŸõ
-                // ‘å•¶š¬•¶š‚Ì‹æ•ÊiTrue=‹æ•Ê‚µ‚È‚¢j
+                // æ–‡å­—åˆ—å…¨ä½“ã‚’æ¤œç´¢
+                // å¤§æ–‡å­—å°æ–‡å­—ã®åŒºåˆ¥ï¼ˆTrue=åŒºåˆ¥ã—ãªã„ï¼‰
                 var ignoreCase = false;
                 if (pcount >= 3)
                 {
-                    if (SRC.Expression.GetValueAsString(@params[3], is_term[3]) == "‘å¬‹æ•Ê‚È‚µ")
+                    if (SRC.Expression.GetValueAsString(@params[3], is_term[3]) == "å¤§å°åŒºåˆ¥ãªã—")
                     {
                         ignoreCase = true;
                     }
                 }
-                // ŒŸõƒpƒ^[ƒ“
+                // æ¤œç´¢ãƒ‘ã‚¿ãƒ¼ãƒ³
                 var regex = new Regex(SRC.Expression.GetValueAsString(@params[2], is_term[2]), ignoreCase ? RegexOptions.IgnoreCase : RegexOptions.None);
                 lastMatch = regex.Matches(SRC.Expression.GetValueAsString(@params[1], is_term[1]));
                 if (lastMatch.Count == 0)
@@ -65,19 +65,19 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // RegExpReplace(•¶š—ñ, ŒŸõƒpƒ^[ƒ“, ’uŠ·ƒpƒ^[ƒ“[,‘å¬‹æ•Ê‚ ‚è|‘å¬‹æ•Ê‚È‚µ])
+            // RegExpReplace(æ–‡å­—åˆ—, æ¤œç´¢ãƒ‘ã‚¿ãƒ¼ãƒ³, ç½®æ›ãƒ‘ã‚¿ãƒ¼ãƒ³[,å¤§å°åŒºåˆ¥ã‚ã‚Š|å¤§å°åŒºåˆ¥ãªã—])
             var ignoreCase = false;
             if (pcount >= 3)
             {
-                if (SRC.Expression.GetValueAsString(@params[4], is_term[4]) == "‘å¬‹æ•Ê‚È‚µ")
+                if (SRC.Expression.GetValueAsString(@params[4], is_term[4]) == "å¤§å°åŒºåˆ¥ãªã—")
                 {
                     ignoreCase = true;
                 }
             }
-            // ŒŸõƒpƒ^[ƒ“
+            // æ¤œç´¢ãƒ‘ã‚¿ãƒ¼ãƒ³
             var regex = new Regex(SRC.Expression.GetValueAsString(@params[2], is_term[2]), ignoreCase ? RegexOptions.IgnoreCase : RegexOptions.None);
 
-            // ’uŠ·Às
+            // ç½®æ›å®Ÿè¡Œ
             str_result = regex.Replace(SRC.Expression.GetValueAsString(@params[1], is_term[1]), SRC.Expression.GetValueAsString(@params[3], is_term[3]));
 
             return ValueType.StringType;

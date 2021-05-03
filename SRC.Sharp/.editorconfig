@@ -1,4 +1,5 @@
 ﻿[*.cs]
+charset = utf-8
 
 # CS0168: 変数は宣言されていますが、使用されていません
 dotnet_diagnostic.CS0168.severity = suggestion
