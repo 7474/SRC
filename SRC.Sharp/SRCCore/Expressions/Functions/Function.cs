@@ -2,8 +2,6 @@ using SRCCore.Lib;
 
 namespace SRCCore.Expressions.Functions
 {
-
-
     public class Action : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
@@ -70,7 +68,7 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Countitem : AFunction
+    public class CountItem : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -92,7 +90,7 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Countpartner : AFunction
+    public class CountPartner : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -114,7 +112,7 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Countpilot : AFunction
+    public class CountPilot : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -158,7 +156,7 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class En : AFunction
+    public class EN : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -180,7 +178,7 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Hp : AFunction
+    public class HP : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -202,7 +200,7 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Isavailable : AFunction
+    public class IsAvailable : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -224,7 +222,7 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Isequiped : AFunction
+    public class IsEquiped : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -268,7 +266,7 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Itemid : AFunction
+    public class ItemID : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -400,7 +398,7 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Pilotid : AFunction
+    public class PilotID : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -487,49 +485,6 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class Rounddown : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Rounddown
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
-    public class Roundup : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Roundup
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
 
     public class Skill : AFunction
     {
@@ -553,7 +508,7 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Sp : AFunction
+    public class SP : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -575,7 +530,7 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Specialpower : AFunction
+    public class SpecialPower : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -641,7 +596,7 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Unitid : AFunction
+    public class UnitID : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -663,7 +618,7 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Windowwidth : AFunction
+    public class WindowWidth : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -685,7 +640,7 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Windowheight : AFunction
+    public class WindowHeight : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -705,49 +660,4 @@ namespace SRCCore.Expressions.Functions
             }
         }
     }
-
-
-    public class Wx : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Wx
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
-    public class Wy : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Wy
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
 }

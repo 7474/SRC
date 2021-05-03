@@ -24,51 +24,6 @@ namespace SRCCore.Expressions.Functions
     // MidB(文字列,位置[,バイト数])
     // RightB(文字列,バイト数)
 
-    public class Instr : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Instr
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
-    public class Instrrev : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Instrrev
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-
-
-
     public class Format : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
@@ -119,6 +74,27 @@ namespace SRCCore.Expressions.Functions
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(i);
+                return ValueType.StringType;
+            }
+            else
+            {
+                return ValueType.NumericType;
+            }
+        }
+    }
+
+    public class InStrRev : AFunction
+    {
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        {
+            str_result = "";
+            num_result = 0d;
+
+            // TODO Impl Instrrev
+
+            if (etype == ValueType.StringType)
+            {
+                str_result = GeneralLib.FormatNum(num_result);
                 return ValueType.StringType;
             }
             else
@@ -199,7 +175,7 @@ namespace SRCCore.Expressions.Functions
         }
     }
     
-    public class Lset : AFunction
+    public class LSet : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -264,7 +240,7 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Rset : AFunction
+    public class RSet : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -285,7 +261,7 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class Strcomp : AFunction
+    public class StrComp : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -354,7 +330,7 @@ namespace SRCCore.Expressions.Functions
 
 
 
-    public class Instrb : AFunction
+    public class InStrB : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -374,7 +350,7 @@ namespace SRCCore.Expressions.Functions
             }
         }
     }
-    public class Instrrevb : AFunction
+    public class InStrRevB : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -395,7 +371,7 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class Leftb : AFunction
+    public class LeftB : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -417,7 +393,7 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Lenb : AFunction
+    public class LenB : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -439,7 +415,7 @@ namespace SRCCore.Expressions.Functions
     }
 
 
-    public class Midb : AFunction
+    public class MidB : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
@@ -459,7 +435,7 @@ namespace SRCCore.Expressions.Functions
             }
         }
     }
-    public class Rightb : AFunction
+    public class RightB : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
