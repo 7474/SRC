@@ -172,30 +172,25 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Left
-
-            if (etype == ValueType.StringType)
+            str_result = Strings.Left(SRC.Expression.GetValueAsString(@params[1], is_term[1]), SRC.Expression.GetValueAsLong(@params[2], is_term[2]));
+            if (etype == ValueType.NumericType)
             {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
+                num_result = GeneralLib.StrToDbl(str_result);
+                return ValueType.NumericType;
             }
             else
             {
-                return ValueType.NumericType;
+                return ValueType.StringType;
             }
         }
     }
-
 
     public class Len : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Len
-
+            num_result = (double)Strings.Len(SRC.Expression.GetValueAsString(@params[1], is_term[1]));
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
