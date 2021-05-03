@@ -1265,5 +1265,11 @@ namespace SRCSharpForm
             PaintedAreaX2 = (short)GeneralLib.MinLng(PaintedAreaX2, MapToPixelX(X) + 36);
             PaintedAreaY2 = (short)GeneralLib.MaxLng(PaintedAreaY2, MapToPixelY(Y) + 32);
         }
+
+        public SizeF MeasureString(string msg)
+        {
+            using var g = Graphics.FromImage(MainForm.picBack.Image);
+            return g.MeasureString(msg, currentDrawFont);
+        }
     }
 }

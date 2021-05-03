@@ -132,6 +132,7 @@ namespace SRCCore.VB
         public static string StrConv(string str, VbStrConv Conversion)
         {
             // TODO 要る分だけ実装ないし完全に置き換える
+            // TODO Impl Wide
             switch (Conversion)
             {
                 default:

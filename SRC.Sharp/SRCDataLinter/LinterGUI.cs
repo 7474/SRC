@@ -3,6 +3,7 @@ using SRCCore.Commands;
 using SRCCore.Units;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 
 namespace SRCDataLinter
@@ -52,6 +53,10 @@ namespace SRCDataLinter
         public bool MessageFormVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public bool MainFormVisible => throw new NotImplementedException();
+
+        public Font CurrentPaintFont => throw new NotImplementedException();
+
+        public Color CurrentPaintColor => throw new NotImplementedException();
 
         public UnitAbility AbilityListBox(Unit u, UnitAbilityList abilities, string caption_msg, string lb_mode, bool is_item = false)
         {
@@ -274,6 +279,11 @@ namespace SRCDataLinter
         }
 
         public void MaskScreen()
+        {
+            throw new NotImplementedException();
+        }
+
+        public SizeF MeasureString(string msg)
         {
             throw new NotImplementedException();
         }

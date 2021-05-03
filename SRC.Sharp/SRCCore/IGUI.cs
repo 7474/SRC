@@ -6,6 +6,7 @@
 using SRCCore.Commands;
 using SRCCore.Units;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 
 namespace SRCCore
@@ -76,6 +77,9 @@ namespace SRCCore
         bool IsCursorVisible { get; set; }
         // 背景色
         int BGColor { get; set; }
+        // XXX Font への依存が厳しいようなら依存を切る
+        Font CurrentPaintFont { get; }
+        Color CurrentPaintColor { get; }
 
         // GUIから入力可能かどうか
         bool IsGUILocked { get; set; }
@@ -225,6 +229,8 @@ namespace SRCCore
         void DrawString(string msg, int X, int Y, bool without_cr = false);
         // メインウィンドウに文字列を表示 (システムメッセージ)
         void DrawSysString(int X, int Y, string msg, bool without_refresh = false);
+        // 文字列を表示した際のサイズを計る
+        SizeF MeasureString(string msg);
 
         // === 画像消去に関する処理 ===
 

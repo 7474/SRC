@@ -1,18 +1,15 @@
-// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-// æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-// æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-// å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+using SRCCore.Lib;
 
-using System;
-
-namespace SRCCore.Expressions
+namespace SRCCore.Expressions.Functions
 {
-    public partial class Expression
+    public class Info : AFunction
     {
-        // Infoé–¢æ•°ã®è©•ä¾¡
-        private string EvalInfoFunc(string[] @params)
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
-            throw new NotImplementedException();
+            str_result = "";
+            num_result = 0d;
+
+            // TODO Impl Info
             //string EvalInfoFuncRet = default;
             //Unit u;
             //UnitData ud;
@@ -37,10 +34,10 @@ namespace SRCCore.Expressions
             //itd = null;
             //spd = null;
 
-            //// å„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¨­å®š
+            //// ŠeƒIƒuƒWƒFƒNƒg‚Ìİ’è
             //switch (@params[1] ?? "")
             //{
-            //    case "ãƒ¦ãƒ‹ãƒƒãƒˆ":
+            //    case "ƒ†ƒjƒbƒg":
             //        {
             //            var tmp = @params;
             //            u = SRC.UList.Item(tmp[2]);
@@ -48,7 +45,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿":
+            //    case "ƒ†ƒjƒbƒgƒf[ƒ^":
             //        {
             //            var tmp1 = @params;
             //            ud = SRC.UDList.Item(tmp1[2]);
@@ -56,7 +53,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ":
+            //    case "ƒpƒCƒƒbƒg":
             //        {
             //            var tmp2 = @params;
             //            p = SRC.PList.Item(tmp2[2]);
@@ -64,7 +61,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿":
+            //    case "ƒpƒCƒƒbƒgƒf[ƒ^":
             //        {
             //            var tmp3 = @params;
             //            pd = SRC.PDList.Item(tmp3[2]);
@@ -72,7 +69,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "éæˆ¦é—˜å“¡":
+            //    case "”ñí“¬ˆõ":
             //        {
             //            var tmp4 = @params;
             //            nd = SRC.NPDList.Item(tmp4[2]);
@@ -80,7 +77,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ã‚¢ã‚¤ãƒ†ãƒ ":
+            //    case "ƒAƒCƒeƒ€":
             //        {
             //            var tmp7 = @params;
             //            if (SRC.IList.IsDefined(tmp7[2]))
@@ -98,7 +95,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ã‚¢ã‚¤ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿":
+            //    case "ƒAƒCƒeƒ€ƒf[ƒ^":
             //        {
             //            var tmp8 = @params;
             //            itd = SRC.IDList.Item(tmp8[2]);
@@ -106,7 +103,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼":
+            //    case "ƒXƒyƒVƒƒƒ‹ƒpƒ[":
             //        {
             //            var tmp9 = @params;
             //            spd = SRC.SPDList.Item(tmp9[2]);
@@ -114,8 +111,8 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ãƒãƒƒãƒ—":
-            //    case "ã‚ªãƒ—ã‚·ãƒ§ãƒ³":
+            //    case "ƒ}ƒbƒv":
+            //    case "ƒIƒvƒVƒ‡ƒ“":
             //        {
             //            idx = 1;
             //            break;
@@ -152,7 +149,7 @@ namespace SRCCore.Expressions
             //int mx = default, my_Renamed = default;
             //switch (@params[idx] ?? "")
             //{
-            //    case "åç§°":
+            //    case "–¼Ì":
             //        {
             //            if (u is object)
             //            {
@@ -190,7 +187,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "èª­ã¿ä»®å":
+            //    case "“Ç‚İ‰¼–¼":
             //        {
             //            if (u is object)
             //            {
@@ -224,7 +221,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æ„›ç§°":
+            //    case "ˆ¤Ì":
             //        {
             //            if (u is object)
             //            {
@@ -258,7 +255,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æ€§åˆ¥":
+            //    case "«•Ê":
             //        {
             //            if (p is object)
             //            {
@@ -272,8 +269,8 @@ namespace SRCCore.Expressions
             //            return EvalInfoFuncRet;
             //        }
 
-            //    case "ãƒ¦ãƒ‹ãƒƒãƒˆã‚¯ãƒ©ã‚¹":
-            //    case "æ©Ÿä½“ã‚¯ãƒ©ã‚¹":
+            //    case "ƒ†ƒjƒbƒgƒNƒ‰ƒX":
+            //    case "‹@‘ÌƒNƒ‰ƒX":
             //        {
             //            if (u is object)
             //            {
@@ -295,7 +292,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "åœ°å½¢é©å¿œ":
+            //    case "’nŒ`“K‰":
             //        {
             //            if (u is object)
             //            {
@@ -357,7 +354,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "çµŒé¨“å€¤":
+            //    case "ŒoŒ±’l":
             //        {
             //            if (u is object)
             //            {
@@ -379,7 +376,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æ ¼é—˜":
+            //    case "Ši“¬":
             //        {
             //            if (p is object)
             //            {
@@ -393,7 +390,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "å°„æ’ƒ":
+            //    case "ËŒ‚":
             //        {
             //            if (p is object)
             //            {
@@ -407,7 +404,7 @@ namespace SRCCore.Expressions
             //            return EvalInfoFuncRet;
             //        }
 
-            //    case "å‘½ä¸­":
+            //    case "–½’†":
             //        {
             //            if (p is object)
             //            {
@@ -421,7 +418,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "å›é¿":
+            //    case "‰ñ”ğ":
             //        {
             //            if (p is object)
             //            {
@@ -435,7 +432,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æŠ€é‡":
+            //    case "‹Z—Ê":
             //        {
             //            if (p is object)
             //            {
@@ -449,7 +446,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "åå¿œ":
+            //    case "”½‰":
             //        {
             //            if (p is object)
             //            {
@@ -463,7 +460,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "é˜²å¾¡":
+            //    case "–hŒä":
             //        {
             //            if (p is object)
             //            {
@@ -473,7 +470,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æ ¼é—˜åŸºæœ¬å€¤":
+            //    case "Ši“¬Šî–{’l":
             //        {
             //            if (p is object)
             //            {
@@ -483,7 +480,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "å°„æ’ƒåŸºæœ¬å€¤":
+            //    case "ËŒ‚Šî–{’l":
             //        {
             //            if (p is object)
             //            {
@@ -493,7 +490,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "å‘½ä¸­åŸºæœ¬å€¤":
+            //    case "–½’†Šî–{’l":
             //        {
             //            if (p is object)
             //            {
@@ -503,7 +500,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "å›é¿åŸºæœ¬å€¤":
+            //    case "‰ñ”ğŠî–{’l":
             //        {
             //            if (p is object)
             //            {
@@ -513,7 +510,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æŠ€é‡åŸºæœ¬å€¤":
+            //    case "‹Z—ÊŠî–{’l":
             //        {
             //            if (p is object)
             //            {
@@ -523,7 +520,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "åå¿œåŸºæœ¬å€¤":
+            //    case "”½‰Šî–{’l":
             //        {
             //            if (p is object)
             //            {
@@ -533,7 +530,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æ ¼é—˜ä¿®æ­£å€¤":
+            //    case "Ši“¬C³’l":
             //        {
             //            if (p is object)
             //            {
@@ -543,7 +540,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "å°„æ’ƒä¿®æ­£å€¤":
+            //    case "ËŒ‚C³’l":
             //        {
             //            if (p is object)
             //            {
@@ -553,7 +550,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "å‘½ä¸­ä¿®æ­£å€¤":
+            //    case "–½’†C³’l":
             //        {
             //            if (p is object)
             //            {
@@ -563,7 +560,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "å›é¿ä¿®æ­£å€¤":
+            //    case "‰ñ”ğC³’l":
             //        {
             //            if (p is object)
             //            {
@@ -573,7 +570,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æŠ€é‡ä¿®æ­£å€¤":
+            //    case "‹Z—ÊC³’l":
             //        {
             //            if (p is object)
             //            {
@@ -583,7 +580,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "åå¿œä¿®æ­£å€¤":
+            //    case "”½‰C³’l":
             //        {
             //            if (p is object)
             //            {
@@ -593,7 +590,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æ ¼é—˜æ”¯æ´ä¿®æ­£å€¤":
+            //    case "Ši“¬x‰‡C³’l":
             //        {
             //            if (p is object)
             //            {
@@ -603,7 +600,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "å°„æ’ƒæ”¯æ´ä¿®æ­£å€¤":
+            //    case "ËŒ‚x‰‡C³’l":
             //        {
             //            if (p is object)
             //            {
@@ -613,7 +610,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "å‘½ä¸­æ”¯æ´ä¿®æ­£å€¤":
+            //    case "–½’†x‰‡C³’l":
             //        {
             //            if (p is object)
             //            {
@@ -623,7 +620,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "å›é¿æ”¯æ´ä¿®æ­£å€¤":
+            //    case "‰ñ”ğx‰‡C³’l":
             //        {
             //            if (p is object)
             //            {
@@ -633,7 +630,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æŠ€é‡æ”¯æ´ä¿®æ­£å€¤":
+            //    case "‹Z—Êx‰‡C³’l":
             //        {
             //            if (p is object)
             //            {
@@ -643,7 +640,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "åå¿œæ”¯æ´ä¿®æ­£å€¤":
+            //    case "”½‰x‰‡C³’l":
             //        {
             //            if (p is object)
             //            {
@@ -653,7 +650,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æ€§æ ¼":
+            //    case "«Ši":
             //        {
             //            if (p is object)
             //            {
@@ -667,7 +664,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æœ€å¤§ï¼³ï¼°":
+            //    case "Å‘å‚r‚o":
             //        {
             //            if (p is object)
             //            {
@@ -688,7 +685,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ï¼³ï¼°":
+            //    case "‚r‚o":
             //        {
             //            if (p is object)
             //            {
@@ -709,7 +706,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯":
+            //    case "ƒOƒ‰ƒtƒBƒbƒN":
             //        {
             //            if (u is object)
             //            {
@@ -735,7 +732,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ï¼­ï¼©ï¼¤ï¼©":
+            //    case "‚l‚h‚c‚h":
             //        {
             //            if (p is object)
             //            {
@@ -749,7 +746,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ãƒ¬ãƒ™ãƒ«":
+            //    case "ƒŒƒxƒ‹":
             //        {
             //            if (p is object)
             //            {
@@ -759,7 +756,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ç´¯ç©çµŒé¨“å€¤":
+            //    case "—İÏŒoŒ±’l":
             //        {
             //            if (p is object)
             //            {
@@ -769,7 +766,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æ°—åŠ›":
+            //    case "‹C—Í":
             //        {
             //            if (p is object)
             //            {
@@ -779,8 +776,8 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æœ€å¤§éœŠåŠ›":
-            //    case "æœ€å¤§ãƒ—ãƒ©ãƒ¼ãƒŠ":
+            //    case "Å‘å—ì—Í":
+            //    case "Å‘åƒvƒ‰[ƒi":
             //        {
             //            if (p is object)
             //            {
@@ -788,14 +785,14 @@ namespace SRCCore.Expressions
             //            }
             //            else if (pd is object)
             //            {
-            //                EvalInfoFuncRet = SrcFormatter.Format(pd.SkillLevel(0, "éœŠåŠ›"));
+            //                EvalInfoFuncRet = SrcFormatter.Format(pd.SkillLevel(0, "—ì—Í"));
             //            }
 
             //            break;
             //        }
 
-            //    case "éœŠåŠ›":
-            //    case "ãƒ—ãƒ©ãƒ¼ãƒŠ":
+            //    case "—ì—Í":
+            //    case "ƒvƒ‰[ƒi":
             //        {
             //            if (p is object)
             //            {
@@ -803,14 +800,14 @@ namespace SRCCore.Expressions
             //            }
             //            else if (pd is object)
             //            {
-            //                EvalInfoFuncRet = SrcFormatter.Format(pd.SkillLevel(0, "éœŠåŠ›"));
+            //                EvalInfoFuncRet = SrcFormatter.Format(pd.SkillLevel(0, "—ì—Í"));
             //            }
 
             //            break;
             //        }
 
-            //    case "åŒèª¿ç‡":
-            //    case "ã‚·ãƒ³ã‚¯ãƒ­ç‡":
+            //    case "“¯’²—¦":
+            //    case "ƒVƒ“ƒNƒ—¦":
             //        {
             //            if (p is object)
             //            {
@@ -818,15 +815,15 @@ namespace SRCCore.Expressions
             //            }
             //            else if (pd is object)
             //            {
-            //                EvalInfoFuncRet = SrcFormatter.Format(pd.SkillLevel(0, "åŒèª¿ç‡"));
+            //                EvalInfoFuncRet = SrcFormatter.Format(pd.SkillLevel(0, "“¯’²—¦"));
             //            }
 
             //            break;
             //        }
 
-            //    case "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼":
-            //    case "ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰":
-            //    case "ç²¾ç¥":
+            //    case "ƒXƒyƒVƒƒƒ‹ƒpƒ[":
+            //    case "¸_ƒRƒ}ƒ“ƒh":
+            //    case "¸_":
             //        {
             //            if (p is object)
             //            {
@@ -858,8 +855,8 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼æ‰€æœ‰":
-            //    case "ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰æ‰€æœ‰":
+            //    case "ƒXƒyƒVƒƒƒ‹ƒpƒ[Š—L":
+            //    case "¸_ƒRƒ}ƒ“ƒhŠ—L":
             //        {
             //            if (p is object)
             //            {
@@ -895,8 +892,8 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚³ã‚¹ãƒˆ":
-            //    case "ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰ã‚³ã‚¹ãƒˆ":
+            //    case "ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒRƒXƒg":
+            //    case "¸_ƒRƒ}ƒ“ƒhƒRƒXƒg":
             //        {
             //            if (p is object)
             //            {
@@ -918,7 +915,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ç‰¹æ®Šèƒ½åŠ›æ•°":
+            //    case "“Áê”\—Í”":
             //        {
             //            if (u is object)
             //            {
@@ -952,7 +949,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ç‰¹æ®Šèƒ½åŠ›":
+            //    case "“Áê”\—Í":
             //        {
             //            if (u is object)
             //            {
@@ -1000,11 +997,11 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ç‰¹æ®Šèƒ½åŠ›åç§°":
+            //    case "“Áê”\—Í–¼Ì":
             //        {
             //            aname = @params[idx + 1];
 
-            //            // ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+            //            // ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
             //            if (SRC.ALDList.IsDefined(aname))
             //            {
             //                {
@@ -1100,11 +1097,11 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ç‰¹æ®Šèƒ½åŠ›æ‰€æœ‰":
+            //    case "“Áê”\—ÍŠ—L":
             //        {
             //            aname = @params[idx + 1];
 
-            //            // ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+            //            // ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
             //            if (SRC.ALDList.IsDefined(aname))
             //            {
             //                {
@@ -1198,11 +1195,11 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ç‰¹æ®Šèƒ½åŠ›ãƒ¬ãƒ™ãƒ«":
+            //    case "“Áê”\—ÍƒŒƒxƒ‹":
             //        {
             //            aname = @params[idx + 1];
 
-            //            // ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+            //            // ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
             //            if (SRC.ALDList.IsDefined(aname))
             //            {
             //                {
@@ -1320,11 +1317,11 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ç‰¹æ®Šèƒ½åŠ›ãƒ‡ãƒ¼ã‚¿":
+            //    case "“Áê”\—Íƒf[ƒ^":
             //        {
             //            aname = @params[idx + 1];
 
-            //            // ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+            //            // ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
             //            if (SRC.ALDList.IsDefined(aname))
             //            {
             //                {
@@ -1420,11 +1417,11 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ç‰¹æ®Šèƒ½åŠ›å¿…è¦æŠ€èƒ½":
+            //    case "“Áê”\—Í•K—v‹Z”\":
             //        {
             //            aname = @params[idx + 1];
 
-            //            // ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+            //            // ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
             //            if (SRC.ALDList.IsDefined(aname))
             //            {
             //                {
@@ -1496,11 +1493,11 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ç‰¹æ®Šèƒ½åŠ›è§£èª¬":
+            //    case "“Áê”\—Í‰ğà":
             //        {
             //            aname = @params[idx + 1];
 
-            //            // ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+            //            // ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
             //            if (SRC.ALDList.IsDefined(aname))
             //            {
             //                {
@@ -1559,7 +1556,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "è¦å®šãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ•°":
+            //    case "‹K’èƒpƒCƒƒbƒg”":
             //        {
             //            if (u is object)
             //            {
@@ -1573,7 +1570,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ•°":
+            //    case "ƒpƒCƒƒbƒg”":
             //        {
             //            if (u is object)
             //            {
@@ -1587,7 +1584,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ã‚µãƒãƒ¼ãƒˆæ•°":
+            //    case "ƒTƒ|[ƒg”":
             //        {
             //            if (u is object)
             //            {
@@ -1597,7 +1594,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æœ€å¤§ã‚¢ã‚¤ãƒ†ãƒ æ•°":
+            //    case "Å‘åƒAƒCƒeƒ€”":
             //        {
             //            if (u is object)
             //            {
@@ -1611,7 +1608,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ã‚¢ã‚¤ãƒ†ãƒ æ•°":
+            //    case "ƒAƒCƒeƒ€”":
             //        {
             //            if (u is object)
             //            {
@@ -1625,7 +1622,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ã‚¢ã‚¤ãƒ†ãƒ ":
+            //    case "ƒAƒCƒeƒ€":
             //        {
             //            if (u is object)
             //            {
@@ -1644,7 +1641,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ã‚¢ã‚¤ãƒ†ãƒ ï¼©ï¼¤":
+            //    case "ƒAƒCƒeƒ€‚h‚c":
             //        {
             //            if (u is object)
             //            {
@@ -1663,7 +1660,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ç§»å‹•å¯èƒ½åœ°å½¢":
+            //    case "ˆÚ“®‰Â”\’nŒ`":
             //        {
             //            if (u is object)
             //            {
@@ -1677,7 +1674,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ç§»å‹•åŠ›":
+            //    case "ˆÚ“®—Í":
             //        {
             //            if (u is object)
             //            {
@@ -1691,7 +1688,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ã‚µã‚¤ã‚º":
+            //    case "ƒTƒCƒY":
             //        {
             //            if (u is object)
             //            {
@@ -1705,7 +1702,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ä¿®ç†è²»":
+            //    case "C—”ï":
             //        {
             //            if (u is object)
             //            {
@@ -1719,7 +1716,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æœ€å¤§ï¼¨ï¼°":
+            //    case "Å‘å‚g‚o":
             //        {
             //            if (u is object)
             //            {
@@ -1733,7 +1730,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ï¼¨ï¼°":
+            //    case "‚g‚o":
             //        {
             //            if (u is object)
             //            {
@@ -1747,7 +1744,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æœ€å¤§ï¼¥ï¼®":
+            //    case "Å‘å‚d‚m":
             //        {
             //            if (u is object)
             //            {
@@ -1761,7 +1758,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ï¼¥ï¼®":
+            //    case "‚d‚m":
             //        {
             //            if (u is object)
             //            {
@@ -1775,7 +1772,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "è£…ç”²":
+            //    case "‘•b":
             //        {
             //            if (u is object)
             //            {
@@ -1789,7 +1786,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "é‹å‹•æ€§":
+            //    case "‰^“®«":
             //        {
             //            if (u is object)
             //            {
@@ -1803,7 +1800,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æ­¦å™¨æ•°":
+            //    case "•Ší”":
             //        {
             //            if (u is object)
             //            {
@@ -1833,14 +1830,14 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æ­¦å™¨":
+            //    case "•Ší":
             //        {
             //            idx = (idx + 1);
             //            if (u is object)
             //            {
             //                {
             //                    var withBlock7 = u;
-            //                    // ä½•ç•ªç›®ã®æ­¦å™¨ã‹ã‚’åˆ¤å®š
+            //                    // ‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
             //                    if (GeneralLib.IsNumber(@params[idx]))
             //                    {
             //                        i = Conversions.Toint(@params[idx]);
@@ -1856,7 +1853,7 @@ namespace SRCCore.Expressions
             //                            }
             //                        }
             //                    }
-            //                    // æŒ‡å®šã—ãŸæ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
+            //                    // w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
             //                    if (i <= 0 | withBlock7.CountWeapon() < i)
             //                    {
             //                        return EvalInfoFuncRet;
@@ -1866,80 +1863,80 @@ namespace SRCCore.Expressions
             //                    switch (@params[idx] ?? "")
             //                    {
             //                        case var case1 when case1 == "":
-            //                        case "åç§°":
+            //                        case "–¼Ì":
             //                            {
             //                                EvalInfoFuncRet = withBlock7.Weapon(i).Name;
             //                                break;
             //                            }
 
-            //                        case "æ”»æ’ƒåŠ›":
+            //                        case "UŒ‚—Í":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock7.WeaponPower(i, ""));
             //                                break;
             //                            }
 
-            //                        case "å°„ç¨‹":
-            //                        case "æœ€å¤§å°„ç¨‹":
+            //                        case "Ë’ö":
+            //                        case "Å‘åË’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock7.WeaponMaxRange(i));
             //                                break;
             //                            }
 
-            //                        case "æœ€å°å°„ç¨‹":
+            //                        case "Å¬Ë’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock7.Weapon(i).MinRange);
             //                                break;
             //                            }
 
-            //                        case "å‘½ä¸­ç‡":
+            //                        case "–½’†—¦":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock7.WeaponPrecision(i));
             //                                break;
             //                            }
 
-            //                        case "æœ€å¤§å¼¾æ•°":
+            //                        case "Å‘å’e”":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock7.MaxBullet(i));
             //                                break;
             //                            }
 
-            //                        case "å¼¾æ•°":
+            //                        case "’e”":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock7.Bullet(i));
             //                                break;
             //                            }
 
-            //                        case "æ¶ˆè²»ï¼¥ï¼®":
+            //                        case "Á”ï‚d‚m":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock7.WeaponENConsumption(i));
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æ°—åŠ›":
+            //                        case "•K—v‹C—Í":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock7.Weapon(i).NecessaryMorale);
             //                                break;
             //                            }
 
-            //                        case "åœ°å½¢é©å¿œ":
+            //                        case "’nŒ`“K‰":
             //                            {
             //                                EvalInfoFuncRet = withBlock7.Weapon(i).Adaption;
             //                                break;
             //                            }
 
-            //                        case "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡":
+            //                        case "ƒNƒŠƒeƒBƒJƒ‹—¦":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock7.WeaponCritical(i));
             //                                break;
             //                            }
 
-            //                        case "å±æ€§":
+            //                        case "‘®«":
             //                            {
             //                                EvalInfoFuncRet = withBlock7.WeaponClass(i);
             //                                break;
             //                            }
 
-            //                        case "å±æ€§æ‰€æœ‰":
+            //                        case "‘®«Š—L":
             //                            {
             //                                if (withBlock7.IsWeaponClassifiedAs(i, @params[idx + 1]))
             //                                {
@@ -1953,33 +1950,33 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å±æ€§ãƒ¬ãƒ™ãƒ«":
+            //                        case "‘®«ƒŒƒxƒ‹":
             //                            {
             //                                EvalInfoFuncRet = withBlock7.WeaponLevel(i, @params[idx + 1]).ToString();
             //                                break;
             //                            }
 
-            //                        case "å±æ€§åç§°":
+            //                        case "‘®«–¼Ì":
             //                            {
             //                                EvalInfoFuncRet = Help.AttributeName(u, @params[idx + 1], false);
             //                                break;
             //                            }
 
-            //                        case "å±æ€§è§£èª¬":
+            //                        case "‘®«‰ğà":
             //                            {
             //                                EvalInfoFuncRet = Help.AttributeHelpMessage(u, @params[idx + 1], i, false);
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æŠ€èƒ½":
+            //                        case "•K—v‹Z”\":
             //                            {
             //                                EvalInfoFuncRet = withBlock7.Weapon(i).NecessarySkill;
             //                                break;
             //                            }
 
-            //                        case "ä½¿ç”¨å¯":
+            //                        case "g—p‰Â":
             //                            {
-            //                                if (withBlock7.IsWeaponAvailable(i, "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹"))
+            //                                if (withBlock7.IsWeaponAvailable(i, "ƒXƒe[ƒ^ƒX"))
             //                                {
             //                                    EvalInfoFuncRet = "1";
             //                                }
@@ -1991,7 +1988,7 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "ä¿®å¾—":
+            //                        case "C“¾":
             //                            {
             //                                if (withBlock7.IsWeaponMastered(i))
             //                                {
@@ -2009,7 +2006,7 @@ namespace SRCCore.Expressions
             //            }
             //            else if (ud is object)
             //            {
-            //                // ä½•ç•ªç›®ã®æ­¦å™¨ã‹ã‚’åˆ¤å®š
+            //                // ‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
             //                if (GeneralLib.IsNumber(@params[idx]))
             //                {
             //                    i = Conversions.Toint(@params[idx]);
@@ -2027,7 +2024,7 @@ namespace SRCCore.Expressions
             //                        }
             //                    }
             //                }
-            //                // æŒ‡å®šã—ãŸæ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
+            //                // w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
             //                if (i <= 0 | ud.CountWeapon() < i)
             //                {
             //                    return EvalInfoFuncRet;
@@ -2039,75 +2036,75 @@ namespace SRCCore.Expressions
             //                    switch (@params[idx] ?? "")
             //                    {
             //                        case var case2 when case2 == "":
-            //                        case "åç§°":
+            //                        case "–¼Ì":
             //                            {
             //                                EvalInfoFuncRet = withBlock8.Name;
             //                                break;
             //                            }
 
-            //                        case "æ”»æ’ƒåŠ›":
+            //                        case "UŒ‚—Í":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock8.Power);
             //                                break;
             //                            }
 
-            //                        case "å°„ç¨‹":
-            //                        case "æœ€å¤§å°„ç¨‹":
+            //                        case "Ë’ö":
+            //                        case "Å‘åË’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock8.MaxRange);
             //                                break;
             //                            }
 
-            //                        case "æœ€å°å°„ç¨‹":
+            //                        case "Å¬Ë’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock8.MinRange);
             //                                break;
             //                            }
 
-            //                        case "å‘½ä¸­ç‡":
+            //                        case "–½’†—¦":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock8.Precision);
             //                                break;
             //                            }
 
-            //                        case "æœ€å¤§å¼¾æ•°":
-            //                        case "å¼¾æ•°":
+            //                        case "Å‘å’e”":
+            //                        case "’e”":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock8.Bullet);
             //                                break;
             //                            }
 
-            //                        case "æ¶ˆè²»ï¼¥ï¼®":
+            //                        case "Á”ï‚d‚m":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock8.ENConsumption);
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æ°—åŠ›":
+            //                        case "•K—v‹C—Í":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock8.NecessaryMorale);
             //                                break;
             //                            }
 
-            //                        case "åœ°å½¢é©å¿œ":
+            //                        case "’nŒ`“K‰":
             //                            {
             //                                EvalInfoFuncRet = withBlock8.Adaption;
             //                                break;
             //                            }
 
-            //                        case "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡":
+            //                        case "ƒNƒŠƒeƒBƒJƒ‹—¦":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock8.Critical);
             //                                break;
             //                            }
 
-            //                        case "å±æ€§":
+            //                        case "‘®«":
             //                            {
             //                                EvalInfoFuncRet = withBlock8.Class;
             //                                break;
             //                            }
 
-            //                        case "å±æ€§æ‰€æœ‰":
+            //                        case "‘®«Š—L":
             //                            {
             //                                if (GeneralLib.InStrNotNest(withBlock8.Class, @params[idx + 1]) > 0)
             //                                {
@@ -2121,7 +2118,7 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å±æ€§ãƒ¬ãƒ™ãƒ«":
+            //                        case "‘®«ƒŒƒxƒ‹":
             //                            {
             //                                j = GeneralLib.InStrNotNest(withBlock8.Class, @params[idx + 1] + "L");
             //                                if (j == 0)
@@ -2146,14 +2143,14 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æŠ€èƒ½":
+            //                        case "•K—v‹Z”\":
             //                            {
             //                                EvalInfoFuncRet = withBlock8.NecessarySkill;
             //                                break;
             //                            }
 
-            //                        case "ä½¿ç”¨å¯":
-            //                        case "ä¿®å¾—":
+            //                        case "g—p‰Â":
+            //                        case "C“¾":
             //                            {
             //                                EvalInfoFuncRet = "1";
             //                                break;
@@ -2165,7 +2162,7 @@ namespace SRCCore.Expressions
             //            {
             //                {
             //                    var withBlock9 = p.Data;
-            //                    // ä½•ç•ªç›®ã®æ­¦å™¨ã‹ã‚’åˆ¤å®š
+            //                    // ‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
             //                    if (GeneralLib.IsNumber(@params[idx]))
             //                    {
             //                        i = Conversions.Toint(@params[idx]);
@@ -2183,7 +2180,7 @@ namespace SRCCore.Expressions
             //                            }
             //                        }
             //                    }
-            //                    // æŒ‡å®šã—ãŸæ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
+            //                    // w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
             //                    if (i <= 0 | withBlock9.CountWeapon() < i)
             //                    {
             //                        return EvalInfoFuncRet;
@@ -2195,75 +2192,75 @@ namespace SRCCore.Expressions
             //                        switch (@params[idx] ?? "")
             //                        {
             //                            case var case3 when case3 == "":
-            //                            case "åç§°":
+            //                            case "–¼Ì":
             //                                {
             //                                    EvalInfoFuncRet = withBlock10.Name;
             //                                    break;
             //                                }
 
-            //                            case "æ”»æ’ƒåŠ›":
+            //                            case "UŒ‚—Í":
             //                                {
             //                                    EvalInfoFuncRet = SrcFormatter.Format(withBlock10.Power);
             //                                    break;
             //                                }
 
-            //                            case "å°„ç¨‹":
-            //                            case "æœ€å¤§å°„ç¨‹":
+            //                            case "Ë’ö":
+            //                            case "Å‘åË’ö":
             //                                {
             //                                    EvalInfoFuncRet = SrcFormatter.Format(withBlock10.MaxRange);
             //                                    break;
             //                                }
 
-            //                            case "æœ€å°å°„ç¨‹":
+            //                            case "Å¬Ë’ö":
             //                                {
             //                                    EvalInfoFuncRet = SrcFormatter.Format(withBlock10.MinRange);
             //                                    break;
             //                                }
 
-            //                            case "å‘½ä¸­ç‡":
+            //                            case "–½’†—¦":
             //                                {
             //                                    EvalInfoFuncRet = SrcFormatter.Format(withBlock10.Precision);
             //                                    break;
             //                                }
 
-            //                            case "æœ€å¤§å¼¾æ•°":
-            //                            case "å¼¾æ•°":
+            //                            case "Å‘å’e”":
+            //                            case "’e”":
             //                                {
             //                                    EvalInfoFuncRet = SrcFormatter.Format(withBlock10.Bullet);
             //                                    break;
             //                                }
 
-            //                            case "æ¶ˆè²»ï¼¥ï¼®":
+            //                            case "Á”ï‚d‚m":
             //                                {
             //                                    EvalInfoFuncRet = SrcFormatter.Format(withBlock10.ENConsumption);
             //                                    break;
             //                                }
 
-            //                            case "å¿…è¦æ°—åŠ›":
+            //                            case "•K—v‹C—Í":
             //                                {
             //                                    EvalInfoFuncRet = SrcFormatter.Format(withBlock10.NecessaryMorale);
             //                                    break;
             //                                }
 
-            //                            case "åœ°å½¢é©å¿œ":
+            //                            case "’nŒ`“K‰":
             //                                {
             //                                    EvalInfoFuncRet = withBlock10.Adaption;
             //                                    break;
             //                                }
 
-            //                            case "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡":
+            //                            case "ƒNƒŠƒeƒBƒJƒ‹—¦":
             //                                {
             //                                    EvalInfoFuncRet = SrcFormatter.Format(withBlock10.Critical);
             //                                    break;
             //                                }
 
-            //                            case "å±æ€§":
+            //                            case "‘®«":
             //                                {
             //                                    EvalInfoFuncRet = withBlock10.Class;
             //                                    break;
             //                                }
 
-            //                            case "å±æ€§æ‰€æœ‰":
+            //                            case "‘®«Š—L":
             //                                {
             //                                    if (GeneralLib.InStrNotNest(withBlock10.Class, @params[idx + 1]) > 0)
             //                                    {
@@ -2277,7 +2274,7 @@ namespace SRCCore.Expressions
             //                                    break;
             //                                }
 
-            //                            case "å±æ€§ãƒ¬ãƒ™ãƒ«":
+            //                            case "‘®«ƒŒƒxƒ‹":
             //                                {
             //                                    j = GeneralLib.InStrNotNest(withBlock10.Class, @params[idx + 1] + "L");
             //                                    if (j == 0)
@@ -2302,14 +2299,14 @@ namespace SRCCore.Expressions
             //                                    break;
             //                                }
 
-            //                            case "å¿…è¦æŠ€èƒ½":
+            //                            case "•K—v‹Z”\":
             //                                {
             //                                    EvalInfoFuncRet = withBlock10.NecessarySkill;
             //                                    break;
             //                                }
 
-            //                            case "ä½¿ç”¨å¯":
-            //                            case "ä¿®å¾—":
+            //                            case "g—p‰Â":
+            //                            case "C“¾":
             //                                {
             //                                    EvalInfoFuncRet = "1";
             //                                    break;
@@ -2320,7 +2317,7 @@ namespace SRCCore.Expressions
             //            }
             //            else if (pd is object)
             //            {
-            //                // ä½•ç•ªç›®ã®æ­¦å™¨ã‹ã‚’åˆ¤å®š
+            //                // ‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
             //                if (GeneralLib.IsNumber(@params[idx]))
             //                {
             //                    i = Conversions.Toint(@params[idx]);
@@ -2338,7 +2335,7 @@ namespace SRCCore.Expressions
             //                        }
             //                    }
             //                }
-            //                // æŒ‡å®šã—ãŸæ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
+            //                // w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
             //                if (i <= 0 | pd.CountWeapon() < i)
             //                {
             //                    return EvalInfoFuncRet;
@@ -2350,75 +2347,75 @@ namespace SRCCore.Expressions
             //                    switch (@params[idx] ?? "")
             //                    {
             //                        case var case4 when case4 == "":
-            //                        case "åç§°":
+            //                        case "–¼Ì":
             //                            {
             //                                EvalInfoFuncRet = withBlock11.Name;
             //                                break;
             //                            }
 
-            //                        case "æ”»æ’ƒåŠ›":
+            //                        case "UŒ‚—Í":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock11.Power);
             //                                break;
             //                            }
 
-            //                        case "å°„ç¨‹":
-            //                        case "æœ€å¤§å°„ç¨‹":
+            //                        case "Ë’ö":
+            //                        case "Å‘åË’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock11.MaxRange);
             //                                break;
             //                            }
 
-            //                        case "æœ€å°å°„ç¨‹":
+            //                        case "Å¬Ë’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock11.MinRange);
             //                                break;
             //                            }
 
-            //                        case "å‘½ä¸­ç‡":
+            //                        case "–½’†—¦":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock11.Precision);
             //                                break;
             //                            }
 
-            //                        case "æœ€å¤§å¼¾æ•°":
-            //                        case "å¼¾æ•°":
+            //                        case "Å‘å’e”":
+            //                        case "’e”":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock11.Bullet);
             //                                break;
             //                            }
 
-            //                        case "æ¶ˆè²»ï¼¥ï¼®":
+            //                        case "Á”ï‚d‚m":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock11.ENConsumption);
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æ°—åŠ›":
+            //                        case "•K—v‹C—Í":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock11.NecessaryMorale);
             //                                break;
             //                            }
 
-            //                        case "åœ°å½¢é©å¿œ":
+            //                        case "’nŒ`“K‰":
             //                            {
             //                                EvalInfoFuncRet = withBlock11.Adaption;
             //                                break;
             //                            }
 
-            //                        case "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡":
+            //                        case "ƒNƒŠƒeƒBƒJƒ‹—¦":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock11.Critical);
             //                                break;
             //                            }
 
-            //                        case "å±æ€§":
+            //                        case "‘®«":
             //                            {
             //                                EvalInfoFuncRet = withBlock11.Class;
             //                                break;
             //                            }
 
-            //                        case "å±æ€§æ‰€æœ‰":
+            //                        case "‘®«Š—L":
             //                            {
             //                                if (GeneralLib.InStrNotNest(withBlock11.Class, @params[idx + 1]) > 0)
             //                                {
@@ -2432,7 +2429,7 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å±æ€§ãƒ¬ãƒ™ãƒ«":
+            //                        case "‘®«ƒŒƒxƒ‹":
             //                            {
             //                                j = GeneralLib.InStrNotNest(withBlock11.Class, @params[idx + 1] + "L");
             //                                if (j == 0)
@@ -2457,14 +2454,14 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æŠ€èƒ½":
+            //                        case "•K—v‹Z”\":
             //                            {
             //                                EvalInfoFuncRet = withBlock11.NecessarySkill;
             //                                break;
             //                            }
 
-            //                        case "ä½¿ç”¨å¯":
-            //                        case "ä¿®å¾—":
+            //                        case "g—p‰Â":
+            //                        case "C“¾":
             //                            {
             //                                EvalInfoFuncRet = "1";
             //                                break;
@@ -2474,7 +2471,7 @@ namespace SRCCore.Expressions
             //            }
             //            else if (it is object)
             //            {
-            //                // ä½•ç•ªç›®ã®æ­¦å™¨ã‹ã‚’åˆ¤å®š
+            //                // ‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
             //                if (GeneralLib.IsNumber(@params[idx]))
             //                {
             //                    i = Conversions.Toint(@params[idx]);
@@ -2492,7 +2489,7 @@ namespace SRCCore.Expressions
             //                        }
             //                    }
             //                }
-            //                // æŒ‡å®šã—ãŸæ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
+            //                // w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
             //                if (i <= 0 | it.CountWeapon() < i)
             //                {
             //                    return EvalInfoFuncRet;
@@ -2504,75 +2501,75 @@ namespace SRCCore.Expressions
             //                    switch (@params[idx] ?? "")
             //                    {
             //                        case var case5 when case5 == "":
-            //                        case "åç§°":
+            //                        case "–¼Ì":
             //                            {
             //                                EvalInfoFuncRet = withBlock12.Name;
             //                                break;
             //                            }
 
-            //                        case "æ”»æ’ƒåŠ›":
+            //                        case "UŒ‚—Í":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock12.Power);
             //                                break;
             //                            }
 
-            //                        case "å°„ç¨‹":
-            //                        case "æœ€å¤§å°„ç¨‹":
+            //                        case "Ë’ö":
+            //                        case "Å‘åË’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock12.MaxRange);
             //                                break;
             //                            }
 
-            //                        case "æœ€å°å°„ç¨‹":
+            //                        case "Å¬Ë’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock12.MinRange);
             //                                break;
             //                            }
 
-            //                        case "å‘½ä¸­ç‡":
+            //                        case "–½’†—¦":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock12.Precision);
             //                                break;
             //                            }
 
-            //                        case "æœ€å¤§å¼¾æ•°":
-            //                        case "å¼¾æ•°":
+            //                        case "Å‘å’e”":
+            //                        case "’e”":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock12.Bullet);
             //                                break;
             //                            }
 
-            //                        case "æ¶ˆè²»ï¼¥ï¼®":
+            //                        case "Á”ï‚d‚m":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock12.ENConsumption);
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æ°—åŠ›":
+            //                        case "•K—v‹C—Í":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock12.NecessaryMorale);
             //                                break;
             //                            }
 
-            //                        case "åœ°å½¢é©å¿œ":
+            //                        case "’nŒ`“K‰":
             //                            {
             //                                EvalInfoFuncRet = withBlock12.Adaption;
             //                                break;
             //                            }
 
-            //                        case "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡":
+            //                        case "ƒNƒŠƒeƒBƒJƒ‹—¦":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock12.Critical);
             //                                break;
             //                            }
 
-            //                        case "å±æ€§":
+            //                        case "‘®«":
             //                            {
             //                                EvalInfoFuncRet = withBlock12.Class;
             //                                break;
             //                            }
 
-            //                        case "å±æ€§æ‰€æœ‰":
+            //                        case "‘®«Š—L":
             //                            {
             //                                if (GeneralLib.InStrNotNest(withBlock12.Class, @params[idx + 1]) > 0)
             //                                {
@@ -2586,7 +2583,7 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å±æ€§ãƒ¬ãƒ™ãƒ«":
+            //                        case "‘®«ƒŒƒxƒ‹":
             //                            {
             //                                j = GeneralLib.InStrNotNest(withBlock12.Class, @params[idx + 1] + "L");
             //                                if (j == 0)
@@ -2611,14 +2608,14 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æŠ€èƒ½":
+            //                        case "•K—v‹Z”\":
             //                            {
             //                                EvalInfoFuncRet = withBlock12.NecessarySkill;
             //                                break;
             //                            }
 
-            //                        case "ä½¿ç”¨å¯":
-            //                        case "ä¿®å¾—":
+            //                        case "g—p‰Â":
+            //                        case "C“¾":
             //                            {
             //                                EvalInfoFuncRet = "1";
             //                                break;
@@ -2628,7 +2625,7 @@ namespace SRCCore.Expressions
             //            }
             //            else if (itd is object)
             //            {
-            //                // ä½•ç•ªç›®ã®æ­¦å™¨ã‹ã‚’åˆ¤å®š
+            //                // ‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
             //                if (GeneralLib.IsNumber(@params[idx]))
             //                {
             //                    i = Conversions.Toint(@params[idx]);
@@ -2646,7 +2643,7 @@ namespace SRCCore.Expressions
             //                        }
             //                    }
             //                }
-            //                // æŒ‡å®šã—ãŸæ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
+            //                // w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
             //                if (i <= 0 | itd.CountWeapon() < i)
             //                {
             //                    return EvalInfoFuncRet;
@@ -2658,75 +2655,75 @@ namespace SRCCore.Expressions
             //                    switch (@params[idx] ?? "")
             //                    {
             //                        case var case6 when case6 == "":
-            //                        case "åç§°":
+            //                        case "–¼Ì":
             //                            {
             //                                EvalInfoFuncRet = withBlock13.Name;
             //                                break;
             //                            }
 
-            //                        case "æ”»æ’ƒåŠ›":
+            //                        case "UŒ‚—Í":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock13.Power);
             //                                break;
             //                            }
 
-            //                        case "å°„ç¨‹":
-            //                        case "æœ€å¤§å°„ç¨‹":
+            //                        case "Ë’ö":
+            //                        case "Å‘åË’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock13.MaxRange);
             //                                break;
             //                            }
 
-            //                        case "æœ€å°å°„ç¨‹":
+            //                        case "Å¬Ë’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock13.MinRange);
             //                                break;
             //                            }
 
-            //                        case "å‘½ä¸­ç‡":
+            //                        case "–½’†—¦":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock13.Precision);
             //                                break;
             //                            }
 
-            //                        case "æœ€å¤§å¼¾æ•°":
-            //                        case "å¼¾æ•°":
+            //                        case "Å‘å’e”":
+            //                        case "’e”":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock13.Bullet);
             //                                break;
             //                            }
 
-            //                        case "æ¶ˆè²»ï¼¥ï¼®":
+            //                        case "Á”ï‚d‚m":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock13.ENConsumption);
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æ°—åŠ›":
+            //                        case "•K—v‹C—Í":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock13.NecessaryMorale);
             //                                break;
             //                            }
 
-            //                        case "åœ°å½¢é©å¿œ":
+            //                        case "’nŒ`“K‰":
             //                            {
             //                                EvalInfoFuncRet = withBlock13.Adaption;
             //                                break;
             //                            }
 
-            //                        case "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡":
+            //                        case "ƒNƒŠƒeƒBƒJƒ‹—¦":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock13.Critical);
             //                                break;
             //                            }
 
-            //                        case "å±æ€§":
+            //                        case "‘®«":
             //                            {
             //                                EvalInfoFuncRet = withBlock13.Class;
             //                                break;
             //                            }
 
-            //                        case "å±æ€§æ‰€æœ‰":
+            //                        case "‘®«Š—L":
             //                            {
             //                                if (GeneralLib.InStrNotNest(withBlock13.Class, @params[idx + 1]) > 0)
             //                                {
@@ -2740,7 +2737,7 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å±æ€§ãƒ¬ãƒ™ãƒ«":
+            //                        case "‘®«ƒŒƒxƒ‹":
             //                            {
             //                                j = GeneralLib.InStrNotNest(withBlock13.Class, @params[idx + 1] + "L");
             //                                if (j == 0)
@@ -2765,14 +2762,14 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æŠ€èƒ½":
+            //                        case "•K—v‹Z”\":
             //                            {
             //                                EvalInfoFuncRet = withBlock13.NecessarySkill;
             //                                break;
             //                            }
 
-            //                        case "ä½¿ç”¨å¯":
-            //                        case "ä¿®å¾—":
+            //                        case "g—p‰Â":
+            //                        case "C“¾":
             //                            {
             //                                EvalInfoFuncRet = "1";
             //                                break;
@@ -2784,7 +2781,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ã‚¢ãƒ“ãƒªãƒ†ã‚£æ•°":
+            //    case "ƒAƒrƒŠƒeƒB”":
             //        {
             //            if (u is object)
             //            {
@@ -2814,14 +2811,14 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ã‚¢ãƒ“ãƒªãƒ†ã‚£":
+            //    case "ƒAƒrƒŠƒeƒB":
             //        {
             //            idx = (idx + 1);
             //            if (u is object)
             //            {
             //                {
             //                    var withBlock14 = u;
-            //                    // ä½•ç•ªç›®ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã‚’åˆ¤å®š
+            //                    // ‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
             //                    if (GeneralLib.IsNumber(@params[idx]))
             //                    {
             //                        i = Conversions.Toint(@params[idx]);
@@ -2837,7 +2834,7 @@ namespace SRCCore.Expressions
             //                            }
             //                        }
             //                    }
-            //                    // æŒ‡å®šã—ãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã„
+            //                    // w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
             //                    if (i <= 0 | withBlock14.CountAbility() < i)
             //                    {
             //                        return EvalInfoFuncRet;
@@ -2847,21 +2844,21 @@ namespace SRCCore.Expressions
             //                    switch (@params[idx] ?? "")
             //                    {
             //                        case var case7 when case7 == "":
-            //                        case "åç§°":
+            //                        case "–¼Ì":
             //                            {
             //                                EvalInfoFuncRet = withBlock14.Ability(i).Name;
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœæ•°":
+            //                        case "Œø‰Ê”":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock14.Ability(i).CountEffect());
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœã‚¿ã‚¤ãƒ—":
+            //                        case "Œø‰Êƒ^ƒCƒv":
             //                            {
-            //                                // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
+            //                                // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
             //                                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                                {
             //                                    j = Conversions.Toint(@params[idx + 1]);
@@ -2876,9 +2873,9 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœãƒ¬ãƒ™ãƒ«":
+            //                        case "Œø‰ÊƒŒƒxƒ‹":
             //                            {
-            //                                // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
+            //                                // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
             //                                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                                {
             //                                    j = Conversions.Toint(@params[idx + 1]);
@@ -2895,9 +2892,9 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœãƒ‡ãƒ¼ã‚¿":
+            //                        case "Œø‰Êƒf[ƒ^":
             //                            {
-            //                                // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
+            //                                // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
             //                                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                                {
             //                                    j = Conversions.Toint(@params[idx + 1]);
@@ -2912,50 +2909,50 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å°„ç¨‹":
-            //                        case "æœ€å¤§å°„ç¨‹":
+            //                        case "Ë’ö":
+            //                        case "Å‘åË’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock14.AbilityMaxRange(i));
             //                                break;
             //                            }
 
-            //                        case "æœ€å°å°„ç¨‹":
+            //                        case "Å¬Ë’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock14.AbilityMinRange(i));
             //                                break;
             //                            }
 
-            //                        case "æœ€å¤§ä½¿ç”¨å›æ•°":
+            //                        case "Å‘åg—p‰ñ”":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock14.MaxStock(i));
             //                                break;
             //                            }
 
-            //                        case "ä½¿ç”¨å›æ•°":
+            //                        case "g—p‰ñ”":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock14.Stock(i));
             //                                break;
             //                            }
 
-            //                        case "æ¶ˆè²»ï¼¥ï¼®":
+            //                        case "Á”ï‚d‚m":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock14.AbilityENConsumption(i));
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æ°—åŠ›":
+            //                        case "•K—v‹C—Í":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock14.Ability(i).NecessaryMorale);
             //                                break;
             //                            }
 
-            //                        case "å±æ€§":
+            //                        case "‘®«":
             //                            {
             //                                EvalInfoFuncRet = withBlock14.Ability(i).Class;
             //                                break;
             //                            }
 
-            //                        case "å±æ€§æ‰€æœ‰":
+            //                        case "‘®«Š—L":
             //                            {
             //                                if (withBlock14.IsAbilityClassifiedAs(i, @params[idx + 1]))
             //                                {
@@ -2969,33 +2966,33 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å±æ€§ãƒ¬ãƒ™ãƒ«":
+            //                        case "‘®«ƒŒƒxƒ‹":
             //                            {
             //                                EvalInfoFuncRet = withBlock14.AbilityLevel(i, @params[idx + 1]).ToString();
             //                                break;
             //                            }
 
-            //                        case "å±æ€§åç§°":
+            //                        case "‘®«–¼Ì":
             //                            {
             //                                EvalInfoFuncRet = Help.AttributeName(u, @params[idx + 1], true);
             //                                break;
             //                            }
 
-            //                        case "å±æ€§è§£èª¬":
+            //                        case "‘®«‰ğà":
             //                            {
             //                                EvalInfoFuncRet = Help.AttributeHelpMessage(u, @params[idx + 1], i, true);
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æŠ€èƒ½":
+            //                        case "•K—v‹Z”\":
             //                            {
             //                                EvalInfoFuncRet = withBlock14.Ability(i).NecessarySkill;
             //                                break;
             //                            }
 
-            //                        case "ä½¿ç”¨å¯":
+            //                        case "g—p‰Â":
             //                            {
-            //                                if (withBlock14.IsAbilityAvailable(i, "ç§»å‹•å‰"))
+            //                                if (withBlock14.IsAbilityAvailable(i, "ˆÚ“®‘O"))
             //                                {
             //                                    EvalInfoFuncRet = "1";
             //                                }
@@ -3007,7 +3004,7 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "ä¿®å¾—":
+            //                        case "C“¾":
             //                            {
             //                                if (withBlock14.IsAbilityMastered(i))
             //                                {
@@ -3025,7 +3022,7 @@ namespace SRCCore.Expressions
             //            }
             //            else if (ud is object)
             //            {
-            //                // ä½•ç•ªç›®ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã‚’åˆ¤å®š
+            //                // ‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
             //                if (GeneralLib.IsNumber(@params[idx]))
             //                {
             //                    i = Conversions.Toint(@params[idx]);
@@ -3043,7 +3040,7 @@ namespace SRCCore.Expressions
             //                        }
             //                    }
             //                }
-            //                // æŒ‡å®šã—ãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã„
+            //                // w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
             //                if (i <= 0 | ud.CountAbility() < i)
             //                {
             //                    return EvalInfoFuncRet;
@@ -3055,21 +3052,21 @@ namespace SRCCore.Expressions
             //                    switch (@params[idx] ?? "")
             //                    {
             //                        case var case8 when case8 == "":
-            //                        case "åç§°":
+            //                        case "–¼Ì":
             //                            {
             //                                EvalInfoFuncRet = withBlock15.Name;
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœæ•°":
+            //                        case "Œø‰Ê”":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock15.CountEffect());
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœã‚¿ã‚¤ãƒ—":
+            //                        case "Œø‰Êƒ^ƒCƒv":
             //                            {
-            //                                // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
+            //                                // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
             //                                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                                {
             //                                    j = Conversions.Toint(@params[idx + 1]);
@@ -3084,9 +3081,9 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœãƒ¬ãƒ™ãƒ«":
+            //                        case "Œø‰ÊƒŒƒxƒ‹":
             //                            {
-            //                                // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
+            //                                // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
             //                                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                                {
             //                                    j = Conversions.Toint(@params[idx + 1]);
@@ -3103,9 +3100,9 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœãƒ‡ãƒ¼ã‚¿":
+            //                        case "Œø‰Êƒf[ƒ^":
             //                            {
-            //                                // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
+            //                                // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
             //                                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                                {
             //                                    j = Conversions.Toint(@params[idx + 1]);
@@ -3120,45 +3117,45 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å°„ç¨‹":
-            //                        case "æœ€å¤§å°„ç¨‹":
+            //                        case "Ë’ö":
+            //                        case "Å‘åË’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock15.MaxRange);
             //                                break;
             //                            }
 
-            //                        case "æœ€å°å°„ç¨‹":
+            //                        case "Å¬Ë’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock15.MinRange);
             //                                break;
             //                            }
 
-            //                        case "æœ€å¤§ä½¿ç”¨å›æ•°":
-            //                        case "ä½¿ç”¨å›æ•°":
+            //                        case "Å‘åg—p‰ñ”":
+            //                        case "g—p‰ñ”":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock15.Stock);
             //                                break;
             //                            }
 
-            //                        case "æ¶ˆè²»ï¼¥ï¼®":
+            //                        case "Á”ï‚d‚m":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock15.ENConsumption);
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æ°—åŠ›":
+            //                        case "•K—v‹C—Í":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock15.NecessaryMorale);
             //                                break;
             //                            }
 
-            //                        case "å±æ€§":
+            //                        case "‘®«":
             //                            {
             //                                EvalInfoFuncRet = withBlock15.Class;
             //                                break;
             //                            }
 
-            //                        case "å±æ€§æ‰€æœ‰":
+            //                        case "‘®«Š—L":
             //                            {
             //                                if (GeneralLib.InStrNotNest(withBlock15.Class, @params[idx + 1]) > 0)
             //                                {
@@ -3172,7 +3169,7 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å±æ€§ãƒ¬ãƒ™ãƒ«":
+            //                        case "‘®«ƒŒƒxƒ‹":
             //                            {
             //                                j = GeneralLib.InStrNotNest(withBlock15.Class, @params[idx + 1] + "L");
             //                                if (j == 0)
@@ -3197,14 +3194,14 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æŠ€èƒ½":
+            //                        case "•K—v‹Z”\":
             //                            {
             //                                EvalInfoFuncRet = withBlock15.NecessarySkill;
             //                                break;
             //                            }
 
-            //                        case "ä½¿ç”¨å¯":
-            //                        case "ä¿®å¾—":
+            //                        case "g—p‰Â":
+            //                        case "C“¾":
             //                            {
             //                                EvalInfoFuncRet = "1";
             //                                break;
@@ -3216,7 +3213,7 @@ namespace SRCCore.Expressions
             //            {
             //                {
             //                    var withBlock16 = p.Data;
-            //                    // ä½•ç•ªç›®ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã‚’åˆ¤å®š
+            //                    // ‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
             //                    if (GeneralLib.IsNumber(@params[idx]))
             //                    {
             //                        i = Conversions.Toint(@params[idx]);
@@ -3234,7 +3231,7 @@ namespace SRCCore.Expressions
             //                            }
             //                        }
             //                    }
-            //                    // æŒ‡å®šã—ãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã„
+            //                    // w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
             //                    if (i <= 0 | withBlock16.CountAbility() < i)
             //                    {
             //                        return EvalInfoFuncRet;
@@ -3246,21 +3243,21 @@ namespace SRCCore.Expressions
             //                        switch (@params[idx] ?? "")
             //                        {
             //                            case var case9 when case9 == "":
-            //                            case "åç§°":
+            //                            case "–¼Ì":
             //                                {
             //                                    EvalInfoFuncRet = withBlock17.Name;
             //                                    break;
             //                                }
 
-            //                            case "åŠ¹æœæ•°":
+            //                            case "Œø‰Ê”":
             //                                {
             //                                    EvalInfoFuncRet = SrcFormatter.Format(withBlock17.CountEffect());
             //                                    break;
             //                                }
 
-            //                            case "åŠ¹æœã‚¿ã‚¤ãƒ—":
+            //                            case "Œø‰Êƒ^ƒCƒv":
             //                                {
-            //                                    // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
+            //                                    // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
             //                                    if (GeneralLib.IsNumber(@params[idx + 1]))
             //                                    {
             //                                        j = Conversions.Toint(@params[idx + 1]);
@@ -3275,9 +3272,9 @@ namespace SRCCore.Expressions
             //                                    break;
             //                                }
 
-            //                            case "åŠ¹æœãƒ¬ãƒ™ãƒ«":
+            //                            case "Œø‰ÊƒŒƒxƒ‹":
             //                                {
-            //                                    // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
+            //                                    // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
             //                                    if (GeneralLib.IsNumber(@params[idx + 1]))
             //                                    {
             //                                        j = Conversions.Toint(@params[idx + 1]);
@@ -3294,9 +3291,9 @@ namespace SRCCore.Expressions
             //                                    break;
             //                                }
 
-            //                            case "åŠ¹æœãƒ‡ãƒ¼ã‚¿":
+            //                            case "Œø‰Êƒf[ƒ^":
             //                                {
-            //                                    // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
+            //                                    // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
             //                                    if (GeneralLib.IsNumber(@params[idx + 1]))
             //                                    {
             //                                        j = Conversions.Toint(@params[idx + 1]);
@@ -3311,45 +3308,45 @@ namespace SRCCore.Expressions
             //                                    break;
             //                                }
 
-            //                            case "å°„ç¨‹":
-            //                            case "æœ€å¤§å°„ç¨‹":
+            //                            case "Ë’ö":
+            //                            case "Å‘åË’ö":
             //                                {
             //                                    EvalInfoFuncRet = SrcFormatter.Format(withBlock17.MaxRange);
             //                                    break;
             //                                }
 
-            //                            case "æœ€å°å°„ç¨‹":
+            //                            case "Å¬Ë’ö":
             //                                {
             //                                    EvalInfoFuncRet = SrcFormatter.Format(withBlock17.MinRange);
             //                                    break;
             //                                }
 
-            //                            case "æœ€å¤§ä½¿ç”¨å›æ•°":
-            //                            case "ä½¿ç”¨å›æ•°":
+            //                            case "Å‘åg—p‰ñ”":
+            //                            case "g—p‰ñ”":
             //                                {
             //                                    EvalInfoFuncRet = SrcFormatter.Format(withBlock17.Stock);
             //                                    break;
             //                                }
 
-            //                            case "æ¶ˆè²»ï¼¥ï¼®":
+            //                            case "Á”ï‚d‚m":
             //                                {
             //                                    EvalInfoFuncRet = SrcFormatter.Format(withBlock17.ENConsumption);
             //                                    break;
             //                                }
 
-            //                            case "å¿…è¦æ°—åŠ›":
+            //                            case "•K—v‹C—Í":
             //                                {
             //                                    EvalInfoFuncRet = SrcFormatter.Format(withBlock17.NecessaryMorale);
             //                                    break;
             //                                }
 
-            //                            case "å±æ€§":
+            //                            case "‘®«":
             //                                {
             //                                    EvalInfoFuncRet = withBlock17.Class;
             //                                    break;
             //                                }
 
-            //                            case "å±æ€§æ‰€æœ‰":
+            //                            case "‘®«Š—L":
             //                                {
             //                                    if (GeneralLib.InStrNotNest(withBlock17.Class, @params[idx + 1]) > 0)
             //                                    {
@@ -3363,7 +3360,7 @@ namespace SRCCore.Expressions
             //                                    break;
             //                                }
 
-            //                            case "å±æ€§ãƒ¬ãƒ™ãƒ«":
+            //                            case "‘®«ƒŒƒxƒ‹":
             //                                {
             //                                    j = GeneralLib.InStrNotNest(withBlock17.Class, @params[idx + 1] + "L");
             //                                    if (j == 0)
@@ -3388,14 +3385,14 @@ namespace SRCCore.Expressions
             //                                    break;
             //                                }
 
-            //                            case "å¿…è¦æŠ€èƒ½":
+            //                            case "•K—v‹Z”\":
             //                                {
             //                                    EvalInfoFuncRet = withBlock17.NecessarySkill;
             //                                    break;
             //                                }
 
-            //                            case "ä½¿ç”¨å¯":
-            //                            case "ä¿®å¾—":
+            //                            case "g—p‰Â":
+            //                            case "C“¾":
             //                                {
             //                                    EvalInfoFuncRet = "1";
             //                                    break;
@@ -3406,7 +3403,7 @@ namespace SRCCore.Expressions
             //            }
             //            else if (pd is object)
             //            {
-            //                // ä½•ç•ªç›®ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã‚’åˆ¤å®š
+            //                // ‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
             //                if (GeneralLib.IsNumber(@params[idx]))
             //                {
             //                    i = Conversions.Toint(@params[idx]);
@@ -3424,7 +3421,7 @@ namespace SRCCore.Expressions
             //                        }
             //                    }
             //                }
-            //                // æŒ‡å®šã—ãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã„
+            //                // w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
             //                if (i <= 0 | pd.CountAbility() < i)
             //                {
             //                    return EvalInfoFuncRet;
@@ -3436,21 +3433,21 @@ namespace SRCCore.Expressions
             //                    switch (@params[idx] ?? "")
             //                    {
             //                        case var case10 when case10 == "":
-            //                        case "åç§°":
+            //                        case "–¼Ì":
             //                            {
             //                                EvalInfoFuncRet = withBlock18.Name;
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœæ•°":
+            //                        case "Œø‰Ê”":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock18.CountEffect());
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœã‚¿ã‚¤ãƒ—":
+            //                        case "Œø‰Êƒ^ƒCƒv":
             //                            {
-            //                                // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
+            //                                // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
             //                                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                                {
             //                                    j = Conversions.Toint(@params[idx + 1]);
@@ -3465,9 +3462,9 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœãƒ¬ãƒ™ãƒ«":
+            //                        case "Œø‰ÊƒŒƒxƒ‹":
             //                            {
-            //                                // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
+            //                                // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
             //                                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                                {
             //                                    j = Conversions.Toint(@params[idx + 1]);
@@ -3484,9 +3481,9 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœãƒ‡ãƒ¼ã‚¿":
+            //                        case "Œø‰Êƒf[ƒ^":
             //                            {
-            //                                // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
+            //                                // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
             //                                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                                {
             //                                    j = Conversions.Toint(@params[idx + 1]);
@@ -3501,45 +3498,45 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å°„ç¨‹":
-            //                        case "æœ€å¤§å°„ç¨‹":
+            //                        case "Ë’ö":
+            //                        case "Å‘åË’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock18.MaxRange);
             //                                break;
             //                            }
 
-            //                        case "æœ€å°å°„ç¨‹":
+            //                        case "Å¬Ë’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock18.MinRange);
             //                                break;
             //                            }
 
-            //                        case "æœ€å¤§ä½¿ç”¨å›æ•°":
-            //                        case "ä½¿ç”¨å›æ•°":
+            //                        case "Å‘åg—p‰ñ”":
+            //                        case "g—p‰ñ”":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock18.Stock);
             //                                break;
             //                            }
 
-            //                        case "æ¶ˆè²»ï¼¥ï¼®":
+            //                        case "Á”ï‚d‚m":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock18.ENConsumption);
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æ°—åŠ›":
+            //                        case "•K—v‹C—Í":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock18.NecessaryMorale);
             //                                break;
             //                            }
 
-            //                        case "å±æ€§":
+            //                        case "‘®«":
             //                            {
             //                                EvalInfoFuncRet = withBlock18.Class;
             //                                break;
             //                            }
 
-            //                        case "å±æ€§æ‰€æœ‰":
+            //                        case "‘®«Š—L":
             //                            {
             //                                if (GeneralLib.InStrNotNest(withBlock18.Class, @params[idx + 1]) > 0)
             //                                {
@@ -3553,7 +3550,7 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å±æ€§ãƒ¬ãƒ™ãƒ«":
+            //                        case "‘®«ƒŒƒxƒ‹":
             //                            {
             //                                j = GeneralLib.InStrNotNest(withBlock18.Class, @params[idx + 1] + "L");
             //                                if (j == 0)
@@ -3578,14 +3575,14 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æŠ€èƒ½":
+            //                        case "•K—v‹Z”\":
             //                            {
             //                                EvalInfoFuncRet = withBlock18.NecessarySkill;
             //                                break;
             //                            }
 
-            //                        case "ä½¿ç”¨å¯":
-            //                        case "ä¿®å¾—":
+            //                        case "g—p‰Â":
+            //                        case "C“¾":
             //                            {
             //                                EvalInfoFuncRet = "1";
             //                                break;
@@ -3595,7 +3592,7 @@ namespace SRCCore.Expressions
             //            }
             //            else if (it is object)
             //            {
-            //                // ä½•ç•ªç›®ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã‚’åˆ¤å®š
+            //                // ‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
             //                if (GeneralLib.IsNumber(@params[idx]))
             //                {
             //                    i = Conversions.Toint(@params[idx]);
@@ -3613,7 +3610,7 @@ namespace SRCCore.Expressions
             //                        }
             //                    }
             //                }
-            //                // æŒ‡å®šã—ãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã„
+            //                // w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
             //                if (i <= 0 | it.CountAbility() < i)
             //                {
             //                    return EvalInfoFuncRet;
@@ -3625,21 +3622,21 @@ namespace SRCCore.Expressions
             //                    switch (@params[idx] ?? "")
             //                    {
             //                        case var case11 when case11 == "":
-            //                        case "åç§°":
+            //                        case "–¼Ì":
             //                            {
             //                                EvalInfoFuncRet = withBlock19.Name;
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœæ•°":
+            //                        case "Œø‰Ê”":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock19.CountEffect());
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœã‚¿ã‚¤ãƒ—":
+            //                        case "Œø‰Êƒ^ƒCƒv":
             //                            {
-            //                                // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
+            //                                // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
             //                                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                                {
             //                                    j = Conversions.Toint(@params[idx + 1]);
@@ -3654,9 +3651,9 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœãƒ¬ãƒ™ãƒ«":
+            //                        case "Œø‰ÊƒŒƒxƒ‹":
             //                            {
-            //                                // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
+            //                                // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
             //                                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                                {
             //                                    j = Conversions.Toint(@params[idx + 1]);
@@ -3673,9 +3670,9 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœãƒ‡ãƒ¼ã‚¿":
+            //                        case "Œø‰Êƒf[ƒ^":
             //                            {
-            //                                // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
+            //                                // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
             //                                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                                {
             //                                    j = Conversions.Toint(@params[idx + 1]);
@@ -3690,45 +3687,45 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å°„ç¨‹":
-            //                        case "æœ€å¤§å°„ç¨‹":
+            //                        case "Ë’ö":
+            //                        case "Å‘åË’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock19.MaxRange);
             //                                break;
             //                            }
 
-            //                        case "æœ€å°å°„ç¨‹":
+            //                        case "Å¬Ë’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock19.MinRange);
             //                                break;
             //                            }
 
-            //                        case "æœ€å¤§ä½¿ç”¨å›æ•°":
-            //                        case "ä½¿ç”¨å›æ•°":
+            //                        case "Å‘åg—p‰ñ”":
+            //                        case "g—p‰ñ”":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock19.Stock);
             //                                break;
             //                            }
 
-            //                        case "æ¶ˆè²»ï¼¥ï¼®":
+            //                        case "Á”ï‚d‚m":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock19.ENConsumption);
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æ°—åŠ›":
+            //                        case "•K—v‹C—Í":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock19.NecessaryMorale);
             //                                break;
             //                            }
 
-            //                        case "å±æ€§":
+            //                        case "‘®«":
             //                            {
             //                                EvalInfoFuncRet = withBlock19.Class;
             //                                break;
             //                            }
 
-            //                        case "å±æ€§æ‰€æœ‰":
+            //                        case "‘®«Š—L":
             //                            {
             //                                if (GeneralLib.InStrNotNest(withBlock19.Class, @params[idx + 1]) > 0)
             //                                {
@@ -3742,7 +3739,7 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å±æ€§ãƒ¬ãƒ™ãƒ«":
+            //                        case "‘®«ƒŒƒxƒ‹":
             //                            {
             //                                j = GeneralLib.InStrNotNest(withBlock19.Class, @params[idx + 1] + "L");
             //                                if (j == 0)
@@ -3767,14 +3764,14 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æŠ€èƒ½":
+            //                        case "•K—v‹Z”\":
             //                            {
             //                                EvalInfoFuncRet = withBlock19.NecessarySkill;
             //                                break;
             //                            }
 
-            //                        case "ä½¿ç”¨å¯":
-            //                        case "ä¿®å¾—":
+            //                        case "g—p‰Â":
+            //                        case "C“¾":
             //                            {
             //                                EvalInfoFuncRet = "1";
             //                                break;
@@ -3784,7 +3781,7 @@ namespace SRCCore.Expressions
             //            }
             //            else if (itd is object)
             //            {
-            //                // ä½•ç•ªç›®ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã‚’åˆ¤å®š
+            //                // ‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
             //                if (GeneralLib.IsNumber(@params[idx]))
             //                {
             //                    i = Conversions.Toint(@params[idx]);
@@ -3802,7 +3799,7 @@ namespace SRCCore.Expressions
             //                        }
             //                    }
             //                }
-            //                // æŒ‡å®šã—ãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã„
+            //                // w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
             //                if (i <= 0 | itd.CountAbility() < i)
             //                {
             //                    return EvalInfoFuncRet;
@@ -3814,21 +3811,21 @@ namespace SRCCore.Expressions
             //                    switch (@params[idx] ?? "")
             //                    {
             //                        case var case12 when case12 == "":
-            //                        case "åç§°":
+            //                        case "–¼Ì":
             //                            {
             //                                EvalInfoFuncRet = withBlock20.Name;
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœæ•°":
+            //                        case "Œø‰Ê”":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock20.CountEffect());
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœã‚¿ã‚¤ãƒ—":
+            //                        case "Œø‰Êƒ^ƒCƒv":
             //                            {
-            //                                // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
+            //                                // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
             //                                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                                {
             //                                    j = Conversions.Toint(@params[idx + 1]);
@@ -3843,9 +3840,9 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœãƒ¬ãƒ™ãƒ«":
+            //                        case "Œø‰ÊƒŒƒxƒ‹":
             //                            {
-            //                                // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
+            //                                // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
             //                                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                                {
             //                                    j = Conversions.Toint(@params[idx + 1]);
@@ -3862,9 +3859,9 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "åŠ¹æœãƒ‡ãƒ¼ã‚¿":
+            //                        case "Œø‰Êƒf[ƒ^":
             //                            {
-            //                                // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
+            //                                // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
             //                                if (GeneralLib.IsNumber(@params[idx + 1]))
             //                                {
             //                                    j = Conversions.Toint(@params[idx + 1]);
@@ -3879,45 +3876,45 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å°„ç¨‹":
-            //                        case "æœ€å¤§å°„ç¨‹":
+            //                        case "Ë’ö":
+            //                        case "Å‘åË’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock20.MaxRange);
             //                                break;
             //                            }
 
-            //                        case "æœ€å°å°„ç¨‹":
+            //                        case "Å¬Ë’ö":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock20.MinRange);
             //                                break;
             //                            }
 
-            //                        case "æœ€å¤§ä½¿ç”¨å›æ•°":
-            //                        case "ä½¿ç”¨å›æ•°":
+            //                        case "Å‘åg—p‰ñ”":
+            //                        case "g—p‰ñ”":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock20.Stock);
             //                                break;
             //                            }
 
-            //                        case "æ¶ˆè²»ï¼¥ï¼®":
+            //                        case "Á”ï‚d‚m":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock20.ENConsumption);
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æ°—åŠ›":
+            //                        case "•K—v‹C—Í":
             //                            {
             //                                EvalInfoFuncRet = SrcFormatter.Format(withBlock20.NecessaryMorale);
             //                                break;
             //                            }
 
-            //                        case "å±æ€§":
+            //                        case "‘®«":
             //                            {
             //                                EvalInfoFuncRet = withBlock20.Class;
             //                                break;
             //                            }
 
-            //                        case "å±æ€§æ‰€æœ‰":
+            //                        case "‘®«Š—L":
             //                            {
             //                                if (GeneralLib.InStrNotNest(withBlock20.Class, @params[idx + 1]) > 0)
             //                                {
@@ -3931,7 +3928,7 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å±æ€§ãƒ¬ãƒ™ãƒ«":
+            //                        case "‘®«ƒŒƒxƒ‹":
             //                            {
             //                                j = GeneralLib.InStrNotNest(withBlock20.Class, @params[idx + 1] + "L");
             //                                if (j == 0)
@@ -3956,14 +3953,14 @@ namespace SRCCore.Expressions
             //                                break;
             //                            }
 
-            //                        case "å¿…è¦æŠ€èƒ½":
+            //                        case "•K—v‹Z”\":
             //                            {
             //                                EvalInfoFuncRet = withBlock20.NecessarySkill;
             //                                break;
             //                            }
 
-            //                        case "ä½¿ç”¨å¯":
-            //                        case "ä¿®å¾—":
+            //                        case "g—p‰Â":
+            //                        case "C“¾":
             //                            {
             //                                EvalInfoFuncRet = "1";
             //                                break;
@@ -3975,7 +3972,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ãƒ©ãƒ³ã‚¯":
+            //    case "ƒ‰ƒ“ƒN":
             //        {
             //            if (u is object)
             //            {
@@ -3985,7 +3982,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ãƒœã‚¹ãƒ©ãƒ³ã‚¯":
+            //    case "ƒ{ƒXƒ‰ƒ“ƒN":
             //        {
             //            if (u is object)
             //            {
@@ -3995,7 +3992,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ã‚¨ãƒªã‚¢":
+            //    case "ƒGƒŠƒA":
             //        {
             //            if (u is object)
             //            {
@@ -4005,7 +4002,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æ€è€ƒãƒ¢ãƒ¼ãƒ‰":
+            //    case "vlƒ‚[ƒh":
             //        {
             //            if (u is object)
             //            {
@@ -4015,7 +4012,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æœ€å¤§æ”»æ’ƒåŠ›":
+            //    case "Å‘åUŒ‚—Í":
             //        {
             //            if (u is object)
             //            {
@@ -4025,7 +4022,7 @@ namespace SRCCore.Expressions
             //                    var loopTo20 = withBlock21.CountWeapon();
             //                    for (i = 1; i <= loopTo20; i++)
             //                    {
-            //                        if (withBlock21.IsWeaponMastered(i) & !withBlock21.IsDisabled(withBlock21.Weapon(i).Name) & !withBlock21.IsWeaponClassifiedAs(i, "åˆ"))
+            //                        if (withBlock21.IsWeaponMastered(i) & !withBlock21.IsDisabled(withBlock21.Weapon(i).Name) & !withBlock21.IsWeaponClassifiedAs(i, "‡"))
             //                        {
             //                            if (withBlock21.WeaponPower(i, "") > max_value)
             //                            {
@@ -4045,7 +4042,7 @@ namespace SRCCore.Expressions
             //                {
             //                    WeaponData localWeapon7() { object argIndex1 = i; var ret = ud.Weapon(argIndex1); return ret; }
 
-            //                    if (Strings.InStr(localWeapon7().Class, "åˆ") == 0)
+            //                    if (Strings.InStr(localWeapon7().Class, "‡") == 0)
             //                    {
             //                        WeaponData localWeapon6() { object argIndex1 = i; var ret = ud.Weapon(argIndex1); return ret; }
 
@@ -4064,7 +4061,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æœ€é•·å°„ç¨‹":
+            //    case "Å’·Ë’ö":
             //        {
             //            if (u is object)
             //            {
@@ -4074,7 +4071,7 @@ namespace SRCCore.Expressions
             //                    var loopTo22 = withBlock22.CountWeapon();
             //                    for (i = 1; i <= loopTo22; i++)
             //                    {
-            //                        if (withBlock22.IsWeaponMastered(i) & !withBlock22.IsDisabled(withBlock22.Weapon(i).Name) & !withBlock22.IsWeaponClassifiedAs(i, "åˆ"))
+            //                        if (withBlock22.IsWeaponMastered(i) & !withBlock22.IsDisabled(withBlock22.Weapon(i).Name) & !withBlock22.IsWeaponClassifiedAs(i, "‡"))
             //                        {
             //                            if (withBlock22.WeaponMaxRange(i) > max_value)
             //                            {
@@ -4094,7 +4091,7 @@ namespace SRCCore.Expressions
             //                {
             //                    WeaponData localWeapon10() { object argIndex1 = i; var ret = ud.Weapon(argIndex1); return ret; }
 
-            //                    if (Strings.InStr(localWeapon10().Class, "åˆ") == 0)
+            //                    if (Strings.InStr(localWeapon10().Class, "‡") == 0)
             //                    {
             //                        WeaponData localWeapon9() { object argIndex1 = i; var ret = ud.Weapon(argIndex1); return ret; }
 
@@ -4113,7 +4110,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æ®‹ã‚Šã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯æ•°":
+            //    case "c‚èƒTƒ|[ƒgƒAƒ^ƒbƒN”":
             //        {
             //            if (u is object)
             //            {
@@ -4123,7 +4120,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æ®‹ã‚Šã‚µãƒãƒ¼ãƒˆã‚¬ãƒ¼ãƒ‰æ•°":
+            //    case "c‚èƒTƒ|[ƒgƒK[ƒh”":
             //        {
             //            if (u is object)
             //            {
@@ -4133,7 +4130,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æ®‹ã‚ŠåŒæ™‚æ´è­·æ”»æ’ƒæ•°":
+            //    case "c‚è“¯‰‡ŒìUŒ‚”":
             //        {
             //            if (u is object)
             //            {
@@ -4143,7 +4140,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æ®‹ã‚Šã‚«ã‚¦ãƒ³ã‚¿ãƒ¼æ”»æ’ƒæ•°":
+            //    case "c‚èƒJƒEƒ“ƒ^[UŒ‚”":
             //        {
             //            if (u is object)
             //            {
@@ -4153,7 +4150,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æ”¹é€ è²»":
+            //    case "‰ü‘¢”ï":
             //        {
             //            if (u is object)
             //            {
@@ -4163,7 +4160,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æœ€å¤§æ”¹é€ æ•°":
+            //    case "Å‘å‰ü‘¢”":
             //        {
             //            if (u is object)
             //            {
@@ -4173,7 +4170,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ã‚¢ã‚¤ãƒ†ãƒ ã‚¯ãƒ©ã‚¹":
+            //    case "ƒAƒCƒeƒ€ƒNƒ‰ƒX":
             //        {
             //            if (it is object)
             //            {
@@ -4187,7 +4184,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "è£…å‚™å€‹æ‰€":
+            //    case "‘•”õŒÂŠ":
             //        {
             //            if (it is object)
             //            {
@@ -4201,7 +4198,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æœ€å¤§ï¼¨ï¼°ä¿®æ­£å€¤":
+            //    case "Å‘å‚g‚oC³’l":
             //        {
             //            if (it is object)
             //            {
@@ -4215,7 +4212,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æœ€å¤§ï¼¥ï¼®ä¿®æ­£å€¤":
+            //    case "Å‘å‚d‚mC³’l":
             //        {
             //            if (it is object)
             //            {
@@ -4229,7 +4226,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "è£…ç”²ä¿®æ­£å€¤":
+            //    case "‘•bC³’l":
             //        {
             //            if (it is object)
             //            {
@@ -4243,7 +4240,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "é‹å‹•æ€§ä¿®æ­£å€¤":
+            //    case "‰^“®«C³’l":
             //        {
             //            if (it is object)
             //            {
@@ -4257,7 +4254,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ç§»å‹•åŠ›ä¿®æ­£å€¤":
+            //    case "ˆÚ“®—ÍC³’l":
             //        {
             //            if (it is object)
             //            {
@@ -4271,8 +4268,8 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "è§£èª¬æ–‡":
-            //    case "ã‚³ãƒ¡ãƒ³ãƒˆ":
+            //    case "‰ğà•¶":
+            //    case "ƒRƒƒ“ƒg":
             //        {
             //            if (it is object)
             //            {
@@ -4292,7 +4289,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "çŸ­ç¸®å":
+            //    case "’Zk–¼":
             //        {
             //            if (spd is object)
             //            {
@@ -4302,7 +4299,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æ¶ˆè²»ï¼³ï¼°":
+            //    case "Á”ï‚r‚o":
             //        {
             //            if (spd is object)
             //            {
@@ -4312,7 +4309,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "å¯¾è±¡":
+            //    case "‘ÎÛ":
             //        {
             //            if (spd is object)
             //            {
@@ -4322,7 +4319,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "æŒç¶šæœŸé–“":
+            //    case "‘±ŠúŠÔ":
             //        {
             //            if (spd is object)
             //            {
@@ -4332,7 +4329,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "é©ç”¨æ¡ä»¶":
+            //    case "“K—pğŒ":
             //        {
             //            if (spd is object)
             //            {
@@ -4342,7 +4339,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ã‚¢ãƒ‹ãƒ¡":
+            //    case "ƒAƒjƒ":
             //        {
             //            if (spd is object)
             //            {
@@ -4352,7 +4349,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "åŠ¹æœæ•°":
+            //    case "Œø‰Ê”":
             //        {
             //            if (spd is object)
             //            {
@@ -4362,7 +4359,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "åŠ¹æœã‚¿ã‚¤ãƒ—":
+            //    case "Œø‰Êƒ^ƒCƒv":
             //        {
             //            if (spd is object)
             //            {
@@ -4377,7 +4374,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "åŠ¹æœãƒ¬ãƒ™ãƒ«":
+            //    case "Œø‰ÊƒŒƒxƒ‹":
             //        {
             //            if (spd is object)
             //            {
@@ -4392,7 +4389,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "åŠ¹æœãƒ‡ãƒ¼ã‚¿":
+            //    case "Œø‰Êƒf[ƒ^":
             //        {
             //            if (spd is object)
             //            {
@@ -4407,12 +4404,12 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ãƒãƒƒãƒ—":
+            //    case "ƒ}ƒbƒv":
             //        {
             //            idx = (idx + 1);
             //            switch (@params[idx] ?? "")
             //            {
-            //                case "ãƒ•ã‚¡ã‚¤ãƒ«å":
+            //                case "ƒtƒ@ƒCƒ‹–¼":
             //                    {
             //                        EvalInfoFuncRet = Map.MapFileName;
             //                        if (Strings.Len(EvalInfoFuncRet) > Strings.Len(SRC.ScenarioPath))
@@ -4426,17 +4423,17 @@ namespace SRCCore.Expressions
             //                        break;
             //                    }
 
-            //                case "å¹…":
+            //                case "•":
             //                    {
             //                        EvalInfoFuncRet = SrcFormatter.Format(Map.MapWidth);
             //                        break;
             //                    }
 
-            //                case "æ™‚é–“å¸¯":
+            //                case "ŠÔ‘Ñ":
             //                    {
             //                        if (!string.IsNullOrEmpty(Map.MapDrawMode))
             //                        {
-            //                            if (Map.MapDrawMode == "ãƒ•ã‚£ãƒ«ã‚¿")
+            //                            if (Map.MapDrawMode == "ƒtƒBƒ‹ƒ^")
             //                            {
             //                                buf = Conversion.Hex(Map.MapDrawFilterColor);
             //                                var loopTo24 = (6 - Strings.Len(buf));
@@ -4451,20 +4448,20 @@ namespace SRCCore.Expressions
 
             //                            if (Map.MapDrawIsMapOnly)
             //                            {
-            //                                buf = buf + " ãƒãƒƒãƒ—é™å®š";
+            //                                buf = buf + " ƒ}ƒbƒvŒÀ’è";
             //                            }
 
             //                            EvalInfoFuncRet = buf;
             //                        }
             //                        else
             //                        {
-            //                            EvalInfoFuncRet = "æ˜¼";
+            //                            EvalInfoFuncRet = "’‹";
             //                        }
 
             //                        break;
             //                    }
 
-            //                case "é«˜ã•":
+            //                case "‚‚³":
             //                    {
             //                        EvalInfoFuncRet = SrcFormatter.Format(Map.MapHeight);
             //                        break;
@@ -4491,52 +4488,52 @@ namespace SRCCore.Expressions
             //                        idx = (idx + 1);
             //                        switch (@params[idx] ?? "")
             //                        {
-            //                            case "åœ°å½¢å":
+            //                            case "’nŒ`–¼":
             //                                {
             //                                    EvalInfoFuncRet = Map.TerrainName(mx, my_Renamed);
             //                                    break;
             //                                }
 
-            //                            case "åœ°å½¢ã‚¿ã‚¤ãƒ—":
-            //                            case "åœ°å½¢ã‚¯ãƒ©ã‚¹":
+            //                            case "’nŒ`ƒ^ƒCƒv":
+            //                            case "’nŒ`ƒNƒ‰ƒX":
             //                                {
             //                                    EvalInfoFuncRet = Map.TerrainClass(mx, my_Renamed);
             //                                    break;
             //                                }
 
-            //                            case "ç§»å‹•ã‚³ã‚¹ãƒˆ":
+            //                            case "ˆÚ“®ƒRƒXƒg":
             //                                {
-            //                                    // 0.5åˆ»ã¿ã®ç§»å‹•ã‚³ã‚¹ãƒˆã‚’ä½¿ãˆã‚‹ã‚ˆã†ã«ã™ã‚‹ãŸã‚ã€ç§»å‹•ã‚³ã‚¹ãƒˆã¯
-            //                                    // å®Ÿéš›ã®ï¼’å€ã®å€¤ã§è¨˜éŒ²ã•ã‚Œã¦ã„ã‚‹
+            //                                    // 0.5‚İ‚ÌˆÚ“®ƒRƒXƒg‚ğg‚¦‚é‚æ‚¤‚É‚·‚é‚½‚ßAˆÚ“®ƒRƒXƒg‚Í
+            //                                    // ÀÛ‚Ì‚Q”{‚Ì’l‚Å‹L˜^‚³‚ê‚Ä‚¢‚é
             //                                    EvalInfoFuncRet = SrcFormatter.Format(Map.TerrainMoveCost(mx, my_Renamed) / 2d);
             //                                    break;
             //                                }
 
-            //                            case "å›é¿ä¿®æ­£":
+            //                            case "‰ñ”ğC³":
             //                                {
             //                                    EvalInfoFuncRet = SrcFormatter.Format(Map.TerrainEffectForHit(mx, my_Renamed));
             //                                    break;
             //                                }
 
-            //                            case "ãƒ€ãƒ¡ãƒ¼ã‚¸ä¿®æ­£":
+            //                            case "ƒ_ƒ[ƒWC³":
             //                                {
             //                                    EvalInfoFuncRet = SrcFormatter.Format(Map.TerrainEffectForDamage(mx, my_Renamed));
             //                                    break;
             //                                }
 
-            //                            case "ï¼¨ï¼°å›å¾©é‡":
+            //                            case "‚g‚o‰ñ•œ—Ê":
             //                                {
             //                                    EvalInfoFuncRet = SrcFormatter.Format(Map.TerrainEffectForHPRecover(mx, my_Renamed));
             //                                    break;
             //                                }
 
-            //                            case "ï¼¥ï¼®å›å¾©é‡":
+            //                            case "‚d‚m‰ñ•œ—Ê":
             //                                {
             //                                    EvalInfoFuncRet = SrcFormatter.Format(Map.TerrainEffectForENRecover(mx, my_Renamed));
             //                                    break;
             //                                }
 
-            //                            case "ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—å":
+            //                            case "ƒrƒbƒgƒ}ƒbƒv–¼":
             //                                {
             //                                    // MOD START 240a
             //                                    // Select Case MapImageFileTypeData(mx, my)
@@ -4579,7 +4576,7 @@ namespace SRCCore.Expressions
             //                                }
             //                            // MOD  END  240a
             //                            // ADD START 240a
-            //                            case "ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—å":
+            //                            case "ƒŒƒCƒ„[ƒrƒbƒgƒ}ƒbƒv–¼":
             //                                {
             //                                    switch (Map.MapImageFileTypeData[mx, my_Renamed])
             //                                    {
@@ -4605,7 +4602,7 @@ namespace SRCCore.Expressions
             //                                    break;
             //                                }
             //                            // ADD  END  240a
-            //                            case "ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤":
+            //                            case "ƒ†ƒjƒbƒg‚h‚c":
             //                                {
             //                                    if (Map.MapDataForUnit[mx, my_Renamed] is object)
             //                                    {
@@ -4623,7 +4620,7 @@ namespace SRCCore.Expressions
             //            break;
             //        }
 
-            //    case "ã‚ªãƒ—ã‚·ãƒ§ãƒ³":
+            //    case "ƒIƒvƒVƒ‡ƒ“":
             //        {
             //            idx = (idx + 1);
             //            switch (@params[idx] ?? "")
@@ -4710,7 +4707,7 @@ namespace SRCCore.Expressions
             //                // '                    "BattleAnimation", "WeaponAnimation", "MoveAnimation", _
             //                // '                    "ImageBufferNum", "MaxImageBufferSize", "KeepStretchedImage", _
             //                // '                    "UseTransparentBlt"
-            //                // ã€ŒNewGUIã€ã§æ¢ã—ã«æ¥ãŸã‚‰INIã®çŠ¶æ…‹ã‚’è¿”ã™ã€‚ã€Œæ–°ï¼§ï¼µï¼©ã€ã§æ¢ã—ã«æ¥ãŸã‚‰Optionã®çŠ¶æ…‹ã‚’è¿”ã™ã€‚
+            //                // uNewGUIv‚Å’T‚µ‚É—ˆ‚½‚çINI‚Ìó‘Ô‚ğ•Ô‚·BuV‚f‚t‚hv‚Å’T‚µ‚É—ˆ‚½‚çOption‚Ìó‘Ô‚ğ•Ô‚·B
             //                case "Turn":
             //                case "Square":
             //                case "KeepEnemyBGM":
@@ -4736,7 +4733,7 @@ namespace SRCCore.Expressions
 
             //                default:
             //                    {
-            //                        // Optionã‚³ãƒãƒ³ãƒ‰ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’å‚ç…§
+            //                        // OptionƒRƒ}ƒ“ƒh‚ÌƒIƒvƒVƒ‡ƒ“‚ğQÆ
             //                        if (IsOptionDefined(@params[idx]))
             //                        {
             //                            EvalInfoFuncRet = "On";
@@ -4755,6 +4752,16 @@ namespace SRCCore.Expressions
             //}
 
             //return EvalInfoFuncRet;
+
+            if (etype == ValueType.StringType)
+            {
+                str_result = GeneralLib.FormatNum(num_result);
+                return ValueType.StringType;
+            }
+            else
+            {
+                return ValueType.NumericType;
+            }
         }
     }
 }
