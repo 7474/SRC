@@ -48,14 +48,12 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class Plana : AFunction
+    public class Plana : APilotFunction
     {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, Pilots.Pilot pilot, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Plana
+            num_result = pilot?.Plana ?? 0d;
 
             if (etype == ValueType.StringType)
             {
