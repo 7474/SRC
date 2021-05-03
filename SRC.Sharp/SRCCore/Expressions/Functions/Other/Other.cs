@@ -349,7 +349,7 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Keystate
+            // TODO Impl Keystate GUI‚É‰¡—¬‚µ‚·‚é‚±‚Æ‚É‚È‚è‚»‚¤
             //                        if (pcount != 1)
             //                        {
             //                            return CallFunctionRet;
@@ -435,7 +435,6 @@ namespace SRCCore.Expressions.Functions
             //                            CallFunctionRet = ValueType.NumericType;
             //                        }
 
-
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
@@ -455,84 +454,51 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Nickname
-            //                        switch (pcount)
-            //                        {
-            //                            case 1:
-            //                                {
-            //                                    buf = GetValueAsString(@params[1], is_term[1]);
-            //                                    bool localIsDefined15() { object argIndex1 = buf; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
-
-            //                                    bool localIsDefined16() { object argIndex1 = buf; var ret = SRC.NPDList.IsDefined(argIndex1); return ret; }
-
-            //                                    bool localIsDefined17() { object argIndex1 = buf; var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-            //                                    bool localIsDefined18() { object argIndex1 = buf; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
-
-            //                                    bool localIsDefined19() { object argIndex1 = buf; var ret = SRC.IDList.IsDefined(argIndex1); return ret; }
-
-            //                                    if (SRC.PList.IsDefined(buf))
-            //                                    {
-            //                                        Pilot localItem31() { object argIndex1 = buf; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-            //                                        str_result = localItem31().get_Nickname(false);
-            //                                    }
-            //                                    else if (localIsDefined15())
-            //                                    {
-            //                                        PilotData localItem32() { object argIndex1 = buf; var ret = SRC.PDList.Item(argIndex1); return ret; }
-
-            //                                        str_result = localItem32().Nickname;
-            //                                    }
-            //                                    else if (localIsDefined16())
-            //                                    {
-            //                                        NonPilotData localItem33() { object argIndex1 = buf; var ret = SRC.NPDList.Item(argIndex1); return ret; }
-
-            //                                        str_result = localItem33().Nickname;
-            //                                    }
-            //                                    else if (localIsDefined17())
-            //                                    {
-            //                                        Unit localItem34() { object argIndex1 = buf; var ret = SRC.UList.Item(argIndex1); return ret; }
-
-            //                                        str_result = localItem34().Nickname0;
-            //                                    }
-            //                                    else if (localIsDefined18())
-            //                                    {
-            //                                        UnitData localItem35() { object argIndex1 = buf; var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-            //                                        str_result = localItem35().Nickname;
-            //                                    }
-            //                                    else if (localIsDefined19())
-            //                                    {
-            //                                        ItemData localItem36() { object argIndex1 = buf; var ret = SRC.IDList.Item(argIndex1); return ret; }
-
-            //                                        str_result = localItem36().Nickname;
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case 0:
-            //                                {
-            //                                    if (Event.SelectedUnitForEvent is object)
-            //                                    {
-            //                                        str_result = Event.SelectedUnitForEvent.Nickname0;
-            //                                    }
-
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        CallFunctionRet = ValueType.StringType;
-
-            if (etype == ValueType.StringType)
+            switch (pcount)
             {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
+                case 1:
+                    {
+                        var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+
+                        if (SRC.PList.IsDefined(buf))
+                        {
+                            str_result = SRC.PList.Item(buf).get_Nickname(false);
+                        }
+                        else if (SRC.PDList.IsDefined(buf))
+                        {
+                            str_result = SRC.PDList.Item(buf).Nickname;
+                        }
+                        else if (SRC.NPDList.IsDefined(buf))
+                        {
+                            str_result = SRC.NPDList.Item(buf).Nickname;
+                        }
+                        else if (SRC.UList.IsDefined(buf))
+                        {
+                            str_result = SRC.UList.Item(buf).Nickname0;
+                        }
+                        else if (SRC.UDList.IsDefined(buf))
+                        {
+                            str_result = SRC.UDList.Item(buf).Nickname;
+                        }
+                        else if (SRC.IDList.IsDefined(buf))
+                        {
+                            str_result = SRC.IDList.Item(buf).Nickname;
+                        }
+
+                        break;
+                    }
+
+                case 0:
+                    {
+                        if (SRC.Event.SelectedUnitForEvent != null)
+                        {
+                            str_result = SRC.Event.SelectedUnitForEvent.Nickname0;
+                        }
+
+                        break;
+                    }
             }
-            else
-            {
-                return ValueType.NumericType;
-            }
+            return ValueType.StringType;
         }
     }
 
