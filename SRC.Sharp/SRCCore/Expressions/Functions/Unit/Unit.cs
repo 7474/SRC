@@ -262,19 +262,23 @@ namespace SRCCore.Expressions.Functions
             var index = pcount == 1
                 ? SRC.Expression.GetValueAsLong(@params[1], is_term[1])
                 : SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
+            if (index <= 0)
+            {
+                return ValueType.StringType;
+            }
             if (pcount == 2)
             {
                 var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
                 if (pname == "–¢‘•”õ")
                 {
                     var items = SRC.IList.List.Where(itm => itm.Unit == null && itm.Exist).ToList();
-                    str_result = items.Count < index - 1 ? items[index - 1].Name : "";
+                    str_result = items.Count > index - 1 ? items[index - 1].Name : "";
                     return ValueType.StringType;
                 }
             }
             if (unit != null)
             {
-                str_result = unit.ItemList.Count < index - 1 ? unit.ItemList[index - 1].Name : "";
+                str_result = unit.ItemList.Count > index - 1 ? unit.ItemList[index - 1].Name : "";
             }
             return ValueType.StringType;
         }
@@ -291,19 +295,23 @@ namespace SRCCore.Expressions.Functions
             var index = pcount == 1
                 ? SRC.Expression.GetValueAsLong(@params[1], is_term[1])
                 : SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
+            if (index <= 0)
+            {
+                return ValueType.StringType;
+            }
             if (pcount == 2)
             {
                 var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
                 if (pname == "–¢‘•”õ")
                 {
                     var items = SRC.IList.List.Where(itm => itm.Unit == null && itm.Exist).ToList();
-                    str_result = items.Count < index - 1 ? items[index - 1].ID : "";
+                    str_result = items.Count > index - 1 ? items[index - 1].ID : "";
                     return ValueType.StringType;
                 }
             }
             if (unit != null)
             {
-                str_result = unit.ItemList.Count < index - 1 ? unit.ItemList[index - 1].ID : "";
+                str_result = unit.ItemList.Count > index - 1 ? unit.ItemList[index - 1].ID : "";
             }
             return ValueType.StringType;
         }
@@ -339,45 +347,57 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class Pilot : AFunction
+    public class Pilot : AUnitFunction
     {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override int OptionArgCount => 1;
+        protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Pilot
-
-            if (etype == ValueType.StringType)
+            var index = pcount == 1
+                ? SRC.Expression.GetValueAsLong(@params[1], is_term[1])
+                : SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
+            if (unit != null && unit.CountPilot() > 0)
             {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
+                if (index > 0)
+                {
+                    var pilots = unit.AllRawPilots.ToList();
+                    str_result = pilots.Count > index - 1 ? pilots[index - 1].Name : "";
+                }
+                else
+                {
+                    str_result = unit.MainPilot().Name;
+                }
             }
-            else
-            {
-                return ValueType.NumericType;
-            }
+            return ValueType.StringType;
         }
     }
 
-    public class PilotID : AFunction
+    public class PilotID : AUnitFunction
     {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override int OptionArgCount => 1;
+        protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Pilotid
-
-            if (etype == ValueType.StringType)
+            var index = pcount == 1
+                ? SRC.Expression.GetValueAsLong(@params[1], is_term[1])
+                : SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
+            if (unit != null && unit.CountPilot() > 0)
             {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
+                if (index > 0)
+                {
+                    var pilots = unit.AllRawPilots.ToList();
+                    str_result = pilots.Count > index - 1 ? pilots[index - 1].ID : "";
+                }
+                else
+                {
+                    str_result = unit.MainPilot().ID;
+                }
             }
-            else
-            {
-                return ValueType.NumericType;
-            }
+            return ValueType.StringType;
         }
     }
 
