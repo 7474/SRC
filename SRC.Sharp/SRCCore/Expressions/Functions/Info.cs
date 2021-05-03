@@ -23,45 +23,45 @@ namespace SRCCore.Expressions.Functions
             SpecialPowerData spd = null;
             int idx;
 
-            // ŠeƒIƒuƒWƒFƒNƒg‚Ìİ’è
+            // å„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¨­å®š
             switch (@params[1])
             {
-                case "ƒ†ƒjƒbƒg":
+                case "ãƒ¦ãƒ‹ãƒƒãƒˆ":
                     {
                         u = SRC.UList.Item(@params[2]);
                         idx = 3;
                         break;
                     }
 
-                case "ƒ†ƒjƒbƒgƒf[ƒ^":
+                case "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿":
                     {
                         ud = SRC.UDList.Item(@params[2]);
                         idx = 3;
                         break;
                     }
 
-                case "ƒpƒCƒƒbƒg":
+                case "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ":
                     {
                         p = SRC.PList.Item(@params[2]);
                         idx = 3;
                         break;
                     }
 
-                case "ƒpƒCƒƒbƒgƒf[ƒ^":
+                case "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿":
                     {
                         pd = SRC.PDList.Item(@params[2]);
                         idx = 3;
                         break;
                     }
 
-                case "”ñí“¬ˆõ":
+                case "éæˆ¦é—˜å“¡":
                     {
                         nd = SRC.NPDList.Item(@params[2]);
                         idx = 3;
                         break;
                     }
 
-                case "ƒAƒCƒeƒ€":
+                case "ã‚¢ã‚¤ãƒ†ãƒ ":
                     {
                         if (SRC.IList.IsDefined(@params[2]))
                         {
@@ -76,22 +76,22 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "ƒAƒCƒeƒ€ƒf[ƒ^":
+                case "ã‚¢ã‚¤ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿":
                     {
                         itd = SRC.IDList.Item(@params[2]);
                         idx = 3;
                         break;
                     }
 
-                case "ƒXƒyƒVƒƒƒ‹ƒpƒ[":
+                case "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼":
                     {
                         spd = SRC.SPDList.Item(@params[2]);
                         idx = 3;
                         break;
                     }
 
-                case "ƒ}ƒbƒv":
-                case "ƒIƒvƒVƒ‡ƒ“":
+                case "ãƒãƒƒãƒ—":
+                case "ã‚ªãƒ—ã‚·ãƒ§ãƒ³":
                     {
                         idx = 1;
                         break;
@@ -120,7 +120,7 @@ namespace SRCCore.Expressions.Functions
             int mx = default, my = default;
             switch (@params[idx] ?? "")
             {
-                case "–¼Ì":
+                case "åç§°":
                     {
                         if (u != null)
                         {
@@ -158,7 +158,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "“Ç‚İ‰¼–¼":
+                case "èª­ã¿ä»®å":
                     {
                         if (u != null)
                         {
@@ -192,7 +192,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "ˆ¤Ì":
+                case "æ„›ç§°":
                     {
                         if (u != null)
                         {
@@ -226,7 +226,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "«•Ê":
+                case "æ€§åˆ¥":
                     {
                         if (p != null)
                         {
@@ -239,8 +239,8 @@ namespace SRCCore.Expressions.Functions
                         return ValueType.StringType;
                     }
 
-                case "ƒ†ƒjƒbƒgƒNƒ‰ƒX":
-                case "‹@‘ÌƒNƒ‰ƒX":
+                case "ãƒ¦ãƒ‹ãƒƒãƒˆã‚¯ãƒ©ã‚¹":
+                case "æ©Ÿä½“ã‚¯ãƒ©ã‚¹":
                     {
                         if (u != null)
                         {
@@ -262,7 +262,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "’nŒ`“K‰":
+                case "åœ°å½¢é©å¿œ":
                     {
                         if (u != null)
                         {
@@ -324,7 +324,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "ŒoŒ±’l":
+                case "çµŒé¨“å€¤":
                     {
                         if (u != null)
                         {
@@ -346,7 +346,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "Ši“¬":
+                case "æ ¼é—˜":
                     {
                         if (p != null)
                         {
@@ -360,7 +360,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "ËŒ‚":
+                case "å°„æ’ƒ":
                     {
                         if (p != null)
                         {
@@ -374,7 +374,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "–½’†":
+                case "å‘½ä¸­":
                     {
                         if (p != null)
                         {
@@ -388,7 +388,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "‰ñ”ğ":
+                case "å›é¿":
                     {
                         if (p != null)
                         {
@@ -402,7 +402,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "‹Z—Ê":
+                case "æŠ€é‡":
                     {
                         if (p != null)
                         {
@@ -416,7 +416,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "”½‰":
+                case "åå¿œ":
                     {
                         if (p != null)
                         {
@@ -430,7 +430,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "–hŒä":
+                case "é˜²å¾¡":
                     {
                         if (p != null)
                         {
@@ -440,7 +440,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "Ši“¬Šî–{’l":
+                case "æ ¼é—˜åŸºæœ¬å€¤":
                     {
                         if (p != null)
                         {
@@ -450,7 +450,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "ËŒ‚Šî–{’l":
+                case "å°„æ’ƒåŸºæœ¬å€¤":
                     {
                         if (p != null)
                         {
@@ -460,7 +460,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "–½’†Šî–{’l":
+                case "å‘½ä¸­åŸºæœ¬å€¤":
                     {
                         if (p != null)
                         {
@@ -470,7 +470,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "‰ñ”ğŠî–{’l":
+                case "å›é¿åŸºæœ¬å€¤":
                     {
                         if (p != null)
                         {
@@ -480,7 +480,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "‹Z—ÊŠî–{’l":
+                case "æŠ€é‡åŸºæœ¬å€¤":
                     {
                         if (p != null)
                         {
@@ -490,7 +490,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "”½‰Šî–{’l":
+                case "åå¿œåŸºæœ¬å€¤":
                     {
                         if (p != null)
                         {
@@ -500,7 +500,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "Ši“¬C³’l":
+                case "æ ¼é—˜ä¿®æ­£å€¤":
                     {
                         if (p != null)
                         {
@@ -510,7 +510,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "ËŒ‚C³’l":
+                case "å°„æ’ƒä¿®æ­£å€¤":
                     {
                         if (p != null)
                         {
@@ -520,7 +520,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "–½’†C³’l":
+                case "å‘½ä¸­ä¿®æ­£å€¤":
                     {
                         if (p != null)
                         {
@@ -530,7 +530,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "‰ñ”ğC³’l":
+                case "å›é¿ä¿®æ­£å€¤":
                     {
                         if (p != null)
                         {
@@ -540,7 +540,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "‹Z—ÊC³’l":
+                case "æŠ€é‡ä¿®æ­£å€¤":
                     {
                         if (p != null)
                         {
@@ -550,7 +550,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "”½‰C³’l":
+                case "åå¿œä¿®æ­£å€¤":
                     {
                         if (p != null)
                         {
@@ -560,7 +560,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "Ši“¬x‰‡C³’l":
+                case "æ ¼é—˜æ”¯æ´ä¿®æ­£å€¤":
                     {
                         if (p != null)
                         {
@@ -570,7 +570,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "ËŒ‚x‰‡C³’l":
+                case "å°„æ’ƒæ”¯æ´ä¿®æ­£å€¤":
                     {
                         if (p != null)
                         {
@@ -580,7 +580,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "–½’†x‰‡C³’l":
+                case "å‘½ä¸­æ”¯æ´ä¿®æ­£å€¤":
                     {
                         if (p != null)
                         {
@@ -590,7 +590,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "‰ñ”ğx‰‡C³’l":
+                case "å›é¿æ”¯æ´ä¿®æ­£å€¤":
                     {
                         if (p != null)
                         {
@@ -600,7 +600,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "‹Z—Êx‰‡C³’l":
+                case "æŠ€é‡æ”¯æ´ä¿®æ­£å€¤":
                     {
                         if (p != null)
                         {
@@ -610,7 +610,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "”½‰x‰‡C³’l":
+                case "åå¿œæ”¯æ´ä¿®æ­£å€¤":
                     {
                         if (p != null)
                         {
@@ -620,7 +620,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "«Ši":
+                case "æ€§æ ¼":
                     {
                         if (p != null)
                         {
@@ -634,7 +634,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "Å‘å‚r‚o":
+                case "æœ€å¤§ï¼³ï¼°":
                     {
                         if (p != null)
                         {
@@ -655,7 +655,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "‚r‚o":
+                case "ï¼³ï¼°":
                     {
                         if (p != null)
                         {
@@ -676,7 +676,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "ƒOƒ‰ƒtƒBƒbƒN":
+                case "ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯":
                     {
                         if (u != null)
                         {
@@ -702,7 +702,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "‚l‚h‚c‚h":
+                case "ï¼­ï¼©ï¼¤ï¼©":
                     {
                         if (p != null)
                         {
@@ -716,7 +716,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "ƒŒƒxƒ‹":
+                case "ãƒ¬ãƒ™ãƒ«":
                     {
                         if (p != null)
                         {
@@ -726,7 +726,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "—İÏŒoŒ±’l":
+                case "ç´¯ç©çµŒé¨“å€¤":
                     {
                         if (p != null)
                         {
@@ -736,7 +736,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "‹C—Í":
+                case "æ°—åŠ›":
                     {
                         if (p != null)
                         {
@@ -746,8 +746,8 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "Å‘å—ì—Í":
-                case "Å‘åƒvƒ‰[ƒi":
+                case "æœ€å¤§éœŠåŠ›":
+                case "æœ€å¤§ãƒ—ãƒ©ãƒ¼ãƒŠ":
                     {
                         if (p != null)
                         {
@@ -755,14 +755,14 @@ namespace SRCCore.Expressions.Functions
                         }
                         else if (pd != null)
                         {
-                            str_result = SrcFormatter.Format(pd.SkillLevel(0, "—ì—Í"));
+                            str_result = SrcFormatter.Format(pd.SkillLevel(0, "éœŠåŠ›"));
                         }
 
                         break;
                     }
 
-                case "—ì—Í":
-                case "ƒvƒ‰[ƒi":
+                case "éœŠåŠ›":
+                case "ãƒ—ãƒ©ãƒ¼ãƒŠ":
                     {
                         if (p != null)
                         {
@@ -770,14 +770,14 @@ namespace SRCCore.Expressions.Functions
                         }
                         else if (pd != null)
                         {
-                            str_result = SrcFormatter.Format(pd.SkillLevel(0, "—ì—Í"));
+                            str_result = SrcFormatter.Format(pd.SkillLevel(0, "éœŠåŠ›"));
                         }
 
                         break;
                     }
 
-                case "“¯’²—¦":
-                case "ƒVƒ“ƒNƒ—¦":
+                case "åŒèª¿ç‡":
+                case "ã‚·ãƒ³ã‚¯ãƒ­ç‡":
                     {
                         if (p != null)
                         {
@@ -785,15 +785,15 @@ namespace SRCCore.Expressions.Functions
                         }
                         else if (pd != null)
                         {
-                            str_result = SrcFormatter.Format(pd.SkillLevel(0, "“¯’²—¦"));
+                            str_result = SrcFormatter.Format(pd.SkillLevel(0, "åŒèª¿ç‡"));
                         }
 
                         break;
                     }
 
-                case "ƒXƒyƒVƒƒƒ‹ƒpƒ[":
-                case "¸_ƒRƒ}ƒ“ƒh":
-                case "¸_":
+                case "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼":
+                case "ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰":
+                case "ç²¾ç¥":
                     {
                         if (p != null)
                         {
@@ -825,8 +825,8 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "ƒXƒyƒVƒƒƒ‹ƒpƒ[Š—L":
-                case "¸_ƒRƒ}ƒ“ƒhŠ—L":
+                case "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼æ‰€æœ‰":
+                case "ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰æ‰€æœ‰":
                     {
                         if (p != null)
                         {
@@ -862,8 +862,8 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒRƒXƒg":
-                case "¸_ƒRƒ}ƒ“ƒhƒRƒXƒg":
+                case "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚³ã‚¹ãƒˆ":
+                case "ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰ã‚³ã‚¹ãƒˆ":
                     {
                         if (p != null)
                         {
@@ -885,7 +885,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "“Áê”\—Í”":
+                case "ç‰¹æ®Šèƒ½åŠ›æ•°":
                     {
                         if (u != null)
                         {
@@ -915,7 +915,7 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "“Áê”\—Í":
+                case "ç‰¹æ®Šèƒ½åŠ›":
                     {
                         if (u != null)
                         {
@@ -963,11 +963,11 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "“Áê”\—Í–¼Ì":
+                case "ç‰¹æ®Šèƒ½åŠ›åç§°":
                     {
                         var aname = @params[idx + 1];
 
-                        // ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+                        // ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
                         if (SRC.ALDList.IsDefined(aname))
                         {
                             aname = SRC.ALDList.Item(aname).ReplaceTypeName(aname);
@@ -1043,11 +1043,11 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                case "“Áê”\—ÍŠ—L":
+                case "ç‰¹æ®Šèƒ½åŠ›æ‰€æœ‰":
                     {
                         var aname = @params[idx + 1];
 
-                        // ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+                        // ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
                         if (SRC.ALDList.IsDefined(aname))
                         {
                             aname = SRC.ALDList.Item(aname).ReplaceTypeName(aname);
@@ -1123,11 +1123,11 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                    //case "“Áê”\—ÍƒŒƒxƒ‹":
+                    //case "ç‰¹æ®Šèƒ½åŠ›ãƒ¬ãƒ™ãƒ«":
                     //    {
                     //        var aname = @params[idx + 1];
 
-                    //        // ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+                    //        // ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
                     //        if (SRC.ALDList.IsDefined(aname))
                     //        {
                     //            var alias = SRC.ALDList.Item(aname);
@@ -1225,11 +1225,11 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "“Áê”\—Íƒf[ƒ^":
+                    //case "ç‰¹æ®Šèƒ½åŠ›ãƒ‡ãƒ¼ã‚¿":
                     //    {
                     //        aname = @params[idx + 1];
 
-                    //        // ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+                    //        // ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
                     //        if (SRC.ALDList.IsDefined(aname))
                     //        {
                     //            {
@@ -1325,11 +1325,11 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "“Áê”\—Í•K—v‹Z”\":
+                    //case "ç‰¹æ®Šèƒ½åŠ›å¿…è¦æŠ€èƒ½":
                     //    {
                     //        aname = @params[idx + 1];
 
-                    //        // ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+                    //        // ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
                     //        if (SRC.ALDList.IsDefined(aname))
                     //        {
                     //            {
@@ -1401,11 +1401,11 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "“Áê”\—Í‰ğà":
+                    //case "ç‰¹æ®Šèƒ½åŠ›è§£èª¬":
                     //    {
                     //        aname = @params[idx + 1];
 
-                    //        // ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+                    //        // ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
                     //        if (SRC.ALDList.IsDefined(aname))
                     //        {
                     //            {
@@ -1464,7 +1464,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "‹K’èƒpƒCƒƒbƒg”":
+                    //case "è¦å®šãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ•°":
                     //    {
                     //        if (u != null)
                     //        {
@@ -1478,7 +1478,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "ƒpƒCƒƒbƒg”":
+                    //case "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ•°":
                     //    {
                     //        if (u != null)
                     //        {
@@ -1492,7 +1492,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "ƒTƒ|[ƒg”":
+                    //case "ã‚µãƒãƒ¼ãƒˆæ•°":
                     //    {
                     //        if (u != null)
                     //        {
@@ -1502,7 +1502,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "Å‘åƒAƒCƒeƒ€”":
+                    //case "æœ€å¤§ã‚¢ã‚¤ãƒ†ãƒ æ•°":
                     //    {
                     //        if (u != null)
                     //        {
@@ -1516,7 +1516,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "ƒAƒCƒeƒ€”":
+                    //case "ã‚¢ã‚¤ãƒ†ãƒ æ•°":
                     //    {
                     //        if (u != null)
                     //        {
@@ -1530,7 +1530,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "ƒAƒCƒeƒ€":
+                    //case "ã‚¢ã‚¤ãƒ†ãƒ ":
                     //    {
                     //        if (u != null)
                     //        {
@@ -1549,7 +1549,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "ƒAƒCƒeƒ€‚h‚c":
+                    //case "ã‚¢ã‚¤ãƒ†ãƒ ï¼©ï¼¤":
                     //    {
                     //        if (u != null)
                     //        {
@@ -1568,7 +1568,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "ˆÚ“®‰Â”\’nŒ`":
+                    //case "ç§»å‹•å¯èƒ½åœ°å½¢":
                     //    {
                     //        if (u != null)
                     //        {
@@ -1582,7 +1582,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "ˆÚ“®—Í":
+                    //case "ç§»å‹•åŠ›":
                     //    {
                     //        if (u != null)
                     //        {
@@ -1596,7 +1596,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "ƒTƒCƒY":
+                    //case "ã‚µã‚¤ã‚º":
                     //    {
                     //        if (u != null)
                     //        {
@@ -1610,7 +1610,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "C—”ï":
+                    //case "ä¿®ç†è²»":
                     //    {
                     //        if (u != null)
                     //        {
@@ -1624,7 +1624,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "Å‘å‚g‚o":
+                    //case "æœ€å¤§ï¼¨ï¼°":
                     //    {
                     //        if (u != null)
                     //        {
@@ -1638,7 +1638,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "‚g‚o":
+                    //case "ï¼¨ï¼°":
                     //    {
                     //        if (u != null)
                     //        {
@@ -1652,7 +1652,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "Å‘å‚d‚m":
+                    //case "æœ€å¤§ï¼¥ï¼®":
                     //    {
                     //        if (u != null)
                     //        {
@@ -1666,7 +1666,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "‚d‚m":
+                    //case "ï¼¥ï¼®":
                     //    {
                     //        if (u != null)
                     //        {
@@ -1680,7 +1680,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "‘•b":
+                    //case "è£…ç”²":
                     //    {
                     //        if (u != null)
                     //        {
@@ -1694,7 +1694,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "‰^“®«":
+                    //case "é‹å‹•æ€§":
                     //    {
                     //        if (u != null)
                     //        {
@@ -1708,7 +1708,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "•Ší”":
+                    //case "æ­¦å™¨æ•°":
                     //    {
                     //        if (u != null)
                     //        {
@@ -1738,14 +1738,14 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "•Ší":
+                    //case "æ­¦å™¨":
                     //    {
                     //        idx = (idx + 1);
                     //        if (u != null)
                     //        {
                     //            {
                     //                var withBlock7 = u;
-                    //                // ‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
+                    //                // ä½•ç•ªç›®ã®æ­¦å™¨ã‹ã‚’åˆ¤å®š
                     //                if (GeneralLib.IsNumber(@params[idx]))
                     //                {
                     //                    i = Conversions.ToInteger(@params[idx]);
@@ -1761,7 +1761,7 @@ namespace SRCCore.Expressions.Functions
                     //                        }
                     //                    }
                     //                }
-                    //                // w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
+                    //                // æŒ‡å®šã—ãŸæ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
                     //                if (i <= 0 || withBlock7.CountWeapon() < i)
                     //                {
                     //                    return str_result;
@@ -1771,80 +1771,80 @@ namespace SRCCore.Expressions.Functions
                     //                switch (@params[idx] ?? "")
                     //                {
                     //                    case var case1 when case1 == "":
-                    //                    case "–¼Ì":
+                    //                    case "åç§°":
                     //                        {
                     //                            str_result = withBlock7.Weapon(i).Name;
                     //                            break;
                     //                        }
 
-                    //                    case "UŒ‚—Í":
+                    //                    case "æ”»æ’ƒåŠ›":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock7.WeaponPower(i, ""));
                     //                            break;
                     //                        }
 
-                    //                    case "Ë’ö":
-                    //                    case "Å‘åË’ö":
+                    //                    case "å°„ç¨‹":
+                    //                    case "æœ€å¤§å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock7.WeaponMaxRange(i));
                     //                            break;
                     //                        }
 
-                    //                    case "Å¬Ë’ö":
+                    //                    case "æœ€å°å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock7.Weapon(i).MinRange);
                     //                            break;
                     //                        }
 
-                    //                    case "–½’†—¦":
+                    //                    case "å‘½ä¸­ç‡":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock7.WeaponPrecision(i));
                     //                            break;
                     //                        }
 
-                    //                    case "Å‘å’e”":
+                    //                    case "æœ€å¤§å¼¾æ•°":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock7.MaxBullet(i));
                     //                            break;
                     //                        }
 
-                    //                    case "’e”":
+                    //                    case "å¼¾æ•°":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock7.Bullet(i));
                     //                            break;
                     //                        }
 
-                    //                    case "Á”ï‚d‚m":
+                    //                    case "æ¶ˆè²»ï¼¥ï¼®":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock7.WeaponENConsumption(i));
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹C—Í":
+                    //                    case "å¿…è¦æ°—åŠ›":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock7.Weapon(i).NecessaryMorale);
                     //                            break;
                     //                        }
 
-                    //                    case "’nŒ`“K‰":
+                    //                    case "åœ°å½¢é©å¿œ":
                     //                        {
                     //                            str_result = withBlock7.Weapon(i).Adaption;
                     //                            break;
                     //                        }
 
-                    //                    case "ƒNƒŠƒeƒBƒJƒ‹—¦":
+                    //                    case "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock7.WeaponCritical(i));
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«":
+                    //                    case "å±æ€§":
                     //                        {
                     //                            str_result = withBlock7.WeaponClass(i);
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«Š—L":
+                    //                    case "å±æ€§æ‰€æœ‰":
                     //                        {
                     //                            if (withBlock7.IsWeaponClassifiedAs(i, @params[idx + 1]))
                     //                            {
@@ -1858,33 +1858,33 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«ƒŒƒxƒ‹":
+                    //                    case "å±æ€§ãƒ¬ãƒ™ãƒ«":
                     //                        {
                     //                            str_result = withBlock7.WeaponLevel(i, @params[idx + 1]).ToString();
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«–¼Ì":
+                    //                    case "å±æ€§åç§°":
                     //                        {
                     //                            str_result = Help.AttributeName(u, @params[idx + 1], false);
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«‰ğà":
+                    //                    case "å±æ€§è§£èª¬":
                     //                        {
                     //                            str_result = Help.AttributeHelpMessage(u, @params[idx + 1], i, false);
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹Z”\":
+                    //                    case "å¿…è¦æŠ€èƒ½":
                     //                        {
                     //                            str_result = withBlock7.Weapon(i).NecessarySkill;
                     //                            break;
                     //                        }
 
-                    //                    case "g—p‰Â":
+                    //                    case "ä½¿ç”¨å¯":
                     //                        {
-                    //                            if (withBlock7.IsWeaponAvailable(i, "ƒXƒe[ƒ^ƒX"))
+                    //                            if (withBlock7.IsWeaponAvailable(i, "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹"))
                     //                            {
                     //                                str_result = "1";
                     //                            }
@@ -1896,7 +1896,7 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "C“¾":
+                    //                    case "ä¿®å¾—":
                     //                        {
                     //                            if (withBlock7.IsWeaponMastered(i))
                     //                            {
@@ -1914,7 +1914,7 @@ namespace SRCCore.Expressions.Functions
                     //        }
                     //        else if (ud != null)
                     //        {
-                    //            // ‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
+                    //            // ä½•ç•ªç›®ã®æ­¦å™¨ã‹ã‚’åˆ¤å®š
                     //            if (GeneralLib.IsNumber(@params[idx]))
                     //            {
                     //                i = Conversions.ToInteger(@params[idx]);
@@ -1932,7 +1932,7 @@ namespace SRCCore.Expressions.Functions
                     //                    }
                     //                }
                     //            }
-                    //            // w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
+                    //            // æŒ‡å®šã—ãŸæ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
                     //            if (i <= 0 || ud.CountWeapon() < i)
                     //            {
                     //                return str_result;
@@ -1944,75 +1944,75 @@ namespace SRCCore.Expressions.Functions
                     //                switch (@params[idx] ?? "")
                     //                {
                     //                    case var case2 when case2 == "":
-                    //                    case "–¼Ì":
+                    //                    case "åç§°":
                     //                        {
                     //                            str_result = withBlock8.Name;
                     //                            break;
                     //                        }
 
-                    //                    case "UŒ‚—Í":
+                    //                    case "æ”»æ’ƒåŠ›":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock8.Power);
                     //                            break;
                     //                        }
 
-                    //                    case "Ë’ö":
-                    //                    case "Å‘åË’ö":
+                    //                    case "å°„ç¨‹":
+                    //                    case "æœ€å¤§å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock8.MaxRange);
                     //                            break;
                     //                        }
 
-                    //                    case "Å¬Ë’ö":
+                    //                    case "æœ€å°å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock8.MinRange);
                     //                            break;
                     //                        }
 
-                    //                    case "–½’†—¦":
+                    //                    case "å‘½ä¸­ç‡":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock8.Precision);
                     //                            break;
                     //                        }
 
-                    //                    case "Å‘å’e”":
-                    //                    case "’e”":
+                    //                    case "æœ€å¤§å¼¾æ•°":
+                    //                    case "å¼¾æ•°":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock8.Bullet);
                     //                            break;
                     //                        }
 
-                    //                    case "Á”ï‚d‚m":
+                    //                    case "æ¶ˆè²»ï¼¥ï¼®":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock8.ENConsumption);
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹C—Í":
+                    //                    case "å¿…è¦æ°—åŠ›":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock8.NecessaryMorale);
                     //                            break;
                     //                        }
 
-                    //                    case "’nŒ`“K‰":
+                    //                    case "åœ°å½¢é©å¿œ":
                     //                        {
                     //                            str_result = withBlock8.Adaption;
                     //                            break;
                     //                        }
 
-                    //                    case "ƒNƒŠƒeƒBƒJƒ‹—¦":
+                    //                    case "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock8.Critical);
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«":
+                    //                    case "å±æ€§":
                     //                        {
                     //                            str_result = withBlock8.Class;
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«Š—L":
+                    //                    case "å±æ€§æ‰€æœ‰":
                     //                        {
                     //                            if (GeneralLib.InStrNotNest(withBlock8.Class, @params[idx + 1]) > 0)
                     //                            {
@@ -2026,7 +2026,7 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«ƒŒƒxƒ‹":
+                    //                    case "å±æ€§ãƒ¬ãƒ™ãƒ«":
                     //                        {
                     //                            j = GeneralLib.InStrNotNest(withBlock8.Class, @params[idx + 1] + "L");
                     //                            if (j == 0)
@@ -2051,14 +2051,14 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹Z”\":
+                    //                    case "å¿…è¦æŠ€èƒ½":
                     //                        {
                     //                            str_result = withBlock8.NecessarySkill;
                     //                            break;
                     //                        }
 
-                    //                    case "g—p‰Â":
-                    //                    case "C“¾":
+                    //                    case "ä½¿ç”¨å¯":
+                    //                    case "ä¿®å¾—":
                     //                        {
                     //                            str_result = "1";
                     //                            break;
@@ -2070,7 +2070,7 @@ namespace SRCCore.Expressions.Functions
                     //        {
                     //            {
                     //                var withBlock9 = p.Data;
-                    //                // ‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
+                    //                // ä½•ç•ªç›®ã®æ­¦å™¨ã‹ã‚’åˆ¤å®š
                     //                if (GeneralLib.IsNumber(@params[idx]))
                     //                {
                     //                    i = Conversions.ToInteger(@params[idx]);
@@ -2088,7 +2088,7 @@ namespace SRCCore.Expressions.Functions
                     //                        }
                     //                    }
                     //                }
-                    //                // w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
+                    //                // æŒ‡å®šã—ãŸæ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
                     //                if (i <= 0 || withBlock9.CountWeapon() < i)
                     //                {
                     //                    return str_result;
@@ -2100,75 +2100,75 @@ namespace SRCCore.Expressions.Functions
                     //                    switch (@params[idx] ?? "")
                     //                    {
                     //                        case var case3 when case3 == "":
-                    //                        case "–¼Ì":
+                    //                        case "åç§°":
                     //                            {
                     //                                str_result = withBlock10.Name;
                     //                                break;
                     //                            }
 
-                    //                        case "UŒ‚—Í":
+                    //                        case "æ”»æ’ƒåŠ›":
                     //                            {
                     //                                str_result = SrcFormatter.Format(withBlock10.Power);
                     //                                break;
                     //                            }
 
-                    //                        case "Ë’ö":
-                    //                        case "Å‘åË’ö":
+                    //                        case "å°„ç¨‹":
+                    //                        case "æœ€å¤§å°„ç¨‹":
                     //                            {
                     //                                str_result = SrcFormatter.Format(withBlock10.MaxRange);
                     //                                break;
                     //                            }
 
-                    //                        case "Å¬Ë’ö":
+                    //                        case "æœ€å°å°„ç¨‹":
                     //                            {
                     //                                str_result = SrcFormatter.Format(withBlock10.MinRange);
                     //                                break;
                     //                            }
 
-                    //                        case "–½’†—¦":
+                    //                        case "å‘½ä¸­ç‡":
                     //                            {
                     //                                str_result = SrcFormatter.Format(withBlock10.Precision);
                     //                                break;
                     //                            }
 
-                    //                        case "Å‘å’e”":
-                    //                        case "’e”":
+                    //                        case "æœ€å¤§å¼¾æ•°":
+                    //                        case "å¼¾æ•°":
                     //                            {
                     //                                str_result = SrcFormatter.Format(withBlock10.Bullet);
                     //                                break;
                     //                            }
 
-                    //                        case "Á”ï‚d‚m":
+                    //                        case "æ¶ˆè²»ï¼¥ï¼®":
                     //                            {
                     //                                str_result = SrcFormatter.Format(withBlock10.ENConsumption);
                     //                                break;
                     //                            }
 
-                    //                        case "•K—v‹C—Í":
+                    //                        case "å¿…è¦æ°—åŠ›":
                     //                            {
                     //                                str_result = SrcFormatter.Format(withBlock10.NecessaryMorale);
                     //                                break;
                     //                            }
 
-                    //                        case "’nŒ`“K‰":
+                    //                        case "åœ°å½¢é©å¿œ":
                     //                            {
                     //                                str_result = withBlock10.Adaption;
                     //                                break;
                     //                            }
 
-                    //                        case "ƒNƒŠƒeƒBƒJƒ‹—¦":
+                    //                        case "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡":
                     //                            {
                     //                                str_result = SrcFormatter.Format(withBlock10.Critical);
                     //                                break;
                     //                            }
 
-                    //                        case "‘®«":
+                    //                        case "å±æ€§":
                     //                            {
                     //                                str_result = withBlock10.Class;
                     //                                break;
                     //                            }
 
-                    //                        case "‘®«Š—L":
+                    //                        case "å±æ€§æ‰€æœ‰":
                     //                            {
                     //                                if (GeneralLib.InStrNotNest(withBlock10.Class, @params[idx + 1]) > 0)
                     //                                {
@@ -2182,7 +2182,7 @@ namespace SRCCore.Expressions.Functions
                     //                                break;
                     //                            }
 
-                    //                        case "‘®«ƒŒƒxƒ‹":
+                    //                        case "å±æ€§ãƒ¬ãƒ™ãƒ«":
                     //                            {
                     //                                j = GeneralLib.InStrNotNest(withBlock10.Class, @params[idx + 1] + "L");
                     //                                if (j == 0)
@@ -2207,14 +2207,14 @@ namespace SRCCore.Expressions.Functions
                     //                                break;
                     //                            }
 
-                    //                        case "•K—v‹Z”\":
+                    //                        case "å¿…è¦æŠ€èƒ½":
                     //                            {
                     //                                str_result = withBlock10.NecessarySkill;
                     //                                break;
                     //                            }
 
-                    //                        case "g—p‰Â":
-                    //                        case "C“¾":
+                    //                        case "ä½¿ç”¨å¯":
+                    //                        case "ä¿®å¾—":
                     //                            {
                     //                                str_result = "1";
                     //                                break;
@@ -2225,7 +2225,7 @@ namespace SRCCore.Expressions.Functions
                     //        }
                     //        else if (pd != null)
                     //        {
-                    //            // ‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
+                    //            // ä½•ç•ªç›®ã®æ­¦å™¨ã‹ã‚’åˆ¤å®š
                     //            if (GeneralLib.IsNumber(@params[idx]))
                     //            {
                     //                i = Conversions.ToInteger(@params[idx]);
@@ -2243,7 +2243,7 @@ namespace SRCCore.Expressions.Functions
                     //                    }
                     //                }
                     //            }
-                    //            // w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
+                    //            // æŒ‡å®šã—ãŸæ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
                     //            if (i <= 0 || pd.CountWeapon() < i)
                     //            {
                     //                return str_result;
@@ -2255,75 +2255,75 @@ namespace SRCCore.Expressions.Functions
                     //                switch (@params[idx] ?? "")
                     //                {
                     //                    case var case4 when case4 == "":
-                    //                    case "–¼Ì":
+                    //                    case "åç§°":
                     //                        {
                     //                            str_result = withBlock11.Name;
                     //                            break;
                     //                        }
 
-                    //                    case "UŒ‚—Í":
+                    //                    case "æ”»æ’ƒåŠ›":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock11.Power);
                     //                            break;
                     //                        }
 
-                    //                    case "Ë’ö":
-                    //                    case "Å‘åË’ö":
+                    //                    case "å°„ç¨‹":
+                    //                    case "æœ€å¤§å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock11.MaxRange);
                     //                            break;
                     //                        }
 
-                    //                    case "Å¬Ë’ö":
+                    //                    case "æœ€å°å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock11.MinRange);
                     //                            break;
                     //                        }
 
-                    //                    case "–½’†—¦":
+                    //                    case "å‘½ä¸­ç‡":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock11.Precision);
                     //                            break;
                     //                        }
 
-                    //                    case "Å‘å’e”":
-                    //                    case "’e”":
+                    //                    case "æœ€å¤§å¼¾æ•°":
+                    //                    case "å¼¾æ•°":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock11.Bullet);
                     //                            break;
                     //                        }
 
-                    //                    case "Á”ï‚d‚m":
+                    //                    case "æ¶ˆè²»ï¼¥ï¼®":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock11.ENConsumption);
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹C—Í":
+                    //                    case "å¿…è¦æ°—åŠ›":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock11.NecessaryMorale);
                     //                            break;
                     //                        }
 
-                    //                    case "’nŒ`“K‰":
+                    //                    case "åœ°å½¢é©å¿œ":
                     //                        {
                     //                            str_result = withBlock11.Adaption;
                     //                            break;
                     //                        }
 
-                    //                    case "ƒNƒŠƒeƒBƒJƒ‹—¦":
+                    //                    case "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock11.Critical);
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«":
+                    //                    case "å±æ€§":
                     //                        {
                     //                            str_result = withBlock11.Class;
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«Š—L":
+                    //                    case "å±æ€§æ‰€æœ‰":
                     //                        {
                     //                            if (GeneralLib.InStrNotNest(withBlock11.Class, @params[idx + 1]) > 0)
                     //                            {
@@ -2337,7 +2337,7 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«ƒŒƒxƒ‹":
+                    //                    case "å±æ€§ãƒ¬ãƒ™ãƒ«":
                     //                        {
                     //                            j = GeneralLib.InStrNotNest(withBlock11.Class, @params[idx + 1] + "L");
                     //                            if (j == 0)
@@ -2362,14 +2362,14 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹Z”\":
+                    //                    case "å¿…è¦æŠ€èƒ½":
                     //                        {
                     //                            str_result = withBlock11.NecessarySkill;
                     //                            break;
                     //                        }
 
-                    //                    case "g—p‰Â":
-                    //                    case "C“¾":
+                    //                    case "ä½¿ç”¨å¯":
+                    //                    case "ä¿®å¾—":
                     //                        {
                     //                            str_result = "1";
                     //                            break;
@@ -2379,7 +2379,7 @@ namespace SRCCore.Expressions.Functions
                     //        }
                     //        else if (it != null)
                     //        {
-                    //            // ‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
+                    //            // ä½•ç•ªç›®ã®æ­¦å™¨ã‹ã‚’åˆ¤å®š
                     //            if (GeneralLib.IsNumber(@params[idx]))
                     //            {
                     //                i = Conversions.ToInteger(@params[idx]);
@@ -2397,7 +2397,7 @@ namespace SRCCore.Expressions.Functions
                     //                    }
                     //                }
                     //            }
-                    //            // w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
+                    //            // æŒ‡å®šã—ãŸæ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
                     //            if (i <= 0 || it.CountWeapon() < i)
                     //            {
                     //                return str_result;
@@ -2409,75 +2409,75 @@ namespace SRCCore.Expressions.Functions
                     //                switch (@params[idx] ?? "")
                     //                {
                     //                    case var case5 when case5 == "":
-                    //                    case "–¼Ì":
+                    //                    case "åç§°":
                     //                        {
                     //                            str_result = withBlock12.Name;
                     //                            break;
                     //                        }
 
-                    //                    case "UŒ‚—Í":
+                    //                    case "æ”»æ’ƒåŠ›":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock12.Power);
                     //                            break;
                     //                        }
 
-                    //                    case "Ë’ö":
-                    //                    case "Å‘åË’ö":
+                    //                    case "å°„ç¨‹":
+                    //                    case "æœ€å¤§å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock12.MaxRange);
                     //                            break;
                     //                        }
 
-                    //                    case "Å¬Ë’ö":
+                    //                    case "æœ€å°å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock12.MinRange);
                     //                            break;
                     //                        }
 
-                    //                    case "–½’†—¦":
+                    //                    case "å‘½ä¸­ç‡":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock12.Precision);
                     //                            break;
                     //                        }
 
-                    //                    case "Å‘å’e”":
-                    //                    case "’e”":
+                    //                    case "æœ€å¤§å¼¾æ•°":
+                    //                    case "å¼¾æ•°":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock12.Bullet);
                     //                            break;
                     //                        }
 
-                    //                    case "Á”ï‚d‚m":
+                    //                    case "æ¶ˆè²»ï¼¥ï¼®":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock12.ENConsumption);
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹C—Í":
+                    //                    case "å¿…è¦æ°—åŠ›":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock12.NecessaryMorale);
                     //                            break;
                     //                        }
 
-                    //                    case "’nŒ`“K‰":
+                    //                    case "åœ°å½¢é©å¿œ":
                     //                        {
                     //                            str_result = withBlock12.Adaption;
                     //                            break;
                     //                        }
 
-                    //                    case "ƒNƒŠƒeƒBƒJƒ‹—¦":
+                    //                    case "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock12.Critical);
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«":
+                    //                    case "å±æ€§":
                     //                        {
                     //                            str_result = withBlock12.Class;
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«Š—L":
+                    //                    case "å±æ€§æ‰€æœ‰":
                     //                        {
                     //                            if (GeneralLib.InStrNotNest(withBlock12.Class, @params[idx + 1]) > 0)
                     //                            {
@@ -2491,7 +2491,7 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«ƒŒƒxƒ‹":
+                    //                    case "å±æ€§ãƒ¬ãƒ™ãƒ«":
                     //                        {
                     //                            j = GeneralLib.InStrNotNest(withBlock12.Class, @params[idx + 1] + "L");
                     //                            if (j == 0)
@@ -2516,14 +2516,14 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹Z”\":
+                    //                    case "å¿…è¦æŠ€èƒ½":
                     //                        {
                     //                            str_result = withBlock12.NecessarySkill;
                     //                            break;
                     //                        }
 
-                    //                    case "g—p‰Â":
-                    //                    case "C“¾":
+                    //                    case "ä½¿ç”¨å¯":
+                    //                    case "ä¿®å¾—":
                     //                        {
                     //                            str_result = "1";
                     //                            break;
@@ -2533,7 +2533,7 @@ namespace SRCCore.Expressions.Functions
                     //        }
                     //        else if (itd != null)
                     //        {
-                    //            // ‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
+                    //            // ä½•ç•ªç›®ã®æ­¦å™¨ã‹ã‚’åˆ¤å®š
                     //            if (GeneralLib.IsNumber(@params[idx]))
                     //            {
                     //                i = Conversions.ToInteger(@params[idx]);
@@ -2551,7 +2551,7 @@ namespace SRCCore.Expressions.Functions
                     //                    }
                     //                }
                     //            }
-                    //            // w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
+                    //            // æŒ‡å®šã—ãŸæ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
                     //            if (i <= 0 || itd.CountWeapon() < i)
                     //            {
                     //                return str_result;
@@ -2563,75 +2563,75 @@ namespace SRCCore.Expressions.Functions
                     //                switch (@params[idx] ?? "")
                     //                {
                     //                    case var case6 when case6 == "":
-                    //                    case "–¼Ì":
+                    //                    case "åç§°":
                     //                        {
                     //                            str_result = withBlock13.Name;
                     //                            break;
                     //                        }
 
-                    //                    case "UŒ‚—Í":
+                    //                    case "æ”»æ’ƒåŠ›":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock13.Power);
                     //                            break;
                     //                        }
 
-                    //                    case "Ë’ö":
-                    //                    case "Å‘åË’ö":
+                    //                    case "å°„ç¨‹":
+                    //                    case "æœ€å¤§å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock13.MaxRange);
                     //                            break;
                     //                        }
 
-                    //                    case "Å¬Ë’ö":
+                    //                    case "æœ€å°å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock13.MinRange);
                     //                            break;
                     //                        }
 
-                    //                    case "–½’†—¦":
+                    //                    case "å‘½ä¸­ç‡":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock13.Precision);
                     //                            break;
                     //                        }
 
-                    //                    case "Å‘å’e”":
-                    //                    case "’e”":
+                    //                    case "æœ€å¤§å¼¾æ•°":
+                    //                    case "å¼¾æ•°":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock13.Bullet);
                     //                            break;
                     //                        }
 
-                    //                    case "Á”ï‚d‚m":
+                    //                    case "æ¶ˆè²»ï¼¥ï¼®":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock13.ENConsumption);
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹C—Í":
+                    //                    case "å¿…è¦æ°—åŠ›":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock13.NecessaryMorale);
                     //                            break;
                     //                        }
 
-                    //                    case "’nŒ`“K‰":
+                    //                    case "åœ°å½¢é©å¿œ":
                     //                        {
                     //                            str_result = withBlock13.Adaption;
                     //                            break;
                     //                        }
 
-                    //                    case "ƒNƒŠƒeƒBƒJƒ‹—¦":
+                    //                    case "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock13.Critical);
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«":
+                    //                    case "å±æ€§":
                     //                        {
                     //                            str_result = withBlock13.Class;
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«Š—L":
+                    //                    case "å±æ€§æ‰€æœ‰":
                     //                        {
                     //                            if (GeneralLib.InStrNotNest(withBlock13.Class, @params[idx + 1]) > 0)
                     //                            {
@@ -2645,7 +2645,7 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«ƒŒƒxƒ‹":
+                    //                    case "å±æ€§ãƒ¬ãƒ™ãƒ«":
                     //                        {
                     //                            j = GeneralLib.InStrNotNest(withBlock13.Class, @params[idx + 1] + "L");
                     //                            if (j == 0)
@@ -2670,14 +2670,14 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹Z”\":
+                    //                    case "å¿…è¦æŠ€èƒ½":
                     //                        {
                     //                            str_result = withBlock13.NecessarySkill;
                     //                            break;
                     //                        }
 
-                    //                    case "g—p‰Â":
-                    //                    case "C“¾":
+                    //                    case "ä½¿ç”¨å¯":
+                    //                    case "ä¿®å¾—":
                     //                        {
                     //                            str_result = "1";
                     //                            break;
@@ -2689,7 +2689,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "ƒAƒrƒŠƒeƒB”":
+                    //case "ã‚¢ãƒ“ãƒªãƒ†ã‚£æ•°":
                     //    {
                     //        if (u != null)
                     //        {
@@ -2719,14 +2719,14 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "ƒAƒrƒŠƒeƒB":
+                    //case "ã‚¢ãƒ“ãƒªãƒ†ã‚£":
                     //    {
                     //        idx = (idx + 1);
                     //        if (u != null)
                     //        {
                     //            {
                     //                var withBlock14 = u;
-                    //                // ‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
+                    //                // ä½•ç•ªç›®ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã‚’åˆ¤å®š
                     //                if (GeneralLib.IsNumber(@params[idx]))
                     //                {
                     //                    i = Conversions.ToInteger(@params[idx]);
@@ -2742,7 +2742,7 @@ namespace SRCCore.Expressions.Functions
                     //                        }
                     //                    }
                     //                }
-                    //                // w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
+                    //                // æŒ‡å®šã—ãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã„
                     //                if (i <= 0 || withBlock14.CountAbility() < i)
                     //                {
                     //                    return str_result;
@@ -2752,21 +2752,21 @@ namespace SRCCore.Expressions.Functions
                     //                switch (@params[idx] ?? "")
                     //                {
                     //                    case var case7 when case7 == "":
-                    //                    case "–¼Ì":
+                    //                    case "åç§°":
                     //                        {
                     //                            str_result = withBlock14.Ability(i).Name;
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰Ê”":
+                    //                    case "åŠ¹æœæ•°":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock14.Ability(i).CountEffect());
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰Êƒ^ƒCƒv":
+                    //                    case "åŠ¹æœã‚¿ã‚¤ãƒ—":
                     //                        {
-                    //                            // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                    //                            // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                     //                            if (GeneralLib.IsNumber(@params[idx + 1]))
                     //                            {
                     //                                j = Conversions.ToInteger(@params[idx + 1]);
@@ -2781,9 +2781,9 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰ÊƒŒƒxƒ‹":
+                    //                    case "åŠ¹æœãƒ¬ãƒ™ãƒ«":
                     //                        {
-                    //                            // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                    //                            // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                     //                            if (GeneralLib.IsNumber(@params[idx + 1]))
                     //                            {
                     //                                j = Conversions.ToInteger(@params[idx + 1]);
@@ -2800,9 +2800,9 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰Êƒf[ƒ^":
+                    //                    case "åŠ¹æœãƒ‡ãƒ¼ã‚¿":
                     //                        {
-                    //                            // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                    //                            // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                     //                            if (GeneralLib.IsNumber(@params[idx + 1]))
                     //                            {
                     //                                j = Conversions.ToInteger(@params[idx + 1]);
@@ -2817,50 +2817,50 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "Ë’ö":
-                    //                    case "Å‘åË’ö":
+                    //                    case "å°„ç¨‹":
+                    //                    case "æœ€å¤§å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock14.AbilityMaxRange(i));
                     //                            break;
                     //                        }
 
-                    //                    case "Å¬Ë’ö":
+                    //                    case "æœ€å°å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock14.AbilityMinRange(i));
                     //                            break;
                     //                        }
 
-                    //                    case "Å‘åg—p‰ñ”":
+                    //                    case "æœ€å¤§ä½¿ç”¨å›æ•°":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock14.MaxStock(i));
                     //                            break;
                     //                        }
 
-                    //                    case "g—p‰ñ”":
+                    //                    case "ä½¿ç”¨å›æ•°":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock14.Stock(i));
                     //                            break;
                     //                        }
 
-                    //                    case "Á”ï‚d‚m":
+                    //                    case "æ¶ˆè²»ï¼¥ï¼®":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock14.AbilityENConsumption(i));
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹C—Í":
+                    //                    case "å¿…è¦æ°—åŠ›":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock14.Ability(i).NecessaryMorale);
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«":
+                    //                    case "å±æ€§":
                     //                        {
                     //                            str_result = withBlock14.Ability(i).Class;
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«Š—L":
+                    //                    case "å±æ€§æ‰€æœ‰":
                     //                        {
                     //                            if (withBlock14.IsAbilityClassifiedAs(i, @params[idx + 1]))
                     //                            {
@@ -2874,33 +2874,33 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«ƒŒƒxƒ‹":
+                    //                    case "å±æ€§ãƒ¬ãƒ™ãƒ«":
                     //                        {
                     //                            str_result = withBlock14.AbilityLevel(i, @params[idx + 1]).ToString();
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«–¼Ì":
+                    //                    case "å±æ€§åç§°":
                     //                        {
                     //                            str_result = Help.AttributeName(u, @params[idx + 1], true);
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«‰ğà":
+                    //                    case "å±æ€§è§£èª¬":
                     //                        {
                     //                            str_result = Help.AttributeHelpMessage(u, @params[idx + 1], i, true);
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹Z”\":
+                    //                    case "å¿…è¦æŠ€èƒ½":
                     //                        {
                     //                            str_result = withBlock14.Ability(i).NecessarySkill;
                     //                            break;
                     //                        }
 
-                    //                    case "g—p‰Â":
+                    //                    case "ä½¿ç”¨å¯":
                     //                        {
-                    //                            if (withBlock14.IsAbilityAvailable(i, "ˆÚ“®‘O"))
+                    //                            if (withBlock14.IsAbilityAvailable(i, "ç§»å‹•å‰"))
                     //                            {
                     //                                str_result = "1";
                     //                            }
@@ -2912,7 +2912,7 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "C“¾":
+                    //                    case "ä¿®å¾—":
                     //                        {
                     //                            if (withBlock14.IsAbilityMastered(i))
                     //                            {
@@ -2930,7 +2930,7 @@ namespace SRCCore.Expressions.Functions
                     //        }
                     //        else if (ud != null)
                     //        {
-                    //            // ‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
+                    //            // ä½•ç•ªç›®ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã‚’åˆ¤å®š
                     //            if (GeneralLib.IsNumber(@params[idx]))
                     //            {
                     //                i = Conversions.ToInteger(@params[idx]);
@@ -2948,7 +2948,7 @@ namespace SRCCore.Expressions.Functions
                     //                    }
                     //                }
                     //            }
-                    //            // w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
+                    //            // æŒ‡å®šã—ãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã„
                     //            if (i <= 0 || ud.CountAbility() < i)
                     //            {
                     //                return str_result;
@@ -2960,21 +2960,21 @@ namespace SRCCore.Expressions.Functions
                     //                switch (@params[idx] ?? "")
                     //                {
                     //                    case var case8 when case8 == "":
-                    //                    case "–¼Ì":
+                    //                    case "åç§°":
                     //                        {
                     //                            str_result = withBlock15.Name;
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰Ê”":
+                    //                    case "åŠ¹æœæ•°":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock15.CountEffect());
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰Êƒ^ƒCƒv":
+                    //                    case "åŠ¹æœã‚¿ã‚¤ãƒ—":
                     //                        {
-                    //                            // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                    //                            // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                     //                            if (GeneralLib.IsNumber(@params[idx + 1]))
                     //                            {
                     //                                j = Conversions.ToInteger(@params[idx + 1]);
@@ -2989,9 +2989,9 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰ÊƒŒƒxƒ‹":
+                    //                    case "åŠ¹æœãƒ¬ãƒ™ãƒ«":
                     //                        {
-                    //                            // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                    //                            // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                     //                            if (GeneralLib.IsNumber(@params[idx + 1]))
                     //                            {
                     //                                j = Conversions.ToInteger(@params[idx + 1]);
@@ -3008,9 +3008,9 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰Êƒf[ƒ^":
+                    //                    case "åŠ¹æœãƒ‡ãƒ¼ã‚¿":
                     //                        {
-                    //                            // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                    //                            // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                     //                            if (GeneralLib.IsNumber(@params[idx + 1]))
                     //                            {
                     //                                j = Conversions.ToInteger(@params[idx + 1]);
@@ -3025,45 +3025,45 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "Ë’ö":
-                    //                    case "Å‘åË’ö":
+                    //                    case "å°„ç¨‹":
+                    //                    case "æœ€å¤§å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock15.MaxRange);
                     //                            break;
                     //                        }
 
-                    //                    case "Å¬Ë’ö":
+                    //                    case "æœ€å°å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock15.MinRange);
                     //                            break;
                     //                        }
 
-                    //                    case "Å‘åg—p‰ñ”":
-                    //                    case "g—p‰ñ”":
+                    //                    case "æœ€å¤§ä½¿ç”¨å›æ•°":
+                    //                    case "ä½¿ç”¨å›æ•°":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock15.Stock);
                     //                            break;
                     //                        }
 
-                    //                    case "Á”ï‚d‚m":
+                    //                    case "æ¶ˆè²»ï¼¥ï¼®":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock15.ENConsumption);
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹C—Í":
+                    //                    case "å¿…è¦æ°—åŠ›":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock15.NecessaryMorale);
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«":
+                    //                    case "å±æ€§":
                     //                        {
                     //                            str_result = withBlock15.Class;
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«Š—L":
+                    //                    case "å±æ€§æ‰€æœ‰":
                     //                        {
                     //                            if (GeneralLib.InStrNotNest(withBlock15.Class, @params[idx + 1]) > 0)
                     //                            {
@@ -3077,7 +3077,7 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«ƒŒƒxƒ‹":
+                    //                    case "å±æ€§ãƒ¬ãƒ™ãƒ«":
                     //                        {
                     //                            j = GeneralLib.InStrNotNest(withBlock15.Class, @params[idx + 1] + "L");
                     //                            if (j == 0)
@@ -3102,14 +3102,14 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹Z”\":
+                    //                    case "å¿…è¦æŠ€èƒ½":
                     //                        {
                     //                            str_result = withBlock15.NecessarySkill;
                     //                            break;
                     //                        }
 
-                    //                    case "g—p‰Â":
-                    //                    case "C“¾":
+                    //                    case "ä½¿ç”¨å¯":
+                    //                    case "ä¿®å¾—":
                     //                        {
                     //                            str_result = "1";
                     //                            break;
@@ -3121,7 +3121,7 @@ namespace SRCCore.Expressions.Functions
                     //        {
                     //            {
                     //                var withBlock16 = p.Data;
-                    //                // ‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
+                    //                // ä½•ç•ªç›®ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã‚’åˆ¤å®š
                     //                if (GeneralLib.IsNumber(@params[idx]))
                     //                {
                     //                    i = Conversions.ToInteger(@params[idx]);
@@ -3139,7 +3139,7 @@ namespace SRCCore.Expressions.Functions
                     //                        }
                     //                    }
                     //                }
-                    //                // w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
+                    //                // æŒ‡å®šã—ãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã„
                     //                if (i <= 0 || withBlock16.CountAbility() < i)
                     //                {
                     //                    return str_result;
@@ -3151,21 +3151,21 @@ namespace SRCCore.Expressions.Functions
                     //                    switch (@params[idx] ?? "")
                     //                    {
                     //                        case var case9 when case9 == "":
-                    //                        case "–¼Ì":
+                    //                        case "åç§°":
                     //                            {
                     //                                str_result = withBlock17.Name;
                     //                                break;
                     //                            }
 
-                    //                        case "Œø‰Ê”":
+                    //                        case "åŠ¹æœæ•°":
                     //                            {
                     //                                str_result = SrcFormatter.Format(withBlock17.CountEffect());
                     //                                break;
                     //                            }
 
-                    //                        case "Œø‰Êƒ^ƒCƒv":
+                    //                        case "åŠ¹æœã‚¿ã‚¤ãƒ—":
                     //                            {
-                    //                                // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                    //                                // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                     //                                if (GeneralLib.IsNumber(@params[idx + 1]))
                     //                                {
                     //                                    j = Conversions.ToInteger(@params[idx + 1]);
@@ -3180,9 +3180,9 @@ namespace SRCCore.Expressions.Functions
                     //                                break;
                     //                            }
 
-                    //                        case "Œø‰ÊƒŒƒxƒ‹":
+                    //                        case "åŠ¹æœãƒ¬ãƒ™ãƒ«":
                     //                            {
-                    //                                // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                    //                                // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                     //                                if (GeneralLib.IsNumber(@params[idx + 1]))
                     //                                {
                     //                                    j = Conversions.ToInteger(@params[idx + 1]);
@@ -3199,9 +3199,9 @@ namespace SRCCore.Expressions.Functions
                     //                                break;
                     //                            }
 
-                    //                        case "Œø‰Êƒf[ƒ^":
+                    //                        case "åŠ¹æœãƒ‡ãƒ¼ã‚¿":
                     //                            {
-                    //                                // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                    //                                // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                     //                                if (GeneralLib.IsNumber(@params[idx + 1]))
                     //                                {
                     //                                    j = Conversions.ToInteger(@params[idx + 1]);
@@ -3216,45 +3216,45 @@ namespace SRCCore.Expressions.Functions
                     //                                break;
                     //                            }
 
-                    //                        case "Ë’ö":
-                    //                        case "Å‘åË’ö":
+                    //                        case "å°„ç¨‹":
+                    //                        case "æœ€å¤§å°„ç¨‹":
                     //                            {
                     //                                str_result = SrcFormatter.Format(withBlock17.MaxRange);
                     //                                break;
                     //                            }
 
-                    //                        case "Å¬Ë’ö":
+                    //                        case "æœ€å°å°„ç¨‹":
                     //                            {
                     //                                str_result = SrcFormatter.Format(withBlock17.MinRange);
                     //                                break;
                     //                            }
 
-                    //                        case "Å‘åg—p‰ñ”":
-                    //                        case "g—p‰ñ”":
+                    //                        case "æœ€å¤§ä½¿ç”¨å›æ•°":
+                    //                        case "ä½¿ç”¨å›æ•°":
                     //                            {
                     //                                str_result = SrcFormatter.Format(withBlock17.Stock);
                     //                                break;
                     //                            }
 
-                    //                        case "Á”ï‚d‚m":
+                    //                        case "æ¶ˆè²»ï¼¥ï¼®":
                     //                            {
                     //                                str_result = SrcFormatter.Format(withBlock17.ENConsumption);
                     //                                break;
                     //                            }
 
-                    //                        case "•K—v‹C—Í":
+                    //                        case "å¿…è¦æ°—åŠ›":
                     //                            {
                     //                                str_result = SrcFormatter.Format(withBlock17.NecessaryMorale);
                     //                                break;
                     //                            }
 
-                    //                        case "‘®«":
+                    //                        case "å±æ€§":
                     //                            {
                     //                                str_result = withBlock17.Class;
                     //                                break;
                     //                            }
 
-                    //                        case "‘®«Š—L":
+                    //                        case "å±æ€§æ‰€æœ‰":
                     //                            {
                     //                                if (GeneralLib.InStrNotNest(withBlock17.Class, @params[idx + 1]) > 0)
                     //                                {
@@ -3268,7 +3268,7 @@ namespace SRCCore.Expressions.Functions
                     //                                break;
                     //                            }
 
-                    //                        case "‘®«ƒŒƒxƒ‹":
+                    //                        case "å±æ€§ãƒ¬ãƒ™ãƒ«":
                     //                            {
                     //                                j = GeneralLib.InStrNotNest(withBlock17.Class, @params[idx + 1] + "L");
                     //                                if (j == 0)
@@ -3293,14 +3293,14 @@ namespace SRCCore.Expressions.Functions
                     //                                break;
                     //                            }
 
-                    //                        case "•K—v‹Z”\":
+                    //                        case "å¿…è¦æŠ€èƒ½":
                     //                            {
                     //                                str_result = withBlock17.NecessarySkill;
                     //                                break;
                     //                            }
 
-                    //                        case "g—p‰Â":
-                    //                        case "C“¾":
+                    //                        case "ä½¿ç”¨å¯":
+                    //                        case "ä¿®å¾—":
                     //                            {
                     //                                str_result = "1";
                     //                                break;
@@ -3311,7 +3311,7 @@ namespace SRCCore.Expressions.Functions
                     //        }
                     //        else if (pd != null)
                     //        {
-                    //            // ‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
+                    //            // ä½•ç•ªç›®ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã‚’åˆ¤å®š
                     //            if (GeneralLib.IsNumber(@params[idx]))
                     //            {
                     //                i = Conversions.ToInteger(@params[idx]);
@@ -3329,7 +3329,7 @@ namespace SRCCore.Expressions.Functions
                     //                    }
                     //                }
                     //            }
-                    //            // w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
+                    //            // æŒ‡å®šã—ãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã„
                     //            if (i <= 0 || pd.CountAbility() < i)
                     //            {
                     //                return str_result;
@@ -3341,21 +3341,21 @@ namespace SRCCore.Expressions.Functions
                     //                switch (@params[idx] ?? "")
                     //                {
                     //                    case var case10 when case10 == "":
-                    //                    case "–¼Ì":
+                    //                    case "åç§°":
                     //                        {
                     //                            str_result = withBlock18.Name;
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰Ê”":
+                    //                    case "åŠ¹æœæ•°":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock18.CountEffect());
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰Êƒ^ƒCƒv":
+                    //                    case "åŠ¹æœã‚¿ã‚¤ãƒ—":
                     //                        {
-                    //                            // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                    //                            // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                     //                            if (GeneralLib.IsNumber(@params[idx + 1]))
                     //                            {
                     //                                j = Conversions.ToInteger(@params[idx + 1]);
@@ -3370,9 +3370,9 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰ÊƒŒƒxƒ‹":
+                    //                    case "åŠ¹æœãƒ¬ãƒ™ãƒ«":
                     //                        {
-                    //                            // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                    //                            // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                     //                            if (GeneralLib.IsNumber(@params[idx + 1]))
                     //                            {
                     //                                j = Conversions.ToInteger(@params[idx + 1]);
@@ -3389,9 +3389,9 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰Êƒf[ƒ^":
+                    //                    case "åŠ¹æœãƒ‡ãƒ¼ã‚¿":
                     //                        {
-                    //                            // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                    //                            // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                     //                            if (GeneralLib.IsNumber(@params[idx + 1]))
                     //                            {
                     //                                j = Conversions.ToInteger(@params[idx + 1]);
@@ -3406,45 +3406,45 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "Ë’ö":
-                    //                    case "Å‘åË’ö":
+                    //                    case "å°„ç¨‹":
+                    //                    case "æœ€å¤§å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock18.MaxRange);
                     //                            break;
                     //                        }
 
-                    //                    case "Å¬Ë’ö":
+                    //                    case "æœ€å°å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock18.MinRange);
                     //                            break;
                     //                        }
 
-                    //                    case "Å‘åg—p‰ñ”":
-                    //                    case "g—p‰ñ”":
+                    //                    case "æœ€å¤§ä½¿ç”¨å›æ•°":
+                    //                    case "ä½¿ç”¨å›æ•°":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock18.Stock);
                     //                            break;
                     //                        }
 
-                    //                    case "Á”ï‚d‚m":
+                    //                    case "æ¶ˆè²»ï¼¥ï¼®":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock18.ENConsumption);
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹C—Í":
+                    //                    case "å¿…è¦æ°—åŠ›":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock18.NecessaryMorale);
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«":
+                    //                    case "å±æ€§":
                     //                        {
                     //                            str_result = withBlock18.Class;
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«Š—L":
+                    //                    case "å±æ€§æ‰€æœ‰":
                     //                        {
                     //                            if (GeneralLib.InStrNotNest(withBlock18.Class, @params[idx + 1]) > 0)
                     //                            {
@@ -3458,7 +3458,7 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«ƒŒƒxƒ‹":
+                    //                    case "å±æ€§ãƒ¬ãƒ™ãƒ«":
                     //                        {
                     //                            j = GeneralLib.InStrNotNest(withBlock18.Class, @params[idx + 1] + "L");
                     //                            if (j == 0)
@@ -3483,14 +3483,14 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹Z”\":
+                    //                    case "å¿…è¦æŠ€èƒ½":
                     //                        {
                     //                            str_result = withBlock18.NecessarySkill;
                     //                            break;
                     //                        }
 
-                    //                    case "g—p‰Â":
-                    //                    case "C“¾":
+                    //                    case "ä½¿ç”¨å¯":
+                    //                    case "ä¿®å¾—":
                     //                        {
                     //                            str_result = "1";
                     //                            break;
@@ -3500,7 +3500,7 @@ namespace SRCCore.Expressions.Functions
                     //        }
                     //        else if (it != null)
                     //        {
-                    //            // ‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
+                    //            // ä½•ç•ªç›®ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã‚’åˆ¤å®š
                     //            if (GeneralLib.IsNumber(@params[idx]))
                     //            {
                     //                i = Conversions.ToInteger(@params[idx]);
@@ -3518,7 +3518,7 @@ namespace SRCCore.Expressions.Functions
                     //                    }
                     //                }
                     //            }
-                    //            // w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
+                    //            // æŒ‡å®šã—ãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã„
                     //            if (i <= 0 || it.CountAbility() < i)
                     //            {
                     //                return str_result;
@@ -3530,21 +3530,21 @@ namespace SRCCore.Expressions.Functions
                     //                switch (@params[idx] ?? "")
                     //                {
                     //                    case var case11 when case11 == "":
-                    //                    case "–¼Ì":
+                    //                    case "åç§°":
                     //                        {
                     //                            str_result = withBlock19.Name;
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰Ê”":
+                    //                    case "åŠ¹æœæ•°":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock19.CountEffect());
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰Êƒ^ƒCƒv":
+                    //                    case "åŠ¹æœã‚¿ã‚¤ãƒ—":
                     //                        {
-                    //                            // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                    //                            // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                     //                            if (GeneralLib.IsNumber(@params[idx + 1]))
                     //                            {
                     //                                j = Conversions.ToInteger(@params[idx + 1]);
@@ -3559,9 +3559,9 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰ÊƒŒƒxƒ‹":
+                    //                    case "åŠ¹æœãƒ¬ãƒ™ãƒ«":
                     //                        {
-                    //                            // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                    //                            // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                     //                            if (GeneralLib.IsNumber(@params[idx + 1]))
                     //                            {
                     //                                j = Conversions.ToInteger(@params[idx + 1]);
@@ -3578,9 +3578,9 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰Êƒf[ƒ^":
+                    //                    case "åŠ¹æœãƒ‡ãƒ¼ã‚¿":
                     //                        {
-                    //                            // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                    //                            // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                     //                            if (GeneralLib.IsNumber(@params[idx + 1]))
                     //                            {
                     //                                j = Conversions.ToInteger(@params[idx + 1]);
@@ -3595,45 +3595,45 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "Ë’ö":
-                    //                    case "Å‘åË’ö":
+                    //                    case "å°„ç¨‹":
+                    //                    case "æœ€å¤§å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock19.MaxRange);
                     //                            break;
                     //                        }
 
-                    //                    case "Å¬Ë’ö":
+                    //                    case "æœ€å°å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock19.MinRange);
                     //                            break;
                     //                        }
 
-                    //                    case "Å‘åg—p‰ñ”":
-                    //                    case "g—p‰ñ”":
+                    //                    case "æœ€å¤§ä½¿ç”¨å›æ•°":
+                    //                    case "ä½¿ç”¨å›æ•°":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock19.Stock);
                     //                            break;
                     //                        }
 
-                    //                    case "Á”ï‚d‚m":
+                    //                    case "æ¶ˆè²»ï¼¥ï¼®":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock19.ENConsumption);
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹C—Í":
+                    //                    case "å¿…è¦æ°—åŠ›":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock19.NecessaryMorale);
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«":
+                    //                    case "å±æ€§":
                     //                        {
                     //                            str_result = withBlock19.Class;
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«Š—L":
+                    //                    case "å±æ€§æ‰€æœ‰":
                     //                        {
                     //                            if (GeneralLib.InStrNotNest(withBlock19.Class, @params[idx + 1]) > 0)
                     //                            {
@@ -3647,7 +3647,7 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«ƒŒƒxƒ‹":
+                    //                    case "å±æ€§ãƒ¬ãƒ™ãƒ«":
                     //                        {
                     //                            j = GeneralLib.InStrNotNest(withBlock19.Class, @params[idx + 1] + "L");
                     //                            if (j == 0)
@@ -3672,14 +3672,14 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹Z”\":
+                    //                    case "å¿…è¦æŠ€èƒ½":
                     //                        {
                     //                            str_result = withBlock19.NecessarySkill;
                     //                            break;
                     //                        }
 
-                    //                    case "g—p‰Â":
-                    //                    case "C“¾":
+                    //                    case "ä½¿ç”¨å¯":
+                    //                    case "ä¿®å¾—":
                     //                        {
                     //                            str_result = "1";
                     //                            break;
@@ -3689,7 +3689,7 @@ namespace SRCCore.Expressions.Functions
                     //        }
                     //        else if (itd != null)
                     //        {
-                    //            // ‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
+                    //            // ä½•ç•ªç›®ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã‚’åˆ¤å®š
                     //            if (GeneralLib.IsNumber(@params[idx]))
                     //            {
                     //                i = Conversions.ToInteger(@params[idx]);
@@ -3707,7 +3707,7 @@ namespace SRCCore.Expressions.Functions
                     //                    }
                     //                }
                     //            }
-                    //            // w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
+                    //            // æŒ‡å®šã—ãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã„
                     //            if (i <= 0 || itd.CountAbility() < i)
                     //            {
                     //                return str_result;
@@ -3719,21 +3719,21 @@ namespace SRCCore.Expressions.Functions
                     //                switch (@params[idx] ?? "")
                     //                {
                     //                    case var case12 when case12 == "":
-                    //                    case "–¼Ì":
+                    //                    case "åç§°":
                     //                        {
                     //                            str_result = withBlock20.Name;
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰Ê”":
+                    //                    case "åŠ¹æœæ•°":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock20.CountEffect());
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰Êƒ^ƒCƒv":
+                    //                    case "åŠ¹æœã‚¿ã‚¤ãƒ—":
                     //                        {
-                    //                            // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                    //                            // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                     //                            if (GeneralLib.IsNumber(@params[idx + 1]))
                     //                            {
                     //                                j = Conversions.ToInteger(@params[idx + 1]);
@@ -3748,9 +3748,9 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰ÊƒŒƒxƒ‹":
+                    //                    case "åŠ¹æœãƒ¬ãƒ™ãƒ«":
                     //                        {
-                    //                            // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                    //                            // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                     //                            if (GeneralLib.IsNumber(@params[idx + 1]))
                     //                            {
                     //                                j = Conversions.ToInteger(@params[idx + 1]);
@@ -3767,9 +3767,9 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "Œø‰Êƒf[ƒ^":
+                    //                    case "åŠ¹æœãƒ‡ãƒ¼ã‚¿":
                     //                        {
-                    //                            // ‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                    //                            // ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                     //                            if (GeneralLib.IsNumber(@params[idx + 1]))
                     //                            {
                     //                                j = Conversions.ToInteger(@params[idx + 1]);
@@ -3784,45 +3784,45 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "Ë’ö":
-                    //                    case "Å‘åË’ö":
+                    //                    case "å°„ç¨‹":
+                    //                    case "æœ€å¤§å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock20.MaxRange);
                     //                            break;
                     //                        }
 
-                    //                    case "Å¬Ë’ö":
+                    //                    case "æœ€å°å°„ç¨‹":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock20.MinRange);
                     //                            break;
                     //                        }
 
-                    //                    case "Å‘åg—p‰ñ”":
-                    //                    case "g—p‰ñ”":
+                    //                    case "æœ€å¤§ä½¿ç”¨å›æ•°":
+                    //                    case "ä½¿ç”¨å›æ•°":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock20.Stock);
                     //                            break;
                     //                        }
 
-                    //                    case "Á”ï‚d‚m":
+                    //                    case "æ¶ˆè²»ï¼¥ï¼®":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock20.ENConsumption);
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹C—Í":
+                    //                    case "å¿…è¦æ°—åŠ›":
                     //                        {
                     //                            str_result = SrcFormatter.Format(withBlock20.NecessaryMorale);
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«":
+                    //                    case "å±æ€§":
                     //                        {
                     //                            str_result = withBlock20.Class;
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«Š—L":
+                    //                    case "å±æ€§æ‰€æœ‰":
                     //                        {
                     //                            if (GeneralLib.InStrNotNest(withBlock20.Class, @params[idx + 1]) > 0)
                     //                            {
@@ -3836,7 +3836,7 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "‘®«ƒŒƒxƒ‹":
+                    //                    case "å±æ€§ãƒ¬ãƒ™ãƒ«":
                     //                        {
                     //                            j = GeneralLib.InStrNotNest(withBlock20.Class, @params[idx + 1] + "L");
                     //                            if (j == 0)
@@ -3861,14 +3861,14 @@ namespace SRCCore.Expressions.Functions
                     //                            break;
                     //                        }
 
-                    //                    case "•K—v‹Z”\":
+                    //                    case "å¿…è¦æŠ€èƒ½":
                     //                        {
                     //                            str_result = withBlock20.NecessarySkill;
                     //                            break;
                     //                        }
 
-                    //                    case "g—p‰Â":
-                    //                    case "C“¾":
+                    //                    case "ä½¿ç”¨å¯":
+                    //                    case "ä¿®å¾—":
                     //                        {
                     //                            str_result = "1";
                     //                            break;
@@ -3880,7 +3880,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "ƒ‰ƒ“ƒN":
+                    //case "ãƒ©ãƒ³ã‚¯":
                     //    {
                     //        if (u != null)
                     //        {
@@ -3890,7 +3890,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "ƒ{ƒXƒ‰ƒ“ƒN":
+                    //case "ãƒœã‚¹ãƒ©ãƒ³ã‚¯":
                     //    {
                     //        if (u != null)
                     //        {
@@ -3900,7 +3900,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "ƒGƒŠƒA":
+                    //case "ã‚¨ãƒªã‚¢":
                     //    {
                     //        if (u != null)
                     //        {
@@ -3910,7 +3910,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "vlƒ‚[ƒh":
+                    //case "æ€è€ƒãƒ¢ãƒ¼ãƒ‰":
                     //    {
                     //        if (u != null)
                     //        {
@@ -3920,7 +3920,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "Å‘åUŒ‚—Í":
+                    //case "æœ€å¤§æ”»æ’ƒåŠ›":
                     //    {
                     //        if (u != null)
                     //        {
@@ -3930,7 +3930,7 @@ namespace SRCCore.Expressions.Functions
                     //                var loopTo20 = withBlock21.CountWeapon();
                     //                for (i = 1; i <= loopTo20; i++)
                     //                {
-                    //                    if (withBlock21.IsWeaponMastered(i) && !withBlock21.IsDisabled(withBlock21.Weapon(i).Name) && !withBlock21.IsWeaponClassifiedAs(i, "‡"))
+                    //                    if (withBlock21.IsWeaponMastered(i) && !withBlock21.IsDisabled(withBlock21.Weapon(i).Name) && !withBlock21.IsWeaponClassifiedAs(i, "åˆ"))
                     //                    {
                     //                        if (withBlock21.WeaponPower(i, "") > max_value)
                     //                        {
@@ -3950,7 +3950,7 @@ namespace SRCCore.Expressions.Functions
                     //            {
                     //                WeaponData localWeapon7() { object argIndex1 = i; var ret = ud.Weapon(argIndex1); return ret; }
 
-                    //                if (Strings.InStr(localWeapon7().Class, "‡") == 0)
+                    //                if (Strings.InStr(localWeapon7().Class, "åˆ") == 0)
                     //                {
                     //                    WeaponData localWeapon6() { object argIndex1 = i; var ret = ud.Weapon(argIndex1); return ret; }
 
@@ -3969,7 +3969,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "Å’·Ë’ö":
+                    //case "æœ€é•·å°„ç¨‹":
                     //    {
                     //        if (u != null)
                     //        {
@@ -3979,7 +3979,7 @@ namespace SRCCore.Expressions.Functions
                     //                var loopTo22 = withBlock22.CountWeapon();
                     //                for (i = 1; i <= loopTo22; i++)
                     //                {
-                    //                    if (withBlock22.IsWeaponMastered(i) && !withBlock22.IsDisabled(withBlock22.Weapon(i).Name) && !withBlock22.IsWeaponClassifiedAs(i, "‡"))
+                    //                    if (withBlock22.IsWeaponMastered(i) && !withBlock22.IsDisabled(withBlock22.Weapon(i).Name) && !withBlock22.IsWeaponClassifiedAs(i, "åˆ"))
                     //                    {
                     //                        if (withBlock22.WeaponMaxRange(i) > max_value)
                     //                        {
@@ -3999,7 +3999,7 @@ namespace SRCCore.Expressions.Functions
                     //            {
                     //                WeaponData localWeapon10() { object argIndex1 = i; var ret = ud.Weapon(argIndex1); return ret; }
 
-                    //                if (Strings.InStr(localWeapon10().Class, "‡") == 0)
+                    //                if (Strings.InStr(localWeapon10().Class, "åˆ") == 0)
                     //                {
                     //                    WeaponData localWeapon9() { object argIndex1 = i; var ret = ud.Weapon(argIndex1); return ret; }
 
@@ -4018,7 +4018,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "c‚èƒTƒ|[ƒgƒAƒ^ƒbƒN”":
+                    //case "æ®‹ã‚Šã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯æ•°":
                     //    {
                     //        if (u != null)
                     //        {
@@ -4028,7 +4028,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "c‚èƒTƒ|[ƒgƒK[ƒh”":
+                    //case "æ®‹ã‚Šã‚µãƒãƒ¼ãƒˆã‚¬ãƒ¼ãƒ‰æ•°":
                     //    {
                     //        if (u != null)
                     //        {
@@ -4038,7 +4038,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "c‚è“¯‰‡ŒìUŒ‚”":
+                    //case "æ®‹ã‚ŠåŒæ™‚æ´è­·æ”»æ’ƒæ•°":
                     //    {
                     //        if (u != null)
                     //        {
@@ -4048,7 +4048,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "c‚èƒJƒEƒ“ƒ^[UŒ‚”":
+                    //case "æ®‹ã‚Šã‚«ã‚¦ãƒ³ã‚¿ãƒ¼æ”»æ’ƒæ•°":
                     //    {
                     //        if (u != null)
                     //        {
@@ -4058,7 +4058,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "‰ü‘¢”ï":
+                    //case "æ”¹é€ è²»":
                     //    {
                     //        if (u != null)
                     //        {
@@ -4068,7 +4068,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "Å‘å‰ü‘¢”":
+                    //case "æœ€å¤§æ”¹é€ æ•°":
                     //    {
                     //        if (u != null)
                     //        {
@@ -4078,7 +4078,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "ƒAƒCƒeƒ€ƒNƒ‰ƒX":
+                    //case "ã‚¢ã‚¤ãƒ†ãƒ ã‚¯ãƒ©ã‚¹":
                     //    {
                     //        if (it != null)
                     //        {
@@ -4092,7 +4092,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "‘•”õŒÂŠ":
+                    //case "è£…å‚™å€‹æ‰€":
                     //    {
                     //        if (it != null)
                     //        {
@@ -4106,7 +4106,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "Å‘å‚g‚oC³’l":
+                    //case "æœ€å¤§ï¼¨ï¼°ä¿®æ­£å€¤":
                     //    {
                     //        if (it != null)
                     //        {
@@ -4120,7 +4120,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "Å‘å‚d‚mC³’l":
+                    //case "æœ€å¤§ï¼¥ï¼®ä¿®æ­£å€¤":
                     //    {
                     //        if (it != null)
                     //        {
@@ -4134,7 +4134,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "‘•bC³’l":
+                    //case "è£…ç”²ä¿®æ­£å€¤":
                     //    {
                     //        if (it != null)
                     //        {
@@ -4148,7 +4148,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "‰^“®«C³’l":
+                    //case "é‹å‹•æ€§ä¿®æ­£å€¤":
                     //    {
                     //        if (it != null)
                     //        {
@@ -4162,7 +4162,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "ˆÚ“®—ÍC³’l":
+                    //case "ç§»å‹•åŠ›ä¿®æ­£å€¤":
                     //    {
                     //        if (it != null)
                     //        {
@@ -4176,8 +4176,8 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "‰ğà•¶":
-                    //case "ƒRƒƒ“ƒg":
+                    //case "è§£èª¬æ–‡":
+                    //case "ã‚³ãƒ¡ãƒ³ãƒˆ":
                     //    {
                     //        if (it != null)
                     //        {
@@ -4197,7 +4197,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "’Zk–¼":
+                    //case "çŸ­ç¸®å":
                     //    {
                     //        if (spd != null)
                     //        {
@@ -4207,7 +4207,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "Á”ï‚r‚o":
+                    //case "æ¶ˆè²»ï¼³ï¼°":
                     //    {
                     //        if (spd != null)
                     //        {
@@ -4217,7 +4217,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "‘ÎÛ":
+                    //case "å¯¾è±¡":
                     //    {
                     //        if (spd != null)
                     //        {
@@ -4227,7 +4227,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "‘±ŠúŠÔ":
+                    //case "æŒç¶šæœŸé–“":
                     //    {
                     //        if (spd != null)
                     //        {
@@ -4237,7 +4237,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "“K—pğŒ":
+                    //case "é©ç”¨æ¡ä»¶":
                     //    {
                     //        if (spd != null)
                     //        {
@@ -4247,7 +4247,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "ƒAƒjƒ":
+                    //case "ã‚¢ãƒ‹ãƒ¡":
                     //    {
                     //        if (spd != null)
                     //        {
@@ -4257,7 +4257,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "Œø‰Ê”":
+                    //case "åŠ¹æœæ•°":
                     //    {
                     //        if (spd != null)
                     //        {
@@ -4267,7 +4267,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "Œø‰Êƒ^ƒCƒv":
+                    //case "åŠ¹æœã‚¿ã‚¤ãƒ—":
                     //    {
                     //        if (spd != null)
                     //        {
@@ -4282,7 +4282,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "Œø‰ÊƒŒƒxƒ‹":
+                    //case "åŠ¹æœãƒ¬ãƒ™ãƒ«":
                     //    {
                     //        if (spd != null)
                     //        {
@@ -4297,7 +4297,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "Œø‰Êƒf[ƒ^":
+                    //case "åŠ¹æœãƒ‡ãƒ¼ã‚¿":
                     //    {
                     //        if (spd != null)
                     //        {
@@ -4312,12 +4312,12 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "ƒ}ƒbƒv":
+                    //case "ãƒãƒƒãƒ—":
                     //    {
                     //        idx = (idx + 1);
                     //        switch (@params[idx] ?? "")
                     //        {
-                    //            case "ƒtƒ@ƒCƒ‹–¼":
+                    //            case "ãƒ•ã‚¡ã‚¤ãƒ«å":
                     //                {
                     //                    str_result = SRC.Map.MapFileName;
                     //                    if (Strings.Len(str_result) > Strings.Len(SRC.ScenarioPath))
@@ -4331,17 +4331,17 @@ namespace SRCCore.Expressions.Functions
                     //                    break;
                     //                }
 
-                    //            case "•":
+                    //            case "å¹…":
                     //                {
                     //                    str_result = SrcFormatter.Format(SRC.Map.MapWidth);
                     //                    break;
                     //                }
 
-                    //            case "ŠÔ‘Ñ":
+                    //            case "æ™‚é–“å¸¯":
                     //                {
                     //                    if (!string.IsNullOrEmpty(SRC.Map.MapDrawMode))
                     //                    {
-                    //                        if (SRC.Map.MapDrawMode == "ƒtƒBƒ‹ƒ^")
+                    //                        if (SRC.Map.MapDrawMode == "ãƒ•ã‚£ãƒ«ã‚¿")
                     //                        {
                     //                            buf = Conversion.Hex(SRC.Map.MapDrawFilterColor);
                     //                            var loopTo24 = (6 - Strings.Len(buf));
@@ -4356,20 +4356,20 @@ namespace SRCCore.Expressions.Functions
 
                     //                        if (SRC.Map.MapDrawIsMapOnly)
                     //                        {
-                    //                            buf = buf + " ƒ}ƒbƒvŒÀ’è";
+                    //                            buf = buf + " ãƒãƒƒãƒ—é™å®š";
                     //                        }
 
                     //                        str_result = buf;
                     //                    }
                     //                    else
                     //                    {
-                    //                        str_result = "’‹";
+                    //                        str_result = "æ˜¼";
                     //                    }
 
                     //                    break;
                     //                }
 
-                    //            case "‚‚³":
+                    //            case "é«˜ã•":
                     //                {
                     //                    str_result = SrcFormatter.Format(SRC.Map.MapHeight);
                     //                    break;
@@ -4396,52 +4396,52 @@ namespace SRCCore.Expressions.Functions
                     //                    idx = (idx + 1);
                     //                    switch (@params[idx] ?? "")
                     //                    {
-                    //                        case "’nŒ`–¼":
+                    //                        case "åœ°å½¢å":
                     //                            {
                     //                                str_result = SRC.Map.TerrainName(mx, my);
                     //                                break;
                     //                            }
 
-                    //                        case "’nŒ`ƒ^ƒCƒv":
-                    //                        case "’nŒ`ƒNƒ‰ƒX":
+                    //                        case "åœ°å½¢ã‚¿ã‚¤ãƒ—":
+                    //                        case "åœ°å½¢ã‚¯ãƒ©ã‚¹":
                     //                            {
                     //                                str_result = SRC.Map.TerrainClass(mx, my);
                     //                                break;
                     //                            }
 
-                    //                        case "ˆÚ“®ƒRƒXƒg":
+                    //                        case "ç§»å‹•ã‚³ã‚¹ãƒˆ":
                     //                            {
-                    //                                // 0.5‚İ‚ÌˆÚ“®ƒRƒXƒg‚ğg‚¦‚é‚æ‚¤‚É‚·‚é‚½‚ßAˆÚ“®ƒRƒXƒg‚Í
-                    //                                // ÀÛ‚Ì‚Q”{‚Ì’l‚Å‹L˜^‚³‚ê‚Ä‚¢‚é
+                    //                                // 0.5åˆ»ã¿ã®ç§»å‹•ã‚³ã‚¹ãƒˆã‚’ä½¿ãˆã‚‹ã‚ˆã†ã«ã™ã‚‹ãŸã‚ã€ç§»å‹•ã‚³ã‚¹ãƒˆã¯
+                    //                                // å®Ÿéš›ã®ï¼’å€ã®å€¤ã§è¨˜éŒ²ã•ã‚Œã¦ã„ã‚‹
                     //                                str_result = SrcFormatter.Format(SRC.Map.TerrainMoveCost(mx, my) / 2d);
                     //                                break;
                     //                            }
 
-                    //                        case "‰ñ”ğC³":
+                    //                        case "å›é¿ä¿®æ­£":
                     //                            {
                     //                                str_result = SrcFormatter.Format(SRC.Map.TerrainEffectForHit(mx, my));
                     //                                break;
                     //                            }
 
-                    //                        case "ƒ_ƒ[ƒWC³":
+                    //                        case "ãƒ€ãƒ¡ãƒ¼ã‚¸ä¿®æ­£":
                     //                            {
                     //                                str_result = SrcFormatter.Format(SRC.Map.TerrainEffectForDamage(mx, my));
                     //                                break;
                     //                            }
 
-                    //                        case "‚g‚o‰ñ•œ—Ê":
+                    //                        case "ï¼¨ï¼°å›å¾©é‡":
                     //                            {
                     //                                str_result = SrcFormatter.Format(SRC.Map.TerrainEffectForHPRecover(mx, my));
                     //                                break;
                     //                            }
 
-                    //                        case "‚d‚m‰ñ•œ—Ê":
+                    //                        case "ï¼¥ï¼®å›å¾©é‡":
                     //                            {
                     //                                str_result = SrcFormatter.Format(SRC.Map.TerrainEffectForENRecover(mx, my));
                     //                                break;
                     //                            }
 
-                    //                        case "ƒrƒbƒgƒ}ƒbƒv–¼":
+                    //                        case "ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—å":
                     //                            {
                     //                                // MOD START 240a
                     //                                // Select Case MapImageFileTypeData(mx, my)
@@ -4484,7 +4484,7 @@ namespace SRCCore.Expressions.Functions
                     //                            }
                     //                        // MOD  END  240a
                     //                        // ADD START 240a
-                    //                        case "ƒŒƒCƒ„[ƒrƒbƒgƒ}ƒbƒv–¼":
+                    //                        case "ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—å":
                     //                            {
                     //                                switch (SRC.Map.MapImageFileTypeData[mx, my])
                     //                                {
@@ -4510,7 +4510,7 @@ namespace SRCCore.Expressions.Functions
                     //                                break;
                     //                            }
                     //                        // ADD  END  240a
-                    //                        case "ƒ†ƒjƒbƒg‚h‚c":
+                    //                        case "ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤":
                     //                            {
                     //                                if (SRC.Map.MapDataForUnit[mx, my] != null)
                     //                                {
@@ -4528,7 +4528,7 @@ namespace SRCCore.Expressions.Functions
                     //        break;
                     //    }
 
-                    //case "ƒIƒvƒVƒ‡ƒ“":
+                    //case "ã‚ªãƒ—ã‚·ãƒ§ãƒ³":
                     //    {
                     //        idx = (idx + 1);
                     //        switch (@params[idx] ?? "")
@@ -4615,7 +4615,7 @@ namespace SRCCore.Expressions.Functions
                     //            // '                    "BattleAnimation", "WeaponAnimation", "MoveAnimation", _
                     //            // '                    "ImageBufferNum", "MaxImageBufferSize", "KeepStretchedImage", _
                     //            // '                    "UseTransparentBlt"
-                    //            // uNewGUIv‚Å’T‚µ‚É—ˆ‚½‚çINI‚Ìó‘Ô‚ğ•Ô‚·BuV‚f‚t‚hv‚Å’T‚µ‚É—ˆ‚½‚çOption‚Ìó‘Ô‚ğ•Ô‚·B
+                    //            // ã€ŒNewGUIã€ã§æ¢ã—ã«æ¥ãŸã‚‰INIã®çŠ¶æ…‹ã‚’è¿”ã™ã€‚ã€Œæ–°ï¼§ï¼µï¼©ã€ã§æ¢ã—ã«æ¥ãŸã‚‰Optionã®çŠ¶æ…‹ã‚’è¿”ã™ã€‚
                     //            case "Turn":
                     //            case "Square":
                     //            case "KeepEnemyBGM":
@@ -4641,7 +4641,7 @@ namespace SRCCore.Expressions.Functions
 
                     //            default:
                     //                {
-                    //                    // OptionƒRƒ}ƒ“ƒh‚ÌƒIƒvƒVƒ‡ƒ“‚ğQÆ
+                    //                    // Optionã‚³ãƒãƒ³ãƒ‰ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’å‚ç…§
                     //                    if (IsOptionDefined(@params[idx]))
                     //                    {
                     //                        str_result = "On";

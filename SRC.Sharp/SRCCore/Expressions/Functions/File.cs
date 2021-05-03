@@ -2,12 +2,12 @@ using SRCCore.Lib;
 
 namespace SRCCore.Expressions.Functions
 {
-    //ƒtƒ@ƒCƒ‹ˆ—ŠÖ”
-    // TODO Impl “––Ê‚ÍÀ‘•‚µ‚È‚¢
-    //Dirƒtƒ@ƒCƒ‹‚Ì‘¶İ”»’è
-    //EOFƒtƒ@ƒCƒ‹‚Ì––”ö‚©”»’è
-    //LoadFileDialog“Ç‚İo‚µ—pƒtƒ@ƒCƒ‹‚Ì‘I‘ğƒ_ƒCƒAƒƒO‚ğ•\¦
-    //SaveFileDialog‘‚«‚İ—pƒtƒ@ƒCƒ‹‚Ì‘I‘ğƒ_ƒCƒAƒƒO‚ğ•\¦
+    //ãƒ•ã‚¡ã‚¤ãƒ«å‡¦ç†é–¢æ•°
+    // TODO Impl å½“é¢ã¯å®Ÿè£…ã—ãªã„
+    //Dirãƒ•ã‚¡ã‚¤ãƒ«ã®å­˜åœ¨åˆ¤å®š
+    //EOFãƒ•ã‚¡ã‚¤ãƒ«ã®æœ«å°¾ã‹åˆ¤å®š
+    //LoadFileDialogèª­ã¿å‡ºã—ç”¨ãƒ•ã‚¡ã‚¤ãƒ«ã®é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤º
+    //SaveFileDialogæ›¸ãè¾¼ã¿ç”¨ãƒ•ã‚¡ã‚¤ãƒ«ã®é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤º
 
     public class Dir : AFunction
     {
@@ -24,7 +24,7 @@ namespace SRCCore.Expressions.Functions
             //                                {
             //                                    fname = GetValueAsString(@params[1], is_term[1]);
 
-            //                                    // ƒtƒ‹ƒpƒXw’è‚Å‚È‚¯‚ê‚ÎƒVƒiƒŠƒIƒtƒHƒ‹ƒ_‚ğ‹N“_‚ÉŒŸõ
+            //                                    // ãƒ•ãƒ«ãƒ‘ã‚¹æŒ‡å®šã§ãªã‘ã‚Œã°ã‚·ãƒŠãƒªã‚ªãƒ•ã‚©ãƒ«ãƒ€ã‚’èµ·ç‚¹ã«æ¤œç´¢
             //                                    if (Strings.Mid(fname, 2, 1) != ":")
             //                                    {
             //                                        fname = SRC.ScenarioPath + fname;
@@ -32,26 +32,26 @@ namespace SRCCore.Expressions.Functions
 
             //                                    switch (GetValueAsString(@params[2], is_term[2]) ?? "")
             //                                    {
-            //                                        case "ƒtƒ@ƒCƒ‹":
+            //                                        case "ãƒ•ã‚¡ã‚¤ãƒ«":
             //                                            {
             //                                                num = Constants.vbNormal;
             //                                                break;
             //                                            }
 
-            //                                        case "ƒtƒHƒ‹ƒ_":
+            //                                        case "ãƒ•ã‚©ãƒ«ãƒ€":
             //                                            {
             //                                                num = FileAttribute.Directory;
             //                                                break;
             //                                            }
             //                                    }
-            //                                    // UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                                    // UPGRADE_WARNING: Dir ã«æ–°ã—ã„å‹•ä½œãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                                    str_result = FileSystem.Dir(fname, (FileAttribute)num);
             //                                    if (Strings.Len(str_result) == 0)
             //                                    {
             //                                        return CallFunctionRet;
             //                                    }
 
-            //                                    // ƒtƒ@ƒCƒ‹‘®«ƒ`ƒFƒbƒN—p‚ÉŒŸõƒpƒX‚ğì¬
+            //                                    // ãƒ•ã‚¡ã‚¤ãƒ«å±æ€§ãƒã‚§ãƒƒã‚¯ç”¨ã«æ¤œç´¢ãƒ‘ã‚¹ã‚’ä½œæˆ
             //                                    dir_path = fname;
             //                                    if (num == FileAttribute.Directory)
             //                                    {
@@ -62,11 +62,11 @@ namespace SRCCore.Expressions.Functions
             //                                        }
             //                                    }
 
-            //                                    // ’Pˆêƒtƒ@ƒCƒ‹‚ÌŒŸõH
+            //                                    // å˜ä¸€ãƒ•ã‚¡ã‚¤ãƒ«ã®æ¤œç´¢ï¼Ÿ
             //                                    if (Strings.InStr(fname, "*") == 0)
             //                                    {
-            //                                        // ƒtƒHƒ‹ƒ_‚ÌŒŸõ‚Ìê‡‚ÍŒ©‚Â‚©‚Á‚½ƒtƒ@ƒCƒ‹‚ªƒtƒHƒ‹ƒ_
-            //                                        // ‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚·‚é
+            //                                        // ãƒ•ã‚©ãƒ«ãƒ€ã®æ¤œç´¢ã®å ´åˆã¯è¦‹ã¤ã‹ã£ãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒãƒ•ã‚©ãƒ«ãƒ€
+            //                                        // ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
             //                                        if (num == FileAttribute.Directory)
             //                                        {
             //                                            if ((FileSystem.GetAttr(dir_path + str_result) & num) == 0)
@@ -80,30 +80,30 @@ namespace SRCCore.Expressions.Functions
 
             //                                    if (str_result == ".")
             //                                    {
-            //                                        // UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                                        // UPGRADE_WARNING: Dir ã«æ–°ã—ã„å‹•ä½œãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                                        str_result = FileSystem.Dir();
             //                                    }
 
             //                                    if (str_result == "..")
             //                                    {
-            //                                        // UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                                        // UPGRADE_WARNING: Dir ã«æ–°ã—ã„å‹•ä½œãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                                        str_result = FileSystem.Dir();
             //                                    }
 
-            //                                    // ŒŸõ‚³‚ê‚½ƒtƒ@ƒCƒ‹ˆê——‚ğì¬
+            //                                    // æ¤œç´¢ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ä¸€è¦§ã‚’ä½œæˆ
             //                                    dir_list = new string[1];
             //                                    if (num == FileAttribute.Directory)
             //                                    {
             //                                        while (Strings.Len(str_result) > 0)
             //                                        {
-            //                                            // ƒtƒHƒ‹ƒ_‚ÌŒŸõ‚Ìê‡‚ÍŒ©‚Â‚©‚Á‚½ƒtƒ@ƒCƒ‹‚ªƒtƒHƒ‹ƒ_
-            //                                            // ‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚·‚é
+            //                                            // ãƒ•ã‚©ãƒ«ãƒ€ã®æ¤œç´¢ã®å ´åˆã¯è¦‹ã¤ã‹ã£ãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒãƒ•ã‚©ãƒ«ãƒ€
+            //                                            // ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
             //                                            if ((FileSystem.GetAttr(dir_path + str_result) & num) != 0)
             //                                            {
             //                                                Array.Resize(dir_list, Information.UBound(dir_list) + 1 + 1);
             //                                                dir_list[Information.UBound(dir_list)] = str_result;
             //                                            }
-            //                                            // UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                                            // UPGRADE_WARNING: Dir ã«æ–°ã—ã„å‹•ä½œãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                                            str_result = FileSystem.Dir();
             //                                        }
             //                                    }
@@ -113,7 +113,7 @@ namespace SRCCore.Expressions.Functions
             //                                        {
             //                                            Array.Resize(dir_list, Information.UBound(dir_list) + 1 + 1);
             //                                            dir_list[Information.UBound(dir_list)] = str_result;
-            //                                            // UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                                            // UPGRADE_WARNING: Dir ã«æ–°ã—ã„å‹•ä½œãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                                            str_result = FileSystem.Dir();
             //                                        }
             //                                    }
@@ -136,20 +136,20 @@ namespace SRCCore.Expressions.Functions
             //                                {
             //                                    fname = GetValueAsString(@params[1], is_term[1]);
 
-            //                                    // ƒtƒ‹ƒpƒXw’è‚Å‚È‚¯‚ê‚ÎƒVƒiƒŠƒIƒtƒHƒ‹ƒ_‚ğ‹N“_‚ÉŒŸõ
+            //                                    // ãƒ•ãƒ«ãƒ‘ã‚¹æŒ‡å®šã§ãªã‘ã‚Œã°ã‚·ãƒŠãƒªã‚ªãƒ•ã‚©ãƒ«ãƒ€ã‚’èµ·ç‚¹ã«æ¤œç´¢
             //                                    if (Strings.Mid(fname, 2, 1) != ":")
             //                                    {
             //                                        fname = SRC.ScenarioPath + fname;
             //                                    }
 
-            //                                    // UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                                    // UPGRADE_WARNING: Dir ã«æ–°ã—ã„å‹•ä½œãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                                    str_result = FileSystem.Dir(fname, FileAttribute.Directory);
             //                                    if (Strings.Len(str_result) == 0)
             //                                    {
             //                                        return CallFunctionRet;
             //                                    }
 
-            //                                    // ’Pˆêƒtƒ@ƒCƒ‹‚ÌŒŸõH
+            //                                    // å˜ä¸€ãƒ•ã‚¡ã‚¤ãƒ«ã®æ¤œç´¢ï¼Ÿ
             //                                    if (Strings.InStr(fname, "*") == 0)
             //                                    {
             //                                        return CallFunctionRet;
@@ -157,23 +157,23 @@ namespace SRCCore.Expressions.Functions
 
             //                                    if (str_result == ".")
             //                                    {
-            //                                        // UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                                        // UPGRADE_WARNING: Dir ã«æ–°ã—ã„å‹•ä½œãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                                        str_result = FileSystem.Dir();
             //                                    }
 
             //                                    if (str_result == "..")
             //                                    {
-            //                                        // UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                                        // UPGRADE_WARNING: Dir ã«æ–°ã—ã„å‹•ä½œãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                                        str_result = FileSystem.Dir();
             //                                    }
 
-            //                                    // ŒŸõ‚³‚ê‚½ƒtƒ@ƒCƒ‹ˆê——‚ğì¬
+            //                                    // æ¤œç´¢ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ä¸€è¦§ã‚’ä½œæˆ
             //                                    dir_list = new string[1];
             //                                    while (Strings.Len(str_result) > 0)
             //                                    {
             //                                        Array.Resize(dir_list, Information.UBound(dir_list) + 1 + 1);
             //                                        dir_list[Information.UBound(dir_list)] = str_result;
-            //                                        // UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                                        // UPGRADE_WARNING: Dir ã«æ–°ã—ã„å‹•ä½œãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                                        str_result = FileSystem.Dir();
             //                                    }
 
@@ -275,45 +275,45 @@ namespace SRCCore.Expressions.Functions
             //                        {
             //                            case 2:
             //                                {
-            //                                    str_result = FileDialog.LoadFileDialog("ƒtƒ@ƒCƒ‹‚ğŠJ‚­", SRC.ScenarioPath, "", 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: GetValueAsString(@params[1], is_term[1])2, fsuffix2: GetValueAsString(@params[2], is_term[2])2, ftype3: GetValueAsString(@params[1], is_term[1])3, fsuffix3: GetValueAsString(@params[2], is_term[2])3);
+            //                                    str_result = FileDialog.LoadFileDialog("ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã", SRC.ScenarioPath, "", 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: GetValueAsString(@params[1], is_term[1])2, fsuffix2: GetValueAsString(@params[2], is_term[2])2, ftype3: GetValueAsString(@params[1], is_term[1])3, fsuffix3: GetValueAsString(@params[2], is_term[2])3);
             //                                    break;
             //                                }
 
             //                            case 3:
             //                                {
-            //                                    str_result = FileDialog.LoadFileDialog("ƒtƒ@ƒCƒ‹‚ğŠJ‚­", SRC.ScenarioPath, GetValueAsString(@params[3], is_term[3]), 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: ""1, fsuffix2: ""1, ftype3: ""1, fsuffix3: ""1);
+            //                                    str_result = FileDialog.LoadFileDialog("ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã", SRC.ScenarioPath, GetValueAsString(@params[3], is_term[3]), 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: ""1, fsuffix2: ""1, ftype3: ""1, fsuffix3: ""1);
             //                                    break;
             //                                }
 
             //                            case 4:
             //                                {
-            //                                    str_result = FileDialog.LoadFileDialog("ƒtƒ@ƒCƒ‹‚ğŠJ‚­", SRC.ScenarioPath + GetValueAsString(@params[4], is_term[4]), GetValueAsString(@params[3], is_term[3]), 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
+            //                                    str_result = FileDialog.LoadFileDialog("ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã", SRC.ScenarioPath + GetValueAsString(@params[4], is_term[4]), GetValueAsString(@params[3], is_term[3]), 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
             //                                    break;
             //                                }
             //                        }
 
             //                        CallFunctionRet = ValueType.StringType;
 
-            //                        // –{“–‚Í‚±‚ê‚¾‚¯‚Å‚¢‚¢‚Í‚¸‚¾‚¯‚Çcc
+            //                        // æœ¬å½“ã¯ã“ã‚Œã ã‘ã§ã„ã„ã¯ãšã ã‘ã©â€¦â€¦
             //                        if (Strings.InStr(str_result, SRC.ScenarioPath) > 0)
             //                        {
             //                            str_result = Strings.Mid(str_result, Strings.Len(SRC.ScenarioPath) + 1);
             //                            return CallFunctionRet;
             //                        }
 
-            //                        // ƒtƒ‹ƒpƒXw’è‚È‚ç‚±‚±‚ÅI—¹
+            //                        // ãƒ•ãƒ«ãƒ‘ã‚¹æŒ‡å®šãªã‚‰ã“ã“ã§çµ‚äº†
             //                        if (Strings.Right(Strings.Left(str_result, 3), 2) == @":\")
             //                        {
             //                            str_result = "";
             //                            return CallFunctionRet;
             //                        }
 
-            //                        // UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                        // UPGRADE_WARNING: Dir ã«æ–°ã—ã„å‹•ä½œãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                        while (string.IsNullOrEmpty(FileSystem.Dir(SRC.ScenarioPath + str_result, FileAttribute.Normal)))
             //                        {
             //                            if (Strings.InStr(str_result, @"\") == 0)
             //                            {
-            //                                // ƒVƒiƒŠƒIƒtƒHƒ‹ƒ_ŠO‚Ìƒtƒ@ƒCƒ‹‚¾‚Á‚½
+            //                                // ã‚·ãƒŠãƒªã‚ªãƒ•ã‚©ãƒ«ãƒ€å¤–ã®ãƒ•ã‚¡ã‚¤ãƒ«ã ã£ãŸ
             //                                str_result = "";
             //                                return CallFunctionRet;
             //                            }
@@ -345,26 +345,26 @@ namespace SRCCore.Expressions.Functions
             //                        {
             //                            case 2:
             //                                {
-            //                                    str_result = FileDialog.SaveFileDialog("ƒtƒ@ƒCƒ‹‚ğ•Û‘¶", SRC.ScenarioPath, "", 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
+            //                                    str_result = FileDialog.SaveFileDialog("ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¿å­˜", SRC.ScenarioPath, "", 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
             //                                    break;
             //                                }
 
             //                            case 3:
             //                                {
-            //                                    str_result = FileDialog.SaveFileDialog("ƒtƒ@ƒCƒ‹‚ğ•Û‘¶", SRC.ScenarioPath, GetValueAsString(@params[3], is_term[3]), 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
+            //                                    str_result = FileDialog.SaveFileDialog("ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¿å­˜", SRC.ScenarioPath, GetValueAsString(@params[3], is_term[3]), 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
             //                                    break;
             //                                }
 
             //                            case 4:
             //                                {
-            //                                    str_result = FileDialog.SaveFileDialog("ƒtƒ@ƒCƒ‹‚ğ•Û‘¶", SRC.ScenarioPath + GetValueAsString(@params[4], is_term[4]), GetValueAsString(@params[3], is_term[3]), 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
+            //                                    str_result = FileDialog.SaveFileDialog("ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¿å­˜", SRC.ScenarioPath + GetValueAsString(@params[4], is_term[4]), GetValueAsString(@params[3], is_term[3]), 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
             //                                    break;
             //                                }
             //                        }
 
             //                        CallFunctionRet = ValueType.StringType;
 
-            //                        // –{“–‚Í‚±‚ê‚¾‚¯‚Å‚¢‚¢‚Í‚¸‚¾‚¯‚Çcc
+            //                        // æœ¬å½“ã¯ã“ã‚Œã ã‘ã§ã„ã„ã¯ãšã ã‘ã©â€¦â€¦
             //                        if (Strings.InStr(str_result, SRC.ScenarioPath) > 0)
             //                        {
             //                            str_result = Strings.Mid(str_result, Strings.Len(SRC.ScenarioPath) + 1);
@@ -390,7 +390,7 @@ namespace SRCCore.Expressions.Functions
             //                        while (Strings.InStr(buf, @"\") > 0)
             //                        {
             //                            buf = Strings.Mid(buf, Strings.InStr(buf, @"\") + 1);
-            //                            // UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                            // UPGRADE_WARNING: Dir ã«æ–°ã—ã„å‹•ä½œãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                            if (!string.IsNullOrEmpty(FileSystem.Dir(SRC.ScenarioPath + buf, FileAttribute.Directory)))
             //                            {
             //                                str_result = buf + @"\" + str_result;
@@ -398,7 +398,7 @@ namespace SRCCore.Expressions.Functions
             //                            }
             //                        }
 
-            //                        // UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+            //                        // UPGRADE_WARNING: Dir ã«æ–°ã—ã„å‹•ä½œãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚ è©³ç´°ã«ã¤ã„ã¦ã¯ã€'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
             //                        if (!string.IsNullOrEmpty(FileSystem.Dir(SRC.ScenarioPath + buf, FileAttribute.Directory)))
             //                        {
             //                            str_result = buf + @"\" + str_result;

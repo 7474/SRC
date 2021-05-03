@@ -21,7 +21,7 @@ namespace SRCCore.Extensions
 
         public static List<T> CloneList<T>(this IList<T> list)
         {
-            // TODO ó‚¢ƒRƒs[‚ÅƒNƒ[ƒ“‚·‚éÀ‘•‚ÌŠm”F
+            // TODO æµ…ã„ã‚³ãƒ”ãƒ¼ã§ã‚¯ãƒ­ãƒ¼ãƒ³ã™ã‚‹å®Ÿè£…ã®ç¢ºèª
             return list.ToList();
         }
     }

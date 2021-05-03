@@ -11,7 +11,7 @@ namespace SRCCore.Expressions.Functions
             num_result = 0d;
             if (unit != null)
             {
-                if (unit.Status == "oŒ‚" || unit.Status == "Ši”[")
+                if (unit.Status == "å‡ºæ’ƒ" || unit.Status == "æ ¼ç´")
                 {
                     num_result = unit.Action;
                 }
@@ -76,7 +76,7 @@ namespace SRCCore.Expressions.Functions
             if (pcount == 1)
             {
                 var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
-                if (pname == "–¢‘•”õ")
+                if (pname == "æœªè£…å‚™")
                 {
                     num_result = SRC.IList.List.Count(itm => itm.Unit == null && itm.Exist);
                 }
@@ -200,7 +200,7 @@ namespace SRCCore.Expressions.Functions
             var name = pcount == 1
                 ? SRC.Expression.GetValueAsString(@params[1], is_term[1])
                 : SRC.Expression.GetValueAsString(@params[2], is_term[2]);
-            // ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+            // ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
             if (SRC.ALDList.IsDefined(name))
             {
                 name = SRC.ALDList.Item(name).ReplaceTypeName(name);
@@ -259,7 +259,7 @@ namespace SRCCore.Expressions.Functions
             if (pcount == 2)
             {
                 var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
-                if (pname == "–¢‘•”õ")
+                if (pname == "æœªè£…å‚™")
                 {
                     var items = SRC.IList.List.Where(itm => itm.Unit == null && itm.Exist).ToList();
                     str_result = items.Count > index - 1 ? items[index - 1].Name : "";
@@ -292,7 +292,7 @@ namespace SRCCore.Expressions.Functions
             if (pcount == 2)
             {
                 var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
-                if (pname == "–¢‘•”õ")
+                if (pname == "æœªè£…å‚™")
                 {
                     var items = SRC.IList.List.Where(itm => itm.Unit == null && itm.Exist).ToList();
                     str_result = items.Count > index - 1 ? items[index - 1].ID : "";

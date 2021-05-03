@@ -3,13 +3,13 @@ using System.Linq;
 
 namespace SRCCore.Expressions.Functions
 {
-    //ƒpƒCƒƒbƒgî•ñŠÖ”
-    //LevelƒpƒCƒƒbƒg‚ÌƒŒƒxƒ‹
-    //MoraleƒpƒCƒƒbƒg‚Ì‹C—Í
-    //PlanaƒpƒCƒƒbƒg‚Ìc‚è—ì—Í
-    //RelationƒpƒCƒƒbƒgŠÔ‚ÌM—Š“x
-    //SkillƒpƒCƒƒbƒg‚ªw’è‚µ‚½“Áê”\—Í‚ğ‚Á‚Ä‚¢‚é‚©
-    //SPƒpƒCƒƒbƒg‚Ìc‚è‚r‚o
+    //ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæƒ…å ±é–¢æ•°
+    //Levelãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ãƒ¬ãƒ™ãƒ«
+    //Moraleãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æ°—åŠ›
+    //Planaãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æ®‹ã‚ŠéœŠåŠ›
+    //Relationãƒ‘ã‚¤ãƒ­ãƒƒãƒˆé–“ã®ä¿¡é ¼åº¦
+    //Skillãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒæŒ‡å®šã—ãŸç‰¹æ®Šèƒ½åŠ›ã‚’æŒã£ã¦ã„ã‚‹ã‹
+    //SPãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æ®‹ã‚Šï¼³ï¼°
 
     public class Level : APilotFunction
     {
@@ -81,7 +81,7 @@ namespace SRCCore.Expressions.Functions
             var p2 = SRC.PList.Item(pname2);
             if (p1 != null && p2 != null)
             {
-                num_result = SRC.Expression.GetValueAsLong("ŠÖŒW:" + p1.Name + ":" + p2.Name);
+                num_result = SRC.Expression.GetValueAsLong("é–¢ä¿‚:" + p1.Name + ":" + p2.Name);
             }
 
             if (etype == ValueType.StringType)
@@ -106,7 +106,7 @@ namespace SRCCore.Expressions.Functions
             var name = pcount == 1
                 ? SRC.Expression.GetValueAsString(@params[1], is_term[1])
                 : SRC.Expression.GetValueAsString(@params[2], is_term[2]);
-            // ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+            // ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
             if (SRC.ALDList.IsDefined(name))
             {
                 name = SRC.ALDList.Item(name).ReplaceTypeName(name);

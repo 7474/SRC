@@ -48,7 +48,7 @@ namespace SRCCore.Expressions.Functions
                 SRC.Expression.GetValueAsString(@params[1], is_term[1]),
                 SRC.Expression.GetValueAsLong(@params[2], is_term[2]));
 
-            // ‘S‘Ì‚ª()‚ÅˆÍ‚Ü‚ê‚Ä‚¢‚éê‡‚Í()‚ğŠO‚·
+            // å…¨ä½“ãŒ()ã§å›²ã¾ã‚Œã¦ã„ã‚‹å ´åˆã¯()ã‚’å¤–ã™
             if (Strings.Left(str_result, 1) == "(" & Strings.Right(str_result, 1) == ")")
             {
                 str_result = Strings.Mid(str_result, 2, Strings.Len(str_result) - 2);

@@ -15,7 +15,7 @@ namespace SRCCore.Events
         }
         public void Restore(SRCSuspendData data)
         {
-            // RequireƒRƒ}ƒ“ƒh‚Å’Ç‰Á‚³‚ê‚½ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹
+            // Requireã‚³ãƒãƒ³ãƒ‰ã§è¿½åŠ ã•ã‚ŒãŸã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«
             foreach (var fname in data.AdditionalEventFileNames)
             {
                 if (!EventFileNames.Contains(fname))
@@ -25,7 +25,7 @@ namespace SRCCore.Events
             }
             RegisterLabel();
 
-            // ƒCƒxƒ“ƒg—pƒ‰ƒxƒ‹‚ğİ’è
+            // ã‚¤ãƒ™ãƒ³ãƒˆç”¨ãƒ©ãƒ™ãƒ«ã‚’è¨­å®š
             foreach (var lab in colEventLabelList.List)
             {
                 lab.Enable = !data.DisableEventLabels.Contains(lab.Data);
