@@ -30,6 +30,7 @@ namespace SRCCore
         public Sound Sound { get; }
         public Effect Effect { get; }
         public COM COM { get; }
+        public InterMission InterMission { get; }
 
         // パイロットデータのリスト
         public PilotDataList PDList;
@@ -154,6 +155,8 @@ namespace SRCCore
             Sound = new Sound(this);
             Effect = new Effect(this);
             COM = new COM(this);
+            // TODO 個別にインスタンス化してるの消す
+            InterMission = new InterMission(this);
 
             PDList = new PilotDataList(this);
             NPDList = new NonPilotDataList(this);

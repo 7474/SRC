@@ -1664,171 +1664,171 @@ namespace SRCCore.Expressions.Functions
                         idx = (idx + 1);
                         if (u != null)
                         {
-                                // 何番目の武器かを判定
-                                if (GeneralLib.IsNumber(@params[idx]))
+                            // 何番目の武器かを判定
+                            if (GeneralLib.IsNumber(@params[idx]))
+                            {
+                                i = Conversions.ToInteger(@params[idx]);
+                            }
+                            else
+                            {
+                                var loopTo8 = u.CountWeapon();
+                                for (i = 1; i <= loopTo8; i++)
                                 {
-                                    i = Conversions.ToInteger(@params[idx]);
-                                }
-                                else
-                                {
-                                    var loopTo8 = u.CountWeapon();
-                                    for (i = 1; i <= loopTo8; i++)
+                                    if ((@params[idx] ?? "") == (u.Weapon(i).Name ?? ""))
                                     {
-                                        if ((@params[idx] ?? "") == (u.Weapon(i).Name ?? ""))
-                                        {
-                                            break;
-                                        }
+                                        break;
                                     }
                                 }
-                                // 指定した武器を持っていない
-                                if (i <= 0 || u.CountWeapon() < i)
-                                {
-                                    return str_result;
-                                }
+                            }
+                            // 指定した武器を持っていない
+                            if (i <= 0 || u.CountWeapon() < i)
+                            {
+                                return str_result;
+                            }
 
-                                idx = (idx + 1);
-                                switch (@params[idx] ?? "")
-                                {
-                                    case var case1 when case1 == "":
-                                    case "名称":
+                            idx = (idx + 1);
+                            switch (@params[idx] ?? "")
+                            {
+                                case var case1 when case1 == "":
+                                case "名称":
+                                    {
+                                        str_result = u.Weapon(i).Name;
+                                        break;
+                                    }
+
+                                case "攻撃力":
+                                    {
+                                        str_result = SrcFormatter.Format(u.WeaponPower(i, ""));
+                                        break;
+                                    }
+
+                                case "射程":
+                                case "最大射程":
+                                    {
+                                        str_result = SrcFormatter.Format(u.WeaponMaxRange(i));
+                                        break;
+                                    }
+
+                                case "最小射程":
+                                    {
+                                        str_result = SrcFormatter.Format(u.Weapon(i).MinRange);
+                                        break;
+                                    }
+
+                                case "命中率":
+                                    {
+                                        str_result = SrcFormatter.Format(u.WeaponPrecision(i));
+                                        break;
+                                    }
+
+                                case "最大弾数":
+                                    {
+                                        str_result = SrcFormatter.Format(u.MaxBullet(i));
+                                        break;
+                                    }
+
+                                case "弾数":
+                                    {
+                                        str_result = SrcFormatter.Format(u.Bullet(i));
+                                        break;
+                                    }
+
+                                case "消費ＥＮ":
+                                    {
+                                        str_result = SrcFormatter.Format(u.WeaponENConsumption(i));
+                                        break;
+                                    }
+
+                                case "必要気力":
+                                    {
+                                        str_result = SrcFormatter.Format(u.Weapon(i).NecessaryMorale);
+                                        break;
+                                    }
+
+                                case "地形適応":
+                                    {
+                                        str_result = u.Weapon(i).Adaption;
+                                        break;
+                                    }
+
+                                case "クリティカル率":
+                                    {
+                                        str_result = SrcFormatter.Format(u.WeaponCritical(i));
+                                        break;
+                                    }
+
+                                case "属性":
+                                    {
+                                        str_result = u.WeaponClass(i);
+                                        break;
+                                    }
+
+                                case "属性所有":
+                                    {
+                                        if (u.IsWeaponClassifiedAs(i, @params[idx + 1]))
                                         {
-                                            str_result = u.Weapon(i).Name;
-                                            break;
+                                            str_result = "1";
+                                        }
+                                        else
+                                        {
+                                            str_result = "0";
                                         }
 
-                                    case "攻撃力":
+                                        break;
+                                    }
+
+                                case "属性レベル":
+                                    {
+                                        str_result = u.WeaponLevel(i, @params[idx + 1]).ToString();
+                                        break;
+                                    }
+
+                                case "属性名称":
+                                    {
+                                        str_result = Help.AttributeName(u, @params[idx + 1], false);
+                                        break;
+                                    }
+
+                                case "属性解説":
+                                    {
+                                        str_result = Help.AttributeHelpMessage(u, @params[idx + 1], i, false);
+                                        break;
+                                    }
+
+                                case "必要技能":
+                                    {
+                                        str_result = u.Weapon(i).NecessarySkill;
+                                        break;
+                                    }
+
+                                case "使用可":
+                                    {
+                                        if (u.IsWeaponAvailable(i, "ステータス"))
                                         {
-                                            str_result = SrcFormatter.Format(u.WeaponPower(i, ""));
-                                            break;
+                                            str_result = "1";
+                                        }
+                                        else
+                                        {
+                                            str_result = "0";
                                         }
 
-                                    case "射程":
-                                    case "最大射程":
+                                        break;
+                                    }
+
+                                case "修得":
+                                    {
+                                        if (u.IsWeaponMastered(i))
                                         {
-                                            str_result = SrcFormatter.Format(u.WeaponMaxRange(i));
-                                            break;
+                                            str_result = "1";
+                                        }
+                                        else
+                                        {
+                                            str_result = "0";
                                         }
 
-                                    case "最小射程":
-                                        {
-                                            str_result = SrcFormatter.Format(u.Weapon(i).MinRange);
-                                            break;
-                                        }
-
-                                    case "命中率":
-                                        {
-                                            str_result = SrcFormatter.Format(u.WeaponPrecision(i));
-                                            break;
-                                        }
-
-                                    case "最大弾数":
-                                        {
-                                            str_result = SrcFormatter.Format(u.MaxBullet(i));
-                                            break;
-                                        }
-
-                                    case "弾数":
-                                        {
-                                            str_result = SrcFormatter.Format(u.Bullet(i));
-                                            break;
-                                        }
-
-                                    case "消費ＥＮ":
-                                        {
-                                            str_result = SrcFormatter.Format(u.WeaponENConsumption(i));
-                                            break;
-                                        }
-
-                                    case "必要気力":
-                                        {
-                                            str_result = SrcFormatter.Format(u.Weapon(i).NecessaryMorale);
-                                            break;
-                                        }
-
-                                    case "地形適応":
-                                        {
-                                            str_result = u.Weapon(i).Adaption;
-                                            break;
-                                        }
-
-                                    case "クリティカル率":
-                                        {
-                                            str_result = SrcFormatter.Format(u.WeaponCritical(i));
-                                            break;
-                                        }
-
-                                    case "属性":
-                                        {
-                                            str_result = u.WeaponClass(i);
-                                            break;
-                                        }
-
-                                    case "属性所有":
-                                        {
-                                            if (u.IsWeaponClassifiedAs(i, @params[idx + 1]))
-                                            {
-                                                str_result = "1";
-                                            }
-                                            else
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "属性レベル":
-                                        {
-                                            str_result = u.WeaponLevel(i, @params[idx + 1]).ToString();
-                                            break;
-                                        }
-
-                                    case "属性名称":
-                                        {
-                                            str_result = Help.AttributeName(u, @params[idx + 1], false);
-                                            break;
-                                        }
-
-                                    case "属性解説":
-                                        {
-                                            str_result = Help.AttributeHelpMessage(u, @params[idx + 1], i, false);
-                                            break;
-                                        }
-
-                                    case "必要技能":
-                                        {
-                                            str_result = u.Weapon(i).NecessarySkill;
-                                            break;
-                                        }
-
-                                    case "使用可":
-                                        {
-                                            if (u.IsWeaponAvailable(i, "ステータス"))
-                                            {
-                                                str_result = "1";
-                                            }
-                                            else
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "修得":
-                                        {
-                                            if (u.IsWeaponMastered(i))
-                                            {
-                                                str_result = "1";
-                                            }
-                                            else
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-                                }
+                                        break;
+                                    }
+                            }
                         }
                         else if (ud != null)
                         {
@@ -3842,27 +3842,24 @@ namespace SRCCore.Expressions.Functions
                     {
                         if (u != null)
                         {
+                            var max_value = 0;
+                            var loopTo20 = u.CountWeapon();
+                            for (i = 1; i <= loopTo20; i++)
                             {
-                                var withBlock21 = u;
-                                max_value = 0;
-                                var loopTo20 = withBlock21.CountWeapon();
-                                for (i = 1; i <= loopTo20; i++)
+                                if (u.IsWeaponMastered(i) && !u.IsDisabled(u.Weapon(i).Name) && !u.IsWeaponClassifiedAs(i, "合"))
                                 {
-                                    if (withBlock21.IsWeaponMastered(i) && !withBlock21.IsDisabled(withBlock21.Weapon(i).Name) && !withBlock21.IsWeaponClassifiedAs(i, "合"))
+                                    if (u.WeaponPower(i, "") > max_value)
                                     {
-                                        if (withBlock21.WeaponPower(i, "") > max_value)
-                                        {
-                                            max_value = withBlock21.WeaponPower(i, "");
-                                        }
+                                        max_value = u.WeaponPower(i, "");
                                     }
                                 }
-
-                                str_result = SrcFormatter.Format(max_value);
                             }
+
+                            str_result = SrcFormatter.Format(max_value);
                         }
                         else if (ud != null)
                         {
-                            max_value = 0;
+                            var max_value = 0;
                             var loopTo21 = ud.CountWeapon();
                             for (i = 1; i <= loopTo21; i++)
                             {
@@ -3891,27 +3888,24 @@ namespace SRCCore.Expressions.Functions
                     {
                         if (u != null)
                         {
+                            var max_value = 0;
+                            var loopTo22 = u.CountWeapon();
+                            for (i = 1; i <= loopTo22; i++)
                             {
-                                var withBlock22 = u;
-                                max_value = 0;
-                                var loopTo22 = withBlock22.CountWeapon();
-                                for (i = 1; i <= loopTo22; i++)
+                                if (u.IsWeaponMastered(i) && !u.IsDisabled(u.Weapon(i).Name) && !u.IsWeaponClassifiedAs(i, "合"))
                                 {
-                                    if (withBlock22.IsWeaponMastered(i) && !withBlock22.IsDisabled(withBlock22.Weapon(i).Name) && !withBlock22.IsWeaponClassifiedAs(i, "合"))
+                                    if (u.WeaponMaxRange(i) > max_value)
                                     {
-                                        if (withBlock22.WeaponMaxRange(i) > max_value)
-                                        {
-                                            max_value = withBlock22.WeaponMaxRange(i);
-                                        }
+                                        max_value = u.WeaponMaxRange(i);
                                     }
                                 }
-
-                                str_result = SrcFormatter.Format(max_value);
                             }
+
+                            str_result = SrcFormatter.Format(max_value);
                         }
                         else if (ud != null)
                         {
-                            max_value = 0;
+                            var max_value = 0;
                             var loopTo23 = ud.CountWeapon();
                             for (i = 1; i <= loopTo23; i++)
                             {
@@ -3980,7 +3974,7 @@ namespace SRCCore.Expressions.Functions
                     {
                         if (u != null)
                         {
-                            str_result = SrcFormatter.Format(InterMission.RankUpCost(u));
+                            str_result = SrcFormatter.Format(SRC.InterMission.RankUpCost(u));
                         }
 
                         break;
@@ -3990,7 +3984,7 @@ namespace SRCCore.Expressions.Functions
                     {
                         if (u != null)
                         {
-                            str_result = SrcFormatter.Format(InterMission.MaxRank(u));
+                            str_result = SrcFormatter.Format(SRC.InterMission.MaxRank(u));
                         }
 
                         break;
