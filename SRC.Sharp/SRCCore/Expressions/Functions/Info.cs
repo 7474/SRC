@@ -15,6 +15,11 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
+            for (var i = 1; i <= pcount; i++)
+            {
+                @params[i] = SRC.Expression.GetValueAsString(@params[i], is_term[i]);
+            }
+
             Units.Unit u = null;
             UnitData ud = null;
             Pilots.Pilot p = null;
