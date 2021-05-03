@@ -1,7 +1,9 @@
 using SRCCore.Lib;
+using SRCCore.Models;
 
 namespace SRCCore.Expressions.Functions
 {
+    // TODO Impl Info
     public class Info : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
@@ -9,142 +11,109 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Info
-            //string EvalInfoFuncRet = default;
-            //Unit u;
-            //UnitData ud;
-            //Pilot p;
-            //PilotData pd;
-            //NonPilotData nd;
-            ////Item it;
-            //ItemData itd;
-            //SpecialPowerData spd;
-            //int i, idx, j = default;
-            //string buf;
-            //string aname;
-            //int max_value;
-            //EvalInfoFuncRet = "";
+            Units.Unit u = null;
+            UnitData ud = null;
+            Pilots.Pilot p = null;
+            PilotData pd = null;
+            NonPilotData nd = null;
+            Items.Item it = null;
+            ItemData itd = null;
+            SpecialPowerData spd = null;
+            int idx;
 
-            //u = null;
-            //ud = null;
-            //p = null;
-            //pd = null;
-            //nd = null;
-            //it = null;
-            //itd = null;
-            //spd = null;
+            // 各オブジェクトの設定
+            switch (@params[1])
+            {
+                case "ユニット":
+                    {
+                        u = SRC.UList.Item(@params[2]);
+                        idx = 3;
+                        break;
+                    }
 
-            //// 各オブジェクトの設定
-            //switch (@params[1] ?? "")
-            //{
-            //    case "ユニット":
-            //        {
-            //            var tmp = @params;
-            //            u = SRC.UList.Item(tmp[2]);
-            //            idx = 3;
-            //            break;
-            //        }
+                case "ユニットデータ":
+                    {
+                        ud = SRC.UDList.Item(@params[2]);
+                        idx = 3;
+                        break;
+                    }
 
-            //    case "ユニットデータ":
-            //        {
-            //            var tmp1 = @params;
-            //            ud = SRC.UDList.Item(tmp1[2]);
-            //            idx = 3;
-            //            break;
-            //        }
+                case "パイロット":
+                    {
+                        p = SRC.PList.Item(@params[2]);
+                        idx = 3;
+                        break;
+                    }
 
-            //    case "パイロット":
-            //        {
-            //            var tmp2 = @params;
-            //            p = SRC.PList.Item(tmp2[2]);
-            //            idx = 3;
-            //            break;
-            //        }
+                case "パイロットデータ":
+                    {
+                        pd = SRC.PDList.Item(@params[2]);
+                        idx = 3;
+                        break;
+                    }
 
-            //    case "パイロットデータ":
-            //        {
-            //            var tmp3 = @params;
-            //            pd = SRC.PDList.Item(tmp3[2]);
-            //            idx = 3;
-            //            break;
-            //        }
+                case "非戦闘員":
+                    {
+                        nd = SRC.NPDList.Item(@params[2]);
+                        idx = 3;
+                        break;
+                    }
 
-            //    case "非戦闘員":
-            //        {
-            //            var tmp4 = @params;
-            //            nd = SRC.NPDList.Item(tmp4[2]);
-            //            idx = 3;
-            //            break;
-            //        }
+                case "アイテム":
+                    {
+                        if (SRC.IList.IsDefined(@params[2]))
+                        {
+                            it = SRC.IList.Item(@params[2]);
+                        }
+                        else
+                        {
+                            itd = SRC.IDList.Item(@params[2]);
+                        }
 
-            //    case "アイテム":
-            //        {
-            //            var tmp7 = @params;
-            //            if (SRC.IList.IsDefined(tmp7[2]))
-            //            {
-            //                var tmp5 = @params;
-            //                it = SRC.IList.Item(tmp5[2]);
-            //            }
-            //            else
-            //            {
-            //                var tmp6 = @params;
-            //                itd = SRC.IDList.Item(tmp6[2]);
-            //            }
+                        idx = 3;
+                        break;
+                    }
 
-            //            idx = 3;
-            //            break;
-            //        }
+                case "アイテムデータ":
+                    {
+                        itd = SRC.IDList.Item(@params[2]);
+                        idx = 3;
+                        break;
+                    }
 
-            //    case "アイテムデータ":
-            //        {
-            //            var tmp8 = @params;
-            //            itd = SRC.IDList.Item(tmp8[2]);
-            //            idx = 3;
-            //            break;
-            //        }
+                case "スペシャルパワー":
+                    {
+                        spd = SRC.SPDList.Item(@params[2]);
+                        idx = 3;
+                        break;
+                    }
 
-            //    case "スペシャルパワー":
-            //        {
-            //            var tmp9 = @params;
-            //            spd = SRC.SPDList.Item(tmp9[2]);
-            //            idx = 3;
-            //            break;
-            //        }
+                case "マップ":
+                case "オプション":
+                    {
+                        idx = 1;
+                        break;
+                    }
 
-            //    case "マップ":
-            //    case "オプション":
-            //        {
-            //            idx = 1;
-            //            break;
-            //        }
+                case var @case when @case == "":
+                    {
+                        return etype;
+                    }
 
-            //    case var @case when @case == "":
-            //        {
-            //            return EvalInfoFuncRet;
-            //        }
-
-            //    default:
-            //        {
-            //            var tmp10 = @params;
-            //            u = SRC.UList.Item(tmp10[1]);
-            //            var tmp11 = @params;
-            //            ud = SRC.UDList.Item(tmp11[1]);
-            //            var tmp12 = @params;
-            //            p = SRC.PList.Item(tmp12[1]);
-            //            var tmp13 = @params;
-            //            pd = SRC.PDList.Item(tmp13[1]);
-            //            var tmp14 = @params;
-            //            nd = SRC.NPDList.Item(tmp14[1]);
-            //            var tmp15 = @params;
-            //            it = SRC.IList.Item(tmp15[1]);
-            //            var tmp16 = @params;
-            //            itd = SRC.IDList.Item(tmp16[1]);
-            //            var tmp17 = @params;
-            //            spd = SRC.SPDList.Item(tmp17[1]);
-            //            idx = 2;
-            //            break;
-            //        }
-            //}
+                default:
+                    {
+                        u = SRC.UList.Item(@params[1]);
+                        ud = SRC.UDList.Item(@params[1]);
+                        p = SRC.PList.Item(@params[1]);
+                        pd = SRC.PDList.Item(@params[1]);
+                        nd = SRC.NPDList.Item(@params[1]);
+                        it = SRC.IList.Item(@params[1]);
+                        itd = SRC.IDList.Item(@params[1]);
+                        spd = SRC.SPDList.Item(@params[1]);
+                        idx = 2;
+                        break;
+                    }
+            }
 
             //int mx = default, my_Renamed = default;
             //switch (@params[idx] ?? "")
