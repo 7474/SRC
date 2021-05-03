@@ -272,7 +272,7 @@ namespace SRCCore.Expressions.Functions
                     return ValueType.StringType;
                 }
             }
-            if(unit != null)
+            if (unit != null)
             {
                 str_result = unit.ItemList.Count < index - 1 ? unit.ItemList[index - 1].Name : "";
             }
@@ -316,17 +316,16 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Partner
-
-            if (etype == ValueType.StringType)
+            var index = SRC.Expression.GetValueAsLong(@params[1], is_term[1]);
+            if (index == 0)
             {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
+                str_result = SRC.Event.SelectedUnitForEvent?.ID ?? "";
             }
-            else
+            else if (1 <= index && index - 1 < SRC.Commands.SelectedPartners.Length)
             {
-                return ValueType.NumericType;
+                str_result = SRC.Commands.SelectedPartners[index - 1].ID;
             }
+            return ValueType.StringType;
         }
     }
 
