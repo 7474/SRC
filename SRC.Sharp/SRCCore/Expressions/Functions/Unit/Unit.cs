@@ -87,15 +87,12 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-
     public class CountPartner : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Countpartner
+            num_result = SRC.Commands.SelectedPartners?.Length ?? 0;
 
             if (etype == ValueType.StringType)
             {
@@ -108,7 +105,6 @@ namespace SRCCore.Expressions.Functions
             }
         }
     }
-
 
     public class CountPilot : AFunction
     {
