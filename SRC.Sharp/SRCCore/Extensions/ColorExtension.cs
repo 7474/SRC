@@ -6,7 +6,7 @@ namespace SRCCore.Extensions
     {
         public static string ToHexString(this Color color)
         {
-            return ColorTranslator.ToHtml(color);
+            return string.Format("#{0:x2}{1:x2}{2:x2}", color.R, color.G, color.B);
         }
     }
 }
