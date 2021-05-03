@@ -3843,45 +3843,20 @@ namespace SRCCore.Expressions.Functions
                     {
                         if (u != null)
                         {
-                            var max_value = 0;
-                            var loopTo20 = u.CountWeapon();
-                            for (i = 1; i <= loopTo20; i++)
-                            {
-                                if (u.IsWeaponMastered(i) && !u.IsDisabled(u.Weapon(i).Name) && !u.IsWeaponClassifiedAs(i, "合"))
-                                {
-                                    if (u.WeaponPower(i, "") > max_value)
-                                    {
-                                        max_value = u.WeaponPower(i, "");
-                                    }
-                                }
-                            }
-
+                            var max_value = u.Weapons.Where(x => x.IsEnableForInfo())
+                                .Select(x => x.WeaponPower(""))
+                                .Append(0)
+                                .Max();
                             str_result = SrcFormatter.Format(max_value);
                         }
                         else if (ud != null)
                         {
-                            var max_value = 0;
-                            var loopTo21 = ud.CountWeapon();
-                            for (i = 1; i <= loopTo21; i++)
-                            {
-                                WeaponData localWeapon7() { object argIndex1 = i; var ret = ud.Weapon(argIndex1); return ret; }
-
-                                if (Strings.InStr(localWeapon7().Class, "合") == 0)
-                                {
-                                    WeaponData localWeapon6() { object argIndex1 = i; var ret = ud.Weapon(argIndex1); return ret; }
-
-                                    if (localWeapon6().Power > max_value)
-                                    {
-                                        WeaponData localWeapon5() { object argIndex1 = i; var ret = ud.Weapon(argIndex1); return ret; }
-
-                                        max_value = localWeapon5().Power;
-                                    }
-                                }
-                            }
-
+                            var max_value = ud.Weapons.Where(x => Strings.InStr(x.Class, "合") == 0)
+                                .Select(x => x.Power)
+                                .Append(0)
+                                .Max();
                             str_result = SrcFormatter.Format(max_value);
                         }
-
                         break;
                     }
 
@@ -3889,45 +3864,20 @@ namespace SRCCore.Expressions.Functions
                     {
                         if (u != null)
                         {
-                            var max_value = 0;
-                            var loopTo22 = u.CountWeapon();
-                            for (i = 1; i <= loopTo22; i++)
-                            {
-                                if (u.IsWeaponMastered(i) && !u.IsDisabled(u.Weapon(i).Name) && !u.IsWeaponClassifiedAs(i, "合"))
-                                {
-                                    if (u.WeaponMaxRange(i) > max_value)
-                                    {
-                                        max_value = u.WeaponMaxRange(i);
-                                    }
-                                }
-                            }
-
+                            var max_value = u.Weapons.Where(x => x.IsEnableForInfo())
+                                .Select(x => x.WeaponMaxRange())
+                                .Append(0)
+                                .Max();
                             str_result = SrcFormatter.Format(max_value);
                         }
                         else if (ud != null)
                         {
-                            var max_value = 0;
-                            var loopTo23 = ud.CountWeapon();
-                            for (i = 1; i <= loopTo23; i++)
-                            {
-                                WeaponData localWeapon10() { object argIndex1 = i; var ret = ud.Weapon(argIndex1); return ret; }
-
-                                if (Strings.InStr(localWeapon10().Class, "合") == 0)
-                                {
-                                    WeaponData localWeapon9() { object argIndex1 = i; var ret = ud.Weapon(argIndex1); return ret; }
-
-                                    if (localWeapon9().MaxRange > max_value)
-                                    {
-                                        WeaponData localWeapon8() { object argIndex1 = i; var ret = ud.Weapon(argIndex1); return ret; }
-
-                                        max_value = localWeapon8().MaxRange;
-                                    }
-                                }
-                            }
-
+                            var max_value = ud.Weapons.Where(x => Strings.InStr(x.Class, "合") == 0)
+                                .Select(x => x.MaxRange)
+                                .Append(0)
+                                .Max();
                             str_result = SrcFormatter.Format(max_value);
                         }
-
                         break;
                     }
 
