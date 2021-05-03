@@ -228,15 +228,17 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class IsEquiped : AFunction
+    public class IsEquiped : AUnitFunction
     {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override int OptionArgCount => 1;
+        protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
             num_result = 0d;
-
-            // TODO Impl Isequiped
-
+            var name = pcount == 1
+                ? SRC.Expression.GetValueAsString(@params[1], is_term[1])
+                : SRC.Expression.GetValueAsString(@params[2], is_term[2]);
+            num_result = unit?.IsEquiped(name) ?? false ? 1d : 0d;
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
@@ -248,7 +250,6 @@ namespace SRCCore.Expressions.Functions
             }
         }
     }
-
 
     public class Item : AFunction
     {
@@ -271,7 +272,6 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-
     public class ItemID : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
@@ -292,8 +292,6 @@ namespace SRCCore.Expressions.Functions
             }
         }
     }
-
-
 
     public class Partner : AFunction
     {
@@ -316,7 +314,6 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-
     public class Party : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
@@ -337,7 +334,6 @@ namespace SRCCore.Expressions.Functions
             }
         }
     }
-
 
     public class Pilot : AFunction
     {
@@ -360,7 +356,6 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-
     public class PilotID : AFunction
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
@@ -381,7 +376,6 @@ namespace SRCCore.Expressions.Functions
             }
         }
     }
-
 
     public class Rank : AFunction
     {
@@ -526,5 +520,4 @@ namespace SRCCore.Expressions.Functions
             }
         }
     }
-
 }
