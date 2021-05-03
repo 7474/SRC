@@ -1835,778 +1835,24 @@ namespace SRCCore.Expressions.Functions
                         }
                         else if (ud != null)
                         {
-                            // 何番目の武器かを判定
-                            if (GeneralLib.IsNumber(@params[idx]))
-                            {
-                                i = Conversions.ToInteger(@params[idx]);
-                            }
-                            else
-                            {
-                                var loopTo9 = ud.CountWeapon();
-                                for (i = 1; i <= loopTo9; i++)
-                                {
-                                    WeaponData localWeapon() { object argIndex1 = i; var ret = ud.Weapon(argIndex1); return ret; }
-
-                                    if ((@params[idx] ?? "") == (localWeapon().Name ?? ""))
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-                            // 指定した武器を持っていない
-                            if (i <= 0 || ud.CountWeapon() < i)
-                            {
-                                return str_result;
-                            }
-
-                            idx = (idx + 1);
-                            {
-                                var withBlock8 = ud.Weapon(i);
-                                switch (@params[idx] ?? "")
-                                {
-                                    case var case2 when case2 == "":
-                                    case "名称":
-                                        {
-                                            str_result = withBlock8.Name;
-                                            break;
-                                        }
-
-                                    case "攻撃力":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock8.Power);
-                                            break;
-                                        }
-
-                                    case "射程":
-                                    case "最大射程":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock8.MaxRange);
-                                            break;
-                                        }
-
-                                    case "最小射程":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock8.MinRange);
-                                            break;
-                                        }
-
-                                    case "命中率":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock8.Precision);
-                                            break;
-                                        }
-
-                                    case "最大弾数":
-                                    case "弾数":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock8.Bullet);
-                                            break;
-                                        }
-
-                                    case "消費ＥＮ":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock8.ENConsumption);
-                                            break;
-                                        }
-
-                                    case "必要気力":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock8.NecessaryMorale);
-                                            break;
-                                        }
-
-                                    case "地形適応":
-                                        {
-                                            str_result = withBlock8.Adaption;
-                                            break;
-                                        }
-
-                                    case "クリティカル率":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock8.Critical);
-                                            break;
-                                        }
-
-                                    case "属性":
-                                        {
-                                            str_result = withBlock8.Class;
-                                            break;
-                                        }
-
-                                    case "属性所有":
-                                        {
-                                            if (GeneralLib.InStrNotNest(withBlock8.Class, @params[idx + 1]) > 0)
-                                            {
-                                                str_result = "1";
-                                            }
-                                            else
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "属性レベル":
-                                        {
-                                            j = GeneralLib.InStrNotNest(withBlock8.Class, @params[idx + 1] + "L");
-                                            if (j == 0)
-                                            {
-                                                str_result = "0";
-                                                return str_result;
-                                            }
-
-                                            str_result = "";
-                                            j = (j + Strings.Len(@params[idx + 1]) + 1);
-                                            do
-                                            {
-                                                str_result = str_result + Strings.Mid(withBlock8.Class, j, 1);
-                                                j = (j + 1);
-                                            }
-                                            while (GeneralLib.IsNumber(Strings.Mid(withBlock8.Class, j, 1)));
-                                            if (!GeneralLib.IsNumber(str_result))
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "必要技能":
-                                        {
-                                            str_result = withBlock8.NecessarySkill;
-                                            break;
-                                        }
-
-                                    case "使用可":
-                                    case "修得":
-                                        {
-                                            str_result = "1";
-                                            break;
-                                        }
-                                }
-                            }
+                            str_result = InfoWeaponData(@params, idx, ud.Weapons);
                         }
                         else if (p != null)
                         {
-                            {
-                                var withBlock9 = p.Data;
-                                // 何番目の武器かを判定
-                                if (GeneralLib.IsNumber(@params[idx]))
-                                {
-                                    i = Conversions.ToInteger(@params[idx]);
-                                }
-                                else
-                                {
-                                    var loopTo10 = withBlock9.CountWeapon();
-                                    for (i = 1; i <= loopTo10; i++)
-                                    {
-                                        WeaponData localWeapon1() { object argIndex1 = i; var ret = withBlock9.Weapon(argIndex1); return ret; }
-
-                                        if ((@params[idx] ?? "") == (localWeapon1().Name ?? ""))
-                                        {
-                                            break;
-                                        }
-                                    }
-                                }
-                                // 指定した武器を持っていない
-                                if (i <= 0 || withBlock9.CountWeapon() < i)
-                                {
-                                    return str_result;
-                                }
-
-                                idx = (idx + 1);
-                                {
-                                    var withBlock10 = withBlock9.Weapon(i);
-                                    switch (@params[idx] ?? "")
-                                    {
-                                        case var case3 when case3 == "":
-                                        case "名称":
-                                            {
-                                                str_result = withBlock10.Name;
-                                                break;
-                                            }
-
-                                        case "攻撃力":
-                                            {
-                                                str_result = SrcFormatter.Format(withBlock10.Power);
-                                                break;
-                                            }
-
-                                        case "射程":
-                                        case "最大射程":
-                                            {
-                                                str_result = SrcFormatter.Format(withBlock10.MaxRange);
-                                                break;
-                                            }
-
-                                        case "最小射程":
-                                            {
-                                                str_result = SrcFormatter.Format(withBlock10.MinRange);
-                                                break;
-                                            }
-
-                                        case "命中率":
-                                            {
-                                                str_result = SrcFormatter.Format(withBlock10.Precision);
-                                                break;
-                                            }
-
-                                        case "最大弾数":
-                                        case "弾数":
-                                            {
-                                                str_result = SrcFormatter.Format(withBlock10.Bullet);
-                                                break;
-                                            }
-
-                                        case "消費ＥＮ":
-                                            {
-                                                str_result = SrcFormatter.Format(withBlock10.ENConsumption);
-                                                break;
-                                            }
-
-                                        case "必要気力":
-                                            {
-                                                str_result = SrcFormatter.Format(withBlock10.NecessaryMorale);
-                                                break;
-                                            }
-
-                                        case "地形適応":
-                                            {
-                                                str_result = withBlock10.Adaption;
-                                                break;
-                                            }
-
-                                        case "クリティカル率":
-                                            {
-                                                str_result = SrcFormatter.Format(withBlock10.Critical);
-                                                break;
-                                            }
-
-                                        case "属性":
-                                            {
-                                                str_result = withBlock10.Class;
-                                                break;
-                                            }
-
-                                        case "属性所有":
-                                            {
-                                                if (GeneralLib.InStrNotNest(withBlock10.Class, @params[idx + 1]) > 0)
-                                                {
-                                                    str_result = "1";
-                                                }
-                                                else
-                                                {
-                                                    str_result = "0";
-                                                }
-
-                                                break;
-                                            }
-
-                                        case "属性レベル":
-                                            {
-                                                j = GeneralLib.InStrNotNest(withBlock10.Class, @params[idx + 1] + "L");
-                                                if (j == 0)
-                                                {
-                                                    str_result = "0";
-                                                    return str_result;
-                                                }
-
-                                                str_result = "";
-                                                j = (j + Strings.Len(@params[idx + 1]) + 1);
-                                                do
-                                                {
-                                                    str_result = str_result + Strings.Mid(withBlock10.Class, j, 1);
-                                                    j = (j + 1);
-                                                }
-                                                while (GeneralLib.IsNumber(Strings.Mid(withBlock10.Class, j, 1)));
-                                                if (!GeneralLib.IsNumber(str_result))
-                                                {
-                                                    str_result = "0";
-                                                }
-
-                                                break;
-                                            }
-
-                                        case "必要技能":
-                                            {
-                                                str_result = withBlock10.NecessarySkill;
-                                                break;
-                                            }
-
-                                        case "使用可":
-                                        case "修得":
-                                            {
-                                                str_result = "1";
-                                                break;
-                                            }
-                                    }
-                                }
-                            }
+                            str_result = InfoWeaponData(@params, idx, p.Data.Weapons);
                         }
                         else if (pd != null)
                         {
-                            // 何番目の武器かを判定
-                            if (GeneralLib.IsNumber(@params[idx]))
-                            {
-                                i = Conversions.ToInteger(@params[idx]);
-                            }
-                            else
-                            {
-                                var loopTo11 = pd.CountWeapon();
-                                for (i = 1; i <= loopTo11; i++)
-                                {
-                                    WeaponData localWeapon2() { object argIndex1 = i; var ret = pd.Weapon(argIndex1); return ret; }
-
-                                    if ((@params[idx] ?? "") == (localWeapon2().Name ?? ""))
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-                            // 指定した武器を持っていない
-                            if (i <= 0 || pd.CountWeapon() < i)
-                            {
-                                return str_result;
-                            }
-
-                            idx = (idx + 1);
-                            {
-                                var withBlock11 = pd.Weapon(i);
-                                switch (@params[idx] ?? "")
-                                {
-                                    case var case4 when case4 == "":
-                                    case "名称":
-                                        {
-                                            str_result = withBlock11.Name;
-                                            break;
-                                        }
-
-                                    case "攻撃力":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock11.Power);
-                                            break;
-                                        }
-
-                                    case "射程":
-                                    case "最大射程":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock11.MaxRange);
-                                            break;
-                                        }
-
-                                    case "最小射程":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock11.MinRange);
-                                            break;
-                                        }
-
-                                    case "命中率":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock11.Precision);
-                                            break;
-                                        }
-
-                                    case "最大弾数":
-                                    case "弾数":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock11.Bullet);
-                                            break;
-                                        }
-
-                                    case "消費ＥＮ":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock11.ENConsumption);
-                                            break;
-                                        }
-
-                                    case "必要気力":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock11.NecessaryMorale);
-                                            break;
-                                        }
-
-                                    case "地形適応":
-                                        {
-                                            str_result = withBlock11.Adaption;
-                                            break;
-                                        }
-
-                                    case "クリティカル率":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock11.Critical);
-                                            break;
-                                        }
-
-                                    case "属性":
-                                        {
-                                            str_result = withBlock11.Class;
-                                            break;
-                                        }
-
-                                    case "属性所有":
-                                        {
-                                            if (GeneralLib.InStrNotNest(withBlock11.Class, @params[idx + 1]) > 0)
-                                            {
-                                                str_result = "1";
-                                            }
-                                            else
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "属性レベル":
-                                        {
-                                            j = GeneralLib.InStrNotNest(withBlock11.Class, @params[idx + 1] + "L");
-                                            if (j == 0)
-                                            {
-                                                str_result = "0";
-                                                return str_result;
-                                            }
-
-                                            str_result = "";
-                                            j = (j + Strings.Len(@params[idx + 1]) + 1);
-                                            do
-                                            {
-                                                str_result = str_result + Strings.Mid(withBlock11.Class, j, 1);
-                                                j = (j + 1);
-                                            }
-                                            while (GeneralLib.IsNumber(Strings.Mid(withBlock11.Class, j, 1)));
-                                            if (!GeneralLib.IsNumber(str_result))
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "必要技能":
-                                        {
-                                            str_result = withBlock11.NecessarySkill;
-                                            break;
-                                        }
-
-                                    case "使用可":
-                                    case "修得":
-                                        {
-                                            str_result = "1";
-                                            break;
-                                        }
-                                }
-                            }
+                            str_result = InfoWeaponData(@params, idx, pd.Weapons);
                         }
                         else if (it != null)
                         {
-                            // 何番目の武器かを判定
-                            if (GeneralLib.IsNumber(@params[idx]))
-                            {
-                                i = Conversions.ToInteger(@params[idx]);
-                            }
-                            else
-                            {
-                                var loopTo12 = it.CountWeapon();
-                                for (i = 1; i <= loopTo12; i++)
-                                {
-                                    WeaponData localWeapon3() { object argIndex1 = i; var ret = it.Weapon(argIndex1); return ret; }
-
-                                    if ((@params[idx] ?? "") == (localWeapon3().Name ?? ""))
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-                            // 指定した武器を持っていない
-                            if (i <= 0 || it.CountWeapon() < i)
-                            {
-                                return str_result;
-                            }
-
-                            idx = (idx + 1);
-                            {
-                                var withBlock12 = it.Weapon(i);
-                                switch (@params[idx] ?? "")
-                                {
-                                    case var case5 when case5 == "":
-                                    case "名称":
-                                        {
-                                            str_result = withBlock12.Name;
-                                            break;
-                                        }
-
-                                    case "攻撃力":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock12.Power);
-                                            break;
-                                        }
-
-                                    case "射程":
-                                    case "最大射程":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock12.MaxRange);
-                                            break;
-                                        }
-
-                                    case "最小射程":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock12.MinRange);
-                                            break;
-                                        }
-
-                                    case "命中率":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock12.Precision);
-                                            break;
-                                        }
-
-                                    case "最大弾数":
-                                    case "弾数":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock12.Bullet);
-                                            break;
-                                        }
-
-                                    case "消費ＥＮ":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock12.ENConsumption);
-                                            break;
-                                        }
-
-                                    case "必要気力":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock12.NecessaryMorale);
-                                            break;
-                                        }
-
-                                    case "地形適応":
-                                        {
-                                            str_result = withBlock12.Adaption;
-                                            break;
-                                        }
-
-                                    case "クリティカル率":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock12.Critical);
-                                            break;
-                                        }
-
-                                    case "属性":
-                                        {
-                                            str_result = withBlock12.Class;
-                                            break;
-                                        }
-
-                                    case "属性所有":
-                                        {
-                                            if (GeneralLib.InStrNotNest(withBlock12.Class, @params[idx + 1]) > 0)
-                                            {
-                                                str_result = "1";
-                                            }
-                                            else
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "属性レベル":
-                                        {
-                                            j = GeneralLib.InStrNotNest(withBlock12.Class, @params[idx + 1] + "L");
-                                            if (j == 0)
-                                            {
-                                                str_result = "0";
-                                                return str_result;
-                                            }
-
-                                            str_result = "";
-                                            j = (j + Strings.Len(@params[idx + 1]) + 1);
-                                            do
-                                            {
-                                                str_result = str_result + Strings.Mid(withBlock12.Class, j, 1);
-                                                j = (j + 1);
-                                            }
-                                            while (GeneralLib.IsNumber(Strings.Mid(withBlock12.Class, j, 1)));
-                                            if (!GeneralLib.IsNumber(str_result))
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "必要技能":
-                                        {
-                                            str_result = withBlock12.NecessarySkill;
-                                            break;
-                                        }
-
-                                    case "使用可":
-                                    case "修得":
-                                        {
-                                            str_result = "1";
-                                            break;
-                                        }
-                                }
-                            }
+                            str_result = InfoWeaponData(@params, idx, it.Data.Weapons);
                         }
                         else if (itd != null)
                         {
-                            // 何番目の武器かを判定
-                            if (GeneralLib.IsNumber(@params[idx]))
-                            {
-                                i = Conversions.ToInteger(@params[idx]);
-                            }
-                            else
-                            {
-                                var loopTo13 = itd.CountWeapon();
-                                for (i = 1; i <= loopTo13; i++)
-                                {
-                                    WeaponData localWeapon4() { object argIndex1 = i; var ret = itd.Weapon(argIndex1); return ret; }
-
-                                    if ((@params[idx] ?? "") == (localWeapon4().Name ?? ""))
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-                            // 指定した武器を持っていない
-                            if (i <= 0 || itd.CountWeapon() < i)
-                            {
-                                return str_result;
-                            }
-
-                            idx = (idx + 1);
-                            {
-                                var withBlock13 = itd.Weapon(i);
-                                switch (@params[idx] ?? "")
-                                {
-                                    case var case6 when case6 == "":
-                                    case "名称":
-                                        {
-                                            str_result = withBlock13.Name;
-                                            break;
-                                        }
-
-                                    case "攻撃力":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock13.Power);
-                                            break;
-                                        }
-
-                                    case "射程":
-                                    case "最大射程":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock13.MaxRange);
-                                            break;
-                                        }
-
-                                    case "最小射程":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock13.MinRange);
-                                            break;
-                                        }
-
-                                    case "命中率":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock13.Precision);
-                                            break;
-                                        }
-
-                                    case "最大弾数":
-                                    case "弾数":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock13.Bullet);
-                                            break;
-                                        }
-
-                                    case "消費ＥＮ":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock13.ENConsumption);
-                                            break;
-                                        }
-
-                                    case "必要気力":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock13.NecessaryMorale);
-                                            break;
-                                        }
-
-                                    case "地形適応":
-                                        {
-                                            str_result = withBlock13.Adaption;
-                                            break;
-                                        }
-
-                                    case "クリティカル率":
-                                        {
-                                            str_result = SrcFormatter.Format(withBlock13.Critical);
-                                            break;
-                                        }
-
-                                    case "属性":
-                                        {
-                                            str_result = withBlock13.Class;
-                                            break;
-                                        }
-
-                                    case "属性所有":
-                                        {
-                                            if (GeneralLib.InStrNotNest(withBlock13.Class, @params[idx + 1]) > 0)
-                                            {
-                                                str_result = "1";
-                                            }
-                                            else
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "属性レベル":
-                                        {
-                                            j = GeneralLib.InStrNotNest(withBlock13.Class, @params[idx + 1] + "L");
-                                            if (j == 0)
-                                            {
-                                                str_result = "0";
-                                                return str_result;
-                                            }
-
-                                            str_result = "";
-                                            j = (j + Strings.Len(@params[idx + 1]) + 1);
-                                            do
-                                            {
-                                                str_result = str_result + Strings.Mid(withBlock13.Class, j, 1);
-                                                j = (j + 1);
-                                            }
-                                            while (GeneralLib.IsNumber(Strings.Mid(withBlock13.Class, j, 1)));
-                                            if (!GeneralLib.IsNumber(str_result))
-                                            {
-                                                str_result = "0";
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "必要技能":
-                                        {
-                                            str_result = withBlock13.NecessarySkill;
-                                            break;
-                                        }
-
-                                    case "使用可":
-                                    case "修得":
-                                        {
-                                            str_result = "1";
-                                            break;
-                                        }
-                                }
-                            }
+                            str_result = InfoWeaponData(@params, idx, itd.Weapons);
                         }
-
                         break;
                     }
 
@@ -3500,6 +2746,153 @@ namespace SRCCore.Expressions.Functions
             {
                 return ValueType.StringType;
             }
+        }
+
+        private static string InfoWeaponData(string[] @params, int idx, IList<WeaponData> weapons)
+        {
+            // 何番目の武器かを判定
+            var str_result = "";
+            WeaponData wd;
+            if (GeneralLib.IsNumber(@params[idx]))
+            {
+                wd = weapons.SafeRefOneOffset(Conversions.ToInteger(@params[idx]));
+            }
+            else
+            {
+                wd = weapons.FirstOrDefault(x => x.Name == @params[idx]);
+            }
+            // 指定した武器を持っていない
+            if (wd == null)
+            {
+                return "";
+            }
+
+            idx = (idx + 1);
+            switch (@params[idx] ?? "")
+            {
+                case var case2 when case2 == "":
+                case "名称":
+                    {
+                        str_result = wd.Name;
+                        break;
+                    }
+
+                case "攻撃力":
+                    {
+                        str_result = SrcFormatter.Format(wd.Power);
+                        break;
+                    }
+
+                case "射程":
+                case "最大射程":
+                    {
+                        str_result = SrcFormatter.Format(wd.MaxRange);
+                        break;
+                    }
+
+                case "最小射程":
+                    {
+                        str_result = SrcFormatter.Format(wd.MinRange);
+                        break;
+                    }
+
+                case "命中率":
+                    {
+                        str_result = SrcFormatter.Format(wd.Precision);
+                        break;
+                    }
+
+                case "最大弾数":
+                case "弾数":
+                    {
+                        str_result = SrcFormatter.Format(wd.Bullet);
+                        break;
+                    }
+
+                case "消費ＥＮ":
+                    {
+                        str_result = SrcFormatter.Format(wd.ENConsumption);
+                        break;
+                    }
+
+                case "必要気力":
+                    {
+                        str_result = SrcFormatter.Format(wd.NecessaryMorale);
+                        break;
+                    }
+
+                case "地形適応":
+                    {
+                        str_result = wd.Adaption;
+                        break;
+                    }
+
+                case "クリティカル率":
+                    {
+                        str_result = SrcFormatter.Format(wd.Critical);
+                        break;
+                    }
+
+                case "属性":
+                    {
+                        str_result = wd.Class;
+                        break;
+                    }
+
+                case "属性所有":
+                    {
+                        if (GeneralLib.InStrNotNest(wd.Class, @params[idx + 1]) > 0)
+                        {
+                            str_result = "1";
+                        }
+                        else
+                        {
+                            str_result = "0";
+                        }
+
+                        break;
+                    }
+
+                case "属性レベル":
+                    {
+                        var j = GeneralLib.InStrNotNest(wd.Class, @params[idx + 1] + "L");
+                        if (j == 0)
+                        {
+                            str_result = "0";
+                            return str_result;
+                        }
+
+                        str_result = "";
+                        j = (j + Strings.Len(@params[idx + 1]) + 1);
+                        do
+                        {
+                            str_result = str_result + Strings.Mid(wd.Class, j, 1);
+                            j = (j + 1);
+                        }
+                        while (GeneralLib.IsNumber(Strings.Mid(wd.Class, j, 1)));
+                        if (!GeneralLib.IsNumber(str_result))
+                        {
+                            str_result = "0";
+                        }
+
+                        break;
+                    }
+
+                case "必要技能":
+                    {
+                        str_result = wd.NecessarySkill;
+                        break;
+                    }
+
+                case "使用可":
+                case "修得":
+                    {
+                        str_result = "1";
+                        break;
+                    }
+            }
+
+            return str_result;
         }
 
         private static string InfoAbilitiyData(string[] @params, int idx, IList<AbilityData> abilities)
