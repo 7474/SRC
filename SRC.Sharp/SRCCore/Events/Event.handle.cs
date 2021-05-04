@@ -13,7 +13,7 @@ namespace SRCCore.Events
         // イベントの実行
         public void HandleEvent(params string[] Args)
         {
-            SRC.LogDebug("", Args);
+            SRC.LogDebug(">", Args);
 
             // 画面入力をロック
             var prev_is_gui_locked = GUI.IsGUILocked;
@@ -26,7 +26,7 @@ namespace SRCCore.Events
             // (SearchLabel()実行時の式計算用にあらかじめ設定しておく)
             SelectedUnitForEvent = Commands.SelectedUnit;
             // 引数に指定されたユニットを優先
-            if (Args.Length > 0)
+            if (Args.Length > 1)
             {
                 if (SRC.PList.IsDefined(Args[1]))
                 {
@@ -250,7 +250,7 @@ namespace SRCCore.Events
                     // SearchLabel()で入れ替えられる可能性があるので、毎回設定し直す必要あり
                     SelectedUnitForEvent = Commands.SelectedUnit;
                     // 引数に指定されたユニットを優先
-                    if (Args.Length > 0)
+                    if (Args.Length > 1)
                     {
                         if (SRC.PList.IsDefined(Args[1]))
                         {
@@ -307,6 +307,8 @@ namespace SRCCore.Events
                     }
                     while (ret < 0);
 
+                    if (ret < 0) { break; }
+
                     // 戦闘後のイベント実行前にはいくつかの後始末が必要
                     if (!EventData[ret].IsAlwaysEventLabel)
                     {
@@ -329,8 +331,6 @@ namespace SRCCore.Events
                             }
                         }
                     }
-
-                    if (ret < 0) { break; }
 
                     // ラベルの行は実行しても無駄なので
                     ret = ret + 1;
