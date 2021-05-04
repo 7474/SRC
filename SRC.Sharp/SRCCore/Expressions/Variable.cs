@@ -33,6 +33,8 @@ namespace SRCCore.Expressions
             if (isArray(vname))
             {
                 vname = ResolveArrayVarName(vname);
+                // 定義されていない要素を使って配列を読み出した場合は空文字列を返す
+                str_result = "";
             }
 
             // ここから配列と通常変数の共通処理
