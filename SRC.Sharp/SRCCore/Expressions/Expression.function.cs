@@ -4510,7 +4510,12 @@ namespace SRCCore.Expressions
             }
             finally
             {
-                SRC.LogTrace("Called", etype.ToString().Substring(0, 1), fname, str_result, num_result.ToString());
+                SRC.LogTrace("Called",
+                    etype.ToString().Substring(0, 1),
+                    fname + "(" + string.Join(",", Enumerable.Range(1, pcount).Select(x => @params[x])) + ")",
+                    str_result,
+                    num_result.ToString()
+                    );
             }
         }
     }

@@ -1,5 +1,6 @@
 using SRCCore.Events;
 using SRCCore.Lib;
+using System.Linq;
 
 namespace SRCCore.Expressions.Functions
 {
@@ -131,7 +132,12 @@ namespace SRCCore.Expressions.Functions
             }
             finally
             {
-                SRC.LogTrace("Called", CallFunctionRet.ToString().Substring(0, 1), @params[1], str_result, num_result.ToString());
+                SRC.LogTrace("Called",
+                   etype.ToString().Substring(0, 1),
+                   @params[1] + "(" + string.Join(",", Enumerable.Range(2, pcount - 1).Select(x => @params[x])) + ")",
+                   str_result,
+                   num_result.ToString()
+                );
             }
 
             return CallFunctionRet;
