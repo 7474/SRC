@@ -388,6 +388,11 @@ namespace SRCCoreTests.TestLib
             throw new NotImplementedException();
         }
 
+        public void ResetDrawString()
+        {
+            throw new NotImplementedException();
+        }
+
         public void RestoreCursorPos()
         {
             throw new NotImplementedException();

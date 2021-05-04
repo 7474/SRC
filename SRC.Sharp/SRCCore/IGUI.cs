@@ -232,6 +232,8 @@ namespace SRCCore
         void DrawSysString(int X, int Y, string msg, bool without_refresh = false);
         // 文字列を表示した際のサイズを計る
         SizeF MeasureString(string msg);
+        // 文字列描画設定を初期化する
+        void ResetDrawString();
 
         // === 画像消去に関する処理 ===
 

@@ -2,6 +2,8 @@
 using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 
 namespace SRCCore.Events
@@ -38,6 +40,7 @@ namespace SRCCore.Events
             SelectedTargetForEvent = Commands.SelectedTarget;
 
             // イベントキューを作成
+            // XXX キューをいつ処理しきるのか？
             //event_que_idx = Information.UBound(EventQue);
             switch (Args[0])
             {
@@ -380,31 +383,22 @@ namespace SRCCore.Events
             //// イベントキューを元に戻す
             //Array.Resize(EventQue, GeneralLib.MinLng(event_que_idx - 1, Information.UBound(EventQue)) + 1);
 
-            //// フォント設定をデフォルトに戻す
-            //{
-            //    var withBlock7 = GUI.MainForm.picMain(0);
-            //    withBlock7.ForeColor = Information.RGB(255, 255, 255);
-            //    {
-            //        var withBlock8 = withBlock7.Font;
-            //        withBlock8.Size = 16;
-            //        withBlock8.Name = "ＭＳ Ｐ明朝";
-            //        withBlock8.Bold = true;
-            //        withBlock8.Italic = false;
-            //    }
+            // フォント設定をデフォルトに戻す
+            // XXX 位置はリセットしない？
+            GUI.ResetDrawString();
+            GUI.PermanentStringMode = false;
+            GUI.KeepStringMode = false;
 
-            //    GUI.PermanentStringMode = false;
-            //    GUI.KeepStringMode = false;
-            //}
+            // オブジェクト色をデフォルトに戻す
+            // XXX これはEventsが持ってていいのか？
+            ObjColor = Color.White;
+            ObjFillColor = Color.White;
+            ObjFillStyle = HatchStyle.Min; //vbFSTransparent;
+            ObjDrawWidth = 1;
+            ObjDrawOption = "";
 
-            //// オブジェクト色をデフォルトに戻す
-            //ObjColor = ColorTranslator.ToOle(Color.White);
-            //ObjFillColor = ColorTranslator.ToOle(Color.White);
-            //ObjFillStyle = vbFSTransparent;
-            //ObjDrawWidth = 1;
-            //ObjDrawOption = "";
-
-            //// 描画の基準座標位置を元に戻す
-            //RestoreBasePoint();
+            // 描画の基準座標位置を元に戻す
+            RestoreBasePoint();
 
             // 画面入力のロックを解除
             if (!prev_is_gui_locked)
