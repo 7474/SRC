@@ -28,19 +28,26 @@ namespace SRCCore.Expressions
             str_result = var_name;
             num_result = 0d;
 
-            if (isArray(vname))
+            try
             {
-                // 定義されていない要素を使って配列を読み出した場合は空文字列を返す
-                str_result = "";
-            }
+                if (isArray(vname))
+                {
+                    // 定義されていない要素を使って配列を読み出した場合は空文字列を返す
+                    str_result = "";
+                }
 
-            var varObj = GetVariableObject(vname);
-            if (varObj != null)
+                var varObj = GetVariableObject(vname);
+                if (varObj != null)
+                {
+                    return varObj.ReferenceValue(etype, out str_result, out num_result);
+                }
+
+                return ValueType.UndefinedType;
+            }
+            finally
             {
-                return varObj.ReferenceValue(etype, out str_result, out num_result);
+                SRC.LogTrace("<", var_name, str_result, num_result.ToString());
             }
-
-            return ValueType.UndefinedType;
         }
 
         private string ResolveArrayVarName(string vname)
@@ -236,13 +243,13 @@ namespace SRCCore.Expressions
         // 変数の値を設定
         public void SetVariable(string var_name, ValueType etype, string str_value, double num_value)
         {
+            SRC.LogTrace(">", var_name, str_value, num_value.ToString());
+
             VarData new_var;
             string vname = var_name;
             int i, ret;
             var vname0 = default(string);
             var is_subroutine_local_array = default(bool);
-
-            // Debug.Print "Set " & vname & " " & new_value
 
             // 左辺値を伴う関数
             // TODO Impl
@@ -1315,8 +1322,8 @@ namespace SRCCore.Expressions
                                     }
 
                                     num = (Event.ArgIndex - Event.ArgIndexStack[i - 1]);
-                                        num_result = num;
-                                        etype = ValueType.NumericType;
+                                    num_result = num;
+                                    etype = ValueType.NumericType;
 
                                     break;
                                 }

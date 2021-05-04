@@ -14,11 +14,10 @@ namespace SRCSharpForm
         [STAThread]
         static void Main()
         {
-
             using var loggerFactory = LoggerFactory.Create(builder =>
             {
                 builder
-                    .SetMinimumLevel(LogLevel.Debug)
+                    .SetMinimumLevel(LogLevel.Trace)
                     .AddDebug();
             });
             Log = loggerFactory.CreateLogger("SRCSharpForm");
