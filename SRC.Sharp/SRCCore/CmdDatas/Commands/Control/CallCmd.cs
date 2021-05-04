@@ -64,11 +64,11 @@ namespace SRCCore.CmdDatas.Commands
             Event.UpVarLevel = 0;
 
             // 引数をスタックに積む
+            Event.ArgIndex = Event.ArgIndex + subParams.Length;
             for (var i = 0; i < subParams.Length; i++)
             {
-                Event.ArgStack[Event.ArgIndex + i + 1] = subParams[i];
+                Event.ArgStack[Event.ArgIndex - i ] = subParams[i];
             }
-            Event.ArgIndex = Event.ArgIndex + subParams.Length;
 
             // 呼び出し階層数をインクリメント
             Event.CallDepth = Event.CallDepth + 1;

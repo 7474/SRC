@@ -4449,11 +4449,11 @@ namespace SRCCore.Expressions
                 var cur_depth = Event.CallDepth;
 
                 // 引数をスタックに積む
+                SRC.Event.ArgIndex = (SRC.Event.ArgIndex + pcount);
                 for (var i = 1; i <= pcount; i++)
                 {
-                    SRC.Event.ArgStack[SRC.Event.ArgIndex + i] = @params[i];
+                    SRC.Event.ArgStack[SRC.Event.ArgIndex - i + 1] = @params[i];
                 }
-                SRC.Event.ArgIndex = (SRC.Event.ArgIndex + pcount);
 
                 // サブルーチン本体を実行
                 do
