@@ -612,8 +612,8 @@ namespace SRCCore.Expressions
                 // ローカル変数の配列の要素として定義
                 if (IsLocalVariableDefined(vname0))
                 {
+                    // Nop
                 }
-                // Nop
                 // グローバル変数の配列の要素として定義
                 else if (IsGlobalVariableDefined(vname0))
                 {
@@ -628,7 +628,7 @@ namespace SRCCore.Expressions
                 {
                     // ローカル変数の配列のメインＩＤを作成
                     new_var2 = new VarData();
-                    new_var2.SetValue(vname0, ValueType.StringType, "", 0d);
+                    new_var2.Init(vname0);
                     if (Strings.InStr(new_var2.Name, "\"") > 0)
                     {
                         Event.DisplayEventErrorMessage(Event.CurrentLineNum, "不正な変数「" + new_var2.Name + "」が作成されました");
