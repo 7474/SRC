@@ -52,13 +52,7 @@ namespace SRCCore.CmdDatas.Commands
                                 {
                                     etype = Expression.EvalTerm(arg.strArg, ValueType.UndefinedType, out str_result, out num_result);
                                     Event.VarIndex = (Event.VarIndex + 1);
-                                    {
-                                        var v = Event.VarStack[Event.VarIndex];
-                                        v.Name = vname;
-                                        v.VariableType = etype;
-                                        v.StringValue = str_result;
-                                        v.NumericValue = num_result;
-                                    }
+                                    Event.VarStack[Event.VarIndex].SetValue(vname, etype, str_result, num_result);
 
                                     break;
                                 }
@@ -66,13 +60,7 @@ namespace SRCCore.CmdDatas.Commands
                             case ValueType.StringType:
                                 {
                                     Event.VarIndex = (Event.VarIndex + 1);
-                                    {
-                                        var v = Event.VarStack[Event.VarIndex];
-                                        v.Name = vname;
-                                        v.VariableType = ValueType.StringType;
-                                        v.StringValue = arg.strArg;
-                                        v.NumericValue = num_result;
-                                    }
+                                    Event.VarStack[Event.VarIndex].SetValue(vname, ValueType.StringType, arg.strArg, num_result);
 
                                     break;
                                 }
@@ -80,13 +68,7 @@ namespace SRCCore.CmdDatas.Commands
                             case ValueType.NumericType:
                                 {
                                     Event.VarIndex = (Event.VarIndex + 1);
-                                    {
-                                        var v = Event.VarStack[Event.VarIndex];
-                                        v.Name = vname;
-                                        v.VariableType = ValueType.NumericType;
-                                        v.StringValue = str_result;
-                                        v.NumericValue = arg.dblArg;
-                                    }
+                                    Event.VarStack[Event.VarIndex].SetValue(vname, ValueType.NumericType, str_result, arg.dblArg);
 
                                     break;
                                 }
@@ -97,13 +79,7 @@ namespace SRCCore.CmdDatas.Commands
                         var arg = "(" + string.Join(" ", Enumerable.Range(4, ArgNum - 3).Select(x => GetArg(x))) + ")";
                         etype = Expression.EvalTerm(arg, ValueType.UndefinedType, out str_result, out num_result);
                         Event.VarIndex = (Event.VarIndex + 1);
-                        {
-                            var v = Event.VarStack[Event.VarIndex];
-                            v.Name = vname;
-                            v.VariableType = ValueType.NumericType;
-                            v.StringValue = str_result;
-                            v.NumericValue = num_result;
-                        }
+                        Event.VarStack[Event.VarIndex].SetValue(vname, etype, str_result, num_result);
                     }
 
                     return EventData.NextID;
@@ -118,23 +94,18 @@ namespace SRCCore.CmdDatas.Commands
 
             for (var i = 2; i <= ArgNum; i++)
             {
+                var v = Event.VarStack[Event.VarIndex - i + 2];
+                vname = GetArg(i);
+                if (Strings.InStr(vname, "\"") > 0)
                 {
-                    var v = Event.VarStack[Event.VarIndex - i + 2];
-                    vname = GetArg(i);
-                    if (Strings.InStr(vname, "\"") > 0)
-                    {
-                        throw new EventErrorException(this, "変数名「" + vname + "」が不正です");
-                    }
-
-                    if (Strings.Asc(vname) == 36) // $
-                    {
-                        vname = Strings.Mid(vname, 2);
-                    }
-
-                    v.Name = vname;
-                    v.VariableType = ValueType.StringType;
-                    v.StringValue = "";
+                    throw new EventErrorException(this, "変数名「" + vname + "」が不正です");
                 }
+
+                if (Strings.Asc(vname) == 36) // $
+                {
+                    vname = Strings.Mid(vname, 2);
+                }
+                v.SetValue(vname, ValueType.StringType, "", 0d);
             }
             return EventData.NextID;
         }

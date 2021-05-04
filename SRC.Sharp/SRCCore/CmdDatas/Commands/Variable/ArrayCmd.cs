@@ -50,13 +50,7 @@ namespace SRCCore.CmdDatas.Commands
                 // サブルーチンローカル変数の場合
                 Expression.UndefineVariable(var_name);
                 Event.VarIndex = (Event.VarIndex + 1);
-                {
-                    var v = Event.VarStack[Event.VarIndex];
-                    v.Name = var_name;
-                    v.VariableType = Expressions.ValueType.NumericType;
-                    v.StringValue = "";
-                    v.NumericValue = 0d;
-                }
+                Event.VarStack[Event.VarIndex].SetValue(var_name, ValueType.UndefinedType, "", 0d);
             }
             else if (Expression.IsLocalVariableDefined(var_name))
             {

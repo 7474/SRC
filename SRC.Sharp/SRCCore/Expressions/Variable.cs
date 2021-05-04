@@ -489,9 +489,7 @@ namespace SRCCore.Expressions
                 var v = Event.SubLocalVar(vname);
                 if (v != null)
                 {
-                    v.VariableType = etype;
-                    v.StringValue = str_value;
-                    v.NumericValue = num_value;
+                    v.SetValue(vname, etype, str_value, num_value);
                     return;
                 }
             }
@@ -508,10 +506,7 @@ namespace SRCCore.Expressions
                 }
 
                 var v = Event.VarStack[Event.VarIndex];
-                v.Name = vname;
-                v.VariableType = etype;
-                v.StringValue = str_value;
-                v.NumericValue = num_value;
+                v.SetValue(vname, etype, str_value, num_value);
                 return;
             }
 
@@ -519,10 +514,7 @@ namespace SRCCore.Expressions
             if (IsLocalVariableDefined(vname))
             {
                 var v = Event.LocalVariableList[vname];
-                v.Name = vname;
-                v.VariableType = etype;
-                v.StringValue = str_value;
-                v.NumericValue = num_value;
+                v.SetValue(vname, etype, str_value, num_value);
                 return;
             }
 
@@ -530,10 +522,7 @@ namespace SRCCore.Expressions
             if (IsGlobalVariableDefined(vname))
             {
                 var v = Event.GlobalVariableList[vname];
-                v.Name = vname;
-                v.VariableType = etype;
-                v.StringValue = str_value;
-                v.NumericValue = num_value;
+                v.SetValue(vname, etype, str_value, num_value);
                 return;
             }
 
@@ -630,10 +619,7 @@ namespace SRCCore.Expressions
                 {
                     DefineGlobalVariable(vname);
                     var v = Event.GlobalVariableList[vname];
-                    v.Name = vname;
-                    v.VariableType = etype;
-                    v.StringValue = str_value;
-                    v.NumericValue = num_value;
+                    v.SetValue(vname, etype, str_value, num_value);
 
                     return;
                 }
@@ -642,8 +628,7 @@ namespace SRCCore.Expressions
                 {
                     // ローカル変数の配列のメインＩＤを作成
                     new_var2 = new VarData();
-                    new_var2.Name = vname0;
-                    new_var2.VariableType = ValueType.StringType;
+                    new_var2.SetValue(vname0, ValueType.StringType, "", 0d);
                     if (Strings.InStr(new_var2.Name, "\"") > 0)
                     {
                         Event.DisplayEventErrorMessage(Event.CurrentLineNum, "不正な変数「" + new_var2.Name + "」が作成されました");
@@ -655,10 +640,7 @@ namespace SRCCore.Expressions
 
             // ローカル変数として作成
             new_var = new VarData();
-            new_var.Name = vname;
-            new_var.VariableType = etype;
-            new_var.StringValue = str_value;
-            new_var.NumericValue = num_value;
+            new_var.SetValue(vname, etype, str_value, num_value);
             if (Strings.InStr(new_var.Name, "\"") > 0)
             {
                 Event.DisplayEventErrorMessage(Event.CurrentLineNum, "不正な変数「" + new_var.Name + "」が作成されました");
@@ -686,9 +668,7 @@ namespace SRCCore.Expressions
         public void DefineGlobalVariable(string vname)
         {
             var new_var = new VarData();
-            new_var.Name = vname;
-            new_var.VariableType = ValueType.StringType;
-            new_var.StringValue = "";
+            new_var.Init(vname);
             Event.GlobalVariableList.Add(vname, new_var);
         }
 
@@ -696,9 +676,7 @@ namespace SRCCore.Expressions
         public void DefineLocalVariable(string vname)
         {
             var new_var = new VarData();
-            new_var.Name = vname;
-            new_var.VariableType = ValueType.StringType;
-            new_var.StringValue = "";
+            new_var.Init(vname);
             Event.LocalVariableList.Add(vname, new_var);
         }
 
@@ -855,11 +833,10 @@ namespace SRCCore.Expressions
             // サブルーチンローカル変数？
             if (IsSubLocalVariableDefined(vname))
             {
-                // XXX 名前消すだけでいいの？
                 var v = Event.SubLocalVar(vname);
                 if (v != null)
                 {
-                    v.Name = "";
+                    v.Clear();
                     return;
                 }
             }
@@ -894,9 +871,9 @@ namespace SRCCore.Expressions
                 // XXX 配列の取得
                 foreach (var v in Event.SubLocalVars())
                 {
-                    if ((vname ?? "") == (v.Name ?? "") | Strings.InStr(v.Name, vname2) == 1)
+                    if ((vname ?? "") == (v.Name ?? "") || Strings.InStr(v.Name, vname2) == 1)
                     {
-                        v.Name = "";
+                        v.Clear();
                     }
                 }
                 return;
@@ -1914,13 +1891,7 @@ namespace SRCCore.Expressions
                 {
                     str_result = SrcFormatter.Format(num_result);
                 }
-                return new VarData
-                {
-                    Name = vname,
-                    VariableType = etype,
-                    StringValue = str_result ?? "",
-                    NumericValue = num_result,
-                };
+                return new VarData(vname, etype, str_result ?? "", num_result);
             }
 
             return null;

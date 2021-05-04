@@ -28,54 +28,33 @@ namespace SRCCore.CmdDatas.Commands
                 old_var1 = Expression.GetVariableObject(GetArg(2));
                 if (old_var1 is object)
                 {
-                    {
-                        var withBlock = new_var2;
-                        withBlock.Name = old_var1.Name;
-                        withBlock.VariableType = old_var1.VariableType;
-                        withBlock.StringValue = old_var1.StringValue;
-                        withBlock.NumericValue = old_var1.NumericValue;
-                    }
+                    new_var2.SetFrom(old_var1);
                 }
                 // 引数2の変数
                 old_var2 = Expression.GetVariableObject(GetArg(3));
                 if (old_var2 is object)
                 {
-                    {
-                        var withBlock1 = new_var1;
-                        withBlock1.Name = old_var2.Name;
-                        withBlock1.VariableType = old_var2.VariableType;
-                        withBlock1.StringValue = old_var2.StringValue;
-                        withBlock1.NumericValue = old_var2.NumericValue;
-                    }
+                    new_var1.SetFrom(old_var2);
                 }
 
                 // 引数2の変数を引数1の変数に代入
                 {
-                    var withBlock2 = old_var1;
                     // 引数1がサブルーチンローカル変数の場合
                     if (Event.CallDepth > 0)
                     {
                         var loopTo = Event.VarIndex;
                         for (var i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo; i++)
                         {
-                            if ((withBlock2.Name ?? "") == (Event.VarStack[i].Name ?? ""))
+                            if ((old_var1.Name ?? "") == (Event.VarStack[i].Name ?? ""))
                             {
-                                {
-                                    var withBlock3 = Event.VarStack[i];
-                                    withBlock3.VariableType = new_var1.VariableType;
-                                    withBlock3.StringValue = new_var1.StringValue;
-                                    withBlock3.NumericValue = new_var1.NumericValue;
-                                }
-
+                                Event.VarStack[i].SetFrom(new_var1);
                                 goto Swap_Var2toVar1_End;
                             }
                         }
                     }
 
                     // ローカル・またはグローバル変数の場合
-                    withBlock2.VariableType = new_var1.VariableType;
-                    withBlock2.StringValue = new_var1.StringValue;
-                    withBlock2.NumericValue = new_var1.NumericValue;
+                    old_var1.SetFrom(new_var1);
                 }
 
             Swap_Var2toVar1_End:
@@ -83,31 +62,22 @@ namespace SRCCore.CmdDatas.Commands
 
                 // 引数1の変数を引数2の変数に代入
                 {
-                    var withBlock4 = old_var2;
                     // 引数2がサブルーチンローカル変数の場合
                     if (Event.CallDepth > 0)
                     {
                         var loopTo1 = Event.VarIndex;
                         for (var i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo1; i++)
                         {
-                            if ((withBlock4.Name ?? "") == (Event.VarStack[i].Name ?? ""))
+                            if ((old_var2.Name ?? "") == (Event.VarStack[i].Name ?? ""))
                             {
-                                {
-                                    var withBlock5 = Event.VarStack[i];
-                                    withBlock5.VariableType = new_var2.VariableType;
-                                    withBlock5.StringValue = new_var2.StringValue;
-                                    withBlock5.NumericValue = new_var2.NumericValue;
-                                }
-
+                                Event.VarStack[i].SetFrom(new_var2);
                                 goto Swap_Var1toVar2_End;
                             }
                         }
                     }
 
                     // ローカル・またはグローバル変数の場合
-                    withBlock4.VariableType = new_var2.VariableType;
-                    withBlock4.StringValue = new_var2.StringValue;
-                    withBlock4.NumericValue = new_var2.NumericValue;
+                    old_var2.SetFrom(new_var2);
                 }
 
             Swap_Var1toVar2_End:
