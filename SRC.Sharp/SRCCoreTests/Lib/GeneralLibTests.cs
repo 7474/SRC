@@ -51,5 +51,16 @@ namespace SRCCore.Lib.Tests
             Assert.AreEqual(4, GeneralLib.StrWidth("1２3"));
             Assert.AreEqual(6, GeneralLib.StrWidth("１２３"));
         }
+
+        [TestMethod()]
+        public void StrToLngTest()
+        {
+            Assert.AreEqual(0, GeneralLib.StrToLng(""));
+            Assert.AreEqual(1, GeneralLib.StrToLng("1"));
+            Assert.AreEqual(1, GeneralLib.StrToLng("1.0"));
+            Assert.AreEqual(1, GeneralLib.StrToLng("1.1"));
+            Assert.AreEqual(1, GeneralLib.StrToLng("1.9"));
+            //Assert.AreEqual(1, GeneralLib.StrToLng("0x1"));
+        }
     }
 }
