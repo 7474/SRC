@@ -331,7 +331,7 @@ namespace SRCCore.Events
 
                     // ラベルの行は実行しても無駄なので
                     ret = ret + 1;
-                    //Application.DoEvents();
+                    GUI.DoEvents();
 
                     // イベントの各コマンドを実行
                     do

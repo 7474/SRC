@@ -17,6 +17,7 @@ namespace SRCCore
         /// <returns>プロセスを終了してもよい場合に true</returns>
         bool Terminate();
 
+        void DoEvents();
         void Sleep(int dwMilliseconds, bool withEvents = true);
         //// XXX 要プロパティ更新、戻り値で返したほうがいい気はする。そもそも実行をロックしたくない。
         //void StartWaitClick();

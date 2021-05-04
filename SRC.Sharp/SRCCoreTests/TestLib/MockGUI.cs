@@ -173,6 +173,11 @@ namespace SRCCoreTests.TestLib
             throw new NotImplementedException();
         }
 
+        public void DoEvents()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool DrawPicture(string fname, int dx, int dy, int dw, int dh, int sx, int sy, int sw, int sh, string draw_option)
         {
             throw new NotImplementedException();
