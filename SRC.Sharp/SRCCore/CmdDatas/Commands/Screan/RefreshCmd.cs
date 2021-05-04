@@ -12,7 +12,7 @@ namespace SRCCore.CmdDatas.Commands
         {
             GUI.UpdateScreen();
 
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

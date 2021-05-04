@@ -163,7 +163,7 @@ namespace SRCCore.CmdDatas.Commands
             u.CheckAutoHyperMode();
             Event.SelectedUnitForEvent = u.CurrentForm();
 
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

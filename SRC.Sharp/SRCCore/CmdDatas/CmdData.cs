@@ -297,7 +297,7 @@ namespace SRCCore.CmdDatas
         public IEnumerable<int> AfterEventIdRange()
         {
             // 次から最後まで
-            var start = EventData.ID + 1;
+            var start = EventData.NextID;
             return Enumerable.Range(start, Math.Max(0, Event.EventCmd.Count - start));
         }
 

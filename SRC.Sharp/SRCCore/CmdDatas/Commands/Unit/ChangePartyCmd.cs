@@ -68,7 +68,7 @@ namespace SRCCore.CmdDatas.Commands
             // XXX 実装次第要素
             GUI.IsCursorVisible = false;
 
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

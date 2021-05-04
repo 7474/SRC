@@ -77,7 +77,7 @@ namespace SRCCore.CmdDatas.Commands
             // マウスカーソルを元に戻す
             GUI.ChangeStatus(GuiStatus.Default);
 
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

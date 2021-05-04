@@ -22,7 +22,7 @@ namespace SRCCore.CmdDatas.Commands
                 // TODO コマンド実装し終わったら。。。
                 //throw new EventErrorException(this, "サブルーチンの呼び出し先ラベルである「" + subName + "」がみつかりません");
                 SRC.LogDebug($"{subName} is not found.");
-                return EventData.ID + 1;
+                return EventData.NextID;
             }
 
             // 呼び出し階層をチェック

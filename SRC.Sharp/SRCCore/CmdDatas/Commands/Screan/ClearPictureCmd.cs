@@ -29,7 +29,7 @@ namespace SRCCore.CmdDatas.Commands
                     throw new EventErrorException(this, "ClearPictureコマンドの引数の数が違います");
             }
 
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

@@ -196,7 +196,7 @@ namespace SRCCore.CmdDatas.Commands
                     dw = GeneralLib.StrToLng(buf);
                     if (dw <= 0)
                     {
-                        return EventData.ID + 1;
+                        return EventData.NextID;
                     }
                 }
 
@@ -210,7 +210,7 @@ namespace SRCCore.CmdDatas.Commands
                     dh = GeneralLib.StrToLng(buf);
                     if (dh <= 0)
                     {
-                        return EventData.ID + 1;
+                        return EventData.NextID;
                     }
                 }
             }
@@ -256,8 +256,9 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             GUI.DrawPicture(fname, dx, dy, dw, dh, sx, sy, sw, sh, options);
+            SRC.LogTrace($"DrawPicture({fname}, {dx}, {dy}, {dw}, {dh}, {sx}, {sy}, {sw}, {sh}, {options})");
 
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

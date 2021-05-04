@@ -146,7 +146,7 @@ namespace SRCCore.CmdDatas.Commands
                     throw new EventErrorException(this, "Waitコマンドの引数の数が違います");
             }
 
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

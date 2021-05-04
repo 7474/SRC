@@ -20,7 +20,7 @@ namespace SRCCore.CmdDatas.Commands
 
             Sound.PlayWave(fname);
 
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

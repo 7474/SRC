@@ -21,7 +21,7 @@ namespace SRCCore.CmdDatas.Commands
 
             GUI.RedrawScreen(late_refresh);
 
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }
