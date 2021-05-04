@@ -64,7 +64,7 @@ namespace SRCCore.VB
         public static string Left(string str, int Length)
         {
             if (string.IsNullOrEmpty(str)) { return ""; }
-            return str.Substring(0, Length);
+            return Mid(str, 1, Length);
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.len?view=net-5.0
