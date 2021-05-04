@@ -975,10 +975,10 @@ namespace SRCCore.Expressions
                         if (Event.SelectedUnitForEvent is object)
                         {
                             {
-                                var withBlock3 = Event.SelectedUnitForEvent;
-                                if (withBlock3.CountPilot() > 0)
+                                var withBlock = Event.SelectedUnitForEvent;
+                                if (withBlock.CountPilot() > 0)
                                 {
-                                    str_result = withBlock3.MainPilot().ID;
+                                    str_result = withBlock.MainPilot().ID;
                                 }
                                 else
                                 {
@@ -1001,10 +1001,10 @@ namespace SRCCore.Expressions
                         if (Event.SelectedTargetForEvent is object)
                         {
                             {
-                                var withBlock4 = Event.SelectedTargetForEvent;
-                                if (withBlock4.CountPilot() > 0)
+                                var withBlock1 = Event.SelectedTargetForEvent;
+                                if (withBlock1.CountPilot() > 0)
                                 {
-                                    str_result = withBlock4.MainPilot().ID;
+                                    str_result = withBlock1.MainPilot().ID;
                                 }
                                 else
                                 {
@@ -1053,33 +1053,26 @@ namespace SRCCore.Expressions
 
                 case "対象ユニット使用武器":
                     {
-                        str_result = "";
                         if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedUnit))
                         {
+                            if (Commands.SelectedWeapon > 0)
                             {
-                                var withBlock5 = Event.SelectedUnitForEvent;
-                                if (Commands.SelectedWeapon > 0)
-                                {
-                                    str_result = Commands.SelectedWeaponName;
-                                }
-                                else
-                                {
-                                    str_result = "";
-                                }
+                                str_result = Commands.SelectedWeaponName;
+                            }
+                            else
+                            {
+                                str_result = "";
                             }
                         }
                         else if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedTarget))
                         {
+                            if (Commands.SelectedTWeapon > 0)
                             {
-                                var withBlock6 = Event.SelectedUnitForEvent;
-                                if (Commands.SelectedTWeapon > 0)
-                                {
-                                    str_result = Commands.SelectedTWeaponName;
-                                }
-                                else
-                                {
-                                    str_result = Commands.SelectedDefenseOption;
-                                }
+                                str_result = Commands.SelectedTWeaponName;
+                            }
+                            else
+                            {
+                                str_result = Commands.SelectedDefenseOption;
                             }
                         }
 
@@ -1089,33 +1082,26 @@ namespace SRCCore.Expressions
 
                 case "相手ユニット使用武器":
                     {
-                        str_result = "";
                         if (ReferenceEquals(Event.SelectedTargetForEvent, Commands.SelectedTarget))
                         {
+                            if (Commands.SelectedTWeapon > 0)
                             {
-                                var withBlock7 = Event.SelectedTargetForEvent;
-                                if (Commands.SelectedTWeapon > 0)
-                                {
-                                    str_result = Commands.SelectedTWeaponName;
-                                }
-                                else
-                                {
-                                    str_result = Commands.SelectedDefenseOption;
-                                }
+                                str_result = Commands.SelectedTWeaponName;
+                            }
+                            else
+                            {
+                                str_result = Commands.SelectedDefenseOption;
                             }
                         }
                         else if (ReferenceEquals(Event.SelectedTargetForEvent, Commands.SelectedUnit))
                         {
+                            if (Commands.SelectedWeapon > 0)
                             {
-                                var withBlock8 = Event.SelectedTargetForEvent;
-                                if (Commands.SelectedWeapon > 0)
-                                {
-                                    str_result = Commands.SelectedWeaponName;
-                                }
-                                else
-                                {
-                                    str_result = "";
-                                }
+                                str_result = Commands.SelectedWeaponName;
+                            }
+                            else
+                            {
+                                str_result = "";
                             }
                         }
 
@@ -1125,73 +1111,36 @@ namespace SRCCore.Expressions
 
                 case "対象ユニット使用武器番号":
                     {
-                        str_result = "";
                         if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedUnit))
                         {
-                            if (etype == ValueType.StringType)
-                            {
-                                str_result = SrcFormatter.Format(Commands.SelectedWeapon);
-                                etype = ValueType.StringType;
-                            }
-                            else
-                            {
-                                num_result = Commands.SelectedWeapon;
-                                etype = ValueType.NumericType;
-                            }
+                            num_result = Commands.SelectedWeapon;
                         }
                         else if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedTarget))
                         {
-                            if (etype == ValueType.StringType)
-                            {
-                                str_result = SrcFormatter.Format(Commands.SelectedTWeapon);
-                                etype = ValueType.StringType;
-                            }
-                            else
-                            {
-                                num_result = Commands.SelectedTWeapon;
-                                etype = ValueType.NumericType;
-                            }
+                            num_result = Commands.SelectedTWeapon;
                         }
 
+                        etype = ValueType.NumericType;
                         break;
                     }
 
                 case "相手ユニット使用武器番号":
                     {
-                        str_result = "";
                         if (ReferenceEquals(Event.SelectedTargetForEvent, Commands.SelectedTarget))
                         {
-                            if (etype == ValueType.StringType)
-                            {
-                                str_result = SrcFormatter.Format(Commands.SelectedTWeapon);
-                                etype = ValueType.StringType;
-                            }
-                            else
-                            {
-                                num_result = Commands.SelectedTWeapon;
-                                etype = ValueType.NumericType;
-                            }
+                            num_result = Commands.SelectedTWeapon;
                         }
                         else if (ReferenceEquals(Event.SelectedTargetForEvent, Commands.SelectedUnit))
                         {
-                            if (etype == ValueType.StringType)
-                            {
-                                str_result = SrcFormatter.Format(Commands.SelectedWeapon);
-                                etype = ValueType.StringType;
-                            }
-                            else
-                            {
-                                num_result = Commands.SelectedWeapon;
-                                etype = ValueType.NumericType;
-                            }
+                            num_result = Commands.SelectedWeapon;
                         }
 
+                        etype = ValueType.NumericType;
                         break;
                     }
 
                 case "対象ユニット使用アビリティ":
                     {
-                        str_result = "";
                         if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedUnit))
                         {
                             if (Commands.SelectedAbility > 0)
@@ -1210,27 +1159,17 @@ namespace SRCCore.Expressions
 
                 case "対象ユニット使用アビリティ番号":
                     {
-                        str_result = "";
                         if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedUnit))
                         {
-                            if (etype == ValueType.StringType)
-                            {
-                                str_result = SrcFormatter.Format(Commands.SelectedAbility);
-                                etype = ValueType.StringType;
-                            }
-                            else
-                            {
-                                num_result = Commands.SelectedAbility;
-                                etype = ValueType.NumericType;
-                            }
+                            num_result = Commands.SelectedAbility;
                         }
 
+                        etype = ValueType.NumericType;
                         break;
                     }
 
                 case "対象ユニット使用スペシャルパワー":
                     {
-                        str_result = "";
                         if (ReferenceEquals(Event.SelectedUnitForEvent, Commands.SelectedUnit))
                         {
                             str_result = Commands.SelectedSpecialPower;
@@ -1271,9 +1210,9 @@ namespace SRCCore.Expressions
                     }
 
                 case "選択":
-                    if (etype == ValueType.NumericType)
+                    if (Information.IsNumeric(Event.SelectedAlternative))
                     {
-                        num_result = Conversions.ToDouble(Event.SelectedAlternative);
+                        num_result = GeneralLib.StrToDbl(Event.SelectedAlternative);
                         etype = ValueType.NumericType;
                     }
                     else
@@ -1286,33 +1225,15 @@ namespace SRCCore.Expressions
 
                 case "ターン数":
                     {
-                        if (etype == ValueType.StringType)
-                        {
-                            str_result = SrcFormatter.Format(SRC.Turn);
-                            etype = ValueType.StringType;
-                        }
-                        else
-                        {
-                            num_result = SRC.Turn;
-                            etype = ValueType.NumericType;
-                        }
-
+                        num_result = SRC.Turn;
+                        etype = ValueType.NumericType;
                         break;
                     }
 
                 case "総ターン数":
                     {
-                        if (etype == ValueType.StringType)
-                        {
-                            str_result = SrcFormatter.Format(SRC.TotalTurn);
-                            etype = ValueType.StringType;
-                        }
-                        else
-                        {
-                            num_result = SRC.TotalTurn;
-                            etype = ValueType.NumericType;
-                        }
-
+                        num_result = SRC.TotalTurn;
+                        etype = ValueType.NumericType;
                         break;
                     }
 
@@ -1323,288 +1244,143 @@ namespace SRCCore.Expressions
                         break;
                     }
 
-                //    case "味方数":
-                //        {
-                //            num = 0;
-                //            foreach (Unit currentU in SRC.UList)
-                //            {
-                //                u = currentU;
-                //                if (u.Party0 == "味方" & (u.Status_Renamed == "出撃" | u.Status_Renamed == "格納"))
-                //                {
-                //                    num = (num + 1);
-                //                }
-                //            }
-
-                //            if (etype == ValueType.StringType)
-                //            {
-                //                str_result = SrcFormatter.Format(num);
-                //                etype = ValueType.StringType;
-                //            }
-                //            else
-                //            {
-                //                num_result = num;
-                //                etype = ValueType.NumericType;
-                //            }
-
-                //            break;
-                //        }
-
-                //    case "ＮＰＣ数":
-                //        {
-                //            num = 0;
-                //            foreach (Unit currentU1 in SRC.UList)
-                //            {
-                //                u = currentU1;
-                //                if (u.Party0 == "ＮＰＣ" & (u.Status_Renamed == "出撃" | u.Status_Renamed == "格納"))
-                //                {
-                //                    num = (num + 1);
-                //                }
-                //            }
-
-                //            if (etype == ValueType.StringType)
-                //            {
-                //                str_result = SrcFormatter.Format(num);
-                //                etype = ValueType.StringType;
-                //            }
-                //            else
-                //            {
-                //                num_result = num;
-                //                etype = ValueType.NumericType;
-                //            }
-
-                //            break;
-                //        }
-
-                //    case "敵数":
-                //        {
-                //            num = 0;
-                //            foreach (Unit currentU2 in SRC.UList)
-                //            {
-                //                u = currentU2;
-                //                if (u.Party0 == "敵" & (u.Status_Renamed == "出撃" | u.Status_Renamed == "格納"))
-                //                {
-                //                    num = (num + 1);
-                //                }
-                //            }
-
-                //            if (etype == ValueType.StringType)
-                //            {
-                //                str_result = SrcFormatter.Format(num);
-                //                etype = ValueType.StringType;
-                //            }
-                //            else
-                //            {
-                //                num_result = num;
-                //                etype = ValueType.NumericType;
-                //            }
-
-                //            break;
-                //        }
-
-                //    case "中立数":
-                //        {
-                //            num = 0;
-                //            foreach (Unit currentU3 in SRC.UList)
-                //            {
-                //                u = currentU3;
-                //                if (u.Party0 == "中立" & (u.Status_Renamed == "出撃" | u.Status_Renamed == "格納"))
-                //                {
-                //                    num = (num + 1);
-                //                }
-                //            }
-
-                //            if (etype == ValueType.StringType)
-                //            {
-                //                str_result = SrcFormatter.Format(num);
-                //                etype = ValueType.StringType;
-                //            }
-                //            else
-                //            {
-                //                num_result = num;
-                //                etype = ValueType.NumericType;
-                //            }
-
-                //            break;
-                //        }
-
-                //    case "資金":
-                //        {
-                //            if (etype == ValueType.StringType)
-                //            {
-                //                str_result = GeneralLib.FormatNum(SRC.Money);
-                //                etype = ValueType.StringType;
-                //            }
-                //            else
-                //            {
-                //                num_result = SRC.Money;
-                //                etype = ValueType.NumericType;
-                //            }
-
-                //            break;
-                //        }
-
-                //    default:
-                //        {
-                //            // アルファベットの変数名はlow caseで判別
-                //            switch (Strings.LCase(vname) ?? "")
-                //            {
-                //                case "apppath":
-                //                    {
-                //                        str_result = SRC.AppPath;
-                //                        etype = ValueType.StringType;
-                //                        break;
-                //                    }
-
-                //                case "appversion":
-                //                    {
-                //                        {
-                //                            var withBlock15 = App;
-                //                            num = (10000 * My.MyProject.Application.Info.Version.Major + 100 * My.MyProject.Application.Info.Version.Minor + My.MyProject.Application.Info.Version.Revision);
-                //                        }
-
-                //                        if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = SrcFormatter.Format(num);
-                //                            etype = ValueType.StringType;
-                //                        }
-                //                        else
-                //                        {
-                //                            num_result = num;
-                //                            etype = ValueType.NumericType;
-                //                        }
-
-                //                        break;
-                //                    }
-
-                case "argnum":
+                case "味方数":
+                case "ＮＰＣ数":
+                case "敵数":
+                case "中立数":
                     {
-                        // UpVarの呼び出し回数を累計
-                        var num = Event.UpVarLevel;
-                        var i = Event.CallDepth;
-                        while (num > 0)
+                        var party = Strings.Left(vname, Strings.Len(vname) - 1);
+                        var num = 0;
+                        foreach (var u in SRC.UList.Items)
                         {
-                            i = (i - num);
-                            if (i < 1)
+                            if (u.Party0 == party && (u.Status == "出撃" || u.Status == "格納"))
                             {
-                                i = 1;
-                                break;
+                                num = num + 1;
                             }
-
-                            num = Event.UpVarLevelStack[i];
                         }
-
-                        num = (Event.ArgIndex - Event.ArgIndexStack[i - 1]);
-                        if (etype == ValueType.StringType)
-                        {
-                            str_result = SrcFormatter.Format(num);
-                            etype = ValueType.StringType;
-                        }
-                        else
-                        {
-                            num_result = num;
-                            etype = ValueType.NumericType;
-                        }
-
+                        num_result = num;
+                        etype = ValueType.NumericType;
                         break;
                     }
 
-                case "basex":
+                case "資金":
                     {
-                        if (etype == ValueType.StringType)
-                        {
-                            str_result = SrcFormatter.Format(Event.BaseX);
-                            etype = ValueType.StringType;
-                        }
-                        else
-                        {
-                            num_result = Event.BaseX;
-                            etype = ValueType.NumericType;
-                        }
-
+                        num_result = SRC.Money;
+                        etype = ValueType.NumericType;
                         break;
                     }
 
-                case "basey":
-                    {
-                        if (etype == ValueType.StringType)
-                        {
-                            str_result = SrcFormatter.Format(Event.BaseY);
-                            etype = ValueType.StringType;
-                        }
-                        else
-                        {
-                            num_result = Event.BaseY;
-                            etype = ValueType.NumericType;
-                        }
-
-                        break;
-                    }
-
-                //                case "extdatapath":
-                //                    {
-                //                        str_result = SRC.ExtDataPath;
-                //                        etype = ValueType.StringType;
-                //                        break;
-                //                    }
-
-                //                case "extdatapath2":
-                //                    {
-                //                        str_result = SRC.ExtDataPath2;
-                //                        etype = ValueType.StringType;
-                //                        break;
-                //                    }
-
-                //                case "mousex":
-                //                    {
-                //                        if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = SrcFormatter.Format(GUI.MouseX);
-                //                            etype = ValueType.StringType;
-                //                        }
-                //                        else
-                //                        {
-                //                            num_result = GUI.MouseX;
-                //                            etype = ValueType.NumericType;
-                //                        }
-
-                //                        break;
-                //                    }
-
-                //                case "mousey":
-                //                    {
-                //                        if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = SrcFormatter.Format(GUI.MouseY);
-                //                            etype = ValueType.StringType;
-                //                        }
-                //                        else
-                //                        {
-                //                            num_result = GUI.MouseY;
-                //                            etype = ValueType.NumericType;
-                //                        }
-
-                //                        break;
-                //                    }
-
-                //                case "now":
-                //                    {
-                //                        str_result = Conversions.ToString(DateAndTime.Now);
-                //                        etype = ValueType.StringType;
-                //                        break;
-                //                    }
-
-                //                case "scenariopath":
-                //                    {
-                //                        str_result = SRC.ScenarioPath;
-                //                        etype = ValueType.StringType;
-                //                        break;
-                //                    }
-                //            }
-
-                //            break;
-                //        }
                 default:
-                    break;
+                    {
+                        // アルファベットの変数名はlow caseで判別
+                        switch (Strings.LCase(vname))
+                        {
+                            case "apppath":
+                                {
+                                    str_result = SRC.AppPath;
+                                    etype = ValueType.StringType;
+                                    break;
+                                }
+
+                            case "appversion":
+                                {
+                                    // revision は捨てた
+                                    // Ref. System.Version
+                                    var v = SRC.Version;
+                                    num_result = v.Major * 100000 + v.Minor * 100 + v.Build;
+                                    etype = ValueType.NumericType;
+                                    break;
+                                }
+
+                            case "argnum":
+                                {
+                                    // XXX GetVariableObjectと実装が違う、そもそもこの辺はバグフィクスで修正したい
+                                    //num = (short)(Event.ArgIndex - Event.ArgIndexStack[Event.CallDepth - 1 - Event.UpVarLevel]);
+                                    //num_result = num;
+                                    //etype = ValueType.NumericType;
+                                    //break;
+                                    // UpVarの呼び出し回数を累計
+                                    var num = Event.UpVarLevel;
+                                    var i = Event.CallDepth;
+                                    while (num > 0)
+                                    {
+                                        i = (i - num);
+                                        if (i < 1)
+                                        {
+                                            i = 1;
+                                            break;
+                                        }
+
+                                        num = Event.UpVarLevelStack[i];
+                                    }
+
+                                    num = (Event.ArgIndex - Event.ArgIndexStack[i - 1]);
+                                        num_result = num;
+                                        etype = ValueType.NumericType;
+
+                                    break;
+                                }
+
+                            case "basex":
+                                {
+                                    num_result = Event.BaseX;
+                                    etype = ValueType.NumericType;
+                                    break;
+                                }
+
+                            case "basey":
+                                {
+                                    num_result = Event.BaseY;
+                                    etype = ValueType.NumericType;
+                                    break;
+                                }
+
+                            case "extdatapath":
+                                {
+                                    str_result = SRC.ExtDataPath;
+                                    etype = ValueType.StringType;
+                                    break;
+                                }
+
+                            case "extdatapath2":
+                                {
+                                    str_result = SRC.ExtDataPath2;
+                                    etype = ValueType.StringType;
+                                    break;
+                                }
+
+                            case "mousex":
+                                {
+                                    num_result = GUI.MouseX;
+                                    etype = ValueType.NumericType;
+                                    break;
+                                }
+
+                            case "mousey":
+                                {
+                                    num_result = GUI.MouseY;
+                                    etype = ValueType.NumericType;
+                                    break;
+                                }
+
+                            case "now":
+                                {
+                                    // XXX Format DateTime
+                                    str_result = Conversions.ToString(Conversions.GetNow());
+                                    etype = ValueType.StringType;
+                                    break;
+                                }
+
+                            case "scenariopath":
+                                {
+                                    str_result = SRC.ScenarioPath;
+                                    etype = ValueType.StringType;
+                                    break;
+                                }
+                        }
+
+                        break;
+                    }
             }
 
             // コンフィグ変数？
@@ -2122,391 +1898,22 @@ namespace SRCCore.Expressions
                 //    }
             }
 
-            // XXX GetVariableObject
-            {
-
-                //    // システム変数？
-                //    etype = ValueType.UndefinedType;
-                //    str_result = "";
-                //    num_result = 0d;
-                //    switch (vname ?? "")
-                //    {
-                //        case "対象ユニット":
-                //        case "対象パイロット":
-                //            {
-                //                if (Event_Renamed.SelectedUnitForEvent is object)
-                //                {
-                //                    {
-                //                        var withBlock = Event_Renamed.SelectedUnitForEvent;
-                //                        if (withBlock.CountPilot() > 0)
-                //                        {
-                //                            str_result = withBlock.MainPilot().ID;
-                //                        }
-                //                        else
-                //                        {
-                //                            str_result = "";
-                //                        }
-                //                    }
-                //                }
-                //                else
-                //                {
-                //                    str_result = "";
-                //                }
-
-                //                etype = ValueType.StringType;
-                //                break;
-                //            }
-
-                //        case "相手ユニット":
-                //        case "相手パイロット":
-                //            {
-                //                if (Event_Renamed.SelectedTargetForEvent is object)
-                //                {
-                //                    {
-                //                        var withBlock1 = Event_Renamed.SelectedTargetForEvent;
-                //                        if (withBlock1.CountPilot() > 0)
-                //                        {
-                //                            str_result = withBlock1.MainPilot().ID;
-                //                        }
-                //                        else
-                //                        {
-                //                            str_result = "";
-                //                        }
-                //                    }
-                //                }
-                //                else
-                //                {
-                //                    str_result = "";
-                //                }
-
-                //                etype = ValueType.StringType;
-                //                break;
-                //            }
-
-                //        case "対象ユニットＩＤ":
-                //            {
-                //                if (Event_Renamed.SelectedUnitForEvent is object)
-                //                {
-                //                    str_result = Event_Renamed.SelectedUnitForEvent.ID;
-                //                }
-                //                else
-                //                {
-                //                    str_result = "";
-                //                }
-
-                //                etype = ValueType.StringType;
-                //                break;
-                //            }
-
-                //        case "相手ユニットＩＤ":
-                //            {
-                //                if (Event_Renamed.SelectedTargetForEvent is object)
-                //                {
-                //                    str_result = Event_Renamed.SelectedTargetForEvent.ID;
-                //                }
-                //                else
-                //                {
-                //                    str_result = "";
-                //                }
-
-                //                etype = ValueType.StringType;
-                //                break;
-                //            }
-
-                //        case "対象ユニット使用武器":
-                //            {
-                //                if (ReferenceEquals(Event_Renamed.SelectedUnitForEvent, Commands.SelectedUnit))
-                //                {
-                //                    if (Commands.SelectedWeapon > 0)
-                //                    {
-                //                        str_result = Commands.SelectedWeaponName;
-                //                    }
-                //                    else
-                //                    {
-                //                        str_result = "";
-                //                    }
-                //                }
-                //                else if (ReferenceEquals(Event_Renamed.SelectedUnitForEvent, Commands.SelectedTarget))
-                //                {
-                //                    if (Commands.SelectedTWeapon > 0)
-                //                    {
-                //                        str_result = Commands.SelectedTWeaponName;
-                //                    }
-                //                    else
-                //                    {
-                //                        str_result = Commands.SelectedDefenseOption;
-                //                    }
-                //                }
-
-                //                etype = ValueType.StringType;
-                //                break;
-                //            }
-
-                //        case "相手ユニット使用武器":
-                //            {
-                //                if (ReferenceEquals(Event_Renamed.SelectedTargetForEvent, Commands.SelectedTarget))
-                //                {
-                //                    if (Commands.SelectedTWeapon > 0)
-                //                    {
-                //                        str_result = Commands.SelectedTWeaponName;
-                //                    }
-                //                    else
-                //                    {
-                //                        str_result = Commands.SelectedDefenseOption;
-                //                    }
-                //                }
-                //                else if (ReferenceEquals(Event_Renamed.SelectedTargetForEvent, Commands.SelectedUnit))
-                //                {
-                //                    if (Commands.SelectedWeapon > 0)
-                //                    {
-                //                        str_result = Commands.SelectedWeaponName;
-                //                    }
-                //                    else
-                //                    {
-                //                        str_result = "";
-                //                    }
-                //                }
-
-                //                etype = ValueType.StringType;
-                //                break;
-                //            }
-
-                //        case "対象ユニット使用武器番号":
-                //            {
-                //                if (ReferenceEquals(Event_Renamed.SelectedUnitForEvent, Commands.SelectedUnit))
-                //                {
-                //                    num_result = Commands.SelectedWeapon;
-                //                }
-                //                else if (ReferenceEquals(Event_Renamed.SelectedUnitForEvent, Commands.SelectedTarget))
-                //                {
-                //                    num_result = Commands.SelectedTWeapon;
-                //                }
-
-                //                etype = ValueType.NumericType;
-                //                break;
-                //            }
-
-                //        case "相手ユニット使用武器番号":
-                //            {
-                //                if (ReferenceEquals(Event_Renamed.SelectedTargetForEvent, Commands.SelectedTarget))
-                //                {
-                //                    num_result = Commands.SelectedTWeapon;
-                //                }
-                //                else if (ReferenceEquals(Event_Renamed.SelectedTargetForEvent, Commands.SelectedUnit))
-                //                {
-                //                    num_result = Commands.SelectedWeapon;
-                //                }
-
-                //                etype = ValueType.NumericType;
-                //                break;
-                //            }
-
-                //        case "対象ユニット使用アビリティ":
-                //            {
-                //                if (ReferenceEquals(Event_Renamed.SelectedUnitForEvent, Commands.SelectedUnit))
-                //                {
-                //                    if (Commands.SelectedAbility > 0)
-                //                    {
-                //                        str_result = Commands.SelectedAbilityName;
-                //                    }
-                //                    else
-                //                    {
-                //                        str_result = "";
-                //                    }
-                //                }
-
-                //                etype = ValueType.StringType;
-                //                break;
-                //            }
-
-                //        case "対象ユニット使用アビリティ番号":
-                //            {
-                //                if (ReferenceEquals(Event_Renamed.SelectedUnitForEvent, Commands.SelectedUnit))
-                //                {
-                //                    num_result = Commands.SelectedAbility;
-                //                }
-
-                //                etype = ValueType.NumericType;
-                //                break;
-                //            }
-
-                //        case "対象ユニット使用スペシャルパワー":
-                //            {
-                //                if (ReferenceEquals(Event_Renamed.SelectedUnitForEvent, Commands.SelectedUnit))
-                //                {
-                //                    str_result = Commands.SelectedSpecialPower;
-                //                }
-
-                //                etype = ValueType.StringType;
-                //                break;
-                //            }
-
-                //        case "選択":
-                //            {
-                //                if (Information.IsNumeric(Event_Renamed.SelectedAlternative))
-                //                {
-                //                    num_result = GeneralLib.StrToDbl(ref Event_Renamed.SelectedAlternative);
-                //                    etype = ValueType.NumericType;
-                //                }
-                //                else
-                //                {
-                //                    str_result = Event_Renamed.SelectedAlternative;
-                //                    etype = ValueType.StringType;
-                //                }
-
-                //                break;
-                //            }
-
-                //        case "ターン数":
-                //            {
-                //                num_result = SRC.Turn;
-                //                etype = ValueType.NumericType;
-                //                break;
-                //            }
-
-                //        case "総ターン数":
-                //            {
-                //                num_result = SRC.TotalTurn;
-                //                etype = ValueType.NumericType;
-                //                break;
-                //            }
-
-                //        case "フェイズ":
-                //            {
-                //                str_result = SRC.Stage;
-                //                etype = ValueType.StringType;
-                //                break;
-                //            }
-
-                //        case "味方数":
-                //        case "ＮＰＣ数":
-                //        case "敵数":
-                //        case "中立数":
-                //            {
-                //                num = 0;
-                //                foreach (Unit u in SRC.UList)
-                //                {
-                //                    if ((u.Party0 ?? "") == (Strings.Left(vname, Strings.Len(vname) - 1) ?? "") & (u.Status_Renamed == "出撃" | u.Status_Renamed == "格納"))
-                //                    {
-                //                        num = (short)(num + 1);
-                //                    }
-                //                }
-
-                //                num_result = num;
-                //                etype = ValueType.NumericType;
-                //                break;
-                //            }
-
-                //        case "資金":
-                //            {
-                //                num_result = SRC.Money;
-                //                etype = ValueType.NumericType;
-                //                break;
-                //            }
-
-                //        default:
-                //            {
-                //                // アルファベットの変数名はlow caseで判別
-                //                switch (Strings.LCase(vname) ?? "")
-                //                {
-                //                    case "apppath":
-                //                        {
-                //                            str_result = SRC.AppPath;
-                //                            etype = ValueType.StringType;
-                //                            break;
-                //                        }
-
-                //                    case "appversion":
-                //                        {
-                //                            // UPGRADE_ISSUE: App オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
-                //                            {
-                //                                var withBlock2 = App;
-                //                                num = (short)(10000 * My.MyProject.Application.Info.Version.Major + 100 * My.MyProject.Application.Info.Version.Minor + My.MyProject.Application.Info.Version.Revision);
-                //                            }
-
-                //                            num_result = num;
-                //                            etype = ValueType.NumericType;
-                //                            break;
-                //                        }
-
-                //                    case "argnum":
-                //                        {
-                //                            num = (short)(Event_Renamed.ArgIndex - Event_Renamed.ArgIndexStack[Event_Renamed.CallDepth - 1 - Event_Renamed.UpVarLevel]);
-                //                            num_result = num;
-                //                            etype = ValueType.NumericType;
-                //                            break;
-                //                        }
-
-                //                    case "basex":
-                //                        {
-                //                            num_result = Event_Renamed.BaseX;
-                //                            etype = ValueType.NumericType;
-                //                            break;
-                //                        }
-
-                //                    case "basey":
-                //                        {
-                //                            num_result = Event_Renamed.BaseY;
-                //                            etype = ValueType.NumericType;
-                //                            break;
-                //                        }
-
-                //                    case "extdatapath":
-                //                        {
-                //                            str_result = SRC.ExtDataPath;
-                //                            etype = ValueType.StringType;
-                //                            break;
-                //                        }
-
-                //                    case "extdatapath2":
-                //                        {
-                //                            str_result = SRC.ExtDataPath2;
-                //                            etype = ValueType.StringType;
-                //                            break;
-                //                        }
-
-                //                    case "mousex":
-                //                        {
-                //                            num_result = GUI.MouseX;
-                //                            etype = ValueType.NumericType;
-                //                            break;
-                //                        }
-
-                //                    case "mousey":
-                //                        {
-                //                            num_result = GUI.MouseY;
-                //                            etype = ValueType.NumericType;
-                //                            break;
-                //                        }
-
-                //                    case "now":
-                //                        {
-                //                            str_result = Conversions.ToString(DateAndTime.Now);
-                //                            etype = ValueType.StringType;
-                //                            break;
-                //                        }
-
-                //                    case "scenariopath":
-                //                        {
-                //                            str_result = SRC.ScenarioPath;
-                //                            etype = ValueType.StringType;
-                //                            break;
-                //                        }
-                //                }
-
-                //                break;
-                //            }
-                //    }
-            }
 
             if (etype != ValueType.UndefinedType)
             {
+                // XXX 0 と 未定義の区別ついていない
+                if (etype == ValueType.NumericType
+                    && str_result == null
+                    && num_result != 0d)
+                {
+                    str_result = SrcFormatter.Format(num_result);
+                }
                 return new VarData
                 {
                     Name = vname,
                     VariableType = etype,
-                    StringValue = str_result,
-                    NumericValue = num_result
+                    StringValue = str_result ?? "",
+                    NumericValue = num_result,
                 };
             }
 
