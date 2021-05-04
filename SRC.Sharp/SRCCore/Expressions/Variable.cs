@@ -46,7 +46,7 @@ namespace SRCCore.Expressions
             }
             finally
             {
-                SRC.LogTrace("<", var_name, str_result, num_result.ToString());
+                SRC.LogTrace("<", etype.ToString().Substring(0, 1), var_name, str_result, num_result.ToString());
             }
         }
 
@@ -243,7 +243,7 @@ namespace SRCCore.Expressions
         // 変数の値を設定
         public void SetVariable(string var_name, ValueType etype, string str_value, double num_value)
         {
-            SRC.LogTrace(">", var_name, str_value, num_value.ToString());
+            SRC.LogTrace(">", etype.ToString().Substring(0, 1), var_name, str_value, num_value.ToString());
 
             VarData new_var;
             string vname = var_name;
@@ -970,7 +970,7 @@ namespace SRCCore.Expressions
             }
 
             ValueType etype = ValueType.UndefinedType;
-            string str_result = "";
+            string str_result = null;
             double num_result = 0d;
             // システム変数？
             // TODO Impl
@@ -1904,7 +1904,6 @@ namespace SRCCore.Expressions
                 //        }
                 //    }
             }
-
 
             if (etype != ValueType.UndefinedType)
             {

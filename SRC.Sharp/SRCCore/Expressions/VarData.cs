@@ -46,7 +46,8 @@ namespace SRCCore.Expressions
 
                 case ValueType.StringType:
                     {
-                        if (VariableType == ValueType.StringType)
+                        // XXX Undefind 時の参照、Numeric？
+                        if (VariableType != ValueType.NumericType)
                         {
                             str_result = StringValue;
                         }
