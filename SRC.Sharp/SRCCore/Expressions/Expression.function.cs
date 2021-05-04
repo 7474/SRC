@@ -337,7 +337,7 @@ namespace SRCCore.Expressions
             ret = Event.FindNormalLabel(fname);
             if (ret >= 0)
             {
-                return CallUserFunction(etype, ret, @params, pcount, is_term, out str_result, out num_result);
+                return CallUserFunction(fname, etype, ret, @params, pcount, is_term, out str_result, out num_result);
             }
 
             // 実はシステム定義のグローバル変数？
@@ -4402,107 +4402,115 @@ namespace SRCCore.Expressions
             return ValueType.UndefinedType;
         }
 
-        private ValueType CallUserFunction(ValueType etype, int labelId, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        private ValueType CallUserFunction(string fname, ValueType etype, int labelId, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             // TODO CallCmdと合わせる
             str_result = "";
             num_result = 0d;
 
-            // 関数が見つかった
-            var ret = labelId + 1;
-
-            // 呼び出し階層をチェック
-            if (Event.CallDepth > Event.MaxCallDepth)
+            try
             {
-                Event.CallDepth = Event.MaxCallDepth;
-                Event.DisplayEventErrorMessage(Event.CurrentLineNum, GeneralLib.FormatNum(Event.MaxCallDepth) + "階層を越えるサブルーチンの呼び出しは出来ません");
-                return ValueType.UndefinedType;
-            }
+                // 関数が見つかった
+                var ret = labelId + 1;
 
-            // 引数用スタックが溢れないかチェック
-            if ((Event.ArgIndex + pcount) > Event.MaxArgIndex)
-            {
-                Event.DisplayEventErrorMessage(Event.CurrentLineNum, "サブルーチンの引数の総数が" + GeneralLib.FormatNum(Event.MaxArgIndex) + "個を超えています");
-                return ValueType.UndefinedType;
-            }
-
-            // 引数の値を先に求めておく
-            // (スタックに積みながら計算すると、引数での関数呼び出しで不正になる)
-            var loopTo14 = pcount;
-            for (var i = 1; i <= loopTo14; i++)
-                @params[i] = GetValueAsString(@params[i], is_term[i]);
-
-            // 現在の状態を保存
-            Event.CallStack[Event.CallDepth] = Event.CurrentLineNum;
-            Event.ArgIndexStack[Event.CallDepth] = Event.ArgIndex;
-            Event.VarIndexStack[Event.CallDepth] = Event.VarIndex;
-            Event.ForIndexStack[Event.CallDepth] = Event.ForIndex;
-            Event.UpVarLevelStack[Event.CallDepth] = Event.UpVarLevel;
-
-            // UpVarの階層数を初期化
-            Event.UpVarLevel = 0;
-
-            // 呼び出し階層数をインクリメント
-            Event.CallDepth = (Event.CallDepth + 1);
-            var cur_depth = Event.CallDepth;
-
-            // 引数をスタックに積む
-            Event.ArgIndex = (Event.ArgIndex + pcount);
-            var loopTo15 = pcount;
-            for (var i = 1; i <= loopTo15; i++)
-                Event.ArgStack[Event.ArgIndex - i + 1] = @params[i];
-
-            // サブルーチン本体を実行
-            do
-            {
-                Event.CurrentLineNum = ret;
-                if (Event.CurrentLineNum >= Event.EventCmd.Count)
+                // 呼び出し階層をチェック
+                if (Event.CallDepth > Event.MaxCallDepth)
                 {
-                    break;
+                    Event.CallDepth = Event.MaxCallDepth;
+                    Event.DisplayEventErrorMessage(Event.CurrentLineNum, GeneralLib.FormatNum(Event.MaxCallDepth) + "階層を越えるサブルーチンの呼び出しは出来ません");
+                    return ValueType.UndefinedType;
                 }
 
+                // 引数用スタックが溢れないかチェック
+                if ((Event.ArgIndex + pcount) > Event.MaxArgIndex)
                 {
-                    var withBlock49 = Event.EventCmd[Event.CurrentLineNum];
-                    if (cur_depth == Event.CallDepth & withBlock49.Name == CmdType.ReturnCmd)
+                    Event.DisplayEventErrorMessage(Event.CurrentLineNum, "サブルーチンの引数の総数が" + GeneralLib.FormatNum(Event.MaxArgIndex) + "個を超えています");
+                    return ValueType.UndefinedType;
+                }
+
+                // 引数の値を先に求めておく
+                // (スタックに積みながら計算すると、引数での関数呼び出しで不正になる)
+                var loopTo14 = pcount;
+                for (var i = 1; i <= loopTo14; i++)
+                    @params[i] = GetValueAsString(@params[i], is_term[i]);
+
+                // 現在の状態を保存
+                Event.CallStack[Event.CallDepth] = Event.CurrentLineNum;
+                Event.ArgIndexStack[Event.CallDepth] = Event.ArgIndex;
+                Event.VarIndexStack[Event.CallDepth] = Event.VarIndex;
+                Event.ForIndexStack[Event.CallDepth] = Event.ForIndex;
+                Event.UpVarLevelStack[Event.CallDepth] = Event.UpVarLevel;
+
+                // UpVarの階層数を初期化
+                Event.UpVarLevel = 0;
+
+                // 呼び出し階層数をインクリメント
+                Event.CallDepth = (Event.CallDepth + 1);
+                var cur_depth = Event.CallDepth;
+
+                // 引数をスタックに積む
+                for (var i = 1; i <= pcount; i++)
+                {
+                    SRC.Event.ArgStack[SRC.Event.ArgIndex + i] = @params[i];
+                }
+                SRC.Event.ArgIndex = (SRC.Event.ArgIndex + pcount);
+
+                // サブルーチン本体を実行
+                do
+                {
+                    Event.CurrentLineNum = ret;
+                    if (Event.CurrentLineNum >= Event.EventCmd.Count)
                     {
                         break;
                     }
 
-                    ret = withBlock49.Exec();
-                }
-            }
-            while (ret >= 0);
+                    {
+                        var withBlock49 = Event.EventCmd[Event.CurrentLineNum];
+                        if (cur_depth == Event.CallDepth & withBlock49.Name == CmdType.ReturnCmd)
+                        {
+                            break;
+                        }
 
-            // 返り値
-            {
-                var withBlock50 = Event.EventCmd[Event.CurrentLineNum];
-                if (withBlock50.ArgNum > 1)
+                        ret = withBlock49.Exec();
+                    }
+                }
+                while (ret >= 0);
+
+                // 返り値
                 {
-                    str_result = withBlock50.GetArgAsString(2);
+                    var withBlock50 = Event.EventCmd[Event.CurrentLineNum];
+                    if (withBlock50.ArgNum > 1)
+                    {
+                        str_result = withBlock50.GetArgAsString(2);
+                    }
+                    else
+                    {
+                        str_result = "";
+                    }
+                }
+
+                // 呼び出し階層数をデクリメント
+                Event.CallDepth = (Event.CallDepth - 1);
+
+                // サブルーチン実行前の状態に復帰
+                Event.CurrentLineNum = Event.CallStack[Event.CallDepth];
+                Event.ArgIndex = Event.ArgIndexStack[Event.CallDepth];
+                Event.VarIndex = Event.VarIndexStack[Event.CallDepth];
+                Event.ForIndex = Event.ForIndexStack[Event.CallDepth];
+                Event.UpVarLevel = Event.UpVarLevelStack[Event.CallDepth];
+                if (etype == ValueType.NumericType)
+                {
+                    num_result = GeneralLib.StrToDbl(str_result);
+                    return ValueType.NumericType;
                 }
                 else
                 {
-                    str_result = "";
+                    return ValueType.StringType;
                 }
             }
-
-            // 呼び出し階層数をデクリメント
-            Event.CallDepth = (Event.CallDepth - 1);
-
-            // サブルーチン実行前の状態に復帰
-            Event.CurrentLineNum = Event.CallStack[Event.CallDepth];
-            Event.ArgIndex = Event.ArgIndexStack[Event.CallDepth];
-            Event.VarIndex = Event.VarIndexStack[Event.CallDepth];
-            Event.ForIndex = Event.ForIndexStack[Event.CallDepth];
-            Event.UpVarLevel = Event.UpVarLevelStack[Event.CallDepth];
-            if (etype == ValueType.NumericType)
+            finally
             {
-                num_result = GeneralLib.StrToDbl(str_result);
-                return ValueType.NumericType;
-            }
-            else
-            {
-                return ValueType.StringType;
+                SRC.LogTrace("Called", etype.ToString().Substring(0, 1), fname, str_result, num_result.ToString());
             }
         }
     }

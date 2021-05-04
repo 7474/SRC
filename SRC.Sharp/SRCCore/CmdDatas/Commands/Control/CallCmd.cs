@@ -41,7 +41,7 @@ namespace SRCCore.CmdDatas.Commands
             // 引数の値を先に求めておく
             // (スタックに積みながら計算すると、引数での関数呼び出しで不正になる)
             var subParams = ArgNum >= 3
-                ? Enumerable.Range(3, ArgNum - 3).Select(x => GetArgAsString(x)).ToArray()
+                ? Enumerable.Range(3, ArgNum - 2).Select(x => GetArgAsString(x)).ToArray()
                 : new string[] { };
 
             // 現在の状態を保存
@@ -68,7 +68,6 @@ namespace SRCCore.CmdDatas.Commands
             {
                 Event.ArgStack[Event.ArgIndex + i + 1] = subParams[i];
             }
-
             Event.ArgIndex = Event.ArgIndex + subParams.Length;
 
             // 呼び出し階層数をインクリメント

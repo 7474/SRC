@@ -2,6 +2,8 @@
 using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 
 namespace SRCCore.Events
@@ -11,7 +13,7 @@ namespace SRCCore.Events
         // イベントの実行
         public void HandleEvent(params string[] Args)
         {
-            SRC.LogDebug("", Args);
+            SRC.LogDebug(">", Args);
 
             // 画面入力をロック
             var prev_is_gui_locked = GUI.IsGUILocked;
@@ -20,27 +22,25 @@ namespace SRCCore.Events
                 GUI.LockGUI();
             }
 
-            //// 現在選択されているユニット＆ターゲットをイベント用に設定
-            //// (SearchLabel()実行時の式計算用にあらかじめ設定しておく)
-            //SelectedUnitForEvent = Commands.SelectedUnit;
-            //// 引数に指定されたユニットを優先
-            //if (Information.UBound(Args) > 0)
-            //{
-            //    if (SRC.PList.IsDefined(Args[1]))
-            //    {
-            //        {
-            //            var withBlock = SRC.PList.Item(Args[1]);
-            //            if (withBlock.Unit is object)
-            //            {
-            //                SelectedUnitForEvent = withBlock.Unit;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //SelectedTargetForEvent = Commands.SelectedTarget;
+            // 現在選択されているユニット＆ターゲットをイベント用に設定
+            // (SearchLabel()実行時の式計算用にあらかじめ設定しておく)
+            SelectedUnitForEvent = Commands.SelectedUnit;
+            // 引数に指定されたユニットを優先
+            if (Args.Length > 1)
+            {
+                if (SRC.PList.IsDefined(Args[1]))
+                {
+                    var p = SRC.PList.Item(Args[1]);
+                    if (p.Unit is object)
+                    {
+                        SelectedUnitForEvent = p.Unit;
+                    }
+                }
+            }
+            SelectedTargetForEvent = Commands.SelectedTarget;
 
             // イベントキューを作成
+            // XXX キューをいつ処理しきるのか？
             //event_que_idx = Information.UBound(EventQue);
             switch (Args[0])
             {
@@ -213,8 +213,7 @@ namespace SRCCore.Events
             ArgIndexStack[CallDepth] = ArgIndex;
             VarIndexStack[CallDepth] = VarIndex;
             ForIndexStack[CallDepth] = ForIndex;
-            // TODO Impl SaveBasePoint
-            //SaveBasePoint();
+            SaveBasePoint();
 
             // 呼び出し階層数をインクリメント
             var prev_call_depth = CallDepth;
@@ -227,8 +226,7 @@ namespace SRCCore.Events
             while (EventQue.Count > 0)
             {
                 var eventItem = EventQue.Dequeue();
-
-                // Debug.Print "HandleEvent (" & EventQue(i) & ")"
+                SRC.LogDebug("EventQue.Dequeue", eventItem);
 
                 // 前のイベントで他のユニットが出現している可能性があるので
                 // 本当に全滅したのか判定
@@ -236,10 +234,10 @@ namespace SRCCore.Events
                 {
                     var uparty = GeneralLib.LIndex(eventItem, 2);
                     if (SRC.UList.Items.Any(u => u.Party0 == uparty
-                        && u.Status == "出撃" 
+                        && u.Status == "出撃"
                         && !u.IsConditionSatisfied("憑依")))
                     {
-                        continue; 
+                        continue;
                     }
                 }
 
@@ -248,25 +246,22 @@ namespace SRCCore.Events
                 var main_event_done = false;
                 while (true)
                 {
-                    //// 現在選択されているユニット＆ターゲットをイベント用に設定
-                    //// SearchLabel()で入れ替えられる可能性があるので、毎回設定し直す必要あり
-                    //SelectedUnitForEvent = Commands.SelectedUnit;
-                    //// 引数に指定されたユニットを優先
-                    //if (Information.UBound(Args) > 0)
-                    //{
-                    //    if (SRC.PList.IsDefined(Args[1]))
-                    //    {
-                    //        {
-                    //            var withBlock6 = SRC.PList.Item(Args[1]);
-                    //            if (withBlock6.Unit is object)
-                    //            {
-                    //                SelectedUnitForEvent = withBlock6.Unit;
-                    //            }
-                    //        }
-                    //    }
-                    //}
-
-                    //SelectedTargetForEvent = Commands.SelectedTarget;
+                    // 現在選択されているユニット＆ターゲットをイベント用に設定
+                    // SearchLabel()で入れ替えられる可能性があるので、毎回設定し直す必要あり
+                    SelectedUnitForEvent = Commands.SelectedUnit;
+                    // 引数に指定されたユニットを優先
+                    if (Args.Length > 1)
+                    {
+                        if (SRC.PList.IsDefined(Args[1]))
+                        {
+                            var p = SRC.PList.Item(Args[1]);
+                            if (p.Unit is object)
+                            {
+                                SelectedUnitForEvent = p.Unit;
+                            }
+                        }
+                    }
+                    SelectedTargetForEvent = Commands.SelectedTarget;
 
                     // 実行するイベントラベルを探す
                     do
@@ -312,32 +307,34 @@ namespace SRCCore.Events
                     }
                     while (ret < 0);
 
-                    // 戦闘後のイベント実行前にはいくつかの後始末が必要
-                    //if (Strings.Left(EventData[ret], 1) != "*")
-                    //{
-                    //    // UPGRADE_WARNING: オブジェクト Args(0) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    //    if (Conversions.ToBoolean(Operators.OrObject(Operators.OrObject(Operators.OrObject(Operators.ConditionalCompareObjectEqual(Args[0], "破壊", false), Operators.ConditionalCompareObjectEqual(Args[0], "損傷率", false)), Operators.ConditionalCompareObjectEqual(Args[0], "攻撃後", false)), Operators.ConditionalCompareObjectEqual(Args[0], "全滅", false))))
-                    //    {
-                    //        // 画面をクリア
-                    //        if (GUI.MainForm.Visible == true)
-                    //        {
-                    //            Status.ClearUnitStatus();
-                    //            GUI.RedrawScreen();
-                    //        }
-
-                    //        // メッセージウィンドウを閉じる
-                    //        if (My.MyProject.Forms.frmMessage.Visible == true)
-                    //        {
-                    //            GUI.CloseMessageForm();
-                    //        }
-                    //    }
-                    //}
-
                     if (ret < 0) { break; }
+
+                    // 戦闘後のイベント実行前にはいくつかの後始末が必要
+                    if (!EventData[ret].IsAlwaysEventLabel)
+                    {
+                        if (Args[0] == "破壊"
+                            || Args[0] == "損傷率"
+                            || Args[0] == "攻撃後"
+                            || Args[0] == "全滅")
+                        {
+                            // 画面をクリア
+                            if (GUI.MainFormVisible)
+                            {
+                                Status.ClearUnitStatus();
+                                GUI.RedrawScreen();
+                            }
+
+                            // メッセージウィンドウを閉じる
+                            if (GUI.MessageFormVisible)
+                            {
+                                GUI.CloseMessageForm();
+                            }
+                        }
+                    }
 
                     // ラベルの行は実行しても無駄なので
                     ret = ret + 1;
-                    //Application.DoEvents();
+                    GUI.DoEvents();
 
                     // イベントの各コマンドを実行
                     do
@@ -386,31 +383,22 @@ namespace SRCCore.Events
             //// イベントキューを元に戻す
             //Array.Resize(EventQue, GeneralLib.MinLng(event_que_idx - 1, Information.UBound(EventQue)) + 1);
 
-            //// フォント設定をデフォルトに戻す
-            //{
-            //    var withBlock7 = GUI.MainForm.picMain(0);
-            //    withBlock7.ForeColor = Information.RGB(255, 255, 255);
-            //    {
-            //        var withBlock8 = withBlock7.Font;
-            //        withBlock8.Size = 16;
-            //        withBlock8.Name = "ＭＳ Ｐ明朝";
-            //        withBlock8.Bold = true;
-            //        withBlock8.Italic = false;
-            //    }
+            // フォント設定をデフォルトに戻す
+            // XXX 位置はリセットしない？
+            GUI.ResetDrawString();
+            GUI.PermanentStringMode = false;
+            GUI.KeepStringMode = false;
 
-            //    GUI.PermanentStringMode = false;
-            //    GUI.KeepStringMode = false;
-            //}
+            // オブジェクト色をデフォルトに戻す
+            // XXX これはEventsが持ってていいのか？
+            ObjColor = Color.White;
+            ObjFillColor = Color.White;
+            ObjFillStyle = HatchStyle.Min; //vbFSTransparent;
+            ObjDrawWidth = 1;
+            ObjDrawOption = "";
 
-            //// オブジェクト色をデフォルトに戻す
-            //ObjColor = ColorTranslator.ToOle(Color.White);
-            //ObjFillColor = ColorTranslator.ToOle(Color.White);
-            //ObjFillStyle = vbFSTransparent;
-            //ObjDrawWidth = 1;
-            //ObjDrawOption = "";
-
-            //// 描画の基準座標位置を元に戻す
-            //RestoreBasePoint();
+            // 描画の基準座標位置を元に戻す
+            RestoreBasePoint();
 
             // 画面入力のロックを解除
             if (!prev_is_gui_locked)

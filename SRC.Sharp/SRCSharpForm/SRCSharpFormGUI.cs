@@ -22,13 +22,20 @@ namespace SRCSharpForm
             return true;
         }
 
+        public void DoEvents()
+        {
+            Sleep(0, true);
+        }
         public void Sleep(int dwMilliseconds, bool withEvents = true)
         {
             if (withEvents)
             {
                 Application.DoEvents();
             }
-            Thread.Sleep(dwMilliseconds);
+            if (dwMilliseconds > 0)
+            {
+                Thread.Sleep(dwMilliseconds);
+            }
         }
 
         public bool IsGUILocked { get; set; }

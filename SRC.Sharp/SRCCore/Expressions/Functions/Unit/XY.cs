@@ -239,7 +239,7 @@ namespace SRCCore.Expressions.Functions
                     break;
             }
 
-            num_result = SRC.GUI.MapToPixelX((int)num_result);
+            num_result = SRC.GUI.MapToPixelY((int)num_result);
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);

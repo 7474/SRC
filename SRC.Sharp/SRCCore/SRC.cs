@@ -141,7 +141,7 @@ namespace SRCCore
             using (var loggerFactory = LoggerFactory.Create(builder =>
             {
                 builder
-                    .SetMinimumLevel(LogLevel.Debug)
+                    .SetMinimumLevel(LogLevel.Trace)
                     .AddDebug();
             }))
             {
@@ -187,6 +187,24 @@ namespace SRCCore
                 if (!Log.IsEnabled(LogLevel.Debug)) { return; }
                 string method = new StackFrame(1).GetMethod().Name;
                 Log.LogDebug(method
+                    + " "
+                    + message
+                    + " "
+                    + string.Join(", ", param));
+            }
+            catch
+            {
+                // ignore
+            }
+        }
+
+        public void LogTrace(string message = "", params string[] param)
+        {
+            try
+            {
+                if (!Log.IsEnabled(LogLevel.Trace)) { return; }
+                string method = new StackFrame(1).GetMethod().Name;
+                Log.LogTrace(method
                     + " "
                     + message
                     + " "

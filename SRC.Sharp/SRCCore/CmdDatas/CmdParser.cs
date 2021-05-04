@@ -541,7 +541,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "sunset":
-                        return new UnSetCmd(src, data);
+                        return new NotImplementedCmd(src, data);
 
                     case "swap":
                         return new SwapCmd(src, data);
@@ -587,7 +587,7 @@ namespace SRCCore.CmdDatas
                         return new UnitCmd(src, data);
 
                     case "unset":
-                        return new NotImplementedCmd(src, data);
+                        return new UnSetCmd(src, data);
 
                     case "upgrade":
                         return new NotImplementedCmd(src, data);

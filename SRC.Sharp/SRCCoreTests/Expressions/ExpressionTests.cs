@@ -40,7 +40,7 @@ namespace SRCCore.Expressions.Tests
 
             exp.SetVariable("フラグ名", ValueType.UndefinedType, "001", 1d);
             Assert.AreEqual(1d, exp.GetValueAsDouble("フラグ名"));
-            Assert.AreEqual("1", exp.GetValueAsString("フラグ名"));
+            Assert.AreEqual("001", exp.GetValueAsString("フラグ名"));
             exp.SetVariable("フラグ名", ValueType.StringType, "001", 1d);
             Assert.AreEqual(1d, exp.GetValueAsDouble("フラグ名"));
             Assert.AreEqual("001", exp.GetValueAsString("フラグ名"));

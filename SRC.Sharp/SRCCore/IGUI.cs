@@ -17,6 +17,7 @@ namespace SRCCore
         /// <returns>プロセスを終了してもよい場合に true</returns>
         bool Terminate();
 
+        void DoEvents();
         void Sleep(int dwMilliseconds, bool withEvents = true);
         //// XXX 要プロパティ更新、戻り値で返したほうがいい気はする。そもそも実行をロックしたくない。
         //void StartWaitClick();
@@ -231,6 +232,8 @@ namespace SRCCore
         void DrawSysString(int X, int Y, string msg, bool without_refresh = false);
         // 文字列を表示した際のサイズを計る
         SizeF MeasureString(string msg);
+        // 文字列描画設定を初期化する
+        void ResetDrawString();
 
         // === 画像消去に関する処理 ===
 

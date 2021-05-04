@@ -1,3 +1,4 @@
+using SRCCore.Commands;
 using SRCCore.Maps;
 
 namespace SRCCore.Events
@@ -6,8 +7,10 @@ namespace SRCCore.Events
     {
         protected SRC SRC { get; }
         private IGUI GUI => SRC.GUI;
+        private IGUIStatus Status => SRC.GUIStatus;
         private Map Map => SRC.Map;
         private Expressions.Expression Expression => SRC.Expression;
+        private Command Commands => SRC.Commands;
 
         public Event(SRC src)
         {
