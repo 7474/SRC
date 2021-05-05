@@ -17,6 +17,7 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             var a = GetArgAsString(2);
+            SRC.LogTrace("Switch", a);
             var depth = 1;
             foreach (var i in this.AfterEventIdRange())
             {
@@ -47,7 +48,8 @@ namespace SRCCore.CmdDatas.Commands
                                     b = cmd.GetArg(j);
                                 }
 
-                                if ((a ?? "") == (b ?? ""))
+                                SRC.LogTrace("Case", a, b);
+                                if (a == b)
                                 {
                                     return i + 1;
                                 }
