@@ -344,10 +344,10 @@ namespace SRCCore.CmdDatas
                         return new MoveCmd(src, data);
 
                     case "night":
-                        return new NotImplementedCmd(src, data);
+                        return new NightCmd(src, data);
 
                     case "noon":
-                        return new NotImplementedCmd(src, data);
+                        return new NoonCmd(src, data);
 
                     case "open":
                         return new NotImplementedCmd(src, data);

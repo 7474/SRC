@@ -1,4 +1,5 @@
 using SRCCore.Events;
+using SRCCore.Exceptions;
 using System;
 
 namespace SRCCore.CmdDatas.Commands
@@ -11,8 +12,35 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            throw new NotImplementedException();
-            //return EventData.NextID;
+            var late_refresh = false;
+            for (var i = 2; i <= ArgNum; i++)
+            {
+                var buf = GetArgAsString(i);
+                switch (buf ?? "")
+                {
+                    case "非同期":
+                        {
+                            late_refresh = true;
+                            break;
+                        }
+
+                    default:
+                        {
+                            throw new EventErrorException(this, "Noonコマンドに不正なオプション「" + buf + "」が使われています");
+                        }
+                }
+            }
+            Map.MapDrawIsMapOnly = false;
+
+            // マウスカーソルを砂時計に
+            GUI.ChangeStatus(GuiStatus.WaitCursor);
+            GUI.SetupBackground("", "非同期", filter_color: 0, filter_trans_par: 0d);
+            GUI.RedrawScreen(late_refresh);
+
+            // マウスカーソルを元に戻す
+            GUI.ChangeStatus(GuiStatus.Default);
+
+            return EventData.NextID;
         }
     }
 }
