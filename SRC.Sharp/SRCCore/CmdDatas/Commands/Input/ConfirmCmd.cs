@@ -19,7 +19,7 @@ namespace SRCCore.CmdDatas.Commands
             var res = GUI.Confirm(GetArgAsString(2), "選択", GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
             Event.SelectedAlternative = res == GuiDialogResult.Ok ? "1" : "0";
 
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

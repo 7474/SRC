@@ -77,7 +77,7 @@ namespace SRCCore
         // カーソル画像が表示されているか
         bool IsCursorVisible { get; set; }
         // 背景色
-        int BGColor { get; set; }
+        Color BGColor { get; set; }
         // XXX Font への依存が厳しいようなら依存を切る
         Font CurrentPaintFont { get; }
         Color CurrentPaintColor { get; }
@@ -152,7 +152,7 @@ namespace SRCCore
         // 画面をクリアする
         void ClearScrean();
         // マップ画面背景の設定
-        void SetupBackground(string draw_mode = "", string draw_option = "", int filter_color = 0, double filter_trans_par = 0d);
+        void SetupBackground(string draw_mode = "", string draw_option = "", Color filter_color = default, double filter_trans_par = 0d);
         // 画面の書き換え (ユニット表示からやり直し)
         void RedrawScreen(bool late_refresh = false);
         // 画面をマスクがけして再表示

@@ -18,7 +18,7 @@ namespace SRCCore.CmdDatas.Commands
 
             Event.RestoreLabel(GetArgAsString(2));
 
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

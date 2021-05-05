@@ -29,7 +29,7 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             Expression.SetVariableAsString(GetArg(2), res == GuiDialogResult.Ok ? input : "");
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

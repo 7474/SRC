@@ -90,7 +90,7 @@ namespace Project1
         // カーソル画像が表示されているか
         public static bool IsCursorVisible;
         // 背景色
-        public static int BGColor;
+        public static Color BGColor;
 
         // 画像バッファ管理用変数
         private static int PicBufDateCount;
@@ -2741,9 +2741,9 @@ namespace Project1
                 buf = messages[i];
 
                 // メッセージ内の式置換を処理
-                Event_Renamed.SaveBasePoint();
+                Event.SaveBasePoint();
                 Expression.FormatMessage(ref buf);
-                Event_Renamed.RestoreBasePoint();
+                Event.RestoreBasePoint();
 
                 // 特殊効果
                 switch (Strings.LCase(Strings.Right(GeneralLib.LIndex(ref buf, 1), 4)) ?? "")
@@ -4063,8 +4063,8 @@ namespace Project1
         {
             // MOD END MARGE
             PictureBox pic;
-            // UPGRADE_NOTE: my は my_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-            short mx, my_Renamed;
+            // UPGRADE_NOTE: my は my にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+            short mx, my;
             short sx, sy;
             short dx, dy;
             short dw, dh;
@@ -4132,7 +4132,7 @@ namespace Project1
                 }
 
                 mx = (short)(MapX - (MainWidth + 1) / 2 + 1);
-                my_Renamed = (short)(MapY - (MainHeight + 1) / 2 + 1);
+                my = (short)(MapY - (MainHeight + 1) / 2 + 1);
 
                 // マップ画像の転送元と転送先を計算する
 
@@ -4160,21 +4160,21 @@ namespace Project1
                     dw = MainWidth;
                 }
 
-                if (my_Renamed < 1)
+                if (my < 1)
                 {
                     sy = 1;
-                    dy = (short)(2 - my_Renamed);
-                    dh = (short)(MainHeight - (1 - my_Renamed));
+                    dy = (short)(2 - my);
+                    dh = (short)(MainHeight - (1 - my));
                 }
-                else if (my_Renamed + MainHeight - 1 > Map.MapHeight)
+                else if (my + MainHeight - 1 > Map.MapHeight)
                 {
-                    sy = my_Renamed;
+                    sy = my;
                     dy = 1;
-                    dh = (short)(MainHeight - (my_Renamed + MainHeight - 1 - Map.MapHeight));
+                    dh = (short)(MainHeight - (my + MainHeight - 1 - Map.MapHeight));
                 }
                 else
                 {
-                    sy = my_Renamed;
+                    sy = my;
                     dy = 1;
                     dh = MainHeight;
                 }
@@ -4422,8 +4422,8 @@ namespace Project1
         private static void RefreshScreenNew(bool without_refresh = false, bool delay_refresh = false)
         {
             PictureBox pic;
-            // UPGRADE_NOTE: my は my_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-            short mx, my_Renamed;
+            // UPGRADE_NOTE: my は my にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+            short mx, my;
             short sx, sy;
             short dx, dy;
             short dw, dh;
@@ -4491,7 +4491,7 @@ namespace Project1
                 }
 
                 mx = (short)(MapX - (MainWidth + 1) / 2 + 1);
-                my_Renamed = (short)(MapY - (MainHeight + 1) / 2 + 1);
+                my = (short)(MapY - (MainHeight + 1) / 2 + 1);
 
                 // マップ画像の転送元と転送先を計算する
 
@@ -4519,21 +4519,21 @@ namespace Project1
                     dw = MainWidth;
                 }
 
-                if (my_Renamed < 1)
+                if (my < 1)
                 {
                     sy = 1;
-                    dy = (short)(2 - my_Renamed);
-                    dh = (short)(MainHeight - (1 - my_Renamed));
+                    dy = (short)(2 - my);
+                    dh = (short)(MainHeight - (1 - my));
                 }
-                else if (my_Renamed + MainHeight - 1 > Map.MapHeight)
+                else if (my + MainHeight - 1 > Map.MapHeight)
                 {
-                    sy = my_Renamed;
+                    sy = my;
                     dy = 1;
-                    dh = (short)(MainHeight - (my_Renamed + MainHeight - 1 - Map.MapHeight));
+                    dh = (short)(MainHeight - (my + MainHeight - 1 - Map.MapHeight));
                 }
                 else
                 {
-                    sy = my_Renamed;
+                    sy = my;
                     dy = 1;
                     dh = MainHeight;
                 }
@@ -5119,7 +5119,7 @@ namespace Project1
                     // ユニット画像を使って表示
                     uname = "搭乗ユニット[" + u.MainPilot().ID + "]";
                     // UPGRADE_WARNING: オブジェクト LocalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    uname = Conversions.ToString(Event_Renamed.LocalVariableList[uname].StringValue);
+                    uname = Conversions.ToString(Event.LocalVariableList[uname].StringValue);
                     Unit localItem() { object argIndex1 = uname; var ret = SRC.UList.Item(ref argIndex1); return ret; }
 
                     fname = @"\Bitmap\Unit\" + localItem().get_Bitmap(false);
@@ -7511,13 +7511,13 @@ namespace Project1
                         }
 
                         // 属性
-                        if (GeneralLib.InStrNotNest(ref withBlock3.Class_Renamed, ref "|") > 0)
+                        if (GeneralLib.InStrNotNest(ref withBlock3.Class, ref "|") > 0)
                         {
-                            list[Information.UBound(list)] = list[Information.UBound(list)] + " " + Strings.Left(withBlock3.Class_Renamed, GeneralLib.InStrNotNest(ref withBlock3.Class_Renamed, ref "|") - 1);
+                            list[Information.UBound(list)] = list[Information.UBound(list)] + " " + Strings.Left(withBlock3.Class, GeneralLib.InStrNotNest(ref withBlock3.Class, ref "|") - 1);
                         }
                         else
                         {
-                            list[Information.UBound(list)] = list[Information.UBound(list)] + " " + withBlock3.Class_Renamed;
+                            list[Information.UBound(list)] = list[Information.UBound(list)] + " " + withBlock3.Class;
                         }
 
                         if (!string.IsNullOrEmpty(rest_msg))
@@ -11345,7 +11345,7 @@ namespace Project1
         public static void OpenNowLoadingForm()
         {
             // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
-            Cursor.Current = Cursors.WaitCursor;
+            GUI.ChangeStatus(GuiStatus.WaitCursor);
             Load(My.MyProject.Forms.frmNowLoading);
             {
                 var withBlock = My.MyProject.Forms.frmNowLoading;
@@ -11363,7 +11363,7 @@ namespace Project1
             // UPGRADE_NOTE: オブジェクト frmNowLoading をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             My.MyProject.Forms.frmNowLoading = null;
             // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
-            Cursor.Current = Cursors.Default;
+            GUI.ChangeStatus(GuiStatus.Default);
         }
 
         // 「Now Loading...」のバーを１段階進行させる
@@ -11379,7 +11379,7 @@ namespace Project1
             {
                 var withBlock = My.MyProject.Forms.frmNowLoading;
                 withBlock.Value = 0;
-                withBlock.Size_Renamed = new_size;
+                withBlock.Size = new_size;
             }
         }
 

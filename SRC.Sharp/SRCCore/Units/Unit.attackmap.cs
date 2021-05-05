@@ -121,7 +121,7 @@ namespace SRCCore.Units
             //            u = currentU;
             //            {
             //                var withBlock = u;
-            //                if (withBlock.Status_Renamed == "出撃")
+            //                if (withBlock.Status == "出撃")
             //                {
             //                    if (IsAlly(u) | WeaponAdaption(w, withBlock.Area) == 0d)
             //                    {
@@ -285,7 +285,7 @@ namespace SRCCore.Units
             //    if (!is_event)
             //    {
             //        // 使用イベント
-            //        Event_Renamed.HandleEvent("使用", MainPilot().ID, wname);
+            //        Event.HandleEvent("使用", MainPilot().ID, wname);
             //        if (SRC.IsScenarioFinished)
             //        {
             //            SRC.IsScenarioFinished = false;
@@ -305,7 +305,7 @@ namespace SRCCore.Units
             //            t = targets[i];
             //            Commands.SaveSelections();
             //            Commands.SelectedTarget = t;
-            //            Event_Renamed.HandleEvent("攻撃", MainPilot().ID, t.MainPilot().ID);
+            //            Event.HandleEvent("攻撃", MainPilot().ID, t.MainPilot().ID);
             //            Commands.RestoreSelections();
             //            if (SRC.IsScenarioFinished | SRC.IsCanceled)
             //            {
@@ -317,7 +317,7 @@ namespace SRCCore.Units
             //    // まだ攻撃可能？
             //    if (!is_event)
             //    {
-            //        if (Status_Renamed != "出撃" | MaxAction(true) == 0 | IsConditionSatisfied("攻撃不能"))
+            //        if (Status != "出撃" | MaxAction(true) == 0 | IsConditionSatisfied("攻撃不能"))
             //        {
             //            return;
             //        }
@@ -347,7 +347,7 @@ namespace SRCCore.Units
 
             //    // 選択内容を切り替え
             //    Commands.SelectedUnit = this;
-            //    Event_Renamed.SelectedUnitForEvent = this;
+            //    Event.SelectedUnitForEvent = this;
             //    Commands.SelectedWeapon = w;
             //    Commands.SelectedX = tx;
             //    Commands.SelectedY = ty;
@@ -356,7 +356,7 @@ namespace SRCCore.Units
             //    // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             //    Commands.SelectedTarget = null;
             //    // UPGRADE_NOTE: オブジェクト SelectedTargetForEvent をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //    Event_Renamed.SelectedTargetForEvent = null;
+            //    Event.SelectedTargetForEvent = null;
 
             //    // 攻撃準備の効果音
             //    bool localIsSpecialEffectDefined() { string argmain_situation = wname + "(準備)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
@@ -570,7 +570,7 @@ namespace SRCCore.Units
             //    for (i = 1; i <= loopTo13; i++)
             //    {
             //        t = targets[i].CurrentForm();
-            //        if (t.Status_Renamed == "出撃")
+            //        if (t.Status == "出撃")
             //        {
             //            if (Party == "味方" | Party == "ＮＰＣ")
             //            {
@@ -594,7 +594,7 @@ namespace SRCCore.Units
             //            }
 
             //            // これ以上攻撃を続けられない場合
-            //            if (Status_Renamed != "出撃" | CountPilot() == 0 | IsMapAttackCanceled)
+            //            if (Status != "出撃" | CountPilot() == 0 | IsMapAttackCanceled)
             //            {
             //                GUI.CloseMessageForm();
             //                SelectedMapAttackPower = 0;
@@ -706,7 +706,7 @@ namespace SRCCore.Units
             //            {
             //            }
             //            // 味方からは経験値＆資金は得られない
-            //            else if (t.Status_Renamed == "破壊")
+            //            else if (t.Status == "破壊")
             //            {
             //                // 経験値の獲得
             //                earned_exp = earned_exp + GetExp(t, "破壊", "マップ");
@@ -864,7 +864,7 @@ namespace SRCCore.Units
             //                }
 
             //                GUI.DisplaySysMessage(msg);
-            //                Event_Renamed.HandleEvent("レベルアップ", withBlock8.ID);
+            //                Event.HandleEvent("レベルアップ", withBlock8.ID);
             //                SRC.PList.UpdateSupportMod(this);
             //            }
             //            else if (earned_exp > 0)
@@ -908,7 +908,7 @@ namespace SRCCore.Units
             //            {
             //                {
             //                    var withBlock9 = targets[i].CurrentForm();
-            //                    if (withBlock9.Status_Renamed == "出撃" & withBlock9.MaxAction() > 0)
+            //                    if (withBlock9.Status == "出撃" & withBlock9.MaxAction() > 0)
             //                    {
             //                        AddCondition("ステルス無効", 1, cdata: "");
             //                        break;
@@ -1180,7 +1180,7 @@ namespace SRCCore.Units
             //                GUI.CloseMessageForm();
             //                if (!is_event)
             //                {
-            //                    Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+            //                    Event.HandleEvent("破壊", MainPilot().ID);
             //                    if (SRC.IsScenarioFinished)
             //                    {
             //                        return;
@@ -1194,7 +1194,7 @@ namespace SRCCore.Units
             //            GUI.CloseMessageForm();
             //            if (!is_event)
             //            {
-            //                Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+            //                Event.HandleEvent("破壊", MainPilot().ID);
             //                if (SRC.IsScenarioFinished)
             //                {
             //                    return;
@@ -1208,7 +1208,7 @@ namespace SRCCore.Units
             //        GUI.CloseMessageForm();
             //        if (!is_event)
             //        {
-            //            Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+            //            Event.HandleEvent("破壊", MainPilot().ID);
             //            if (SRC.IsScenarioFinished)
             //            {
             //                return;
@@ -1323,26 +1323,26 @@ namespace SRCCore.Units
             //        for (i = 1; i <= loopTo31; i++)
             //        {
             //            t = targets[i].CurrentForm();
-            //            if (t.Status_Renamed == "破壊")
+            //            if (t.Status == "破壊")
             //            {
             //                // 破壊イベントを発生
             //                Commands.SaveSelections();
             //                Commands.SwapSelections();
-            //                Event_Renamed.HandleEvent("マップ攻撃破壊", t.MainPilot().ID);
+            //                Event.HandleEvent("マップ攻撃破壊", t.MainPilot().ID);
             //                Commands.RestoreSelections();
             //                if (SRC.IsScenarioFinished | SRC.IsCanceled)
             //                {
             //                    return;
             //                }
             //            }
-            //            else if (t.Status_Renamed == "出撃")
+            //            else if (t.Status == "出撃")
             //            {
             //                if (t.HP / (double)t.MaxHP < targets_hp_ratio[i])
             //                {
             //                    // 損傷率イベント
             //                    Commands.SaveSelections();
             //                    Commands.SwapSelections();
-            //                    Event_Renamed.HandleEvent("損傷率", t.MainPilot().ID, 100 * (t.MaxHP - t.HP) / t.MaxHP);
+            //                    Event.HandleEvent("損傷率", t.MainPilot().ID, 100 * (t.MaxHP - t.HP) / t.MaxHP);
             //                    Commands.RestoreSelections();
             //                    if (SRC.IsScenarioFinished | SRC.IsCanceled)
             //                    {
@@ -1353,9 +1353,9 @@ namespace SRCCore.Units
             //                // ターゲットが動いていたら進入イベントを発生
             //                {
             //                    var withBlock14 = t.CurrentForm();
-            //                    if (withBlock14.Status_Renamed == "出撃" & (withBlock14.x != targets_x[i] | withBlock14.y != targets_y[i]))
+            //                    if (withBlock14.Status == "出撃" & (withBlock14.x != targets_x[i] | withBlock14.y != targets_y[i]))
             //                    {
-            //                        Event_Renamed.HandleEvent("進入", withBlock14.MainPilot().ID, withBlock14.x, withBlock14.y);
+            //                        Event.HandleEvent("進入", withBlock14.MainPilot().ID, withBlock14.x, withBlock14.y);
             //                        if (SRC.IsScenarioFinished | SRC.IsCanceled)
             //                        {
             //                            return;
@@ -1401,7 +1401,7 @@ namespace SRCCore.Units
             //            {
             //                {
             //                    var withBlock15 = targets[j].CurrentForm();
-            //                    if ((withBlock15.Party0 ?? "") == (uparty ?? "") & withBlock15.Status_Renamed != "出撃")
+            //                    if ((withBlock15.Party0 ?? "") == (uparty ?? "") & withBlock15.Status != "出撃")
             //                    {
             //                        found = true;
             //                        break;
@@ -1415,7 +1415,7 @@ namespace SRCCore.Units
             //                foreach (Unit currentU1 in SRC.UList)
             //                {
             //                    u = currentU1;
-            //                    if ((u.Party0 ?? "") == (uparty ?? "") & u.Status_Renamed == "出撃" & !u.IsConditionSatisfied("憑依"))
+            //                    if ((u.Party0 ?? "") == (uparty ?? "") & u.Status == "出撃" & !u.IsConditionSatisfied("憑依"))
             //                    {
             //                        found = true;
             //                        break;
@@ -1424,7 +1424,7 @@ namespace SRCCore.Units
 
             //                if (!found)
             //                {
-            //                    Event_Renamed.HandleEvent("全滅", uparty);
+            //                    Event.HandleEvent("全滅", uparty);
             //                    if (SRC.IsScenarioFinished | SRC.IsCanceled)
             //                    {
             //                        return;
@@ -1434,9 +1434,9 @@ namespace SRCCore.Units
             //        }
 
             //        // 使用後イベント
-            //        if (CurrentForm().Status_Renamed == "出撃")
+            //        if (CurrentForm().Status == "出撃")
             //        {
-            //            Event_Renamed.HandleEvent("使用後", CurrentForm().MainPilot().ID, wname);
+            //            Event.HandleEvent("使用後", CurrentForm().MainPilot().ID, wname);
             //            if (SRC.IsScenarioFinished | SRC.IsCanceled)
             //            {
             //                return;
@@ -1444,7 +1444,7 @@ namespace SRCCore.Units
             //        }
 
             //        // 攻撃後イベント
-            //        if (CurrentForm().Status_Renamed == "出撃")
+            //        if (CurrentForm().Status == "出撃")
             //        {
             //            Commands.SaveSelections();
             //            var loopTo33 = Information.UBound(targets);
@@ -1453,9 +1453,9 @@ namespace SRCCore.Units
             //                Commands.SelectedTarget = targets[i].CurrentForm();
             //                {
             //                    var withBlock16 = Commands.SelectedTarget;
-            //                    if (withBlock16.Status_Renamed == "出撃")
+            //                    if (withBlock16.Status == "出撃")
             //                    {
-            //                        Event_Renamed.HandleEvent("攻撃後", CurrentForm().MainPilot().ID, withBlock16.MainPilot().ID);
+            //                        Event.HandleEvent("攻撃後", CurrentForm().MainPilot().ID, withBlock16.MainPilot().ID);
             //                        if (SRC.IsScenarioFinished)
             //                        {
             //                            Commands.RestoreSelections();

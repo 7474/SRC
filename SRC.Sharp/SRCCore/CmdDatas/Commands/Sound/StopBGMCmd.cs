@@ -14,7 +14,7 @@ namespace SRCCore.CmdDatas.Commands
             Sound.BossBGM = false;
             Sound.StopBGM(true);
 
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

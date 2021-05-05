@@ -16,7 +16,7 @@ namespace SRCCore.VB
             {
                 return ret;
             }
-            return 0;
+            return (int)ToDouble(Value);
         }
 
         public static double ToDouble(string Value)

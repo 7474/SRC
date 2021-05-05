@@ -40,7 +40,7 @@ namespace SRCCore.Models
         //public string Name(int ID)
         //{
         //    string NameRet = default;
-        //    NameRet = TerrainDataList_Renamed[ID].Name;
+        //    NameRet = TerrainDataList[ID].Name;
         //    return NameRet;
         //}
 
@@ -48,24 +48,24 @@ namespace SRCCore.Models
         //public string Bitmap(int ID)
         //{
         //    string BitmapRet = default;
-        //    BitmapRet = TerrainDataList_Renamed[ID].Bitmap_Renamed;
+        //    BitmapRet = TerrainDataList[ID].Bitmap;
         //    return BitmapRet;
         //}
 
         //// 指定したデータのクラス
-        //// UPGRADE_NOTE: Class は Class_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        //public string Class_Renamed(int ID)
+        //// UPGRADE_NOTE: Class は Class にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+        //public string Class(int ID)
         //{
-        //    string Class_RenamedRet = default;
-        //    Class_RenamedRet = TerrainDataList_Renamed[ID].Class_Renamed;
-        //    return Class_RenamedRet;
+        //    string ClassRet = default;
+        //    ClassRet = TerrainDataList[ID].Class;
+        //    return ClassRet;
         //}
 
         //// 指定したデータの移動コスト
         //public int MoveCost(int ID)
         //{
         //    int MoveCostRet = default;
-        //    MoveCostRet = TerrainDataList_Renamed[ID].MoveCost;
+        //    MoveCostRet = TerrainDataList[ID].MoveCost;
         //    return MoveCostRet;
         //}
 
@@ -73,7 +73,7 @@ namespace SRCCore.Models
         //public int HitMod(int ID)
         //{
         //    int HitModRet = default;
-        //    HitModRet = TerrainDataList_Renamed[ID].HitMod;
+        //    HitModRet = TerrainDataList[ID].HitMod;
         //    return HitModRet;
         //}
 
@@ -81,7 +81,7 @@ namespace SRCCore.Models
         //public int DamageMod(int ID)
         //{
         //    int DamageModRet = default;
-        //    DamageModRet = TerrainDataList_Renamed[ID].DamageMod;
+        //    DamageModRet = TerrainDataList[ID].DamageMod;
         //    return DamageModRet;
         //}
 
@@ -91,21 +91,21 @@ namespace SRCCore.Models
         //public bool IsFeatureAvailable(int ID, string ftype)
         //{
         //    bool IsFeatureAvailableRet = default;
-        //    IsFeatureAvailableRet = TerrainDataList_Renamed[ID].IsFeatureAvailable(ftype);
+        //    IsFeatureAvailableRet = TerrainDataList[ID].IsFeatureAvailable(ftype);
         //    return IsFeatureAvailableRet;
         //}
 
         //public double FeatureLevel(int ID, string ftype)
         //{
         //    double FeatureLevelRet = default;
-        //    FeatureLevelRet = TerrainDataList_Renamed[ID].FeatureLevel(ftype);
+        //    FeatureLevelRet = TerrainDataList[ID].FeatureLevel(ftype);
         //    return FeatureLevelRet;
         //}
 
         //public string FeatureData(int ID, string ftype)
         //{
         //    string FeatureDataRet = default;
-        //    FeatureDataRet = TerrainDataList_Renamed[ID].FeatureData(ftype);
+        //    FeatureDataRet = TerrainDataList[ID].FeatureData(ftype);
         //    return FeatureDataRet;
         //}
 

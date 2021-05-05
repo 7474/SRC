@@ -15,7 +15,7 @@ namespace SRCCore.CmdDatas.Commands
             {
                 case 1:
                     // Do - Loop While
-                    return EventData.ID + 1;
+                    return EventData.NextID;
 
                 case 3:
                     switch (GetArg(2)?.ToLower() ?? "")
@@ -23,14 +23,14 @@ namespace SRCCore.CmdDatas.Commands
                         case "while":
                             if (GetArgAsLong(3) != 0)
                             {
-                                return EventData.ID + 1;
+                                return EventData.NextID;
                             }
                             break;
 
                         case "until":
                             if (GetArgAsLong(3) == 0)
                             {
-                                return EventData.ID + 1;
+                                return EventData.NextID;
                             }
                             break;
 
@@ -58,7 +58,7 @@ namespace SRCCore.CmdDatas.Commands
                         depth = (depth - 1);
                         if (depth == 0)
                         {
-                            return cmd.EventData.ID + 1;
+                            return cmd.EventData.NextID;
                         }
                         break;
                 }

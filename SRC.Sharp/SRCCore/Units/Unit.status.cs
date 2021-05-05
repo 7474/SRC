@@ -645,7 +645,7 @@ namespace SRCCore.Units
 
             //            if (!without_refresh)
             //            {
-            //                if (Status_Renamed == "出撃")
+            //                if (Status == "出撃")
             //                {
             //                    if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
             //                    {
@@ -659,7 +659,7 @@ namespace SRCCore.Units
             //    // ユニットの表示、非表示が切り替わった場合
             //    if (is_invisible != IsFeatureAvailable("非表示"))
             //    {
-            //        if (Status_Renamed == "出撃")
+            //        if (Status == "出撃")
             //        {
             //            if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
             //            {
@@ -1233,7 +1233,7 @@ namespace SRCCore.Units
             //    }
 
             //    // 空中に留まることが出来るかチェック
-            //    if (Status_Renamed == "出撃" && Area == "空中" && !IsTransAvailable("空"))
+            //    if (Status == "出撃" && Area == "空中" && !IsTransAvailable("空"))
             //    {
             //        // 地上(水中)に戻す
             //        switch (Map.TerrainClass(x, y) ?? "")
@@ -2123,7 +2123,7 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    if (Status_Renamed != "出撃")
+            //    if (Status != "出撃")
             //    {
             //        return;
             //    }

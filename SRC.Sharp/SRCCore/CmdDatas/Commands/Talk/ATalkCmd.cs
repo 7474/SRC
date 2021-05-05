@@ -51,9 +51,9 @@ namespace SRCCore.CmdDatas.Commands
                             //    if (SRC.PList.IsDefined(pname))
                             //    {
                             //        var p = SRC.PList.Item(pname);
-                            //        if (p.Unit_Renamed != null)
+                            //        if (p.Unit != null)
                             //        {
-                            //            pname = p.Unit_Renamed.MainPilot().Name;
+                            //            pname = p.Unit.MainPilot().Name;
                             //        }
                             //    }
                             //}

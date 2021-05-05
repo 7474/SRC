@@ -177,7 +177,7 @@ namespace SRCCore.Models
             //    md = Add("汎用");
             //}
 
-            //if (Event_Renamed.FindNormalLabel("戦闘アニメ_回避発動") > 0)
+            //if (Event.FindNormalLabel("戦闘アニメ_回避発動") > 0)
             //{
             //    if (string.IsNullOrEmpty(md.SelectMessage("回避", u: null)))
             //    {
@@ -185,7 +185,7 @@ namespace SRCCore.Models
             //    }
             //}
 
-            //if (Event_Renamed.FindNormalLabel("戦闘アニメ_切り払い発動") > 0)
+            //if (Event.FindNormalLabel("戦闘アニメ_切り払い発動") > 0)
             //{
             //    if (string.IsNullOrEmpty(md.SelectMessage("切り払い", u: null)))
             //    {
@@ -193,7 +193,7 @@ namespace SRCCore.Models
             //    }
             //}
 
-            //if (Event_Renamed.FindNormalLabel("戦闘アニメ_迎撃発動") > 0)
+            //if (Event.FindNormalLabel("戦闘アニメ_迎撃発動") > 0)
             //{
             //    if (string.IsNullOrEmpty(md.SelectMessage("迎撃", u: null)))
             //    {
@@ -201,7 +201,7 @@ namespace SRCCore.Models
             //    }
             //}
 
-            //if (Event_Renamed.FindNormalLabel("戦闘アニメ_ダミー発動") > 0)
+            //if (Event.FindNormalLabel("戦闘アニメ_ダミー発動") > 0)
             //{
             //    if (string.IsNullOrEmpty(md.SelectMessage("ダミー", u: null)))
             //    {
@@ -209,7 +209,7 @@ namespace SRCCore.Models
             //    }
             //}
 
-            //if (Event_Renamed.FindNormalLabel("戦闘アニメ_修理装置発動") > 0)
+            //if (Event.FindNormalLabel("戦闘アニメ_修理装置発動") > 0)
             //{
             //    if (string.IsNullOrEmpty(md.SelectMessage("修理", u: null)))
             //    {
@@ -217,7 +217,7 @@ namespace SRCCore.Models
             //    }
             //}
 
-            //if (Event_Renamed.FindNormalLabel("戦闘アニメ_補給装置発動") > 0)
+            //if (Event.FindNormalLabel("戦闘アニメ_補給装置発動") > 0)
             //{
             //    if (string.IsNullOrEmpty(md.SelectMessage("補給", u: null)))
             //    {
@@ -225,7 +225,7 @@ namespace SRCCore.Models
             //    }
             //}
 
-            //if (Event_Renamed.FindNormalLabel("戦闘アニメ_終了発動") > 0)
+            //if (Event.FindNormalLabel("戦闘アニメ_終了発動") > 0)
             //{
             //    if (string.IsNullOrEmpty(md.SelectMessage("終了", u: null)))
             //    {

@@ -1,5 +1,6 @@
 using SRCCore;
 using SRCCore.Maps;
+using SRCSharpForm.Extensions;
 using SRCSharpForm.Resoruces;
 using System.Drawing;
 
@@ -210,8 +211,12 @@ namespace SRCSharpForm
                 //}
             }
         }
-        public void SetupBackground(string draw_mode, string draw_option, int filter_color, double filter_trans_par)
+        public void SetupBackground(string draw_mode, string draw_option, Color filter_color, double filter_trans_par)
         {
+            Map.MapDrawMode = draw_mode;
+            Map.MapDrawFilterColor = filter_color;
+            Map.MapDrawFilterTransPercent = filter_trans_par;
+
             Map.IsMapDirty = false;
             GUI.IsPictureVisible = false;
             GUI.IsCursorVisible = false;
@@ -254,9 +259,40 @@ namespace SRCSharpForm
                         //g.DrawString($"{cell.TerrainType}", SystemFonts.DefaultFont, Brushes.Gray, xpx + 2, ypx + 2);
                     }
                 }
+            }
 
-                // マス目の表示
-                //if (SRC.ShowSquareLine)
+            // マップ設定によって表示色を変更
+            switch (draw_mode ?? "")
+            {
+                case "夜":
+                    picBack.Image.Dark();
+                    break;
+
+                case "セピア":
+                    picBack.Image.Sepia();
+                    break;
+
+                case "白黒":
+                    picBack.Image.Monotone();
+                    break;
+
+                case "夕焼け":
+                    picBack.Image.Sunset();
+                    break;
+
+                case "水中":
+                    picBack.Image.Water();
+                    break;
+
+                case "フィルタ":
+                    picBack.Image.ColorFilter(filter_color, (float)filter_trans_par);
+                    break;
+            }
+
+            // マス目の表示
+            if (SRC.ShowSquareLine)
+            {
+                using (var g = Graphics.FromImage(picBack.Image))
                 {
                     g.DrawRectangle(MapLinePen, 0, 0, MapPWidth, MapPHeight);
                     for (var x = 1; x <= Map.MapWidth - 1; x++)
@@ -425,7 +461,7 @@ namespace SRCSharpForm
 
         public void UpdateScreen()
         {
-            GUI.ScreenIsSaved = false;
+            //GUI.ScreenIsSaved = false;
             if (Visible)
             {
                 using (var g = _picMain_0.CreateGraphics())
@@ -438,6 +474,26 @@ namespace SRCSharpForm
 
         public void DrawUnit(Graphics g, MapCell cell, SRCCore.Units.Unit u, Rectangle destRect)
         {
+            using var image = DrawUnit(cell, u);
+            if (image != null)
+            {
+                g.DrawImage(image, destRect);
+            }
+        }
+
+        private Image DrawUnit(MapCell cell, SRCCore.Units.Unit u, bool use_orig_color = false)
+        {
+            var image = new Bitmap(MapCellPx, MapCellPx);
+            var destRect = new Rectangle(0, 0, MapCellPx, MapCellPx);
+            var emit_light = false;
+
+            // ユニットが自分で発光しているかをあらかじめチェック
+            if (Map.MapDrawMode == "夜" && !Map.MapDrawIsMapOnly && !use_orig_color && u.IsFeatureAvailable("発光"))
+            {
+                emit_light = true;
+            }
+
+            using var g = Graphics.FromImage(image);
             // タイル
             switch (u.Party0 ?? "")
             {
@@ -455,16 +511,18 @@ namespace SRCSharpForm
 
             // XXX BitmapMissing
             // TODO 対象画像の解決
-            var image = imageBuffer.GetTransparent(SRC.FileSystem.PathCombine("Unit", u.CurrentForm().Data.Bitmap));
-            if (image != null)
+            var unitImage = imageBuffer.GetTransparent(SRC.FileSystem.PathCombine("Unit", u.CurrentForm().Data.Bitmap));
+            // (発光している場合は２度塗りを防ぐため描画しない)
+            if (unitImage != null && !emit_light)
             {
-                g.DrawImage(image, destRect);
+                g.DrawImage(unitImage, destRect);
             }
             else
             {
                 u.CurrentForm().Data.IsBitmapMissing = true;
             }
 
+            // TODO Impl フィルタ
             // フィルタ
             //            if (u.IsFeatureAvailable(ref "地形ユニット"))
             //            {
@@ -487,75 +545,45 @@ namespace SRCSharpForm
             //                    ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, SRCINVERT);
             //                }
             //            }
-            //                // 色をステージの状況に合わせて変更
-            //                if (!use_orig_color & !Map.MapDrawIsMapOnly)
-            //{
-            //    switch (Map.MapDrawMode ?? "")
-            //    {
-            //        case "夜":
-            //            {
-            //                Graphics.GetImage(ref withBlock.picTmp32(1));
-            //                Graphics.Dark();
-            //                Graphics.SetImage(ref withBlock.picTmp32(1));
-            //                // ユニットが"発光"の特殊能力を持つ場合、
-            //                // ユニット画像を、暗くしたタイル画像の上に描画する。
-            //                if (emit_light)
-            //                {
-            //                    if (SRC.UseTransparentBlt)
-            //                    {
-            //                        ret = TransparentBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, 32, 32, ColorTranslator.ToOle(Color.White));
-            //                    }
-            //                    else
-            //                    {
-            //                        ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(2).hDC, 0, 0, SRCERASE);
-            //                        ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, SRCINVERT);
-            //                    }
-            //                }
+            // 色をステージの状況に合わせて変更
+            if (!use_orig_color && !Map.MapDrawIsMapOnly)
+            {
+                switch (Map.MapDrawMode ?? "")
+                {
+                    case "夜":
+                        image.Dark();
+                        // ユニットが"発光"の特殊能力を持つ場合、
+                        // ユニット画像を、暗くしたタイル画像の上に描画する。
+                        if (emit_light)
+                        {
+                            if (unitImage != null)
+                            {
+                                g.DrawImage(unitImage, destRect);
+                            }
+                        }
+                        break;
 
-            //                break;
-            //            }
+                    case "セピア":
+                        image.Sepia();
+                        break;
 
-            //        case "セピア":
-            //            {
-            //                Graphics.GetImage(ref withBlock.picTmp32(1));
-            //                Graphics.Sepia();
-            //                Graphics.SetImage(ref withBlock.picTmp32(1));
-            //                break;
-            //            }
+                    case "白黒":
+                        image.Monotone();
+                        break;
 
-            //        case "白黒":
-            //            {
-            //                Graphics.GetImage(ref withBlock.picTmp32(1));
-            //                Graphics.Monotone();
-            //                Graphics.SetImage(ref withBlock.picTmp32(1));
-            //                break;
-            //            }
+                    case "夕焼け":
+                        image.Sunset();
+                        break;
 
-            //        case "夕焼け":
-            //            {
-            //                Graphics.GetImage(ref withBlock.picTmp32(1));
-            //                Graphics.Sunset();
-            //                Graphics.SetImage(ref withBlock.picTmp32(1));
-            //                break;
-            //            }
+                    case "水中":
+                        image.Water();
+                        break;
 
-            //        case "水中":
-            //            {
-            //                Graphics.GetImage(ref withBlock.picTmp32(1));
-            //                Graphics.Water();
-            //                Graphics.SetImage(ref withBlock.picTmp32(1));
-            //                break;
-            //            }
-
-            //        case "フィルタ":
-            //            {
-            //                Graphics.GetImage(ref withBlock.picTmp32(1));
-            //                Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent);
-            //                Graphics.SetImage(ref withBlock.picTmp32(1));
-            //                break;
-            //            }
-            //    }
-            //}
+                    case "フィルタ":
+                        image.ColorFilter(Map.MapDrawFilterColor, (float)Map.MapDrawFilterTransPercent);
+                        break;
+                }
+            }
 
             // 行動済のフィルタ
             if (u.Action <= 0 && !u.IsFeatureAvailable("地形ユニット"))
@@ -599,8 +627,9 @@ namespace SRCSharpForm
                     }
                     break;
             }
-        }
 
+            return image;
+        }
 
         public void DisplayGlobalMap()
         {

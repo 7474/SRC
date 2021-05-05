@@ -48,8 +48,8 @@ namespace Project1
         // 待機：待機中
         // 旧形態：分離ユニットが合体前に取っていた形態
         // 離脱：Leaveコマンドにより戦線を離脱。Organizeコマンドでも表示されない
-        // UPGRADE_NOTE: Status は Status_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        public string Status_Renamed;
+        // UPGRADE_NOTE: Status は Status にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+        public string Status;
 
         // ユニットに対して使用されているスペシャルパワー
         private Collection colSpecialPowerInEffect = new Collection();
@@ -168,10 +168,10 @@ namespace Project1
 
 
         // クラスの初期化
-        // UPGRADE_NOTE: Class_Initialize は Class_Initialize_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        private void Class_Initialize_Renamed()
+        // UPGRADE_NOTE: Class_Initialize は Class_Initialize にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+        private void Class_Initialize()
         {
-            Status_Renamed = "待機";
+            Status = "待機";
             intBossRank = -1;
             // UPGRADE_NOTE: オブジェクト Summoner をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             Summoner = null;
@@ -183,12 +183,12 @@ namespace Project1
 
         public Unit() : base()
         {
-            Class_Initialize_Renamed();
+            Class_Initialize();
         }
 
         // クラスの解放
-        // UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        private void Class_Terminate_Renamed()
+        // UPGRADE_NOTE: Class_Terminate は Class_Terminate にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+        private void Class_Terminate()
         {
             int i;
 
@@ -287,7 +287,7 @@ namespace Project1
 
         ~Unit()
         {
-            Class_Terminate_Renamed();
+            Class_Terminate();
         }
 
 
@@ -346,10 +346,10 @@ namespace Project1
                     }
                 }
 
-                u = Event_Renamed.SelectedUnitForEvent;
-                Event_Renamed.SelectedUnitForEvent = this;
+                u = Event.SelectedUnitForEvent;
+                Event.SelectedUnitForEvent = this;
                 Expression.ReplaceSubExpression(Nickname0Ret);
-                Event_Renamed.SelectedUnitForEvent = u;
+                Event.SelectedUnitForEvent = u;
                 return Nickname0Ret;
             }
         }
@@ -438,10 +438,10 @@ namespace Project1
                     KanaNameRet = GeneralLib.StrToHiragana(KanaNameRet);
                 }
 
-                u = Event_Renamed.SelectedUnitForEvent;
-                Event_Renamed.SelectedUnitForEvent = this;
+                u = Event.SelectedUnitForEvent;
+                Event.SelectedUnitForEvent = this;
                 Expression.ReplaceSubExpression(KanaNameRet);
-                Event_Renamed.SelectedUnitForEvent = u;
+                Event.SelectedUnitForEvent = u;
                 return KanaNameRet;
             }
         }
@@ -502,14 +502,14 @@ namespace Project1
         }
 
         // ユニットクラス
-        // UPGRADE_NOTE: Class は Class_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        public string Class_Renamed
+        // UPGRADE_NOTE: Class は Class にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+        public string Class
         {
             get
             {
-                string Class_RenamedRet = default;
-                Class_RenamedRet = Data.Class_Renamed;
-                return Class_RenamedRet;
+                string ClassRet = default;
+                ClassRet = Data.Class;
+                return ClassRet;
             }
         }
 
@@ -520,7 +520,7 @@ namespace Project1
             {
                 string Class0Ret = default;
                 int i, n;
-                Class0Ret = Data.Class_Renamed;
+                Class0Ret = Data.Class;
 
                 // 人間ユニット指定を削除
                 if (Strings.Left(Class0Ret, 1) == "(")
@@ -770,7 +770,7 @@ namespace Project1
                 }
 
                 // ＥＮ切れにより移動できない場合
-                if (Status_Renamed == "出撃")
+                if (Status == "出撃")
                 {
                     switch (Area ?? "")
                     {
@@ -2760,7 +2760,7 @@ namespace Project1
 
                     if (!without_refresh)
                     {
-                        if (Status_Renamed == "出撃")
+                        if (Status == "出撃")
                         {
                             if (!GUI.IsPictureVisible & !string.IsNullOrEmpty(Map.MapFileName))
                             {
@@ -2774,7 +2774,7 @@ namespace Project1
             // ユニットの表示、非表示が切り替わった場合
             if (is_invisible != IsFeatureAvailable("非表示"))
             {
-                if (Status_Renamed == "出撃")
+                if (Status == "出撃")
                 {
                     if (!GUI.IsPictureVisible & !string.IsNullOrEmpty(Map.MapFileName))
                     {
@@ -3351,7 +3351,7 @@ namespace Project1
             }
 
             // 空中に留まることが出来るかチェック
-            if (Status_Renamed == "出撃" & Area == "空中" & !IsTransAvailable("空"))
+            if (Status == "出撃" & Area == "空中" & !IsTransAvailable("空"))
             {
                 // 地上(水中)に戻す
                 switch (Map.TerrainClass(x, y) ?? "")
@@ -3631,7 +3631,7 @@ namespace Project1
             strWeaponClass = new string[(CountWeapon() + 1)];
             var loopTo24 = CountWeapon();
             for (i = 1; i <= loopTo24; i++)
-                strWeaponClass[i] = Weapon(i).Class_Renamed;
+                strWeaponClass[i] = Weapon(i).Class;
             string hidden_attr;
             bool skipped;
             if (IsFeatureAvailable("攻撃属性"))
@@ -4964,20 +4964,20 @@ namespace Project1
 
             // 最大弾数を更新
             intMaxBullet = new int[(CountWeapon() + 1)];
-            // UPGRADE_NOTE: rate は rate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-            double rate_Renamed;
+            // UPGRADE_NOTE: rate は rate にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+            double rate;
             var loopTo51 = CountWeapon();
             for (i = 1; i <= loopTo51; i++)
             {
                 intMaxBullet[i] = Weapon(i).Bullet;
 
                 // 最大弾数の増加率
-                rate_Renamed = 0d;
+                rate = 0d;
 
                 // ボスランクによる修正
                 if (intBossRank > 0)
                 {
-                    rate_Renamed = 0.2d * BossRank;
+                    rate = 0.2d * BossRank;
                 }
 
                 // 最大弾数増加による修正
@@ -5103,14 +5103,14 @@ namespace Project1
                             {
                                 double localFeatureLevel6() { object argIndex1 = j; var ret = FeatureLevel(argIndex1); return ret; }
 
-                                rate_Renamed = rate_Renamed + 0.5d * localFeatureLevel6();
+                                rate = rate + 0.5d * localFeatureLevel6();
                             }
                         }
                     }
                 }
 
                 // 増加率に合わせて弾数を修正
-                intMaxBullet[i] = ((1d + rate_Renamed) * intMaxBullet[i]);
+                intMaxBullet[i] = ((1d + rate) * intMaxBullet[i]);
 
                 // 最大値は99
                 if (intMaxBullet[i] > 99)
@@ -5254,7 +5254,7 @@ namespace Project1
                 }
             }
 
-            if (Status_Renamed != "出撃")
+            if (Status != "出撃")
             {
                 return;
             }
@@ -5636,7 +5636,7 @@ namespace Project1
                     withBlock.BossRank = BossRank;
                     withBlock.Party = Party0;
                     withBlock.ID = SRC.UList.CreateID(uname);
-                    withBlock.Status_Renamed = "他形態";
+                    withBlock.Status = "他形態";
                     withBlock.x = x;
                     withBlock.y = y;
                     var loopTo = CountOtherForm();
@@ -5749,7 +5749,7 @@ namespace Project1
             {
                 {
                     var withBlock = OtherForm(i);
-                    if (withBlock.Status_Renamed == "他形態")
+                    if (withBlock.Status == "他形態")
                     {
                         j = 1;
                         while (j <= withBlock.CountOtherForm())
@@ -5799,7 +5799,7 @@ namespace Project1
                 {
                     Unit localOtherForm() { object argIndex1 = i; var ret = OtherForm(argIndex1); return ret; }
 
-                    localOtherForm().Status_Renamed = "破棄";
+                    localOtherForm().Status = "破棄";
                     DeleteOtherForm(i);
                 }
                 else
@@ -5830,7 +5830,7 @@ namespace Project1
             int i;
             Pilot prev_p;
             Pilot[] pilot_list;
-            p.Unit_Renamed = this;
+            p.Unit = this;
             prev_p = (Pilot)colPilot[Index];
             pilot_list = new Pilot[colPilot.Count + 1];
             var loopTo = Information.UBound(pilot_list);
@@ -5852,7 +5852,7 @@ namespace Project1
                 }
             }
             // UPGRADE_NOTE: オブジェクト prev_p.Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            prev_p.Unit_Renamed = null;
+            prev_p.Unit = null;
             prev_p.Alive = false;
         }
 
@@ -5893,7 +5893,7 @@ namespace Project1
             }
 
             // 破棄された場合はメインパイロットの変更を行わない
-            if (Status_Renamed == "破棄")
+            if (Status == "破棄")
             {
                 MainPilotRet = (Pilot)colPilot[1];
                 return MainPilotRet;
@@ -5928,15 +5928,15 @@ namespace Project1
                     {
                         // 既に暴走時パイロットが作成済み
                         MainPilotRet = SRC.PList.Item(pname);
-                        MainPilotRet.Unit_Renamed = this;
+                        MainPilotRet.Unit = this;
                         MainPilotRet.Morale = Pilot(1).Morale;
                         MainPilotRet.Level = Pilot(1).Level;
                         MainPilotRet.Exp = Pilot(1).Exp;
                         if (!without_update)
                         {
-                            if (!ReferenceEquals(MainPilotRet.Unit_Renamed, this))
+                            if (!ReferenceEquals(MainPilotRet.Unit, this))
                             {
-                                MainPilotRet.Unit_Renamed = this;
+                                MainPilotRet.Unit = this;
                                 MainPilotRet.Update();
                                 MainPilotRet.UpdateSupportMod();
                             }
@@ -5951,7 +5951,7 @@ namespace Project1
                         this.Party0 = argpparty;
                         MainPilotRet.Morale = Pilot(1).Morale;
                         MainPilotRet.Exp = Pilot(1).Exp;
-                        MainPilotRet.Unit_Renamed = this;
+                        MainPilotRet.Unit = this;
                         MainPilotRet.Update();
                         MainPilotRet.UpdateSupportMod();
                         return MainPilotRet;
@@ -5982,9 +5982,9 @@ namespace Project1
                         MainPilotRet = pltAdditionalPilot;
                         {
                             var withBlock = pltAdditionalPilot;
-                            if (withBlock.IsAdditionalPilot & !ReferenceEquals(withBlock.Unit_Renamed, this))
+                            if (withBlock.IsAdditionalPilot & !ReferenceEquals(withBlock.Unit, this))
                             {
-                                withBlock.Unit_Renamed = this;
+                                withBlock.Unit = this;
                                 withBlock.Party = Party0;
                                 withBlock.Exp = Pilot(1).Exp;
                                 if (withBlock.Personality != "機械")
@@ -6023,8 +6023,8 @@ namespace Project1
 
                                 pltAdditionalPilot = localOtherForm().pltAdditionalPilot;
                                 withBlock1.Party = Party0;
-                                withBlock1.Unit_Renamed = this;
-                                if (withBlock1.IsAdditionalPilot & !ReferenceEquals(withBlock1.Unit_Renamed, this))
+                                withBlock1.Unit = this;
+                                if (withBlock1.IsAdditionalPilot & !ReferenceEquals(withBlock1.Unit, this))
                                 {
                                     withBlock1.Level = Pilot(1).Level;
                                     withBlock1.Exp = Pilot(1).Exp;
@@ -6083,16 +6083,16 @@ namespace Project1
 
                             if (!without_update)
                             {
-                                if (!ReferenceEquals(withBlock2.Unit_Renamed, this))
+                                if (!ReferenceEquals(withBlock2.Unit, this))
                                 {
-                                    withBlock2.Unit_Renamed = this;
+                                    withBlock2.Unit = this;
                                     withBlock2.Update();
                                     withBlock2.UpdateSupportMod();
                                 }
                             }
                             else
                             {
-                                withBlock2.Unit_Renamed = this;
+                                withBlock2.Unit = this;
                             }
                         }
 
@@ -6125,7 +6125,7 @@ namespace Project1
 
                 {
                     var withBlock4 = pltAdditionalPilot;
-                    withBlock4.Unit_Renamed = this;
+                    withBlock4.Unit = this;
                     if (!without_update)
                     {
                         withBlock4.Update();
@@ -6161,7 +6161,7 @@ namespace Project1
             int i;
             Pilot prev_p;
             Pilot[] support_list;
-            p.Unit_Renamed = this;
+            p.Unit = this;
             prev_p = (Pilot)colSupport[Index];
             support_list = new Pilot[colSupport.Count + 1];
             var loopTo = Information.UBound(support_list);
@@ -6183,7 +6183,7 @@ namespace Project1
                 }
             }
             // UPGRADE_NOTE: オブジェクト prev_p.Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            prev_p.Unit_Renamed = null;
+            prev_p.Unit = null;
             prev_p.Alive = false;
         }
 
@@ -6232,7 +6232,7 @@ namespace Project1
                 if ((pltAdditionalSupport.Name ?? "") == (pname ?? ""))
                 {
                     AdditionalSupportRet = pltAdditionalSupport;
-                    pltAdditionalSupport.Unit_Renamed = this;
+                    pltAdditionalSupport.Unit = this;
                     return AdditionalSupportRet;
                 }
             }
@@ -6246,7 +6246,7 @@ namespace Project1
                     {
                         if ((withBlock.pltAdditionalSupport.Name ?? "") == (pname ?? ""))
                         {
-                            withBlock.pltAdditionalSupport.Unit_Renamed = this;
+                            withBlock.pltAdditionalSupport.Unit = this;
                             AdditionalSupportRet = withBlock.pltAdditionalSupport;
                             return AdditionalSupportRet;
                         }
@@ -6266,7 +6266,7 @@ namespace Project1
                         var withBlock1 = pltAdditionalSupport;
                         withBlock1.IsAdditionalSupport = true;
                         withBlock1.Party = Party0;
-                        withBlock1.Unit_Renamed = this;
+                        withBlock1.Unit = this;
                         withBlock1.Level = Pilot(1).Level;
                         withBlock1.Exp = Pilot(1).Exp;
                         if (withBlock1.Personality != "機械")
@@ -6294,7 +6294,7 @@ namespace Project1
             {
                 var withBlock2 = pltAdditionalSupport;
                 withBlock2.IsAdditionalSupport = true;
-                withBlock2.Unit_Renamed = this;
+                withBlock2.Unit = this;
                 withBlock2.Exp = Pilot(1).Exp;
                 if (withBlock2.Personality != "機械")
                 {
@@ -7082,9 +7082,9 @@ namespace Project1
                     {
                         {
                             var withBlock = SRC.PList.Item(SpecialPowerData((object)sd.Name));
-                            if (withBlock.Unit_Renamed is object)
+                            if (withBlock.Unit is object)
                             {
-                                if ((withBlock.Unit_Renamed.CurrentForm().Party ?? "") != (SRC.Stage ?? ""))
+                                if ((withBlock.Unit.CurrentForm().Party ?? "") != (SRC.Stage ?? ""))
                                 {
                                     i = (i + 1);
                                     goto NextSP;
@@ -7095,7 +7095,7 @@ namespace Project1
                 }
 
                 // 消去するスペシャルパワーの効果を発動
-                if (CurrentForm().Status_Renamed == "出撃")
+                if (CurrentForm().Status == "出撃")
                 {
                     sd.Apply(CurrentForm().MainPilot(), CurrentForm(), false, true);
                 }
@@ -7341,7 +7341,7 @@ namespace Project1
                                 GUI.OpenMessageForm(u1: null, u2: null);
                                 GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
                                 GUI.CloseMessageForm();
-                                Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+                                Event.HandleEvent("破壊", MainPilot().ID);
                                 break;
                             }
 
@@ -7398,10 +7398,10 @@ namespace Project1
             Unit u;
 
             // 愛称内の式置換のため、デフォルトユニットを一時的に変更する
-            u = Event_Renamed.SelectedUnitForEvent;
-            Event_Renamed.SelectedUnitForEvent = this;
+            u = Event.SelectedUnitForEvent;
+            Event.SelectedUnitForEvent = this;
             WeaponNicknameRet = WData[w].Nickname();
-            Event_Renamed.SelectedUnitForEvent = u;
+            Event.SelectedUnitForEvent = u;
             return WeaponNicknameRet;
         }
 
@@ -8095,8 +8095,8 @@ namespace Project1
         public int WeaponENConsumption(int w)
         {
             int WeaponENConsumptionRet = default;
-            // UPGRADE_NOTE: rate は rate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-            double rate_Renamed;
+            // UPGRADE_NOTE: rate は rate にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+            double rate;
             int i;
             {
                 var withBlock = Weapon(w);
@@ -8245,7 +8245,7 @@ namespace Project1
                 }
 
                 // ＥＮ消費減少能力による修正
-                rate_Renamed = 1d;
+                rate = 1d;
                 if (IsFeatureAvailable("ＥＮ消費減少"))
                 {
                     var loopTo = CountFeature();
@@ -8255,17 +8255,17 @@ namespace Project1
                         {
                             double localFeatureLevel() { object argIndex1 = i; var ret = FeatureLevel(argIndex1); return ret; }
 
-                            rate_Renamed = rate_Renamed - 0.1d * localFeatureLevel();
+                            rate = rate - 0.1d * localFeatureLevel();
                         }
                     }
                 }
 
-                if (rate_Renamed < 0.1d)
+                if (rate < 0.1d)
                 {
-                    rate_Renamed = 0.1d;
+                    rate = 0.1d;
                 }
 
-                WeaponENConsumptionRet = (rate_Renamed * WeaponENConsumptionRet);
+                WeaponENConsumptionRet = (rate * WeaponENConsumptionRet);
             }
 
             return WeaponENConsumptionRet;
@@ -13047,8 +13047,8 @@ namespace Project1
             {
                 Commands.SelectedUnit = Commands.SelectedTarget;
                 Commands.SelectedTarget = this;
-                Event_Renamed.SelectedUnitForEvent = Event_Renamed.SelectedTargetForEvent;
-                Event_Renamed.SelectedTargetForEvent = this;
+                Event.SelectedUnitForEvent = Event.SelectedTargetForEvent;
+                Event.SelectedTargetForEvent = this;
                 Commands.SelectedWeapon = w;
                 Commands.SelectedWeaponName = wname;
             }
@@ -13064,8 +13064,8 @@ namespace Project1
                 Commands.SelectedWeaponName = wname;
                 Commands.SelectedUnit = this;
                 Commands.SelectedTarget = t;
-                Event_Renamed.SelectedUnitForEvent = this;
-                Event_Renamed.SelectedTargetForEvent = t;
+                Event.SelectedUnitForEvent = this;
+                Event.SelectedTargetForEvent = t;
             }
 
             // サポートガードを行ったユニットに関する情報をクリア
@@ -13783,13 +13783,13 @@ namespace Project1
 
                                 Pilot localItem() { object argIndex1 = (object)hs40b56b80c15841019d507de2a6e31457(); var ret = SRC.PList.Item(argIndex1); return ret; }
 
-                                su = localItem().Unit_Renamed;
+                                su = localItem().Unit;
                                 t.RemoveSpecialPowerInEffect("みがわり");
                                 i = (i - 1);
                                 if (su is object)
                                 {
                                     su = su.CurrentForm();
-                                    if (su.Status_Renamed != "出撃")
+                                    if (su.Status != "出撃")
                                     {
                                         // UPGRADE_NOTE: オブジェクト su をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
                                         su = null;
@@ -13922,7 +13922,7 @@ namespace Project1
                     // ターゲットを再設定
                     t = su;
                     Commands.SelectedTarget = t;
-                    Event_Renamed.SelectedTargetForEvent = t;
+                    Event.SelectedTargetForEvent = t;
                 }
             }
 
@@ -14332,7 +14332,7 @@ namespace Project1
             if (t.HP > 0)
             {
                 CheckAutoAttack(w, t, attack_mode, def_mode, dmg, be_quiet | use_protect_msg);
-                if (Status_Renamed != "出撃")
+                if (Status != "出撃")
                 {
                     goto EndAttack;
                 }
@@ -15277,7 +15277,7 @@ namespace Project1
 
                     t = t.CurrentForm();
                     Commands.SelectedTarget = t;
-                    Event_Renamed.SelectedTargetForEvent = t;
+                    Event.SelectedTargetForEvent = t;
                     goto Resurrect;
                 }
 
@@ -15298,12 +15298,12 @@ namespace Project1
                     foreach (Pilot p in SRC.PList)
                     {
                         // 出撃中のパイロットのみが対象
-                        if (p.Unit_Renamed is null)
+                        if (p.Unit is null)
                         {
                             goto NextPilot;
                         }
 
-                        if (p.Unit_Renamed.Status_Renamed != "出撃")
+                        if (p.Unit.Status != "出撃")
                         {
                             goto NextPilot;
                         }
@@ -15363,7 +15363,7 @@ namespace Project1
                 }
 
                 // 脱出メッセージの表示
-                bool localIsEventDefined() { string arglname = "破壊 " + t.MainPilot().ID; var ret = Event_Renamed.IsEventDefined(arglname, true); return ret; }
+                bool localIsEventDefined() { string arglname = "破壊 " + t.MainPilot().ID; var ret = Event.IsEventDefined(arglname, true); return ret; }
 
                 if (t.IsMessageDefined("脱出") & !is_event & !localIsEventDefined())
                 {
@@ -15394,7 +15394,7 @@ namespace Project1
 
             EndAttack:
             ;
-            if (Status_Renamed == "出撃" & t.Status_Renamed == "出撃" & Strings.InStr(attack_mode, "援護攻撃") == 0 & attack_mode != "マップ攻撃" & attack_mode != "反射" & !IsWeaponClassifiedAs(w, "合") & HP > 0 & t.HP > 0)
+            if (Status == "出撃" & t.Status == "出撃" & Strings.InStr(attack_mode, "援護攻撃") == 0 & attack_mode != "マップ攻撃" & attack_mode != "反射" & !IsWeaponClassifiedAs(w, "合") & HP > 0 & t.HP > 0)
             {
                 // 再攻撃
                 if (!second_attack & IsWeaponAvailable(w, "ステータス") & IsTargetWithinRange(w, t))
@@ -15462,7 +15462,7 @@ namespace Project1
                     withBlock6.x = prev_x;
                     withBlock6.y = prev_y;
                     withBlock6.Area = prev_area;
-                    if (withBlock6.Status_Renamed == "出撃")
+                    if (withBlock6.Status == "出撃")
                     {
                         Map.MapDataForUnit[withBlock6.x, withBlock6.y] = su;
                         Map.MapDataForUnit[tx, ty] = orig_t;
@@ -15562,7 +15562,7 @@ namespace Project1
             {
                 t.DeleteCondition("ユニット画像");
                 t.BitmapID = GUI.MakeUnitBitmap(t);
-                if (t.Status_Renamed == "出撃")
+                if (t.Status == "出撃")
                 {
                     GUI.PaintUnitBitmap(t, "リフレッシュ無し");
                 }
@@ -15572,7 +15572,7 @@ namespace Project1
             {
                 t.DeleteCondition("非表示付加");
                 t.BitmapID = GUI.MakeUnitBitmap(t);
-                if (t.Status_Renamed == "出撃")
+                if (t.Status == "出撃")
                 {
                     GUI.PaintUnitBitmap(t, "リフレッシュ無し");
                 }
@@ -15628,7 +15628,7 @@ namespace Project1
                 if (IsWeaponClassifiedAs(w, "忍"))
                 {
                     // 暗殺武器の場合、相手を倒すか行動不能にすればステルス継続
-                    if (t.CurrentForm().Status_Renamed == "出撃" & t.CurrentForm().MaxAction() > 0)
+                    if (t.CurrentForm().Status == "出撃" & t.CurrentForm().MaxAction() > 0)
                     {
                         AddCondition("ステルス無効", 1, cdata: "");
                     }
@@ -15844,7 +15844,7 @@ namespace Project1
             // 変形技
 
             // 能力コピー
-            if (CurrentForm().Status_Renamed == "破壊")
+            if (CurrentForm().Status == "破壊")
             {
             }
             else if (IsWeaponClassifiedAs(w, "自"))
@@ -21398,7 +21398,7 @@ namespace Project1
                         // 自動反撃で攻撃をかける
                         t.Attack(w2, this, "自動反撃", "");
                         t = t.CurrentForm();
-                        if (Status_Renamed != "出撃" | t.Status_Renamed != "出撃")
+                        if (Status != "出撃" | t.Status != "出撃")
                         {
                             return;
                         }
@@ -21637,7 +21637,7 @@ namespace Project1
                         // 追加攻撃をかける
                         Attack(w2, t, "追加攻撃", def_mode);
                         t = t.CurrentForm();
-                        if (Status_Renamed != "出撃" | t.Status_Renamed != "出撃")
+                        if (Status != "出撃" | t.Status != "出撃")
                         {
                             return;
                         }
@@ -22935,12 +22935,12 @@ namespace Project1
                         {
                             Expression.DefineGlobalVariable(vname);
                             // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                            Event_Renamed.GlobalVariableList[vname].StringValue = stype;
+                            Event.GlobalVariableList[vname].StringValue = stype;
                         }
                         else
                         {
                             {
-                                var withBlock = Event_Renamed.GlobalVariableList[vname];
+                                var withBlock = Event.GlobalVariableList[vname];
                                 // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item(vname).StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                                 // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                                 withBlock.StringValue = Operators.ConcatenateObject(Operators.ConcatenateObject(withBlock.StringValue, " "), stype);
@@ -23245,7 +23245,7 @@ namespace Project1
                         }
                 }
                 // MOD START 240a
-                if (t.Area == "地上" & (td.Class_Renamed == "陸" | td.Class_Renamed == "屋内" | td.Class_Renamed == "月面") | t.Area == "水中" & (td.Class_Renamed == "水" | td.Class_Renamed == "深水") | (t.Area ?? "") == (Class_Renamed ?? ""))
+                if (t.Area == "地上" & (td.Class == "陸" | td.Class == "屋内" | td.Class == "月面") | t.Area == "水中" & (td.Class == "水" | td.Class == "深水") | (t.Area ?? "") == (Class ?? ""))
                 {
                     if (td.IsFeatureAvailable("摩擦"))
                     {
@@ -24087,7 +24087,7 @@ namespace Project1
                     u = currentU;
                     {
                         var withBlock = u;
-                        if (withBlock.Status_Renamed == "出撃")
+                        if (withBlock.Status == "出撃")
                         {
                             if (IsAlly(u) | WeaponAdaption(w, withBlock.Area) == 0d)
                             {
@@ -24251,7 +24251,7 @@ namespace Project1
             if (!is_event)
             {
                 // 使用イベント
-                Event_Renamed.HandleEvent("使用", MainPilot().ID, wname);
+                Event.HandleEvent("使用", MainPilot().ID, wname);
                 if (SRC.IsScenarioFinished)
                 {
                     SRC.IsScenarioFinished = false;
@@ -24271,7 +24271,7 @@ namespace Project1
                     t = targets[i];
                     Commands.SaveSelections();
                     Commands.SelectedTarget = t;
-                    Event_Renamed.HandleEvent("攻撃", MainPilot().ID, t.MainPilot().ID);
+                    Event.HandleEvent("攻撃", MainPilot().ID, t.MainPilot().ID);
                     Commands.RestoreSelections();
                     if (SRC.IsScenarioFinished | SRC.IsCanceled)
                     {
@@ -24283,7 +24283,7 @@ namespace Project1
             // まだ攻撃可能？
             if (!is_event)
             {
-                if (Status_Renamed != "出撃" | MaxAction(true) == 0 | IsConditionSatisfied("攻撃不能"))
+                if (Status != "出撃" | MaxAction(true) == 0 | IsConditionSatisfied("攻撃不能"))
                 {
                     return;
                 }
@@ -24313,7 +24313,7 @@ namespace Project1
 
             // 選択内容を切り替え
             Commands.SelectedUnit = this;
-            Event_Renamed.SelectedUnitForEvent = this;
+            Event.SelectedUnitForEvent = this;
             Commands.SelectedWeapon = w;
             Commands.SelectedX = tx;
             Commands.SelectedY = ty;
@@ -24322,7 +24322,7 @@ namespace Project1
             // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             Commands.SelectedTarget = null;
             // UPGRADE_NOTE: オブジェクト SelectedTargetForEvent をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            Event_Renamed.SelectedTargetForEvent = null;
+            Event.SelectedTargetForEvent = null;
 
             // 攻撃準備の効果音
             bool localIsSpecialEffectDefined() { string argmain_situation = wname + "(準備)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
@@ -24536,7 +24536,7 @@ namespace Project1
             for (i = 1; i <= loopTo13; i++)
             {
                 t = targets[i].CurrentForm();
-                if (t.Status_Renamed == "出撃")
+                if (t.Status == "出撃")
                 {
                     if (Party == "味方" | Party == "ＮＰＣ")
                     {
@@ -24560,7 +24560,7 @@ namespace Project1
                     }
 
                     // これ以上攻撃を続けられない場合
-                    if (Status_Renamed != "出撃" | CountPilot() == 0 | IsMapAttackCanceled)
+                    if (Status != "出撃" | CountPilot() == 0 | IsMapAttackCanceled)
                     {
                         GUI.CloseMessageForm();
                         SelectedMapAttackPower = 0;
@@ -24672,7 +24672,7 @@ namespace Project1
                     {
                     }
                     // 味方からは経験値＆資金は得られない
-                    else if (t.Status_Renamed == "破壊")
+                    else if (t.Status == "破壊")
                     {
                         // 経験値の獲得
                         earned_exp = earned_exp + GetExp(t, "破壊", "マップ");
@@ -24830,7 +24830,7 @@ namespace Project1
                         }
 
                         GUI.DisplaySysMessage(msg);
-                        Event_Renamed.HandleEvent("レベルアップ", withBlock8.ID);
+                        Event.HandleEvent("レベルアップ", withBlock8.ID);
                         SRC.PList.UpdateSupportMod(this);
                     }
                     else if (earned_exp > 0)
@@ -24874,7 +24874,7 @@ namespace Project1
                     {
                         {
                             var withBlock9 = targets[i].CurrentForm();
-                            if (withBlock9.Status_Renamed == "出撃" & withBlock9.MaxAction() > 0)
+                            if (withBlock9.Status == "出撃" & withBlock9.MaxAction() > 0)
                             {
                                 AddCondition("ステルス無効", 1, cdata: "");
                                 break;
@@ -25146,7 +25146,7 @@ namespace Project1
                         GUI.CloseMessageForm();
                         if (!is_event)
                         {
-                            Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+                            Event.HandleEvent("破壊", MainPilot().ID);
                             if (SRC.IsScenarioFinished)
                             {
                                 return;
@@ -25160,7 +25160,7 @@ namespace Project1
                     GUI.CloseMessageForm();
                     if (!is_event)
                     {
-                        Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+                        Event.HandleEvent("破壊", MainPilot().ID);
                         if (SRC.IsScenarioFinished)
                         {
                             return;
@@ -25174,7 +25174,7 @@ namespace Project1
                 GUI.CloseMessageForm();
                 if (!is_event)
                 {
-                    Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+                    Event.HandleEvent("破壊", MainPilot().ID);
                     if (SRC.IsScenarioFinished)
                     {
                         return;
@@ -25289,26 +25289,26 @@ namespace Project1
                 for (i = 1; i <= loopTo31; i++)
                 {
                     t = targets[i].CurrentForm();
-                    if (t.Status_Renamed == "破壊")
+                    if (t.Status == "破壊")
                     {
                         // 破壊イベントを発生
                         Commands.SaveSelections();
                         Commands.SwapSelections();
-                        Event_Renamed.HandleEvent("マップ攻撃破壊", t.MainPilot().ID);
+                        Event.HandleEvent("マップ攻撃破壊", t.MainPilot().ID);
                         Commands.RestoreSelections();
                         if (SRC.IsScenarioFinished | SRC.IsCanceled)
                         {
                             return;
                         }
                     }
-                    else if (t.Status_Renamed == "出撃")
+                    else if (t.Status == "出撃")
                     {
                         if (t.HP / (double)t.MaxHP < targets_hp_ratio[i])
                         {
                             // 損傷率イベント
                             Commands.SaveSelections();
                             Commands.SwapSelections();
-                            Event_Renamed.HandleEvent("損傷率", t.MainPilot().ID, 100 * (t.MaxHP - t.HP) / t.MaxHP);
+                            Event.HandleEvent("損傷率", t.MainPilot().ID, 100 * (t.MaxHP - t.HP) / t.MaxHP);
                             Commands.RestoreSelections();
                             if (SRC.IsScenarioFinished | SRC.IsCanceled)
                             {
@@ -25319,9 +25319,9 @@ namespace Project1
                         // ターゲットが動いていたら進入イベントを発生
                         {
                             var withBlock14 = t.CurrentForm();
-                            if (withBlock14.Status_Renamed == "出撃" & (withBlock14.x != targets_x[i] | withBlock14.y != targets_y[i]))
+                            if (withBlock14.Status == "出撃" & (withBlock14.x != targets_x[i] | withBlock14.y != targets_y[i]))
                             {
-                                Event_Renamed.HandleEvent("進入", withBlock14.MainPilot().ID, withBlock14.x, withBlock14.y);
+                                Event.HandleEvent("進入", withBlock14.MainPilot().ID, withBlock14.x, withBlock14.y);
                                 if (SRC.IsScenarioFinished | SRC.IsCanceled)
                                 {
                                     return;
@@ -25367,7 +25367,7 @@ namespace Project1
                     {
                         {
                             var withBlock15 = targets[j].CurrentForm();
-                            if ((withBlock15.Party0 ?? "") == (uparty ?? "") & withBlock15.Status_Renamed != "出撃")
+                            if ((withBlock15.Party0 ?? "") == (uparty ?? "") & withBlock15.Status != "出撃")
                             {
                                 found = true;
                                 break;
@@ -25381,7 +25381,7 @@ namespace Project1
                         foreach (Unit currentU1 in SRC.UList)
                         {
                             u = currentU1;
-                            if ((u.Party0 ?? "") == (uparty ?? "") & u.Status_Renamed == "出撃" & !u.IsConditionSatisfied("憑依"))
+                            if ((u.Party0 ?? "") == (uparty ?? "") & u.Status == "出撃" & !u.IsConditionSatisfied("憑依"))
                             {
                                 found = true;
                                 break;
@@ -25390,7 +25390,7 @@ namespace Project1
 
                         if (!found)
                         {
-                            Event_Renamed.HandleEvent("全滅", uparty);
+                            Event.HandleEvent("全滅", uparty);
                             if (SRC.IsScenarioFinished | SRC.IsCanceled)
                             {
                                 return;
@@ -25400,9 +25400,9 @@ namespace Project1
                 }
 
                 // 使用後イベント
-                if (CurrentForm().Status_Renamed == "出撃")
+                if (CurrentForm().Status == "出撃")
                 {
-                    Event_Renamed.HandleEvent("使用後", CurrentForm().MainPilot().ID, wname);
+                    Event.HandleEvent("使用後", CurrentForm().MainPilot().ID, wname);
                     if (SRC.IsScenarioFinished | SRC.IsCanceled)
                     {
                         return;
@@ -25410,7 +25410,7 @@ namespace Project1
                 }
 
                 // 攻撃後イベント
-                if (CurrentForm().Status_Renamed == "出撃")
+                if (CurrentForm().Status == "出撃")
                 {
                     Commands.SaveSelections();
                     var loopTo33 = Information.UBound(targets);
@@ -25419,9 +25419,9 @@ namespace Project1
                         Commands.SelectedTarget = targets[i].CurrentForm();
                         {
                             var withBlock16 = Commands.SelectedTarget;
-                            if (withBlock16.Status_Renamed == "出撃")
+                            if (withBlock16.Status == "出撃")
                             {
-                                Event_Renamed.HandleEvent("攻撃後", CurrentForm().MainPilot().ID, withBlock16.MainPilot().ID);
+                                Event.HandleEvent("攻撃後", CurrentForm().MainPilot().ID, withBlock16.MainPilot().ID);
                                 if (SRC.IsScenarioFinished)
                                 {
                                     Commands.RestoreSelections();
@@ -25753,10 +25753,10 @@ namespace Project1
             Unit u;
 
             // 愛称内の式置換のため、デフォルトユニットを一時的に変更する
-            u = Event_Renamed.SelectedUnitForEvent;
-            Event_Renamed.SelectedUnitForEvent = this;
+            u = Event.SelectedUnitForEvent;
+            Event.SelectedUnitForEvent = this;
             AbilityNicknameRet = adata[a].Nickname();
-            Event_Renamed.SelectedUnitForEvent = u;
+            Event.SelectedUnitForEvent = u;
             return AbilityNicknameRet;
         }
 
@@ -25785,8 +25785,8 @@ namespace Project1
         public int AbilityENConsumption(int a)
         {
             int AbilityENConsumptionRet = default;
-            // UPGRADE_NOTE: rate は rate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-            double rate_Renamed;
+            // UPGRADE_NOTE: rate は rate にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+            double rate;
             Pilot p;
             int i;
             {
@@ -25938,7 +25938,7 @@ namespace Project1
                 }
 
                 // ＥＮ消費減少能力による修正
-                rate_Renamed = 1d;
+                rate = 1d;
                 if (IsFeatureAvailable("ＥＮ消費減少"))
                 {
                     var loopTo = CountFeature();
@@ -25948,17 +25948,17 @@ namespace Project1
                         {
                             double localFeatureLevel() { object argIndex1 = i; var ret = FeatureLevel(argIndex1); return ret; }
 
-                            rate_Renamed = rate_Renamed - 0.1d * localFeatureLevel();
+                            rate = rate - 0.1d * localFeatureLevel();
                         }
                     }
                 }
 
-                if (rate_Renamed < 0.1d)
+                if (rate < 0.1d)
                 {
-                    rate_Renamed = 0.1d;
+                    rate = 0.1d;
                 }
 
-                AbilityENConsumptionRet = (rate_Renamed * AbilityENConsumptionRet);
+                AbilityENConsumptionRet = (rate * AbilityENConsumptionRet);
             }
 
             return AbilityENConsumptionRet;
@@ -25968,7 +25968,7 @@ namespace Project1
         public bool IsAbilityClassifiedAs(int a, string attr)
         {
             bool IsAbilityClassifiedAsRet = default;
-            if (GeneralLib.InStrNotNest(Ability(a).Class_Renamed, attr) > 0)
+            if (GeneralLib.InStrNotNest(Ability(a).Class, attr) > 0)
             {
                 IsAbilityClassifiedAsRet = true;
             }
@@ -26000,7 +26000,7 @@ namespace Project1
             attrlv = attr + "L";
 
             // アビリティ属性を調べてみる
-            aclass = Ability(a).Class_Renamed;
+            aclass = Ability(a).Class;
 
             // レベル指定があるか？
             start_idx = Strings.InStr(aclass, attrlv);
@@ -26264,7 +26264,7 @@ namespace Project1
 
                         string localCondition1() { object argIndex1 = i; var ret = Condition(argIndex1); return ret; }
 
-                        if (GeneralLib.InStrNotNest(Ability(a).Class_Renamed, Strings.Left(localCondition(), Strings.Len(localCondition1()) - 6)) > 0)
+                        if (GeneralLib.InStrNotNest(Ability(a).Class, Strings.Left(localCondition(), Strings.Len(localCondition1()) - 6)) > 0)
                         {
                             return IsAbilityAvailableRet;
                         }
@@ -26481,7 +26481,7 @@ namespace Project1
 
                         {
                             var withBlock3 = localServant().CurrentForm();
-                            switch (withBlock3.Status_Renamed ?? "")
+                            switch (withBlock3.Status ?? "")
                             {
                                 case "出撃":
                                 case "格納":
@@ -26508,7 +26508,7 @@ namespace Project1
 
                                                     {
                                                         var withBlock4 = localItem().CurrentForm();
-                                                        if (withBlock4.Status_Renamed == "出撃" | withBlock4.Status_Renamed == "格納")
+                                                        if (withBlock4.Status == "出撃" | withBlock4.Status == "格納")
                                                         {
                                                             return IsAbilityAvailableRet;
                                                         }
@@ -26553,10 +26553,10 @@ namespace Project1
                         {
                             Pilot localItem2() { object argIndex1 = pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
-                            u = localItem2().Unit_Renamed;
+                            u = localItem2().Unit;
                             if (u is object)
                             {
-                                if (u.Status_Renamed == "出撃" | u.Status_Renamed == "格納")
+                                if (u.Status == "出撃" | u.Status == "格納")
                                 {
                                     return IsAbilityAvailableRet;
                                 }
@@ -27014,7 +27014,7 @@ namespace Project1
                                     {
                                         if (withBlock.Bullet(j) < withBlock.MaxBullet(j))
                                         {
-                                            if ((withBlock.WeaponNickname(j) ?? "") == (edata ?? "") | GeneralLib.InStrNotNest(withBlock.Weapon(j).Class_Renamed, edata) > 0)
+                                            if ((withBlock.WeaponNickname(j) ?? "") == (edata ?? "") | GeneralLib.InStrNotNest(withBlock.Weapon(j).Class, edata) > 0)
                                             {
                                                 IsAbilityEffectiveRet = true;
                                                 return IsAbilityEffectiveRet;
@@ -27252,7 +27252,7 @@ namespace Project1
             string fname;
             if (IsAbilityClassifiedAs(a, "封"))
             {
-                if (!t.Weakness(Ability(a).Class_Renamed) & !t.Effective(Ability(a).Class_Renamed))
+                if (!t.Weakness(Ability(a).Class) & !t.Effective(Ability(a).Class))
                 {
                     return IsAbilityApplicableRet;
                 }
@@ -27260,9 +27260,9 @@ namespace Project1
 
             if (IsAbilityClassifiedAs(a, "限"))
             {
-                bool localWeakness() { string argstring2 = "限"; string arganame = Strings.Mid(Ability(a).Class_Renamed, GeneralLib.InStrNotNest(Ability(a).Class_Renamed, argstring2) + 1); var ret = t.Weakness(arganame); return ret; }
+                bool localWeakness() { string argstring2 = "限"; string arganame = Strings.Mid(Ability(a).Class, GeneralLib.InStrNotNest(Ability(a).Class, argstring2) + 1); var ret = t.Weakness(arganame); return ret; }
 
-                bool localEffective() { string argstring2 = "限"; string arganame = Strings.Mid(Ability(a).Class_Renamed, GeneralLib.InStrNotNest(Ability(a).Class_Renamed, argstring2) + 1); var ret = t.Effective(arganame); return ret; }
+                bool localEffective() { string argstring2 = "限"; string arganame = Strings.Mid(Ability(a).Class, GeneralLib.InStrNotNest(Ability(a).Class, argstring2) + 1); var ret = t.Effective(arganame); return ret; }
 
                 if (!localWeakness() & !localEffective())
                 {
@@ -27282,9 +27282,9 @@ namespace Project1
             }
 
             // 無効化の対象になる場合は使用出来ない
-            if (t.Immune(Ability(a).Class_Renamed))
+            if (t.Immune(Ability(a).Class))
             {
-                if (!t.Weakness(Ability(a).Class_Renamed) & !t.Effective(Ability(a).Class_Renamed))
+                if (!t.Weakness(Ability(a).Class) & !t.Effective(Ability(a).Class))
                 {
                     return IsAbilityApplicableRet;
                 }
@@ -27508,16 +27508,16 @@ namespace Project1
             string cname;
             aname = Ability(a).Name;
             anickname = AbilityNickname(a);
-            aclass = Ability(a).Class_Renamed;
+            aclass = Ability(a).Class;
 
             // 現在の選択状況をセーブ
             Commands.SaveSelections();
 
             // 選択内容を切り替え
             Commands.SelectedUnit = this;
-            Event_Renamed.SelectedUnitForEvent = this;
+            Event.SelectedUnitForEvent = this;
             Commands.SelectedTarget = t;
-            Event_Renamed.SelectedTargetForEvent = t;
+            Event.SelectedTargetForEvent = t;
             Commands.SelectedAbility = a;
             Commands.SelectedAbilityName = aname;
             if (!is_map_ability)
@@ -28487,7 +28487,7 @@ namespace Project1
                                     {
                                         if (withBlock25.Bullet(j) < withBlock25.MaxBullet(j))
                                         {
-                                            if ((withBlock25.WeaponNickname(j) ?? "") == (edata ?? "") | GeneralLib.InStrNotNest(withBlock25.Weapon(j).Class_Renamed, edata) > 0)
+                                            if ((withBlock25.WeaponNickname(j) ?? "") == (edata ?? "") | GeneralLib.InStrNotNest(withBlock25.Weapon(j).Class, edata) > 0)
                                             {
                                                 withBlock25.SetBullet(j, withBlock25.MaxBullet(j));
                                                 flag = true;
@@ -28506,7 +28506,7 @@ namespace Project1
                                             {
                                                 if (withBlock26.Bullet(k) < withBlock26.MaxBullet(k))
                                                 {
-                                                    if ((withBlock26.WeaponNickname(k) ?? "") == (edata ?? "") | GeneralLib.InStrNotNest(withBlock26.Weapon(k).Class_Renamed, edata) > 0)
+                                                    if ((withBlock26.WeaponNickname(k) ?? "") == (edata ?? "") | GeneralLib.InStrNotNest(withBlock26.Weapon(k).Class, edata) > 0)
                                                     {
                                                         withBlock26.SetBullet(k, withBlock26.MaxBullet(k));
                                                     }
@@ -29412,7 +29412,7 @@ namespace Project1
                                     else
                                     {
                                         p = SRC.PList.Item(pname);
-                                        u = p.Unit_Renamed;
+                                        u = p.Unit;
                                         if (u is null)
                                         {
                                             if (SRC.UList.IsDefined(edata))
@@ -29472,12 +29472,12 @@ namespace Project1
                                 }
 
                                 // ちゃんと配置できた？
-                                if (u.Status_Renamed == "待機")
+                                if (u.Status == "待機")
                                 {
                                     // 空いた場所がなく出撃出来なかった場合
                                     GUI.DisplaySysMessage(Nickname + "は" + u.Nickname + "の召喚に失敗した。");
                                     DeleteServant(u.ID);
-                                    u.Status_Renamed = "破棄";
+                                    u.Status = "破棄";
                                 }
                             }
 
@@ -29786,7 +29786,7 @@ namespace Project1
             }
 
             // 変身した場合
-            if (Status_Renamed == "他形態")
+            if (Status == "他形態")
             {
                 {
                     var withBlock37 = CurrentForm();
@@ -30095,7 +30095,7 @@ namespace Project1
             if (!is_event)
             {
                 // マップ攻撃の使用イベント
-                Event_Renamed.HandleEvent("使用", MainPilot().ID, aname);
+                Event.HandleEvent("使用", MainPilot().ID, aname);
                 if (SRC.IsScenarioFinished)
                 {
                     return;
@@ -30344,7 +30344,7 @@ namespace Project1
 
             // 選択内容を切り替え
             Commands.SelectedUnit = this;
-            Event_Renamed.SelectedUnitForEvent = this;
+            Event.SelectedUnitForEvent = this;
             Commands.SelectedAbility = a;
             Commands.SelectedAbilityName = Ability(a).Name;
             Commands.SelectedX = tx;
@@ -30354,7 +30354,7 @@ namespace Project1
             // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             Commands.SelectedTarget = null;
             // UPGRADE_NOTE: オブジェクト SelectedTargetForEvent をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            Event_Renamed.SelectedTargetForEvent = null;
+            Event.SelectedTargetForEvent = null;
 
             // マップアビリティ開始のメッセージ＆特殊効果
             if (IsAnimationDefined(aname + "(準備)", sub_situation: ""))
@@ -30498,7 +30498,7 @@ namespace Project1
             for (i = 1; i <= loopTo11; i++)
             {
                 t = targets[i].CurrentForm();
-                if (t.Status_Renamed == "出撃")
+                if (t.Status == "出撃")
                 {
                     if (ReferenceEquals(t, this))
                     {
@@ -30863,7 +30863,7 @@ namespace Project1
                         Die();
                         if (!is_event)
                         {
-                            Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+                            Event.HandleEvent("破壊", MainPilot().ID);
                             if (SRC.IsScenarioFinished)
                             {
                                 return;
@@ -30876,7 +30876,7 @@ namespace Project1
                     Die();
                     if (!is_event)
                     {
-                        Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+                        Event.HandleEvent("破壊", MainPilot().ID);
                         if (SRC.IsScenarioFinished)
                         {
                             return;
@@ -30889,7 +30889,7 @@ namespace Project1
                 Die();
                 if (!is_event)
                 {
-                    Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+                    Event.HandleEvent("破壊", MainPilot().ID);
                     if (SRC.IsScenarioFinished)
                     {
                         return;
@@ -30993,7 +30993,7 @@ namespace Project1
             // 使用後イベント
             if (!is_event)
             {
-                Event_Renamed.HandleEvent("使用後", CurrentForm().MainPilot().ID, aname);
+                Event.HandleEvent("使用後", CurrentForm().MainPilot().ID, aname);
                 if (SRC.IsScenarioFinished | SRC.IsCanceled)
                 {
                     return;
@@ -31197,7 +31197,7 @@ namespace Project1
             }
 
             // イベント専用アイテムは装備個所を消費しない
-            if (itm.Class_Renamed() == "固定")
+            if (itm.Class() == "固定")
             {
                 if (itm.IsFeatureAvailable("非表示"))
                 {
@@ -31561,7 +31561,7 @@ namespace Project1
 
 
             // 装備されたアイテムは常に存在するとみなす
-            if (Status_Renamed != "破棄")
+            if (Status != "破棄")
             {
                 itm.Exist = true;
             }
@@ -31686,7 +31686,7 @@ namespace Project1
                             var withBlock = SRC.PList.Item(itm.FeatureData(argIndex1));
                             withBlock.Alive = false;
                             // UPGRADE_NOTE: オブジェクト PList.Item().Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                            withBlock.Unit_Renamed = null;
+                            withBlock.Unit = null;
                         }
                     }
                 }
@@ -31775,7 +31775,7 @@ namespace Project1
                                             var withBlock1 = SRC.PList.Item(itm.FeatureData("追加パイロット"));
                                             withBlock1.Alive = false;
                                             // UPGRADE_NOTE: オブジェクト PList.Item().Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                                            withBlock1.Unit_Renamed = null;
+                                            withBlock1.Unit = null;
                                         }
                                     }
                                 }
@@ -31810,7 +31810,7 @@ namespace Project1
                                             var withBlock2 = SRC.PList.Item(itm.FeatureData("追加パイロット"));
                                             withBlock2.Alive = false;
                                             // UPGRADE_NOTE: オブジェクト PList.Item().Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                                            withBlock2.Unit_Renamed = null;
+                                            withBlock2.Unit = null;
                                         }
                                     }
                                 }
@@ -31894,7 +31894,7 @@ namespace Project1
                                                 var withBlock3 = SRC.PList.Item(itm.FeatureData(argIndex19));
                                                 withBlock3.Alive = false;
                                                 // UPGRADE_NOTE: オブジェクト PList.Item().Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                                                withBlock3.Unit_Renamed = null;
+                                                withBlock3.Unit = null;
                                             }
                                         }
                                     }
@@ -31935,7 +31935,7 @@ namespace Project1
                                             var withBlock4 = SRC.PList.Item(itm.FeatureData("追加パイロット"));
                                             withBlock4.Alive = false;
                                             // UPGRADE_NOTE: オブジェクト PList.Item().Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                                            withBlock4.Unit_Renamed = null;
+                                            withBlock4.Unit = null;
                                         }
                                     }
                                 }
@@ -32097,7 +32097,7 @@ namespace Project1
             }
 
             // アイテムのクラスを記録
-            iclass = it.Class_Renamed();
+            iclass = it.Class();
 
             // 汎用ならばユニットの種類に関わらず装備可能
             if (iclass == "汎用")
@@ -32601,7 +32601,7 @@ namespace Project1
                 if (Expression.IsLocalVariableDefined(buf))
                 {
                     // UPGRADE_WARNING: オブジェクト LocalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    selected_msg = Conversions.ToString(Event_Renamed.LocalVariableList[buf].StringValue);
+                    selected_msg = Conversions.ToString(Event.LocalVariableList[buf].StringValue);
                     selected_situation = situations[i];
                     Expression.UndefineVariable(buf);
                     break;
@@ -32613,7 +32613,7 @@ namespace Project1
                     if (Expression.IsLocalVariableDefined(buf))
                     {
                         // UPGRADE_WARNING: オブジェクト LocalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                        selected_msg = Conversions.ToString(Event_Renamed.LocalVariableList[buf].StringValue);
+                        selected_msg = Conversions.ToString(Event.LocalVariableList[buf].StringValue);
                         selected_situation = "攻撃";
                         Expression.UndefineVariable(buf);
                         break;
@@ -32626,7 +32626,7 @@ namespace Project1
                     if (Expression.IsLocalVariableDefined(buf))
                     {
                         // UPGRADE_WARNING: オブジェクト LocalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                        selected_msg = Conversions.ToString(Event_Renamed.LocalVariableList[buf].StringValue);
+                        selected_msg = Conversions.ToString(Event.LocalVariableList[buf].StringValue);
                         selected_situation = "攻撃(反撃)";
                         Expression.UndefineVariable(buf);
                         break;
@@ -34998,19 +34998,19 @@ namespace Project1
             is_message_form_opened = My.MyProject.Forms.frmMessage.Visible;
 
             // オブジェクト色等を記録しておく
-            prev_obj_color = Event_Renamed.ObjColor;
-            prev_obj_fill_color = Event_Renamed.ObjFillColor;
-            prev_obj_fill_style = Event_Renamed.ObjFillStyle;
-            prev_obj_draw_width = Event_Renamed.ObjDrawWidth;
-            prev_obj_draw_option = Event_Renamed.ObjDrawOption;
+            prev_obj_color = Event.ObjColor;
+            prev_obj_fill_color = Event.ObjFillColor;
+            prev_obj_fill_style = Event.ObjFillStyle;
+            prev_obj_draw_width = Event.ObjDrawWidth;
+            prev_obj_draw_option = Event.ObjDrawOption;
 
             // オブジェクト色等をデフォルトに戻す
-            Event_Renamed.ObjColor = ColorTranslator.ToOle(Color.White);
-            Event_Renamed.ObjFillColor = ColorTranslator.ToOle(Color.White);
+            Event.ObjColor = ColorTranslator.ToOle(Color.White);
+            Event.ObjFillColor = ColorTranslator.ToOle(Color.White);
             // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-            Event_Renamed.ObjFillStyle = vbFSTransparent;
-            Event_Renamed.ObjDrawWidth = 1;
-            Event_Renamed.ObjDrawOption = "";
+            Event.ObjFillStyle = vbFSTransparent;
+            Event.ObjDrawWidth = 1;
+            Event.ObjDrawOption = "";
 
             // 検索するシチュエーションが武器名かどうか調べる
             var loopTo1 = CountWeapon();
@@ -35035,16 +35035,16 @@ namespace Project1
             }
 
             // イベント用ターゲットを記録しておく
-            prev_selected_target = Event_Renamed.SelectedTargetForEvent;
+            prev_selected_target = Event.SelectedTargetForEvent;
 
             // 攻撃でもアビリティでもない場合、ターゲットが設定されていなければ
             // 自分自身をターゲットに設定する
             // (発動アニメではアニメ表示にSelectedTargetForEventが使われるため)
             if (!is_weapon & !is_ability)
             {
-                if (Event_Renamed.SelectedTargetForEvent is null)
+                if (Event.SelectedTargetForEvent is null)
                 {
-                    Event_Renamed.SelectedTargetForEvent = this;
+                    Event.SelectedTargetForEvent = this;
                 }
             }
 
@@ -35267,25 +35267,25 @@ namespace Project1
             }
 
             // オブジェクト色等を元に戻す
-            Event_Renamed.ObjColor = prev_obj_color;
-            Event_Renamed.ObjFillColor = prev_obj_fill_color;
-            Event_Renamed.ObjFillStyle = prev_obj_fill_style;
-            Event_Renamed.ObjDrawWidth = prev_obj_draw_width;
-            Event_Renamed.ObjDrawOption = prev_obj_draw_option;
+            Event.ObjColor = prev_obj_color;
+            Event.ObjFillColor = prev_obj_fill_color;
+            Event.ObjFillStyle = prev_obj_fill_style;
+            Event.ObjDrawWidth = prev_obj_draw_width;
+            Event.ObjDrawOption = prev_obj_draw_option;
 
             // イベント用ターゲットを元に戻す
-            Event_Renamed.SelectedTargetForEvent = prev_selected_target;
+            Event.SelectedTargetForEvent = prev_selected_target;
             return;
             ErrorHandler:
             ;
-            if (Strings.Len(Event_Renamed.EventErrorMessage) > 0)
+            if (Strings.Len(Event.EventErrorMessage) > 0)
             {
-                Event_Renamed.DisplayEventErrorMessage(Event_Renamed.CurrentLineNum, Event_Renamed.EventErrorMessage);
-                Event_Renamed.EventErrorMessage = "";
+                Event.DisplayEventErrorMessage(Event.CurrentLineNum, Event.EventErrorMessage);
+                Event.EventErrorMessage = "";
             }
             else
             {
-                Event_Renamed.DisplayEventErrorMessage(Event_Renamed.CurrentLineNum, "");
+                Event.DisplayEventErrorMessage(Event.CurrentLineNum, "");
             }
         }
 
@@ -35641,19 +35641,19 @@ namespace Project1
             is_message_form_opened = My.MyProject.Forms.frmMessage.Visible;
 
             // オブジェクト色等を記録しておく
-            prev_obj_color = Event_Renamed.ObjColor;
-            prev_obj_fill_color = Event_Renamed.ObjFillColor;
-            prev_obj_fill_style = Event_Renamed.ObjFillStyle;
-            prev_obj_draw_width = Event_Renamed.ObjDrawWidth;
-            prev_obj_draw_option = Event_Renamed.ObjDrawOption;
+            prev_obj_color = Event.ObjColor;
+            prev_obj_fill_color = Event.ObjFillColor;
+            prev_obj_fill_style = Event.ObjFillStyle;
+            prev_obj_draw_width = Event.ObjDrawWidth;
+            prev_obj_draw_option = Event.ObjDrawOption;
 
             // オブジェクト色等をデフォルトに戻す
-            Event_Renamed.ObjColor = ColorTranslator.ToOle(Color.White);
-            Event_Renamed.ObjFillColor = ColorTranslator.ToOle(Color.White);
+            Event.ObjColor = ColorTranslator.ToOle(Color.White);
+            Event.ObjFillColor = ColorTranslator.ToOle(Color.White);
             // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-            Event_Renamed.ObjFillStyle = vbFSTransparent;
-            Event_Renamed.ObjDrawWidth = 1;
-            Event_Renamed.ObjDrawOption = "";
+            Event.ObjFillStyle = vbFSTransparent;
+            Event.ObjDrawWidth = 1;
+            Event.ObjDrawOption = "";
 
             // 検索するシチュエーションが武器名かどうか調べる
             var loopTo = CountWeapon();
@@ -35678,16 +35678,16 @@ namespace Project1
             }
 
             // イベント用ターゲットを記録しておく
-            prev_selected_target = Event_Renamed.SelectedTargetForEvent;
+            prev_selected_target = Event.SelectedTargetForEvent;
 
             // 攻撃でもアビリティでもない場合、ターゲットが設定されていなければ
             // 自分自身をターゲットに設定する
             // (発動アニメではアニメ表示にSelectedTargetForEventが使われるため)
             if (!is_weapon & !is_ability)
             {
-                if (Event_Renamed.SelectedTargetForEvent is null)
+                if (Event.SelectedTargetForEvent is null)
                 {
-                    Event_Renamed.SelectedTargetForEvent = this;
+                    Event.SelectedTargetForEvent = this;
                 }
             }
 
@@ -35906,7 +35906,7 @@ namespace Project1
                 }
 
                 // サブルーチンが見つからなかった
-                if (Event_Renamed.FindNormalLabel(sname) == 0)
+                if (Event.FindNormalLabel(sname) == 0)
                 {
                     if (in_bulk)
                     {
@@ -35999,9 +35999,9 @@ namespace Project1
                 GUI.IsPictureDrawn = false;
 
                 // 戦闘アニメ再生
-                Event_Renamed.SaveBasePoint();
+                Event.SaveBasePoint();
                 Expression.CallFunction("Call(" + sname + ")", Expression.ValueType.StringType, buf, ret);
-                Event_Renamed.RestoreBasePoint();
+                Event.RestoreBasePoint();
 
                 // 画像を消去しておく
                 if (GUI.IsPictureDrawn & Strings.LCase(buf) != "keep")
@@ -36044,25 +36044,25 @@ namespace Project1
             }
 
             // オブジェクト色等を元に戻す
-            Event_Renamed.ObjColor = prev_obj_color;
-            Event_Renamed.ObjFillColor = prev_obj_fill_color;
-            Event_Renamed.ObjFillStyle = prev_obj_fill_style;
-            Event_Renamed.ObjDrawWidth = prev_obj_draw_width;
-            Event_Renamed.ObjDrawOption = prev_obj_draw_option;
+            Event.ObjColor = prev_obj_color;
+            Event.ObjFillColor = prev_obj_fill_color;
+            Event.ObjFillStyle = prev_obj_fill_style;
+            Event.ObjDrawWidth = prev_obj_draw_width;
+            Event.ObjDrawOption = prev_obj_draw_option;
 
             // イベント用ターゲットを元に戻す
-            Event_Renamed.SelectedTargetForEvent = prev_selected_target;
+            Event.SelectedTargetForEvent = prev_selected_target;
             return;
             ErrorHandler:
             ;
-            if (Strings.Len(Event_Renamed.EventErrorMessage) > 0)
+            if (Strings.Len(Event.EventErrorMessage) > 0)
             {
-                Event_Renamed.DisplayEventErrorMessage(Event_Renamed.CurrentLineNum, Event_Renamed.EventErrorMessage);
-                Event_Renamed.EventErrorMessage = "";
+                Event.DisplayEventErrorMessage(Event.CurrentLineNum, Event.EventErrorMessage);
+                Event.EventErrorMessage = "";
             }
             else
             {
-                Event_Renamed.DisplayEventErrorMessage(Event_Renamed.CurrentLineNum, "");
+                Event.DisplayEventErrorMessage(Event.CurrentLineNum, "");
             }
         }
 
@@ -36218,7 +36218,7 @@ namespace Project1
             // 空いた場所がなかった？
             if (x == 0 & y == 0)
             {
-                Status_Renamed = "待機";
+                Status = "待機";
                 return;
             }
 
@@ -36244,7 +36244,7 @@ namespace Project1
             }
 
             // 格納されていた場合はあらかじめ降ろしておく
-            if (Status_Renamed == "格納")
+            if (Status == "格納")
             {
                 foreach (Unit u in SRC.UList)
                 {
@@ -36266,13 +36266,13 @@ namespace Project1
             }
 
             // Statusを更新
-            Status_Renamed = "出撃";
+            Status = "出撃";
             var loopTo7 = CountOtherForm();
             for (i = 1; i <= loopTo7; i++)
             {
                 Unit localOtherForm() { object argIndex1 = i; var ret = OtherForm(argIndex1); return ret; }
 
-                localOtherForm().Status_Renamed = "他形態";
+                localOtherForm().Status = "他形態";
             }
 
             // ユニットのいる地形は？
@@ -36971,7 +36971,7 @@ namespace Project1
             int i, j;
 
             // 母艦に乗っていた場合は降りておく
-            if (Status_Renamed == "格納")
+            if (Status == "格納")
             {
                 foreach (Unit currentU in SRC.UList)
                 {
@@ -36994,7 +36994,7 @@ namespace Project1
             }
 
             // 出撃している場合は画面上からユニットを消去
-            if (Status_Renamed == "出撃" | Status_Renamed == "破壊")
+            if (Status == "出撃" | Status == "破壊")
             {
                 if (ReferenceEquals(Map.MapDataForUnit[x, y], this))
                 {
@@ -37013,9 +37013,9 @@ namespace Project1
                 }
             }
 
-            if (Status_Renamed == "出撃" | Status_Renamed == "格納")
+            if (Status == "出撃" | Status == "格納")
             {
-                Status_Renamed = "待機";
+                Status = "待機";
             }
 
             // 破壊をキャンセル状態は解除
@@ -37028,7 +37028,7 @@ namespace Project1
             foreach (Unit currentU1 in colUnitOnBoard)
             {
                 u = currentU1;
-                u.Status_Renamed = "待機";
+                u.Status = "待機";
                 colUnitOnBoard.Remove(u.ID);
             }
 
@@ -37054,7 +37054,7 @@ namespace Project1
             // Landコマンドで着艦した場合
             if (is_event)
             {
-                if (Status_Renamed == "出撃" | Status_Renamed == "格納")
+                if (Status == "出撃" | Status == "格納")
                 {
                     Escape();
                 }
@@ -37063,7 +37063,7 @@ namespace Project1
                     // 出撃のための前準備
 
                     // ユニットが存在する位置を決定
-                    if (u.Status_Renamed == "出撃")
+                    if (u.Status == "出撃")
                     {
                         tclass = Map.TerrainClass(u.x, u.y);
                     }
@@ -37179,7 +37179,7 @@ namespace Project1
             // 座標を母艦に合わせる
             x = u.x;
             y = u.y;
-            Status_Renamed = "格納";
+            Status = "格納";
             if (Area != "宇宙" & Area != "空中")
             {
                 Area = "地上";
@@ -37279,10 +37279,10 @@ namespace Project1
             hp_ratio = 100 * HP / (double)MaxHP;
             en_ratio = 100 * EN / (double)MaxEN;
             u = OtherForm(new_form);
-            u.Status_Renamed = Status_Renamed;
-            if (Status_Renamed != "破棄")
+            u.Status = Status;
+            if (Status != "破棄")
             {
-                Status_Renamed = "他形態";
+                Status = "他形態";
             }
 
             // 制御不可能な形態から元に戻る場合は暴走を解除
@@ -37593,7 +37593,7 @@ namespace Project1
                 {
                     Pilot localPilot4() { object argIndex1 = i; var ret = withBlock.Pilot(argIndex1); return ret; }
 
-                    localPilot4().Unit_Renamed = u;
+                    localPilot4().Unit = u;
                 }
 
                 var loopTo21 = withBlock.CountSupport();
@@ -37601,7 +37601,7 @@ namespace Project1
                 {
                     Pilot localSupport1() { object argIndex1 = i; var ret = withBlock.Support(argIndex1); return ret; }
 
-                    localSupport1().Unit_Renamed = u;
+                    localSupport1().Unit = u;
                     Pilot localSupport4() { object argIndex1 = i; var ret = withBlock.Support(argIndex1); return ret; }
 
                     if (localSupport4().SupportIndex > 0)
@@ -37745,7 +37745,7 @@ namespace Project1
                     withBlock.DeleteCondition("残り時間");
                 }
 
-                switch (withBlock.Status_Renamed ?? "")
+                switch (withBlock.Status ?? "")
                 {
                     case "出撃":
                         {
@@ -37823,7 +37823,7 @@ namespace Project1
             string prev_status;
             double hp_ratio = default, en_ratio = default;
             string fdata;
-            prev_status = Status_Renamed;
+            prev_status = Status;
             if (string.IsNullOrEmpty(uname))
             {
                 // 合体形態が指定されてなければその場所にいるユニットと２体合体
@@ -37977,7 +37977,7 @@ namespace Project1
             string BGM;
             if (!is_event)
             {
-                if (Status_Renamed == "出撃")
+                if (Status == "出撃")
                 {
                     // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
                     if (u.IsFeatureAvailable("追加パイロット"))
@@ -38159,11 +38159,11 @@ namespace Project1
                 // マップ上から撤退させる
                 {
                     var withBlock3 = rarray[i].CurrentForm();
-                    switch (withBlock3.Status_Renamed ?? "")
+                    switch (withBlock3.Status ?? "")
                     {
                         case "出撃":
                             {
-                                withBlock3.Status_Renamed = "待機";
+                                withBlock3.Status = "待機";
                                 // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
                                 Map.MapDataForUnit[withBlock3.x, withBlock3.y] = null;
                                 GUI.EraseUnitBitmap(withBlock3.x, withBlock3.y);
@@ -38172,7 +38172,7 @@ namespace Project1
 
                         case "格納":
                             {
-                                withBlock3.Status_Renamed = "待機";
+                                withBlock3.Status = "待機";
                                 foreach (Unit eu in SRC.UList)
                                 {
                                     var loopTo18 = eu.CountUnitOnBoard();
@@ -38206,11 +38206,11 @@ namespace Project1
                     var withBlock4 = rarray[i];
                     if (i == 1)
                     {
-                        withBlock4.Status_Renamed = "旧主形態";
+                        withBlock4.Status = "旧主形態";
                     }
                     else
                     {
-                        withBlock4.Status_Renamed = "旧形態";
+                        withBlock4.Status = "旧形態";
                     }
 
                     hp_ratio = hp_ratio + 100 * withBlock4.HP / (double)withBlock4.MaxHP;
@@ -38506,7 +38506,7 @@ namespace Project1
             }
             else
             {
-                u.Status_Renamed = prev_status;
+                u.Status = prev_status;
             }
 
             // 分離ユニットの座標を合体後のユニットの座標に合わせる
@@ -38522,8 +38522,8 @@ namespace Project1
         }
 
         // 分離
-        // UPGRADE_NOTE: Split は Split_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        public void Split_Renamed()
+        // UPGRADE_NOTE: Split は Split にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+        public void Split()
         {
             int k, i, j, l;
             int idx, n;
@@ -38536,7 +38536,7 @@ namespace Project1
             en_ratio = 100 * EN / (double)MaxEN;
 
             // まずは撤退
-            if (Status_Renamed == "出撃")
+            if (Status == "出撃")
             {
                 // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
                 Map.MapDataForUnit[x, y] = null;
@@ -38561,7 +38561,7 @@ namespace Project1
             var loopTo1 = Information.UBound(uarray);
             for (i = 1; i <= loopTo1; i++)
             {
-                if (uarray[i].Status_Renamed == "旧主形態")
+                if (uarray[i].Status == "旧主形態")
                 {
                     break;
                 }
@@ -38652,7 +38652,7 @@ namespace Project1
                         {
                             if (withBlock1.IsFeatureAvailable("召喚ユニット"))
                             {
-                                if (Status_Renamed == "出撃" | Status_Renamed == "格納")
+                                if (Status == "出撃" | Status == "格納")
                                 {
                                     pname = withBlock1.FeatureData("追加パイロット");
                                     PilotData localItem1() { object argIndex1 = pname; var ret = SRC.PDList.Item(argIndex1); return ret; }
@@ -38822,8 +38822,8 @@ namespace Project1
                     withBlock1.SyncBullet();
 
                     // 出撃 or 格納？
-                    withBlock1.Status_Renamed = Status_Renamed;
-                    switch (Status_Renamed ?? "")
+                    withBlock1.Status = Status;
+                    switch (Status ?? "")
                     {
                         case "出撃":
                             {
@@ -38926,7 +38926,7 @@ namespace Project1
             }
 
             // 格納されている場合は母艦から自分のエントリーを外しておく
-            if (Status_Renamed == "格納")
+            if (Status == "格納")
             {
                 foreach (Unit u in SRC.UList)
                 {
@@ -38947,7 +38947,7 @@ namespace Project1
                 ;
             }
 
-            Status_Renamed = "他形態";
+            Status = "他形態";
 
             // ユニットステータスコマンドの場合以外は制限時間付き合体ユニットは
             // ２度とその形態を利用できない
@@ -39359,7 +39359,7 @@ namespace Project1
                         GUI.Sleep(GUI.MessageWait);
                     }
 
-                    Event_Renamed.HandleEvent("レベルアップ", withBlock1.ID);
+                    Event.HandleEvent("レベルアップ", withBlock1.ID);
                     SRC.PList.UpdateSupportMod(this);
                 }
                 else if (GetExpRet > 0)
@@ -39417,7 +39417,7 @@ namespace Project1
             }
 
             // 出撃中？
-            if (Status_Renamed == "出撃")
+            if (Status == "出撃")
             {
                 // 自分の陣営のステージなら行動可能に
                 if ((Party ?? "") == (SRC.Stage ?? ""))
@@ -39492,7 +39492,7 @@ namespace Project1
             int i, j;
             string pname;
             HP = 0;
-            Status_Renamed = "破壊";
+            Status = "破壊";
 
             // 破壊をキャンセルし、破壊イベント内で処理をしたい場合
             if (IsConditionSatisfied("破壊キャンセル"))
@@ -39555,11 +39555,11 @@ namespace Project1
                     {
                         if ((p.Name ?? "") == (pname ?? "") | (p.get_Nickname(false) ?? "") == (pname ?? ""))
                         {
-                            if (p.Unit_Renamed is object)
+                            if (p.Unit is object)
                             {
-                                if (p.Unit_Renamed.Status_Renamed == "出撃" | p.Unit_Renamed.Status_Renamed == "格納")
+                                if (p.Unit.Status == "出撃" | p.Unit.Status == "格納")
                                 {
-                                    p.Unit_Renamed.Die(true);
+                                    p.Unit.Die(true);
                                 }
                             }
                         }
@@ -39659,7 +39659,7 @@ namespace Project1
             {
                 u = Commands.SelectedUnit;
                 Commands.SelectedUnit = this;
-                Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+                Event.HandleEvent("破壊", MainPilot().ID);
                 Commands.SelectedUnit = u;
                 if (SRC.IsScenarioFinished)
                 {
@@ -39788,15 +39788,15 @@ namespace Project1
                             u = Commands.SelectedUnit;
                             Commands.SelectedUnit = withBlock.CurrentForm();
                             Commands.SelectedTarget = this;
-                            if (withBlock.Status_Renamed == "破壊")
+                            if (withBlock.Status == "破壊")
                             {
                                 GUI.DisplaySysMessage(withBlock.Nickname + "は破壊された");
-                                Event_Renamed.HandleEvent("破壊", withBlock.MainPilot().ID);
+                                Event.HandleEvent("破壊", withBlock.MainPilot().ID);
                             }
                             else
                             {
                                 GUI.DisplaySysMessage(withBlock.Nickname + "は" + tdmg + "のダメージを受けた。;" + "残りＨＰは" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.HP) + "（損傷率 = " + 100 * (withBlock.MaxHP - withBlock.HP) / withBlock.MaxHP + "％）");
-                                Event_Renamed.HandleEvent("損傷率", withBlock.MainPilot().ID, 100 - withBlock.HP * 100 / withBlock.MaxHP);
+                                Event.HandleEvent("損傷率", withBlock.MainPilot().ID, 100 - withBlock.HP * 100 / withBlock.MaxHP);
                             }
 
                             Commands.SelectedUnit = u;
@@ -40137,7 +40137,7 @@ namespace Project1
                         {
                             GUI.Center(x, y);
                             withBlock4.UseSpecialPower(spname, 0d);
-                            if (Status_Renamed == "他形態")
+                            if (Status == "他形態")
                             {
                                 return;
                             }
@@ -40156,7 +40156,7 @@ namespace Project1
                     {
                         GUI.Center(x, y);
                         withBlock4.UseSpecialPower(spname, 0d);
-                        if (Status_Renamed == "他形態")
+                        if (Status == "他形態")
                         {
                             return;
                         }
@@ -40187,7 +40187,7 @@ namespace Project1
                             {
                                 GUI.Center(x, y);
                                 withBlock5.UseSpecialPower(spname, 0d);
-                                if (Status_Renamed == "他形態")
+                                if (Status == "他形態")
                                 {
                                     return;
                                 }
@@ -40220,7 +40220,7 @@ namespace Project1
                             {
                                 GUI.Center(x, y);
                                 withBlock6.UseSpecialPower(spname, 0d);
-                                if (Status_Renamed == "他形態")
+                                if (Status == "他形態")
                                 {
                                     return;
                                 }
@@ -40252,7 +40252,7 @@ namespace Project1
                             {
                                 GUI.Center(x, y);
                                 withBlock7.UseSpecialPower(spname, 0d);
-                                if (Status_Renamed == "他形態")
+                                if (Status == "他形態")
                                 {
                                     return;
                                 }
@@ -40349,7 +40349,7 @@ namespace Project1
                 GUI.OpenMessageForm(u1: null, u2: null);
                 GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
                 GUI.CloseMessageForm();
-                Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+                Event.HandleEvent("破壊", MainPilot().ID);
             }
 
             // 死の宣告
@@ -40394,7 +40394,7 @@ namespace Project1
             }
 
             // 付加された移動能力が切れた場合の処理
-            if (Status_Renamed == "出撃" & !string.IsNullOrEmpty(Map.MapFileName))
+            if (Status == "出撃" & !string.IsNullOrEmpty(Map.MapFileName))
             {
                 switch (Area ?? "")
                 {
@@ -40409,7 +40409,7 @@ namespace Project1
                                     GUI.OpenMessageForm(u1: null, u2: null);
                                     GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
                                     GUI.CloseMessageForm();
-                                    Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+                                    Event.HandleEvent("破壊", MainPilot().ID);
                                     return;
                                 }
                                 // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -40432,7 +40432,7 @@ namespace Project1
                                     GUI.OpenMessageForm(u1: null, u2: null);
                                     GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
                                     GUI.CloseMessageForm();
-                                    Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+                                    Event.HandleEvent("破壊", MainPilot().ID);
                                     return;
                                 }
                                 // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -40455,7 +40455,7 @@ namespace Project1
                                     GUI.OpenMessageForm(u1: null, u2: null);
                                     GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
                                     GUI.CloseMessageForm();
-                                    Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+                                    Event.HandleEvent("破壊", MainPilot().ID);
                                     return;
                                 }
                                 // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -40478,7 +40478,7 @@ namespace Project1
                                     GUI.OpenMessageForm(u1: null, u2: null);
                                     GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
                                     GUI.CloseMessageForm();
-                                    Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+                                    Event.HandleEvent("破壊", MainPilot().ID);
                                     return;
                                 }
                                 // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -40492,7 +40492,7 @@ namespace Project1
                 }
             }
 
-            if (Status_Renamed == "格納")
+            if (Status == "格納")
             {
                 // 格納時は回復率ＵＰ
                 // MOD START MARGE
@@ -41403,7 +41403,7 @@ namespace Project1
                         GUI.OpenMessageForm(u1: null, u2: null);
                         GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
                         GUI.CloseMessageForm();
-                        Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+                        Event.HandleEvent("破壊", MainPilot().ID);
                         return;
                     }
                 }
@@ -41509,7 +41509,7 @@ namespace Project1
                         GUI.OpenMessageForm(u1: null, u2: null);
                         GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
                         GUI.CloseMessageForm();
-                        Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+                        Event.HandleEvent("破壊", MainPilot().ID);
                         return;
                     }
                 }
@@ -41573,7 +41573,7 @@ namespace Project1
                     }
 
                     // 分離
-                    Split_Renamed();
+                    Split();
                 }
                 else
                 {
@@ -41584,7 +41584,7 @@ namespace Project1
                     GUI.DisplaySysMessage(Nickname + "は制限時間切れのため退却します。");
                     GUI.CloseMessageForm();
                     Escape();
-                    Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+                    Event.HandleEvent("破壊", MainPilot().ID);
                     return;
                 }
             }
@@ -41605,7 +41605,7 @@ namespace Project1
 
             // ハイパーモードが自動発動するか判定
 
-            if (Status_Renamed != "出撃")
+            if (Status != "出撃")
             {
                 return;
             }
@@ -41775,11 +41775,11 @@ namespace Project1
             // 特殊効果
             Commands.SaveSelections();
             Commands.SelectedUnit = this;
-            Event_Renamed.SelectedUnitForEvent = this;
+            Event.SelectedUnitForEvent = this;
             // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             Commands.SelectedTarget = null;
             // UPGRADE_NOTE: オブジェクト SelectedTargetForEvent をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            Event_Renamed.SelectedTargetForEvent = null;
+            Event.SelectedTargetForEvent = null;
             bool localIsAnimationDefined() { string argmain_situation = "ハイパーモード(" + uname + ")"; string argsub_situation = ""; var ret = IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
             bool localIsAnimationDefined1() { object argIndex1 = "ハイパーモード"; string argmain_situation = "ハイパーモード(" + FeatureName(argIndex1) + ")"; string argsub_situation = ""; var ret = IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
@@ -41837,11 +41837,11 @@ namespace Project1
                 }
             }
 
-            if (Event_Renamed.SelectedUnitForEvent is object)
+            if (Event.SelectedUnitForEvent is object)
             {
-                if ((ID ?? "") == (Event_Renamed.SelectedUnitForEvent.ID ?? ""))
+                if ((ID ?? "") == (Event.SelectedUnitForEvent.ID ?? ""))
                 {
-                    Event_Renamed.SelectedUnitForEvent = CurrentForm();
+                    Event.SelectedUnitForEvent = CurrentForm();
                 }
             }
 
@@ -41853,18 +41853,18 @@ namespace Project1
                 }
             }
 
-            if (Event_Renamed.SelectedTargetForEvent is object)
+            if (Event.SelectedTargetForEvent is object)
             {
-                if ((ID ?? "") == (Event_Renamed.SelectedTargetForEvent.ID ?? ""))
+                if ((ID ?? "") == (Event.SelectedTargetForEvent.ID ?? ""))
                 {
-                    Event_Renamed.SelectedTargetForEvent = CurrentForm();
+                    Event.SelectedTargetForEvent = CurrentForm();
                 }
             }
 
             // 変形イベント
             {
                 var withBlock2 = CurrentForm();
-                Event_Renamed.HandleEvent("変形", withBlock2.MainPilot().ID, withBlock2.Name);
+                Event.HandleEvent("変形", withBlock2.MainPilot().ID, withBlock2.Name);
             }
         }
 
@@ -41878,7 +41878,7 @@ namespace Project1
 
             // ノーマルモードが自動発動するか判定
 
-            if (Status_Renamed != "出撃")
+            if (Status != "出撃")
             {
                 return CheckAutoNormalModeRet;
             }
@@ -41989,11 +41989,11 @@ namespace Project1
             // 特殊効果
             Commands.SaveSelections();
             Commands.SelectedUnit = this;
-            Event_Renamed.SelectedUnitForEvent = this;
+            Event.SelectedUnitForEvent = this;
             // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             Commands.SelectedTarget = null;
             // UPGRADE_NOTE: オブジェクト SelectedTargetForEvent をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            Event_Renamed.SelectedTargetForEvent = null;
+            Event.SelectedTargetForEvent = null;
             bool localIsAnimationDefined() { string argmain_situation = "ノーマルモード(" + uname + ")"; string argsub_situation = ""; var ret = IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
             bool localIsSpecialEffectDefined() { string argmain_situation = "ノーマルモード(" + Name + "=>" + uname + ")"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
@@ -42039,11 +42039,11 @@ namespace Project1
                 }
             }
 
-            if (Event_Renamed.SelectedUnitForEvent is object)
+            if (Event.SelectedUnitForEvent is object)
             {
-                if ((ID ?? "") == (Event_Renamed.SelectedUnitForEvent.ID ?? ""))
+                if ((ID ?? "") == (Event.SelectedUnitForEvent.ID ?? ""))
                 {
-                    Event_Renamed.SelectedUnitForEvent = CurrentForm();
+                    Event.SelectedUnitForEvent = CurrentForm();
                 }
             }
 
@@ -42055,11 +42055,11 @@ namespace Project1
                 }
             }
 
-            if (Event_Renamed.SelectedTargetForEvent is object)
+            if (Event.SelectedTargetForEvent is object)
             {
-                if ((ID ?? "") == (Event_Renamed.SelectedTargetForEvent.ID ?? ""))
+                if ((ID ?? "") == (Event.SelectedTargetForEvent.ID ?? ""))
                 {
-                    Event_Renamed.SelectedTargetForEvent = CurrentForm();
+                    Event.SelectedTargetForEvent = CurrentForm();
                 }
             }
 
@@ -42076,7 +42076,7 @@ namespace Project1
             // 変形イベント
             {
                 var withBlock1 = CurrentForm();
-                Event_Renamed.HandleEvent("変形", withBlock1.MainPilot().ID, withBlock1.Name);
+                Event.HandleEvent("変形", withBlock1.MainPilot().ID, withBlock1.Name);
             }
 
             return CheckAutoNormalModeRet;
@@ -42084,8 +42084,8 @@ namespace Project1
 
 
         // データをリセット
-        // UPGRADE_NOTE: Reset は Reset_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        public void Reset_Renamed()
+        // UPGRADE_NOTE: Reset は Reset にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+        public void Reset()
         {
             int i;
             string pname;
@@ -42563,13 +42563,13 @@ namespace Project1
             {
                 {
                     var withBlock = Servant(1).CurrentForm();
-                    switch (withBlock.Status_Renamed ?? "")
+                    switch (withBlock.Status ?? "")
                     {
                         case "出撃":
                         case "格納":
                             {
                                 withBlock.Escape();
-                                withBlock.Status_Renamed = "破棄";
+                                withBlock.Status = "破棄";
                                 break;
                             }
 
@@ -42588,17 +42588,17 @@ namespace Project1
                                         {
                                             Unit localItem() { object argIndex1 = uname; var ret = SRC.UList.Item(argIndex1); return ret; }
 
-                                            localItem().CurrentForm().Split_Renamed();
+                                            localItem().CurrentForm().Split();
                                         }
                                     }
                                 }
 
                                 {
                                     var withBlock1 = withBlock.CurrentForm();
-                                    if (withBlock1.Status_Renamed == "出撃" | withBlock1.Status_Renamed == "格納")
+                                    if (withBlock1.Status == "出撃" | withBlock1.Status == "格納")
                                     {
                                         withBlock1.Escape();
-                                        withBlock1.Status_Renamed = "破棄";
+                                        withBlock1.Status = "破棄";
                                     }
                                 }
 
@@ -42730,7 +42730,7 @@ namespace Project1
             int i;
             FileSystem.WriteLine(SRC.SaveDataFileNumber, Name, ID, Party0);
             FileSystem.WriteLine(SRC.SaveDataFileNumber, Rank, BossRank, x, y);
-            FileSystem.WriteLine(SRC.SaveDataFileNumber, Area, UsedAction, Mode, Status_Renamed);
+            FileSystem.WriteLine(SRC.SaveDataFileNumber, Area, UsedAction, Mode, Status);
             if (Master is object)
             {
                 FileSystem.WriteLine(SRC.SaveDataFileNumber, Master.ID);
@@ -42845,8 +42845,8 @@ namespace Project1
             var sbuf = default(string);
             var ibuf = default;
             var lbuf = default;
-            // UPGRADE_NOTE: ctype は ctype_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-            string ctype_Renamed = default, cdata = default;
+            // UPGRADE_NOTE: ctype は ctype にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+            string ctype = default, cdata = default;
             int cltime;
             double clevel;
             int num = default, i, ret;
@@ -42878,7 +42878,7 @@ namespace Project1
             FileSystem.Input(SRC.SaveDataFileNumber, sbuf);
             strMode = sbuf;
             FileSystem.Input(SRC.SaveDataFileNumber, sbuf);
-            Status_Renamed = sbuf;
+            Status = sbuf;
 
             // Master, Summoner
             FileSystem.Input(SRC.SaveDataFileNumber, sbuf);
@@ -42937,7 +42937,7 @@ namespace Project1
                 if (!string.IsNullOrEmpty(sbuf))
                 {
                     pltAdditionalSupport = SRC.PList.Item(sbuf);
-                    pltAdditionalSupport.Unit_Renamed = this;
+                    pltAdditionalSupport.Unit = this;
                     pltAdditionalSupport.IsAdditionalSupport = true;
                 }
             }
@@ -42959,9 +42959,9 @@ namespace Project1
             var loopTo6 = num;
             for (i = 1; i <= loopTo6; i++)
             {
-                FileSystem.Input(SRC.SaveDataFileNumber, ctype_Renamed);
+                FileSystem.Input(SRC.SaveDataFileNumber, ctype);
                 FileSystem.Input(SRC.SaveDataFileNumber, cdata);
-                MakeSpecialPowerInEffect(ctype_Renamed, cdata);
+                MakeSpecialPowerInEffect(ctype, cdata);
             }
 
             // Condition
@@ -42975,10 +42975,10 @@ namespace Project1
                 // 正しく行えないので手動でパーシング
 
                 ret = Strings.InStr(sbuf, ",");
-                ctype_Renamed = Strings.Left(sbuf, ret - 1);
-                if (Strings.Left(ctype_Renamed, 1) == "\"")
+                ctype = Strings.Left(sbuf, ret - 1);
+                if (Strings.Left(ctype, 1) == "\"")
                 {
-                    ctype_Renamed = Strings.Mid(ctype_Renamed, 2, Strings.Len(ctype_Renamed) - 2);
+                    ctype = Strings.Mid(ctype, 2, Strings.Len(ctype) - 2);
                 }
 
                 sbuf = Strings.Mid(sbuf, ret + 1);
@@ -43007,7 +43007,7 @@ namespace Project1
                     }
                 }
 
-                AddCondition(ctype_Renamed, cltime, clevel, cdata);
+                AddCondition(ctype, cltime, clevel, cdata);
                 NextCondition:
                 ;
             }
@@ -43277,7 +43277,7 @@ namespace Project1
         {
             bool IsOperationalRet = default;
             int i;
-            if (Status_Renamed == "出撃")
+            if (Status == "出撃")
             {
                 IsOperationalRet = true;
                 return IsOperationalRet;
@@ -43288,7 +43288,7 @@ namespace Project1
             {
                 Unit localOtherForm() { object argIndex1 = i; var ret = OtherForm(argIndex1); return ret; }
 
-                if (localOtherForm().Status_Renamed == "出撃")
+                if (localOtherForm().Status == "出撃")
                 {
                     IsOperationalRet = true;
                     return IsOperationalRet;
@@ -43331,14 +43331,14 @@ namespace Project1
         {
             Unit CurrentFormRet = default;
             int i;
-            if (Status_Renamed == "他形態")
+            if (Status == "他形態")
             {
                 var loopTo = CountOtherForm();
                 for (i = 1; i <= loopTo; i++)
                 {
                     Unit localOtherForm() { object argIndex1 = i; var ret = OtherForm(argIndex1); return ret; }
 
-                    if (localOtherForm().Status_Renamed != "他形態")
+                    if (localOtherForm().Status != "他形態")
                     {
                         CurrentFormRet = OtherForm(i);
                         return CurrentFormRet;
@@ -43356,7 +43356,7 @@ namespace Project1
             bool IsHeroRet = default;
             {
                 var withBlock = Data;
-                if (Strings.Left(withBlock.Class_Renamed, 1) == "(")
+                if (Strings.Left(withBlock.Class, 1) == "(")
                 {
                     IsHeroRet = true;
                 }
@@ -44447,8 +44447,8 @@ namespace Project1
         }
 
         // 合体技のパートナーを探す
-        // UPGRADE_NOTE: ctype は ctype_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        public void CombinationPartner(string ctype_Renamed, int w, Unit[] partners, int tx = 0, int ty = 0, bool check_formation = false)
+        // UPGRADE_NOTE: ctype は ctype にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+        public void CombinationPartner(string ctype, int w, Unit[] partners, int tx = 0, int ty = 0, bool check_formation = false)
         {
             Unit u;
             string uname;
@@ -44467,7 +44467,7 @@ namespace Project1
             }
 
             // 合体技のデータを調べておく
-            if (ctype_Renamed == "武装")
+            if (ctype == "武装")
             {
                 cname = Weapon(w).Name;
                 cen = WeaponENConsumption(w);
@@ -44535,7 +44535,7 @@ namespace Project1
             }
 
             // 出撃していない場合
-            if (Status_Renamed != "出撃" | string.IsNullOrEmpty(Map.MapFileName))
+            if (Status != "出撃" | string.IsNullOrEmpty(Map.MapFileName))
             {
                 // パートナーが仲間にいるだけでよい
                 var loopTo1 = cnum;
@@ -44548,7 +44548,7 @@ namespace Project1
                     {
                         {
                             var withBlock = SRC.UList.Item(uname);
-                            if (withBlock.Status_Renamed == "出撃" | withBlock.Status_Renamed == "待機")
+                            if (withBlock.Status == "出撃" | withBlock.Status == "待機")
                             {
                                 goto NextPartner;
                             }
@@ -44562,13 +44562,13 @@ namespace Project1
 
                         Pilot localItem2() { object argIndex1 = uname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
-                        if (localItem2().Unit_Renamed is object)
+                        if (localItem2().Unit is object)
                         {
                             Pilot localItem() { object argIndex1 = uname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
                             {
-                                var withBlock1 = localItem().Unit_Renamed;
-                                if (withBlock1.Status_Renamed == "出撃" | withBlock1.Status_Renamed == "待機")
+                                var withBlock1 = localItem().Unit;
+                                if (withBlock1.Status == "出撃" | withBlock1.Status == "待機")
                                 {
                                     goto NextPartner;
                                 }
@@ -44836,7 +44836,7 @@ namespace Project1
                         // パートナーが武器を使うための条件を満たしているかを判定
                         if (!check_formation)
                         {
-                            if (ctype_Renamed == "武装")
+                            if (ctype == "武装")
                             {
                                 // 合体技と同名の武器を検索
                                 var loopTo5 = withBlock2.CountWeapon();
@@ -45012,7 +45012,7 @@ namespace Project1
                             }
                         }
                         // フォーメーションのチェックだけの時も必要技能は調べておく
-                        else if (ctype_Renamed == "武装")
+                        else if (ctype == "武装")
                         {
                             var loopTo7 = withBlock2.CountWeapon();
                             for (k = 1; k <= loopTo7; k++)
@@ -45081,7 +45081,7 @@ namespace Project1
             bool IsCombinationAttackAvailableRet = default;
             Unit[] partners;
             partners = new Unit[1];
-            if (Status_Renamed == "待機" | string.IsNullOrEmpty(Map.MapFileName))
+            if (Status == "待機" | string.IsNullOrEmpty(Map.MapFileName))
             {
                 // 出撃時以外は相手が仲間にいるだけでＯＫ
                 CombinationPartner("武装", w, partners, x, y);
@@ -45167,7 +45167,7 @@ namespace Project1
             bool IsCombinationAbilityAvailableRet = default;
             Unit[] partners;
             partners = new Unit[1];
-            if (Status_Renamed == "待機" | string.IsNullOrEmpty(Map.MapFileName))
+            if (Status == "待機" | string.IsNullOrEmpty(Map.MapFileName))
             {
                 // 出撃時以外は相手が仲間にいるだけでＯＫ
                 CombinationPartner("アビリティ", a, partners, x, y);
@@ -45390,7 +45390,7 @@ namespace Project1
             }
 
             // 制限時間の切れた形態？
-            if (Status_Renamed == "他形態")
+            if (Status == "他形態")
             {
                 if (IsConditionSatisfied("行動不能"))
                 {
@@ -45526,7 +45526,7 @@ namespace Project1
             // ステータスコマンド実行時は条件が満たされていると見なす？
             if (Strings.Left(ndata, 1) == "+")
             {
-                if (Status_Renamed == "出撃" & InterMission.InStatusCommand())
+                if (Status == "出撃" & InterMission.InStatusCommand())
                 {
                     IsNecessarySkillSatisfied2Ret = true;
                     return IsNecessarySkillSatisfied2Ret;
@@ -45985,7 +45985,7 @@ namespace Project1
                 case "地中":
                     {
                         slevel = 0d;
-                        if (Status_Renamed == "出撃")
+                        if (Status == "出撃")
                         {
                             if ((sname ?? "") == (Area ?? ""))
                             {
@@ -46346,7 +46346,7 @@ namespace Project1
                             if (Strings.Left(sname, 1) == "@")
                             {
                                 // 地形を指定した必要技能
-                                if (Status_Renamed == "出撃" & 1 <= x & x <= Map.MapWidth & 1 <= y & y <= Map.MapHeight)
+                                if (Status == "出撃" & 1 <= x & x <= Map.MapWidth & 1 <= y & y <= Map.MapHeight)
                                 {
                                     if ((Strings.Mid(sname, 2) ?? "") == (Map.TerrainName(x, y) ?? ""))
                                     {
@@ -46377,7 +46377,7 @@ namespace Project1
                             else if (Strings.Right(sname, 2) == "隣接" | Strings.Right(sname, 4) == "マス以内")
                             {
                                 // 特定のユニットが近くにいることを指定した必要技能
-                                if (Status_Renamed == "出撃")
+                                if (Status == "出撃")
                                 {
                                     if (Strings.Right(sname, 2) == "隣接")
                                     {

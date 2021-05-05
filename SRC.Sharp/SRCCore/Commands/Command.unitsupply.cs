@@ -79,7 +79,7 @@ namespace SRCCore.Commands
             //    t = null;
             //    foreach (Unit u in SRC.UList)
             //    {
-            //        if (u.Status_Renamed == "出撃" & u.Party == "味方")
+            //        if (u.Status == "出撃" & u.Party == "味方")
             //        {
             //            if (Map.MaskData[u.x, u.y] == false & !ReferenceEquals(u, SelectedUnit))
             //            {
@@ -127,8 +127,8 @@ namespace SRCCore.Commands
             //{
             //    var withBlock = SelectedUnit;
             //    // 選択内容を変更
-            //    Event_Renamed.SelectedUnitForEvent = SelectedUnit;
-            //    Event_Renamed.SelectedTargetForEvent = SelectedTarget;
+            //    Event.SelectedUnitForEvent = SelectedUnit;
+            //    Event.SelectedTargetForEvent = SelectedTarget;
 
             //    // 修理メッセージ＆特殊効果
             //    if (withBlock.IsMessageDefined("修理"))
@@ -271,7 +271,7 @@ namespace SRCCore.Commands
             //    t = null;
             //    foreach (Unit u in SRC.UList)
             //    {
-            //        if (u.Status_Renamed == "出撃" & u.Party == "味方")
+            //        if (u.Status == "出撃" & u.Party == "味方")
             //        {
             //            if (Map.MaskData[u.x, u.y] == false & !ReferenceEquals(u, SelectedUnit))
             //            {
@@ -313,8 +313,8 @@ namespace SRCCore.Commands
             //{
             //    var withBlock = SelectedUnit;
             //    // 選択内容を変更
-            //    Event_Renamed.SelectedUnitForEvent = SelectedUnit;
-            //    Event_Renamed.SelectedTargetForEvent = SelectedTarget;
+            //    Event.SelectedUnitForEvent = SelectedUnit;
+            //    Event.SelectedTargetForEvent = SelectedTarget;
 
             //    // 補給メッセージ＆特殊効果
             //    if (withBlock.IsMessageDefined("補給"))

@@ -420,12 +420,12 @@ namespace SRCSharpForm
                 }
 
                 //// ホットポイントが定義されている場合はツールチップを変更
-                //var loopTo = Information.UBound(Event_Renamed.HotPointList);
+                //var loopTo = Information.UBound(Event.HotPointList);
                 //for (i = 1; i <= loopTo; i++)
                 //{
                 //    {
-                //        var withBlock = Event_Renamed.HotPointList[i];
-                //        if (withBlock.Left_Renamed <= GUI.MouseX & GUI.MouseX < withBlock.Left_Renamed + withBlock.width & withBlock.Top <= GUI.MouseY & GUI.MouseY < withBlock.Top + withBlock.Height)
+                //        var withBlock = Event.HotPointList[i];
+                //        if (withBlock.Left <= GUI.MouseX & GUI.MouseX < withBlock.Left + withBlock.width & withBlock.Top <= GUI.MouseY & GUI.MouseY < withBlock.Top + withBlock.Height)
                 //        {
                 //            if (withBlock.Caption == "非表示" | string.IsNullOrEmpty(withBlock.Caption))
                 //            {

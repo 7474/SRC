@@ -93,8 +93,10 @@ namespace SRCSharpForm
         public int PaintedAreaX2 { get; set; }
         public int PaintedAreaY2 { get; set; }
         public bool IsCursorVisible { get; set; }
-        public int BGColor { get; set; }
+        public Color BGColor { get; set; }
         public Font CurrentPaintFont => currentDrawFont;
+        // XXX Fontと画像のForeカラー同じでいいのか？
+        public Brush CurrentPaintBrush => currentDrawFontColor;
         // XXX そもそもBrushでなくForeColor持っていたほうがいいかもしれない
         public Color CurrentPaintColor => (currentDrawFontColor as SolidBrush).Color;
         int IGUI.TopItem { get; set; }
@@ -234,7 +236,7 @@ namespace SRCSharpForm
             MainForm.ClearScrean();
         }
 
-        public void SetupBackground(string draw_mode, string draw_option, int filter_color, double filter_trans_par)
+        public void SetupBackground(string draw_mode, string draw_option, Color filter_color, double filter_trans_par)
         {
             MainForm.SetupBackground(draw_mode, draw_option, filter_color, filter_trans_par);
         }
@@ -991,6 +993,7 @@ namespace SRCSharpForm
 
         public void SaveScreen()
         {
+            SRC.LogTrace(ScreenIsSaved + "");
             if (!ScreenIsSaved)
             {
                 // XXX 何で半端にMainFormに追い出してあるんだ。
@@ -1003,6 +1006,7 @@ namespace SRCSharpForm
 
         public void ClearPicture()
         {
+            SRC.LogTrace(ScreenIsSaved + "");
             if (!ScreenIsSaved)
             {
                 return;

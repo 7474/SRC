@@ -818,8 +818,8 @@ namespace SRCCore.Units
             int WeaponENConsumptionRet = WeaponData.ENConsumption;
             return WeaponENConsumptionRet;
             // TODO Impl
-            //// UPGRADE_NOTE: rate は rate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-            //double rate_Renamed;
+            //// UPGRADE_NOTE: rate は rate にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+            //double rate;
             //int i;
             //{
             //    var withBlock = Weapon(w);
@@ -968,7 +968,7 @@ namespace SRCCore.Units
             //    }
 
             //    // ＥＮ消費減少能力による修正
-            //    rate_Renamed = 1d;
+            //    rate = 1d;
             //    if (IsFeatureAvailable("ＥＮ消費減少"))
             //    {
             //        var loopTo = CountFeature();
@@ -978,17 +978,17 @@ namespace SRCCore.Units
             //            {
             //                double localFeatureLevel() { object argIndex1 = i; var ret = FeatureLevel(argIndex1); return ret; }
 
-            //                rate_Renamed = rate_Renamed - 0.1d * localFeatureLevel();
+            //                rate = rate - 0.1d * localFeatureLevel();
             //            }
             //        }
             //    }
 
-            //    if (rate_Renamed < 0.1d)
+            //    if (rate < 0.1d)
             //    {
-            //        rate_Renamed = 0.1d;
+            //        rate = 0.1d;
             //    }
 
-            //    WeaponENConsumptionRet = (rate_Renamed * WeaponENConsumptionRet);
+            //    WeaponENConsumptionRet = (rate * WeaponENConsumptionRet);
             //}
 
             //return WeaponENConsumptionRet;
@@ -5422,7 +5422,7 @@ namespace SRCCore.Units
         }
 
         // 合体技のパートナーを探す
-        public IList<Unit> CombinationPartner(string ctype_Renamed, int tx = 0, int ty = 0, bool check_formation = false)
+        public IList<Unit> CombinationPartner(string ctype, int tx = 0, int ty = 0, bool check_formation = false)
         {
             return new List<Unit>();
             // TODO Impl CombinationPartner
@@ -5443,7 +5443,7 @@ namespace SRCCore.Units
             //}
 
             //// 合体技のデータを調べておく
-            //if (ctype_Renamed == "武装")
+            //if (ctype == "武装")
             //{
             //    cname = Weapon(w).Name;
             //    cen = WeaponENConsumption(w);
@@ -5538,12 +5538,12 @@ namespace SRCCore.Units
 
             //            Pilot localItem2() { string argIndex1 = uname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
-            //            if (localItem2().Unit_Renamed is object)
+            //            if (localItem2().Unit is object)
             //            {
             //                Pilot localItem() { string argIndex1 = uname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
             //                {
-            //                    var withBlock1 = localItem().Unit_Renamed;
+            //                    var withBlock1 = localItem().Unit;
             //                    if (withBlock1.Status == "出撃" | withBlock1.Status == "待機")
             //                    {
             //                        goto NextPartner;
@@ -5812,7 +5812,7 @@ namespace SRCCore.Units
             //            // パートナーが武器を使うための条件を満たしているかを判定
             //            if (!check_formation)
             //            {
-            //                if (ctype_Renamed == "武装")
+            //                if (ctype == "武装")
             //                {
             //                    // 合体技と同名の武器を検索
             //                    var loopTo5 = withBlock2.CountWeapon();
@@ -5988,7 +5988,7 @@ namespace SRCCore.Units
             //                }
             //            }
             //            // フォーメーションのチェックだけの時も必要技能は調べておく
-            //            else if (ctype_Renamed == "武装")
+            //            else if (ctype == "武装")
             //            {
             //                var loopTo7 = withBlock2.CountWeapon();
             //                for (k = 1; k <= loopTo7; k++)

@@ -119,7 +119,7 @@ namespace SRCCore.CmdDatas.Commands
                 unit.Mode = new_mode;
             }
 
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

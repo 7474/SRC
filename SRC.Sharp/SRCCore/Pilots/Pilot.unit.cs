@@ -40,9 +40,9 @@ namespace SRCCore.Pilots
                 // XXX 仮
                 Unit = u;
                 u.AddPilot(this);
-                //short localInStrNotNest1() { string argstring1 = Class_Renamed; string argstring2 = "サポート)"; var ret = GeneralLib.InStrNotNest(argstring1, argstring2); this.Class_Renamed = argstring1; return ret; }
+                //short localInStrNotNest1() { string argstring1 = Class; string argstring2 = "サポート)"; var ret = GeneralLib.InStrNotNest(argstring1, argstring2); this.Class = argstring1; return ret; }
 
-                //short localLLength() { string arglist = Class_Renamed; var ret = GeneralLib.LLength(arglist); this.Class_Renamed = arglist; return ret; }
+                //short localLLength() { string arglist = Class; var ret = GeneralLib.LLength(arglist); this.Class = arglist; return ret; }
 
                 //if (localInStrNotNest1() > 0 & localLLength() == 1 & !u.IsFeatureAvailable("ダミーユニット"))
                 //{
@@ -53,7 +53,7 @@ namespace SRCCore.Pilots
                 //{
                 //    // 同じユニットクラスに対して通常パイロットとサポートの両方のパターン
                 //    // がいける場合は通常パイロットを優先
-                //    short localInStrNotNest() { string argstring1 = Class_Renamed; string argstring2 = u.Class0 + " "; var ret = GeneralLib.InStrNotNest(argstring1, argstring2); this.Class_Renamed = argstring1; return ret; }
+                //    short localInStrNotNest() { string argstring1 = Class; string argstring2 = u.Class0 + " "; var ret = GeneralLib.InStrNotNest(argstring1, argstring2); this.Class = argstring1; return ret; }
 
                 //    if (u.CountPilot() < Math.Abs(u.Data.PilotNum) & localInStrNotNest() > 0 & !is_support)
                 //    {
@@ -110,7 +110,7 @@ namespace SRCCore.Pilots
 
             // TODO Impl
             //{
-            //    var withBlock = Unit_Renamed;
+            //    var withBlock = Unit;
             //    var loopTo = withBlock.CountSupport();
             //    for (i = 1; i <= loopTo; i++)
             //    {
@@ -119,8 +119,8 @@ namespace SRCCore.Pilots
             //            // サポートパイロットとして乗り込んでいる場合
             //            withBlock.DeleteSupport(i);
             //            withBlock.Update();
-            //            // UPGRADE_NOTE: オブジェクト Unit_Renamed をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //            Unit_Renamed = null;
+            //            // UPGRADE_NOTE: オブジェクト Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+            //            Unit = null;
             //            Update();
             //            return;
             //        }
@@ -142,23 +142,23 @@ namespace SRCCore.Pilots
             //    var loopTo1 = withBlock.CountPilot();
             //    for (i = 1; i <= loopTo1; i++)
             //    {
-            //        // UPGRADE_NOTE: オブジェクト Unit_Renamed.Pilot().Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        withBlock.Pilot(1).Unit_Renamed = null;
+            //        // UPGRADE_NOTE: オブジェクト Unit.Pilot().Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+            //        withBlock.Pilot(1).Unit = null;
             //        withBlock.DeletePilot(1);
             //    }
 
             //    var loopTo2 = withBlock.CountSupport();
             //    for (i = 1; i <= loopTo2; i++)
             //    {
-            //        // UPGRADE_NOTE: オブジェクト Unit_Renamed.Support().Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        withBlock.Support(1).Unit_Renamed = null;
+            //        // UPGRADE_NOTE: オブジェクト Unit.Support().Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+            //        withBlock.Support(1).Unit = null;
             //        withBlock.DeleteSupport(1);
             //    }
 
             //    withBlock.Update();
             //}
 
-            // UPGRADE_NOTE: オブジェクト Unit_Renamed をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+            // UPGRADE_NOTE: オブジェクト Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             Unit = null;
             Update();
         }
@@ -179,7 +179,7 @@ namespace SRCCore.Pilots
             //}
 
             //// サポート指定が存在する？
-            //short localInStrNotNest() { string argstring1 = Class_Renamed; string argstring2 = "サポート)"; var ret = GeneralLib.InStrNotNest(argstring1, argstring2); this.Class_Renamed = argstring1; return ret; }
+            //short localInStrNotNest() { string argstring1 = Class; string argstring2 = "サポート)"; var ret = GeneralLib.InStrNotNest(argstring1, argstring2); this.Class = argstring1; return ret; }
 
             //if (localInStrNotNest() == 0)
             //{
@@ -190,12 +190,12 @@ namespace SRCCore.Pilots
             //if (u.CountPilot() == 0)
             //{
             //    // パイロットが乗っていないユニットの場合は通常パイロットを優先
-            //    var loopTo = GeneralLib.LLength(Class_Renamed);
+            //    var loopTo = GeneralLib.LLength(Class);
             //    for (i = 1; i <= loopTo; i++)
             //    {
-            //        pclass = GeneralLib.LIndex(Class_Renamed, i);
-            //        this.Class_Renamed = arglist;
-            //        if ((u.Class_Renamed ?? "") == (pclass ?? "") | (u.Class_Renamed ?? "") == (pclass + "(" + Name + "専用)" ?? "") | (u.Class_Renamed ?? "") == (pclass + "(" + get_Nickname(false) + "専用)" ?? "") | (u.Class_Renamed ?? "") == (pclass + "(" + Sex + "専用)" ?? ""))
+            //        pclass = GeneralLib.LIndex(Class, i);
+            //        this.Class = arglist;
+            //        if ((u.Class ?? "") == (pclass ?? "") | (u.Class ?? "") == (pclass + "(" + Name + "専用)" ?? "") | (u.Class ?? "") == (pclass + "(" + get_Nickname(false) + "専用)" ?? "") | (u.Class ?? "") == (pclass + "(" + Sex + "専用)" ?? ""))
             //        {
             //            // 通常のパイロットとして搭乗可能であればサポートでないとみなす
             //            IsSupportRet = false;
@@ -203,7 +203,7 @@ namespace SRCCore.Pilots
             //        }
             //    }
 
-            //    this.Class_Renamed = arglist1;
+            //    this.Class = arglist1;
             //}
             //else
             //{
@@ -222,10 +222,10 @@ namespace SRCCore.Pilots
             //uclass = u.Class0;
 
             //// 通常のサポート？
-            //var loopTo2 = GeneralLib.LLength(Class_Renamed);
+            //var loopTo2 = GeneralLib.LLength(Class);
             //for (i = 1; i <= loopTo2; i++)
             //{
-            //    string localLIndex() { string arglist = Class_Renamed; var ret = GeneralLib.LIndex(arglist, i); this.Class_Renamed = arglist; return ret; }
+            //    string localLIndex() { string arglist = Class; var ret = GeneralLib.LIndex(arglist, i); this.Class = arglist; return ret; }
 
             //    if ((uclass + "(サポート)" ?? "") == (localLIndex() ?? ""))
             //    {
@@ -234,7 +234,7 @@ namespace SRCCore.Pilots
             //    }
             //}
 
-            //this.Class_Renamed = arglist2;
+            //this.Class = arglist2;
 
             //// パイロットが乗っていないユニットの場合はここで終了
             //if (u.CountPilot() == 0)
@@ -246,11 +246,11 @@ namespace SRCCore.Pilots
             //// 専属サポート？
             //{
             //    var withBlock = u.MainPilot();
-            //    var loopTo3 = GeneralLib.LLength(Class_Renamed);
+            //    var loopTo3 = GeneralLib.LLength(Class);
             //    for (i = 1; i <= loopTo3; i++)
             //    {
-            //        pclass = GeneralLib.LIndex(Class_Renamed, i);
-            //        this.Class_Renamed = arglist3;
+            //        pclass = GeneralLib.LIndex(Class, i);
+            //        this.Class = arglist3;
             //        if ((pclass ?? "") == (uclass + "(" + withBlock.Name + "専属サポート)" ?? "") | (pclass ?? "") == (uclass + "(" + withBlock.get_Nickname(false) + "専属サポート)" ?? "") | (pclass ?? "") == (uclass + "(" + withBlock.Sex + "専属サポート)" ?? ""))
             //        {
             //            IsSupportRet = true;
@@ -270,7 +270,7 @@ namespace SRCCore.Pilots
             //        }
             //    }
 
-            //    this.Class_Renamed = arglist4;
+            //    this.Class = arglist4;
             //}
 
             //IsSupportRet = false;
@@ -288,20 +288,20 @@ namespace SRCCore.Pilots
             //{
             //    var withBlock = u;
             //    // 汎用ユニットは必要技能を満たせばＯＫ
-            //    if (withBlock.Class_Renamed == "汎用")
+            //    if (withBlock.Class == "汎用")
             //    {
             //        IsAbleToRideRet = true;
             //        goto CheckNecessarySkill;
             //    }
 
             //    // 人間ユニット指定を除いて判定
-            //    if (Strings.Left(withBlock.Class_Renamed, 1) == "(" & Strings.Right(withBlock.Class_Renamed, 1) == ")")
+            //    if (Strings.Left(withBlock.Class, 1) == "(" & Strings.Right(withBlock.Class, 1) == ")")
             //    {
-            //        uclass = Strings.Mid(withBlock.Class_Renamed, 2, Strings.Len(withBlock.Class_Renamed) - 2);
+            //        uclass = Strings.Mid(withBlock.Class, 2, Strings.Len(withBlock.Class) - 2);
             //    }
             //    else
             //    {
-            //        uclass = withBlock.Class_Renamed;
+            //        uclass = withBlock.Class;
             //    }
 
             //    // サポートかどうかをまず判定しておく
@@ -312,11 +312,11 @@ namespace SRCCore.Pilots
             //        goto CheckNecessarySkill;
             //    }
 
-            //    var loopTo = GeneralLib.LLength(Class_Renamed);
+            //    var loopTo = GeneralLib.LLength(Class);
             //    for (i = 1; i <= loopTo; i++)
             //    {
-            //        pclass = GeneralLib.LIndex(Class_Renamed, i);
-            //        this.Class_Renamed = arglist;
+            //        pclass = GeneralLib.LIndex(Class, i);
+            //        this.Class = arglist;
             //        if ((uclass ?? "") == (pclass ?? "") | (uclass ?? "") == (pclass + "(" + get_Nickname(false) + "専用)" ?? "") | (uclass ?? "") == (pclass + "(" + Name + "専用)" ?? "") | (uclass ?? "") == (pclass + "(" + Sex + "専用)" ?? ""))
             //        {
             //            IsAbleToRideRet = true;
@@ -325,7 +325,7 @@ namespace SRCCore.Pilots
             //        }
             //    }
 
-            //    this.Class_Renamed = arglist1; // ユニットクラスは複数設定可能
+            //    this.Class = arglist1; // ユニットクラスは複数設定可能
 
             //    // クラスが合わない
             //    IsAbleToRideRet = false;

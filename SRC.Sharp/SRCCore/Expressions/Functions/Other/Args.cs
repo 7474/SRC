@@ -32,10 +32,9 @@ namespace SRCCore.Expressions.Functions
 
             // 引数の範囲内に納まっているかチェック
             num = SRC.Expression.GetValueAsLong(@params[1], is_term[1]);
-            var baseIndex = SRC.Event.ArgIndexStack[i - 1];
-            if (baseIndex + num <= SRC.Event.ArgIndex)
+            if (num <= SRC.Event.ArgIndex - SRC.Event.ArgIndexStack[i - 1])
             {
-                str_result = SRC.Event.ArgStack[baseIndex + num];
+                str_result = SRC.Event.ArgStack[SRC.Event.ArgIndex - num + 1];
             }
 
             if (etype == ValueType.NumericType)

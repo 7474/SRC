@@ -18,7 +18,7 @@ namespace SRCCore.CmdDatas.Commands
 
             Sound.KeepBGM = true;
 
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

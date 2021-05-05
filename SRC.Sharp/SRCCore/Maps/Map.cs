@@ -293,14 +293,14 @@ namespace SRCCore.Maps
         //    //    case BoxTypes.UpperBmpOnly:
         //    //        {
         //    //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
-        //    //            TerrainClassRet = SRC.TDList.Class_Renamed(MapData[X, Y, MapDataIndex.TerrainType]);
+        //    //            TerrainClassRet = SRC.TDList.Class(MapData[X, Y, MapDataIndex.TerrainType]);
         //    //            break;
         //    //        }
 
         //    //    default:
         //    //        {
         //    //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
-        //    //            TerrainClassRet = SRC.TDList.Class_Renamed(MapData[X, Y, MapDataIndex.LayerType]);
+        //    //            TerrainClassRet = SRC.TDList.Class(MapData[X, Y, MapDataIndex.LayerType]);
         //    //            break;
         //    //        }
         //    //}

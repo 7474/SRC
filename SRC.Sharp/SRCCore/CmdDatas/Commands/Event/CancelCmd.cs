@@ -11,7 +11,7 @@ namespace SRCCore.CmdDatas.Commands
         protected override int ExecInternal()
         {
             SRC.IsCanceled = true;
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

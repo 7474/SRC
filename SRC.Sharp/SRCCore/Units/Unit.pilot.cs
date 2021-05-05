@@ -28,7 +28,7 @@ namespace SRCCore.Units
         //    int i;
         //    Pilot prev_p;
         //    Pilot[] pilot_list;
-        //    p.Unit_Renamed = this;
+        //    p.Unit = this;
         //    prev_p = (Pilot)colPilot[Index];
         //    pilot_list = new Pilot[colPilot.Count + 1];
         //    var loopTo = Information.UBound(pilot_list);
@@ -50,7 +50,7 @@ namespace SRCCore.Units
         //        }
         //    }
         //    // UPGRADE_NOTE: オブジェクト prev_p.Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-        //    prev_p.Unit_Renamed = null;
+        //    prev_p.Unit = null;
         //    prev_p.Alive = false;
         //}
 
@@ -114,15 +114,15 @@ namespace SRCCore.Units
             //        {
             //            // 既に暴走時パイロットが作成済み
             //            MainPilotRet = SRC.PList.Item(pname);
-            //            MainPilotRet.Unit_Renamed = this;
+            //            MainPilotRet.Unit = this;
             //            MainPilotRet.Morale = Pilot(1).Morale;
             //            MainPilotRet.Level = Pilot(1).Level;
             //            MainPilotRet.Exp = Pilot(1).Exp;
             //            if (!without_update)
             //            {
-            //                if (!erenceEquals(MainPilotRet.Unit_Renamed, this))
+            //                if (!erenceEquals(MainPilotRet.Unit, this))
             //                {
-            //                    MainPilotRet.Unit_Renamed = this;
+            //                    MainPilotRet.Unit = this;
             //                    MainPilotRet.Update();
             //                    MainPilotRet.UpdateSupportMod();
             //                }
@@ -137,7 +137,7 @@ namespace SRCCore.Units
             //            this.Party0 = argpparty;
             //            MainPilotRet.Morale = Pilot(1).Morale;
             //            MainPilotRet.Exp = Pilot(1).Exp;
-            //            MainPilotRet.Unit_Renamed = this;
+            //            MainPilotRet.Unit = this;
             //            MainPilotRet.Update();
             //            MainPilotRet.UpdateSupportMod();
             //            return MainPilotRet;
@@ -168,9 +168,9 @@ namespace SRCCore.Units
             //            MainPilotRet = pltAdditionalPilot;
             //            {
             //                var withBlock = pltAdditionalPilot;
-            //                if (withBlock.IsAdditionalPilot && !erenceEquals(withBlock.Unit_Renamed, this))
+            //                if (withBlock.IsAdditionalPilot && !erenceEquals(withBlock.Unit, this))
             //                {
-            //                    withBlock.Unit_Renamed = this;
+            //                    withBlock.Unit = this;
             //                    withBlock.Party = Party0;
             //                    withBlock.Exp = Pilot(1).Exp;
             //                    if (withBlock.Personality != "機械")
@@ -209,8 +209,8 @@ namespace SRCCore.Units
 
             //                    pltAdditionalPilot = localOtherForm().pltAdditionalPilot;
             //                    withBlock1.Party = Party0;
-            //                    withBlock1.Unit_Renamed = this;
-            //                    if (withBlock1.IsAdditionalPilot && !erenceEquals(withBlock1.Unit_Renamed, this))
+            //                    withBlock1.Unit = this;
+            //                    if (withBlock1.IsAdditionalPilot && !erenceEquals(withBlock1.Unit, this))
             //                    {
             //                        withBlock1.Level = Pilot(1).Level;
             //                        withBlock1.Exp = Pilot(1).Exp;
@@ -269,16 +269,16 @@ namespace SRCCore.Units
 
             //                if (!without_update)
             //                {
-            //                    if (!erenceEquals(withBlock2.Unit_Renamed, this))
+            //                    if (!erenceEquals(withBlock2.Unit, this))
             //                    {
-            //                        withBlock2.Unit_Renamed = this;
+            //                        withBlock2.Unit = this;
             //                        withBlock2.Update();
             //                        withBlock2.UpdateSupportMod();
             //                    }
             //                }
             //                else
             //                {
-            //                    withBlock2.Unit_Renamed = this;
+            //                    withBlock2.Unit = this;
             //                }
             //            }
 
@@ -311,7 +311,7 @@ namespace SRCCore.Units
 
             //    {
             //        var withBlock4 = pltAdditionalPilot;
-            //        withBlock4.Unit_Renamed = this;
+            //        withBlock4.Unit = this;
             //        if (!without_update)
             //        {
             //            withBlock4.Update();
@@ -370,7 +370,7 @@ namespace SRCCore.Units
         //    int i;
         //    Pilot prev_p;
         //    Pilot[] support_list;
-        //    p.Unit_Renamed = this;
+        //    p.Unit = this;
         //    prev_p = (Pilot)colSupport[Index];
         //    support_list = new Pilot[colSupport.Count + 1];
         //    var loopTo = Information.UBound(support_list);
@@ -392,7 +392,7 @@ namespace SRCCore.Units
         //        }
         //    }
         //    // UPGRADE_NOTE: オブジェクト prev_p.Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-        //    prev_p.Unit_Renamed = null;
+        //    prev_p.Unit = null;
         //    prev_p.Alive = false;
         //}
 
@@ -439,7 +439,7 @@ namespace SRCCore.Units
             //        if ((pltAdditionalSupport.Name ?? "") == (pname ?? ""))
             //        {
             //            AdditionalSupportRet = pltAdditionalSupport;
-            //            pltAdditionalSupport.Unit_Renamed = this;
+            //            pltAdditionalSupport.Unit = this;
             //            return AdditionalSupportRet;
             //        }
             //    }
@@ -453,7 +453,7 @@ namespace SRCCore.Units
             //            {
             //                if ((withBlock.pltAdditionalSupport.Name ?? "") == (pname ?? ""))
             //                {
-            //                    withBlock.pltAdditionalSupport.Unit_Renamed = this;
+            //                    withBlock.pltAdditionalSupport.Unit = this;
             //                    AdditionalSupportRet = withBlock.pltAdditionalSupport;
             //                    return AdditionalSupportRet;
             //                }
@@ -473,7 +473,7 @@ namespace SRCCore.Units
             //                var withBlock1 = pltAdditionalSupport;
             //                withBlock1.IsAdditionalSupport = true;
             //                withBlock1.Party = Party0;
-            //                withBlock1.Unit_Renamed = this;
+            //                withBlock1.Unit = this;
             //                withBlock1.Level = Pilot(1).Level;
             //                withBlock1.Exp = Pilot(1).Exp;
             //                if (withBlock1.Personality != "機械")
@@ -501,7 +501,7 @@ namespace SRCCore.Units
             //    {
             //        var withBlock2 = pltAdditionalSupport;
             //        withBlock2.IsAdditionalSupport = true;
-            //        withBlock2.Unit_Renamed = this;
+            //        withBlock2.Unit = this;
             //        withBlock2.Exp = Pilot(1).Exp;
             //        if (withBlock2.Personality != "機械")
             //        {

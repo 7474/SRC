@@ -17,6 +17,7 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             var a = GetArgAsString(2);
+            SRC.LogTrace("Switch", a);
             var depth = 1;
             foreach (var i in this.AfterEventIdRange())
             {
@@ -47,7 +48,7 @@ namespace SRCCore.CmdDatas.Commands
                                     b = cmd.GetArg(j);
                                 }
 
-                                if ((a ?? "") == (b ?? ""))
+                                if (a == b)
                                 {
                                     return i + 1;
                                 }
@@ -146,7 +147,7 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

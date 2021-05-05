@@ -23,7 +23,7 @@ namespace SRCCore.CmdDatas.Commands
                     }
                     else
                     {
-                        return EventData.ID + 1;
+                        return EventData.NextID;
                     }
 
                 case IfCmdType.GoTo:
@@ -38,14 +38,14 @@ namespace SRCCore.CmdDatas.Commands
                     }
                     else
                     {
-                        return EventData.ID + 1;
+                        return EventData.NextID;
                     }
 
                 case IfCmdType.Then:
                     if (flag)
                     {
                         // Then節をそのまま実行
-                        return EventData.ID + 1;
+                        return EventData.NextID;
                     }
 
                     // 条件式が成り立たない場合はElse節もしくはEndIfを探す
@@ -65,7 +65,7 @@ namespace SRCCore.CmdDatas.Commands
                             case CmdType.ElseCmd:
                                 if (depth == 1)
                                 {
-                                    return cmd.EventData.ID + 1;
+                                    return cmd.EventData.NextID;
                                 }
                                 break;
 
@@ -77,7 +77,7 @@ namespace SRCCore.CmdDatas.Commands
 
                                 if ((cmd as AIfCmd).Evaluate())
                                 {
-                                    return cmd.EventData.ID + 1;
+                                    return cmd.EventData.NextID;
                                 }
                                 break;
 
@@ -85,7 +85,7 @@ namespace SRCCore.CmdDatas.Commands
                                 depth = (depth - 1);
                                 if (depth == 0)
                                 {
-                                    return cmd.EventData.ID + 1;
+                                    return cmd.EventData.NextID;
                                 }
                                 break;
                         }

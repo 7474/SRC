@@ -11,7 +11,7 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

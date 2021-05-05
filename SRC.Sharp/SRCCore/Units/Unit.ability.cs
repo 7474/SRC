@@ -1032,7 +1032,7 @@ namespace SRCCore.Units
             //                            {
             //                                if (withBlock25.Bullet(j) < withBlock25.MaxBullet(j))
             //                                {
-            //                                    if ((withBlock25.WeaponNickname(j) ?? "") == (edata ?? "") | GeneralLib.InStrNotNest(withBlock25.Weapon(j).Class_Renamed, edata) > 0)
+            //                                    if ((withBlock25.WeaponNickname(j) ?? "") == (edata ?? "") | GeneralLib.InStrNotNest(withBlock25.Weapon(j).Class, edata) > 0)
             //                                    {
             //                                        withBlock25.SetBullet(j, withBlock25.MaxBullet(j));
             //                                        flag = true;
@@ -1051,7 +1051,7 @@ namespace SRCCore.Units
             //                                    {
             //                                        if (withBlock26.Bullet(k) < withBlock26.MaxBullet(k))
             //                                        {
-            //                                            if ((withBlock26.WeaponNickname(k) ?? "") == (edata ?? "") | GeneralLib.InStrNotNest(withBlock26.Weapon(k).Class_Renamed, edata) > 0)
+            //                                            if ((withBlock26.WeaponNickname(k) ?? "") == (edata ?? "") | GeneralLib.InStrNotNest(withBlock26.Weapon(k).Class, edata) > 0)
             //                                            {
             //                                                withBlock26.SetBullet(k, withBlock26.MaxBullet(k));
             //                                            }
@@ -1957,7 +1957,7 @@ namespace SRCCore.Units
             //                            else
             //                            {
             //                                p = SRC.PList.Item(pname);
-            //                                u = p.Unit_Renamed;
+            //                                u = p.Unit;
             //                                if (u is null)
             //                                {
             //                                    if (SRC.UList.IsDefined(edata))
@@ -2017,12 +2017,12 @@ namespace SRCCore.Units
             //                        }
 
             //                        // ちゃんと配置できた？
-            //                        if (u.Status_Renamed == "待機")
+            //                        if (u.Status == "待機")
             //                        {
             //                            // 空いた場所がなく出撃出来なかった場合
             //                            GUI.DisplaySysMessage(Nickname + "は" + u.Nickname + "の召喚に失敗した。");
             //                            DeleteServant(u.ID);
-            //                            u.Status_Renamed = "破棄";
+            //                            u.Status = "破棄";
             //                        }
             //                    }
 
@@ -2331,7 +2331,7 @@ namespace SRCCore.Units
             //    }
 
             //    // 変身した場合
-            //    if (Status_Renamed == "他形態")
+            //    if (Status == "他形態")
             //    {
             //        {
             //            var withBlock37 = CurrentForm();
@@ -3044,7 +3044,7 @@ namespace SRCCore.Units
             //    for (i = 1; i <= loopTo11; i++)
             //    {
             //        t = targets[i].CurrentForm();
-            //        if (t.Status_Renamed == "出撃")
+            //        if (t.Status == "出撃")
             //        {
             //            if (ReferenceEquals(t, this))
             //            {

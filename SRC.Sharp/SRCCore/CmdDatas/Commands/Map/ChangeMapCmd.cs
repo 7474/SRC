@@ -65,19 +65,19 @@ namespace SRCCore.CmdDatas.Commands
 
             if (late_refresh)
             {
-                GUI.SetupBackground("", "非同期", filter_color: 0, filter_trans_par: 0d);
+                GUI.SetupBackground("", "非同期");
                 GUI.RedrawScreen(true);
             }
             else
             {
-                GUI.SetupBackground(draw_mode: "", draw_option: "", filter_color: 0, filter_trans_par: 0d);
+                GUI.SetupBackground(draw_mode: "", draw_option: "");
                 GUI.RedrawScreen();
             }
 
             // マウスカーソルを元に戻す
             GUI.ChangeStatus(GuiStatus.Default);
 
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

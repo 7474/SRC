@@ -348,7 +348,7 @@ namespace SRCCore.CmdDatas.Commands
                     break;
             }
 
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }

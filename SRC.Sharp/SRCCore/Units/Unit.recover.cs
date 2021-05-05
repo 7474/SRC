@@ -305,7 +305,7 @@ namespace SRCCore.Units
             //                {
             //                    GUI.Center(x, y);
             //                    withBlock4.UseSpecialPower(spname, 0d);
-            //                    if (Status_Renamed == "他形態")
+            //                    if (Status == "他形態")
             //                    {
             //                        return;
             //                    }
@@ -324,7 +324,7 @@ namespace SRCCore.Units
             //            {
             //                GUI.Center(x, y);
             //                withBlock4.UseSpecialPower(spname, 0d);
-            //                if (Status_Renamed == "他形態")
+            //                if (Status == "他形態")
             //                {
             //                    return;
             //                }
@@ -355,7 +355,7 @@ namespace SRCCore.Units
             //                    {
             //                        GUI.Center(x, y);
             //                        withBlock5.UseSpecialPower(spname, 0d);
-            //                        if (Status_Renamed == "他形態")
+            //                        if (Status == "他形態")
             //                        {
             //                            return;
             //                        }
@@ -388,7 +388,7 @@ namespace SRCCore.Units
             //                    {
             //                        GUI.Center(x, y);
             //                        withBlock6.UseSpecialPower(spname, 0d);
-            //                        if (Status_Renamed == "他形態")
+            //                        if (Status == "他形態")
             //                        {
             //                            return;
             //                        }
@@ -420,7 +420,7 @@ namespace SRCCore.Units
             //                    {
             //                        GUI.Center(x, y);
             //                        withBlock7.UseSpecialPower(spname, 0d);
-            //                        if (Status_Renamed == "他形態")
+            //                        if (Status == "他形態")
             //                        {
             //                            return;
             //                        }
@@ -517,7 +517,7 @@ namespace SRCCore.Units
             //        GUI.OpenMessageForm(u1: null, u2: null);
             //        GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
             //        GUI.CloseMessageForm();
-            //        Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+            //        Event.HandleEvent("破壊", MainPilot().ID);
             //    }
 
             //    // 死の宣告
@@ -562,7 +562,7 @@ namespace SRCCore.Units
             //    }
 
             //    // 付加された移動能力が切れた場合の処理
-            //    if (Status_Renamed == "出撃" & !string.IsNullOrEmpty(Map.MapFileName))
+            //    if (Status == "出撃" & !string.IsNullOrEmpty(Map.MapFileName))
             //    {
             //        switch (Area ?? "")
             //        {
@@ -577,7 +577,7 @@ namespace SRCCore.Units
             //                            GUI.OpenMessageForm(u1: null, u2: null);
             //                            GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
             //                            GUI.CloseMessageForm();
-            //                            Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+            //                            Event.HandleEvent("破壊", MainPilot().ID);
             //                            return;
             //                        }
             //                        // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -600,7 +600,7 @@ namespace SRCCore.Units
             //                            GUI.OpenMessageForm(u1: null, u2: null);
             //                            GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
             //                            GUI.CloseMessageForm();
-            //                            Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+            //                            Event.HandleEvent("破壊", MainPilot().ID);
             //                            return;
             //                        }
             //                        // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -623,7 +623,7 @@ namespace SRCCore.Units
             //                            GUI.OpenMessageForm(u1: null, u2: null);
             //                            GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
             //                            GUI.CloseMessageForm();
-            //                            Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+            //                            Event.HandleEvent("破壊", MainPilot().ID);
             //                            return;
             //                        }
             //                        // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -646,7 +646,7 @@ namespace SRCCore.Units
             //                            GUI.OpenMessageForm(u1: null, u2: null);
             //                            GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
             //                            GUI.CloseMessageForm();
-            //                            Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+            //                            Event.HandleEvent("破壊", MainPilot().ID);
             //                            return;
             //                        }
             //                        // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -660,7 +660,7 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    if (Status_Renamed == "格納")
+            //    if (Status == "格納")
             //    {
             //        // 格納時は回復率ＵＰ
             //        // MOD START MARGE
@@ -1571,7 +1571,7 @@ namespace SRCCore.Units
             //                GUI.OpenMessageForm(u1: null, u2: null);
             //                GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
             //                GUI.CloseMessageForm();
-            //                Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+            //                Event.HandleEvent("破壊", MainPilot().ID);
             //                return;
             //            }
             //        }
@@ -1677,7 +1677,7 @@ namespace SRCCore.Units
             //                GUI.OpenMessageForm(u1: null, u2: null);
             //                GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
             //                GUI.CloseMessageForm();
-            //                Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+            //                Event.HandleEvent("破壊", MainPilot().ID);
             //                return;
             //            }
             //        }
@@ -1741,7 +1741,7 @@ namespace SRCCore.Units
             //            }
 
             //            // 分離
-            //            Split_Renamed();
+            //            Split();
             //        }
             //        else
             //        {
@@ -1752,7 +1752,7 @@ namespace SRCCore.Units
             //            GUI.DisplaySysMessage(Nickname + "は制限時間切れのため退却します。");
             //            GUI.CloseMessageForm();
             //            Escape();
-            //            Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+            //            Event.HandleEvent("破壊", MainPilot().ID);
             //            return;
             //        }
             //    }
@@ -1773,7 +1773,7 @@ namespace SRCCore.Units
 
             //    // ハイパーモードが自動発動するか判定
 
-            //    if (Status_Renamed != "出撃")
+            //    if (Status != "出撃")
             //    {
             //        return;
             //    }
@@ -1943,11 +1943,11 @@ namespace SRCCore.Units
             //    // 特殊効果
             //    Commands.SaveSelections();
             //    Commands.SelectedUnit = this;
-            //    Event_Renamed.SelectedUnitForEvent = this;
+            //    Event.SelectedUnitForEvent = this;
             //    // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             //    Commands.SelectedTarget = null;
             //    // UPGRADE_NOTE: オブジェクト SelectedTargetForEvent をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //    Event_Renamed.SelectedTargetForEvent = null;
+            //    Event.SelectedTargetForEvent = null;
             //    bool localIsAnimationDefined() { string argmain_situation = "ハイパーモード(" + uname + ")"; string argsub_situation = ""; var ret = IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
             //    bool localIsAnimationDefined1() { object argIndex1 = "ハイパーモード"; string argmain_situation = "ハイパーモード(" + FeatureName(argIndex1) + ")"; string argsub_situation = ""; var ret = IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
@@ -2005,11 +2005,11 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    if (Event_Renamed.SelectedUnitForEvent is object)
+            //    if (Event.SelectedUnitForEvent is object)
             //    {
-            //        if ((ID ?? "") == (Event_Renamed.SelectedUnitForEvent.ID ?? ""))
+            //        if ((ID ?? "") == (Event.SelectedUnitForEvent.ID ?? ""))
             //        {
-            //            Event_Renamed.SelectedUnitForEvent = CurrentForm();
+            //            Event.SelectedUnitForEvent = CurrentForm();
             //        }
             //    }
 
@@ -2021,18 +2021,18 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    if (Event_Renamed.SelectedTargetForEvent is object)
+            //    if (Event.SelectedTargetForEvent is object)
             //    {
-            //        if ((ID ?? "") == (Event_Renamed.SelectedTargetForEvent.ID ?? ""))
+            //        if ((ID ?? "") == (Event.SelectedTargetForEvent.ID ?? ""))
             //        {
-            //            Event_Renamed.SelectedTargetForEvent = CurrentForm();
+            //            Event.SelectedTargetForEvent = CurrentForm();
             //        }
             //    }
 
             //    // 変形イベント
             //    {
             //        var withBlock2 = CurrentForm();
-            //        Event_Renamed.HandleEvent("変形", withBlock2.MainPilot().ID, withBlock2.Name);
+            //        Event.HandleEvent("変形", withBlock2.MainPilot().ID, withBlock2.Name);
             //    }
         }
 
@@ -2047,7 +2047,7 @@ namespace SRCCore.Units
 
             //    // ノーマルモードが自動発動するか判定
 
-            //    if (Status_Renamed != "出撃")
+            //    if (Status != "出撃")
             //    {
             //        return CheckAutoNormalModeRet;
             //    }
@@ -2158,11 +2158,11 @@ namespace SRCCore.Units
             //    // 特殊効果
             //    Commands.SaveSelections();
             //    Commands.SelectedUnit = this;
-            //    Event_Renamed.SelectedUnitForEvent = this;
+            //    Event.SelectedUnitForEvent = this;
             //    // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             //    Commands.SelectedTarget = null;
             //    // UPGRADE_NOTE: オブジェクト SelectedTargetForEvent をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //    Event_Renamed.SelectedTargetForEvent = null;
+            //    Event.SelectedTargetForEvent = null;
             //    bool localIsAnimationDefined() { string argmain_situation = "ノーマルモード(" + uname + ")"; string argsub_situation = ""; var ret = IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
             //    bool localIsSpecialEffectDefined() { string argmain_situation = "ノーマルモード(" + Name + "=>" + uname + ")"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
@@ -2208,11 +2208,11 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    if (Event_Renamed.SelectedUnitForEvent is object)
+            //    if (Event.SelectedUnitForEvent is object)
             //    {
-            //        if ((ID ?? "") == (Event_Renamed.SelectedUnitForEvent.ID ?? ""))
+            //        if ((ID ?? "") == (Event.SelectedUnitForEvent.ID ?? ""))
             //        {
-            //            Event_Renamed.SelectedUnitForEvent = CurrentForm();
+            //            Event.SelectedUnitForEvent = CurrentForm();
             //        }
             //    }
 
@@ -2224,11 +2224,11 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    if (Event_Renamed.SelectedTargetForEvent is object)
+            //    if (Event.SelectedTargetForEvent is object)
             //    {
-            //        if ((ID ?? "") == (Event_Renamed.SelectedTargetForEvent.ID ?? ""))
+            //        if ((ID ?? "") == (Event.SelectedTargetForEvent.ID ?? ""))
             //        {
-            //            Event_Renamed.SelectedTargetForEvent = CurrentForm();
+            //            Event.SelectedTargetForEvent = CurrentForm();
             //        }
             //    }
 
@@ -2245,7 +2245,7 @@ namespace SRCCore.Units
             //    // 変形イベント
             //    {
             //        var withBlock1 = CurrentForm();
-            //        Event_Renamed.HandleEvent("変形", withBlock1.MainPilot().ID, withBlock1.Name);
+            //        Event.HandleEvent("変形", withBlock1.MainPilot().ID, withBlock1.Name);
             //    }
 
             //    return CheckAutoNormalModeRet;

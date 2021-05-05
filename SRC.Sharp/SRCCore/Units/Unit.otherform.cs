@@ -190,7 +190,7 @@ namespace SRCCore.Units
             //    {
             //        {
             //            var withBlock = OtherForm(i);
-            //            if (withBlock.Status_Renamed == "他形態")
+            //            if (withBlock.Status == "他形態")
             //            {
             //                j = 1;
             //                while (j <= withBlock.CountOtherForm())
@@ -240,7 +240,7 @@ namespace SRCCore.Units
             //        {
             //            Unit localOtherForm() { object argIndex1 = i; var ret = OtherForm(argIndex1); return ret; }
 
-            //            localOtherForm().Status_Renamed = "破棄";
+            //            localOtherForm().Status = "破棄";
             //            DeleteOtherForm(i);
             //        }
             //        else

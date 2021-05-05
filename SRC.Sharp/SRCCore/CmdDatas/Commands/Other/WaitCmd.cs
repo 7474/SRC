@@ -64,7 +64,7 @@ namespace SRCCore.CmdDatas.Commands
                             //    {
                             //        {
                             //            var withBlock1 = Event.HotPointList[(int)i];
-                            //            if ((float)withBlock1.Left_Renamed <= GUI.MouseX & GUI.MouseX < (float)(withBlock1.Left_Renamed + withBlock1.width) & (float)withBlock1.Top <= GUI.MouseY & GUI.MouseY < (float)(withBlock1.Top + withBlock1.Height))
+                            //            if ((float)withBlock1.Left <= GUI.MouseX & GUI.MouseX < (float)(withBlock1.Left + withBlock1.width) & (float)withBlock1.Top <= GUI.MouseY & GUI.MouseY < (float)(withBlock1.Top + withBlock1.Height))
                             //            {
                             //                Event.SelectedAlternative = withBlock1.Name;
                             //                break;
@@ -146,7 +146,7 @@ namespace SRCCore.CmdDatas.Commands
                     throw new EventErrorException(this, "Waitコマンドの引数の数が違います");
             }
 
-            return EventData.ID + 1;
+            return EventData.NextID;
         }
     }
 }
