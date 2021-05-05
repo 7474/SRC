@@ -31,6 +31,8 @@ namespace SRCSharpForm
         private double LastMouseY;
         private int LastMapX;
         private int LastMapY;
+        private PointF lastDraggPoint;
+        private const float draggMoveThresholdRate = 0.5f;
 
         // ポップアップメニュー選択が右クリックだったか？
         private bool IsRightClick;
@@ -392,6 +394,8 @@ namespace SRCSharpForm
                 GUI.PrevMouseX = X;
                 GUI.PrevMouseY = Y;
                 IsDragging = true;
+                lastDraggPoint.X = X;
+                lastDraggPoint.Y = Y;
             }
         }
 
@@ -532,47 +536,53 @@ namespace SRCSharpForm
             // マップをドラッグ中？
             if (IsDragging && ResolveMouseButton(eventArgs) == GuiButton.Left)
             {
-                // Ｘ軸の移動量を算出
-                GUI.MapX = (int)(GUI.PrevMapX - (X - GUI.PrevMouseX) / MapCellPx);
-                if (GUI.MapX < 1)
+                // 移動量が少なければ無視する
+                if (Math.Abs(lastDraggPoint.X - X) + Math.Abs(lastDraggPoint.Y - Y) > MapCellPx * draggMoveThresholdRate)
                 {
-                    GUI.MapX = 1;
-                }
-                else if (GUI.MapX > HScrollBar.Maximum - HScrollBar.LargeChange + 1)
-                {
-                    GUI.MapX = (HScrollBar.Maximum - HScrollBar.LargeChange + 1);
-                }
-
-                // Ｙ軸の移動量を算出
-                GUI.MapY = (int)(GUI.PrevMapY - (Y - GUI.PrevMouseY) / 32L);
-                if (GUI.MapY < 1)
-                {
-                    GUI.MapY = 1;
-                }
-                else if (GUI.MapY > VScrollBar.Maximum - VScrollBar.LargeChange + 1)
-                {
-                    GUI.MapY = (VScrollBar.Maximum - VScrollBar.LargeChange + 1);
-                }
-
-                if (Map.IsStatusView)
-                {
-                    // ステータス画面の場合は移動量を限定
-                    GUI.MapX = 8;
-                    if (GUI.MapY < 8)
+                    lastDraggPoint.X = X;
+                    lastDraggPoint.Y = Y;
+                    // Ｘ軸の移動量を算出
+                    GUI.MapX = (int)(GUI.PrevMapX - (X - GUI.PrevMouseX) / MapCellPx);
+                    if (GUI.MapX < 1)
                     {
-                        GUI.MapY = 8;
+                        GUI.MapX = 1;
                     }
-                    else if (GUI.MapY > Map.MapHeight - 7)
+                    else if (GUI.MapX > HScrollBar.Maximum - HScrollBar.LargeChange + 1)
                     {
-                        GUI.MapY = (Map.MapHeight - 7);
+                        GUI.MapX = (HScrollBar.Maximum - HScrollBar.LargeChange + 1);
                     }
-                }
 
-                // XXX LastXXX保存しないような気がする
-                // マップ画面を新しい座標で更新
-                if (!(GUI.MapX == LastMapX) | !(GUI.MapY == LastMapY))
-                {
-                    GUI.RefreshScreen();
+                    // Ｙ軸の移動量を算出
+                    GUI.MapY = (int)(GUI.PrevMapY - (Y - GUI.PrevMouseY) / 32L);
+                    if (GUI.MapY < 1)
+                    {
+                        GUI.MapY = 1;
+                    }
+                    else if (GUI.MapY > VScrollBar.Maximum - VScrollBar.LargeChange + 1)
+                    {
+                        GUI.MapY = (VScrollBar.Maximum - VScrollBar.LargeChange + 1);
+                    }
+
+                    if (Map.IsStatusView)
+                    {
+                        // ステータス画面の場合は移動量を限定
+                        GUI.MapX = 8;
+                        if (GUI.MapY < 8)
+                        {
+                            GUI.MapY = 8;
+                        }
+                        else if (GUI.MapY > Map.MapHeight - 7)
+                        {
+                            GUI.MapY = (Map.MapHeight - 7);
+                        }
+                    }
+
+                    // XXX LastXXX保存しないような気がする
+                    // マップ画面を新しい座標で更新
+                    if (!(GUI.MapX == LastMapX) | !(GUI.MapY == LastMapY))
+                    {
+                        GUI.RefreshScreen();
+                    }
                 }
             }
         }
