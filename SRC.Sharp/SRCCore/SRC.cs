@@ -141,7 +141,7 @@ namespace SRCCore
             using (var loggerFactory = LoggerFactory.Create(builder =>
             {
                 builder
-                    .SetMinimumLevel(LogLevel.Trace)
+                    .SetMinimumLevel(LogLevel.Debug)
                     .AddDebug();
             }))
             {
