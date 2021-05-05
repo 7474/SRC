@@ -783,6 +783,8 @@ namespace SRCSharpForm
                 //LoadedPicture:
 
                 // TODO Impl 画像の加工
+                // Copy on write
+                using (var orgImage = (Image)drawBuffer.Clone())
                 using (var gBuf = Graphics.FromImage(drawBuffer))
                 {
                     // 原画像を修正して使う場合は原画像を別のpicBufにコピーして修正する
@@ -887,7 +889,7 @@ namespace SRCSharpForm
                         {
                             var ia = new ImageAttributes();
                             ia.SetColorMatrix(monochromeMatrix);
-                            gBuf.DrawImage(drawBuffer,
+                            gBuf.DrawImage(orgImage,
                                 new Rectangle(0, 0, drawBuffer.Width, drawBuffer.Height),
                                 0, 0, drawBuffer.Width, drawBuffer.Height,
                                 GraphicsUnit.Pixel,
@@ -963,10 +965,19 @@ namespace SRCSharpForm
                             //// 前回の回転角が90度の倍数かどうかで描画の際の最適化使用可否を決める
                             //// (連続で回転させる場合に描画速度を一定にするため)
                             //Graphics.Rotate(angle, last_angle % 90 != 0);
-                            g.ResetTransform();
-                            g.TranslateTransform(drawBuffer.Width / 2f, drawBuffer.Height / 2f);
-                            g.RotateTransform(angle);
-                            g.DrawImage(drawBuffer, -drawBuffer.Width / 2f, 0);
+                            if (transparent)
+                            {
+                                gBuf.Clear(Color.Transparent);
+                            }
+                            else
+                            {
+                                gBuf.Clear(BGColor);
+                            }
+                            gBuf.ResetTransform();
+                            gBuf.TranslateTransform(drawBuffer.Width / 2f, drawBuffer.Height / 2f);
+                            gBuf.RotateTransform(angle % 360);
+                            gBuf.DrawImage(orgImage, -drawBuffer.Width / 2f, -drawBuffer.Height / 2f);
+                            gBuf.ResetTransform();
                         }
                     }
                 }
@@ -1006,7 +1017,9 @@ namespace SRCSharpForm
                 }
                 // ユニット上で画像のセンタリングを行うことを意図している
                 // 場合は修正が必要
-                else if (Strings.InStr(fname, "EFFECT_") > 0 || Strings.InStr(fname, @"スペシャルパワー\") > 0 || Strings.InStr(fname, @"精神コマンド\") > 0)
+                else if (Strings.InStr(fname, "EFFECT_") > 0
+                    || Strings.InStr(fname, @"スペシャルパワー\") > 0
+                    || Strings.InStr(fname, @"精神コマンド\") > 0)
                 {
                     if (dx == Constants.DEFAULT_LEVEL)
                     {

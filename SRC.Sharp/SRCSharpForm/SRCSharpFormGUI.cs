@@ -993,6 +993,7 @@ namespace SRCSharpForm
 
         public void SaveScreen()
         {
+            SRC.LogTrace(ScreenIsSaved + "");
             if (!ScreenIsSaved)
             {
                 // XXX 何で半端にMainFormに追い出してあるんだ。
@@ -1005,6 +1006,7 @@ namespace SRCSharpForm
 
         public void ClearPicture()
         {
+            SRC.LogTrace(ScreenIsSaved + "");
             if (!ScreenIsSaved)
             {
                 return;
