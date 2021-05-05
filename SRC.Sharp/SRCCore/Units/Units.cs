@@ -357,7 +357,7 @@ namespace SRCCore.Units
             //                u = currentU1;
             //                if (u.Party0 == "味方")
             //                {
-            //                    if (u.Status_Renamed == "破壊")
+            //                    if (u.Status == "破壊")
             //                    {
             //                        flag = true;
             //                        break;
@@ -365,7 +365,7 @@ namespace SRCCore.Units
             //                }
             //                else if (u.Party0 == "ＮＰＣ")
             //                {
-            //                    if (u.Status_Renamed == "破壊")
+            //                    if (u.Status == "破壊")
             //                    {
             //                        if (u.Summoner is object)
             //                        {
@@ -387,7 +387,7 @@ namespace SRCCore.Units
             //                foreach (Unit currentU2 in colUnits)
             //                {
             //                    u = currentU2;
-            //                    if (u.Status_Renamed != "破壊")
+            //                    if (u.Status != "破壊")
             //                    {
             //                        goto NextDestroyedUnit;
             //                    }
@@ -426,7 +426,7 @@ namespace SRCCore.Units
             //                    }
 
             //                    SRC.IncrMoney(-u.Value);
-            //                    u.Status_Renamed = "待機";
+            //                    u.Status = "待機";
             //                    if (!u.IsHero())
             //                    {
             //                        GUI.DisplayMessage("システム", u.Nickname + "を修理した;修理費 = " + SrcFormatter.Format(u.Value));
@@ -448,12 +448,12 @@ namespace SRCCore.Units
             //            foreach (Unit currentU3 in colUnits)
             //            {
             //                u = currentU3;
-            //                switch (u.Status_Renamed ?? "")
+            //                switch (u.Status ?? "")
             //                {
             //                    case "出撃":
             //                    case "格納":
             //                        {
-            //                            u.Status_Renamed = "待機";
+            //                            u.Status = "待機";
             //                            break;
             //                        }
             //                }
@@ -466,7 +466,7 @@ namespace SRCCore.Units
             //                foreach (Unit currentU4 in colUnits)
             //                {
             //                    u = currentU4;
-            //                    if (u.Party0 == "味方" & u.Status_Renamed != "他形態" & u.Status_Renamed != "旧主形態" & u.Status_Renamed != "旧形態")
+            //                    if (u.Party0 == "味方" & u.Status != "他形態" & u.Status != "旧主形態" & u.Status != "旧形態")
             //                    {
             //                        if (u.IsFeatureAvailable("ノーマルモード"))
             //                        {
@@ -501,12 +501,12 @@ namespace SRCCore.Units
             //                        goto NextLoop1;
             //                    }
 
-            //                    if (u.Party0 != "味方" | u.Status_Renamed == "他形態" | u.Status_Renamed == "旧主形態" | u.Status_Renamed == "旧形態")
+            //                    if (u.Party0 != "味方" | u.Status == "他形態" | u.Status == "旧主形態" | u.Status == "旧形態")
             //                    {
             //                        goto NextLoop1;
             //                    }
 
-            //                    if (u.Status_Renamed == "破棄")
+            //                    if (u.Status == "破棄")
             //                    {
             //                        if (u.CountPilot() == 0)
             //                        {
@@ -565,14 +565,14 @@ namespace SRCCore.Units
 
             //                        Unit localItem() { object argIndex1 = uname; var ret = SRC.UList.Item(argIndex1); return ret; }
 
-            //                        if (localItem().CurrentForm().Status_Renamed == "待機")
+            //                        if (localItem().CurrentForm().Status == "待機")
             //                        {
             //                            goto NextLoop1;
             //                        }
             //                    }
 
             //                    // 分離を実施
-            //                    u.Split_Renamed();
+            //                    u.Split();
             //                NextLoop1:
             //                    ;
             //                }
@@ -581,7 +581,7 @@ namespace SRCCore.Units
             //                foreach (Unit currentU6 in colUnits)
             //                {
             //                    u = currentU6;
-            //                    if (u.Party0 == "味方" & u.Status_Renamed != "他形態" & u.Status_Renamed != "旧主形態" & u.Status_Renamed != "旧形態")
+            //                    if (u.Party0 == "味方" & u.Status != "他形態" & u.Status != "旧主形態" & u.Status != "旧形態")
             //                    {
             //                        if (u.IsFeatureAvailable("合体"))
             //                        {
@@ -606,7 +606,7 @@ namespace SRCCore.Units
 
             //                                {
             //                                    var withBlock1 = SRC.UList.Item(uname);
-            //                                    if (u.Status_Renamed == "待機" & withBlock1.CurrentForm().Status_Renamed == "離脱")
+            //                                    if (u.Status == "待機" & withBlock1.CurrentForm().Status == "離脱")
             //                                    {
             //                                        goto NextLoop2;
             //                                    }
@@ -644,14 +644,14 @@ namespace SRCCore.Units
 
             //                                    {
             //                                        var withBlock2 = SRC.UList.Item(uname);
-            //                                        if (u.Status_Renamed == "待機")
+            //                                        if (u.Status == "待機")
             //                                        {
-            //                                            if (withBlock2.CurrentForm().Status_Renamed != "待機")
+            //                                            if (withBlock2.CurrentForm().Status != "待機")
             //                                            {
             //                                                goto NextLoop2;
             //                                            }
             //                                        }
-            //                                        else if (withBlock2.CurrentForm().Status_Renamed != "離脱")
+            //                                        else if (withBlock2.CurrentForm().Status != "離脱")
             //                                        {
             //                                            goto NextLoop2;
             //                                        }
@@ -676,7 +676,7 @@ namespace SRCCore.Units
             //                foreach (Unit currentU7 in colUnits)
             //                {
             //                    u = currentU7;
-            //                    if (u.Party0 == "味方" & u.Status_Renamed != "他形態" & u.Status_Renamed != "旧主形態" & u.Status_Renamed != "旧形態")
+            //                    if (u.Party0 == "味方" & u.Status != "他形態" & u.Status != "旧主形態" & u.Status != "旧形態")
             //                    {
             //                        if (u.IsFeatureAvailable("変形"))
             //                        {
@@ -742,7 +742,7 @@ namespace SRCCore.Units
             //            foreach (Unit currentU10 in colUnits)
             //            {
             //                u = currentU10;
-            //                if (u.Status_Renamed == "待機")
+            //                if (u.Status == "待機")
             //                {
             //                    u.DeleteTemporaryOtherForm();
             //                }
@@ -755,16 +755,16 @@ namespace SRCCore.Units
             //                // 召喚ユニットは必ず破棄
             //                if (u.IsFeatureAvailable("召喚ユニット"))
             //                {
-            //                    u.Status_Renamed = "破棄";
+            //                    u.Status = "破棄";
             //                }
             //                // ダミーユニットを破棄
             //                if (u.IsFeatureAvailable("ダミーユニット"))
             //                {
-            //                    u.Status_Renamed = "破棄";
+            //                    u.Status = "破棄";
             //                }
 
             //                // 味方ユニット以外のユニットと破棄されたユニットを削除
-            //                if (u.Party0 != "味方" | u.Status_Renamed == "破棄")
+            //                if (u.Party0 != "味方" | u.Status == "破棄")
             //                {
             //                    // ユニットが装備しているアイテムも破棄
             //                    var loopTo6 = u.CountItem();
@@ -783,7 +783,7 @@ namespace SRCCore.Units
             //            foreach (Unit currentU12 in colUnits)
             //            {
             //                u = currentU12;
-            //                u.Reset_Renamed();
+            //                u.Reset();
             //            }
 
             //            // ステータスをアップデート
@@ -804,7 +804,7 @@ namespace SRCCore.Units
         //            foreach (Unit u in colUnits)
         //            {
         //                FileSystem.WriteLine(SRC.SaveDataFileNumber, u.Name);
-        //                FileSystem.WriteLine(SRC.SaveDataFileNumber, u.ID, u.Rank, u.Status_Renamed);
+        //                FileSystem.WriteLine(SRC.SaveDataFileNumber, u.ID, u.Rank, u.Status);
         //                FileSystem.WriteLine(SRC.SaveDataFileNumber, (object)u.CountOtherForm());
         //                var loopTo = u.CountOtherForm();
         //                for (i = 1; i <= loopTo; i++)
@@ -850,8 +850,8 @@ namespace SRCCore.Units
         //            int num = default, num2 = default;
         //            Unit new_unit;
         //            var Name = default(string);
-        //            // UPGRADE_NOTE: Status は Status_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        //            string ID = default, Status_Renamed = default;
+        //            // UPGRADE_NOTE: Status は Status にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+        //            string ID = default, Status = default;
         //            var Rank = default;
         //            int i, j;
         //            string dummy;
@@ -875,7 +875,7 @@ namespace SRCCore.Units
         //                // ID, Rank, Status
         //                FileSystem.Input(SRC.SaveDataFileNumber, ID);
         //                FileSystem.Input(SRC.SaveDataFileNumber, Rank);
-        //                FileSystem.Input(SRC.SaveDataFileNumber, Status_Renamed);
+        //                FileSystem.Input(SRC.SaveDataFileNumber, Status);
 
         //                // 旧形式のユニットＩＤを新形式に変換
         //                if (SRC.SaveDataVersion < 10700)
@@ -887,7 +887,7 @@ namespace SRCCore.Units
         //                new_unit.ID = ID;
         //                new_unit.Rank = Rank;
         //                new_unit.Party = "味方";
-        //                new_unit.Status_Renamed = Status_Renamed;
+        //                new_unit.Status = Status;
         //                new_unit.FullRecover();
         //                colUnits.Add(new_unit, new_unit.ID);
 
@@ -971,7 +971,7 @@ namespace SRCCore.Units
         //                            Pilot localItem1() { object argIndex1 = ID2; var ret = SRC.PList.Item(argIndex1); return ret; }
 
         //                            withBlock.AddPilot(localItem1());
-        //                            if (withBlock.Status_Renamed == "離脱")
+        //                            if (withBlock.Status == "離脱")
         //                            {
         //                                Pilot localItem2() { object argIndex1 = ID2; var ret = SRC.PList.Item(argIndex1); return ret; }
 
@@ -986,7 +986,7 @@ namespace SRCCore.Units
         //                                Pilot localItem3() { object argIndex1 = ID2; var ret = SRC.PList.Item(argIndex1); return ret; }
 
         //                                withBlock.AddPilot(localItem3());
-        //                                if (withBlock.Status_Renamed == "離脱")
+        //                                if (withBlock.Status == "離脱")
         //                                {
         //                                    Pilot localItem4() { object argIndex1 = ID2; var ret = SRC.PList.Item(argIndex1); return ret; }
 
@@ -1007,7 +1007,7 @@ namespace SRCCore.Units
         //                            Pilot localItem5() { object argIndex1 = ID2; var ret = SRC.PList.Item(argIndex1); return ret; }
 
         //                            withBlock.AddSupport(localItem5());
-        //                            if (withBlock.Status_Renamed == "離脱")
+        //                            if (withBlock.Status == "離脱")
         //                            {
         //                                Pilot localItem6() { object argIndex1 = ID2; var ret = SRC.PList.Item(argIndex1); return ret; }
 
@@ -1168,15 +1168,15 @@ namespace SRCCore.Units
         //                // 出撃していないユニットは味方ユニット以外全て削除
         //                if (u.Party0 != "味方")
         //                {
-        //                    if (u.Status_Renamed == "待機" | u.Status_Renamed == "破壊")
+        //                    if (u.Status == "待機" | u.Status == "破壊")
         //                    {
-        //                        u.Status_Renamed = "破棄";
+        //                        u.Status = "破棄";
         //                        var loopTo = u.CountOtherForm();
         //                        for (i = 1; i <= loopTo; i++)
         //                        {
         //                            Unit localOtherForm() { object argIndex1 = i; var ret = u.OtherForm(argIndex1); return ret; }
 
-        //                            localOtherForm().Status_Renamed = "破棄";
+        //                            localOtherForm().Status = "破棄";
         //                        }
         //                    }
         //                }
@@ -1186,7 +1186,7 @@ namespace SRCCore.Units
         //            {
         //                u = currentU1;
         //                // 破棄されたユニットを削除
-        //                if (u.Status_Renamed == "破棄")
+        //                if (u.Status == "破棄")
         //                {
         //                    // ユニットに乗っているパイロットも破棄
         //                    var loopTo1 = u.CountPilot();

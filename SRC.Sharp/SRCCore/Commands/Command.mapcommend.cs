@@ -188,7 +188,7 @@ namespace SRCCore.Commands
         //        u = currentU;
         //        {
         //            var withBlock = u;
-        //            if ((withBlock.Party0 ?? "") == (uparty ?? "") & (withBlock.Status_Renamed == "出撃" | withBlock.Status_Renamed == "格納"))
+        //            if ((withBlock.Party0 ?? "") == (uparty ?? "") & (withBlock.Status == "出撃" | withBlock.Status == "格納"))
         //            {
         //                // 未確認のユニットは表示しない
         //                if (Expression.IsOptionDefined("ユニット情報隠蔽") & !withBlock.IsConditionSatisfied("識別済み") & (withBlock.Party0 == "敵" | withBlock.Party0 == "中立") | withBlock.IsConditionSatisfied("ユニット情報隠蔽"))
@@ -281,7 +281,7 @@ namespace SRCCore.Commands
         //                    list[Information.UBound(list)] = list[Information.UBound(list)] + "済";
         //                }
 
-        //                if (withBlock.Status_Renamed == "格納")
+        //                if (withBlock.Status == "格納")
         //                {
         //                    list[Information.UBound(list)] = list[Information.UBound(list)] + "格";
         //                }
@@ -650,14 +650,14 @@ namespace SRCCore.Commands
         //            p = currentP;
         //            if (p.Party == "味方")
         //            {
-        //                if (p.Unit_Renamed is object)
+        //                if (p.Unit is object)
         //                {
-        //                    if (p.Unit_Renamed.Status_Renamed == "出撃" & !p.Unit_Renamed.IsConditionSatisfied("憑依"))
+        //                    if (p.Unit.Status == "出撃" & !p.Unit.IsConditionSatisfied("憑依"))
         //                    {
         //                        // 本当に乗っている？
         //                        found = false;
         //                        {
-        //                            var withBlock1 = p.Unit_Renamed;
+        //                            var withBlock1 = p.Unit;
         //                            if (ReferenceEquals(p, withBlock1.MainPilot()))
         //                            {
         //                                found = true;
@@ -756,19 +756,19 @@ namespace SRCCore.Commands
         //                goto NextLoop;
         //            }
 
-        //            if (p.Unit_Renamed is null)
+        //            if (p.Unit is null)
         //            {
         //                goto NextLoop;
         //            }
 
-        //            if (p.Unit_Renamed.Status_Renamed != "出撃")
+        //            if (p.Unit.Status != "出撃")
         //            {
         //                goto NextLoop;
         //            }
 
-        //            if (p.Unit_Renamed.CountPilot() > 0)
+        //            if (p.Unit.CountPilot() > 0)
         //            {
-        //                if ((p.ID ?? "") == (p.Unit_Renamed.Pilot(1).ID ?? "") & (p.ID ?? "") != (p.Unit_Renamed.MainPilot().ID ?? ""))
+        //                if ((p.ID ?? "") == (p.Unit.Pilot(1).ID ?? "") & (p.ID ?? "") != (p.Unit.MainPilot().ID ?? ""))
         //                {
         //                    // 追加パイロットのため、使用されていない
         //                    goto NextLoop;
@@ -786,7 +786,7 @@ namespace SRCCore.Commands
         //            Array.Resize(id_list, Information.UBound(list2) + 1);
         //            Array.Resize(pid, Information.UBound(list2) + 1);
         //            GUI.ListItemFlag[Information.UBound(list2)] = false;
-        //            id_list[Information.UBound(list2)] = p.Unit_Renamed.ID;
+        //            id_list[Information.UBound(list2)] = p.Unit.ID;
         //            pid[Information.UBound(list2)] = p.ID;
         //            string localRightPaddedString() { string argbuf = p.get_Nickname(false); var ret = GeneralLib.RightPaddedString(argbuf, 19); p.get_Nickname(false) = argbuf; return ret; }
 
@@ -805,10 +805,10 @@ namespace SRCCore.Commands
         //            list2[Information.UBound(list2)] = list2[Information.UBound(list2)] + GeneralLib.RightPaddedString(buf, 12);
         //            if (p.SP < p.SpecialPowerCost(SelectedSpecialPower))
         //            {
-        //                list2[Information.UBound(list2)] = list2[Information.UBound(list2)] + " " + Expression.Term("ＳＰ", p.Unit_Renamed) + "不足";
+        //                list2[Information.UBound(list2)] = list2[Information.UBound(list2)] + " " + Expression.Term("ＳＰ", p.Unit) + "不足";
         //            }
 
-        //            if (p.Unit_Renamed.Action == 0)
+        //            if (p.Unit.Action == 0)
         //            {
         //                list2[Information.UBound(list2)] = list2[Information.UBound(list2)] + " 行動済";
         //            }
@@ -839,14 +839,14 @@ namespace SRCCore.Commands
         //            var tmp = pid;
         //            {
         //                var withBlock2 = SRC.PList.Item(tmp[ret]);
-        //                GUI.Center(withBlock2.Unit_Renamed.x, withBlock2.Unit_Renamed.y);
+        //                GUI.Center(withBlock2.Unit.x, withBlock2.Unit.y);
         //                GUI.RefreshScreen();
-        //                Status.DisplayUnitStatus(withBlock2.Unit_Renamed);
+        //                Status.DisplayUnitStatus(withBlock2.Unit);
 
         //                // カーソル自動移動
         //                if (SRC.AutoMoveCursor)
         //                {
-        //                    GUI.MoveCursorPos("ユニット選択", withBlock2.Unit_Renamed);
+        //                    GUI.MoveCursorPos("ユニット選択", withBlock2.Unit);
         //                }
         //            }
 

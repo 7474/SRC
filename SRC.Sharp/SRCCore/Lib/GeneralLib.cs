@@ -166,34 +166,34 @@ namespace SRCCore.Lib
         }
 
         //        // リスト list に要素 str を追加
-        //        // UPGRADE_NOTE: str は str_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        //        public static void LAppend(string list, string str_Renamed)
+        //        // UPGRADE_NOTE: str は str にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+        //        public static void LAppend(string list, string str)
         //        {
         //            list = Strings.Trim(list);
-        //            str_Renamed = Strings.Trim(str_Renamed);
+        //            str = Strings.Trim(str);
         //            if (!string.IsNullOrEmpty(list))
         //            {
-        //                if (!string.IsNullOrEmpty(str_Renamed))
+        //                if (!string.IsNullOrEmpty(str))
         //                {
-        //                    list = list + " " + str_Renamed;
+        //                    list = list + " " + str;
         //                }
         //            }
-        //            else if (!string.IsNullOrEmpty(str_Renamed))
+        //            else if (!string.IsNullOrEmpty(str))
         //            {
-        //                list = str_Renamed;
+        //                list = str;
         //            }
         //        }
 
         //        // リスト list に str が登場する位置を返す
-        //        // UPGRADE_NOTE: str は str_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        //        public static int SearchList(string list, string str_Renamed)
+        //        // UPGRADE_NOTE: str は str にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+        //        public static int SearchList(string list, string str)
         //        {
         //            int SearchListRet = default;
         //            int i;
         //            var loopTo = LLength(list);
         //            for (i = 1; i <= loopTo; i++)
         //            {
-        //                if ((LIndex(list, i) ?? "") == (str_Renamed ?? ""))
+        //                if ((LIndex(list, i) ?? "") == (str ?? ""))
         //                {
         //                    SearchListRet = i;
         //                    return SearchListRet;
@@ -333,18 +333,18 @@ namespace SRCCore.Lib
         }
 
         //        // タブを考慮したTrim
-        //        // UPGRADE_NOTE: str は str_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        //        public static void TrimString(string str_Renamed)
+        //        // UPGRADE_NOTE: str は str にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+        //        public static void TrimString(string str)
         //        {
         //            int j, i, lstr;
-        //            lstr = Strings.Len(str_Renamed);
+        //            lstr = Strings.Len(str);
         //            i = 1;
         //            j = lstr;
 
         //            // 先頭の空白を検索
         //            while (i <= j)
         //            {
-        //                switch (Strings.Asc(Strings.Mid(str_Renamed, i)))
+        //                switch (Strings.Asc(Strings.Mid(str, i)))
         //                {
         //                    case 9:
         //                    case 32:
@@ -364,7 +364,7 @@ namespace SRCCore.Lib
         //            // 末尾の空白を検索
         //            while (i < j)
         //            {
-        //                switch (Strings.Asc(Strings.Mid(str_Renamed, j)))
+        //                switch (Strings.Asc(Strings.Mid(str, j)))
         //                {
         //                    case 9:
         //                    case 32:
@@ -384,7 +384,7 @@ namespace SRCCore.Lib
         //            // 空白があれば置き換え
         //            if (i != 1 | j != lstr)
         //            {
-        //                str_Renamed = Strings.Mid(str_Renamed, i, j - i + 1);
+        //                str = Strings.Mid(str, i, j - i + 1);
         //            }
         //        }
 

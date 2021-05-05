@@ -180,7 +180,7 @@ namespace SRCCore.Units
             //                        GUI.OpenMessageForm(u1: ref null, u2: ref null);
             //                        GUI.DisplaySysMessage(Nickname + "は強制的に退却させられた。");
             //                        GUI.CloseMessageForm();
-            //                        Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+            //                        Event.HandleEvent("破壊", MainPilot().ID);
             //                        break;
             //                    }
 

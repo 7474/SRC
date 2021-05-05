@@ -79,7 +79,7 @@
 //                wHeight = (short)GetGlobalStatusSize(ref X, ref Y);
 //                // 枠線を引く
 //                pic.Line(lineStart, lineStart); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-//                pic.FillStyle = Event_Renamed.ObjFillStyle;
+//                pic.FillStyle = Event.ObjFillStyle;
 //                // 高さを設定する
 //                pic.Height = (int)SrcFormatter.TwipsToPixelsY(wHeight);
 //                pic.CurrentX = 5;
@@ -334,7 +334,7 @@
 //            }
 
 //            // 破壊、破棄されたユニットは表示しない
-//            if (u.Status_Renamed == "破壊" | u.Status_Renamed == "破棄")
+//            if (u.Status == "破壊" | u.Status == "破棄")
 //            {
 //                return;
 //            }
@@ -370,7 +370,7 @@
 //                upic.FillStyle = vbFSTransparent;
 //                // 枠線を引く
 //                upic.Line(lineStart, lineStart); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-//                upic.FillStyle = Event_Renamed.ObjFillStyle;
+//                upic.FillStyle = Event.ObjFillStyle;
 //                upic.CurrentX = 5;
 //                upic.CurrentY = 5;
 //                // 文字色をリセット
@@ -1945,7 +1945,7 @@
 //                upic.Print(withBlock.Nickname0);
 //                upic.Font = SrcFormatter.FontChangeBold(upic.Font, false);
 //                upic.Font = SrcFormatter.FontChangeSize(upic.Font, 9f);
-//                if (withBlock.Status_Renamed == "出撃" & !string.IsNullOrEmpty(Map.MapFileName))
+//                if (withBlock.Status == "出撃" & !string.IsNullOrEmpty(Map.MapFileName))
 //                {
 
 //                    // 地形情報の表示
@@ -2283,11 +2283,11 @@
 //                        // 思考モードにパイロット名が指定されている場合
 //                        {
 //                            var withBlock1 = SRC.PList.Item(ref buf);
-//                            if (withBlock1.Unit_Renamed is object)
+//                            if (withBlock1.Unit is object)
 //                            {
 //                                {
-//                                    var withBlock2 = withBlock1.Unit_Renamed;
-//                                    if (withBlock2.Status_Renamed == "出撃")
+//                                    var withBlock2 = withBlock1.Unit;
+//                                    if (withBlock2.Status == "出撃")
 //                                    {
 //                                        upic.Print(withBlock2.Nickname + "(" + SrcFormatter.Format(withBlock2.x) + "," + SrcFormatter.Format(withBlock2.y) + ")を");
 //                                        if (withBlock2.Party == "味方")
@@ -4988,7 +4988,7 @@
 //                        buf = buf + "M";
 //                    }
 //                    // 特殊効果
-//                    wclass = withBlock.Weapon(w).Class_Renamed;
+//                    wclass = withBlock.Weapon(w).Class;
 //                    var loopTo25 = withBlock.CountWeaponEffect(w);
 //                    for (j = 1; j <= loopTo25; j++)
 //                        buf = buf + "+";
@@ -5145,7 +5145,7 @@
 //        public static void DisplayPilotStatus(Pilot p)
 //        {
 //            short i;
-//            DisplayedUnit = p.Unit_Renamed;
+//            DisplayedUnit = p.Unit;
 //            {
 //                var withBlock = DisplayedUnit;
 //                if (ReferenceEquals(p, withBlock.MainPilot()))

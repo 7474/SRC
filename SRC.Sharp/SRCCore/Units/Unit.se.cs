@@ -295,19 +295,19 @@ namespace SRCCore.Units
             //            is_message_form_opened = My.MyProject.Forms.frmMessage.Visible;
 
             //            // オブジェクト色等を記録しておく
-            //            prev_obj_color = Event_Renamed.ObjColor;
-            //            prev_obj_fill_color = Event_Renamed.ObjFillColor;
-            //            prev_obj_fill_style = Event_Renamed.ObjFillStyle;
-            //            prev_obj_draw_width = Event_Renamed.ObjDrawWidth;
-            //            prev_obj_draw_option = Event_Renamed.ObjDrawOption;
+            //            prev_obj_color = Event.ObjColor;
+            //            prev_obj_fill_color = Event.ObjFillColor;
+            //            prev_obj_fill_style = Event.ObjFillStyle;
+            //            prev_obj_draw_width = Event.ObjDrawWidth;
+            //            prev_obj_draw_option = Event.ObjDrawOption;
 
             //            // オブジェクト色等をデフォルトに戻す
-            //            Event_Renamed.ObjColor = ColorTranslator.ToOle(Color.White);
-            //            Event_Renamed.ObjFillColor = ColorTranslator.ToOle(Color.White);
+            //            Event.ObjColor = ColorTranslator.ToOle(Color.White);
+            //            Event.ObjFillColor = ColorTranslator.ToOle(Color.White);
             //            // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-            //            Event_Renamed.ObjFillStyle = vbFSTransparent;
-            //            Event_Renamed.ObjDrawWidth = 1;
-            //            Event_Renamed.ObjDrawOption = "";
+            //            Event.ObjFillStyle = vbFSTransparent;
+            //            Event.ObjDrawWidth = 1;
+            //            Event.ObjDrawOption = "";
 
             //            // 検索するシチュエーションが武器名かどうか調べる
             //            var loopTo1 = CountWeapon();
@@ -332,16 +332,16 @@ namespace SRCCore.Units
             //            }
 
             //            // イベント用ターゲットを記録しておく
-            //            prev_selected_target = Event_Renamed.SelectedTargetForEvent;
+            //            prev_selected_target = Event.SelectedTargetForEvent;
 
             //            // 攻撃でもアビリティでもない場合、ターゲットが設定されていなければ
             //            // 自分自身をターゲットに設定する
             //            // (発動アニメではアニメ表示にSelectedTargetForEventが使われるため)
             //            if (!is_weapon & !is_ability)
             //            {
-            //                if (Event_Renamed.SelectedTargetForEvent is null)
+            //                if (Event.SelectedTargetForEvent is null)
             //                {
-            //                    Event_Renamed.SelectedTargetForEvent = this;
+            //                    Event.SelectedTargetForEvent = this;
             //                }
             //            }
 
@@ -564,25 +564,25 @@ namespace SRCCore.Units
             //            }
 
             //            // オブジェクト色等を元に戻す
-            //            Event_Renamed.ObjColor = prev_obj_color;
-            //            Event_Renamed.ObjFillColor = prev_obj_fill_color;
-            //            Event_Renamed.ObjFillStyle = prev_obj_fill_style;
-            //            Event_Renamed.ObjDrawWidth = prev_obj_draw_width;
-            //            Event_Renamed.ObjDrawOption = prev_obj_draw_option;
+            //            Event.ObjColor = prev_obj_color;
+            //            Event.ObjFillColor = prev_obj_fill_color;
+            //            Event.ObjFillStyle = prev_obj_fill_style;
+            //            Event.ObjDrawWidth = prev_obj_draw_width;
+            //            Event.ObjDrawOption = prev_obj_draw_option;
 
             //            // イベント用ターゲットを元に戻す
-            //            Event_Renamed.SelectedTargetForEvent = prev_selected_target;
+            //            Event.SelectedTargetForEvent = prev_selected_target;
             //            return;
             //        ErrorHandler:
             //            ;
-            //            if (Strings.Len(Event_Renamed.EventErrorMessage) > 0)
+            //            if (Strings.Len(Event.EventErrorMessage) > 0)
             //            {
-            //                Event_Renamed.DisplayEventErrorMessage(Event_Renamed.CurrentLineNum, Event_Renamed.EventErrorMessage);
-            //                Event_Renamed.EventErrorMessage = "";
+            //                Event.DisplayEventErrorMessage(Event.CurrentLineNum, Event.EventErrorMessage);
+            //                Event.EventErrorMessage = "";
             //            }
             //            else
             //            {
-            //                Event_Renamed.DisplayEventErrorMessage(Event_Renamed.CurrentLineNum, "");
+            //                Event.DisplayEventErrorMessage(Event.CurrentLineNum, "");
             //            }
         }
 

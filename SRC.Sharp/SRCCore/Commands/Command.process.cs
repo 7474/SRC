@@ -666,7 +666,7 @@ namespace SRCCore.Commands
                 //                            break;
                 //                        }
 
-                //                        if (u.Status_Renamed != "出撃" && u.CurrentForm().IsFeatureAvailable("合体制限"))
+                //                        if (u.Status != "出撃" && u.CurrentForm().IsFeatureAvailable("合体制限"))
                 //                        {
                 //                            break;
                 //                        }
@@ -1526,7 +1526,7 @@ namespace SRCCore.Commands
 
                     //    {
                     //        var withBlock12 = localServant().CurrentForm();
-                    //        switch (withBlock12.Status_Renamed ?? "")
+                    //        switch (withBlock12.Status ?? "")
                     //        {
                     //            case "出撃":
                     //            case "格納":
@@ -1554,7 +1554,7 @@ namespace SRCCore.Commands
 
                     //                                {
                     //                                    var withBlock13 = localItem2().CurrentForm();
-                    //                                    if (withBlock13.Status_Renamed == "出撃" | withBlock13.Status_Renamed == "格納")
+                    //                                    if (withBlock13.Status == "出撃" | withBlock13.Status == "格納")
                     //                                    {
                     //                                        GUI.MainForm.mnuUnitCommandItem(DismissCmdID).Visible = false;
                     //                                    }
@@ -2002,7 +2002,7 @@ namespace SRCCore.Commands
                 //                    break;
                 //                }
 
-                //                if (u.Status_Renamed != "出撃" && u.CurrentForm().IsFeatureAvailable("合体制限"))
+                //                if (u.Status != "出撃" && u.CurrentForm().IsFeatureAvailable("合体制限"))
                 //                {
                 //                    break;
                 //                }

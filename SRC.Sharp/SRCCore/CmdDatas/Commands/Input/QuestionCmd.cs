@@ -20,10 +20,10 @@ namespace SRCCore.CmdDatas.Commands
             //            GUI.ListItemID = new string[1];
             //            GUI.ListItemFlag = new bool[1];
             //            GUI.ListItemID[0] = "0";
-            //            var loopTo = Information.UBound(Event_Renamed.EventData);
+            //            var loopTo = Information.UBound(Event.EventData);
             //            for (i = LineNum + 1; i <= loopTo; i++)
             //            {
-            //                buf = Event_Renamed.EventData[i];
+            //                buf = Event.EventData[i];
             //                Expression.FormatMessage(ref buf);
             //                if (Strings.Len(buf) > 0)
             //                {
@@ -41,9 +41,9 @@ namespace SRCCore.CmdDatas.Commands
             //                }
             //            }
 
-            //            if (i == Information.UBound(Event_Renamed.EventData))
+            //            if (i == Information.UBound(Event.EventData))
             //            {
-            //                Event_Renamed.EventErrorMessage = "QuestionとEndが対応していません";
+            //                Event.EventErrorMessage = "QuestionとEndが対応していません";
             //                ;
             //#error Cannot convert ErrorStatementSyntax - see comment for details
             //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 399008
@@ -73,7 +73,7 @@ namespace SRCCore.CmdDatas.Commands
 
             //                    default:
             //                        {
-            //                            Event_Renamed.EventErrorMessage = "Questionコマンドの引数の数が違います";
+            //                            Event.EventErrorMessage = "Questionコマンドの引数の数が違います";
             //                            ;
             //#error Cannot convert ErrorStatementSyntax - see comment for details
             //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 399492
@@ -92,7 +92,7 @@ namespace SRCCore.CmdDatas.Commands
             //                Commands.SelectedItem = (short)0;
             //            }
 
-            //            Event_Renamed.SelectedAlternative = GUI.ListItemID[Commands.SelectedItem];
+            //            Event.SelectedAlternative = GUI.ListItemID[Commands.SelectedItem];
             //            GUI.ListItemID = new string[1];
             //            ExecQuestionCmdRet = i + 1;
         }

@@ -601,7 +601,7 @@ namespace SRCCore
             //if (Expression.IsGlobalVariableDefined(vname))
             //{
             //    // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //    BGMNameRet = Conversions.ToString(Event_Renamed.GlobalVariableList[vname].StringValue);
+            //    BGMNameRet = Conversions.ToString(Event.GlobalVariableList[vname].StringValue);
             //    return BGMNameRet;
             //}
 

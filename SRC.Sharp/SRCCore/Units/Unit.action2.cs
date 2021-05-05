@@ -409,7 +409,7 @@ namespace SRCCore.Units
             //            GUI.Sleep(GUI.MessageWait);
             //        }
 
-            //        Event_Renamed.HandleEvent("レベルアップ", withBlock1.ID);
+            //        Event.HandleEvent("レベルアップ", withBlock1.ID);
             //        SRC.PList.UpdateSupportMod(this);
             //    }
             //    else if (GetExpRet > 0)
@@ -586,11 +586,11 @@ namespace SRCCore.Units
             //            {
             //                if ((p.Name ?? "") == (pname ?? "") | (p.get_Nickname(false) ?? "") == (pname ?? ""))
             //                {
-            //                    if (p.Unit_Renamed is object)
+            //                    if (p.Unit is object)
             //                    {
-            //                        if (p.Unit_Renamed.Status == "出撃" | p.Unit_Renamed.Status == "格納")
+            //                        if (p.Unit.Status == "出撃" | p.Unit.Status == "格納")
             //                        {
-            //                            p.Unit_Renamed.Die(true);
+            //                            p.Unit.Die(true);
             //                        }
             //                    }
             //                }
@@ -691,7 +691,7 @@ namespace SRCCore.Units
             //    {
             //        u = Commands.SelectedUnit;
             //        Commands.SelectedUnit = this;
-            //        Event_Renamed.HandleEvent("破壊", MainPilot().ID);
+            //        Event.HandleEvent("破壊", MainPilot().ID);
             //        Commands.SelectedUnit = u;
             //        if (SRC.IsScenarioFinished)
             //        {
@@ -822,12 +822,12 @@ namespace SRCCore.Units
             //                    if (withBlock.Status == "破壊")
             //                    {
             //                        GUI.DisplaySysMessage(withBlock.Nickname + "は破壊された");
-            //                        Event_Renamed.HandleEvent("破壊", withBlock.MainPilot().ID);
+            //                        Event.HandleEvent("破壊", withBlock.MainPilot().ID);
             //                    }
             //                    else
             //                    {
             //                        GUI.DisplaySysMessage(withBlock.Nickname + "は" + tdmg + "のダメージを受けた。;" + "残りＨＰは" + SrcFormatter.Format(withBlock.HP) + "（損傷率 = " + 100 * (withBlock.MaxHP - withBlock.HP) / withBlock.MaxHP + "％）");
-            //                        Event_Renamed.HandleEvent("損傷率", withBlock.MainPilot().ID, 100 - withBlock.HP * 100 / withBlock.MaxHP);
+            //                        Event.HandleEvent("損傷率", withBlock.MainPilot().ID, 100 - withBlock.HP * 100 / withBlock.MaxHP);
             //                    }
 
             //                    Commands.SelectedUnit = u;

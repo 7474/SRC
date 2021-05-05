@@ -272,7 +272,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    Pilot localItem() { object argIndex1 = idx; var ret = SRC.PList.Item(argIndex1); return ret; }
 
-                //                    u = localItem().Unit_Renamed;
+                //                    u = localItem().Unit;
                 //                }
                 //                else
                 //                {
@@ -313,7 +313,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    Pilot localItem1() { object argIndex1 = idx; var ret = SRC.PList.Item(argIndex1); return ret; }
 
-                //                    u = localItem1().Unit_Renamed;
+                //                    u = localItem1().Unit;
                 //                }
                 //                else
                 //                {
@@ -331,7 +331,7 @@ namespace SRCCore.Expressions
                 //                        u.EN = GeneralLib.StrToLng(str_value);
                 //                    }
 
-                //                    if (u.EN == 0 & u.Status_Renamed == "出撃")
+                //                    if (u.EN == 0 & u.Status == "出撃")
                 //                    {
                 //                        GUI.PaintUnitBitmap(u);
                 //                    }
@@ -435,7 +435,7 @@ namespace SRCCore.Expressions
                 //                {
                 //                    Pilot localItem3() { object argIndex1 = idx; var ret = SRC.PList.Item(argIndex1); return ret; }
 
-                //                    u = localItem3().Unit_Renamed;
+                //                    u = localItem3().Unit;
                 //                }
                 //                else
                 //                {

@@ -69,12 +69,12 @@ namespace SRCCore.CmdDatas.Commands
             //            goto NextPilot;
             //        }
 
-            //        if (p.Unit_Renamed is null)
+            //        if (p.Unit is null)
             //        {
             //            goto NextPilot;
             //        }
 
-            //        if (p.Unit_Renamed.Status != "出撃" & p.Unit_Renamed.Status != "格納")
+            //        if (p.Unit.Status != "出撃" & p.Unit.Status != "格納")
             //        {
             //            goto NextPilot;
             //        }
@@ -83,22 +83,22 @@ namespace SRCCore.CmdDatas.Commands
             //        p.Exp = p.Exp + 2 * p.SP;
 
             //        // 追加パイロットや暴走時パイロットに関する処理
-            //        if (p.Unit_Renamed.CountPilot() > 0 & !p.IsSupport(p.Unit_Renamed))
+            //        if (p.Unit.CountPilot() > 0 & !p.IsSupport(p.Unit))
             //        {
             //            // 追加パイロットがメインパイロットの場合
-            //            if (ReferenceEquals(p, p.Unit_Renamed.Pilot(1)) & !ReferenceEquals(p, p.Unit_Renamed.MainPilot()) & p.Unit_Renamed.MainPilot().MaxSP > 0)
+            //            if (ReferenceEquals(p, p.Unit.Pilot(1)) & !ReferenceEquals(p, p.Unit.MainPilot()) & p.Unit.MainPilot().MaxSP > 0)
             //            {
             //                goto NextPilot;
             //            }
 
             //            // 追加パイロットがメインパイロットではなくなった場合
-            //            if (!ReferenceEquals(p, p.Unit_Renamed.MainPilot()))
+            //            if (!ReferenceEquals(p, p.Unit.MainPilot()))
             //            {
             //                // 自分がユニットのパイロット一覧に含まれているか判定
-            //                var loopTo = p.Unit_Renamed.CountPilot();
+            //                var loopTo = p.Unit.CountPilot();
             //                for (i = 1; i <= loopTo; i++)
             //                {
-            //                    Pilot localPilot() { object argIndex1 = i; var ret = p.Unit_Renamed.Pilot(argIndex1); return ret; }
+            //                    Pilot localPilot() { object argIndex1 = i; var ret = p.Unit.Pilot(argIndex1); return ret; }
 
             //                    if (ReferenceEquals(p, localPilot()))
             //                    {
@@ -106,7 +106,7 @@ namespace SRCCore.CmdDatas.Commands
             //                    }
             //                }
 
-            //                if (i > p.Unit_Renamed.CountPilot())
+            //                if (i > p.Unit.CountPilot())
             //                {
             //                    goto NextPilot;
             //                }

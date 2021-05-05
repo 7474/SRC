@@ -755,7 +755,7 @@ namespace SRCCore.Units
 
             //            {
             //                var withBlock3 = localServant().CurrentForm();
-            //                switch (withBlock3.Status_Renamed ?? "")
+            //                switch (withBlock3.Status ?? "")
             //                {
             //                    case "出撃":
             //                    case "格納":
@@ -782,7 +782,7 @@ namespace SRCCore.Units
 
             //                                        {
             //                                            var withBlock4 = localItem().CurrentForm();
-            //                                            if (withBlock4.Status_Renamed == "出撃" | withBlock4.Status_Renamed == "格納")
+            //                                            if (withBlock4.Status == "出撃" | withBlock4.Status == "格納")
             //                                            {
             //                                                return IsAbilityAvailableRet;
             //                                            }
@@ -827,10 +827,10 @@ namespace SRCCore.Units
             //            {
             //                Pilot localItem2() { object argIndex1 = pname; var ret = SRC.PList.Item(argIndex1); return ret; }
 
-            //                u = localItem2().Unit_Renamed;
+            //                u = localItem2().Unit;
             //                if (u is object)
             //                {
-            //                    if (u.Status_Renamed == "出撃" | u.Status_Renamed == "格納")
+            //                    if (u.Status == "出撃" | u.Status == "格納")
             //                    {
             //                        return IsAbilityAvailableRet;
             //                    }

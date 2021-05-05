@@ -51,7 +51,7 @@ namespace SRCCore
 
             //            // マウスカーソルを砂時計に
             //            // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
-            //            Cursor.Current = Cursors.WaitCursor;
+            //            GUI.ChangeStatus(GuiStatus.WaitCursor);
 
             // タイトル画面を表示
             GUI.OpenTitleForm();
@@ -820,7 +820,7 @@ namespace SRCCore
 
             //    // マウスカーソルを元に戻す
             //    // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
-            //    Cursor.Current = Cursors.Default;
+            //    GUI.ChangeStatus(GuiStatus.Default);
 
             //    // シナリオパスは変更される可能性があるので、MIDIファイルのサーチパスをリセット
             //    Sound.ResetMidiSearchPath();
@@ -906,7 +906,7 @@ namespace SRCCore
             GUI.CloseTitleForm();
 
             //// UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
-            //Cursor.Current = Cursors.Default;
+            //GUI.ChangeStatus(GuiStatus.Default);
             //}
 
             //// ロングネームにしておく

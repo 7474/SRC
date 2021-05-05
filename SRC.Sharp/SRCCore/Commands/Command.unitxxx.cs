@@ -26,7 +26,7 @@ namespace SRCCore.Commands
             //}
 
             //// 使用イベント
-            //Event_Renamed.HandleEvent("使用", SelectedUnit.MainPilot().ID, "チャージ");
+            //Event.HandleEvent("使用", SelectedUnit.MainPilot().ID, "チャージ");
             //if (SRC.IsScenarioFinished)
             //{
             //    SRC.IsScenarioFinished = false;
@@ -113,7 +113,7 @@ namespace SRCCore.Commands
             //}
 
             //// 使用後イベント
-            //Event_Renamed.HandleEvent("使用後", SelectedUnit.MainPilot().ID, "チャージ");
+            //Event.HandleEvent("使用後", SelectedUnit.MainPilot().ID, "チャージ");
             //if (SRC.IsScenarioFinished)
             //{
             //    SRC.IsScenarioFinished = false;
@@ -161,7 +161,7 @@ namespace SRCCore.Commands
             //            {
             //                if (Map.MapDataForUnit[i, j] is object)
             //                {
-            //                    bool localIsEventDefined() { var arglname = "会話 " + withBlock.MainPilot().ID + " " + Map.MapDataForUnit[i, j].MainPilot.ID; var ret = Event_Renamed.IsEventDefined(arglname); return ret; }
+            //                    bool localIsEventDefined() { var arglname = "会話 " + withBlock.MainPilot().ID + " " + Map.MapDataForUnit[i, j].MainPilot.ID; var ret = Event.IsEventDefined(arglname); return ret; }
 
             //                    if (!localIsEventDefined())
             //                    {
@@ -215,7 +215,7 @@ namespace SRCCore.Commands
             //}
 
             //// 会話イベントを実施
-            //Event_Renamed.HandleEvent("会話", SelectedUnit.MainPilot().ID, SelectedTarget.MainPilot().ID);
+            //Event.HandleEvent("会話", SelectedUnit.MainPilot().ID, SelectedTarget.MainPilot().ID);
             //if (SRC.IsScenarioFinished)
             //{
             //    SRC.IsScenarioFinished = false;
@@ -224,9 +224,9 @@ namespace SRCCore.Commands
 
             //if (p is object)
             //{
-            //    if (p.Unit_Renamed is object)
+            //    if (p.Unit is object)
             //    {
-            //        SelectedUnit = p.Unit_Renamed;
+            //        SelectedUnit = p.Unit;
             //    }
             //}
 

@@ -59,13 +59,13 @@ namespace SRCCore.Models
                 //    {
                 //        var withBlock = SRC.PList.Item(ref pname);
                 //        // パイロットがユニットに乗っている？
-                //        if (withBlock.Unit_Renamed is null)
+                //        if (withBlock.Unit is null)
                 //        {
                 //            return default;
                 //        }
 
                 //        {
-                //            var withBlock1 = withBlock.Unit_Renamed;
+                //            var withBlock1 = withBlock.Unit;
                 //            // 念のため……
                 //            if (withBlock1.CountPilot() == 0)
                 //            {

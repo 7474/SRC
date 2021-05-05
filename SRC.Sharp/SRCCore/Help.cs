@@ -107,13 +107,13 @@
 //            }
 
 //            // パイロットが乗っているユニット
-//            u = p.Unit_Renamed;
+//            u = p.Unit;
 //            if (u.Name == "ステータス表示用ダミーユニット")
 //            {
 //                if (Expression.IsLocalVariableDefined(ref "搭乗ユニット[" + p.ID + "]"))
 //                {
 //                    // UPGRADE_WARNING: オブジェクト LocalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-//                    uname = Conversions.ToString(Event_Renamed.LocalVariableList["搭乗ユニット[" + p.ID + "]"].StringValue);
+//                    uname = Conversions.ToString(Event.LocalVariableList["搭乗ユニット[" + p.ID + "]"].StringValue);
 //                    if (!string.IsNullOrEmpty(uname))
 //                    {
 //                        u2 = u;

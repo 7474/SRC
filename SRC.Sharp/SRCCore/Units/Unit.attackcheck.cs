@@ -5326,7 +5326,7 @@ namespace SRCCore.Units
             //            // 自動反撃で攻撃をかける
             //            t.Attack(w2, this, "自動反撃", "");
             //            t = t.CurrentForm();
-            //            if (Status_Renamed != "出撃" | t.Status_Renamed != "出撃")
+            //            if (Status != "出撃" | t.Status != "出撃")
             //            {
             //                return;
             //            }
@@ -5567,7 +5567,7 @@ namespace SRCCore.Units
             //            // 追加攻撃をかける
             //            Attack(w2, t, "追加攻撃", def_mode);
             //            t = t.CurrentForm();
-            //            if (Status_Renamed != "出撃" | t.Status_Renamed != "出撃")
+            //            if (Status != "出撃" | t.Status != "出撃")
             //            {
             //                return;
             //            }
@@ -6867,12 +6867,12 @@ namespace SRCCore.Units
             //                {
             //                    Expression.DefineGlobalVariable(vname);
             //                    // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //                    Event_Renamed.GlobalVariableList[vname].StringValue = stype;
+            //                    Event.GlobalVariableList[vname].StringValue = stype;
             //                }
             //                else
             //                {
             //                    {
-            //                        var withBlock = Event_Renamed.GlobalVariableList[vname];
+            //                        var withBlock = Event.GlobalVariableList[vname];
             //                        // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item(vname).StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
             //                        // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
             //                        withBlock.StringValue = Operators.ConcatenateObject(Operators.ConcatenateObject(withBlock.StringValue, " "), stype);
@@ -7179,7 +7179,7 @@ namespace SRCCore.Units
             //            }
             //    }
             //    // MOD START 240a
-            //    if (t.Area == "地上" & (td.Class_Renamed == "陸" | td.Class_Renamed == "屋内" | td.Class_Renamed == "月面") | t.Area == "水中" & (td.Class_Renamed == "水" | td.Class_Renamed == "深水") | (t.Area ?? "") == (Class_Renamed ?? ""))
+            //    if (t.Area == "地上" & (td.Class == "陸" | td.Class == "屋内" | td.Class == "月面") | t.Area == "水中" & (td.Class == "水" | td.Class == "深水") | (t.Area ?? "") == (Class ?? ""))
             //    {
             //        if (td.IsFeatureAvailable("摩擦"))
             //        {

@@ -338,7 +338,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "monotone":
-                        return new NotImplementedCmd(src, data);
+                        return new MonotoneCmd(src, data);
 
                     case "move":
                         return new MoveCmd(src, data);

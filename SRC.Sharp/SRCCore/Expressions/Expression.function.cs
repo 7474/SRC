@@ -493,7 +493,7 @@ namespace SRCCore.Expressions
             //                                            {
             //                                                {
             //                                                    var withBlock3 = withBlock2.Unit;
-            //                                                    if (withBlock3.Status_Renamed == "出撃" | withBlock3.Status_Renamed == "格納")
+            //                                                    if (withBlock3.Status == "出撃" | withBlock3.Status == "格納")
             //                                                    {
             //                                                        num_result = (double)withBlock3.Action;
             //                                                    }
@@ -1543,7 +1543,7 @@ namespace SRCCore.Expressions
             //                                            {
             //                                                {
             //                                                    var withBlock18 = withBlock17.Unit;
-            //                                                    if (withBlock18.Status_Renamed == "出撃" | withBlock18.Status_Renamed == "格納")
+            //                                                    if (withBlock18.Status == "出撃" | withBlock18.Status == "格納")
             //                                                    {
             //                                                        flag = true;
             //                                                    }
@@ -1584,7 +1584,7 @@ namespace SRCCore.Expressions
             //                                            {
             //                                                {
             //                                                    var withBlock20 = withBlock19.Unit;
-            //                                                    if (withBlock20.Status_Renamed == "出撃" | withBlock20.Status_Renamed == "格納")
+            //                                                    if (withBlock20.Status == "出撃" | withBlock20.Status == "格納")
             //                                                    {
             //                                                        flag = false;
             //                                                    }
@@ -1868,7 +1868,7 @@ namespace SRCCore.Expressions
             //                                                {
             //                                                    Unit localItem5() { object argIndex1 = (object)pname; var ret = SRC.UList.Item(argIndex1); return ret; }
 
-            //                                                    if (localItem5().Status_Renamed != "破棄")
+            //                                                    if (localItem5().Status != "破棄")
             //                                                    {
             //                                                        num_result = 1d;
             //                                                    }
@@ -1910,7 +1910,7 @@ namespace SRCCore.Expressions
             //                                    {
             //                                        Unit localItem7() { object argIndex1 = (object)pname; var ret = SRC.UList.Item(argIndex1); return ret; }
 
-            //                                        if (localItem7().Status_Renamed != "破棄")
+            //                                        if (localItem7().Status != "破棄")
             //                                        {
             //                                            num_result = 1d;
             //                                        }
@@ -3582,7 +3582,7 @@ namespace SRCCore.Expressions
             //                                    {
             //                                        Unit localItem216() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
 
-            //                                        str_result = localItem216().Status_Renamed;
+            //                                        str_result = localItem216().Status;
             //                                    }
             //                                    else if (localIsDefined30())
             //                                    {
@@ -3590,7 +3590,7 @@ namespace SRCCore.Expressions
             //                                            var withBlock42 = SRC.PList.Item((object)pname);
             //                                            if (withBlock42.Unit is object)
             //                                            {
-            //                                                str_result = withBlock42.Unit.Status_Renamed;
+            //                                                str_result = withBlock42.Unit.Status;
             //                                            }
             //                                        }
             //                                    }
@@ -3602,7 +3602,7 @@ namespace SRCCore.Expressions
             //                                {
             //                                    if (Event.SelectedUnitForEvent is object)
             //                                    {
-            //                                        str_result = Event.SelectedUnitForEvent.Status_Renamed;
+            //                                        str_result = Event.SelectedUnitForEvent.Status;
             //                                    }
 
             //                                    break;

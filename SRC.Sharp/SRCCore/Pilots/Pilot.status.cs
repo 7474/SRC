@@ -68,13 +68,13 @@ namespace SRCCore.Pilots
             //    {
 
             //        // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        alist = Conversions.ToString(Event_Renamed.GlobalVariableList["Ability(" + ID + ")"].StringValue);
+            //        alist = Conversions.ToString(Event.GlobalVariableList["Ability(" + ID + ")"].StringValue);
             //        var loopTo3 = GeneralLib.LLength(alist);
             //        for (i = 1; i <= loopTo3; i++)
             //        {
             //            sname = GeneralLib.LIndex(alist, i);
             //            // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //            buf = Conversions.ToString(Event_Renamed.GlobalVariableList["Ability(" + ID + "," + sname + ")"].StringValue);
+            //            buf = Conversions.ToString(Event.GlobalVariableList["Ability(" + ID + "," + sname + ")"].StringValue);
             //            sdata = GeneralLib.ListTail(buf, 2);
 
             //            // 既に登録済み？
@@ -138,14 +138,14 @@ namespace SRCCore.Pilots
             //    }
 
             //    // 属性使用不能状態の際、対応する技能を封印する。
-            //    if (Unit_Renamed is object)
+            //    if (Unit is object)
             //    {
             //        var loopTo6 = skill_num;
             //        for (j = 1; j <= loopTo6; j++)
             //        {
             //            if (skill_data[j] is object)
             //            {
-            //                if (Unit_Renamed.ConditionLifetime(skill_data[j].Name + "使用不能") > 0)
+            //                if (Unit.ConditionLifetime(skill_data[j].Name + "使用不能") > 0)
             //                {
             //                    // UPGRADE_NOTE: オブジェクト skill_data() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             //                    skill_data[j] = null;
@@ -294,14 +294,14 @@ namespace SRCCore.Pilots
 
             #region これから下はユニットによる修正値の計算
             //    // ユニットに乗っていない？
-            //    if (Unit_Renamed is null)
+            //    if (Unit is null)
             //    {
             //        goto SkipUnitMod;
             //    }
 
             //    var padaption = new short[5];
             //    {
-            //        var withBlock4 = Unit_Renamed;
+            //        var withBlock4 = Unit;
             //        // クイックセーブ処理などで実際には乗っていない場合
             //        if (withBlock4.CountPilot() == 0)
             //        {
@@ -691,22 +691,22 @@ namespace SRCCore.Pilots
         //    }
 
         //    // ユニットに乗っていなければここで終了
-        //    if (Unit_Renamed is null)
+        //    if (Unit is null)
         //    {
         //        return;
         //    }
 
         //    // 一旦乗っているユニットを記録しておく
-        //    my_unit = Unit_Renamed;
+        //    my_unit = Unit;
         //    {
-        //        var withBlock = Unit_Renamed;
+        //        var withBlock = Unit;
         //        // ユニットが出撃していなければここで終了
         //        if (withBlock.Status != "出撃")
         //        {
         //            return;
         //        }
 
-        //        if (!ReferenceEquals(Unit_Renamed, Map.MapDataForUnit[withBlock.x, withBlock.y]))
+        //        if (!ReferenceEquals(Unit, Map.MapDataForUnit[withBlock.x, withBlock.y]))
         //        {
         //            return;
         //        }
@@ -781,7 +781,7 @@ namespace SRCCore.Pilots
         //                    goto NextUnit;
         //                }
 
-        //                if (ReferenceEquals(u, Unit_Renamed))
+        //                if (ReferenceEquals(u, Unit))
         //                {
         //                    goto NextUnit;
         //                }
@@ -879,7 +879,7 @@ namespace SRCCore.Pilots
 
         //        // 追加パイロットの場合は乗っているユニットが変化してしまうことがあるので
         //        // 変化してしまった場合は元に戻しておく
-        //        if (!ReferenceEquals(my_unit, Unit_Renamed))
+        //        if (!ReferenceEquals(my_unit, Unit))
         //        {
         //            my_unit.MainPilot();
         //        }
@@ -1007,7 +1007,7 @@ namespace SRCCore.Pilots
         //                    goto NextUnit2;
         //                }
 
-        //                if (ReferenceEquals(u, Unit_Renamed))
+        //                if (ReferenceEquals(u, Unit))
         //                {
         //                    goto NextUnit2;
         //                }
@@ -1115,7 +1115,7 @@ namespace SRCCore.Pilots
 
         //        // 追加パイロットの場合は乗っているユニットが変化してしまうことがあるので
         //        // 変化してしまった場合は元に戻しておく
-        //        if (!ReferenceEquals(my_unit, Unit_Renamed))
+        //        if (!ReferenceEquals(my_unit, Unit))
         //        {
         //            my_unit.MainPilot();
         //        }

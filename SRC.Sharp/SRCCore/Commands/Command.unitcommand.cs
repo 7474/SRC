@@ -399,7 +399,7 @@ namespace SRCCore.Commands
             //SRC.PList.UpdateSupportMod(SelectedUnit);
 
             //// ユニットが既に出撃していない？
-            //if (SelectedUnit.Status_Renamed != "出撃")
+            //if (SelectedUnit.Status != "出撃")
             //{
             //    GUI.RedrawScreen();
             //    Status.ClearUnitStatus();
@@ -472,7 +472,7 @@ namespace SRCCore.Commands
             //            return;
             //        }
 
-            //        if (SelectedUnit.Status_Renamed != "出撃")
+            //        if (SelectedUnit.Status != "出撃")
             //        {
             //            GUI.RedrawScreen();
             //            Status.ClearUnitStatus();
@@ -514,9 +514,9 @@ namespace SRCCore.Commands
             //    return;
             //}
 
-            //if (p.Unit_Renamed is object)
+            //if (p.Unit is object)
             //{
-            //    SelectedUnit = p.Unit_Renamed;
+            //    SelectedUnit = p.Unit;
             //}
 
             //if (SelectedUnit.Action > 0 & SelectedUnit.CountPilot() > 0)
@@ -539,7 +539,7 @@ namespace SRCCore.Commands
             GUI.UnlockGUI();
 
             //// ステータスウィンドウの表示内容を更新
-            //if (SelectedUnit.Status_Renamed == "出撃" & GUI.MainWidth == 15)
+            //if (SelectedUnit.Status == "出撃" & GUI.MainWidth == 15)
             //{
             //    Status.DisplayUnitStatus(SelectedUnit);
             //}
