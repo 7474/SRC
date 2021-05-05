@@ -438,6 +438,18 @@ namespace SRCSharpForm
 
         public void DrawUnit(Graphics g, MapCell cell, SRCCore.Units.Unit u, Rectangle destRect)
         {
+            using var image = DrawUnit(cell, u);
+            if (image != null)
+            {
+                g.DrawImage(image, destRect);
+            }
+        }
+
+        private Image DrawUnit(MapCell cell, SRCCore.Units.Unit u)
+        {
+            var unitImage = new Bitmap(MapCellPx, MapCellPx);
+            var destRect = new Rectangle(0, 0, MapCellPx, MapCellPx);
+            using var g = Graphics.FromImage(unitImage);
             // タイル
             switch (u.Party0 ?? "")
             {
@@ -599,8 +611,9 @@ namespace SRCSharpForm
                     }
                     break;
             }
-        }
 
+            return unitImage;
+        }
 
         public void DisplayGlobalMap()
         {
