@@ -87,7 +87,7 @@ namespace SRCCore.CmdDatas
                         return new ChangePartyCmd(src, data);
 
                     case "changeterrain":
-                        return new NotImplementedCmd(src, data);
+                        return new ChangeTerrainCmd(src, data);
 
                     case "changeunitbitmap":
                         return new NotImplementedCmd(src, data);
