@@ -45,6 +45,7 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
         - Windows Forms実装のSRC#Sharp
         - SRC#Sharpの仮実行を行える
         - .NET 5
+        - 元のSRCとの区別の便宜上、バージョンは `3.x.x` としている
     - [SRCTestForm](./SRC.Sharp/SRCTestForm)
         - 動作の確認用フォーム
         - データの閲覧を行える
