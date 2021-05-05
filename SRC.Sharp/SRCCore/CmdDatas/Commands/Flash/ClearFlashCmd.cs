@@ -7,12 +7,12 @@ namespace SRCCore.CmdDatas.Commands
     {
         public ClearFlashCmd(SRC src, EventDataLine eventData) : base(src, CmdType.ClearFlashCmd, eventData)
         {
+            throw new NotImplementedException("ClearFlashコマンドはサポートされていません。");
         }
 
         protected override int ExecInternal()
         {
             throw new NotImplementedException();
-            //return EventData.NextID;
         }
     }
 }

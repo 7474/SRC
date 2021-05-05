@@ -550,10 +550,10 @@ namespace SRCCore.CmdDatas
                         return new SwitchCmd(src, data);
 
                     case "playflash":
-                        return new NotImplementedCmd(src, data);
+                        return new PlayFlashCmd(src, data);
 
                     case "clearflash":
-                        return new NotImplementedCmd(src, data);
+                        return new ClearFlashCmd(src, data);
 
                     case "case":
                         if (list.Length == 2)
