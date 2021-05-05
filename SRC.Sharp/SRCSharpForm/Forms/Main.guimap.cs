@@ -211,7 +211,7 @@ namespace SRCSharpForm
                 //}
             }
         }
-        public void SetupBackground(string draw_mode, string draw_option, int filter_color, double filter_trans_par)
+        public void SetupBackground(string draw_mode, string draw_option, Color filter_color, double filter_trans_par)
         {
             Map.MapDrawMode = draw_mode;
             // TODO 型合わせ

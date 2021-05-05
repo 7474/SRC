@@ -477,7 +477,7 @@ namespace SRCCore
                 int map_x, map_y;
                 map_x = GUI.MapX;
                 map_y = GUI.MapY;
-                GUI.SetupBackground(Map.MapDrawMode, "非同期", filter_color: 0, filter_trans_par: 0d);
+                GUI.SetupBackground(Map.MapDrawMode, "非同期");
                 GUI.MapX = map_x;
                 GUI.MapY = map_y;
 

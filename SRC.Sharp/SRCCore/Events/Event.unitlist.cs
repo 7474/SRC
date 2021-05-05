@@ -36,7 +36,7 @@ namespace SRCCore.Events
 
             // マップをクリア
             Map.LoadMapData("");
-            GUI.SetupBackground("", "ステータス", filter_color: 0, filter_trans_par: 0d);
+            GUI.SetupBackground("", "ステータス");
 
             // ユニット一覧を作成
             var target_unit_list = SRC.UList.Items

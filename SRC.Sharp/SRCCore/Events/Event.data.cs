@@ -1159,7 +1159,7 @@ namespace SRCCore.Events
             if (GeneralLib.FileExists(mapFileName))
             {
                 Map.LoadMapData(mapFileName);
-                GUI.SetupBackground(draw_mode: "", draw_option: "", filter_color: 0, filter_trans_par: 0d);
+                GUI.SetupBackground(draw_mode: "", draw_option: "");
                 GUI.RedrawScreen();
                 GUI.DisplayLoadingProgress();
             }

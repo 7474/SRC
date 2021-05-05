@@ -42,7 +42,7 @@ namespace SRCCore.CmdDatas.Commands
 
             // マウスカーソルを砂時計に
             GUI.ChangeStatus(GuiStatus.WaitCursor);
-            GUI.SetupBackground("白黒", "非同期", filter_color: 0, filter_trans_par: 0d);
+            GUI.SetupBackground("白黒", "非同期");
             GUI.RedrawScreen(late_refresh);
 
             // マウスカーソルを元に戻す

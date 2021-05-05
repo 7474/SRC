@@ -433,7 +433,7 @@ namespace SRCDataLinter
             throw new NotImplementedException();
         }
 
-        public void SetupBackground(string draw_mode = "", string draw_option = "", int filter_color = 0, double filter_trans_par = 0)
+        public void SetupBackground(string draw_mode = "", string draw_option = "", Color filter_color = default, double filter_trans_par = 0)
         {
             throw new NotImplementedException();
         }

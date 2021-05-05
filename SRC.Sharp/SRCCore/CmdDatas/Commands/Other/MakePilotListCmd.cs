@@ -42,7 +42,7 @@ namespace SRCCore.CmdDatas.Commands
 
             // マップをクリア
             Map.LoadMapData("");
-            GUI.SetupBackground("", "ステータス", filter_color: 0, filter_trans_par: 0d);
+            GUI.SetupBackground("", "ステータス");
 
             // ユニット一覧を作成
             var target_pilot_list = SRC.PList.Items
