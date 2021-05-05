@@ -6,6 +6,7 @@ using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.VB;
 using System.IO;
+using System.Linq;
 
 namespace SRCCore.Models
 {
@@ -31,9 +32,15 @@ namespace SRCCore.Models
         // 地形データリストから指定したデータを取り出す
         public TerrainData Item(int ID)
         {
-            return ID >= 0 && ID < TerrainList.Length 
+            return ID >= 0 && ID < TerrainList.Length
                 ? TerrainList[ID]
                 : TerrainData.EmptyTerrain;
+        }
+
+        // 名前を指定してデータを取り出す
+        public TerrainData ItemByName(string name)
+        {
+            return TerrainList.FirstOrDefault(x => x.Name == name);
         }
 
         //// 指定したデータの名称
