@@ -95,6 +95,8 @@ namespace SRCSharpForm
         public bool IsCursorVisible { get; set; }
         public int BGColor { get; set; }
         public Font CurrentPaintFont => currentDrawFont;
+        // XXX Fontと画像のForeカラー同じでいいのか？
+        public Brush CurrentPaintBrush => currentDrawFontColor;
         // XXX そもそもBrushでなくForeColor持っていたほうがいいかもしれない
         public Color CurrentPaintColor => (currentDrawFontColor as SolidBrush).Color;
         int IGUI.TopItem { get; set; }

@@ -5,6 +5,7 @@ using SRCSharpForm.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace SRCSharpForm
 {
@@ -15,6 +16,16 @@ namespace SRCSharpForm
         private bool init_draw_pitcure;
         private IList<string> existBitmapDirectories;
         private IList<string> existMapBitmapDirectories;
+
+        // https://dobon.net/vb/dotnet/graphics/grayscale.html
+        // http://www.graficaobscura.com/matrix/index.html
+        private static readonly ColorMatrix monochromeMatrix = new ColorMatrix(new float[][]{
+            new float[]{0.3086f, 0.3086f, 0.3086f, 0 ,0},
+            new float[]{0.6094f, 0.6094f, 0.6094f, 0, 0},
+            new float[]{0.0820f, 0.0820f, 0.0820f, 0, 0},
+            new float[]{0, 0, 0, 1, 0},
+            new float[]{0, 0, 0, 0, 1}
+        });
 
         // 画像をウィンドウに描画
         public bool DrawPicture(string fname, int dx, int dy, int dw, int dh, int sx, int sy, int sw, int sh, string draw_option)
@@ -732,7 +743,6 @@ namespace SRCSharpForm
 
                 var orig_width = image.Width;
                 var orig_height = image.Height;
-                // XXX 使用するpicBufを選択
                 Bitmap drawBuffer = null;
 
                 // 原画像の一部のみを描画？
@@ -771,190 +781,194 @@ namespace SRCSharpForm
                 }
 
                 //LoadedPicture:
+
+                // TODO Impl 画像の加工
+                using (var gBuf = Graphics.FromImage(drawBuffer))
                 {
-                    //    // 原画像を修正して使う場合は原画像を別のpicBufにコピーして修正する
-                    //    if (top_part | bottom_part | left_part | right_part | tleft_part | tright_part | bleft_part | bright_part | is_monotone | is_sepia | is_sunset | is_water | negpos | is_sil | vrev | hrev | bright_count > 0 | dark_count > 0 | angle % 360 != 0 | is_colorfilter)
+                    // 原画像を修正して使う場合は原画像を別のpicBufにコピーして修正する
+                    // -> 常に描画毎にバッファを使う
+                    //if (top_part || bottom_part || left_part || right_part || tleft_part || tright_part || bleft_part || bright_part || is_monotone || is_sepia || is_sunset || is_water || negpos || is_sil || vrev || hrev || bright_count > 0 || dark_count > 0 || angle % 360 != 0 || is_colorfilter)
+                    //{
+                    //    // 使用するpicBufを選択
+                    //    i = GUI.GetPicBuf(display_byte_pixel * orig_width * orig_height);
+                    //    PicBufFname[i] = fname;
+                    //    PicBufOption[i] = pic_option;
+                    //    PicBufOption2[i] = pic_option2;
+                    //    PicBufDW[i] = Constants.DEFAULT_LEVEL;
+                    //    PicBufDH[i] = Constants.DEFAULT_LEVEL;
+                    //    PicBufSX[i] = sx;
+                    //    PicBufSY[i] = sy;
+                    //    PicBufSW[i] = sw;
+                    //    PicBufSH[i] = sh;
+                    //    PicBufIsMask[i] = false;
+                    //    // Debug.Print "Use " & Format$(i) & " As Edited"
+
+                    //    // 画像をコピー
                     //    {
-                    //        // 使用するpicBufを選択
-                    //        i = GUI.GetPicBuf(display_byte_pixel * orig_width * orig_height);
-                    //        PicBufFname[i] = fname;
-                    //        PicBufOption[i] = pic_option;
-                    //        PicBufOption2[i] = pic_option2;
-                    //        PicBufDW[i] =  Constants.DEFAULT_LEVEL;
-                    //        PicBufDH[i] =  Constants.DEFAULT_LEVEL;
-                    //        PicBufSX[i] = sx;
-                    //        PicBufSY[i] = sy;
-                    //        PicBufSW[i] = sw;
-                    //        PicBufSH[i] = sh;
-                    //        PicBufIsMask[i] = false;
-                    //        // Debug.Print "Use " & Format$(i) & " As Edited"
-
-                    //        // 画像をコピー
-                    //        {
-                    //            var withBlock8 = MainForm.picBuf(i);
-                    //            withBlock8.Picture = Image.FromFile("");
-                    //            withBlock8.width = orig_width;
-                    //            withBlock8.Height = orig_height;
-                    //            ret = BitBlt(withBlock8.hDC, 0, 0, orig_width, orig_height, orig_pic.hDC, 0, 0, SRCCOPY);
-                    //        }
-                    //        orig_pic = MainForm.picBuf(i);
+                    //        var withBlock8 = MainForm.picBuf(i);
+                    //        withBlock8.Picture = Image.FromFile("");
+                    //        withBlock8.width = orig_width;
+                    //        withBlock8.Height = orig_height;
+                    //        ret = BitBlt(withBlock8.hDC, 0, 0, orig_width, orig_height, orig_pic.hDC, 0, 0, SRCCOPY);
                     //    }
+                    //    orig_pic = MainForm.picBuf(i);
+                    //}
 
-                    //    // 画像の一部を塗りつぶして描画する場合
-                    //    if (top_part)
-                    //    {
-                    //        // 上半分
-                    //        orig_pic.Line(0, orig_height / 2); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //    }
+                    // 画像の一部を塗りつぶして描画する場合
+                    if (top_part)
+                    {
+                        // 上半分
+                        gBuf.FillRectangle(CurrentPaintBrush, 0f, orig_height / 2f, gBuf.VisibleClipBounds.Width, orig_height / 2f);
+                    }
 
-                    //    if (bottom_part)
-                    //    {
-                    //        // 下半分
-                    //        orig_pic.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //    }
+                    if (bottom_part)
+                    {
+                        // 下半分
+                        gBuf.FillRectangle(CurrentPaintBrush, 0f, 0f, gBuf.VisibleClipBounds.Width, orig_height / 2f);
+                    }
 
-                    //    if (left_part)
-                    //    {
-                    //        // 左半分
-                    //        orig_pic.Line(orig_width / 2, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //    }
+                    if (left_part)
+                    {
+                        // 左半分
+                        gBuf.FillRectangle(CurrentPaintBrush, gBuf.VisibleClipBounds.Width / 2, 0f, gBuf.VisibleClipBounds.Width / 2f, orig_height);
+                    }
 
-                    //    if (right_part)
-                    //    {
-                    //        // 右半分
-                    //        orig_pic.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //    }
+                    if (right_part)
+                    {
+                        // 右半分
+                        gBuf.FillRectangle(CurrentPaintBrush, 0f, 0f, gBuf.VisibleClipBounds.Width / 2f, orig_height);
+                    }
 
-                    //    if (tleft_part)
-                    //    {
-                    //        // 左上
-                    //        var loopTo5 = (orig_width - 1);
-                    //        for (i = 0; i <= loopTo5; i++)
-                    //            orig_pic.Line(i, orig_height - 1 - i); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //    }
+                    //if (tleft_part)
+                    //{
+                    //    // 左上
+                    //    var loopTo5 = (orig_width - 1);
+                    //    for (i = 0; i <= loopTo5; i++)
+                    //        orig_pic.Line(i, orig_height - 1 - i);
+                    //}
 
-                    //    if (tright_part)
-                    //    {
-                    //        // 右上
-                    //        var loopTo6 = (orig_width - 1);
-                    //        for (i = 0; i <= loopTo6; i++)
-                    //            orig_pic.Line(i, i); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //    }
+                    //if (tright_part)
+                    //{
+                    //    // 右上
+                    //    var loopTo6 = (orig_width - 1);
+                    //    for (i = 0; i <= loopTo6; i++)
+                    //        orig_pic.Line(i, i); 
+                    //}
 
-                    //    if (bleft_part)
-                    //    {
-                    //        // 左下
-                    //        var loopTo7 = (orig_width - 1);
-                    //        for (i = 0; i <= loopTo7; i++)
-                    //            orig_pic.Line(i, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //    }
+                    //if (bleft_part)
+                    //{
+                    //    // 左下
+                    //    var loopTo7 = (orig_width - 1);
+                    //    for (i = 0; i <= loopTo7; i++)
+                    //        orig_pic.Line(i, 0);
+                    //}
 
-                    //    if (bright_part)
-                    //    {
-                    //        // 右下
-                    //        var loopTo8 = (orig_width - 1);
-                    //        for (i = 0; i <= loopTo8; i++)
-                    //            orig_pic.Line(i, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //    }
+                    //if (bright_part)
+                    //{
+                    //    // 右下
+                    //    var loopTo8 = (orig_width - 1);
+                    //    for (i = 0; i <= loopTo8; i++)
+                    //        orig_pic.Line(i, 0); 
+                    //}
 
-                    //    // 特殊効果
-                    //    if (is_monotone | is_sepia | is_sunset | is_water | is_colorfilter | bright_count > 0 | dark_count > 0 | negpos | is_sil | vrev | hrev | angle != 0)
-                    //    {
-                    //        // 画像のサイズをチェック
-                    //        if (orig_width * orig_height % 4 != 0)
-                    //        {
-                    //            ErrorMessage(fname + "の画像サイズが4の倍数になっていません");
-                    //            return DrawPictureRet;
-                    //        }
+                    // 特殊効果
+                    if (is_monotone || is_sepia || is_sunset || is_water || is_colorfilter || bright_count > 0 || dark_count > 0 || negpos || is_sil || vrev || hrev || angle != 0)
+                    {
+                        // 画像のサイズをチェック
+                        // XXX 別に4の倍数縛り要らないんじゃないかな。綺麗には出ないかもしれないけれど
+                        //if (orig_width * orig_height % 4 != 0)
+                        //{
+                        //    ErrorMessage(fname + "の画像サイズが4の倍数になっていません");
+                        //    return DrawPictureRet;
+                        //}
 
-                    //        // イメージをバッファに取り込み
-                    //        Graphics.GetImage(orig_pic);
+                        // 白黒
+                        if (is_monotone)
+                        {
+                            var ia = new ImageAttributes();
+                            ia.SetColorMatrix(monochromeMatrix);
+                            gBuf.DrawImage(drawBuffer,
+                                new Rectangle(0, 0, drawBuffer.Width, drawBuffer.Height),
+                                0, 0, drawBuffer.Width, drawBuffer.Height,
+                                GraphicsUnit.Pixel,
+                                ia);
+                        }
 
-                    //        // 白黒
-                    //        if (is_monotone)
-                    //        {
-                    //            Graphics.Monotone(transparent);
-                    //        }
+                        //// セピア
+                        //if (is_sepia)
+                        //{
+                        //    Graphics.Sepia(transparent);
+                        //}
 
-                    //        // セピア
-                    //        if (is_sepia)
-                    //        {
-                    //            Graphics.Sepia(transparent);
-                    //        }
+                        //// 夕焼け
+                        //if (is_sunset)
+                        //{
+                        //    Graphics.Sunset(transparent);
+                        //}
 
-                    //        // 夕焼け
-                    //        if (is_sunset)
-                    //        {
-                    //            Graphics.Sunset(transparent);
-                    //        }
+                        //// 水中
+                        //if (is_water)
+                        //{
+                        //    Graphics.Water(transparent);
+                        //}
 
-                    //        // 水中
-                    //        if (is_water)
-                    //        {
-                    //            Graphics.Water(transparent);
-                    //        }
+                        //// シルエット
+                        //if (is_sil)
+                        //{
+                        //    Graphics.Silhouette();
+                        //}
 
-                    //        // シルエット
-                    //        if (is_sil)
-                    //        {
-                    //            Graphics.Silhouette();
-                    //        }
+                        //// ネガポジ反転
+                        //if (negpos)
+                        //{
+                        //    Graphics.NegPosReverse(transparent);
+                        //}
 
-                    //        // ネガポジ反転
-                    //        if (negpos)
-                    //        {
-                    //            Graphics.NegPosReverse(transparent);
-                    //        }
+                        //// フィルタ
+                        //if (is_colorfilter)
+                        //{
+                        //    if (trans_par < 0d)
+                        //    {
+                        //        trans_par = 0.5d;
+                        //    }
 
-                    //        // フィルタ
-                    //        if (is_colorfilter)
-                    //        {
-                    //            if (trans_par < 0d)
-                    //            {
-                    //                trans_par = 0.5d;
-                    //            }
+                        //    Graphics.ColorFilter(fcolor, trans_par, transparent);
+                        //}
 
-                    //            Graphics.ColorFilter(fcolor, trans_par, transparent);
-                    //        }
+                        //// 明 (多段指定可能)
+                        //var loopTo9 = bright_count;
+                        //for (i = 1; i <= loopTo9; i++)
+                        //    Graphics.Bright(transparent);
 
-                    //        // 明 (多段指定可能)
-                    //        var loopTo9 = bright_count;
-                    //        for (i = 1; i <= loopTo9; i++)
-                    //            Graphics.Bright(transparent);
+                        //// 暗 (多段指定可能)
+                        //var loopTo10 = dark_count;
+                        //for (i = 1; i <= loopTo10; i++)
+                        //    Graphics.Dark(transparent);
 
-                    //        // 暗 (多段指定可能)
-                    //        var loopTo10 = dark_count;
-                    //        for (i = 1; i <= loopTo10; i++)
-                    //            Graphics.Dark(transparent);
+                        //// 左右反転
+                        //if (vrev)
+                        //{
+                        //    Graphics.VReverse();
+                        //}
 
-                    //        // 左右反転
-                    //        if (vrev)
-                    //        {
-                    //            Graphics.VReverse();
-                    //        }
+                        //// 上下反転
+                        //if (hrev)
+                        //{
+                        //    Graphics.HReverse();
+                        //}
 
-                    //        // 上下反転
-                    //        if (hrev)
-                    //        {
-                    //            Graphics.HReverse();
-                    //        }
-
-                    //        // 回転
-                    //        if (angle != 0)
-                    //        {
-                    //            // 前回の回転角が90度の倍数かどうかで描画の際の最適化使用可否を決める
-                    //            // (連続で回転させる場合に描画速度を一定にするため)
-                    //            Graphics.Rotate(angle, last_angle % 90 != 0);
-                    //        }
-
-                    //        // 変更した内容をイメージに変換
-                    //        Graphics.SetImage(orig_pic);
-
-                    //        // バッファを破棄
-                    //        Graphics.ClearImage();
-                    //    }
-
-                    //    last_angle = angle;
+                        // 回転
+                        if (angle != 0)
+                        {
+                            //// 前回の回転角が90度の倍数かどうかで描画の際の最適化使用可否を決める
+                            //// (連続で回転させる場合に描画速度を一定にするため)
+                            //Graphics.Rotate(angle, last_angle % 90 != 0);
+                            g.ResetTransform();
+                            g.TranslateTransform(drawBuffer.Width / 2f, drawBuffer.Height / 2f);
+                            g.RotateTransform(angle);
+                            g.DrawImage(drawBuffer, -drawBuffer.Width / 2f, 0);
+                        }
+                    }
                 }
                 //EditedPicture:
 
@@ -992,7 +1006,7 @@ namespace SRCSharpForm
                 }
                 // ユニット上で画像のセンタリングを行うことを意図している
                 // 場合は修正が必要
-                else if (Strings.InStr(fname, "EFFECT_") > 0 | Strings.InStr(fname, @"スペシャルパワー\") > 0 | Strings.InStr(fname, @"精神コマンド\") > 0)
+                else if (Strings.InStr(fname, "EFFECT_") > 0 || Strings.InStr(fname, @"スペシャルパワー\") > 0 || Strings.InStr(fname, @"精神コマンド\") > 0)
                 {
                     if (dx == Constants.DEFAULT_LEVEL)
                     {
@@ -1240,7 +1254,7 @@ namespace SRCSharpForm
         public void DrawSysString(int X, int Y, string msg, bool without_refresh)
         {
             // 表示位置が画面外？
-            if (X < MapX - MainWidth / 2 | MapX + MainWidth / 2 < X | Y < MapY - MainHeight / 2 | MapY + MainHeight / 2 < Y)
+            if (X < MapX - MainWidth / 2 || MapX + MainWidth / 2 < X || Y < MapY - MainHeight / 2 || MapY + MainHeight / 2 < Y)
             {
                 return;
             }
