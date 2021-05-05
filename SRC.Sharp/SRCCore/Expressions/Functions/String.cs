@@ -338,129 +338,36 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class InStrB : AFunction
+    // https://github.com/7474/SRC/issues/175
+
+    public class InStrB : InStr
     {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Instrb
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
-    }
-    public class InStrRevB : AFunction
-    {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Instrrevb
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
+        // TODO Impl Instrb
     }
 
-    public class LeftB : AFunction
+    public class InStrRevB : InStrRev
     {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Leftb
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
+        // TODO Impl Instrrevb
     }
 
-    public class LenB : AFunction
+    public class LeftB : Left
     {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Lenb
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
+        // TODO Impl Leftb
     }
 
-    public class MidB : AFunction
+    public class LenB : Len
     {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Midb
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
+        // TODO Impl Lenb
     }
 
-    public class RightB : AFunction
+    public class MidB : Mid
     {
-        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
+        // TODO Impl Midb
+    }
 
-            // TODO Impl Rightb
-
-            if (etype == ValueType.StringType)
-            {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
-        }
+    public class RightB : Right
+    {
+        // TODO Impl Rightb
     }
 
     public class Replace : AFunction
@@ -470,16 +377,46 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Replace
-
-            if (etype == ValueType.StringType)
+            switch (pcount)
             {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
+                case 4:
+                    {
+                        var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                        var num = SRC.Expression.GetValueAsLong(@params[4], is_term[4]);
+                        var buf2 = Strings.Right(buf, Strings.Len(buf) - num + 1);
+                        buf2 = buf2.Replace(SRC.Expression.GetValueAsString(@params[2], is_term[2]), SRC.Expression.GetValueAsString(@params[3], is_term[3]));
+                        str_result = Strings.Left(buf, num - 1) + buf2;
+                        break;
+                    }
+
+                case 5:
+                    {
+                        var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                        var num = SRC.Expression.GetValueAsLong(@params[4], is_term[4]);
+                        var num2 = SRC.Expression.GetValueAsLong(@params[5], is_term[5]);
+                        var buf2 = Strings.Mid(buf, num, num2);
+                        buf2 = buf2.Replace(SRC.Expression.GetValueAsString(@params[2], is_term[2]), SRC.Expression.GetValueAsString(@params[3], is_term[3]));
+                        str_result = Strings.Left(buf, num - 1) + buf2 + Strings.Right(buf, Strings.Len(buf) - (num + num2 - 1) - 1);
+                        break;
+                    }
+
+                default:
+                    {
+                        str_result = SRC.Expression.GetValueAsString(@params[1], is_term[1]).Replace(
+                             SRC.Expression.GetValueAsString(@params[2], is_term[2]),
+                             SRC.Expression.GetValueAsString(@params[3], is_term[3]));
+                        break;
+                    }
+            }
+
+            if (etype == ValueType.NumericType)
+            {
+                num_result = GeneralLib.StrToDbl(str_result);
+                return ValueType.NumericType;
             }
             else
             {
-                return ValueType.NumericType;
+                return ValueType.StringType;
             }
         }
     }
