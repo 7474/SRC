@@ -93,7 +93,7 @@ namespace SRCSharpForm
         public int PaintedAreaX2 { get; set; }
         public int PaintedAreaY2 { get; set; }
         public bool IsCursorVisible { get; set; }
-        public int BGColor { get; set; }
+        public Color BGColor { get; set; }
         public Font CurrentPaintFont => currentDrawFont;
         // XXX Fontと画像のForeカラー同じでいいのか？
         public Brush CurrentPaintBrush => currentDrawFontColor;

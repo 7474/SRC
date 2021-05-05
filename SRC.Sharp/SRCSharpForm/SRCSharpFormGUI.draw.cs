@@ -17,15 +17,11 @@ namespace SRCSharpForm
         private IList<string> existBitmapDirectories;
         private IList<string> existMapBitmapDirectories;
 
-        // https://dobon.net/vb/dotnet/graphics/grayscale.html
-        // http://www.graficaobscura.com/matrix/index.html
-        private static readonly ColorMatrix monochromeMatrix = new ColorMatrix(new float[][]{
-            new float[]{0.3086f, 0.3086f, 0.3086f, 0 ,0},
-            new float[]{0.6094f, 0.6094f, 0.6094f, 0, 0},
-            new float[]{0.0820f, 0.0820f, 0.0820f, 0, 0},
-            new float[]{0, 0, 0, 1, 0},
-            new float[]{0, 0, 0, 0, 1}
-        });
+
+        private Color GetDrawBgColor(bool transparent)
+        {
+            return transparent ? Color.Transparent : BGColor;
+        }
 
         // 画像をウィンドウに描画
         public bool DrawPicture(string fname, int dx, int dy, int dw, int dh, int sx, int sy, int sw, int sh, string draw_option)
@@ -783,8 +779,6 @@ namespace SRCSharpForm
                 //LoadedPicture:
 
                 // TODO Impl 画像の加工
-                // Copy on write
-                using (var orgImage = (Image)drawBuffer.Clone())
                 using (var gBuf = Graphics.FromImage(drawBuffer))
                 {
                     // 原画像を修正して使う場合は原画像を別のpicBufにコピーして修正する
@@ -872,113 +866,91 @@ namespace SRCSharpForm
                     //    for (i = 0; i <= loopTo8; i++)
                     //        orig_pic.Line(i, 0); 
                     //}
+                }
+                // 特殊効果
+                if (is_monotone || is_sepia || is_sunset || is_water || is_colorfilter || bright_count > 0 || dark_count > 0 || negpos || is_sil || vrev || hrev || angle != 0)
+                {
+                    // 画像のサイズをチェック
+                    // XXX 別に4の倍数縛り要らないんじゃないかな。綺麗には出ないかもしれないけれど
+                    //if (orig_width * orig_height % 4 != 0)
+                    //{
+                    //    ErrorMessage(fname + "の画像サイズが4の倍数になっていません");
+                    //    return DrawPictureRet;
+                    //}
 
-                    // 特殊効果
-                    if (is_monotone || is_sepia || is_sunset || is_water || is_colorfilter || bright_count > 0 || dark_count > 0 || negpos || is_sil || vrev || hrev || angle != 0)
+                    // 白黒
+                    if (is_monotone)
                     {
-                        // 画像のサイズをチェック
-                        // XXX 別に4の倍数縛り要らないんじゃないかな。綺麗には出ないかもしれないけれど
-                        //if (orig_width * orig_height % 4 != 0)
-                        //{
-                        //    ErrorMessage(fname + "の画像サイズが4の倍数になっていません");
-                        //    return DrawPictureRet;
-                        //}
+                        drawBuffer.Monotone();
+                    }
 
-                        // 白黒
-                        if (is_monotone)
-                        {
-                            var ia = new ImageAttributes();
-                            ia.SetColorMatrix(monochromeMatrix);
-                            gBuf.DrawImage(orgImage,
-                                new Rectangle(0, 0, drawBuffer.Width, drawBuffer.Height),
-                                0, 0, drawBuffer.Width, drawBuffer.Height,
-                                GraphicsUnit.Pixel,
-                                ia);
-                        }
+                    //// セピア
+                    //if (is_sepia)
+                    //{
+                    //    Graphics.Sepia(transparent);
+                    //}
 
-                        //// セピア
-                        //if (is_sepia)
-                        //{
-                        //    Graphics.Sepia(transparent);
-                        //}
+                    //// 夕焼け
+                    //if (is_sunset)
+                    //{
+                    //    Graphics.Sunset(transparent);
+                    //}
 
-                        //// 夕焼け
-                        //if (is_sunset)
-                        //{
-                        //    Graphics.Sunset(transparent);
-                        //}
+                    //// 水中
+                    //if (is_water)
+                    //{
+                    //    Graphics.Water(transparent);
+                    //}
 
-                        //// 水中
-                        //if (is_water)
-                        //{
-                        //    Graphics.Water(transparent);
-                        //}
+                    //// シルエット
+                    //if (is_sil)
+                    //{
+                    //    Graphics.Silhouette();
+                    //}
 
-                        //// シルエット
-                        //if (is_sil)
-                        //{
-                        //    Graphics.Silhouette();
-                        //}
+                    //// ネガポジ反転
+                    //if (negpos)
+                    //{
+                    //    Graphics.NegPosReverse(transparent);
+                    //}
 
-                        //// ネガポジ反転
-                        //if (negpos)
-                        //{
-                        //    Graphics.NegPosReverse(transparent);
-                        //}
+                    //// フィルタ
+                    //if (is_colorfilter)
+                    //{
+                    //    if (trans_par < 0d)
+                    //    {
+                    //        trans_par = 0.5d;
+                    //    }
 
-                        //// フィルタ
-                        //if (is_colorfilter)
-                        //{
-                        //    if (trans_par < 0d)
-                        //    {
-                        //        trans_par = 0.5d;
-                        //    }
+                    //    Graphics.ColorFilter(fcolor, trans_par, transparent);
+                    //}
 
-                        //    Graphics.ColorFilter(fcolor, trans_par, transparent);
-                        //}
+                    //// 明 (多段指定可能)
+                    //var loopTo9 = bright_count;
+                    //for (i = 1; i <= loopTo9; i++)
+                    //    Graphics.Bright(transparent);
 
-                        //// 明 (多段指定可能)
-                        //var loopTo9 = bright_count;
-                        //for (i = 1; i <= loopTo9; i++)
-                        //    Graphics.Bright(transparent);
+                    //// 暗 (多段指定可能)
+                    //var loopTo10 = dark_count;
+                    //for (i = 1; i <= loopTo10; i++)
+                    //    Graphics.Dark(transparent);
 
-                        //// 暗 (多段指定可能)
-                        //var loopTo10 = dark_count;
-                        //for (i = 1; i <= loopTo10; i++)
-                        //    Graphics.Dark(transparent);
+                    //// 左右反転
+                    //if (vrev)
+                    //{
+                    //    Graphics.VReverse();
+                    //}
 
-                        //// 左右反転
-                        //if (vrev)
-                        //{
-                        //    Graphics.VReverse();
-                        //}
+                    //// 上下反転
+                    //if (hrev)
+                    //{
+                    //    Graphics.HReverse();
+                    //}
 
-                        //// 上下反転
-                        //if (hrev)
-                        //{
-                        //    Graphics.HReverse();
-                        //}
-
-                        // 回転
-                        if (angle != 0)
-                        {
-                            //// 前回の回転角が90度の倍数かどうかで描画の際の最適化使用可否を決める
-                            //// (連続で回転させる場合に描画速度を一定にするため)
-                            //Graphics.Rotate(angle, last_angle % 90 != 0);
-                            if (transparent)
-                            {
-                                gBuf.Clear(Color.Transparent);
-                            }
-                            else
-                            {
-                                gBuf.Clear(BGColor);
-                            }
-                            gBuf.ResetTransform();
-                            gBuf.TranslateTransform(drawBuffer.Width / 2f, drawBuffer.Height / 2f);
-                            gBuf.RotateTransform(angle % 360);
-                            gBuf.DrawImage(orgImage, -drawBuffer.Width / 2f, -drawBuffer.Height / 2f);
-                            gBuf.ResetTransform();
-                        }
+                    // 回転
+                    if (angle != 0)
+                    {
+                        drawBuffer.Rotate(angle, GetDrawBgColor(transparent));
                     }
                 }
                 //EditedPicture:

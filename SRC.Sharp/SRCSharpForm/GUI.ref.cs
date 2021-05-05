@@ -90,7 +90,7 @@ namespace Project1
         // カーソル画像が表示されているか
         public static bool IsCursorVisible;
         // 背景色
-        public static int BGColor;
+        public static Color BGColor;
 
         // 画像バッファ管理用変数
         private static int PicBufDateCount;

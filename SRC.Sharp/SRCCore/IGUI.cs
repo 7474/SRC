@@ -77,7 +77,7 @@ namespace SRCCore
         // カーソル画像が表示されているか
         bool IsCursorVisible { get; set; }
         // 背景色
-        int BGColor { get; set; }
+        Color BGColor { get; set; }
         // XXX Font への依存が厳しいようなら依存を切る
         Font CurrentPaintFont { get; }
         Color CurrentPaintColor { get; }

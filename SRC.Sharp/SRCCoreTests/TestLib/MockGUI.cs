@@ -49,7 +49,7 @@ namespace SRCCoreTests.TestLib
         public int PaintedAreaX2 { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int PaintedAreaY2 { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool IsCursorVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int BGColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Color BGColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool MessageFormVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public bool MainFormVisible => throw new NotImplementedException();
