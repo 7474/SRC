@@ -236,7 +236,7 @@ namespace SRCSharpForm
             MainForm.ClearScrean();
         }
 
-        public void SetupBackground(string draw_mode, string draw_option, int filter_color, double filter_trans_par)
+        public void SetupBackground(string draw_mode, string draw_option, Color filter_color, double filter_trans_par)
         {
             MainForm.SetupBackground(draw_mode, draw_option, filter_color, filter_trans_par);
         }

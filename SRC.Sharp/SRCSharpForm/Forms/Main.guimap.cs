@@ -214,9 +214,8 @@ namespace SRCSharpForm
         public void SetupBackground(string draw_mode, string draw_option, Color filter_color, double filter_trans_par)
         {
             Map.MapDrawMode = draw_mode;
-            // TODO 型合わせ
-            //Map.MapDrawFilterColor = filter_color;
-            //Map.MapDrawFilterTransPercent = filter_trans_par;
+            Map.MapDrawFilterColor = filter_color;
+            Map.MapDrawFilterTransPercent = filter_trans_par;
 
             Map.IsMapDirty = false;
             GUI.IsPictureVisible = false;
@@ -269,41 +268,25 @@ namespace SRCSharpForm
                     picBack.Image.Dark();
                     break;
 
-                //    case "セピア":
-                //        {
-                //            Graphics.GetImage(ref withBlock.picTmp32(0));
-                //            Graphics.Sepia();
-                //            Graphics.SetImage(ref withBlock.picTmp32(0));
-                //            break;
-                //        }
+                case "セピア":
+                    picBack.Image.Sepia();
+                    break;
 
                 case "白黒":
                     picBack.Image.Monotone();
                     break;
 
-                    //    case "夕焼け":
-                    //        {
-                    //            Graphics.GetImage(ref withBlock.picTmp32(0));
-                    //            Graphics.Sunset();
-                    //            Graphics.SetImage(ref withBlock.picTmp32(0));
-                    //            break;
-                    //        }
+                case "夕焼け":
+                    picBack.Image.Sunset();
+                    break;
 
-                    //    case "水中":
-                    //        {
-                    //            Graphics.GetImage(ref withBlock.picTmp32(0));
-                    //            Graphics.Water();
-                    //            Graphics.SetImage(ref withBlock.picTmp32(0));
-                    //            break;
-                    //        }
+                case "水中":
+                    picBack.Image.Water();
+                    break;
 
-                    //    case "フィルタ":
-                    //        {
-                    //            Graphics.GetImage(ref withBlock.picTmp32(0));
-                    //            Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent);
-                    //            Graphics.SetImage(ref withBlock.picTmp32(0));
-                    //            break;
-                    //        }
+                case "フィルタ":
+                    picBack.Image.ColorFilter(filter_color, (float)filter_trans_par);
+                    break;
             }
 
             // マス目の表示
@@ -580,41 +563,25 @@ namespace SRCSharpForm
                         }
                         break;
 
-                    //case "セピア":
-                    //    {
-                    //        Graphics.GetImage(ref withBlock.picTmp32(1));
-                    //        Graphics.Sepia();
-                    //        Graphics.SetImage(ref withBlock.picTmp32(1));
-                    //        break;
-                    //    }
+                    case "セピア":
+                        image.Sepia();
+                        break;
 
                     case "白黒":
                         image.Monotone();
                         break;
 
-                        //case "夕焼け":
-                        //    {
-                        //        Graphics.GetImage(ref withBlock.picTmp32(1));
-                        //        Graphics.Sunset();
-                        //        Graphics.SetImage(ref withBlock.picTmp32(1));
-                        //        break;
-                        //    }
+                    case "夕焼け":
+                        image.Sunset();
+                        break;
 
-                        //case "水中":
-                        //    {
-                        //        Graphics.GetImage(ref withBlock.picTmp32(1));
-                        //        Graphics.Water();
-                        //        Graphics.SetImage(ref withBlock.picTmp32(1));
-                        //        break;
-                        //    }
+                    case "水中":
+                        image.Water();
+                        break;
 
-                        //case "フィルタ":
-                        //    {
-                        //        Graphics.GetImage(ref withBlock.picTmp32(1));
-                        //        Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent);
-                        //        Graphics.SetImage(ref withBlock.picTmp32(1));
-                        //        break;
-                        //    }
+                    case "フィルタ":
+                        image.ColorFilter(Map.MapDrawFilterColor, (float)Map.MapDrawFilterTransPercent);
+                        break;
                 }
             }
 

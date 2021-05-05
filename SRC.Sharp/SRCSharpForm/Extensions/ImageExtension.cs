@@ -10,11 +10,18 @@ namespace SRCSharpForm.Extensions
 {
     public static class ImageExtension
     {
-        // XXX 単純に各色50%
+        // XXX 夜って意味合いだと単純に各色50%より青系強めにしたほうがいい気はする
         private static readonly ColorMatrix darkMatrix = new ColorMatrix(new float[][]{
             new float[]{0.5f, 0, 0, 0 ,0},
             new float[]{0, 0.5f, 0, 0 ,0},
             new float[]{0, 0, 0.5f, 0 ,0},
+            new float[]{0, 0, 0, 1, 0},
+            new float[]{0, 0, 0, 0, 1}
+        });
+        private static readonly ColorMatrix sepiaMatrix = new ColorMatrix(new float[][]{
+            new float[]{ 0.299f * 1.1f, 0.299f * 0.9f, 0.299f * 0.7f, 0 ,0},
+            new float[]{ 0.587f * 1.1f, 0.587f * 0.9f, 0.587f * 0.7f, 0 ,0},
+            new float[]{ 0.114f * 1.1f, 0.114f * 0.9f, 0.114f * 0.7f, 0 ,0},
             new float[]{0, 0, 0, 1, 0},
             new float[]{0, 0, 0, 0, 1}
         });
@@ -24,6 +31,22 @@ namespace SRCSharpForm.Extensions
             new float[]{0.3086f, 0.3086f, 0.3086f, 0 ,0},
             new float[]{0.6094f, 0.6094f, 0.6094f, 0, 0},
             new float[]{0.0820f, 0.0820f, 0.0820f, 0, 0},
+            new float[]{0, 0, 0, 1, 0},
+            new float[]{0, 0, 0, 0, 1}
+        });
+        // XXX 色味未調整
+        private static readonly ColorMatrix waterMatrix = new ColorMatrix(new float[][]{
+            new float[]{ 0.299f * 0.6f, 0.299f * 0.8f, 0.299f, 0 ,0},
+            new float[]{ 0.587f * 0.6f, 0.587f * 0.8f, 0.587f, 0 ,0},
+            new float[]{ 0.114f * 0.6f, 0.114f * 0.8f, 0.114f, 0 ,0},
+            new float[]{0, 0, 0, 1, 0},
+            new float[]{0, 0, 0, 0, 1}
+        });
+        // XXX 色味未調整
+        private static readonly ColorMatrix sunsetMatrix = new ColorMatrix(new float[][]{
+            new float[]{ 0.299f * 1.3f + 0.2f, 0.299f * 0.4f, 0.299f * 0.2f, 0 ,0},
+            new float[]{ 0.587f * 1.3f, 0.587f * 0.4f + 0.2f, 0.587f * 0.2f, 0 ,0},
+            new float[]{ 0.114f * 1.3f, 0.114f * 0.4f, 0.114f * 0.2f + 0.2f, 0 ,0},
             new float[]{0, 0, 0, 1, 0},
             new float[]{0, 0, 0, 0, 1}
         });
@@ -50,9 +73,35 @@ namespace SRCSharpForm.Extensions
             return image.ApplyColorMatrix(darkMatrix);
         }
 
+        public static Image Sepia(this Image image)
+        {
+            return image.ApplyColorMatrix(sepiaMatrix);
+        }
+
         public static Image Monotone(this Image image)
         {
             return image.ApplyColorMatrix(monochromeMatrix);
+        }
+
+        public static Image Sunset(this Image image)
+        {
+            return image.ApplyColorMatrix(sunsetMatrix);
+        }
+
+        public static Image Water(this Image image)
+        {
+            return image.ApplyColorMatrix(waterMatrix);
+        }
+
+        public static Image ColorFilter(this Image image, Color color, float alpha)
+        {
+            return image.ApplyColorMatrix(new ColorMatrix(new float[][]{
+                new float[]{1f - alpha, 0, 0, 0, 0},
+                new float[]{0, 1f - alpha, 0, 0, 0},
+                new float[]{0, 0, 1f - alpha, 0, 0},
+                new float[]{0, 0, 0, 1, 0},
+                new float[]{color.R * alpha / 255f, color.G * alpha / 255f, color.B * alpha / 255f, 0, 1}
+            }));
         }
 
         public static Image Rotate(this Image image, float angle, Color background)

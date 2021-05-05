@@ -138,7 +138,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "colorfilter":
-                        return new NotImplementedCmd(src, data);
+                        return new ColorFilterCmd(src, data);
 
                     case "combine":
                         return new NotImplementedCmd(src, data);
@@ -470,7 +470,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "sepia":
-                        return new NotImplementedCmd(src, data);
+                        return new SepiaCmd(src, data);
 
                     case "set":
                         return new SetCmd(src, data);
@@ -541,7 +541,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "sunset":
-                        return new NotImplementedCmd(src, data);
+                        return new SunsetCmd(src, data);
 
                     case "swap":
                         return new SwapCmd(src, data);
@@ -602,7 +602,7 @@ namespace SRCCore.CmdDatas
                         return new WaitCmd(src, data);
 
                     case "water":
-                        return new NotImplementedCmd(src, data);
+                        return new WaterCmd(src, data);
 
                     case "whitein":
                         return new NotImplementedCmd(src, data);
