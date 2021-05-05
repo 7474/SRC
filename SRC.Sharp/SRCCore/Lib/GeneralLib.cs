@@ -409,31 +409,17 @@ namespace SRCCore.Lib
             return InStr2Ret;
         }
 
-
         // 文字列をDoubleに変換
         public static double StrToDbl(string expr)
         {
-            double StrToDblRet = default;
-            if (Information.IsNumeric(expr))
-            {
-                StrToDblRet = Conversions.ToDouble(expr);
-            }
-
-            return StrToDblRet;
+            return Conversions.ToDouble(expr);
         }
 
         // 文字列をLongに変換
         // memo: VBのLongは32bit
         public static int StrToLng(string expr)
         {
-            try
-            {
-                return Conversions.ToInteger(expr);
-            }
-            catch
-            {
-                return 0;
-            }
+            return Conversions.ToInteger(expr ?? "");
         }
 
         // 文字列をひらがなに変換
