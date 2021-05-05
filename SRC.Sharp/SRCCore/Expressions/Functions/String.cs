@@ -55,10 +55,9 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            int i;
             if (pcount == 2)
             {
-                i = Strings.InStr(
+                num_result = Strings.InStr(
                     SRC.Expression.GetValueAsString(@params[1], is_term[1]),
                     SRC.Expression.GetValueAsString(@params[2], is_term[2]));
             }
@@ -67,7 +66,7 @@ namespace SRCCore.Expressions.Functions
                 // params(3)が指定されている場合は、それを検索開始位置似設定
                 // VBのInStrは引数1が開始位置になりますが、現仕様との兼ね合いを考え、
                 // eve上では引数3に設定するようにしています
-                i = Strings.InStr(
+                num_result = Strings.InStr(
                     SRC.Expression.GetValueAsLong(@params[3], is_term[3]),
                     SRC.Expression.GetValueAsString(@params[1], is_term[1]),
                     SRC.Expression.GetValueAsString(@params[2], is_term[2]));
@@ -76,7 +75,7 @@ namespace SRCCore.Expressions.Functions
 
             if (etype == ValueType.StringType)
             {
-                str_result = GeneralLib.FormatNum(i);
+                str_result = GeneralLib.FormatNum(num_result);
                 return ValueType.StringType;
             }
             else
