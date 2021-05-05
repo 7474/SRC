@@ -10,6 +10,14 @@ namespace SRCSharpForm.Extensions
 {
     public static class ImageExtension
     {
+        // XXX 単純に各色50%
+        private static readonly ColorMatrix darkMatrix = new ColorMatrix(new float[][]{
+            new float[]{0.5f, 0, 0, 0 ,0},
+            new float[]{0, 0.5f, 0, 0 ,0},
+            new float[]{0, 0, 0.5f, 0 ,0},
+            new float[]{0, 0, 0, 1, 0},
+            new float[]{0, 0, 0, 0, 1}
+        });
         // https://dobon.net/vb/dotnet/graphics/grayscale.html
         // http://www.graficaobscura.com/matrix/index.html
         private static readonly ColorMatrix monochromeMatrix = new ColorMatrix(new float[][]{
@@ -20,13 +28,13 @@ namespace SRCSharpForm.Extensions
             new float[]{0, 0, 0, 0, 1}
         });
 
-        public static Image Monotone(this Image image)
+        public static Image ApplyColorMatrix(this Image image, ColorMatrix matrix)
         {
             using (var orgImage = new Bitmap(image))
             using (var g = Graphics.FromImage(image))
             using (var ia = new ImageAttributes())
             {
-                ia.SetColorMatrix(monochromeMatrix);
+                ia.SetColorMatrix(matrix);
                 g.Clear(Color.Transparent);
                 g.DrawImage(orgImage,
                     new Rectangle(0, 0, image.Width, image.Height),
@@ -35,6 +43,16 @@ namespace SRCSharpForm.Extensions
                     ia);
                 return image;
             }
+        }
+
+        public static Image Dark(this Image image)
+        {
+            return image.ApplyColorMatrix(darkMatrix);
+        }
+
+        public static Image Monotone(this Image image)
+        {
+            return image.ApplyColorMatrix(monochromeMatrix);
         }
 
         public static Image Rotate(this Image image, float angle, Color background)

@@ -265,13 +265,9 @@ namespace SRCSharpForm
             // マップ設定によって表示色を変更
             switch (draw_mode ?? "")
             {
-                //    case "夜":
-                //        {
-                //            Graphics.GetImage(ref withBlock.picTmp32(0));
-                //            Graphics.Dark();
-                //            Graphics.SetImage(ref withBlock.picTmp32(0));
-                //            break;
-                //        }
+                case "夜":
+                    picBack.Image.Dark();
+                    break;
 
                 //    case "セピア":
                 //        {
@@ -504,9 +500,17 @@ namespace SRCSharpForm
 
         private Image DrawUnit(MapCell cell, SRCCore.Units.Unit u, bool use_orig_color = false)
         {
-            var unitImage = new Bitmap(MapCellPx, MapCellPx);
+            var image = new Bitmap(MapCellPx, MapCellPx);
             var destRect = new Rectangle(0, 0, MapCellPx, MapCellPx);
-            using var g = Graphics.FromImage(unitImage);
+            var emit_light = false;
+
+            // ユニットが自分で発光しているかをあらかじめチェック
+            if (Map.MapDrawMode == "夜" && !Map.MapDrawIsMapOnly && !use_orig_color && u.IsFeatureAvailable("発光"))
+            {
+                emit_light = true;
+            }
+
+            using var g = Graphics.FromImage(image);
             // タイル
             switch (u.Party0 ?? "")
             {
@@ -524,10 +528,11 @@ namespace SRCSharpForm
 
             // XXX BitmapMissing
             // TODO 対象画像の解決
-            var image = imageBuffer.GetTransparent(SRC.FileSystem.PathCombine("Unit", u.CurrentForm().Data.Bitmap));
-            if (image != null)
+            var unitImage = imageBuffer.GetTransparent(SRC.FileSystem.PathCombine("Unit", u.CurrentForm().Data.Bitmap));
+            // (発光している場合は２度塗りを防ぐため描画しない)
+            if (unitImage != null && !emit_light)
             {
-                g.DrawImage(image, destRect);
+                g.DrawImage(unitImage, destRect);
             }
             else
             {
@@ -562,28 +567,18 @@ namespace SRCSharpForm
             {
                 switch (Map.MapDrawMode ?? "")
                 {
-                    //case "夜":
-                    //    {
-                    //        Graphics.GetImage(ref withBlock.picTmp32(1));
-                    //        Graphics.Dark();
-                    //        Graphics.SetImage(ref withBlock.picTmp32(1));
-                    //        // ユニットが"発光"の特殊能力を持つ場合、
-                    //        // ユニット画像を、暗くしたタイル画像の上に描画する。
-                    //        if (emit_light)
-                    //        {
-                    //            if (SRC.UseTransparentBlt)
-                    //            {
-                    //                ret = TransparentBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, 32, 32, ColorTranslator.ToOle(Color.White));
-                    //            }
-                    //            else
-                    //            {
-                    //                ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(2).hDC, 0, 0, SRCERASE);
-                    //                ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, SRCINVERT);
-                    //            }
-                    //        }
-
-                    //        break;
-                    //    }
+                    case "夜":
+                        image.Dark();
+                        // ユニットが"発光"の特殊能力を持つ場合、
+                        // ユニット画像を、暗くしたタイル画像の上に描画する。
+                        if (emit_light)
+                        {
+                            if (unitImage != null)
+                            {
+                                g.DrawImage(unitImage, destRect);
+                            }
+                        }
+                        break;
 
                     //case "セピア":
                     //    {
@@ -594,10 +589,8 @@ namespace SRCSharpForm
                     //    }
 
                     case "白黒":
-                        {
-                            unitImage.Monotone();
-                            break;
-                        }
+                        image.Monotone();
+                        break;
 
                         //case "夕焼け":
                         //    {
@@ -668,7 +661,7 @@ namespace SRCSharpForm
                     break;
             }
 
-            return unitImage;
+            return image;
         }
 
         public void DisplayGlobalMap()
