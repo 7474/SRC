@@ -88,6 +88,10 @@ namespace SRCCore.Expressions
             new LeftB(),
             new MidB(),
             new RightB(),
+            new Asc(),
+            new Chr(),
+            new LCase(),
+            new Trim(),
             // List
             new List(),
             new LLength(),
