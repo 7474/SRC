@@ -1,5 +1,6 @@
 using SRCCore;
 using SRCCore.Maps;
+using SRCSharpForm.Extensions;
 using SRCSharpForm.Resoruces;
 using System.Drawing;
 
@@ -212,6 +213,11 @@ namespace SRCSharpForm
         }
         public void SetupBackground(string draw_mode, string draw_option, int filter_color, double filter_trans_par)
         {
+            Map.MapDrawMode = draw_mode;
+            // TODO 型合わせ
+            //Map.MapDrawFilterColor = filter_color;
+            //Map.MapDrawFilterTransPercent = filter_trans_par;
+
             Map.IsMapDirty = false;
             GUI.IsPictureVisible = false;
             GUI.IsCursorVisible = false;
@@ -254,9 +260,60 @@ namespace SRCSharpForm
                         //g.DrawString($"{cell.TerrainType}", SystemFonts.DefaultFont, Brushes.Gray, xpx + 2, ypx + 2);
                     }
                 }
+            }
 
-                // マス目の表示
-                //if (SRC.ShowSquareLine)
+            // マップ設定によって表示色を変更
+            switch (draw_mode ?? "")
+            {
+                //    case "夜":
+                //        {
+                //            Graphics.GetImage(ref withBlock.picTmp32(0));
+                //            Graphics.Dark();
+                //            Graphics.SetImage(ref withBlock.picTmp32(0));
+                //            break;
+                //        }
+
+                //    case "セピア":
+                //        {
+                //            Graphics.GetImage(ref withBlock.picTmp32(0));
+                //            Graphics.Sepia();
+                //            Graphics.SetImage(ref withBlock.picTmp32(0));
+                //            break;
+                //        }
+
+                case "白黒":
+                    picBack.Image.Monotone();
+                    break;
+
+                    //    case "夕焼け":
+                    //        {
+                    //            Graphics.GetImage(ref withBlock.picTmp32(0));
+                    //            Graphics.Sunset();
+                    //            Graphics.SetImage(ref withBlock.picTmp32(0));
+                    //            break;
+                    //        }
+
+                    //    case "水中":
+                    //        {
+                    //            Graphics.GetImage(ref withBlock.picTmp32(0));
+                    //            Graphics.Water();
+                    //            Graphics.SetImage(ref withBlock.picTmp32(0));
+                    //            break;
+                    //        }
+
+                    //    case "フィルタ":
+                    //        {
+                    //            Graphics.GetImage(ref withBlock.picTmp32(0));
+                    //            Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent);
+                    //            Graphics.SetImage(ref withBlock.picTmp32(0));
+                    //            break;
+                    //        }
+            }
+
+            // マス目の表示
+            if (SRC.ShowSquareLine)
+            {
+                using (var g = Graphics.FromImage(picBack.Image))
                 {
                     g.DrawRectangle(MapLinePen, 0, 0, MapPWidth, MapPHeight);
                     for (var x = 1; x <= Map.MapWidth - 1; x++)
@@ -477,6 +534,7 @@ namespace SRCSharpForm
                 u.CurrentForm().Data.IsBitmapMissing = true;
             }
 
+            // TODO Impl フィルタ
             // フィルタ
             //            if (u.IsFeatureAvailable(ref "地形ユニット"))
             //            {
@@ -502,72 +560,69 @@ namespace SRCSharpForm
             //                // 色をステージの状況に合わせて変更
             //                if (!use_orig_color & !Map.MapDrawIsMapOnly)
             //{
-            //    switch (Map.MapDrawMode ?? "")
-            //    {
-            //        case "夜":
-            //            {
-            //                Graphics.GetImage(ref withBlock.picTmp32(1));
-            //                Graphics.Dark();
-            //                Graphics.SetImage(ref withBlock.picTmp32(1));
-            //                // ユニットが"発光"の特殊能力を持つ場合、
-            //                // ユニット画像を、暗くしたタイル画像の上に描画する。
-            //                if (emit_light)
-            //                {
-            //                    if (SRC.UseTransparentBlt)
-            //                    {
-            //                        ret = TransparentBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, 32, 32, ColorTranslator.ToOle(Color.White));
-            //                    }
-            //                    else
-            //                    {
-            //                        ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(2).hDC, 0, 0, SRCERASE);
-            //                        ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, SRCINVERT);
-            //                    }
-            //                }
+            switch (Map.MapDrawMode ?? "")
+            {
+                //case "夜":
+                //    {
+                //        Graphics.GetImage(ref withBlock.picTmp32(1));
+                //        Graphics.Dark();
+                //        Graphics.SetImage(ref withBlock.picTmp32(1));
+                //        // ユニットが"発光"の特殊能力を持つ場合、
+                //        // ユニット画像を、暗くしたタイル画像の上に描画する。
+                //        if (emit_light)
+                //        {
+                //            if (SRC.UseTransparentBlt)
+                //            {
+                //                ret = TransparentBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, 32, 32, ColorTranslator.ToOle(Color.White));
+                //            }
+                //            else
+                //            {
+                //                ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(2).hDC, 0, 0, SRCERASE);
+                //                ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, SRCINVERT);
+                //            }
+                //        }
 
-            //                break;
-            //            }
+                //        break;
+                //    }
 
-            //        case "セピア":
-            //            {
-            //                Graphics.GetImage(ref withBlock.picTmp32(1));
-            //                Graphics.Sepia();
-            //                Graphics.SetImage(ref withBlock.picTmp32(1));
-            //                break;
-            //            }
+                //case "セピア":
+                //    {
+                //        Graphics.GetImage(ref withBlock.picTmp32(1));
+                //        Graphics.Sepia();
+                //        Graphics.SetImage(ref withBlock.picTmp32(1));
+                //        break;
+                //    }
 
-            //        case "白黒":
-            //            {
-            //                Graphics.GetImage(ref withBlock.picTmp32(1));
-            //                Graphics.Monotone();
-            //                Graphics.SetImage(ref withBlock.picTmp32(1));
-            //                break;
-            //            }
+                case "白黒":
+                    {
+                        unitImage.Monotone();
+                        break;
+                    }
 
-            //        case "夕焼け":
-            //            {
-            //                Graphics.GetImage(ref withBlock.picTmp32(1));
-            //                Graphics.Sunset();
-            //                Graphics.SetImage(ref withBlock.picTmp32(1));
-            //                break;
-            //            }
+                    //case "夕焼け":
+                    //    {
+                    //        Graphics.GetImage(ref withBlock.picTmp32(1));
+                    //        Graphics.Sunset();
+                    //        Graphics.SetImage(ref withBlock.picTmp32(1));
+                    //        break;
+                    //    }
 
-            //        case "水中":
-            //            {
-            //                Graphics.GetImage(ref withBlock.picTmp32(1));
-            //                Graphics.Water();
-            //                Graphics.SetImage(ref withBlock.picTmp32(1));
-            //                break;
-            //            }
+                    //case "水中":
+                    //    {
+                    //        Graphics.GetImage(ref withBlock.picTmp32(1));
+                    //        Graphics.Water();
+                    //        Graphics.SetImage(ref withBlock.picTmp32(1));
+                    //        break;
+                    //    }
 
-            //        case "フィルタ":
-            //            {
-            //                Graphics.GetImage(ref withBlock.picTmp32(1));
-            //                Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent);
-            //                Graphics.SetImage(ref withBlock.picTmp32(1));
-            //                break;
-            //            }
-            //    }
-            //}
+                    //case "フィルタ":
+                    //    {
+                    //        Graphics.GetImage(ref withBlock.picTmp32(1));
+                    //        Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent);
+                    //        Graphics.SetImage(ref withBlock.picTmp32(1));
+                    //        break;
+                    //    }
+            }
 
             // 行動済のフィルタ
             if (u.Action <= 0 && !u.IsFeatureAvailable("地形ユニット"))
