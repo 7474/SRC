@@ -48,7 +48,6 @@ namespace SRCCore.CmdDatas.Commands
                                     b = cmd.GetArg(j);
                                 }
 
-                                SRC.LogTrace("Case", a, b);
                                 if (a == b)
                                 {
                                     return i + 1;
