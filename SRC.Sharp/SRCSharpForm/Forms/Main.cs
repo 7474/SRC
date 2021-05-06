@@ -37,11 +37,6 @@ namespace SRCSharpForm
         // ポップアップメニュー選択が右クリックだったか？
         private bool IsRightClick;
 
-        private void frmMain_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            ActiveControl = null;
-        }
-
         // フォーム上でキーを押す
         private void frmMain_KeyDown(object eventSender, KeyEventArgs eventArgs)
         {
@@ -82,9 +77,6 @@ namespace SRCSharpForm
             if (!Shift)
             {
                 Program.Log.LogDebug("Focus: {0}", ActiveControl?.Name);
-                // XXX なんか他方の軸も動く。
-                // フォーカスが当たっているスクロールバーがキー処理してしまってる様子。
-                // キー処理の殺し方が分からん。
                 // 方向キーを押した場合はマップを動かす
                 switch (KeyCode)
                 {
@@ -120,19 +112,17 @@ namespace SRCSharpForm
                         }
                         break;
 
-                        //case Keys.Escape:
-                        //case Keys.Delete:
-                        //case Keys.Back:
-                        //    {
-                        //        picMain_MouseDown(picMain[0], new MouseEventArgs((MouseButtons)0x100000, 0, 0, 0, 0));
-                        //        break;
-                        //    }
+                    case Keys.Escape:
+                    case Keys.Delete:
+                    case Keys.Back:
+                        // XXX 元はマウスダウンでキャンセル相当の動作をさせていたかも
+                        SimpleClick();
+                        break;
 
-                        //default:
-                        //    {
-                        //        picMain_MouseDown(picMain[0], new MouseEventArgs((MouseButtons)0x100000, 0, 0, 0, 0));
-                        //        break;
-                        //    }
+                    default:
+                        SimpleClick();
+                        // XXX 元はマウスダウンでキャンセル相当の動作をさせていたかも
+                        break;
                 }
             }
         }
@@ -715,10 +705,6 @@ namespace SRCSharpForm
             //{
             //    My.MyProject.Forms.frmErrorMessage.Show();
             //}
-        }
-
-        private void VScrollBar_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
         }
     }
 }
