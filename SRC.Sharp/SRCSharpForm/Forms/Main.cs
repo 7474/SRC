@@ -632,28 +632,6 @@ namespace SRCSharpForm
             }
         }
 
-        private void HScroll_Scroll(object eventSender, ScrollEventArgs eventArgs)
-        {
-            Program.Log.LogDebug("HScroll_Scroll {0}", JsonConvert.SerializeObject(eventArgs));
-            //switch (eventArgs.Type)
-            //{
-            //    case ScrollEventType.EndScroll:
-            //        HScroll_Change(eventArgs.NewValue);
-            //        break;
-            //}
-        }
-
-        private void VScroll_Scroll(object eventSender, ScrollEventArgs eventArgs)
-        {
-            Program.Log.LogDebug("VScroll_Scroll {0}", JsonConvert.SerializeObject(eventArgs));
-            //switch (eventArgs.Type)
-            //{
-            //    case ScrollEventType.EndScroll:
-            //        VScroll_Change(eventArgs.NewValue);
-            //        break;
-            //}
-        }
-
         private void HScrollBar_ValueChanged(object sender, EventArgs e)
         {
             Program.Log.LogDebug("HScrollBar_ValueChanged {0}", JsonConvert.SerializeObject(e));

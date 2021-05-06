@@ -353,7 +353,6 @@ namespace SRCSharpForm
             this.HScrollBar.Size = new System.Drawing.Size(49, 17);
             this.HScrollBar.TabIndex = 5;
             this.HScrollBar.Value = 1;
-            this.HScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScroll_Scroll);
             this.HScrollBar.ValueChanged += new System.EventHandler(this.HScrollBar_ValueChanged);
             // 
             // VScrollBar
@@ -368,7 +367,6 @@ namespace SRCSharpForm
             this.VScrollBar.Size = new System.Drawing.Size(17, 49);
             this.VScrollBar.TabIndex = 4;
             this.VScrollBar.Value = 1;
-            this.VScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.VScroll_Scroll);
             this.VScrollBar.ValueChanged += new System.EventHandler(this.VScrollBar_ValueChanged);
             // 
             // picMask
