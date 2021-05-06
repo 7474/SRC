@@ -3,6 +3,7 @@ using SRCCore;
 using SRCCore.Maps;
 using SRCCore.Pilots;
 using SRCCore.Units;
+using SRCCore.VB;
 using SRCSharpForm.Extensions;
 using System;
 using System.Drawing;
@@ -50,17 +51,134 @@ namespace SRCSharpForm
             // ステータスウィンドウを消去
             ClearUnitStatus();
 
-            var sb = new StringBuilder();
-            sb.AppendLine($"ターン数 {SRC.Turn}");
-            sb.AppendLine($"資金 {SRC.Money}");
-
             var xx = GUI.PixelToMapX((int)GUI.MouseX);
             var yy = GUI.PixelToMapY((int)GUI.MouseY);
             var mapCell = Map.CellAtPoint(xx, yy);
 
-            if (mapCell != null)
+            var sb = new StringBuilder();
+            sb.AppendLine("ターン数 " + SrcFormatter.Format(SRC.Turn));
+            sb.AppendLine(Expression.Term("資金", null, 8) + " " + SrcFormatter.Format(SRC.Money));
+
+            // マップ外をクリックした時はここで終了
+            if (mapCell == null)
             {
-                sb.AppendLine(JsonConvert.SerializeObject(mapCell.Terrain, Formatting.Indented));
+                picUnitStatus.NewImageIfNull();
+                using (var g = Graphics.FromImage(picUnitStatus.Image))
+                {
+                    g.TextRenderingHint = StatusTextRenderingHint;
+                    g.DrawString(sb.ToString(), StatusFont, StatusNormalStringBrush, 0, 0);
+                }
+                return;
+            }
+
+            // 地形情報の表示
+            var td = mapCell.Terrain;
+            var sbTerrain = new StringBuilder();
+            // 地形名称
+            sbTerrain.Append($"({mapCell.X},{mapCell.Y}) ");
+            if (Strings.InStr(td.Name, "(") > 0)
+            {
+                sbTerrain.AppendLine(Strings.Left(td.Name, Strings.InStr(td.Name, "(") - 1));
+            }
+            else
+            {
+                sbTerrain.AppendLine(td.Name);
+            }
+
+            // 命中修正
+            if (td.HitMod >= 0)
+            {
+                sbTerrain.Append("回避 +" + SrcFormatter.Format(td.HitMod) + "%");
+            }
+            else
+            {
+                sbTerrain.Append("回避 " + SrcFormatter.Format(td.HitMod) + "%");
+            }
+
+            // ダメージ修正
+            if (td.DamageMod >= 0)
+            {
+                sbTerrain.AppendLine("  防御 +" + SrcFormatter.Format(td.DamageMod) + "%");
+            }
+            else
+            {
+                sbTerrain.AppendLine("  防御 " + SrcFormatter.Format(td.DamageMod) + "%");
+            }
+
+            // ＨＰ回復率
+            if (td.EffectForHPRecover() > 0)
+            {
+                sbTerrain.Append(Expression.Term("ＨＰ", u: null) + " +" + SrcFormatter.Format(td.EffectForHPRecover()) + "%  ");
+            }
+
+            // ＥＮ回復率
+            if (td.EffectForENRecover() > 0)
+            {
+                sbTerrain.Append(Expression.Term("ＥＮ", u: null) + " +" + SrcFormatter.Format(td.EffectForENRecover()) + "%");
+            }
+
+            if (td.EffectForHPRecover() > 0 || td.EffectForENRecover() > 0)
+            {
+                sbTerrain.AppendLine();
+            }
+
+            // ＨＰ＆ＥＮ減少
+            if (td.IsFeatureAvailable("ＨＰ減少"))
+            {
+                sbTerrain.Append(Expression.Term("ＨＰ", u: null) + " -" + SrcFormatter.Format(10d * td.FeatureLevel("ＨＰ減少")) + "% (" + td.Feature("ＨＰ減少").Data + ")  ");
+            }
+
+            if (td.IsFeatureAvailable("ＥＮ減少"))
+            {
+                sbTerrain.Append(Expression.Term("ＥＮ", u: null) + " -" + SrcFormatter.Format(10d * td.FeatureLevel("ＥＮ減少")) + "% (" + td.Feature("ＥＮ減少").Data + ")  ");
+            }
+
+            if (td.IsFeatureAvailable("ＨＰ減少") || td.IsFeatureAvailable("ＥＮ減少"))
+            {
+                sbTerrain.AppendLine();
+            }
+
+            // ＨＰ＆ＥＮ増加
+            if (td.IsFeatureAvailable("ＨＰ増加"))
+            {
+                sbTerrain.Append(Expression.Term("ＨＰ", u: null) + " +" + SrcFormatter.Format(1000d * td.FeatureLevel("ＨＰ増加")) + "  ");
+            }
+
+            if (td.IsFeatureAvailable("ＥＮ増加"))
+            {
+                sbTerrain.Append(Expression.Term("ＥＮ", u: null) + " +" + SrcFormatter.Format(10d * td.FeatureLevel("ＥＮ増加")) + "  ");
+            }
+
+            if (td.IsFeatureAvailable("ＨＰ増加") || td.IsFeatureAvailable("ＥＮ増加"))
+            {
+                sbTerrain.AppendLine();
+            }
+
+            // ＨＰ＆ＥＮ低下
+            if (td.IsFeatureAvailable("ＨＰ低下"))
+            {
+                sbTerrain.Append(Expression.Term("ＨＰ", u: null) + " -" + SrcFormatter.Format(1000d * td.FeatureLevel("ＨＰ低下")) + "  ");
+            }
+
+            if (td.IsFeatureAvailable("ＥＮ低下"))
+            {
+                sbTerrain.Append(Expression.Term("ＥＮ", u: null) + " -" + SrcFormatter.Format(10d * td.FeatureLevel("ＥＮ低下")) + "  ");
+            }
+
+            if (td.IsFeatureAvailable("ＨＰ低下") || td.IsFeatureAvailable("ＥＮ低下"))
+            {
+                sbTerrain.AppendLine();
+            }
+
+            // 摩擦
+            if (td.IsFeatureAvailable("摩擦"))
+            {
+                sbTerrain.AppendLine("摩擦Lv" + SrcFormatter.Format(td.FeatureLevel("摩擦")));
+            }
+            // 状態異常付加
+            if (td.IsFeatureAvailable("状態付加"))
+            {
+                sbTerrain.AppendLine(td.Feature("状態付加").Data + "状態付加");
             }
 
             picUnitStatus.NewImageIfNull();
@@ -68,8 +186,16 @@ namespace SRCSharpForm
             {
                 g.TextRenderingHint = StatusTextRenderingHint;
                 g.DrawString(sb.ToString(), StatusFont, StatusNormalStringBrush, 0, 0);
+
+                // マップ画像表示
+                g.DrawImage(picBack.Image, 0, 48,
+                    new Rectangle((xx - 1) * MapCellPx, (yy - 1) * MapCellPx, MapCellPx, MapCellPx),
+                    GraphicsUnit.Pixel);
+
+                g.DrawString(sbTerrain.ToString(), StatusFont, StatusNormalStringBrush, MapCellPx + 5, 48);
             }
 
+            // XXX 以下参考用
             //var pic = picUnitStatus;
             //pic.Font = SrcFormatter.FontChangeSize(pic.Font, 12f);
 
@@ -118,7 +244,7 @@ namespace SRCSharpForm
             //// MOV  END  240a
 
             //// マップ外をクリックした時はここで終了
-            //if (X < 1 | Map.MapWidth < X | Y < 1 | Map.MapHeight < Y)
+            //if (X < 1 || Map.MapWidth < X || Y < 1 || Map.MapHeight < Y)
             //{
             //    pic.Font = SrcFormatter.FontChangeSize(pic.Font, 9f);
             //    if (GUI.NewGUIMode)
@@ -200,7 +326,7 @@ namespace SRCSharpForm
             //    pic.Print(Expression.Term("ＥＮ", u: null) + " +" + SrcFormatter.Format(Map.TerrainEffectForENRecover(X, Y)) + "%");
             //}
 
-            //if (Map.TerrainEffectForHPRecover(X, Y) > 0 | Map.TerrainEffectForENRecover(X, Y) > 0)
+            //if (Map.TerrainEffectForHPRecover(X, Y) > 0 || Map.TerrainEffectForENRecover(X, Y) > 0)
             //{
             //    pic.Print();
             //}
@@ -242,7 +368,7 @@ namespace SRCSharpForm
             //    pic.Print(Expression.Term("ＥＮ", u: null) + " -" + SrcFormatter.Format(10d * td.FeatureLevel("ＥＮ減少")) + "% (" + td.FeatureData("ＥＮ減少") + ")  ");
             //}
 
-            //if (td.IsFeatureAvailable("ＨＰ減少") | td.IsFeatureAvailable("ＥＮ減少"))
+            //if (td.IsFeatureAvailable("ＨＰ減少") || td.IsFeatureAvailable("ＥＮ減少"))
             //{
             //    pic.Print();
             //}
@@ -264,7 +390,7 @@ namespace SRCSharpForm
             //    pic.Print(Expression.Term("ＥＮ", u: null) + " +" + SrcFormatter.Format(10d * td.FeatureLevel("ＥＮ増加")) + "  ");
             //}
 
-            //if (td.IsFeatureAvailable("ＨＰ増加") | td.IsFeatureAvailable("ＥＮ増加"))
+            //if (td.IsFeatureAvailable("ＨＰ増加") || td.IsFeatureAvailable("ＥＮ増加"))
             //{
             //    pic.Print();
             //}
@@ -287,7 +413,7 @@ namespace SRCSharpForm
             //    pic.Print(Expression.Term("ＥＮ", u: null) + " -" + SrcFormatter.Format(10d * td.FeatureLevel("ＥＮ低下")) + "  ");
             //}
 
-            //if (td.IsFeatureAvailable("ＨＰ低下") | td.IsFeatureAvailable("ＥＮ低下"))
+            //if (td.IsFeatureAvailable("ＨＰ低下") || td.IsFeatureAvailable("ＥＮ低下"))
             //{
             //    pic.Print();
             //}
@@ -381,7 +507,7 @@ namespace SRCSharpForm
             //    }
 
             //    // 破壊、破棄されたユニットは表示しない
-            //    if (u.Status == "破壊" | u.Status == "破棄")
+            //    if (u.Status == "破壊" || u.Status == "破棄")
             //    {
             //        return;
             //    }
@@ -433,7 +559,7 @@ namespace SRCSharpForm
             //        withBlock.Update();
 
             //        // 未確認ユニットかどうか判定しておく
-            //        if (Expression.IsOptionDefined("ユニット情報隠蔽") & !withBlock.IsConditionSatisfied("識別済み") & (withBlock.Party0 == "敵" | withBlock.Party0 == "中立") | withBlock.IsConditionSatisfied("ユニット情報隠蔽"))
+            //        if (Expression.IsOptionDefined("ユニット情報隠蔽") & !withBlock.IsConditionSatisfied("識別済み") & (withBlock.Party0 == "敵" || withBlock.Party0 == "中立") || withBlock.IsConditionSatisfied("ユニット情報隠蔽"))
             //        {
             //            is_unknown = true;
             //        }
@@ -518,7 +644,7 @@ namespace SRCSharpForm
             //        {
             //            // メインパイロット
             //            p = withBlock.MainPilot();
-            //            if ((withBlock.MainPilot().get_Nickname(false) ?? "") == (withBlock.Pilot(1).get_Nickname(false) ?? "") | withBlock.Data.PilotNum == 1)
+            //            if ((withBlock.MainPilot().get_Nickname(false) ?? "") == (withBlock.Pilot(1).get_Nickname(false) ?? "") || withBlock.Data.PilotNum == 1)
             //            {
             //                DisplayedPilotInd = 1;
             //            }
@@ -559,7 +685,7 @@ namespace SRCSharpForm
             //        {
             //            // ザコ＆汎用パイロットが乗るユニットの出撃選択時はパイロット画像の
             //            // 代わりにユニット画像を表示
-            //            if (Strings.InStr(p.Name, "(ザコ)") > 0 | Strings.InStr(p.Name, "(汎用)") > 0)
+            //            if (Strings.InStr(p.Name, "(ザコ)") > 0 || Strings.InStr(p.Name, "(汎用)") > 0)
             //            {
             //                fname = @"\Bitmap\Unit\" + u.get_Bitmap(false);
             //            }
@@ -1214,7 +1340,7 @@ namespace SRCSharpForm
             //            upic.Print(GeneralLib.LeftPaddedString("--", 5) + Strings.Space(9));
             //        }
 
-            //        if (Expression.IsOptionDefined("防御力成長") | Expression.IsOptionDefined("防御力レベルアップ"))
+            //        if (Expression.IsOptionDefined("防御力成長") || Expression.IsOptionDefined("防御力レベルアップ"))
             //        {
             //            if (GUI.NewGUIMode)
             //            {
@@ -1715,7 +1841,7 @@ namespace SRCSharpForm
             //                        var loopTo6 = u.CountWeapon();
             //                        for (j = 1; j <= loopTo6; j++)
             //                        {
-            //                            if (u.IsWeaponAvailable(j, "移動後") & u.IsWeaponClassifiedAs(j, "射撃系") & (u.Weapon(j).Bullet >= 10 | u.Weapon(j).Bullet == 0 & u.Weapon(j).ENConsumption <= 5))
+            //                            if (u.IsWeaponAvailable(j, "移動後") & u.IsWeaponClassifiedAs(j, "射撃系") & (u.Weapon(j).Bullet >= 10 || u.Weapon(j).Bullet == 0 & u.Weapon(j).ENConsumption <= 5))
             //                            {
             //                                break;
             //                            }
@@ -1821,7 +1947,7 @@ namespace SRCSharpForm
             //                        if (!string.IsNullOrEmpty(Map.MapFileName))
             //                        {
             //                            ret = GeneralLib.MaxLng(u.MaxSupportGuard() - u.UsedSupportGuard, 0);
-            //                            if (ret == 0 | u.IsUnderSpecialPowerEffect("サポートガード不能"))
+            //                            if (ret == 0 || u.IsUnderSpecialPowerEffect("サポートガード不能"))
             //                            {
             //                                // MOD START 240a
             //                                // upic.ForeColor = rgb(150, 0, 0)
@@ -1895,7 +2021,7 @@ namespace SRCSharpForm
 
             //                case "耐久":
             //                    {
-            //                        if (Expression.IsOptionDefined("防御力成長") | Expression.IsOptionDefined("防御力レベルアップ"))
+            //                        if (Expression.IsOptionDefined("防御力成長") || Expression.IsOptionDefined("防御力レベルアップ"))
             //                        {
             //                            goto NextSkill;
             //                        }
@@ -2261,9 +2387,9 @@ namespace SRCSharpForm
             //            upic.Print("？");
 
             //            // サポートアタックを得られるかどうかのみ表示
-            //            if ((Commands.CommandState == "ターゲット選択" | Commands.CommandState == "移動後ターゲット選択") & (Commands.SelectedCommand == "攻撃" | Commands.SelectedCommand == "マップ攻撃") & Commands.SelectedUnit is object)
+            //            if ((Commands.CommandState == "ターゲット選択" || Commands.CommandState == "移動後ターゲット選択") & (Commands.SelectedCommand == "攻撃" || Commands.SelectedCommand == "マップ攻撃") & Commands.SelectedUnit is object)
             //            {
-            //                if (withBlock.Party == "敵" | withBlock.Party == "中立" | withBlock.IsConditionSatisfied("暴走") | withBlock.IsConditionSatisfied("魅了") | withBlock.IsConditionSatisfied("憑依"))
+            //                if (withBlock.Party == "敵" || withBlock.Party == "中立" || withBlock.IsConditionSatisfied("暴走") || withBlock.IsConditionSatisfied("魅了") || withBlock.IsConditionSatisfied("憑依"))
             //                {
             //                    upic.Print();
 
@@ -2830,7 +2956,7 @@ namespace SRCSharpForm
 
             //                        string localCondition9() { object argIndex1 = i; var ret = withBlock.Condition(argIndex1); return ret; }
 
-            //                        if (Strings.Right(localCondition8(), 3) == "付加２" | Strings.Right(localCondition9(), 3) == "強化２")
+            //                        if (Strings.Right(localCondition8(), 3) == "付加２" || Strings.Right(localCondition9(), 3) == "強化２")
             //                        {
             //                            goto NextCondition;
             //                        }
@@ -3131,7 +3257,7 @@ namespace SRCSharpForm
             //        // MOD  END  240a
             //        string localLIndex5() { object argIndex1 = "テレポート"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
 
-            //        if (withBlock.IsFeatureAvailable("テレポート") & (withBlock.Data.Speed == 0 | localLIndex5() == "0"))
+            //        if (withBlock.IsFeatureAvailable("テレポート") & (withBlock.Data.Speed == 0 || localLIndex5() == "0"))
             //        {
             //            upic.Print(SrcFormatter.Format(withBlock.Speed + withBlock.FeatureLevel("テレポート")));
             //        }
@@ -3510,7 +3636,7 @@ namespace SRCSharpForm
             //        flist = new string[1];
             //        if (Expression.IsOptionDefined("アイテム交換"))
             //        {
-            //            if (withBlock.IsFeatureAvailable("武器クラス") | withBlock.IsFeatureAvailable("防具クラス"))
+            //            if (withBlock.IsFeatureAvailable("武器クラス") || withBlock.IsFeatureAvailable("防具クラス"))
             //            {
             //                if (GUI.NewGUIMode)
             //                {
@@ -3790,7 +3916,7 @@ namespace SRCSharpForm
             //                            nmorale = 0;
             //                        }
 
-            //                        if (withBlock.EN < ecost | pmorale < nmorale)
+            //                        if (withBlock.EN < ecost || pmorale < nmorale)
             //                        {
             //                            // MOD START 240a
             //                            // upic.ForeColor = rgb(150, 0, 0)
@@ -3821,7 +3947,7 @@ namespace SRCSharpForm
             //                            nmorale = 0;
             //                        }
 
-            //                        if (withBlock.EN < ecost | pmorale < nmorale)
+            //                        if (withBlock.EN < ecost || pmorale < nmorale)
             //                        {
             //                            // MOD START 240a
             //                            // upic.ForeColor = rgb(150, 0, 0)
@@ -3868,7 +3994,7 @@ namespace SRCSharpForm
             //                            nmorale = 0;
             //                        }
 
-            //                        if (withBlock.EN < ecost | pmorale < nmorale | withBlock.IsConditionSatisfied("バリア無効化") & Strings.InStr(fdata, "バリア無効化無効") == 0)
+            //                        if (withBlock.EN < ecost || pmorale < nmorale || withBlock.IsConditionSatisfied("バリア無効化") & Strings.InStr(fdata, "バリア無効化無効") == 0)
             //                        {
             //                            // MOD START 240a
             //                            // upic.ForeColor = rgb(150, 0, 0)
@@ -3954,7 +4080,7 @@ namespace SRCSharpForm
             //                            nmorale = 0;
             //                        }
 
-            //                        if (withBlock.EN < ecost | pmorale < nmorale | withBlock.IsConditionSatisfied("バリア無効化") & Strings.InStr(fdata, "バリア無効化無効") == 0)
+            //                        if (withBlock.EN < ecost || pmorale < nmorale || withBlock.IsConditionSatisfied("バリア無効化") & Strings.InStr(fdata, "バリア無効化無効") == 0)
             //                        {
             //                            // MOD START 240a
             //                            // upic.ForeColor = rgb(150, 0, 0)
@@ -4045,7 +4171,7 @@ namespace SRCSharpForm
             //                            nmorale = 0;
             //                        }
 
-            //                        if (withBlock.EN < ecost | pmorale < nmorale | withBlock.IsConditionSatisfied("バリア無効化") & Strings.InStr(fdata, "バリア無効化無効") == 0)
+            //                        if (withBlock.EN < ecost || pmorale < nmorale || withBlock.IsConditionSatisfied("バリア無効化") & Strings.InStr(fdata, "バリア無効化無効") == 0)
             //                        {
             //                            // MOD START 240a
             //                            // upic.ForeColor = rgb(150, 0, 0)
@@ -4168,7 +4294,7 @@ namespace SRCSharpForm
             //                            nmorale = 0;
             //                        }
 
-            //                        if (withBlock.EN < ecost | pmorale < nmorale)
+            //                        if (withBlock.EN < ecost || pmorale < nmorale)
             //                        {
             //                            // MOD START 240a
             //                            // upic.ForeColor = rgb(150, 0, 0)
@@ -4253,7 +4379,7 @@ namespace SRCSharpForm
             //                            nmorale = 0;
             //                        }
 
-            //                        if (withBlock.EN < ecost | pmorale < nmorale)
+            //                        if (withBlock.EN < ecost || pmorale < nmorale)
             //                        {
             //                            // MOD START 240a
             //                            // upic.ForeColor = rgb(150, 0, 0)
@@ -4286,7 +4412,7 @@ namespace SRCSharpForm
             //                            nmorale = 0;
             //                        }
 
-            //                        if (withBlock.EN < ecost | pmorale < nmorale)
+            //                        if (withBlock.EN < ecost || pmorale < nmorale)
             //                        {
             //                            // MOD START 240a
             //                            // upic.ForeColor = rgb(150, 0, 0)
@@ -4383,7 +4509,7 @@ namespace SRCSharpForm
             //                    {
             //                        // MOD START MARGE
             //                        // If .IsConditionSatisfied("回復不能") Then
-            //                        if (withBlock.IsConditionSatisfied("回復不能") | withBlock.IsSpecialPowerInEffect("回復不能"))
+            //                        if (withBlock.IsConditionSatisfied("回復不能") || withBlock.IsSpecialPowerInEffect("回復不能"))
             //                        {
             //                            // MOD END MARGE
             //                            // MOD START 240a
@@ -4441,7 +4567,7 @@ namespace SRCSharpForm
             //                        if (j >= 1)
             //                        {
             //                            GeneralLib.ReplaceString(fdata, Constants.vbTab, " ");
-            //                            if (Strings.InStr(fdata, " 直線") > 0 | Strings.InStr(fdata, " 垂直") > 0 & Strings.InStr(fdata, " 水平") > 0)
+            //                            if (Strings.InStr(fdata, " 直線") > 0 || Strings.InStr(fdata, " 垂直") > 0 & Strings.InStr(fdata, " 水平") > 0)
             //                            {
             //                                buf = "直線";
             //                            }
@@ -4490,7 +4616,7 @@ namespace SRCSharpForm
             //                            nmorale = 0;
             //                        }
 
-            //                        if (withBlock.EN < ecost | pmorale < nmorale)
+            //                        if (withBlock.EN < ecost || pmorale < nmorale)
             //                        {
             //                            // MOD START 240a
             //                            // upic.ForeColor = rgb(150, 0, 0)
@@ -4637,7 +4763,7 @@ namespace SRCSharpForm
             //        // ターゲット選択時の攻撃結果予想表示
 
             //        // 攻撃時にのみ表示
-            //        if ((Commands.CommandState == "ターゲット選択" | Commands.CommandState == "移動後ターゲット選択") & (Commands.SelectedCommand == "攻撃" | Commands.SelectedCommand == "マップ攻撃") & Commands.SelectedUnit is object & Commands.SelectedWeapon > 0 & SRC.Stage != "プロローグ" & SRC.Stage != "エピローグ")
+            //        if ((Commands.CommandState == "ターゲット選択" || Commands.CommandState == "移動後ターゲット選択") & (Commands.SelectedCommand == "攻撃" || Commands.SelectedCommand == "マップ攻撃") & Commands.SelectedUnit is object & Commands.SelectedWeapon > 0 & SRC.Stage != "プロローグ" & SRC.Stage != "エピローグ")
             //        {
             //        }
             //        // 攻撃時と判定
@@ -4689,7 +4815,7 @@ namespace SRCSharpForm
             //        }
 
             //        // 反撃を受ける？
-            //        if (withBlock.MaxAction() == 0 | Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, "Ｍ") | Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, "間"))
+            //        if (withBlock.MaxAction() == 0 || Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, "Ｍ") || Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, "間"))
             //        {
             //            w = 0;
             //        }
@@ -5164,12 +5290,12 @@ namespace SRCSharpForm
             //            // MOD START 240a
             //            // upic.Move MainPWidth - 230 - 5, 10
             //            // 画面左側にカーソルがある場合
-            //            upic.SetBounds(SrcFormatter.TwipsToPixelsX(GUI.MainPWidth - 240), SrcFormatter.TwipsToPixelsY(10d), 0, 0, BoundsSpecified.X | BoundsSpecified.Y);
+            //            upic.SetBounds(SrcFormatter.TwipsToPixelsX(GUI.MainPWidth - 240), SrcFormatter.TwipsToPixelsY(10d), 0, 0, BoundsSpecified.X || BoundsSpecified.Y);
             //        }
             //        // MOD  END
             //        else
             //        {
-            //            upic.SetBounds(SrcFormatter.TwipsToPixelsX(5d), SrcFormatter.TwipsToPixelsY(10d), 0, 0, BoundsSpecified.X | BoundsSpecified.Y);
+            //            upic.SetBounds(SrcFormatter.TwipsToPixelsX(5d), SrcFormatter.TwipsToPixelsY(10d), 0, 0, BoundsSpecified.X || BoundsSpecified.Y);
             //        }
 
             //        if (upic.Visible)
