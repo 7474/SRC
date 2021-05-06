@@ -1,84 +1,56 @@
-using System;
 using System.Windows.Forms;
 
 namespace SRCSharpForm.Lib
 {
     // 方向キーでのスクロールはスクロールバーでは処理したくない。
-    // そのためキー入力だった場合はスクロール処理を発生させない。
-    // 裏付けのない結果として狙った振る舞いを得られている状態のコード。
+    // そのためキー入力に伴うスクロールメッセージは処理しない。
+    // マウスホイールに伴うスクロールは、マウス操作メッセージの処理中で行っている。
+    // 値の直接設定後はスクロールメッセージではない。
+    // https://referencesource.microsoft.com/#System.Windows.Forms/winforms/Managed/System/WinForms/ScrollBar.cs
 
     public class SrcHScrollBar : HScrollBar
     {
-        private bool isKey;
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        protected override void WndProc(ref Message m)
         {
-            isKey = true;
-            return false;
-        }
-        protected override bool ProcessDialogChar(char charCode)
-        {
-            isKey = true;
-            return false;
-        }
-        protected override bool ProcessDialogKey(Keys keyData)
-        {
-            isKey = true;
-            return false;
-        }
-        protected override bool ProcessKeyEventArgs(ref Message m)
-        {
-            isKey = true;
-            return false;
-        }
-        protected override bool ProcessKeyPreview(ref Message m)
-        {
-            isKey = true;
-            return false;
-        }
-        protected override void OnValueChanged(EventArgs e)
-        {
-            if (!isKey)
+            if (!isScrollMsg(m))
             {
-                base.OnValueChanged(e);
+                base.WndProc(ref m);
             }
-            isKey = false;
+        }
+        private static bool isScrollMsg(Message msg)
+        {
+            //    case NativeMethods.WM_REFLECT + NativeMethods.WM_HSCROLL:
+            //    case NativeMethods.WM_REFLECT + NativeMethods.WM_VSCROLL:
+            //        WmReflectScroll(ref m);
+            //    WM_HSCROLL = 0x0114,
+            //    WM_VSCROLL = 0x0115,
+            //    WM_USER = 0x0400,
+            //    WM_REFLECT = NativeMethods.WM_USER + 0x1C00,
+            return msg.Msg == 0x0400 + 0x1c00 + 0x0114
+                || msg.Msg == 0x0400 + 0x1c00 + 0x0115;
         }
     }
+
     public class SrcVScrollBar : VScrollBar
     {
-        private bool isKey;
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        protected override void WndProc(ref Message m)
         {
-            isKey = true;
-            return false;
-        }
-        protected override bool ProcessDialogChar(char charCode)
-        {
-            isKey = true;
-            return false;
-        }
-        protected override bool ProcessDialogKey(Keys keyData)
-        {
-            isKey = true;
-            return false;
-        }
-        protected override bool ProcessKeyEventArgs(ref Message m)
-        {
-            isKey = true;
-            return false;
-        }
-        protected override bool ProcessKeyPreview(ref Message m)
-        {
-            isKey = true;
-            return false;
-        }
-        protected override void OnValueChanged(EventArgs e)
-        {
-            if (!isKey)
+            if (!isScrollMsg(m))
             {
-                base.OnValueChanged(e);
+                base.WndProc(ref m);
             }
-            isKey = false;
+        }
+        private static bool isScrollMsg(Message msg)
+        {
+            //    case NativeMethods.WM_REFLECT + NativeMethods.WM_HSCROLL:
+            //    case NativeMethods.WM_REFLECT + NativeMethods.WM_VSCROLL:
+            //        WmReflectScroll(ref m);
+            //    WM_HSCROLL = 0x0114,
+            //    WM_VSCROLL = 0x0115,
+            //    WM_USER = 0x0400,
+            //    WM_REFLECT = NativeMethods.WM_USER + 0x1C00,
+            return msg.Msg == 0x0400 + 0x1c00 + 0x0114
+                || msg.Msg == 0x0400 + 0x1c00 + 0x0115;
         }
     }
 }
