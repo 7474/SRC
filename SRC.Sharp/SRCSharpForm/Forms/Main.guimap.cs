@@ -48,10 +48,16 @@ namespace SRCSharpForm
         public void InitStatus()
         {
             // ステータスウィンドウを設置
-            picFace.Location = new Point(MainPWidth + 24, 4);
-            picPilotStatus.Location = new Point(MainPWidth + 24 + 68 + 4, 4);
+            //picFace.Location = new Point(MainPWidth + 24, 4);
+            //picPilotStatus.Location = new Point(MainPWidth + 24 + 68 + 4, 4);
+            //picPilotStatus.Size = new Size(155, 72);
+            //picUnitStatus.Location = new Point(MainPWidth + 24, 4 + 68 + 4);
+            //picUnitStatus.Size = new Size(225 + 5, MainPHeight - 64 + 16);
+            picFace.Location = new Point(MainPWidth + 16 + 4, 4);
+            picPilotStatus.Location = new Point(MainPWidth + 16 + 4 + 68 + 4, 4);
             picPilotStatus.Size = new Size(155, 72);
-            picUnitStatus.Location = new Point(MainPWidth + 24, 4 + 68 + 4);
+            picUnitStatus.Location = new Point(MainPWidth + 16 + 4, 4 + 68 + 4);
+            // XXX 幅ぎりぎりまで使うってことか？
             picUnitStatus.Size = new Size(225 + 5, MainPHeight - 64 + 16);
             // TODO Impl
             //    // MOD START MARGE
@@ -98,8 +104,10 @@ namespace SRCSharpForm
 
             VScrollBar.Visible = false;
             HScrollBar.Visible = false;
-            Width = Width - ClientRectangle.Width + (MainPWidth + 24 + 225 + 4);
-            Height = Height - ClientRectangle.Height + (MainPHeight + 24);
+            //Width = Width - ClientRectangle.Width + (MainPWidth + 24 + 225 + 4);
+            //Height = Height - ClientRectangle.Height + (MainPHeight + 24);
+            Width = Width - ClientRectangle.Width + (MainPWidth + 16 + 4 + 225 + 4);
+            Height = Height - ClientRectangle.Height + (MainPHeight + 16);
 
             // TODO Impl オフセットあるのダルいから原点0にしようかな。
             ////{

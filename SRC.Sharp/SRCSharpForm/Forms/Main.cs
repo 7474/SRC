@@ -24,6 +24,7 @@ namespace SRCSharpForm
         public Map Map => SRC.Map;
         public SRCCore.Commands.Command Commands => SRC.Commands;
         public IGUIStatus Status => SRC.GUIStatus;
+        public SRCCore.Expressions.Expression Expression => SRC.Expression;
 
         // マップウィンドウがドラッグされているか？
         private bool IsDragging;
