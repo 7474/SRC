@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using SRCCore.Models;
 using SRCCore.Units;
 using SRCCore.VB;
+using System.Collections.Generic;
 
 namespace SRCCore.Pilots
 {
@@ -130,5 +131,6 @@ namespace SRCCore.Pilots
 
         // 特殊能力
         private SrcCollection<SkillData> colSkill = new SrcCollection<SkillData>();
+        public IList<SkillData> Skills => colSkill.List;
     }
 }
