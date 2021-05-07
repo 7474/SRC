@@ -41,6 +41,7 @@ namespace SRCSharpForm
         public Color StatusFontColorAbilityDisable = Color.FromArgb(150, 0, 0);
         // ステータス画面 その他通常描画のフォントカラー
         public Color StatusFontColorNormalString = Color.FromArgb(0, 0, 0);
+        public Color StatusFontColorWarning = Color.FromArgb(190, 0, 0);
 
         // XXX
         private TextRenderingHint StatusTextRenderingHint = TextRenderingHint.SystemDefault;
@@ -991,7 +992,7 @@ namespace SRCSharpForm
                     //                {
                     //                    // MOD START 240a
                     //                    // upic.ForeColor = vbBlue
-                    //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
+                    //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToIntegereger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
                     //                    // MOD  END  240a
                     //                }
 
@@ -1004,7 +1005,7 @@ namespace SRCSharpForm
                     //                {
                     //                    // MOD START 240a
                     //                    // upic.ForeColor = vbBlue
-                    //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
+                    //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToIntegereger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
                     //                    // MOD  END  240a
                     //                }
 
@@ -1017,7 +1018,7 @@ namespace SRCSharpForm
                     //                {
                     //                    // MOD START 240a
                     //                    // upic.ForeColor = vbBlue
-                    //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
+                    //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToIntegereger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
                     //                    // MOD  END  240a
                     //                }
 
@@ -1038,7 +1039,7 @@ namespace SRCSharpForm
                     //                    {
                     //                        // MOD START 240a
                     //                        // upic.ForeColor = vbBlue
-                    //                        upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
+                    //                        upic.ForeColor = ColorTranslator.FromOle(Conversions.ToIntegereger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
                     //                        // MOD  END  240a
                     //                    }
                     //                }
@@ -1054,7 +1055,7 @@ namespace SRCSharpForm
                     //                    {
                     //                        // MOD START 240a
                     //                        // upic.ForeColor = vbBlue
-                    //                        upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
+                    //                        upic.ForeColor = ColorTranslator.FromOle(Conversions.ToIntegereger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
                     //                        // MOD  END  240a
                     //                    }
                     //                }
@@ -1271,7 +1272,7 @@ namespace SRCSharpForm
                     //                {
                     //                    // MOD START 240a
                     //                    // upic.ForeColor = vbBlue
-                    //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
+                    //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToIntegereger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
                     //                    // MOD  END  240a
                     //                }
 
@@ -2327,17 +2328,13 @@ namespace SRCSharpForm
                 upic.SetColor(StatusFontColorAbilityName);
                 upic.Print(Expression.Term("タイプ", u, 6) + " ");
                 upic.SetColor(StatusFontColorNormalString);
-                string localRightPaddedString16() { string argbuf = u.Transportation; var ret = GeneralLib.RightPaddedString(argbuf, 12); u.Transportation = argbuf; return ret; }
-
-                upic.Print(localRightPaddedString16());
+                upic.Print(GeneralLib.RightPaddedString(u.Transportation, 12));
 
                 // 移動力
                 upic.SetColor(StatusFontColorAbilityName);
                 upic.Print(Expression.Term("移動力", u, 6) + " ");
                 upic.SetColor(StatusFontColorNormalString);
-                string localLIndex5() { object argIndex1 = "テレポート"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-                if (u.IsFeatureAvailable("テレポート") && (u.Data.Speed == 0 || localLIndex5() == "0"))
+                if (u.IsFeatureAvailable("テレポート") && (u.Data.Speed == 0 || GeneralLib.LIndex(u.FeatureData("テレポート"), 2) == "0"))
                 {
                     upic.Print(SrcFormatter.Format(u.Speed + u.FeatureLevel("テレポート")));
                 }
@@ -2473,12 +2470,6 @@ namespace SRCSharpForm
                         if (n > 1)
                         {
                             upic.Print();
-                            // ADD START 240a
-                            if (GUI.NewGUIMode)
-                            {
-                                upic.CurrentX = 5;
-                            }
-                            // ADD  END  240a
                             n = 0;
                         }
                     }
@@ -2491,39 +2482,19 @@ namespace SRCSharpForm
                             if (n > 0)
                             {
                                 upic.Print();
-                                // ADD START 240a
-                                if (GUI.NewGUIMode)
-                                {
-                                    upic.CurrentX = 5;
-                                }
-                                // ADD  END  240a
                             }
 
                             n = 2;
                         }
 
-                        if (n == 0 && GUI.NewGUIMode)
-                        {
-                            upic.CurrentX = 5;
-                        }
-                        // MOD START 240a
-                        // upic.ForeColor = rgb(0, 0, 150)
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print("弱点   ");
-                        // MOD START 240a
-                        // upic.ForeColor = rgb(0, 0, 0)
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print(GeneralLib.RightPaddedString((string)u.strWeakness, 12));
                         n = (n + 1);
                         if (n > 1)
                         {
                             upic.Print();
-                            // ADD START 240a
-                            if (GUI.NewGUIMode)
-                            {
-                                upic.CurrentX = 5;
-                            }
-                            // ADD  END  240a
                             n = 0;
                         }
                     }
@@ -2536,39 +2507,19 @@ namespace SRCSharpForm
                             if (n > 0)
                             {
                                 upic.Print();
-                                // ADD START 240a
-                                if (GUI.NewGUIMode)
-                                {
-                                    upic.CurrentX = 5;
-                                }
-                                // ADD  END  240a
                             }
 
                             n = 2;
                         }
 
-                        if (n == 0 && GUI.NewGUIMode)
-                        {
-                            upic.CurrentX = 5;
-                        }
-                        // MOD START 240a
-                        // upic.ForeColor = rgb(0, 0, 150)
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print("有効   ");
-                        // MOD START 240a
-                        // upic.ForeColor = rgb(0, 0, 0)
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print(GeneralLib.RightPaddedString((string)u.strEffective, 12));
                         n = (n + 1);
                         if (n > 1)
                         {
                             upic.Print();
-                            // ADD START 240a
-                            if (GUI.NewGUIMode)
-                            {
-                                upic.CurrentX = 5;
-                            }
-                            // ADD  END  240a
                             n = 0;
                         }
                     }
@@ -2581,39 +2532,19 @@ namespace SRCSharpForm
                             if (n > 0)
                             {
                                 upic.Print();
-                                // ADD START 240a
-                                if (GUI.NewGUIMode)
-                                {
-                                    upic.CurrentX = 5;
-                                }
-                                // ADD  END  240a
                             }
 
                             n = 2;
                         }
 
-                        if (n == 0 && GUI.NewGUIMode)
-                        {
-                            upic.CurrentX = 5;
-                        }
-                        // MOD START 240a
-                        // upic.ForeColor = rgb(0, 0, 150)
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print("特無効 ");
-                        // MOD START 240a
-                        // upic.ForeColor = rgb(0, 0, 0)
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print(GeneralLib.RightPaddedString((string)u.strSpecialEffectImmune, 12));
                         n = (n + 1);
                         if (n > 1)
                         {
                             upic.Print();
-                            // ADD START 240a
-                            if (GUI.NewGUIMode)
-                            {
-                                upic.CurrentX = 5;
-                            }
-                            // ADD  END  240a
                             n = 0;
                         }
                     }
@@ -2622,12 +2553,6 @@ namespace SRCSharpForm
                     if (n > 0)
                     {
                         upic.Print();
-                        // ADD START 240a
-                        if (GUI.NewGUIMode)
-                        {
-                            upic.CurrentX = 5;
-                        }
-                        // ADD  END  240a
                     }
                 }
 
@@ -2680,12 +2605,6 @@ namespace SRCSharpForm
                                         if (n > 1)
                                         {
                                             upic.Print();
-                                            // ADD START 240a
-                                            if (GUI.NewGUIMode)
-                                            {
-                                                upic.CurrentX = 5;
-                                            }
-                                            // ADD  END  240a
                                             n = 0;
                                         }
 
@@ -2718,12 +2637,6 @@ namespace SRCSharpForm
                                         if (n > 1)
                                         {
                                             upic.Print();
-                                            // ADD START 240a
-                                            if (GUI.NewGUIMode)
-                                            {
-                                                upic.CurrentX = 5;
-                                            }
-                                            // ADD  END  240a
                                             n = 0;
                                         }
 
@@ -2834,7 +2747,7 @@ namespace SRCSharpForm
                             {
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
                                 {
-                                    if (u.EN < Conversions.Toint(GeneralLib.LIndex(fdata, 2)))
+                                    if (u.EN < Conversions.ToInteger(GeneralLib.LIndex(fdata, 2)))
                                     {
                                         // MOD START 240a
                                         // upic.ForeColor = rgb(150, 0, 0)
@@ -2849,7 +2762,7 @@ namespace SRCSharpForm
                             {
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
                                 {
-                                    if (u.EN < Conversions.Toint(GeneralLib.LIndex(fdata, 2)))
+                                    if (u.EN < Conversions.ToInteger(GeneralLib.LIndex(fdata, 2)))
                                     {
                                         // MOD START 240a
                                         // upic.ForeColor = rgb(150, 0, 0)
@@ -2882,7 +2795,7 @@ namespace SRCSharpForm
                             {
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
                                 {
-                                    ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 2));
+                                    ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 2));
                                 }
                                 else
                                 {
@@ -2891,7 +2804,7 @@ namespace SRCSharpForm
 
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
                                 {
-                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
+                                    nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
                                 }
                                 else
                                 {
@@ -2912,7 +2825,7 @@ namespace SRCSharpForm
                             {
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
                                 {
-                                    ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
+                                    ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
                                 }
                                 else
                                 {
@@ -2921,7 +2834,7 @@ namespace SRCSharpForm
 
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
                                 {
-                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+                                    nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
                                 }
                                 else
                                 {
@@ -2957,7 +2870,7 @@ namespace SRCSharpForm
                             {
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
                                 {
-                                    ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
+                                    ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
                                 }
                                 else
                                 {
@@ -2966,7 +2879,7 @@ namespace SRCSharpForm
 
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
                                 {
-                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+                                    nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
                                 }
                                 else
                                 {
@@ -3043,7 +2956,7 @@ namespace SRCSharpForm
                             {
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
                                 {
-                                    ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
+                                    ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
                                 }
                                 else
                                 {
@@ -3052,7 +2965,7 @@ namespace SRCSharpForm
 
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
                                 {
-                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+                                    nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
                                 }
                                 else
                                 {
@@ -3130,11 +3043,11 @@ namespace SRCSharpForm
                             {
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
                                 {
-                                    ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+                                    ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
                                 }
                                 else if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
                                 {
-                                    ecost = (20 * Conversions.Toint(GeneralLib.LIndex(fdata, 2)));
+                                    ecost = (20 * Conversions.ToInteger(GeneralLib.LIndex(fdata, 2)));
                                 }
                                 else
                                 {
@@ -3143,7 +3056,7 @@ namespace SRCSharpForm
 
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
                                 {
-                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
+                                    nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
                                 }
                                 else
                                 {
@@ -3166,7 +3079,7 @@ namespace SRCSharpForm
                             {
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
                                 {
-                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
+                                    nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
                                 }
                                 else
                                 {
@@ -3233,7 +3146,7 @@ namespace SRCSharpForm
                             {
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
                                 {
-                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
+                                    nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
                                 }
                                 else
                                 {
@@ -3255,7 +3168,7 @@ namespace SRCSharpForm
                             {
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
                                 {
-                                    ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+                                    ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
                                 }
                                 else
                                 {
@@ -3264,7 +3177,7 @@ namespace SRCSharpForm
 
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
                                 {
-                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
+                                    nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
                                 }
                                 else
                                 {
@@ -3340,7 +3253,7 @@ namespace SRCSharpForm
                             {
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
                                 {
-                                    ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
+                                    ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
                                 }
                                 else
                                 {
@@ -3349,7 +3262,7 @@ namespace SRCSharpForm
 
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 6)))
                                 {
-                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 6));
+                                    nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 6));
                                 }
                                 else
                                 {
@@ -3372,7 +3285,7 @@ namespace SRCSharpForm
                             {
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
                                 {
-                                    ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
+                                    ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
                                 }
                                 else
                                 {
@@ -3381,7 +3294,7 @@ namespace SRCSharpForm
 
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 6)))
                                 {
-                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 6));
+                                    nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 6));
                                 }
                                 else
                                 {
@@ -3457,10 +3370,7 @@ namespace SRCSharpForm
                             {
                                 if (pmorale >= 130)
                                 {
-                                    // MOD START 240a
-                                    // upic.ForeColor = vbBlue
-                                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
-                                    // MOD  END  240a
+                                    upic.SetColor(StatusFontColorAbilityEnable);
                                 }
 
                                 break;
@@ -3517,10 +3427,7 @@ namespace SRCSharpForm
 
                                     if (pmorale >= localStrToLng2())
                                     {
-                                        // MOD START 240a
-                                        // upic.ForeColor = vbBlue
-                                        upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
-                                        // MOD  END  240a
+                                        upic.SetColor(StatusFontColorAbilityEnable);
                                     }
                                 }
 
@@ -3535,7 +3442,7 @@ namespace SRCSharpForm
                                 }
                                 else
                                 {
-                                    j = Conversions.Toint(GeneralLib.LIndex(fdata, 2));
+                                    j = Conversions.ToInteger(GeneralLib.LIndex(fdata, 2));
                                 }
 
                                 if (j >= 1)
@@ -3574,7 +3481,7 @@ namespace SRCSharpForm
                             {
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
                                 {
-                                    ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
+                                    ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
                                 }
                                 else
                                 {
@@ -3583,7 +3490,7 @@ namespace SRCSharpForm
 
                                 if (Information.IsNumeric(GeneralLib.LIndex(fdata, 6)))
                                 {
-                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 6));
+                                    nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 6));
                                 }
                                 else
                                 {
@@ -3617,12 +3524,6 @@ namespace SRCSharpForm
                         if (n > 0)
                         {
                             upic.Print();
-                            // ADD START 240a
-                            if (GUI.NewGUIMode)
-                            {
-                                upic.CurrentX = 5;
-                            }
-                            // ADD  END  240a
                         }
                         upic.Print(fname);
                         n = 2;
@@ -3637,18 +3538,10 @@ namespace SRCSharpForm
                     if (n > 1)
                     {
                         upic.Print();
-                        // ADD START 240a
-                        if (GUI.NewGUIMode)
-                        {
-                            upic.CurrentX = 5;
-                        }
-                        // ADD  END  240a
                         n = 0;
                     }
 
                     // 表示色を戻しておく
-                    // MOD START 240a
-                    // upic.ForeColor = rgb(0, 0, 0)
                     upic.SetColor(StatusFontColorNormalString);
                 NextFeature:
                     ;
@@ -3779,7 +3672,7 @@ namespace SRCSharpForm
 
                     if (dmg >= u.HP && !u.IsConditionSatisfied("データ不明"))
                     {
-                        upic.ForeColor = ColorTranslator.FromOle(Information.RGB(190, 0, 0));
+                        upic.SetColor(StatusFontColorWarning);
                     }
                     else
                     {
@@ -3830,7 +3723,7 @@ namespace SRCSharpForm
                         dmg = u.Damage(w, Commands.SelectedUnit, true);
                         if (dmg >= Commands.SelectedUnit.HP)
                         {
-                            upic.ForeColor = ColorTranslator.FromOle(Information.RGB(190, 0, 0));
+                            upic.SetColor(StatusFontColorWarning);
                         }
                         else
                         {
@@ -4096,34 +3989,10 @@ namespace SRCSharpForm
             UpdateStatusWindow:
                 ;
 
-                if (!GUI.NewGUIMode)
-                {
-                    // ステータスウィンドウをリフレッシュ
-                    GUI.MainForm.picFace.Refresh();
-                    ppic.Refresh();
-                    upic.Refresh();
-                }
-                else
-                {
-                    if (GUI.MouseX < GUI.MainPWidth / 2)
-                    {
-                        // 画面左側にカーソルがある場合
-                        upic.SetBounds(SrcFormatter.TwipsToPixelsX(GUI.MainPWidth - 240), SrcFormatter.TwipsToPixelsY(10d), 0, 0, BoundsSpecified.X || BoundsSpecified.Y);
-                    }
-                    else
-                    {
-                        upic.SetBounds(SrcFormatter.TwipsToPixelsX(5d), SrcFormatter.TwipsToPixelsY(10d), 0, 0, BoundsSpecified.X || BoundsSpecified.Y);
-                    }
-
-                    if (upic.Visible)
-                    {
-                        upic.Refresh();
-                    }
-                    else
-                    {
-                        upic.Visible = true;
-                    }
-                }
+                //// ステータスウィンドウをリフレッシュ
+                //GUI.MainForm.picFace.Refresh();
+                //ppic.Refresh();
+                //upic.Refresh();
             }
             //    return;
             //ErrorHandler:
