@@ -9,6 +9,7 @@ using SRCCore.Expressions;
 using SRCCore.Filesystem;
 using SRCCore.Maps;
 using SRCCore.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -178,6 +179,64 @@ namespace SRCCore
 
             // XXX 別な実装をするならコンストラクタでは設定しない
             SystemConfig = new LocalFileConfig();
+        }
+
+        public void LogError(Exception ex)
+        {
+            LogError("", ex);
+        }
+        public void LogError(string message, Exception ex, params string[] param)
+        {
+            try
+            {
+                if (!Log.IsEnabled(LogLevel.Error)) { return; }
+                Log.LogDebug(message
+                    + " "
+                    + string.Join(", ", param)
+                    + " "
+                    + ex?.Message
+                    + ex?.StackTrace);
+            }
+            catch
+            {
+                // ignore
+            }
+        }
+
+        public void LogWarn( Exception ex)
+        {
+            LogWarn("", ex);
+        }
+        public void LogWarn(string message, Exception ex, params string[] param)
+        {
+            try
+            {
+                if (!Log.IsEnabled(LogLevel.Warning)) { return; }
+                Log.LogDebug(message
+                    + " "
+                    + string.Join(", ", param)
+                    + " "
+                    + ex?.Message
+                    + ex?.StackTrace);
+            }
+            catch
+            {
+                // ignore
+            }
+        }
+
+        public void LogInfo(string message, params string[] param)
+        {
+            try
+            {
+                Log.LogDebug(message
+                    + " "
+                    + string.Join(", ", param));
+            }
+            catch
+            {
+                // ignore
+            }
         }
 
         public void LogDebug(string message = "", params string[] param)
