@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace SRCCore.VB
 {
@@ -120,6 +121,22 @@ namespace SRCCore.VB
         public static string Space(int Number)
         {
             return new string(' ', Number);
+        }
+
+        public static string StrDup(string str, int n)
+        {
+            if (string.IsNullOrEmpty(str) || n <= 0)
+            {
+                return "";
+            }
+            else if (str.Length == 1)
+            {
+                return new string(str[0], n);
+            }
+            else
+            {
+                return string.Concat(Enumerable.Repeat(str, n));
+            }
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.strcomp?view=net-5.0
