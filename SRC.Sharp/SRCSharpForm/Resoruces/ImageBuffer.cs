@@ -1,17 +1,24 @@
+using System.Runtime.Caching;
 using SRCCore;
 using SRCCore.Lib;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace SRCSharpForm.Resoruces
 {
-    // TODO LRUキャッシュ
     public class ImageBuffer
     {
-        private IDictionary<string, Bitmap> buffer = new Dictionary<string, Bitmap>();
-        private IDictionary<string, Bitmap> transparentBuffer = new Dictionary<string, Bitmap>();
+        // キャッシュインスタンスの共有を考えてキーに空間を持っておく。
+        private const string IMAGE_KEY_PREFIX = "img:";
+        private const string TRANSPARENT_IMAGE_KEY_PREFIX = "t:";
+
+        // XXX 何かバッファを増やすときには共有する
+        private MemoryCache cache;
+        private CacheItemPolicy cacheItemPolicy;
+
         private SRC SRC;
 
         private IList<string> existBitmapDirectories;
@@ -21,6 +28,19 @@ namespace SRCSharpForm.Resoruces
         {
             SRC = src;
             InitFileSystemInfo();
+            cacheItemPolicy = new CacheItemPolicy()
+            {
+                RemovedCallback = (arg) =>
+                {
+                    SRC.Log.LogTrace($"ImageBuffer Removed {arg.RemovedReason} {arg.CacheItem.Key}");
+                },
+            };
+            cache = new MemoryCache("ImageBuffer", new System.Collections.Specialized.NameValueCollection()
+            {
+                ["CacheMemoryLimitMegabytes"] = SRC.SystemConfig.MaxImageBufferByteSize > 0
+                    ? $"{SRC.SystemConfig.MaxImageBufferByteSize / 1024 / 1024}"
+                    : "128",
+            });
         }
 
         public bool Load(string name)
@@ -31,7 +51,7 @@ namespace SRCSharpForm.Resoruces
                 return false;
             }
             var image = NormalizeImage(path, Image.FromFile(path));
-            buffer[ToKey(name)] = image;
+            cache.Add(ToKey(name), image, cacheItemPolicy);
             return true;
         }
 
@@ -67,13 +87,13 @@ namespace SRCSharpForm.Resoruces
         public Image Get(string name)
         {
             var key = ToKey(name);
-            if (buffer.ContainsKey(key))
+            if (cache.Contains(key))
             {
-                return buffer[key];
+                return (Image)cache[key];
             }
             if (Load(name))
             {
-                return buffer[key];
+                return (Image)cache[key];
             }
             else
             {
@@ -88,10 +108,10 @@ namespace SRCSharpForm.Resoruces
 
         public Image GetTransparent(string name, Color transparentColor)
         {
-            var key = ToKey(name);
-            if (transparentBuffer.ContainsKey(key))
+            var key = ToTransparentKey(name);
+            if (cache.Contains(key))
             {
-                return transparentBuffer[key];
+                return (Image)cache[key];
             }
             var image = Get(name);
             if (image == null)
@@ -105,13 +125,18 @@ namespace SRCSharpForm.Resoruces
         {
             var transparentImage = new Bitmap(image);
             transparentImage.MakeTransparent(transparentColor);
-            transparentBuffer[key] = transparentImage;
+            cache.Add(key, transparentImage, cacheItemPolicy);
             return transparentImage;
         }
 
         public string ToKey(string name)
         {
-            return name.ToLower();
+            return IMAGE_KEY_PREFIX + name.ToLower();
+        }
+
+        public string ToTransparentKey(string name)
+        {
+            return TRANSPARENT_IMAGE_KEY_PREFIX + ToKey(name);
         }
 
         public string SearchFile(string name)
