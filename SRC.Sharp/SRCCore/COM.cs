@@ -7197,10 +7197,10 @@ namespace SRCCore
         }
 
         // ユニット u が武器 w で攻撃をかけた際にターゲット t が選択する防御行動を返す
-        public object SelectDefense(Unit u, int w, Unit t, int tw)
+        public string SelectDefense(Unit u, int w, Unit t, int tw)
         {
             // TODO Impl
-            object SelectDefenseRet = default;
+            string SelectDefenseRet = default;
             //int prob, dmg;
             //int tprob = default, tdmg = default;
             //var is_target_inferior = default(bool);

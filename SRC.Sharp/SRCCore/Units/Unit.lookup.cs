@@ -410,7 +410,8 @@ namespace SRCCore.Units
         // ユニット t に対して周囲にサポートアタックを行ってくれるユニットがいるかどうかを判定
         public Unit LookForSupportAttack(Unit t)
         {
-            throw new NotImplementedException();
+            return null;
+            // TODO Impl LookForSupportAttack
             //Unit LookForSupportAttackRet = default;
             //Unit u;
             //int i, w;
