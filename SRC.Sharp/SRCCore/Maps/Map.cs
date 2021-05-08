@@ -4,6 +4,7 @@
 // 再頒布または改変することができます。
 using Newtonsoft.Json;
 using SRCCore.Exceptions;
+using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.Units;
@@ -573,7 +574,7 @@ namespace SRCCore.Maps
             }
             else
             {
-                using (var stream = SRC.FileSystem.Open(fname))
+                using (var stream = SRC.FileSystem.OpenText(SRC.SystemConfig.SRCCompatibilityMode, fname))
                 {
                     LoadMapData(fname, stream);
                 }

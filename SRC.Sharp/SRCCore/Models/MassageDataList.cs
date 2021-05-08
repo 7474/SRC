@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.VB;
 using System.Collections.Generic;
@@ -60,7 +61,7 @@ namespace SRCCore.Models
         // メッセージデータをファイルからロード
         public void Load(string fname, bool isEffect)
         {
-            using (var stream = new FileStream(fname, FileMode.Open))
+            using (var stream = SRC.FileSystem.OpenText(SRC.SystemConfig.SRCCompatibilityMode, fname))
             {
                 Load(fname, isEffect, stream);
             }
