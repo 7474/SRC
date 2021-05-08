@@ -14,6 +14,7 @@ namespace SRCSharpForm.Extensions
                 // https://github.com/dotnet/runtime/blob/33033b22eccf50550451387ac8927ad1b5f17768/src/libraries/System.Drawing.Common/src/System/Drawing/Graphics.cs#L1565
                 // 最終的には GdipMeasureString に移譲されていて余白の付与量が具体的にどうなのかサッとは分からなかった。
                 // 雰囲気デフォルトっぽい文字サイズの 0.5em 位な感じはするのでそのくらいにしておく。
+                // XXX 終端空白以外でも文字によって余白調整されていそう
                 size.Width -= RefFont.Size / 2f;
             }
             return size;
