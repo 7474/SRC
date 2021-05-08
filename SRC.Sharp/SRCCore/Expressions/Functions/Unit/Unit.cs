@@ -337,16 +337,22 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class Pilot : AUnitFunction
+    public class Pilot : AFunction
     {
-        protected override int OptionArgCount => 1;
-        protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
             num_result = 0d;
 
+            Units.Unit unit = null;
+            var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+            if (SRC.UList.IsDefined(pname))
+            {
+                unit = SRC.UList.Item(pname);
+            }
+
             var index = pcount == 1
-                ? SRC.Expression.GetValueAsLong(@params[1], is_term[1])
+                ? 0
                 : SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
             if (unit != null && unit.CountPilot() > 0)
             {
@@ -364,16 +370,22 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class PilotID : AUnitFunction
+    public class PilotID : AFunction
     {
-        protected override int OptionArgCount => 1;
-        protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
             num_result = 0d;
 
+            Units.Unit unit = null;
+            var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+            if (SRC.UList.IsDefined(pname))
+            {
+                unit = SRC.UList.Item(pname);
+            }
+
             var index = pcount == 1
-                ? SRC.Expression.GetValueAsLong(@params[1], is_term[1])
+                ? 0
                 : SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
             if (unit != null && unit.CountPilot() > 0)
             {
