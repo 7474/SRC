@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -6,6 +8,13 @@ namespace SRCCore.Filesystem
 {
     public class LocalFileSystem : IFileSystem
     {
+        private IList<ZipArchive> archives;
+
+        public LocalFileSystem()
+        {
+            archives = new List<ZipArchive>();
+        }
+
         public string PathCombine(params string[] paths)
         {
             // 先頭の `\` は絶対パスのルートとして扱われないことを期待されている。
@@ -20,7 +29,32 @@ namespace SRCCore.Filesystem
 
         public Stream Open(params string[] paths)
         {
-            return new FileStream(PathCombine(paths), FileMode.Open);
+            var path = PathCombine(paths);
+            // ZipArchive のパス区切り文字は / である様子
+            // マルチバイト文字はUTF-8にしておけばよい
+            // XXX 大文字小文字はどうなってるんだろうか？
+            var archivePath = path.Replace("\\", "/");
+            foreach (var archive in archives)
+            {
+                try
+                {
+                    var entry = archive.GetEntry(archivePath);
+                    if (entry != null)
+                    {
+                        return entry.Open();
+                    }
+                }
+                catch
+                {
+                    // ignore
+                }
+            }
+            return new FileStream(path, FileMode.Open);
+        }
+
+        public void AddAchive(string path)
+        {
+            archives.Insert(0, ZipFile.Open(path, ZipArchiveMode.Read));
         }
 
         public bool RelativePathEuqals(string scenarioPath, string a, string b)
