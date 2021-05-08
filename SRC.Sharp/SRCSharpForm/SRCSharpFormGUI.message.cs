@@ -1691,7 +1691,7 @@ namespace SRCSharpForm
             var ret = Strings.InStr(msg, "<");
             if (ret == 0)
             {
-                return g.MeasureString(msg, font);
+                return g.MeasureStringWithoutRightMargin(msg, font);
             }
 
             var buf = "";
@@ -1716,7 +1716,7 @@ namespace SRCSharpForm
             buf = buf + msg;
 
             // タグ抜きメッセージのピクセル幅を計算
-            return g.MeasureString(buf, font);
+            return g.MeasureStringWithoutRightMargin(buf, font);
         }
 
         public void DisplayBattleMessage(string pname, string msg, string msg_mode)

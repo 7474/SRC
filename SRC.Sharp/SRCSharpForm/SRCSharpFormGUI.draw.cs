@@ -1161,7 +1161,7 @@ namespace SRCSharpForm
                 var prev_cx = currentDrawStringPoint.X;
                 float tx = currentDrawStringPoint.X;
                 float ty = currentDrawStringPoint.Y;
-                var msgSize = g.MeasureString(msg, currentDrawFont);
+                var msgSize = g.MeasureStringWithoutRightMargin(msg, currentDrawFont);
                 // 書き込み先の座標を求める
                 if (HCentering)
                 {
@@ -1251,7 +1251,7 @@ namespace SRCSharpForm
                 var font = SRC.BattleAnimation ? battleAnimeFont : sysFont;
 
                 // メッセージの書き込み
-                var msgSize = g.MeasureString(msg, font);
+                var msgSize = g.MeasureStringWithoutRightMargin(msg, font);
                 var tx = MapToPixelX(X) + (frmMain.MapCellPx - msgSize.Width) / 2 - 1;
                 var ty = MapToPixelY(Y + 1) - msgSize.Height;
 
@@ -1274,7 +1274,7 @@ namespace SRCSharpForm
         public SizeF MeasureString(string msg)
         {
             using var g = Graphics.FromImage(MainForm.picBack.Image);
-            return g.MeasureString(msg, currentDrawFont);
+            return g.MeasureStringWithoutRightMargin(msg, currentDrawFont);
         }
     }
 }
