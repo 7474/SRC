@@ -11,5 +11,6 @@ namespace SRCCore
         public const int DEFAULT_LEVEL = -1000;
         public const string vbCr = "\r";
         public const string vbLf = "\n";
+        public const string vbTab = "\t";
     }
 }

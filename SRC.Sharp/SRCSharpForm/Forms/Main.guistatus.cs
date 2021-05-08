@@ -9,6 +9,7 @@ using SRCCore.VB;
 using SRCSharpForm.Extensions;
 using SRCSharpForm.Lib;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
@@ -301,21 +302,23 @@ namespace SRCSharpForm
                     // 情報を更新
                     p.UpdateSupportMod();
 
-                    // パイロット画像を表示
-                    var fname = SRC.FileSystem.PathCombine("Pilot", p.get_Bitmap(false));
-                    //if (My.MyProject.Forms.frmMultiSelectListBox.Visible)
-                    //{
-                    //    // ザコ＆汎用パイロットが乗るユニットの出撃選択時はパイロット画像の
-                    //    // 代わりにユニット画像を表示
-                    //    if (Strings.InStr(p.Name, "(ザコ)") > 0 || Strings.InStr(p.Name, "(汎用)") > 0)
-                    //    {
-                    //        fname = @"\Bitmap\Unit\" + u.get_Bitmap(false);
-                    //    }
-                    //}
-                    // 画像ファイルを読み込んで表示
-                    var image = imageBuffer.GetTransparent(fname);
-                    picFace.Image = image;
-
+                    {
+                        // パイロット画像を表示
+                        var fname = SRC.FileSystem.PathCombine("Pilot", p.get_Bitmap(false));
+                        // TODO Impl
+                        //if (My.MyProject.Forms.frmMultiSelectListBox.Visible)
+                        //{
+                        //    // ザコ＆汎用パイロットが乗るユニットの出撃選択時はパイロット画像の
+                        //    // 代わりにユニット画像を表示
+                        //    if (Strings.InStr(p.Name, "(ザコ)") > 0 || Strings.InStr(p.Name, "(汎用)") > 0)
+                        //    {
+                        //        fname = @"\Bitmap\Unit\" + u.get_Bitmap(false);
+                        //    }
+                        //}
+                        // 画像ファイルを読み込んで表示
+                        var image = imageBuffer.GetTransparent(fname);
+                        picFace.Image = image;
+                    }
                     // パイロット愛称
                     ppic.SetFont(StatusFont);
                     ppic.SetColor(StatusFontColorNormalString);
@@ -2398,1161 +2401,1088 @@ namespace SRCSharpForm
                     upic.Print(Expression.Term("サイズ", u, 6) + " ");
                     upic.SetColor(StatusFontColorNormalString);
                     upic.Print(Strings.StrConv((string)u.Size, VbStrConv.Wide));
-
-                    // 防御属性の表示
                     {
+
                         var n = 0;
-                        // 吸収
-                        if (Strings.Len((string)u.strAbsorb) > 0 && Strings.InStr((string)u.strAbsorb, "非表示") == 0)
+                        // 防御属性の表示
                         {
-                            if (Strings.Len((string)u.strAbsorb) > 5)
+                            // 吸収
+                            if (Strings.Len((string)u.strAbsorb) > 0 && Strings.InStr((string)u.strAbsorb, "非表示") == 0)
                             {
-                                if (n > 0)
+                                if (Strings.Len((string)u.strAbsorb) > 5)
+                                {
+                                    if (n > 0)
+                                    {
+                                        upic.Print();
+                                    }
+
+                                    n = 2;
+                                }
+                                upic.SetColor(StatusFontColorAbilityName);
+                                upic.Print("吸収   ");
+                                upic.SetColor(StatusFontColorNormalString);
+                                upic.Print(GeneralLib.RightPaddedString((string)u.strAbsorb, 12));
+                                n = (n + 1);
+                                if (n > 1)
                                 {
                                     upic.Print();
+                                    n = 0;
                                 }
-
-                                n = 2;
                             }
-                            upic.SetColor(StatusFontColorAbilityName);
-                            upic.Print("吸収   ");
-                            upic.SetColor(StatusFontColorNormalString);
-                            upic.Print(GeneralLib.RightPaddedString((string)u.strAbsorb, 12));
-                            n = (n + 1);
-                            if (n > 1)
-                            {
-                                upic.Print();
-                                n = 0;
-                            }
-                        }
 
-                        // 無効化
-                        if (Strings.Len((string)u.strImmune) > 0 && Strings.InStr((string)u.strImmune, "非表示") == 0)
-                        {
-                            if (Strings.Len((string)u.strImmune) > 5)
+                            // 無効化
+                            if (Strings.Len((string)u.strImmune) > 0 && Strings.InStr((string)u.strImmune, "非表示") == 0)
                             {
-                                if (n > 0)
+                                if (Strings.Len((string)u.strImmune) > 5)
+                                {
+                                    if (n > 0)
+                                    {
+                                        upic.Print();
+                                    }
+
+                                    n = 2;
+                                }
+                                upic.SetColor(StatusFontColorAbilityName);
+                                upic.Print("無効化 ");
+                                upic.SetColor(StatusFontColorNormalString);
+                                upic.Print(GeneralLib.RightPaddedString((string)u.strImmune, 12));
+                                n = (n + 1);
+                                if (n > 1)
                                 {
                                     upic.Print();
+                                    n = 0;
+                                }
+                            }
+
+                            // 耐性
+                            if (Strings.Len((string)u.strResist) > 0 && Strings.InStr((string)u.strResist, "非表示") == 0)
+                            {
+                                if (Strings.Len((string)u.strResist) > 5)
+                                {
+                                    if (n > 0)
+                                    {
+                                        upic.Print();
+                                    }
+
+                                    n = 2;
                                 }
 
-                                n = 2;
-                            }
-                            upic.SetColor(StatusFontColorAbilityName);
-                            upic.Print("無効化 ");
-                            upic.SetColor(StatusFontColorNormalString);
-                            upic.Print(GeneralLib.RightPaddedString((string)u.strImmune, 12));
-                            n = (n + 1);
-                            if (n > 1)
-                            {
-                                upic.Print();
-                                n = 0;
-                            }
-                        }
-
-                        // 耐性
-                        if (Strings.Len((string)u.strResist) > 0 && Strings.InStr((string)u.strResist, "非表示") == 0)
-                        {
-                            if (Strings.Len((string)u.strResist) > 5)
-                            {
-                                if (n > 0)
+                                upic.SetColor(StatusFontColorAbilityName);
+                                upic.Print("耐性   ");
+                                // MOD START 240a
+                                // upic.ForeColor = rgb(0, 0, 0)
+                                upic.SetColor(StatusFontColorNormalString);
+                                upic.Print(GeneralLib.RightPaddedString((string)u.strResist, 12));
+                                n = (n + 1);
+                                if (n > 1)
                                 {
                                     upic.Print();
+                                    n = 0;
+                                }
+                            }
+
+                            // 弱点
+                            if (Strings.Len((string)u.strWeakness) > 0 && Strings.InStr((string)u.strWeakness, "非表示") == 0)
+                            {
+                                if (Strings.Len((string)u.strWeakness) > 5)
+                                {
+                                    if (n > 0)
+                                    {
+                                        upic.Print();
+                                    }
+
+                                    n = 2;
                                 }
 
-                                n = 2;
-                            }
-
-                            upic.SetColor(StatusFontColorAbilityName);
-                            upic.Print("耐性   ");
-                            // MOD START 240a
-                            // upic.ForeColor = rgb(0, 0, 0)
-                            upic.SetColor(StatusFontColorNormalString);
-                            upic.Print(GeneralLib.RightPaddedString((string)u.strResist, 12));
-                            n = (n + 1);
-                            if (n > 1)
-                            {
-                                upic.Print();
-                                n = 0;
-                            }
-                        }
-
-                        // 弱点
-                        if (Strings.Len((string)u.strWeakness) > 0 && Strings.InStr((string)u.strWeakness, "非表示") == 0)
-                        {
-                            if (Strings.Len((string)u.strWeakness) > 5)
-                            {
-                                if (n > 0)
+                                upic.SetColor(StatusFontColorAbilityName);
+                                upic.Print("弱点   ");
+                                upic.SetColor(StatusFontColorNormalString);
+                                upic.Print(GeneralLib.RightPaddedString((string)u.strWeakness, 12));
+                                n = (n + 1);
+                                if (n > 1)
                                 {
                                     upic.Print();
+                                    n = 0;
+                                }
+                            }
+
+                            // 有効
+                            if (Strings.Len((string)u.strEffective) > 0 && Strings.InStr((string)u.strEffective, "非表示") == 0)
+                            {
+                                if (Strings.Len((string)u.strEffective) > 5)
+                                {
+                                    if (n > 0)
+                                    {
+                                        upic.Print();
+                                    }
+
+                                    n = 2;
                                 }
 
-                                n = 2;
-                            }
-
-                            upic.SetColor(StatusFontColorAbilityName);
-                            upic.Print("弱点   ");
-                            upic.SetColor(StatusFontColorNormalString);
-                            upic.Print(GeneralLib.RightPaddedString((string)u.strWeakness, 12));
-                            n = (n + 1);
-                            if (n > 1)
-                            {
-                                upic.Print();
-                                n = 0;
-                            }
-                        }
-
-                        // 有効
-                        if (Strings.Len((string)u.strEffective) > 0 && Strings.InStr((string)u.strEffective, "非表示") == 0)
-                        {
-                            if (Strings.Len((string)u.strEffective) > 5)
-                            {
-                                if (n > 0)
+                                upic.SetColor(StatusFontColorAbilityName);
+                                upic.Print("有効   ");
+                                upic.SetColor(StatusFontColorNormalString);
+                                upic.Print(GeneralLib.RightPaddedString((string)u.strEffective, 12));
+                                n = (n + 1);
+                                if (n > 1)
                                 {
                                     upic.Print();
+                                    n = 0;
+                                }
+                            }
+
+                            // 特殊効果無効化
+                            if (Strings.Len((string)u.strSpecialEffectImmune) > 0 && Strings.InStr((string)u.strSpecialEffectImmune, "非表示") == 0)
+                            {
+                                if (Strings.Len((string)u.strSpecialEffectImmune) > 5)
+                                {
+                                    if (n > 0)
+                                    {
+                                        upic.Print();
+                                    }
+
+                                    n = 2;
                                 }
 
-                                n = 2;
-                            }
-
-                            upic.SetColor(StatusFontColorAbilityName);
-                            upic.Print("有効   ");
-                            upic.SetColor(StatusFontColorNormalString);
-                            upic.Print(GeneralLib.RightPaddedString((string)u.strEffective, 12));
-                            n = (n + 1);
-                            if (n > 1)
-                            {
-                                upic.Print();
-                                n = 0;
-                            }
-                        }
-
-                        // 特殊効果無効化
-                        if (Strings.Len((string)u.strSpecialEffectImmune) > 0 && Strings.InStr((string)u.strSpecialEffectImmune, "非表示") == 0)
-                        {
-                            if (Strings.Len((string)u.strSpecialEffectImmune) > 5)
-                            {
-                                if (n > 0)
+                                upic.SetColor(StatusFontColorAbilityName);
+                                upic.Print("特無効 ");
+                                upic.SetColor(StatusFontColorNormalString);
+                                upic.Print(GeneralLib.RightPaddedString((string)u.strSpecialEffectImmune, 12));
+                                n = (n + 1);
+                                if (n > 1)
                                 {
                                     upic.Print();
-                                }
-
-                                n = 2;
-                            }
-
-                            upic.SetColor(StatusFontColorAbilityName);
-                            upic.Print("特無効 ");
-                            upic.SetColor(StatusFontColorNormalString);
-                            upic.Print(GeneralLib.RightPaddedString((string)u.strSpecialEffectImmune, 12));
-                            n = (n + 1);
-                            if (n > 1)
-                            {
-                                upic.Print();
-                                n = 0;
-                            }
-                        }
-
-                        // 必要に応じて改行
-                        if (n > 0)
-                        {
-                            upic.Print();
-                        }
-                    }
-
-                    // 武器・防具クラス
-                    flist = new string[1];
-                    if (Expression.IsOptionDefined("アイテム交換"))
-                    {
-                        if (u.IsFeatureAvailable("武器クラス") || u.IsFeatureAvailable("防具クラス"))
-                        {
-                            upic.Print(GeneralLib.RightPaddedString("武器・防具クラス", 19));
-                            Array.Resize(flist, 2);
-                            flist[1] = "武器・防具クラス";
-                            n = (n + 1);
-                        }
-                    }
-
-                    // 特殊能力一覧を表示する前に必要気力判定のためメインパイロットの気力を参照
-                    if (u.CountPilot() > 0)
-                    {
-                        pmorale = u.MainPilot().Morale;
-                    }
-                    else
-                    {
-                        pmorale = 150;
-                    }
-
-                    // 特殊能力一覧
-                    var loopTo10 = u.CountAllFeature();
-                    for (var i = (u.AdditionalFeaturesNum + 1); i <= loopTo10; i++)
-                    {
-                        fname = u.AllFeatureName(i);
-
-                        // ユニットステータスコマンド時は通常は非表示のパーツ合体、
-                        // ノーマルモード、換装も表示
-                        if (string.IsNullOrEmpty(fname))
-                        {
-                            if (string.IsNullOrEmpty(Map.MapFileName))
-                            {
-                                switch (u.AllFeature(i) ?? "")
-                                {
-                                    case "パーツ合体":
-                                    case "ノーマルモード":
-                                        {
-                                            string localAllFeature() { object argIndex1 = i; var ret = u.AllFeature(argIndex1); return ret; }
-
-                                            string localRightPaddedString17() { string argbuf = hs5fe6f1588051411f97aaada3678aab3c(); var ret = GeneralLib.RightPaddedString(argbuf, 19); return ret; }
-
-                                            upic.Print(localRightPaddedString17());
-                                            n = (n + 1);
-                                            if (n > 1)
-                                            {
-                                                upic.Print();
-                                                n = 0;
-                                            }
-
-                                            break;
-                                        }
-
-                                    case "換装":
-                                        {
-                                            fname = "換装";
-
-                                            // エリアスで換装の名称が変更されている？
-                                            {
-                                                var withBlock3 = SRC.ALDList;
-                                                var loopTo11 = withBlock3.Count();
-                                                for (j = 1; j <= loopTo11; j++)
-                                                {
-                                                    {
-                                                        var withBlock4 = withBlock3.Item(j);
-                                                        if (withBlock4.get_AliasType(1) == "換装")
-                                                        {
-                                                            fname = withBlock4.Name;
-                                                            break;
-                                                        }
-                                                    }
-                                                }
-                                            }
-
-                                            upic.Print(GeneralLib.RightPaddedString(fname, 19));
-                                            n = (n + 1);
-                                            if (n > 1)
-                                            {
-                                                upic.Print();
-                                                n = 0;
-                                            }
-
-                                            break;
-                                        }
+                                    n = 0;
                                 }
                             }
 
-                            goto NextFeature;
-                        }
-
-                        // 既に表示しているかを判定
-                        var loopTo12 = Information.UBound(flist);
-                        for (j = 1; j <= loopTo12; j++)
-                        {
-                            if ((fname ?? "") == (flist[j] ?? ""))
-                            {
-                                goto NextFeature;
-                            }
-                        }
-
-                        Array.Resize(flist, Information.UBound(flist) + 1 + 1);
-                        flist[Information.UBound(flist)] = fname;
-
-                        // 使用可否によって表示色を変える
-                        fdata = u.AllFeatureData(i);
-                        switch (u.AllFeature(i) ?? "")
-                        {
-                            case "合体":
-                                {
-                                    bool localIsDefined1() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-                                    if (!localIsDefined1())
-                                    {
-                                        goto NextFeature;
-                                    }
-
-                                    Unit localItem1() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UList.Item(argIndex1); return ret; }
-
-                                    if (localItem1().IsConditionSatisfied("行動不能"))
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-
-                                    break;
-                                }
-
-                            case "分離":
-                                {
-                                    k = 0;
-                                    var loopTo13 = GeneralLib.LLength(fdata);
-                                    for (j = 2; j <= loopTo13; j++)
-                                    {
-                                        bool localIsDefined2() { object argIndex1 = GeneralLib.LIndex(fdata, j); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-                                        if (!localIsDefined2())
-                                        {
-                                            goto NextFeature;
-                                        }
-
-                                        Unit localItem2() { object argIndex1 = GeneralLib.LIndex(fdata, j); var ret = SRC.UList.Item(argIndex1); return ret; }
-
-                                        {
-                                            var withBlock5 = localItem2().Data;
-                                            if (withBlock5.IsFeatureAvailable("召喚ユニット"))
-                                            {
-                                                k = (k + Math.Abs(withBlock5.PilotNum));
-                                            }
-                                        }
-                                    }
-
-                                    if (u.CountPilot() < k)
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-
-                                    break;
-                                }
-
-                            case "ハイパーモード":
-                                {
-                                    double localFeatureLevel() { object argIndex1 = i; var ret = u.FeatureLevel(argIndex1); return ret; }
-
-                                    double localFeatureLevel1() { object argIndex1 = i; var ret = u.FeatureLevel(argIndex1); return ret; }
-                                    // MOD  END  240a
-                                    if (pmorale < (10d * localFeatureLevel1()) + 100 && u.HP > u.MaxHP / 4)
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-                                    else if (u.IsConditionSatisfied("ノーマルモード付加"))
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-
-                                    break;
-                                }
-
-                            case "修理装置":
-                            case "補給装置":
-                                {
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
-                                    {
-                                        if (u.EN < Conversions.ToInteger(GeneralLib.LIndex(fdata, 2)))
-                                        {
-                                            // MOD START 240a
-                                            // upic.ForeColor = rgb(150, 0, 0)
-                                            upic.SetColor(StatusFontColorAbilityDisable);
-                                        }
-                                    }
-
-                                    break;
-                                }
-
-                            case "テレポート":
-                                {
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
-                                    {
-                                        if (u.EN < Conversions.ToInteger(GeneralLib.LIndex(fdata, 2)))
-                                        {
-                                            // MOD START 240a
-                                            // upic.ForeColor = rgb(150, 0, 0)
-                                            upic.SetColor(StatusFontColorAbilityDisable);
-                                        }
-                                    }
-                                    else if (u.EN < 40)
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-
-                                    break;
-                                }
-
-                            case "分身":
-                                {
-                                    if (pmorale < 130)
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-
-                                    break;
-                                }
-
-                            case "超回避":
-                                {
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
-                                    {
-                                        ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 2));
-                                    }
-                                    else
-                                    {
-                                        ecost = 0;
-                                    }
-
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
-                                    {
-                                        nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
-                                    }
-                                    else
-                                    {
-                                        nmorale = 0;
-                                    }
-
-                                    if (u.EN < ecost || pmorale < nmorale)
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-
-                                    break;
-                                }
-
-                            case "緊急テレポート":
-                                {
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
-                                    {
-                                        ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
-                                    }
-                                    else
-                                    {
-                                        ecost = 0;
-                                    }
-
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
-                                    {
-                                        nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
-                                    }
-                                    else
-                                    {
-                                        nmorale = 0;
-                                    }
-
-                                    if (u.EN < ecost || pmorale < nmorale)
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-
-                                    break;
-                                }
-
-                            case "エネルギーシールド":
-                                {
-                                    if (u.EN < 5)
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-
-                                    break;
-                                }
-
-                            case "バリア":
-                            case "バリアシールド":
-                            case "プロテクション":
-                            case "アクティブプロテクション":
-                                {
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
-                                    {
-                                        ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
-                                    }
-                                    else
-                                    {
-                                        ecost = 10;
-                                    }
-
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
-                                    {
-                                        nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
-                                    }
-                                    else
-                                    {
-                                        nmorale = 0;
-                                    }
-
-                                    if (u.EN < ecost || pmorale < nmorale || u.IsConditionSatisfied("バリア無効化") && Strings.InStr(fdata, "バリア無効化無効") == 0)
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-                                    // MOD  END  240a
-                                    else if (Strings.InStr(fdata, "能力必要") > 0)
-                                    {
-                                        var loopTo14 = GeneralLib.LLength(fdata);
-                                        for (j = 5; j <= loopTo14; j++)
-                                        {
-                                            opt = GeneralLib.LIndex(fdata, j);
-                                            if (Strings.InStr(opt, "*") > 0)
-                                            {
-                                                opt = Strings.Left(opt, Strings.InStr(opt, "*") - 1);
-                                            }
-
-                                            switch (opt ?? "")
-                                            {
-                                                case "相殺":
-                                                case "中和":
-                                                case "近接無効":
-                                                case "手動":
-                                                case "能力必要":
-                                                    {
-                                                        break;
-                                                    }
-                                                // スキップ
-                                                case "同調率":
-                                                    {
-                                                        if (u.SyncLevel() == 0d)
-                                                        {
-                                                            goto NextFeature;
-                                                        }
-
-                                                        break;
-                                                    }
-
-                                                case "霊力":
-                                                    {
-                                                        if (u.PlanaLevel() == 0d)
-                                                        {
-                                                            goto NextFeature;
-                                                        }
-
-                                                        break;
-                                                    }
-
-                                                default:
-                                                    {
-                                                        if (u.SkillLevel(opt) == 0d)
-                                                        {
-                                                            goto NextFeature;
-                                                        }
-
-                                                        break;
-                                                    }
-                                            }
-                                        }
-                                    }
-
-                                    break;
-                                }
-
-                            case "フィールド":
-                            case "アクティブフィールド":
-                                {
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
-                                    {
-                                        ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
-                                    }
-                                    else
-                                    {
-                                        ecost = 0;
-                                    }
-
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
-                                    {
-                                        nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
-                                    }
-                                    else
-                                    {
-                                        nmorale = 0;
-                                    }
-
-                                    if (u.EN < ecost || pmorale < nmorale || u.IsConditionSatisfied("バリア無効化") && Strings.InStr(fdata, "バリア無効化無効") == 0)
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-                                    // MOD  END  240a
-                                    else if (Strings.InStr(fdata, "能力必要") > 0)
-                                    {
-                                        var loopTo15 = GeneralLib.LLength(fdata);
-                                        for (j = 5; j <= loopTo15; j++)
-                                        {
-                                            opt = GeneralLib.LIndex(fdata, j);
-                                            if (Strings.InStr(opt, "*") > 0)
-                                            {
-                                                opt = Strings.Left(opt, Strings.InStr(opt, "*") - 1);
-                                            }
-
-                                            switch (opt ?? "")
-                                            {
-                                                case "相殺":
-                                                case "中和":
-                                                case "近接無効":
-                                                case "手動":
-                                                case "能力必要":
-                                                    {
-                                                        break;
-                                                    }
-                                                // スキップ
-                                                case "同調率":
-                                                    {
-                                                        if (u.SyncLevel() == 0d)
-                                                        {
-                                                            goto NextFeature;
-                                                        }
-
-                                                        break;
-                                                    }
-
-                                                case "霊力":
-                                                    {
-                                                        if (u.PlanaLevel() == 0d)
-                                                        {
-                                                            goto NextFeature;
-                                                        }
-
-                                                        break;
-                                                    }
-
-                                                default:
-                                                    {
-                                                        if (u.SkillLevel(opt) == 0d)
-                                                        {
-                                                            goto NextFeature;
-                                                        }
-
-                                                        break;
-                                                    }
-                                            }
-                                        }
-                                    }
-
-                                    break;
-                                }
-
-                            case "広域バリア":
-                            case "広域フィールド":
-                            case "広域プロテクション":
-                                {
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
-                                    {
-                                        ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
-                                    }
-                                    else if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
-                                    {
-                                        ecost = (20 * Conversions.ToInteger(GeneralLib.LIndex(fdata, 2)));
-                                    }
-                                    else
-                                    {
-                                        ecost = 0;
-                                    }
-
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
-                                    {
-                                        nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
-                                    }
-                                    else
-                                    {
-                                        nmorale = 0;
-                                    }
-
-                                    if (u.EN < ecost || pmorale < nmorale || u.IsConditionSatisfied("バリア無効化") && Strings.InStr(fdata, "バリア無効化無効") == 0)
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-
-                                    fname = fname + "(範囲" + GeneralLib.LIndex(fdata, 2) + "マス)";
-                                    break;
-                                }
-
-                            case "アーマー":
-                            case "レジスト":
-                                {
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
-                                    {
-                                        nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
-                                    }
-                                    else
-                                    {
-                                        nmorale = 0;
-                                    }
-
-                                    if (pmorale < nmorale)
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-                                    // MOD  END  240a
-                                    else if (Strings.InStr(fdata, "能力必要") > 0)
-                                    {
-                                        var loopTo16 = GeneralLib.LLength(fdata);
-                                        for (j = 4; j <= loopTo16; j++)
-                                        {
-                                            opt = GeneralLib.LIndex(fdata, j);
-                                            if (Strings.InStr(opt, "*") > 0)
-                                            {
-                                                opt = Strings.Left(opt, Strings.InStr(opt, "*") - 1);
-                                            }
-
-                                            switch (opt ?? "")
-                                            {
-                                                case "同調率":
-                                                    {
-                                                        if (u.SyncLevel() == 0d)
-                                                        {
-                                                            goto NextFeature;
-                                                        }
-
-                                                        break;
-                                                    }
-
-                                                case "霊力":
-                                                    {
-                                                        if (u.PlanaLevel() == 0d)
-                                                        {
-                                                            goto NextFeature;
-                                                        }
-
-                                                        break;
-                                                    }
-
-                                                default:
-                                                    {
-                                                        if (u.SkillLevel(opt) == 0d)
-                                                        {
-                                                            goto NextFeature;
-                                                        }
-
-                                                        break;
-                                                    }
-                                            }
-                                        }
-                                    }
-
-                                    break;
-                                }
-
-                            case "攻撃回避":
-                                {
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
-                                    {
-                                        nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
-                                    }
-                                    else
-                                    {
-                                        nmorale = 0;
-                                    }
-
-                                    if (pmorale < nmorale)
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-
-                                    break;
-                                }
-
-                            case "反射":
-                            case "阻止":
-                                {
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
-                                    {
-                                        ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
-                                    }
-                                    else
-                                    {
-                                        ecost = 0;
-                                    }
-
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
-                                    {
-                                        nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
-                                    }
-                                    else
-                                    {
-                                        nmorale = 0;
-                                    }
-
-                                    if (u.EN < ecost || pmorale < nmorale)
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-                                    // MOD  END  240a
-                                    else if (Strings.InStr(fdata, "能力必要") > 0)
-                                    {
-                                        var loopTo17 = GeneralLib.LLength(fdata);
-                                        for (j = 6; j <= loopTo17; j++)
-                                        {
-                                            opt = GeneralLib.LIndex(fdata, j);
-                                            if (Strings.InStr(opt, "*") > 0)
-                                            {
-                                                opt = Strings.Left(opt, Strings.InStr(opt, "*") - 1);
-                                            }
-
-                                            switch (opt ?? "")
-                                            {
-                                                case "相殺":
-                                                case "中和":
-                                                case "近接無効":
-                                                case "手動":
-                                                case "能力必要":
-                                                    {
-                                                        break;
-                                                    }
-                                                // スキップ
-                                                case "同調率":
-                                                    {
-                                                        if (u.SyncLevel() == 0d)
-                                                        {
-                                                            goto NextFeature;
-                                                        }
-
-                                                        break;
-                                                    }
-
-                                                case "霊力":
-                                                    {
-                                                        if (u.PlanaLevel() == 0d)
-                                                        {
-                                                            goto NextFeature;
-                                                        }
-
-                                                        break;
-                                                    }
-
-                                                default:
-                                                    {
-                                                        if (u.SkillLevel(opt) == 0d)
-                                                        {
-                                                            goto NextFeature;
-                                                        }
-
-                                                        break;
-                                                    }
-                                            }
-                                        }
-                                    }
-
-                                    break;
-                                }
-
-                            case "広域阻止":
-                                {
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
-                                    {
-                                        ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
-                                    }
-                                    else
-                                    {
-                                        ecost = 0;
-                                    }
-
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 6)))
-                                    {
-                                        nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 6));
-                                    }
-                                    else
-                                    {
-                                        nmorale = 0;
-                                    }
-
-                                    if (u.EN < ecost || pmorale < nmorale)
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-
-                                    fname = fname + "(範囲" + GeneralLib.LIndex(fdata, 2) + "マス)";
-                                    break;
-                                }
-
-                            case "当て身技":
-                            case "自動反撃":
-                                {
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
-                                    {
-                                        ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
-                                    }
-                                    else
-                                    {
-                                        ecost = 0;
-                                    }
-
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 6)))
-                                    {
-                                        nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 6));
-                                    }
-                                    else
-                                    {
-                                        nmorale = 0;
-                                    }
-
-                                    if (u.EN < ecost || pmorale < nmorale)
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-                                    // MOD  END  240a
-                                    else if (Strings.InStr(fdata, "能力必要") > 0)
-                                    {
-                                        var loopTo18 = GeneralLib.LLength(fdata);
-                                        for (j = 7; j <= loopTo18; j++)
-                                        {
-                                            opt = GeneralLib.LIndex(fdata, j);
-                                            if (Strings.InStr(opt, "*") > 0)
-                                            {
-                                                opt = Strings.Left(opt, Strings.InStr(opt, "*") - 1);
-                                            }
-
-                                            switch (opt ?? "")
-                                            {
-                                                case "相殺":
-                                                case "中和":
-                                                case "近接無効":
-                                                case "手動":
-                                                case "能力必要":
-                                                    {
-                                                        break;
-                                                    }
-                                                // スキップ
-                                                case "同調率":
-                                                    {
-                                                        if (u.SyncLevel() == 0d)
-                                                        {
-                                                            goto NextFeature;
-                                                        }
-
-                                                        break;
-                                                    }
-
-                                                case "霊力":
-                                                    {
-                                                        if (u.PlanaLevel() == 0d)
-                                                        {
-                                                            goto NextFeature;
-                                                        }
-
-                                                        break;
-                                                    }
-
-                                                default:
-                                                    {
-                                                        if (u.SkillLevel(opt) == 0d)
-                                                        {
-                                                            goto NextFeature;
-                                                        }
-
-                                                        break;
-                                                    }
-                                            }
-                                        }
-                                    }
-
-                                    break;
-                                }
-
-                            case "ブースト":
-                                {
-                                    if (pmorale >= 130)
-                                    {
-                                        upic.SetColor(StatusFontColorAbilityEnable);
-                                    }
-
-                                    break;
-                                }
-
-                            case "盾":
-                                {
-                                    if (u.ConditionLevel("盾ダメージ") >= u.AllFeatureLevel("盾"))
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-
-                                    fname = fname + "(" + SrcFormatter.Format(GeneralLib.MaxLng((u.AllFeatureLevel("盾") - u.ConditionLevel("盾ダメージ")), 0)) + "/" + SrcFormatter.Format(u.AllFeatureLevel("盾")) + ")";
-                                    break;
-                                }
-
-                            case "ＨＰ回復":
-                            case "ＥＮ回復":
-                                {
-                                    // MOD START MARGE
-                                    // If .IsConditionSatisfied("回復不能") Then
-                                    if (u.IsConditionSatisfied("回復不能") || u.IsSpecialPowerInEffect("回復不能"))
-                                    {
-                                        // MOD END MARGE
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-
-                                    break;
-                                }
-
-                            case "格闘強化":
-                            case "射撃強化":
-                            case "命中強化":
-                            case "回避強化":
-                            case "技量強化":
-                            case "反応強化":
-                            case "ＨＰ強化":
-                            case "ＥＮ強化":
-                            case "装甲強化":
-                            case "運動性強化":
-                            case "移動力強化":
-                            case "ＨＰ割合強化":
-                            case "ＥＮ割合強化":
-                            case "装甲割合強化":
-                            case "運動性割合強化":
-                                {
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
-                                    {
-                                        int localStrToLng2() { string argexpr = GeneralLib.LIndex(fdata, 2); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-                                        if (pmorale >= localStrToLng2())
-                                        {
-                                            upic.SetColor(StatusFontColorAbilityEnable);
-                                        }
-                                    }
-
-                                    break;
-                                }
-
-                            case "ＺＯＣ":
-                                {
-                                    if (GeneralLib.LLength(fdata) < 2)
-                                    {
-                                        j = 1;
-                                    }
-                                    else
-                                    {
-                                        j = Conversions.ToInteger(GeneralLib.LIndex(fdata, 2));
-                                    }
-
-                                    if (j >= 1)
-                                    {
-                                        GeneralLib.ReplaceString(fdata, Constants.vbTab, " ");
-                                        if (Strings.InStr(fdata, " 直線") > 0 || Strings.InStr(fdata, " 垂直") > 0 && Strings.InStr(fdata, " 水平") > 0)
-                                        {
-                                            buf = "直線";
-                                        }
-                                        else if (Strings.InStr(fdata, " 垂直") > 0)
-                                        {
-                                            buf = "上下";
-                                        }
-                                        else if (Strings.InStr(fdata, " 水平") > 0)
-                                        {
-                                            buf = "左右";
-                                        }
-                                        else
-                                        {
-                                            buf = "範囲";
-                                        }
-
-                                        fname = fname + "(" + buf + SrcFormatter.Format(j) + "マス)";
-                                    }
-
-                                    break;
-                                }
-
-                            case "広域ＺＯＣ無効化":
-                                {
-                                    fname = fname + "(範囲" + GeneralLib.LIndex(fdata, 2) + "マス)";
-                                    break;
-                                }
-
-                            case "追加攻撃":
-                                {
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
-                                    {
-                                        ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
-                                    }
-                                    else
-                                    {
-                                        ecost = 0;
-                                    }
-
-                                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 6)))
-                                    {
-                                        nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 6));
-                                    }
-                                    else
-                                    {
-                                        nmorale = 0;
-                                    }
-
-                                    if (u.EN < ecost || pmorale < nmorale)
-                                    {
-                                        // MOD START 240a
-                                        // upic.ForeColor = rgb(150, 0, 0)
-                                        upic.SetColor(StatusFontColorAbilityDisable);
-                                    }
-
-                                    break;
-                                }
-                        }
-
-                        // 必要条件を満たさない特殊能力は赤色で表示
-                        bool localIsFeatureActivated() { object argIndex1 = i; var ret = u.IsFeatureActivated(argIndex1); return ret; }
-
-                        if (!localIsFeatureActivated())
-                        {
-                            // MOD START 240a
-                            // upic.ForeColor = rgb(150, 0, 0)
-                            upic.SetColor(StatusFontColorAbilityDisable);
-                        }
-
-                        // 特殊能力名を表示
-                        if (LenB(Strings.StrConv(fname, vbFromUnicode)) > 19)
-                        {
+                            // 必要に応じて改行
                             if (n > 0)
                             {
                                 upic.Print();
                             }
-                            upic.Print(fname);
-                            n = 2;
+                        }
+
+                        // 武器・防具クラス
+                        var flist = new List<string>();
+                        if (Expression.IsOptionDefined("アイテム交換"))
+                        {
+                            if (u.IsFeatureAvailable("武器クラス") || u.IsFeatureAvailable("防具クラス"))
+                            {
+                                upic.Print(GeneralLib.RightPaddedString("武器・防具クラス", 19));
+                                flist.Add("武器・防具クラス");
+                                n = (n + 1);
+                            }
+                        }
+
+                        // 特殊能力一覧を表示する前に必要気力判定のためメインパイロットの気力を参照
+                        int pmorale;
+                        if (u.CountPilot() > 0)
+                        {
+                            pmorale = u.MainPilot().Morale;
                         }
                         else
                         {
-                            upic.Print(GeneralLib.RightPaddedString(fname, 19));
-                            n = (n + 1);
+                            pmorale = 150;
                         }
 
-                        // 必要に応じて改行
-                        if (n > 1)
+                        // 特殊能力一覧
+                        foreach (var fd in u.AllFeatures)
+                        {
+                            var fname = fd.Name;
+
+                            // ユニットステータスコマンド時は通常は非表示のパーツ合体、
+                            // ノーマルモード、換装も表示
+                            if (string.IsNullOrEmpty(fname))
+                            {
+                                if (string.IsNullOrEmpty(Map.MapFileName))
+                                {
+                                    switch (fd.Name)
+                                    {
+                                        case "パーツ合体":
+                                        case "ノーマルモード":
+                                            {
+                                                upic.Print(GeneralLib.RightPaddedString(fd.Name, 19));
+                                                n = (n + 1);
+                                                if (n > 1)
+                                                {
+                                                    upic.Print();
+                                                    n = 0;
+                                                }
+
+                                                break;
+                                            }
+
+                                        case "換装":
+                                            {
+                                                // エリアスで換装の名称が変更されている？
+                                                fname = SRC.ALDList.RefName("換装");
+                                                upic.Print(GeneralLib.RightPaddedString(fname, 19));
+                                                n = (n + 1);
+                                                if (n > 1)
+                                                {
+                                                    upic.Print();
+                                                    n = 0;
+                                                }
+
+                                                break;
+                                            }
+                                    }
+                                }
+
+                                goto NextFeature;
+                            }
+
+                            // 既に表示しているかを判定
+                            if (flist.Contains(fname))
+                            {
+                                goto NextFeature;
+                            }
+                            flist.Add(fname);
+
+                            // 使用可否によって表示色を変える
+                            var fdata = fd.Data;
+                            switch (fd.Name)
+                            {
+                                case "合体":
+                                    {
+                                        if (!SRC.UList.IsDefined(fd.DataL[1]))
+                                        {
+                                            goto NextFeature;
+                                        }
+                                        if (SRC.UList.Item(fd.DataL[1]).IsConditionSatisfied("行動不能"))
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+                                        break;
+                                    }
+
+                                case "分離":
+                                    {
+                                        // XXX 分離の可否どっかにまとまっていて欲しい
+                                        var k = 0;
+                                        var loopTo13 = GeneralLib.LLength(fdata);
+                                        for (var j = 2; j <= loopTo13; j++)
+                                        {
+                                            var uname = GeneralLib.LIndex(fdata, j);
+                                            if (!SRC.UList.IsDefined(uname))
+                                            {
+                                                goto NextFeature;
+                                            }
+                                            var ud = SRC.UList.Item(uname).Data;
+                                            if (ud.IsFeatureAvailable("召喚ユニット"))
+                                            {
+                                                k = (k + Math.Abs(ud.PilotNum));
+                                            }
+                                        }
+                                        if (u.CountPilot() < k)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "ハイパーモード":
+                                    {
+                                        if (pmorale < (10d * fd.Level) + 100 && u.HP > u.MaxHP / 4)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+                                        else if (u.IsConditionSatisfied("ノーマルモード付加"))
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "修理装置":
+                                case "補給装置":
+                                    {
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
+                                        {
+                                            if (u.EN < Conversions.ToInteger(GeneralLib.LIndex(fdata, 2)))
+                                            {
+                                                upic.SetColor(StatusFontColorAbilityDisable);
+                                            }
+                                        }
+
+                                        break;
+                                    }
+
+                                case "テレポート":
+                                    {
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
+                                        {
+                                            if (u.EN < Conversions.ToInteger(GeneralLib.LIndex(fdata, 2)))
+                                            {
+                                                upic.SetColor(StatusFontColorAbilityDisable);
+                                            }
+                                        }
+                                        else if (u.EN < 40)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "分身":
+                                    {
+                                        if (pmorale < 130)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "超回避":
+                                    {
+                                        int ecost;
+                                        int nmorale;
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
+                                        {
+                                            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 2));
+                                        }
+                                        else
+                                        {
+                                            ecost = 0;
+                                        }
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
+                                        {
+                                            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
+                                        }
+                                        else
+                                        {
+                                            nmorale = 0;
+                                        }
+
+                                        if (u.EN < ecost || pmorale < nmorale)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "緊急テレポート":
+                                    {
+                                        int ecost;
+                                        int nmorale;
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
+                                        {
+                                            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
+                                        }
+                                        else
+                                        {
+                                            ecost = 0;
+                                        }
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
+                                        {
+                                            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
+                                        }
+                                        else
+                                        {
+                                            nmorale = 0;
+                                        }
+
+                                        if (u.EN < ecost || pmorale < nmorale)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "エネルギーシールド":
+                                    {
+                                        if (u.EN < 5)
+                                        {
+                                            // MOD START 240a
+                                            // upic.ForeColor = rgb(150, 0, 0)
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "バリア":
+                                case "バリアシールド":
+                                case "プロテクション":
+                                case "アクティブプロテクション":
+                                    {
+                                        int ecost;
+                                        int nmorale;
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
+                                        {
+                                            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
+                                        }
+                                        else
+                                        {
+                                            ecost = 10;
+                                        }
+
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
+                                        {
+                                            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
+                                        }
+                                        else
+                                        {
+                                            nmorale = 0;
+                                        }
+
+                                        if (u.EN < ecost
+                                            || pmorale < nmorale
+                                            || u.IsConditionSatisfied("バリア無効化") && Strings.InStr(fdata, "バリア無効化無効") == 0)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+                                        else if (Strings.InStr(fdata, "能力必要") > 0)
+                                        {
+                                            var loopTo14 = GeneralLib.LLength(fdata);
+                                            for (var j = 5; j <= loopTo14; j++)
+                                            {
+                                                var opt = GeneralLib.LIndex(fdata, j);
+                                                if (Strings.InStr(opt, "*") > 0)
+                                                {
+                                                    opt = Strings.Left(opt, Strings.InStr(opt, "*") - 1);
+                                                }
+
+                                                switch (opt ?? "")
+                                                {
+                                                    case "相殺":
+                                                    case "中和":
+                                                    case "近接無効":
+                                                    case "手動":
+                                                    case "能力必要":
+                                                        {
+                                                            break;
+                                                        }
+                                                    // スキップ
+                                                    case "同調率":
+                                                        {
+                                                            if (u.SyncLevel() == 0d)
+                                                            {
+                                                                goto NextFeature;
+                                                            }
+
+                                                            break;
+                                                        }
+
+                                                    case "霊力":
+                                                        {
+                                                            if (u.PlanaLevel() == 0d)
+                                                            {
+                                                                goto NextFeature;
+                                                            }
+
+                                                            break;
+                                                        }
+
+                                                    default:
+                                                        {
+                                                            if (u.SkillLevel(opt) == 0d)
+                                                            {
+                                                                goto NextFeature;
+                                                            }
+
+                                                            break;
+                                                        }
+                                                }
+                                            }
+                                        }
+
+                                        break;
+                                    }
+
+                                case "フィールド":
+                                case "アクティブフィールド":
+                                    {
+                                        int ecost;
+                                        int nmorale;
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
+                                        {
+                                            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
+                                        }
+                                        else
+                                        {
+                                            ecost = 0;
+                                        }
+
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
+                                        {
+                                            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
+                                        }
+                                        else
+                                        {
+                                            nmorale = 0;
+                                        }
+
+                                        if (u.EN < ecost || pmorale < nmorale || u.IsConditionSatisfied("バリア無効化") && Strings.InStr(fdata, "バリア無効化無効") == 0)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+                                        else if (Strings.InStr(fdata, "能力必要") > 0)
+                                        {
+                                            var loopTo15 = GeneralLib.LLength(fdata);
+                                            for (var j = 5; j <= loopTo15; j++)
+                                            {
+                                                var opt = GeneralLib.LIndex(fdata, j);
+                                                if (Strings.InStr(opt, "*") > 0)
+                                                {
+                                                    opt = Strings.Left(opt, Strings.InStr(opt, "*") - 1);
+                                                }
+
+                                                switch (opt ?? "")
+                                                {
+                                                    case "相殺":
+                                                    case "中和":
+                                                    case "近接無効":
+                                                    case "手動":
+                                                    case "能力必要":
+                                                        {
+                                                            break;
+                                                        }
+                                                    // スキップ
+                                                    case "同調率":
+                                                        {
+                                                            if (u.SyncLevel() == 0d)
+                                                            {
+                                                                goto NextFeature;
+                                                            }
+
+                                                            break;
+                                                        }
+
+                                                    case "霊力":
+                                                        {
+                                                            if (u.PlanaLevel() == 0d)
+                                                            {
+                                                                goto NextFeature;
+                                                            }
+
+                                                            break;
+                                                        }
+
+                                                    default:
+                                                        {
+                                                            if (u.SkillLevel(opt) == 0d)
+                                                            {
+                                                                goto NextFeature;
+                                                            }
+
+                                                            break;
+                                                        }
+                                                }
+                                            }
+                                        }
+
+                                        break;
+                                    }
+
+                                case "広域バリア":
+                                case "広域フィールド":
+                                case "広域プロテクション":
+                                    {
+                                        int ecost;
+                                        int nmorale;
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
+                                        {
+                                            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
+                                        }
+                                        else if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
+                                        {
+                                            ecost = (20 * Conversions.ToInteger(GeneralLib.LIndex(fdata, 2)));
+                                        }
+                                        else
+                                        {
+                                            ecost = 0;
+                                        }
+
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
+                                        {
+                                            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
+                                        }
+                                        else
+                                        {
+                                            nmorale = 0;
+                                        }
+
+                                        if (u.EN < ecost || pmorale < nmorale || u.IsConditionSatisfied("バリア無効化") && Strings.InStr(fdata, "バリア無効化無効") == 0)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+
+                                        fname = fname + "(範囲" + GeneralLib.LIndex(fdata, 2) + "マス)";
+                                        break;
+                                    }
+
+                                case "アーマー":
+                                case "レジスト":
+                                    {
+                                        int nmorale;
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
+                                        {
+                                            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
+                                        }
+                                        else
+                                        {
+                                            nmorale = 0;
+                                        }
+
+                                        if (pmorale < nmorale)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+                                        else if (Strings.InStr(fdata, "能力必要") > 0)
+                                        {
+                                            var loopTo16 = GeneralLib.LLength(fdata);
+                                            for (var j = 4; j <= loopTo16; j++)
+                                            {
+                                                var opt = GeneralLib.LIndex(fdata, j);
+                                                if (Strings.InStr(opt, "*") > 0)
+                                                {
+                                                    opt = Strings.Left(opt, Strings.InStr(opt, "*") - 1);
+                                                }
+
+                                                switch (opt ?? "")
+                                                {
+                                                    case "同調率":
+                                                        {
+                                                            if (u.SyncLevel() == 0d)
+                                                            {
+                                                                goto NextFeature;
+                                                            }
+
+                                                            break;
+                                                        }
+
+                                                    case "霊力":
+                                                        {
+                                                            if (u.PlanaLevel() == 0d)
+                                                            {
+                                                                goto NextFeature;
+                                                            }
+
+                                                            break;
+                                                        }
+
+                                                    default:
+                                                        {
+                                                            if (u.SkillLevel(opt) == 0d)
+                                                            {
+                                                                goto NextFeature;
+                                                            }
+
+                                                            break;
+                                                        }
+                                                }
+                                            }
+                                        }
+
+                                        break;
+                                    }
+
+                                case "攻撃回避":
+                                    {
+                                        int nmorale;
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
+                                        {
+                                            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
+                                        }
+                                        else
+                                        {
+                                            nmorale = 0;
+                                        }
+
+                                        if (pmorale < nmorale)
+                                        {
+                                            // MOD START 240a
+                                            // upic.ForeColor = rgb(150, 0, 0)
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "反射":
+                                case "阻止":
+                                    {
+                                        int ecost;
+                                        int nmorale;
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
+                                        {
+                                            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
+                                        }
+                                        else
+                                        {
+                                            ecost = 0;
+                                        }
+
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
+                                        {
+                                            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
+                                        }
+                                        else
+                                        {
+                                            nmorale = 0;
+                                        }
+
+                                        if (u.EN < ecost || pmorale < nmorale)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+                                        else if (Strings.InStr(fdata, "能力必要") > 0)
+                                        {
+                                            var loopTo17 = GeneralLib.LLength(fdata);
+                                            for (var j = 6; j <= loopTo17; j++)
+                                            {
+                                                var opt = GeneralLib.LIndex(fdata, j);
+                                                if (Strings.InStr(opt, "*") > 0)
+                                                {
+                                                    opt = Strings.Left(opt, Strings.InStr(opt, "*") - 1);
+                                                }
+
+                                                switch (opt ?? "")
+                                                {
+                                                    case "相殺":
+                                                    case "中和":
+                                                    case "近接無効":
+                                                    case "手動":
+                                                    case "能力必要":
+                                                        {
+                                                            break;
+                                                        }
+                                                    // スキップ
+                                                    case "同調率":
+                                                        {
+                                                            if (u.SyncLevel() == 0d)
+                                                            {
+                                                                goto NextFeature;
+                                                            }
+
+                                                            break;
+                                                        }
+
+                                                    case "霊力":
+                                                        {
+                                                            if (u.PlanaLevel() == 0d)
+                                                            {
+                                                                goto NextFeature;
+                                                            }
+
+                                                            break;
+                                                        }
+
+                                                    default:
+                                                        {
+                                                            if (u.SkillLevel(opt) == 0d)
+                                                            {
+                                                                goto NextFeature;
+                                                            }
+
+                                                            break;
+                                                        }
+                                                }
+                                            }
+                                        }
+
+                                        break;
+                                    }
+
+                                case "広域阻止":
+                                    {
+                                        int ecost;
+                                        int nmorale;
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
+                                        {
+                                            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
+                                        }
+                                        else
+                                        {
+                                            ecost = 0;
+                                        }
+
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 6)))
+                                        {
+                                            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 6));
+                                        }
+                                        else
+                                        {
+                                            nmorale = 0;
+                                        }
+
+                                        if (u.EN < ecost || pmorale < nmorale)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+
+                                        fname = fname + "(範囲" + GeneralLib.LIndex(fdata, 2) + "マス)";
+                                        break;
+                                    }
+
+                                case "当て身技":
+                                case "自動反撃":
+                                    {
+                                        int ecost;
+                                        int nmorale;
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
+                                        {
+                                            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
+                                        }
+                                        else
+                                        {
+                                            ecost = 0;
+                                        }
+
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 6)))
+                                        {
+                                            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 6));
+                                        }
+                                        else
+                                        {
+                                            nmorale = 0;
+                                        }
+
+                                        if (u.EN < ecost || pmorale < nmorale)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+                                        else if (Strings.InStr(fdata, "能力必要") > 0)
+                                        {
+                                            var loopTo18 = GeneralLib.LLength(fdata);
+                                            for (var j = 7; j <= loopTo18; j++)
+                                            {
+                                                var opt = GeneralLib.LIndex(fdata, j);
+                                                if (Strings.InStr(opt, "*") > 0)
+                                                {
+                                                    opt = Strings.Left(opt, Strings.InStr(opt, "*") - 1);
+                                                }
+
+                                                switch (opt ?? "")
+                                                {
+                                                    case "相殺":
+                                                    case "中和":
+                                                    case "近接無効":
+                                                    case "手動":
+                                                    case "能力必要":
+                                                        {
+                                                            break;
+                                                        }
+                                                    // スキップ
+                                                    case "同調率":
+                                                        {
+                                                            if (u.SyncLevel() == 0d)
+                                                            {
+                                                                goto NextFeature;
+                                                            }
+
+                                                            break;
+                                                        }
+
+                                                    case "霊力":
+                                                        {
+                                                            if (u.PlanaLevel() == 0d)
+                                                            {
+                                                                goto NextFeature;
+                                                            }
+
+                                                            break;
+                                                        }
+
+                                                    default:
+                                                        {
+                                                            if (u.SkillLevel(opt) == 0d)
+                                                            {
+                                                                goto NextFeature;
+                                                            }
+
+                                                            break;
+                                                        }
+                                                }
+                                            }
+                                        }
+
+                                        break;
+                                    }
+
+                                case "ブースト":
+                                    {
+                                        if (pmorale >= 130)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityEnable);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "盾":
+                                    {
+                                        if ((u.Condition("盾ダメージ")?.Level ?? 0) >= fd.Level)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+
+                                        fname = fname + "(" + SrcFormatter.Format(GeneralLib.MaxLng((int)(fd.Level - (u.Condition("盾ダメージ")?.Level ?? 0)), 0)) + "/" + SrcFormatter.Format(fd.Level) + ")";
+                                        break;
+                                    }
+
+                                case "ＨＰ回復":
+                                case "ＥＮ回復":
+                                    {
+                                        if (u.IsConditionSatisfied("回復不能") || u.IsSpecialPowerInEffect("回復不能"))
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "格闘強化":
+                                case "射撃強化":
+                                case "命中強化":
+                                case "回避強化":
+                                case "技量強化":
+                                case "反応強化":
+                                case "ＨＰ強化":
+                                case "ＥＮ強化":
+                                case "装甲強化":
+                                case "運動性強化":
+                                case "移動力強化":
+                                case "ＨＰ割合強化":
+                                case "ＥＮ割合強化":
+                                case "装甲割合強化":
+                                case "運動性割合強化":
+                                    {
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
+                                        {
+                                            int localStrToLng2() { string argexpr = GeneralLib.LIndex(fdata, 2); var ret = GeneralLib.StrToLng(argexpr); return ret; }
+
+                                            if (pmorale >= localStrToLng2())
+                                            {
+                                                upic.SetColor(StatusFontColorAbilityEnable);
+                                            }
+                                        }
+
+                                        break;
+                                    }
+
+                                case "ＺＯＣ":
+                                    {
+                                        int j;
+                                        if (GeneralLib.LLength(fdata) < 2)
+                                        {
+                                            j = 1;
+                                        }
+                                        else
+                                        {
+                                            j = Conversions.ToInteger(GeneralLib.LIndex(fdata, 2));
+                                        }
+
+                                        if (j >= 1)
+                                        {
+                                            fdata = fdata.Replace(Constants.vbTab, " ");
+                                            if (Strings.InStr(fdata, " 直線") > 0 || Strings.InStr(fdata, " 垂直") > 0 && Strings.InStr(fdata, " 水平") > 0)
+                                            {
+                                                buf = "直線";
+                                            }
+                                            else if (Strings.InStr(fdata, " 垂直") > 0)
+                                            {
+                                                buf = "上下";
+                                            }
+                                            else if (Strings.InStr(fdata, " 水平") > 0)
+                                            {
+                                                buf = "左右";
+                                            }
+                                            else
+                                            {
+                                                buf = "範囲";
+                                            }
+
+                                            fname = fname + "(" + buf + SrcFormatter.Format(j) + "マス)";
+                                        }
+
+                                        break;
+                                    }
+
+                                case "広域ＺＯＣ無効化":
+                                    {
+                                        fname = fname + "(範囲" + GeneralLib.LIndex(fdata, 2) + "マス)";
+                                        break;
+                                    }
+
+                                case "追加攻撃":
+                                    {
+                                        int ecost;
+                                        int nmorale;
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
+                                        {
+                                            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
+                                        }
+                                        else
+                                        {
+                                            ecost = 0;
+                                        }
+
+                                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 6)))
+                                        {
+                                            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 6));
+                                        }
+                                        else
+                                        {
+                                            nmorale = 0;
+                                        }
+
+                                        if (u.EN < ecost || pmorale < nmorale)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+
+                                        break;
+                                    }
+                            }
+
+                            // 必要条件を満たさない特殊能力は赤色で表示
+                            if (!u.IsFeatureActivated(fd))
+                            {
+                                upic.SetColor(StatusFontColorAbilityDisable);
+                            }
+
+                            // 特殊能力名を表示
+                            if (GeneralLib.StrWidth(fname) > 19)
+                            {
+                                if (n > 0)
+                                {
+                                    upic.Print();
+                                }
+                                upic.Print(fname);
+                                n = 2;
+                            }
+                            else
+                            {
+                                upic.Print(GeneralLib.RightPaddedString(fname, 19));
+                                n = (n + 1);
+                            }
+
+                            // 必要に応じて改行
+                            if (n > 1)
+                            {
+                                upic.Print();
+                                n = 0;
+                            }
+
+                            // 表示色を戻しておく
+                            upic.SetColor(StatusFontColorNormalString);
+                        NextFeature:
+                            ;
+                        }
+
+                        if (n > 0)
                         {
                             upic.Print();
-                            n = 0;
                         }
-
-                        // 表示色を戻しておく
-                        upic.SetColor(StatusFontColorNormalString);
-                    NextFeature:
-                        ;
-                    }
-
-                    if (n > 0)
-                    {
-                        upic.Print();
                     }
 
                     // アイテム一覧
@@ -3604,390 +3534,397 @@ namespace SRCSharpForm
                     }
 
                     // ターゲット選択時の攻撃結果予想表示
-
-                    // 攻撃時にのみ表示
-                    if ((Commands.CommandState == "ターゲット選択" || Commands.CommandState == "移動後ターゲット選択") && (Commands.SelectedCommand == "攻撃" || Commands.SelectedCommand == "マップ攻撃") && Commands.SelectedUnit is object && Commands.SelectedWeapon > 0 && SRC.Stage != "プロローグ" && SRC.Stage != "エピローグ")
+                    // TODO Impl
                     {
-                    }
-                    // 攻撃時と判定
-                    else
-                    {
-                        goto SkipAttackExpResult;
-                    }
+                        //// 攻撃時にのみ表示
+                        //if ((Commands.CommandState == "ターゲット選択" || Commands.CommandState == "移動後ターゲット選択") && (Commands.SelectedCommand == "攻撃" || Commands.SelectedCommand == "マップ攻撃") && Commands.SelectedUnit is object && Commands.SelectedWeapon > 0 && SRC.Stage != "プロローグ" && SRC.Stage != "エピローグ")
+                        //{
+                        //}
+                        //// 攻撃時と判定
+                        //else
+                        //{
+                        //    goto SkipAttackExpResult;
+                        //}
 
-                    // 相手が敵の場合にのみ表示
-                    if (u.Party != "敵" && u.Party != "中立" && !u.IsConditionSatisfied("暴走") && !u.IsConditionSatisfied("魅了") && !u.IsConditionSatisfied("憑依") && !u.IsConditionSatisfied("混乱") && !u.IsConditionSatisfied("睡眠"))
-                    {
-                        goto SkipAttackExpResult;
-                    }
+                        //// 相手が敵の場合にのみ表示
+                        //if (u.Party != "敵" && u.Party != "中立" && !u.IsConditionSatisfied("暴走") && !u.IsConditionSatisfied("魅了") && !u.IsConditionSatisfied("憑依") && !u.IsConditionSatisfied("混乱") && !u.IsConditionSatisfied("睡眠"))
+                        //{
+                        //    goto SkipAttackExpResult;
+                        //}
 
-                    upic.Print();
+                        //upic.Print();
 
-                    // 攻撃手段
-                    upic.SetColor(StatusFontColorAbilityName);
-                    upic.Print("攻撃     ");
-                    upic.SetColor(StatusFontColorNormalString);
-                    upic.Print(Commands.SelectedUnit.WeaponNickname(Commands.SelectedWeapon));
-                    // サポートアタックを得られる？
-                    if (!Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, "合") && !Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, "Ｍ") && Commands.UseSupportAttack)
-                    {
-                        if (Commands.SelectedUnit.LookForSupportAttack(u) is object)
-                        {
-                            upic.Print(" [援]");
-                        }
-                        else
-                        {
-                            upic.Print();
-                        }
-                    }
-                    else
-                    {
-                        upic.Print();
-                    }
+                        //// 攻撃手段
+                        //upic.SetColor(StatusFontColorAbilityName);
+                        //upic.Print("攻撃     ");
+                        //upic.SetColor(StatusFontColorNormalString);
+                        //upic.Print(Commands.SelectedUnit.WeaponNickname(Commands.SelectedWeapon));
+                        //// サポートアタックを得られる？
+                        //if (!Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, "合") && !Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, "Ｍ") && Commands.UseSupportAttack)
+                        //{
+                        //    if (Commands.SelectedUnit.LookForSupportAttack(u) is object)
+                        //    {
+                        //        upic.Print(" [援]");
+                        //    }
+                        //    else
+                        //    {
+                        //        upic.Print();
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    upic.Print();
+                        //}
 
-                    // 反撃を受ける？
-                    if (u.MaxAction() == 0 || Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, "Ｍ") || Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, "間"))
-                    {
-                        w = 0;
-                    }
-                    else
-                    {
-                        w = COM.SelectWeapon(u, Commands.SelectedUnit, "反撃", max_prob: 0, max_dmg: 0);
-                    }
+                        //// 反撃を受ける？
+                        //if (u.MaxAction() == 0 || Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, "Ｍ") || Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, "間"))
+                        //{
+                        //    w = 0;
+                        //}
+                        //else
+                        //{
+                        //    w = COM.SelectWeapon(u, Commands.SelectedUnit, "反撃", max_prob: 0, max_dmg: 0);
+                        //}
 
-                    // 敵の防御行動を設定
-                    def_mode = Conversions.ToString(COM.SelectDefense(Commands.SelectedUnit, Commands.SelectedWeapon, u, w));
-                    if (!string.IsNullOrEmpty(def_mode))
-                    {
-                        w = 0;
-                    }
+                        //// 敵の防御行動を設定
+                        //def_mode = Conversions.ToString(COM.SelectDefense(Commands.SelectedUnit, Commands.SelectedWeapon, u, w));
+                        //if (!string.IsNullOrEmpty(def_mode))
+                        //{
+                        //    w = 0;
+                        //}
 
-                    // 予測ダメージ
-                    if (!Expression.IsOptionDefined("予測ダメージ非表示"))
-                    {
-                        upic.SetColor(StatusFontColorAbilityName);
-                        upic.Print("ダメージ ");
-                        dmg = Commands.SelectedUnit.Damage(Commands.SelectedWeapon, u, true);
-                        if (def_mode == "防御")
-                        {
-                            dmg = dmg / 2;
-                        }
+                        //// 予測ダメージ
+                        //if (!Expression.IsOptionDefined("予測ダメージ非表示"))
+                        //{
+                        //    upic.SetColor(StatusFontColorAbilityName);
+                        //    upic.Print("ダメージ ");
+                        //    dmg = Commands.SelectedUnit.Damage(Commands.SelectedWeapon, u, true);
+                        //    if (def_mode == "防御")
+                        //    {
+                        //        dmg = dmg / 2;
+                        //    }
 
-                        if (dmg >= u.HP && !u.IsConditionSatisfied("データ不明"))
-                        {
-                            upic.SetColor(StatusFontColorWarning);
-                        }
-                        else
-                        {
-                            upic.SetColor(StatusFontColorNormalString);
-                        }
-                        upic.Print(SrcFormatter.Format(dmg));
-                    }
+                        //    if (dmg >= u.HP && !u.IsConditionSatisfied("データ不明"))
+                        //    {
+                        //        upic.SetColor(StatusFontColorWarning);
+                        //    }
+                        //    else
+                        //    {
+                        //        upic.SetColor(StatusFontColorNormalString);
+                        //    }
+                        //    upic.Print(SrcFormatter.Format(dmg));
+                        //}
 
-                    // 予測命中率
-                    if (!Expression.IsOptionDefined("予測命中率非表示"))
-                    {
-                        upic.SetColor(StatusFontColorAbilityName);
-                        upic.Print("命中率   ");
-                        upic.SetColor(StatusFontColorNormalString);
-                        prob = Commands.SelectedUnit.HitProbability(Commands.SelectedWeapon, u, true);
-                        if (def_mode == "回避")
-                        {
-                            prob = (prob / 2);
-                        }
+                        //// 予測命中率
+                        //if (!Expression.IsOptionDefined("予測命中率非表示"))
+                        //{
+                        //    upic.SetColor(StatusFontColorAbilityName);
+                        //    upic.Print("命中率   ");
+                        //    upic.SetColor(StatusFontColorNormalString);
+                        //    prob = Commands.SelectedUnit.HitProbability(Commands.SelectedWeapon, u, true);
+                        //    if (def_mode == "回避")
+                        //    {
+                        //        prob = (prob / 2);
+                        //    }
 
-                        cprob = Commands.SelectedUnit.CriticalProbability(Commands.SelectedWeapon, u, def_mode);
-                        upic.Print(GeneralLib.MinLng(prob, 100) + "％（" + cprob + "％）");
-                        upic.SetColor(StatusFontColorNormalString);
-                    }
+                        //    cprob = Commands.SelectedUnit.CriticalProbability(Commands.SelectedWeapon, u, def_mode);
+                        //    upic.Print(GeneralLib.MinLng(prob, 100) + "％（" + cprob + "％）");
+                        //    upic.SetColor(StatusFontColorNormalString);
+                        //}
 
-                    if (w > 0)
-                    {
-                        // 反撃手段
-                        upic.SetColor(StatusFontColorAbilityName);
-                        upic.Print("反撃     ");
-                        upic.SetColor(StatusFontColorNormalString);
-                        upic.Print(u.WeaponNickname(w));
-                        // サポートガードを受けられる？
-                        if (u.LookForSupportGuard(Commands.SelectedUnit, Commands.SelectedWeapon) is object)
-                        {
-                            upic.Print(" [援]");
-                        }
-                        else
-                        {
-                            upic.Print();
-                        }
+                        //if (w > 0)
+                        //{
+                        //    // 反撃手段
+                        //    upic.SetColor(StatusFontColorAbilityName);
+                        //    upic.Print("反撃     ");
+                        //    upic.SetColor(StatusFontColorNormalString);
+                        //    upic.Print(u.WeaponNickname(w));
+                        //    // サポートガードを受けられる？
+                        //    if (u.LookForSupportGuard(Commands.SelectedUnit, Commands.SelectedWeapon) is object)
+                        //    {
+                        //        upic.Print(" [援]");
+                        //    }
+                        //    else
+                        //    {
+                        //        upic.Print();
+                        //    }
 
-                        // 予測ダメージ
-                        if (!Expression.IsOptionDefined("予測ダメージ非表示"))
-                        {
-                            upic.SetColor(StatusFontColorAbilityName);
-                            upic.Print("ダメージ ");
-                            dmg = u.Damage(w, Commands.SelectedUnit, true);
-                            if (dmg >= Commands.SelectedUnit.HP)
-                            {
-                                upic.SetColor(StatusFontColorWarning);
-                            }
-                            else
-                            {
-                                upic.SetColor(StatusFontColorNormalString);
-                            }
-                            upic.Print(SrcFormatter.Format(dmg));
-                        }
+                        //    // 予測ダメージ
+                        //    if (!Expression.IsOptionDefined("予測ダメージ非表示"))
+                        //    {
+                        //        upic.SetColor(StatusFontColorAbilityName);
+                        //        upic.Print("ダメージ ");
+                        //        dmg = u.Damage(w, Commands.SelectedUnit, true);
+                        //        if (dmg >= Commands.SelectedUnit.HP)
+                        //        {
+                        //            upic.SetColor(StatusFontColorWarning);
+                        //        }
+                        //        else
+                        //        {
+                        //            upic.SetColor(StatusFontColorNormalString);
+                        //        }
+                        //        upic.Print(SrcFormatter.Format(dmg));
+                        //    }
 
-                        // 予測命中率
-                        if (!Expression.IsOptionDefined("予測命中率非表示"))
-                        {
-                            upic.SetColor(StatusFontColorAbilityName);
-                            upic.Print("命中率   ");
-                            upic.SetColor(StatusFontColorNormalString);
-                            prob = u.HitProbability(w, Commands.SelectedUnit, true);
-                            cprob = u.CriticalProbability(w, Commands.SelectedUnit);
-                            upic.Print(SrcFormatter.Format(GeneralLib.MinLng(prob, 100)) + "％（" + cprob + "％）");
-                        }
-                    }
-                    else
-                    {
-                        // 相手は反撃できない
-                        upic.SetColor(StatusFontColorAbilityName);
-                        if (!string.IsNullOrEmpty(def_mode))
-                        {
-                            upic.Print(def_mode);
-                        }
-                        else
-                        {
-                            upic.Print("反撃不能");
-                        }
-                        upic.SetColor(StatusFontColorNormalString);
-                        // サポートガードを受けられる？
-                        if (u.LookForSupportGuard(Commands.SelectedUnit, Commands.SelectedWeapon) is object)
-                        {
-                            upic.Print(" [援]");
-                        }
-                        else
-                        {
-                            upic.Print();
-                        }
+                        //    // 予測命中率
+                        //    if (!Expression.IsOptionDefined("予測命中率非表示"))
+                        //    {
+                        //        upic.SetColor(StatusFontColorAbilityName);
+                        //        upic.Print("命中率   ");
+                        //        upic.SetColor(StatusFontColorNormalString);
+                        //        prob = u.HitProbability(w, Commands.SelectedUnit, true);
+                        //        cprob = u.CriticalProbability(w, Commands.SelectedUnit);
+                        //        upic.Print(SrcFormatter.Format(GeneralLib.MinLng(prob, 100)) + "％（" + cprob + "％）");
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    // 相手は反撃できない
+                        //    upic.SetColor(StatusFontColorAbilityName);
+                        //    if (!string.IsNullOrEmpty(def_mode))
+                        //    {
+                        //        upic.Print(def_mode);
+                        //    }
+                        //    else
+                        //    {
+                        //        upic.Print("反撃不能");
+                        //    }
+                        //    upic.SetColor(StatusFontColorNormalString);
+                        //    // サポートガードを受けられる？
+                        //    if (u.LookForSupportGuard(Commands.SelectedUnit, Commands.SelectedWeapon) is object)
+                        //    {
+                        //        upic.Print(" [援]");
+                        //    }
+                        //    else
+                        //    {
+                        //        upic.Print();
+                        //    }
+                        //}
                     }
 
                 SkipAttackExpResult:
                     ;
 
                     // 武器一覧
-                    upic.CurrentY = upic.CurrentY + 8;
-                    upic.Print(Strings.Space(25));
-                    upic.SetColor(StatusFontColorAbilityName);
-                    upic.Print("攻撃 射程");
-                    upic.SetColor(StatusFontColorNormalString);
-
-                    warray = new int[(u.CountWeapon() + 1)];
-                    wpower = new int[(u.CountWeapon() + 1)];
-                    var loopTo20 = u.CountWeapon();
-                    for (i = 1; i <= loopTo20; i++)
+                    // TODO Impl
                     {
-                        wpower[i] = u.WeaponPower(i, "");
-                    }
+                        //upic.CurrentY = upic.CurrentY + 8;
+                        //upic.Print(Strings.Space(25));
+                        //upic.SetColor(StatusFontColorAbilityName);
+                        //upic.Print("攻撃 射程");
+                        //upic.SetColor(StatusFontColorNormalString);
 
-                    // 攻撃力でソート
-                    var loopTo21 = u.CountWeapon();
-                    for (i = 1; i <= loopTo21; i++)
-                    {
-                        var loopTo22 = (i - 1);
-                        for (j = 1; j <= loopTo22; j++)
-                        {
-                            if (wpower[i] > wpower[warray[i - j]])
-                            {
-                                break;
-                            }
-                            else if (wpower[i] == wpower[warray[i - j]])
-                            {
-                                if (u.Weapon(i).ENConsumption > 0)
-                                {
-                                    if (u.Weapon(i).ENConsumption >= u.Weapon(warray[i - j]).ENConsumption)
-                                    {
-                                        break;
-                                    }
-                                }
-                                else if (u.Weapon(i).Bullet > 0)
-                                {
-                                    if (u.Weapon(i).Bullet <= u.Weapon(warray[i - j]).Bullet)
-                                    {
-                                        break;
-                                    }
-                                }
-                                else if (u.Weapon((i - j)).ENConsumption == 0 && u.Weapon(warray[i - j]).Bullet == 0)
-                                {
-                                    break;
-                                }
-                            }
-                        }
+                        //warray = new int[(u.CountWeapon() + 1)];
+                        //wpower = new int[(u.CountWeapon() + 1)];
+                        //var loopTo20 = u.CountWeapon();
+                        //for (i = 1; i <= loopTo20; i++)
+                        //{
+                        //    wpower[i] = u.WeaponPower(i, "");
+                        //}
 
-                        var loopTo23 = (j - 1);
-                        for (k = 1; k <= loopTo23; k++)
-                            warray[i - k + 1] = warray[i - k];
-                        warray[i - j + 1] = i;
-                    }
+                        //// 攻撃力でソート
+                        //var loopTo21 = u.CountWeapon();
+                        //for (i = 1; i <= loopTo21; i++)
+                        //{
+                        //    var loopTo22 = (i - 1);
+                        //    for (j = 1; j <= loopTo22; j++)
+                        //    {
+                        //        if (wpower[i] > wpower[warray[i - j]])
+                        //        {
+                        //            break;
+                        //        }
+                        //        else if (wpower[i] == wpower[warray[i - j]])
+                        //        {
+                        //            if (u.Weapon(i).ENConsumption > 0)
+                        //            {
+                        //                if (u.Weapon(i).ENConsumption >= u.Weapon(warray[i - j]).ENConsumption)
+                        //                {
+                        //                    break;
+                        //                }
+                        //            }
+                        //            else if (u.Weapon(i).Bullet > 0)
+                        //            {
+                        //                if (u.Weapon(i).Bullet <= u.Weapon(warray[i - j]).Bullet)
+                        //                {
+                        //                    break;
+                        //                }
+                        //            }
+                        //            else if (u.Weapon((i - j)).ENConsumption == 0 && u.Weapon(warray[i - j]).Bullet == 0)
+                        //            {
+                        //                break;
+                        //            }
+                        //        }
+                        //    }
 
-                    // 個々の武器を表示
-                    var loopTo24 = u.CountWeapon();
-                    for (i = 1; i <= loopTo24; i++)
-                    {
-                        if (upic.CurrentY > 420)
-                        {
-                            break;
-                        }
+                        //    var loopTo23 = (j - 1);
+                        //    for (k = 1; k <= loopTo23; k++)
+                        //        warray[i - k + 1] = warray[i - k];
+                        //    warray[i - j + 1] = i;
+                        //}
 
-                        w = warray[i];
-                        if (!u.IsWeaponAvailable(w, "ステータス"))
-                        {
-                            // 習得していない技は表示しない
-                            if (!u.IsWeaponMastered(w))
-                            {
-                                goto NextWeapon;
-                            }
-                            // Disableコマンドで使用不可になった武器も同様
-                            if (u.IsDisabled(u.Weapon(w).Name))
-                            {
-                                goto NextWeapon;
-                            }
-                            // フォーメーションを満たしていない合体技も
-                            if (u.IsWeaponClassifiedAs(w, "合"))
-                            {
-                                if (!u.IsCombinationAttackAvailable(w, true))
-                                {
-                                    goto NextWeapon;
-                                }
-                            }
-                            upic.SetColor(StatusFontColorAbilityDisable);
-                        }
+                        //// 個々の武器を表示
+                        //var loopTo24 = u.CountWeapon();
+                        //for (i = 1; i <= loopTo24; i++)
+                        //{
+                        //    if (upic.CurrentY > 420)
+                        //    {
+                        //        break;
+                        //    }
 
-                        // 武器の表示
-                        if (u.WeaponPower(w, "") < 10000)
-                        {
-                            buf = GeneralLib.RightPaddedString(SrcFormatter.Format(u.WeaponNickname(w)), 25);
-                            string localLeftPaddedString19() { string argtarea = ""; string argbuf = SrcFormatter.Format(u.WeaponPower(w, argtarea)); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
+                        //    w = warray[i];
+                        //    if (!u.IsWeaponAvailable(w, "ステータス"))
+                        //    {
+                        //        // 習得していない技は表示しない
+                        //        if (!u.IsWeaponMastered(w))
+                        //        {
+                        //            goto NextWeapon;
+                        //        }
+                        //        // Disableコマンドで使用不可になった武器も同様
+                        //        if (u.IsDisabled(u.Weapon(w).Name))
+                        //        {
+                        //            goto NextWeapon;
+                        //        }
+                        //        // フォーメーションを満たしていない合体技も
+                        //        if (u.IsWeaponClassifiedAs(w, "合"))
+                        //        {
+                        //            if (!u.IsCombinationAttackAvailable(w, true))
+                        //            {
+                        //                goto NextWeapon;
+                        //            }
+                        //        }
+                        //        upic.SetColor(StatusFontColorAbilityDisable);
+                        //    }
 
-                            buf = buf + localLeftPaddedString19();
-                        }
-                        else
-                        {
-                            buf = GeneralLib.RightPaddedString(SrcFormatter.Format(u.WeaponNickname(w)), 24);
-                            string localLeftPaddedString20() { string argtarea = ""; string argbuf = SrcFormatter.Format(u.WeaponPower(w, argtarea)); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
+                        //    // 武器の表示
+                        //    if (u.WeaponPower(w, "") < 10000)
+                        //    {
+                        //        buf = GeneralLib.RightPaddedString(SrcFormatter.Format(u.WeaponNickname(w)), 25);
+                        //        string localLeftPaddedString19() { string argtarea = ""; string argbuf = SrcFormatter.Format(u.WeaponPower(w, argtarea)); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
-                            buf = buf + localLeftPaddedString20();
-                        }
+                        //        buf = buf + localLeftPaddedString19();
+                        //    }
+                        //    else
+                        //    {
+                        //        buf = GeneralLib.RightPaddedString(SrcFormatter.Format(u.WeaponNickname(w)), 24);
+                        //        string localLeftPaddedString20() { string argtarea = ""; string argbuf = SrcFormatter.Format(u.WeaponPower(w, argtarea)); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                        // 武器が特殊効果を持つ場合は略称で表記
-                        if (u.WeaponMaxRange(w) > 1)
-                        {
-                            string localLeftPaddedString21() { string argbuf = SrcFormatter.Format(u.Weapon(w).MinRange) + "-" + SrcFormatter.Format(u.WeaponMaxRange(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 34 - LenB(Strings.StrConv(buf, vbFromUnicode))); return ret; }
+                        //        buf = buf + localLeftPaddedString20();
+                        //    }
 
-                            buf = buf + localLeftPaddedString21();
-                            // 移動後攻撃可能
-                            if (u.IsWeaponClassifiedAs(w, "Ｐ"))
-                            {
-                                buf = buf + "P";
-                            }
-                        }
-                        else
-                        {
-                            buf = buf + GeneralLib.LeftPaddedString("1", 34 - LenB(Strings.StrConv(buf, vbFromUnicode)));
-                            // 移動後攻撃不可
-                            if (u.IsWeaponClassifiedAs(w, "Ｑ"))
-                            {
-                                buf = buf + "Q";
-                            }
-                        }
-                        // マップ攻撃
-                        if (u.IsWeaponClassifiedAs(w, "Ｍ"))
-                        {
-                            buf = buf + "M";
-                        }
-                        // 特殊効果
-                        wclass = u.Weapon(w).Class;
-                        var loopTo25 = u.CountWeaponEffect(w);
-                        for (j = 1; j <= loopTo25; j++)
-                            buf = buf + "+";
-                        upic.Print(buf);
-                        upic.SetColor(StatusFontColorNormalString);
-                    NextWeapon:
-                        ;
+                        //    // 武器が特殊効果を持つ場合は略称で表記
+                        //    if (u.WeaponMaxRange(w) > 1)
+                        //    {
+                        //        string localLeftPaddedString21() { string argbuf = SrcFormatter.Format(u.Weapon(w).MinRange) + "-" + SrcFormatter.Format(u.WeaponMaxRange(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 34 - LenB(Strings.StrConv(buf, vbFromUnicode))); return ret; }
+
+                        //        buf = buf + localLeftPaddedString21();
+                        //        // 移動後攻撃可能
+                        //        if (u.IsWeaponClassifiedAs(w, "Ｐ"))
+                        //        {
+                        //            buf = buf + "P";
+                        //        }
+                        //    }
+                        //    else
+                        //    {
+                        //        buf = buf + GeneralLib.LeftPaddedString("1", 34 - LenB(Strings.StrConv(buf, vbFromUnicode)));
+                        //        // 移動後攻撃不可
+                        //        if (u.IsWeaponClassifiedAs(w, "Ｑ"))
+                        //        {
+                        //            buf = buf + "Q";
+                        //        }
+                        //    }
+                        //    // マップ攻撃
+                        //    if (u.IsWeaponClassifiedAs(w, "Ｍ"))
+                        //    {
+                        //        buf = buf + "M";
+                        //    }
+                        //    // 特殊効果
+                        //    wclass = u.Weapon(w).Class;
+                        //    var loopTo25 = u.CountWeaponEffect(w);
+                        //    for (j = 1; j <= loopTo25; j++)
+                        //        buf = buf + "+";
+                        //    upic.Print(buf);
+                        //    upic.SetColor(StatusFontColorNormalString);
+                        //NextWeapon:
+                        //    ;
+                        //}
                     }
 
                     // アビリティ一覧
-                    var loopTo26 = u.CountAbility();
-                    for (var i = 1; i <= loopTo26; i++)
+                    // TODO Impl
                     {
-                        if (upic.CurrentY > 420)
-                        {
-                            break;
-                        }
+                        //var loopTo26 = u.CountAbility();
+                        //for (var i = 1; i <= loopTo26; i++)
+                        //{
+                        //    if (upic.CurrentY > 420)
+                        //    {
+                        //        break;
+                        //    }
 
-                        if (!u.IsAbilityAvailable(i, "ステータス"))
-                        {
-                            // 習得していない技は表示しない
-                            if (!u.IsAbilityMastered(i))
-                            {
-                                goto NextAbility;
-                            }
-                            // Disableコマンドで使用不可になった武器も同様
-                            if (u.IsDisabled(u.Ability(i).Name))
-                            {
-                                goto NextAbility;
-                            }
-                            // フォーメーションを満たしていない合体技も
-                            if (u.IsAbilityClassifiedAs(i, "合"))
-                            {
-                                if (!u.IsCombinationAbilityAvailable(i, true))
-                                {
-                                    goto NextAbility;
-                                }
-                            }
-                            upic.SetColor(StatusFontColorAbilityDisable);
-                        }
+                        //    if (!u.IsAbilityAvailable(i, "ステータス"))
+                        //    {
+                        //        // 習得していない技は表示しない
+                        //        if (!u.IsAbilityMastered(i))
+                        //        {
+                        //            goto NextAbility;
+                        //        }
+                        //        // Disableコマンドで使用不可になった武器も同様
+                        //        if (u.IsDisabled(u.Ability(i).Name))
+                        //        {
+                        //            goto NextAbility;
+                        //        }
+                        //        // フォーメーションを満たしていない合体技も
+                        //        if (u.IsAbilityClassifiedAs(i, "合"))
+                        //        {
+                        //            if (!u.IsCombinationAbilityAvailable(i, true))
+                        //            {
+                        //                goto NextAbility;
+                        //            }
+                        //        }
+                        //        upic.SetColor(StatusFontColorAbilityDisable);
+                        //    }
 
-                        // アビリティの表示
-                        string localRightPaddedString18() { string argbuf = SrcFormatter.Format(u.AbilityNickname(i)); var ret = GeneralLib.RightPaddedString(argbuf, 29); return ret; }
+                        //    // アビリティの表示
+                        //    string localRightPaddedString18() { string argbuf = SrcFormatter.Format(u.AbilityNickname(i)); var ret = GeneralLib.RightPaddedString(argbuf, 29); return ret; }
 
-                        upic.Print(localRightPaddedString18());
-                        if (u.AbilityMaxRange(i) > 1)
-                        {
-                            string localLeftPaddedString22() { string argbuf = SrcFormatter.Format(u.AbilityMinRange(i)) + "-" + SrcFormatter.Format(u.AbilityMaxRange(i)); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
+                        //    upic.Print(localRightPaddedString18());
+                        //    if (u.AbilityMaxRange(i) > 1)
+                        //    {
+                        //        string localLeftPaddedString22() { string argbuf = SrcFormatter.Format(u.AbilityMinRange(i)) + "-" + SrcFormatter.Format(u.AbilityMaxRange(i)); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                            upic.Print(localLeftPaddedString22());
-                            if (u.IsAbilityClassifiedAs(i, "Ｐ"))
-                            {
-                                upic.Print("P");
-                            }
+                        //        upic.Print(localLeftPaddedString22());
+                        //        if (u.IsAbilityClassifiedAs(i, "Ｐ"))
+                        //        {
+                        //            upic.Print("P");
+                        //        }
 
-                            if (u.IsAbilityClassifiedAs(i, "Ｍ"))
-                            {
-                                upic.Print("M");
-                            }
-                            upic.Print();
-                        }
-                        else if (u.AbilityMaxRange(i) == 1)
-                        {
-                            upic.Print("    1");
-                            if (u.IsAbilityClassifiedAs(i, "Ｑ"))
-                            {
-                                upic.Print("Q");
-                            }
-                            if (u.IsAbilityClassifiedAs(i, "Ｍ"))
-                            {
-                                upic.Print("M");
-                            }
-                            upic.Print();
-                        }
-                        else
-                        {
-                            upic.Print("    -");
-                        }
-                        upic.SetColor(StatusFontColorNormalString);
-                    NextAbility:
-                        ;
+                        //        if (u.IsAbilityClassifiedAs(i, "Ｍ"))
+                        //        {
+                        //            upic.Print("M");
+                        //        }
+                        //        upic.Print();
+                        //    }
+                        //    else if (u.AbilityMaxRange(i) == 1)
+                        //    {
+                        //        upic.Print("    1");
+                        //        if (u.IsAbilityClassifiedAs(i, "Ｑ"))
+                        //        {
+                        //            upic.Print("Q");
+                        //        }
+                        //        if (u.IsAbilityClassifiedAs(i, "Ｍ"))
+                        //        {
+                        //            upic.Print("M");
+                        //        }
+                        //        upic.Print();
+                        //    }
+                        //    else
+                        //    {
+                        //        upic.Print("    -");
+                        //    }
+                        //    upic.SetColor(StatusFontColorNormalString);
+                        //NextAbility:
+                        //    ;
+                        //}
                     }
-
 
                 UpdateStatusWindow:
                     ;

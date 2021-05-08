@@ -243,37 +243,12 @@ namespace SRCCore.Units
         //            IsAllFeatureLevelSpecifiedRet = false;
         //        }
 
-        //        // 特殊能力が必要条件を満たしているか
-        //        public bool IsFeatureActivated(string Index)
-        //        {
-        //            bool IsFeatureActivatedRet = default;
-        //            FeatureData fd;
-        //            ;
-        //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-        //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 38217
-
-
-        //            Input:
-
-        //                    On Error GoTo ErrorHandler
-
-        //             */
-        //            fd = (FeatureData)colAllFeature[Index];
-        //            foreach (FeatureData fd2 in colFeature)
-        //            {
-        //                if (ReferenceEquals(fd, fd2))
-        //                {
-        //                    IsFeatureActivatedRet = true;
-        //                    return IsFeatureActivatedRet;
-        //                }
-        //            }
-
-        //            IsFeatureActivatedRet = false;
-        //            return IsFeatureActivatedRet;
-        //        ErrorHandler:
-        //            ;
-        //            IsFeatureActivatedRet = false;
-        //        }
+        // 特殊能力が必要条件を満たしているか
+        public bool IsFeatureActivated(FeatureData fd)
+        {
+            // XXX 同一インスタンスじゃないかも
+            return AllFeatures.Contains(fd);
+        }
 
         // 特殊能力を登録
         private void AddFeatures(IList<FeatureData> fdc, bool is_item = false)
