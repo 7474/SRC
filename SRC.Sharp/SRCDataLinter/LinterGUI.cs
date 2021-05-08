@@ -458,6 +458,11 @@ namespace SRCDataLinter
             return false;
         }
 
+        public void TransionScrean(TransionPattern pattern, Color fillColor, int frame, int frameMillis)
+        {
+            throw new NotImplementedException();
+        }
+
         public void UnlockGUI()
         {
             throw new NotImplementedException();
