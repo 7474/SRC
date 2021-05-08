@@ -6,6 +6,7 @@ using SRCCore.Lib;
 using SRCCore.VB;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace SRCCore.Models
 {
@@ -47,6 +48,12 @@ namespace SRCCore.Models
         public AliasDataType Item(string Index)
         {
             return colAliasDataList[Index];
+        }
+
+        // 置き換え元が一致するエイリアスがあればその名前を、なければ引数値をそのまま返す
+        public string RefName(string Index)
+        {
+            return Items.FirstOrDefault(x => x.Elements.First().strAliasType == Index)?.Name ?? Index;
         }
 
         // エリアスデータリストに指定したデータが定義されているか？
