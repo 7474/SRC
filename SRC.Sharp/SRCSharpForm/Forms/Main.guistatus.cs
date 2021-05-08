@@ -3676,7 +3676,7 @@ namespace SRCSharpForm
                         //    upic.SetColor(StatusFontColorAbilityName);
                         //    upic.Print("反撃     ");
                         //    upic.SetColor(StatusFontColorNormalString);
-                        //    upic.Print(u.WeaponNickname(w));
+                        //    upic.Print(uw.WeaponNickname());
                         //    // サポートガードを受けられる？
                         //    if (u.LookForSupportGuard(Commands.SelectedUnit, Commands.SelectedWeapon) is object)
                         //    {
@@ -3692,7 +3692,7 @@ namespace SRCSharpForm
                         //    {
                         //        upic.SetColor(StatusFontColorAbilityName);
                         //        upic.Print("ダメージ ");
-                        //        dmg = u.Damage(w, Commands.SelectedUnit, true);
+                        //        dmg = uw.Damage( Commands.SelectedUnit, true);
                         //        if (dmg >= Commands.SelectedUnit.HP)
                         //        {
                         //            upic.SetColor(StatusFontColorWarning);
@@ -3710,8 +3710,8 @@ namespace SRCSharpForm
                         //        upic.SetColor(StatusFontColorAbilityName);
                         //        upic.Print("命中率   ");
                         //        upic.SetColor(StatusFontColorNormalString);
-                        //        prob = u.HitProbability(w, Commands.SelectedUnit, true);
-                        //        cprob = u.CriticalProbability(w, Commands.SelectedUnit);
+                        //        prob = uw.HitProbability( Commands.SelectedUnit, true);
+                        //        cprob = uw.CriticalProbability( Commands.SelectedUnit);
                         //        upic.Print(SrcFormatter.Format(GeneralLib.MinLng(prob, 100)) + "％（" + cprob + "％）");
                         //    }
                         //}
@@ -3744,224 +3744,172 @@ namespace SRCSharpForm
                     ;
 
                     // 武器一覧
-                    // TODO Impl
                     {
-                        //upic.CurrentY = upic.CurrentY + 8;
-                        //upic.Print(Strings.Space(25));
-                        //upic.SetColor(StatusFontColorAbilityName);
-                        //upic.Print("攻撃 射程");
-                        //upic.SetColor(StatusFontColorNormalString);
+                        upic.ClearGrid();
+                        upic.Print();
+                        upic.SetColor(StatusFontColorAbilityName);
+                        upic.Print(Strings.Space(25) + "攻撃 射程");
+                        upic.SetColor(StatusFontColorNormalString);
 
-                        //warray = new int[(u.CountWeapon() + 1)];
-                        //wpower = new int[(u.CountWeapon() + 1)];
-                        //var loopTo20 = u.CountWeapon();
-                        //for (i = 1; i <= loopTo20; i++)
-                        //{
-                        //    wpower[i] = u.WeaponPower(i, "");
-                        //}
+                        // 攻撃力, 消費EN, 残弾数でソート
+                        var weapons = u.Weapons
+                            .OrderBy(x => x.WeaponPower("") * 1000 * 100
+                                + x.WeaponENConsumption() * 100
+                                + x.Bullet())
+                            .ToList();
+                        // 個々の武器を表示
+                        foreach (var uw in weapons)
+                        {
+                            // XXX 枠の外なら無視
+                            //if (upic.CurrentY > 420)
+                            //{
+                            //    break;
+                            //}
 
-                        //// 攻撃力でソート
-                        //var loopTo21 = u.CountWeapon();
-                        //for (i = 1; i <= loopTo21; i++)
-                        //{
-                        //    var loopTo22 = (i - 1);
-                        //    for (j = 1; j <= loopTo22; j++)
-                        //    {
-                        //        if (wpower[i] > wpower[warray[i - j]])
-                        //        {
-                        //            break;
-                        //        }
-                        //        else if (wpower[i] == wpower[warray[i - j]])
-                        //        {
-                        //            if (u.Weapon(i).ENConsumption > 0)
-                        //            {
-                        //                if (u.Weapon(i).ENConsumption >= u.Weapon(warray[i - j]).ENConsumption)
-                        //                {
-                        //                    break;
-                        //                }
-                        //            }
-                        //            else if (u.Weapon(i).Bullet > 0)
-                        //            {
-                        //                if (u.Weapon(i).Bullet <= u.Weapon(warray[i - j]).Bullet)
-                        //                {
-                        //                    break;
-                        //                }
-                        //            }
-                        //            else if (u.Weapon((i - j)).ENConsumption == 0 && u.Weapon(warray[i - j]).Bullet == 0)
-                        //            {
-                        //                break;
-                        //            }
-                        //        }
-                        //    }
+                            if (!uw.IsWeaponAvailable("ステータス"))
+                            {
+                                // 習得していない技は表示しない
+                                if (!uw.IsWeaponMastered())
+                                {
+                                    goto NextWeapon;
+                                }
+                                // Disableコマンドで使用不可になった武器も同様
+                                if (u.IsDisabled(uw.Name))
+                                {
+                                    goto NextWeapon;
+                                }
+                                // フォーメーションを満たしていない合体技も
+                                if (uw.IsWeaponClassifiedAs("合"))
+                                {
+                                    if (!uw.IsCombinationAttackAvailable(true))
+                                    {
+                                        goto NextWeapon;
+                                    }
+                                }
+                                upic.SetColor(StatusFontColorAbilityDisable);
+                            }
 
-                        //    var loopTo23 = (j - 1);
-                        //    for (k = 1; k <= loopTo23; k++)
-                        //        warray[i - k + 1] = warray[i - k];
-                        //    warray[i - j + 1] = i;
-                        //}
+                            // 武器の表示
+                            if (uw.WeaponPower("") < 10000)
+                            {
+                                buf = GeneralLib.RightPaddedString(SrcFormatter.Format(uw.WeaponNickname()), 25);
+                                buf = buf + GeneralLib.LeftPaddedString(SrcFormatter.Format(uw.WeaponPower("")), 4);
+                            }
+                            else
+                            {
+                                buf = GeneralLib.RightPaddedString(SrcFormatter.Format(uw.WeaponNickname()), 24);
+                                buf = buf + GeneralLib.LeftPaddedString(SrcFormatter.Format(uw.WeaponPower("")), 5);
+                            }
 
-                        //// 個々の武器を表示
-                        //var loopTo24 = u.CountWeapon();
-                        //for (i = 1; i <= loopTo24; i++)
-                        //{
-                        //    if (upic.CurrentY > 420)
-                        //    {
-                        //        break;
-                        //    }
-
-                        //    w = warray[i];
-                        //    if (!u.IsWeaponAvailable(w, "ステータス"))
-                        //    {
-                        //        // 習得していない技は表示しない
-                        //        if (!u.IsWeaponMastered(w))
-                        //        {
-                        //            goto NextWeapon;
-                        //        }
-                        //        // Disableコマンドで使用不可になった武器も同様
-                        //        if (u.IsDisabled(u.Weapon(w).Name))
-                        //        {
-                        //            goto NextWeapon;
-                        //        }
-                        //        // フォーメーションを満たしていない合体技も
-                        //        if (u.IsWeaponClassifiedAs(w, "合"))
-                        //        {
-                        //            if (!u.IsCombinationAttackAvailable(w, true))
-                        //            {
-                        //                goto NextWeapon;
-                        //            }
-                        //        }
-                        //        upic.SetColor(StatusFontColorAbilityDisable);
-                        //    }
-
-                        //    // 武器の表示
-                        //    if (u.WeaponPower(w, "") < 10000)
-                        //    {
-                        //        buf = GeneralLib.RightPaddedString(SrcFormatter.Format(u.WeaponNickname(w)), 25);
-                        //        string localLeftPaddedString19() { string argtarea = ""; string argbuf = SrcFormatter.Format(u.WeaponPower(w, argtarea)); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
-
-                        //        buf = buf + localLeftPaddedString19();
-                        //    }
-                        //    else
-                        //    {
-                        //        buf = GeneralLib.RightPaddedString(SrcFormatter.Format(u.WeaponNickname(w)), 24);
-                        //        string localLeftPaddedString20() { string argtarea = ""; string argbuf = SrcFormatter.Format(u.WeaponPower(w, argtarea)); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
-
-                        //        buf = buf + localLeftPaddedString20();
-                        //    }
-
-                        //    // 武器が特殊効果を持つ場合は略称で表記
-                        //    if (u.WeaponMaxRange(w) > 1)
-                        //    {
-                        //        string localLeftPaddedString21() { string argbuf = SrcFormatter.Format(u.Weapon(w).MinRange) + "-" + SrcFormatter.Format(u.WeaponMaxRange(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 34 - LenB(Strings.StrConv(buf, vbFromUnicode))); return ret; }
-
-                        //        buf = buf + localLeftPaddedString21();
-                        //        // 移動後攻撃可能
-                        //        if (u.IsWeaponClassifiedAs(w, "Ｐ"))
-                        //        {
-                        //            buf = buf + "P";
-                        //        }
-                        //    }
-                        //    else
-                        //    {
-                        //        buf = buf + GeneralLib.LeftPaddedString("1", 34 - LenB(Strings.StrConv(buf, vbFromUnicode)));
-                        //        // 移動後攻撃不可
-                        //        if (u.IsWeaponClassifiedAs(w, "Ｑ"))
-                        //        {
-                        //            buf = buf + "Q";
-                        //        }
-                        //    }
-                        //    // マップ攻撃
-                        //    if (u.IsWeaponClassifiedAs(w, "Ｍ"))
-                        //    {
-                        //        buf = buf + "M";
-                        //    }
-                        //    // 特殊効果
-                        //    wclass = u.Weapon(w).Class;
-                        //    var loopTo25 = u.CountWeaponEffect(w);
-                        //    for (j = 1; j <= loopTo25; j++)
-                        //        buf = buf + "+";
-                        //    upic.Print(buf);
-                        //    upic.SetColor(StatusFontColorNormalString);
-                        //NextWeapon:
-                        //    ;
-                        //}
+                            // 武器が特殊効果を持つ場合は略称で表記
+                            if (uw.WeaponMaxRange() > 1)
+                            {
+                                var range = SrcFormatter.Format(uw.WeaponMinRange()) + "-" + SrcFormatter.Format(uw.WeaponMaxRange());
+                                buf = buf + GeneralLib.LeftPaddedString(range, 34 - GeneralLib.StrWidth(buf));
+                                // 移動後攻撃可能
+                                if (uw.IsWeaponClassifiedAs("Ｐ"))
+                                {
+                                    buf = buf + "P";
+                                }
+                            }
+                            else
+                            {
+                                buf = buf + GeneralLib.LeftPaddedString("1", 34 - GeneralLib.StrWidth(buf));
+                                // 移動後攻撃不可
+                                if (uw.IsWeaponClassifiedAs("Ｑ"))
+                                {
+                                    buf = buf + "Q";
+                                }
+                            }
+                            // マップ攻撃
+                            if (uw.IsWeaponClassifiedAs("Ｍ"))
+                            {
+                                buf = buf + "M";
+                            }
+                            // 特殊効果
+                            var wclass = uw.WeaponClass();
+                            buf += Strings.StrDup("+", uw.CountWeaponEffect());
+                            upic.Print(buf);
+                            upic.Print();
+                            upic.SetColor(StatusFontColorNormalString);
+                        NextWeapon:
+                            ;
+                        }
                     }
 
                     // アビリティ一覧
-                    // TODO Impl
                     {
-                        //var loopTo26 = u.CountAbility();
-                        //for (var i = 1; i <= loopTo26; i++)
-                        //{
-                        //    if (upic.CurrentY > 420)
-                        //    {
-                        //        break;
-                        //    }
+                        upic.ClearGrid();
+                        var abilities = u.Abilities;
+                        foreach (var ua in abilities)
+                        {
+                            // XXX 枠の外なら無視
+                            //if (upic.CurrentY > 420)
+                            //{
+                            //    break;
+                            //}
 
-                        //    if (!u.IsAbilityAvailable(i, "ステータス"))
-                        //    {
-                        //        // 習得していない技は表示しない
-                        //        if (!u.IsAbilityMastered(i))
-                        //        {
-                        //            goto NextAbility;
-                        //        }
-                        //        // Disableコマンドで使用不可になった武器も同様
-                        //        if (u.IsDisabled(u.Ability(i).Name))
-                        //        {
-                        //            goto NextAbility;
-                        //        }
-                        //        // フォーメーションを満たしていない合体技も
-                        //        if (u.IsAbilityClassifiedAs(i, "合"))
-                        //        {
-                        //            if (!u.IsCombinationAbilityAvailable(i, true))
-                        //            {
-                        //                goto NextAbility;
-                        //            }
-                        //        }
-                        //        upic.SetColor(StatusFontColorAbilityDisable);
-                        //    }
+                            if (!ua.IsAbilityAvailable("ステータス"))
+                            {
+                                // 習得していない技は表示しない
+                                if (!ua.IsAbilityMastered())
+                                {
+                                    goto NextAbility;
+                                }
+                                // Disableコマンドで使用不可になった武器も同様
+                                if (u.IsDisabled(ua.Data.Name))
+                                {
+                                    goto NextAbility;
+                                }
+                                // フォーメーションを満たしていない合体技も
+                                if (ua.IsAbilityClassifiedAs("合"))
+                                {
+                                    if (!ua.IsCombinationAbilityAvailable(true))
+                                    {
+                                        goto NextAbility;
+                                    }
+                                }
+                                upic.SetColor(StatusFontColorAbilityDisable);
+                            }
 
-                        //    // アビリティの表示
-                        //    string localRightPaddedString18() { string argbuf = SrcFormatter.Format(u.AbilityNickname(i)); var ret = GeneralLib.RightPaddedString(argbuf, 29); return ret; }
+                            // アビリティの表示
+                            // XXX 終端空白無視されてそう。どうすっかな。
+                            upic.Print(GeneralLib.RightPaddedString(SrcFormatter.Format(ua.AbilityNickname()), 29));
+                            if (ua.AbilityMaxRange() > 1)
+                            {
+                                upic.Print(GeneralLib.LeftPaddedString(SrcFormatter.Format(ua.AbilityMinRange()) + "-" + SrcFormatter.Format(ua.AbilityMaxRange()), 5));
+                                if (ua.IsAbilityClassifiedAs("Ｐ"))
+                                {
+                                    upic.Print("P");
+                                }
 
-                        //    upic.Print(localRightPaddedString18());
-                        //    if (u.AbilityMaxRange(i) > 1)
-                        //    {
-                        //        string localLeftPaddedString22() { string argbuf = SrcFormatter.Format(u.AbilityMinRange(i)) + "-" + SrcFormatter.Format(u.AbilityMaxRange(i)); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
-
-                        //        upic.Print(localLeftPaddedString22());
-                        //        if (u.IsAbilityClassifiedAs(i, "Ｐ"))
-                        //        {
-                        //            upic.Print("P");
-                        //        }
-
-                        //        if (u.IsAbilityClassifiedAs(i, "Ｍ"))
-                        //        {
-                        //            upic.Print("M");
-                        //        }
-                        //        upic.Print();
-                        //    }
-                        //    else if (u.AbilityMaxRange(i) == 1)
-                        //    {
-                        //        upic.Print("    1");
-                        //        if (u.IsAbilityClassifiedAs(i, "Ｑ"))
-                        //        {
-                        //            upic.Print("Q");
-                        //        }
-                        //        if (u.IsAbilityClassifiedAs(i, "Ｍ"))
-                        //        {
-                        //            upic.Print("M");
-                        //        }
-                        //        upic.Print();
-                        //    }
-                        //    else
-                        //    {
-                        //        upic.Print("    -");
-                        //    }
-                        //    upic.SetColor(StatusFontColorNormalString);
-                        //NextAbility:
-                        //    ;
-                        //}
+                                if (ua.IsAbilityClassifiedAs("Ｍ"))
+                                {
+                                    upic.Print("M");
+                                }
+                                upic.Print();
+                            }
+                            else if (ua.AbilityMaxRange() == 1)
+                            {
+                                upic.Print("    1");
+                                if (ua.IsAbilityClassifiedAs("Ｑ"))
+                                {
+                                    upic.Print("Q");
+                                }
+                                if (ua.IsAbilityClassifiedAs("Ｍ"))
+                                {
+                                    upic.Print("M");
+                                }
+                                upic.Print();
+                            }
+                            else
+                            {
+                                upic.Print("    -");
+                            }
+                            upic.SetColor(StatusFontColorNormalString);
+                        NextAbility:
+                            ;
+                        }
                     }
 
                 UpdateStatusWindow:
