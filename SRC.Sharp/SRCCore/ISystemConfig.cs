@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,6 +7,8 @@ namespace SRCCore
     // システムオプション
     public interface ISystemConfig
     {
+        bool SRCCompatibilityMode { get; set; }
+
         // 敵フェイズにはＢＧＭを変更しないか
         bool KeepEnemyBGM { get; set; }
 

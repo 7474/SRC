@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using SRCCore.CmdDatas;
 using SRCCore.CmdDatas.Commands;
+using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.VB;
@@ -1189,7 +1190,7 @@ namespace SRCCore.Events
             var lineNumber = -1;
             try
             {
-                using (var stream = new FileStream(fname, FileMode.Open))
+                using (var stream = SRC.FileSystem.OpenText(SRC.SystemConfig.SRCCompatibilityMode, fname))
                 using (var reader = new SrcEveReader(fname, stream))
                 {
                     while (reader.HasMore)
