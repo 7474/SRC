@@ -1,3 +1,4 @@
+using SRCSharpForm.Extensions;
 using System.Drawing;
 
 namespace SRCSharpForm.Lib
@@ -79,8 +80,7 @@ namespace SRCSharpForm.Lib
 
         public void Print(string str)
         {
-            // XXX MeasureString の余白解決
-            var textSize = g.MeasureString(str, currentFont);
+            var textSize = g.MeasureStringWithoutRightMargin(str, currentFont);
             if (currentPoint.X > 0 && g.VisibleClipBounds.Width < currentPoint.X + textSize.Width)
             {
                 Print();
