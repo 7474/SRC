@@ -333,6 +333,11 @@ namespace SRCCore.Units
         // ユニットリストをアップデート
         public void Update()
         {
+            // XXX 仮処理しておく
+            foreach(var u in Items)
+            {
+                u.Update();
+            }
             // TODO Impl Update
             //            Unit u;
             //            int k, i, j, n;

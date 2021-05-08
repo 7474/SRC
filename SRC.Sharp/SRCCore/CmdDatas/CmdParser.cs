@@ -207,10 +207,10 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "fadein":
-                        return new NotImplementedCmd(src, data);
+                        return new FadeInCmd(src, data);
 
                     case "fadeout":
-                        return new NotImplementedCmd(src, data);
+                        return new FadeOutCmd(src, data);
 
                     case "fillcolor":
                         return new NotImplementedCmd(src, data);
@@ -605,10 +605,10 @@ namespace SRCCore.CmdDatas
                         return new WaterCmd(src, data);
 
                     case "whitein":
-                        return new NotImplementedCmd(src, data);
+                        return new WhiteInCmd(src, data);
 
                     case "whiteout":
-                        return new NotImplementedCmd(src, data);
+                        return new WhiteOutCmd(src, data);
 
                     case "write":
                         return new NotImplementedCmd(src, data);

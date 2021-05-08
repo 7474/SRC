@@ -1385,7 +1385,7 @@ namespace SRCSharpForm
                     var offset = new Point();
                     offset.Y = textMargin * 8;
                     upic.SetFont(HeadingFont);
-                    upic.Print(p.get_Nickname(false));
+                    upic.Print(u.Nickname0);
                     upic.Print();
 
                     upic.SetFont(StatusSmallFont);

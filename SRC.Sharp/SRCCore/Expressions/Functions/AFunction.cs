@@ -34,7 +34,7 @@ namespace SRCCore.Expressions.Functions
         {
             Units.Unit unit = null;
 
-            if (OptionArgCount <= pcount)
+            if (OptionArgCount >= pcount)
             {
                 unit = SRC.Event.SelectedUnitForEvent;
             }
@@ -65,7 +65,7 @@ namespace SRCCore.Expressions.Functions
         {
             Pilots.Pilot pilot = null;
 
-            if (OptionArgCount <= pcount)
+            if (OptionArgCount >= pcount)
             {
                 pilot = SRC.Event.SelectedUnitForEvent?.MainPilot();
             }

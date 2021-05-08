@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 using SRCCore.Units;
+using System.Linq;
 
 namespace SRCCore.Pilots
 {
@@ -108,57 +109,43 @@ namespace SRCCore.Pilots
                 return;
             }
 
-            // TODO Impl
-            //{
-            //    var withBlock = Unit;
-            //    var loopTo = withBlock.CountSupport();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        if (ReferenceEquals(withBlock.Support(i), this))
-            //        {
-            //            // サポートパイロットとして乗り込んでいる場合
-            //            withBlock.DeleteSupport(i);
-            //            withBlock.Update();
-            //            // UPGRADE_NOTE: オブジェクト Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //            Unit = null;
-            //            Update();
-            //            return;
-            //        }
-            //    }
+            var u = Unit;
+            var loopTo = u.CountSupport();
+            if (u.Supports.Any(x => x == this))
+            {
+                // サポートパイロットとして乗り込んでいる場合
+                u.DeleteSupport(this);
+                u.Update();
+                Unit = null;
+                Update();
+                return;
+            }
 
-            //    // 出撃していた場合は退却
-            //    if (!without_leave)
-            //    {
-            //        if (withBlock.Status == "出撃")
-            //        {
-            //            withBlock.Status = "待機";
-            //            // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //            Map.MapDataForUnit[withBlock.x, withBlock.y] = null;
-            //            GUI.EraseUnitBitmap(withBlock.x, withBlock.y, false);
-            //        }
-            //    }
+            // 出撃していた場合は退却
+            if (!without_leave)
+            {
+                if (u.Status == "出撃")
+                {
+                    u.Status = "待機";
+                    // XXX 外から操作したいものではない
+                    SRC.Map.MapDataForUnit[u.x, u.y] = null;
+                    GUI.EraseUnitBitmap(u.x, u.y, false);
+                }
+            }
 
-            //    // 通常のパイロットの場合は、そのユニットに乗っていた他のパイロットも降ろされる
-            //    var loopTo1 = withBlock.CountPilot();
-            //    for (i = 1; i <= loopTo1; i++)
-            //    {
-            //        // UPGRADE_NOTE: オブジェクト Unit.Pilot().Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        withBlock.Pilot(1).Unit = null;
-            //        withBlock.DeletePilot(1);
-            //    }
+            // 通常のパイロットの場合は、そのユニットに乗っていた他のパイロットも降ろされる
+            foreach (var p in u.Pilots)
+            {
+                p.Unit = null;
+                u.DeletePilot(p);
+            }
+            foreach (var p in u.Supports)
+            {
+                p.Unit = null;
+                u.DeleteSupport(p);
+            }
+            u.Update();
 
-            //    var loopTo2 = withBlock.CountSupport();
-            //    for (i = 1; i <= loopTo2; i++)
-            //    {
-            //        // UPGRADE_NOTE: オブジェクト Unit.Support().Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        withBlock.Support(1).Unit = null;
-            //        withBlock.DeleteSupport(1);
-            //    }
-
-            //    withBlock.Update();
-            //}
-
-            // UPGRADE_NOTE: オブジェクト Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             Unit = null;
             Update();
         }

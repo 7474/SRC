@@ -39,14 +39,14 @@ namespace SRCCore.VB
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.instr?view=net-5.0
         public static int InStr(string String1, string String2)
         {
-            return InStr(1, String1, String2);
+            return InStr(1, String1 ?? "", String2 ?? "");
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.instr?view=net-5.0
         public static int InStr(int Start, string String1, string String2)
         {
             // .NET Core と .NET 5 で同環境でも比較設定の規定値が異なっていそう。
-            return String1.IndexOf(String2, Start - 1, StringComparison.Ordinal) + 1;
+            return (String1 ?? "").IndexOf(String2 ?? "", Start - 1, StringComparison.Ordinal) + 1;
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.lcase?view=net-5.0

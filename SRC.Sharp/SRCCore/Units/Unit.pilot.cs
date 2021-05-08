@@ -17,9 +17,9 @@ namespace SRCCore.Units
         }
 
         // パイロットを削除
-        public void DeletePilot(string Index)
+        public void DeletePilot(Pilot p)
         {
-            colPilot.Remove(Index);
+            colPilot.Remove(p);
         }
 
         //// パイロットの入れ替え
