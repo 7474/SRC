@@ -57,6 +57,8 @@ namespace SRCSharpForm
         private Brush StatusAbilityEnableBrush = new SolidBrush(Color.FromArgb(0, 0, 200));
         private Brush StatusAbilityDisableBrush = new SolidBrush(Color.FromArgb(150, 0, 0));
 
+        private const float UnitStatusGridColumnWidth = 112f;
+
         public void DisplayGlobalStatus()
         {
             ClearUnitStatus();
@@ -234,7 +236,6 @@ namespace SRCSharpForm
 
             try
             {
-
                 using (var pilotG = Graphics.FromImage(picPilotStatus.NewImageIfNull().Image))
                 using (var unitG = Graphics.FromImage(picUnitStatus.NewImageIfNull().Image))
                 {
@@ -244,8 +245,8 @@ namespace SRCSharpForm
                     var textMargin = StatusFont.Height;
                     var smallMargin = StatusSmallFont.Height;
 
-                    var ppic = new Printer(pilotG, StatusFont, StatusFontColorNormalString);
-                    var upic = new Printer(unitG, StatusFont, StatusFontColorNormalString);
+                    var ppic = new Printer(pilotG, StatusFont, StatusFontColorNormalString, UnitStatusGridColumnWidth);
+                    var upic = new Printer(unitG, StatusFont, StatusFontColorNormalString, UnitStatusGridColumnWidth);
 
                     // パイロットが乗っていない？
                     if (u.CountPilot() == 0)
@@ -395,6 +396,7 @@ namespace SRCSharpForm
                     var isNoSp = false;
                     if (p.MaxSP > 0)
                     {
+                        ppic.SetColor(StatusFontColorAbilityName);
                         ppic.Print(Expression.Term("ＳＰ", u) + " ");
                         ppic.SetColor(StatusFontColorNormalString);
                         if (!is_unknown)
@@ -470,6 +472,7 @@ namespace SRCSharpForm
                     {
                         upic.Print(GeneralLib.LeftPaddedString("--", 5) + Strings.Space(9));
                     }
+                    upic.PushGrid();
 
                     // 射撃
                     upic.SetColor(StatusFontColorAbilityName);
@@ -523,6 +526,7 @@ namespace SRCSharpForm
                     {
                         upic.Print(GeneralLib.LeftPaddedString("--", 5) + Strings.Space(5));
                     }
+                    upic.PushGrid();
 
                     // 命中
                     upic.SetColor(StatusFontColorAbilityName);
@@ -569,6 +573,7 @@ namespace SRCSharpForm
                     {
                         upic.Print(GeneralLib.LeftPaddedString("--", 5) + Strings.Space(9));
                     }
+                    upic.PushGrid();
 
                     // 回避
                     upic.SetColor(StatusFontColorAbilityName);
@@ -615,6 +620,7 @@ namespace SRCSharpForm
                     {
                         upic.Print(GeneralLib.LeftPaddedString("--", 5) + Strings.Space(9));
                     }
+                    upic.PushGrid();
 
                     // 技量
                     upic.SetColor(StatusFontColorAbilityName);
@@ -661,6 +667,7 @@ namespace SRCSharpForm
                     {
                         upic.Print(GeneralLib.LeftPaddedString("--", 5) + Strings.Space(9));
                     }
+                    upic.PushGrid();
 
                     // 反応
                     upic.SetColor(StatusFontColorAbilityName);
@@ -707,6 +714,7 @@ namespace SRCSharpForm
                     {
                         upic.Print(GeneralLib.LeftPaddedString("--", 5) + Strings.Space(9));
                     }
+                    upic.PushGrid();
 
                     if (Expression.IsOptionDefined("防御力成長") || Expression.IsOptionDefined("防御力レベルアップ"))
                     {
@@ -728,7 +736,10 @@ namespace SRCSharpForm
                         {
                             upic.Print(GeneralLib.LeftPaddedString("--", 5));
                         }
+                        upic.PushGrid();
                     }
+
+                    upic.ClearGrid();
 
                     // 所有するスペシャルパワー一覧
                     if (p.CountSpecialPower > 0)
@@ -789,6 +800,7 @@ namespace SRCSharpForm
                             }
                             upic.Print(SrcFormatter.Format(p.Plana) + "/" + SrcFormatter.Format(p.MaxPlana()));
                             upic.SetColor(StatusFontColorNormalString);
+                            upic.PushGrid();
                         }
                     }
 
@@ -806,8 +818,10 @@ namespace SRCSharpForm
                             }
                             upic.Print(SrcFormatter.Format(p.SynchroRate()) + "%");
                             upic.SetColor(StatusFontColorNormalString);
+                            upic.PushGrid();
                         }
                     }
+                    upic.ClearGrid();
 
                     // 得意技＆不得手
                     {
@@ -1363,6 +1377,8 @@ namespace SRCSharpForm
                     }
 
                     // ここからはユニットに関する情報
+                    upic.ClearGrid();
+                    upic.Print();
                     var mapCell = Map.CellAtPoint(u.x, u.y);
                     var td = mapCell.Terrain;
                     string buf;
@@ -1372,6 +1388,8 @@ namespace SRCSharpForm
                     offset.Y = textMargin * 8;
                     upic.SetFont(HeadingFont);
                     upic.Print(p.get_Nickname(false));
+                    upic.Print();
+
                     upic.SetFont(StatusSmallFont);
                     if (u.Status == "出撃" && !string.IsNullOrEmpty(Map.MapFileName))
                     {
@@ -1478,6 +1496,7 @@ namespace SRCSharpForm
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print(SrcFormatter.Format((object)u.Rank));
                     }
+                    upic.ClearGrid();
 
                     // 未確認ユニット？
                     if (is_unknown)
@@ -1487,48 +1506,56 @@ namespace SRCSharpForm
                         upic.Print(Expression.Term("ＨＰ", null, 6) + " ");
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print("?????/?????");
+                        upic.PushGrid();
 
                         // ＥＮ
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print(Expression.Term("ＥＮ", null, 6) + " ");
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print("???/???");
+                        upic.PushGrid();
 
                         // 装甲
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print(Expression.Term("装甲", null, 6) + " ");
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print(GeneralLib.RightPaddedString("？", 12));
+                        upic.PushGrid();
 
                         // 運動性
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print(Expression.Term("運動性", null, 6) + " ");
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print("？");
+                        upic.PushGrid();
 
                         // 移動タイプ
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print(Expression.Term("タイプ", null, 6) + " ");
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print(GeneralLib.RightPaddedString("？", 12));
+                        upic.PushGrid();
 
                         // 移動力
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print(Expression.Term("移動力", null, 6) + " ");
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print("？");
+                        upic.PushGrid();
 
                         // 地形適応
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print("適応   ");
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print(GeneralLib.RightPaddedString("？", 12));
+                        upic.PushGrid();
 
                         // ユニットサイズ
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print(Expression.Term("サイズ", null, 6) + " ");
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print("？");
+                        upic.PushGrid();
 
                         // サポートアタックを得られるかどうかのみ表示
                         if ((Commands.CommandState == "ターゲット選択" || Commands.CommandState == "移動後ターゲット選択") && (Commands.SelectedCommand == "攻撃" || Commands.SelectedCommand == "マップ攻撃") && Commands.SelectedUnit is object)
@@ -1623,6 +1650,7 @@ namespace SRCSharpForm
                             upic.Print("(" + GeneralLib.LIndex(buf, 1) + "," + GeneralLib.LIndex(buf, 2) + ")に移動中");
                         }
                     }
+                    upic.ClearGrid();
 
                     // ユニットにかかっている特殊ステータス
                     {
@@ -2230,6 +2258,7 @@ namespace SRCSharpForm
                             upic.Print("?????");
                         }
                     }
+                    upic.PushGrid();
 
                     // ＥＮ
                     // TODO Impl EN Bar
@@ -2273,6 +2302,7 @@ namespace SRCSharpForm
                             upic.Print("???");
                         }
                     }
+                    upic.PushGrid();
 
                     // 装甲
                     upic.SetColor(StatusFontColorAbilityName);
@@ -2304,6 +2334,7 @@ namespace SRCSharpForm
                                 break;
                             }
                     }
+                    upic.PushGrid();
 
                     // 運動性
                     upic.SetColor(StatusFontColorAbilityName);
@@ -2329,12 +2360,14 @@ namespace SRCSharpForm
                                 break;
                             }
                     }
+                    upic.PushGrid();
 
                     // 移動タイプ
                     upic.SetColor(StatusFontColorAbilityName);
                     upic.Print(Expression.Term("タイプ", u, 6) + " ");
                     upic.SetColor(StatusFontColorNormalString);
                     upic.Print(GeneralLib.RightPaddedString(u.Transportation, 12));
+                    upic.PushGrid();
 
                     // 移動力
                     upic.SetColor(StatusFontColorAbilityName);
@@ -2348,6 +2381,7 @@ namespace SRCSharpForm
                     {
                         upic.Print(SrcFormatter.Format(u.Speed));
                     }
+                    upic.PushGrid();
 
                     // 地形適応
                     upic.SetColor(StatusFontColorAbilityName);
@@ -2394,22 +2428,25 @@ namespace SRCSharpForm
                                 }
                         }
                     }
-                    upic.Print(Strings.Space(8));
+                    upic.PushGrid();
 
                     // ユニットサイズ
                     upic.SetColor(StatusFontColorAbilityName);
                     upic.Print(Expression.Term("サイズ", u, 6) + " ");
                     upic.SetColor(StatusFontColorNormalString);
-                    upic.Print(Strings.StrConv((string)u.Size, VbStrConv.Wide));
-                    {
+                    upic.Print(Strings.StrConv(u.Size, VbStrConv.Wide));
+                    upic.PushGrid();
 
+                    upic.ClearGrid();
+                    {
+                        // XXX n の処理
                         var n = 0;
                         // 防御属性の表示
                         {
                             // 吸収
-                            if (Strings.Len((string)u.strAbsorb) > 0 && Strings.InStr((string)u.strAbsorb, "非表示") == 0)
+                            if (Strings.Len(u.strAbsorb) > 0 && Strings.InStr(u.strAbsorb, "非表示") == 0)
                             {
-                                if (Strings.Len((string)u.strAbsorb) > 5)
+                                if (Strings.Len(u.strAbsorb) > 5)
                                 {
                                     if (n > 0)
                                     {
@@ -2421,7 +2458,7 @@ namespace SRCSharpForm
                                 upic.SetColor(StatusFontColorAbilityName);
                                 upic.Print("吸収   ");
                                 upic.SetColor(StatusFontColorNormalString);
-                                upic.Print(GeneralLib.RightPaddedString((string)u.strAbsorb, 12));
+                                upic.Print(GeneralLib.RightPaddedString(u.strAbsorb, 12));
                                 n = (n + 1);
                                 if (n > 1)
                                 {
@@ -2431,9 +2468,9 @@ namespace SRCSharpForm
                             }
 
                             // 無効化
-                            if (Strings.Len((string)u.strImmune) > 0 && Strings.InStr((string)u.strImmune, "非表示") == 0)
+                            if (Strings.Len(u.strImmune) > 0 && Strings.InStr(u.strImmune, "非表示") == 0)
                             {
-                                if (Strings.Len((string)u.strImmune) > 5)
+                                if (Strings.Len(u.strImmune) > 5)
                                 {
                                     if (n > 0)
                                     {
@@ -2445,7 +2482,7 @@ namespace SRCSharpForm
                                 upic.SetColor(StatusFontColorAbilityName);
                                 upic.Print("無効化 ");
                                 upic.SetColor(StatusFontColorNormalString);
-                                upic.Print(GeneralLib.RightPaddedString((string)u.strImmune, 12));
+                                upic.Print(GeneralLib.RightPaddedString(u.strImmune, 12));
                                 n = (n + 1);
                                 if (n > 1)
                                 {
@@ -2455,9 +2492,9 @@ namespace SRCSharpForm
                             }
 
                             // 耐性
-                            if (Strings.Len((string)u.strResist) > 0 && Strings.InStr((string)u.strResist, "非表示") == 0)
+                            if (Strings.Len(u.strResist) > 0 && Strings.InStr(u.strResist, "非表示") == 0)
                             {
-                                if (Strings.Len((string)u.strResist) > 5)
+                                if (Strings.Len(u.strResist) > 5)
                                 {
                                     if (n > 0)
                                     {
@@ -2472,7 +2509,7 @@ namespace SRCSharpForm
                                 // MOD START 240a
                                 // upic.ForeColor = rgb(0, 0, 0)
                                 upic.SetColor(StatusFontColorNormalString);
-                                upic.Print(GeneralLib.RightPaddedString((string)u.strResist, 12));
+                                upic.Print(GeneralLib.RightPaddedString(u.strResist, 12));
                                 n = (n + 1);
                                 if (n > 1)
                                 {
@@ -2482,9 +2519,9 @@ namespace SRCSharpForm
                             }
 
                             // 弱点
-                            if (Strings.Len((string)u.strWeakness) > 0 && Strings.InStr((string)u.strWeakness, "非表示") == 0)
+                            if (Strings.Len(u.strWeakness) > 0 && Strings.InStr(u.strWeakness, "非表示") == 0)
                             {
-                                if (Strings.Len((string)u.strWeakness) > 5)
+                                if (Strings.Len(u.strWeakness) > 5)
                                 {
                                     if (n > 0)
                                     {
@@ -2497,7 +2534,7 @@ namespace SRCSharpForm
                                 upic.SetColor(StatusFontColorAbilityName);
                                 upic.Print("弱点   ");
                                 upic.SetColor(StatusFontColorNormalString);
-                                upic.Print(GeneralLib.RightPaddedString((string)u.strWeakness, 12));
+                                upic.Print(GeneralLib.RightPaddedString(u.strWeakness, 12));
                                 n = (n + 1);
                                 if (n > 1)
                                 {
@@ -2507,9 +2544,9 @@ namespace SRCSharpForm
                             }
 
                             // 有効
-                            if (Strings.Len((string)u.strEffective) > 0 && Strings.InStr((string)u.strEffective, "非表示") == 0)
+                            if (Strings.Len(u.strEffective) > 0 && Strings.InStr(u.strEffective, "非表示") == 0)
                             {
-                                if (Strings.Len((string)u.strEffective) > 5)
+                                if (Strings.Len(u.strEffective) > 5)
                                 {
                                     if (n > 0)
                                     {
@@ -2522,7 +2559,7 @@ namespace SRCSharpForm
                                 upic.SetColor(StatusFontColorAbilityName);
                                 upic.Print("有効   ");
                                 upic.SetColor(StatusFontColorNormalString);
-                                upic.Print(GeneralLib.RightPaddedString((string)u.strEffective, 12));
+                                upic.Print(GeneralLib.RightPaddedString(u.strEffective, 12));
                                 n = (n + 1);
                                 if (n > 1)
                                 {
@@ -2532,9 +2569,9 @@ namespace SRCSharpForm
                             }
 
                             // 特殊効果無効化
-                            if (Strings.Len((string)u.strSpecialEffectImmune) > 0 && Strings.InStr((string)u.strSpecialEffectImmune, "非表示") == 0)
+                            if (Strings.Len(u.strSpecialEffectImmune) > 0 && Strings.InStr(u.strSpecialEffectImmune, "非表示") == 0)
                             {
-                                if (Strings.Len((string)u.strSpecialEffectImmune) > 5)
+                                if (Strings.Len(u.strSpecialEffectImmune) > 5)
                                 {
                                     if (n > 0)
                                     {
@@ -2547,7 +2584,7 @@ namespace SRCSharpForm
                                 upic.SetColor(StatusFontColorAbilityName);
                                 upic.Print("特無効 ");
                                 upic.SetColor(StatusFontColorNormalString);
-                                upic.Print(GeneralLib.RightPaddedString((string)u.strSpecialEffectImmune, 12));
+                                upic.Print(GeneralLib.RightPaddedString(u.strSpecialEffectImmune, 12));
                                 n = (n + 1);
                                 if (n > 1)
                                 {
@@ -3485,6 +3522,7 @@ namespace SRCSharpForm
                         }
                     }
 
+                    upic.ClearGrid();
                     // アイテム一覧
                     if (u.CountItem() > 0)
                     {
