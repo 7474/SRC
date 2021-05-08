@@ -1,8 +1,6 @@
-using Newtonsoft.Json;
 using SRCCore;
 using SRCCore.Lib;
 using SRCCore.Maps;
-using SRCCore.Models;
 using SRCCore.Pilots;
 using SRCCore.Units;
 using SRCCore.VB;
@@ -3572,172 +3570,178 @@ namespace SRCSharpForm
                     }
 
                     // ターゲット選択時の攻撃結果予想表示
-                    // TODO Impl
                     {
-                        //// 攻撃時にのみ表示
-                        //if ((Commands.CommandState == "ターゲット選択" || Commands.CommandState == "移動後ターゲット選択") && (Commands.SelectedCommand == "攻撃" || Commands.SelectedCommand == "マップ攻撃") && Commands.SelectedUnit is object && Commands.SelectedWeapon > 0 && SRC.Stage != "プロローグ" && SRC.Stage != "エピローグ")
-                        //{
-                        //}
-                        //// 攻撃時と判定
-                        //else
-                        //{
-                        //    goto SkipAttackExpResult;
-                        //}
+                        // 攻撃時にのみ表示
+                        if ((Commands.CommandState == "ターゲット選択" || Commands.CommandState == "移動後ターゲット選択") && (Commands.SelectedCommand == "攻撃" || Commands.SelectedCommand == "マップ攻撃") && Commands.SelectedUnit is object && Commands.SelectedWeapon > 0 && SRC.Stage != "プロローグ" && SRC.Stage != "エピローグ")
+                        {
+                        }
+                        // 攻撃時と判定
+                        else
+                        {
+                            goto SkipAttackExpResult;
+                        }
 
-                        //// 相手が敵の場合にのみ表示
-                        //if (u.Party != "敵" && u.Party != "中立" && !u.IsConditionSatisfied("暴走") && !u.IsConditionSatisfied("魅了") && !u.IsConditionSatisfied("憑依") && !u.IsConditionSatisfied("混乱") && !u.IsConditionSatisfied("睡眠"))
-                        //{
-                        //    goto SkipAttackExpResult;
-                        //}
+                        // 相手が敵の場合にのみ表示
+                        if (u.Party != "敵" && u.Party != "中立" && !u.IsConditionSatisfied("暴走") && !u.IsConditionSatisfied("魅了") && !u.IsConditionSatisfied("憑依") && !u.IsConditionSatisfied("混乱") && !u.IsConditionSatisfied("睡眠"))
+                        {
+                            goto SkipAttackExpResult;
+                        }
 
-                        //upic.Print();
+                        upic.ClearGrid();
+                        upic.Print();
+                        upic.SetGridCellWidth(55f);
 
-                        //// 攻撃手段
-                        //upic.SetColor(StatusFontColorAbilityName);
-                        //upic.Print("攻撃     ");
-                        //upic.SetColor(StatusFontColorNormalString);
-                        //upic.Print(Commands.SelectedUnit.WeaponNickname(Commands.SelectedWeapon));
-                        //// サポートアタックを得られる？
-                        //if (!Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, "合") && !Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, "Ｍ") && Commands.UseSupportAttack)
-                        //{
-                        //    if (Commands.SelectedUnit.LookForSupportAttack(u) is object)
-                        //    {
-                        //        upic.Print(" [援]");
-                        //    }
-                        //    else
-                        //    {
-                        //        upic.Print();
-                        //    }
-                        //}
-                        //else
-                        //{
-                        //    upic.Print();
-                        //}
+                        // 攻撃手段
+                        var uw = Commands.SelectedUnit.Weapon(Commands.SelectedWeapon);
+                        upic.SetColor(StatusFontColorAbilityName);
+                        upic.Print("攻撃     ");
+                        upic.PushGrid();
+                        upic.SetColor(StatusFontColorNormalString);
+                        upic.Print(uw.WeaponNickname());
+                        // サポートアタックを得られる？
+                        if (!uw.IsWeaponClassifiedAs("合")
+                            && !uw.IsWeaponClassifiedAs("Ｍ")
+                            && Commands.UseSupportAttack)
+                        {
+                            if (Commands.SelectedUnit.LookForSupportAttack(u) is object)
+                            {
+                                upic.Print(" [援]");
+                            }
+                        }
+                        upic.ClearGrid();
 
-                        //// 反撃を受ける？
-                        //if (u.MaxAction() == 0 || Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, "Ｍ") || Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, "間"))
-                        //{
-                        //    w = 0;
-                        //}
-                        //else
-                        //{
-                        //    w = COM.SelectWeapon(u, Commands.SelectedUnit, "反撃", max_prob: 0, max_dmg: 0);
-                        //}
+                        // 反撃を受ける？
+                        UnitWeapon cw;
+                        int tw;
+                        if (u.MaxAction() == 0
+                            || uw.IsWeaponClassifiedAs("Ｍ")
+                            || uw.IsWeaponClassifiedAs("間"))
+                        {
+                            tw = 0;
+                        }
+                        else
+                        {
+                            tw = SRC.COM.SelectWeapon(u, Commands.SelectedUnit, "反撃", out _, out _);
+                        }
 
-                        //// 敵の防御行動を設定
-                        //def_mode = Conversions.ToString(COM.SelectDefense(Commands.SelectedUnit, Commands.SelectedWeapon, u, w));
-                        //if (!string.IsNullOrEmpty(def_mode))
-                        //{
-                        //    w = 0;
-                        //}
+                        // 敵の防御行動を設定
+                        var def_mode = SRC.COM.SelectDefense(Commands.SelectedUnit, Commands.SelectedWeapon, u, tw);
+                        if (!string.IsNullOrEmpty(def_mode))
+                        {
+                            tw = 0;
+                        }
 
-                        //// 予測ダメージ
-                        //if (!Expression.IsOptionDefined("予測ダメージ非表示"))
-                        //{
-                        //    upic.SetColor(StatusFontColorAbilityName);
-                        //    upic.Print("ダメージ ");
-                        //    dmg = Commands.SelectedUnit.Damage(Commands.SelectedWeapon, u, true);
-                        //    if (def_mode == "防御")
-                        //    {
-                        //        dmg = dmg / 2;
-                        //    }
+                        // 予測ダメージ
+                        if (!Expression.IsOptionDefined("予測ダメージ非表示"))
+                        {
+                            upic.SetColor(StatusFontColorAbilityName);
+                            upic.Print("ダメージ ");
+                            upic.PushGrid();
+                            var dmg = uw.Damage(u, true);
+                            if (def_mode == "防御")
+                            {
+                                dmg = dmg / 2;
+                            }
 
-                        //    if (dmg >= u.HP && !u.IsConditionSatisfied("データ不明"))
-                        //    {
-                        //        upic.SetColor(StatusFontColorWarning);
-                        //    }
-                        //    else
-                        //    {
-                        //        upic.SetColor(StatusFontColorNormalString);
-                        //    }
-                        //    upic.Print(SrcFormatter.Format(dmg));
-                        //}
+                            if (dmg >= u.HP && !u.IsConditionSatisfied("データ不明"))
+                            {
+                                upic.SetColor(StatusFontColorWarning);
+                            }
+                            else
+                            {
+                                upic.SetColor(StatusFontColorNormalString);
+                            }
+                            upic.Print(SrcFormatter.Format(dmg));
+                            upic.ClearGrid();
+                        }
 
-                        //// 予測命中率
-                        //if (!Expression.IsOptionDefined("予測命中率非表示"))
-                        //{
-                        //    upic.SetColor(StatusFontColorAbilityName);
-                        //    upic.Print("命中率   ");
-                        //    upic.SetColor(StatusFontColorNormalString);
-                        //    prob = Commands.SelectedUnit.HitProbability(Commands.SelectedWeapon, u, true);
-                        //    if (def_mode == "回避")
-                        //    {
-                        //        prob = (prob / 2);
-                        //    }
+                        // 予測命中率
+                        if (!Expression.IsOptionDefined("予測命中率非表示"))
+                        {
+                            upic.SetColor(StatusFontColorAbilityName);
+                            upic.Print("命中率   ");
+                            upic.PushGrid();
+                            upic.SetColor(StatusFontColorNormalString);
+                            var prob = uw.HitProbability(u, true);
+                            if (def_mode == "回避")
+                            {
+                                prob = (prob / 2);
+                            }
 
-                        //    cprob = Commands.SelectedUnit.CriticalProbability(Commands.SelectedWeapon, u, def_mode);
-                        //    upic.Print(GeneralLib.MinLng(prob, 100) + "％（" + cprob + "％）");
-                        //    upic.SetColor(StatusFontColorNormalString);
-                        //}
+                            var cprob = uw.CriticalProbability(u, def_mode);
+                            upic.Print(GeneralLib.MinLng(prob, 100) + "％（" + cprob + "％）");
+                            upic.SetColor(StatusFontColorNormalString);
+                            upic.ClearGrid();
+                        }
 
-                        //if (w > 0)
-                        //{
-                        //    // 反撃手段
-                        //    upic.SetColor(StatusFontColorAbilityName);
-                        //    upic.Print("反撃     ");
-                        //    upic.SetColor(StatusFontColorNormalString);
-                        //    upic.Print(uw.WeaponNickname());
-                        //    // サポートガードを受けられる？
-                        //    if (u.LookForSupportGuard(Commands.SelectedUnit, Commands.SelectedWeapon) is object)
-                        //    {
-                        //        upic.Print(" [援]");
-                        //    }
-                        //    else
-                        //    {
-                        //        upic.Print();
-                        //    }
+                        if (tw > 0)
+                        {
+                            var tuw = u.Weapon(tw);
+                            // 反撃手段
+                            upic.SetColor(StatusFontColorAbilityName);
+                            upic.Print("反撃     ");
+                            upic.PushGrid();
+                            upic.SetColor(StatusFontColorNormalString);
+                            upic.Print(tuw.WeaponNickname());
+                            // サポートガードを受けられる？
+                            if (u.LookForSupportGuard(Commands.SelectedUnit, uw) is object)
+                            {
+                                upic.Print(" [援]");
+                            }
+                            upic.ClearGrid();
 
-                        //    // 予測ダメージ
-                        //    if (!Expression.IsOptionDefined("予測ダメージ非表示"))
-                        //    {
-                        //        upic.SetColor(StatusFontColorAbilityName);
-                        //        upic.Print("ダメージ ");
-                        //        dmg = uw.Damage( Commands.SelectedUnit, true);
-                        //        if (dmg >= Commands.SelectedUnit.HP)
-                        //        {
-                        //            upic.SetColor(StatusFontColorWarning);
-                        //        }
-                        //        else
-                        //        {
-                        //            upic.SetColor(StatusFontColorNormalString);
-                        //        }
-                        //        upic.Print(SrcFormatter.Format(dmg));
-                        //    }
+                            // 予測ダメージ
+                            if (!Expression.IsOptionDefined("予測ダメージ非表示"))
+                            {
+                                upic.SetColor(StatusFontColorAbilityName);
+                                upic.Print("ダメージ ");
+                                upic.PushGrid();
+                                var dmg = tuw.Damage(Commands.SelectedUnit, true);
+                                if (dmg >= Commands.SelectedUnit.HP)
+                                {
+                                    upic.SetColor(StatusFontColorWarning);
+                                }
+                                else
+                                {
+                                    upic.SetColor(StatusFontColorNormalString);
+                                }
+                                upic.Print(SrcFormatter.Format(dmg));
+                                upic.ClearGrid();
+                            }
 
-                        //    // 予測命中率
-                        //    if (!Expression.IsOptionDefined("予測命中率非表示"))
-                        //    {
-                        //        upic.SetColor(StatusFontColorAbilityName);
-                        //        upic.Print("命中率   ");
-                        //        upic.SetColor(StatusFontColorNormalString);
-                        //        prob = uw.HitProbability( Commands.SelectedUnit, true);
-                        //        cprob = uw.CriticalProbability( Commands.SelectedUnit);
-                        //        upic.Print(SrcFormatter.Format(GeneralLib.MinLng(prob, 100)) + "％（" + cprob + "％）");
-                        //    }
-                        //}
-                        //else
-                        //{
-                        //    // 相手は反撃できない
-                        //    upic.SetColor(StatusFontColorAbilityName);
-                        //    if (!string.IsNullOrEmpty(def_mode))
-                        //    {
-                        //        upic.Print(def_mode);
-                        //    }
-                        //    else
-                        //    {
-                        //        upic.Print("反撃不能");
-                        //    }
-                        //    upic.SetColor(StatusFontColorNormalString);
-                        //    // サポートガードを受けられる？
-                        //    if (u.LookForSupportGuard(Commands.SelectedUnit, Commands.SelectedWeapon) is object)
-                        //    {
-                        //        upic.Print(" [援]");
-                        //    }
-                        //    else
-                        //    {
-                        //        upic.Print();
-                        //    }
-                        //}
+                            // 予測命中率
+                            if (!Expression.IsOptionDefined("予測命中率非表示"))
+                            {
+                                upic.SetColor(StatusFontColorAbilityName);
+                                upic.Print("命中率   ");
+                                upic.PushGrid();
+                                upic.SetColor(StatusFontColorNormalString);
+                                var prob = tuw.HitProbability(Commands.SelectedUnit, true);
+                                var cprob = tuw.CriticalProbability(Commands.SelectedUnit);
+                                upic.Print(SrcFormatter.Format(GeneralLib.MinLng(prob, 100)) + "％（" + cprob + "％）");
+                                upic.ClearGrid();
+                            }
+                        }
+                        else
+                        {
+                            // 相手は反撃できない
+                            upic.SetColor(StatusFontColorAbilityName);
+                            if (!string.IsNullOrEmpty(def_mode))
+                            {
+                                upic.Print(def_mode);
+                            }
+                            else
+                            {
+                                upic.Print("反撃不能");
+                            }
+                            upic.SetColor(StatusFontColorNormalString);
+                            // サポートガードを受けられる？
+                            if (u.LookForSupportGuard(Commands.SelectedUnit, uw) is object)
+                            {
+                                upic.Print(" [援]");
+                            }
+                            upic.ClearGrid();
+                        }
                     }
 
                 SkipAttackExpResult:

@@ -47,6 +47,11 @@ namespace SRCSharpForm.Lib
             currentBrush = new SolidBrush(color);
         }
 
+        public void SetGridCellWidth(float gridCellWidth)
+        {
+            this.gridCellWidth = gridCellWidth;
+        }
+
         public void PushGrid()
         {
             // XXX 3カラム以上対応
