@@ -513,250 +513,232 @@ namespace SRCCore.Units
             //    return AdditionalSupportRet;
         }
 
-        //// いずれかのパイロットが特殊能力 sname を持っているか判定
-        //public bool IsSkillAvailable(string sname)
-        //{
-        //    bool IsSkillAvailableRet = default;
-        //    int i;
-        //    if (CountPilot() == 0)
-        //    {
-        //        return IsSkillAvailableRet;
-        //    }
+        // いずれかのパイロットが特殊能力 sname を持っているか判定
+        public bool IsSkillAvailable(string sname)
+        {
+            bool IsSkillAvailableRet = default;
+            int i;
+            if (CountPilot() == 0)
+            {
+                return IsSkillAvailableRet;
+            }
 
-        //    // メインパイロット
-        //    if (MainPilot().IsSkillAvailable(sname))
-        //    {
-        //        IsSkillAvailableRet = true;
-        //        return IsSkillAvailableRet;
-        //    }
+            // メインパイロット
+            if (MainPilot().IsSkillAvailable(sname))
+            {
+                IsSkillAvailableRet = true;
+                return IsSkillAvailableRet;
+            }
 
-        //    // パイロット数が負の場合はメインパイロットの能力のみが有効
-        //    if (Data.PilotNum > 0)
-        //    {
-        //        var loopTo = CountPilot();
-        //        for (i = 2; i <= loopTo; i++)
-        //        {
-        //            Pilot localPilot() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
+            // パイロット数が負の場合はメインパイロットの能力のみが有効
+            if (Data.PilotNum > 0)
+            {
+                foreach (var p in SubPilots)
+                {
+                    if (p.IsSkillAvailable(sname))
+                    {
+                        IsSkillAvailableRet = true;
+                        return IsSkillAvailableRet;
+                    }
+                }
+            }
 
-        //            if (localPilot().IsSkillAvailable(sname))
-        //            {
-        //                IsSkillAvailableRet = true;
-        //                return IsSkillAvailableRet;
-        //            }
-        //        }
-        //    }
+            // サポート
+            foreach (var p in Supports)
+            {
+                if (p.IsSkillAvailable(sname))
+                {
+                    IsSkillAvailableRet = true;
+                    return IsSkillAvailableRet;
+                }
+            }
 
-        //    // サポート
-        //    var loopTo1 = CountSupport();
-        //    for (i = 1; i <= loopTo1; i++)
-        //    {
-        //        Pilot localSupport() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
+            // 追加サポート
+            if (IsFeatureAvailable("追加サポート"))
+            {
+                if (AdditionalSupport().IsSkillAvailable(sname))
+                {
+                    IsSkillAvailableRet = true;
+                    return IsSkillAvailableRet;
+                }
+            }
 
-        //        if (localSupport().IsSkillAvailable(sname))
-        //        {
-        //            IsSkillAvailableRet = true;
-        //            return IsSkillAvailableRet;
-        //        }
-        //    }
+            IsSkillAvailableRet = false;
+            return IsSkillAvailableRet;
+        }
 
-        //    // 追加サポート
-        //    if (IsFeatureAvailable("追加サポート"))
-        //    {
-        //        if (AdditionalSupport().IsSkillAvailable(sname))
-        //        {
-        //            IsSkillAvailableRet = true;
-        //            return IsSkillAvailableRet;
-        //        }
-        //    }
+        // パイロット全員によるパイロット能力レベル
+        public double SkillLevel(string sname, double default_slevel = 1d)
+        {
+            double SkillLevelRet = default;
+            if (CountPilot() == 0)
+            {
+                return SkillLevelRet;
+            }
 
-        //    IsSkillAvailableRet = false;
-        //    return IsSkillAvailableRet;
-        //}
+            // エリアスが設定されてるかチェック
+            if (SRC.ALDList.IsDefined(sname))
+            {
+                sname = SRC.ALDList.Item(sname).Elements.First().strAliasType;
+            }
 
-        //// パイロット全員によるパイロット能力レベル
-        //public double SkillLevel(string sname, double default_slevel = 1d)
-        //{
-        //    double SkillLevelRet = default;
-        //    if (CountPilot() == 0)
-        //    {
-        //        return SkillLevelRet;
-        //    }
+            switch (sname ?? "")
+            {
+                case "同調率":
+                    {
+                        SkillLevelRet = SyncLevel();
+                        break;
+                    }
 
-        //    // エリアスが設定されてるかチェック
-        //    if (SRC.ALDList.IsDefined(sname))
-        //    {
-        //        AliasDataType localItem() { object argIndex1 = sname; var ret = SRC.ALDList.Item(argIndex1); return ret; }
+                case "霊力":
+                    {
+                        SkillLevelRet = PlanaLevel();
+                        break;
+                    }
 
-        //        sname = localItem().get_AliasType(1);
-        //    }
+                case "オーラ":
+                    {
+                        SkillLevelRet = AuraLevel();
+                        break;
+                    }
 
-        //    switch (sname ?? "")
-        //    {
-        //        case "同調率":
-        //            {
-        //                SkillLevelRet = SyncLevel();
-        //                break;
-        //            }
+                case "超能力":
+                    {
+                        SkillLevelRet = PsychicLevel();
+                        break;
+                    }
 
-        //        case "霊力":
-        //            {
-        //                SkillLevelRet = PlanaLevel();
-        //                break;
-        //            }
+                case "Ｓ防御":
+                case "切り払い":
+                    {
+                        SkillLevelRet = MainPilot().SkillLevel(sname, 1.ToString());
+                        break;
+                    }
 
-        //        case "オーラ":
-        //            {
-        //                SkillLevelRet = AuraLevel();
-        //                break;
-        //            }
+                case "超感覚":
+                    {
+                        if (MaxSkillLevel("超感覚", 1d) > MaxSkillLevel("知覚強化", 1d))
+                        {
+                            SkillLevelRet = MaxSkillLevel("超感覚", 1d);
+                        }
+                        else
+                        {
+                            SkillLevelRet = MaxSkillLevel("知覚強化", 1d);
+                        }
 
-        //        case "超能力":
-        //            {
-        //                SkillLevelRet = PsychicLevel();
-        //                break;
-        //            }
+                        break;
+                    }
 
-        //        case "Ｓ防御":
-        //        case "切り払い":
-        //            {
-        //                SkillLevelRet = MainPilot().SkillLevel(sname, 1.ToString());
-        //                break;
-        //            }
+                default:
+                    {
+                        SkillLevelRet = MaxSkillLevel(sname, default_slevel);
+                        break;
+                    }
+            }
 
-        //        case "超感覚":
-        //            {
-        //                if (MaxSkillLevel("超感覚", 1d) > MaxSkillLevel("知覚強化", 1d))
-        //                {
-        //                    SkillLevelRet = MaxSkillLevel("超感覚", 1d);
-        //                }
-        //                else
-        //                {
-        //                    SkillLevelRet = MaxSkillLevel("知覚強化", 1d);
-        //                }
+            return SkillLevelRet;
+        }
 
-        //                break;
-        //            }
+        // パイロット中での最も高いパイロット能力レベルを返す
+        private double MaxSkillLevel(string sname, double default_slevel)
+        {
+            double MaxSkillLevelRet = default;
+            double slevel;
+            int i;
+            if (CountPilot() == 0)
+            {
+                return MaxSkillLevelRet;
+            }
 
-        //        default:
-        //            {
-        //                SkillLevelRet = MaxSkillLevel(sname, default_slevel);
-        //                break;
-        //            }
-        //    }
+            // メインパイロット
+            {
+                var withBlock = MainPilot();
+                if (withBlock.IsSkillLevelSpecified(sname))
+                {
+                    MaxSkillLevelRet = withBlock.SkillLevel(sname, ref_mode: "");
+                }
+                else if (withBlock.IsSkillAvailable(sname))
+                {
+                    MaxSkillLevelRet = default_slevel;
+                }
+                else
+                {
+                    MaxSkillLevelRet = 0d;
+                }
+            }
 
-        //    return SkillLevelRet;
-        //}
+            // パイロット数が負の場合はメインパイロットの能力のみが有効
+            if (Data.PilotNum > 0)
+            {
+                foreach (var p in SubPilots)
+                {
+                    if (p.IsSkillLevelSpecified(sname))
+                    {
+                        slevel = p.SkillLevel(sname, ref_mode: "");
+                    }
+                    else if (p.IsSkillAvailable(sname))
+                    {
+                        slevel = default_slevel;
+                    }
+                    else
+                    {
+                        slevel = 0d;
+                    }
 
-        //// パイロット中での最も高いパイロット能力レベルを返す
-        //private double MaxSkillLevel(string sname, double default_slevel)
-        //{
-        //    double MaxSkillLevelRet = default;
-        //    double slevel;
-        //    int i;
-        //    if (CountPilot() == 0)
-        //    {
-        //        return MaxSkillLevelRet;
-        //    }
+                    if (slevel > MaxSkillLevelRet)
+                    {
+                        MaxSkillLevelRet = slevel;
+                    }
+                }
+            }
 
-        //    // メインパイロット
-        //    {
-        //        var withBlock = MainPilot();
-        //        if (withBlock.IsSkillLevelSpecified(sname))
-        //        {
-        //            MaxSkillLevelRet = withBlock.SkillLevel(sname, _mode: "");
-        //        }
-        //        else if (withBlock.IsSkillAvailable(sname))
-        //        {
-        //            MaxSkillLevelRet = default_slevel;
-        //        }
-        //        else
-        //        {
-        //            MaxSkillLevelRet = 0d;
-        //        }
-        //    }
+            // サポート
+            foreach (var p in Supports)
+            {
+                if (p.IsSkillLevelSpecified(sname))
+                {
+                    slevel = p.SkillLevel(sname, ref_mode: "");
+                }
+                else if (p.IsSkillAvailable(sname))
+                {
+                    slevel = default_slevel;
+                }
+                else
+                {
+                    slevel = 0d;
+                }
 
-        //    // パイロット数が負の場合はメインパイロットの能力のみが有効
-        //    if (Data.PilotNum > 0)
-        //    {
-        //        var loopTo = CountPilot();
-        //        for (i = 2; i <= loopTo; i++)
-        //        {
-        //            {
-        //                var withBlock1 = Pilot(i);
-        //                if (withBlock1.IsSkillLevelSpecified(sname))
-        //                {
-        //                    slevel = withBlock1.SkillLevel(sname, _mode: "");
-        //                }
-        //                else if (withBlock1.IsSkillAvailable(sname))
-        //                {
-        //                    slevel = default_slevel;
-        //                }
-        //                else
-        //                {
-        //                    slevel = 0d;
-        //                }
+                if (slevel > MaxSkillLevelRet)
+                {
+                    MaxSkillLevelRet = slevel;
+                }
+            }
 
-        //                if (slevel > MaxSkillLevelRet)
-        //                {
-        //                    MaxSkillLevelRet = slevel;
-        //                }
-        //            }
-        //        }
-        //    }
+            // 追加サポート
+            if (IsFeatureAvailable("追加サポート"))
+            {
+                var p = AdditionalSupport();
+                if (p.IsSkillLevelSpecified(sname))
+                {
+                    slevel = p.SkillLevel(sname, ref_mode: "");
+                }
+                else if (p.IsSkillAvailable(sname))
+                {
+                    slevel = default_slevel;
+                }
+                else
+                {
+                    slevel = 0d;
+                }
 
-        //    // サポート
-        //    var loopTo1 = CountSupport();
-        //    for (i = 1; i <= loopTo1; i++)
-        //    {
-        //        {
-        //            var withBlock2 = Support(i);
-        //            if (withBlock2.IsSkillLevelSpecified(sname))
-        //            {
-        //                slevel = withBlock2.SkillLevel(sname, _mode: "");
-        //            }
-        //            else if (withBlock2.IsSkillAvailable(sname))
-        //            {
-        //                slevel = default_slevel;
-        //            }
-        //            else
-        //            {
-        //                slevel = 0d;
-        //            }
+                if (slevel > MaxSkillLevelRet)
+                {
+                    MaxSkillLevelRet = slevel;
+                }
+            }
 
-        //            if (slevel > MaxSkillLevelRet)
-        //            {
-        //                MaxSkillLevelRet = slevel;
-        //            }
-        //        }
-        //    }
-
-        //    // 追加サポート
-        //    if (IsFeatureAvailable("追加サポート"))
-        //    {
-        //        {
-        //            var withBlock3 = AdditionalSupport();
-        //            if (withBlock3.IsSkillLevelSpecified(sname))
-        //            {
-        //                slevel = withBlock3.SkillLevel(sname, _mode: "");
-        //            }
-        //            else if (withBlock3.IsSkillAvailable(sname))
-        //            {
-        //                slevel = default_slevel;
-        //            }
-        //            else
-        //            {
-        //                slevel = 0d;
-        //            }
-
-        //            if (slevel > MaxSkillLevelRet)
-        //            {
-        //                MaxSkillLevelRet = slevel;
-        //            }
-        //        }
-        //    }
-
-        //    return MaxSkillLevelRet;
-        //}
+            return MaxSkillLevelRet;
+        }
 
         // ユニットのオーラ力レベル
         public double AuraLevel(bool no_limit = false)
