@@ -52,6 +52,6 @@ namespace SRCCore
 
         // バージョンを取得、設定する
         // 既定値は実行ファイルのバージョン
-        public Version Version { get; set; } = Assembly.GetExecutingAssembly().GetName().Version;
+        public Version Version { get; set; } = Assembly.GetEntryAssembly().GetName().Version;
     }
 }
