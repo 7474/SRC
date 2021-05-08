@@ -59,10 +59,7 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
 ### SRC#Form 簡易実行手順
 
 1. Windows 10 64bit版に[.NET 5 ランタイムをインストール](https://docs.microsoft.com/ja-jp/dotnet/core/install/windows?tabs=net50)する
-1. 構築済のSRCフォルダ内のファイルの文字コードをShift_JISからUTF-8に変換する
-1. 同様に実行するシナリオのフォルダ内のファイルの文字コードをShift_JISからUTF-8に変換する
 1. [Release](./releases) から SRCSharpForm.zip をダウンロード、ないし SRCSharpForm をビルドして実行ファイル（ SRCSharpForm.exe （ビルドした場合は加えて付随するDLL））を得る
-1. 文字コードを変換したSRCフォルダ内に実行ファイルをコピーする
 1. SRCSharpForm.exe を実行する
 
 SRCに付属のサンプルシナリオや https://github.com/7474/SRC-SharpTestScenario で動作確認しながら作っています。
