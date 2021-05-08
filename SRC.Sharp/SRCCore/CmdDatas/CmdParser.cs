@@ -207,7 +207,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "fadein":
-                        return new NotImplementedCmd(src, data);
+                        return new FadeInCmd(src, data);
 
                     case "fadeout":
                         return new NotImplementedCmd(src, data);

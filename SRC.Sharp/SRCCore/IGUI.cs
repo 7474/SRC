@@ -159,6 +159,8 @@ namespace SRCCore
         void MaskScreen();
         // 画面の書き換え
         void RefreshScreen(bool without_refresh = false, bool delay_refresh = false);
+        // 画面を遷移させる
+        void TransionScrean(TransionPattern pattern, Color fillColor, int frame, int frameMillis);
         // 指定されたマップ座標を画面の中央に表示
         void Center(int new_x, int new_y);
 
@@ -319,6 +321,12 @@ namespace SRCCore
 
         // === マップコマンド ===
         void DisplayGlobalMap();
+    }
+
+    public enum TransionPattern
+    {
+        FadeIn,
+        FadeOut,
     }
 
     public enum GuiStatus

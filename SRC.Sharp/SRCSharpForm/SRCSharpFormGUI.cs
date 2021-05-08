@@ -231,6 +231,41 @@ namespace SRCSharpForm
         private double RightUnitENRatio;
         private double LeftUnitENRatio;
 
+        public void TransionScrean(TransionPattern pattern, Color fillColor, int frame, int frameMillis)
+        {
+            var start_time = GeneralLib.timeGetTime();
+            using (var copyBuffer = new Bitmap(MainForm.MainBuffer))
+            using (var g = Graphics.FromImage(MainForm.MainBuffer))
+            {
+                for (int i = 0; i <= frame; i++)
+                {
+                    int fillOpacity = pattern == TransionPattern.FadeIn
+                        ? 0xff * (frame - i) / frame
+                        : 0xff * i / frame;
+
+                    var fillBrush = new SolidBrush(Color.FromArgb(fillOpacity, fillColor));
+
+                    g.DrawImage(copyBuffer, 0, 0);
+                    g.FillRectangle(fillBrush, g.VisibleClipBounds);
+                    UpdateScreen();
+
+                    if(frame != i)
+                    {
+                        var cur_time = GeneralLib.timeGetTime();
+                        while (cur_time < start_time + frameMillis * (i + 1))
+                        {
+                            Application.DoEvents();
+                            cur_time = GeneralLib.timeGetTime();
+                        }
+                        if (IsRButtonPressed())
+                        {
+                            i = frame;
+                        }
+                    }
+                }
+            }
+        }
+
         public void ClearScrean()
         {
             MainForm.ClearScrean();
@@ -1383,5 +1418,6 @@ namespace SRCSharpForm
             // 画面を元に戻す
             RefreshScreen();
         }
+
     }
 }

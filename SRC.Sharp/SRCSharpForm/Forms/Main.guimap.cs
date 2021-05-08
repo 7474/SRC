@@ -469,7 +469,6 @@ namespace SRCSharpForm
 
         public void UpdateScreen()
         {
-            //GUI.ScreenIsSaved = false;
             if (Visible)
             {
                 using (var g = _picMain_0.CreateGraphics())
