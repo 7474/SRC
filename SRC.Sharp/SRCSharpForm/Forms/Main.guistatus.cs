@@ -3742,10 +3742,10 @@ namespace SRCSharpForm
 
                 SkipAttackExpResult:
                     ;
-                    upic.ClearGrid();
 
                     // 武器一覧
                     {
+                        upic.ClearGrid();
                         upic.Print();
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print(Strings.Space(25) + "攻撃 射程");
@@ -3838,80 +3838,78 @@ namespace SRCSharpForm
                     }
 
                     // アビリティ一覧
-                    // TODO Impl
                     {
-                        //var loopTo26 = u.CountAbility();
-                        //for (var i = 1; i <= loopTo26; i++)
-                        //{
-                        //    if (upic.CurrentY > 420)
-                        //    {
-                        //        break;
-                        //    }
+                        upic.ClearGrid();
+                        var abilities = u.Abilities;
+                        foreach (var ua in abilities)
+                        {
+                            // XXX 枠の外なら無視
+                            //if (upic.CurrentY > 420)
+                            //{
+                            //    break;
+                            //}
 
-                        //    if (!u.IsAbilityAvailable(i, "ステータス"))
-                        //    {
-                        //        // 習得していない技は表示しない
-                        //        if (!u.IsAbilityMastered(i))
-                        //        {
-                        //            goto NextAbility;
-                        //        }
-                        //        // Disableコマンドで使用不可になった武器も同様
-                        //        if (u.IsDisabled(u.Ability(i).Name))
-                        //        {
-                        //            goto NextAbility;
-                        //        }
-                        //        // フォーメーションを満たしていない合体技も
-                        //        if (u.IsAbilityClassifiedAs(i, "合"))
-                        //        {
-                        //            if (!u.IsCombinationAbilityAvailable(i, true))
-                        //            {
-                        //                goto NextAbility;
-                        //            }
-                        //        }
-                        //        upic.SetColor(StatusFontColorAbilityDisable);
-                        //    }
+                            if (!ua.IsAbilityAvailable("ステータス"))
+                            {
+                                // 習得していない技は表示しない
+                                if (!ua.IsAbilityMastered())
+                                {
+                                    goto NextAbility;
+                                }
+                                // Disableコマンドで使用不可になった武器も同様
+                                if (u.IsDisabled(ua.Data.Name))
+                                {
+                                    goto NextAbility;
+                                }
+                                // フォーメーションを満たしていない合体技も
+                                if (ua.IsAbilityClassifiedAs("合"))
+                                {
+                                    if (!ua.IsCombinationAbilityAvailable(true))
+                                    {
+                                        goto NextAbility;
+                                    }
+                                }
+                                upic.SetColor(StatusFontColorAbilityDisable);
+                            }
 
-                        //    // アビリティの表示
-                        //    string localRightPaddedString18() { string argbuf = SrcFormatter.Format(u.AbilityNickname(i)); var ret = GeneralLib.RightPaddedString(argbuf, 29); return ret; }
+                            // アビリティの表示
+                            // XXX 終端空白無視されてそう。どうすっかな。
+                            upic.Print(GeneralLib.RightPaddedString(SrcFormatter.Format(ua.AbilityNickname()), 29));
+                            if (ua.AbilityMaxRange() > 1)
+                            {
+                                upic.Print(GeneralLib.LeftPaddedString(SrcFormatter.Format(ua.AbilityMinRange()) + "-" + SrcFormatter.Format(ua.AbilityMaxRange()), 5));
+                                if (ua.IsAbilityClassifiedAs("Ｐ"))
+                                {
+                                    upic.Print("P");
+                                }
 
-                        //    upic.Print(localRightPaddedString18());
-                        //    if (u.AbilityMaxRange(i) > 1)
-                        //    {
-                        //        string localLeftPaddedString22() { string argbuf = SrcFormatter.Format(u.AbilityMinRange(i)) + "-" + SrcFormatter.Format(u.AbilityMaxRange(i)); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
-
-                        //        upic.Print(localLeftPaddedString22());
-                        //        if (u.IsAbilityClassifiedAs(i, "Ｐ"))
-                        //        {
-                        //            upic.Print("P");
-                        //        }
-
-                        //        if (u.IsAbilityClassifiedAs(i, "Ｍ"))
-                        //        {
-                        //            upic.Print("M");
-                        //        }
-                        //        upic.Print();
-                        //    }
-                        //    else if (u.AbilityMaxRange(i) == 1)
-                        //    {
-                        //        upic.Print("    1");
-                        //        if (u.IsAbilityClassifiedAs(i, "Ｑ"))
-                        //        {
-                        //            upic.Print("Q");
-                        //        }
-                        //        if (u.IsAbilityClassifiedAs(i, "Ｍ"))
-                        //        {
-                        //            upic.Print("M");
-                        //        }
-                        //        upic.Print();
-                        //    }
-                        //    else
-                        //    {
-                        //        upic.Print("    -");
-                        //    }
-                        //    upic.SetColor(StatusFontColorNormalString);
-                        //NextAbility:
-                        //    ;
-                        //}
+                                if (ua.IsAbilityClassifiedAs("Ｍ"))
+                                {
+                                    upic.Print("M");
+                                }
+                                upic.Print();
+                            }
+                            else if (ua.AbilityMaxRange() == 1)
+                            {
+                                upic.Print("    1");
+                                if (ua.IsAbilityClassifiedAs("Ｑ"))
+                                {
+                                    upic.Print("Q");
+                                }
+                                if (ua.IsAbilityClassifiedAs("Ｍ"))
+                                {
+                                    upic.Print("M");
+                                }
+                                upic.Print();
+                            }
+                            else
+                            {
+                                upic.Print("    -");
+                            }
+                            upic.SetColor(StatusFontColorNormalString);
+                        NextAbility:
+                            ;
+                        }
                     }
 
                 UpdateStatusWindow:
