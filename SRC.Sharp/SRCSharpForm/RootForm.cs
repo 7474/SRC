@@ -19,7 +19,7 @@ namespace SRCSharpForm
             var fileSystem = new LocalFileSystem();
             try
             {
-                fileSystem.AddAchive("assets.zip");
+                fileSystem.AddAchive(SRC.AppPath, "assets.zip");
             }
             catch
             {
