@@ -16,7 +16,17 @@ namespace SRCSharpForm
             InitializeComponent();
 
             SRC = new SRCCore.SRC();
-            SRC.FileSystem = new LocalFileSystem();
+            var fileSystem = new LocalFileSystem();
+            try
+            {
+                fileSystem.AddAchive("assets.zip");
+            }
+            catch
+            {
+                // ignore
+                // Assetsはお試し中
+            }
+            SRC.FileSystem = fileSystem;
             SRC.Sound.Player = new WindowsManagedPlayer();
             var config = new LocalFileConfig();
             SRC.SystemConfig = config;

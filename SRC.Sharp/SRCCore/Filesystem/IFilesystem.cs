@@ -8,6 +8,14 @@ namespace SRCCore.Filesystem
         bool FileExists(params string[] paths);
         Stream Open(params string[] paths);
 
+        /// <summary>
+        /// 読み込みアクセス対象とするアーカイブファイルを追加します。
+        /// アーカイブはファイルシステムが規定でサポートする要素より先に走査されます。
+        /// アーカイブは後に追加したものから先に走査されます。
+        /// </summary>
+        /// <param name="path"></param>
+        void AddAchive(string path);
+
         //
         bool RelativePathEuqals(string scenarioPath, string a, string b);
         string ToAbsolutePath(string scenarioPath, string path);

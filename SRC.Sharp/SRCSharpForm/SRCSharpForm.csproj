@@ -29,4 +29,10 @@
 		<None Include="..\.editorconfig" Link=".editorconfig" />
 		<None Include="GUI.ref.cs" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Update="assets.zip">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 </Project>
