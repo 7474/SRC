@@ -6261,7 +6261,7 @@ namespace SRCCore
             //        }
             //}
 
-            //if (GeneralLib.FileExists(SRC.ScenarioPath + fname + ".bmp"))
+            //if (SRC.FileSystem.FileExists(SRC.ScenarioPath + fname + ".bmp"))
             //{
             //    fname = SRC.ScenarioPath + fname;
             //}
@@ -6270,7 +6270,7 @@ namespace SRCCore
             //    fname = SRC.AppPath + fname;
             //}
 
-            //bool localFileExists() { string argfname = fname + "01.bmp"; var ret = GeneralLib.FileExists(argfname); return ret; }
+            //bool localFileExists() { string argfname = fname + "01.bmp"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
 
             //if (!localFileExists())
             //{
@@ -6319,11 +6319,11 @@ namespace SRCCore
             //if (!init_explode_animation)
             //{
             //    // 爆発用画像のパス
-            //    bool localFileExists() { string argfname = SRC.ScenarioPath + @"Bitmap\Event\Explode01.bmp"; var ret = GeneralLib.FileExists(argfname); return ret; }
+            //    bool localFileExists() { string argfname = SRC.ScenarioPath + @"Bitmap\Event\Explode01.bmp"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
 
-            //    bool localFileExists1() { string argfname = SRC.AppPath + @"Bitmap\Anime\Explode\EFFECT_Explode01.bmp"; var ret = GeneralLib.FileExists(argfname); return ret; }
+            //    bool localFileExists1() { string argfname = SRC.AppPath + @"Bitmap\Anime\Explode\EFFECT_Explode01.bmp"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
 
-            //    if (GeneralLib.FileExists(SRC.ScenarioPath + @"Bitmap\Anime\Explode\EFFECT_Explode01.bmp"))
+            //    if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Bitmap\Anime\Explode\EFFECT_Explode01.bmp"))
             //    {
             //        explode_image_path = SRC.ScenarioPath + @"Bitmap\Anime\Explode\EFFECT_Explode";
             //    }
@@ -6342,7 +6342,7 @@ namespace SRCCore
 
             //    // 爆発用画像の個数
             //    i = 2;
-            //    while (GeneralLib.FileExists(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp"))
+            //    while (SRC.FileSystem.FileExists(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp"))
             //        i = (i + 1);
             //    explode_image_num = (i - 1);
             //}

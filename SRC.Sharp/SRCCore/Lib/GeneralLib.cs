@@ -595,11 +595,11 @@ namespace SRCCore.Lib
         //            return ReplaceStringRet;
         //        }
 
-        // ファイル fname が存在するか判定
-        public static bool FileExists(string fname)
-        {
-            return File.Exists(fname);
-        }
+        //// ファイル fname が存在するか判定
+        //public static bool FileExists(string fname)
+        //{
+        //    return File.Exists(fname);
+        //}
 
         //        // データファイルfnumからデータを一行読み込み、line_bufに格納するとともに
         //        // 行番号line_numを更新する。

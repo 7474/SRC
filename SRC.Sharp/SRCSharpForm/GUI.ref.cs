@@ -5131,13 +5131,13 @@ namespace Project1
                 }
 
                 // 画像を検索
-                bool localFileExists() { string argfname = SRC.ScenarioPath + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists() { string argfname = SRC.ScenarioPath + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-                bool localFileExists1() { string argfname = SRC.ExtDataPath + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists1() { string argfname = SRC.ExtDataPath + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-                bool localFileExists2() { string argfname = SRC.ExtDataPath2 + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists2() { string argfname = SRC.ExtDataPath2 + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-                bool localFileExists3() { string argfname = SRC.AppPath + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists3() { string argfname = SRC.AppPath + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
                 if (Strings.InStr(fname, @"\-.bmp") > 0)
                 {
@@ -5172,9 +5172,9 @@ namespace Project1
             {
                 // 地形ユニット
                 fname = u.get_Bitmap(false);
-                bool localFileExists5() { string argfname = SRC.ScenarioPath + @"Bitmap\Map\" + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists5() { string argfname = SRC.ScenarioPath + @"Bitmap\Map\" + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-                if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + fname) | localFileExists5())
+                if (SRC.FileSystem.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + fname) | localFileExists5())
                 {
                     fname = @"Bitmap\Map\" + fname;
                 }
@@ -5221,9 +5221,9 @@ namespace Project1
 
                     if (!string.IsNullOrEmpty(tdir))
                     {
-                        bool localFileExists4() { string argfname = SRC.ScenarioPath + @"Bitmap\Map\" + tname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                        bool localFileExists4() { string argfname = SRC.ScenarioPath + @"Bitmap\Map\" + tname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-                        if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + tname) | localFileExists4())
+                        if (SRC.FileSystem.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + tname) | localFileExists4())
                         {
                             fname = @"Bitmap\Map\" + tname;
                         }
@@ -5265,13 +5265,13 @@ namespace Project1
             }
 
             // 画像の検索
-            bool localFileExists6() { string argfname = SRC.ScenarioPath + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+            bool localFileExists6() { string argfname = SRC.ScenarioPath + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-            bool localFileExists7() { string argfname = SRC.ExtDataPath + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+            bool localFileExists7() { string argfname = SRC.ExtDataPath + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-            bool localFileExists8() { string argfname = SRC.ExtDataPath2 + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+            bool localFileExists8() { string argfname = SRC.ExtDataPath2 + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-            bool localFileExists9() { string argfname = SRC.AppPath + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+            bool localFileExists9() { string argfname = SRC.AppPath + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
             if (Strings.InStr(fname, @"\-.bmp") > 0)
             {
@@ -5293,7 +5293,7 @@ namespace Project1
             {
                 fname = SRC.AppPath + fname;
             }
-            else if (!GeneralLib.FileExists(ref fname))
+            else if (!SRC.FileSystem.FileExists(ref fname))
             {
                 fname = "";
 
@@ -6514,13 +6514,13 @@ namespace Project1
 
                 // ユニット側の表示
                 fname = @"Bitmap\Pilot\" + u.MainPilot().get_Bitmap(false);
-                bool localFileExists() { string argfname = SRC.ExtDataPath + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists() { string argfname = SRC.ExtDataPath + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-                bool localFileExists1() { string argfname = SRC.ExtDataPath2 + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists1() { string argfname = SRC.ExtDataPath2 + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-                bool localFileExists2() { string argfname = SRC.AppPath + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists2() { string argfname = SRC.AppPath + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-                if (GeneralLib.FileExists(ref SRC.ScenarioPath + fname))
+                if (SRC.FileSystem.FileExists(ref SRC.ScenarioPath + fname))
                 {
                     withBlock.imgPilot1.Image = Image.FromFile(SRC.ScenarioPath + fname);
                 }
@@ -6626,13 +6626,13 @@ namespace Project1
                 var withBlock2 = My.MyProject.Forms.frmListBox;
                 // ターゲット側の表示
                 fname = @"Bitmap\Pilot\" + t.MainPilot().get_Bitmap(false);
-                bool localFileExists3() { string argfname = SRC.ExtDataPath + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists3() { string argfname = SRC.ExtDataPath + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-                bool localFileExists4() { string argfname = SRC.ExtDataPath2 + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists4() { string argfname = SRC.ExtDataPath2 + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-                bool localFileExists5() { string argfname = SRC.AppPath + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists5() { string argfname = SRC.AppPath + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-                if (GeneralLib.FileExists(ref SRC.ScenarioPath + fname))
+                if (SRC.FileSystem.FileExists(ref SRC.ScenarioPath + fname))
                 {
                     withBlock2.imgPilot2.Image = Image.FromFile(SRC.ScenarioPath + fname);
                 }
@@ -9130,7 +9130,7 @@ namespace Project1
             {
                 if (scenario_anime_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Anime\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ScenarioPath + @"Bitmap\Anime\" + fname))
                     {
                         fpath = SRC.ScenarioPath + @"Bitmap\Anime\";
                         last_path = "";
@@ -9140,7 +9140,7 @@ namespace Project1
 
                 if (extdata_anime_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Anime\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath + @"Bitmap\Anime\" + fname))
                     {
                         fpath = SRC.ExtDataPath + @"Bitmap\Anime\";
                         last_path = "";
@@ -9150,7 +9150,7 @@ namespace Project1
 
                 if (extdata2_anime_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Anime\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Anime\" + fname))
                     {
                         fpath = SRC.ExtDataPath2 + @"Bitmap\Anime\";
                         last_path = "";
@@ -9158,7 +9158,7 @@ namespace Project1
                     }
                 }
 
-                if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Anime\" + fname))
+                if (SRC.FileSystem.FileExists(ref SRC.AppPath + @"Bitmap\Anime\" + fname))
                 {
                     fpath = SRC.AppPath + @"Bitmap\Anime\";
                     last_path = "";
@@ -9169,7 +9169,7 @@ namespace Project1
             // 前回と同じパス？
             if (Strings.Len(last_path) > 0)
             {
-                if (GeneralLib.FileExists(ref last_path + fname))
+                if (SRC.FileSystem.FileExists(ref last_path + fname))
                 {
                     fpath = last_path;
                     goto FoundPicture;
@@ -9181,7 +9181,7 @@ namespace Project1
             {
                 if (scenario_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ScenarioPath + fname))
                     {
                         fpath = SRC.ScenarioPath;
                         last_path = fpath;
@@ -9189,7 +9189,7 @@ namespace Project1
                     }
                 }
 
-                if (GeneralLib.FileExists(ref SRC.AppPath + fname))
+                if (SRC.FileSystem.FileExists(ref SRC.AppPath + fname))
                 {
                     fpath = SRC.AppPath;
                     last_path = "";
@@ -9209,7 +9209,7 @@ namespace Project1
             {
                 if (scenario_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ScenarioPath + @"Bitmap\" + fname))
                     {
                         fpath = SRC.ScenarioPath + @"Bitmap\";
                         last_path = fpath;
@@ -9219,7 +9219,7 @@ namespace Project1
 
                 if (extdata_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath + @"Bitmap\" + fname))
                     {
                         fpath = SRC.ExtDataPath + @"Bitmap\";
                         last_path = "";
@@ -9229,7 +9229,7 @@ namespace Project1
 
                 if (extdata2_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\" + fname))
                     {
                         fpath = SRC.ExtDataPath2 + @"Bitmap\";
                         last_path = "";
@@ -9237,7 +9237,7 @@ namespace Project1
                     }
                 }
 
-                if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\" + fname))
+                if (SRC.FileSystem.FileExists(ref SRC.AppPath + @"Bitmap\" + fname))
                 {
                     fpath = SRC.AppPath + @"Bitmap\";
                     last_path = "";
@@ -9316,7 +9316,7 @@ namespace Project1
             // Bitmapフォルダに直置き
             if (scenario_map_bitmap_dir_exists)
             {
-                if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\" + fname))
+                if (SRC.FileSystem.FileExists(ref SRC.ScenarioPath + @"Bitmap\" + fname))
                 {
                     fpath = SRC.ScenarioPath + @"Bitmap\";
                     last_path = fpath;
@@ -9324,7 +9324,7 @@ namespace Project1
                 }
             }
 
-            if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\" + fname))
+            if (SRC.FileSystem.FileExists(ref SRC.ScenarioPath + @"Bitmap\" + fname))
             {
                 fpath = SRC.ScenarioPath + @"Bitmap\";
                 last_path = fpath;
@@ -9336,7 +9336,7 @@ namespace Project1
             {
                 if (scenario_anime_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Anime\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ScenarioPath + @"Bitmap\Anime\" + fname))
                     {
                         fpath = SRC.ScenarioPath + @"Bitmap\Anime\";
                         last_path = fpath;
@@ -9346,7 +9346,7 @@ namespace Project1
 
                 if (scenario_event_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Event\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ScenarioPath + @"Bitmap\Event\" + fname))
                     {
                         fpath = SRC.ScenarioPath + @"Bitmap\Event\";
                         last_path = fpath;
@@ -9356,7 +9356,7 @@ namespace Project1
 
                 if (scenario_cutin_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Cutin\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ScenarioPath + @"Bitmap\Cutin\" + fname))
                     {
                         fpath = SRC.ScenarioPath + @"Bitmap\Cutin\";
                         last_path = fpath;
@@ -9366,7 +9366,7 @@ namespace Project1
 
                 if (scenario_pilot_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Pilot\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ScenarioPath + @"Bitmap\Pilot\" + fname))
                     {
                         fpath = SRC.ScenarioPath + @"Bitmap\Pilot\";
                         last_path = fpath;
@@ -9376,7 +9376,7 @@ namespace Project1
 
                 if (scenario_unit_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Unit\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ScenarioPath + @"Bitmap\Unit\" + fname))
                     {
                         fpath = SRC.ScenarioPath + @"Bitmap\Unit\";
                         last_path = fpath;
@@ -9388,14 +9388,14 @@ namespace Project1
                 {
                     if (!string.IsNullOrEmpty(tdir))
                     {
-                        if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Map\" + tdir + fname))
+                        if (SRC.FileSystem.FileExists(ref SRC.ScenarioPath + @"Bitmap\Map\" + tdir + fname))
                         {
                             fpath = SRC.ScenarioPath + @"Bitmap\Map\" + tdir;
                             last_path = fpath;
                             goto FoundPicture;
                         }
 
-                        if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Map\" + tdir + tname))
+                        if (SRC.FileSystem.FileExists(ref SRC.ScenarioPath + @"Bitmap\Map\" + tdir + tname))
                         {
                             fname = tname;
                             fpath = SRC.ScenarioPath + @"Bitmap\Map\" + tdir;
@@ -9405,7 +9405,7 @@ namespace Project1
                             goto FoundPicture;
                         }
 
-                        if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Map\" + tname))
+                        if (SRC.FileSystem.FileExists(ref SRC.ScenarioPath + @"Bitmap\Map\" + tname))
                         {
                             fname = tname;
                             fpath = SRC.ScenarioPath + @"Bitmap\Map\";
@@ -9416,7 +9416,7 @@ namespace Project1
                         }
                     }
 
-                    if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Bitmap\Map\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ScenarioPath + @"Bitmap\Map\" + fname))
                     {
                         fpath = SRC.ScenarioPath + @"Bitmap\Map\";
                         last_path = fpath;
@@ -9430,7 +9430,7 @@ namespace Project1
             {
                 if (extdata_anime_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Anime\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath + @"Bitmap\Anime\" + fname))
                     {
                         fpath = SRC.ExtDataPath + @"Bitmap\Anime\";
                         last_path = "";
@@ -9440,7 +9440,7 @@ namespace Project1
 
                 if (extdata_event_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Event\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath + @"Bitmap\Event\" + fname))
                     {
                         fpath = SRC.ExtDataPath + @"Bitmap\Event\";
                         last_path = "";
@@ -9450,7 +9450,7 @@ namespace Project1
 
                 if (extdata_cutin_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Cutin\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath + @"Bitmap\Cutin\" + fname))
                     {
                         fpath = SRC.ExtDataPath + @"Bitmap\Cutin\";
                         last_path = "";
@@ -9460,7 +9460,7 @@ namespace Project1
 
                 if (extdata_pilot_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Pilot\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath + @"Bitmap\Pilot\" + fname))
                     {
                         fpath = SRC.ExtDataPath + @"Bitmap\Pilot\";
                         last_path = "";
@@ -9470,7 +9470,7 @@ namespace Project1
 
                 if (extdata_unit_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Unit\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath + @"Bitmap\Unit\" + fname))
                     {
                         fpath = SRC.ExtDataPath + @"Bitmap\Unit\";
                         last_path = "";
@@ -9482,14 +9482,14 @@ namespace Project1
                 {
                     if (!string.IsNullOrEmpty(tdir))
                     {
-                        if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Map\" + tdir + fname))
+                        if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath + @"Bitmap\Map\" + tdir + fname))
                         {
                             fpath = SRC.ExtDataPath + @"Bitmap\Map\" + tdir;
                             last_path = "";
                             goto FoundPicture;
                         }
 
-                        if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Map\" + tdir + tname))
+                        if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath + @"Bitmap\Map\" + tdir + tname))
                         {
                             fname = tname;
                             fpath = SRC.ExtDataPath + @"Bitmap\Map\" + tdir;
@@ -9499,7 +9499,7 @@ namespace Project1
                             goto FoundPicture;
                         }
 
-                        if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Map\" + tname))
+                        if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath + @"Bitmap\Map\" + tname))
                         {
                             fname = tname;
                             fpath = SRC.ExtDataPath + @"Bitmap\Map\";
@@ -9510,7 +9510,7 @@ namespace Project1
                         }
                     }
 
-                    if (GeneralLib.FileExists(ref SRC.ExtDataPath + @"Bitmap\Map\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath + @"Bitmap\Map\" + fname))
                     {
                         fpath = SRC.ExtDataPath + @"Bitmap\Map\";
                         last_path = "";
@@ -9524,7 +9524,7 @@ namespace Project1
             {
                 if (extdata2_anime_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Anime\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Anime\" + fname))
                     {
                         fpath = SRC.ExtDataPath2 + @"Bitmap\Anime\";
                         last_path = "";
@@ -9534,7 +9534,7 @@ namespace Project1
 
                 if (extdata2_event_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Event\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Event\" + fname))
                     {
                         fpath = SRC.ExtDataPath2 + @"Bitmap\Event\";
                         last_path = "";
@@ -9544,7 +9544,7 @@ namespace Project1
 
                 if (extdata2_cutin_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Cutin\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Cutin\" + fname))
                     {
                         fpath = SRC.ExtDataPath2 + @"Bitmap\Cutin\";
                         last_path = "";
@@ -9554,7 +9554,7 @@ namespace Project1
 
                 if (extdata2_pilot_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Pilot\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Pilot\" + fname))
                     {
                         fpath = SRC.ExtDataPath2 + @"Bitmap\Pilot\";
                         last_path = "";
@@ -9564,7 +9564,7 @@ namespace Project1
 
                 if (extdata2_unit_bitmap_dir_exists)
                 {
-                    if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Unit\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Unit\" + fname))
                     {
                         fpath = SRC.ExtDataPath2 + @"Bitmap\Unit\";
                         last_path = "";
@@ -9576,14 +9576,14 @@ namespace Project1
                 {
                     if (!string.IsNullOrEmpty(tdir))
                     {
-                        if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Map\" + tdir + fname))
+                        if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Map\" + tdir + fname))
                         {
                             fpath = SRC.ExtDataPath2 + @"Bitmap\Map\" + tdir;
                             last_path = "";
                             goto FoundPicture;
                         }
 
-                        if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Map\" + tdir + tname))
+                        if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Map\" + tdir + tname))
                         {
                             fname = tname;
                             fpath = SRC.ExtDataPath2 + @"Bitmap\Map\" + tdir;
@@ -9593,7 +9593,7 @@ namespace Project1
                             goto FoundPicture;
                         }
 
-                        if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Map\" + tname))
+                        if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Map\" + tname))
                         {
                             fname = tname;
                             fpath = SRC.ExtDataPath2 + @"Bitmap\Map\";
@@ -9604,7 +9604,7 @@ namespace Project1
                         }
                     }
 
-                    if (GeneralLib.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Map\" + fname))
+                    if (SRC.FileSystem.FileExists(ref SRC.ExtDataPath2 + @"Bitmap\Map\" + fname))
                     {
                         fpath = SRC.ExtDataPath2 + @"Bitmap\Map\";
                         last_path = "";
@@ -9614,14 +9614,14 @@ namespace Project1
             }
 
             // 本体側フォルダ
-            if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Anime\" + fname))
+            if (SRC.FileSystem.FileExists(ref SRC.AppPath + @"Bitmap\Anime\" + fname))
             {
                 fpath = SRC.AppPath + @"Bitmap\Anime\";
                 last_path = "";
                 goto FoundPicture;
             }
 
-            if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Event\" + fname))
+            if (SRC.FileSystem.FileExists(ref SRC.AppPath + @"Bitmap\Event\" + fname))
             {
                 fpath = SRC.AppPath + @"Bitmap\Event\";
                 last_path = "";
@@ -9630,7 +9630,7 @@ namespace Project1
 
             if (app_cutin_bitmap_dir_exists)
             {
-                if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Cutin\" + fname))
+                if (SRC.FileSystem.FileExists(ref SRC.AppPath + @"Bitmap\Cutin\" + fname))
                 {
                     fpath = SRC.AppPath + @"Bitmap\Cutin\";
                     last_path = "";
@@ -9640,7 +9640,7 @@ namespace Project1
 
             if (app_pilot_bitmap_dir_exists)
             {
-                if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Pilot\" + fname))
+                if (SRC.FileSystem.FileExists(ref SRC.AppPath + @"Bitmap\Pilot\" + fname))
                 {
                     fpath = SRC.AppPath + @"Bitmap\Pilot\";
                     last_path = "";
@@ -9650,7 +9650,7 @@ namespace Project1
 
             if (app_unit_bitmap_dir_exists)
             {
-                if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Unit\" + fname))
+                if (SRC.FileSystem.FileExists(ref SRC.AppPath + @"Bitmap\Unit\" + fname))
                 {
                     fpath = SRC.AppPath + @"Bitmap\Unit\";
                     last_path = "";
@@ -9660,14 +9660,14 @@ namespace Project1
 
             if (!string.IsNullOrEmpty(tdir))
             {
-                if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + tdir + fname))
+                if (SRC.FileSystem.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + tdir + fname))
                 {
                     fpath = SRC.AppPath + @"Bitmap\Map\" + tdir;
                     last_path = "";
                     goto FoundPicture;
                 }
 
-                if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + tdir + tname))
+                if (SRC.FileSystem.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + tdir + tname))
                 {
                     fname = tname;
                     fpath = SRC.AppPath + @"Bitmap\Map\" + tdir;
@@ -9677,7 +9677,7 @@ namespace Project1
                     goto FoundPicture;
                 }
 
-                if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + tname))
+                if (SRC.FileSystem.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + tname))
                 {
                     fname = tname;
                     fpath = SRC.AppPath + @"Bitmap\Map\";
@@ -9688,7 +9688,7 @@ namespace Project1
                 }
             }
 
-            if (GeneralLib.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + fname))
+            if (SRC.FileSystem.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + fname))
             {
                 fpath = SRC.AppPath + @"Bitmap\Map\";
                 last_path = "";

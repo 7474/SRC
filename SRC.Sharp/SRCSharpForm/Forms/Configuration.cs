@@ -262,7 +262,7 @@ namespace SRCSharpForm
             }
 
             //bool localFileExists() { string argfname = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve"; 
-            //    var ret = GeneralLib.FileExists(argfname); 
+            //    var ret = SRC.FileSystem.FileExists(argfname); 
             //    return ret; }
 
             //if (!localFileExists())

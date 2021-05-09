@@ -8,11 +8,11 @@ namespace SRCCore.Filesystem
 {
     public class LocalFileSystem : IFileSystem
     {
-        private IList<ZipArchive> archives;
+        private IList<LocalFileSystemArchive> archives;
 
         public LocalFileSystem()
         {
-            archives = new List<ZipArchive>();
+            archives = new List<LocalFileSystemArchive>();
         }
 
         public string PathCombine(params string[] paths)
@@ -24,24 +24,42 @@ namespace SRCCore.Filesystem
         public bool FileExists(params string[] paths)
         {
             string path = PathCombine(paths);
-            return File.Exists(path);
+            return GetArchiveEntry(path) != null
+                || File.Exists(path);
         }
 
         public Stream Open(params string[] paths)
         {
             var path = PathCombine(paths);
+            var archiveEntry = GetArchiveEntry(path);
+            if (archiveEntry != null)
+            {
+                return archiveEntry.Open();
+            }
+            return new FileStream(path, FileMode.Open);
+        }
+
+        private ZipArchiveEntry GetArchiveEntry(string path)
+        {
             // ZipArchive のパス区切り文字は / である様子
             // マルチバイト文字はUTF-8にしておけばよい
             // XXX 大文字小文字はどうなってるんだろうか？
             var archivePath = path.Replace("\\", "/");
+            var isAbsolute = Path.IsPathRooted(path);
             foreach (var archive in archives)
             {
+                if (isAbsolute && !archivePath.StartsWith(archive.BasePath))
+                {
+                    continue;
+                }
+                var entryPath = isAbsolute ? archivePath.Replace(archive.BasePath, "") : archivePath;
                 try
                 {
-                    var entry = archive.GetEntry(archivePath);
+                    // XXX これもしかして線形検索してるんだろうか？
+                    var entry = archive.Archive.GetEntry(entryPath);
                     if (entry != null)
                     {
-                        return entry.Open();
+                        return entry;
                     }
                 }
                 catch
@@ -49,12 +67,21 @@ namespace SRCCore.Filesystem
                     // ignore
                 }
             }
-            return new FileStream(path, FileMode.Open);
+            return null;
         }
 
-        public void AddAchive(string path)
+        public void AddAchive(string basePath, string archivePath)
         {
-            archives.Insert(0, ZipFile.Open(path, ZipArchiveMode.Read));
+            var tmpBasePath = basePath.Replace("\\", "/");
+            if (!tmpBasePath.EndsWith("/"))
+            {
+                tmpBasePath += "/";
+            }
+            archives.Insert(0, new LocalFileSystemArchive
+            {
+                BasePath = tmpBasePath,
+                Archive = ZipFile.Open(archivePath, ZipArchiveMode.Read),
+            });
         }
 
         public bool RelativePathEuqals(string scenarioPath, string a, string b)
@@ -78,5 +105,10 @@ namespace SRCCore.Filesystem
         {
             return (path ?? "").Replace('/', '\\');
         }
+    }
+    public class LocalFileSystemArchive
+    {
+        public string BasePath { get; set; }
+        public ZipArchive Archive { get; set; }
     }
 }

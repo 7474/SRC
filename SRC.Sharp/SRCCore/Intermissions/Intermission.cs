@@ -256,7 +256,7 @@ namespace SRCCore
                                 SRC.AppPath,
                             }.Where(x => Directory.Exists(x))
                                 .Select(x => Path.Combine(x, "Lib", "パイロットステータス表示.eve"))
-                                .Where(x => GeneralLib.FileExists(x))
+                                .Where(x => SRC.FileSystem.FileExists(x))
                                 .FirstOrDefault();
                             if (!string.IsNullOrEmpty(eveFile))
                             {
@@ -282,7 +282,7 @@ namespace SRCCore
                                 SRC.AppPath,
                             }.Where(x => Directory.Exists(x))
                                 .Select(x => Path.Combine(x, "Lib", "ユニットステータス表示.eve"))
-                                .Where(x => GeneralLib.FileExists(x))
+                                .Where(x => SRC.FileSystem.FileExists(x))
                                 .FirstOrDefault();
                             if (!string.IsNullOrEmpty(eveFile))
                             {

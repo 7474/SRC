@@ -298,7 +298,7 @@ namespace SRCCore.Units
             //            }
             //    }
 
-            //    if (GeneralLib.FileExists(SRC.AppPath + fname + "1.bmp"))
+            //    if (SRC.FileSystem.FileExists(SRC.AppPath + fname + "1.bmp"))
             //    {
             //        // アニメ表示開始時刻を記録
             //        start_time = GeneralLib.timeGetTime();
