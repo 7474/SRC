@@ -131,9 +131,9 @@ namespace SRCCore.Events
                 ScenarioLibChecked = true;
 
                 // XXX この辺がある時だけ再ロードするようにする
-                //bool localFileExists17() { string argfname = SRC.ScenarioPath + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-                //bool localFileExists18() { string argfname = SRC.ScenarioPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-                //bool localFileExists19() { string argfname = SRC.ScenarioPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
+                //bool localFileExists17() { string argfname = SRC.ScenarioPath + @"Lib\スペシャルパワー.eve"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
+                //bool localFileExists18() { string argfname = SRC.ScenarioPath + @"Lib\精神コマンド.eve"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
+                //bool localFileExists19() { string argfname = SRC.ScenarioPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
                 var hasScenarioSystemData = true;
                 if (hasScenarioSystemData)
                 {
@@ -1053,7 +1053,7 @@ namespace SRCCore.Events
             }
 
             string mapFileName = Strings.Left(fname, Strings.Len(fname) - 4) + ".map";
-            if (GeneralLib.FileExists(mapFileName))
+            if (SRC.FileSystem.FileExists(mapFileName))
             {
                 progressMax = progressMax + 1;
             }
@@ -1081,14 +1081,14 @@ namespace SRCCore.Events
             if (!SRC.IsLocalDataLoaded || new_titles.Any())
             {
                 // TODO Impl
-                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\alias.txt"))
+                //if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\alias.txt"))
                 //{
                 //    SRC.ALDList.Load(SRC.ScenarioPath + @"Data\alias.txt");
                 //}
 
-                //bool localFileExists23() { string argfname = SRC.ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
+                //bool localFileExists23() { string argfname = SRC.ScenarioPath + @"Data\mind.txt"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
 
-                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\sp.txt"))
+                //if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\sp.txt"))
                 //{
                 //    SRC.SPDList.Load(SRC.ScenarioPath + @"Data\sp.txt");
                 //}
@@ -1097,53 +1097,53 @@ namespace SRCCore.Events
                 //    SRC.SPDList.Load(SRC.ScenarioPath + @"Data\mind.txt");
                 //}
 
-                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\pilot.txt"))
+                //if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\pilot.txt"))
                 //{
                 //    SRC.PDList.Load(SRC.ScenarioPath + @"Data\pilot.txt");
                 //}
 
-                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\non_pilot.txt"))
+                //if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\non_pilot.txt"))
                 //{
                 //    SRC.NPDList.Load(SRC.ScenarioPath + @"Data\non_pilot.txt");
                 //}
 
-                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\robot.txt"))
+                //if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\robot.txt"))
                 //{
                 //    SRC.UDList.Load(SRC.ScenarioPath + @"Data\robot.txt");
                 //}
 
-                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\unit.txt"))
+                //if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\unit.txt"))
                 //{
                 //    SRC.UDList.Load(SRC.ScenarioPath + @"Data\unit.txt");
                 //}
 
                 //GUI.DisplayLoadingProgress();
-                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\pilot_message.txt"))
+                //if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\pilot_message.txt"))
                 //{
                 //    SRC.MDList.Load(SRC.ScenarioPath + @"Data\pilot_message.txt");
                 //}
 
-                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\pilot_dialog.txt"))
+                //if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\pilot_dialog.txt"))
                 //{
                 //    SRC.DDList.Load(SRC.ScenarioPath + @"Data\pilot_dialog.txt");
                 //}
 
-                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\effect.txt"))
+                //if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\effect.txt"))
                 //{
                 //    SRC.EDList.Load(SRC.ScenarioPath + @"Data\effect.txt");
                 //}
 
-                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\animation.txt"))
+                //if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\animation.txt"))
                 //{
                 //    SRC.ADList.Load(SRC.ScenarioPath + @"Data\animation.txt");
                 //}
 
-                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\ext_animation.txt"))
+                //if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\ext_animation.txt"))
                 //{
                 //    SRC.EADList.Load(SRC.ScenarioPath + @"Data\ext_animation.txt");
                 //}
 
-                //if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\item.txt"))
+                //if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\item.txt"))
                 //{
                 //    SRC.IDList.Load(SRC.ScenarioPath + @"Data\item.txt");
                 //}
@@ -1156,7 +1156,7 @@ namespace SRCCore.Events
             SRC.ADList.AddDefaultAnimation();
 
             // マップデータをロード
-            if (GeneralLib.FileExists(mapFileName))
+            if (SRC.FileSystem.FileExists(mapFileName))
             {
                 Map.LoadMapData(mapFileName);
                 GUI.SetupBackground(draw_mode: "", draw_option: "");
@@ -1170,7 +1170,7 @@ namespace SRCCore.Events
 
         public bool LoadEventData2IfExist(string fname, EventDataSource source)
         {
-            if (GeneralLib.FileExists(fname))
+            if (SRC.FileSystem.FileExists(fname))
             {
                 LoadEventData2(fname, source);
                 return true;

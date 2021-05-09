@@ -30,7 +30,7 @@ namespace SRCCore
             GUI.LoadMainFormAndRegisterFlash();
 
             //            // Src.iniが無ければ作成
-            //            bool localFileExists() { string argfname = AppPath + "Src.ini"; var ret = GeneralLib.FileExists(argfname); return ret; }
+            //            bool localFileExists() { string argfname = AppPath + "Src.ini"; var ret = FileSystem.FileExists(argfname); return ret; }
 
             //            if (!localFileExists())
             //            {
@@ -664,9 +664,9 @@ namespace SRCCore
             //            GUI.ListItemComment = new string[1];
 
             //            // エリアスデータをロード
-            //            bool localFileExists1() { string argfname = AppPath + @"Data\System\alias.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
+            //            bool localFileExists1() { string argfname = AppPath + @"Data\System\alias.txt"; var ret = FileSystem.FileExists(argfname); return ret; }
 
-            //            if (GeneralLib.FileExists(ScenarioPath + @"Data\System\alias.txt"))
+            //            if (FileSystem.FileExists(ScenarioPath + @"Data\System\alias.txt"))
             //            {
             //                ALDList.Load(ScenarioPath + @"Data\System\alias.txt");
             //            }
@@ -686,7 +686,7 @@ namespace SRCCore
             foreach (var spFile in spFiles)
             {
 
-                if (GeneralLib.FileExists(spFile))
+                if (FileSystem.FileExists(spFile))
                 {
                     SPDList.Load(spFile);
                     break;
@@ -694,9 +694,9 @@ namespace SRCCore
             }
 
             //            // 汎用アイテムデータをロード
-            //            bool localFileExists5() { string argfname = AppPath + @"Data\System\item.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
+            //            bool localFileExists5() { string argfname = AppPath + @"Data\System\item.txt"; var ret = FileSystem.FileExists(argfname); return ret; }
 
-            //            if (GeneralLib.FileExists(ScenarioPath + @"Data\System\item.txt"))
+            //            if (FileSystem.FileExists(ScenarioPath + @"Data\System\item.txt"))
             //            {
             //                IDList.Load(ScenarioPath + @"Data\System\item.txt");
             //            }
@@ -706,7 +706,7 @@ namespace SRCCore
             //            }
             // 地形データをロード
             string appTerrainPath = FileSystem.PathCombine(AppPath, "Data", "System", "terrain.txt");
-            if (GeneralLib.FileExists(appTerrainPath))
+            if (FileSystem.FileExists(appTerrainPath))
             {
                 TDList.Load(appTerrainPath);
             }
@@ -715,7 +715,7 @@ namespace SRCCore
                 throw new TerminateException(@"地形データファイル「Data\System\terrain.txt」が見つかりません");
             }
             string scenarioTerrainPath = FileSystem.PathCombine(ScenarioPath, "Data", "System", "terrain.txt");
-            if (GeneralLib.FileExists(scenarioTerrainPath))
+            if (FileSystem.FileExists(scenarioTerrainPath))
             {
                 TDList.Load(scenarioTerrainPath);
             }
@@ -728,7 +728,7 @@ namespace SRCCore
             };
             foreach (var bcFile in bcFiles)
             {
-                if (GeneralLib.FileExists(bcFile))
+                if (FileSystem.FileExists(bcFile))
                 {
                     BCList.Load(bcFile);
                     break;
@@ -912,7 +912,7 @@ namespace SRCCore
             //// ロングネームにしておく
             //// UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //fname = ScenarioPath + FileSystem.Dir(fname);
-            //if (!GeneralLib.FileExists(fname))
+            //if (!FileSystem.FileExists(fname))
             //{
             //    GUI.ErrorMessage("指定したファイルが存在しません");
             //    TerminateSRC();

@@ -519,13 +519,13 @@
 //                }
 
 //                // 画像ファイルを検索
-//                bool localFileExists() { string argfname = SRC.ScenarioPath + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+//                bool localFileExists() { string argfname = SRC.ScenarioPath + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-//                bool localFileExists1() { string argfname = SRC.ExtDataPath + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+//                bool localFileExists1() { string argfname = SRC.ExtDataPath + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-//                bool localFileExists2() { string argfname = SRC.ExtDataPath2 + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+//                bool localFileExists2() { string argfname = SRC.ExtDataPath2 + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-//                bool localFileExists3() { string argfname = SRC.AppPath + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+//                bool localFileExists3() { string argfname = SRC.AppPath + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
 //                if (Strings.InStr(fname, @"\-.bmp") > 0)
 //                {

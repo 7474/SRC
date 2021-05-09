@@ -19,7 +19,7 @@ namespace SRCCore
                 {
                     FileSystem.PathCombine(ScenarioPath, fname),
                     FileSystem.PathCombine(AppPath, fname),
-                }.FirstOrDefault(x => GeneralLib.FileExists(x)) ?? fname;
+                }.FirstOrDefault(x => FileSystem.FileExists(x)) ?? fname;
             }
 
             if (string.IsNullOrEmpty(Lib.FileSystem.Dir(fname, FileAttribute.Normal)))
@@ -824,7 +824,7 @@ namespace SRCCore
                 FileSystem.PathCombine(ScenarioPath, "Data", "System", "GameOver.eve"),
                 FileSystem.PathCombine(AppPath, "Data", "System", "GameOver.eve"),
             };
-            var gameOverFile = gameOverFiles.FirstOrDefault(x => GeneralLib.FileExists(x));
+            var gameOverFile = gameOverFiles.FirstOrDefault(x => FileSystem.FileExists(x));
             if (string.IsNullOrEmpty(gameOverFile))
             {
                 // GameOver.eveが無ければそのまま終了
@@ -832,7 +832,7 @@ namespace SRCCore
             }
 
             var nonPilotFile = FileSystem.PathCombine(Path.GetDirectoryName(gameOverFile), "non_pilot.txt");
-            if (GeneralLib.FileExists(nonPilotFile))
+            if (FileSystem.FileExists(nonPilotFile))
             {
                 NPDList.Load(nonPilotFile);
             }
@@ -872,7 +872,7 @@ namespace SRCCore
                 FileSystem.PathCombine(ScenarioPath, "Data", "System", "Exit.eve"),
                 FileSystem.PathCombine(AppPath, "Data", "System", "Exit.eve"),
             };
-            var exitFile = exitFiles.FirstOrDefault(x => GeneralLib.FileExists(x));
+            var exitFile = exitFiles.FirstOrDefault(x => FileSystem.FileExists(x));
             if (string.IsNullOrEmpty(exitFile))
             {
                 // Exit.eveが無ければそのまま終了
@@ -880,7 +880,7 @@ namespace SRCCore
             }
 
             var nonPilotFile = FileSystem.PathCombine(Path.GetDirectoryName(exitFile), "non_pilot.txt");
-            if (GeneralLib.FileExists(nonPilotFile))
+            if (FileSystem.FileExists(nonPilotFile))
             {
                 NPDList.Load(nonPilotFile);
             }

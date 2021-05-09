@@ -52,42 +52,42 @@ namespace SRCCore
         public void LoadDataDirectory(string fpath)
         {
             var aliasFilePath = FileSystem.PathCombine(fpath, "alias.txt");
-            if (GeneralLib.FileExists(aliasFilePath))
+            if (FileSystem.FileExists(aliasFilePath))
             {
                 ALDList.Load(aliasFilePath);
             }
 
             var mindFilePath = FileSystem.PathCombine(fpath, "mind.txt");
             var spFilePath = FileSystem.PathCombine(fpath, "sp.txt");
-            if (GeneralLib.FileExists(mindFilePath))
+            if (FileSystem.FileExists(mindFilePath))
             {
                 SPDList.Load(mindFilePath);
             }
-            else if (GeneralLib.FileExists(spFilePath))
+            else if (FileSystem.FileExists(spFilePath))
             {
                 SPDList.Load(spFilePath);
             }
 
             var pilotFilePath = FileSystem.PathCombine(fpath, "pilot.txt");
-            if (GeneralLib.FileExists(pilotFilePath))
+            if (FileSystem.FileExists(pilotFilePath))
             {
                 PDList.Load(pilotFilePath);
             }
 
             var nonPilotFilePath = FileSystem.PathCombine(fpath, "non_pilot.txt");
-            if (GeneralLib.FileExists(nonPilotFilePath))
+            if (FileSystem.FileExists(nonPilotFilePath))
             {
                 NPDList.Load(nonPilotFilePath);
             }
 
             var robotFilePath = FileSystem.PathCombine(fpath, "robot.txt");
-            if (GeneralLib.FileExists(robotFilePath))
+            if (FileSystem.FileExists(robotFilePath))
             {
                 UDList.Load(robotFilePath);
             }
 
             var unitFilePath = FileSystem.PathCombine(fpath, "unit.txt");
-            if (GeneralLib.FileExists(unitFilePath))
+            if (FileSystem.FileExists(unitFilePath))
             {
                 UDList.Load(unitFilePath);
             }
@@ -99,37 +99,37 @@ namespace SRCCore
             //}
 
             var pilotMessageFilePath = FileSystem.PathCombine(fpath, "pilot_message.txt");
-            if (GeneralLib.FileExists(pilotMessageFilePath))
+            if (FileSystem.FileExists(pilotMessageFilePath))
             {
                 MDList.Load(pilotMessageFilePath, false);
             }
 
             var pilotDialogFilePath = FileSystem.PathCombine(fpath, "pilot_dialog.txt");
-            if (GeneralLib.FileExists(pilotDialogFilePath))
+            if (FileSystem.FileExists(pilotDialogFilePath))
             {
                 DDList.Load(pilotDialogFilePath);
             }
 
             var effectFilePath = FileSystem.PathCombine(fpath, "effect.txt");
-            if (GeneralLib.FileExists(effectFilePath))
+            if (FileSystem.FileExists(effectFilePath))
             {
                 EDList.Load(effectFilePath, true);
             }
 
             var animationFilePath = FileSystem.PathCombine(fpath, "animation.txt");
-            if (GeneralLib.FileExists(animationFilePath))
+            if (FileSystem.FileExists(animationFilePath))
             {
                 ADList.Load(animationFilePath, false);
             }
 
             var ext_animationFilePath = FileSystem.PathCombine(fpath, "ext_animation.txt");
-            if (GeneralLib.FileExists(ext_animationFilePath))
+            if (FileSystem.FileExists(ext_animationFilePath))
             {
                 EADList.Load(ext_animationFilePath, false);
             }
 
             var itemFilePath = FileSystem.PathCombine(fpath, "item.txt");
-            if (GeneralLib.FileExists(itemFilePath))
+            if (FileSystem.FileExists(itemFilePath))
             {
                 IDList.Load(itemFilePath);
             }

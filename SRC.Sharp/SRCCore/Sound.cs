@@ -312,7 +312,7 @@ namespace SRCCore
             //    }
 
             //    // MP3が演奏可能かどうかも調べておく
-            //    if (GeneralLib.FileExists(SRC.AppPath + "VBMP3.dll"))
+            //    if (SRC.FileSystem.FileExists(SRC.AppPath + "VBMP3.dll"))
             //    {
             //        is_mp3_available = true;
             //    }
@@ -364,14 +364,14 @@ namespace SRCCore
             //    {
             //        if (is_mp3_available)
             //        {
-            //            if (GeneralLib.FileExists(fname_mp3))
+            //            if (SRC.FileSystem.FileExists(fname_mp3))
             //            {
             //                SearchMidiFileRet = fname_mp3;
             //                return SearchMidiFileRet;
             //            }
             //        }
 
-            //        if (GeneralLib.FileExists(buf))
+            //        if (SRC.FileSystem.FileExists(buf))
             //        {
             //            SearchMidiFileRet = buf;
             //        }
@@ -407,7 +407,7 @@ namespace SRCCore
             //            if (!string.IsNullOrEmpty(sub_folder))
             //            {
             //                fname = SRC.ScenarioPath + @"Midi\" + sub_folder + fname_mp3;
-            //                if (GeneralLib.FileExists(fname))
+            //                if (SRC.FileSystem.FileExists(fname))
             //                {
             //                    SearchMidiFileRet = fname;
             //                    // fpath_history.Add fname, buf   DEL MARGE
@@ -416,7 +416,7 @@ namespace SRCCore
             //            }
 
             //            fname = SRC.ScenarioPath + @"Midi\" + fname_mp3;
-            //            if (GeneralLib.FileExists(fname))
+            //            if (SRC.FileSystem.FileExists(fname))
             //            {
             //                SearchMidiFileRet = fname;
             //                // fpath_history.Add fname, buf   DEL MARGE
@@ -427,7 +427,7 @@ namespace SRCCore
             //        if (!string.IsNullOrEmpty(sub_folder))
             //        {
             //            fname = SRC.ScenarioPath + @"Midi\" + sub_folder + buf;
-            //            if (GeneralLib.FileExists(fname))
+            //            if (SRC.FileSystem.FileExists(fname))
             //            {
             //                SearchMidiFileRet = fname;
             //                // fpath_history.Add fname, buf   DEL MARGE
@@ -436,7 +436,7 @@ namespace SRCCore
             //        }
 
             //        fname = SRC.ScenarioPath + @"Midi\" + buf;
-            //        if (GeneralLib.FileExists(fname))
+            //        if (SRC.FileSystem.FileExists(fname))
             //        {
             //            SearchMidiFileRet = fname;
             //            // fpath_history.Add fname, buf   DEL MARGE
@@ -452,7 +452,7 @@ namespace SRCCore
             //            if (!string.IsNullOrEmpty(sub_folder))
             //            {
             //                fname = SRC.ExtDataPath + @"Midi\" + sub_folder + fname_mp3;
-            //                if (GeneralLib.FileExists(fname))
+            //                if (SRC.FileSystem.FileExists(fname))
             //                {
             //                    SearchMidiFileRet = fname;
             //                    // fpath_history.Add fname, buf   DEL MARGE
@@ -461,7 +461,7 @@ namespace SRCCore
             //            }
 
             //            fname = SRC.ExtDataPath + @"Midi\" + fname_mp3;
-            //            if (GeneralLib.FileExists(fname))
+            //            if (SRC.FileSystem.FileExists(fname))
             //            {
             //                SearchMidiFileRet = fname;
             //                // fpath_history.Add fname, buf   DEL MARGE
@@ -472,7 +472,7 @@ namespace SRCCore
             //        if (!string.IsNullOrEmpty(sub_folder))
             //        {
             //            fname = SRC.ExtDataPath + @"Midi\" + sub_folder + buf;
-            //            if (GeneralLib.FileExists(fname))
+            //            if (SRC.FileSystem.FileExists(fname))
             //            {
             //                SearchMidiFileRet = fname;
             //                // fpath_history.Add fname, buf   DEL MARGE
@@ -481,7 +481,7 @@ namespace SRCCore
             //        }
 
             //        fname = SRC.ExtDataPath + @"Midi\" + buf;
-            //        if (GeneralLib.FileExists(fname))
+            //        if (SRC.FileSystem.FileExists(fname))
             //        {
             //            SearchMidiFileRet = fname;
             //            // fpath_history.Add fname, buf   DEL MARGE
@@ -497,7 +497,7 @@ namespace SRCCore
             //            if (!string.IsNullOrEmpty(sub_folder))
             //            {
             //                fname = SRC.ExtDataPath2 + @"Midi\" + sub_folder + fname_mp3;
-            //                if (GeneralLib.FileExists(fname))
+            //                if (SRC.FileSystem.FileExists(fname))
             //                {
             //                    SearchMidiFileRet = fname;
             //                    // fpath_history.Add fname, buf   DEL MARGE
@@ -506,7 +506,7 @@ namespace SRCCore
             //            }
 
             //            fname = SRC.ExtDataPath2 + @"Midi\" + fname_mp3;
-            //            if (GeneralLib.FileExists(fname))
+            //            if (SRC.FileSystem.FileExists(fname))
             //            {
             //                SearchMidiFileRet = fname;
             //                // fpath_history.Add fname, buf   DEL MARGE
@@ -517,7 +517,7 @@ namespace SRCCore
             //        if (!string.IsNullOrEmpty(sub_folder))
             //        {
             //            fname = SRC.ExtDataPath2 + @"Midi\" + sub_folder + buf;
-            //            if (GeneralLib.FileExists(fname))
+            //            if (SRC.FileSystem.FileExists(fname))
             //            {
             //                SearchMidiFileRet = fname;
             //                // fpath_history.Add fname, buf   DEL MARGE
@@ -526,7 +526,7 @@ namespace SRCCore
             //        }
 
             //        fname = SRC.ExtDataPath2 + @"Midi\" + buf;
-            //        if (GeneralLib.FileExists(fname))
+            //        if (SRC.FileSystem.FileExists(fname))
             //        {
             //            SearchMidiFileRet = fname;
             //            // fpath_history.Add fname, buf   DEL MARGE
@@ -540,7 +540,7 @@ namespace SRCCore
             //        if (!string.IsNullOrEmpty(sub_folder))
             //        {
             //            fname = SRC.AppPath + @"Midi\" + sub_folder + fname_mp3;
-            //            if (GeneralLib.FileExists(fname))
+            //            if (SRC.FileSystem.FileExists(fname))
             //            {
             //                SearchMidiFileRet = fname;
             //                // fpath_history.Add fname, buf   DEL MARGE
@@ -549,7 +549,7 @@ namespace SRCCore
             //        }
 
             //        fname = SRC.AppPath + @"Midi\" + fname_mp3;
-            //        if (GeneralLib.FileExists(fname))
+            //        if (SRC.FileSystem.FileExists(fname))
             //        {
             //            SearchMidiFileRet = fname;
             //            // fpath_history.Add fname, buf   DEL MARGE
@@ -560,7 +560,7 @@ namespace SRCCore
             //    if (!string.IsNullOrEmpty(sub_folder))
             //    {
             //        fname = SRC.AppPath + @"Midi\" + sub_folder + buf;
-            //        if (GeneralLib.FileExists(fname))
+            //        if (SRC.FileSystem.FileExists(fname))
             //        {
             //            SearchMidiFileRet = fname;
             //            // fpath_history.Add fname, buf   DEL MARGE
@@ -569,7 +569,7 @@ namespace SRCCore
             //    }
 
             //    fname = SRC.AppPath + @"Midi\" + buf;
-            //    if (GeneralLib.FileExists(fname))
+            //    if (SRC.FileSystem.FileExists(fname))
             //    {
             //        SearchMidiFileRet = fname;
             //        // fpath_history.Add fname, buf   DEL MARGE
@@ -668,7 +668,7 @@ namespace SRCCore
             if (string.IsNullOrEmpty(existFile))
             {
                 // 絶対表記？
-                if (!GeneralLib.FileExists(wave_name))
+                if (!SRC.FileSystem.FileExists(wave_name))
                 {
                     // 見つからなかった
                     return;

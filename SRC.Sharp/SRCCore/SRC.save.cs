@@ -110,14 +110,14 @@ namespace SRCCore
                     IncludeData(title);
                 }
                 // XXX Dataフォルダ直下って読んでる？
-                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\alias.txt"))
+                //    if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\alias.txt"))
                 //    {
                 //        ALDList.Load(ScenarioPath + @"Data\alias.txt");
                 //    }
 
-                //    bool localFileExists() { string argfname = ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
+                //    bool localFileExists() { string argfname = ScenarioPath + @"Data\mind.txt"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
 
-                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\sp.txt"))
+                //    if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\sp.txt"))
                 //    {
                 //        SPDList.Load(ScenarioPath + @"Data\sp.txt");
                 //    }
@@ -126,53 +126,53 @@ namespace SRCCore
                 //        SPDList.Load(ScenarioPath + @"Data\mind.txt");
                 //    }
 
-                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot.txt"))
+                //    if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\pilot.txt"))
                 //    {
                 //        PDList.Load(ScenarioPath + @"Data\pilot.txt");
                 //    }
 
-                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\non_pilot.txt"))
+                //    if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\non_pilot.txt"))
                 //    {
                 //        NPDList.Load(ScenarioPath + @"Data\non_pilot.txt");
                 //    }
 
-                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\robot.txt"))
+                //    if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\robot.txt"))
                 //    {
                 //        UDList.Load(ScenarioPath + @"Data\robot.txt");
                 //    }
 
-                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\unit.txt"))
+                //    if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\unit.txt"))
                 //    {
                 //        UDList.Load(ScenarioPath + @"Data\unit.txt");
                 //    }
 
                 //    GUI.DisplayLoadingProgress();
-                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_message.txt"))
+                //    if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\pilot_message.txt"))
                 //    {
                 //        MDList.Load(ScenarioPath + @"Data\pilot_message.txt");
                 //    }
 
-                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_dialog.txt"))
+                //    if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\pilot_dialog.txt"))
                 //    {
                 //        DDList.Load(ScenarioPath + @"Data\pilot_dialog.txt");
                 //    }
 
-                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\effect.txt"))
+                //    if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\effect.txt"))
                 //    {
                 //        EDList.Load(ScenarioPath + @"Data\effect.txt");
                 //    }
 
-                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\animation.txt"))
+                //    if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\animation.txt"))
                 //    {
                 //        ADList.Load(ScenarioPath + @"Data\animation.txt");
                 //    }
 
-                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\ext_animation.txt"))
+                //    if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\ext_animation.txt"))
                 //    {
                 //        EADList.Load(ScenarioPath + @"Data\ext_animation.txt");
                 //    }
 
-                //    if (GeneralLib.FileExists(ScenarioPath + @"Data\item.txt"))
+                //    if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\item.txt"))
                 //    {
                 //        IDList.Load(ScenarioPath + @"Data\item.txt");
                 //    }
@@ -332,14 +332,14 @@ namespace SRCCore
                         IncludeData(title);
                     }
 
-                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\alias.txt"))
+                    //if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\alias.txt"))
                     //{
                     //    ALDList.Load(ScenarioPath + @"Data\alias.txt");
                     //}
 
-                    //bool localFileExists() { string argfname = ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
+                    //bool localFileExists() { string argfname = ScenarioPath + @"Data\mind.txt"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
 
-                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\sp.txt"))
+                    //if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\sp.txt"))
                     //{
                     //    SPDList.Load(ScenarioPath + @"Data\sp.txt");
                     //}
@@ -348,53 +348,53 @@ namespace SRCCore
                     //    SPDList.Load(ScenarioPath + @"Data\mind.txt");
                     //}
 
-                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot.txt"))
+                    //if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\pilot.txt"))
                     //{
                     //    PDList.Load(ScenarioPath + @"Data\pilot.txt");
                     //}
 
-                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\non_pilot.txt"))
+                    //if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\non_pilot.txt"))
                     //{
                     //    NPDList.Load(ScenarioPath + @"Data\non_pilot.txt");
                     //}
 
-                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\robot.txt"))
+                    //if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\robot.txt"))
                     //{
                     //    UDList.Load(ScenarioPath + @"Data\robot.txt");
                     //}
 
-                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\unit.txt"))
+                    //if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\unit.txt"))
                     //{
                     //    UDList.Load(ScenarioPath + @"Data\unit.txt");
                     //}
 
                     //GUI.DisplayLoadingProgress();
-                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_message.txt"))
+                    //if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\pilot_message.txt"))
                     //{
                     //    MDList.Load(ScenarioPath + @"Data\pilot_message.txt");
                     //}
 
-                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\pilot_dialog.txt"))
+                    //if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\pilot_dialog.txt"))
                     //{
                     //    DDList.Load(ScenarioPath + @"Data\pilot_dialog.txt");
                     //}
 
-                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\effect.txt"))
+                    //if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\effect.txt"))
                     //{
                     //    EDList.Load(ScenarioPath + @"Data\effect.txt");
                     //}
 
-                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\animation.txt"))
+                    //if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\animation.txt"))
                     //{
                     //    ADList.Load(ScenarioPath + @"Data\animation.txt");
                     //}
 
-                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\ext_animation.txt"))
+                    //if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\ext_animation.txt"))
                     //{
                     //    EADList.Load(ScenarioPath + @"Data\ext_animation.txt");
                     //}
 
-                    //if (GeneralLib.FileExists(ScenarioPath + @"Data\item.txt"))
+                    //if (SRC.FileSystem.FileExists(ScenarioPath + @"Data\item.txt"))
                     //{
                     //    IDList.Load(ScenarioPath + @"Data\item.txt");
                     //}

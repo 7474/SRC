@@ -567,7 +567,7 @@ namespace SRCCore.Maps
         // マップファイル fname のデータをロード
         public void LoadMapData(string fname)
         {
-            if (string.IsNullOrEmpty(fname) || !GeneralLib.FileExists(fname))
+            if (string.IsNullOrEmpty(fname) || !SRC.FileSystem.FileExists(fname))
             {
                 // ファイルが存在しない場合
                 SetupStatusView();

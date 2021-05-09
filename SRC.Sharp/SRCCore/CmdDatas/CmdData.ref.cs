@@ -1796,11 +1796,11 @@
 //                        My.MyProject.Forms.frmListBox.Hide();
 //                        GUI.ReduceListBoxHeight();
 //                        SRC.IsSubStage = true;
-//                        bool localFileExists() { string argfname = SRC.ExtDataPath + @"Lib\パイロットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
+//                        bool localFileExists() { string argfname = SRC.ExtDataPath + @"Lib\パイロットステータス表示.eve"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
 
-//                        bool localFileExists1() { string argfname = SRC.ExtDataPath2 + @"Lib\パイロットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
+//                        bool localFileExists1() { string argfname = SRC.ExtDataPath2 + @"Lib\パイロットステータス表示.eve"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
 
-//                        if (GeneralLib.FileExists(SRC.ScenarioPath + @"Lib\パイロットステータス表示.eve"))
+//                        if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Lib\パイロットステータス表示.eve"))
 //                        {
 //                            SRC.StartScenario(SRC.ScenarioPath + @"Lib\パイロットステータス表示.eve");
 //                        }
@@ -1826,11 +1826,11 @@
 //                        My.MyProject.Forms.frmListBox.Hide();
 //                        GUI.ReduceListBoxHeight();
 //                        SRC.IsSubStage = true;
-//                        bool localFileExists2() { string argfname = SRC.ExtDataPath + @"Lib\ユニットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
+//                        bool localFileExists2() { string argfname = SRC.ExtDataPath + @"Lib\ユニットステータス表示.eve"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
 
-//                        bool localFileExists3() { string argfname = SRC.ExtDataPath2 + @"Lib\ユニットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
+//                        bool localFileExists3() { string argfname = SRC.ExtDataPath2 + @"Lib\ユニットステータス表示.eve"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
 
-//                        if (GeneralLib.FileExists(SRC.ScenarioPath + @"Lib\ユニットステータス表示.eve"))
+//                        if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Lib\ユニットステータス表示.eve"))
 //                        {
 //                            SRC.StartScenario(SRC.ScenarioPath + @"Lib\ユニットステータス表示.eve");
 //                        }
@@ -4986,13 +4986,13 @@
 //            }
 
 //            fname1 = GetArgAsString(2);
-//            bool localFileExists() { string argfname = SRC.ExtDataPath + fname1; var ret = GeneralLib.FileExists(argfname); return ret; }
+//            bool localFileExists() { string argfname = SRC.ExtDataPath + fname1; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
 
-//            bool localFileExists1() { string argfname = SRC.ExtDataPath2 + fname1; var ret = GeneralLib.FileExists(argfname); return ret; }
+//            bool localFileExists1() { string argfname = SRC.ExtDataPath2 + fname1; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
 
-//            bool localFileExists2() { string argfname = SRC.AppPath + fname1; var ret = GeneralLib.FileExists(argfname); return ret; }
+//            bool localFileExists2() { string argfname = SRC.AppPath + fname1; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
 
-//            if (GeneralLib.FileExists(SRC.ScenarioPath + fname1))
+//            if (SRC.FileSystem.FileExists(SRC.ScenarioPath + fname1))
 //            {
 //                fname1 = SRC.ScenarioPath + fname1;
 //            }
@@ -5388,7 +5388,7 @@
 //                fname = Strings.Left(fname, Strings.Len(fname) - 1);
 //            }
 
-//            if (!GeneralLib.FileExists(fname))
+//            if (!SRC.FileSystem.FileExists(fname))
 //            {
 //                FileSystem.MkDir(fname);
 //            }
@@ -10200,21 +10200,21 @@
 //            {
 //                SRC.IncludeData(new_titles[i]);
 //                tfolder = SRC.SearchDataFolder(new_titles[i]);
-//                if (GeneralLib.FileExists(tfolder + @"\include.eve"))
+//                if (SRC.FileSystem.FileExists(tfolder + @"\include.eve"))
 //                {
 //                    Event.LoadEventData2(tfolder + @"\include.eve", Information.UBound(Event.EventData));
 //                }
 //            }
 
 //            // ローカルデータの読みこみ
-//            if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\alias.txt"))
+//            if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\alias.txt"))
 //            {
 //                SRC.ALDList.Load(SRC.ScenarioPath + @"Data\alias.txt");
 //            }
 
-//            bool localFileExists() { string argfname = SRC.ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
+//            bool localFileExists() { string argfname = SRC.ScenarioPath + @"Data\mind.txt"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
 
-//            if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\sp.txt"))
+//            if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\sp.txt"))
 //            {
 //                SRC.SPDList.Load(SRC.ScenarioPath + @"Data\sp.txt");
 //            }
@@ -10223,37 +10223,37 @@
 //                SRC.SPDList.Load(SRC.ScenarioPath + @"Data\mind.txt");
 //            }
 
-//            if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\pilot.txt"))
+//            if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\pilot.txt"))
 //            {
 //                SRC.PDList.Load(SRC.ScenarioPath + @"Data\pilot.txt");
 //            }
 
-//            if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\non_pilot.txt"))
+//            if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\non_pilot.txt"))
 //            {
 //                SRC.NPDList.Load(SRC.ScenarioPath + @"Data\non_pilot.txt");
 //            }
 
-//            if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\robot.txt"))
+//            if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\robot.txt"))
 //            {
 //                SRC.UDList.Load(SRC.ScenarioPath + @"Data\robot.txt");
 //            }
 
-//            if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\unit.txt"))
+//            if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\unit.txt"))
 //            {
 //                SRC.UDList.Load(SRC.ScenarioPath + @"Data\unit.txt");
 //            }
 
-//            if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\pilot_message.txt"))
+//            if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\pilot_message.txt"))
 //            {
 //                SRC.MDList.Load(SRC.ScenarioPath + @"Data\pilot_message.txt");
 //            }
 
-//            if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\pilot_dialog.txt"))
+//            if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\pilot_dialog.txt"))
 //            {
 //                SRC.DDList.Load(SRC.ScenarioPath + @"Data\pilot_dialog.txt");
 //            }
 
-//            if (GeneralLib.FileExists(SRC.ScenarioPath + @"Data\item.txt"))
+//            if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\item.txt"))
 //            {
 //                SRC.IDList.Load(SRC.ScenarioPath + @"Data\item.txt");
 //            }
@@ -11691,7 +11691,7 @@
 
 //                case "入力":
 //                    {
-//                        if (!GeneralLib.FileExists(fname))
+//                        if (!SRC.FileSystem.FileExists(fname))
 //                        {
 //                            Event.EventErrorMessage = fname + "というファイルは存在しません";
 //                            ;
@@ -13379,7 +13379,7 @@
 //            GUI.LockGUI();
 //            Status.ClearUnitStatus();
 //            Sound.StopBGM();
-//            if (GeneralLib.FileExists(SRC.LastSaveDataFileName))
+//            if (SRC.FileSystem.FileExists(SRC.LastSaveDataFileName))
 //            {
 //                // セーブしたファイルが存在すればそれをロード
 //                SRC.RestoreData(SRC.LastSaveDataFileName, true);
@@ -14036,7 +14036,7 @@
 //                 */
 //            }
 
-//            if (GeneralLib.FileExists(fname))
+//            if (SRC.FileSystem.FileExists(fname))
 //            {
 //                FileSystem.Kill(fname);
 //            }
@@ -14098,7 +14098,7 @@
 //                fname = Strings.Left(fname, Strings.Len(fname) - 1);
 //            }
 
-//            if (GeneralLib.FileExists(fname))
+//            if (SRC.FileSystem.FileExists(fname))
 //            {
 //                fso = Interaction.CreateObject("Scripting.FileSystemObject");
 
@@ -15173,7 +15173,7 @@
 //                 */
 //            }
 
-//            if (!GeneralLib.FileExists(fname1))
+//            if (!SRC.FileSystem.FileExists(fname1))
 //            {
 //                Event.EventErrorMessage = "元のファイル" + "「" + fname1 + "」が見つかりません";
 //                ;
@@ -15187,7 +15187,7 @@
 //                 */
 //            }
 
-//            if (GeneralLib.FileExists(fname2))
+//            if (SRC.FileSystem.FileExists(fname2))
 //            {
 //                Event.EventErrorMessage = "既に" + "「" + fname2 + "」が存在しています";
 //                ;
@@ -15409,7 +15409,7 @@
 //            }
 
 //            // ファイルが存在する？
-//            if (!GeneralLib.FileExists(fname))
+//            if (!SRC.FileSystem.FileExists(fname))
 //            {
 //                Event.EventErrorMessage = "指定されたファイル「" + fname + "」が見つかりません。";
 //                ;

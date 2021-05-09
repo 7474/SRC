@@ -538,7 +538,7 @@ namespace SRCSharpForm
                 //            {
                 //                if (scenario_anime_bitmap_dir_exists)
                 //                {
-                //                    if (GeneralLib.FileExists(SRC.ScenarioPath + @"Bitmap\Anime\" + fname))
+                //                    if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Bitmap\Anime\" + fname))
                 //                    {
                 //                        fpath = SRC.ScenarioPath + @"Bitmap\Anime\";
                 //                        last_path = "";
@@ -548,7 +548,7 @@ namespace SRCSharpForm
 
                 //                if (extdata_anime_bitmap_dir_exists)
                 //                {
-                //                    if (GeneralLib.FileExists(SRC.ExtDataPath + @"Bitmap\Anime\" + fname))
+                //                    if (SRC.FileSystem.FileExists(SRC.ExtDataPath + @"Bitmap\Anime\" + fname))
                 //                    {
                 //                        fpath = SRC.ExtDataPath + @"Bitmap\Anime\";
                 //                        last_path = "";
@@ -558,7 +558,7 @@ namespace SRCSharpForm
 
                 //                if (extdata2_anime_bitmap_dir_exists)
                 //                {
-                //                    if (GeneralLib.FileExists(SRC.ExtDataPath2 + @"Bitmap\Anime\" + fname))
+                //                    if (SRC.FileSystem.FileExists(SRC.ExtDataPath2 + @"Bitmap\Anime\" + fname))
                 //                    {
                 //                        fpath = SRC.ExtDataPath2 + @"Bitmap\Anime\";
                 //                        last_path = "";
@@ -566,7 +566,7 @@ namespace SRCSharpForm
                 //                    }
                 //                }
 
-                //                if (GeneralLib.FileExists(SRC.AppPath + @"Bitmap\Anime\" + fname))
+                //                if (SRC.FileSystem.FileExists(SRC.AppPath + @"Bitmap\Anime\" + fname))
                 //                {
                 //                    fpath = SRC.AppPath + @"Bitmap\Anime\";
                 //                    last_path = "";
@@ -577,7 +577,7 @@ namespace SRCSharpForm
                 //            // 前回と同じパス？
                 //            if (Strings.Len(last_path) > 0)
                 //            {
-                //                if (GeneralLib.FileExists(last_path + fname))
+                //                if (SRC.FileSystem.FileExists(last_path + fname))
                 //                {
                 //                    fpath = last_path;
                 //                    goto FoundPicture;
@@ -589,7 +589,7 @@ namespace SRCSharpForm
                 //            {
                 //                if (scenario_bitmap_dir_exists)
                 //                {
-                //                    if (GeneralLib.FileExists(SRC.ScenarioPath + fname))
+                //                    if (SRC.FileSystem.FileExists(SRC.ScenarioPath + fname))
                 //                    {
                 //                        fpath = SRC.ScenarioPath;
                 //                        last_path = fpath;
@@ -597,7 +597,7 @@ namespace SRCSharpForm
                 //                    }
                 //                }
 
-                //                if (GeneralLib.FileExists(SRC.AppPath + fname))
+                //                if (SRC.FileSystem.FileExists(SRC.AppPath + fname))
                 //                {
                 //                    fpath = SRC.AppPath;
                 //                    last_path = "";
@@ -617,7 +617,7 @@ namespace SRCSharpForm
                 //            {
                 //                if (scenario_bitmap_dir_exists)
                 //                {
-                //                    if (GeneralLib.FileExists(SRC.ScenarioPath + @"Bitmap\" + fname))
+                //                    if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Bitmap\" + fname))
                 //                    {
                 //                        fpath = SRC.ScenarioPath + @"Bitmap\";
                 //                        last_path = fpath;
@@ -627,7 +627,7 @@ namespace SRCSharpForm
 
                 //                if (extdata_bitmap_dir_exists)
                 //                {
-                //                    if (GeneralLib.FileExists(SRC.ExtDataPath + @"Bitmap\" + fname))
+                //                    if (SRC.FileSystem.FileExists(SRC.ExtDataPath + @"Bitmap\" + fname))
                 //                    {
                 //                        fpath = SRC.ExtDataPath + @"Bitmap\";
                 //                        last_path = "";
@@ -637,7 +637,7 @@ namespace SRCSharpForm
 
                 //                if (extdata2_bitmap_dir_exists)
                 //                {
-                //                    if (GeneralLib.FileExists(SRC.ExtDataPath2 + @"Bitmap\" + fname))
+                //                    if (SRC.FileSystem.FileExists(SRC.ExtDataPath2 + @"Bitmap\" + fname))
                 //                    {
                 //                        fpath = SRC.ExtDataPath2 + @"Bitmap\";
                 //                        last_path = "";
@@ -645,7 +645,7 @@ namespace SRCSharpForm
                 //                    }
                 //                }
 
-                //                if (GeneralLib.FileExists(SRC.AppPath + @"Bitmap\" + fname))
+                //                if (SRC.FileSystem.FileExists(SRC.AppPath + @"Bitmap\" + fname))
                 //                {
                 //                    fpath = SRC.AppPath + @"Bitmap\";
                 //                    last_path = "";

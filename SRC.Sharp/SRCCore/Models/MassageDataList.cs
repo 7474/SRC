@@ -162,7 +162,7 @@ namespace SRCCore.Models
             //// アニメデータが用意されていない場合は Data\System\animation.txt を読み込む
             //if (Count() == 0)
             //{
-            //    if (GeneralLib.FileExists(SRC.AppPath + @"Data\System\animation.txt"))
+            //    if (SRC.FileSystem.FileExists(SRC.AppPath + @"Data\System\animation.txt"))
             //    {
             //        Load(SRC.AppPath + @"Data\System\animation.txt");
             //    }

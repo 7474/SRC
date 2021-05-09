@@ -24,12 +24,23 @@ namespace SRCCore.Filesystem
         public bool FileExists(params string[] paths)
         {
             string path = PathCombine(paths);
-            return File.Exists(path);
+            return GetArchiveEntry(path) != null
+                || File.Exists(path);
         }
 
         public Stream Open(params string[] paths)
         {
             var path = PathCombine(paths);
+            var archiveEntry = GetArchiveEntry(path);
+            if (archiveEntry != null)
+            {
+                return archiveEntry.Open();
+            }
+            return new FileStream(path, FileMode.Open);
+        }
+
+        private ZipArchiveEntry GetArchiveEntry(string path)
+        {
             // ZipArchive のパス区切り文字は / である様子
             // マルチバイト文字はUTF-8にしておけばよい
             // XXX 大文字小文字はどうなってるんだろうか？
@@ -41,7 +52,7 @@ namespace SRCCore.Filesystem
                     var entry = archive.GetEntry(archivePath);
                     if (entry != null)
                     {
-                        return entry.Open();
+                        return entry;
                     }
                 }
                 catch
@@ -49,7 +60,7 @@ namespace SRCCore.Filesystem
                     // ignore
                 }
             }
-            return new FileStream(path, FileMode.Open);
+            return null;
         }
 
         public void AddAchive(string path)
