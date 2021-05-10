@@ -2735,27 +2735,6 @@ namespace SRCCore.Units
         // is_true_value によって補正を省くかどうかを指定できるようにしている
         public int Damage(Unit t, bool is_true_value, bool is_support_attack = false)
         {
-            //int arm, arm_mod;
-            //int j, i, idx;
-            //string ch, wclass, buf;
-            //int mpskill;
-            //string fname, fdata;
-            //double flevel;
-            //double slevel;
-            //string sdata;
-            //int nmorale;
-            //bool neautralize;
-            //double lv_mod;
-            //string opt;
-            //string tname;
-            //double dmg_mod, uadaption;
-            //// 装甲、装甲補正一時保存
-            //double ed_amr;
-            //double ed_amr_fix;
-
-            //return WeaponPower(t.Area);
-            //// TODO Impl
-
             int DamageRet = 0;
             var wclass = WeaponClass();
 
@@ -2802,149 +2781,18 @@ namespace SRCCore.Units
                 }
 
                 // オプション
-                var neautralize = false;
-                var slevel = 0d;
-                foreach (var fdOpt in GeneralLib.ToL(fdata).Skip(3))
+                bool neautralize;
+                double slevel;
+                var lv_mod_dic = new Dictionary<string, double>
                 {
-                    var opt = fdOpt;
-                    var idx = Strings.InStr(opt, "*");
-                    double lv_mod;
-                    if (idx > 0)
-                    {
-                        lv_mod = GeneralLib.StrToDbl(Strings.Mid(opt, idx + 1));
-                        opt = Strings.Left(opt, idx - 1);
-                    }
-                    else
-                    {
-                        lv_mod = -1;
-                    }
-
-                    switch (opt ?? "")
-                    {
-                        case "能力必要":
-                            {
-                                break;
-                            }
-                        // スキップ
-                        case "同調率":
-                            {
-                                if (lv_mod == -1)
-                                {
-                                    lv_mod = 5d;
-                                }
-
-                                slevel = lv_mod * (t.MainPilot().SynchroRate() - 30);
-                                if (Strings.InStr(fdata, "能力必要") > 0)
-                                {
-                                    if (slevel == -30 * lv_mod)
-                                    {
-                                        neautralize = true;
-                                    }
-                                }
-                                else if (slevel == -30 * lv_mod)
-                                {
-                                    slevel = 0d;
-                                }
-
-                                break;
-                            }
-
-                        case "霊力":
-                            {
-                                if (lv_mod == -1)
-                                {
-                                    lv_mod = 2d;
-                                }
-
-                                slevel = lv_mod * t.MainPilot().Plana;
-                                if (Strings.InStr(fdata, "能力必要") > 0)
-                                {
-                                    if (slevel == 0d)
-                                    {
-                                        neautralize = true;
-                                    }
-                                }
-
-                                break;
-                            }
-
-                        case "オーラ":
-                            {
-                                if (lv_mod == -1)
-                                {
-                                    lv_mod = 50d;
-                                }
-
-                                slevel = lv_mod * t.AuraLevel();
-                                if (Strings.InStr(fdata, "能力必要") > 0)
-                                {
-                                    if (slevel == 0d)
-                                    {
-                                        neautralize = true;
-                                    }
-                                }
-
-                                break;
-                            }
-
-                        case "超能力":
-                            {
-                                if (lv_mod == -1)
-                                {
-                                    lv_mod = 50d;
-                                }
-
-                                slevel = lv_mod * t.PsychicLevel();
-                                if (Strings.InStr(fdata, "能力必要") > 0)
-                                {
-                                    if (slevel == 0d)
-                                    {
-                                        neautralize = true;
-                                    }
-                                }
-
-                                break;
-                            }
-
-                        case "超感覚":
-                            {
-                                if (lv_mod == -1)
-                                {
-                                    lv_mod = 50d;
-                                }
-
-                                slevel = lv_mod * (t.MainPilot().SkillLevel("超感覚", ref_mode: "") + t.MainPilot().SkillLevel("知覚強化", ref_mode: ""));
-                                if (Strings.InStr(fdata, "能力必要") > 0)
-                                {
-                                    if (slevel == 0d)
-                                    {
-                                        neautralize = true;
-                                    }
-                                }
-
-                                break;
-                            }
-
-                        default:
-                            {
-                                if (lv_mod == -1)
-                                {
-                                    lv_mod = 50d;
-                                }
-
-                                slevel = lv_mod * t.MainPilot().SkillLevel(opt);
-                                if (Strings.InStr(fdata, "能力必要") > 0)
-                                {
-                                    if (slevel == 0d)
-                                    {
-                                        neautralize = true;
-                                    }
-                                }
-
-                                break;
-                            }
-                    }
-                }
+                    [""] = 50d,
+                    ["同調率"] = 5d,
+                    ["霊力"] = 2d,
+                    ["オーラ"] = 50d,
+                    ["超能力"] = 50d,
+                    ["超感覚"] = 50d,
+                };
+                RefDefenceNecessarySkill(t, fdata, 3, lv_mod_dic, out neautralize, out slevel);
 
                 // 発動可能？
                 if (t.MainPilot().Morale >= nmorale
@@ -2965,7 +2813,6 @@ namespace SRCCore.Units
             arm = arm + arm_mod;
         SkipArmor:
             ;
-
 
             // 地形適応による装甲修正
             double uadaption = 0d;
@@ -3536,7 +3383,7 @@ namespace SRCCore.Units
                             DamageRet = (int)(1.2d * DamageRet);
                         }
 
-                        if (IsFeatureAvailable("ブースト"))
+                        if (Unit.IsFeatureAvailable("ブースト"))
                         {
                             DamageRet = (int)(1.2d * DamageRet);
                         }
@@ -3548,7 +3395,7 @@ namespace SRCCore.Units
                             DamageRet = (int)(1.25d * DamageRet);
                         }
 
-                        if (IsFeatureAvailable("ブースト"))
+                        if (Unit.IsFeatureAvailable("ブースト"))
                         {
                             DamageRet = (int)(1.25d * DamageRet);
                         }
@@ -3558,9 +3405,9 @@ namespace SRCCore.Units
                 // 得意技
                 if (withBlock1.IsSkillAvailable("得意技"))
                 {
-                    sdata = withBlock1.SkillData("得意技");
+                    var sdata = withBlock1.SkillData("得意技");
                     var loopTo4 = Strings.Len(sdata);
-                    for (i = 1; i <= loopTo4; i++)
+                    for (var i = 1; i <= loopTo4; i++)
                     {
                         if (GeneralLib.InStrNotNest(WeaponClass(), Strings.Mid(sdata, i, 1)) > 0)
                         {
@@ -3573,9 +3420,9 @@ namespace SRCCore.Units
                 // 不得手
                 if (withBlock1.IsSkillAvailable("不得手"))
                 {
-                    sdata = withBlock1.SkillData("不得手");
+                    var sdata = withBlock1.SkillData("不得手");
                     var loopTo5 = Strings.Len(sdata);
-                    for (i = 1; i <= loopTo5; i++)
+                    for (var i = 1; i <= loopTo5; i++)
                     {
                         if (GeneralLib.InStrNotNest(WeaponClass(), Strings.Mid(sdata, i, 1)) > 0)
                         {
@@ -3588,19 +3435,24 @@ namespace SRCCore.Units
 
             // ハンター能力
             // (ターゲットのMainPilotを参照するため、「With .MainPilot」は使えない)
-            if (MainPilot().IsSkillAvailable("ハンター"))
+            if (Unit.MainPilot().IsSkillAvailable("ハンター"))
             {
-                var loopTo6 = MainPilot().CountSkill();
-                for (i = 1; i <= loopTo6; i++)
+                var loopTo6 = Unit.MainPilot().CountSkill();
+                for (var i = 1; i <= loopTo6; i++)
                 {
-                    if (MainPilot().Skill(i) == "ハンター")
+                    if (Unit.MainPilot().Skill(i) == "ハンター")
                     {
-                        sdata = MainPilot().SkillData(i);
+                        var sdata = Unit.MainPilot().SkillData(i);
                         var loopTo7 = GeneralLib.LLength(sdata);
+                        int j;
                         for (j = 2; j <= loopTo7; j++)
                         {
-                            tname = GeneralLib.LIndex(sdata, j);
-                            if ((t.Name ?? "") == (tname ?? "") || (t.Class0 ?? "") == (tname ?? "") || (t.Size + "サイズ" ?? "") == (tname ?? "") || (t.MainPilot().Name ?? "") == (tname ?? "") || (t.MainPilot().Sex ?? "") == (tname ?? ""))
+                            var tname = GeneralLib.LIndex(sdata, j);
+                            if ((t.Name ?? "") == (tname ?? "")
+                                || (t.Class0 ?? "") == (tname ?? "")
+                                || (t.Size + "サイズ" ?? "") == (tname ?? "")
+                                || (t.MainPilot().Name ?? "") == (tname ?? "")
+                                || (t.MainPilot().Sex ?? "") == (tname ?? ""))
                             {
                                 break;
                             }
@@ -3608,21 +3460,21 @@ namespace SRCCore.Units
 
                         if (j <= GeneralLib.LLength(sdata))
                         {
-                            double localSkillLevel1() { object argIndex1 = i; string argref_mode = ""; var ret = MainPilot().SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
-
-                            DamageRet = ((int)((10d + localSkillLevel1()) * DamageRet) / 10);
+                            DamageRet = ((int)((10d + Unit.MainPilot().SkillLevel(i)) * DamageRet) / 10);
                             break;
                         }
                     }
                 }
 
-                if (IsConditionSatisfied("ハンター付加") || IsConditionSatisfied("ハンター付加２"))
+                if (Unit.IsConditionSatisfied("ハンター付加")
+                    || Unit.IsConditionSatisfied("ハンター付加２"))
                 {
-                    sdata = MainPilot().SkillData("ハンター");
+                    var sdata = Unit.MainPilot().SkillData("ハンター");
                     var loopTo8 = GeneralLib.LLength(sdata);
+                    int i;
                     for (i = 2; i <= loopTo8; i++)
                     {
-                        tname = GeneralLib.LIndex(sdata, i);
+                        var tname = GeneralLib.LIndex(sdata, i);
                         if ((t.Name ?? "") == (tname ?? "") || (t.Class0 ?? "") == (tname ?? "") || (t.Size + "サイズ" ?? "") == (tname ?? "") || (t.MainPilot().Name ?? "") == (tname ?? "") || (t.MainPilot().Sex ?? "") == (tname ?? ""))
                         {
                             break;
@@ -3631,14 +3483,14 @@ namespace SRCCore.Units
 
                     if (i <= GeneralLib.LLength(sdata))
                     {
-                        DamageRet = ((long)((10d + MainPilot().SkillLevel("ハンター", ref_mode: "")) * DamageRet) / 10L);
+                        DamageRet = ((int)((10d + Unit.MainPilot().SkillLevel("ハンター", ref_mode: "")) * DamageRet) / 10);
                     }
                 }
             }
 
             // スペシャルパワー、特殊状態によるダメージ増加
-            dmg_mod = 1d;
-            if (IsConditionSatisfied("攻撃力ＵＰ") || IsConditionSatisfied("狂戦士"))
+            var dmg_mod = 1d;
+            if (Unit.IsConditionSatisfied("攻撃力ＵＰ") || Unit.IsConditionSatisfied("狂戦士"))
             {
                 if (Expression.IsOptionDefined("ダメージ倍率低下"))
                 {
@@ -3655,28 +3507,28 @@ namespace SRCCore.Units
                 if (is_true_value || mpskill >= 160)
                 {
                     // スペシャルパワーによるダメージ増加は特殊状態による増加と重複しない
-                    dmg_mod = GeneralLib.MaxDbl(dmg_mod, 1d + 0.1d * SpecialPowerEffectLevel("ダメージ増加"));
+                    dmg_mod = GeneralLib.MaxDbl(dmg_mod, 1d + 0.1d * Unit.SpecialPowerEffectLevel("ダメージ増加"));
                     dmg_mod = dmg_mod + 0.1d * t.SpecialPowerEffectLevel("被ダメージ増加");
                 }
             }
 
-            DamageRet = (dmg_mod * DamageRet);
+            DamageRet = ((int)(dmg_mod * DamageRet));
 
             // スペシャルパワー、特殊状態、サポートアタックによるダメージ低下
             if (is_true_value || mpskill >= 160)
             {
                 dmg_mod = 1d;
-                dmg_mod = dmg_mod - 0.1d * SpecialPowerEffectLevel("ダメージ低下");
+                dmg_mod = dmg_mod - 0.1d * Unit.SpecialPowerEffectLevel("ダメージ低下");
                 dmg_mod = dmg_mod - 0.1d * t.SpecialPowerEffectLevel("被ダメージ低下");
-                DamageRet = (dmg_mod * DamageRet);
+                DamageRet = (int)(dmg_mod * DamageRet);
             }
 
-            if (IsConditionSatisfied("攻撃力ＤＯＷＮ"))
+            if (Unit.IsConditionSatisfied("攻撃力ＤＯＷＮ"))
             {
                 DamageRet = (int)(0.75d * DamageRet);
             }
 
-            if (IsConditionSatisfied("恐怖"))
+            if (Unit.IsConditionSatisfied("恐怖"))
             {
                 DamageRet = (int)(0.8d * DamageRet);
             }
@@ -3702,184 +3554,47 @@ namespace SRCCore.Units
                 goto SkipResist;
             }
 
-            var loopTo9 = t.CountFeature();
-            for (i = 1; i <= loopTo9; i++)
+            foreach (var fd in t.Features.Where(x => x.Name == "レジスト"))
             {
-                if (t.Feature(i) == "レジスト")
+                var fname = fd.FeatureName0(t);
+                var fdata = fd.Data;
+                var flevel = fd.FeatureLevel;
+
+                // 必要条件
+                int nmorale;
+                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
                 {
-                    fname = t.FeatureName0(i);
-                    fdata = t.FeatureData(i);
-                    flevel = t.FeatureLevel(i);
+                    nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
+                }
+                else
+                {
+                    nmorale = 0;
+                }
 
-                    // 必要条件
-                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
-                    {
-                        nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
-                    }
-                    else
-                    {
-                        nmorale = 0;
-                    }
+                // オプション
+                bool neautralize;
+                double slevel;
+                var lv_mod_dic = new Dictionary<string, double>
+                {
+                    [""] = 5d,
+                    ["同調率"] = 0.5d,
+                    ["霊力"] = 0.2d,
+                    ["オーラ"] = 5d,
+                    ["超能力"] = 5d,
+                    ["超感覚"] = 5d,
+                };
+                RefDefenceNecessarySkill(t, fdata, 3, lv_mod_dic, out neautralize, out slevel);
 
-                    // オプション
-                    neautralize = false;
-                    slevel = 0d;
-                    var loopTo10 = GeneralLib.LLength(fdata);
-                    for (j = 4; j <= loopTo10; j++)
-                    {
-                        opt = GeneralLib.LIndex(fdata, j);
-                        idx = Strings.InStr(opt, "*");
-                        if (idx > 0)
-                        {
-                            lv_mod = GeneralLib.StrToDbl(Strings.Mid(opt, idx + 1));
-                            opt = Strings.Left(opt, idx - 1);
-                        }
-                        else
-                        {
-                            lv_mod = -1;
-                        }
-
-                        switch (opt ?? "")
-                        {
-                            case "能力必要":
-                                {
-                                    break;
-                                }
-                            // スキップ
-                            case "同調率":
-                                {
-                                    if (lv_mod == -1)
-                                    {
-                                        lv_mod = 0.5d;
-                                    }
-
-                                    slevel = lv_mod * (t.MainPilot().SynchroRate() - 30);
-                                    if (Strings.InStr(fdata, "能力必要") > 0)
-                                    {
-                                        if (slevel == -30 * lv_mod)
-                                        {
-                                            neautralize = true;
-                                        }
-                                    }
-                                    else if (slevel == -30 * lv_mod)
-                                    {
-                                        slevel = 0d;
-                                    }
-
-                                    break;
-                                }
-
-                            case "霊力":
-                                {
-                                    if (lv_mod == -1)
-                                    {
-                                        lv_mod = 0.2d;
-                                    }
-
-                                    slevel = lv_mod * t.MainPilot().Plana;
-                                    if (Strings.InStr(fdata, "能力必要") > 0)
-                                    {
-                                        if (slevel == 0d)
-                                        {
-                                            neautralize = true;
-                                        }
-                                    }
-
-                                    break;
-                                }
-
-                            case "オーラ":
-                                {
-                                    if (lv_mod == -1)
-                                    {
-                                        lv_mod = 5d;
-                                    }
-
-                                    slevel = lv_mod * t.AuraLevel();
-                                    if (Strings.InStr(fdata, "能力必要") > 0)
-                                    {
-                                        if (slevel == 0d)
-                                        {
-                                            neautralize = true;
-                                        }
-                                    }
-
-                                    break;
-                                }
-
-                            case "超能力":
-                                {
-                                    if (lv_mod == -1)
-                                    {
-                                        lv_mod = 5d;
-                                    }
-
-                                    slevel = lv_mod * t.PsychicLevel();
-                                    if (Strings.InStr(fdata, "能力必要") > 0)
-                                    {
-                                        if (slevel == 0d)
-                                        {
-                                            neautralize = true;
-                                        }
-                                    }
-
-                                    break;
-                                }
-
-                            case "超感覚":
-                                {
-                                    if (lv_mod == -1)
-                                    {
-                                        lv_mod = 5d;
-                                    }
-
-                                    slevel = lv_mod * (t.MainPilot().SkillLevel("超感覚", ref_mode: "") + t.MainPilot().SkillLevel("知覚強化", ref_mode: ""));
-                                    if (Strings.InStr(fdata, "能力必要") > 0)
-                                    {
-                                        if (slevel == 0d)
-                                        {
-                                            neautralize = true;
-                                        }
-                                    }
-
-                                    break;
-                                }
-
-                            default:
-                                {
-                                    if (lv_mod == -1)
-                                    {
-                                        lv_mod = 5d;
-                                    }
-
-                                    double localSkillLevel2() { object argIndex1 = opt; string argref_mode = ""; var ret = t.MainPilot().SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
-
-                                    slevel = lv_mod * localSkillLevel2();
-                                    if (Strings.InStr(fdata, "能力必要") > 0)
-                                    {
-                                        if (slevel == 0d)
-                                        {
-                                            neautralize = true;
-                                        }
-                                    }
-
-                                    break;
-                                }
-                        }
-                    }
-
-                    // 発動可能？
-                    bool localIsAttributeClassified1() { string argaclass1 = GeneralLib.LIndex(fdata, 2); var ret = t.IsAttributeClassified(argaclass1, wclass); return ret; }
-
-                    if (t.MainPilot().Morale >= nmorale && localIsAttributeClassified1() && !neautralize)
-                    {
-                        // レジスト発動
-                        dmg_mod = dmg_mod + 10d * flevel + slevel;
-                    }
+                // 発動可能？
+                if (t.MainPilot().Morale >= nmorale && t.IsAttributeClassified(GeneralLib.LIndex(fdata, 2), wclass) && !neautralize)
+                {
+                    // レジスト発動
+                    dmg_mod = dmg_mod + 10d * flevel + slevel;
                 }
             }
 
-            DamageRet = ((long)(DamageRet * (100d - dmg_mod)) / 100L);
+
+            DamageRet = (int)(DamageRet * (100d - dmg_mod)) / 100;
         SkipResist:
             ;
             if (SRC.BCList.IsDefined("最終ダメージ"))
@@ -3929,6 +3644,154 @@ namespace SRCCore.Units
             }
 
             return DamageRet;
+        }
+
+        private static void RefDefenceNecessarySkill(
+            Unit t, string fdata, int skip, IDictionary<string, double> lv_mod_dic, out bool neautralize, out double slevel)
+        {
+            neautralize = false;
+            slevel = 0d;
+            foreach (var fdOpt in GeneralLib.ToL(fdata).Skip(skip))
+            {
+                var opt = fdOpt;
+                var idx = Strings.InStr(opt, "*");
+                double lv_mod;
+                if (idx > 0)
+                {
+                    lv_mod = GeneralLib.StrToDbl(Strings.Mid(opt, idx + 1));
+                    opt = Strings.Left(opt, idx - 1);
+                }
+                else
+                {
+                    lv_mod = -1;
+                }
+
+                switch (opt ?? "")
+                {
+                    case "能力必要":
+                        {
+                            break;
+                        }
+                    // スキップ
+                    case "同調率":
+                        {
+                            if (lv_mod == -1)
+                            {
+                                lv_mod = lv_mod_dic["同調率"];
+                            }
+
+                            slevel = lv_mod * (t.MainPilot().SynchroRate() - 30);
+                            if (Strings.InStr(fdata, "能力必要") > 0)
+                            {
+                                if (slevel == -30 * lv_mod)
+                                {
+                                    neautralize = true;
+                                }
+                            }
+                            else if (slevel == -30 * lv_mod)
+                            {
+                                slevel = 0d;
+                            }
+
+                            break;
+                        }
+
+                    case "霊力":
+                        {
+                            if (lv_mod == -1)
+                            {
+                                lv_mod = lv_mod_dic["霊力"];
+                            }
+
+                            slevel = lv_mod * t.MainPilot().Plana;
+                            if (Strings.InStr(fdata, "能力必要") > 0)
+                            {
+                                if (slevel == 0d)
+                                {
+                                    neautralize = true;
+                                }
+                            }
+
+                            break;
+                        }
+
+                    case "オーラ":
+                        {
+                            if (lv_mod == -1)
+                            {
+                                lv_mod = lv_mod_dic["オーラ"];
+                            }
+
+                            slevel = lv_mod * t.AuraLevel();
+                            if (Strings.InStr(fdata, "能力必要") > 0)
+                            {
+                                if (slevel == 0d)
+                                {
+                                    neautralize = true;
+                                }
+                            }
+
+                            break;
+                        }
+
+                    case "超能力":
+                        {
+                            if (lv_mod == -1)
+                            {
+                                lv_mod = lv_mod_dic["超能力"];
+                            }
+
+                            slevel = lv_mod * t.PsychicLevel();
+                            if (Strings.InStr(fdata, "能力必要") > 0)
+                            {
+                                if (slevel == 0d)
+                                {
+                                    neautralize = true;
+                                }
+                            }
+
+                            break;
+                        }
+
+                    case "超感覚":
+                        {
+                            if (lv_mod == -1)
+                            {
+                                lv_mod = lv_mod_dic["超感覚"];
+                            }
+
+                            slevel = lv_mod * (t.MainPilot().SkillLevel("超感覚", ref_mode: "") + t.MainPilot().SkillLevel("知覚強化", ref_mode: ""));
+                            if (Strings.InStr(fdata, "能力必要") > 0)
+                            {
+                                if (slevel == 0d)
+                                {
+                                    neautralize = true;
+                                }
+                            }
+
+                            break;
+                        }
+
+                    default:
+                        {
+                            if (lv_mod == -1)
+                            {
+                                lv_mod = lv_mod_dic[""];
+                            }
+
+                            slevel = lv_mod * t.MainPilot().SkillLevel(opt);
+                            if (Strings.InStr(fdata, "能力必要") > 0)
+                            {
+                                if (slevel == 0d)
+                                {
+                                    neautralize = true;
+                                }
+                            }
+
+                            break;
+                        }
+                }
+            }
         }
 
         // クリティカルの発生率
