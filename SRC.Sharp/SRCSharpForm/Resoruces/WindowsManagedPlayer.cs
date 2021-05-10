@@ -2,6 +2,7 @@ using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Devices;
 using Microsoft.Extensions.Logging;
 using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 using SRCCore;
 using System;
 using System.Collections.Generic;
@@ -118,21 +119,21 @@ namespace SRCSharpForm.Resoruces
             throw new NotImplementedException();
         }
 
-        public void Play(int channel, string path, PlaySoundMode mode)
+        public void Play(int channel, Stream stream, SoundType soundType, PlaySoundMode mode)
         {
             Stop(channel);
 
-            switch (Path.GetExtension(path).ToLower())
+            switch (soundType)
             {
-                case ".mid":
+                case SoundType.Midi:
                     if (CH_BGM != channel)
                     {
                         throw new ArgumentException($"{channel} is not support MIDI. MIDI channel is {CH_BGM}");
                     }
-                    StartMidiPlayback(path, mode);
+                    StartMidiPlayback(stream, mode);
                     break;
                 default:
-                    StartWave(channel, path, mode);
+                    StartWave(channel, stream, soundType, mode);
                     break;
             }
         }
@@ -149,7 +150,7 @@ namespace SRCSharpForm.Resoruces
             }
         }
 
-        public void StartWave(int channel, string path, PlaySoundMode mode)
+        public void StartWave(int channel, Stream stream, SoundType soundType, PlaySoundMode mode)
         {
             if (!outputMap.ContainsKey(channel))
             {
@@ -162,7 +163,7 @@ namespace SRCSharpForm.Resoruces
             }
             WaveChannel waveChannel = outputMap[channel];
             waveChannel.repeat = mode.HasFlag(PlaySoundMode.Repeat);
-            waveChannel.outputDevice.Init(new LoopStream(new AudioFileReader(path))
+            waveChannel.outputDevice.Init(new LoopStream(new AudioStreamReader(stream, soundType))
             {
                 EnableLooping = waveChannel.repeat,
             });
@@ -170,9 +171,10 @@ namespace SRCSharpForm.Resoruces
             waveChannel.outputDevice.Play();
         }
 
-        private void StartMidiPlayback(string path, PlaySoundMode mode)
+
+        private void StartMidiPlayback(Stream stream, PlaySoundMode mode)
         {
-            midiFile = MidiFile.Read(path);
+            midiFile = MidiFile.Read(stream);
             try
             {
                 midiOutput = OutputDevice.GetAll().First();
@@ -217,6 +219,33 @@ namespace SRCSharpForm.Resoruces
             catch
             {
                 // ignore
+            }
+        }
+
+        public SoundType ResolveSoundType(string path)
+        {
+            var fileName = path;
+            if (fileName.EndsWith(".wav", StringComparison.OrdinalIgnoreCase))
+            {
+                return SoundType.Wave;
+            }
+            else if (fileName.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase))
+            {
+                return SoundType.Mp3;
+            }
+            else if (fileName.EndsWith(".aiff", StringComparison.OrdinalIgnoreCase)
+                || fileName.EndsWith(".aif", StringComparison.OrdinalIgnoreCase))
+            {
+                return SoundType.Aiff;
+            }
+            else if (fileName.EndsWith(".midi", StringComparison.OrdinalIgnoreCase)
+                || fileName.EndsWith(".mid", StringComparison.OrdinalIgnoreCase))
+            {
+                return SoundType.Midi;
+            }
+            else
+            {
+                return SoundType.Unknown;
             }
         }
     }
@@ -290,6 +319,150 @@ namespace SRCSharpForm.Resoruces
                 totalBytesRead += bytesRead;
             }
             return totalBytesRead;
+        }
+    }
+
+    /// <summary>
+    /// Copy of AudioFileReader for Stream.
+    /// </summary>
+    public class AudioStreamReader : WaveStream, ISampleProvider
+    {
+        private WaveStream readerStream; // the waveStream which we will use for all positioning
+        private readonly SampleChannel sampleChannel; // sample provider that gives us most stuff we need
+        private readonly int destBytesPerSample;
+        private readonly int sourceBytesPerSample;
+        private readonly long length;
+        private readonly object lockObject;
+
+        public AudioStreamReader(Stream stream, SoundType soundType)
+        {
+            lockObject = new object();
+            readerStream = CreateReaderStream(stream, soundType);
+            sourceBytesPerSample = (readerStream.WaveFormat.BitsPerSample / 8) * readerStream.WaveFormat.Channels;
+            sampleChannel = new SampleChannel(readerStream, false);
+            destBytesPerSample = 4 * sampleChannel.WaveFormat.Channels;
+            length = SourceToDest(readerStream.Length);
+        }
+
+        private WaveStream CreateReaderStream(Stream stream, SoundType soundType)
+        {
+            switch (soundType)
+            {
+                case SoundType.Midi:
+                    throw new InvalidOperationException(soundType + " is not supported.");
+                case SoundType.Wave:
+                    WaveStream tmpStream = new WaveFileReader(stream);
+                    if (tmpStream.WaveFormat.Encoding != WaveFormatEncoding.Pcm && tmpStream.WaveFormat.Encoding != WaveFormatEncoding.IeeeFloat)
+                    {
+                        tmpStream = WaveFormatConversionStream.CreatePcmStream(tmpStream);
+                        tmpStream = new BlockAlignReductionStream(tmpStream);
+                    }
+                    return tmpStream;
+                case SoundType.Mp3:
+                    return new Mp3FileReader(stream);
+                case SoundType.Aiff:
+                    return new AiffFileReader(stream);
+                default:
+                    // AudioFileReader は MediaFoundationReader に処理を移譲しているけれど、
+                    // ファイル名があっても構築するのはちょっと大変そう
+                    //return new MediaFoundationReader(stream);
+                    throw new InvalidOperationException(soundType + " is not supported.");
+            }
+        }
+        /// <summary>
+        /// File Name
+        /// </summary>
+        public string FileName { get; }
+
+        /// <summary>
+        /// WaveFormat of this stream
+        /// </summary>
+        public override WaveFormat WaveFormat => sampleChannel.WaveFormat;
+
+        /// <summary>
+        /// Length of this stream (in bytes)
+        /// </summary>
+        public override long Length => length;
+
+        /// <summary>
+        /// Position of this stream (in bytes)
+        /// </summary>
+        public override long Position
+        {
+            get { return SourceToDest(readerStream.Position); }
+            set { lock (lockObject) { readerStream.Position = DestToSource(value); } }
+        }
+
+        /// <summary>
+        /// Reads from this wave stream
+        /// </summary>
+        /// <param name="buffer">Audio buffer</param>
+        /// <param name="offset">Offset into buffer</param>
+        /// <param name="count">Number of bytes required</param>
+        /// <returns>Number of bytes read</returns>
+        public override int Read(byte[] buffer, int offset, int count)
+        {
+            var waveBuffer = new WaveBuffer(buffer);
+            int samplesRequired = count / 4;
+            int samplesRead = Read(waveBuffer.FloatBuffer, offset / 4, samplesRequired);
+            return samplesRead * 4;
+        }
+
+        /// <summary>
+        /// Reads audio from this sample provider
+        /// </summary>
+        /// <param name="buffer">Sample buffer</param>
+        /// <param name="offset">Offset into sample buffer</param>
+        /// <param name="count">Number of samples required</param>
+        /// <returns>Number of samples read</returns>
+        public int Read(float[] buffer, int offset, int count)
+        {
+            lock (lockObject)
+            {
+                return sampleChannel.Read(buffer, offset, count);
+            }
+        }
+
+        /// <summary>
+        /// Gets or Sets the Volume of this AudioFileReader. 1.0f is full volume
+        /// </summary>
+        public float Volume
+        {
+            get { return sampleChannel.Volume; }
+            set { sampleChannel.Volume = value; }
+        }
+
+        /// <summary>
+        /// Helper to convert source to dest bytes
+        /// </summary>
+        private long SourceToDest(long sourceBytes)
+        {
+            return destBytesPerSample * (sourceBytes / sourceBytesPerSample);
+        }
+
+        /// <summary>
+        /// Helper to convert dest to source bytes
+        /// </summary>
+        private long DestToSource(long destBytes)
+        {
+            return sourceBytesPerSample * (destBytes / destBytesPerSample);
+        }
+
+        /// <summary>
+        /// Disposes this AudioFileReader
+        /// </summary>
+        /// <param name="disposing">True if called from Dispose</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (readerStream != null)
+                {
+                    readerStream.Dispose();
+                    readerStream = null;
+                }
+            }
+            base.Dispose(disposing);
         }
     }
 }

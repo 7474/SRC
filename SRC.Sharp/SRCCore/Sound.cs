@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Extensions;
 using SRCCore.Filesystem;
 using SRCCore.Lib;
 using SRCCore.VB;
@@ -124,7 +125,8 @@ namespace SRCCore
             RepeatMode = is_repeat_mode;
 
             // ファイルをロードし、演奏開始
-            Player.Play(CH_BGM, fname, is_repeat_mode ? PlaySoundMode.Repeat : PlaySoundMode.None);
+            // ライブラリが再生時に get_Length してエラーする対応などとして複製したストリームを渡す
+            Player.Play(CH_BGM, FileSystem.Open(fname).ToMemoryStream(), Player.ResolveSoundType(fname), is_repeat_mode ? PlaySoundMode.Repeat : PlaySoundMode.None);
             // 演奏しているBGMのファイル名を記録
             BGMFileName = fname;
         }
@@ -138,8 +140,9 @@ namespace SRCCore
                 return;
             }
             // リスタート
+            // ライブラリが再生時に get_Length してエラーする対応などとして複製したストリームを渡す
             // XXX 止まってるってことはリピートしてないってことだろう。
-            Player.Play(CH_BGM, BGMFileName, RepeatMode ? PlaySoundMode.Repeat : PlaySoundMode.None);
+            Player.Play(CH_BGM, FileSystem.Open(BGMFileName).ToMemoryStream(), Player.ResolveSoundType(BGMFileName), RepeatMode ? PlaySoundMode.Repeat : PlaySoundMode.None);
         }
 
         // ＢＧＭを停止する
@@ -254,9 +257,11 @@ namespace SRCCore
                 SRC.ExtDataPath,
                 SRC.ExtDataPath2,
                 SRC.AppPath,
-            }.Where(x => Directory.Exists(x))
+            }
+            // TODO Directory.Exists
+            //.Where(x => Directory.Exists(x))
                 .Select(x => SRC.FileSystem.PathCombine(x, "Midi"))
-                .Where(x => Directory.Exists(x))
+                //.Where(x => Directory.Exists(x))
                 .ToList();
 
             var midiNames = GeneralLib.ToList(midi_name, true);
@@ -655,15 +660,17 @@ namespace SRCCore
                 SRC.ExtDataPath,
                 SRC.ExtDataPath2,
                 SRC.AppPath,
-            }.Where(x => Directory.Exists(x))
+            }
+            // TODO Directory.Exists
+            //.Where(x => Directory.Exists(x))
                 .Select(x => SRC.FileSystem.PathCombine(x, "Sound"))
-                .Where(x => Directory.Exists(x))
+            //    .Where(x => Directory.Exists(x))
                 .ToList();
 
             var waveNames = GeneralLib.ToList(wave_name, true);
             var existFile = waveNames
                 .SelectMany(x => baseDirs.Select(y => SRC.FileSystem.PathCombine(y, x)))
-                .FirstOrDefault(x => File.Exists(x));
+                .FirstOrDefault(x => SRC.FileSystem.FileExists(x));
 
             if (string.IsNullOrEmpty(existFile))
             {
@@ -676,7 +683,8 @@ namespace SRCCore
                 existFile = wave_name;
             }
 
-            Player.Play(CH_EFFECT, existFile, PlaySoundMode.None);
+            // ライブラリが再生時に get_Length してエラーする対応などとして複製したストリームを渡す
+            Player.Play(CH_EFFECT, FileSystem.Open(existFile).ToMemoryStream(), Player.ResolveSoundType(existFile), PlaySoundMode.None);
 
             // 効果音再生のフラグを立てる
             IsWavePlayed = true;

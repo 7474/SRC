@@ -5,6 +5,7 @@
 
 using SRCCore.Units;
 using System;
+using System.IO;
 
 namespace SRCCore
 {
@@ -23,9 +24,20 @@ namespace SRCCore
         // XXX 今呼んでない。
         void Initialize();
 
-        void Play(int channel, string path, PlaySoundMode mode);
+        void Play(int channel, Stream stream, SoundType soundType, PlaySoundMode mode);
 
         void Stop(int channel);
+
+        SoundType ResolveSoundType(string path);
+    }
+
+    public enum SoundType
+    {
+        Unknown,
+        Midi,
+        Wave,
+        Mp3,
+        Aiff,
     }
 
     public enum BGMStatus
