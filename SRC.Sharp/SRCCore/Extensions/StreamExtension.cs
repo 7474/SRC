@@ -7,7 +7,11 @@ namespace SRCCore.Extensions
 {
     public static class StreamExtension
     {
-        public static Stream CloneStream(this Stream stream)
+        /// <summary>
+        /// Streamの内容を全て読み取ってMemoryStreamに格納して返す。
+        /// 元のStreamは破棄される。
+        /// </summary>
+        public static MemoryStream ToMemoryStream(this Stream stream)
         {
             try
             {

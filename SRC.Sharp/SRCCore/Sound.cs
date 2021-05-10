@@ -126,7 +126,7 @@ namespace SRCCore
 
             // ファイルをロードし、演奏開始
             // ライブラリが再生時に get_Length してエラーする対応などとして複製したストリームを渡す
-            Player.Play(CH_BGM, FileSystem.Open(fname).CloneStream(), Player.ResolveSoundType(fname), is_repeat_mode ? PlaySoundMode.Repeat : PlaySoundMode.None);
+            Player.Play(CH_BGM, FileSystem.Open(fname).ToMemoryStream(), Player.ResolveSoundType(fname), is_repeat_mode ? PlaySoundMode.Repeat : PlaySoundMode.None);
             // 演奏しているBGMのファイル名を記録
             BGMFileName = fname;
         }
@@ -142,7 +142,7 @@ namespace SRCCore
             // リスタート
             // ライブラリが再生時に get_Length してエラーする対応などとして複製したストリームを渡す
             // XXX 止まってるってことはリピートしてないってことだろう。
-            Player.Play(CH_BGM, FileSystem.Open(BGMFileName).CloneStream(), Player.ResolveSoundType(BGMFileName), RepeatMode ? PlaySoundMode.Repeat : PlaySoundMode.None);
+            Player.Play(CH_BGM, FileSystem.Open(BGMFileName).ToMemoryStream(), Player.ResolveSoundType(BGMFileName), RepeatMode ? PlaySoundMode.Repeat : PlaySoundMode.None);
         }
 
         // ＢＧＭを停止する
@@ -684,7 +684,7 @@ namespace SRCCore
             }
 
             // ライブラリが再生時に get_Length してエラーする対応などとして複製したストリームを渡す
-            Player.Play(CH_EFFECT, FileSystem.Open(existFile).CloneStream(), Player.ResolveSoundType(existFile), PlaySoundMode.None);
+            Player.Play(CH_EFFECT, FileSystem.Open(existFile).ToMemoryStream(), Player.ResolveSoundType(existFile), PlaySoundMode.None);
 
             // 効果音再生のフラグを立てる
             IsWavePlayed = true;
