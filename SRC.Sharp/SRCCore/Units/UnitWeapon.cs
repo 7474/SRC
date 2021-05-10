@@ -225,11 +225,11 @@ namespace SRCCore.Units
 
                 //    // 事前にデータを登録
                 //    BCVariable.DataReset();
-                //    BCVariable.MeUnit = this;
-                //    BCVariable.AtkUnit = this;
+                //    BCVariable.MeUnit = Unit;
+                //    BCVariable.AtkUnit = Unit;
                 //    // UPGRADE_NOTE: オブジェクト BCVariable.DefUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
                 //    BCVariable.DefUnit = null;
-                //    BCVariable.WeaponNumber = w;
+                //    BCVariable.WeaponNumber = WeaponNo();
                 //    BCVariable.AttackExp = pat;
                 //    BCVariable.WeaponPower = WeaponPowerRet;
                 //    WeaponPowerRet = SRC.BCList.Item("攻撃補正").Calculate();
@@ -299,10 +299,10 @@ namespace SRCCore.Units
             //{
             //    // 事前にデータを登録
             //    BCVariable.DataReset();
-            //    BCVariable.MeUnit = this;
-            //    BCVariable.AtkUnit = this;
+            //    BCVariable.MeUnit = Unit;
+            //    BCVariable.AtkUnit = Unit;
             //    BCVariable.DefUnit = null;
-            //    BCVariable.WeaponNumber = w;
+            //    BCVariable.WeaponNumber = WeaponNo();
             //    BCVariable.AttackExp = WeaponPowerRet;
             //    BCVariable.TerrainAdaption = WeaponAdaption(tarea);
             //    WeaponPowerRet = SRC.BCList.Item("攻撃地形補正").Calculate();
@@ -2075,10 +2075,10 @@ namespace SRCCore.Units
             //        // 命中を一時保存
             //        // 事前にデータを登録
             //        BCVariable.DataReset();
-            //        BCVariable.MeUnit = this;
-            //        BCVariable.AtkUnit = this;
+            //        BCVariable.MeUnit = Unit;
+            //        BCVariable.AtkUnit = Unit;
             //        BCVariable.DefUnit = t;
-            //        BCVariable.WeaponNumber = w;
+            //        BCVariable.WeaponNumber = WeaponNo();
             //        BCVariable.AttackExp = WeaponPrecision(w);
             //        ed_hit = SRC.BCList.Item("命中補正").Calculate();
             //    }
@@ -2099,9 +2099,9 @@ namespace SRCCore.Units
             //        // 事前にデータを登録
             //        BCVariable.DataReset();
             //        BCVariable.MeUnit = t;
-            //        BCVariable.AtkUnit = this;
+            //        BCVariable.AtkUnit = Unit;
             //        BCVariable.DefUnit = t;
-            //        BCVariable.WeaponNumber = w;
+            //        BCVariable.WeaponNumber = WeaponNo();
             //        ed_avd = SRC.BCList.Item("回避補正").Calculate();
             //    }
             //    else
@@ -2252,10 +2252,10 @@ namespace SRCCore.Units
             //{
             //    // 事前にデータを登録
             //    BCVariable.DataReset();
-            //    BCVariable.MeUnit = this;
-            //    BCVariable.AtkUnit = this;
+            //    BCVariable.MeUnit = Unit;
+            //    BCVariable.AtkUnit = Unit;
             //    BCVariable.DefUnit = t;
-            //    BCVariable.WeaponNumber = w;
+            //    BCVariable.WeaponNumber = WeaponNo();
             //    BCVariable.AttackVariable = ed_hit;
             //    BCVariable.DffenceVariable = ed_avd;
             //    BCVariable.TerrainAdaption = ed_aradap;
@@ -2719,10 +2719,10 @@ namespace SRCCore.Units
             //{
             //    // 事前にデータを登録
             //    BCVariable.DataReset();
-            //    BCVariable.MeUnit = this;
-            //    BCVariable.AtkUnit = this;
+            //    BCVariable.MeUnit = Unit;
+            //    BCVariable.AtkUnit = Unit;
             //    BCVariable.DefUnit = t;
-            //    BCVariable.WeaponNumber = w;
+            //    BCVariable.WeaponNumber = WeaponNo();
             //    BCVariable.LastVariable = prob;
             //    prob = SRC.BCList.Item("最終命中率").Calculate();
             //}
@@ -3797,416 +3797,430 @@ namespace SRCCore.Units
         // クリティカルの発生率
         public int CriticalProbability(Unit t, string def_mode = "")
         {
-            return 0;
             // TODO Impl
             //int CriticalProbabilityRet = default;
             //int i, prob, idx;
             //string wclass;
             //string buf, c;
             //var is_special = default(bool);
+
+            int CriticalProbabilityRet = 0;
+            bool is_special = false;
+            int prob;
+
             //// クリティカル攻撃、防御の一時保存変数
-            //int ed_crtatk, ed_crtdfe;
-            //if (IsNormalWeapon(w))
-            //{
-            //    // 通常攻撃
+            int ed_crtatk, ed_crtdfe;
+            if (IsNormalWeapon())
+            {
+                // 通常攻撃
 
-            //    // スペシャルパワーとの効果の重ね合わせが禁止されている場合
-            //    if (Expression.IsOptionDefined("スペシャルパワー使用時クリティカル無効") 
-            //        || Expression.IsOptionDefined("精神コマンド使用時クリティカル無効"))
-            //    {
-            //        if (IsUnderSpecialPowerEffect("ダメージ増加"))
-            //        {
-            //            return CriticalProbabilityRet;
-            //        }
-            //    }
+                // スペシャルパワーとの効果の重ね合わせが禁止されている場合
+                if (Expression.IsOptionDefined("スペシャルパワー使用時クリティカル無効")
+                    || Expression.IsOptionDefined("精神コマンド使用時クリティカル無効"))
+                {
+                    if (Unit.IsUnderSpecialPowerEffect("ダメージ増加"))
+                    {
+                        return CriticalProbabilityRet;
+                    }
+                }
 
-            //    // 攻撃側による補正
-            //    if (SRC.BCList.IsDefined("クリティカル攻撃補正"))
-            //    {
-            //        // バトルコンフィグデータの設定による修正
-            //        // 一時保存変数に一時保存
-            //        // 事前にデータを登録
-            //        BCVariable.DataReset();
-            //        BCVariable.MeUnit = this;
-            //        BCVariable.AtkUnit = this;
-            //        BCVariable.DefUnit = t;
-            //        BCVariable.WeaponNumber = w;
-            //        BCVariable.AttackExp = WeaponCritical(w);
-            //        ed_crtatk = SRC.BCList.Item("クリティカル攻撃補正").Calculate();
-            //    }
-            //    else
-            //    {
-            //        // 一時保存変数に一時保存
-            //        ed_crtatk = (WeaponCritical(w) + this.MainPilot().Technique);
-            //    }
+                // 攻撃側による補正
+                if (SRC.BCList.IsDefined("クリティカル攻撃補正"))
+                {
+                    // バトルコンフィグデータの設定による修正
+                    // 一時保存変数に一時保存
+                    // 事前にデータを登録
+                    BCVariable.DataReset();
+                    BCVariable.MeUnit = Unit;
+                    BCVariable.AtkUnit = Unit;
+                    BCVariable.DefUnit = t;
+                    BCVariable.WeaponNumber = WeaponNo();
+                    BCVariable.AttackExp = WeaponCritical();
+                    ed_crtatk = (int)SRC.BCList.Item("クリティカル攻撃補正").Calculate();
+                }
+                else
+                {
+                    // 一時保存変数に一時保存
+                    ed_crtatk = (WeaponCritical() + Unit.MainPilot().Technique);
+                }
 
-            //    // 防御側による補正
-            //    if (SRC.BCList.IsDefined("クリティカル防御補正"))
-            //    {
-            //        // バトルコンフィグデータの設定による修正
-            //        // 一時保存変数に一時保存
-            //        // 事前にデータを登録
-            //        BCVariable.DataReset();
-            //        BCVariable.MeUnit = t;
-            //        BCVariable.AtkUnit = this;
-            //        BCVariable.DefUnit = t;
-            //        BCVariable.WeaponNumber = w;
-            //        ed_crtdfe = SRC.BCList.Item("クリティカル防御補正").Calculate();
-            //    }
-            //    else
-            //    {
-            //        // 一時保存変数に一時保存
-            //        ed_crtdfe = t.MainPilot().Technique;
-            //    }
+                // 防御側による補正
+                if (SRC.BCList.IsDefined("クリティカル防御補正"))
+                {
+                    // バトルコンフィグデータの設定による修正
+                    // 一時保存変数に一時保存
+                    // 事前にデータを登録
+                    BCVariable.DataReset();
+                    BCVariable.MeUnit = t;
+                    BCVariable.AtkUnit = Unit;
+                    BCVariable.DefUnit = t;
+                    BCVariable.WeaponNumber = WeaponNo();
+                    ed_crtdfe = (int)SRC.BCList.Item("クリティカル防御補正").Calculate();
+                }
+                else
+                {
+                    // 一時保存変数に一時保存
+                    ed_crtdfe = t.MainPilot().Technique;
+                }
 
-            //    // クリティカル発生率計算
-            //    if (SRC.BCList.IsDefined("クリティカル発生率"))
-            //    {
-            //        // 事前にデータを登録
-            //        BCVariable.DataReset();
-            //        BCVariable.MeUnit = this;
-            //        BCVariable.AtkUnit = this;
-            //        BCVariable.DefUnit = t;
-            //        BCVariable.WeaponNumber = w;
-            //        BCVariable.AttackVariable = ed_crtatk;
-            //        BCVariable.DffenceVariable = ed_crtdfe;
-            //        prob = SRC.BCList.Item("クリティカル発生率").Calculate();
-            //    }
-            //    else
-            //    {
-            //        prob = (ed_crtatk - ed_crtdfe);
-            //    }
+                // クリティカル発生率計算
+                if (SRC.BCList.IsDefined("クリティカル発生率"))
+                {
+                    // 事前にデータを登録
+                    BCVariable.DataReset();
+                    BCVariable.MeUnit = Unit;
+                    BCVariable.AtkUnit = Unit;
+                    BCVariable.DefUnit = t;
+                    BCVariable.WeaponNumber = WeaponNo();
+                    BCVariable.AttackVariable = ed_crtatk;
+                    BCVariable.DffenceVariable = ed_crtdfe;
+                    prob = (int)SRC.BCList.Item("クリティカル発生率").Calculate();
+                }
+                else
+                {
+                    prob = (ed_crtatk - ed_crtdfe);
+                }
 
-            //    // 超反応による修正
-            //    prob = (prob + 2d * MainPilot().SkillLevel("超反応", ref_mode: "") - 2d * t.MainPilot().SkillLevel("超反応", ref_mode: ""));
+                // 超反応による修正
+                prob = (int)(prob + 2d * Unit.MainPilot().SkillLevel("超反応", ref_mode: "") - 2d * t.MainPilot().SkillLevel("超反応", ref_mode: ""));
 
-            //    // 超能力による修正
-            //    if (MainPilot().IsSkillAvailable("超能力"))
-            //    {
-            //        prob = (prob + 5);
-            //    }
+                // 超能力による修正
+                if (Unit.MainPilot().IsSkillAvailable("超能力"))
+                {
+                    prob = (prob + 5);
+                }
 
-            //    // 底力、超底力、覚悟による修正
-            //    if (HP <= MaxHP / 4)
-            //    {
-            //        if (MainPilot().IsSkillAvailable("底力") || MainPilot().IsSkillAvailable("超底力") || MainPilot().IsSkillAvailable("覚悟"))
-            //        {
-            //            prob = (prob + 50);
-            //        }
-            //    }
+                // 底力、超底力、覚悟による修正
+                if (Unit.HP <= Unit.MaxHP / 4)
+                {
+                    if (Unit.MainPilot().IsSkillAvailable("底力")
+                        || Unit.MainPilot().IsSkillAvailable("超底力")
+                        || Unit.MainPilot().IsSkillAvailable("覚悟"))
+                    {
+                        prob = (prob + 50);
+                    }
+                }
 
-            //    // スペシャルパワーにる修正
-            //    prob = (prob + 10d * SpecialPowerEffectLevel("クリティカル率増加"));
-            //}
-            //else
-            //{
-            //    // 特殊効果を伴う攻撃
-            //    is_special = true;
+                // スペシャルパワーにる修正
+                prob = (int)(prob + 10d * Unit.SpecialPowerEffectLevel("クリティカル率増加"));
+            }
+            else
+            {
+                // 特殊効果を伴う攻撃
+                is_special = true;
 
-            //    // 攻撃側による補正
-            //    if (SRC.BCList.IsDefined("特殊効果攻撃補正"))
-            //    {
-            //        // バトルコンフィグデータの設定による修正
-            //        // 一時保存変数に一時保存
-            //        // 事前にデータを登録
-            //        BCVariable.DataReset();
-            //        BCVariable.MeUnit = this;
-            //        BCVariable.AtkUnit = this;
-            //        BCVariable.DefUnit = t;
-            //        BCVariable.WeaponNumber = w;
-            //        BCVariable.AttackExp = WeaponCritical(w);
-            //        ed_crtatk = SRC.BCList.Item("特殊効果攻撃補正").Calculate();
-            //    }
-            //    else
-            //    {
-            //        // 一時保存変数に一時保存
-            //        ed_crtatk = (WeaponCritical(w) + this.MainPilot().Technique / 2);
-            //    }
+                // 攻撃側による補正
+                if (SRC.BCList.IsDefined("特殊効果攻撃補正"))
+                {
+                    // バトルコンフィグデータの設定による修正
+                    // 一時保存変数に一時保存
+                    // 事前にデータを登録
+                    BCVariable.DataReset();
+                    BCVariable.MeUnit = Unit;
+                    BCVariable.AtkUnit = Unit;
+                    BCVariable.DefUnit = t;
+                    BCVariable.WeaponNumber = WeaponNo();
+                    BCVariable.AttackExp = WeaponCritical();
+                    ed_crtatk = (int)SRC.BCList.Item("特殊効果攻撃補正").Calculate();
+                }
+                else
+                {
+                    // 一時保存変数に一時保存
+                    ed_crtatk = (WeaponCritical() + Unit.MainPilot().Technique / 2);
+                }
 
-            //    // 防御側による補正
-            //    if (SRC.BCList.IsDefined("特殊効果防御補正"))
-            //    {
-            //        // バトルコンフィグデータの設定による修正
-            //        // 一時保存変数に一時保存
-            //        // 事前にデータを登録
-            //        BCVariable.DataReset();
-            //        BCVariable.MeUnit = t;
-            //        BCVariable.AtkUnit = this;
-            //        BCVariable.DefUnit = t;
-            //        BCVariable.WeaponNumber = w;
-            //        // 特殊効果の場合は相手がザコの時に確率が増加
-            //        if (Strings.InStr(t.MainPilot().Name, "(ザコ)") > 0)
-            //        {
-            //            BCVariable.CommonEnemy = 30;
-            //        }
+                // 防御側による補正
+                if (SRC.BCList.IsDefined("特殊効果防御補正"))
+                {
+                    // バトルコンフィグデータの設定による修正
+                    // 一時保存変数に一時保存
+                    // 事前にデータを登録
+                    BCVariable.DataReset();
+                    BCVariable.MeUnit = t;
+                    BCVariable.AtkUnit = Unit;
+                    BCVariable.DefUnit = t;
+                    BCVariable.WeaponNumber = WeaponNo();
+                    // 特殊効果の場合は相手がザコの時に確率が増加
+                    if (Strings.InStr(t.MainPilot().Name, "(ザコ)") > 0)
+                    {
+                        BCVariable.CommonEnemy = 30;
+                    }
 
-            //        ed_crtdfe = SRC.BCList.Item("特殊効果防御補正").Calculate();
-            //    }
-            //    else
-            //    {
-            //        // 一時保存変数に一時保存
-            //        ed_crtdfe = (t.MainPilot().Technique / 2);
+                    ed_crtdfe = (int)SRC.BCList.Item("特殊効果防御補正").Calculate();
+                }
+                else
+                {
+                    // 一時保存変数に一時保存
+                    ed_crtdfe = (t.MainPilot().Technique / 2);
 
-            //        // 特殊効果の場合は相手がザコの時に確率が増加
-            //        if (Strings.InStr(t.MainPilot().Name, "(ザコ)") > 0)
-            //        {
-            //            // 一時保存変数に一時保存
-            //            ed_crtdfe = (ed_crtdfe - 30);
-            //        }
-            //    }
+                    // 特殊効果の場合は相手がザコの時に確率が増加
+                    if (Strings.InStr(t.MainPilot().Name, "(ザコ)") > 0)
+                    {
+                        // 一時保存変数に一時保存
+                        ed_crtdfe = (ed_crtdfe - 30);
+                    }
+                }
 
-            //    // 特殊効果発生率計算
-            //    if (SRC.BCList.IsDefined("特殊効果発生率"))
-            //    {
-            //        // 事前にデータを登録
-            //        BCVariable.DataReset();
-            //        BCVariable.MeUnit = this;
-            //        BCVariable.AtkUnit = this;
-            //        BCVariable.DefUnit = t;
-            //        BCVariable.WeaponNumber = w;
-            //        BCVariable.AttackVariable = ed_crtatk;
-            //        BCVariable.DffenceVariable = ed_crtdfe;
-            //        prob = SRC.BCList.Item("特殊効果発生率").Calculate();
-            //    }
-            //    else
-            //    {
-            //        prob = (ed_crtatk - ed_crtdfe);
-            //    }
+                // 特殊効果発生率計算
+                if (SRC.BCList.IsDefined("特殊効果発生率"))
+                {
+                    // 事前にデータを登録
+                    BCVariable.DataReset();
+                    BCVariable.MeUnit = Unit;
+                    BCVariable.AtkUnit = Unit;
+                    BCVariable.DefUnit = t;
+                    BCVariable.WeaponNumber = WeaponNo();
+                    BCVariable.AttackVariable = ed_crtatk;
+                    BCVariable.DffenceVariable = ed_crtdfe;
+                    prob = (int)SRC.BCList.Item("特殊効果発生率").Calculate();
+                }
+                else
+                {
+                    prob = (int)(ed_crtatk - ed_crtdfe);
+                }
 
-            //    // 抵抗力による修正
-            //    prob = (prob - 10d * t.FeatureLevel("抵抗力"));
-            //}
+                // 抵抗力による修正
+                prob = (int)(prob - 10d * t.FeatureLevel("抵抗力"));
+            }
 
-            //// 不意打ち
-            //if (IsFeatureAvailable("ステルス") && !IsConditionSatisfied("ステルス無効") && !t.IsFeatureAvailable("ステルス無効化") && IsWeaponClassifiedAs("忍"))
-            //{
-            //    prob = (prob + 10);
-            //}
+            // 不意打ち
+            if (Unit.IsFeatureAvailable("ステルス")
+                && !Unit.IsConditionSatisfied("ステルス無効")
+                && !t.IsFeatureAvailable("ステルス無効化")
+                && IsWeaponClassifiedAs("忍"))
+            {
+                prob = (prob + 10);
+            }
 
-            //// 相手が動けなければ確率アップ
-            //if (t.IsConditionSatisfied("行動不能") || t.IsConditionSatisfied("石化") || t.IsConditionSatisfied("凍結") || t.IsConditionSatisfied("麻痺") || t.IsConditionSatisfied("睡眠") || t.IsUnderSpecialPowerEffect("行動不能"))
-            //{
-            //    prob = (prob + 10);
-            //}
+            // 相手が動けなければ確率アップ
+            if (t.IsConditionSatisfied("行動不能") || t.IsConditionSatisfied("石化") || t.IsConditionSatisfied("凍結") || t.IsConditionSatisfied("麻痺") || t.IsConditionSatisfied("睡眠") || t.IsUnderSpecialPowerEffect("行動不能"))
+            {
+                prob = (prob + 10);
+            }
 
-            //// 以下の修正は特殊効果発動確率にのみ影響
-            //if (is_special)
-            //{
-            //    wclass = WeaponClass(w);
+            // 以下の修正は特殊効果発動確率にのみ影響
+            if (is_special)
+            {
+                var wclass = WeaponClass();
 
-            //    // 封印攻撃は弱点、有効を持つユニット以外には効かない
-            //    if (GeneralLib.InStrNotNest(WeaponClass(), "封") > 0)
-            //    {
-            //        buf = t.strWeakness + t.strEffective;
-            //        var loopTo = Strings.Len(buf);
-            //        for (i = 1; i <= loopTo; i++)
-            //        {
-            //            // 属性をひとまとめずつ取得
-            //            c = GeneralLib.GetClassBundle(buf, i);
-            //            if (c != "物" && c != "魔")
-            //            {
-            //                if (GeneralLib.InStrNotNest(WeaponClass(), c) > 0)
-            //                {
-            //                    break;
-            //                }
-            //            }
-            //        }
+                // XXX この辺の判断切り出せそうな気はする
+                // 封印攻撃は弱点、有効を持つユニット以外には効かない
+                if (GeneralLib.InStrNotNest(WeaponClass(), "封") > 0)
+                {
+                    var buf = t.strWeakness + t.strEffective;
+                    var loopTo = Strings.Len(buf);
+                    int i;
+                    for (i = 1; i <= loopTo; i++)
+                    {
+                        // 属性をひとまとめずつ取得
+                        var c = GeneralLib.GetClassBundle(buf, ref i);
+                        if (c != "物" && c != "魔")
+                        {
+                            if (GeneralLib.InStrNotNest(WeaponClass(), c) > 0)
+                            {
+                                break;
+                            }
+                        }
+                    }
 
-            //        if (i > Strings.Len(buf))
-            //        {
-            //            CriticalProbabilityRet = 0;
-            //            return CriticalProbabilityRet;
-            //        }
-            //    }
+                    if (i > Strings.Len(buf))
+                    {
+                        CriticalProbabilityRet = 0;
+                        return CriticalProbabilityRet;
+                    }
+                }
 
-            //    // 限定攻撃は弱点、有効を持つユニット以外には効かない
-            //    idx = GeneralLib.InStrNotNest(WeaponClass(), "限");
-            //    if (idx > 0)
-            //    {
-            //        buf = t.strWeakness + t.strEffective;
-            //        var loopTo1 = Strings.Len(buf);
-            //        for (i = 1; i <= loopTo1; i++)
-            //        {
-            //            // 属性をひとまとめずつ取得
-            //            c = GeneralLib.GetClassBundle(buf, i);
-            //            if (c != "物" && c != "魔")
-            //            {
-            //                if (GeneralLib.InStrNotNest(WeaponClass(), c) > idx)
-            //                {
-            //                    break;
-            //                }
-            //            }
-            //        }
+                // 限定攻撃は弱点、有効を持つユニット以外には効かない
+                var idx = GeneralLib.InStrNotNest(WeaponClass(), "限");
+                if (idx > 0)
+                {
+                    var buf = t.strWeakness + t.strEffective;
+                    var loopTo1 = Strings.Len(buf);
+                    int i;
+                    for (i = 1; i <= loopTo1; i++)
+                    {
+                        // 属性をひとまとめずつ取得
+                        var c = GeneralLib.GetClassBundle(buf, ref i);
+                        if (c != "物" && c != "魔")
+                        {
+                            if (GeneralLib.InStrNotNest(WeaponClass(), c) > idx)
+                            {
+                                break;
+                            }
+                        }
+                    }
 
-            //        if (i > Strings.Len(buf))
-            //        {
-            //            CriticalProbabilityRet = 0;
-            //            return CriticalProbabilityRet;
-            //        }
-            //    }
+                    if (i > Strings.Len(buf))
+                    {
+                        CriticalProbabilityRet = 0;
+                        return CriticalProbabilityRet;
+                    }
+                }
 
-            //    // 特定レベル限定攻撃
-            //    if (GeneralLib.InStrNotNest(WeaponClass(), "対") > 0)
-            //    {
-            //        // UPGRADE_WARNING: Mod に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //        if (t.MainPilot().Level % WeaponLevel("対") != 0d)
-            //        {
-            //            CriticalProbabilityRet = 0;
-            //            return CriticalProbabilityRet;
-            //        }
-            //    }
+                // 特定レベル限定攻撃
+                if (GeneralLib.InStrNotNest(WeaponClass(), "対") > 0)
+                {
+                    // UPGRADE_WARNING: Mod に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
+                    if (t.MainPilot().Level % WeaponLevel("対") != 0d)
+                    {
+                        CriticalProbabilityRet = 0;
+                        return CriticalProbabilityRet;
+                    }
+                }
 
-            //    // クリティカル率については、
-            //    // 弱、効属性の指定属性に対しての防御特性を考慮する。
-            //    buf = "";
-            //    i = GeneralLib.InStrNotNest(WeaponClass(), "弱");
-            //    while (i > 0)
-            //    {
-            //        buf = buf + Strings.Mid(GeneralLib.GetClassBundle(WeaponClass(), i), 2);
-            //        i = GeneralLib.InStrNotNest(WeaponClass(), "弱", (i + 1));
-            //    }
+                // クリティカル率については、
+                // 弱、効属性の指定属性に対しての防御特性を考慮する。
+                {
+                    var buf = "";
+                    var i = GeneralLib.InStrNotNest(WeaponClass(), "弱");
+                    while (i > 0)
+                    {
+                        buf = buf + Strings.Mid(GeneralLib.GetClassBundle(WeaponClass(), ref i), 2);
+                        i = GeneralLib.InStrNotNest(WeaponClass(), "弱", (i + 1));
+                    }
 
-            //    i = GeneralLib.InStrNotNest(WeaponClass(), "効");
-            //    while (i > 0)
-            //    {
-            //        buf = buf + Strings.Mid(GeneralLib.GetClassBundle(WeaponClass(), i), 2);
-            //        i = GeneralLib.InStrNotNest(WeaponClass(), "効", (i + 1));
-            //    }
+                    i = GeneralLib.InStrNotNest(WeaponClass(), "効");
+                    while (i > 0)
+                    {
+                        buf = buf + Strings.Mid(GeneralLib.GetClassBundle(WeaponClass(), ref i), 2);
+                        i = GeneralLib.InStrNotNest(WeaponClass(), "効", (i + 1));
+                    }
 
-            //    buf = buf + wclass;
+                    buf = buf + wclass;
 
-            //    // 弱点
-            //    // 変化なし
-            //    // 封印技
-            //    // 限定技
-            //    if (t.Weakness(buf))
-            //    {
-            //        prob = (prob + 10);
-            //    }
-            //    // 有効
-            //    else if (t.Effective(buf))
-            //    {
-            //    }
-            //    else if (GeneralLib.InStrNotNest(WeaponClass(), "封") > 0)
-            //    {
-            //        CriticalProbabilityRet = 0;
-            //        return CriticalProbabilityRet;
-            //    }
-            //    else if (GeneralLib.InStrNotNest(WeaponClass(), "限") > 0)
-            //    {
-            //        CriticalProbabilityRet = 0;
-            //        return CriticalProbabilityRet;
-            //    }
-            //    // 吸収
-            //    else if (t.Absorb(buf))
-            //    {
-            //        CriticalProbabilityRet = 0;
-            //        return CriticalProbabilityRet;
-            //    }
-            //    // 無効化
-            //    else if (t.Immune(buf))
-            //    {
-            //        CriticalProbabilityRet = 0;
-            //        return CriticalProbabilityRet;
-            //    }
-            //    // 耐性
-            //    else if (t.Resist(buf))
-            //    {
-            //        prob = (prob / 2);
-            //    }
+                    // 弱点
+                    // 変化なし
+                    // 封印技
+                    // 限定技
+                    if (t.Weakness(buf))
+                    {
+                        prob = (prob + 10);
+                    }
+                    // 有効
+                    else if (t.Effective(buf))
+                    {
+                    }
+                    else if (GeneralLib.InStrNotNest(WeaponClass(), "封") > 0)
+                    {
+                        CriticalProbabilityRet = 0;
+                        return CriticalProbabilityRet;
+                    }
+                    else if (GeneralLib.InStrNotNest(WeaponClass(), "限") > 0)
+                    {
+                        CriticalProbabilityRet = 0;
+                        return CriticalProbabilityRet;
+                    }
+                    // 吸収
+                    else if (t.Absorb(buf))
+                    {
+                        CriticalProbabilityRet = 0;
+                        return CriticalProbabilityRet;
+                    }
+                    // 無効化
+                    else if (t.Immune(buf))
+                    {
+                        CriticalProbabilityRet = 0;
+                        return CriticalProbabilityRet;
+                    }
+                    // 耐性
+                    else if (t.Resist(buf))
+                    {
+                        prob = (prob / 2);
+                    }
+                }
 
-            //    // 盲目状態には視覚攻撃は効かない
-            //    if (GeneralLib.InStrNotNest(WeaponClass(), "視") > 0)
-            //    {
-            //        if (t.IsConditionSatisfied("盲目"))
-            //        {
-            //            CriticalProbabilityRet = 0;
-            //            return CriticalProbabilityRet;
-            //        }
-            //    }
+                // 盲目状態には視覚攻撃は効かない
+                if (GeneralLib.InStrNotNest(WeaponClass(), "視") > 0)
+                {
+                    if (t.IsConditionSatisfied("盲目"))
+                    {
+                        CriticalProbabilityRet = 0;
+                        return CriticalProbabilityRet;
+                    }
+                }
 
-            //    // 機械には精神攻撃は効かない
-            //    if (GeneralLib.InStrNotNest(WeaponClass(), "精") > 0)
-            //    {
-            //        if (t.MainPilot().Personality == "機械")
-            //        {
-            //            CriticalProbabilityRet = 0;
-            //            return CriticalProbabilityRet;
-            //        }
-            //    }
+                // 機械には精神攻撃は効かない
+                if (GeneralLib.InStrNotNest(WeaponClass(), "精") > 0)
+                {
+                    if (t.MainPilot().Personality == "機械")
+                    {
+                        CriticalProbabilityRet = 0;
+                        return CriticalProbabilityRet;
+                    }
+                }
 
-            //    // 性別限定武器
-            //    if (GeneralLib.InStrNotNest(WeaponClass(), "♂") > 0)
-            //    {
-            //        if (t.MainPilot().Sex != "男性")
-            //        {
-            //            CriticalProbabilityRet = 0;
-            //            return CriticalProbabilityRet;
-            //        }
-            //    }
+                // 性別限定武器
+                if (GeneralLib.InStrNotNest(WeaponClass(), "♂") > 0)
+                {
+                    if (t.MainPilot().Sex != "男性")
+                    {
+                        CriticalProbabilityRet = 0;
+                        return CriticalProbabilityRet;
+                    }
+                }
 
-            //    if (GeneralLib.InStrNotNest(WeaponClass(), "♀") > 0)
-            //    {
-            //        if (t.MainPilot().Sex != "女性")
-            //        {
-            //            CriticalProbabilityRet = 0;
-            //            return CriticalProbabilityRet;
-            //        }
-            //    }
-            //}
+                if (GeneralLib.InStrNotNest(WeaponClass(), "♀") > 0)
+                {
+                    if (t.MainPilot().Sex != "女性")
+                    {
+                        CriticalProbabilityRet = 0;
+                        return CriticalProbabilityRet;
+                    }
+                }
+            }
 
-            //// 防御時はクリティカル発生確率が半減
-            //if (def_mode == "防御")
-            //{
-            //    prob = (prob / 2);
-            //}
+            // 防御時はクリティカル発生確率が半減
+            if (def_mode == "防御")
+            {
+                prob = (prob / 2);
+            }
 
-            //// 最終クリティカル/特殊効果を定義する。これがないときは何もしない
-            //if (IsNormalWeapon(w))
-            //{
-            //    // クリティカル
-            //    if (SRC.BCList.IsDefined("最終クリティカル発生率"))
-            //    {
-            //        // 事前にデータを登録
-            //        BCVariable.DataReset();
-            //        BCVariable.MeUnit = this;
-            //        BCVariable.AtkUnit = this;
-            //        BCVariable.DefUnit = t;
-            //        BCVariable.WeaponNumber = w;
-            //        BCVariable.LastVariable = prob;
-            //        prob = SRC.BCList.Item("最終クリティカル発生率").Calculate();
-            //    }
-            //}
-            //else
-            //{
-            //    // 特殊効果
-            //    if (SRC.BCList.IsDefined("最終特殊効果発生率"))
-            //    {
-            //        // 事前にデータを登録
-            //        BCVariable.DataReset();
-            //        BCVariable.MeUnit = this;
-            //        BCVariable.AtkUnit = this;
-            //        BCVariable.DefUnit = t;
-            //        BCVariable.WeaponNumber = w;
-            //        BCVariable.LastVariable = prob;
-            //        prob = SRC.BCList.Item("最終特殊効果発生率").Calculate();
-            //    }
-            //}
+            // 最終クリティカル/特殊効果を定義する。これがないときは何もしない
+            if (IsNormalWeapon())
+            {
+                // クリティカル
+                if (SRC.BCList.IsDefined("最終クリティカル発生率"))
+                {
+                    // 事前にデータを登録
+                    BCVariable.DataReset();
+                    BCVariable.MeUnit = Unit;
+                    BCVariable.AtkUnit = Unit;
+                    BCVariable.DefUnit = t;
+                    BCVariable.WeaponNumber = WeaponNo();
+                    BCVariable.LastVariable = prob;
+                    prob = (int)SRC.BCList.Item("最終クリティカル発生率").Calculate();
+                }
+            }
+            else
+            {
+                // 特殊効果
+                if (SRC.BCList.IsDefined("最終特殊効果発生率"))
+                {
+                    // 事前にデータを登録
+                    BCVariable.DataReset();
+                    BCVariable.MeUnit = Unit;
+                    BCVariable.AtkUnit = Unit;
+                    BCVariable.DefUnit = t;
+                    BCVariable.WeaponNumber = WeaponNo();
+                    BCVariable.LastVariable = prob;
+                    prob = (int)SRC.BCList.Item("最終特殊効果発生率").Calculate();
+                }
+            }
 
-            //if (prob > 100)
-            //{
-            //    CriticalProbabilityRet = 100;
-            //}
-            //else if (prob < 1)
-            //{
-            //    CriticalProbabilityRet = 1;
-            //}
-            //else
-            //{
-            //    CriticalProbabilityRet = prob;
-            //}
+            if (prob > 100)
+            {
+                CriticalProbabilityRet = 100;
+            }
+            else if (prob < 1)
+            {
+                CriticalProbabilityRet = 1;
+            }
+            else
+            {
+                CriticalProbabilityRet = prob;
+            }
 
-            //return CriticalProbabilityRet;
+            return CriticalProbabilityRet;
         }
 
         // 武器wでユニットtに攻撃をかけた時のダメージの期待値
