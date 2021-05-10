@@ -40,17 +40,9 @@ namespace SRCCore.Units
         {
             return colFeature[Index].FeatureName(this);
         }
-
         public string FeatureName0(string Index)
         {
-            string FeatureName0Ret = default;
-            FeatureName0Ret = FeatureName(Index);
-            if (Strings.InStr(FeatureName0Ret, "Lv") > 0)
-            {
-                FeatureName0Ret = Strings.Left(FeatureName0Ret, Strings.InStr(FeatureName0Ret, "Lv") - 1);
-            }
-
-            return FeatureName0Ret;
+            return colFeature[Index].FeatureName0(this);
         }
 
         // 特殊能力のレベル
