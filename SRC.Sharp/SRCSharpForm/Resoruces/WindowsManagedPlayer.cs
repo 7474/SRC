@@ -118,21 +118,21 @@ namespace SRCSharpForm.Resoruces
             throw new NotImplementedException();
         }
 
-        public void Play(int channel, string path, PlaySoundMode mode)
+        public void Play(int channel, Stream stream, SoundType soundType, PlaySoundMode mode)
         {
             Stop(channel);
 
-            switch (Path.GetExtension(path).ToLower())
+            switch (soundType)
             {
-                case ".mid":
+                case SoundType.Midi:
                     if (CH_BGM != channel)
                     {
                         throw new ArgumentException($"{channel} is not support MIDI. MIDI channel is {CH_BGM}");
                     }
-                    StartMidiPlayback(path, mode);
+                    StartMidiPlayback(stream, mode);
                     break;
                 default:
-                    StartWave(channel, path, mode);
+                    StartWave(channel, stream, soundType, mode);
                     break;
             }
         }
@@ -149,7 +149,7 @@ namespace SRCSharpForm.Resoruces
             }
         }
 
-        public void StartWave(int channel, string path, PlaySoundMode mode)
+        public void StartWave(int channel, Stream stream, SoundType soundType, PlaySoundMode mode)
         {
             if (!outputMap.ContainsKey(channel))
             {
@@ -162,7 +162,7 @@ namespace SRCSharpForm.Resoruces
             }
             WaveChannel waveChannel = outputMap[channel];
             waveChannel.repeat = mode.HasFlag(PlaySoundMode.Repeat);
-            waveChannel.outputDevice.Init(new LoopStream(new AudioFileReader(path))
+            waveChannel.outputDevice.Init(new LoopStream(CreateReaderStream(stream, soundType))
             {
                 EnableLooping = waveChannel.repeat,
             });
@@ -170,9 +170,36 @@ namespace SRCSharpForm.Resoruces
             waveChannel.outputDevice.Play();
         }
 
-        private void StartMidiPlayback(string path, PlaySoundMode mode)
+        // https://github.com/naudio/NAudio/blob/fb35ce8367f30b8bc5ea84e7d2529e172cf4c381/NAudio/AudioFileReader.cs#L45-L69
+        private WaveStream CreateReaderStream(Stream stream, SoundType soundType)
         {
-            midiFile = MidiFile.Read(path);
+            switch (soundType)
+            {
+                case SoundType.Midi:
+                    throw new InvalidOperationException(soundType + " is not supported.");
+                case SoundType.Wave:
+                    WaveStream readerStream = new WaveFileReader(stream);
+                    if (readerStream.WaveFormat.Encoding != WaveFormatEncoding.Pcm && readerStream.WaveFormat.Encoding != WaveFormatEncoding.IeeeFloat)
+                    {
+                        readerStream = WaveFormatConversionStream.CreatePcmStream(readerStream);
+                        readerStream = new BlockAlignReductionStream(readerStream);
+                    }
+                    return readerStream;
+                case SoundType.Mp3:
+                    return new Mp3FileReader(stream);
+                case SoundType.Aiff:
+                    return new AiffFileReader(stream);
+                default:
+                    // AudioFileReader は MediaFoundationReader に処理を移譲しているけれど、
+                    // ファイル名があっても構築するのはちょっと大変そう
+                    //return new MediaFoundationReader(stream);
+                    throw new InvalidOperationException(soundType + " is not supported.");
+            }
+        }
+
+        private void StartMidiPlayback(Stream stream, PlaySoundMode mode)
+        {
+            midiFile = MidiFile.Read(stream);
             try
             {
                 midiOutput = OutputDevice.GetAll().First();
@@ -217,6 +244,33 @@ namespace SRCSharpForm.Resoruces
             catch
             {
                 // ignore
+            }
+        }
+
+        public SoundType ResolveSoundType(string path)
+        {
+            var fileName = path;
+            if (fileName.EndsWith(".wav", StringComparison.OrdinalIgnoreCase))
+            {
+                return SoundType.Wave;
+            }
+            else if (fileName.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase))
+            {
+                return SoundType.Mp3;
+            }
+            else if (fileName.EndsWith(".aiff", StringComparison.OrdinalIgnoreCase)
+                || fileName.EndsWith(".aif", StringComparison.OrdinalIgnoreCase))
+            {
+                return SoundType.Aiff;
+            }
+            else if (fileName.EndsWith(".midi", StringComparison.OrdinalIgnoreCase)
+                || fileName.EndsWith(".mid", StringComparison.OrdinalIgnoreCase))
+            {
+                return SoundType.Midi;
+            }
+            else
+            {
+                return SoundType.Unknown;
             }
         }
     }
