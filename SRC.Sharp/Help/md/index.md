@@ -198,8 +198,8 @@
         - [ChangeUnitBitmapコマンド](ChangeUnitBitmapコマンド.md)
         - [Chargeコマンド](Chargeコマンド.md)
         - [Circleコマンド](Circleコマンド.md)
-        - [ClearEventコマンド](ClearEventコマンド.md)
-        - [ClearFlashコマンド](ClearFlashコマンド.md)
+        - ~~[ClearEventコマンド](ClearEventコマンド.md)~~
+        - ~~[ClearFlashコマンド](ClearFlashコマンド.md)~~
         - [ClearObjコマンド](ClearObjコマンド.md)
         - [ClearPictureコマンド](ClearPictureコマンド.md)
         - [ClearSkillコマンド](ClearSkillコマンド.md)
