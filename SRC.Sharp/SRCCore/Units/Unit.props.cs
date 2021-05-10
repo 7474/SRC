@@ -672,197 +672,197 @@ namespace SRCCore.Units
             return AdaptionRet;
         }
 
-        //// 地形適応による修正値
-        //public double get_AdaptionMod(int idx, int ad_mod)
-        //{
-        //    double AdaptionModRet = default;
-        //    int uad;
-        //    uad = get_Adaption(idx);
+        // 地形適応による修正値
+        public double get_AdaptionMod(int idx, int ad_mod)
+        {
+            double AdaptionModRet = default;
+            int uad;
+            uad = get_Adaption(idx);
 
-        //    // 元々属性がSでない限り、Sにはしない
-        //    if (uad == 5)
-        //    {
-        //        uad = (int)GeneralLib.MinLng(uad + ad_mod, 5);
-        //    }
-        //    else
-        //    {
-        //        uad = (int)GeneralLib.MinLng(uad + ad_mod, 4);
-        //    }
+            // 元々属性がSでない限り、Sにはしない
+            if (uad == 5)
+            {
+                uad = (int)GeneralLib.MinLng(uad + ad_mod, 5);
+            }
+            else
+            {
+                uad = (int)GeneralLib.MinLng(uad + ad_mod, 4);
+            }
 
-        //    // Optionコマンドの設定に応じて適応修正値を設定
-        //    if (Expression.IsOptionDefined("地形適応修正緩和"))
-        //    {
-        //        if (Expression.IsOptionDefined("地形適応修正繰り下げ"))
-        //        {
-        //            switch (uad)
-        //            {
-        //                case 5:
-        //                    {
-        //                        AdaptionModRet = 1.1d;
-        //                        break;
-        //                    }
+            // Optionコマンドの設定に応じて適応修正値を設定
+            if (Expression.IsOptionDefined("地形適応修正緩和"))
+            {
+                if (Expression.IsOptionDefined("地形適応修正繰り下げ"))
+                {
+                    switch (uad)
+                    {
+                        case 5:
+                            {
+                                AdaptionModRet = 1.1d;
+                                break;
+                            }
 
-        //                case 4:
-        //                    {
-        //                        AdaptionModRet = 1d;
-        //                        break;
-        //                    }
+                        case 4:
+                            {
+                                AdaptionModRet = 1d;
+                                break;
+                            }
 
-        //                case 3:
-        //                    {
-        //                        AdaptionModRet = 0.9d;
-        //                        break;
-        //                    }
+                        case 3:
+                            {
+                                AdaptionModRet = 0.9d;
+                                break;
+                            }
 
-        //                case 2:
-        //                    {
-        //                        AdaptionModRet = 0.8d;
-        //                        break;
-        //                    }
+                        case 2:
+                            {
+                                AdaptionModRet = 0.8d;
+                                break;
+                            }
 
-        //                case 1:
-        //                    {
-        //                        AdaptionModRet = 0.7d;
-        //                        break;
-        //                    }
+                        case 1:
+                            {
+                                AdaptionModRet = 0.7d;
+                                break;
+                            }
 
-        //                default:
-        //                    {
-        //                        AdaptionModRet = 0d;
-        //                        break;
-        //                    }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            switch (uad)
-        //            {
-        //                case 5:
-        //                    {
-        //                        AdaptionModRet = 1.2d;
-        //                        break;
-        //                    }
+                        default:
+                            {
+                                AdaptionModRet = 0d;
+                                break;
+                            }
+                    }
+                }
+                else
+                {
+                    switch (uad)
+                    {
+                        case 5:
+                            {
+                                AdaptionModRet = 1.2d;
+                                break;
+                            }
 
-        //                case 4:
-        //                    {
-        //                        AdaptionModRet = 1.1d;
-        //                        break;
-        //                    }
+                        case 4:
+                            {
+                                AdaptionModRet = 1.1d;
+                                break;
+                            }
 
-        //                case 3:
-        //                    {
-        //                        AdaptionModRet = 1d;
-        //                        break;
-        //                    }
+                        case 3:
+                            {
+                                AdaptionModRet = 1d;
+                                break;
+                            }
 
-        //                case 2:
-        //                    {
-        //                        AdaptionModRet = 0.9d;
-        //                        break;
-        //                    }
+                        case 2:
+                            {
+                                AdaptionModRet = 0.9d;
+                                break;
+                            }
 
-        //                case 1:
-        //                    {
-        //                        AdaptionModRet = 0.8d;
-        //                        break;
-        //                    }
+                        case 1:
+                            {
+                                AdaptionModRet = 0.8d;
+                                break;
+                            }
 
-        //                default:
-        //                    {
-        //                        AdaptionModRet = 0d;
-        //                        break;
-        //                    }
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (Expression.IsOptionDefined("地形適応修正繰り下げ"))
-        //        {
-        //            switch (uad)
-        //            {
-        //                case 5:
-        //                    {
-        //                        AdaptionModRet = 1.2d;
-        //                        break;
-        //                    }
+                        default:
+                            {
+                                AdaptionModRet = 0d;
+                                break;
+                            }
+                    }
+                }
+            }
+            else
+            {
+                if (Expression.IsOptionDefined("地形適応修正繰り下げ"))
+                {
+                    switch (uad)
+                    {
+                        case 5:
+                            {
+                                AdaptionModRet = 1.2d;
+                                break;
+                            }
 
-        //                case 4:
-        //                    {
-        //                        AdaptionModRet = 1d;
-        //                        break;
-        //                    }
+                        case 4:
+                            {
+                                AdaptionModRet = 1d;
+                                break;
+                            }
 
-        //                case 3:
-        //                    {
-        //                        AdaptionModRet = 0.8d;
-        //                        break;
-        //                    }
+                        case 3:
+                            {
+                                AdaptionModRet = 0.8d;
+                                break;
+                            }
 
-        //                case 2:
-        //                    {
-        //                        AdaptionModRet = 0.6d;
-        //                        break;
-        //                    }
+                        case 2:
+                            {
+                                AdaptionModRet = 0.6d;
+                                break;
+                            }
 
-        //                case 1:
-        //                    {
-        //                        AdaptionModRet = 0.4d;
-        //                        break;
-        //                    }
+                        case 1:
+                            {
+                                AdaptionModRet = 0.4d;
+                                break;
+                            }
 
-        //                default:
-        //                    {
-        //                        AdaptionModRet = 0d;
-        //                        break;
-        //                    }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            switch (uad)
-        //            {
-        //                case 5:
-        //                    {
-        //                        AdaptionModRet = 1.4d;
-        //                        break;
-        //                    }
+                        default:
+                            {
+                                AdaptionModRet = 0d;
+                                break;
+                            }
+                    }
+                }
+                else
+                {
+                    switch (uad)
+                    {
+                        case 5:
+                            {
+                                AdaptionModRet = 1.4d;
+                                break;
+                            }
 
-        //                case 4:
-        //                    {
-        //                        AdaptionModRet = 1.2d;
-        //                        break;
-        //                    }
+                        case 4:
+                            {
+                                AdaptionModRet = 1.2d;
+                                break;
+                            }
 
-        //                case 3:
-        //                    {
-        //                        AdaptionModRet = 1d;
-        //                        break;
-        //                    }
+                        case 3:
+                            {
+                                AdaptionModRet = 1d;
+                                break;
+                            }
 
-        //                case 2:
-        //                    {
-        //                        AdaptionModRet = 0.8d;
-        //                        break;
-        //                    }
+                        case 2:
+                            {
+                                AdaptionModRet = 0.8d;
+                                break;
+                            }
 
-        //                case 1:
-        //                    {
-        //                        AdaptionModRet = 0.6d;
-        //                        break;
-        //                    }
+                        case 1:
+                            {
+                                AdaptionModRet = 0.6d;
+                                break;
+                            }
 
-        //                default:
-        //                    {
-        //                        AdaptionModRet = 0d;
-        //                        break;
-        //                    }
-        //            }
-        //        }
-        //    }
+                        default:
+                            {
+                                AdaptionModRet = 0d;
+                                break;
+                            }
+                    }
+                }
+            }
 
-        //    return AdaptionModRet;
-        //}
+            return AdaptionModRet;
+        }
 
 
         // 装甲

@@ -230,5 +230,18 @@ namespace SRCCore.Models
 
             return FeatureNameRet;
         }
+
+        public string FeatureName0(Unit unit)
+        {
+            string FeatureName0Ret = default;
+            FeatureName0Ret = FeatureName(unit);
+            if (Strings.InStr(FeatureName0Ret, "Lv") > 0)
+            {
+                FeatureName0Ret = Strings.Left(FeatureName0Ret, Strings.InStr(FeatureName0Ret, "Lv") - 1);
+            }
+
+            return FeatureName0Ret;
+        }
+
     }
 }
