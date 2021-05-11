@@ -14,6 +14,7 @@ describe('Load Data', function () {
         cy.get('.navbar-burger ').click();
         cy.contains('Titles').click();
         cy.contains('∀ガンダム').click();
+        cy.get('body');
         cy.contains('∀ガンダム(前期)').should('exist');
     });
 });
