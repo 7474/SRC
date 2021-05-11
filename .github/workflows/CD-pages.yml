@@ -44,5 +44,8 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          spec: SRC.Sharp/SRCTestBlazor/E2E/cypress/integration/*.js
-          
+          project: ./SRC.Sharp/SRCTestBlazor/E2E
+          record: true
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
