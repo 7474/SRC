@@ -12,7 +12,7 @@ describe('Load Data', function () {
     it('適当なデータが読み込まれる', function () {
         cy.visit(ROOT_URL);
         cy.get('.navbar-burger ').click();
-        cy.contains('Titles').click();
+        cy.contains('Titles').trigger('mouseover');
         cy.contains('∀ガンダム').click();
         cy.get('body');
         cy.contains('∀ガンダム(前期)').should('exist');
