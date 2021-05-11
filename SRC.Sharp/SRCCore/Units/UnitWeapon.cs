@@ -323,444 +323,442 @@ namespace SRCCore.Units
         // 武器 w の地形 tarea におけるダメージ修正値
         public double WeaponAdaption(string tarea)
         {
-            return 1d;
-            // TODO Impl
-            //    double WeaponAdaptionRet = default;
-            //    int wad = default, uad, xad;
-            //    int ind;
+            double WeaponAdaptionRet = default;
+            int wad = 0;
+            int uad, xad, ind;
 
-            //    // 武器の地形適応値の計算に使用する適応値を決定
-            //    switch (tarea ?? "")
-            //    {
-            //        case "空中":
-            //            {
-            //                ind = 1;
-            //                break;
-            //            }
+            // 武器の地形適応値の計算に使用する適応値を決定
+            switch (tarea ?? "")
+            {
+                case "空中":
+                    {
+                        ind = 1;
+                        break;
+                    }
 
-            //        case "地上":
-            //            {
-            //                if (Map.TerrainClass(x, y) == "月面")
-            //                {
-            //                    ind = 4;
-            //                }
-            //                else
-            //                {
-            //                    ind = 2;
-            //                }
+                case "地上":
+                    {
+                        if (Map.Terrain(Unit.x, Unit.y).Class == "月面")
+                        {
+                            ind = 4;
+                        }
+                        else
+                        {
+                            ind = 2;
+                        }
 
-            //                break;
-            //            }
+                        break;
+                    }
 
-            //        case "水上":
-            //            {
-            //                if (Strings.Mid(Weapon(w).Adaption, 3, 1) == "A")
-            //                {
-            //                    ind = 3;
-            //                }
-            //                else
-            //                {
-            //                    ind = 2;
-            //                }
+                case "水上":
+                    {
+                        if (Strings.Mid(WeaponData.Adaption, 3, 1) == "A")
+                        {
+                            ind = 3;
+                        }
+                        else
+                        {
+                            ind = 2;
+                        }
 
-            //                break;
-            //            }
+                        break;
+                    }
 
-            //        case "水中":
-            //            {
-            //                ind = 3;
-            //                break;
-            //            }
+                case "水中":
+                    {
+                        ind = 3;
+                        break;
+                    }
 
-            //        case "宇宙":
-            //            {
-            //                ind = 4;
-            //                break;
-            //            }
+                case "宇宙":
+                    {
+                        ind = 4;
+                        break;
+                    }
 
-            //        case "地中":
-            //            {
-            //                WeaponAdaptionRet = 0d;
-            //                return WeaponAdaptionRet;
-            //            }
+                case "地中":
+                    {
+                        WeaponAdaptionRet = 0d;
+                        return WeaponAdaptionRet;
+                    }
 
-            //        default:
-            //            {
-            //                xad = 4;
-            //                goto CalcAdaption;
-            //                break;
-            //            }
-            //    }
+                default:
+                    {
+                        xad = 4;
+                        goto CalcAdaption;
+                        break;
+                    }
+            }
 
-            //    // 武器の地形適応値
-            //    switch (Strings.Mid(Weapon(w).Adaption, ind, 1) ?? "")
-            //    {
-            //        case "S":
-            //            {
-            //                wad = 5;
-            //                break;
-            //            }
+            // 武器の地形適応値
+            switch (Strings.Mid(WeaponData.Adaption, ind, 1) ?? "")
+            {
+                case "S":
+                    {
+                        wad = 5;
+                        break;
+                    }
 
-            //        case "A":
-            //            {
-            //                wad = 4;
-            //                break;
-            //            }
+                case "A":
+                    {
+                        wad = 4;
+                        break;
+                    }
 
-            //        case "B":
-            //            {
-            //                wad = 3;
-            //                break;
-            //            }
+                case "B":
+                    {
+                        wad = 3;
+                        break;
+                    }
 
-            //        case "C":
-            //            {
-            //                wad = 2;
-            //                break;
-            //            }
+                case "C":
+                    {
+                        wad = 2;
+                        break;
+                    }
 
-            //        case "D":
-            //            {
-            //                wad = 1;
-            //                break;
-            //            }
+                case "D":
+                    {
+                        wad = 1;
+                        break;
+                    }
 
-            //        case "-":
-            //            {
-            //                WeaponAdaptionRet = 0d;
-            //                return WeaponAdaptionRet;
-            //            }
-            //    }
+                case "-":
+                    {
+                        WeaponAdaptionRet = 0d;
+                        return WeaponAdaptionRet;
+                    }
+            }
 
-            //    // ユニットの地形適応値の計算に使用する適応値を決定
-            //    if (!IsWeaponClassifiedAs("武") && !IsWeaponClassifiedAs("突") && !IsWeaponClassifiedAs("接"))
-            //    {
-            //        // 格闘戦以外の場合はユニットがいる地形を参照
-            //        switch (Area ?? "")
-            //        {
-            //            case "空中":
-            //                {
-            //                    ind = 1;
-            //                    break;
-            //                }
+            // ユニットの地形適応値の計算に使用する適応値を決定
+            if (!IsWeaponClassifiedAs("武") && !IsWeaponClassifiedAs("突") && !IsWeaponClassifiedAs("接"))
+            {
+                // 格闘戦以外の場合はユニットがいる地形を参照
+                switch (Unit.Area ?? "")
+                {
+                    case "空中":
+                        {
+                            ind = 1;
+                            break;
+                        }
 
-            //            case "地上":
-            //                {
-            //                    if (Map.TerrainClass(x, y) == "月面")
-            //                    {
-            //                        ind = 4;
-            //                    }
-            //                    else
-            //                    {
-            //                        ind = 2;
-            //                    }
+                    case "地上":
+                        {
+                            if (Map.Terrain(Unit.x, Unit.y).Class == "月面")
+                            {
+                                ind = 4;
+                            }
+                            else
+                            {
+                                ind = 2;
+                            }
 
-            //                    break;
-            //                }
+                            break;
+                        }
 
-            //            case "水上":
-            //                {
-            //                    ind = 2;
-            //                    break;
-            //                }
+                    case "水上":
+                        {
+                            ind = 2;
+                            break;
+                        }
 
-            //            case "水中":
-            //                {
-            //                    ind = 3;
-            //                    break;
-            //                }
+                    case "水中":
+                        {
+                            ind = 3;
+                            break;
+                        }
 
-            //            case "宇宙":
-            //                {
-            //                    ind = 4;
-            //                    break;
-            //                }
+                    case "宇宙":
+                        {
+                            ind = 4;
+                            break;
+                        }
 
-            //            case "地中":
-            //                {
-            //                    WeaponAdaptionRet = 0d;
-            //                    return WeaponAdaptionRet;
-            //                }
-            //        }
-            //        // ユニットの地形適応値
-            //        uad = get_Adaption(ind);
-            //    }
-            //    else
-            //    {
-            //        // 格闘戦の場合はターゲットがいる地形を参照
-            //        switch (tarea ?? "")
-            //        {
-            //            case "空中":
-            //                {
-            //                    uad = get_Adaption(1);
-            //                    // ジャンプ攻撃
-            //                    if (IsWeaponClassifiedAs("Ｊ"))
-            //                    {
-            //                        uad = (uad + WeaponLevel("Ｊ"));
-            //                    }
+                    case "地中":
+                        {
+                            WeaponAdaptionRet = 0d;
+                            return WeaponAdaptionRet;
+                        }
+                }
+                // ユニットの地形適応値
+                uad = Unit.get_Adaption(ind);
+            }
+            else
+            {
+                // 格闘戦の場合はターゲットがいる地形を参照
+                switch (tarea ?? "")
+                {
+                    case "空中":
+                        {
+                            uad = Unit.get_Adaption(1);
+                            // ジャンプ攻撃
+                            if (IsWeaponClassifiedAs("Ｊ"))
+                            {
+                                uad = (int)(uad + WeaponLevel("Ｊ"));
+                            }
 
-            //                    break;
-            //                }
+                            break;
+                        }
 
-            //            case "地上":
-            //                {
-            //                    if (get_Adaption(2) > 0)
-            //                    {
-            //                        uad = get_Adaption(2);
-            //                    }
-            //                    else
-            //                    {
-            //                        // 空中専用ユニットが地上のユニットに格闘戦をしかけられるようにする
-            //                        uad = GeneralLib.MaxLng(get_Adaption(1) - 1, 0);
-            //                    }
+                    case "地上":
+                        {
+                            if (Unit.get_Adaption(2) > 0)
+                            {
+                                uad = Unit.get_Adaption(2);
+                            }
+                            else
+                            {
+                                // 空中専用ユニットが地上のユニットに格闘戦をしかけられるようにする
+                                uad = GeneralLib.MaxLng(Unit.get_Adaption(1) - 1, 0);
+                            }
 
-            //                    break;
-            //                }
+                            break;
+                        }
 
-            //            case "水上":
-            //                {
-            //                    // 水中専用ユニットが水上のユニットに格闘戦をしかけられるようにする
-            //                    uad = GeneralLib.MaxDbl(get_Adaption(2), get_Adaption(3));
-            //                    if (uad <= 0)
-            //                    {
-            //                        // 空中専用ユニットが地上のユニットに格闘戦をしかけられるようにする
-            //                        uad = GeneralLib.MaxLng(get_Adaption(1) - 1, 0);
-            //                    }
+                    case "水上":
+                        {
+                            // 水中専用ユニットが水上のユニットに格闘戦をしかけられるようにする
+                            uad = (int)GeneralLib.MaxDbl(Unit.get_Adaption(2), Unit.get_Adaption(3));
+                            if (uad <= 0)
+                            {
+                                // 空中専用ユニットが地上のユニットに格闘戦をしかけられるようにする
+                                uad = GeneralLib.MaxLng(Unit.get_Adaption(1) - 1, 0);
+                            }
 
-            //                    break;
-            //                }
+                            break;
+                        }
 
-            //            case "水中":
-            //                {
-            //                    uad = get_Adaption(3);
-            //                    break;
-            //                }
+                    case "水中":
+                        {
+                            uad = Unit.get_Adaption(3);
+                            break;
+                        }
 
-            //            case "宇宙":
-            //                {
-            //                    uad = get_Adaption(4);
-            //                    if (Area == "地上" && Map.TerrainClass(x, y) == "月面")
-            //                    {
-            //                        // 月面からのジャンプ攻撃
-            //                        if (IsWeaponClassifiedAs("Ｊ"))
-            //                        {
-            //                            uad = (uad + WeaponLevel("Ｊ"));
-            //                        }
-            //                    }
+                    case "宇宙":
+                        {
+                            uad = Unit.get_Adaption(4);
+                            if (Unit.Area == "地上" && Map.Terrain(Unit.x, Unit.y).Class == "月面")
+                            {
+                                // 月面からのジャンプ攻撃
+                                if (IsWeaponClassifiedAs("Ｊ"))
+                                {
+                                    uad = (int)(uad + WeaponLevel("Ｊ"));
+                                }
+                            }
 
-            //                    break;
-            //                }
+                            break;
+                        }
 
-            //            default:
-            //                {
-            //                    uad = get_Adaption(ind);
-            //                    break;
-            //                }
-            //        }
-            //    }
+                    default:
+                        {
+                            uad = Unit.get_Adaption(ind);
+                            break;
+                        }
+                }
+            }
 
-            //    // 地形適応が命中率に適応される場合、ユニットの地形適応は攻撃可否の判定にのみ用いる
-            //    if (Expression.IsOptionDefined("地形適応命中率修正"))
-            //    {
-            //        if (uad > 0)
-            //        {
-            //            xad = wad;
-            //            goto CalcAdaption;
-            //        }
-            //        else
-            //        {
-            //            WeaponAdaptionRet = 0d;
-            //            return WeaponAdaptionRet;
-            //        }
-            //    }
+            // 地形適応が命中率に適応される場合、ユニットの地形適応は攻撃可否の判定にのみ用いる
+            if (Expression.IsOptionDefined("地形適応命中率修正"))
+            {
+                if (uad > 0)
+                {
+                    xad = wad;
+                    goto CalcAdaption;
+                }
+                else
+                {
+                    WeaponAdaptionRet = 0d;
+                    return WeaponAdaptionRet;
+                }
+            }
 
-            //    // 武器側とユニット側の地形適応の低い方を優先
-            //    if (uad > wad)
-            //    {
-            //        xad = wad;
-            //    }
-            //    else
-            //    {
-            //        xad = uad;
-            //    }
+            // 武器側とユニット側の地形適応の低い方を優先
+            if (uad > wad)
+            {
+                xad = wad;
+            }
+            else
+            {
+                xad = uad;
+            }
 
-            //CalcAdaption:
-            //    ;
+        CalcAdaption:
+            ;
 
 
-            //    // Optionコマンドの設定に従って地形適応値を算出
-            //    if (Expression.IsOptionDefined("地形適応修正緩和"))
-            //    {
-            //        if (Expression.IsOptionDefined("地形適応修正繰り下げ"))
-            //        {
-            //            switch (xad)
-            //            {
-            //                case 5:
-            //                    {
-            //                        WeaponAdaptionRet = 1.1d;
-            //                        break;
-            //                    }
+            // Optionコマンドの設定に従って地形適応値を算出
+            if (Expression.IsOptionDefined("地形適応修正緩和"))
+            {
+                if (Expression.IsOptionDefined("地形適応修正繰り下げ"))
+                {
+                    switch (xad)
+                    {
+                        case 5:
+                            {
+                                WeaponAdaptionRet = 1.1d;
+                                break;
+                            }
 
-            //                case 4:
-            //                    {
-            //                        WeaponAdaptionRet = 1d;
-            //                        break;
-            //                    }
+                        case 4:
+                            {
+                                WeaponAdaptionRet = 1d;
+                                break;
+                            }
 
-            //                case 3:
-            //                    {
-            //                        WeaponAdaptionRet = 0.9d;
-            //                        break;
-            //                    }
+                        case 3:
+                            {
+                                WeaponAdaptionRet = 0.9d;
+                                break;
+                            }
 
-            //                case 2:
-            //                    {
-            //                        WeaponAdaptionRet = 0.8d;
-            //                        break;
-            //                    }
+                        case 2:
+                            {
+                                WeaponAdaptionRet = 0.8d;
+                                break;
+                            }
 
-            //                case 1:
-            //                    {
-            //                        WeaponAdaptionRet = 0.7d;
-            //                        break;
-            //                    }
+                        case 1:
+                            {
+                                WeaponAdaptionRet = 0.7d;
+                                break;
+                            }
 
-            //                default:
-            //                    {
-            //                        WeaponAdaptionRet = 0d;
-            //                        break;
-            //                    }
-            //            }
-            //        }
-            //        else
-            //        {
-            //            switch (xad)
-            //            {
-            //                case 5:
-            //                    {
-            //                        WeaponAdaptionRet = 1.2d;
-            //                        break;
-            //                    }
+                        default:
+                            {
+                                WeaponAdaptionRet = 0d;
+                                break;
+                            }
+                    }
+                }
+                else
+                {
+                    switch (xad)
+                    {
+                        case 5:
+                            {
+                                WeaponAdaptionRet = 1.2d;
+                                break;
+                            }
 
-            //                case 4:
-            //                    {
-            //                        WeaponAdaptionRet = 1.1d;
-            //                        break;
-            //                    }
+                        case 4:
+                            {
+                                WeaponAdaptionRet = 1.1d;
+                                break;
+                            }
 
-            //                case 3:
-            //                    {
-            //                        WeaponAdaptionRet = 1d;
-            //                        break;
-            //                    }
+                        case 3:
+                            {
+                                WeaponAdaptionRet = 1d;
+                                break;
+                            }
 
-            //                case 2:
-            //                    {
-            //                        WeaponAdaptionRet = 0.9d;
-            //                        break;
-            //                    }
+                        case 2:
+                            {
+                                WeaponAdaptionRet = 0.9d;
+                                break;
+                            }
 
-            //                case 1:
-            //                    {
-            //                        WeaponAdaptionRet = 0.8d;
-            //                        break;
-            //                    }
+                        case 1:
+                            {
+                                WeaponAdaptionRet = 0.8d;
+                                break;
+                            }
 
-            //                default:
-            //                    {
-            //                        WeaponAdaptionRet = 0d;
-            //                        break;
-            //                    }
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (Expression.IsOptionDefined("地形適応修正繰り下げ"))
-            //        {
-            //            switch (xad)
-            //            {
-            //                case 5:
-            //                    {
-            //                        WeaponAdaptionRet = 1.2d;
-            //                        break;
-            //                    }
+                        default:
+                            {
+                                WeaponAdaptionRet = 0d;
+                                break;
+                            }
+                    }
+                }
+            }
+            else
+            {
+                if (Expression.IsOptionDefined("地形適応修正繰り下げ"))
+                {
+                    switch (xad)
+                    {
+                        case 5:
+                            {
+                                WeaponAdaptionRet = 1.2d;
+                                break;
+                            }
 
-            //                case 4:
-            //                    {
-            //                        WeaponAdaptionRet = 1d;
-            //                        break;
-            //                    }
+                        case 4:
+                            {
+                                WeaponAdaptionRet = 1d;
+                                break;
+                            }
 
-            //                case 3:
-            //                    {
-            //                        WeaponAdaptionRet = 0.8d;
-            //                        break;
-            //                    }
+                        case 3:
+                            {
+                                WeaponAdaptionRet = 0.8d;
+                                break;
+                            }
 
-            //                case 2:
-            //                    {
-            //                        WeaponAdaptionRet = 0.6d;
-            //                        break;
-            //                    }
+                        case 2:
+                            {
+                                WeaponAdaptionRet = 0.6d;
+                                break;
+                            }
 
-            //                case 1:
-            //                    {
-            //                        WeaponAdaptionRet = 0.4d;
-            //                        break;
-            //                    }
+                        case 1:
+                            {
+                                WeaponAdaptionRet = 0.4d;
+                                break;
+                            }
 
-            //                default:
-            //                    {
-            //                        WeaponAdaptionRet = 0d;
-            //                        break;
-            //                    }
-            //            }
-            //        }
-            //        else
-            //        {
-            //            switch (xad)
-            //            {
-            //                case 5:
-            //                    {
-            //                        WeaponAdaptionRet = 1.4d;
-            //                        break;
-            //                    }
+                        default:
+                            {
+                                WeaponAdaptionRet = 0d;
+                                break;
+                            }
+                    }
+                }
+                else
+                {
+                    switch (xad)
+                    {
+                        case 5:
+                            {
+                                WeaponAdaptionRet = 1.4d;
+                                break;
+                            }
 
-            //                case 4:
-            //                    {
-            //                        WeaponAdaptionRet = 1.2d;
-            //                        break;
-            //                    }
+                        case 4:
+                            {
+                                WeaponAdaptionRet = 1.2d;
+                                break;
+                            }
 
-            //                case 3:
-            //                    {
-            //                        WeaponAdaptionRet = 1d;
-            //                        break;
-            //                    }
+                        case 3:
+                            {
+                                WeaponAdaptionRet = 1d;
+                                break;
+                            }
 
-            //                case 2:
-            //                    {
-            //                        WeaponAdaptionRet = 0.8d;
-            //                        break;
-            //                    }
+                        case 2:
+                            {
+                                WeaponAdaptionRet = 0.8d;
+                                break;
+                            }
 
-            //                case 1:
-            //                    {
-            //                        WeaponAdaptionRet = 0.6d;
-            //                        break;
-            //                    }
+                        case 1:
+                            {
+                                WeaponAdaptionRet = 0.6d;
+                                break;
+                            }
 
-            //                default:
-            //                    {
-            //                        WeaponAdaptionRet = 0d;
-            //                        break;
-            //                    }
-            //            }
-            //        }
-            //    }
+                        default:
+                            {
+                                WeaponAdaptionRet = 0d;
+                                break;
+                            }
+                    }
+                }
+            }
 
-            //    return WeaponAdaptionRet;
+            return WeaponAdaptionRet;
         }
 
         public int WeaponMinRange()
