@@ -3759,18 +3759,11 @@ namespace SRCCore.Units
         // クリティカルの発生率
         public int CriticalProbability(Unit t, string def_mode = "")
         {
-            // TODO Impl
-            //int CriticalProbabilityRet = default;
-            //int i, prob, idx;
-            //string wclass;
-            //string buf, c;
-            //var is_special = default(bool);
-
             int CriticalProbabilityRet = 0;
             bool is_special = false;
             int prob;
 
-            //// クリティカル攻撃、防御の一時保存変数
+            // クリティカル攻撃、防御の一時保存変数
             int ed_crtatk, ed_crtdfe;
             if (IsNormalWeapon())
             {
@@ -4022,7 +4015,6 @@ namespace SRCCore.Units
                 // 特定レベル限定攻撃
                 if (GeneralLib.InStrNotNest(WeaponClass(), "対") > 0)
                 {
-                    // UPGRADE_WARNING: Mod に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                     if (t.MainPilot().Level % WeaponLevel("対") != 0d)
                     {
                         CriticalProbabilityRet = 0;
