@@ -114,9 +114,7 @@ namespace SRCCore.Units
         // tarea は敵のいる地形
         public int WeaponPower(string tarea)
         {
-            //int pat;
             //// 攻撃補正一時保存
-            //double ed_atk;
             int WeaponPowerRet = lngWeaponPower;
 
             // 「体」属性を持つ武器は残りＨＰに応じて攻撃力が増える
@@ -206,35 +204,34 @@ namespace SRCCore.Units
 
             {
                 var pilot = Unit.MainPilot();
-                // TODO Impl
-                //if (SRC.BCList.IsDefined("攻撃補正"))
-                //{
-                //    // バトルコンフィグデータの設定による修正
-                //    if (IsWeaponClassifiedAs("複"))
-                //    {
-                //        pat = (pilot.Infight + pilot.Shooting) / 2;
-                //    }
-                //    else if (IsWeaponClassifiedAs("格闘系"))
-                //    {
-                //        pat = pilot.Infight;
-                //    }
-                //    else
-                //    {
-                //        pat = pilot.Shooting;
-                //    }
+                if (SRC.BCList.IsDefined("攻撃補正"))
+                {
+                    int pat;
+                    // バトルコンフィグデータの設定による修正
+                    if (IsWeaponClassifiedAs("複"))
+                    {
+                        pat = (pilot.Infight + pilot.Shooting) / 2;
+                    }
+                    else if (IsWeaponClassifiedAs("格闘系"))
+                    {
+                        pat = pilot.Infight;
+                    }
+                    else
+                    {
+                        pat = pilot.Shooting;
+                    }
 
-                //    // 事前にデータを登録
-                //    BCVariable.DataReset();
-                //    BCVariable.MeUnit = Unit;
-                //    BCVariable.AtkUnit = Unit;
-                //    // UPGRADE_NOTE: オブジェクト BCVariable.DefUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                //    BCVariable.DefUnit = null;
-                //    BCVariable.WeaponNumber = WeaponNo();
-                //    BCVariable.AttackExp = pat;
-                //    BCVariable.WeaponPower = WeaponPowerRet;
-                //    WeaponPowerRet = SRC.BCList.Item("攻撃補正").Calculate();
-                //}
-                //else
+                    // 事前にデータを登録
+                    BCVariable.DataReset();
+                    BCVariable.MeUnit = Unit;
+                    // UPGRADE_NOTE: オブジェクト BCVariable.DefUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+                    BCVariable.DefUnit = null;
+                    BCVariable.WeaponNumber = WeaponNo();
+                    BCVariable.AttackExp = pat;
+                    BCVariable.WeaponPower = WeaponPowerRet;
+                    WeaponPowerRet = (int)SRC.BCList.Item("攻撃補正").Calculate();
+                }
+                else
                 {
                     // パイロットの攻撃力による修正
                     if (IsWeaponClassifiedAs("複"))
@@ -294,20 +291,19 @@ namespace SRCCore.Units
             }
 
             // 地形補正
-            // TODO Impl
-            //if (SRC.BCList.IsDefined("攻撃地形補正"))
-            //{
-            //    // 事前にデータを登録
-            //    BCVariable.DataReset();
-            //    BCVariable.MeUnit = Unit;
-            //    BCVariable.AtkUnit = Unit;
-            //    BCVariable.DefUnit = null;
-            //    BCVariable.WeaponNumber = WeaponNo();
-            //    BCVariable.AttackExp = WeaponPowerRet;
-            //    BCVariable.TerrainAdaption = WeaponAdaption(tarea);
-            //    WeaponPowerRet = SRC.BCList.Item("攻撃地形補正").Calculate();
-            //}
-            //else
+            if (SRC.BCList.IsDefined("攻撃地形補正"))
+            {
+                // 事前にデータを登録
+                BCVariable.DataReset();
+                BCVariable.MeUnit = Unit;
+                BCVariable.AtkUnit = Unit;
+                BCVariable.DefUnit = null;
+                BCVariable.WeaponNumber = WeaponNo();
+                BCVariable.AttackExp = WeaponPowerRet;
+                BCVariable.TerrainAdaption = WeaponAdaption(tarea);
+                WeaponPowerRet = (int)SRC.BCList.Item("攻撃地形補正").Calculate();
+            }
+            else
             {
                 WeaponPowerRet = (int)(WeaponPowerRet * WeaponAdaption(tarea));
             }
