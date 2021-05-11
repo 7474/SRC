@@ -1702,21 +1702,13 @@ namespace SRCCore.Units
         // 武器 w の使用技能を満たしているか。
         public bool IsWeaponMastered()
         {
-            return true;
-            // TODO Impl
-            //bool IsWeaponMasteredRet = default;
-            //IsWeaponMasteredRet = IsNecessarySkillSatisfied(Weapon(w).NecessarySkill, p: null);
-            //return IsWeaponMasteredRet;
+            return Unit.IsNecessarySkillSatisfied(WeaponData.NecessarySkill, p: null);
         }
 
         // 武器 w の使用条件を満たしているか。
         public bool IsWeaponEnabled()
         {
-            return true;
-            // TODO Impl
-            //bool IsWeaponEnabledRet = default;
-            //IsWeaponEnabledRet = IsNecessarySkillSatisfied(Weapon(w).NecessaryCondition, p: null);
-            //return IsWeaponEnabledRet;
+            return Unit.IsNecessarySkillSatisfied(WeaponData.NecessaryCondition, p: null);
         }
 
         // 武器が使用可能であり、かつ射程内に敵がいるかどうか
