@@ -44,6 +44,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
+          working-directory: ./SRC.Sharp/SRCTestBlazor/E2E
           project: ./SRC.Sharp/SRCTestBlazor/E2E
           record: true
         env:
