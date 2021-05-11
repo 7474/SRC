@@ -769,39 +769,37 @@ namespace SRCCore.Units
         public int WeaponMaxRange()
         {
             int WeaponMaxRangeRet = intWeaponMaxRange;
+            // 最大射程がもともと１ならそれ以上変化しない
+            if (WeaponMaxRangeRet == 1)
+            {
+                return WeaponMaxRangeRet;
+            }
+
+            // マップ攻撃には適用されない
+            if (IsWeaponClassifiedAs("Ｍ"))
+            {
+                return WeaponMaxRangeRet;
+            }
+
+            // 接近戦武器には適用されない
+            if (IsCrossRange())
+            {
+                return WeaponMaxRangeRet;
+            }
+
+            // 有線式誘導攻撃には適用されない
+            if (IsWeaponClassifiedAs("有"))
+            {
+                return WeaponMaxRangeRet;
+            }
+
+            // スペシャルパワーによる射程延長
+            if (Unit.IsUnderSpecialPowerEffect("射程延長"))
+            {
+                WeaponMaxRangeRet = (int)(WeaponMaxRangeRet + Unit.SpecialPowerEffectLevel("射程延長"));
+            }
+
             return WeaponMaxRangeRet;
-            // TODO Impl
-            //// 最大射程がもともと１ならそれ以上変化しない
-            //if (WeaponMaxRangeRet == 1)
-            //{
-            //    return WeaponMaxRangeRet;
-            //}
-
-            //// マップ攻撃には適用されない
-            //if (IsWeaponClassifiedAs("Ｍ"))
-            //{
-            //    return WeaponMaxRangeRet;
-            //}
-
-            //// 接近戦武器には適用されない
-            //if (IsCrossRange())
-            //{
-            //    return WeaponMaxRangeRet;
-            //}
-
-            //// 有線式誘導攻撃には適用されない
-            //if (IsWeaponClassifiedAs("有"))
-            //{
-            //    return WeaponMaxRangeRet;
-            //}
-
-            //// スペシャルパワーによる射程延長
-            //if (IsUnderSpecialPowerEffect("射程延長"))
-            //{
-            //    WeaponMaxRangeRet = (WeaponMaxRangeRet + SpecialPowerEffectLevel("射程延長"));
-            //}
-
-            //return WeaponMaxRangeRet;
         }
         public void SetMaxRangeCorrection(int correction)
         {
