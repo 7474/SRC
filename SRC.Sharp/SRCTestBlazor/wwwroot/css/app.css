@@ -7814,7 +7814,6 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   overflow-x: hidden; }
 
 .src-sub-nuvbar.navbar {
-  position: -webkit-sticky;
   position: sticky;
   top: 93px;
   display: block; }
