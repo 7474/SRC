@@ -1573,15 +1573,14 @@ namespace SRCCore.Units
                     return false;
                 }
 
-                // TODO Impl アビリティ
-                //if (Unit.AbilityDatas
-                //    .Where(x => x.IsAbilityClassifiedAs("共"))
-                //    .Where(x => x.AbilityLevel("共") == lv)
-                //    .Where(x => Unit.IsConditionSatisfied(x.AbilityNickname() + "充填中"))
-                //    .Any())
-                //{
-                //    return false;
-                //}
+                if (Unit.Abilities
+                    .Where(x => x.IsAbilityClassifiedAs("共"))
+                    .Where(x => x.AbilityLevel("共") == lv)
+                    .Where(x => Unit.IsConditionSatisfied(x.AbilityNickname() + "充填中"))
+                    .Any())
+                {
+                    return false;
+                }
             }
 
             // 能力コピー
