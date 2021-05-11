@@ -27,6 +27,7 @@ namespace SRCCore.Units
         private Expressions.Expression Expression => SRC.Expression;
         private Commands.Command Commands => SRC.Commands;
         private BCVariable BCVariable => SRC.Event.BCVariable;
+        private IGUI GUI => SRC.GUI;
 
         // 状態
         [JsonProperty]
@@ -955,7 +956,7 @@ namespace SRCCore.Units
 
             // ＥＮ消費減少能力による修正
             rate = 1d;
-            foreach(var fd in Unit.Features.Where(x => x.Name == "ＥＮ消費減少"))
+            foreach (var fd in Unit.Features.Where(x => x.Name == "ＥＮ消費減少"))
             {
                 rate = rate - 0.1d * fd.FeatureLevel;
             }
@@ -1117,61 +1118,57 @@ namespace SRCCore.Units
         // 武器 w の属性 attr におけるレベル
         public double WeaponLevel(string attr)
         {
-            return 0;
-            // TODO Impl
-            //double WeaponLevelRet = default;
-            //string attrlv, wclass;
-            //int start_idx, i;
-            //string c;
-            //;
-            ///* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 164587
-            //        On Error GoTo ErrorHandler
-            // */
-            //attrlv = attr + "L";
+            double WeaponLevelRet = default;
+            try
+            {
+                var attrlv = attr + "L";
 
-            //// 武器属性を調べてみる
-            //wclass = strWeaponClass[w];
+                // 武器属性を調べてみる
+                var wclass = strWeaponClass;
 
-            //// レベル指定があるか？
-            //start_idx = GeneralLib.InStrNotNest(WeaponClass(), attrlv);
-            //if (start_idx == 0)
-            //{
-            //    return WeaponLevelRet;
-            //}
+                // レベル指定があるか？
+                var start_idx = GeneralLib.InStrNotNest(WeaponClass(), attrlv);
+                if (start_idx == 0)
+                {
+                    return WeaponLevelRet;
+                }
 
-            //// レベル指定部分の切り出し
-            //start_idx = (start_idx + Strings.Len(attrlv));
-            //i = start_idx;
-            //while (true)
-            //{
-            //    c = Strings.Mid(WeaponClass(), i, 1);
-            //    if (string.IsNullOrEmpty(c))
-            //    {
-            //        break;
-            //    }
+                // レベル指定部分の切り出し
+                start_idx = (start_idx + Strings.Len(attrlv));
+                var i = start_idx;
+                while (true)
+                {
+                    var c = Strings.Mid(WeaponClass(), i, 1);
+                    if (string.IsNullOrEmpty(c))
+                    {
+                        break;
+                    }
 
-            //    switch (Strings.Asc(c))
-            //    {
-            //        case var @case when 45 <= @case && @case <= 46:
-            //        case var case1 when 48 <= case1 && case1 <= 57: // "-", ".", 0-9
-            //            {
-            //                break;
-            //            }
+                    switch (Strings.Asc(c))
+                    {
+                        case var @case when 45 <= @case && @case <= 46:
+                        case var case1 when 48 <= case1 && case1 <= 57: // "-", ".", 0-9
+                            {
+                                break;
+                            }
 
-            //        default:
-            //            {
-            //                break;
-            //            }
-            //    }
+                        default:
+                            {
+                                break;
+                            }
+                    }
 
-            //    i = (i + 1);
-            //}
+                    i = (i + 1);
+                }
 
-            //WeaponLevelRet = Conversions.ToDouble(Strings.Mid(WeaponClass(), start_idx, i - start_idx));
-            //return WeaponLevelRet;
-            //ErrorHandler:
-            //;
-            //GUI.ErrorMessage(Name + "の" + "武装「" + Weapon(w).Name + "」の" + "属性「" + attr + "」のレベル指定が不正です");
+                WeaponLevelRet = Conversions.ToDouble(Strings.Mid(WeaponClass(), start_idx, i - start_idx));
+            }
+            catch
+            {
+                GUI.ErrorMessage(Name + "の" + "武装「" + Name + "」の" + "属性「" + attr + "」のレベル指定が不正です");
+
+            }
+            return WeaponLevelRet;
         }
 
         // 武器 w の属性 attr にレベル指定がなされているか
