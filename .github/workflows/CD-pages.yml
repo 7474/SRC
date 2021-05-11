@@ -11,7 +11,7 @@ on:
       - SRC.Sharp/**
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -33,3 +33,16 @@ jobs:
         build_dir: ${{ env.PUBLISH_DIR }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  e2e:
+    # https://docs.cypress.io/guides/continuous-integration/github-actions#Basic-Setup
+    name: monitoring
+    runs-on: ubuntu-latest
+    needs: publish
+    steps:
+      - name: checkout
+        uses: actions/checkout@master
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          spec: SRC.Sharp/SRCTestBlazor/E2E/cypress/integration/*.js
+          
