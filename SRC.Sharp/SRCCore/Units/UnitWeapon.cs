@@ -386,7 +386,6 @@ namespace SRCCore.Units
                     {
                         xad = 4;
                         goto CalcAdaption;
-                        break;
                     }
             }
 
@@ -810,182 +809,165 @@ namespace SRCCore.Units
         public int WeaponENConsumption()
         {
             int WeaponENConsumptionRet = WeaponData.ENConsumption;
+            double rate;
+            int i;
+            // パイロットの能力によって術及び技の消費ＥＮは減少する
+            if (Unit.CountPilot() > 0)
+            {
+                // 術に該当するか？
+                if (IsSpellWeapon())
+                {
+                    // 術に該当する場合は術技能によってＥＮ消費量を変える
+                    switch (Unit.MainPilot().SkillLevel("術", ref_mode: ""))
+                    {
+                        case 1d:
+                            {
+                                break;
+                            }
+
+                        case 2d:
+                            {
+                                WeaponENConsumptionRet = (int)(0.9d * WeaponENConsumptionRet);
+                                break;
+                            }
+
+                        case 3d:
+                            {
+                                WeaponENConsumptionRet = (int)(0.8d * WeaponENConsumptionRet);
+                                break;
+                            }
+
+                        case 4d:
+                            {
+                                WeaponENConsumptionRet = (int)(0.7d * WeaponENConsumptionRet);
+                                break;
+                            }
+
+                        case 5d:
+                            {
+                                WeaponENConsumptionRet = (int)(0.6d * WeaponENConsumptionRet);
+                                break;
+                            }
+
+                        case 6d:
+                            {
+                                WeaponENConsumptionRet = (int)(0.5d * WeaponENConsumptionRet);
+                                break;
+                            }
+
+                        case 7d:
+                            {
+                                WeaponENConsumptionRet = (int)(0.45d * WeaponENConsumptionRet);
+                                break;
+                            }
+
+                        case 8d:
+                            {
+                                WeaponENConsumptionRet = (int)(0.4d * WeaponENConsumptionRet);
+                                break;
+                            }
+
+                        case 9d:
+                            {
+                                WeaponENConsumptionRet = (int)(0.35d * WeaponENConsumptionRet);
+                                break;
+                            }
+
+                        case var @case when @case >= 10d:
+                            {
+                                WeaponENConsumptionRet = (int)(0.3d * WeaponENConsumptionRet);
+                                break;
+                            }
+                    }
+
+                    WeaponENConsumptionRet = GeneralLib.MinLng(GeneralLib.MaxLng(WeaponENConsumptionRet, 5), WeaponData.ENConsumption);
+                }
+
+                // 技に該当するか？
+                if (IsFeatWeapon())
+                {
+                    // 技に該当する場合は技技能によってＥＮ消費量を変える
+                    switch (Unit.MainPilot().SkillLevel("技", ref_mode: ""))
+                    {
+                        case 1d:
+                            {
+                                break;
+                            }
+
+                        case 2d:
+                            {
+                                WeaponENConsumptionRet = (int)(0.9d * WeaponENConsumptionRet);
+                                break;
+                            }
+
+                        case 3d:
+                            {
+                                WeaponENConsumptionRet = (int)(0.8d * WeaponENConsumptionRet);
+                                break;
+                            }
+
+                        case 4d:
+                            {
+                                WeaponENConsumptionRet = (int)(0.7d * WeaponENConsumptionRet);
+                                break;
+                            }
+
+                        case 5d:
+                            {
+                                WeaponENConsumptionRet = (int)(0.6d * WeaponENConsumptionRet);
+                                break;
+                            }
+
+                        case 6d:
+                            {
+                                WeaponENConsumptionRet = (int)(0.5d * WeaponENConsumptionRet);
+                                break;
+                            }
+
+                        case 7d:
+                            {
+                                WeaponENConsumptionRet = (int)(0.45d * WeaponENConsumptionRet);
+                                break;
+                            }
+
+                        case 8d:
+                            {
+                                WeaponENConsumptionRet = (int)(0.4d * WeaponENConsumptionRet);
+                                break;
+                            }
+
+                        case 9d:
+                            {
+                                WeaponENConsumptionRet = (int)(0.35d * WeaponENConsumptionRet);
+                                break;
+                            }
+
+                        case var case1 when case1 >= 10d:
+                            {
+                                WeaponENConsumptionRet = (int)(0.3d * WeaponENConsumptionRet);
+                                break;
+                            }
+                    }
+
+                    WeaponENConsumptionRet = GeneralLib.MinLng(GeneralLib.MaxLng(WeaponENConsumptionRet, 5), WeaponData.ENConsumption);
+                }
+            }
+
+            // ＥＮ消費減少能力による修正
+            rate = 1d;
+            foreach(var fd in Unit.Features.Where(x => x.Name == "ＥＮ消費減少"))
+            {
+                rate = rate - 0.1d * fd.FeatureLevel;
+            }
+
+            if (rate < 0.1d)
+            {
+                rate = 0.1d;
+            }
+
+            WeaponENConsumptionRet = (int)(rate * WeaponENConsumptionRet);
+
             return WeaponENConsumptionRet;
-            // TODO Impl
-            //// UPGRADE_NOTE: rate は rate にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-            //double rate;
-            //int i;
-            //{
-            //    var withBlock = Weapon(w);
-            //    WeaponENConsumptionRet = withBlock.ENConsumption;
-
-            //    // パイロットの能力によって術及び技の消費ＥＮは減少する
-            //    if (CountPilot() > 0)
-            //    {
-            //        // 術に該当するか？
-            //        if (IsSpellWeapon(w))
-            //        {
-            //            // 術に該当する場合は術技能によってＥＮ消費量を変える
-            //            switch (MainPilot().SkillLevel("術", ref_mode: ""))
-            //            {
-            //                case 1d:
-            //                    {
-            //                        break;
-            //                    }
-
-            //                case 2d:
-            //                    {
-            //                        WeaponENConsumptionRet = (0.9d * WeaponENConsumptionRet);
-            //                        break;
-            //                    }
-
-            //                case 3d:
-            //                    {
-            //                        WeaponENConsumptionRet = (0.8d * WeaponENConsumptionRet);
-            //                        break;
-            //                    }
-
-            //                case 4d:
-            //                    {
-            //                        WeaponENConsumptionRet = (0.7d * WeaponENConsumptionRet);
-            //                        break;
-            //                    }
-
-            //                case 5d:
-            //                    {
-            //                        WeaponENConsumptionRet = (0.6d * WeaponENConsumptionRet);
-            //                        break;
-            //                    }
-
-            //                case 6d:
-            //                    {
-            //                        WeaponENConsumptionRet = (0.5d * WeaponENConsumptionRet);
-            //                        break;
-            //                    }
-
-            //                case 7d:
-            //                    {
-            //                        WeaponENConsumptionRet = (0.45d * WeaponENConsumptionRet);
-            //                        break;
-            //                    }
-
-            //                case 8d:
-            //                    {
-            //                        WeaponENConsumptionRet = (0.4d * WeaponENConsumptionRet);
-            //                        break;
-            //                    }
-
-            //                case 9d:
-            //                    {
-            //                        WeaponENConsumptionRet = (0.35d * WeaponENConsumptionRet);
-            //                        break;
-            //                    }
-
-            //                case var @case when @case >= 10d:
-            //                    {
-            //                        WeaponENConsumptionRet = (0.3d * WeaponENConsumptionRet);
-            //                        break;
-            //                    }
-            //            }
-
-            //            WeaponENConsumptionRet = GeneralLib.MinLng(GeneralLib.MaxLng(WeaponENConsumptionRet, 5), withBlock.ENConsumption);
-            //        }
-
-            //        // 技に該当するか？
-            //        if (IsFeatWeapon(w))
-            //        {
-            //            // 技に該当する場合は技技能によってＥＮ消費量を変える
-            //            switch (MainPilot().SkillLevel("技", ref_mode: ""))
-            //            {
-            //                case 1d:
-            //                    {
-            //                        break;
-            //                    }
-
-            //                case 2d:
-            //                    {
-            //                        WeaponENConsumptionRet = (0.9d * WeaponENConsumptionRet);
-            //                        break;
-            //                    }
-
-            //                case 3d:
-            //                    {
-            //                        WeaponENConsumptionRet = (0.8d * WeaponENConsumptionRet);
-            //                        break;
-            //                    }
-
-            //                case 4d:
-            //                    {
-            //                        WeaponENConsumptionRet = (0.7d * WeaponENConsumptionRet);
-            //                        break;
-            //                    }
-
-            //                case 5d:
-            //                    {
-            //                        WeaponENConsumptionRet = (0.6d * WeaponENConsumptionRet);
-            //                        break;
-            //                    }
-
-            //                case 6d:
-            //                    {
-            //                        WeaponENConsumptionRet = (0.5d * WeaponENConsumptionRet);
-            //                        break;
-            //                    }
-
-            //                case 7d:
-            //                    {
-            //                        WeaponENConsumptionRet = (0.45d * WeaponENConsumptionRet);
-            //                        break;
-            //                    }
-
-            //                case 8d:
-            //                    {
-            //                        WeaponENConsumptionRet = (0.4d * WeaponENConsumptionRet);
-            //                        break;
-            //                    }
-
-            //                case 9d:
-            //                    {
-            //                        WeaponENConsumptionRet = (0.35d * WeaponENConsumptionRet);
-            //                        break;
-            //                    }
-
-            //                case var case1 when case1 >= 10d:
-            //                    {
-            //                        WeaponENConsumptionRet = (0.3d * WeaponENConsumptionRet);
-            //                        break;
-            //                    }
-            //            }
-
-            //            WeaponENConsumptionRet = GeneralLib.MinLng(GeneralLib.MaxLng(WeaponENConsumptionRet, 5), withBlock.ENConsumption);
-            //        }
-            //    }
-
-            //    // ＥＮ消費減少能力による修正
-            //    rate = 1d;
-            //    if (IsFeatureAvailable("ＥＮ消費減少"))
-            //    {
-            //        var loopTo = CountFeature();
-            //        for (i = 1; i <= loopTo; i++)
-            //        {
-            //            if (Feature(i) == "ＥＮ消費減少")
-            //            {
-            //                double localFeatureLevel() { object argIndex1 = i; var ret = FeatureLevel(argIndex1); return ret; }
-
-            //                rate = rate - 0.1d * localFeatureLevel();
-            //            }
-            //        }
-            //    }
-
-            //    if (rate < 0.1d)
-            //    {
-            //        rate = 0.1d;
-            //    }
-
-            //    WeaponENConsumptionRet = (rate * WeaponENConsumptionRet);
-            //}
-
-            //return WeaponENConsumptionRet;
         }
 
         // 武器 w の命中率
