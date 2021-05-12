@@ -5,7 +5,6 @@ using SRCSharpForm.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 
 namespace SRCSharpForm
 {
@@ -1251,7 +1250,8 @@ namespace SRCSharpForm
                 var font = SRC.BattleAnimation ? battleAnimeFont : sysFont;
 
                 // メッセージの書き込み
-                var msgSize = g.MeasureStringWithoutRightMargin(msg, font);
+                // ここでは描画にあたって既定の余白を取っておく
+                var msgSize = g.MeasureString(msg, font);
                 var tx = MapToPixelX(X) + (frmMain.MapCellPx - msgSize.Width) / 2 - 1;
                 var ty = MapToPixelY(Y + 1) - msgSize.Height;
 

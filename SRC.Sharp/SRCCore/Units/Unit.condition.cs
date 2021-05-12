@@ -92,18 +92,11 @@ namespace SRCCore.Units
             return ConditionLifetime(Index) >= 0;
         }
 
-        //// 特殊状態のレベル
-        //public double ConditionLevel(string Index)
-        //{
-        //    double ConditionLevelRet = default;
-        //    ;
-        //    // UPGRADE_WARNING: オブジェクト colCondition.Item().Level の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //    ConditionLevelRet = Conversions.ToDouble(colCondition[Index].Level);
-        //    return ConditionLevelRet;
-        //ErrorHandler:
-        //    ;
-        //    ConditionLevelRet = 0d;
-        //}
+        // 特殊状態のレベル
+        public double ConditionLevel(string Index)
+        {
+            return Condition(Index)?.Level ?? 0d;
+        }
 
         //// 特殊状態のレベルの変更
         //public void SetConditionLevel(string Index, double lv)

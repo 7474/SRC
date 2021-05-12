@@ -2,8 +2,11 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.VB;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SRCCore.Pilots
 {
@@ -1315,115 +1318,89 @@ namespace SRCCore.Pilots
         //            return SkillNameForNSRet;
         //        }
 
-        //        // 特殊能力の種類
-        //        public string SkillType(string sname)
-        //        {
-        //            string SkillTypeRet = default;
-        //            int i;
-        //            string sname0, sname2;
-        //            if (string.IsNullOrEmpty(sname))
-        //            {
-        //                return SkillTypeRet;
-        //            }
+        // 特殊能力の種類
+        public string SkillType(string sname)
+        {
+            string SkillTypeRet = default;
+            int i;
+            string sname0, sname2;
+            if (string.IsNullOrEmpty(sname))
+            {
+                return SkillTypeRet;
+            }
 
-        //            i = Strings.InStr(sname, "Lv");
-        //            if (i > 0)
-        //            {
-        //                sname0 = Strings.Left(sname, i - 1);
-        //            }
-        //            else
-        //            {
-        //                sname0 = sname;
-        //            }
+            i = Strings.InStr(sname, "Lv");
+            if (i > 0)
+            {
+                sname0 = Strings.Left(sname, i - 1);
+            }
+            else
+            {
+                sname0 = sname;
+            }
 
-        //            // エリアスデータが定義されている？
-        //            if (SRC.ALDList.IsDefined(sname0))
-        //            {
-        //                {
-        //                    var withBlock = SRC.ALDList.Item(sname0);
-        //                    SkillTypeRet = withBlock.get_AliasType(1);
-        //                    return SkillTypeRet;
-        //                }
-        //            }
+            // エリアスデータが定義されている？
+            if (SRC.ALDList.IsDefined(sname0))
+            {
+                return SRC.ALDList.Item(sname0).ReplaceTypeName(sname0);
+            }
 
-        //            // 特殊能力一覧から検索
-        //            foreach (SkillData sd in colSkill)
-        //            {
-        //                if ((sname0 ?? "") == (sd.Name ?? ""))
-        //                {
-        //                    SkillTypeRet = sd.Name;
-        //                    return SkillTypeRet;
-        //                }
+            // 特殊能力一覧から検索
+            foreach (SkillData sd in colSkill)
+            {
+                if ((sname0 ?? "") == (sd.Name ?? ""))
+                {
+                    SkillTypeRet = sd.Name;
+                    return SkillTypeRet;
+                }
 
-        //                sname2 = GeneralLib.LIndex(sd.StrData, 1);
-        //                if ((sname0 ?? "") == (sname2 ?? ""))
-        //                {
-        //                    SkillTypeRet = sd.Name;
-        //                    return SkillTypeRet;
-        //                }
+                sname2 = GeneralLib.LIndex(sd.StrData, 1);
+                if ((sname0 ?? "") == (sname2 ?? ""))
+                {
+                    SkillTypeRet = sd.Name;
+                    return SkillTypeRet;
+                }
 
-        //                if (Strings.Left(sname2, 1) == "(")
-        //                {
-        //                    if (Strings.Right(sname2, 1) == ")")
-        //                    {
-        //                        sname2 = Strings.Mid(sname2, 2, Strings.Len(sname2) - 2);
-        //                        if ((sname ?? "") == (sname2 ?? ""))
-        //                        {
-        //                            SkillTypeRet = sd.Name;
-        //                            return SkillTypeRet;
-        //                        }
-        //                    }
-        //                }
-        //            }
+                if (Strings.Left(sname2, 1) == "(")
+                {
+                    if (Strings.Right(sname2, 1) == ")")
+                    {
+                        sname2 = Strings.Mid(sname2, 2, Strings.Len(sname2) - 2);
+                        if ((sname ?? "") == (sname2 ?? ""))
+                        {
+                            SkillTypeRet = sd.Name;
+                            return SkillTypeRet;
+                        }
+                    }
+                }
+            }
 
-        //            // その能力を修得していない
-        //            SkillTypeRet = sname0;
+            // その能力を修得していない
+            SkillTypeRet = sname0;
 
-        //            // 特殊能力付加による修正
-        //            if (Unit is object)
-        //            {
-        //                {
-        //                    var withBlock1 = Unit;
-        //                    if (Conversions.ToBoolean(withBlock1.CountCondition() & Conversions.Toint(withBlock1.CountPilot() > 0)))
-        //                    {
-        //                        if (ReferenceEquals(this, withBlock1.MainPilot()) | ReferenceEquals(this, withBlock1.Pilot(1)))
-        //                        {
-        //                            var loopTo = withBlock1.CountCondition();
-        //                            for (i = 1; i <= loopTo; i++)
-        //                            {
-        //                                string localCondition() { object argIndex1 = i; var ret = withBlock1.Condition(argIndex1); return ret; }
+            // 特殊能力付加による修正
+            if (Unit != null)
+            {
+                var u = Unit;
+                if (u.CountCondition() > 0 && u.CountPilot() > 0)
+                {
+                    if (ReferenceEquals(this, u.MainPilot()) || ReferenceEquals(this, u.Pilots.First()))
+                    {
+                        // XXX 疎通してないから怪しいかもしれん
+                        var conditionType = u.Conditions
+                            .Where(c => c.Name.EndsWith("付加") || c.Name.EndsWith("付加２"))
+                            .Where(c => GeneralLib.LIndex(c.StrData, 1) == sname0)
+                            .Select(c => Regex.Replace(c.Name, "付加２?$", ""))
+                            .FirstOrDefault();
+                        if (string.IsNullOrEmpty(conditionType))
+                        {
+                            return conditionType;
+                        }
+                    }
+                }
+            }
 
-        //                                string localCondition1() { object argIndex1 = i; var ret = withBlock1.Condition(argIndex1); return ret; }
-
-        //                                if (Strings.Right(localCondition(), 2) == "付加")
-        //                                {
-        //                                    string localConditionData() { object argIndex1 = i; var ret = withBlock1.ConditionData(argIndex1); return ret; }
-
-        //                                    if ((GeneralLib.LIndex(localConditionData(), 1) ?? "") == (sname0 ?? ""))
-        //                                    {
-        //                                        SkillTypeRet = withBlock1.Condition(i);
-        //                                        SkillTypeRet = Strings.Left(SkillTypeRet, Strings.Len(SkillTypeRet) - 2);
-        //                                        break;
-        //                                    }
-        //                                }
-        //                                else if (Strings.Right(localCondition1(), 3) == "付加２")
-        //                                {
-        //                                    string localConditionData1() { object argIndex1 = i; var ret = withBlock1.ConditionData(argIndex1); return ret; }
-
-        //                                    if ((GeneralLib.LIndex(localConditionData1(), 1) ?? "") == (sname0 ?? ""))
-        //                                    {
-        //                                        SkillTypeRet = withBlock1.Condition(i);
-        //                                        SkillTypeRet = Strings.Left(SkillTypeRet, Strings.Len(SkillTypeRet) - 3);
-        //                                        break;
-        //                                    }
-        //                                }
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-
-        //            return SkillTypeRet;
-        //        }
+            return SkillTypeRet;
+        }
     }
 }
