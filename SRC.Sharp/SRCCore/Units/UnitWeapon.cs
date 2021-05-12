@@ -1880,7 +1880,7 @@ namespace SRCCore.Units
             // 合体技で射程が１の場合は相手を囲んでいる必要がある
             if (IsWeaponClassifiedAs("合") && !IsWeaponClassifiedAs("Ｍ") && max_range == 1)
             {
-               var partners= CombinationPartner("武装", t.x, t.y);
+                var partners = CombinationPartner("武装", t.x, t.y);
                 if (partners.Count == 0)
                 {
                     return false;
@@ -1893,10 +1893,8 @@ namespace SRCCore.Units
         // 移動を併用した場合にユニット t が武器 w の射程範囲内にいるかをチェック
         public bool IsTargetReachable(Unit t)
         {
-            bool IsTargetReachableRet = default;
             int i, j;
             int max_range, min_range;
-            var partners = default(Unit[]);
             // 地形適応をチェック
             if (WeaponAdaption(t.Area) == 0d)
             {
@@ -1915,39 +1913,37 @@ namespace SRCCore.Units
             // 射程計算
             min_range = WeaponData.MinRange;
             max_range = WeaponMaxRange();
-            // TODO Impl
-            //// 敵がステルスの場合
-            //if (t.IsFeatureAvailable("ステルス") 
-            //    && !t.IsConditionSatisfied("ステルス無効") 
-            //    && !IsFeatureAvailable("ステルス無効化"))
-            //{
-            //    if (t.IsFeatureLevelSpecified("ステルス"))
-            //    {
-            //        max_range = GeneralLib.MinLng(max_range, (t.FeatureLevel("ステルス") + 1d));
-            //    }
-            //    else
-            //    {
-            //        max_range = GeneralLib.MinLng(max_range, 4);
-            //    }
-            //}
+            // 敵がステルスの場合
+            if (t.IsFeatureAvailable("ステルス")
+                && !t.IsConditionSatisfied("ステルス無効")
+                && !Unit.IsFeatureAvailable("ステルス無効化"))
+            {
+                if (t.IsFeatureLevelSpecified("ステルス"))
+                {
+                    max_range = GeneralLib.MinLng(max_range, (int)(t.FeatureLevel("ステルス") + 1d));
+                }
+                else
+                {
+                    max_range = GeneralLib.MinLng(max_range, 4);
+                }
+            }
 
-            //// 隣接していれば必ず届く
-            //if (min_range == 1 && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
-            //{
-            //    // ただし合体技の場合は例外……
-            //    // 合体技で射程が１の場合は相手を囲んでいる必要がある
-            //    if (IsWeaponClassifiedAs("合") && !IsWeaponClassifiedAs("Ｍ") && WeaponMaxRange(w) == 1)
-            //    {
-            //        CombinationPartner("武装", w, partners, t.x, t.y);
-            //        if (Information.UBound(partners) == 0)
-            //        {
-            //            IsTargetReachableRet = false;
-            //            return false;
-            //        }
-            //    }
+            // 隣接していれば必ず届く
+            if (min_range == 1 && Math.Abs((Unit.x - t.x)) + Math.Abs((Unit.y - t.y)) == 1)
+            {
+                // ただし合体技の場合は例外……
+                // 合体技で射程が１の場合は相手を囲んでいる必要がある
+                if (IsWeaponClassifiedAs("合") && !IsWeaponClassifiedAs("Ｍ") && WeaponMaxRange() == 1)
+                {
+                    var partners = CombinationPartner("武装", t.x, t.y);
+                    if (partners.Count == 0)
+                    {
+                        return false;
+                    }
+                }
 
-            //    return true;
-            //}
+                return true;
+            }
 
             // 移動範囲から敵に攻撃が届くかをチェック
             var loopTo = GeneralLib.MinLng(t.x + max_range, Map.MapWidth);
