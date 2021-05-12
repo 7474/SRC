@@ -2127,10 +2127,10 @@ namespace SRCCore.Units
                             return 0;
                         }
                 }
-            }
 
-            // 地形修正を一時保存
-            ed_aradap = ed_aradap * uadaption;
+                // 地形修正を一時保存
+                ed_aradap = ed_aradap * uadaption;
+            }
 
             // サイズ補正
             switch (t.Size ?? "")
