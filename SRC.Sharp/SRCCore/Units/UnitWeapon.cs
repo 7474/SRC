@@ -4227,755 +4227,740 @@ namespace SRCCore.Units
                 return ExpDamageRet;
             }
 
-            return dmg;
-
-            //TODO Impl
-            //// バリア無効化
-            //if (GeneralLib.InStrNotNest(WeaponClass(), "無") > 0 || IsUnderSpecialPowerEffect("防御能力無効化"))
-            //{
-            //    // 抹殺攻撃は一撃で相手を倒せない限り効果がない
-            //    if (GeneralLib.InStrNotNest(WeaponClass(), "殺") > 0)
-            //    {
-            //        if (t.HP > dmg)
-            //        {
-            //            return ExpDamageRet;
-            //        }
-            //    }
-
-            //    ExpDamageRet = dmg;
-            //    return ExpDamageRet;
-            //}
-
-            //// 技量の低い敵はバリアを考慮せず攻撃をかける
-            //{
-            //    var withBlock = MainPilot();
-            //    if (!is_true_value && withBlock.TacticalTechnique() < 150)
-            //    {
-            //        // 抹殺攻撃は一撃で相手を倒せない限り効果がない
-            //        if (GeneralLib.InStrNotNest(WeaponClass(), "殺") > 0)
-            //        {
-            //            if (t.HP > dmg)
-            //            {
-            //                return ExpDamageRet;
-            //            }
-            //        }
-
-            //        ExpDamageRet = dmg;
-            //        return ExpDamageRet;
-            //    }
-            //}
-            //// バリア能力
-            //var loopTo = t.CountFeature();
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    if (t.Feature(i) == "バリア")
-            //    {
-            //        fname = t.FeatureName0(i);
-            //        fdata = t.FeatureData(i);
-            //        flevel = t.FeatureLevel(i);
-
-            //        // 必要条件
-            //        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
-            //        {
-            //            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
-            //        }
-            //        else
-            //        {
-            //            ecost = 10;
-            //        }
-
-            //        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
-            //        {
-            //            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
-            //        }
-            //        else
-            //        {
-            //            nmorale = 0;
-            //        }
-
-            //        // オプション
-            //        neautralize = false;
-            //        slevel = 0d;
-            //        var loopTo1 = GeneralLib.LLength(fdata);
-            //        for (j = 5; j <= loopTo1; j++)
-            //        {
-            //            opt = GeneralLib.LIndex(fdata, j);
-            //            idx = Strings.InStr(opt, "*");
-            //            if (idx > 0)
-            //            {
-            //                lv_mod = GeneralLib.StrToDbl(Strings.Mid(opt, idx + 1));
-            //                opt = Strings.Left(opt, idx - 1);
-            //            }
-            //            else
-            //            {
-            //                lv_mod = -1;
-            //            }
-
-            //            switch (opt ?? "")
-            //            {
-            //                case "相殺":
-            //                    {
-            //                        if (IsSameCategory(fdata, FeatureData("バリア")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
-            //                        {
-            //                            neautralize = true;
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "中和":
-            //                    {
-            //                        if (IsSameCategory(fdata, FeatureData("バリア")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
-            //                        {
-            //                            flevel = flevel - FeatureLevel("バリア");
-            //                            if (flevel <= 0d)
-            //                            {
-            //                                neautralize = true;
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "近接無効":
-            //                    {
-            //                        if (GeneralLib.InStrNotNest(WeaponClass(), "武") > 0 || GeneralLib.InStrNotNest(WeaponClass(), "突") > 0 || GeneralLib.InStrNotNest(WeaponClass(), "接") > 0)
-            //                        {
-            //                            neautralize = true;
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "手動":
-            //                    {
-            //                        neautralize = true;
-            //                        break;
-            //                    }
-
-            //                case "能力必要":
-            //                    {
-            //                        break;
-            //                    }
-            //                // スキップ
-            //                case "同調率":
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 20d;
-            //                        }
-
-            //                        slevel = lv_mod * (t.SyncLevel() - 30d);
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == -30 * lv_mod)
-            //                            {
-            //                                neautralize = true;
-            //                            }
-            //                        }
-            //                        else if (slevel == -30 * lv_mod)
-            //                        {
-            //                            slevel = 0d;
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "霊力":
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 10d;
-            //                        }
-
-            //                        slevel = lv_mod * t.PlanaLevel();
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == 0d)
-            //                            {
-            //                                neautralize = true;
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "オーラ":
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 200d;
-            //                        }
-
-            //                        slevel = lv_mod * t.AuraLevel();
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == 0d)
-            //                            {
-            //                                neautralize = true;
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "超能力":
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 200d;
-            //                        }
-
-            //                        slevel = lv_mod * t.PsychicLevel();
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == 0d)
-            //                            {
-            //                                neautralize = true;
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                default:
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 200d;
-            //                        }
-
-            //                        slevel = lv_mod * t.SkillLevel(opt);
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == 0d)
-            //                            {
-            //                                neautralize = true;
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-            //            }
-            //        }
-
-            //        // バリア無効化で無効化されている？
-            //        if (t.IsConditionSatisfied("バリア無効化"))
-            //        {
-            //            if (Strings.InStr(fdata, "バリア無効化無効") == 0)
-            //            {
-            //                neautralize = true;
-            //            }
-            //        }
-
-            //        // 発動可能？
-            //        bool localIsAttributeClassified() { string argaclass1 = GeneralLib.LIndex(fdata, 2); var ret = t.IsAttributeClassified(argaclass1, wclass); return ret; }
-
-            //        if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && localIsAttributeClassified() && !neautralize)
-            //        {
-            //            // バリア発動
-            //            if (dmg <= 1000d * flevel + slevel)
-            //            {
-            //                ExpDamageRet = w;
-            //                return ExpDamageRet;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// フィールド能力
-            //var loopTo2 = t.CountFeature();
-            //for (i = 1; i <= loopTo2; i++)
-            //{
-            //    if (t.Feature(i) == "フィールド")
-            //    {
-            //        fname = t.FeatureName0(i);
-            //        fdata = t.FeatureData(i);
-            //        flevel = t.FeatureLevel(i);
-
-            //        // 必要条件
-            //        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
-            //        {
-            //            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
-            //        }
-            //        else
-            //        {
-            //            ecost = 0;
-            //        }
-
-            //        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
-            //        {
-            //            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
-            //        }
-            //        else
-            //        {
-            //            nmorale = 0;
-            //        }
-
-            //        // オプション
-            //        neautralize = false;
-            //        slevel = 0d;
-            //        var loopTo3 = GeneralLib.LLength(fdata);
-            //        for (j = 5; j <= loopTo3; j++)
-            //        {
-            //            opt = GeneralLib.LIndex(fdata, j);
-            //            idx = Strings.InStr(opt, "*");
-            //            if (idx > 0)
-            //            {
-            //                lv_mod = GeneralLib.StrToDbl(Strings.Mid(opt, idx + 1));
-            //                opt = Strings.Left(opt, idx - 1);
-            //            }
-            //            else
-            //            {
-            //                lv_mod = -1;
-            //            }
-
-            //            switch (opt ?? "")
-            //            {
-            //                case "相殺":
-            //                    {
-            //                        if (IsSameCategory(fdata, FeatureData("フィールド")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
-            //                        {
-            //                            neautralize = true;
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "中和":
-            //                    {
-            //                        if (IsSameCategory(fdata, FeatureData("フィールド")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
-            //                        {
-            //                            flevel = flevel - FeatureLevel("フィールド");
-            //                            if (flevel <= 0d)
-            //                            {
-            //                                neautralize = true;
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "近接無効":
-            //                    {
-            //                        if (GeneralLib.InStrNotNest(WeaponClass(), "武") > 0 || GeneralLib.InStrNotNest(WeaponClass(), "突") > 0 || GeneralLib.InStrNotNest(WeaponClass(), "接") > 0)
-            //                        {
-            //                            neautralize = true;
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "手動":
-            //                    {
-            //                        neautralize = true;
-            //                        break;
-            //                    }
-
-            //                case "能力必要":
-            //                    {
-            //                        break;
-            //                    }
-            //                // スキップ
-            //                case "同調率":
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 20d;
-            //                        }
-
-            //                        slevel = lv_mod * (t.SyncLevel() - 30d);
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == -30 * lv_mod)
-            //                            {
-            //                                neautralize = true;
-            //                            }
-            //                        }
-            //                        else if (slevel == -30 * lv_mod)
-            //                        {
-            //                            slevel = 0d;
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "霊力":
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 10d;
-            //                        }
-
-            //                        slevel = lv_mod * t.PlanaLevel();
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == 0d)
-            //                            {
-            //                                neautralize = true;
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "オーラ":
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 200d;
-            //                        }
-
-            //                        slevel = lv_mod * t.AuraLevel();
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == 0d)
-            //                            {
-            //                                neautralize = true;
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "超能力":
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 200d;
-            //                        }
-
-            //                        slevel = lv_mod * t.PsychicLevel();
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == 0d)
-            //                            {
-            //                                neautralize = true;
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                default:
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 200d;
-            //                        }
-
-            //                        slevel = lv_mod * t.SkillLevel(opt);
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == 0d)
-            //                            {
-            //                                neautralize = true;
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-            //            }
-            //        }
-
-            //        // バリア無効化で無効化されている？
-            //        if (t.IsConditionSatisfied("バリア無効化"))
-            //        {
-            //            if (Strings.InStr(fdata, "バリア無効化無効") == 0)
-            //            {
-            //                neautralize = true;
-            //            }
-            //        }
-
-            //        // 発動可能？
-            //        bool localIsAttributeClassified1() { string argaclass1 = GeneralLib.LIndex(fdata, 2); var ret = t.IsAttributeClassified(argaclass1, wclass); return ret; }
-
-            //        if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && localIsAttributeClassified1() && !neautralize)
-            //        {
-            //            // フィールド発動
-            //            if (dmg <= 500d * flevel + slevel)
-            //            {
-            //                ExpDamageRet = w;
-            //                return ExpDamageRet;
-            //            }
-            //            else if (flevel > 0d || slevel > 0d)
-            //            {
-            //                dmg = (dmg - 500d * flevel - slevel);
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// プロテクション能力
-            //var loopTo4 = t.CountFeature();
-            //for (i = 1; i <= loopTo4; i++)
-            //{
-            //    if (t.Feature(i) == "プロテクション")
-            //    {
-            //        fname = t.FeatureName0(i);
-            //        fdata = t.FeatureData(i);
-            //        flevel = t.FeatureLevel(i);
-
-            //        // 必要条件
-            //        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
-            //        {
-            //            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
-            //        }
-            //        else
-            //        {
-            //            ecost = 10;
-            //        }
-
-            //        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
-            //        {
-            //            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
-            //        }
-            //        else
-            //        {
-            //            nmorale = 0;
-            //        }
-
-            //        // オプション
-            //        neautralize = false;
-            //        slevel = 0d;
-            //        var loopTo5 = GeneralLib.LLength(fdata);
-            //        for (j = 5; j <= loopTo5; j++)
-            //        {
-            //            opt = GeneralLib.LIndex(fdata, j);
-            //            idx = Strings.InStr(opt, "*");
-            //            if (idx > 0)
-            //            {
-            //                lv_mod = GeneralLib.StrToDbl(Strings.Mid(opt, idx + 1));
-            //                opt = Strings.Left(opt, idx - 1);
-            //            }
-            //            else
-            //            {
-            //                lv_mod = -1;
-            //            }
-
-            //            switch (opt ?? "")
-            //            {
-            //                case "相殺":
-            //                    {
-            //                        if (IsSameCategory(fdata, FeatureData("プロテクション")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
-            //                        {
-            //                            neautralize = true;
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "中和":
-            //                    {
-            //                        if (IsSameCategory(fdata, FeatureData("プロテクション")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
-            //                        {
-            //                            flevel = flevel - FeatureLevel("プロテクション");
-            //                            if (flevel <= 0d)
-            //                            {
-            //                                neautralize = true;
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "近接無効":
-            //                    {
-            //                        if (GeneralLib.InStrNotNest(WeaponClass(), "武") > 0 || GeneralLib.InStrNotNest(WeaponClass(), "突") > 0 || GeneralLib.InStrNotNest(WeaponClass(), "接") > 0)
-            //                        {
-            //                            neautralize = true;
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "手動":
-            //                    {
-            //                        neautralize = true;
-            //                        break;
-            //                    }
-
-            //                case "能力必要":
-            //                    {
-            //                        break;
-            //                    }
-            //                // スキップ
-            //                case "同調率":
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 0.5d;
-            //                        }
-
-            //                        slevel = lv_mod * (t.SyncLevel() - 30d);
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == -30 * lv_mod)
-            //                            {
-            //                                neautralize = true;
-            //                            }
-            //                        }
-            //                        else if (slevel == -30 * lv_mod)
-            //                        {
-            //                            slevel = 0d;
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "霊力":
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 0.2d;
-            //                        }
-
-            //                        slevel = lv_mod * t.PlanaLevel();
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == 0d)
-            //                            {
-            //                                neautralize = true;
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "オーラ":
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 5d;
-            //                        }
-
-            //                        slevel = lv_mod * t.AuraLevel();
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == 0d)
-            //                            {
-            //                                neautralize = true;
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "超能力":
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 5d;
-            //                        }
-
-            //                        slevel = lv_mod * t.PsychicLevel();
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == 0d)
-            //                            {
-            //                                neautralize = true;
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                default:
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 5d;
-            //                        }
-
-            //                        slevel = lv_mod * t.SkillLevel(opt);
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == 0d)
-            //                            {
-            //                                neautralize = true;
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-            //            }
-            //        }
-
-            //        // バリア無効化で無効化されている？
-            //        if (t.IsConditionSatisfied("バリア無効化"))
-            //        {
-            //            if (Strings.InStr(fdata, "バリア無効化無効") == 0)
-            //            {
-            //                neautralize = true;
-            //            }
-            //        }
-
-            //        // 発動可能？
-            //        bool localIsAttributeClassified2() { string argaclass1 = GeneralLib.LIndex(fdata, 2); var ret = t.IsAttributeClassified(argaclass1, wclass); return ret; }
-
-            //        if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && localIsAttributeClassified2() && !neautralize)
-            //        {
-            //            // プロテクション発動
-            //            dmg = ((long)(dmg * (100d - 10d * flevel - slevel)) / 100L);
-            //            if (dmg <= 0)
-            //            {
-            //                ExpDamageRet = w;
-            //                return ExpDamageRet;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// 対ビーム用防御能力
-            //if (GeneralLib.InStrNotNest(WeaponClass(), "Ｂ") > 0)
-            //{
-            //    // ビーム吸収
-            //    if (t.IsFeatureAvailable("ビーム吸収"))
-            //    {
-            //        ExpDamageRet = w;
-            //        return ExpDamageRet;
-            //    }
-            //}
-
-            //// 抹殺攻撃は一撃で相手を倒せる場合にのみ有効
-            //if (GeneralLib.InStrNotNest(WeaponClass(), "殺") > 0)
-            //{
-            //    if (dmg < t.HP)
-            //    {
-            //        dmg = 0;
-            //    }
-            //}
-
-            //// 盾防御
-            //if (t.IsFeatureAvailable("盾") && t.MainPilot().IsSkillAvailable("Ｓ防御") && t.MaxAction() > 0 && !IsWeaponClassifiedAs("精") && !IsWeaponClassifiedAs("浸") && !IsWeaponClassifiedAs("殺") && (t.IsConditionSatisfied("盾付加") || t.FeatureLevel("盾") > t.ConditionLevel("盾ダメージ")))
-            //{
-            //    if (IsWeaponClassifiedAs("破"))
-            //    {
-            //        dmg = (dmg - 50d * (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 4d));
-            //    }
-            //    else
-            //    {
-            //        dmg = (dmg - 100d * (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 4d));
-            //    }
-            //}
-
-            //// ダメージが減少されて0以下になった場合もダミーで1ダメージ
-            //if (dmg <= 0)
-            //{
-            //    dmg = 1;
-            //}
-
-            //// 抹殺攻撃は一撃で相手を倒せない限り効果がない
-            //if (Strings.InStr(w.ToString(), "殺") > 0)
-            //{
-            //    if (t.HP > dmg)
-            //    {
-            //        return ExpDamageRet;
-            //    }
-            //}
-
-            //ExpDamageRet = dmg;
-            //return ExpDamageRet;
+            // バリア無効化
+            if (GeneralLib.InStrNotNest(WeaponClass(), "無") > 0 || Unit.IsUnderSpecialPowerEffect("防御能力無効化"))
+            {
+                // 抹殺攻撃は一撃で相手を倒せない限り効果がない
+                if (GeneralLib.InStrNotNest(WeaponClass(), "殺") > 0)
+                {
+                    if (t.HP > dmg)
+                    {
+                        return ExpDamageRet;
+                    }
+                }
+
+                ExpDamageRet = dmg;
+                return ExpDamageRet;
+            }
+
+            // 技量の低い敵はバリアを考慮せず攻撃をかける
+            {
+                var withBlock = Unit.MainPilot();
+                if (!is_true_value && withBlock.TacticalTechnique() < 150)
+                {
+                    // 抹殺攻撃は一撃で相手を倒せない限り効果がない
+                    if (GeneralLib.InStrNotNest(WeaponClass(), "殺") > 0)
+                    {
+                        if (t.HP > dmg)
+                        {
+                            return ExpDamageRet;
+                        }
+                    }
+
+                    ExpDamageRet = dmg;
+                    return ExpDamageRet;
+                }
+            }
+            // XXX 処理簡便にしておきたい
+            // バリア能力
+            foreach (var fd in t.Features.Where(x => x.Name == "バリア"))
+            {
+                fname = fd.FeatureName0(t);
+                fdata = fd.Data;
+                flevel = fd.FeatureLevel;
+
+                // 必要条件
+                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
+                {
+                    ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
+                }
+                else
+                {
+                    ecost = 10;
+                }
+
+                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
+                {
+                    nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
+                }
+                else
+                {
+                    nmorale = 0;
+                }
+
+                // オプション
+                neautralize = false;
+                slevel = 0d;
+                var loopTo1 = GeneralLib.LLength(fdata);
+                for (j = 5; j <= loopTo1; j++)
+                {
+                    opt = GeneralLib.LIndex(fdata, j);
+                    idx = Strings.InStr(opt, "*");
+                    if (idx > 0)
+                    {
+                        lv_mod = GeneralLib.StrToDbl(Strings.Mid(opt, idx + 1));
+                        opt = Strings.Left(opt, idx - 1);
+                    }
+                    else
+                    {
+                        lv_mod = -1;
+                    }
+
+                    switch (opt ?? "")
+                    {
+                        case "相殺":
+                            {
+                                if (IsSameCategory(fdata, FeatureData("バリア")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                {
+                                    neautralize = true;
+                                }
+
+                                break;
+                            }
+
+                        case "中和":
+                            {
+                                if (IsSameCategory(fdata, FeatureData("バリア")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                {
+                                    flevel = flevel - FeatureLevel("バリア");
+                                    if (flevel <= 0d)
+                                    {
+                                        neautralize = true;
+                                    }
+                                }
+
+                                break;
+                            }
+
+                        case "近接無効":
+                            {
+                                if (GeneralLib.InStrNotNest(WeaponClass(), "武") > 0 || GeneralLib.InStrNotNest(WeaponClass(), "突") > 0 || GeneralLib.InStrNotNest(WeaponClass(), "接") > 0)
+                                {
+                                    neautralize = true;
+                                }
+
+                                break;
+                            }
+
+                        case "手動":
+                            {
+                                neautralize = true;
+                                break;
+                            }
+
+                        case "能力必要":
+                            {
+                                break;
+                            }
+                        // スキップ
+                        case "同調率":
+                            {
+                                if (lv_mod == -1)
+                                {
+                                    lv_mod = 20d;
+                                }
+
+                                slevel = lv_mod * (t.SyncLevel() - 30d);
+                                if (Strings.InStr(fdata, "能力必要") > 0)
+                                {
+                                    if (slevel == -30 * lv_mod)
+                                    {
+                                        neautralize = true;
+                                    }
+                                }
+                                else if (slevel == -30 * lv_mod)
+                                {
+                                    slevel = 0d;
+                                }
+
+                                break;
+                            }
+
+                        case "霊力":
+                            {
+                                if (lv_mod == -1)
+                                {
+                                    lv_mod = 10d;
+                                }
+
+                                slevel = lv_mod * t.PlanaLevel();
+                                if (Strings.InStr(fdata, "能力必要") > 0)
+                                {
+                                    if (slevel == 0d)
+                                    {
+                                        neautralize = true;
+                                    }
+                                }
+
+                                break;
+                            }
+
+                        case "オーラ":
+                            {
+                                if (lv_mod == -1)
+                                {
+                                    lv_mod = 200d;
+                                }
+
+                                slevel = lv_mod * t.AuraLevel();
+                                if (Strings.InStr(fdata, "能力必要") > 0)
+                                {
+                                    if (slevel == 0d)
+                                    {
+                                        neautralize = true;
+                                    }
+                                }
+
+                                break;
+                            }
+
+                        case "超能力":
+                            {
+                                if (lv_mod == -1)
+                                {
+                                    lv_mod = 200d;
+                                }
+
+                                slevel = lv_mod * t.PsychicLevel();
+                                if (Strings.InStr(fdata, "能力必要") > 0)
+                                {
+                                    if (slevel == 0d)
+                                    {
+                                        neautralize = true;
+                                    }
+                                }
+
+                                break;
+                            }
+
+                        default:
+                            {
+                                if (lv_mod == -1)
+                                {
+                                    lv_mod = 200d;
+                                }
+
+                                slevel = lv_mod * t.SkillLevel(opt);
+                                if (Strings.InStr(fdata, "能力必要") > 0)
+                                {
+                                    if (slevel == 0d)
+                                    {
+                                        neautralize = true;
+                                    }
+                                }
+
+                                break;
+                            }
+                    }
+                }
+
+                // バリア無効化で無効化されている？
+                if (t.IsConditionSatisfied("バリア無効化"))
+                {
+                    if (Strings.InStr(fdata, "バリア無効化無効") == 0)
+                    {
+                        neautralize = true;
+                    }
+                }
+
+                // 発動可能？
+                bool localIsAttributeClassified() { string argaclass1 = GeneralLib.LIndex(fdata, 2); var ret = t.IsAttributeClassified(argaclass1, wclass); return ret; }
+
+                if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && localIsAttributeClassified() && !neautralize)
+                {
+                    // バリア発動
+                    if (dmg <= 1000d * flevel + slevel)
+                    {
+                        ExpDamageRet = w;
+                        return ExpDamageRet;
+                    }
+                }
+            }
+
+            // フィールド能力
+            foreach (var fd in t.Features.Where(x => x.Name == "フィールド"))
+            {
+                fname = fd.FeatureName0(t);
+                fdata = fd.Data;
+                flevel = fd.FeatureLevel;
+
+                // 必要条件
+                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
+                {
+                    ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
+                }
+                else
+                {
+                    ecost = 0;
+                }
+
+                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
+                {
+                    nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
+                }
+                else
+                {
+                    nmorale = 0;
+                }
+
+                // オプション
+                neautralize = false;
+                slevel = 0d;
+                var loopTo3 = GeneralLib.LLength(fdata);
+                for (j = 5; j <= loopTo3; j++)
+                {
+                    opt = GeneralLib.LIndex(fdata, j);
+                    idx = Strings.InStr(opt, "*");
+                    if (idx > 0)
+                    {
+                        lv_mod = GeneralLib.StrToDbl(Strings.Mid(opt, idx + 1));
+                        opt = Strings.Left(opt, idx - 1);
+                    }
+                    else
+                    {
+                        lv_mod = -1;
+                    }
+
+                    switch (opt ?? "")
+                    {
+                        case "相殺":
+                            {
+                                if (IsSameCategory(fdata, FeatureData("フィールド")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                {
+                                    neautralize = true;
+                                }
+
+                                break;
+                            }
+
+                        case "中和":
+                            {
+                                if (IsSameCategory(fdata, FeatureData("フィールド")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                {
+                                    flevel = flevel - FeatureLevel("フィールド");
+                                    if (flevel <= 0d)
+                                    {
+                                        neautralize = true;
+                                    }
+                                }
+
+                                break;
+                            }
+
+                        case "近接無効":
+                            {
+                                if (GeneralLib.InStrNotNest(WeaponClass(), "武") > 0 || GeneralLib.InStrNotNest(WeaponClass(), "突") > 0 || GeneralLib.InStrNotNest(WeaponClass(), "接") > 0)
+                                {
+                                    neautralize = true;
+                                }
+
+                                break;
+                            }
+
+                        case "手動":
+                            {
+                                neautralize = true;
+                                break;
+                            }
+
+                        case "能力必要":
+                            {
+                                break;
+                            }
+                        // スキップ
+                        case "同調率":
+                            {
+                                if (lv_mod == -1)
+                                {
+                                    lv_mod = 20d;
+                                }
+
+                                slevel = lv_mod * (t.SyncLevel() - 30d);
+                                if (Strings.InStr(fdata, "能力必要") > 0)
+                                {
+                                    if (slevel == -30 * lv_mod)
+                                    {
+                                        neautralize = true;
+                                    }
+                                }
+                                else if (slevel == -30 * lv_mod)
+                                {
+                                    slevel = 0d;
+                                }
+
+                                break;
+                            }
+
+                        case "霊力":
+                            {
+                                if (lv_mod == -1)
+                                {
+                                    lv_mod = 10d;
+                                }
+
+                                slevel = lv_mod * t.PlanaLevel();
+                                if (Strings.InStr(fdata, "能力必要") > 0)
+                                {
+                                    if (slevel == 0d)
+                                    {
+                                        neautralize = true;
+                                    }
+                                }
+
+                                break;
+                            }
+
+                        case "オーラ":
+                            {
+                                if (lv_mod == -1)
+                                {
+                                    lv_mod = 200d;
+                                }
+
+                                slevel = lv_mod * t.AuraLevel();
+                                if (Strings.InStr(fdata, "能力必要") > 0)
+                                {
+                                    if (slevel == 0d)
+                                    {
+                                        neautralize = true;
+                                    }
+                                }
+
+                                break;
+                            }
+
+                        case "超能力":
+                            {
+                                if (lv_mod == -1)
+                                {
+                                    lv_mod = 200d;
+                                }
+
+                                slevel = lv_mod * t.PsychicLevel();
+                                if (Strings.InStr(fdata, "能力必要") > 0)
+                                {
+                                    if (slevel == 0d)
+                                    {
+                                        neautralize = true;
+                                    }
+                                }
+
+                                break;
+                            }
+
+                        default:
+                            {
+                                if (lv_mod == -1)
+                                {
+                                    lv_mod = 200d;
+                                }
+
+                                slevel = lv_mod * t.SkillLevel(opt);
+                                if (Strings.InStr(fdata, "能力必要") > 0)
+                                {
+                                    if (slevel == 0d)
+                                    {
+                                        neautralize = true;
+                                    }
+                                }
+
+                                break;
+                            }
+                    }
+                }
+
+                // バリア無効化で無効化されている？
+                if (t.IsConditionSatisfied("バリア無効化"))
+                {
+                    if (Strings.InStr(fdata, "バリア無効化無効") == 0)
+                    {
+                        neautralize = true;
+                    }
+                }
+
+                // 発動可能？
+                bool localIsAttributeClassified1() { string argaclass1 = GeneralLib.LIndex(fdata, 2); var ret = t.IsAttributeClassified(argaclass1, wclass); return ret; }
+
+                if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && localIsAttributeClassified1() && !neautralize)
+                {
+                    // フィールド発動
+                    if (dmg <= 500d * flevel + slevel)
+                    {
+                        ExpDamageRet = w;
+                        return ExpDamageRet;
+                    }
+                    else if (flevel > 0d || slevel > 0d)
+                    {
+                        dmg = (dmg - 500d * flevel - slevel);
+                    }
+                }
+            }
+
+            // プロテクション能力
+            foreach (var fd in t.Features.Where(x => x.Name == "プロテクション"))
+            {
+                fname = fd.FeatureName0(t);
+                fdata = fd.Data;
+                flevel = fd.FeatureLevel;
+
+                // 必要条件
+                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
+                {
+                    ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
+                }
+                else
+                {
+                    ecost = 10;
+                }
+
+                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
+                {
+                    nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
+                }
+                else
+                {
+                    nmorale = 0;
+                }
+
+                // オプション
+                neautralize = false;
+                slevel = 0d;
+                var loopTo5 = GeneralLib.LLength(fdata);
+                for (j = 5; j <= loopTo5; j++)
+                {
+                    opt = GeneralLib.LIndex(fdata, j);
+                    idx = Strings.InStr(opt, "*");
+                    if (idx > 0)
+                    {
+                        lv_mod = GeneralLib.StrToDbl(Strings.Mid(opt, idx + 1));
+                        opt = Strings.Left(opt, idx - 1);
+                    }
+                    else
+                    {
+                        lv_mod = -1;
+                    }
+
+                    switch (opt ?? "")
+                    {
+                        case "相殺":
+                            {
+                                if (IsSameCategory(fdata, FeatureData("プロテクション")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                {
+                                    neautralize = true;
+                                }
+
+                                break;
+                            }
+
+                        case "中和":
+                            {
+                                if (IsSameCategory(fdata, FeatureData("プロテクション")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                {
+                                    flevel = flevel - FeatureLevel("プロテクション");
+                                    if (flevel <= 0d)
+                                    {
+                                        neautralize = true;
+                                    }
+                                }
+
+                                break;
+                            }
+
+                        case "近接無効":
+                            {
+                                if (GeneralLib.InStrNotNest(WeaponClass(), "武") > 0 || GeneralLib.InStrNotNest(WeaponClass(), "突") > 0 || GeneralLib.InStrNotNest(WeaponClass(), "接") > 0)
+                                {
+                                    neautralize = true;
+                                }
+
+                                break;
+                            }
+
+                        case "手動":
+                            {
+                                neautralize = true;
+                                break;
+                            }
+
+                        case "能力必要":
+                            {
+                                break;
+                            }
+                        // スキップ
+                        case "同調率":
+                            {
+                                if (lv_mod == -1)
+                                {
+                                    lv_mod = 0.5d;
+                                }
+
+                                slevel = lv_mod * (t.SyncLevel() - 30d);
+                                if (Strings.InStr(fdata, "能力必要") > 0)
+                                {
+                                    if (slevel == -30 * lv_mod)
+                                    {
+                                        neautralize = true;
+                                    }
+                                }
+                                else if (slevel == -30 * lv_mod)
+                                {
+                                    slevel = 0d;
+                                }
+
+                                break;
+                            }
+
+                        case "霊力":
+                            {
+                                if (lv_mod == -1)
+                                {
+                                    lv_mod = 0.2d;
+                                }
+
+                                slevel = lv_mod * t.PlanaLevel();
+                                if (Strings.InStr(fdata, "能力必要") > 0)
+                                {
+                                    if (slevel == 0d)
+                                    {
+                                        neautralize = true;
+                                    }
+                                }
+
+                                break;
+                            }
+
+                        case "オーラ":
+                            {
+                                if (lv_mod == -1)
+                                {
+                                    lv_mod = 5d;
+                                }
+
+                                slevel = lv_mod * t.AuraLevel();
+                                if (Strings.InStr(fdata, "能力必要") > 0)
+                                {
+                                    if (slevel == 0d)
+                                    {
+                                        neautralize = true;
+                                    }
+                                }
+
+                                break;
+                            }
+
+                        case "超能力":
+                            {
+                                if (lv_mod == -1)
+                                {
+                                    lv_mod = 5d;
+                                }
+
+                                slevel = lv_mod * t.PsychicLevel();
+                                if (Strings.InStr(fdata, "能力必要") > 0)
+                                {
+                                    if (slevel == 0d)
+                                    {
+                                        neautralize = true;
+                                    }
+                                }
+
+                                break;
+                            }
+
+                        default:
+                            {
+                                if (lv_mod == -1)
+                                {
+                                    lv_mod = 5d;
+                                }
+
+                                slevel = lv_mod * t.SkillLevel(opt);
+                                if (Strings.InStr(fdata, "能力必要") > 0)
+                                {
+                                    if (slevel == 0d)
+                                    {
+                                        neautralize = true;
+                                    }
+                                }
+
+                                break;
+                            }
+                    }
+                }
+
+                // バリア無効化で無効化されている？
+                if (t.IsConditionSatisfied("バリア無効化"))
+                {
+                    if (Strings.InStr(fdata, "バリア無効化無効") == 0)
+                    {
+                        neautralize = true;
+                    }
+                }
+
+                // 発動可能？
+                bool localIsAttributeClassified2() { string argaclass1 = GeneralLib.LIndex(fdata, 2); var ret = t.IsAttributeClassified(argaclass1, wclass); return ret; }
+
+                if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && localIsAttributeClassified2() && !neautralize)
+                {
+                    // プロテクション発動
+                    dmg = ((long)(dmg * (100d - 10d * flevel - slevel)) / 100L);
+                    if (dmg <= 0)
+                    {
+                        ExpDamageRet = w;
+                        return ExpDamageRet;
+                    }
+                }
+            }
+
+            // 対ビーム用防御能力
+            if (GeneralLib.InStrNotNest(WeaponClass(), "Ｂ") > 0)
+            {
+                // ビーム吸収
+                if (t.IsFeatureAvailable("ビーム吸収"))
+                {
+                    return WeaponNo();
+                }
+            }
+
+            // 抹殺攻撃は一撃で相手を倒せる場合にのみ有効
+            if (GeneralLib.InStrNotNest(WeaponClass(), "殺") > 0)
+            {
+                if (dmg < t.HP)
+                {
+                    dmg = 0;
+                }
+            }
+
+            // 盾防御
+            if (t.IsFeatureAvailable("盾") && t.MainPilot().IsSkillAvailable("Ｓ防御") && t.MaxAction() > 0 && !IsWeaponClassifiedAs("精") && !IsWeaponClassifiedAs("浸") && !IsWeaponClassifiedAs("殺") && (t.IsConditionSatisfied("盾付加") || t.FeatureLevel("盾") > t.ConditionLevel("盾ダメージ")))
+            {
+                if (IsWeaponClassifiedAs("破"))
+                {
+                    dmg = (int)(dmg - 50d * (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 4d));
+                }
+                else
+                {
+                    dmg = (int)(dmg - 100d * (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 4d));
+                }
+            }
+
+            // ダメージが減少されて0以下になった場合もダミーで1ダメージ
+            if (dmg <= 0)
+            {
+                dmg = 1;
+            }
+
+            // 抹殺攻撃は一撃で相手を倒せない限り効果がない
+            if (GeneralLib.InStrNotNest(WeaponClass(), "殺") > 0)
+            {
+                if (t.HP > dmg)
+                {
+                    return ExpDamageRet;
+                }
+            }
+
+            ExpDamageRet = dmg;
+            return ExpDamageRet;
         }
 
         // 武器の使用によるＥＮ、弾薬の消費等を行う
