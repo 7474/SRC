@@ -1841,55 +1841,51 @@ namespace SRCCore.Units
                 return false;
             }
 
-            // TODO Impl
-            //// 敵がステルスの場合
-            //if (t.IsFeatureAvailable("ステルス"))
-            //{
-            //    if (t.IsFeatureLevelSpecified("ステルス"))
-            //    {
-            //        lv = t.FeatureLevel("ステルス");
-            //    }
-            //    else
-            //    {
-            //        lv = 3;
-            //    }
+            // 敵がステルスの場合
+            if (t.IsFeatureAvailable("ステルス"))
+            {
+                double lv;
+                if (t.IsFeatureLevelSpecified("ステルス"))
+                {
+                    lv = t.FeatureLevel("ステルス");
+                }
+                else
+                {
+                    lv = 3;
+                }
 
-            //    if (!t.IsConditionSatisfied("ステルス無効") 
-            //        && !IsFeatureAvailable("ステルス無効化") 
-            //        && distance > lv)
-            //    {
-            //        IsTargetWithinRangeRet = false;
-            //        return IsTargetWithinRangeRet;
-            //    }
-            //}
+                if (!t.IsConditionSatisfied("ステルス無効")
+                    && !Unit.IsFeatureAvailable("ステルス無効化")
+                    && distance > lv)
+                {
+                    return false;
+                }
+            }
 
-            //// 隠れ身中？
-            //if (t.IsUnderSpecialPowerEffect("隠れ身"))
-            //{
-            //    if (!t.IsUnderSpecialPowerEffect("無防備"))
-            //    {
-            //        IsTargetWithinRangeRet = false;
-            //        return IsTargetWithinRangeRet;
-            //    }
-            //}
+            // 隠れ身中？
+            if (t.IsUnderSpecialPowerEffect("隠れ身"))
+            {
+                if (!t.IsUnderSpecialPowerEffect("無防備"))
+                {
+                    return false;
+                }
+            }
 
-            //// 攻撃できない地形にいる場合は射程外とみなす
-            //if (WeaponAdaption(t.Area) == 0d)
-            //{
-            //    IsTargetWithinRangeRet = false;
-            //    return IsTargetWithinRangeRet;
-            //}
+            // 攻撃できない地形にいる場合は射程外とみなす
+            if (WeaponAdaption(t.Area) == 0d)
+            {
+                return false;
+            }
 
-            //// 合体技で射程が１の場合は相手を囲んでいる必要がある
-            //if (IsWeaponClassifiedAs("合") && !IsWeaponClassifiedAs("Ｍ") && max_range == 1)
-            //{
-            //    CombinationPartner("武装", w, partners, t.x, t.y);
-            //    if (Information.UBound(partners) == 0)
-            //    {
-            //        IsTargetWithinRangeRet = false;
-            //        return IsTargetWithinRangeRet;
-            //    }
-            //}
+            // 合体技で射程が１の場合は相手を囲んでいる必要がある
+            if (IsWeaponClassifiedAs("合") && !IsWeaponClassifiedAs("Ｍ") && max_range == 1)
+            {
+               var partners= CombinationPartner("武装", t.x, t.y);
+                if (partners.Count == 0)
+                {
+                    return false;
+                }
+            }
 
             return true;
         }
