@@ -4310,7 +4310,7 @@ namespace SRCCore.Units
                     {
                         case "相殺":
                             {
-                                if (IsSameCategory(fdata, FeatureData("バリア")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                if (Unit.IsSameCategory(fdata, Unit.FeatureData("バリア")) && Math.Abs((Unit.x - t.x)) + Math.Abs((Unit.y - t.y)) == 1)
                                 {
                                     neautralize = true;
                                 }
@@ -4320,9 +4320,9 @@ namespace SRCCore.Units
 
                         case "中和":
                             {
-                                if (IsSameCategory(fdata, FeatureData("バリア")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                if (Unit.IsSameCategory(fdata, Unit.FeatureData("バリア")) && Math.Abs((Unit.x - t.x)) + Math.Abs((Unit.y - t.y)) == 1)
                                 {
-                                    flevel = flevel - FeatureLevel("バリア");
+                                    flevel = flevel - Unit.FeatureLevel("バリア");
                                     if (flevel <= 0d)
                                     {
                                         neautralize = true;
@@ -4471,8 +4471,7 @@ namespace SRCCore.Units
                     // バリア発動
                     if (dmg <= 1000d * flevel + slevel)
                     {
-                        ExpDamageRet = w;
-                        return ExpDamageRet;
+                        return WeaponNo();
                     }
                 }
             }
@@ -4525,7 +4524,7 @@ namespace SRCCore.Units
                     {
                         case "相殺":
                             {
-                                if (IsSameCategory(fdata, FeatureData("フィールド")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                if (Unit.IsSameCategory(fdata, Unit.FeatureData("フィールド")) && Math.Abs((Unit.x - t.x)) + Math.Abs((Unit.y - t.y)) == 1)
                                 {
                                     neautralize = true;
                                 }
@@ -4535,9 +4534,9 @@ namespace SRCCore.Units
 
                         case "中和":
                             {
-                                if (IsSameCategory(fdata, FeatureData("フィールド")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                if (Unit.IsSameCategory(fdata, Unit.FeatureData("フィールド")) && Math.Abs((Unit.x - t.x)) + Math.Abs((Unit.y - t.y)) == 1)
                                 {
-                                    flevel = flevel - FeatureLevel("フィールド");
+                                    flevel = flevel - Unit.FeatureLevel("フィールド");
                                     if (flevel <= 0d)
                                     {
                                         neautralize = true;
@@ -4686,12 +4685,11 @@ namespace SRCCore.Units
                     // フィールド発動
                     if (dmg <= 500d * flevel + slevel)
                     {
-                        ExpDamageRet = w;
-                        return ExpDamageRet;
+                        return WeaponNo();
                     }
                     else if (flevel > 0d || slevel > 0d)
                     {
-                        dmg = (dmg - 500d * flevel - slevel);
+                        dmg = (int)(dmg - 500d * flevel - slevel);
                     }
                 }
             }
@@ -4744,7 +4742,7 @@ namespace SRCCore.Units
                     {
                         case "相殺":
                             {
-                                if (IsSameCategory(fdata, FeatureData("プロテクション")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                if (Unit.IsSameCategory(fdata, Unit.FeatureData("プロテクション")) && Math.Abs((Unit.x - t.x)) + Math.Abs((Unit.y - t.y)) == 1)
                                 {
                                     neautralize = true;
                                 }
@@ -4754,9 +4752,9 @@ namespace SRCCore.Units
 
                         case "中和":
                             {
-                                if (IsSameCategory(fdata, FeatureData("プロテクション")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                if (Unit.IsSameCategory(fdata, Unit.FeatureData("プロテクション")) && Math.Abs((Unit.x - t.x)) + Math.Abs((Unit.y - t.y)) == 1)
                                 {
-                                    flevel = flevel - FeatureLevel("プロテクション");
+                                    flevel = flevel - Unit.FeatureLevel("プロテクション");
                                     if (flevel <= 0d)
                                     {
                                         neautralize = true;
@@ -4903,11 +4901,10 @@ namespace SRCCore.Units
                 if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && localIsAttributeClassified2() && !neautralize)
                 {
                     // プロテクション発動
-                    dmg = ((long)(dmg * (100d - 10d * flevel - slevel)) / 100L);
+                    dmg = ((int)(dmg * (100d - 10d * flevel - slevel)) / 100);
                     if (dmg <= 0)
                     {
-                        ExpDamageRet = w;
-                        return ExpDamageRet;
+                        return WeaponNo();
                     }
                 }
             }
@@ -4932,7 +4929,13 @@ namespace SRCCore.Units
             }
 
             // 盾防御
-            if (t.IsFeatureAvailable("盾") && t.MainPilot().IsSkillAvailable("Ｓ防御") && t.MaxAction() > 0 && !IsWeaponClassifiedAs("精") && !IsWeaponClassifiedAs("浸") && !IsWeaponClassifiedAs("殺") && (t.IsConditionSatisfied("盾付加") || t.FeatureLevel("盾") > t.ConditionLevel("盾ダメージ")))
+            if (t.IsFeatureAvailable("盾")
+                && t.MainPilot().IsSkillAvailable("Ｓ防御") 
+                && t.MaxAction() > 0 
+                && !IsWeaponClassifiedAs("精")
+                && !IsWeaponClassifiedAs("浸")
+                && !IsWeaponClassifiedAs("殺") 
+                && (t.IsConditionSatisfied("盾付加") || t.FeatureLevel("盾") > t.ConditionLevel("盾ダメージ")))
             {
                 if (IsWeaponClassifiedAs("破"))
                 {
@@ -4962,6 +4965,7 @@ namespace SRCCore.Units
             ExpDamageRet = dmg;
             return ExpDamageRet;
         }
+
 
         // 武器の使用によるＥＮ、弾薬の消費等を行う
         public void UseWeapon()

@@ -3,6 +3,9 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Lib;
+using SRCCore.VB;
+
 namespace SRCCore.Units
 {
     // === 攻撃関連処理 ===
@@ -7890,32 +7893,30 @@ namespace SRCCore.Units
 
         // 特殊能力 fdata1 と fdata2 が同じ名称か判定
         // 「中和」「相殺」用
-        private bool IsSameCategory(string fdata1, string fdata2)
+        public bool IsSameCategory(string fdata1, string fdata2)
         {
-            // TODO Impl
-            return false;
-            //bool IsSameCategoryRet = default;
-            //string fc1, fc2;
-            //fc1 = GeneralLib.LIndex(fdata1, 1);
-            //// レベル指定を除く
-            //if (Strings.InStr(fc1, "Lv") > 0)
-            //{
-            //    fc1 = Strings.Left(fc1, Strings.InStr(fc1, "Lv") - 1);
-            //}
+            bool IsSameCategoryRet = default;
+            string fc1, fc2;
+            fc1 = GeneralLib.LIndex(fdata1, 1);
+            // レベル指定を除く
+            if (Strings.InStr(fc1, "Lv") > 0)
+            {
+                fc1 = Strings.Left(fc1, Strings.InStr(fc1, "Lv") - 1);
+            }
 
-            //fc2 = GeneralLib.LIndex(fdata2, 1);
-            //// レベル指定を除く
-            //if (Strings.InStr(fc2, "Lv") > 0)
-            //{
-            //    fc2 = Strings.Left(fc2, Strings.InStr(fc2, "Lv") - 1);
-            //}
+            fc2 = GeneralLib.LIndex(fdata2, 1);
+            // レベル指定を除く
+            if (Strings.InStr(fc2, "Lv") > 0)
+            {
+                fc2 = Strings.Left(fc2, Strings.InStr(fc2, "Lv") - 1);
+            }
 
-            //if ((fc1 ?? "") == (fc2 ?? ""))
-            //{
-            //    IsSameCategoryRet = true;
-            //}
+            if ((fc1 ?? "") == (fc2 ?? ""))
+            {
+                IsSameCategoryRet = true;
+            }
 
-            //return IsSameCategoryRet;
+            return IsSameCategoryRet;
         }
     }
 }
