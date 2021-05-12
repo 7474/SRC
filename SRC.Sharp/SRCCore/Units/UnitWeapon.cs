@@ -1746,51 +1746,50 @@ namespace SRCCore.Units
                         goto NextUnit;
                     }
 
-                    // TODO Impl
-                    //switch (Unit.Party ?? "")
-                    //{
-                    //    case "味方":
-                    //    case "ＮＰＣ":
-                    //        {
-                    //            switch (u.Party ?? "")
-                    //            {
-                    //                case "味方":
-                    //                case "ＮＰＣ":
-                    //                    {
-                    //                        // ステータス異常の場合は味方ユニットでも排除可能
-                    //                        if (!u.IsConditionSatisfied("暴走") 
-                    //                            && !u.IsConditionSatisfied("混乱") 
-                    //                            && !u.IsConditionSatisfied("魅了") 
-                    //                            && !u.IsConditionSatisfied("憑依") 
-                    //                            && !u.IsConditionSatisfied("睡眠"))
-                    //                        {
-                    //                            goto NextUnit;
-                    //                        }
+                    switch (Unit.Party ?? "")
+                    {
+                        case "味方":
+                        case "ＮＰＣ":
+                            {
+                                switch (u.Party ?? "")
+                                {
+                                    case "味方":
+                                    case "ＮＰＣ":
+                                        {
+                                            // ステータス異常の場合は味方ユニットでも排除可能
+                                            if (!u.IsConditionSatisfied("暴走")
+                                                && !u.IsConditionSatisfied("混乱")
+                                                && !u.IsConditionSatisfied("魅了")
+                                                && !u.IsConditionSatisfied("憑依")
+                                                && !u.IsConditionSatisfied("睡眠"))
+                                            {
+                                                goto NextUnit;
+                                            }
 
-                    //                        break;
-                    //                    }
-                    //            }
+                                            break;
+                                        }
+                                }
 
-                    //            break;
-                    //        }
+                                break;
+                            }
 
-                    //    default:
-                    //        {
-                    //            if ((Unit.Party ?? "") == (u.Party ?? ""))
-                    //            {
-                    //                // ステータス異常の場合は味方ユニットでも排除可能
-                    //                if (!u.IsConditionSatisfied("暴走") 
-                    //                    && !u.IsConditionSatisfied("混乱") 
-                    //                    && !u.IsConditionSatisfied("魅了") 
-                    //                    && !u.IsConditionSatisfied("憑依"))
-                    //                {
-                    //                    goto NextUnit;
-                    //                }
-                    //            }
+                        default:
+                            {
+                                if ((Unit.Party ?? "") == (u.Party ?? ""))
+                                {
+                                    // ステータス異常の場合は味方ユニットでも排除可能
+                                    if (!u.IsConditionSatisfied("暴走")
+                                        && !u.IsConditionSatisfied("混乱")
+                                        && !u.IsConditionSatisfied("魅了")
+                                        && !u.IsConditionSatisfied("憑依"))
+                                    {
+                                        goto NextUnit;
+                                    }
+                                }
 
-                    //            break;
-                    //        }
-                    //}
+                                break;
+                            }
+                    }
 
                     if (IsTargetWithinRange(u))
                     {
