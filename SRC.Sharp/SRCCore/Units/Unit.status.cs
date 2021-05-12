@@ -1067,170 +1067,170 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    // 地形適応
-            //    for (i = 1; i <= 4; i++)
-            //    {
-            //        switch (Strings.Mid(Data.Adaption, i, 1) ?? "")
-            //        {
-            //            case "S":
-            //                {
-            //                    uadaption[i] = 5;
-            //                    break;
-            //                }
+            // 地形適応
+            var uadaption = new int[5];
+            for (var i = 1; i <= 4; i++)
+            {
+                switch (Strings.Mid(Data.Adaption, i, 1) ?? "")
+                {
+                    case "S":
+                        {
+                            uadaption[i] = 5;
+                            break;
+                        }
 
-            //            case "A":
-            //                {
-            //                    uadaption[i] = 4;
-            //                    break;
-            //                }
+                    case "A":
+                        {
+                            uadaption[i] = 4;
+                            break;
+                        }
 
-            //            case "B":
-            //                {
-            //                    uadaption[i] = 3;
-            //                    break;
-            //                }
+                    case "B":
+                        {
+                            uadaption[i] = 3;
+                            break;
+                        }
 
-            //            case "C":
-            //                {
-            //                    uadaption[i] = 2;
-            //                    break;
-            //                }
+                    case "C":
+                        {
+                            uadaption[i] = 2;
+                            break;
+                        }
 
-            //            case "D":
-            //                {
-            //                    uadaption[i] = 1;
-            //                    break;
-            //                }
+                    case "D":
+                        {
+                            uadaption[i] = 1;
+                            break;
+                        }
 
-            //            case "E":
-            //            case "-":
-            //                {
-            //                    uadaption[i] = 0;
-            //                    break;
-            //                }
-            //        }
-            //    }
+                    case "E":
+                    case "-":
+                        {
+                            uadaption[i] = 0;
+                            break;
+                        }
+                }
+            }
 
-            //    // 移動タイプ追加による地形適応修正
-            //    if (IsFeatureAvailable("空中移動"))
-            //    {
-            //        uadaption[1] = GeneralLib.MaxLng(uadaption[1], 4);
-            //    }
+            // 移動タイプ追加による地形適応修正
+            if (IsFeatureAvailable("空中移動"))
+            {
+                uadaption[1] = GeneralLib.MaxLng(uadaption[1], 4);
+            }
 
-            //    if (IsFeatureAvailable("陸上移動"))
-            //    {
-            //        uadaption[2] = GeneralLib.MaxLng(uadaption[2], 4);
-            //    }
+            if (IsFeatureAvailable("陸上移動"))
+            {
+                uadaption[2] = GeneralLib.MaxLng(uadaption[2], 4);
+            }
 
-            //    if (IsFeatureAvailable("水中移動"))
-            //    {
-            //        uadaption[3] = GeneralLib.MaxLng(uadaption[3], 4);
-            //    }
+            if (IsFeatureAvailable("水中移動"))
+            {
+                uadaption[3] = GeneralLib.MaxLng(uadaption[3], 4);
+            }
 
-            //    if (IsFeatureAvailable("宇宙移動"))
-            //    {
-            //        uadaption[4] = GeneralLib.MaxLng(uadaption[4], 4);
-            //    }
+            if (IsFeatureAvailable("宇宙移動"))
+            {
+                uadaption[4] = GeneralLib.MaxLng(uadaption[4], 4);
+            }
 
-            //    // 地形適応変更能力による修正
-            //    foreach (FeatureData currentFd4 in colFeature)
-            //    {
-            //        fd = currentFd4;
-            //        switch (fd.Name ?? "")
-            //        {
-            //            case "地形適応変更":
-            //                {
-            //                    for (i = 1; i <= 4; i++)
-            //                    {
-            //                        num = GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, i));
-            //                        if (num > 0)
-            //                        {
-            //                            if (uadaption[i] < 4)
-            //                            {
-            //                                uadaption[i] = (uadaption[i] + num);
-            //                                // 地形適応はAより高くはならない
-            //                                if (uadaption[i] > 4)
-            //                                {
-            //                                    uadaption[i] = 4;
-            //                                }
-            //                            }
-            //                        }
-            //                        else
-            //                        {
-            //                            uadaption[i] = (uadaption[i] + num);
-            //                        }
-            //                    }
+            // 地形適応変更能力による修正
+            foreach (var fd in Features)
+            {
+                switch (fd.Name ?? "")
+                {
+                    case "地形適応変更":
+                        {
+                            for (var i = 1; i <= 4; i++)
+                            {
+                                var num = GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, i));
+                                if (num > 0)
+                                {
+                                    if (uadaption[i] < 4)
+                                    {
+                                        uadaption[i] = (uadaption[i] + num);
+                                        // 地形適応はAより高くはならない
+                                        if (uadaption[i] > 4)
+                                        {
+                                            uadaption[i] = 4;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    uadaption[i] = (uadaption[i] + num);
+                                }
+                            }
 
-            //                    break;
-            //                }
+                            break;
+                        }
 
-            //            case "地形適応固定変更":
-            //                {
-            //                    for (i = 1; i <= 4; i++)
-            //                    {
-            //                        num = GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, i));
-            //                        if (GeneralLib.LIndex(fd.StrData, 5) == "強制")
-            //                        {
-            //                            // 強制変更の場合
-            //                            if (num >= 0 && num <= 5)
-            //                            {
-            //                                uadaption[i] = num;
-            //                            }
-            //                        }
-            //                        // 高いほうを優先する場合
-            //                        else if (num > uadaption[i] && num <= 5)
-            //                        {
-            //                            uadaption[i] = num;
-            //                        }
-            //                    }
+                    case "地形適応固定変更":
+                        {
+                            for (var i = 1; i <= 4; i++)
+                            {
+                                var num = GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, i));
+                                if (GeneralLib.LIndex(fd.StrData, 5) == "強制")
+                                {
+                                    // 強制変更の場合
+                                    if (num >= 0 && num <= 5)
+                                    {
+                                        uadaption[i] = num;
+                                    }
+                                }
+                                // 高いほうを優先する場合
+                                else if (num > uadaption[i] && num <= 5)
+                                {
+                                    uadaption[i] = num;
+                                }
+                            }
 
-            //                    break;
-            //                }
-            //        }
-            //    }
+                            break;
+                        }
+                }
+            }
 
-            //    strAdaption = "";
-            //    for (i = 1; i <= 4; i++)
-            //    {
-            //        switch (uadaption[i])
-            //        {
-            //            case var @case when @case >= 5:
-            //                {
-            //                    strAdaption = strAdaption + "S";
-            //                    break;
-            //                }
+            strAdaption = "";
+            for (var i = 1; i <= 4; i++)
+            {
+                switch (uadaption[i])
+                {
+                    case var @case when @case >= 5:
+                        {
+                            strAdaption = strAdaption + "S";
+                            break;
+                        }
 
-            //            case 4:
-            //                {
-            //                    strAdaption = strAdaption + "A";
-            //                    break;
-            //                }
+                    case 4:
+                        {
+                            strAdaption = strAdaption + "A";
+                            break;
+                        }
 
-            //            case 3:
-            //                {
-            //                    strAdaption = strAdaption + "B";
-            //                    break;
-            //                }
+                    case 3:
+                        {
+                            strAdaption = strAdaption + "B";
+                            break;
+                        }
 
-            //            case 2:
-            //                {
-            //                    strAdaption = strAdaption + "C";
-            //                    break;
-            //                }
+                    case 2:
+                        {
+                            strAdaption = strAdaption + "C";
+                            break;
+                        }
 
-            //            case 1:
-            //                {
-            //                    strAdaption = strAdaption + "D";
-            //                    break;
-            //                }
+                    case 1:
+                        {
+                            strAdaption = strAdaption + "D";
+                            break;
+                        }
 
-            //            case var case1 when case1 <= 0:
-            //                {
-            //                    strAdaption = strAdaption + "-";
-            //                    break;
-            //                }
-            //        }
-            //    }
+                    case var case1 when case1 <= 0:
+                        {
+                            strAdaption = strAdaption + "-";
+                            break;
+                        }
+                }
+            }
 
             //    // 空中に留まることが出来るかチェック
             //    if (Status == "出撃" && Area == "空中" && !IsTransAvailable("空"))
