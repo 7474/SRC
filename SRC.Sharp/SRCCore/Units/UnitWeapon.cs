@@ -1195,112 +1195,106 @@ namespace SRCCore.Units
         // 武器が持つ特殊効果の数を返す
         public int CountWeaponEffect()
         {
-            return 0;
-            // TODO Impl
-            //int CountWeaponEffectRet = default;
-            //string wclass, wattr;
-            //int i, ret;
-            //wclass = strWeaponClass[w];
-            //var loopTo = Strings.Len(wclass);
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    // 弱Ｓのような入れ子があれば、入れ子の分カウントを進める
-            //    wattr = GeneralLib.GetClassBundle(WeaponClass(), i, 1);
+            int CountWeaponEffectRet = default;
+            string wclass, wattr;
+            int i, ret;
+            wclass = strWeaponClass;
+            var loopTo = Strings.Len(wclass);
+            for (i = 1; i <= loopTo; i++)
+            {
+                // 弱Ｓのような入れ子があれば、入れ子の分カウントを進める
+                wattr = GeneralLib.GetClassBundle(WeaponClass(), ref i, 1);
 
-            //    // 非表示部分は無視
-            //    if (wattr == "|")
-            //    {
-            //        break;
-            //    }
+                // 非表示部分は無視
+                if (wattr == "|")
+                {
+                    break;
+                }
 
-            //    // ＣＴ時発動系
-            //    ret = Strings.InStr("Ｓ縛劣中石凍痺眠乱魅恐踊狂ゾ害憑盲毒撹不止黙除即告脱Ｄ低吹Ｋ引転衰滅盗習写化弱効剋", wattr);
-            //    if (ret > 0)
-            //    {
-            //        CountWeaponEffectRet = (CountWeaponEffectRet + 1);
-            //    }
+                // ＣＴ時発動系
+                ret = Strings.InStr("Ｓ縛劣中石凍痺眠乱魅恐踊狂ゾ害憑盲毒撹不止黙除即告脱Ｄ低吹Ｋ引転衰滅盗習写化弱効剋", wattr);
+                if (ret > 0)
+                {
+                    CountWeaponEffectRet = (CountWeaponEffectRet + 1);
+                }
 
-            //    // それ以外
-            //    ret = Strings.InStr("先再忍貫固殺無浸破間浄吸減奪", wattr);
-            //    if (ret > 0)
-            //    {
-            //        CountWeaponEffectRet = (CountWeaponEffectRet + 1);
-            //    }
-            //}
+                // それ以外
+                ret = Strings.InStr("先再忍貫固殺無浸破間浄吸減奪", wattr);
+                if (ret > 0)
+                {
+                    CountWeaponEffectRet = (CountWeaponEffectRet + 1);
+                }
+            }
 
-            //return CountWeaponEffectRet;
+            return CountWeaponEffectRet;
         }
 
         // 武器 w が術かどうか
         public bool IsSpellWeapon()
         {
-            return false;
-            // TODO Impl
-            //bool IsSpellWeaponRet = default;
-            //int i;
-            //string nskill;
-            //if (IsWeaponClassifiedAs("術"))
-            //{
-            //    IsSpellWeaponRet = true;
-            //    return IsSpellWeaponRet;
-            //}
+            bool IsSpellWeaponRet = default;
+            int i;
+            string nskill;
+            if (IsWeaponClassifiedAs("術"))
+            {
+                IsSpellWeaponRet = true;
+                return IsSpellWeaponRet;
+            }
 
-            //{
-            //    var withBlock = MainPilot();
-            //    var loopTo = GeneralLib.LLength(Weapon(w).NecessarySkill);
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        nskill = GeneralLib.LIndex(Weapon(w).NecessarySkill, i);
-            //        if (Strings.InStr(nskill, "Lv") > 0)
-            //        {
-            //            nskill = Strings.Left(nskill, Strings.InStr(nskill, "Lv") - 1);
-            //        }
+            {
+                var p = Unit.MainPilot();
+                var loopTo = GeneralLib.LLength(WeaponData.NecessarySkill);
+                for (i = 1; i <= loopTo; i++)
+                {
+                    nskill = GeneralLib.LIndex(WeaponData.NecessarySkill, i);
+                    if (Strings.InStr(nskill, "Lv") > 0)
+                    {
+                        nskill = Strings.Left(nskill, Strings.InStr(nskill, "Lv") - 1);
+                    }
 
-            //        if (withBlock.SkillType(nskill) == "術")
-            //        {
-            //            IsSpellWeaponRet = true;
-            //            return IsSpellWeaponRet;
-            //        }
-            //    }
-            //}
+                    if (p.SkillType(nskill) == "術")
+                    {
+                        IsSpellWeaponRet = true;
+                        return IsSpellWeaponRet;
+                    }
+                }
+            }
 
-            //return IsSpellWeaponRet;
+            return IsSpellWeaponRet;
         }
 
         // 武器 w が技かどうか
         public bool IsFeatWeapon()
         {
-            return false;
-            // TODO Impl
-            //bool IsFeatWeaponRet = default;
-            //int i;
-            //string nskill;
-            //if (IsWeaponClassifiedAs("技"))
-            //{
-            //    IsFeatWeaponRet = true;
-            //    return IsFeatWeaponRet;
-            //}
+            bool IsFeatWeaponRet = default;
+            int i;
+            string nskill;
+            if (IsWeaponClassifiedAs("技"))
+            {
+                IsFeatWeaponRet = true;
+                return IsFeatWeaponRet;
+            }
 
-            //{
-            //    var withBlock = MainPilot();
-            //    var loopTo = GeneralLib.LLength(Weapon(w).NecessarySkill);
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        nskill = GeneralLib.LIndex(Weapon(w).NecessarySkill, i);
-            //        if (Strings.InStr(nskill, "Lv") > 0)
-            //        {
-            //            nskill = Strings.Left(nskill, Strings.InStr(nskill, "Lv") - 1);
-            //        }
+            {
+                var p = Unit.MainPilot();
+                var loopTo = GeneralLib.LLength(WeaponData.NecessarySkill);
+                for (i = 1; i <= loopTo; i++)
+                {
+                    nskill = GeneralLib.LIndex(WeaponData.NecessarySkill, i);
+                    if (Strings.InStr(nskill, "Lv") > 0)
+                    {
+                        nskill = Strings.Left(nskill, Strings.InStr(nskill, "Lv") - 1);
+                    }
 
-            //        if (withBlock.SkillType(nskill) == "技")
-            //        {
-            //            IsFeatWeaponRet = true;
-            //            return IsFeatWeaponRet;
-            //        }
-            //    }
-            //}
+                    if (p.SkillType(nskill) == "技")
+                    {
+                        IsFeatWeaponRet = true;
+                        return IsFeatWeaponRet;
+                    }
+                }
+            }
 
-            //return IsFeatWeaponRet;
+            return IsFeatWeaponRet;
         }
 
         // 武器 w が使用可能かどうか
