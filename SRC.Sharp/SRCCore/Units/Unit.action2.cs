@@ -17,7 +17,8 @@ namespace SRCCore.Units
         // exp_mode:マップ攻撃による入手？
         public int GetExp(Unit t, string exp_situation, string exp_mode = null)
         {
-            throw new NotImplementedException();
+            // TODO Impl GetExp
+            return 0;
             //int GetExpRet = default;
             //var xp = default(int);
             //int j, i, n;

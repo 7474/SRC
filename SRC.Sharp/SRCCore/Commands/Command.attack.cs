@@ -75,34 +75,25 @@ namespace SRCCore.Commands
 
             SelectedWeapon = currentWeapon.WeaponNo();
 
-            //// 武器ＢＧＭの演奏
-            //if (currentUnit.IsFeatureAvailable("武器ＢＧＭ"))
-            //{
-            //    var loopTo = currentUnit.CountFeature();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        string localFeature() { object argIndex1 = i; var ret = currentUnit.Feature(argIndex1); return ret; }
-
-            //        string localFeatureData2() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-            //        string localLIndex() { string arglist = hs644c0746afde449eb03788895da90548(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
-
-            //        if (localFeature() == "武器ＢＧＭ" && (localLIndex() ?? "") == (currentUnit.Weapon(SelectedWeapon).Name ?? ""))
-            //        {
-            //            string localFeatureData() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-            //            string localFeatureData1() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-            //            BGM = Sound.SearchMidiFile(Strings.Mid(localFeatureData(), Strings.InStr(localFeatureData1(), " ") + 1));
-            //            if (Strings.Len(BGM) > 0)
-            //            {
-            //                Sound.ChangeBGM(BGM);
-            //            }
-
-            //            break;
-            //        }
-            //    }
-            //}
+            // 武器ＢＧＭの演奏
+            if (currentUnit.IsFeatureAvailable("武器ＢＧＭ"))
+            {
+                var loopTo11 = currentUnit.CountFeature();
+                for (i = 1; i <= loopTo11; i++)
+                {
+                    var fdata = currentUnit.Feature(i).Data;
+                    if (currentUnit.Feature(i).Name == "武器ＢＧＭ" && (GeneralLib.LIndex(fdata, 1) ?? "") == (currentUnit.Weapon(SelectedWeapon).Name ?? ""))
+                    {
+                        // 武器用ＢＧＭが指定されていた
+                        BGM = Sound.SearchMidiFile(Strings.Mid(fdata, Strings.InStr(fdata, " ") + 1));
+                        if (Strings.Len(BGM) > 0)
+                        {
+                            Sound.ChangeBGM(BGM);
+                        }
+                        break;
+                    }
+                }
+            }
 
             // 選択した武器の種類により、この後のコマンドの進行の仕方が異なる
             if (currentWeapon.IsWeaponClassifiedAs("Ｍ"))

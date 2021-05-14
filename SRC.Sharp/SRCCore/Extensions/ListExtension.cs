@@ -28,7 +28,20 @@ namespace SRCCore.Extensions
         public static T SafeRefOneOffset<T>(this IList<T> list, int index)
         {
             var i = index - 1;
-            if (0 <= i && list.Count < i)
+            if (0 <= i && list.Count > i)
+            {
+                return list[i];
+            }
+            else
+            {
+                return default(T);
+            }
+        }
+
+        public static T SafeRefZeroOffset<T>(this IList<T> list, int index)
+        {
+            var i = index;
+            if (0 <= i && list.Count > i)
             {
                 return list[i];
             }

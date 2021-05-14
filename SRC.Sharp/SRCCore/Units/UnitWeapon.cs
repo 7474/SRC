@@ -5991,9 +5991,8 @@ namespace SRCCore.Units
                         // 合体技は自分から攻撃をかける場合にのみ使用
                         && !IsWeaponClassifiedAs("合")
                         // ダメージを与えられる
-                        && !(Damage(targetUnit, true) > 0)
                         // 特殊効果を与えられる
-                        && !(IsNormalWeapon() && CriticalProbability(targetUnit) > 0)
+                        && (Damage(targetUnit, true) > 0) || (!IsNormalWeapon() && CriticalProbability(targetUnit) > 0)
                         ;
 
                 default:

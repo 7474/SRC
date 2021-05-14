@@ -459,12 +459,14 @@ namespace SRCSharpForm
 
         public void AddPartsToListBox()
         {
-            throw new NotImplementedException();
+            // TODO Impl
+            //throw new NotImplementedException();
         }
 
         public void RemovePartsOnListBox()
         {
-            throw new NotImplementedException();
+            // TODO Impl
+            //throw new NotImplementedException();
         }
 
         public UnitWeapon WeaponListBox(Unit u, UnitWeaponList weapons, string caption_msg, string lb_mode, string BGM)
