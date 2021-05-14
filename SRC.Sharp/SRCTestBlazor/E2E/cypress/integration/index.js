@@ -5,6 +5,7 @@ describe('Init Blazor Application', function () {
     it('Blazorアプリケーションとしてのレンダリングが行われる', function () {
         cy.visit(ROOT_URL);
         cy.get('input[type="file"]').should('exist');
+        cy.percySnapshot();
     });
 });
 
@@ -22,5 +23,6 @@ describe('Load Data', function () {
         cy.contains('∀ガンダム(前期)', {
             timeout: 10000,
         }).should('exist');
+        cy.percySnapshot();
     });
 });
