@@ -31,6 +31,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: 'upload'
           app_location: './SRC.Sharp/SRCTestBlazor/bin/Release/net5.0/publish/wwwroot'
+          skip_app_build: true
       - run: npm ci
         working-directory: ./SRC.Sharp/SRCTestBlazor/E2E
       - name: Percy exec Cypress run
