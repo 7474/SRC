@@ -41,9 +41,12 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@master
-      - name: Cypress run
-        uses: cypress-io/github-action@v2
+      - run: npm ci
+        working-directory: ./SRC.Sharp/SRCTestBlazor/E2E
+      - name: Percy Test Cypress run
+        uses: percy/exec-action@v0.3.1
         with:
+          command: "cypress run --record"
           working-directory: ./SRC.Sharp/SRCTestBlazor/E2E
           record: true
         env:
