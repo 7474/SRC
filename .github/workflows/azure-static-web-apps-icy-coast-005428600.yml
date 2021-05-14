@@ -31,6 +31,18 @@ jobs:
           api_location: "" # Api source code path - optional
           output_location: "wwwroot" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
+      - run: npm ci
+        working-directory: ./SRC.Sharp/SRCTestBlazor/E2E
+      - name: Percy exec Cypress run
+        uses: percy/exec-action@v0.3.1
+        with:
+          working-directory: ./SRC.Sharp/SRCTestBlazor/E2E
+          command: "cypress run --env configFile=azurestaticweb"
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_HEAD_REF: ${{ env.GITHUB_HEAD_REF }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
