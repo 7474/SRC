@@ -47,5 +47,6 @@ jobs:
           working-directory: ./SRC.Sharp/SRCTestBlazor/E2E
           record: true
         env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
