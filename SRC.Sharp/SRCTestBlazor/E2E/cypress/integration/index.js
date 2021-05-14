@@ -1,7 +1,8 @@
 ﻿
 const GITHUB_HEAD_REF = Cypress.env('GITHUB_HEAD_REF');
-const ROOT_URL = 'baseUrl';
+const ROOT_URL = Cypress.config('baseUrl');
 console.log(GITHUB_HEAD_REF);
+console.log(ROOT_URL);
 
 describe('Init Blazor Application', function () {
     it('Blazorアプリケーションとしてのレンダリングが行われる', function () {
