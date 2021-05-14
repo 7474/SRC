@@ -1,5 +1,6 @@
 ﻿
 const BASE_URL = Cypress.env('BASE_URL') ?? Cypress.config('baseUrl');
+console.log(BASE_URL);
 
 describe('Init Blazor Application', function () {
     it('Blazorアプリケーションとしてのレンダリングが行われる', function () {
