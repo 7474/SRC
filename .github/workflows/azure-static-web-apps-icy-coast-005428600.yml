@@ -38,7 +38,7 @@ jobs:
         uses: percy/exec-action@v0.3.1
         with:
           working-directory: ./SRC.Sharp/SRCTestBlazor/E2E
-          command: "cypress run --record --env configFile=azurestaticweb"
+          command: "cypress run --record"
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
