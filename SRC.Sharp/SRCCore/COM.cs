@@ -228,7 +228,6 @@ namespace SRCCore
                     if (guard_unit_mode)
                     {
                         // ちゃんと隣接しているので周りの敵を排除
-                        // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
                         Commands.SelectedTarget = null;
                         goto TryBattleTransform;
                     }
@@ -714,14 +713,13 @@ namespace SRCCore
                     // 移動しなくても攻撃出来る場合は現在位置をデフォルトの攻撃位置に設定
                     if (selectedWeapon.IsTargetWithinRange(Commands.SelectedTarget))
                     {
-                        // TODO Impl
-                        new_locations_value = -1000;
-                        //new_locations_value = (Map.TerrainEffectForHPRecover(selectedUnit.x, selectedUnit.y) + Map.TerrainEffectForENRecover(selectedUnit.x, selectedUnit.y) + 100 * selectedUnit.LookForSupport(selectedUnit.x, selectedUnit.y, true));
-                        //if (selectedUnit.Area != "空中")
-                        //{
-                        //    // 地形による防御効果は空中にいる場合は受けられない
-                        //    new_locations_value = ((new_locations_value + Map.TerrainEffectForHit(selectedUnit.x, selectedUnit.y)) + Map.TerrainEffectForDamage(selectedUnit.x, selectedUnit.y));
-                        //}
+                        var td = Map.Terrain(selectedUnit.x, selectedUnit.y);
+                        new_locations_value = (td.EffectForHPRecover() + td.EffectForENRecover() + 100 * selectedUnit.LookForSupport(selectedUnit.x, selectedUnit.y, true));
+                        if (selectedUnit.Area != "空中")
+                        {
+                            // 地形による防御効果は空中にいる場合は受けられない
+                            new_locations_value = new_locations_value + td.HitMod + td.DamageMod;
+                        }
 
                         new_x = selectedUnit.x;
                         new_y = selectedUnit.y;
@@ -745,27 +743,25 @@ namespace SRCCore
                         {
                             if (!Map.MaskData[i, j] & Map.MapDataForUnit[i, j] is null & (Math.Abs((tx - i)) + Math.Abs((ty - j))) >= min_range)
                             {
-                                // TODO Impl
-                                var tmp = -1000;
-                                //tmp = (Map.TerrainEffectForHPRecover(i, j) + Map.TerrainEffectForENRecover(i, j) + 100 * selectedUnit.LookForSupport(i, j, true));
-                                //if (selectedUnit.Area != "空中")
-                                //{
-                                //    // 地形による防御効果は空中にいる場合は受けられない
-                                //    tmp = ((tmp + Map.TerrainEffectForHit(i, j)) + Map.TerrainEffectForDamage(i, j));
-
-                                //    // 水中は水中用ユニットでない限り選択しない
-                                //    if (Map.TerrainClass(i, j) == "水")
-                                //    {
-                                //        if (selectedUnit.IsTransAvailable("水"))
-                                //        {
-                                //            tmp = (tmp + 100);
-                                //        }
-                                //        else
-                                //        {
-                                //            tmp = -1000;
-                                //        }
-                                //    }
-                                //}
+                                var td = Map.Terrain(i, j);
+                                var tmp = (td.EffectForHPRecover() + td.EffectForENRecover() + 100 * selectedUnit.LookForSupport(i, j, true));
+                                if (selectedUnit.Area != "空中")
+                                {
+                                    // 地形による防御効果は空中にいる場合は受けられない
+                                    tmp = tmp + td.HitMod + td.DamageMod;
+                                    // 水中は水中用ユニットでない限り選択しない
+                                    if (Map.Terrain(i, j).Class == "水")
+                                    {
+                                        if (selectedUnit.IsTransAvailable("水"))
+                                        {
+                                            tmp = (tmp + 100);
+                                        }
+                                        else
+                                        {
+                                            tmp = -1000;
+                                        }
+                                    }
+                                }
 
                                 // 条件が同じであれば直線距離で近い場所を選択する
                                 tmp = ((int)(tmp - Math.Sqrt(Math.Pow(Math.Abs((selectedUnit.x - i)), 2d) + Math.Pow(Math.Abs((selectedUnit.y - j)), 2d))));
@@ -947,267 +943,260 @@ namespace SRCCore
                 indirect_attack = selectedWeapon.IsWeaponClassifiedAs("間");
 
                 // 相手の反撃手段を設定
-                def_mode = "防御";
-                // TODO Impl
-                //def_mode = "";
-                //Commands.UseSupportGuard = true;
-                //if (Commands.SelectedTarget.MaxAction() == 0)
-                //{
-                //    // 行動不能の場合
+                def_mode = "";
+                Commands.UseSupportGuard = true;
+                if (Commands.SelectedTarget.MaxAction() == 0)
+                {
+                    // 行動不能の場合
 
-                //    tw = -1;
-                //    // チャージ中または消耗している場合は自動的に防御
-                //    if (Commands.SelectedTarget.Party == "味方"
-                //        && (Commands.SelectedTarget.IsFeatureAvailable("チャージ") || Commands.SelectedTarget.IsFeatureAvailable("消耗")))
-                //    {
-                //        def_mode = "防御";
-                //    }
-                //}
-                //else if (Commands.SelectedTarget.Party == "味方" & !SystemConfig.AutoDefense)
-                //{
-                //    // 味方ユニットによる手動反撃を行う場合
+                    tw = -1;
+                    // チャージ中または消耗している場合は自動的に防御
+                    if (Commands.SelectedTarget.Party == "味方"
+                        && (Commands.SelectedTarget.IsFeatureAvailable("チャージ") || Commands.SelectedTarget.IsFeatureAvailable("消耗")))
+                    {
+                        def_mode = "防御";
+                    }
+                }
+                else if (Commands.SelectedTarget.Party == "味方" & !SystemConfig.AutoDefense)
+                {
+                    // 味方ユニットによる手動反撃を行う場合
 
-                //    // 戦闘アニメを表示する場合でも手動反撃時にはハイライト表示を行う
-                //    if (SRC.BattleAnimation)
-                //    {
-                //        // 射程範囲をハイライト
-                //        // MOD START マージ
-                //        // AreaInRange .X, .Y, _
-                //        // '                    .Weapon(w).MinRange, _
-                //        // '                    .WeaponMaxRange(w), _
-                //        // '                    "空間"
-                //        Map.AreaInRange(selectedUnit.x, selectedUnit.y, selectedUnit.WeaponMaxRange(w), selectedUnit.Weapon(w).MinRange, "空間");
-                //        // MOD END マージ
+                    // 戦闘アニメを表示する場合でも手動反撃時にはハイライト表示を行う
+                    if (SRC.BattleAnimation)
+                    {
+                        // 射程範囲をハイライト
+                        Map.AreaInRange(selectedUnit.x, selectedUnit.y, selectedWeapon.WeaponMaxRange(), selectedWeapon.WeaponData.MinRange, "空間");
 
-                //        // 合体技の場合はパートナーもハイライト表示
-                //        if (selectedUnit.IsWeaponClassifiedAs(w, "合"))
-                //        {
-                //            var loopTo10 = Information.UBound(partners);
-                //            for (i = 1; i <= loopTo10; i++)
-                //            {
-                //                {
-                //                    var withBlock9 = partners[i];
-                //                    Map.MaskData[withBlock9.x, withBlock9.y] = false;
-                //                }
-                //            }
-                //        }
+                        // 合体技の場合はパートナーもハイライト表示
+                        if (selectedWeapon.IsWeaponClassifiedAs("合"))
+                        {
+                            // TODO Impl
+                            //var loopTo10 = Information.UBound(partners);
+                            //for (i = 1; i <= loopTo10; i++)
+                            //{
+                            //    {
+                            //        var withBlock9 = partners[i];
+                            //        Map.MaskData[withBlock9.x, withBlock9.y] = false;
+                            //    }
+                            //}
+                        }
 
-                //        // 自分自身とターゲットもハイライト
-                //        Map.MaskData[selectedUnit.x, selectedUnit.y] = false;
-                //        Map.MaskData[Commands.SelectedTarget.x, Commands.SelectedTarget.y] = false;
+                        // 自分自身とターゲットもハイライト
+                        Map.MaskData[selectedUnit.x, selectedUnit.y] = false;
+                        Map.MaskData[Commands.SelectedTarget.x, Commands.SelectedTarget.y] = false;
 
-                //        // ハイライト表示を実施
-                //        GUI.MaskScreen();
-                //    }
+                        // ハイライト表示を実施
+                        GUI.MaskScreen();
+                    }
 
-                //    hit_prob = selectedUnit.HitProbability(w, Commands.SelectedTarget, true);
-                //    crit_prob = selectedUnit.CriticalProbability(w, Commands.SelectedTarget);
-                //    caption_msg = "反撃：" + selectedUnit.WeaponNickname(w) + " 攻撃力=" + SrcFormatter.Format(selectedUnit.WeaponPower(w, ""));
-                //    if (!Expression.IsOptionDefined("予測命中率非表示"))
-                //    {
-                //        caption_msg = caption_msg + " 命中率=" + SrcFormatter.Format(GeneralLib.MinLng(hit_prob, 100)) + "％（" + crit_prob + "％）";
-                //    }
+                    hit_prob = selectedWeapon.HitProbability(Commands.SelectedTarget, true);
+                    crit_prob = selectedWeapon.CriticalProbability(Commands.SelectedTarget);
+                    caption_msg = "反撃：" + selectedWeapon.WeaponNickname() + " 攻撃力=" + SrcFormatter.Format(selectedWeapon.WeaponPower(""));
+                    if (!Expression.IsOptionDefined("予測命中率非表示"))
+                    {
+                        caption_msg = caption_msg + " 命中率=" + SrcFormatter.Format(GeneralLib.MinLng(hit_prob, 100)) + "％（" + crit_prob + "％）";
+                    }
 
-                //    list = new string[4];
-                //    if (IsAbleToCounterAttack(Commands.SelectedTarget, Commands.SelectedUnit) & !indirect_attack)
-                //    {
-                //        list[1] = "反撃";
-                //    }
-                //    else
-                //    {
-                //        list[1] = "反撃不能";
-                //    }
+                    list = new string[4];
+                    if (IsAbleToCounterAttack(Commands.SelectedTarget, Commands.SelectedUnit) & !indirect_attack)
+                    {
+                        list[1] = "反撃";
+                    }
+                    else
+                    {
+                        list[1] = "反撃不能";
+                    }
 
-                //    if (!Expression.IsOptionDefined("予測命中率非表示"))
-                //    {
-                //        list[2] = "防御：命中率＝" + SrcFormatter.Format(GeneralLib.MinLng(hit_prob, 100)) + "％（" + selectedUnit.CriticalProbability(w, Commands.SelectedTarget, "防御") + "％）";
-                //        list[3] = "回避：命中率＝" + SrcFormatter.Format(GeneralLib.MinLng(hit_prob / 2, 100)) + "％（" + selectedUnit.CriticalProbability(w, Commands.SelectedTarget, "回避") + "％）";
-                //    }
-                //    else
-                //    {
-                //        list[2] = "防御";
-                //        list[3] = "回避";
-                //    }
+                    if (!Expression.IsOptionDefined("予測命中率非表示"))
+                    {
+                        list[2] = "防御：命中率＝" + SrcFormatter.Format(GeneralLib.MinLng(hit_prob, 100)) + "％（" + selectedWeapon.CriticalProbability(Commands.SelectedTarget, "防御") + "％）";
+                        list[3] = "回避：命中率＝" + SrcFormatter.Format(GeneralLib.MinLng(hit_prob / 2, 100)) + "％（" + selectedWeapon.CriticalProbability(Commands.SelectedTarget, "回避") + "％）";
+                    }
+                    else
+                    {
+                        list[2] = "防御";
+                        list[3] = "回避";
+                    }
 
-                //    // 援護防御が受けられる？
-                //    Commands.SupportGuardUnit = Commands.SelectedTarget.LookForSupportGuard(Commands.SelectedUnit, w);
-                //    if (Commands.SupportGuardUnit is object)
-                //    {
-                //        Array.Resize(list, 5);
-                //        if (Expression.IsOptionDefined("等身大基準"))
-                //        {
-                //            list[4] = "援護防御：使用する (" + Commands.SupportGuardUnit.Nickname + ")";
-                //        }
-                //        else
-                //        {
-                //            list[4] = "援護防御：使用する (" + Commands.SupportGuardUnit.Nickname + "/" + Commands.SupportGuardUnit.MainPilot().get_Nickname(false) + ")";
-                //        }
+                    // 援護防御が受けられる？
+                    Commands.SupportGuardUnit = Commands.SelectedTarget.LookForSupportGuard(Commands.SelectedUnit, w);
+                    if (Commands.SupportGuardUnit is object)
+                    {
+                        Array.Resize(list, 5);
+                        if (Expression.IsOptionDefined("等身大基準"))
+                        {
+                            list[4] = "援護防御：使用する (" + Commands.SupportGuardUnit.Nickname + ")";
+                        }
+                        else
+                        {
+                            list[4] = "援護防御：使用する (" + Commands.SupportGuardUnit.Nickname + "/" + Commands.SupportGuardUnit.MainPilot().get_Nickname(false) + ")";
+                        }
 
-                //        Commands.UseSupportGuard = true;
-                //    }
+                        Commands.UseSupportGuard = true;
+                    }
 
-                //    GUI.AddPartsToListBox();
-                //    do
-                //    {
-                //        // 攻撃への対応手段を選択
-                //        {
-                //            var withBlock10 = Commands.SelectedTarget;
-                //            GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
-                //            // 各対抗手段が選択可能か判定
+                    GUI.AddPartsToListBox();
+                    do
+                    {
+                        // 攻撃への対応手段を選択
+                        {
+                            var tu = Commands.SelectedTarget;
+                            GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
+                            // 各対抗手段が選択可能か判定
 
-                //            // 反撃が選択可能？
-                //            if (list[1] == "反撃")
-                //            {
-                //                GUI.ListItemFlag[1] = false;
-                //                tw = -1;
-                //            }
-                //            else
-                //            {
-                //                GUI.ListItemFlag[1] = true;
-                //                tw = 0;
-                //            }
+                            // 反撃が選択可能？
+                            if (list[1] == "反撃")
+                            {
+                                GUI.ListItemFlag[1] = false;
+                                tw = -1;
+                            }
+                            else
+                            {
+                                GUI.ListItemFlag[1] = true;
+                                tw = 0;
+                            }
 
-                //            // 防御が選択可能？
-                //            if (withBlock10.IsFeatureAvailable("防御不可"))
-                //            {
-                //                GUI.ListItemFlag[2] = true;
-                //            }
-                //            else
-                //            {
-                //                GUI.ListItemFlag[2] = false;
-                //            }
+                            // 防御が選択可能？
+                            if (tu.IsFeatureAvailable("防御不可"))
+                            {
+                                GUI.ListItemFlag[2] = true;
+                            }
+                            else
+                            {
+                                GUI.ListItemFlag[2] = false;
+                            }
 
-                //            // 回避が選択可能？
-                //            if (withBlock10.IsFeatureAvailable("回避不可") | withBlock10.IsConditionSatisfied("移動不能"))
-                //            {
-                //                GUI.ListItemFlag[3] = true;
-                //            }
-                //            else
-                //            {
-                //                GUI.ListItemFlag[3] = false;
-                //            }
+                            // 回避が選択可能？
+                            if (tu.IsFeatureAvailable("回避不可") | tu.IsConditionSatisfied("移動不能"))
+                            {
+                                GUI.ListItemFlag[3] = true;
+                            }
+                            else
+                            {
+                                GUI.ListItemFlag[3] = false;
+                            }
 
-                //            // 対応手段を選択
-                //            GUI.TopItem = 1;
-                //            i = GUI.ListBox(caption_msg, list, withBlock10.Nickname0 + " " + withBlock10.MainPilot().get_Nickname(false), "連続表示,カーソル移動");
-                //        }
+                            // 対応手段を選択
+                            GUI.TopItem = 1;
+                            i = GUI.ListBox(caption_msg, list, tu.Nickname0 + " " + tu.MainPilot().get_Nickname(false), "連続表示,カーソル移動");
+                        }
 
-                //        switch (i)
-                //        {
-                //            case 1:
-                //                {
-                //                    // 反撃を選択した場合は反撃に使う武器を選択
-                //                    buf = "反撃：" + selectedUnit.WeaponNickname(w) + " 攻撃力=" + SrcFormatter.Format(selectedUnit.WeaponPower(w, ""));
-                //                    if (!Expression.IsOptionDefined("予測命中率非表示"))
-                //                    {
-                //                        buf = buf + " 命中率=" + SrcFormatter.Format(GeneralLib.MinLng(hit_prob, 100)) + "％（" + crit_prob + "％）" + " ： ";
-                //                    }
+                        switch (i)
+                        {
+                            case 1:
+                                {
+                                    // 反撃を選択した場合は反撃に使う武器を選択
+                                    buf = "反撃：" + selectedUnit.WeaponNickname(w) + " 攻撃力=" + SrcFormatter.Format(selectedUnit.WeaponPower(w, ""));
+                                    if (!Expression.IsOptionDefined("予測命中率非表示"))
+                                    {
+                                        buf = buf + " 命中率=" + SrcFormatter.Format(GeneralLib.MinLng(hit_prob, 100)) + "％（" + crit_prob + "％）" + " ： ";
+                                    }
 
-                //                    {
-                //                        var withBlock11 = Commands.SelectedTarget.MainPilot();
-                //                        buf = buf + withBlock11.get_Nickname(false) + " " + Expression.Term("格闘", Commands.SelectedTarget) + SrcFormatter.Format(withBlock11.Infight) + " ";
-                //                        if (withBlock11.HasMana())
-                //                        {
-                //                            buf = buf + Expression.Term("魔力", Commands.SelectedTarget) + SrcFormatter.Format(withBlock11.Shooting);
-                //                        }
-                //                        else
-                //                        {
-                //                            buf = buf + Expression.Term("射撃", Commands.SelectedTarget) + SrcFormatter.Format(withBlock11.Shooting);
-                //                        }
-                //                    }
+                                    {
+                                        var withBlock11 = Commands.SelectedTarget.MainPilot();
+                                        buf = buf + withBlock11.get_Nickname(false) + " " + Expression.Term("格闘", Commands.SelectedTarget) + SrcFormatter.Format(withBlock11.Infight) + " ";
+                                        if (withBlock11.HasMana())
+                                        {
+                                            buf = buf + Expression.Term("魔力", Commands.SelectedTarget) + SrcFormatter.Format(withBlock11.Shooting);
+                                        }
+                                        else
+                                        {
+                                            buf = buf + Expression.Term("射撃", Commands.SelectedTarget) + SrcFormatter.Format(withBlock11.Shooting);
+                                        }
+                                    }
 
-                //                    tw = GUI.WeaponListBox(Commands.SelectedTarget, buf, "反撃", BGM: "");
-                //                    if (tw == 0)
-                //                    {
-                //                        i = 0;
-                //                    }
+                                    tw = GUI.WeaponListBox(Commands.SelectedTarget, buf, "反撃", BGM: "");
+                                    if (tw == 0)
+                                    {
+                                        i = 0;
+                                    }
 
-                //                    break;
-                //                }
+                                    break;
+                                }
 
-                //            case 2:
-                //                {
-                //                    // 防御を選択した
-                //                    def_mode = "防御";
-                //                    break;
-                //                }
+                            case 2:
+                                {
+                                    // 防御を選択した
+                                    def_mode = "防御";
+                                    break;
+                                }
 
-                //            case 3:
-                //                {
-                //                    // 回避を選択した
-                //                    def_mode = "回避";
-                //                    break;
-                //                }
+                            case 3:
+                                {
+                                    // 回避を選択した
+                                    def_mode = "回避";
+                                    break;
+                                }
 
-                //            case 4:
-                //                {
-                //                    // 援護防御を使用するかどうかを切り替えた
-                //                    Commands.UseSupportGuard = !Commands.UseSupportGuard;
-                //                    if (Commands.UseSupportGuard)
-                //                    {
-                //                        list[4] = "援護防御：使用する (";
-                //                    }
-                //                    else
-                //                    {
-                //                        list[4] = "援護防御：使用しない (";
-                //                    }
+                            case 4:
+                                {
+                                    // 援護防御を使用するかどうかを切り替えた
+                                    Commands.UseSupportGuard = !Commands.UseSupportGuard;
+                                    if (Commands.UseSupportGuard)
+                                    {
+                                        list[4] = "援護防御：使用する (";
+                                    }
+                                    else
+                                    {
+                                        list[4] = "援護防御：使用しない (";
+                                    }
 
-                //                    if (Expression.IsOptionDefined("等身大基準"))
-                //                    {
-                //                        list[4] = list[4] + Commands.SupportGuardUnit.Nickname + ")";
-                //                    }
-                //                    else
-                //                    {
-                //                        list[4] = list[4] + Commands.SupportGuardUnit.Nickname + "/" + Commands.SupportGuardUnit.MainPilot().get_Nickname(false) + ")";
-                //                    }
+                                    if (Expression.IsOptionDefined("等身大基準"))
+                                    {
+                                        list[4] = list[4] + Commands.SupportGuardUnit.Nickname + ")";
+                                    }
+                                    else
+                                    {
+                                        list[4] = list[4] + Commands.SupportGuardUnit.Nickname + "/" + Commands.SupportGuardUnit.MainPilot().get_Nickname(false) + ")";
+                                    }
 
-                //                    i = 0;
-                //                    break;
-                //                }
+                                    i = 0;
+                                    break;
+                                }
 
-                //            default:
-                //                {
-                //                    // 反撃・防御・回避の全てが選択出来ない？
-                //                    if (GUI.ListItemFlag[1] & GUI.ListItemFlag[2] & GUI.ListItemFlag[3])
-                //                    {
-                //                        break;
-                //                    }
+                            default:
+                                {
+                                    // 反撃・防御・回避の全てが選択出来ない？
+                                    if (GUI.ListItemFlag[1] & GUI.ListItemFlag[2] & GUI.ListItemFlag[3])
+                                    {
+                                        break;
+                                    }
 
-                //                    break;
-                //                }
-                //        }
-                //    }
-                //    while (i == 0);
+                                    break;
+                                }
+                        }
+                    }
+                    while (i == 0);
 
-                //    // 反撃手段選択終了
-                //    My.MyProject.Forms.frmListBox.Hide();
-                //    GUI.RemovePartsOnListBox();
+                    // 反撃手段選択終了
+                    GUI.CloseListBox();
+                    GUI.RemovePartsOnListBox();
 
-                //    // ハイライト表示を消去
-                //    if (SRC.BattleAnimation)
-                //    {
-                //        GUI.RefreshScreen();
-                //    }
-                //}
-                //else
-                //{
-                //    // コンピューターが操作するユニット及び自動反撃モードの場合
+                    // ハイライト表示を消去
+                    if (SRC.BattleAnimation)
+                    {
+                        GUI.RefreshScreen();
+                    }
+                }
+                else
+                {
+                    // コンピューターが操作するユニット及び自動反撃モードの場合
 
-                //    // 反撃に使う武器を選択
-                //    tw = SelectWeapon(Commands.SelectedTarget, Commands.SelectedUnit, "反撃", max_prob: 0, max_dmg: 0);
-                //    if (indirect_attack)
-                //    {
-                //        tw = 0;
-                //    }
+                    // 反撃に使う武器を選択
+                    tw = SelectWeapon(Commands.SelectedTarget, Commands.SelectedUnit, "反撃", max_prob: 0, max_dmg: 0);
+                    if (indirect_attack)
+                    {
+                        tw = 0;
+                    }
 
-                //    // 防御を選択する？
-                //    // UPGRADE_WARNING: オブジェクト SelectDefense() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //    def_mode = Conversions.ToString(SelectDefense(Commands.SelectedUnit, w, Commands.SelectedTarget, tw));
-                //    if (!string.IsNullOrEmpty(def_mode))
-                //    {
-                //        tw = -1;
-                //    }
-                //}
+                    // 防御を選択する？
+                    // UPGRADE_WARNING: オブジェクト SelectDefense() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
+                    def_mode = Conversions.ToString(SelectDefense(Commands.SelectedUnit, w, Commands.SelectedTarget, tw));
+                    if (!string.IsNullOrEmpty(def_mode))
+                    {
+                        tw = -1;
+                    }
+                }
             }
 
             // 味方ユニットの場合は武器用ＢＧＭを演奏する
