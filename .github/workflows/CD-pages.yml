@@ -48,7 +48,6 @@ jobs:
         with:
           working-directory: ./SRC.Sharp/SRCTestBlazor/E2E
           command: "cypress run"
-          exec-flags: --record
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
