@@ -1,7 +1,9 @@
 ﻿
 describe('Init Blazor Application', function () {
     it('Blazorアプリケーションとしてのレンダリングが行われる', function () {
-        cy.visit('/');
+        cy.visit('/', {
+            timeout: 10000,
+        });
         cy.get('input[type="file"]').should('exist');
         cy.percySnapshot();
     });
