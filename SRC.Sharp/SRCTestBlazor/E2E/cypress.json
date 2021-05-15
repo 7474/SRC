@@ -1,4 +1,5 @@
 {
   "projectId": "a4eukb",
-  "baseUrl": "https://7474.github.io/SRC"
+  "baseUrl": "https://7474.github.io/SRC",
+  "defaultCommandTimeout":  10000
 }

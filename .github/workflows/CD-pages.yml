@@ -19,6 +19,8 @@ jobs:
     - name: Publish app
       run: dotnet publish SRC.Sharp/SRCTestBlazor/SRCTestBlazor.csproj -c Release
 
+    - name: Configure for GitHub Pages
+      run: mv -f ${{ env.PUBLISH_DIR }}/index.ghp.html ${{ env.PUBLISH_DIR }}/index.html
     - name: Rewrite base href
       uses: SteveSandersonMS/ghaction-rewrite-base-href@v1
       with:
@@ -45,7 +47,7 @@ jobs:
         uses: percy/exec-action@v0.3.1
         with:
           working-directory: ./SRC.Sharp/SRCTestBlazor/E2E
-          command: "cypress run --record"
+          command: 'cypress run --record'
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
