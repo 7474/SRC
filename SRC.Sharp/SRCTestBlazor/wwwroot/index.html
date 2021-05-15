@@ -1,85 +1,28 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SRC#DataViewer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>SRCTestBlazor</title>
     <base href="/" />
-    <link rel="icon" href="favicon.ico" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
-    <link href="fontawesome/css/all.min.css" rel="stylesheet" />
-    <!--<link href="SRCTestBlazor.styles.css" rel="stylesheet" />-->
+    <link href="SRCTestBlazor.styles.css" rel="stylesheet" />
     <link href="manifest.json" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
-    <!-- Start Single Page Apps for GitHub Pages -->
-    <script type="text/javascript">
-        // Single Page Apps for GitHub Pages
-        // https://github.com/rafrex/spa-github-pages
-        // Copyright (c) 2016 Rafael Pedicini, licensed under the MIT License
-        // ----------------------------------------------------------------------
-        // This script checks to see if a redirect is present in the query string
-        // and converts it back into the correct url and adds it to the
-        // browser's history using window.history.replaceState(...),
-        // which won't cause the browser to attempt to load the new url.
-        // When the single page app is loaded further down in this file,
-        // the correct url will be waiting in the browser's history for
-        // the single page app to route accordingly.
-        (function (l) {
-            if (l.search) {
-                var q = {};
-                l.search.slice(1).split('&').forEach(function (v) {
-                    var a = v.split('=');
-                    q[a[0]] = a.slice(1).join('=').replace(/~and~/g, '&');
-                });
-                if (q.p !== undefined) {
-                    window.history.replaceState(null, null,
-                        l.pathname.slice(0, -1) + (q.p || '') +
-                        (q.q ? ('?' + q.q) : '') +
-                        l.hash
-                    );
-                }
-            }
-        }(window.location))
-    </script>
-    <!-- End Single Page Apps for GitHub Pages -->
 </head>
 
-<body class="has-navbar-fixed-top">
+<body>
     <div id="app">Loading...</div>
 
     <div id="blazor-error-ui">
-        エラーしました。
-        <a href="" class="reload">リロード</a>を試してください。<br />
-        リロードしてもエラーが解消しない場合は、エラー内容（<a href="https://support.google.com/displayvideo/answer/6188066">開発者ツール</a>のコンソールログなど）を<a href="https://github.com/7474/SRC">リポジトリ</a>にお知らせください。
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
-    <script src="bulma.js"></script>
-    <script src="anchor.js"></script>
-    <script src="decode.js"></script>
-    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
-    <script>
-        Blazor.start({
-            loadBootResource: function (type, name, defaultUri, integrity) {
-                // For framework resources, use the precompressed .br files for faster downloads
-                // This is needed only because GitHub pages doesn't natively support Brotli (or even gzip for .dll files)
-                if (type !== 'dotnetjs' && location.hostname !== 'localhost') {
-                    return (async function () {
-                        const response = await fetch(defaultUri + '.br', { cache: 'no-cache' });
-                        if (!response.ok) {
-                            throw new Error(response.statusText);
-                        }
-                        const originalResponseBuffer = await response.arrayBuffer();
-                        const originalResponseArray = new Int8Array(originalResponseBuffer);
-                        const decompressedResponseArray = BrotliDecode(originalResponseArray);
-                        const contentType = type === 'dotnetwasm' ? 'application/wasm' : 'application/octet-stream';
-                        return new Response(decompressedResponseArray, { headers: { 'content-type': contentType } });
-                    })();
-                }
-            }
-        });
-    </script>
 </body>
 
 </html>

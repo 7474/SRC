@@ -1,10 +1,10 @@
 {
-  "name": "SRC#DataViewer",
-  "short_name": "SRC#DV",
+  "name": "SRCTestBlazor",
+  "short_name": "SRCTestBlazor",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#5c2d91",
+  "theme_color": "#03173d",
   "icons": [
     {
       "src": "icon-512.png",
