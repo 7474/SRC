@@ -181,7 +181,7 @@ namespace SRCCore.Filesystem
             var entry = _archive.GetEntry(entryPath);
             if (entry == null)
             {
-                entry = _entryMap[entryName];
+                entry = _entryMap[entryPath];
             }
             return entry;
         }
