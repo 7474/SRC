@@ -1,8 +1,8 @@
-using SRCCore.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 
@@ -12,13 +12,17 @@ namespace SRCCore.VB
     // （ジェネリクスは欲しいので）
     public class SrcCollection<V> : IDictionary<string, V>
     {
-        private List<V> list;
+        //private List<V> list;
         private OrderedDictionary dict;
+
+        private static readonly StringComparer s_keyComparer = CultureInfo.InvariantCulture.CompareInfo.GetStringComparer(
+            CompareOptions.IgnoreWidth | CompareOptions.IgnoreCase
+        );
 
         public SrcCollection()
         {
-            dict = new OrderedDictionary();
-            list = new List<V>();
+            dict = new OrderedDictionary(s_keyComparer);
+            //list = new List<V>();
         }
 
         [OnDeserialized]
@@ -27,7 +31,8 @@ namespace SRCCore.VB
             UpdateList();
         }
 
-        public IList<V> List => list.AsReadOnly();
+        //public IList<V> List => list.AsReadOnly();
+        public IList<V> List => dict.Values.Cast<V>().ToList();
 
         /// <summary>
         /// 1オフセット
@@ -36,13 +41,13 @@ namespace SRCCore.VB
         /// <returns></returns>
         public V this[int index]
         {
-            get => list[index - 1];
+            get => List[index - 1];
             set => throw new NotImplementedException();
         }
 
         public V this[string key]
         {
-            get => ContainsKey(key) ? (V)dict[key.ToLower()] : default(V);
+            get => ContainsKey(key) ? (V)dict[key] : default(V);
             set => Add(value, key);
         }
 
@@ -52,7 +57,7 @@ namespace SRCCore.VB
 
         public ICollection<string> Keys => dict.Keys.Cast<string>().ToList();
 
-        public ICollection<V> Values => list;
+        public ICollection<V> Values => List;
 
         public void Add(V item)
         {
@@ -67,29 +72,29 @@ namespace SRCCore.VB
         }
         public void Add(V value, string key)
         {
-            Add(key.ToLower(), value);
+            Add(key, value);
         }
         public void Add(string key, V value)
         {
             // TODO 既存だった時の振る舞いどうなってんねん
-            dict.Add(key.ToLower(), value);
+            dict.Add(key, value);
             UpdateList();
         }
 
         public void Add(KeyValuePair<string, V> item)
         {
-            Add(item.Key.ToLower(), item.Value);
+            Add(item.Key, item.Value);
         }
 
         public void Clear()
         {
             dict.Clear();
-            list.Clear();
+            //list.Clear();
         }
 
         public bool Contains(V item)
         {
-            return list.Contains(item);
+            return dict.Values.Cast<V>().Contains(item);
         }
 
         public bool Contains(KeyValuePair<string, V> item)
@@ -99,7 +104,7 @@ namespace SRCCore.VB
 
         public bool ContainsKey(string key)
         {
-            return key == null ? false : dict.Contains(key.ToLower());
+            return key == null ? false : dict.Contains(key);
         }
 
         public void CopyTo(V[] array, int arrayIndex)
@@ -119,7 +124,7 @@ namespace SRCCore.VB
 
         public int IndexOf(V item)
         {
-            return list.IndexOf(item);
+            return List.IndexOf(item);
         }
 
         public void Insert(int index, V item)
@@ -144,7 +149,7 @@ namespace SRCCore.VB
         {
             if (ContainsKey(key))
             {
-                dict.Remove(key.ToLower());
+                dict.Remove(key);
                 UpdateList();
                 return true;
             }
@@ -153,7 +158,7 @@ namespace SRCCore.VB
 
         public bool Remove(KeyValuePair<string, V> item)
         {
-            return Remove(item.Key.ToLower());
+            return Remove(item.Key);
         }
 
         public void RemoveAt(int index)
@@ -178,7 +183,7 @@ namespace SRCCore.VB
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return list.GetEnumerator();
+            return dict.Values.GetEnumerator();
         }
 
         IEnumerator<KeyValuePair<string, V>> IEnumerable<KeyValuePair<string, V>>.GetEnumerator()
@@ -190,13 +195,8 @@ namespace SRCCore.VB
 
         private void UpdateList()
         {
-            // XXX reallocもったいない。参照時にCastしてListしたほうがいい？
-            list = dict.Values.Cast<V>().ToList();
-        }
-
-        internal void Add(FeatureData fd, object p)
-        {
-            throw new NotImplementedException();
+            //// XXX reallocもったいない。参照時にCastしてListしたほうがいい？
+            //list = dict.Values.Cast<V>().ToList();
         }
     }
 }

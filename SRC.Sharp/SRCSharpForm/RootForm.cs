@@ -34,6 +34,20 @@ namespace SRCSharpForm
             // XXX 単位変更をこんな感じでやるのは下策だなー
             SRC.Sound.Player.SoundVolume = config.SoundVolume / 100f;
 
+            // XXX ファイルシステムへのエントリー追加はお試し中
+            try
+            {
+                fileSystem.AddAchive(SRC.AppPath, "assets.zip");
+                fileSystem.AddPath(SRC.AppPath);
+                fileSystem.AddPath(SRC.ExtDataPath2);
+                fileSystem.AddPath(SRC.ExtDataPath);
+            }
+            catch (Exception ex)
+            {
+                // ignore
+                SRC.LogError(ex);
+            }
+
             SRC.GUI = new SRCSharpFormGUI(SRC);
             SRC.GUI.MessageWait = 700;
         }
@@ -48,23 +62,7 @@ namespace SRCSharpForm
                 if (res == DialogResult.OK)
                 {
                     Hide();
-                    try
-                    {
-                        var fileSystem = SRC.FileSystem;
-                        fileSystem.AddAchive(SRC.AppPath, "assets.zip");
-                        fileSystem.AddPath(SRC.AppPath);
-                        fileSystem.AddPath(SRC.ExtDataPath2);
-                        fileSystem.AddPath(SRC.ExtDataPath);
-                        fileSystem.AddPath(SRC.ExtDataPath);
-                        fileSystem.AddPath(SRC.ExtDataPath);
-                        fileSystem.AddPath(Path.GetDirectoryName(fbd.FileName));
-                    }
-                    catch (Exception ex)
-                    {
-                        // ignore
-                        // XXX ファイルシステムへのエントリー追加Assetsはお試し中
-                        SRC.LogError(ex);
-                    }
+                    SRC.FileSystem.AddPath(Path.GetDirectoryName(fbd.FileName));
                     SRC.Execute(fbd.FileName);
                 }
             }
