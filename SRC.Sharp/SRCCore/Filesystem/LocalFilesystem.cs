@@ -9,11 +9,12 @@ namespace SRCCore.Filesystem
 {
     public class LocalFileSystem : IFileSystem
     {
-        private IList<LocalFileSystemArchive> archives;
+        private IList<ILocalFileSystemEntrySet> entrySets;
 
         public LocalFileSystem()
         {
-            archives = new List<LocalFileSystemArchive>();
+            entrySets = new List<ILocalFileSystemEntrySet>();
+            entrySets.Add(new LocalFileSystemAbsolute());
         }
 
         public string PathCombine(params string[] paths)
@@ -25,61 +26,33 @@ namespace SRCCore.Filesystem
         public bool FileExists(params string[] paths)
         {
             string path = PathCombine(paths);
-            return GetArchiveEntry(path) != null
-                || File.Exists(path);
+            return entrySets.Any(x => x.Exists(path));
         }
 
         public Stream Open(params string[] paths)
         {
             var path = PathCombine(paths);
-            var archiveEntry = GetArchiveEntry(path);
-            if (archiveEntry != null)
-            {
-                return archiveEntry.Open();
-            }
-            return new FileStream(path, FileMode.Open);
+            return entrySets.FirstOrDefault(x => x.Exists(path))?.OpenRead(path);
         }
 
-        private ZipArchiveEntry GetArchiveEntry(string path)
+        public void AddPath(string basePath)
         {
-            // ZipArchive のパス区切り文字は / である様子
-            // マルチバイト文字はUTF-8にしておけばよい
-            // XXX 大文字小文字はどうなってるんだろうか？
-            var archivePath = path.Replace("\\", "/");
-            var isAbsolute = Path.IsPathRooted(path);
-            foreach (var archive in archives)
-            {
-                if (isAbsolute && !archivePath.StartsWith(archive.BasePath))
-                {
-                    continue;
-                }
-                var entryPath = isAbsolute ? archivePath.Replace(archive.BasePath, "") : archivePath;
-                try
-                {
-                    var entry = archive.GetEntry(entryPath);
-                    if (entry != null)
-                    {
-                        return entry;
-                    }
-                }
-                catch
-                {
-                    // ignore
-                }
-            }
-            return null;
+            AddEntrySet(new LocalFileSystemPath(
+                basePath
+            ));
         }
 
         public void AddAchive(string basePath, string archivePath)
         {
-            var tmpBasePath = basePath.Replace("\\", "/");
-            if (!tmpBasePath.EndsWith("/"))
-            {
-                tmpBasePath += "/";
-            }
-            archives.Insert(0, new LocalFileSystemArchive(
-                tmpBasePath, ZipFile.Open(archivePath, ZipArchiveMode.Read)
+            AddEntrySet(new LocalFileSystemArchive(
+                basePath, ZipFile.Open(archivePath, ZipArchiveMode.Read)
             ));
+        }
+
+        private void AddEntrySet(ILocalFileSystemEntrySet entrySet)
+        {
+            // 後に追加したものは絶対パスの次に走査する
+            entrySets.Insert(1, entrySet);
         }
 
         public bool RelativePathEuqals(string scenarioPath, string a, string b)
@@ -104,7 +77,75 @@ namespace SRCCore.Filesystem
             return (path ?? "").Replace('/', '\\');
         }
     }
-    public class LocalFileSystemArchive
+
+    public interface ILocalFileSystemEntrySet
+    {
+        bool Exists(string entryName);
+        Stream OpenRead(string entryName);
+    }
+
+    public class LocalFileSystemAbsolute : ILocalFileSystemEntrySet
+    {
+        public LocalFileSystemAbsolute()
+        {
+        }
+
+        private FileInfo GetFileInfo(string entryName)
+        {
+            return Path.IsPathRooted(entryName) ? new FileInfo(entryName) : null;
+        }
+
+        public bool Exists(string entryName)
+        {
+            return GetFileInfo(entryName)?.Exists ?? false;
+        }
+
+        public Stream OpenRead(string entryName)
+        {
+            var info = GetFileInfo(entryName);
+            return info?.Exists ?? false ? info.OpenRead() : null;
+        }
+    }
+
+    public class LocalFileSystemPath : ILocalFileSystemEntrySet
+    {
+        public string BasePath { get; private set; }
+        public LocalFileSystemPath(string basePath)
+        {
+            var tmpBasePath = basePath.Replace("\\", "/");
+            if (!tmpBasePath.EndsWith("/"))
+            {
+                tmpBasePath += "/";
+            }
+            BasePath = tmpBasePath;
+        }
+
+        private FileInfo GetFileInfo(string entryName)
+        {
+            var archivePath = entryName.Replace("\\", "/");
+            var isAbsolute = Path.IsPathRooted(entryName);
+            if (isAbsolute && !archivePath.StartsWith(BasePath))
+            {
+                return null;
+            }
+            var entryPath = isAbsolute ? archivePath.Replace(BasePath, "") : archivePath;
+
+            return new FileInfo(Path.Combine(BasePath, entryPath));
+        }
+
+        public bool Exists(string entryName)
+        {
+            return GetFileInfo(entryName)?.Exists ?? false;
+        }
+
+        public Stream OpenRead(string entryName)
+        {
+            var info = GetFileInfo(entryName);
+            return info?.Exists ?? false ? info.OpenRead() : null;
+        }
+    }
+
+    public class LocalFileSystemArchive : ILocalFileSystemEntrySet
     {
         public string BasePath { get; private set; }
         private ZipArchive _archive;
@@ -112,7 +153,12 @@ namespace SRCCore.Filesystem
 
         public LocalFileSystemArchive(string basePath, ZipArchive archive)
         {
-            BasePath = basePath;
+            var tmpBasePath = basePath.Replace("\\", "/");
+            if (!tmpBasePath.EndsWith("/"))
+            {
+                tmpBasePath += "/";
+            }
+            BasePath = tmpBasePath;
             _archive = archive;
             _entryMap = new SrcCollection<ZipArchiveEntry>();
 
@@ -122,16 +168,32 @@ namespace SRCCore.Filesystem
             }
         }
 
-        public ZipArchiveEntry GetEntry(string entryName)
+        private ZipArchiveEntry GetEntry(string entryName)
         {
-            var entry = _archive.GetEntry(entryName);
+            var archivePath = entryName.Replace("\\", "/");
+            var isAbsolute = Path.IsPathRooted(entryName);
+            if (isAbsolute && !archivePath.StartsWith(BasePath))
+            {
+                return null;
+            }
+            var entryPath = isAbsolute ? archivePath.Replace(BasePath, "") : archivePath;
 
+            var entry = _archive.GetEntry(entryPath);
             if (entry == null)
             {
                 entry = _entryMap[entryName];
             }
-
             return entry;
+        }
+
+        public bool Exists(string entryName)
+        {
+            return GetEntry(entryName) != null;
+        }
+
+        public Stream OpenRead(string entryName)
+        {
+            return GetEntry(entryName).Open();
         }
     }
 }
