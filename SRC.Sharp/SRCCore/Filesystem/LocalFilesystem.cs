@@ -37,9 +37,13 @@ namespace SRCCore.Filesystem
 
         public void AddPath(string basePath)
         {
-            AddEntrySet(new LocalFileSystemPath(
-                basePath
-            ));
+            if (Directory.Exists(basePath))
+            {
+                AddEntrySet(new LocalFileSystemPath(
+                    basePath
+                ));
+            }
+            // XXX Log
         }
 
         public void AddAchive(string basePath, string archivePath)
