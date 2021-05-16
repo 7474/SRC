@@ -1,3 +1,4 @@
+using SRCCore.VB;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -55,8 +56,7 @@ namespace SRCCore.Filesystem
                 var entryPath = isAbsolute ? archivePath.Replace(archive.BasePath, "") : archivePath;
                 try
                 {
-                    // XXX これもしかして線形検索してるんだろうか？
-                    var entry = archive.Archive.GetEntry(entryPath);
+                    var entry = archive.GetEntry(entryPath);
                     if (entry != null)
                     {
                         return entry;
@@ -77,11 +77,9 @@ namespace SRCCore.Filesystem
             {
                 tmpBasePath += "/";
             }
-            archives.Insert(0, new LocalFileSystemArchive
-            {
-                BasePath = tmpBasePath,
-                Archive = ZipFile.Open(archivePath, ZipArchiveMode.Read),
-            });
+            archives.Insert(0, new LocalFileSystemArchive(
+                tmpBasePath, ZipFile.Open(archivePath, ZipArchiveMode.Read)
+            ));
         }
 
         public bool RelativePathEuqals(string scenarioPath, string a, string b)
@@ -108,7 +106,32 @@ namespace SRCCore.Filesystem
     }
     public class LocalFileSystemArchive
     {
-        public string BasePath { get; set; }
-        public ZipArchive Archive { get; set; }
+        public string BasePath { get; private set; }
+        private ZipArchive _archive;
+        private SrcCollection<ZipArchiveEntry> _entryMap;
+
+        public LocalFileSystemArchive(string basePath, ZipArchive archive)
+        {
+            BasePath = basePath;
+            _archive = archive;
+            _entryMap = new SrcCollection<ZipArchiveEntry>();
+
+            foreach (var entry in _archive.Entries.Where(x => !string.IsNullOrEmpty(x.Name)))
+            {
+                _entryMap[entry.FullName] = entry;
+            }
+        }
+
+        public ZipArchiveEntry GetEntry(string entryName)
+        {
+            var entry = _archive.GetEntry(entryName);
+
+            if (entry == null)
+            {
+                entry = _entryMap[entryName];
+            }
+
+            return entry;
+        }
     }
 }
