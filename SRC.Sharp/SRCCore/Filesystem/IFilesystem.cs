@@ -9,9 +9,15 @@ namespace SRCCore.Filesystem
         Stream Open(params string[] paths);
 
         /// <summary>
+        /// 読み込みアクセス対象とするパスを追加します。
+        /// パスやアーカイブは後に追加したものから先に走査されます。
+        /// </summary>
+        /// <param name="basePath">ファイルが配置されているディレクトリのパス</param>
+        void AddPath(string basePath);
+
+        /// <summary>
         /// 読み込みアクセス対象とするアーカイブファイルを追加します。
-        /// アーカイブはファイルシステムが規定でサポートする要素より先に走査されます。
-        /// アーカイブは後に追加したものから先に走査されます。
+        /// パスやアーカイブは後に追加したものから先に走査されます。
         /// </summary>
         /// <param name="basePath">アーカイブファイルが配置されているディレクトリのパス</param>
         /// <param name="archivePath">アーカイブファイルのパス</param>
