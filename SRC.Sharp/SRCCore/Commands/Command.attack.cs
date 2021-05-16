@@ -1427,152 +1427,147 @@ namespace SRCCore.Commands
         {
             LogDebug();
 
-            throw new NotImplementedException();
-            //// MOD END MARGE
-            //int i;
-            //var partners = default(Unit[]);
-            //// ADD START MARGE
-            //bool is_p_weapon;
-            //// ADD END MARGE
+            var currentUnit = SelectedUnit;
+            var currentWeapon = currentUnit.Weapon(SelectedWeapon);
 
+            // 移動後使用後可能な武器か記録しておく
+            var is_p_weapon = currentWeapon.IsWeaponClassifiedAs("移動後攻撃可");
+
+            // 攻撃目標地点を選択して初めて攻撃範囲が分かるタイプのマップ攻撃
+            // の場合は再度プレイヤーの選択を促す必要がある
+            if (CommandState == "ターゲット選択" || CommandState == "移動後ターゲット選択")
+            {
+                if (currentWeapon.IsWeaponClassifiedAs("Ｍ投"))
+                {
+                    if (CommandState == "ターゲット選択")
+                    {
+                        CommandState = "マップ攻撃使用";
+                    }
+                    else
+                    {
+                        CommandState = "移動後マップ攻撃使用";
+                    }
+
+                    // 攻撃目標地点
+                    SelectedX = GUI.PixelToMapX((int)GUI.MouseX);
+                    SelectedY = GUI.PixelToMapY((int)GUI.MouseY);
+
+                    // 攻撃範囲を設定
+                    if (currentWeapon.IsWeaponClassifiedAs("識")
+                        || currentUnit.IsUnderSpecialPowerEffect("識別攻撃"))
+                    {
+                        Map.AreaInRange(SelectedX, SelectedY, (int)currentWeapon.WeaponLevel("Ｍ投"), 1, "味方の敵");
+                    }
+                    else
+                    {
+                        Map.AreaInRange(SelectedX, SelectedY, (int)currentWeapon.WeaponLevel("Ｍ投"), 1, "すべて");
+                    }
+
+                    GUI.MaskScreen();
+                    return;
+                }
+                else if (currentWeapon.IsWeaponClassifiedAs("Ｍ移"))
+                {
+                    // 攻撃目標地点
+                    SelectedX = GUI.PixelToMapX((int)GUI.MouseX);
+                    SelectedY = GUI.PixelToMapY((int)GUI.MouseY);
+
+                    // 攻撃目標地点に他のユニットがいては駄目
+                    if (Map.MapDataForUnit[SelectedX, SelectedY] is object)
+                    {
+                        GUI.MaskScreen();
+                        return;
+                    }
+
+                    if (CommandState == "ターゲット選択")
+                    {
+                        CommandState = "マップ攻撃使用";
+                    }
+                    else
+                    {
+                        CommandState = "移動後マップ攻撃使用";
+                    }
+
+                    // 攻撃範囲を設定
+                    Map.AreaInPointToPoint(currentUnit.x, currentUnit.y, SelectedX, SelectedY);
+                    GUI.MaskScreen();
+                    return;
+                }
+                else if (currentWeapon.IsWeaponClassifiedAs("Ｍ線"))
+                {
+                    if (CommandState == "ターゲット選択")
+                    {
+                        CommandState = "マップ攻撃使用";
+                    }
+                    else
+                    {
+                        CommandState = "移動後マップ攻撃使用";
+                    }
+
+                    // 攻撃目標地点
+                    SelectedX = GUI.PixelToMapX((int)GUI.MouseX);
+                    SelectedY = GUI.PixelToMapY((int)GUI.MouseY);
+
+                    // 攻撃範囲を設定
+                    Map.AreaInPointToPoint(currentUnit.x, currentUnit.y, SelectedX, SelectedY);
+                    GUI.MaskScreen();
+                    return;
+                }
+            }
+
+            // TODO Impl 合体技
+            // 合体技パートナーの設定
+            var partners = new List<Unit>();
+            //if (currentWeapon.IsWeaponClassifiedAs("合"))
             //{
-            //    var withBlock = SelectedUnit;
-            //    // ADD START MARGE
-            //    // 移動後使用後可能な武器か記録しておく
-            //    is_p_weapon = withBlock.IsWeaponClassifiedAs(SelectedWeapon, "移動後攻撃可");
-            //    // ADD END MARGE
-            //    // 攻撃目標地点を選択して初めて攻撃範囲が分かるタイプのマップ攻撃
-            //    // の場合は再度プレイヤーの選択を促す必要がある
-            //    if (CommandState == "ターゲット選択" || CommandState == "移動後ターゲット選択")
-            //    {
-            //        if (withBlock.IsWeaponClassifiedAs(SelectedWeapon, "Ｍ投"))
-            //        {
-            //            if (CommandState == "ターゲット選択")
-            //            {
-            //                CommandState = "マップ攻撃使用";
-            //            }
-            //            else
-            //            {
-            //                CommandState = "移動後マップ攻撃使用";
-            //            }
-
-            //            // 攻撃目標地点
-            //            SelectedX = GUI.PixelToMapX(GUI.MouseX);
-            //            SelectedY = GUI.PixelToMapY(GUI.MouseY);
-
-            //            // 攻撃範囲を設定
-            //            if (withBlock.IsWeaponClassifiedAs(SelectedWeapon, "識") || withBlock.IsUnderSpecialPowerEffect("識別攻撃"))
-            //            {
-            //                Map.AreaInRange(SelectedX, SelectedY, withBlock.WeaponLevel(SelectedWeapon, "Ｍ投"), 1, "味方の敵");
-            //            }
-            //            else
-            //            {
-            //                Map.AreaInRange(SelectedX, SelectedY, withBlock.WeaponLevel(SelectedWeapon, "Ｍ投"), 1, "すべて");
-            //            }
-
-            //            GUI.MaskScreen();
-            //            return;
-            //        }
-            //        else if (withBlock.IsWeaponClassifiedAs(SelectedWeapon, "Ｍ移"))
-            //        {
-            //            // 攻撃目標地点
-            //            SelectedX = GUI.PixelToMapX(GUI.MouseX);
-            //            SelectedY = GUI.PixelToMapY(GUI.MouseY);
-
-            //            // 攻撃目標地点に他のユニットがいては駄目
-            //            if (Map.MapDataForUnit[SelectedX, SelectedY] is object)
-            //            {
-            //                GUI.MaskScreen();
-            //                return;
-            //            }
-
-            //            if (CommandState == "ターゲット選択")
-            //            {
-            //                CommandState = "マップ攻撃使用";
-            //            }
-            //            else
-            //            {
-            //                CommandState = "移動後マップ攻撃使用";
-            //            }
-
-            //            // 攻撃範囲を設定
-            //            Map.AreaInPointToPoint(withBlock.x, withBlock.y, SelectedX, SelectedY);
-            //            GUI.MaskScreen();
-            //            return;
-            //        }
-            //        else if (withBlock.IsWeaponClassifiedAs(SelectedWeapon, "Ｍ線"))
-            //        {
-            //            if (CommandState == "ターゲット選択")
-            //            {
-            //                CommandState = "マップ攻撃使用";
-            //            }
-            //            else
-            //            {
-            //                CommandState = "移動後マップ攻撃使用";
-            //            }
-
-            //            // 攻撃目標地点
-            //            SelectedX = GUI.PixelToMapX(GUI.MouseX);
-            //            SelectedY = GUI.PixelToMapY(GUI.MouseY);
-
-            //            // 攻撃範囲を設定
-            //            Map.AreaInPointToPoint(withBlock.x, withBlock.y, SelectedX, SelectedY);
-            //            GUI.MaskScreen();
-            //            return;
-            //        }
-            //    }
-
-            //    // 合体技パートナーの設定
-            //    if (withBlock.IsWeaponClassifiedAs(SelectedWeapon, "合"))
-            //    {
-            //        withBlock.CombinationPartner("武装", SelectedWeapon, partners);
-            //    }
-            //    else
-            //    {
-            //        SelectedPartners = new Unit[0];
-            //        partners = new Unit[1];
-            //    }
-
-            //    if (GUI.MainWidth != 15)
-            //    {
-            //        Status.ClearUnitStatus();
-            //    }
-
-            //    GUI.LockGUI();
-            //    SelectedTWeapon = 0;
-
-            //    // マップ攻撃による攻撃を行う
-            //    withBlock.MapAttack(SelectedWeapon, SelectedX, SelectedY);
-            //    SelectedUnit = withBlock.CurrentForm();
-            //    SelectedTarget = null;
-            //    if (SRC.IsScenarioFinished)
-            //    {
-            //        SRC.IsScenarioFinished = false;
-            //        SelectedPartners = new Unit[0];
-            //        GUI.UnlockGUI();
-            //        return;
-            //    }
-
-            //    if (SRC.IsCanceled)
-            //    {
-            //        SRC.IsCanceled = false;
-            //        SelectedPartners = new Unit[0];
-            //        WaitCommand();
-            //        return;
-            //    }
+            //    currentUnit.CombinationPartner("武装", SelectedWeapon, partners);
+            //}
+            //else
+            //{
+            //    SelectedPartners = new Unit[0];
+            //    partners = new Unit[1];
             //}
 
-            //// 合体技のパートナーの行動数を減らす
-            //if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
-            //{
-            //    var loopTo = Information.UBound(partners);
-            //    for (i = 1; i <= loopTo; i++)
-            //        partners[i].CurrentForm().UseAction();
-            //}
+            if (GUI.MainWidth != 15)
+            {
+                Status.ClearUnitStatus();
+            }
 
-            //SelectedPartners = new Unit[0];
+            GUI.LockGUI();
+            SelectedTWeapon = 0;
 
-            //// ADD START MARGE
+            // マップ攻撃による攻撃を行う
+            currentUnit.MapAttack(currentWeapon, SelectedX, SelectedY);
+            SelectedUnit = currentUnit.CurrentForm();
+            SelectedTarget = null;
+            if (SRC.IsScenarioFinished)
+            {
+                SRC.IsScenarioFinished = false;
+                SelectedPartners = new Unit[0];
+                GUI.UnlockGUI();
+                return;
+            }
+
+            if (SRC.IsCanceled)
+            {
+                SRC.IsCanceled = false;
+                SelectedPartners = new Unit[0];
+                WaitCommand();
+                return;
+            }
+
+            // 合体技のパートナーの行動数を減らす
+            if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
+            {
+                foreach (var pu in partners)
+                {
+                    pu.CurrentForm().UseAction();
+                }
+            }
+
+            SelectedPartners = new Unit[0];
+
+            // TODO Impl 再移動
             //// 再移動
             //if (is_p_weapon && SelectedUnit.Status == "出撃")
             //{
@@ -1619,10 +1614,9 @@ namespace SRCCore.Commands
             //        return;
             //    }
             //}
-            //// ADD END MARGE
 
-            //// 行動終了
-            //WaitCommand();
+            // 行動終了
+            WaitCommand();
         }
     }
 }

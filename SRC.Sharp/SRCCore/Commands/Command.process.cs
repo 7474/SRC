@@ -2214,10 +2214,10 @@ namespace SRCCore.Commands
                         GUI.IsGUILocked = false;
                         return;
 
-                    //case "マップ攻撃":
-                    //        MapAttackCommand();
-                    //        GUI.IsGUILocked = false;
-                    //        return;
+                    case "マップ攻撃":
+                        MapAttackCommand();
+                        GUI.IsGUILocked = false;
+                        return;
 
                     //case "マップアビリティ":
                     //case "マップアイテム":
@@ -2290,24 +2290,24 @@ namespace SRCCore.Commands
         {
             LogDebug();
 
-            //if (1 <= GUI.PixelToMapX(GUI.MouseX) && GUI.PixelToMapX(GUI.MouseX) <= Map.MapWidth)
-            //{
-            //    if (1 <= GUI.PixelToMapY(GUI.MouseY) && GUI.PixelToMapY(GUI.MouseY) <= Map.MapHeight)
-            //    {
-            //        if (!Map.MaskData[GUI.PixelToMapX(GUI.MouseX), GUI.PixelToMapY(GUI.MouseY)])
-            //        {
-            //            // 効果範囲内でクリックされればマップ攻撃発動
-            //            if (SelectedCommand == "マップ攻撃")
-            //            {
-            //                MapAttackCommand();
-            //            }
-            //            else
-            //            {
-            //                MapAbilityCommand();
-            //            }
-            //        }
-            //    }
-            //}
+            if (1 <= GUI.PixelToMapX((int)GUI.MouseX) && GUI.PixelToMapX((int)GUI.MouseX) <= Map.MapWidth)
+            {
+                if (1 <= GUI.PixelToMapY((int)GUI.MouseY) && GUI.PixelToMapY((int)GUI.MouseY) <= Map.MapHeight)
+                {
+                    if (!Map.MaskData[GUI.PixelToMapX((int)GUI.MouseX), GUI.PixelToMapY((int)GUI.MouseY)])
+                    {
+                        // 効果範囲内でクリックされればマップ攻撃発動
+                        if (SelectedCommand == "マップ攻撃")
+                        {
+                            MapAttackCommand();
+                        }
+                        else
+                        {
+                            MapAbilityCommand();
+                        }
+                    }
+                }
+            }
         }
 
         // ＧＵＩの処理をキャンセル
