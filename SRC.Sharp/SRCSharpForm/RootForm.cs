@@ -3,6 +3,7 @@ using SRCCore.Config;
 using SRCCore.Filesystem;
 using SRCSharpForm.Resoruces;
 using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace SRCSharpForm
@@ -17,15 +18,6 @@ namespace SRCSharpForm
 
             SRC = new SRCCore.SRC();
             var fileSystem = new LocalFileSystem();
-            try
-            {
-                fileSystem.AddAchive(SRC.AppPath, "assets.zip");
-            }
-            catch
-            {
-                // ignore
-                // Assetsはお試し中
-            }
             SRC.FileSystem = fileSystem;
             SRC.Sound.Player = new WindowsManagedPlayer();
             var config = new LocalFileConfig();
@@ -56,6 +48,23 @@ namespace SRCSharpForm
                 if (res == DialogResult.OK)
                 {
                     Hide();
+                    try
+                    {
+                        var fileSystem = SRC.FileSystem;
+                        fileSystem.AddAchive(SRC.AppPath, "assets.zip");
+                        fileSystem.AddPath(SRC.AppPath);
+                        fileSystem.AddPath(SRC.ExtDataPath2);
+                        fileSystem.AddPath(SRC.ExtDataPath);
+                        fileSystem.AddPath(SRC.ExtDataPath);
+                        fileSystem.AddPath(SRC.ExtDataPath);
+                        fileSystem.AddPath(Path.GetDirectoryName(fbd.FileName));
+                    }
+                    catch (Exception ex)
+                    {
+                        // ignore
+                        // XXX ファイルシステムへのエントリー追加Assetsはお試し中
+                        SRC.LogError(ex);
+                    }
                     SRC.Execute(fbd.FileName);
                 }
             }
