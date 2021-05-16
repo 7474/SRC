@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SRCCore.Filesystem
 {
@@ -154,6 +155,7 @@ namespace SRCCore.Filesystem
         public string BasePath { get; private set; }
         private ZipArchive _archive;
         private SrcCollection<ZipArchiveEntry> _entryMap;
+        private Task _entryMapResolveTask;
 
         public LocalFileSystemArchive(string basePath, ZipArchive archive)
         {
@@ -166,14 +168,21 @@ namespace SRCCore.Filesystem
             _archive = archive;
             _entryMap = new SrcCollection<ZipArchiveEntry>();
 
-            foreach (var entry in _archive.Entries.Where(x => !string.IsNullOrEmpty(x.Name)))
+            _entryMapResolveTask = Task.Run(() =>
             {
-                _entryMap[entry.FullName] = entry;
-            }
+                foreach (var entry in _archive.Entries.Where(x => !string.IsNullOrEmpty(x.Name)))
+                {
+                    _entryMap[entry.FullName] = entry;
+                }
+            });
         }
 
         private ZipArchiveEntry GetEntry(string entryName)
         {
+            while(!_entryMapResolveTask.IsCompleted)
+            {
+                Task.Delay(100).Wait();
+            }
             var archivePath = entryName.Replace("\\", "/");
             var isAbsolute = Path.IsPathRooted(entryName);
             if (isAbsolute && !archivePath.StartsWith(BasePath))
