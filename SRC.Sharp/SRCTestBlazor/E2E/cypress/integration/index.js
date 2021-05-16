@@ -2,7 +2,10 @@
 describe('Init Blazor Application', function () {
     it('Blazorアプリケーションとしてのレンダリングが行われる', function () {
         cy.visit('/');
+        // 本体のレンダリング
         cy.get('input[type="file"]').should('exist');
+        // タイトルリストのロード完了
+        cy.get('.navbar .navbar-menu .fa-folder').should('exist');
         cy.percySnapshot();
     });
 });
