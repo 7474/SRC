@@ -57,6 +57,12 @@
                 </div>
             </div>
             <div class="level is-mobile">
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">SP</p>
+                        <p class="title">@(Data.SP > 0 ? Data.SP : "-")</p>
+                    </div>
+                </div>
                 @foreach (var sp in Data.DefinedSpecialPowers())
                 {
                     <div class="level-item has-text-centered">
