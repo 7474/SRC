@@ -54,7 +54,9 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
         - 動作確認用Blazor WebAssemblyアプリケーション
         - データの閲覧を行える
         - .NET 5
-        - 動作URL: https://7474.github.io/SRC/
+        - 動作URL:
+            - https://7474.github.io/SRC/
+            - https://srcv.7474.jp/
 
 ### SRC#Form 簡易実行手順
 
