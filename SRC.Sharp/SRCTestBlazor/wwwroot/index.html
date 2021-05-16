@@ -23,6 +23,11 @@
         リロードしてもエラーが解消しない場合は、エラー内容（<a href="https://support.google.com/displayvideo/answer/6188066">開発者ツール</a>のコンソールログなど）を<a href="https://github.com/7474/SRC">リポジトリ</a>にお知らせください。
         <a class="dismiss">🗙</a>
     </div>
+    <script>
+        window.getStartupParams = function () {
+            return [navigator.userAgent, window.Cypress ? '--cypress' : ''];
+        };
+    </script>
     <script src="bulma.js"></script>
     <script src="anchor.js"></script>
     <script src="decode.js"></script>
