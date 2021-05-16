@@ -279,7 +279,7 @@ namespace SRCCore.CmdDatas
                         return new IncrCmd(src, data);
 
                     case "increasemorale":
-                        return new NotImplementedCmd(src, data);
+                        return new IncreaseMoraleCmd(src, data);
 
                     case "input":
                         return new InputCmd(src, data);
