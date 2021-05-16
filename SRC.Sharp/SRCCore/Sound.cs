@@ -667,9 +667,12 @@ namespace SRCCore
             //    .Where(x => Directory.Exists(x))
                 .ToList();
 
-            var waveNames = GeneralLib.ToList(wave_name, true);
-            var existFile = waveNames
-                .SelectMany(x => baseDirs.Select(y => SRC.FileSystem.PathCombine(y, x)))
+            // XXX なんで wave_name 分解したんだろう？
+            //var waveNames = GeneralLib.ToList(wave_name, true);
+            //var existFile = waveNames
+            //    .SelectMany(x => baseDirs.Select(y => SRC.FileSystem.PathCombine(y, x)))
+            //    .FirstOrDefault(x => SRC.FileSystem.FileExists(x));
+            var existFile = baseDirs.Select(y => SRC.FileSystem.PathCombine(y, wave_name))
                 .FirstOrDefault(x => SRC.FileSystem.FileExists(x));
 
             if (string.IsNullOrEmpty(existFile))
