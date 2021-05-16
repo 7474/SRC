@@ -12,7 +12,6 @@ namespace SRCCore.VB
     // （ジェネリクスは欲しいので）
     public class SrcCollection<V> : IDictionary<string, V>
     {
-        //private List<V> list;
         private OrderedDictionary dict;
 
         private static readonly StringComparer s_keyComparer = CultureInfo.InvariantCulture.CompareInfo.GetStringComparer(
@@ -22,7 +21,6 @@ namespace SRCCore.VB
         public SrcCollection()
         {
             dict = new OrderedDictionary(s_keyComparer);
-            //list = new List<V>();
         }
 
         [OnDeserialized]
@@ -31,7 +29,7 @@ namespace SRCCore.VB
             UpdateList();
         }
 
-        //public IList<V> List => list.AsReadOnly();
+        // XXX List でなく Enumerable でにしたほうが嬉しそう
         public IList<V> List => dict.Values.Cast<V>().ToList();
 
         /// <summary>
@@ -41,7 +39,9 @@ namespace SRCCore.VB
         /// <returns></returns>
         public V this[int index]
         {
-            get => List[index - 1];
+            get => index <= 0 || index > dict.Count
+                ? throw new IndexOutOfRangeException($"{index} is out of range.")
+                : dict.Values.Cast<V>().Skip(index - 1).First();
             set => throw new NotImplementedException();
         }
 
