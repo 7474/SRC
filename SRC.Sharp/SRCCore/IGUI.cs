@@ -236,6 +236,8 @@ namespace SRCCore
         SizeF MeasureString(string msg);
         // 文字列描画設定を初期化する
         void ResetDrawString();
+        // 文字列描画のプリセットモードを設定する
+        void SetDrawString(DrawStringMode mode);
 
         // === 画像消去に関する処理 ===
 
@@ -321,6 +323,12 @@ namespace SRCCore
 
         // === マップコマンド ===
         void DisplayGlobalMap();
+    }
+
+    public enum DrawStringMode
+    {
+        Default,
+        Status,
     }
 
     public enum TransionPattern

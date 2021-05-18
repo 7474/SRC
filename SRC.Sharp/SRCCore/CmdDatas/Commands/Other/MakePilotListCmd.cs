@@ -86,21 +86,15 @@ namespace SRCCore.CmdDatas.Commands
                 pilot_list = target_pilot_list.OrderBy(p => p.KanaName).ToList();
             }
 
-            // TODO Font。フォントがどうとかそういう次元の話ではない気もする。
-            //// Font Regular 9pt 背景
-            //{
-            //    var withBlock3 = GUI.MainForm.picMain(0).Font;
-            //    withBlock3.Size = 9;
-            //    withBlock3.Bold = false;
-            //    withBlock3.Italic = false;
-            //}
+            // Font Regular 9pt 背景
+            GUI.SetDrawString(DrawStringMode.Status);
 
             GUI.PermanentStringMode = true;
             GUI.HCentering = false;
             GUI.VCentering = false;
             var xx = 1;
             var yy = 1;
-            foreach(var p in pilot_list)
+            foreach (var p in pilot_list)
             {
                 // ユニット出撃位置を折り返す
                 if (xx > 15)
@@ -222,13 +216,8 @@ namespace SRCCore.CmdDatas.Commands
                 xx = (xx + 3);
             }
 
-            //// フォントの設定を戻しておく
-            //{
-            //    var withBlock4 = GUI.MainForm.picMain(0).Font;
-            //    withBlock4.Size = 16;
-            //    withBlock4.Bold = true;
-            //    withBlock4.Italic = false;
-            //}
+            // フォントの設定を戻しておく
+            GUI.ResetDrawString();
 
             GUI.PermanentStringMode = false;
             GUI.RedrawScreen();
