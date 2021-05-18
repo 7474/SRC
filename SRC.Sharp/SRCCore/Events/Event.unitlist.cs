@@ -121,14 +121,8 @@ namespace SRCCore.Events
                 .OrderBy(x => key_type == "名称" ? x.StrKey : "")
                 .ToList();
 
-            // TODO フォント
-            //// Font Regular 9pt 背景
-            //{
-            //    var withBlock3 = GUI.MainForm.picMain(0).Font;
-            //    withBlock3.Size = 9;
-            //    withBlock3.Bold = false;
-            //    withBlock3.Italic = false;
-            //}
+            // Font Regular 9pt 背景
+            GUI.SetDrawString(DrawStringMode.Status);
 
             GUI.PermanentStringMode = true;
             GUI.HCentering = false;
@@ -155,7 +149,7 @@ namespace SRCCore.Events
                 // パイロットが乗っていない場合はダミーパイロットを乗せる
                 if (u.CountPilot() == 0)
                 {
-                var    p = SRC.PList.Add("ステータス表示用ダミーパイロット(ザコ)", 1, "味方", gid: "");
+                    var p = SRC.PList.Add("ステータス表示用ダミーパイロット(ザコ)", 1, "味方", gid: "");
                     p.Ride(u);
                 }
 
@@ -277,13 +271,8 @@ namespace SRCCore.Events
                 xx = xx + 5;
             }
 
-            //// フォントの設定を戻しておく
-            //{
-            //    var withBlock5 = GUI.MainForm.picMain(0).Font;
-            //    withBlock5.Size = 16;
-            //    withBlock5.Bold = true;
-            //    withBlock5.Italic = false;
-            //}
+            // フォントの設定を戻しておく
+            GUI.ResetDrawString();
 
             GUI.PermanentStringMode = false;
             GUI.RedrawScreen();

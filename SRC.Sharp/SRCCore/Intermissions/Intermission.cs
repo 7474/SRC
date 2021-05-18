@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
@@ -334,1199 +335,992 @@ namespace SRCCore
         // 機体改造コマンド
         public void RankUpCommand()
         {
-            throw new NotImplementedException();
-            //    int k, i, j, urank;
-            //    string[] list;
-            //    string[] id_list;
-            //    string sort_mode;
-            //    var sort_mode_type = new string[8];
-            //    var sort_mode_list = new string[8];
-            //    bool[] item_flag_backup;
-            //    string[] item_comment_backup;
-            //    int[] key_list;
-            //    string[] strkey_list;
-            //    int max_item;
-            //    int max_value;
-            //    string max_str;
-            //    Unit u;
-            //    int cost;
-            //    string buf;
-            //    int ret;
-            //    bool b;
-            //    var use_max_rank = default(bool);
-            //    int name_width;
-            //    GUI.TopItem = 1;
+            // XXX
+            SRC.Money = 9999999;
 
-            //    // デフォルトのソート方法
-            //    if (Expression.IsOptionDefined("等身大基準"))
-            //    {
-            //        sort_mode = "レベル";
-            //    }
-            //    else
-            //    {
-            //        sort_mode = "ＨＰ";
-            //    }
+            GUI.TopItem = 1;
+            string sort_mode;
 
-            //    // 最大改造数がユニット毎に変更されているかをあらかじめチェック
-            //    foreach (Unit currentU in SRC.UList)
-            //    {
-            //        u = currentU;
-            //        if (u.IsFeatureAvailable("最大改造数"))
-            //        {
-            //            use_max_rank = true;
-            //            break;
-            //        }
-            //    }
+            // デフォルトのソート方法
+            if (Expression.IsOptionDefined("等身大基準"))
+            {
+                sort_mode = "レベル";
+            }
+            else
+            {
+                sort_mode = "ＨＰ";
+            }
 
-            //    // ユニット名の項の文字数を設定
-            //    name_width = 33;
+            // 最大改造数がユニット毎に変更されているかをあらかじめチェック
+            var use_max_rank = SRC.UList.Items.Any(u => u.IsFeatureAvailable("最大改造数"));
+
+            // ユニット名の項の文字数を設定
+            var name_width = 33;
+            if (use_max_rank)
+            {
+                name_width = (name_width - 2);
+            }
+
+            if (Expression.IsOptionDefined("等身大基準"))
+            {
+                name_width = (name_width + 8);
+            }
+
+            // ユニットのリストを作成
+            var list = new List<ListBoxItem>();
+            list.Add(new ListBoxItem("▽並べ替え▽", "▽並べ替え▽"));
+
+
+        Beginning:
+            ;
+
+            var units = SRC.UList.Items
+                .Where(u => !(u.Party0 != "味方" || u.Status != "待機"))
+                .Select(u =>
+                {
+                    // 改造が可能？
+                    var cost = RankUpCost(u);
+                    // ユニットランク
+                    string msg = GeneralLib.RightPaddedString(u.Nickname0, name_width)
+                              + GeneralLib.LeftPaddedString("" + u.Rank, 2);
+                    if (use_max_rank)
+                    {
+                        if (MaxRank(u) > 0)
+                        {
+                            msg += "/" + GeneralLib.LeftPaddedString("" + MaxRank(u), 2);
+                        }
+                        else
+                        {
+                            msg += "/--";
+                        }
+                    }
+                    // 改造に必要な資金
+                    if (cost < 10000000)
+                    {
+                        msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(cost), 7);
+                    }
+                    else
+                    {
+                        msg += GeneralLib.LeftPaddedString("----", 7);
+                    }
+                    // 等身大基準の場合はパイロットレベルも表示
+                    if (Expression.IsOptionDefined("等身大基準"))
+                    {
+                        if (u.CountPilot() > 0)
+                        {
+                            msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.MainPilot().Level), 3);
+                        }
+                    }
+                    // ユニットに関する情報
+                    msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.MaxHP), 6);
+                    msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.MaxEN), 4);
+                    msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.get_Armor("")), 6);
+                    msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.get_Mobility("")), 4);
+                    // 等身大基準でない場合はパイロット名を表示
+                    if (!Expression.IsOptionDefined("等身大基準"))
+                    {
+                        if (u.CountPilot() > 0)
+                        {
+                            msg += "  " + u.MainPilot().get_Nickname(false);
+                        }
+                    }
+
+                    // 装備しているアイテムをコメント欄に列記
+                    var comment = string.Join(" ", u.ItemList
+                        .Where(itm => (itm.Class() != "固定" || !itm.IsFeatureAvailable("非表示")) && itm.Part() != "非表示")
+                        .Select(itm => itm.Nickname()));
+
+                    return new ListBoxItem(msg, u.ID)
+                    {
+                        ListItemFlag = cost > SRC.Money || cost > 10000000,
+                    };
+                })
+                .ToList();
+
+            // TODO Impl ソート
+            {
+                //// ソート
+                //if (Strings.InStr(sort_mode, "名称") == 0)
+                //{
+                //    // 数値を使ったソート
+
+                //    // まず並べ替えに使うキーのリストを作成
+                //    key_list = new int[Information.UBound(list) + 1];
+                //    {
+                //        var withBlock2 = SRC.UList;
+                //        switch (sort_mode ?? "")
+                //        {
+                //            case "ＨＰ":
+                //                {
+                //                    var loopTo1 = Information.UBound(list);
+                //                    for (i = 2; i <= loopTo1; i++)
+                //                    {
+                //                        Unit localItem() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
+
+                //                        key_list[i] = localItem().MaxHP;
+                //                    }
+
+                //                    break;
+                //                }
+
+                //            case "ＥＮ":
+                //                {
+                //                    var loopTo2 = Information.UBound(list);
+                //                    for (i = 2; i <= loopTo2; i++)
+                //                    {
+                //                        Unit localItem1() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
+
+                //                        key_list[i] = localItem1().MaxEN;
+                //                    }
+
+                //                    break;
+                //                }
+
+                //            case "装甲":
+                //                {
+                //                    var loopTo3 = Information.UBound(list);
+                //                    for (i = 2; i <= loopTo3; i++)
+                //                    {
+                //                        Unit localItem2() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
+
+                //                        key_list[i] = localItem2().get_Armor("");
+                //                    }
+
+                //                    break;
+                //                }
+
+                //            case "運動性":
+                //                {
+                //                    var loopTo4 = Information.UBound(list);
+                //                    for (i = 2; i <= loopTo4; i++)
+                //                    {
+                //                        Unit localItem3() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
+
+                //                        key_list[i] = localItem3().get_Mobility("");
+                //                    }
+
+                //                    break;
+                //                }
+
+                //            case "ユニットランク":
+                //                {
+                //                    var loopTo5 = Information.UBound(list);
+                //                    for (i = 2; i <= loopTo5; i++)
+                //                    {
+                //                        Unit localItem4() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
+
+                //                        key_list[i] = localItem4().Rank;
+                //                    }
+
+                //                    break;
+                //                }
+
+                //            case "レベル":
+                //                {
+                //                    var loopTo6 = Information.UBound(list);
+                //                    for (i = 2; i <= loopTo6; i++)
+                //                    {
+                //                        var tmp = id_list;
+                //                        {
+                //                            var withBlock3 = withBlock2.Item(tmp[i]);
+                //                            if (withBlock3.CountPilot() > 0)
+                //                            {
+                //                                {
+                //                                    var withBlock4 = withBlock3.MainPilot();
+                //                                    key_list[i] = 500 * withBlock4.Level + withBlock4.Exp;
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+
+                //                    break;
+                //                }
+                //        }
+                //    }
+
+                //    // キーを使って並べ換え
+                //    var loopTo7 = (Information.UBound(list) - 1);
+                //    for (i = 2; i <= loopTo7; i++)
+                //    {
+                //        max_item = i;
+                //        max_value = key_list[i];
+                //        var loopTo8 = Information.UBound(list);
+                //        for (j = (i + 1); j <= loopTo8; j++)
+                //        {
+                //            if (key_list[j] > max_value)
+                //            {
+                //                max_item = j;
+                //                max_value = key_list[j];
+                //            }
+                //        }
+
+                //        if (max_item != i)
+                //        {
+                //            buf = list[i];
+                //            list[i] = list[max_item];
+                //            list[max_item] = buf;
+                //            buf = id_list[i];
+                //            id_list[i] = id_list[max_item];
+                //            id_list[max_item] = buf;
+                //            b = GUI.ListItemFlag[i];
+                //            GUI.ListItemFlag[i] = GUI.ListItemFlag[max_item];
+                //            GUI.ListItemFlag[max_item] = b;
+                //            buf = GUI.ListItemComment[i];
+                //            GUI.ListItemComment[i] = GUI.ListItemComment[max_item];
+                //            GUI.ListItemComment[max_item] = buf;
+                //            key_list[max_item] = key_list[i];
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                //    // 数値を使ったソート
+
+                //    // まず並べ替えに使うキーのリストを作成
+                //    strkey_list = new string[Information.UBound(list) + 1];
+                //    {
+                //        var withBlock5 = SRC.UList;
+                //        switch (sort_mode ?? "")
+                //        {
+                //            case "名称":
+                //            case "ユニット名称":
+                //                {
+                //                    var loopTo9 = Information.UBound(list);
+                //                    for (i = 2; i <= loopTo9; i++)
+                //                    {
+                //                        Unit localItem5() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock5.Item(argIndex1); return ret; }
+
+                //                        strkey_list[i] = localItem5().KanaName;
+                //                    }
+
+                //                    break;
+                //                }
+
+                //            case "パイロット名称":
+                //                {
+                //                    var loopTo10 = Information.UBound(list);
+                //                    for (i = 2; i <= loopTo10; i++)
+                //                    {
+                //                        var tmp1 = id_list;
+                //                        {
+                //                            var withBlock6 = withBlock5.Item(tmp1[i]);
+                //                            if (withBlock6.CountPilot() > 0)
+                //                            {
+                //                                strkey_list[i] = withBlock6.MainPilot().KanaName;
+                //                            }
+                //                        }
+                //                    }
+
+                //                    break;
+                //                }
+                //        }
+                //    }
+
+                //    // キーを使って並べ換え
+                //    var loopTo11 = (Information.UBound(strkey_list) - 1);
+                //    for (i = 2; i <= loopTo11; i++)
+                //    {
+                //        max_item = i;
+                //        max_str = strkey_list[i];
+                //        var loopTo12 = Information.UBound(strkey_list);
+                //        for (j = (i + 1); j <= loopTo12; j++)
+                //        {
+                //            if (Strings.StrComp(strkey_list[j], max_str, (CompareMethod)1) == -1)
+                //            {
+                //                max_item = j;
+                //                max_str = strkey_list[j];
+                //            }
+                //        }
+
+                //        if (max_item != i)
+                //        {
+                //            buf = list[i];
+                //            list[i] = list[max_item];
+                //            list[max_item] = buf;
+                //            buf = id_list[i];
+                //            id_list[i] = id_list[max_item];
+                //            id_list[max_item] = buf;
+                //            b = GUI.ListItemFlag[i];
+                //            GUI.ListItemFlag[i] = GUI.ListItemFlag[max_item];
+                //            GUI.ListItemFlag[max_item] = b;
+                //            buf = GUI.ListItemComment[i];
+                //            GUI.ListItemComment[i] = GUI.ListItemComment[max_item];
+                //            GUI.ListItemComment[max_item] = buf;
+                //            strkey_list[max_item] = strkey_list[i];
+                //        }
+                //    }
+                //}
+            }
+
+            // 改造するユニットを選択
+            // TODO Impl caption
+            string caption = "ユニット選択： " + Expression.Term("資金", u: null);
+            var ret = GUI.ListBox(new ListBoxArgs
+            {
+                HasFlag = true,
+                Items = list.AppendRange(units).ToList(),
+                lb_caption = caption,
+                lb_mode = "連続表示,コメント",
+            });
+            //if (Expression.IsOptionDefined("等身大基準"))
+            //{
             //    if (use_max_rank)
             //    {
-            //        name_width = (name_width - 2);
-            //    }
-
-            //    if (Expression.IsOptionDefined("等身大基準"))
-            //    {
-            //        name_width = (name_width + 8);
-            //    }
-
-            //    // ユニットのリストを作成
-            //    list = new string[2];
-            //    id_list = new string[2];
-            //    GUI.ListItemFlag = new bool[2];
-            //    GUI.ListItemComment = new string[2];
-            //    list[1] = "▽並べ替え▽";
-            //    foreach (Unit currentU1 in SRC.UList)
-            //    {
-            //        u = currentU1;
-            //        {
-            //            var withBlock = u;
-            //            if (withBlock.Party0 != "味方" | withBlock.Status != "待機")
-            //            {
-            //                goto NextLoop;
-            //            }
-
-            //            Array.Resize(list, Information.UBound(list) + 1 + 1);
-            //            Array.Resize(id_list, Information.UBound(list) + 1);
-            //            Array.Resize(GUI.ListItemFlag, Information.UBound(list) + 1);
-            //            Array.Resize(GUI.ListItemComment, Information.UBound(list) + 1);
-
-            //            // 改造が可能？
-            //            cost = RankUpCost(u);
-            //            if (cost > SRC.Money | cost > 10000000)
-            //            {
-            //                GUI.ListItemFlag[Information.UBound(list)] = true;
-            //            }
-
-            //            // ユニットランク
-            //            if (use_max_rank)
-            //            {
-            //                string localRightPaddedString() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock.Nickname0 = argbuf; return ret; }
-
-            //                string localLeftPaddedString() { string argbuf = SrcFormatter.Format(withBlock.Rank); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
-
-            //                list[Information.UBound(list)] = localRightPaddedString() + localLeftPaddedString() + "/";
-            //                if (MaxRank(u) > 0)
-            //                {
-            //                    string localLeftPaddedString1() { string argbuf = SrcFormatter.Format(MaxRank(u)); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
-
-            //                    list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString1();
-            //                }
-            //                else
-            //                {
-            //                    list[Information.UBound(list)] = list[Information.UBound(list)] + "--";
-            //                }
-            //            }
-            //            else if (withBlock.Rank < 10)
-            //            {
-            //                string localRightPaddedString1() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock.Nickname0 = argbuf; return ret; }
-
-            //                list[Information.UBound(list)] = localRightPaddedString1() + Strings.StrConv(SrcFormatter.Format(withBlock.Rank), VbStrConv.Wide);
-            //            }
-            //            else
-            //            {
-            //                string localRightPaddedString2() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock.Nickname0 = argbuf; return ret; }
-
-            //                list[Information.UBound(list)] = localRightPaddedString2() + SrcFormatter.Format(withBlock.Rank);
-            //            }
-
-            //            // 改造に必要な資金
-            //            if (cost < 10000000)
-            //            {
-            //                string localLeftPaddedString2() { string argbuf = SrcFormatter.Format(cost); var ret = GeneralLib.LeftPaddedString(argbuf, 7); return ret; }
-
-            //                list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString2();
-            //            }
-            //            else
-            //            {
-            //                list[Information.UBound(list)] = list[Information.UBound(list)] + GeneralLib.LeftPaddedString("----", 7);
-            //            }
-
-            //            // 等身大基準の場合はパイロットレベルも表示
-            //            if (Expression.IsOptionDefined("等身大基準"))
-            //            {
-            //                if (withBlock.CountPilot() > 0)
-            //                {
-            //                    string localLeftPaddedString3() { string argbuf = SrcFormatter.Format(withBlock.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(argbuf, 3); return ret; }
-
-            //                    list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString3();
-            //                }
-            //            }
-
-            //            // ユニットに関する情報
-            //            string localLeftPaddedString4() { string argbuf = SrcFormatter.Format(withBlock.MaxHP); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
-
-            //            string localLeftPaddedString5() { string argbuf = SrcFormatter.Format(withBlock.MaxEN); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
-
-            //            string localLeftPaddedString6() { string argbuf = SrcFormatter.Format(withBlock.get_Armor("")); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
-
-            //            string localLeftPaddedString7() { string argbuf = SrcFormatter.Format(withBlock.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
-
-            //            list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString4() + localLeftPaddedString5() + localLeftPaddedString6() + localLeftPaddedString7();
-
-            //            // 等身大基準でない場合はパイロット名を表示
-            //            if (!Expression.IsOptionDefined("等身大基準"))
-            //            {
-            //                if (withBlock.CountPilot() > 0)
-            //                {
-            //                    list[Information.UBound(list)] = list[Information.UBound(list)] + "  " + withBlock.MainPilot().get_Nickname(false);
-            //                }
-            //            }
-
-            //            // 装備しているアイテムをコメント欄に列記
-            //            var loopTo = withBlock.CountItem();
-            //            for (k = 1; k <= loopTo; k++)
-            //            {
-            //                {
-            //                    var withBlock1 = withBlock.Item(k);
-            //                    if ((withBlock1.Class() != "固定" | !withBlock1.IsFeatureAvailable("非表示")) && withBlock1.Part() != "非表示")
-            //                    {
-            //                        GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock1.Nickname() + " ";
-            //                    }
-            //                }
-            //            }
-
-            //            // ユニットＩＤを記録しておく
-            //            id_list[Information.UBound(list)] = withBlock.ID;
-            //        }
-
-            //    NextLoop:
-            //        ;
-            //    }
-
-            //Beginning:
-            //    ;
-
-
-            //    // ソート
-            //    if (Strings.InStr(sort_mode, "名称") == 0)
-            //    {
-            //        // 数値を使ったソート
-
-            //        // まず並べ替えに使うキーのリストを作成
-            //        key_list = new int[Information.UBound(list) + 1];
-            //        {
-            //            var withBlock2 = SRC.UList;
-            //            switch (sort_mode ?? "")
-            //            {
-            //                case "ＨＰ":
-            //                    {
-            //                        var loopTo1 = Information.UBound(list);
-            //                        for (i = 2; i <= loopTo1; i++)
-            //                        {
-            //                            Unit localItem() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
-
-            //                            key_list[i] = localItem().MaxHP;
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "ＥＮ":
-            //                    {
-            //                        var loopTo2 = Information.UBound(list);
-            //                        for (i = 2; i <= loopTo2; i++)
-            //                        {
-            //                            Unit localItem1() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
-
-            //                            key_list[i] = localItem1().MaxEN;
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "装甲":
-            //                    {
-            //                        var loopTo3 = Information.UBound(list);
-            //                        for (i = 2; i <= loopTo3; i++)
-            //                        {
-            //                            Unit localItem2() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
-
-            //                            key_list[i] = localItem2().get_Armor("");
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "運動性":
-            //                    {
-            //                        var loopTo4 = Information.UBound(list);
-            //                        for (i = 2; i <= loopTo4; i++)
-            //                        {
-            //                            Unit localItem3() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
-
-            //                            key_list[i] = localItem3().get_Mobility("");
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "ユニットランク":
-            //                    {
-            //                        var loopTo5 = Information.UBound(list);
-            //                        for (i = 2; i <= loopTo5; i++)
-            //                        {
-            //                            Unit localItem4() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
-
-            //                            key_list[i] = localItem4().Rank;
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "レベル":
-            //                    {
-            //                        var loopTo6 = Information.UBound(list);
-            //                        for (i = 2; i <= loopTo6; i++)
-            //                        {
-            //                            var tmp = id_list;
-            //                            {
-            //                                var withBlock3 = withBlock2.Item(tmp[i]);
-            //                                if (withBlock3.CountPilot() > 0)
-            //                                {
-            //                                    {
-            //                                        var withBlock4 = withBlock3.MainPilot();
-            //                                        key_list[i] = 500 * withBlock4.Level + withBlock4.Exp;
-            //                                    }
-            //                                }
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-            //            }
-            //        }
-
-            //        // キーを使って並べ換え
-            //        var loopTo7 = (Information.UBound(list) - 1);
-            //        for (i = 2; i <= loopTo7; i++)
-            //        {
-            //            max_item = i;
-            //            max_value = key_list[i];
-            //            var loopTo8 = Information.UBound(list);
-            //            for (j = (i + 1); j <= loopTo8; j++)
-            //            {
-            //                if (key_list[j] > max_value)
-            //                {
-            //                    max_item = j;
-            //                    max_value = key_list[j];
-            //                }
-            //            }
-
-            //            if (max_item != i)
-            //            {
-            //                buf = list[i];
-            //                list[i] = list[max_item];
-            //                list[max_item] = buf;
-            //                buf = id_list[i];
-            //                id_list[i] = id_list[max_item];
-            //                id_list[max_item] = buf;
-            //                b = GUI.ListItemFlag[i];
-            //                GUI.ListItemFlag[i] = GUI.ListItemFlag[max_item];
-            //                GUI.ListItemFlag[max_item] = b;
-            //                buf = GUI.ListItemComment[i];
-            //                GUI.ListItemComment[i] = GUI.ListItemComment[max_item];
-            //                GUI.ListItemComment[max_item] = buf;
-            //                key_list[max_item] = key_list[i];
-            //            }
-            //        }
+            //        ret = GUI.ListBox("ユニット選択： " + Expression.Term("資金", u: null) + SrcFormatter.Format(SRC.Money), list, "ユニット                               " + Expression.Term(argtname1, argu1, 6) + "  費用 Lv  " + Expression.Term(argtname2, argu2, 4) + " " + Expression.Term(argtname3, argu3, 4) + " " + Expression.Term(argtname4, argu4, 4) + " " + Expression.Term(argtname5, u: argu5), "連続表示,コメント");
             //    }
             //    else
             //    {
-            //        // 数値を使ったソート
-
-            //        // まず並べ替えに使うキーのリストを作成
-            //        strkey_list = new string[Information.UBound(list) + 1];
-            //        {
-            //            var withBlock5 = SRC.UList;
-            //            switch (sort_mode ?? "")
-            //            {
-            //                case "名称":
-            //                case "ユニット名称":
-            //                    {
-            //                        var loopTo9 = Information.UBound(list);
-            //                        for (i = 2; i <= loopTo9; i++)
-            //                        {
-            //                            Unit localItem5() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock5.Item(argIndex1); return ret; }
-
-            //                            strkey_list[i] = localItem5().KanaName;
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "パイロット名称":
-            //                    {
-            //                        var loopTo10 = Information.UBound(list);
-            //                        for (i = 2; i <= loopTo10; i++)
-            //                        {
-            //                            var tmp1 = id_list;
-            //                            {
-            //                                var withBlock6 = withBlock5.Item(tmp1[i]);
-            //                                if (withBlock6.CountPilot() > 0)
-            //                                {
-            //                                    strkey_list[i] = withBlock6.MainPilot().KanaName;
-            //                                }
-            //                            }
-            //                        }
-
-            //                        break;
-            //                    }
-            //            }
-            //        }
-
-            //        // キーを使って並べ換え
-            //        var loopTo11 = (Information.UBound(strkey_list) - 1);
-            //        for (i = 2; i <= loopTo11; i++)
-            //        {
-            //            max_item = i;
-            //            max_str = strkey_list[i];
-            //            var loopTo12 = Information.UBound(strkey_list);
-            //            for (j = (i + 1); j <= loopTo12; j++)
-            //            {
-            //                if (Strings.StrComp(strkey_list[j], max_str, (CompareMethod)1) == -1)
-            //                {
-            //                    max_item = j;
-            //                    max_str = strkey_list[j];
-            //                }
-            //            }
-
-            //            if (max_item != i)
-            //            {
-            //                buf = list[i];
-            //                list[i] = list[max_item];
-            //                list[max_item] = buf;
-            //                buf = id_list[i];
-            //                id_list[i] = id_list[max_item];
-            //                id_list[max_item] = buf;
-            //                b = GUI.ListItemFlag[i];
-            //                GUI.ListItemFlag[i] = GUI.ListItemFlag[max_item];
-            //                GUI.ListItemFlag[max_item] = b;
-            //                buf = GUI.ListItemComment[i];
-            //                GUI.ListItemComment[i] = GUI.ListItemComment[max_item];
-            //                GUI.ListItemComment[max_item] = buf;
-            //                strkey_list[max_item] = strkey_list[i];
-            //            }
-            //        }
+            //        ret = GUI.ListBox("ユニット選択： " + Expression.Term("資金", u: null) + SrcFormatter.Format(SRC.Money), list, "ユニット                             " + Expression.Term(argtname7, argu7, 6) + "   費用 Lv  " + Expression.Term(argtname8, argu8, 4) + " " + Expression.Term(argtname9, argu9, 4) + " " + Expression.Term(argtname10, argu10, 4) + " " + Expression.Term(argtname11, u: argu11), "連続表示,コメント");
             //    }
+            //}
+            //else if (use_max_rank)
+            //{
+            //    ret = GUI.ListBox("ユニット選択： " + Expression.Term("資金", u: null) + SrcFormatter.Format(SRC.Money), list, "ユニット                       " + Expression.Term(argtname13, argu13, 6) + "  費用  " + Expression.Term(argtname14, argu14, 4) + " " + Expression.Term(argtname15, argu15, 4) + " " + Expression.Term(argtname16, argu16, 4) + " " + Expression.Term(argtname17, argu17, 4) + " パイロット", "連続表示,コメント");
+            //}
+            //else
+            //{
+            //    ret = GUI.ListBox("ユニット選択： " + Expression.Term("資金", u: null) + SrcFormatter.Format(SRC.Money), list, "ユニット                     " + Expression.Term(argtname19, argu19, 6) + "   費用  " + Expression.Term(argtname20, argu20, 4) + " " + Expression.Term(argtname21, argu21, 4) + " " + Expression.Term(argtname22, argu22, 4) + " " + Expression.Term(argtname23, argu23, 4) + " パイロット", "連続表示,コメント");
+            //}
 
-            //    // 改造するユニットを選択
-            //    if (Expression.IsOptionDefined("等身大基準"))
-            //    {
-            //        if (use_max_rank)
-            //        {
-            //            ret = GUI.ListBox("ユニット選択： " + Expression.Term("資金", u: null) + SrcFormatter.Format(SRC.Money), list, "ユニット                               " + Expression.Term(argtname1, argu1, 6) + "  費用 Lv  " + Expression.Term(argtname2, argu2, 4) + " " + Expression.Term(argtname3, argu3, 4) + " " + Expression.Term(argtname4, argu4, 4) + " " + Expression.Term(argtname5, u: argu5), "連続表示,コメント");
-            //        }
-            //        else
-            //        {
-            //            ret = GUI.ListBox("ユニット選択： " + Expression.Term("資金", u: null) + SrcFormatter.Format(SRC.Money), list, "ユニット                             " + Expression.Term(argtname7, argu7, 6) + "   費用 Lv  " + Expression.Term(argtname8, argu8, 4) + " " + Expression.Term(argtname9, argu9, 4) + " " + Expression.Term(argtname10, argu10, 4) + " " + Expression.Term(argtname11, u: argu11), "連続表示,コメント");
-            //        }
-            //    }
-            //    else if (use_max_rank)
-            //    {
-            //        ret = GUI.ListBox("ユニット選択： " + Expression.Term("資金", u: null) + SrcFormatter.Format(SRC.Money), list, "ユニット                       " + Expression.Term(argtname13, argu13, 6) + "  費用  " + Expression.Term(argtname14, argu14, 4) + " " + Expression.Term(argtname15, argu15, 4) + " " + Expression.Term(argtname16, argu16, 4) + " " + Expression.Term(argtname17, argu17, 4) + " パイロット", "連続表示,コメント");
-            //    }
-            //    else
-            //    {
-            //        ret = GUI.ListBox("ユニット選択： " + Expression.Term("資金", u: null) + SrcFormatter.Format(SRC.Money), list, "ユニット                     " + Expression.Term(argtname19, argu19, 6) + "   費用  " + Expression.Term(argtname20, argu20, 4) + " " + Expression.Term(argtname21, argu21, 4) + " " + Expression.Term(argtname22, argu22, 4) + " " + Expression.Term(argtname23, argu23, 4) + " パイロット", "連続表示,コメント");
-            //    }
+            switch (ret)
+            {
+                case 0:
+                    {
+                        // キャンセル
+                        return;
+                    }
 
-            //    switch (ret)
-            //    {
-            //        case 0:
-            //            {
-            //                // キャンセル
-            //                return;
-            //            }
+                case 1:
+                    {
+                        // TODO Impl ソート
+                        //// ソート方法を選択
+                        //if (Expression.IsOptionDefined("等身大基準"))
+                        //{
+                        //    sort_mode_type[1] = "名称";
+                        //    sort_mode_list[1] = "名称";
+                        //    sort_mode_type[2] = "レベル";
+                        //    sort_mode_list[2] = "レベル";
+                        //    sort_mode_type[3] = "ＨＰ";
+                        //    sort_mode_list[3] = Expression.Term("ＨＰ"4, u: null4);
+                        //    sort_mode_type[4] = "ＥＮ";
+                        //    sort_mode_list[4] = Expression.Term("ＥＮ", u: null);
+                        //    sort_mode_type[5] = "装甲";
+                        //    sort_mode_list[5] = Expression.Term("装甲", u: null);
+                        //    sort_mode_type[6] = "運動性";
+                        //    sort_mode_list[6] = Expression.Term("運動性", u: null);
+                        //    sort_mode_type[7] = "ユニットランク";
+                        //    sort_mode_list[7] = Expression.Term("ランク", u: null);
+                        //}
+                        //else
+                        //{
+                        //    sort_mode_type[1] = "ＨＰ";
+                        //    sort_mode_list[1] = Expression.Term("ＨＰ", u: null);
+                        //    sort_mode_type[2] = "ＥＮ";
+                        //    sort_mode_list[2] = Expression.Term("ＥＮ", u: null);
+                        //    sort_mode_type[3] = "装甲";
+                        //    sort_mode_list[3] = Expression.Term("装甲", u: null);
+                        //    sort_mode_type[4] = "運動性";
+                        //    sort_mode_list[4] = Expression.Term("運動性", u: null);
+                        //    sort_mode_type[5] = "ユニットランク";
+                        //    sort_mode_list[5] = Expression.Term("ランク", u: null);
+                        //    sort_mode_type[6] = "ユニット名称";
+                        //    sort_mode_list[6] = "ユニット名称";
+                        //    sort_mode_type[7] = "パイロット名称";
+                        //    sort_mode_list[7] = "パイロット名称";
+                        //}
 
-            //        case 1:
-            //            {
-            //                // ソート方法を選択
-            //                if (Expression.IsOptionDefined("等身大基準"))
-            //                {
-            //                    sort_mode_type[1] = "名称";
-            //                    sort_mode_list[1] = "名称";
-            //                    sort_mode_type[2] = "レベル";
-            //                    sort_mode_list[2] = "レベル";
-            //                    sort_mode_type[3] = "ＨＰ";
-            //                    sort_mode_list[3] = Expression.Term("ＨＰ"4, u: null4);
-            //                    sort_mode_type[4] = "ＥＮ";
-            //                    sort_mode_list[4] = Expression.Term("ＥＮ", u: null);
-            //                    sort_mode_type[5] = "装甲";
-            //                    sort_mode_list[5] = Expression.Term("装甲", u: null);
-            //                    sort_mode_type[6] = "運動性";
-            //                    sort_mode_list[6] = Expression.Term("運動性", u: null);
-            //                    sort_mode_type[7] = "ユニットランク";
-            //                    sort_mode_list[7] = Expression.Term("ランク", u: null);
-            //                }
-            //                else
-            //                {
-            //                    sort_mode_type[1] = "ＨＰ";
-            //                    sort_mode_list[1] = Expression.Term("ＨＰ", u: null);
-            //                    sort_mode_type[2] = "ＥＮ";
-            //                    sort_mode_list[2] = Expression.Term("ＥＮ", u: null);
-            //                    sort_mode_type[3] = "装甲";
-            //                    sort_mode_list[3] = Expression.Term("装甲", u: null);
-            //                    sort_mode_type[4] = "運動性";
-            //                    sort_mode_list[4] = Expression.Term("運動性", u: null);
-            //                    sort_mode_type[5] = "ユニットランク";
-            //                    sort_mode_list[5] = Expression.Term("ランク", u: null);
-            //                    sort_mode_type[6] = "ユニット名称";
-            //                    sort_mode_list[6] = "ユニット名称";
-            //                    sort_mode_type[7] = "パイロット名称";
-            //                    sort_mode_list[7] = "パイロット名称";
-            //                }
+                        //item_flag_backup = new bool[Information.UBound(list) + 1];
+                        //item_comment_backup = new string[Information.UBound(list) + 1];
+                        //var loopTo13 = Information.UBound(list);
+                        //for (i = 2; i <= loopTo13; i++)
+                        //{
+                        //    item_flag_backup[i] = GUI.ListItemFlag[i];
+                        //    item_comment_backup[i] = GUI.ListItemComment[i];
+                        //}
 
-            //                item_flag_backup = new bool[Information.UBound(list) + 1];
-            //                item_comment_backup = new string[Information.UBound(list) + 1];
-            //                var loopTo13 = Information.UBound(list);
-            //                for (i = 2; i <= loopTo13; i++)
-            //                {
-            //                    item_flag_backup[i] = GUI.ListItemFlag[i];
-            //                    item_comment_backup[i] = GUI.ListItemComment[i];
-            //                }
+                        //GUI.ListItemComment = new string[Information.UBound(sort_mode_list) + 1];
+                        //GUI.ListItemFlag = new bool[Information.UBound(sort_mode_list) + 1];
+                        //ret = GUI.ListBox("どれで並べ替えますか？", sort_mode_list, "並べ替えの方法", "連続表示,コメント");
+                        //GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
+                        //GUI.ListItemComment = new string[Information.UBound(list) + 1];
+                        //var loopTo14 = Information.UBound(list);
+                        //for (i = 2; i <= loopTo14; i++)
+                        //{
+                        //    GUI.ListItemFlag[i] = item_flag_backup[i];
+                        //    GUI.ListItemComment[i] = item_comment_backup[i];
+                        //}
 
-            //                GUI.ListItemComment = new string[Information.UBound(sort_mode_list) + 1];
-            //                GUI.ListItemFlag = new bool[Information.UBound(sort_mode_list) + 1];
-            //                ret = GUI.ListBox("どれで並べ替えますか？", sort_mode_list, "並べ替えの方法", "連続表示,コメント");
-            //                GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
-            //                GUI.ListItemComment = new string[Information.UBound(list) + 1];
-            //                var loopTo14 = Information.UBound(list);
-            //                for (i = 2; i <= loopTo14; i++)
-            //                {
-            //                    GUI.ListItemFlag[i] = item_flag_backup[i];
-            //                    GUI.ListItemComment[i] = item_comment_backup[i];
-            //                }
+                        //// ソート方法を変更して再表示
+                        //if (ret > 0)
+                        //{
+                        //    sort_mode = sort_mode_type[ret];
+                        //}
 
-            //                // ソート方法を変更して再表示
-            //                if (ret > 0)
-            //                {
-            //                    sort_mode = sort_mode_type[ret];
-            //                }
+                        goto Beginning;
+                    }
+            }
 
-            //                goto Beginning;
-            //                break;
-            //            }
-            //    }
+            // 改造するユニットを検索
+            var u = SRC.UList.Item(units[ret - 2].ListItemID);
 
-            //    // 改造するユニットを検索
-            //    var tmp2 = id_list;
-            //    u = SRC.UList.Item(tmp2[ret]);
-
-            //    // 改造するか確認
-            //    if (u.IsHero())
-            //    {
-            //        if (Interaction.MsgBox(u.Nickname0 + "をパワーアップさせますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "パワーアップ") != 1)
-            //        {
-            //            goto Beginning;
-            //        }
-            //    }
-            //    else if (Interaction.MsgBox(u.Nickname0 + "を改造しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "改造") != 1)
+            //// 改造するか確認
+            //if (u.IsHero())
+            //{
+            //    if (Interaction.MsgBox(u.Nickname0 + "をパワーアップさせますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "パワーアップ") != 1)
             //    {
             //        goto Beginning;
             //    }
-
-            //    // 資金を減らす
-            //    SRC.IncrMoney(-RankUpCost(u));
-
-            //    // ユニットランクを一段階上げる
-            //    {
-            //        var withBlock7 = u;
-            //        withBlock7.Rank = (withBlock7.Rank + 1);
-            //        withBlock7.HP = withBlock7.MaxHP;
-            //        withBlock7.EN = withBlock7.MaxEN;
-
-            //        // 他形態のランクも上げておく
-            //        var loopTo15 = withBlock7.CountOtherForm();
-            //        for (i = 1; i <= loopTo15; i++)
-            //        {
-            //            Unit localOtherForm() { object argIndex1 = i; var ret = withBlock7.OtherForm(argIndex1); return ret; }
-
-            //            localOtherForm().Rank = withBlock7.Rank;
-            //            Unit localOtherForm1() { object argIndex1 = i; var ret = withBlock7.OtherForm(argIndex1); return ret; }
-
-            //            Unit localOtherForm2() { object argIndex1 = i; var ret = withBlock7.OtherForm(argIndex1); return ret; }
-
-            //            localOtherForm1().HP = localOtherForm2().MaxHP;
-            //            Unit localOtherForm3() { object argIndex1 = i; var ret = withBlock7.OtherForm(argIndex1); return ret; }
-
-            //            Unit localOtherForm4() { object argIndex1 = i; var ret = withBlock7.OtherForm(argIndex1); return ret; }
-
-            //            localOtherForm3().EN = localOtherForm4().MaxEN;
-            //        }
-
-            //        // 合体形態が主形態の分離形態が改造された場合は他の分離形態のユニットの
-            //        // ランクも上げる
-            //        if (withBlock7.IsFeatureAvailable("合体"))
-            //        {
-            //            var loopTo16 = withBlock7.CountFeature();
-            //            for (i = 1; i <= loopTo16; i++)
-            //            {
-            //                if (withBlock7.Feature(i) == "合体")
-            //                {
-            //                    string localFeatureData() { object argIndex1 = i; var ret = withBlock7.FeatureData(argIndex1); return ret; }
-
-            //                    buf = GeneralLib.LIndex(localFeatureData(), 2);
-            //                    string localFeatureData1() { object argIndex1 = i; var ret = withBlock7.FeatureData(argIndex1); return ret; }
-
-            //                    if (GeneralLib.LLength(localFeatureData1()) == 3)
-            //                    {
-            //                        if (SRC.UDList.IsDefined(buf))
-            //                        {
-            //                            UnitData localItem6() { object argIndex1 = buf; var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-            //                            if (localItem6().IsFeatureAvailable("主形態"))
-            //                            {
-            //                                break;
-            //                            }
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        if (SRC.UDList.IsDefined(buf))
-            //                        {
-            //                            UnitData localItem7() { object argIndex1 = buf; var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-            //                            if (!localItem7().IsFeatureAvailable("制限時間"))
-            //                            {
-            //                                break;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //            if (i <= withBlock7.CountFeature())
-            //            {
-            //                urank = withBlock7.Rank;
-            //                string localFeatureData2() { object argIndex1 = i; var ret = withBlock7.FeatureData(argIndex1); return ret; }
-
-            //                string localLIndex() { string arglist = hsba79967d549343448297e0bcf57b2982(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                UnitData localItem8() { object argIndex1 = (object)hsd871da3601884bc086fad5045542bc83(); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-            //                buf = localItem8().FeatureData("分離");
-            //                var loopTo17 = GeneralLib.LLength(buf);
-            //                for (i = 2; i <= loopTo17; i++)
-            //                {
-            //                    bool localIsDefined() { object argIndex1 = GeneralLib.LIndex(buf, i); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-            //                    if (!localIsDefined())
-            //                    {
-            //                        goto NextForm;
-            //                    }
-
-            //                    {
-            //                        var withBlock8 = SRC.UList.Item(GeneralLib.LIndex(buf, i));
-            //                        withBlock8.Rank = GeneralLib.MaxLng(urank, withBlock8.Rank);
-            //                        withBlock8.HP = withBlock8.MaxHP;
-            //                        withBlock8.EN = withBlock8.MaxEN;
-            //                        var loopTo18 = withBlock8.CountOtherForm();
-            //                        for (j = 1; j <= loopTo18; j++)
-            //                        {
-            //                            Unit localOtherForm5() { object argIndex1 = j; var ret = withBlock8.OtherForm(argIndex1); return ret; }
-
-            //                            localOtherForm5().Rank = withBlock8.Rank;
-            //                            Unit localOtherForm6() { object argIndex1 = j; var ret = withBlock8.OtherForm(argIndex1); return ret; }
-
-            //                            Unit localOtherForm7() { object argIndex1 = j; var ret = withBlock8.OtherForm(argIndex1); return ret; }
-
-            //                            localOtherForm6().HP = localOtherForm7().MaxHP;
-            //                            Unit localOtherForm8() { object argIndex1 = j; var ret = withBlock8.OtherForm(argIndex1); return ret; }
-
-            //                            Unit localOtherForm9() { object argIndex1 = j; var ret = withBlock8.OtherForm(argIndex1); return ret; }
-
-            //                            localOtherForm8().EN = localOtherForm9().MaxEN;
-            //                        }
-
-            //                        var loopTo19 = Information.UBound(id_list);
-            //                        for (j = 1; j <= loopTo19; j++)
-            //                        {
-            //                            if ((withBlock8.CurrentForm().ID ?? "") == (id_list[j] ?? ""))
-            //                            {
-            //                                break;
-            //                            }
-            //                        }
-
-            //                        if (j > Information.UBound(id_list))
-            //                        {
-            //                            goto NextForm;
-            //                        }
-
-            //                        if (use_max_rank)
-            //                        {
-            //                            string localRightPaddedString3() { string argbuf = withBlock8.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock8.Nickname0 = argbuf; return ret; }
-
-            //                            string localLeftPaddedString8() { string argbuf = SrcFormatter.Format(withBlock8.Rank); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
-
-            //                            list[j] = localRightPaddedString3() + localLeftPaddedString8() + "/";
-            //                            if (MaxRank(u) > 0)
-            //                            {
-            //                                string localLeftPaddedString9() { string argbuf = SrcFormatter.Format(MaxRank(u)); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
-
-            //                                list[j] = list[j] + localLeftPaddedString9();
-            //                            }
-            //                            else
-            //                            {
-            //                                list[j] = list[j] + "--";
-            //                            }
-            //                        }
-            //                        else if (withBlock8.Rank < 10)
-            //                        {
-            //                            string localRightPaddedString4() { string argbuf = withBlock8.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock8.Nickname0 = argbuf; return ret; }
-
-            //                            list[j] = localRightPaddedString4() + Strings.StrConv(SrcFormatter.Format(withBlock8.Rank), VbStrConv.Wide);
-            //                        }
-            //                        else
-            //                        {
-            //                            string localRightPaddedString5() { string argbuf = withBlock8.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock8.Nickname0 = argbuf; return ret; }
-
-            //                            list[j] = localRightPaddedString5() + SrcFormatter.Format(withBlock8.Rank);
-            //                        }
-
-            //                        if (RankUpCost(u) < 1000000)
-            //                        {
-            //                            string localLeftPaddedString10() { string argbuf = SrcFormatter.Format(RankUpCost(u)); var ret = GeneralLib.LeftPaddedString(argbuf, 7); return ret; }
-
-            //                            list[j] = list[j] + localLeftPaddedString10();
-            //                        }
-            //                        else
-            //                        {
-            //                            list[j] = list[j] + GeneralLib.LeftPaddedString("----", 7);
-            //                        }
-
-            //                        if (Expression.IsOptionDefined("等身大基準"))
-            //                        {
-            //                            if (withBlock8.CountPilot() > 0)
-            //                            {
-            //                                string localLeftPaddedString11() { string argbuf = SrcFormatter.Format(withBlock8.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(argbuf, 3); return ret; }
-
-            //                                list[j] = list[j] + localLeftPaddedString11();
-            //                            }
-            //                        }
-
-            //                        string localLeftPaddedString12() { string argbuf = SrcFormatter.Format(withBlock8.MaxHP); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
-
-            //                        string localLeftPaddedString13() { string argbuf = SrcFormatter.Format(withBlock8.MaxEN); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
-
-            //                        string localLeftPaddedString14() { string argbuf = SrcFormatter.Format(withBlock8.get_Armor("")); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
-
-            //                        string localLeftPaddedString15() { string argbuf = SrcFormatter.Format(withBlock8.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
-
-            //                        list[j] = list[j] + localLeftPaddedString12() + localLeftPaddedString13() + localLeftPaddedString14() + localLeftPaddedString15();
-            //                        if (!Expression.IsOptionDefined("等身大基準"))
-            //                        {
-            //                            if (withBlock8.CountPilot() > 0)
-            //                            {
-            //                                list[j] = list[j] + "  " + withBlock8.MainPilot().get_Nickname(false);
-            //                            }
-            //                        }
-            //                    }
-
-            //                NextForm:
-            //                    ;
-            //                }
-            //            }
-            //        }
-
-            //        // 合体ユニットの場合は分離形態のユニットのランクも上げる
-            //        if (withBlock7.IsFeatureAvailable("分離"))
-            //        {
-            //            urank = withBlock7.Rank;
-            //            buf = withBlock7.FeatureData("分離");
-            //            var loopTo20 = GeneralLib.LLength(buf);
-            //            for (i = 2; i <= loopTo20; i++)
-            //            {
-            //                if (SRC.UList.IsDefined(GeneralLib.LIndex(buf, i)))
-            //                {
-            //                    {
-            //                        var withBlock9 = SRC.UList.Item(GeneralLib.LIndex(buf, i));
-            //                        withBlock9.Rank = GeneralLib.MaxLng(urank, withBlock9.Rank);
-            //                        withBlock9.HP = withBlock9.MaxHP;
-            //                        withBlock9.EN = withBlock9.MaxEN;
-            //                        var loopTo21 = withBlock9.CountOtherForm();
-            //                        for (j = 1; j <= loopTo21; j++)
-            //                        {
-            //                            Unit localOtherForm10() { object argIndex1 = j; var ret = withBlock9.OtherForm(argIndex1); return ret; }
-
-            //                            localOtherForm10().Rank = withBlock9.Rank;
-            //                            Unit localOtherForm11() { object argIndex1 = j; var ret = withBlock9.OtherForm(argIndex1); return ret; }
-
-            //                            Unit localOtherForm12() { object argIndex1 = j; var ret = withBlock9.OtherForm(argIndex1); return ret; }
-
-            //                            localOtherForm11().HP = localOtherForm12().MaxHP;
-            //                            Unit localOtherForm13() { object argIndex1 = j; var ret = withBlock9.OtherForm(argIndex1); return ret; }
-
-            //                            Unit localOtherForm14() { object argIndex1 = j; var ret = withBlock9.OtherForm(argIndex1); return ret; }
-
-            //                            localOtherForm13().EN = localOtherForm14().MaxEN;
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-
-            //        // ユニットリストの表示内容を更新
-
-            //        if (use_max_rank)
-            //        {
-            //            string localRightPaddedString6() { string argbuf = withBlock7.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock7.Nickname0 = argbuf; return ret; }
-
-            //            string localLeftPaddedString16() { string argbuf = SrcFormatter.Format(withBlock7.Rank); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
-
-            //            list[ret] = localRightPaddedString6() + localLeftPaddedString16() + "/";
-            //            if (MaxRank(u) > 0)
-            //            {
-            //                string localLeftPaddedString17() { string argbuf = SrcFormatter.Format(MaxRank(u)); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
-
-            //                list[ret] = list[ret] + localLeftPaddedString17();
-            //            }
-            //            else
-            //            {
-            //                list[ret] = list[ret] + "--";
-            //            }
-            //        }
-            //        else if (withBlock7.Rank < 10)
-            //        {
-            //            string localRightPaddedString7() { string argbuf = withBlock7.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock7.Nickname0 = argbuf; return ret; }
-
-            //            list[ret] = localRightPaddedString7() + Strings.StrConv(SrcFormatter.Format(withBlock7.Rank), VbStrConv.Wide);
-            //        }
-            //        else
-            //        {
-            //            string localRightPaddedString8() { string argbuf = withBlock7.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock7.Nickname0 = argbuf; return ret; }
-
-            //            list[ret] = localRightPaddedString8() + SrcFormatter.Format(withBlock7.Rank);
-            //        }
-
-            //        if (RankUpCost(u) < 10000000)
-            //        {
-            //            string localLeftPaddedString18() { string argbuf = SrcFormatter.Format(RankUpCost(u)); var ret = GeneralLib.LeftPaddedString(argbuf, 7); return ret; }
-
-            //            list[ret] = list[ret] + localLeftPaddedString18();
-            //        }
-            //        else
-            //        {
-            //            list[ret] = list[ret] + GeneralLib.LeftPaddedString("----", 7);
-            //        }
-
-            //        if (Expression.IsOptionDefined("等身大基準"))
-            //        {
-            //            if (withBlock7.CountPilot() > 0)
-            //            {
-            //                string localLeftPaddedString19() { string argbuf = SrcFormatter.Format(withBlock7.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(argbuf, 3); return ret; }
-
-            //                list[ret] = list[ret] + localLeftPaddedString19();
-            //            }
-            //        }
-
-            //        string localLeftPaddedString20() { string argbuf = SrcFormatter.Format(withBlock7.MaxHP); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
-
-            //        string localLeftPaddedString21() { string argbuf = SrcFormatter.Format(withBlock7.MaxEN); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
-
-            //        string localLeftPaddedString22() { string argbuf = SrcFormatter.Format(withBlock7.get_Armor("")); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
-
-            //        string localLeftPaddedString23() { string argbuf = SrcFormatter.Format(withBlock7.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
-
-            //        list[ret] = list[ret] + localLeftPaddedString20() + localLeftPaddedString21() + localLeftPaddedString22() + localLeftPaddedString23();
-            //        if (!Expression.IsOptionDefined("等身大基準"))
-            //        {
-            //            if (withBlock7.CountPilot() > 0)
-            //            {
-            //                list[ret] = list[ret] + "  " + withBlock7.MainPilot().get_Nickname(false);
-            //            }
-            //        }
-            //    }
-
-            //    // 改めて資金と改造費を調べ、各ユニットが改造可能かチェックする
-            //    var loopTo22 = Information.UBound(list);
-            //    for (i = 2; i <= loopTo22; i++)
-            //    {
-            //        Unit localItem9() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = SRC.UList.Item(argIndex1); return ret; }
-
-            //        cost = RankUpCost(null4);
-            //        if (cost > SRC.Money | cost > 10000000)
-            //        {
-            //            GUI.ListItemFlag[i] = true;
-            //        }
-            //        else
-            //        {
-            //            GUI.ListItemFlag[i] = false;
-            //        }
-            //    }
-
+            //}
+            //else if (Interaction.MsgBox(u.Nickname0 + "を改造しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "改造") != 1)
+            //{
             //    goto Beginning;
+            //}
+
+            // 資金を減らす
+            SRC.IncrMoney(-RankUpCost(u));
+
+            // ユニットランクを一段階上げる
+            RankUp(u);
+
+            goto Beginning;
+        }
+
+        private void RankUp(Unit u)
+        {
+            // TODO 適当に Unit#update
+            u.Rank = u.Rank + 1;
+
+            // 他形態のランクも上げておく
+            foreach (var of in u.OtherForms)
+            {
+                of.Rank = u.Rank;
+            }
+            // 合体形態が主形態の分離形態が改造された場合は他の分離形態のユニットの
+            // ランクも上げる
+            if (u.IsFeatureAvailable("合体"))
+            {
+                var mu = u.Features.Where(fd => fd.Name == "合体")
+                    .Select(fd => new
+                    {
+                        u = SRC.UDList.Item(GeneralLib.LIndex(fd.Data, 2)),
+                        fd = fd,
+                    })
+                    .Where(x => x.u != null)
+                    .Where(x => (GeneralLib.LLength(x.fd.Data) == 3 && x.u.IsFeatureAvailable("主形態"))
+                        || (GeneralLib.LLength(x.fd.Data) != 3 && !x.u.IsFeatureAvailable("制限時間")))
+                    .Select(x => x.u)
+                    .FirstOrDefault();
+                if (mu != null)
+                {
+                    if (mu.IsFeatureAvailable("分離"))
+                    {
+                        var buf = mu.FeatureData("分離");
+                        foreach (var pu in GeneralLib.ToList(buf).Skip(1).Select(x => SRC.UList.Item(x)).Where(x => x != null))
+                        {
+                            pu.Rank = GeneralLib.MaxLng(u.Rank, pu.Rank);
+                            foreach (var of in pu.OtherForms)
+                            {
+                                of.Rank = pu.Rank;
+                            }
+                        }
+                    }
+                }
+                // XXX 分離ユニット選択肢に加えるの？
+                {
+                    //if (i <= u.CountFeature())
+                    //{
+                    //    urank = u.Rank;
+                    //    string localFeatureData2() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
+
+                    //    string localLIndex() { string arglist = hsba79967d549343448297e0bcf57b2982(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+
+                    //    UnitData localItem8() { object argIndex1 = (object)hsd871da3601884bc086fad5045542bc83(); var ret = SRC.UDList.Item(argIndex1); return ret; }
+
+                    //    buf = localItem8().FeatureData("分離");
+                    //    var loopTo17 = GeneralLib.LLength(buf);
+                    //    for (i = 2; i <= loopTo17; i++)
+                    //    {
+                    //        bool localIsDefined() { object argIndex1 = GeneralLib.LIndex(buf, i); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
+
+                    //        if (!localIsDefined())
+                    //        {
+                    //            goto NextForm;
+                    //        }
+
+                    //        {
+                    //            var withBlock8 = SRC.UList.Item(GeneralLib.LIndex(buf, i));
+                    //            withBlock8.Rank = GeneralLib.MaxLng(urank, withBlock8.Rank);
+                    //            withBlock8.HP = withBlock8.MaxHP;
+                    //            withBlock8.EN = withBlock8.MaxEN;
+                    //            var loopTo18 = withBlock8.CountOtherForm();
+                    //            for (j = 1; j <= loopTo18; j++)
+                    //            {
+                    //                Unit localOtherForm5() { object argIndex1 = j; var ret = withBlock8.OtherForm(argIndex1); return ret; }
+
+                    //                localOtherForm5().Rank = withBlock8.Rank;
+                    //                Unit localOtherForm6() { object argIndex1 = j; var ret = withBlock8.OtherForm(argIndex1); return ret; }
+
+                    //                Unit localOtherForm7() { object argIndex1 = j; var ret = withBlock8.OtherForm(argIndex1); return ret; }
+
+                    //                localOtherForm6().HP = localOtherForm7().MaxHP;
+                    //                Unit localOtherForm8() { object argIndex1 = j; var ret = withBlock8.OtherForm(argIndex1); return ret; }
+
+                    //                Unit localOtherForm9() { object argIndex1 = j; var ret = withBlock8.OtherForm(argIndex1); return ret; }
+
+                    //                localOtherForm8().EN = localOtherForm9().MaxEN;
+                    //            }
+
+                    //            var loopTo19 = Information.UBound(id_list);
+                    //            for (j = 1; j <= loopTo19; j++)
+                    //            {
+                    //                if ((withBlock8.CurrentForm().ID ?? "") == (id_list[j] ?? ""))
+                    //                {
+                    //                    break;
+                    //                }
+                    //            }
+
+                    //            if (j > Information.UBound(id_list))
+                    //            {
+                    //                goto NextForm;
+                    //            }
+
+                    //            if (use_max_rank)
+                    //            {
+                    //                string localRightPaddedString3() { string argbuf = withBlock8.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock8.Nickname0 = argbuf; return ret; }
+
+                    //                string localLeftPaddedString8() { string argbuf = SrcFormatter.Format(withBlock8.Rank); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
+
+                    //                list[j] = localRightPaddedString3() + localLeftPaddedString8() + "/";
+                    //                if (MaxRank(u) > 0)
+                    //                {
+                    //                    string localLeftPaddedString9() { string argbuf = SrcFormatter.Format(MaxRank(u)); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
+
+                    //                    list[j] = list[j] + localLeftPaddedString9();
+                    //                }
+                    //                else
+                    //                {
+                    //                    list[j] = list[j] + "--";
+                    //                }
+                    //            }
+                    //            else if (withBlock8.Rank < 10)
+                    //            {
+                    //                string localRightPaddedString4() { string argbuf = withBlock8.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock8.Nickname0 = argbuf; return ret; }
+
+                    //                list[j] = localRightPaddedString4() + Strings.StrConv(SrcFormatter.Format(withBlock8.Rank), VbStrConv.Wide);
+                    //            }
+                    //            else
+                    //            {
+                    //                string localRightPaddedString5() { string argbuf = withBlock8.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock8.Nickname0 = argbuf; return ret; }
+
+                    //                list[j] = localRightPaddedString5() + SrcFormatter.Format(withBlock8.Rank);
+                    //            }
+
+                    //            if (RankUpCost(u) < 1000000)
+                    //            {
+                    //                string localLeftPaddedString10() { string argbuf = SrcFormatter.Format(RankUpCost(u)); var ret = GeneralLib.LeftPaddedString(argbuf, 7); return ret; }
+
+                    //                list[j] = list[j] + localLeftPaddedString10();
+                    //            }
+                    //            else
+                    //            {
+                    //                list[j] = list[j] + GeneralLib.LeftPaddedString("----", 7);
+                    //            }
+
+                    //            if (Expression.IsOptionDefined("等身大基準"))
+                    //            {
+                    //                if (withBlock8.CountPilot() > 0)
+                    //                {
+                    //                    string localLeftPaddedString11() { string argbuf = SrcFormatter.Format(withBlock8.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(argbuf, 3); return ret; }
+
+                    //                    list[j] = list[j] + localLeftPaddedString11();
+                    //                }
+                    //            }
+
+                    //            string localLeftPaddedString12() { string argbuf = SrcFormatter.Format(withBlock8.MaxHP); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
+
+                    //            string localLeftPaddedString13() { string argbuf = SrcFormatter.Format(withBlock8.MaxEN); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
+
+                    //            string localLeftPaddedString14() { string argbuf = SrcFormatter.Format(withBlock8.get_Armor("")); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
+
+                    //            string localLeftPaddedString15() { string argbuf = SrcFormatter.Format(withBlock8.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
+
+                    //            list[j] = list[j] + localLeftPaddedString12() + localLeftPaddedString13() + localLeftPaddedString14() + localLeftPaddedString15();
+                    //            if (!Expression.IsOptionDefined("等身大基準"))
+                    //            {
+                    //                if (withBlock8.CountPilot() > 0)
+                    //                {
+                    //                    list[j] = list[j] + "  " + withBlock8.MainPilot().get_Nickname(false);
+                    //                }
+                    //            }
+                    //        }
+
+                    //    NextForm:
+                    //        ;
+                    //    }
+                    //}
+                }
+            }
+
+            // 合体ユニットの場合は分離形態のユニットのランクも上げる
+            if (u.IsFeatureAvailable("分離"))
+            {
+                var buf = u.FeatureData("分離");
+                foreach (var pu in GeneralLib.ToList(buf).Skip(1).Select(x => SRC.UList.Item(x)).Where(x => x != null))
+                {
+                    pu.Rank = GeneralLib.MaxLng(u.Rank, pu.Rank);
+                    foreach (var of in pu.OtherForms)
+                    {
+                        of.Rank = pu.Rank;
+                    }
+                }
+            }
         }
 
         // ユニットランクを上げるためのコストを算出
         public int RankUpCost(Unit u)
         {
-            throw new NotImplementedException();
-            //    int RankUpCostRet = default;
-            //    {
-            //        var withBlock = u;
-            //        // これ以上改造できない？
-            //        if (withBlock.Rank >= MaxRank(u))
-            //        {
-            //            RankUpCostRet = 999999999;
-            //            return RankUpCostRet;
-            //        }
+            int RankUpCostRet = default;
+            {
+                // これ以上改造できない？
+                if (u.Rank >= MaxRank(u))
+                {
+                    RankUpCostRet = 999999999;
+                    return RankUpCostRet;
+                }
 
-            //        // 合体状態にある場合はそれが主形態でない限り改造不可
-            //        if (withBlock.IsFeatureAvailable("分離"))
-            //        {
-            //            int localLLength() { object argIndex1 = "分離"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LLength(arglist); return ret; }
+                // 合体状態にある場合はそれが主形態でない限り改造不可
+                if (u.IsFeatureAvailable("分離"))
+                {
+                    if (GeneralLib.LLength(u.FeatureData("分離")) == 3
+                        && !u.IsFeatureAvailable("主形態") || u.IsFeatureAvailable("制限時間"))
+                    {
+                        RankUpCostRet = 999999999;
+                        return RankUpCostRet;
+                    }
+                }
 
-            //            if (localLLength() == 3 && !withBlock.IsFeatureAvailable("主形態") | withBlock.IsFeatureAvailable("制限時間"))
-            //            {
-            //                RankUpCostRet = 999999999;
-            //                return RankUpCostRet;
-            //            }
-            //        }
+                if (Expression.IsOptionDefined("低改造費"))
+                {
+                    // 低改造費の場合
+                    switch (u.Rank)
+                    {
+                        case 0:
+                            {
+                                RankUpCostRet = 10000;
+                                break;
+                            }
 
-            //        if (Expression.IsOptionDefined("低改造費"))
-            //        {
-            //            // 低改造費の場合
-            //            switch (withBlock.Rank)
-            //            {
-            //                case 0:
-            //                    {
-            //                        RankUpCostRet = 10000;
-            //                        break;
-            //                    }
+                        case 1:
+                            {
+                                RankUpCostRet = 15000;
+                                break;
+                            }
 
-            //                case 1:
-            //                    {
-            //                        RankUpCostRet = 15000;
-            //                        break;
-            //                    }
+                        case 2:
+                            {
+                                RankUpCostRet = 20000;
+                                break;
+                            }
 
-            //                case 2:
-            //                    {
-            //                        RankUpCostRet = 20000;
-            //                        break;
-            //                    }
+                        case 3:
+                            {
+                                RankUpCostRet = 30000;
+                                break;
+                            }
 
-            //                case 3:
-            //                    {
-            //                        RankUpCostRet = 30000;
-            //                        break;
-            //                    }
+                        case 4:
+                            {
+                                RankUpCostRet = 40000;
+                                break;
+                            }
 
-            //                case 4:
-            //                    {
-            //                        RankUpCostRet = 40000;
-            //                        break;
-            //                    }
+                        case 5:
+                            {
+                                RankUpCostRet = 50000;
+                                break;
+                            }
 
-            //                case 5:
-            //                    {
-            //                        RankUpCostRet = 50000;
-            //                        break;
-            //                    }
+                        case 6:
+                            {
+                                RankUpCostRet = 60000;
+                                break;
+                            }
 
-            //                case 6:
-            //                    {
-            //                        RankUpCostRet = 60000;
-            //                        break;
-            //                    }
+                        case 7:
+                            {
+                                RankUpCostRet = 70000;
+                                break;
+                            }
 
-            //                case 7:
-            //                    {
-            //                        RankUpCostRet = 70000;
-            //                        break;
-            //                    }
+                        case 8:
+                            {
+                                RankUpCostRet = 80000;
+                                break;
+                            }
 
-            //                case 8:
-            //                    {
-            //                        RankUpCostRet = 80000;
-            //                        break;
-            //                    }
+                        case 9:
+                            {
+                                RankUpCostRet = 100000;
+                                break;
+                            }
 
-            //                case 9:
-            //                    {
-            //                        RankUpCostRet = 100000;
-            //                        break;
-            //                    }
+                        case 10:
+                            {
+                                RankUpCostRet = 120000;
+                                break;
+                            }
 
-            //                case 10:
-            //                    {
-            //                        RankUpCostRet = 120000;
-            //                        break;
-            //                    }
+                        case 11:
+                            {
+                                RankUpCostRet = 140000;
+                                break;
+                            }
 
-            //                case 11:
-            //                    {
-            //                        RankUpCostRet = 140000;
-            //                        break;
-            //                    }
+                        case 12:
+                            {
+                                RankUpCostRet = 160000;
+                                break;
+                            }
 
-            //                case 12:
-            //                    {
-            //                        RankUpCostRet = 160000;
-            //                        break;
-            //                    }
+                        case 13:
+                            {
+                                RankUpCostRet = 180000;
+                                break;
+                            }
 
-            //                case 13:
-            //                    {
-            //                        RankUpCostRet = 180000;
-            //                        break;
-            //                    }
+                        case 14:
+                            {
+                                RankUpCostRet = 200000;
+                                break;
+                            }
 
-            //                case 14:
-            //                    {
-            //                        RankUpCostRet = 200000;
-            //                        break;
-            //                    }
+                        default:
+                            {
+                                RankUpCostRet = 999999999;
+                                return RankUpCostRet;
+                            }
+                    }
+                }
+                else if (Expression.IsOptionDefined("１５段階改造"))
+                {
+                    // 通常の１５段改造
+                    // (１０段改造時よりお求め安い価格になっております……)
+                    switch (u.Rank)
+                    {
+                        case 0:
+                            {
+                                RankUpCostRet = 10000;
+                                break;
+                            }
 
-            //                default:
-            //                    {
-            //                        RankUpCostRet = 999999999;
-            //                        return RankUpCostRet;
-            //                    }
-            //            }
-            //        }
-            //        else if (Expression.IsOptionDefined("１５段階改造"))
-            //        {
-            //            // 通常の１５段改造
-            //            // (１０段改造時よりお求め安い価格になっております……)
-            //            switch (withBlock.Rank)
-            //            {
-            //                case 0:
-            //                    {
-            //                        RankUpCostRet = 10000;
-            //                        break;
-            //                    }
+                        case 1:
+                            {
+                                RankUpCostRet = 15000;
+                                break;
+                            }
 
-            //                case 1:
-            //                    {
-            //                        RankUpCostRet = 15000;
-            //                        break;
-            //                    }
+                        case 2:
+                            {
+                                RankUpCostRet = 20000;
+                                break;
+                            }
 
-            //                case 2:
-            //                    {
-            //                        RankUpCostRet = 20000;
-            //                        break;
-            //                    }
+                        case 3:
+                            {
+                                RankUpCostRet = 40000;
+                                break;
+                            }
 
-            //                case 3:
-            //                    {
-            //                        RankUpCostRet = 40000;
-            //                        break;
-            //                    }
+                        case 4:
+                            {
+                                RankUpCostRet = 80000;
+                                break;
+                            }
 
-            //                case 4:
-            //                    {
-            //                        RankUpCostRet = 80000;
-            //                        break;
-            //                    }
+                        case 5:
+                            {
+                                RankUpCostRet = 120000;
+                                break;
+                            }
 
-            //                case 5:
-            //                    {
-            //                        RankUpCostRet = 120000;
-            //                        break;
-            //                    }
+                        case 6:
+                            {
+                                RankUpCostRet = 160000;
+                                break;
+                            }
 
-            //                case 6:
-            //                    {
-            //                        RankUpCostRet = 160000;
-            //                        break;
-            //                    }
+                        case 7:
+                            {
+                                RankUpCostRet = 200000;
+                                break;
+                            }
 
-            //                case 7:
-            //                    {
-            //                        RankUpCostRet = 200000;
-            //                        break;
-            //                    }
+                        case 8:
+                            {
+                                RankUpCostRet = 250000;
+                                break;
+                            }
 
-            //                case 8:
-            //                    {
-            //                        RankUpCostRet = 250000;
-            //                        break;
-            //                    }
+                        case 9:
+                            {
+                                RankUpCostRet = 300000;
+                                break;
+                            }
 
-            //                case 9:
-            //                    {
-            //                        RankUpCostRet = 300000;
-            //                        break;
-            //                    }
+                        case 10:
+                            {
+                                RankUpCostRet = 350000;
+                                break;
+                            }
 
-            //                case 10:
-            //                    {
-            //                        RankUpCostRet = 350000;
-            //                        break;
-            //                    }
+                        case 11:
+                            {
+                                RankUpCostRet = 400000;
+                                break;
+                            }
 
-            //                case 11:
-            //                    {
-            //                        RankUpCostRet = 400000;
-            //                        break;
-            //                    }
+                        case 12:
+                            {
+                                RankUpCostRet = 450000;
+                                break;
+                            }
 
-            //                case 12:
-            //                    {
-            //                        RankUpCostRet = 450000;
-            //                        break;
-            //                    }
+                        case 13:
+                            {
+                                RankUpCostRet = 500000;
+                                break;
+                            }
 
-            //                case 13:
-            //                    {
-            //                        RankUpCostRet = 500000;
-            //                        break;
-            //                    }
+                        case 14:
+                            {
+                                RankUpCostRet = 550000;
+                                break;
+                            }
 
-            //                case 14:
-            //                    {
-            //                        RankUpCostRet = 550000;
-            //                        break;
-            //                    }
+                        default:
+                            {
+                                RankUpCostRet = 999999999;
+                                return RankUpCostRet;
+                            }
+                    }
+                }
+                else
+                {
+                    // 通常の１０段改造
+                    switch (u.Rank)
+                    {
+                        case 0:
+                            {
+                                RankUpCostRet = 10000;
+                                break;
+                            }
 
-            //                default:
-            //                    {
-            //                        RankUpCostRet = 999999999;
-            //                        return RankUpCostRet;
-            //                    }
-            //            }
-            //        }
-            //        else
-            //        {
-            //            // 通常の１０段改造
-            //            switch (withBlock.Rank)
-            //            {
-            //                case 0:
-            //                    {
-            //                        RankUpCostRet = 10000;
-            //                        break;
-            //                    }
+                        case 1:
+                            {
+                                RankUpCostRet = 15000;
+                                break;
+                            }
 
-            //                case 1:
-            //                    {
-            //                        RankUpCostRet = 15000;
-            //                        break;
-            //                    }
+                        case 2:
+                            {
+                                RankUpCostRet = 20000;
+                                break;
+                            }
 
-            //                case 2:
-            //                    {
-            //                        RankUpCostRet = 20000;
-            //                        break;
-            //                    }
+                        case 3:
+                            {
+                                RankUpCostRet = 40000;
+                                break;
+                            }
 
-            //                case 3:
-            //                    {
-            //                        RankUpCostRet = 40000;
-            //                        break;
-            //                    }
+                        case 4:
+                            {
+                                RankUpCostRet = 80000;
+                                break;
+                            }
 
-            //                case 4:
-            //                    {
-            //                        RankUpCostRet = 80000;
-            //                        break;
-            //                    }
+                        case 5:
+                            {
+                                RankUpCostRet = 150000;
+                                break;
+                            }
 
-            //                case 5:
-            //                    {
-            //                        RankUpCostRet = 150000;
-            //                        break;
-            //                    }
+                        case 6:
+                            {
+                                RankUpCostRet = 200000;
+                                break;
+                            }
 
-            //                case 6:
-            //                    {
-            //                        RankUpCostRet = 200000;
-            //                        break;
-            //                    }
+                        case 7:
+                            {
+                                RankUpCostRet = 300000;
+                                break;
+                            }
 
-            //                case 7:
-            //                    {
-            //                        RankUpCostRet = 300000;
-            //                        break;
-            //                    }
+                        case 8:
+                            {
+                                RankUpCostRet = 400000;
+                                break;
+                            }
 
-            //                case 8:
-            //                    {
-            //                        RankUpCostRet = 400000;
-            //                        break;
-            //                    }
+                        case 9:
+                            {
+                                RankUpCostRet = 500000;
+                                break;
+                            }
 
-            //                case 9:
-            //                    {
-            //                        RankUpCostRet = 500000;
-            //                        break;
-            //                    }
+                        default:
+                            {
+                                RankUpCostRet = 999999999;
+                                return RankUpCostRet;
+                            }
+                    }
+                }
 
-            //                default:
-            //                    {
-            //                        RankUpCostRet = 999999999;
-            //                        return RankUpCostRet;
-            //                    }
-            //            }
-            //        }
+                // ユニット用特殊能力「改造費修正」による修正
+                if (u.IsFeatureAvailable("改造費修正"))
+                {
+                    RankUpCostRet = (int)(RankUpCostRet * (1d + u.FeatureLevel("改造費修正") / 10d));
+                }
+            }
 
-            //        // ユニット用特殊能力「改造費修正」による修正
-            //        if (withBlock.IsFeatureAvailable("改造費修正"))
-            //        {
-            //            RankUpCostRet = (RankUpCostRet * (1d + withBlock.FeatureLevel("改造費修正") / 10d));
-            //        }
-            //    }
-
-            //    return RankUpCostRet;
+            return RankUpCostRet;
         }
 
         // ユニットの最大改造数を算出
         public int MaxRank(Unit u)
         {
 
-            throw new NotImplementedException();
-            //    int MaxRankRet = default;
-            //    if (Expression.IsOptionDefined("５段階改造"))
-            //    {
-            //        // ５段階改造までしか出来ない
-            //        MaxRankRet = 5;
-            //    }
-            //    else if (Expression.IsOptionDefined("１５段階改造"))
-            //    {
-            //        // １５段階改造まで可能
-            //        MaxRankRet = 15;
-            //    }
-            //    else
-            //    {
-            //        // デフォルトは１０段階まで
-            //        MaxRankRet = 10;
-            //    }
-            //    // Disableコマンドで改造不可にされている？
-            //    if (Expression.IsGlobalVariableDefined("Disable(" + u.Name + ",改造)"))
-            //    {
-            //        MaxRankRet = 0;
-            //        return MaxRankRet;
-            //    }
+            int MaxRankRet = default;
+            if (Expression.IsOptionDefined("５段階改造"))
+            {
+                // ５段階改造までしか出来ない
+                MaxRankRet = 5;
+            }
+            else if (Expression.IsOptionDefined("１５段階改造"))
+            {
+                // １５段階改造まで可能
+                MaxRankRet = 15;
+            }
+            else
+            {
+                // デフォルトは１０段階まで
+                MaxRankRet = 10;
+            }
+            // Disableコマンドで改造不可にされている？
+            if (Expression.IsGlobalVariableDefined("Disable(" + u.Name + ",改造)"))
+            {
+                MaxRankRet = 0;
+                return MaxRankRet;
+            }
 
-            //    // 最大改造数が設定されている？
-            //    if (u.IsFeatureAvailable("最大改造数"))
-            //    {
-            //        MaxRankRet = GeneralLib.MinLng(MaxRankRet, u.FeatureLevel("最大改造数"));
-            //    }
+            // 最大改造数が設定されている？
+            if (u.IsFeatureAvailable("最大改造数"))
+            {
+                MaxRankRet = GeneralLib.MinLng(MaxRankRet, (int)u.FeatureLevel("最大改造数"));
+            }
 
-            //    return MaxRankRet;
+            return MaxRankRet;
         }
 
         // 乗り換えコマンド
@@ -1576,13 +1370,13 @@ namespace SRCCore
             //            var withBlock = p;
             //            bool localIsGlobalVariableDefined() { string argvname = "Fix(" + withBlock.Name + ")"; var ret = Expression.IsGlobalVariableDefined(argvname); return ret; }
 
-            //            if (withBlock.Party != "味方" | withBlock.Away | localIsGlobalVariableDefined())
+            //            if (withBlock.Party != "味方" || withBlock.Away || localIsGlobalVariableDefined())
             //            {
             //                goto NextLoop;
             //            }
 
             //            // 追加パイロット＆サポートは乗り換え不可
-            //            if (withBlock.IsAdditionalPilot | withBlock.IsAdditionalSupport)
+            //            if (withBlock.IsAdditionalPilot || withBlock.IsAdditionalSupport)
             //            {
             //                goto NextLoop;
             //            }
@@ -1642,7 +1436,7 @@ namespace SRCCore
             //                        {
             //                            {
             //                                var withBlock2 = withBlock1.Item(k);
-            //                                if ((withBlock2.Class() != "固定" | !withBlock2.IsFeatureAvailable("非表示")) && withBlock2.Part() != "非表示")
+            //                                if ((withBlock2.Class() != "固定" || !withBlock2.IsFeatureAvailable("非表示")) && withBlock2.Part() != "非表示")
             //                                {
             //                                    GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock2.Nickname() + " ";
             //                                }
@@ -1727,7 +1521,7 @@ namespace SRCCore
             //                    {
             //                        {
             //                            var withBlock4 = withBlock3.Item(k);
-            //                            if ((withBlock4.Class() != "固定" | !withBlock4.IsFeatureAvailable("非表示")) && withBlock4.Part() != "非表示")
+            //                            if ((withBlock4.Class() != "固定" || !withBlock4.IsFeatureAvailable("非表示")) && withBlock4.Part() != "非表示")
             //                            {
             //                                GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock4.Nickname() + " ";
             //                            }
@@ -1923,7 +1717,7 @@ namespace SRCCore
             //        u = currentU;
             //        {
             //            var withBlock8 = u;
-            //            if (withBlock8.Party0 != "味方" | withBlock8.Status != "待機")
+            //            if (withBlock8.Party0 != "味方" || withBlock8.Status != "待機")
             //            {
             //                goto NextUnit;
             //            }
@@ -2003,7 +1797,7 @@ namespace SRCCore
             //                {
             //                    {
             //                        var withBlock9 = withBlock8.Item(j);
-            //                        if ((withBlock9.Class() != "固定" | !withBlock9.IsFeatureAvailable("非表示")) && withBlock9.Part() != "非表示")
+            //                        if ((withBlock9.Class() != "固定" || !withBlock9.IsFeatureAvailable("非表示")) && withBlock9.Part() != "非表示")
             //                        {
             //                            GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock9.Nickname() + " ";
             //                        }
@@ -2038,7 +1832,7 @@ namespace SRCCore
             //                {
             //                    {
             //                        var withBlock10 = withBlock8.Item(j);
-            //                        if ((withBlock10.Class() != "固定" | !withBlock10.IsFeatureAvailable("非表示")) && withBlock10.Part() != "非表示")
+            //                        if ((withBlock10.Class() != "固定" || !withBlock10.IsFeatureAvailable("非表示")) && withBlock10.Part() != "非表示")
             //                        {
             //                            GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock10.Nickname() + " ";
             //                        }
@@ -2447,7 +2241,7 @@ namespace SRCCore
             //        u = currentU;
             //        {
             //            var withBlock = u;
-            //            if (withBlock.Party0 != "味方" | withBlock.Status != "待機")
+            //            if (withBlock.Party0 != "味方" || withBlock.Status != "待機")
             //            {
             //                goto NextUnit;
             //            }
@@ -2464,10 +2258,10 @@ namespace SRCCore
             //            {
             //                {
             //                    var withBlock1 = withBlock.Item(i);
-            //                    if ((withBlock1.Class() != "固定" | !withBlock1.IsFeatureAvailable("非表示")) && withBlock1.Part() != "非表示")
+            //                    if ((withBlock1.Class() != "固定" || !withBlock1.IsFeatureAvailable("非表示")) && withBlock1.Part() != "非表示")
             //                    {
             //                        GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock1.Nickname() + " ";
-            //                        if (withBlock1.Part() == "強化パーツ" | withBlock1.Part() == "アイテム")
+            //                        if (withBlock1.Part() == "強化パーツ" || withBlock1.Part() == "アイテム")
             //                        {
             //                            inum = (inum + withBlock1.Size());
             //                        }
@@ -2962,7 +2756,7 @@ namespace SRCCore
             //                var loopTo21 = Information.UBound(tmp_part_list);
             //                for (i = 1; i <= loopTo21; i++)
             //                {
-            //                    if ((tmp_part_list[i] ?? "") == (selected_part ?? "") | (selected_part == "片手" | selected_part == "両手" | selected_part == "盾") && (tmp_part_list[i] == "右手" | tmp_part_list[i] == "左手") | (selected_part == "肩" | selected_part == "両肩") && (tmp_part_list[i] == "右肩" | tmp_part_list[i] == "左肩") | (selected_part == "アイテム" | selected_part == "強化パーツ") && (tmp_part_list[i] == "アイテム" | tmp_part_list[i] == "強化パーツ"))
+            //                    if ((tmp_part_list[i] ?? "") == (selected_part ?? "") || (selected_part == "片手" || selected_part == "両手" || selected_part == "盾") && (tmp_part_list[i] == "右手" || tmp_part_list[i] == "左手") || (selected_part == "肩" || selected_part == "両肩") && (tmp_part_list[i] == "右肩" || tmp_part_list[i] == "左肩") || (selected_part == "アイテム" || selected_part == "強化パーツ") && (tmp_part_list[i] == "アイテム" || tmp_part_list[i] == "強化パーツ"))
             //                    {
             //                        Array.Resize(part_list, Information.UBound(part_list) + 1 + 1);
             //                        part_list[Information.UBound(part_list)] = tmp_part_list[i];
@@ -3078,12 +2872,12 @@ namespace SRCCore
 
             //                        default:
             //                            {
-            //                                if (withBlock8.Part() == "強化パーツ" | withBlock8.Part() == "アイテム")
+            //                                if (withBlock8.Part() == "強化パーツ" || withBlock8.Part() == "アイテム")
             //                                {
             //                                    var loopTo23 = Information.UBound(part_list);
             //                                    for (j = 1; j <= loopTo23; j++)
             //                                    {
-            //                                        if ((part_list[j] == "強化パーツ" | part_list[j] == "アイテム") && string.IsNullOrEmpty(part_item[j]))
+            //                                        if ((part_list[j] == "強化パーツ" || part_list[j] == "アイテム") && string.IsNullOrEmpty(part_item[j]))
             //                                        {
             //                                            part_item[j] = withBlock8.ID;
             //                                            var loopTo24 = (j + withBlock8.Size() - 1);
@@ -3188,7 +2982,7 @@ namespace SRCCore
 
             //                                bool localIsGlobalVariableDefined() { string argvname = "Fix(" + withBlock9.Name + ")"; var ret = Expression.IsGlobalVariableDefined(argvname); return ret; }
 
-            //                                if (localIsGlobalVariableDefined() | withBlock9.Class() == "固定" | withBlock9.IsFeatureAvailable("呪い"))
+            //                                if (localIsGlobalVariableDefined() || withBlock9.Class() == "固定" || withBlock9.IsFeatureAvailable("呪い"))
             //                                {
             //                                    GUI.ListItemFlag[i] = true;
             //                                    var loopTo29 = (i + withBlock9.Size() - 1);
@@ -3316,7 +3110,7 @@ namespace SRCCore
             //                                {
             //                                    bool localIsGlobalVariableDefined1() { string argvname = "Fix(" + withBlock10.Name + ")"; var ret = Expression.IsGlobalVariableDefined(argvname); return ret; }
 
-            //                                    if (localIsGlobalVariableDefined1() | withBlock10.Class() == "固定" | withBlock10.IsFeatureAvailable("呪い"))
+            //                                    if (localIsGlobalVariableDefined1() || withBlock10.Class() == "固定" || withBlock10.IsFeatureAvailable("呪い"))
             //                                    {
             //                                        if (is_right_hand_available)
             //                                        {
@@ -3332,7 +3126,7 @@ namespace SRCCore
             //                                {
             //                                    bool localIsGlobalVariableDefined2() { string argvname = "Fix(" + withBlock10.Name + ")"; var ret = Expression.IsGlobalVariableDefined(argvname); return ret; }
 
-            //                                    if (localIsGlobalVariableDefined2() | withBlock10.Class() == "固定" | withBlock10.IsFeatureAvailable("呪い"))
+            //                                    if (localIsGlobalVariableDefined2() || withBlock10.Class() == "固定" || withBlock10.IsFeatureAvailable("呪い"))
             //                                    {
             //                                        is_left_hand_available = false;
             //                                    }
@@ -3357,7 +3151,7 @@ namespace SRCCore
             //                                {
             //                                    bool localIsGlobalVariableDefined3() { string argvname = "Fix(" + withBlock11.Name + ")"; var ret = Expression.IsGlobalVariableDefined(argvname); return ret; }
 
-            //                                    if (localIsGlobalVariableDefined3() | withBlock11.Class() == "固定" | withBlock11.IsFeatureAvailable("呪い"))
+            //                                    if (localIsGlobalVariableDefined3() || withBlock11.Class() == "固定" || withBlock11.IsFeatureAvailable("呪い"))
             //                                    {
             //                                        empty_slot = (empty_slot - 1);
             //                                    }
@@ -3377,11 +3171,11 @@ namespace SRCCore
             //                        {
             //                            {
             //                                var withBlock12 = withBlock7.Item(i);
-            //                                if (withBlock12.Part() == "強化パーツ" | withBlock12.Part() == "アイテム")
+            //                                if (withBlock12.Part() == "強化パーツ" || withBlock12.Part() == "アイテム")
             //                                {
             //                                    bool localIsGlobalVariableDefined4() { string argvname = "Fix(" + withBlock12.Name + ")"; var ret = Expression.IsGlobalVariableDefined(argvname); return ret; }
 
-            //                                    if (localIsGlobalVariableDefined4() | withBlock12.Class() == "固定" | withBlock12.IsFeatureAvailable("呪い"))
+            //                                    if (localIsGlobalVariableDefined4() || withBlock12.Class() == "固定" || withBlock12.IsFeatureAvailable("呪い"))
             //                                    {
             //                                        empty_slot = (empty_slot - withBlock12.Size());
             //                                    }
@@ -3424,7 +3218,7 @@ namespace SRCCore
             //                                {
             //                                    bool localIsGlobalVariableDefined5() { string argvname = "Fix(" + withBlock13.Name + ")"; var ret = Expression.IsGlobalVariableDefined(argvname); return ret; }
 
-            //                                    if (localIsGlobalVariableDefined5() | withBlock13.Class() == "固定" | withBlock13.IsFeatureAvailable("呪い"))
+            //                                    if (localIsGlobalVariableDefined5() || withBlock13.Class() == "固定" || withBlock13.IsFeatureAvailable("呪い"))
             //                                    {
             //                                        empty_slot = (empty_slot - withBlock13.Size());
             //                                    }
@@ -3462,7 +3256,7 @@ namespace SRCCore
             //                                    {
             //                                        case "両手":
             //                                            {
-            //                                                if (!is_right_hand_available | !is_left_hand_available)
+            //                                                if (!is_right_hand_available || !is_left_hand_available)
             //                                                {
             //                                                    goto NextItem;
             //                                                }
@@ -3513,7 +3307,7 @@ namespace SRCCore
             //                                    {
             //                                        case "両手":
             //                                            {
-            //                                                if (!is_right_hand_available | !is_left_hand_available)
+            //                                                if (!is_right_hand_available || !is_left_hand_available)
             //                                                {
             //                                                    goto NextItem;
             //                                                }
@@ -3822,7 +3616,7 @@ namespace SRCCore
             //                    foreach (Item currentIt3 in SRC.IList)
             //                    {
             //                        it = currentIt3;
-            //                        if ((it.Name ?? "") != (iname ?? "") | !it.Exist)
+            //                        if ((it.Name ?? "") != (iname ?? "") || !it.Exist)
             //                        {
             //                            goto NextItem2;
             //                        }
@@ -3864,7 +3658,7 @@ namespace SRCCore
             //                            {
             //                                {
             //                                    var withBlock20 = withBlock19.Item(i);
-            //                                    if ((withBlock20.Class() != "固定" | !withBlock20.IsFeatureAvailable("非表示")) && withBlock20.Part() != "非表示")
+            //                                    if ((withBlock20.Class() != "固定" || !withBlock20.IsFeatureAvailable("非表示")) && withBlock20.Part() != "非表示")
             //                                    {
             //                                        GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock20.Nickname() + " ";
             //                                    }
@@ -4006,7 +3800,7 @@ namespace SRCCore
             //        {
             //            var withBlock = u;
             //            // 待機中の味方ユニット？
-            //            if (withBlock.Party0 != "味方" | withBlock.Status != "待機")
+            //            if (withBlock.Party0 != "味方" || withBlock.Status != "待機")
             //            {
             //                goto NextLoop;
             //            }
@@ -4100,7 +3894,7 @@ namespace SRCCore
             //            {
             //                {
             //                    var withBlock1 = withBlock.Item(k);
-            //                    if ((withBlock1.Class() != "固定" | !withBlock1.IsFeatureAvailable("非表示")) && withBlock1.Part() != "非表示")
+            //                    if ((withBlock1.Class() != "固定" || !withBlock1.IsFeatureAvailable("非表示")) && withBlock1.Part() != "非表示")
             //                    {
             //                        GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock1.Nickname() + " ";
             //                    }
@@ -4322,7 +4116,7 @@ namespace SRCCore
             //    bool InStatusCommandRet = default;
             //    if (string.IsNullOrEmpty(Map.MapFileName))
             //    {
-            //        if (Strings.InStr(SRC.ScenarioFileName, @"\ユニットステータス表示.eve") > 0 | Strings.InStr(SRC.ScenarioFileName, @"\パイロットステータス表示.eve") > 0 | SRC.IsSubStage)
+            //        if (Strings.InStr(SRC.ScenarioFileName, @"\ユニットステータス表示.eve") > 0 || Strings.InStr(SRC.ScenarioFileName, @"\パイロットステータス表示.eve") > 0 || SRC.IsSubStage)
             //        {
             //            InStatusCommandRet = true;
             //        }

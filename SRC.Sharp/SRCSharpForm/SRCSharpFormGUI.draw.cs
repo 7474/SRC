@@ -1087,6 +1087,7 @@ namespace SRCSharpForm
 
         // ＭＳ Ｐ明朝、16pt、Bold、白色
         private static readonly Font defaultDrawFont = new Font("ＭＳ Ｐ明朝", 16, FontStyle.Bold, GraphicsUnit.Point);
+        private static readonly Font statusDrawFont = new Font("ＭＳ Ｐ明朝", 9, FontStyle.Regular, GraphicsUnit.Point);
         private Font currentDrawFont = defaultDrawFont;
         private Brush currentDrawFontColor = Brushes.White;
         private PointF currentDrawStringPoint = new PointF();
@@ -1094,6 +1095,11 @@ namespace SRCSharpForm
         public void ResetDrawString()
         {
             currentDrawFont = defaultDrawFont;
+            currentDrawFontColor = Brushes.White;
+        }
+        public void SetDrawString(DrawStringMode mode)
+        {
+            currentDrawFont = statusDrawFont;
             currentDrawFontColor = Brushes.White;
         }
 

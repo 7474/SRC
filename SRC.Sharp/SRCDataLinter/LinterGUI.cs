@@ -418,6 +418,11 @@ namespace SRCDataLinter
             throw new NotImplementedException();
         }
 
+        public void SetDrawString(DrawStringMode mode)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SetLoadImageSize(int new_size)
         {
             throw new NotImplementedException();
