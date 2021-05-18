@@ -8,6 +8,17 @@ namespace SRCCore.Extensions
 {
     public static class ListExtension
     {
+        // XXX EnumerableExtension
+        // XXX 多分遅い
+        public static IEnumerable<T> AppendRange<T>(this IEnumerable<T> list, IEnumerable<T> appends)
+        {
+            foreach (var a in appends)
+            {
+                list = list.Append(a);
+            }
+            return list;
+        }
+
         public static IList<T> RemoveItem<T>(this IList<T> list, Func<T, bool> predicate)
         {
             list.Where(predicate).ToList().ForEach(item => list.Remove(item));
