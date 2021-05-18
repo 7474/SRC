@@ -128,7 +128,7 @@ namespace SRCCore.Units
                         TmpMaskData[i, j] = Map.MaskData[i, j];
                 }
 
-                partners = w.CombinationPartner("武装");
+                partners = w.CombinationPartner();
                 foreach (var pu in partners)
                 {
 

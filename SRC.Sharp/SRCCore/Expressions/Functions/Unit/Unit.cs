@@ -98,7 +98,7 @@ namespace SRCCore.Expressions.Functions
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
-            num_result = SRC.Commands.SelectedPartners?.Length ?? 0;
+            num_result = SRC.Commands.SelectedPartners.Count;
 
             if (etype == ValueType.StringType)
             {
@@ -319,7 +319,7 @@ namespace SRCCore.Expressions.Functions
             {
                 str_result = SRC.Event.SelectedUnitForEvent?.ID ?? "";
             }
-            else if (1 <= index && index - 1 < SRC.Commands.SelectedPartners.Length)
+            else if (1 <= index && index - 1 < SRC.Commands.SelectedPartners.Count)
             {
                 str_result = SRC.Commands.SelectedPartners[index - 1].ID;
             }

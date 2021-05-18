@@ -8,6 +8,7 @@ using SRCCore.Units;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.Commands
 {
@@ -135,69 +136,22 @@ namespace SRCCore.Commands
                 Map.AreaInRange(currentUnit.x, currentUnit.y, max_range, min_range, "味方の敵");
             }
 
-            // TODO Impl 合体技
-            //// 射程１の合体技はパートナーで相手を取り囲んでいないと使用できない
-            //if (max_range == 1 && currentWeapon.IsWeaponClassifiedAs( "合") && !currentWeapon.IsWeaponClassifiedAs( "Ｍ"))
-            //{
-            //    for (i = 1; i <= 4; i++)
-            //    {
-            //        t = null;
-            //        switch (i)
-            //        {
-            //            case 1:
-            //                {
-            //                    if (currentUnit.x > 1)
-            //                    {
-            //                        t = Map.MapDataForUnit[currentUnit.x - 1, currentUnit.y];
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case 2:
-            //                {
-            //                    if (currentUnit.x < Map.MapWidth)
-            //                    {
-            //                        t = Map.MapDataForUnit[currentUnit.x + 1, currentUnit.y];
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case 3:
-            //                {
-            //                    if (currentUnit.y > 1)
-            //                    {
-            //                        t = Map.MapDataForUnit[currentUnit.x, currentUnit.y - 1];
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case 4:
-            //                {
-            //                    if (currentUnit.y < Map.MapHeight)
-            //                    {
-            //                        t = Map.MapDataForUnit[currentUnit.x, currentUnit.y + 1];
-            //                    }
-
-            //                    break;
-            //                }
-            //        }
-
-            //        if (t is object)
-            //        {
-            //            if (currentUnit.IsEnemy(t))
-            //            {
-            //                currentUnit.CombinationPartner("武装", SelectedWeapon, partners, t.x, t.y);
-            //                if (Information.UBound(partners) == 0)
-            //                {
-            //                    Map.MaskData[t.x, t.y] = true;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+            // 射程１の合体技はパートナーで相手を取り囲んでいないと使用できない
+            if (max_range == 1 && currentWeapon.IsWeaponClassifiedAs("合") && !currentWeapon.IsWeaponClassifiedAs("Ｍ"))
+            {
+                foreach (var t in new Unit[]
+                {
+                    Map.UnitAtPoint(currentUnit.x +1, currentUnit.y ),
+                    Map.UnitAtPoint(currentUnit.x -1, currentUnit.y ),
+                    Map.UnitAtPoint(currentUnit.x, currentUnit.y +1),
+                    Map.UnitAtPoint(currentUnit.x, currentUnit.y -1),
+                }.Where(t => t != null)
+                .Where(t => currentUnit.IsEnemy(t))
+                .Where(t => currentWeapon.CombinationPartner(t.x, t.y).Count == 0))
+                {
+                    Map.MaskData[t.x, t.y] = true;
+                }
+            }
 
             // ユニットに対するマスクの設定
             if (!currentWeapon.IsWeaponClassifiedAs("Ｍ投") && !currentWeapon.IsWeaponClassifiedAs("Ｍ線"))
@@ -355,7 +309,7 @@ namespace SRCCore.Commands
 
             int i;
             string def_mode = "";
-            var partners = new List<Unit>();
+            IList<Unit> partners = new List<Unit>();
             var BGM = "";
             var is_suiside = default(bool);
             string wname, twname = default;
@@ -384,27 +338,25 @@ namespace SRCCore.Commands
             // 移動後使用後可能な武器か記録しておく
             is_p_weapon = currentWeapon.IsWeaponClassifiedAs("移動後攻撃可");
 
-            // TODO Impl 虫食い全般
-            //// 合体技のパートナーを設定
-            //{
-            //    var withBlock = SelectedUnit;
-            //    if (withBlock.IsWeaponClassifiedAs(SelectedWeapon, "合"))
-            //    {
-            //        if (withBlock.WeaponMaxRange(SelectedWeapon) == 1)
-            //        {
-            //            withBlock.CombinationPartner("武装", SelectedWeapon, partners, SelectedTarget.x, SelectedTarget.y);
-            //        }
-            //        else
-            //        {
-            //            withBlock.CombinationPartner("武装", SelectedWeapon, partners);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        SelectedPartners = new Unit[0];
-            //        partners = new Unit[1];
-            //    }
-            //}
+            // 合体技のパートナーを設定
+            {
+                if (currentWeapon.IsWeaponClassifiedAs("合"))
+                {
+                    if (currentWeapon.WeaponMaxRange() == 1)
+                    {
+                        partners = currentWeapon.CombinationPartner( SelectedTarget.x, SelectedTarget.y);
+                    }
+                    else
+                    {
+                        partners = currentWeapon.CombinationPartner();
+                    }
+                }
+                else
+                {
+                    partners.Clear();
+                    SelectedPartners.Clear();
+                }
+            }
 
             // 敵の反撃手段を設定
             UnitWeapon currentTWeapon = null;
@@ -449,7 +401,7 @@ namespace SRCCore.Commands
             {
                 GUI.UnlockGUI();
                 SRC.IsScenarioFinished = false;
-                SelectedPartners = new Unit[0];
+                SelectedPartners.Clear();
                 return;
             }
 
@@ -470,7 +422,7 @@ namespace SRCCore.Commands
                 if (SRC.IsScenarioFinished)
                 {
                     SRC.IsScenarioFinished = false;
-                    SelectedPartners = new Unit[0];
+                    SelectedPartners.Clear();
                     GUI.UnlockGUI();
                     return;
                 }
@@ -478,7 +430,7 @@ namespace SRCCore.Commands
                 if (SRC.IsCanceled)
                 {
                     SRC.IsCanceled = false;
-                    SelectedPartners = new Unit[0];
+                    SelectedPartners.Clear();
                     WaitCommand();
                     return;
                 }
@@ -489,7 +441,7 @@ namespace SRCCore.Commands
             if (SRC.IsScenarioFinished)
             {
                 SRC.IsScenarioFinished = false;
-                SelectedPartners = new Unit[0];
+                SelectedPartners.Clear();
                 GUI.UnlockGUI();
                 return;
             }
@@ -497,7 +449,7 @@ namespace SRCCore.Commands
             if (SRC.IsCanceled)
             {
                 SRC.IsCanceled = false;
-                SelectedPartners = new Unit[0];
+                SelectedPartners.Clear();
                 WaitCommand();
                 return;
             }
@@ -570,15 +522,11 @@ namespace SRCCore.Commands
                 }
             }
 
-            //    // 合体技パートナーのハイライト表示
-            //    var loopTo1 = Information.UBound(partners);
-            //    for (i = 1; i <= loopTo1; i++)
-            //    {
-            //        {
-            //            var withBlock4 = partners[i];
-            //            Map.MaskData[withBlock4.x, withBlock4.y] = false;
-            //        }
-            //    }
+            // 合体技パートナーのハイライト
+            foreach (var pu in partners)
+            {
+                Map.MaskData[pu.x, pu.y] = false;
+            }
 
             Map.MaskData[SelectedUnit.x, SelectedUnit.y] = false;
             Map.MaskData[SelectedTarget.x, SelectedTarget.y] = false;
@@ -598,7 +546,7 @@ namespace SRCCore.Commands
             SupportGuardUnit = null;
             SupportGuardUnit2 = null;
 
-            //// ターゲットの位置を記録
+            // ターゲットの位置を記録
             tx = SelectedTarget.x;
             ty = SelectedTarget.y;
             GUI.OpenMessageForm(SelectedTarget, SelectedUnit);
@@ -666,6 +614,7 @@ namespace SRCCore.Commands
                 }
             }
 
+            // TODO Impl 虫食い全般
             //// サポートアタックのパートナーを探す
             //{
             //    var withBlock6 = SelectedUnit;
@@ -1180,7 +1129,7 @@ namespace SRCCore.Commands
             {
                 GUI.UnlockGUI();
                 SRC.IsScenarioFinished = false;
-                SelectedPartners = new Unit[0];
+                SelectedPartners.Clear();
                 return;
             }
 
@@ -1215,7 +1164,7 @@ namespace SRCCore.Commands
             if (SRC.IsScenarioFinished)
             {
                 SRC.IsScenarioFinished = false;
-                SelectedPartners = new Unit[0];
+                SelectedPartners.Clear();
                 return;
             }
 
@@ -1245,7 +1194,7 @@ namespace SRCCore.Commands
             if (SRC.IsScenarioFinished)
             {
                 SRC.IsScenarioFinished = false;
-                SelectedPartners = new Unit[0];
+                SelectedPartners.Clear();
                 GUI.UnlockGUI();
                 return;
             }
@@ -1253,7 +1202,7 @@ namespace SRCCore.Commands
             if (SRC.IsCanceled)
             {
                 SRC.IsCanceled = false;
-                SelectedPartners = new Unit[0];
+                SelectedPartners.Clear();
                 GUI.UnlockGUI();
                 return;
             }
@@ -1265,7 +1214,7 @@ namespace SRCCore.Commands
                 if (SRC.IsScenarioFinished)
                 {
                     SRC.IsScenarioFinished = false;
-                    SelectedPartners = new Unit[0];
+                    SelectedPartners.Clear();
                     GUI.UnlockGUI();
                     return;
                 }
@@ -1273,7 +1222,7 @@ namespace SRCCore.Commands
                 if (SRC.IsCanceled)
                 {
                     SRC.IsCanceled = false;
-                    SelectedPartners = new Unit[0];
+                    SelectedPartners.Clear();
                     GUI.UnlockGUI();
                     return;
                 }
@@ -1288,7 +1237,7 @@ namespace SRCCore.Commands
                 if (SRC.IsScenarioFinished)
                 {
                     SRC.IsScenarioFinished = false;
-                    SelectedPartners = new Unit[0];
+                    SelectedPartners.Clear();
                     GUI.UnlockGUI();
                     return;
                 }
@@ -1296,7 +1245,7 @@ namespace SRCCore.Commands
                 if (SRC.IsCanceled)
                 {
                     SRC.IsCanceled = false;
-                    SelectedPartners = new Unit[0];
+                    SelectedPartners.Clear();
                     GUI.UnlockGUI();
                     return;
                 }
@@ -1309,7 +1258,7 @@ namespace SRCCore.Commands
                 if (SRC.IsScenarioFinished)
                 {
                     SRC.IsScenarioFinished = false;
-                    SelectedPartners = new Unit[0];
+                    SelectedPartners.Clear();
                     GUI.UnlockGUI();
                     return;
                 }
@@ -1317,7 +1266,7 @@ namespace SRCCore.Commands
                 if (SRC.IsCanceled)
                 {
                     SRC.IsCanceled = false;
-                    SelectedPartners = new Unit[0];
+                    SelectedPartners.Clear();
                     GUI.UnlockGUI();
                     return;
                 }
@@ -1335,7 +1284,7 @@ namespace SRCCore.Commands
                         if (SRC.IsScenarioFinished)
                         {
                             SRC.IsScenarioFinished = false;
-                            SelectedPartners = new Unit[0];
+                            SelectedPartners.Clear();
                             GUI.UnlockGUI();
                             return;
                         }
@@ -1343,7 +1292,7 @@ namespace SRCCore.Commands
                         if (SRC.IsCanceled)
                         {
                             SRC.IsCanceled = false;
-                            SelectedPartners = new Unit[0];
+                            SelectedPartners.Clear();
                             GUI.UnlockGUI();
                             return;
                         }
@@ -1355,15 +1304,16 @@ namespace SRCCore.Commands
             ;
 
 
-            //// 合体技のパートナーの行動数を減らす
-            //if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
-            //{
-            //    var loopTo4 = Information.UBound(partners);
-            //    for (i = 1; i <= loopTo4; i++)
-            //        partners[i].CurrentForm().UseAction();
-            //}
+            // 合体技のパートナーの行動数を減らす
+            if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
+            {
+                foreach (var pu in partners)
+                {
+                    pu.CurrentForm().UseAction();
+                }
+            }
 
-            SelectedPartners = new Unit[0];
+            SelectedPartners.Clear();
 
             // ハイパーモード＆ノーマルモードの自動発動をチェック
             SRC.UList.CheckAutoHyperMode();
@@ -1515,18 +1465,17 @@ namespace SRCCore.Commands
                 }
             }
 
-            // TODO Impl 合体技
             // 合体技パートナーの設定
-            var partners = new List<Unit>();
-            //if (currentWeapon.IsWeaponClassifiedAs("合"))
-            //{
-            //    currentUnit.CombinationPartner("武装", SelectedWeapon, partners);
-            //}
-            //else
-            //{
-            //    SelectedPartners = new Unit[0];
-            //    partners = new Unit[1];
-            //}
+            IList<Unit> partners;
+            if (currentWeapon.IsWeaponClassifiedAs("合"))
+            {
+                partners = currentWeapon.CombinationPartner();
+            }
+            else
+            {
+                partners = new List<Unit>();
+                SelectedPartners.Clear();
+            }
 
             if (GUI.MainWidth != 15)
             {
@@ -1543,7 +1492,7 @@ namespace SRCCore.Commands
             if (SRC.IsScenarioFinished)
             {
                 SRC.IsScenarioFinished = false;
-                SelectedPartners = new Unit[0];
+                SelectedPartners.Clear();
                 GUI.UnlockGUI();
                 return;
             }
@@ -1551,7 +1500,7 @@ namespace SRCCore.Commands
             if (SRC.IsCanceled)
             {
                 SRC.IsCanceled = false;
-                SelectedPartners = new Unit[0];
+                SelectedPartners.Clear();
                 WaitCommand();
                 return;
             }
@@ -1565,7 +1514,7 @@ namespace SRCCore.Commands
                 }
             }
 
-            SelectedPartners = new Unit[0];
+            SelectedPartners.Clear();
 
             // TODO Impl 再移動
             //// 再移動
