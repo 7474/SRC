@@ -742,7 +742,7 @@ namespace SRCCore.Units
             //}
 
             // 破棄されたユニットを削除
-            foreach (Unit u in colUnits)
+            foreach (Unit u in colUnits.List.CloneList())
             {
                 // 召喚ユニットは必ず破棄
                 if (u.IsFeatureAvailable("召喚ユニット"))
@@ -759,9 +759,9 @@ namespace SRCCore.Units
                 if (u.Party0 != "味方" || u.Status == "破棄")
                 {
                     // ユニットが装備しているアイテムも破棄
-                    foreach(var itm in u.ItemList)
+                    foreach (var itm in u.ItemList)
                     {
-                        itm.Exist = false; 
+                        itm.Exist = false;
                     }
 
                     Delete(u.ID);
