@@ -32,7 +32,7 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
 - [SRC.NET](./SRC.NET)
     - SRC_20121125をツールで.NETにコンバートしたもの
 - [SRC.Sharp](./SRC.Sharp)
-    - SRCのC#実装の一部
+    - SRCのC#実装の一部、SRC#
     - [SRCCore](./SRC.Sharp/SRCCore)
         - SRCのコア部分
         - .NET Standard 2.1
@@ -42,8 +42,8 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
         - GitHub Action: https://github.com/7474/SRC-DataLinter
         - Docker Image: https://hub.docker.com/r/koudenpa/srcdatalinter
     - [SRCSharpForm](./SRC.Sharp/SRCSharpForm)
-        - Windows Forms実装のSRC#Sharp
-        - SRC#Sharpの仮実行を行える
+        - Windows Forms実装のSRC#Form
+        - SRC#Formの仮実行を行える
         - .NET 5
         - 元のSRCとの区別の便宜上、バージョンは `3.x.x` としている
     - [SRCTestForm](./SRC.Sharp/SRCTestForm)
