@@ -157,7 +157,7 @@ namespace SRCCore.Units
             }
 
             IList<Unit> partners = new List<Unit>();
-            Commands.SelectedPartners = new Unit[0];
+            Commands.SelectedPartners.Clear();
             if (attack_mode != "マップ攻撃" && attack_mode != "反射" && !second_attack)
             {
                 if (w.IsWeaponClassifiedAs("合"))
@@ -165,11 +165,11 @@ namespace SRCCore.Units
                     // 合体技の場合にパートナーをハイライト表示
                     if (w.WeaponMaxRange() == 1)
                     {
-                        partners = w.CombinationPartner("武装", tx, ty);
+                        partners = w.CombinationPartner(tx, ty);
                     }
                     else
                     {
-                        partners = w.CombinationPartner("武装");
+                        partners = w.CombinationPartner();
                     }
 
                     foreach (var pu in partners)

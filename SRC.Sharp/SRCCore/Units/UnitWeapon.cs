@@ -4,6 +4,7 @@
 // 再頒布または改変することができます。
 using Newtonsoft.Json;
 using SRCCore.Events;
+using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.Models;
@@ -1880,7 +1881,7 @@ namespace SRCCore.Units
             // 合体技で射程が１の場合は相手を囲んでいる必要がある
             if (IsWeaponClassifiedAs("合") && !IsWeaponClassifiedAs("Ｍ") && max_range == 1)
             {
-                var partners = CombinationPartner("武装", t.x, t.y);
+                var partners = CombinationPartner(t.x, t.y);
                 if (partners.Count == 0)
                 {
                     return false;
@@ -1935,7 +1936,7 @@ namespace SRCCore.Units
                 // 合体技で射程が１の場合は相手を囲んでいる必要がある
                 if (IsWeaponClassifiedAs("合") && !IsWeaponClassifiedAs("Ｍ") && WeaponMaxRange() == 1)
                 {
-                    var partners = CombinationPartner("武装", t.x, t.y);
+                    var partners = CombinationPartner(t.x, t.y);
                     if (partners.Count == 0)
                     {
                         return false;
@@ -4930,11 +4931,11 @@ namespace SRCCore.Units
 
             // 盾防御
             if (t.IsFeatureAvailable("盾")
-                && t.MainPilot().IsSkillAvailable("Ｓ防御") 
-                && t.MaxAction() > 0 
+                && t.MainPilot().IsSkillAvailable("Ｓ防御")
+                && t.MaxAction() > 0
                 && !IsWeaponClassifiedAs("精")
                 && !IsWeaponClassifiedAs("浸")
-                && !IsWeaponClassifiedAs("殺") 
+                && !IsWeaponClassifiedAs("殺")
                 && (t.IsConditionSatisfied("盾付加") || t.FeatureLevel("盾") > t.ConditionLevel("盾ダメージ")))
             {
                 if (IsWeaponClassifiedAs("破"))
@@ -5227,721 +5228,63 @@ namespace SRCCore.Units
         }
 
         // 合体技のパートナーを探す
-        public IList<Unit> CombinationPartner(string ctype, int tx = 0, int ty = 0, bool check_formation = false)
+        public IList<Unit> CombinationPartner(int tx = 0, int ty = 0, bool check_formation = false)
         {
-            return new List<Unit>();
-            // TODO Impl CombinationPartner
-            //Unit u;
-            //string uname;
-            //int j, i, k;
-            //int clevel = default, cnum = default;
-            //var clist = default(string);
-            //string cname;
-            //int cmorale, cen, cplana = default;
-            //int crange, loop_limit;
-
-            //// 正常な判断が可能？
-            //if (IsConditionSatisfied("混乱"))
-            //{
-            //    partners = new Unit[1];
-            //    return;
-            //}
-
-            //// 合体技のデータを調べておく
-            //if (ctype == "武装")
-            //{
-            //    cname = Weapon(w).Name;
-            //    cen = WeaponENConsumption(w);
-            //    cmorale = Weapon(w).NecessaryMorale;
-            //    if (IsWeaponClassifiedAs(w, "霊"))
-            //    {
-            //        cplana = (5d * WeaponLevel(w, "霊"));
-            //    }
-            //    else if (IsWeaponClassifiedAs(w, "プ"))
-            //    {
-            //        cplana = (5d * WeaponLevel(w, "プ"));
-            //    }
-
-            //    crange = WeaponMaxRange(w);
-            //}
-            //else
-            //{
-            //    cname = Ability(w).Name;
-            //    cen = AbilityENConsumption(w);
-            //    cmorale = Ability(w).NecessaryMorale;
-            //    if (IsAbilityClassifiedAs(w, "霊"))
-            //    {
-            //        cplana = (5d * AbilityLevel(w, "霊"));
-            //    }
-            //    else if (IsAbilityClassifiedAs(w, "プ"))
-            //    {
-            //        cplana = (5d * AbilityLevel(w, "プ"));
-            //    }
-
-            //    crange = AbilityMaxRange(w);
-            //}
-
-            //// ユニットの特殊能力「合体技」の検索
-            //var loopTo = CountFeature();
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    if (Feature(i) == "合体技")
-            //    {
-            //        string localFeatureData1() { string argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
-
-            //        if ((GeneralLib.LIndex(localFeatureData1(), 1) ?? "") == (cname ?? ""))
-            //        {
-            //            if (IsFeatureLevelSpecified(i))
-            //            {
-            //                clevel = FeatureLevel(i);
-            //            }
-            //            else
-            //            {
-            //                clevel = 0;
-            //            }
-
-            //            string localFeatureData() { string argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
-
-            //            clist = GeneralLib.ListTail(localFeatureData(), 2);
-            //            cnum = GeneralLib.LLength(clist);
-            //            break;
-            //        }
-            //    }
-            //}
-
-            //if (i > CountFeature())
-            //{
-            //    partners = new Unit[1];
-            //    return;
-            //}
-
-            //// 出撃していない場合
-            //if (Status != "出撃" || string.IsNullOrEmpty(Map.MapFileName))
-            //{
-            //    // パートナーが仲間にいるだけでよい
-            //    var loopTo1 = cnum;
-            //    for (i = 1; i <= loopTo1; i++)
-            //    {
-            //        uname = GeneralLib.LIndex(clist, i);
-
-            //        // パートナーがユニット名で指定されている場合
-            //        if (SRC.UList.IsDefined(uname))
-            //        {
-            //            {
-            //                var withBlock = SRC.UList.Item(uname);
-            //                if (withBlock.Status == "出撃" || withBlock.Status == "待機")
-            //                {
-            //                    goto NextPartner;
-            //                }
-            //            }
-            //        }
-
-            //        // パートナーがパイロット名で指定されている場合
-            //        if (SRC.PList.IsDefined(uname))
-            //        {
-            //            Pilot localItem1() { string argIndex1 = uname; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-            //            Pilot localItem2() { string argIndex1 = uname; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-            //            if (localItem2().Unit is object)
-            //            {
-            //                Pilot localItem() { string argIndex1 = uname; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-            //                {
-            //                    var withBlock1 = localItem().Unit;
-            //                    if (withBlock1.Status == "出撃" || withBlock1.Status == "待機")
-            //                    {
-            //                        goto NextPartner;
-            //                    }
-            //                }
-            //            }
-            //        }
-
-            //        // パートナーが見つからなかった
-            //        partners = new Unit[1];
-            //        return;
-            //    NextPartner:
-            //        ;
-            //    }
-            //    // パートナーが全員仲間にいる
-            //    partners = new Unit[(cnum + 1)];
-            //    return;
-            //}
-
-            //// 合体技の基点の設定
-            //if (tx == 0)
-            //{
-            //    tx = x;
-            //}
-
-            //if (ty == 0)
-            //{
-            //    ty = y;
-            //}
-
-            //// パートナーの検索範囲を設定
-
-            //if (crange == 1)
-            //{
-            //    if (cnum >= 8)
-            //    {
-            //        // 射程１で８体合体以上の場合は２マス以内
-            //        loop_limit = 12;
-            //    }
-            //    else if (cnum >= 4)
-            //    {
-            //        // 射程１で４体合体以上の場合は斜め隣接可
-            //        loop_limit = 8;
-            //    }
-            //    else
-            //    {
-            //        // どれにも該当していなければ隣接のみ
-            //        loop_limit = 4;
-            //    }
-            //}
-            //else if (cnum >= 9)
-            //{
-            //    // 射程２以上で９体合体以上の場合は２マス以内
-            //    loop_limit = 12;
-            //}
-            //else if (cnum >= 5)
-            //{
-            //    // 射程２以上で５体合体以上の場合は斜め隣接可
-            //    loop_limit = 8;
-            //}
-            //else
-            //{
-            //    // どれにも該当していなければ隣接のみ
-            //    loop_limit = 4;
-            //}
-
-            //// 合体技斜め隣接可オプション
-            //if (Expression.IsOptionDefined("合体技斜め隣接可"))
-            //{
-            //    if (loop_limit == 4)
-            //    {
-            //        loop_limit = 8;
-            //    }
-            //}
-
-            //partners = new Unit[1];
-            //var loopTo2 = cnum;
-            //for (i = 1; i <= loopTo2; i++)
-            //{
-            //    // パートナーの名称
-            //    uname = GeneralLib.LIndex(clist, i);
-            //    var loopTo3 = loop_limit;
-            //    for (j = 1; j <= loopTo3; j++)
-            //    {
-            //        // パートナーの検索位置設定
-            //        // UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        u = null;
-            //        switch (j)
-            //        {
-            //            case 1:
-            //                {
-            //                    if (tx > 1)
-            //                    {
-            //                        u = Map.MapDataForUnit[tx - 1, ty];
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case 2:
-            //                {
-            //                    if (tx < Map.MapWidth)
-            //                    {
-            //                        u = Map.MapDataForUnit[tx + 1, ty];
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case 3:
-            //                {
-            //                    if (ty > 1)
-            //                    {
-            //                        u = Map.MapDataForUnit[tx, ty - 1];
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case 4:
-            //                {
-            //                    if (ty < Map.MapHeight)
-            //                    {
-            //                        u = Map.MapDataForUnit[tx, ty + 1];
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case 5:
-            //                {
-            //                    if (tx > 1 && ty > 1)
-            //                    {
-            //                        u = Map.MapDataForUnit[tx - 1, ty - 1];
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case 6:
-            //                {
-            //                    if (tx < Map.MapWidth && ty < Map.MapHeight)
-            //                    {
-            //                        u = Map.MapDataForUnit[tx + 1, ty + 1];
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case 7:
-            //                {
-            //                    if (tx > 1 && ty < Map.MapHeight)
-            //                    {
-            //                        u = Map.MapDataForUnit[tx - 1, ty + 1];
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case 8:
-            //                {
-            //                    if (tx < Map.MapWidth && ty > 1)
-            //                    {
-            //                        u = Map.MapDataForUnit[tx + 1, ty - 1];
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case 9:
-            //                {
-            //                    if (tx > 2)
-            //                    {
-            //                        u = Map.MapDataForUnit[tx - 2, ty];
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case 10:
-            //                {
-            //                    if (tx < Map.MapWidth - 1)
-            //                    {
-            //                        u = Map.MapDataForUnit[tx + 2, ty];
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case 11:
-            //                {
-            //                    if (ty > 2)
-            //                    {
-            //                        u = Map.MapDataForUnit[tx, ty - 2];
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case 12:
-            //                {
-            //                    if (ty < Map.MapHeight - 1)
-            //                    {
-            //                        u = Map.MapDataForUnit[tx, ty + 2];
-            //                    }
-
-            //                    break;
-            //                }
-            //        }
-
-            //        // ユニットが存在する？
-            //        if (u is null)
-            //        {
-            //            goto NextNeighbor;
-            //        }
-
-            //        {
-            //            var withBlock2 = u;
-            //            // 合体技のパートナーに該当する？
-            //            if ((withBlock2.Name ?? "") != (uname ?? ""))
-            //            {
-            //                // パイロット名でも確認
-            //                if ((withBlock2.MainPilot().Name ?? "") != (uname ?? ""))
-            //                {
-            //                    goto NextNeighbor;
-            //                }
-            //            }
-
-            //            // ユニットが自分？
-            //            if (ReferenceEquals(u, this))
-            //            {
-            //                goto NextNeighbor;
-            //            }
-
-            //            // 既に選択済み？
-            //            var loopTo4 = Information.UBound(partners);
-            //            for (k = 1; k <= loopTo4; k++)
-            //            {
-            //                if (ReferenceEquals(u, partners[k]))
-            //                {
-            //                    goto NextNeighbor;
-            //                }
-            //            }
-
-            //            // ユニットが敵？
-            //            if (IsEnemy(u))
-            //            {
-            //                goto NextNeighbor;
-            //            }
-
-            //            // 行動出来なければだめ
-            //            if (withBlock2.MaxAction() == 0 || withBlock2.IsConditionSatisfied("混乱") || withBlock2.IsConditionSatisfied("恐怖") || withBlock2.IsConditionSatisfied("憑依"))
-            //            {
-            //                goto NextNeighbor;
-            //            }
-
-            //            // 合体技にレベルが設定されていればパイロット間の信頼度をチェック
-            //            if (clevel > 0)
-            //            {
-            //                if (MainPilot().Relation(withBlock2.MainPilot()) < clevel || withBlock2.MainPilot().Relation(MainPilot()) < clevel)
-            //                {
-            //                    goto NextNeighbor;
-            //                }
-            //            }
-
-            //            // パートナーが武器を使うための条件を満たしているかを判定
-            //            if (!check_formation)
-            //            {
-            //                if (ctype == "武装")
-            //                {
-            //                    // 合体技と同名の武器を検索
-            //                    var loopTo5 = withBlock2.CountWeapon();
-            //                    for (k = 1; k <= loopTo5; k++)
-            //                    {
-            //                        if ((withBlock2.Weapon(k).Name ?? "") == (cname ?? ""))
-            //                        {
-            //                            break;
-            //                        }
-            //                    }
-
-            //                    if (k <= withBlock2.CountWeapon())
-            //                    {
-            //                        // 武器が使える？
-            //                        if (!withBlock2.IsWeaponMastered(k))
-            //                        {
-            //                            goto NextNeighbor;
-            //                        }
-
-            //                        if (withBlock2.Weapon(k).NecessaryMorale > 0)
-            //                        {
-            //                            if (withBlock2.MainPilot().Morale < withBlock2.Weapon(k).NecessaryMorale)
-            //                            {
-            //                                goto NextNeighbor;
-            //                            }
-            //                        }
-
-            //                        if (withBlock2.WeaponENConsumption(k) > 0)
-            //                        {
-            //                            if (withBlock2.EN < withBlock2.WeaponENConsumption(k))
-            //                            {
-            //                                goto NextNeighbor;
-            //                            }
-            //                        }
-
-            //                        if (withBlock2.Weapon(k).Bullet > 0)
-            //                        {
-            //                            if (withBlock2.Bullet(k) == 0)
-            //                            {
-            //                                goto NextNeighbor;
-            //                            }
-            //                        }
-
-            //                        if (withBlock2.WeaponLevel(k, "霊") > 0d)
-            //                        {
-            //                            if (withBlock2.MainPilot().Plana < 5d * withBlock2.WeaponLevel(k, "霊"))
-            //                            {
-            //                                goto NextNeighbor;
-            //                            }
-            //                        }
-            //                        else if (withBlock2.WeaponLevel(k, "プ") > 0d)
-            //                        {
-            //                            if (withBlock2.MainPilot().Plana < 5d * withBlock2.WeaponLevel(k, "プ"))
-            //                            {
-            //                                goto NextNeighbor;
-            //                            }
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        // 同名の武器を持っていなかった場合はチェック項目を限定
-            //                        if (cmorale > 0)
-            //                        {
-            //                            if (withBlock2.MainPilot().Morale < cmorale)
-            //                            {
-            //                                goto NextNeighbor;
-            //                            }
-            //                        }
-
-            //                        if (cen > 0)
-            //                        {
-            //                            if (withBlock2.EN < cen)
-            //                            {
-            //                                goto NextNeighbor;
-            //                            }
-            //                        }
-
-            //                        if (cplana > 0)
-            //                        {
-            //                            if (withBlock2.MainPilot().Plana < cplana)
-            //                            {
-            //                                goto NextNeighbor;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //                else
-            //                {
-            //                    // 合体技と同名のアビリティを検索
-            //                    var loopTo6 = withBlock2.CountAbility();
-            //                    for (k = 1; k <= loopTo6; k++)
-            //                    {
-            //                        if ((withBlock2.Ability(k).Name ?? "") == (cname ?? ""))
-            //                        {
-            //                            break;
-            //                        }
-            //                    }
-
-            //                    if (k <= withBlock2.CountAbility())
-            //                    {
-            //                        // アビリティが使える？
-            //                        if (!withBlock2.IsAbilityMastered(k))
-            //                        {
-            //                            goto NextNeighbor;
-            //                        }
-
-            //                        if (withBlock2.Ability(k).NecessaryMorale > 0)
-            //                        {
-            //                            if (withBlock2.MainPilot().Morale < withBlock2.Ability(k).NecessaryMorale)
-            //                            {
-            //                                goto NextNeighbor;
-            //                            }
-            //                        }
-
-            //                        if (withBlock2.AbilityENConsumption(k) > 0)
-            //                        {
-            //                            if (withBlock2.EN < withBlock2.AbilityENConsumption(k))
-            //                            {
-            //                                goto NextNeighbor;
-            //                            }
-            //                        }
-
-            //                        if (withBlock2.Ability(k).Stock > 0)
-            //                        {
-            //                            if (withBlock2.Stock(k) == 0)
-            //                            {
-            //                                goto NextNeighbor;
-            //                            }
-            //                        }
-
-            //                        if (withBlock2.AbilityLevel(k, "霊") > 0d)
-            //                        {
-            //                            if (withBlock2.MainPilot().Plana < 5d * withBlock2.AbilityLevel(k, "霊"))
-            //                            {
-            //                                goto NextNeighbor;
-            //                            }
-            //                        }
-            //                        else if (withBlock2.AbilityLevel(k, "プ") > 0d)
-            //                        {
-            //                            if (withBlock2.MainPilot().Plana < 5d * withBlock2.AbilityLevel(k, "プ"))
-            //                            {
-            //                                goto NextNeighbor;
-            //                            }
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        // 同名のアビリティを持っていなかった場合はチェック項目を限定
-            //                        if (cmorale > 0)
-            //                        {
-            //                            if (withBlock2.MainPilot().Morale < cmorale)
-            //                            {
-            //                                goto NextNeighbor;
-            //                            }
-            //                        }
-
-            //                        if (cen > 0)
-            //                        {
-            //                            if (withBlock2.EN < cen)
-            //                            {
-            //                                goto NextNeighbor;
-            //                            }
-            //                        }
-
-            //                        if (cplana > 0)
-            //                        {
-            //                            if (withBlock2.MainPilot().Plana < cplana)
-            //                            {
-            //                                goto NextNeighbor;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //            // フォーメーションのチェックだけの時も必要技能は調べておく
-            //            else if (ctype == "武装")
-            //            {
-            //                var loopTo7 = withBlock2.CountWeapon();
-            //                for (k = 1; k <= loopTo7; k++)
-            //                {
-            //                    if ((withBlock2.Weapon(k).Name ?? "") == (cname ?? ""))
-            //                    {
-            //                        break;
-            //                    }
-            //                }
-
-            //                if (k <= withBlock2.CountWeapon())
-            //                {
-            //                    if (!withBlock2.IsWeaponMastered(k))
-            //                    {
-            //                        goto NextNeighbor;
-            //                    }
-            //                }
-            //            }
-            //            else
-            //            {
-            //                var loopTo8 = withBlock2.CountAbility();
-            //                for (k = 1; k <= loopTo8; k++)
-            //                {
-            //                    if ((withBlock2.Ability(k).Name ?? "") == (cname ?? ""))
-            //                    {
-            //                        break;
-            //                    }
-            //                }
-
-            //                if (k <= withBlock2.CountAbility())
-            //                {
-            //                    if (!withBlock2.IsAbilityMastered(k))
-            //                    {
-            //                        goto NextNeighbor;
-            //                    }
-            //                }
-            //            }
-            //        }
-
-            //        // 見つかったパートナーを記録
-            //        Array.Resize(partners, i + 1);
-            //        partners = u;
-            //        break;
-            //    NextNeighbor:
-            //        ;
-            //    }
-
-            //    // パートナーが見つからなかった？
-            //    if (j > loop_limit)
-            //    {
-            //        partners = new Unit[1];
-            //        return;
-            //    }
-            //}
-
-            //// 合体技メッセージ判定用にパートナー一覧を記録
-            //Commands.SelectedPartners = new Unit[Information.UBound(partners) + 1];
-            //var loopTo9 = Information.UBound(partners);
-            //for (i = 1; i <= loopTo9; i++)
-            //    Commands.SelectedPartners = partners;
+            // 合体技のデータを調べておく
+            var cname = Name;
+            var cen = WeaponENConsumption();
+            var cmorale = WeaponData.NecessaryMorale;
+            int cplana = 0;
+            if (IsWeaponClassifiedAs("霊"))
+            {
+                cplana = (int)(5d * WeaponLevel("霊"));
+            }
+            else if (IsWeaponClassifiedAs("プ"))
+            {
+                cplana = (int)(5d * WeaponLevel("プ"));
+            }
+            var crange = WeaponMaxRange();
+            return Unit.CombinationPartner(
+                cname,
+                cen,
+                cmorale,
+                cplana,
+                crange,
+                tx, ty, check_formation
+                );
         }
 
         // 合体技攻撃に必要なパートナーが見つかるか？
         public bool IsCombinationAttackAvailable(bool check_formation = false)
         {
-            return false;
-            // TODO Impl IsCombinationAttackAvailable
-            //bool IsCombinationAttackAvailableRet = default;
-            //Unit[] partners;
-            //partners = new Unit[1];
-            //if (Status == "待機" || string.IsNullOrEmpty(Map.MapFileName))
-            //{
-            //    // 出撃時以外は相手が仲間にいるだけでＯＫ
-            //    CombinationPartner("武装", w, partners, x, y);
-            //}
-            //else if (WeaponMaxRange(w) == 1 && !IsWeaponClassifiedAs(w, "Ｍ"))
-            //{
-            //    // 射程１の場合は自分の周りのいずれかの敵ユニットに対して合体技が使えればＯＫ
-            //    if (x > 1)
-            //    {
-            //        if (Map.MapDataForUnit[x - 1, y] is object)
-            //        {
-            //            if (IsEnemy(Map.MapDataForUnit[x - 1, y]))
-            //            {
-            //                CombinationPartner("武装", w, partners, (x - 1), y, check_formation);
-            //            }
-            //        }
-            //    }
+            IList<Unit> partners;
+            if (Unit.Status == "待機" || string.IsNullOrEmpty(Map.MapFileName))
+            {
+                // 出撃時以外は相手が仲間にいるだけでＯＫ
+                partners = CombinationPartner(Unit.x, Unit.y);
+            }
+            else if (WeaponMaxRange() == 1 && !IsWeaponClassifiedAs("Ｍ"))
+            {
+                // 射程１の場合は自分の周りのいずれかの敵ユニットに対して合体技が使えればＯＫ
+                partners = new Unit[]
+                {
+                    Map.UnitAtPoint(Unit.x +1, Unit.y ),
+                    Map.UnitAtPoint(Unit.x -1, Unit.y ),
+                    Map.UnitAtPoint(Unit.x, Unit.y +1),
+                    Map.UnitAtPoint(Unit.x, Unit.y -1),
+                }.Where(t => t != null)
+                .Where(t => Unit.IsEnemy(t))
+                .Select(t => CombinationPartner(t.x, t.y))
+                .FirstOrDefault(x => x.Count > 0);
+            }
+            else
+            {
+                // 射程２以上の場合は自分の周りにパートナーがいればＯＫ
+                partners = CombinationPartner(Unit.x, Unit.y, check_formation);
+            }
 
-            //    if (Information.UBound(partners) == 0)
-            //    {
-            //        if (x < Map.MapWidth)
-            //        {
-            //            if (Map.MapDataForUnit[x + 1, y] is object)
-            //            {
-            //                if (IsEnemy(Map.MapDataForUnit[x + 1, y]))
-            //                {
-            //                    CombinationPartner("武装", w, partners, (x + 1), y, check_formation);
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    if (Information.UBound(partners) == 0)
-            //    {
-            //        if (y > 1)
-            //        {
-            //            if (Map.MapDataForUnit[x, y - 1] is object)
-            //            {
-            //                if (IsEnemy(Map.MapDataForUnit[x, y - 1]))
-            //                {
-            //                    CombinationPartner("武装", w, partners, x, (y - 1), check_formation);
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    if (Information.UBound(partners) == 0)
-            //    {
-            //        if (y < Map.MapHeight)
-            //        {
-            //            if (Map.MapDataForUnit[x, y + 1] is object)
-            //            {
-            //                if (IsEnemy(Map.MapDataForUnit[x, y + 1]))
-            //                {
-            //                    CombinationPartner("武装", w, partners, x, (y + 1), check_formation);
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    // 射程２以上の場合は自分の周りにパートナーがいればＯＫ
-            //    CombinationPartner("武装", w, partners, x, y, check_formation);
-            //}
-
-            //// 条件を満たすパートナーの組が見つかったか判定
-            //if (Information.UBound(partners) > 0)
-            //{
-            //    IsCombinationAttackAvailableRet = true;
-            //}
-            //else
-            //{
-            //    IsCombinationAttackAvailableRet = false;
-            //}
-
-            //return IsCombinationAttackAvailableRet;
+            // 条件を満たすパートナーの組が見つかったか判定
+            return partners.Count > 0;
         }
 
         public bool IsEnableForInfo()
@@ -5963,7 +5306,7 @@ namespace SRCCore.Units
             // 必要技能を満たさない武器は表示しない
             var baseCondition = IsEnable()
                 // XXX 条件によって check_formation 見直す
-                && !(IsWeaponClassifiedAs("合") && IsCombinationAttackAvailable(true))
+                && !(IsWeaponClassifiedAs("合") && !IsCombinationAttackAvailable(true))
                 ;
             return baseCondition;
         }

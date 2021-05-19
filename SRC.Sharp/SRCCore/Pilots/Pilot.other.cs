@@ -127,13 +127,11 @@ namespace SRCCore.Pilots
             return TacticalTechniqueRet;
         }
 
-        //// イベントコマンド SetRelation で設定した値を返す
-        //public int Relation(Pilot t)
-        //{
-        //    int RelationRet = default;
-        //    RelationRet = Expression.GetValueAsLong("関係:" + Name + ":" + t.Name);
-        //    return RelationRet;
-        //}
+        // イベントコマンド SetRelation で設定した値を返す
+        public int Relation(Pilot t)
+        {
+            return Expression.GetValueAsLong("関係:" + Name + ":" + t.Name);
+        }
 
         // 射撃能力が「魔力」と表示されるかどうか
         public bool HasMana()

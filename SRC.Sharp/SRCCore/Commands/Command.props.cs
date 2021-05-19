@@ -31,7 +31,7 @@ namespace SRCCore.Commands
         public Pilot SelectedPilot { get => SelectedState.SelectedPilot; set { SelectedState.SelectedPilot = value; } } // パイロット
         public int SelectedItem { get => SelectedState.SelectedItem; set { SelectedState.SelectedItem = value; } } // リストボックス中のアイテム
         public string SelectedSpecialPower { get => SelectedState.SelectedSpecialPower; set { SelectedState.SelectedSpecialPower = value; } } // スペシャルパワー
-        public Unit[] SelectedPartners { get => SelectedState.SelectedPartners; set { SelectedState.SelectedPartners = value; } } // 合体技のパートナー
+        public IList<Unit> SelectedPartners { get => SelectedState.SelectedPartners; set { SelectedState.SelectedPartners = value; } } // 合体技のパートナー
         public int SelectedUnitMoveCost { get => SelectedState.SelectedUnitMoveCost; set { SelectedState.SelectedUnitMoveCost = value; } } // 選択したユニットの移動力消費量
 
         // 選択状況の記録用変数

@@ -1,5 +1,7 @@
+using SRCCore.Extensions;
 using SRCCore.Pilots;
 using SRCCore.Units;
+using System.Collections.Generic;
 
 namespace SRCCore.Commands
 {
@@ -20,13 +22,18 @@ namespace SRCCore.Commands
         public Pilot SelectedPilot; // パイロット
         public int SelectedItem; // リストボックス中のアイテム
         public string SelectedSpecialPower; // スペシャルパワー
-        public Unit[] SelectedPartners; // 合体技のパートナー
+        public IList<Unit> SelectedPartners; // 合体技のパートナー
         public int SelectedUnitMoveCost; // 選択したユニットの移動力消費量
+
+        public SelectedState()
+        {
+            SelectedPartners = new List<Unit>();
+        }
 
         public SelectedState Clone()
         {
             var clone = (SelectedState)MemberwiseClone();
-            // TODO SelectedPartners
+            clone.SelectedPartners = this.SelectedPartners.CloneList();
             return clone;
         }
     }
