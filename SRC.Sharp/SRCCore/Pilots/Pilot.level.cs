@@ -81,6 +81,8 @@ namespace SRCCore.Pilots
             }
         }
 
+        public int TotalExp => Level * 500 + Exp;
+
         // 気力
         public int Morale
         {
