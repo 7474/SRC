@@ -239,7 +239,7 @@ namespace SRCCore.Lib
 
                 if (in_single_quote)
                 {
-                    if (c == '\'') // "`"
+                    if (c == '`') // "`"
                     {
                         in_single_quote = false;
                     }
@@ -275,7 +275,7 @@ namespace SRCCore.Lib
                             if (paren == 0) { append = false; }
                             break;
 
-                        case '\'': // "`"
+                        case '`': // "`"
                             in_single_quote = true;
                             break;
 
