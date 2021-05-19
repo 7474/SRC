@@ -402,21 +402,19 @@ namespace SRCCore.Pilots
             // 変化してしまうことがあるため、元のUnitを記録しておく
             my_unit = Unit;
 
-            //// スペシャルパワーアニメを表示
-            //SpecialPowerData localItem2() { object argIndex1 = sname; var ret = SRC.SPDList.Item(argIndex1); return ret; }
+            // スペシャルパワーアニメを表示
+            if (!SRC.SPDList.Item(sname).PlayAnimation())
+            {
+                // メッセージ表示のみ
+                GUI.OpenMessageForm(Unit, u2: null);
+                GUI.DisplaySysMessage(get_Nickname(false) + "は" + sname + "を使った。");
+            }
 
-            //if (!localItem2().PlayAnimation())
-            //{
-            //    // メッセージ表示のみ
-            //    GUI.OpenMessageForm(Unit, u2: null);
-            //    GUI.DisplaySysMessage(get_Nickname(false) + "は" + sname + "を使った。");
-            //}
-
-            //// Unitが変化した場合に元に戻す
-            //if (!ReferenceEquals(my_unit, Unit))
-            //{
-            //    my_unit.MainPilot();
-            //}
+            // Unitが変化した場合に元に戻す
+            if (!ReferenceEquals(my_unit, Unit))
+            {
+                my_unit.MainPilot();
+            }
 
             // スペシャルパワーを実行
             SRC.SPDList.Item(sname).Execute(this);

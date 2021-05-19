@@ -201,25 +201,6 @@ namespace SRCCore.Units
         // 戦闘アニメを再生
         public void PlayAnimation(string main_situation, string sub_situation = "", bool keep_message_form = false)
         {
-            //string anime, sname = default;
-            //string[] animes;
-            //int j, i, idx;
-            //var ret = default(double);
-            //var buf = default(string);
-            //int anime_head;
-            //bool is_message_form_opened;
-            //var is_weapon = default(bool);
-            //var is_ability = default(bool);
-            //var in_bulk = default(bool);
-            //var wait_time = default;
-            //var need_refresh = default(bool);
-            //int prev_obj_color;
-            //int prev_obj_fill_color;
-            //int prev_obj_fill_style;
-            //int prev_obj_draw_width;
-            //string prev_obj_draw_option;
-            //Unit prev_selected_target;
-
             var in_bulk = false;
 
             // 戦闘アニメデータを検索
@@ -270,6 +251,7 @@ namespace SRCCore.Units
             // メッセージウィンドウは表示されている？
             var is_message_form_opened = GUI.MessageFormVisible;
 
+            // TODO Impl オブジェクト色等
             //// オブジェクト色等を記録しておく
             //prev_obj_color = Event.ObjColor;
             //prev_obj_fill_color = Event.ObjFillColor;

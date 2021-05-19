@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.Pilots;
 using SRCCore.Units;
@@ -45,6 +46,7 @@ namespace SRCCore.Models
         private Expressions.Expression Expression => SRC.Expression;
         private Events.Event Event => SRC.Event;
         private IGUI GUI => SRC.GUI;
+        private Sound Sound => SRC.Sound;
         public SpecialPowerData(SRC src)
         {
             SRC = src;
@@ -764,7 +766,6 @@ namespace SRCCore.Models
                         {
                             EffectiveRet = true;
                             goto ExitFunc;
-                            break;
                         }
                 }
 
@@ -2460,285 +2461,256 @@ namespace SRCCore.Models
         //            return CountTargetRet;
         //        }
 
-        //        // スペシャルパワーのアニメーションを表示
-        //        public bool PlayAnimation()
-        //        {
-        //            bool PlayAnimationRet = default;
-        //            string anime;
-        //            string[] animes;
-        //            int anime_head;
-        //            var buf = default(string);
-        //            var ret = default(double);
-        //            int i, j;
-        //            string expr;
-        //            var wait_time = default;
-        //            int prev_obj_color;
-        //            int prev_obj_fill_color;
-        //            int prev_obj_fill_style;
-        //            int prev_obj_draw_width;
-        //            string prev_obj_draw_option;
-        //            if (!SRC.SpecialPowerAnimation)
-        //            {
-        //                return PlayAnimationRet;
-        //            }
+        // スペシャルパワーのアニメーションを表示
+        public bool PlayAnimation()
+        {
+            //string anime;
+            //string[] animes;
+            //int anime_head;
+            //var buf = default(string);
+            //var ret = default(double);
+            //int i, j;
+            //string expr;
+            //int wait_time = 0;
+            //Color prev_obj_color;
+            //Color prev_obj_fill_color;
+            //HatchStyle prev_obj_fill_style;
+            //int prev_obj_draw_width;
+            //string prev_obj_draw_option;
+            if (!SRC.SpecialPowerAnimation)
+            {
+                return false;
+            }
 
-        //            if (Animation == "-")
-        //            {
-        //                PlayAnimationRet = true;
-        //                return PlayAnimationRet;
-        //            }
+            if (Animation == "-")
+            {
+                return true;
+            }
 
-        //            // アニメ指定がなされていない場合はアニメ表示用サブルーチンが見つらなければそのまま終了
-        //            if ((Animation ?? "") == (Name ?? ""))
-        //            {
-        //                if (Event.FindNormalLabel("ＳＰアニメ_" + Animation) == 0)
-        //                {
-        //                    if (Name != "自爆" && Name != "祈り")
-        //                    {
-        //                        if (Event.IsLabelDefined("特殊効果 " + Name))
-        //                        {
-        //                            Event.HandleEvent("特殊効果", Name);
-        //                            PlayAnimationRet = true;
-        //                        }
-        //                    }
+            // アニメ指定がなされていない場合はアニメ表示用サブルーチンが見つらなければそのまま終了
+            if ((Animation ?? "") == (Name ?? ""))
+            {
+                if (Event.FindNormalLabel("ＳＰアニメ_" + Animation) == 0)
+                {
+                    if (Name != "自爆" && Name != "祈り")
+                    {
+                        if (Event.IsLabelDefined("特殊効果 " + Name))
+                        {
+                            Event.HandleEvent("特殊効果", Name);
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            }
 
-        //                    return PlayAnimationRet;
-        //                }
-        //            }
+            // 右クリック中はアニメ表示をスキップ
+            if (GUI.IsRButtonPressed())
+            {
+                return true;
+            }
 
-        //            // 右クリック中はアニメ表示をスキップ
-        //            if (GUI.IsRButtonPressed())
-        //            {
-        //                PlayAnimationRet = true;
-        //                return PlayAnimationRet;
-        //            }
+            // TODO Impl オブジェクト色等
+            //// オブジェクト色等を記録しておく
+            //prev_obj_color = Event.ObjColor;
+            //prev_obj_fill_color = Event.ObjFillColor;
+            //prev_obj_fill_style = Event.ObjFillStyle;
+            //prev_obj_draw_width = Event.ObjDrawWidth;
+            //prev_obj_draw_option = Event.ObjDrawOption;
 
-        //            // オブジェクト色等を記録しておく
-        //            prev_obj_color = Event.ObjColor;
-        //            prev_obj_fill_color = Event.ObjFillColor;
-        //            prev_obj_fill_style = Event.ObjFillStyle;
-        //            prev_obj_draw_width = Event.ObjDrawWidth;
-        //            prev_obj_draw_option = Event.ObjDrawOption;
+            //// オブジェクト色等をデフォルトに戻す
+            //Event.ObjColor = Color.White;
+            //Event.ObjFillColor =Color.White;
+            //Event.ObjFillStyle = System.Drawing.Drawing2D.HatchStyle.Min;
+            //Event.ObjDrawWidth = 1;
+            //Event.ObjDrawOption = "";
 
-        //            // オブジェクト色等をデフォルトに戻す
-        //            Event.ObjColor = ColorTranslator.ToOle(Color.White);
-        //            Event.ObjFillColor = ColorTranslator.ToOle(Color.White);
-        //            Event.ObjFillStyle = vbFSTransparent;
-        //            Event.ObjDrawWidth = 1;
-        //            Event.ObjDrawOption = "";
+            // アニメ指定を分割
+            var animes = Animation.Split(";").ToList();
+            try
+            {
+                var wait_time = 0;
+                foreach (var a in animes)
+                {
+                    var anime = a;
 
-        //            // アニメ指定を分割
-        //            animes = new string[2];
-        //            anime_head = 1;
-        //            var loopTo = Strings.Len(Animation);
-        //            for (i = 1; i <= loopTo; i++)
-        //            {
-        //                if (Strings.Mid(Animation, i, 1) == ";")
-        //                {
-        //                    animes[Information.UBound(animes)] = Strings.Mid(Animation, anime_head, i - anime_head);
-        //                    Array.Resize(animes, Information.UBound(animes) + 1 + 1);
-        //                    anime_head = (i + 1);
-        //                }
-        //            }
+                    // 式評価
+                    Expression.FormatMessage(ref anime);
 
-        //            animes[Information.UBound(animes)] = Strings.Mid(Animation, anime_head);
-        //            ;
-        //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-        //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 59356
+                    // 画面クリア？
+                    if (Strings.LCase(anime) == "clear")
+                    {
+                        GUI.ClearPicture();
+                        GUI.RefreshScreen();
+                        goto NextAnime;
+                    }
 
+                    // 戦闘アニメ以外の特殊効果
+                    switch (Strings.LCase(Strings.Right(GeneralLib.LIndex(anime, 1), 4)) ?? "")
+                    {
+                        case ".wav":
+                        case ".mp3":
+                            {
+                                // 効果音
+                                Sound.PlayWave(anime);
+                                if (wait_time > 0)
+                                {
+                                    GUI.Sleep(wait_time);
+                                    wait_time = 0;
+                                }
 
-        //            Input:
+                                goto NextAnime;
+                            }
 
-        //                    On Error GoTo ErrorHandler
+                        case ".bmp":
+                        case ".jpg":
+                        case ".gif":
+                        case ".png":
+                            {
+                                // カットインの表示
+                                if (wait_time > 0)
+                                {
+                                    anime = SrcFormatter.Format(wait_time / 100d) + ";" + anime;
+                                    wait_time = 0;
+                                }
 
-        //             */
-        //            var loopTo1 = Information.UBound(animes);
-        //            for (i = 1; i <= loopTo1; i++)
-        //            {
-        //                anime = animes[i];
+                                GUI.DisplayBattleMessage("", anime, msg_mode: "");
+                                goto NextAnime;
+                            }
+                    }
 
-        //                // 式評価
-        //                Expression.FormatMessage(anime);
+                    switch (Strings.LCase(GeneralLib.LIndex(anime, 1)) ?? "")
+                    {
+                        case "line":
+                        case "circle":
+                        case "arc":
+                        case "oval":
+                        case "color":
+                        case "fillcolor":
+                        case "fillstyle":
+                        case "drawwidth":
+                            {
+                                // 画面処理コマンド
+                                if (wait_time > 0)
+                                {
+                                    anime = SrcFormatter.Format(wait_time / 100d) + ";" + anime;
+                                    wait_time = 0;
+                                }
 
-        //                // 画面クリア？
-        //                if (Strings.LCase(anime) == "clear")
-        //                {
-        //                    GUI.ClearPicture();
-        //                    GUI.MainForm.picMain(0).Refresh();
-        //                    goto NextAnime;
-        //                }
+                                GUI.DisplayBattleMessage("", anime, msg_mode: "");
+                                goto NextAnime;
+                            }
 
-        //                // 戦闘アニメ以外の特殊効果
-        //                switch (Strings.LCase(Strings.Right(GeneralLib.LIndex(anime, 1), 4)) ?? "")
-        //                {
-        //                    case ".wav":
-        //                    case ".mp3":
-        //                        {
-        //                            // 効果音
-        //                            Sound.PlayWave(anime);
-        //                            if (wait_time > 0)
-        //                            {
-        //                                GUI.Sleep(wait_time);
-        //                                wait_time = 0;
-        //                            }
+                        case "center":
+                            {
+                                // 指定したユニットを中央表示
+                                var buf = Expression.GetValueAsString(GeneralLib.ListIndex(anime, 2));
+                                if (SRC.UList.IsDefined(buf))
+                                {
+                                    {
+                                        var withBlock = SRC.UList.Item(buf);
+                                        GUI.Center(withBlock.x, withBlock.y);
+                                        GUI.RedrawScreen();
+                                    }
+                                }
 
-        //                            goto NextAnime;
-        //                            break;
-        //                        }
+                                goto NextAnime;
+                            }
+                    }
 
-        //                    case ".bmp":
-        //                    case ".jpg":
-        //                    case ".gif":
-        //                    case ".png":
-        //                        {
-        //                            // カットインの表示
-        //                            if (wait_time > 0)
-        //                            {
-        //                                anime = SrcFormatter.Format(wait_time / 100d) + ";" + anime;
-        //                                wait_time = 0;
-        //                            }
+                    // ウェイト？
+                    if (Information.IsNumeric(anime))
+                    {
+                        wait_time = (int)(100d * Conversions.ToDouble(anime));
+                        goto NextAnime;
+                    }
 
-        //                            GUI.DisplayBattleMessage("", anime, msg_mode: "");
-        //                            goto NextAnime;
-        //                            break;
-        //                        }
-        //                }
+                    // サブルーチンの呼び出しが確定
 
-        //                switch (Strings.LCase(GeneralLib.LIndex(anime, 1)) ?? "")
-        //                {
-        //                    case "line":
-        //                    case "circle":
-        //                    case "arc":
-        //                    case "oval":
-        //                    case "color":
-        //                    case "fillcolor":
-        //                    case "fillstyle":
-        //                    case "drawwidth":
-        //                        {
-        //                            // 画面処理コマンド
-        //                            if (wait_time > 0)
-        //                            {
-        //                                anime = SrcFormatter.Format(wait_time / 100d) + ";" + anime;
-        //                                wait_time = 0;
-        //                            }
+                    // 戦闘アニメ再生前にウェイトを入れる？
+                    if (wait_time > 0)
+                    {
+                        GUI.Sleep(wait_time);
+                        wait_time = 0;
+                    }
 
-        //                            GUI.DisplayBattleMessage("", anime, msg_mode: "");
-        //                            goto NextAnime;
-        //                            break;
-        //                        }
+                    // サブルーチン呼び出しのための式を作成
+                    string expr;
+                    if (Strings.Left(anime, 1) == "@")
+                    {
+                        expr = Strings.Mid(GeneralLib.ListIndex(anime, 1), 2) + "(";
+                        // 引数の構築
+                        var loopTo2 = GeneralLib.ListLength(anime);
+                        for (var j = 2; j <= loopTo2; j++)
+                        {
+                            if (j > 2)
+                            {
+                                expr = expr + ",";
+                            }
 
-        //                    case "center":
-        //                        {
-        //                            // 指定したユニットを中央表示
-        //                            buf = Expression.GetValueAsString(GeneralLib.ListIndex(anime, 2));
-        //                            if (SRC.UList.IsDefined(buf))
-        //                            {
-        //                                {
-        //                                    var withBlock = SRC.UList.Item(buf);
-        //                                    GUI.Center(withBlock.x, withBlock.y);
-        //                                    GUI.RedrawScreen();
-        //                                }
-        //                            }
+                            expr = expr + GeneralLib.ListIndex(anime, j);
+                        }
 
-        //                            goto NextAnime;
-        //                            break;
-        //                        }
-        //                }
+                        expr = expr + ")";
+                    }
+                    else if (Commands.SelectedTarget is object)
+                    {
+                        expr = "ＳＰアニメ_" + anime + "(" + Commands.SelectedUnit.ID + "," + Commands.SelectedTarget.ID + ")";
+                    }
+                    else
+                    {
+                        expr = "ＳＰアニメ_" + anime + "(" + Commands.SelectedUnit.ID + ",-)";
+                    }
 
-        //                // ウェイト？
-        //                if (Information.IsNumeric(anime))
-        //                {
-        //                    wait_time = (100d * Conversions.ToDouble(anime));
-        //                    goto NextAnime;
-        //                }
+                    // 画像描画が行われたかどうかの判定のためにフラグを初期化
+                    GUI.IsPictureDrawn = false;
 
-        //                // サブルーチンの呼び出しが確定
+                    {
+                        string buf;
+                        // アニメ再生
+                        Event.SaveBasePoint();
+                        Expression.CallFunction(expr, Expressions.ValueType.StringType, out buf, out _);
+                        Event.RestoreBasePoint();
 
-        //                // 戦闘アニメ再生前にウェイトを入れる？
-        //                if (wait_time > 0)
-        //                {
-        //                    GUI.Sleep(wait_time);
-        //                    wait_time = 0;
-        //                }
+                        // 画像を消去しておく
+                        if (GUI.IsPictureDrawn && Strings.LCase(buf) != "keep")
+                        {
+                            GUI.ClearPicture();
+                            GUI.UpdateScreen();
+                        }
+                    }
+                NextAnime:
+                    ;
+                }
 
-        //                // サブルーチン呼び出しのための式を作成
-        //                if (Strings.Left(anime, 1) == "@")
-        //                {
-        //                    expr = Strings.Mid(GeneralLib.ListIndex(anime, 1), 2) + "(";
-        //                    // 引数の構築
-        //                    var loopTo2 = GeneralLib.ListLength(anime);
-        //                    for (j = 2; j <= loopTo2; j++)
-        //                    {
-        //                        if (j > 2)
-        //                        {
-        //                            expr = expr + ",";
-        //                        }
+                // 戦闘アニメ再生後にウェイトを入れる？
+                if (wait_time > 0)
+                {
+                    GUI.Sleep(wait_time);
+                    wait_time = 0;
+                }
 
-        //                        expr = expr + GeneralLib.ListIndex(anime, j);
-        //                    }
+                // メッセージウィンドウを閉じる
+                GUI.CloseMessageForm();
 
-        //                    expr = expr + ")";
-        //                }
-        //                else if (Commands.SelectedTarget is object)
-        //                {
-        //                    expr = "ＳＰアニメ_" + anime + "(" + Commands.SelectedUnit.ID + "," + Commands.SelectedTarget.ID + ")";
-        //                }
-        //                else
-        //                {
-        //                    expr = "ＳＰアニメ_" + anime + "(" + Commands.SelectedUnit.ID + ",-)";
-        //                }
-
-        //                // 画像描画が行われたかどうかの判定のためにフラグを初期化
-        //                GUI.IsPictureDrawn = false;
-
-        //                // アニメ再生
-        //                Event.SaveBasePoint();
-        //                Expression.CallFunction(expr, Expression.ValueType.StringType, buf, ret);
-        //                Event.RestoreBasePoint();
-
-        //                // 画像を消去しておく
-        //                if (GUI.IsPictureDrawn && Strings.LCase(buf) != "keep")
-        //                {
-        //                    GUI.ClearPicture();
-        //                    GUI.MainForm.picMain(0).Refresh();
-        //                }
-
-        //            NextAnime:
-        //                ;
-        //            }
-
-        //            // 戦闘アニメ再生後にウェイトを入れる？
-        //            if (wait_time > 0)
-        //            {
-        //                GUI.Sleep(wait_time);
-        //                wait_time = 0;
-        //            }
-
-        //            // メッセージウィンドウを閉じる
-        //            GUI.CloseMessageForm();
-
-        //            // オブジェクト色等を元に戻す
-        //            Event.ObjColor = prev_obj_color;
-        //            Event.ObjFillColor = prev_obj_fill_color;
-        //            Event.ObjFillStyle = prev_obj_fill_style;
-        //            Event.ObjDrawWidth = prev_obj_draw_width;
-        //            Event.ObjDrawOption = prev_obj_draw_option;
-        //            PlayAnimationRet = true;
-        //            return PlayAnimationRet;
-        //        ErrorHandler:
-        //            ;
-
-
-        //            // アニメ再生中に発生したエラーの処理
-        //            if (Strings.Len(Event.EventErrorMessage) > 0)
-        //            {
-        //                Event.DisplayEventErrorMessage(Event.CurrentLineNum, Event.EventErrorMessage);
-        //                Event.EventErrorMessage = "";
-        //            }
-        //            else
-        //            {
-        //                Event.DisplayEventErrorMessage(Event.CurrentLineNum, "");
-        //            }
-        //}
+                //// オブジェクト色等を元に戻す
+                //Event.ObjColor = prev_obj_color;
+                //Event.ObjFillColor = prev_obj_fill_color;
+                //Event.ObjFillStyle = prev_obj_fill_style;
+                //Event.ObjDrawWidth = prev_obj_draw_width;
+                //Event.ObjDrawOption = prev_obj_draw_option;
+                return true;
+            }
+            catch (EventErrorException ex)
+            {
+                // アニメ再生中に発生したエラーの処理
+                Event.DisplayEventErrorMessage(ex?.EventData.ID ?? Event.CurrentLineNum, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Event.DisplayEventErrorMessage(Event.CurrentLineNum, "");
+            }
+            return false;
+        }
     }
 }
