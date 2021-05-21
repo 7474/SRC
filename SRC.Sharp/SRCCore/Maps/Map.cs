@@ -1877,60 +1877,51 @@ namespace SRCCore.Maps
         // ２点間を結ぶ直線状のエリアを選択 (Ｍ線の範囲設定用)
         public void AreaInPointToPoint(int x1, int y1, int x2, int y2)
         {
-            throw new NotImplementedException();
-            //int xx, yy;
-
             //// まず全領域をマスク
-            //var loopTo = MapWidth;
-            //for (xx = 1; xx <= loopTo; xx++)
-            //{
-            //    var loopTo1 = MapHeight;
-            //    for (yy = 1; yy <= loopTo1; yy++)
-            //        MaskData[xx, yy] = true;
-            //}
+            ClearMask();
 
-            //// 起点のマスクを解除
-            //MaskData[x1, y1] = false;
-            //xx = x1;
-            //yy = y1;
-            //if (Math.Abs((x1 - x2)) > Math.Abs((y1 - y2)))
-            //{
-            //    do
-            //    {
-            //        if (x1 > x2)
-            //        {
-            //            xx = (xx - 1);
-            //        }
-            //        else
-            //        {
-            //            xx = (xx + 1);
-            //        }
+            // 起点のマスクを解除
+            MaskData[x1, y1] = false;
+            var xx = x1;
+            var yy = y1;
+            if (Math.Abs((x1 - x2)) > Math.Abs((y1 - y2)))
+            {
+                do
+                {
+                    if (x1 > x2)
+                    {
+                        xx = (xx - 1);
+                    }
+                    else
+                    {
+                        xx = (xx + 1);
+                    }
 
-            //        MaskData[xx, yy] = false;
-            //        yy = (y1 + (y2 - y1) * (x1 - xx + 0d) / (x1 - x2));
-            //        MaskData[xx, yy] = false;
-            //    }
-            //    while (xx != x2);
-            //}
-            //else
-            //{
-            //    do
-            //    {
-            //        if (y1 > y2)
-            //        {
-            //            yy = (yy - 1);
-            //        }
-            //        else
-            //        {
-            //            yy = (yy + 1);
-            //        }
+                    MaskData[xx, yy] = false;
+                    yy = (int)(y1 + (y2 - y1) * (x1 - xx + 0d) / (x1 - x2));
+                    MaskData[xx, yy] = false;
+                }
+                while (xx != x2);
+            }
+            else
+            {
+                do
+                {
+                    if (y1 > y2)
+                    {
+                        yy = (yy - 1);
+                    }
+                    else
+                    {
+                        yy = (yy + 1);
+                    }
 
-            //        MaskData[xx, yy] = false;
-            //        xx = (x1 + (x2 - x1) * (y1 - yy + 0d) / (y1 - y2));
-            //        MaskData[xx, yy] = false;
-            //    }
-            //    while (yy != y2);
-            //}
+                    MaskData[xx, yy] = false;
+                    xx = (int)(x1 + (x2 - x1) * (y1 - yy + 0d) / (y1 - y2));
+                    MaskData[xx, yy] = false;
+                }
+                while (yy != y2);
+            }
         }
 
         // ユニット u の移動範囲を選択
