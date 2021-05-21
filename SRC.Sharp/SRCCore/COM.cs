@@ -60,7 +60,6 @@ namespace SRCCore
             bool searched_enemy = default, searched_nearest_enemy = default;
             var guard_unit_mode = default(bool);
             string buf;
-            var partners = default(Unit[]);
             int prev_money, earnings = default;
             string BGM;
             Unit attack_target;
@@ -702,6 +701,7 @@ namespace SRCCore
             //string[] list;
             string caption_msg;
             int hit_prob, crit_prob;
+            IList<Unit> partners;
             {
                 var selectedUnit = Commands.SelectedUnit;
                 var selectedWeapon = selectedUnit.Weapon(w);
@@ -832,36 +832,31 @@ namespace SRCCore
                     // 射程範囲をハイライト
                     Map.AreaInRange(selectedUnit.x, selectedUnit.y, selectedWeapon.WeaponMaxRange(), selectedWeapon.WeaponData.MinRange, "空間");
                 }
-                // TODO Impl
-                //// 合体技の場合はパートナーもハイライト表示
-                //if (selectedUnit.IsWeaponClassifiedAs(w, "合"))
-                //{
-                //    if (selectedUnit.WeaponMaxRange(w) == 1)
-                //    {
-                //        selectedUnit.CombinationPartner("武装", w, partners, Commands.SelectedTarget.x, Commands.SelectedTarget.y);
-                //    }
-                //    else
-                //    {
-                //        selectedUnit.CombinationPartner("武装", w, partners);
-                //    }
+                // 合体技の場合はパートナーもハイライト表示
+                if (selectedWeapon.IsWeaponClassifiedAs("合"))
+                {
+                    if (selectedWeapon.WeaponMaxRange() == 1)
+                    {
+                        partners = selectedWeapon.CombinationPartner(Commands.SelectedTarget.x, Commands.SelectedTarget.y);
+                    }
+                    else
+                    {
+                        partners = selectedWeapon.CombinationPartner();
+                    }
 
-                //    if (!SRC.BattleAnimation)
-                //    {
-                //        var loopTo9 = Information.UBound(partners);
-                //        for (i = 1; i <= loopTo9; i++)
-                //        {
-                //            {
-                //                var withBlock8 = partners[i];
-                //                Map.MaskData[withBlock8.x, withBlock8.y] = false;
-                //            }
-                //        }
-                //    }
-                //}
-                //else
-                //{
-                //    Commands.SelectedPartners = new Unit[1];
-                //    partners = new Unit[1];
-                //}
+                    if (!SRC.BattleAnimation)
+                    {
+                        foreach (var pu in partners)
+                        {
+                            Map.MaskData[pu.x, pu.y] = false;
+                        }
+                    }
+                }
+                else
+                {
+                    Commands.SelectedPartners.Clear();
+                    partners = new List<Unit>();
+                }
 
                 if (!SRC.BattleAnimation)
                 {
@@ -972,15 +967,10 @@ namespace SRCCore
                         // 合体技の場合はパートナーもハイライト表示
                         if (selectedWeapon.IsWeaponClassifiedAs("合"))
                         {
-                            // TODO Impl
-                            //var loopTo10 = Information.UBound(partners);
-                            //for (i = 1; i <= loopTo10; i++)
-                            //{
-                            //    {
-                            //        var withBlock9 = partners[i];
-                            //        Map.MaskData[withBlock9.x, withBlock9.y] = false;
-                            //    }
-                            //}
+                            foreach (var pu in partners)
+                            {
+                                Map.MaskData[pu.x, pu.y] = false;
+                            }
                         }
 
                         // 自分自身とターゲットもハイライト
@@ -1958,7 +1948,7 @@ namespace SRCCore
             if (SRC.IsScenarioFinished)
             {
                 Commands.RestoreSelections();
-                Commands.SelectedPartners = new Unit[1];
+                Commands.SelectedPartners.Clear();
                 return;
             }
 
@@ -1988,7 +1978,7 @@ namespace SRCCore
             Commands.RestoreSelections();
             if (SRC.IsScenarioFinished || SRC.IsCanceled)
             {
-                Commands.SelectedPartners = new Unit[1];
+                Commands.SelectedPartners.Clear();
                 return;
             }
 
@@ -1998,7 +1988,7 @@ namespace SRCCore
                 Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, wname);
                 if (SRC.IsScenarioFinished || SRC.IsCanceled)
                 {
-                    Commands.SelectedPartners = new Unit[1];
+                    Commands.SelectedPartners.Clear();
                     return;
                 }
             }
@@ -2011,7 +2001,7 @@ namespace SRCCore
                 Commands.RestoreSelections();
                 if (SRC.IsScenarioFinished || SRC.IsCanceled)
                 {
-                    Commands.SelectedPartners = new Unit[1];
+                    Commands.SelectedPartners.Clear();
                     return;
                 }
             }
@@ -2022,7 +2012,7 @@ namespace SRCCore
                 Event.HandleEvent("攻撃後", Commands.SelectedUnit.MainPilot().ID, Commands.SelectedTarget.MainPilot().ID);
                 if (SRC.IsScenarioFinished || SRC.IsCanceled)
                 {
-                    Commands.SelectedPartners = new Unit[1];
+                    Commands.SelectedPartners.Clear();
                     return;
                 }
             }
@@ -2037,7 +2027,7 @@ namespace SRCCore
                         Event.HandleEvent("進入", withBlock30.MainPilot().ID, "" + withBlock30.x, "" + withBlock30.y);
                         if (SRC.IsScenarioFinished || SRC.IsCanceled)
                         {
-                            Commands.SelectedPartners = new Unit[1];
+                            Commands.SelectedPartners.Clear();
                             return;
                         }
                     }
@@ -2045,13 +2035,13 @@ namespace SRCCore
             }
 
             // 合体技のパートナーの行動数を減らす
-            // TODO Impl
-            //if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
-            //{
-            //    var loopTo12 = Information.UBound(partners);
-            //    for (i = 1; i <= loopTo12; i++)
-            //        partners[i].CurrentForm().UseAction();
-            //}
+            if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
+            {
+                foreach (var pu in partners)
+                {
+                    pu.CurrentForm().UseAction();
+                }
+            }
 
             // 再移動
             if (is_p_weapon && Commands.SelectedUnit.Status == "出撃")
@@ -2625,8 +2615,7 @@ namespace SRCCore
 
 
             // 行動終了
-
-            Commands.SelectedPartners = new Unit[1];
+            Commands.SelectedPartners.Clear();
             if (moved)
             {
                 // 持続期間が「移動」のスペシャルパワー効果を削除
@@ -3413,7 +3402,7 @@ namespace SRCCore
             //    }
             //    else
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        partners = new Unit[1];
             //    }
 
@@ -3438,7 +3427,7 @@ namespace SRCCore
             //Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, aname);
             //if (SRC.IsScenarioFinished || SRC.IsCanceled)
             //{
-            //    Commands.SelectedPartners = new Unit[1];
+            //    Commands.SelectedPartners.Clear();
             //    return;
             //}
 
@@ -3448,7 +3437,7 @@ namespace SRCCore
             //    Event.HandleEvent("破壊", Commands.SelectedUnit.MainPilot().ID);
             //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        return;
             //    }
             //}
@@ -3464,7 +3453,7 @@ namespace SRCCore
             //        partners[i].CurrentForm().UseAction();
             //}
 
-            //Commands.SelectedPartners = new Unit[1];
+            //Commands.SelectedPartners.Clear();
         }
 
         // 召喚が可能であれば召喚する
@@ -3517,7 +3506,7 @@ namespace SRCCore
             //    }
             //    else
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        partners = new Unit[1];
             //    }
 
@@ -3532,7 +3521,7 @@ namespace SRCCore
             //Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, aname);
             //if (SRC.IsScenarioFinished || SRC.IsCanceled)
             //{
-            //    Commands.SelectedPartners = new Unit[1];
+            //    Commands.SelectedPartners.Clear();
             //    return TrySummonningRet;
             //}
 
@@ -3542,7 +3531,7 @@ namespace SRCCore
             //    Event.HandleEvent("破壊", Commands.SelectedUnit.MainPilot().ID);
             //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        return TrySummonningRet;
             //    }
             //}
@@ -3555,7 +3544,7 @@ namespace SRCCore
             //        partners[i].CurrentForm().UseAction();
             //}
 
-            //Commands.SelectedPartners = new Unit[1];
+            //Commands.SelectedPartners.Clear();
             return TrySummonningRet;
         }
 
@@ -3825,7 +3814,7 @@ namespace SRCCore
             //    }
             //    else
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        partners = new Unit[1];
             //    }
 
@@ -3835,7 +3824,7 @@ namespace SRCCore
             //    withBlock.ExecuteMapAbility(Commands.SelectedAbility, tx, ty);
             //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        return TryMapHealingRet;
             //    }
 
@@ -3847,7 +3836,7 @@ namespace SRCCore
             //            partners[i].CurrentForm().UseAction();
             //    }
 
-            //    Commands.SelectedPartners = new Unit[1];
+            //    Commands.SelectedPartners.Clear();
             //}
 
             //TryMapHealingRet = true;
@@ -4196,7 +4185,7 @@ namespace SRCCore
             //    }
             //    else
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        partners = new Unit[1];
             //    }
 
@@ -4204,7 +4193,7 @@ namespace SRCCore
             //    Event.HandleEvent("使用", withBlock.MainPilot().ID, aname);
             //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        return TryHealingRet;
             //    }
 
@@ -4232,7 +4221,7 @@ namespace SRCCore
             //        Event.HandleEvent("破壊", Commands.SelectedUnit.MainPilot().ID);
             //    }
 
-            //    Commands.SelectedPartners = new Unit[1];
+            //    Commands.SelectedPartners.Clear();
             //    return TryHealingRet;
             //}
 
@@ -4242,7 +4231,7 @@ namespace SRCCore
             //    Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, aname);
             //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        return TryHealingRet;
             //    }
             //}
@@ -4253,7 +4242,7 @@ namespace SRCCore
             //    Event.HandleEvent("破壊", Commands.SelectedUnit.MainPilot().ID);
             //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        return TryHealingRet;
             //    }
             //}
@@ -4266,7 +4255,7 @@ namespace SRCCore
             //        partners[i].CurrentForm().UseAction();
             //}
 
-            //Commands.SelectedPartners = new Unit[1];
+            //Commands.SelectedPartners.Clear();
             return TryHealingRet;
         }
 
@@ -5070,7 +5059,7 @@ namespace SRCCore
             //    }
             //    else
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        partners = new Unit[1];
             //    }
 
@@ -5085,7 +5074,7 @@ namespace SRCCore
             //            partners[i].CurrentForm().UseAction();
             //    }
 
-            //    Commands.SelectedPartners = new Unit[1];
+            //    Commands.SelectedPartners.Clear();
             //    Commands.RestoreSelections();
             //    TryMapAttackRet = true;
             //}

@@ -148,7 +148,7 @@ namespace SRCCore.Units
             else
             {
                 partners = new List<Unit>();
-                Commands.SelectedPartners = new Unit[1];
+                Commands.SelectedPartners.Clear();
                 GUI.MaskScreen();
             }
 

@@ -116,7 +116,7 @@ namespace SRCCore.Units
             //        else
             //        {
             //            partners = new Unit[1];
-            //            Commands.SelectedPartners = new Unit[1];
+            //            Commands.SelectedPartners.Clear();
             //        }
 
             //        // ダイアログ用にあらかじめ追加パイロットを作成しておく
@@ -2879,7 +2879,7 @@ namespace SRCCore.Units
             //    else
             //    {
             //        partners = new Unit[1];
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        GUI.MaskScreen();
             //    }
 

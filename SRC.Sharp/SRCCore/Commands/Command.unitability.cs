@@ -464,7 +464,7 @@ namespace SRCCore.Commands
             //    }
             //    else
             //    {
-            //        SelectedPartners = new Unit[1];
+            //        SelectedPartners.Clear();
             //        partners = new Unit[1];
             //    }
             //}
@@ -482,7 +482,7 @@ namespace SRCCore.Commands
             //if (SRC.IsScenarioFinished)
             //{
             //    SRC.IsScenarioFinished = false;
-            //    SelectedPartners = new Unit[1];
+            //    SelectedPartners.Clear();
             //    GUI.UnlockGUI();
             //    return;
             //}
@@ -490,7 +490,7 @@ namespace SRCCore.Commands
             //if (SRC.IsCanceled)
             //{
             //    SRC.IsCanceled = false;
-            //    SelectedPartners = new Unit[1];
+            //    SelectedPartners.Clear();
             //    WaitCommand();
             //    return;
             //}
@@ -543,7 +543,7 @@ namespace SRCCore.Commands
             //            if (SRC.IsScenarioFinished)
             //            {
             //                SRC.IsScenarioFinished = false;
-            //                SelectedPartners = new Unit[1];
+            //                SelectedPartners.Clear();
             //                GUI.UnlockGUI();
             //                return;
             //            }
@@ -551,7 +551,7 @@ namespace SRCCore.Commands
             //            if (SRC.IsCanceled)
             //            {
             //                SRC.IsCanceled = false;
-            //                SelectedPartners = new Unit[1];
+            //                SelectedPartners.Clear();
             //                GUI.UnlockGUI();
             //                return;
             //            }
@@ -571,7 +571,7 @@ namespace SRCCore.Commands
             //        if (SRC.IsScenarioFinished)
             //        {
             //            SRC.IsScenarioFinished = false;
-            //            SelectedPartners = new Unit[1];
+            //            SelectedPartners.Clear();
             //            GUI.UnlockGUI();
             //            return;
             //        }
@@ -579,7 +579,7 @@ namespace SRCCore.Commands
             //        if (SRC.IsCanceled)
             //        {
             //            SRC.IsCanceled = false;
-            //            SelectedPartners = new Unit[1];
+            //            SelectedPartners.Clear();
             //            GUI.UnlockGUI();
             //            return;
             //        }
@@ -594,7 +594,7 @@ namespace SRCCore.Commands
             //        partners[i].CurrentForm().UseAction();
             //}
 
-            //SelectedPartners = new Unit[1];
+            //SelectedPartners.Clear();
 
             //// ADD START MARGE
             //// 再移動
@@ -744,7 +744,7 @@ namespace SRCCore.Commands
             //    }
             //    else
             //    {
-            //        SelectedPartners = new Unit[1];
+            //        SelectedPartners.Clear();
             //        partners = new Unit[1];
             //    }
             //}
@@ -764,7 +764,7 @@ namespace SRCCore.Commands
             //if (SRC.IsScenarioFinished)
             //{
             //    SRC.IsScenarioFinished = false;
-            //    SelectedPartners = new Unit[1];
+            //    SelectedPartners.Clear();
             //    GUI.UnlockGUI();
             //    return;
             //}
@@ -772,7 +772,7 @@ namespace SRCCore.Commands
             //if (SRC.IsCanceled)
             //{
             //    SRC.IsCanceled = false;
-            //    SelectedPartners = new Unit[1];
+            //    SelectedPartners.Clear();
             //    WaitCommand();
             //    return;
             //}
@@ -785,7 +785,7 @@ namespace SRCCore.Commands
             //        partners[i].CurrentForm().UseAction();
             //}
 
-            //SelectedPartners = new Unit[1];
+            //SelectedPartners.Clear();
 
             //// ADD START MARGE
             //// 再移動
