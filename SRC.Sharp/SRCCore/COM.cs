@@ -7135,212 +7135,208 @@ namespace SRCCore
         // ユニット u が武器 w で攻撃をかけた際にターゲット t が選択する防御行動を返す
         public string SelectDefense(Unit u, int w, Unit t, int tw)
         {
-            // TODO Impl
-            string SelectDefenseRet = default;
-            //int prob, dmg;
-            //int tprob = default, tdmg = default;
-            //var is_target_inferior = default(bool);
+            var uw = u.Weapon(w);
+            if (uw == null)
+            {
+                return "";
+            }
 
-            //// マップ攻撃に対しては防御行動が取れない
-            //if (u.IsWeaponClassifiedAs(w, "Ｍ"))
-            //{
-            //    return SelectDefenseRet;
-            //}
+            string SelectDefenseRet = "";
 
-            //{
-            //    var withBlock = t;
-            //    // 踊っている場合は回避扱い
-            //    if (withBlock.IsConditionSatisfied("踊り"))
-            //    {
-            //        // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        SelectDefenseRet = "回避";
-            //        return SelectDefenseRet;
-            //    }
+            // マップ攻撃に対しては防御行動が取れない
+            if (uw.IsWeaponClassifiedAs("Ｍ"))
+            {
+                return SelectDefenseRet;
+            }
 
-            //    // 狂戦士状態の際は防御行動を取らない
-            //    if (withBlock.IsConditionSatisfied("狂戦士"))
-            //    {
-            //        return SelectDefenseRet;
-            //    }
+            // 踊っている場合は回避扱い
+            if (t.IsConditionSatisfied("踊り"))
+            {
+                SelectDefenseRet = "回避";
+                return SelectDefenseRet;
+            }
 
-            //    // 無防備状態のユニットは防御行動が取れない
-            //    if (withBlock.IsUnderSpecialPowerEffect("無防備"))
-            //    {
-            //        return SelectDefenseRet;
-            //    }
+            // 狂戦士状態の際は防御行動を取らない
+            if (t.IsConditionSatisfied("狂戦士"))
+            {
+                return SelectDefenseRet;
+            }
 
-            //    if (withBlock.Party != "味方")
-            //    {
-            //        // 「敵ユニット防御使用」オプションを選択している場合にのみ敵ユニットは
-            //        // 防御行動を行う
-            //        if (!Expression.IsOptionDefined("敵ユニット防御使用"))
-            //        {
-            //            return SelectDefenseRet;
-            //        }
+            // 無防備状態のユニットは防御行動が取れない
+            if (t.IsUnderSpecialPowerEffect("無防備"))
+            {
+                return SelectDefenseRet;
+            }
 
-            //        // 防御行動を使ってくるのは技量が160以上のザコでないパイロットのみ
-            //        {
-            //            var withBlock1 = withBlock.MainPilot();
-            //            if (Strings.InStr(withBlock1.Name, "(ザコ)") > 0 || withBlock1.TacticalTechnique() < 160)
-            //            {
-            //                return SelectDefenseRet;
-            //            }
-            //        }
-            //    }
+            if (t.Party != "味方")
+            {
+                // 「敵ユニット防御使用」オプションを選択している場合にのみ敵ユニットは
+                // 防御行動を行う
+                if (!Expression.IsOptionDefined("敵ユニット防御使用"))
+                {
+                    return SelectDefenseRet;
+                }
 
-            //    // 行動不能？
-            //    if (withBlock.MaxAction() == 0)
-            //    {
-            //        // チャージ中、消耗中は常に防御、それ以外の場合は防御行動が取れない
-            //        if (withBlock.IsConditionSatisfied("チャージ") || withBlock.IsConditionSatisfied("消耗"))
-            //        {
-            //            // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //            SelectDefenseRet = "防御";
-            //        }
+                // 防御行動を使ってくるのは技量が160以上のザコでないパイロットのみ
+                {
+                    var withBlock1 = t.MainPilot();
+                    if (Strings.InStr(withBlock1.Name, "(ザコ)") > 0 || withBlock1.TacticalTechnique() < 160)
+                    {
+                        return SelectDefenseRet;
+                    }
+                }
+            }
 
-            //        return SelectDefenseRet;
-            //    }
+            // 行動不能？
+            if (t.MaxAction() == 0)
+            {
+                // チャージ中、消耗中は常に防御、それ以外の場合は防御行動が取れない
+                if (t.IsConditionSatisfied("チャージ") || t.IsConditionSatisfied("消耗"))
+                {
+                    SelectDefenseRet = "防御";
+                }
 
-            //    // 相手の攻撃のダメージ・命中率を算出
-            //    dmg = u.ExpDamage(w, t, true);
-            //    prob = GeneralLib.MinLng(u.HitProbability(w, t, true), 100);
+                return SelectDefenseRet;
+            }
 
-            //    // ダミーを持っている場合、相手の攻撃は無効
-            //    if (withBlock.IsFeatureAvailable("ダミー") && withBlock.ConditionLevel("ダミー破壊") < withBlock.FeatureLevel("ダミー"))
-            //    {
-            //        prob = 0;
-            //    }
+            // 相手の攻撃のダメージ・命中率を算出
+            var dmg = uw.ExpDamage(t, true);
+            var prob = GeneralLib.MinLng(uw.HitProbability(t, true), 100);
 
-            //    // サポートガードされる場合も相手の攻撃は無効
-            //    if (withBlock.LookForSupportGuard(u, w) is object)
-            //    {
-            //        prob = 0;
-            //    }
+            // ダミーを持っている場合、相手の攻撃は無効
+            if (t.IsFeatureAvailable("ダミー") && t.ConditionLevel("ダミー破壊") < t.FeatureLevel("ダミー"))
+            {
+                prob = 0;
+            }
 
-            //    // 反撃のダメージ・命中率を算出
-            //    if (tw > 0)
-            //    {
-            //        tdmg = withBlock.ExpDamage(tw, u, true);
-            //        tprob = GeneralLib.MinLng(withBlock.HitProbability(tw, u, true), 100);
+            // サポートガードされる場合も相手の攻撃は無効
+            if (t.LookForSupportGuard(u, uw) is object)
+            {
+                prob = 0;
+            }
 
-            //        // ダミーを持っている場合は反撃は無効
-            //        if (u.IsFeatureAvailable("ダミー") && u.ConditionLevel("ダミー破壊") < u.FeatureLevel("ダミー"))
-            //        {
-            //            prob = 0;
-            //        }
-            //    }
+            var tuw = t.Weapon(tw);
+            int tdmg = 0;
+            int tprob = 0;
+            // 反撃のダメージ・命中率を算出
+            if (tw > 0)
+            {
+                tdmg = tuw.ExpDamage(u, true);
+                tprob = GeneralLib.MinLng(tuw.HitProbability(u, true), 100);
 
-            //    // 相手の攻撃の効果とこちらの反撃の効果を比較
-            //    if (withBlock.Party == "味方")
-            //    {
-            //        // 味方ユニットの場合、相手の攻撃によるダメージの方が多い場合は防御
-            //        if (dmg * prob > tdmg * tprob && tdmg < u.HP)
-            //        {
-            //            is_target_inferior = true;
-            //        }
+                // ダミーを持っている場合は反撃は無効
+                if (u.IsFeatureAvailable("ダミー") && u.ConditionLevel("ダミー破壊") < u.FeatureLevel("ダミー"))
+                {
+                    prob = 0;
+                }
+            }
 
-            //        // 気合の一撃は防御を優先し、やり過ごす
-            //        if (u.IsUnderSpecialPowerEffect("ダメージ増加"))
-            //        {
-            //            if (2 * dmg * prob > tdmg * tprob && tdmg < u.HP)
-            //            {
-            //                is_target_inferior = true;
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        // 敵ユニットの場合でも相手の攻撃によるダメージの方が２倍以上多い場合は防御
-            //        if (dmg * prob / 2 > tdmg * tprob && tdmg < u.HP)
-            //        {
-            //            is_target_inferior = true;
-            //        }
+            // 相手の攻撃の効果とこちらの反撃の効果を比較
+            var is_target_inferior = false;
+            if (t.Party == "味方")
+            {
+                // 味方ユニットの場合、相手の攻撃によるダメージの方が多い場合は防御
+                if (dmg * prob > tdmg * tprob && tdmg < u.HP)
+                {
+                    is_target_inferior = true;
+                }
 
-            //        // 気合の一撃は防御を優先し、やり過ごす
-            //        if (u.IsUnderSpecialPowerEffect("ダメージ増加"))
-            //        {
-            //            if (dmg * prob > tdmg * tprob && tdmg < u.HP)
-            //            {
-            //                is_target_inferior = true;
-            //            }
-            //        }
-            //    }
+                // 気合の一撃は防御を優先し、やり過ごす
+                if (u.IsUnderSpecialPowerEffect("ダメージ増加"))
+                {
+                    if (2 * dmg * prob > tdmg * tprob && tdmg < u.HP)
+                    {
+                        is_target_inferior = true;
+                    }
+                }
+            }
+            else
+            {
+                // 敵ユニットの場合でも相手の攻撃によるダメージの方が２倍以上多い場合は防御
+                if (dmg * prob / 2 > tdmg * tprob && tdmg < u.HP)
+                {
+                    is_target_inferior = true;
+                }
 
-            //    // あと一撃で破壊されてしまう場合は必ず防御
-            //    // (命中率が低い場合を除く)
-            //    if (dmg >= withBlock.HP && prob > 10)
-            //    {
-            //        is_target_inferior = true;
-            //    }
+                // 気合の一撃は防御を優先し、やり過ごす
+                if (u.IsUnderSpecialPowerEffect("ダメージ増加"))
+                {
+                    if (dmg * prob > tdmg * tprob && tdmg < u.HP)
+                    {
+                        is_target_inferior = true;
+                    }
+                }
+            }
 
-            //    if (tw > 0)
-            //    {
-            //        // 先制攻撃可能？
-            //        if (!withBlock.IsWeaponClassifiedAs(tw, "後"))
-            //        {
-            //            if (withBlock.IsWeaponClassifiedAs(tw, "先") || u.IsWeaponClassifiedAs(w, "後") || withBlock.MaxCounterAttack() > withBlock.UsedCounterAttack)
-            //            {
-            //                if (tdmg >= u.HP && tprob > 70)
-            //                {
-            //                    // 先制攻撃で倒せる場合は迷わず反撃
-            //                    is_target_inferior = false;
-            //                }
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        // 反撃できない場合は防御
-            //        is_target_inferior = true;
-            //    }
+            // あと一撃で破壊されてしまう場合は必ず防御
+            // (命中率が低い場合を除く)
+            if (dmg >= t.HP && prob > 10)
+            {
+                is_target_inferior = true;
+            }
 
-            //    if (!is_target_inferior)
-            //    {
-            //        // 反撃を選択した
-            //        return SelectDefenseRet;
-            //    }
+            if (tw > 0)
+            {
+                // 先制攻撃可能？
+                if (!tuw.IsWeaponClassifiedAs("後"))
+                {
+                    if (tuw.IsWeaponClassifiedAs("先") || uw.IsWeaponClassifiedAs("後") || t.MaxCounterAttack() > t.UsedCounterAttack)
+                    {
+                        if (tdmg >= u.HP && tprob > 70)
+                        {
+                            // 先制攻撃で倒せる場合は迷わず反撃
+                            is_target_inferior = false;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // 反撃できない場合は防御
+                is_target_inferior = true;
+            }
 
-            //    // 防御側が劣勢なので反撃は行わず、防御行動を選択
+            if (!is_target_inferior)
+            {
+                // 反撃を選択した
+                return SelectDefenseRet;
+            }
 
-            //    // 命中すれば一撃死で、防御すれば破壊をまぬがれる攻撃は必ず防御
-            //    if (dmg > withBlock.HP && dmg / 2 < withBlock.HP && !withBlock.IsFeatureAvailable("防御不可") && !u.IsWeaponClassifiedAs(w, "殺"))
-            //    {
-            //        // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        SelectDefenseRet = "防御";
-            //        return SelectDefenseRet;
-            //    }
+            // 防御側が劣勢なので反撃は行わず、防御行動を選択
 
-            //    // 相手の命中率が低い場合は回避
-            //    if (prob < 50 && !withBlock.IsFeatureAvailable("回避不可") && !withBlock.IsConditionSatisfied("移動不能"))
-            //    {
-            //        // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        SelectDefenseRet = "回避";
-            //        return SelectDefenseRet;
-            //    }
+            // 命中すれば一撃死で、防御すれば破壊をまぬがれる攻撃は必ず防御
+            if (dmg > t.HP && dmg / 2 < t.HP && !t.IsFeatureAvailable("防御不可") && !uw.IsWeaponClassifiedAs("殺"))
+            {
+                SelectDefenseRet = "防御";
+                return SelectDefenseRet;
+            }
 
-            //    // 防御すれば一撃死をまぬがれる場合は防御
-            //    if (dmg / 2 < withBlock.HP && !withBlock.IsFeatureAvailable("防御不可") && !u.IsWeaponClassifiedAs(w, "殺"))
-            //    {
-            //        // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        SelectDefenseRet = "防御";
-            //        return SelectDefenseRet;
-            //    }
+            // 相手の命中率が低い場合は回避
+            if (prob < 50 && !t.IsFeatureAvailable("回避不可") && !t.IsConditionSatisfied("移動不能"))
+            {
+                SelectDefenseRet = "回避";
+                return SelectDefenseRet;
+            }
 
-            //    // どうしようもないのでとりあえず回避
-            //    if (!withBlock.IsFeatureAvailable("回避不可") && !withBlock.IsConditionSatisfied("移動不能"))
-            //    {
-            //        // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        SelectDefenseRet = "回避";
-            //        return SelectDefenseRet;
-            //    }
+            // 防御すれば一撃死をまぬがれる場合は防御
+            if (dmg / 2 < t.HP && !t.IsFeatureAvailable("防御不可") && !uw.IsWeaponClassifiedAs("殺"))
+            {
+                SelectDefenseRet = "防御";
+                return SelectDefenseRet;
+            }
 
-            //    // 回避も出来ないので防御……
-            //    if (!withBlock.IsFeatureAvailable("防御不可"))
-            //    {
-            //        // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        SelectDefenseRet = "防御";
-            //    }
-            //}
+            // どうしようもないのでとりあえず回避
+            if (!t.IsFeatureAvailable("回避不可") && !t.IsConditionSatisfied("移動不能"))
+            {
+                SelectDefenseRet = "回避";
+                return SelectDefenseRet;
+            }
+
+            // 回避も出来ないので防御……
+            if (!t.IsFeatureAvailable("防御不可"))
+            {
+                SelectDefenseRet = "防御";
+            }
 
             return SelectDefenseRet;
         }
