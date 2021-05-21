@@ -5,18 +5,20 @@ terraform {
       version = "~>2.0"
     }
   }
+  backend "remote" {
+    organization = "koudenpa"
+
+    workspaces {
+      name = "SRC"
+    }
+  }
 }
 
 provider "azurerm" {
   features {}
 }
 
-# resource "azurerm_resource_group" "rg" {
-#   name     = "src"
-#   location = "Japan East"
-# }
-
-resource "azurerm_resource_group" "dumy-rg-for-terraform" {
-  name     = "dumy-rg-for-terraform"
+resource "azurerm_resource_group" "rg" {
+  name     = "src"
   location = "Japan East"
 }
