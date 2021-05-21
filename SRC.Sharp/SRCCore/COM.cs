@@ -4984,131 +4984,126 @@ namespace SRCCore
         // 効果範囲内にいるターゲットをカウント
         private int CountTargetInRange(UnitWeapon uw, int x1, int y1, int x2, int y2)
         {
-            // TODO Impl
             int CountTargetInRangeRet = default;
-            //int i, j;
-            //Unit t;
-            //var is_ally_involved = default(bool);
-            //{
-            //    var withBlock = Commands.SelectedUnit;
-            //    // 効果範囲内のターゲットを検索
-            //    var loopTo = GeneralLib.MinLng(x2, Map.MapWidth);
-            //    for (i = GeneralLib.MaxLng(x1, 1); i <= loopTo; i++)
-            //    {
-            //        var loopTo1 = GeneralLib.MinLng(y2, Map.MapHeight);
-            //        for (j = GeneralLib.MaxLng(y1, 1); j <= loopTo1; j++)
-            //        {
-            //            // 効果範囲内？
-            //            if (Map.MaskData[i, j])
-            //            {
-            //                goto NextPoint;
-            //            }
+            var is_ally_involved = default(bool);
+            var currentUnit = Commands.SelectedUnit;
+            // 効果範囲内のターゲットを検索
+            var loopTo = GeneralLib.MinLng(x2, Map.MapWidth);
+            for (var i = GeneralLib.MaxLng(x1, 1); i <= loopTo; i++)
+            {
+                var loopTo1 = GeneralLib.MinLng(y2, Map.MapHeight);
+                for (var j = GeneralLib.MaxLng(y1, 1); j <= loopTo1; j++)
+                {
+                    // 効果範囲内？
+                    if (Map.MaskData[i, j])
+                    {
+                        goto NextPoint;
+                    }
 
-            //            t = Map.MapDataForUnit[i, j];
+                    var t = Map.MapDataForUnit[i, j];
 
-            //            // ユニットが存在する？
-            //            if (t is null)
-            //            {
-            //                goto NextPoint;
-            //            }
+                    // ユニットが存在する？
+                    if (t is null)
+                    {
+                        goto NextPoint;
+                    }
 
-            //            // ダメージを与えられる？
-            //            if (withBlock.HitProbability(w, t, false) == 0)
-            //            {
-            //                goto NextPoint;
-            //            }
-            //            else if (withBlock.ExpDamage(w, t, false) <= 10)
-            //            {
-            //                if (withBlock.IsNormalWeapon(w))
-            //                {
-            //                    goto NextPoint;
-            //                }
-            //                else if (withBlock.CriticalProbability(w, t) <= 1 && withBlock.WeaponLevel(w, "Ｋ") == 0d && withBlock.WeaponLevel(w, "吹") == 0d)
-            //                {
-            //                    goto NextPoint;
-            //                }
-            //            }
+                    // ダメージを与えられる？
+                    if (uw.HitProbability(t, false) == 0)
+                    {
+                        goto NextPoint;
+                    }
+                    else if (uw.ExpDamage(t, false) <= 10)
+                    {
+                        if (uw.IsNormalWeapon())
+                        {
+                            goto NextPoint;
+                        }
+                        else if (uw.CriticalProbability(t) <= 1 && uw.WeaponLevel("Ｋ") == 0d && uw.WeaponLevel("吹") == 0d)
+                        {
+                            goto NextPoint;
+                        }
+                    }
 
-            //            // ターゲットは敵？
-            //            if (withBlock.IsAlly(t))
-            //            {
-            //                // 味方の場合は同士討ちの可能性があるのでチェックしておく
-            //                is_ally_involved = true;
-            //                goto NextPoint;
-            //            }
+                    // ターゲットは敵？
+                    if (currentUnit.IsAlly(t))
+                    {
+                        // 味方の場合は同士討ちの可能性があるのでチェックしておく
+                        is_ally_involved = true;
+                        goto NextPoint;
+                    }
 
-            //            // 特定の陣営のみを攻撃する場合
-            //            switch (withBlock.Mode ?? "")
-            //            {
-            //                case "味方":
-            //                case "ＮＰＣ":
-            //                    {
-            //                        if (t.Party != "味方" && t.Party != "ＮＰＣ")
-            //                        {
-            //                            goto NextPoint;
-            //                        }
+                    // 特定の陣営のみを攻撃する場合
+                    switch (currentUnit.Mode ?? "")
+                    {
+                        case "味方":
+                        case "ＮＰＣ":
+                            {
+                                if (t.Party != "味方" && t.Party != "ＮＰＣ")
+                                {
+                                    goto NextPoint;
+                                }
 
-            //                        break;
-            //                    }
+                                break;
+                            }
 
-            //                case "敵":
-            //                    {
-            //                        if (t.Party != "敵")
-            //                        {
-            //                            goto NextPoint;
-            //                        }
+                        case "敵":
+                            {
+                                if (t.Party != "敵")
+                                {
+                                    goto NextPoint;
+                                }
 
-            //                        break;
-            //                    }
+                                break;
+                            }
 
-            //                case "中立":
-            //                    {
-            //                        if (t.Party != "中立")
-            //                        {
-            //                            goto NextPoint;
-            //                        }
+                        case "中立":
+                            {
+                                if (t.Party != "中立")
+                                {
+                                    goto NextPoint;
+                                }
 
-            //                        break;
-            //                    }
-            //            }
+                                break;
+                            }
+                    }
 
-            //            // ターゲットが見える？
-            //            if (t.IsUnderSpecialPowerEffect("隠れ身"))
-            //            {
-            //                goto NextPoint;
-            //            }
+                    // ターゲットが見える？
+                    if (t.IsUnderSpecialPowerEffect("隠れ身"))
+                    {
+                        goto NextPoint;
+                    }
 
-            //            if (t.IsFeatureAvailable("ステルス"))
-            //            {
-            //                if (!t.IsConditionSatisfied("ステルス無効") && !withBlock.IsFeatureAvailable("ステルス無効化"))
-            //                {
-            //                    if (t.IsFeatureLevelSpecified("ステルス"))
-            //                    {
-            //                        if (Math.Abs((withBlock.x - t.x)) + Math.Abs((withBlock.y - t.y)) > t.FeatureLevel("ステルス"))
-            //                        {
-            //                            goto NextPoint;
-            //                        }
-            //                    }
-            //                    else if (Math.Abs((withBlock.x - t.x)) + Math.Abs((withBlock.y - t.y)) > 3)
-            //                    {
-            //                        goto NextPoint;
-            //                    }
-            //                }
-            //            }
+                    if (t.IsFeatureAvailable("ステルス"))
+                    {
+                        if (!t.IsConditionSatisfied("ステルス無効") && !currentUnit.IsFeatureAvailable("ステルス無効化"))
+                        {
+                            if (t.IsFeatureLevelSpecified("ステルス"))
+                            {
+                                if (Math.Abs((currentUnit.x - t.x)) + Math.Abs((currentUnit.y - t.y)) > t.FeatureLevel("ステルス"))
+                                {
+                                    goto NextPoint;
+                                }
+                            }
+                            else if (Math.Abs((currentUnit.x - t.x)) + Math.Abs((currentUnit.y - t.y)) > 3)
+                            {
+                                goto NextPoint;
+                            }
+                        }
+                    }
 
-            //            // ターゲットに含める
-            //            CountTargetInRangeRet = (CountTargetInRangeRet + 1);
-            //        NextPoint:
-            //            ;
-            //        }
-            //    }
+                    // ターゲットに含める
+                    CountTargetInRangeRet = (CountTargetInRangeRet + 1);
+                NextPoint:
+                    ;
+                }
+            }
 
-            //    // 味方を巻き込んでしまう場合は攻撃を止める
-            //    if (is_ally_involved && !withBlock.IsWeaponClassifiedAs(w, "識") && !withBlock.IsUnderSpecialPowerEffect("識別攻撃"))
-            //    {
-            //        CountTargetInRangeRet = 0;
-            //    }
-            //}
+            // 味方を巻き込んでしまう場合は攻撃を止める
+            if (is_ally_involved && !uw.IsWeaponClassifiedAs("識") && !currentUnit.IsUnderSpecialPowerEffect("識別攻撃"))
+            {
+                CountTargetInRangeRet = 0;
+            }
 
             return CountTargetInRangeRet;
         }
