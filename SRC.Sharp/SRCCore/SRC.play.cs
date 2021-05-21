@@ -121,7 +121,7 @@ namespace SRCCore
             IsRestartSaveDataAvailable = false;
             IsQuickSaveDataAvailable = false;
             Commands.CommandState = "ユニット選択";
-            //Commands.SelectedPartners = new Unit[1];
+            //Commands.SelectedPartners.Clear();
 
             //// フォント設定をデフォルトに戻す
             //{

@@ -60,7 +60,6 @@ namespace SRCCore
             bool searched_enemy = default, searched_nearest_enemy = default;
             var guard_unit_mode = default(bool);
             string buf;
-            var partners = default(Unit[]);
             int prev_money, earnings = default;
             string BGM;
             Unit attack_target;
@@ -702,6 +701,7 @@ namespace SRCCore
             //string[] list;
             string caption_msg;
             int hit_prob, crit_prob;
+            IList<Unit> partners;
             {
                 var selectedUnit = Commands.SelectedUnit;
                 var selectedWeapon = selectedUnit.Weapon(w);
@@ -832,36 +832,31 @@ namespace SRCCore
                     // 射程範囲をハイライト
                     Map.AreaInRange(selectedUnit.x, selectedUnit.y, selectedWeapon.WeaponMaxRange(), selectedWeapon.WeaponData.MinRange, "空間");
                 }
-                // TODO Impl
-                //// 合体技の場合はパートナーもハイライト表示
-                //if (selectedUnit.IsWeaponClassifiedAs(w, "合"))
-                //{
-                //    if (selectedUnit.WeaponMaxRange(w) == 1)
-                //    {
-                //        selectedUnit.CombinationPartner("武装", w, partners, Commands.SelectedTarget.x, Commands.SelectedTarget.y);
-                //    }
-                //    else
-                //    {
-                //        selectedUnit.CombinationPartner("武装", w, partners);
-                //    }
+                // 合体技の場合はパートナーもハイライト表示
+                if (selectedWeapon.IsWeaponClassifiedAs("合"))
+                {
+                    if (selectedWeapon.WeaponMaxRange() == 1)
+                    {
+                        partners = selectedWeapon.CombinationPartner(Commands.SelectedTarget.x, Commands.SelectedTarget.y);
+                    }
+                    else
+                    {
+                        partners = selectedWeapon.CombinationPartner();
+                    }
 
-                //    if (!SRC.BattleAnimation)
-                //    {
-                //        var loopTo9 = Information.UBound(partners);
-                //        for (i = 1; i <= loopTo9; i++)
-                //        {
-                //            {
-                //                var withBlock8 = partners[i];
-                //                Map.MaskData[withBlock8.x, withBlock8.y] = false;
-                //            }
-                //        }
-                //    }
-                //}
-                //else
-                //{
-                //    Commands.SelectedPartners = new Unit[1];
-                //    partners = new Unit[1];
-                //}
+                    if (!SRC.BattleAnimation)
+                    {
+                        foreach (var pu in partners)
+                        {
+                            Map.MaskData[pu.x, pu.y] = false;
+                        }
+                    }
+                }
+                else
+                {
+                    Commands.SelectedPartners.Clear();
+                    partners = new List<Unit>();
+                }
 
                 if (!SRC.BattleAnimation)
                 {
@@ -972,15 +967,10 @@ namespace SRCCore
                         // 合体技の場合はパートナーもハイライト表示
                         if (selectedWeapon.IsWeaponClassifiedAs("合"))
                         {
-                            // TODO Impl
-                            //var loopTo10 = Information.UBound(partners);
-                            //for (i = 1; i <= loopTo10; i++)
-                            //{
-                            //    {
-                            //        var withBlock9 = partners[i];
-                            //        Map.MaskData[withBlock9.x, withBlock9.y] = false;
-                            //    }
-                            //}
+                            foreach (var pu in partners)
+                            {
+                                Map.MaskData[pu.x, pu.y] = false;
+                            }
                         }
 
                         // 自分自身とターゲットもハイライト
@@ -1958,7 +1948,7 @@ namespace SRCCore
             if (SRC.IsScenarioFinished)
             {
                 Commands.RestoreSelections();
-                Commands.SelectedPartners = new Unit[1];
+                Commands.SelectedPartners.Clear();
                 return;
             }
 
@@ -1988,7 +1978,7 @@ namespace SRCCore
             Commands.RestoreSelections();
             if (SRC.IsScenarioFinished || SRC.IsCanceled)
             {
-                Commands.SelectedPartners = new Unit[1];
+                Commands.SelectedPartners.Clear();
                 return;
             }
 
@@ -1998,7 +1988,7 @@ namespace SRCCore
                 Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, wname);
                 if (SRC.IsScenarioFinished || SRC.IsCanceled)
                 {
-                    Commands.SelectedPartners = new Unit[1];
+                    Commands.SelectedPartners.Clear();
                     return;
                 }
             }
@@ -2011,7 +2001,7 @@ namespace SRCCore
                 Commands.RestoreSelections();
                 if (SRC.IsScenarioFinished || SRC.IsCanceled)
                 {
-                    Commands.SelectedPartners = new Unit[1];
+                    Commands.SelectedPartners.Clear();
                     return;
                 }
             }
@@ -2022,7 +2012,7 @@ namespace SRCCore
                 Event.HandleEvent("攻撃後", Commands.SelectedUnit.MainPilot().ID, Commands.SelectedTarget.MainPilot().ID);
                 if (SRC.IsScenarioFinished || SRC.IsCanceled)
                 {
-                    Commands.SelectedPartners = new Unit[1];
+                    Commands.SelectedPartners.Clear();
                     return;
                 }
             }
@@ -2037,7 +2027,7 @@ namespace SRCCore
                         Event.HandleEvent("進入", withBlock30.MainPilot().ID, "" + withBlock30.x, "" + withBlock30.y);
                         if (SRC.IsScenarioFinished || SRC.IsCanceled)
                         {
-                            Commands.SelectedPartners = new Unit[1];
+                            Commands.SelectedPartners.Clear();
                             return;
                         }
                     }
@@ -2045,13 +2035,13 @@ namespace SRCCore
             }
 
             // 合体技のパートナーの行動数を減らす
-            // TODO Impl
-            //if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
-            //{
-            //    var loopTo12 = Information.UBound(partners);
-            //    for (i = 1; i <= loopTo12; i++)
-            //        partners[i].CurrentForm().UseAction();
-            //}
+            if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
+            {
+                foreach (var pu in partners)
+                {
+                    pu.CurrentForm().UseAction();
+                }
+            }
 
             // 再移動
             if (is_p_weapon && Commands.SelectedUnit.Status == "出撃")
@@ -2625,8 +2615,7 @@ namespace SRCCore
 
 
             // 行動終了
-
-            Commands.SelectedPartners = new Unit[1];
+            Commands.SelectedPartners.Clear();
             if (moved)
             {
                 // 持続期間が「移動」のスペシャルパワー効果を削除
@@ -3413,7 +3402,7 @@ namespace SRCCore
             //    }
             //    else
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        partners = new Unit[1];
             //    }
 
@@ -3438,7 +3427,7 @@ namespace SRCCore
             //Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, aname);
             //if (SRC.IsScenarioFinished || SRC.IsCanceled)
             //{
-            //    Commands.SelectedPartners = new Unit[1];
+            //    Commands.SelectedPartners.Clear();
             //    return;
             //}
 
@@ -3448,7 +3437,7 @@ namespace SRCCore
             //    Event.HandleEvent("破壊", Commands.SelectedUnit.MainPilot().ID);
             //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        return;
             //    }
             //}
@@ -3464,7 +3453,7 @@ namespace SRCCore
             //        partners[i].CurrentForm().UseAction();
             //}
 
-            //Commands.SelectedPartners = new Unit[1];
+            //Commands.SelectedPartners.Clear();
         }
 
         // 召喚が可能であれば召喚する
@@ -3517,7 +3506,7 @@ namespace SRCCore
             //    }
             //    else
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        partners = new Unit[1];
             //    }
 
@@ -3532,7 +3521,7 @@ namespace SRCCore
             //Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, aname);
             //if (SRC.IsScenarioFinished || SRC.IsCanceled)
             //{
-            //    Commands.SelectedPartners = new Unit[1];
+            //    Commands.SelectedPartners.Clear();
             //    return TrySummonningRet;
             //}
 
@@ -3542,7 +3531,7 @@ namespace SRCCore
             //    Event.HandleEvent("破壊", Commands.SelectedUnit.MainPilot().ID);
             //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        return TrySummonningRet;
             //    }
             //}
@@ -3555,7 +3544,7 @@ namespace SRCCore
             //        partners[i].CurrentForm().UseAction();
             //}
 
-            //Commands.SelectedPartners = new Unit[1];
+            //Commands.SelectedPartners.Clear();
             return TrySummonningRet;
         }
 
@@ -3825,7 +3814,7 @@ namespace SRCCore
             //    }
             //    else
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        partners = new Unit[1];
             //    }
 
@@ -3835,7 +3824,7 @@ namespace SRCCore
             //    withBlock.ExecuteMapAbility(Commands.SelectedAbility, tx, ty);
             //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        return TryMapHealingRet;
             //    }
 
@@ -3847,7 +3836,7 @@ namespace SRCCore
             //            partners[i].CurrentForm().UseAction();
             //    }
 
-            //    Commands.SelectedPartners = new Unit[1];
+            //    Commands.SelectedPartners.Clear();
             //}
 
             //TryMapHealingRet = true;
@@ -4196,7 +4185,7 @@ namespace SRCCore
             //    }
             //    else
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        partners = new Unit[1];
             //    }
 
@@ -4204,7 +4193,7 @@ namespace SRCCore
             //    Event.HandleEvent("使用", withBlock.MainPilot().ID, aname);
             //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        return TryHealingRet;
             //    }
 
@@ -4232,7 +4221,7 @@ namespace SRCCore
             //        Event.HandleEvent("破壊", Commands.SelectedUnit.MainPilot().ID);
             //    }
 
-            //    Commands.SelectedPartners = new Unit[1];
+            //    Commands.SelectedPartners.Clear();
             //    return TryHealingRet;
             //}
 
@@ -4242,7 +4231,7 @@ namespace SRCCore
             //    Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, aname);
             //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        return TryHealingRet;
             //    }
             //}
@@ -4253,7 +4242,7 @@ namespace SRCCore
             //    Event.HandleEvent("破壊", Commands.SelectedUnit.MainPilot().ID);
             //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
             //    {
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        return TryHealingRet;
             //    }
             //}
@@ -4266,7 +4255,7 @@ namespace SRCCore
             //        partners[i].CurrentForm().UseAction();
             //}
 
-            //Commands.SelectedPartners = new Unit[1];
+            //Commands.SelectedPartners.Clear();
             return TryHealingRet;
         }
 
@@ -4581,646 +4570,531 @@ namespace SRCCore
         // マップ攻撃使用に関する処理
         public bool TryMapAttack(bool moved)
         {
-            // TODO Impl
             bool TryMapAttackRet = default;
-            //int w;
-            //int xx, tx = default, ty = default, yy;
-            //int y1, x1, x2, y2;
-            //int i, j;
-            //int enemy_num;
-            //int score, score_limit;
-            //Unit t;
-            //var direction = default(string);
-            //int min_range, max_range, lv;
-            //var partners = default(Unit[]);
-            //{
-            //    var withBlock = Commands.SelectedUnit;
-            //    Commands.SaveSelections();
+            var currentUnit = Commands.SelectedUnit;
+            Commands.SaveSelections();
 
-            //    // マップ攻撃を使用するターゲット数の下限を設定する
-            //    score_limit = 1;
-            //    var loopTo = withBlock.CountWeapon();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        // 通常攻撃を持っている場合は単独の敵への攻撃の際に通常攻撃を優先する
-            //        if (!withBlock.IsWeaponClassifiedAs(i, "Ｍ"))
-            //        {
-            //            // MOD START マージ
-            //            // score_limit = 2
-            //            // Exit For
-            //            if (withBlock.IsWeaponAvailable(i, "移動前"))
-            //            {
-            //                score_limit = 2;
-            //                break;
-            //            }
-            //            // MOD END マージ
-            //        }
-            //    }
+            // マップ攻撃を使用するターゲット数の下限を設定する
+            var score_limit = 1;
+            var loopTo = currentUnit.CountWeapon();
+            foreach (var uw in currentUnit.Weapons)
+            {
+                // 通常攻撃を持っている場合は単独の敵への攻撃の際に通常攻撃を優先する
+                if (!uw.IsWeaponClassifiedAs("Ｍ"))
+                {
+                    // XXX なんか移動前固定条件だったけれど、使えれば、でしょ。
+                    if ((!moved && uw.IsWeaponAvailable("移動前")) || (moved && uw.IsWeaponAvailable("移動後")))
+                    {
+                        score_limit = 2;
+                        break;
+                    }
+                }
+            }
 
-            //    // 威力の高い武器を優先して選択
-            //    w = withBlock.CountWeapon();
-            //    while (w > 0)
-            //    {
-            //        Commands.SelectedWeapon = w;
-            //        Commands.SelectedTWeapon = 0;
+            // 威力の高い武器を優先して選択
+            // XXX を意図して逆順なのだろう
+            UnitWeapon useUw = null;
+            int tx = -1;
+            int ty = -1;
+            foreach (var uw in currentUnit.Weapons.Reverse())
+            {
+                // XXX ヒットはこの段階ではしてない
+                useUw = uw;
+                Commands.SelectedWeapon = uw.WeaponNo();
+                Commands.SelectedTWeapon = 0;
 
-            //        // マップ攻撃かどうか
-            //        if (!withBlock.IsWeaponClassifiedAs(w, "Ｍ"))
-            //        {
-            //            goto NextWeapon;
-            //        }
+                // マップ攻撃かどうか
+                if (!uw.IsWeaponClassifiedAs("Ｍ"))
+                {
+                    goto NextWeapon;
+                }
 
-            //        // 武器の使用可否を判定
-            //        if (moved)
-            //        {
-            //            if (!withBlock.IsWeaponAvailable(w, "移動後"))
-            //            {
-            //                goto NextWeapon;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            if (!withBlock.IsWeaponAvailable(w, "移動前"))
-            //            {
-            //                goto NextWeapon;
-            //            }
-            //        }
+                // 武器の使用可否を判定
+                if (moved)
+                {
+                    if (!uw.IsWeaponAvailable("移動後"))
+                    {
+                        goto NextWeapon;
+                    }
+                }
+                else
+                {
+                    if (!uw.IsWeaponAvailable("移動前"))
+                    {
+                        goto NextWeapon;
+                    }
+                }
 
-            //        // ボスユニットが自爆＆全ＥＮ消費攻撃等を使うのは非常時のみ
-            //        if (withBlock.BossRank >= 0)
-            //        {
-            //            if (withBlock.IsWeaponClassifiedAs(w, "自") || withBlock.IsWeaponClassifiedAs(w, "尽") || withBlock.IsWeaponClassifiedAs(w, "消"))
-            //            {
-            //                if (withBlock.HP > withBlock.MaxHP / 4)
-            //                {
-            //                    goto NextWeapon;
-            //                }
-            //            }
-            //        }
+                // ボスユニットが自爆＆全ＥＮ消費攻撃等を使うのは非常時のみ
+                if (currentUnit.BossRank >= 0)
+                {
+                    if (uw.IsWeaponClassifiedAs("自") || uw.IsWeaponClassifiedAs("尽") || uw.IsWeaponClassifiedAs("消"))
+                    {
+                        if (currentUnit.HP > currentUnit.MaxHP / 4)
+                        {
+                            goto NextWeapon;
+                        }
+                    }
+                }
 
-            //        max_range = withBlock.WeaponMaxRange(w);
-            //        min_range = withBlock.Weapon(w).MinRange;
-            //        x1 = GeneralLib.MaxLng(withBlock.x - max_range, 1);
-            //        y1 = GeneralLib.MaxLng(withBlock.y - max_range, 1);
-            //        x2 = GeneralLib.MinLng(withBlock.x + max_range, Map.MapWidth);
-            //        y2 = GeneralLib.MinLng(withBlock.y + max_range, Map.MapHeight);
+                var max_range = uw.WeaponMaxRange();
+                var min_range = uw.WeaponMinRange();
+                var x1 = GeneralLib.MaxLng(currentUnit.x - max_range, 1);
+                var y1 = GeneralLib.MaxLng(currentUnit.y - max_range, 1);
+                var x2 = GeneralLib.MinLng(currentUnit.x + max_range, Map.MapWidth);
+                var y2 = GeneralLib.MinLng(currentUnit.y + max_range, Map.MapHeight);
 
-            //        // マップ攻撃の種類にしたがって効果範囲内にいる敵をカウント
-            //        if (withBlock.IsWeaponClassifiedAs(w, "Ｍ直"))
-            //        {
-            //            for (i = 1; i <= 4; i++)
-            //            {
-            //                switch (i)
-            //                {
-            //                    case 1:
-            //                        {
-            //                            direction = "N";
-            //                            break;
-            //                        }
+                // マップ攻撃の種類にしたがって効果範囲内にいる敵をカウント
+                if (uw.IsWeaponClassifiedAs("Ｍ直"))
+                {
+                    foreach (var direction in Constants.DIRECTIONS)
+                    {
+                        // 効果範囲を設定
+                        Map.AreaInLine(currentUnit.x, currentUnit.y, min_range, max_range, direction);
+                        Map.MaskData[currentUnit.x, currentUnit.y] = true;
 
-            //                    case 2:
-            //                        {
-            //                            direction = "S";
-            //                            break;
-            //                        }
+                        // 効果範囲内にいるユニットをカウント
+                        var enemy_num = CountTargetInRange(uw, x1, y1, x2, y2);
 
-            //                    case 3:
-            //                        {
-            //                            direction = "W";
-            //                            break;
-            //                        }
+                        // マップ攻撃が最強武器であればターゲットが１体であっても使用
+                        if (enemy_num >= score_limit || enemy_num == 1 && uw.IsLastWeapon())
+                        {
+                            switch (direction ?? "")
+                            {
+                                case "N":
+                                    {
+                                        tx = currentUnit.x;
+                                        ty = GeneralLib.MaxLng(currentUnit.y - max_range, 1);
+                                        break;
+                                    }
 
-            //                    case 4:
-            //                        {
-            //                            direction = "E";
-            //                            break;
-            //                        }
-            //                }
+                                case "S":
+                                    {
+                                        tx = currentUnit.x;
+                                        ty = GeneralLib.MinLng(currentUnit.y + max_range, Map.MapHeight);
+                                        break;
+                                    }
 
-            //                // 効果範囲を設定
-            //                Map.AreaInLine(withBlock.x, withBlock.y, min_range, max_range, direction);
-            //                Map.MaskData[withBlock.x, withBlock.y] = true;
+                                case "W":
+                                    {
+                                        tx = GeneralLib.MaxLng(currentUnit.x - max_range, 1);
+                                        ty = currentUnit.y;
+                                        break;
+                                    }
 
-            //                // 効果範囲内にいるユニットをカウント
-            //                enemy_num = CountTargetInRange(w, x1, y1, x2, y2);
+                                case "E":
+                                    {
+                                        tx = GeneralLib.MinLng(currentUnit.x + max_range, Map.MapWidth);
+                                        ty = currentUnit.y;
+                                        break;
+                                    }
+                            }
 
-            //                // マップ攻撃が最強武器であればターゲットが１体であっても使用
-            //                if (enemy_num >= score_limit || enemy_num == 1 && w == withBlock.CountWeapon())
-            //                {
-            //                    switch (direction ?? "")
-            //                    {
-            //                        case "N":
-            //                            {
-            //                                tx = withBlock.x;
-            //                                ty = GeneralLib.MaxLng(withBlock.y - max_range, 1);
-            //                                break;
-            //                            }
+                            goto FoundWeapon;
+                        }
+                    }
+                }
+                else if (uw.IsWeaponClassifiedAs("Ｍ拡"))
+                {
+                    foreach (var direction in Constants.DIRECTIONS)
+                    {
+                        // 効果範囲を設定
+                        Map.AreaInCone(currentUnit.x, currentUnit.y, min_range, max_range, direction);
+                        Map.MaskData[currentUnit.x, currentUnit.y] = true;
 
-            //                        case "S":
-            //                            {
-            //                                tx = withBlock.x;
-            //                                ty = GeneralLib.MinLng(withBlock.y + max_range, Map.MapHeight);
-            //                                break;
-            //                            }
+                        // 効果範囲内にいるユニットをカウント
+                        var enemy_num = CountTargetInRange(uw, x1, y1, x2, y2);
 
-            //                        case "W":
-            //                            {
-            //                                tx = GeneralLib.MaxLng(withBlock.x - max_range, 1);
-            //                                ty = withBlock.y;
-            //                                break;
-            //                            }
+                        // マップ攻撃が最強武器であればターゲットが１体であっても使用
+                        if (enemy_num >= score_limit || enemy_num == 1 && uw.IsLastWeapon())
+                        {
+                            switch (direction ?? "")
+                            {
+                                case "N":
+                                    {
+                                        tx = currentUnit.x;
+                                        ty = (currentUnit.y - 1);
+                                        break;
+                                    }
 
-            //                        case "E":
-            //                            {
-            //                                tx = GeneralLib.MinLng(withBlock.x + max_range, Map.MapWidth);
-            //                                ty = withBlock.y;
-            //                                break;
-            //                            }
-            //                    }
+                                case "S":
+                                    {
+                                        tx = currentUnit.x;
+                                        ty = (currentUnit.y + 1);
+                                        break;
+                                    }
 
-            //                    goto FoundWeapon;
-            //                }
-            //            }
-            //        }
-            //        else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ拡"))
-            //        {
-            //            for (i = 1; i <= 4; i++)
-            //            {
-            //                switch (i)
-            //                {
-            //                    case 1:
-            //                        {
-            //                            direction = "N";
-            //                            break;
-            //                        }
+                                case "W":
+                                    {
+                                        tx = (currentUnit.x - 1);
+                                        ty = currentUnit.y;
+                                        break;
+                                    }
 
-            //                    case 2:
-            //                        {
-            //                            direction = "S";
-            //                            break;
-            //                        }
+                                case "E":
+                                    {
+                                        tx = (currentUnit.x + 1);
+                                        ty = currentUnit.y;
+                                        break;
+                                    }
+                            }
 
-            //                    case 3:
-            //                        {
-            //                            direction = "W";
-            //                            break;
-            //                        }
+                            goto FoundWeapon;
+                        }
+                    }
+                }
+                else if (uw.IsWeaponClassifiedAs("Ｍ扇"))
+                {
+                    foreach (var direction in Constants.DIRECTIONS)
+                    {
+                        // 効果範囲を設定
+                        Map.AreaInSector(currentUnit.x, currentUnit.y, min_range, max_range, direction, (int)uw.WeaponLevel("Ｍ扇"));
+                        Map.MaskData[currentUnit.x, currentUnit.y] = true;
 
-            //                    case 4:
-            //                        {
-            //                            direction = "E";
-            //                            break;
-            //                        }
-            //                }
+                        // 効果範囲内にいるユニットをカウント
+                        var enemy_num = CountTargetInRange(uw, x1, y1, x2, y2);
 
-            //                // 効果範囲を設定
-            //                Map.AreaInCone(withBlock.x, withBlock.y, min_range, max_range, direction);
-            //                Map.MaskData[withBlock.x, withBlock.y] = true;
+                        // マップ攻撃が最強武器であればターゲットが１体であっても使用
+                        if (enemy_num >= score_limit || enemy_num == 1 && uw.IsLastWeapon())
+                        {
+                            switch (direction ?? "")
+                            {
+                                case "N":
+                                    {
+                                        tx = currentUnit.x;
+                                        ty = (currentUnit.y - 1);
+                                        break;
+                                    }
 
-            //                // 効果範囲内にいるユニットをカウント
-            //                enemy_num = CountTargetInRange(w, x1, y1, x2, y2);
+                                case "S":
+                                    {
+                                        tx = currentUnit.x;
+                                        ty = (currentUnit.y + 1);
+                                        break;
+                                    }
 
-            //                // マップ攻撃が最強武器であればターゲットが１体であっても使用
-            //                if (enemy_num >= score_limit || enemy_num == 1 && w == withBlock.CountWeapon())
-            //                {
-            //                    switch (direction ?? "")
-            //                    {
-            //                        case "N":
-            //                            {
-            //                                tx = withBlock.x;
-            //                                ty = (withBlock.y - 1);
-            //                                break;
-            //                            }
+                                case "W":
+                                    {
+                                        tx = (currentUnit.x - 1);
+                                        ty = currentUnit.y;
+                                        break;
+                                    }
 
-            //                        case "S":
-            //                            {
-            //                                tx = withBlock.x;
-            //                                ty = (withBlock.y + 1);
-            //                                break;
-            //                            }
+                                case "E":
+                                    {
+                                        tx = (currentUnit.x + 1);
+                                        ty = currentUnit.y;
+                                        break;
+                                    }
+                            }
 
-            //                        case "W":
-            //                            {
-            //                                tx = (withBlock.x - 1);
-            //                                ty = withBlock.y;
-            //                                break;
-            //                            }
+                            goto FoundWeapon;
+                        }
+                    }
+                }
+                else if (uw.IsWeaponClassifiedAs("Ｍ全"))
+                {
+                    // 効果範囲を設定
+                    Map.AreaInRange(currentUnit.x, currentUnit.y, max_range, min_range, "すべて");
+                    Map.MaskData[currentUnit.x, currentUnit.y] = true;
 
-            //                        case "E":
-            //                            {
-            //                                tx = (withBlock.x + 1);
-            //                                ty = withBlock.y;
-            //                                break;
-            //                            }
-            //                    }
+                    // 効果範囲内にいるユニットをカウント
+                    var enemy_num = CountTargetInRange(uw, x1, y1, x2, y2);
 
-            //                    goto FoundWeapon;
-            //                }
-            //            }
-            //        }
-            //        else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ扇"))
-            //        {
-            //            for (i = 1; i <= 4; i++)
-            //            {
-            //                switch (i)
-            //                {
-            //                    case 1:
-            //                        {
-            //                            direction = "N";
-            //                            break;
-            //                        }
+                    // マップ攻撃が最強武器であればターゲットが１体であっても使用
+                    if (enemy_num >= score_limit || enemy_num == 1 && uw.IsLastWeapon())
+                    {
+                        tx = currentUnit.x;
+                        ty = currentUnit.y;
+                        goto FoundWeapon;
+                    }
+                }
+                else if (uw.IsWeaponClassifiedAs("Ｍ投"))
+                {
+                    var lv = (int)uw.WeaponLevel("Ｍ投");
+                    var score = 0;
+                    for (var xx = x1; xx <= x2; xx++)
+                    {
+                        for (var yy = y1; yy <= y2; yy++)
+                        {
+                            if ((Math.Abs((currentUnit.x - xx)) + Math.Abs((currentUnit.y - yy))) <= max_range && (Math.Abs((currentUnit.x - xx)) + Math.Abs((currentUnit.y - yy))) >= min_range)
+                            {
+                                // 効果範囲を設定
+                                if (lv > 0)
+                                {
+                                    Map.AreaInRange(xx, yy, lv, 1, "すべて");
+                                }
+                                else
+                                {
+                                    Map.ClearMask();
+                                    Map.MaskData[xx, yy] = false;
+                                }
 
-            //                    case 2:
-            //                        {
-            //                            direction = "S";
-            //                            break;
-            //                        }
+                                Map.MaskData[currentUnit.x, currentUnit.y] = true;
 
-            //                    case 3:
-            //                        {
-            //                            direction = "W";
-            //                            break;
-            //                        }
+                                // 効果範囲内にいるユニットをカウント
+                                var enemy_num = CountTargetInRange(uw, (xx - lv), (yy - lv), (xx + lv), (yy + lv));
+                                if (enemy_num > score)
+                                {
+                                    score = enemy_num;
+                                    tx = xx;
+                                    ty = yy;
+                                }
+                            }
+                        }
+                    }
 
-            //                    case 4:
-            //                        {
-            //                            direction = "E";
-            //                            break;
-            //                        }
-            //                }
+                    // マップ攻撃が最強武器であればターゲットが１体であっても使用
+                    // また、Ｍ投L0の場合は最大でも１体の敵しか狙えない
+                    if (score >= score_limit || score == 1 && uw.IsLastWeapon() || score == 1 && lv == 0)
+                    {
+                        goto FoundWeapon;
+                    }
+                }
+                else if (uw.IsWeaponClassifiedAs("Ｍ線"))
+                {
+                    var score = 0;
+                    for (var xx = x1; xx <= x2; xx++)
+                    {
+                        for (var yy = y1; yy <= y2; yy++)
+                        {
+                            if ((Math.Abs((currentUnit.x - xx)) + Math.Abs((currentUnit.y - yy))) <= max_range && (Math.Abs((currentUnit.x - xx)) + Math.Abs((currentUnit.y - yy))) >= min_range)
+                            {
+                                // 効果範囲を設定
+                                Map.AreaInPointToPoint(currentUnit.x, currentUnit.y, xx, yy);
+                                Map.MaskData[currentUnit.x, currentUnit.y] = true;
 
-            //                // 効果範囲を設定
-            //                Map.AreaInSector(withBlock.x, withBlock.y, min_range, max_range, direction, withBlock.WeaponLevel(w, "Ｍ扇"));
-            //                Map.MaskData[withBlock.x, withBlock.y] = true;
+                                // 効果範囲内にいるユニットをカウント
+                                var enemy_num = CountTargetInRange(uw, GeneralLib.MinLng(currentUnit.x, xx), GeneralLib.MinLng(currentUnit.y, yy), GeneralLib.MaxLng(currentUnit.x, xx), GeneralLib.MaxLng(currentUnit.y, yy));
+                                if (enemy_num > score)
+                                {
+                                    score = enemy_num;
+                                    tx = xx;
+                                    ty = yy;
+                                }
+                            }
+                        }
+                    }
 
-            //                // 効果範囲内にいるユニットをカウント
-            //                enemy_num = CountTargetInRange(w, x1, y1, x2, y2);
+                    // マップ攻撃が最強武器であればターゲットが１体であっても使用
+                    if (score >= score_limit || score == 1 && uw.IsLastWeapon())
+                    {
+                        goto FoundWeapon;
+                    }
+                }
+                else if (uw.IsWeaponClassifiedAs("Ｍ移"))
+                {
+                    // その場を動かない場合は移動型マップ攻撃は選考外
+                    if (currentUnit.Mode == "固定")
+                    {
+                        goto NextWeapon;
+                    }
 
-            //                // マップ攻撃が最強武器であればターゲットが１体であっても使用
-            //                if (enemy_num >= score_limit || enemy_num == 1 && w == withBlock.CountWeapon())
-            //                {
-            //                    switch (direction ?? "")
-            //                    {
-            //                        case "N":
-            //                            {
-            //                                tx = withBlock.x;
-            //                                ty = (withBlock.y - 1);
-            //                                break;
-            //                            }
+                    var score = 0;
+                    for (var xx = x1; xx <= x2; xx++)
+                    {
+                        for (var yy = y1; yy <= y2; yy++)
+                        {
+                            if ((Math.Abs((currentUnit.x - xx)) + Math.Abs((currentUnit.y - yy))) <= max_range && (Math.Abs((currentUnit.x - xx)) + Math.Abs((currentUnit.y - yy))) >= min_range && Map.MapDataForUnit[xx, yy] is null && currentUnit.IsAbleToEnter(xx, yy))
+                            {
+                                // 効果範囲を設定
+                                Map.AreaInPointToPoint(currentUnit.x, currentUnit.y, xx, yy);
+                                Map.MaskData[currentUnit.x, currentUnit.y] = true;
 
-            //                        case "S":
-            //                            {
-            //                                tx = withBlock.x;
-            //                                ty = (withBlock.y + 1);
-            //                                break;
-            //                            }
+                                // 効果範囲内にいるユニットをカウント
+                                var enemy_num = CountTargetInRange(uw, GeneralLib.MinLng(currentUnit.x, xx), GeneralLib.MinLng(currentUnit.y, yy), GeneralLib.MaxLng(currentUnit.x, xx), GeneralLib.MaxLng(currentUnit.y, yy));
+                                if (enemy_num > score)
+                                {
+                                    // 最終チェック 目標地点にたどり着けるか？
+                                    Map.AreaInMoveAction(Commands.SelectedUnit, max_range);
+                                    if (!Map.MaskData[xx, yy])
+                                    {
+                                        score = enemy_num;
+                                        tx = xx;
+                                        ty = yy;
+                                    }
+                                }
+                            }
+                        }
+                    }
 
-            //                        case "W":
-            //                            {
-            //                                tx = (withBlock.x - 1);
-            //                                ty = withBlock.y;
-            //                                break;
-            //                            }
+                    // マップ攻撃が最強武器であればターゲットが１体であっても使用
+                    // また、射程が２の場合は最大でも１体の敵しか狙えない
+                    if (score >= score_limit || score == 1 && uw.IsLastWeapon() || score == 1 && max_range == 2)
+                    {
+                        goto FoundWeapon;
+                    }
+                }
 
-            //                        case "E":
-            //                            {
-            //                                tx = (withBlock.x + 1);
-            //                                ty = withBlock.y;
-            //                                break;
-            //                            }
-            //                    }
+            NextWeapon:
+                ;
+            }
 
-            //                    goto FoundWeapon;
-            //                }
-            //            }
-            //        }
-            //        else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ全"))
-            //        {
-            //            // 効果範囲を設定
-            //            // MOD START マージ
-            //            // AreaInRange .X, .Y, min_range, max_range, "すべて"
-            //            Map.AreaInRange(withBlock.x, withBlock.y, max_range, min_range, "すべて");
-            //            // MOD END マージ
-            //            Map.MaskData[withBlock.x, withBlock.y] = true;
+            // 有効なマップ攻撃が見つからなかった
 
-            //            // 効果範囲内にいるユニットをカウント
-            //            enemy_num = CountTargetInRange(w, x1, y1, x2, y2);
-
-            //            // マップ攻撃が最強武器であればターゲットが１体であっても使用
-            //            if (enemy_num >= score_limit || enemy_num == 1 && w == withBlock.CountWeapon())
-            //            {
-            //                tx = withBlock.x;
-            //                ty = withBlock.y;
-            //                goto FoundWeapon;
-            //            }
-            //        }
-            //        else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ投"))
-            //        {
-            //            lv = withBlock.WeaponLevel(w, "Ｍ投");
-            //            score = 0;
-            //            var loopTo1 = x2;
-            //            for (xx = x1; xx <= loopTo1; xx++)
-            //            {
-            //                var loopTo2 = y2;
-            //                for (yy = y1; yy <= loopTo2; yy++)
-            //                {
-            //                    if ((Math.Abs((withBlock.x - xx)) + Math.Abs((withBlock.y - yy))) <= max_range && (Math.Abs((withBlock.x - xx)) + Math.Abs((withBlock.y - yy))) >= min_range)
-            //                    {
-            //                        // 効果範囲を設定
-            //                        if (lv > 0)
-            //                        {
-            //                            // MOD START マージ
-            //                            // AreaInRange xx, yy, 1, lv, "すべて"
-            //                            Map.AreaInRange(xx, yy, lv, 1, "すべて");
-            //                        }
-            //                        // MOD END マージ
-            //                        else
-            //                        {
-            //                            var loopTo3 = Map.MapWidth;
-            //                            for (i = 1; i <= loopTo3; i++)
-            //                            {
-            //                                var loopTo4 = Map.MapHeight;
-            //                                for (j = 1; j <= loopTo4; j++)
-            //                                    Map.MaskData[i, j] = true;
-            //                            }
-
-            //                            Map.MaskData[xx, yy] = false;
-            //                        }
-
-            //                        Map.MaskData[withBlock.x, withBlock.y] = true;
-
-            //                        // 効果範囲内にいるユニットをカウント
-            //                        enemy_num = CountTargetInRange(w, (xx - lv), (yy - lv), (xx + lv), (yy + lv));
-            //                        if (enemy_num > score)
-            //                        {
-            //                            score = enemy_num;
-            //                            tx = xx;
-            //                            ty = yy;
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //            // マップ攻撃が最強武器であればターゲットが１体であっても使用
-            //            // また、Ｍ投L0の場合は最大でも１体の敵しか狙えない
-            //            if (score >= score_limit || score == 1 && w == withBlock.CountWeapon() || score == 1 && lv == 0)
-            //            {
-            //                goto FoundWeapon;
-            //            }
-            //        }
-            //        else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ線"))
-            //        {
-            //            score = 0;
-            //            var loopTo5 = x2;
-            //            for (xx = x1; xx <= loopTo5; xx++)
-            //            {
-            //                var loopTo6 = y2;
-            //                for (yy = y1; yy <= loopTo6; yy++)
-            //                {
-            //                    if ((Math.Abs((withBlock.x - xx)) + Math.Abs((withBlock.y - yy))) <= max_range && (Math.Abs((withBlock.x - xx)) + Math.Abs((withBlock.y - yy))) >= min_range)
-            //                    {
-            //                        // 効果範囲を設定
-            //                        Map.AreaInPointToPoint(withBlock.x, withBlock.y, xx, yy);
-            //                        Map.MaskData[withBlock.x, withBlock.y] = true;
-
-            //                        // 効果範囲内にいるユニットをカウント
-            //                        enemy_num = CountTargetInRange(w, GeneralLib.MinLng(withBlock.x, xx), GeneralLib.MinLng(withBlock.y, yy), GeneralLib.MaxLng(withBlock.x, xx), GeneralLib.MaxLng(withBlock.y, yy));
-            //                        if (enemy_num > score)
-            //                        {
-            //                            score = enemy_num;
-            //                            tx = xx;
-            //                            ty = yy;
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //            // マップ攻撃が最強武器であればターゲットが１体であっても使用
-            //            if (score >= score_limit || score == 1 && w == withBlock.CountWeapon())
-            //            {
-            //                goto FoundWeapon;
-            //            }
-            //        }
-            //        else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ移"))
-            //        {
-            //            // その場を動かない場合は移動型マップ攻撃は選考外
-            //            if (withBlock.Mode == "固定")
-            //            {
-            //                goto NextWeapon;
-            //            }
-
-            //            score = 0;
-            //            var loopTo7 = x2;
-            //            for (xx = x1; xx <= loopTo7; xx++)
-            //            {
-            //                var loopTo8 = y2;
-            //                for (yy = y1; yy <= loopTo8; yy++)
-            //                {
-            //                    if ((Math.Abs((withBlock.x - xx)) + Math.Abs((withBlock.y - yy))) <= max_range && (Math.Abs((withBlock.x - xx)) + Math.Abs((withBlock.y - yy))) >= min_range && Map.MapDataForUnit[xx, yy] is null && withBlock.IsAbleToEnter(xx, yy))
-            //                    {
-            //                        // 効果範囲を設定
-            //                        Map.AreaInPointToPoint(withBlock.x, withBlock.y, xx, yy);
-            //                        Map.MaskData[withBlock.x, withBlock.y] = true;
-
-            //                        // 効果範囲内にいるユニットをカウント
-            //                        enemy_num = CountTargetInRange(w, GeneralLib.MinLng(withBlock.x, xx), GeneralLib.MinLng(withBlock.y, yy), GeneralLib.MaxLng(withBlock.x, xx), GeneralLib.MaxLng(withBlock.y, yy));
-            //                        if (enemy_num > score)
-            //                        {
-            //                            // 最終チェック 目標地点にたどり着けるか？
-            //                            Map.AreaInMoveAction(Commands.SelectedUnit, max_range);
-            //                            if (!Map.MaskData[xx, yy])
-            //                            {
-            //                                score = enemy_num;
-            //                                tx = xx;
-            //                                ty = yy;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //            // マップ攻撃が最強武器であればターゲットが１体であっても使用
-            //            // また、射程が２の場合は最大でも１体の敵しか狙えない
-            //            if (score >= score_limit || score == 1 && w == withBlock.CountWeapon() || score == 1 && max_range == 2)
-            //            {
-            //                goto FoundWeapon;
-            //            }
-            //        }
-
-            //    NextWeapon:
-            //        ;
-            //        w = (w - 1);
-            //    }
-
-            //    // 有効なマップ攻撃が見つからなかった
-
-            //    Commands.RestoreSelections();
-            //    TryMapAttackRet = false;
-            //    return TryMapAttackRet;
-            //FoundWeapon:
-            //    ;
+            Commands.RestoreSelections();
+            TryMapAttackRet = false;
+            return TryMapAttackRet;
+        FoundWeapon:
+            ;
 
 
-            //    // 有効なマップ攻撃が見つかった場合
+            // 有効なマップ攻撃が見つかった場合
 
-            //    // 合体技パートナーの設定
-            //    if (withBlock.IsWeaponClassifiedAs(w, "合"))
-            //    {
-            //        withBlock.CombinationPartner("武装", w, partners);
-            //    }
-            //    else
-            //    {
-            //        Commands.SelectedPartners = new Unit[1];
-            //        partners = new Unit[1];
-            //    }
+            // 合体技パートナーの設定
+            IList<Unit> partners;
+            if (useUw.IsWeaponClassifiedAs("合"))
+            {
+                partners = useUw.CombinationPartner();
+            }
+            else
+            {
+                Commands.SelectedPartners.Clear();
+                partners = new List<Unit>();
+            }
 
-            //    // マップ攻撃による攻撃を実行
-            //    withBlock.MapAttack(w, tx, ty);
+            // マップ攻撃による攻撃を実行
+            currentUnit.MapAttack(useUw, tx, ty);
 
-            //    // 合体技のパートナーの行動数を減らす
-            //    if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
-            //    {
-            //        var loopTo9 = Information.UBound(partners);
-            //        for (i = 1; i <= loopTo9; i++)
-            //            partners[i].CurrentForm().UseAction();
-            //    }
+            // 合体技のパートナーの行動数を減らす
+            if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
+            {
+                foreach (var pu in partners)
+                {
+                    pu.CurrentForm().UseAction();
+                }
+            }
 
-            //    Commands.SelectedPartners = new Unit[1];
-            //    Commands.RestoreSelections();
-            //    TryMapAttackRet = true;
-            //}
+            Commands.SelectedPartners.Clear();
+            Commands.RestoreSelections();
+            TryMapAttackRet = true;
 
             return TryMapAttackRet;
         }
 
         // 効果範囲内にいるターゲットをカウント
-        private int CountTargetInRange(int w, int x1, int y1, int x2, int y2)
+        private int CountTargetInRange(UnitWeapon uw, int x1, int y1, int x2, int y2)
         {
-            // TODO Impl
             int CountTargetInRangeRet = default;
-            //int i, j;
-            //Unit t;
-            //var is_ally_involved = default(bool);
-            //{
-            //    var withBlock = Commands.SelectedUnit;
-            //    // 効果範囲内のターゲットを検索
-            //    var loopTo = GeneralLib.MinLng(x2, Map.MapWidth);
-            //    for (i = GeneralLib.MaxLng(x1, 1); i <= loopTo; i++)
-            //    {
-            //        var loopTo1 = GeneralLib.MinLng(y2, Map.MapHeight);
-            //        for (j = GeneralLib.MaxLng(y1, 1); j <= loopTo1; j++)
-            //        {
-            //            // 効果範囲内？
-            //            if (Map.MaskData[i, j])
-            //            {
-            //                goto NextPoint;
-            //            }
+            var is_ally_involved = default(bool);
+            var currentUnit = Commands.SelectedUnit;
+            // 効果範囲内のターゲットを検索
+            var loopTo = GeneralLib.MinLng(x2, Map.MapWidth);
+            for (var i = GeneralLib.MaxLng(x1, 1); i <= loopTo; i++)
+            {
+                var loopTo1 = GeneralLib.MinLng(y2, Map.MapHeight);
+                for (var j = GeneralLib.MaxLng(y1, 1); j <= loopTo1; j++)
+                {
+                    // 効果範囲内？
+                    if (Map.MaskData[i, j])
+                    {
+                        goto NextPoint;
+                    }
 
-            //            t = Map.MapDataForUnit[i, j];
+                    var t = Map.MapDataForUnit[i, j];
 
-            //            // ユニットが存在する？
-            //            if (t is null)
-            //            {
-            //                goto NextPoint;
-            //            }
+                    // ユニットが存在する？
+                    if (t is null)
+                    {
+                        goto NextPoint;
+                    }
 
-            //            // ダメージを与えられる？
-            //            if (withBlock.HitProbability(w, t, false) == 0)
-            //            {
-            //                goto NextPoint;
-            //            }
-            //            else if (withBlock.ExpDamage(w, t, false) <= 10)
-            //            {
-            //                if (withBlock.IsNormalWeapon(w))
-            //                {
-            //                    goto NextPoint;
-            //                }
-            //                else if (withBlock.CriticalProbability(w, t) <= 1 && withBlock.WeaponLevel(w, "Ｋ") == 0d && withBlock.WeaponLevel(w, "吹") == 0d)
-            //                {
-            //                    goto NextPoint;
-            //                }
-            //            }
+                    // ダメージを与えられる？
+                    if (uw.HitProbability(t, false) == 0)
+                    {
+                        goto NextPoint;
+                    }
+                    else if (uw.ExpDamage(t, false) <= 10)
+                    {
+                        if (uw.IsNormalWeapon())
+                        {
+                            goto NextPoint;
+                        }
+                        else if (uw.CriticalProbability(t) <= 1 && uw.WeaponLevel("Ｋ") == 0d && uw.WeaponLevel("吹") == 0d)
+                        {
+                            goto NextPoint;
+                        }
+                    }
 
-            //            // ターゲットは敵？
-            //            if (withBlock.IsAlly(t))
-            //            {
-            //                // 味方の場合は同士討ちの可能性があるのでチェックしておく
-            //                is_ally_involved = true;
-            //                goto NextPoint;
-            //            }
+                    // ターゲットは敵？
+                    if (currentUnit.IsAlly(t))
+                    {
+                        // 味方の場合は同士討ちの可能性があるのでチェックしておく
+                        is_ally_involved = true;
+                        goto NextPoint;
+                    }
 
-            //            // 特定の陣営のみを攻撃する場合
-            //            switch (withBlock.Mode ?? "")
-            //            {
-            //                case "味方":
-            //                case "ＮＰＣ":
-            //                    {
-            //                        if (t.Party != "味方" && t.Party != "ＮＰＣ")
-            //                        {
-            //                            goto NextPoint;
-            //                        }
+                    // 特定の陣営のみを攻撃する場合
+                    switch (currentUnit.Mode ?? "")
+                    {
+                        case "味方":
+                        case "ＮＰＣ":
+                            {
+                                if (t.Party != "味方" && t.Party != "ＮＰＣ")
+                                {
+                                    goto NextPoint;
+                                }
 
-            //                        break;
-            //                    }
+                                break;
+                            }
 
-            //                case "敵":
-            //                    {
-            //                        if (t.Party != "敵")
-            //                        {
-            //                            goto NextPoint;
-            //                        }
+                        case "敵":
+                            {
+                                if (t.Party != "敵")
+                                {
+                                    goto NextPoint;
+                                }
 
-            //                        break;
-            //                    }
+                                break;
+                            }
 
-            //                case "中立":
-            //                    {
-            //                        if (t.Party != "中立")
-            //                        {
-            //                            goto NextPoint;
-            //                        }
+                        case "中立":
+                            {
+                                if (t.Party != "中立")
+                                {
+                                    goto NextPoint;
+                                }
 
-            //                        break;
-            //                    }
-            //            }
+                                break;
+                            }
+                    }
 
-            //            // ターゲットが見える？
-            //            if (t.IsUnderSpecialPowerEffect("隠れ身"))
-            //            {
-            //                goto NextPoint;
-            //            }
+                    // ターゲットが見える？
+                    if (t.IsUnderSpecialPowerEffect("隠れ身"))
+                    {
+                        goto NextPoint;
+                    }
 
-            //            if (t.IsFeatureAvailable("ステルス"))
-            //            {
-            //                if (!t.IsConditionSatisfied("ステルス無効") && !withBlock.IsFeatureAvailable("ステルス無効化"))
-            //                {
-            //                    if (t.IsFeatureLevelSpecified("ステルス"))
-            //                    {
-            //                        if (Math.Abs((withBlock.x - t.x)) + Math.Abs((withBlock.y - t.y)) > t.FeatureLevel("ステルス"))
-            //                        {
-            //                            goto NextPoint;
-            //                        }
-            //                    }
-            //                    else if (Math.Abs((withBlock.x - t.x)) + Math.Abs((withBlock.y - t.y)) > 3)
-            //                    {
-            //                        goto NextPoint;
-            //                    }
-            //                }
-            //            }
+                    if (t.IsFeatureAvailable("ステルス"))
+                    {
+                        if (!t.IsConditionSatisfied("ステルス無効") && !currentUnit.IsFeatureAvailable("ステルス無効化"))
+                        {
+                            if (t.IsFeatureLevelSpecified("ステルス"))
+                            {
+                                if (Math.Abs((currentUnit.x - t.x)) + Math.Abs((currentUnit.y - t.y)) > t.FeatureLevel("ステルス"))
+                                {
+                                    goto NextPoint;
+                                }
+                            }
+                            else if (Math.Abs((currentUnit.x - t.x)) + Math.Abs((currentUnit.y - t.y)) > 3)
+                            {
+                                goto NextPoint;
+                            }
+                        }
+                    }
 
-            //            // ターゲットに含める
-            //            CountTargetInRangeRet = (CountTargetInRangeRet + 1);
-            //        NextPoint:
-            //            ;
-            //        }
-            //    }
+                    // ターゲットに含める
+                    CountTargetInRangeRet = (CountTargetInRangeRet + 1);
+                NextPoint:
+                    ;
+                }
+            }
 
-            //    // 味方を巻き込んでしまう場合は攻撃を止める
-            //    if (is_ally_involved && !withBlock.IsWeaponClassifiedAs(w, "識") && !withBlock.IsUnderSpecialPowerEffect("識別攻撃"))
-            //    {
-            //        CountTargetInRangeRet = 0;
-            //    }
-            //}
+            // 味方を巻き込んでしまう場合は攻撃を止める
+            if (is_ally_involved && !uw.IsWeaponClassifiedAs("識") && !currentUnit.IsUnderSpecialPowerEffect("識別攻撃"))
+            {
+                CountTargetInRangeRet = 0;
+            }
 
             return CountTargetInRangeRet;
         }
@@ -5563,7 +5437,6 @@ namespace SRCCore
             max_prob = 0;
             max_dmg = 0;
 
-            // TODO Impl
             int SelectWeaponRet = default;
             string smode;
             bool use_true_value = default, is_move_attack;
@@ -5584,28 +5457,28 @@ namespace SRCCore
             int parry_prob;
             string fdata;
 
-            //// 御主人さまにはさからえません
-            //if (u.IsConditionSatisfied("魅了"))
-            //{
-            //    if (ReferenceEquals(u.Master, t))
-            //    {
-            //        SelectWeaponRet = -1;
-            //        return SelectWeaponRet;
-            //    }
-            //}
+            // 御主人さまにはさからえません
+            if (u.IsConditionSatisfied("魅了"))
+            {
+                if (ReferenceEquals(u.Master, t))
+                {
+                    SelectWeaponRet = -1;
+                    return SelectWeaponRet;
+                }
+            }
 
-            //// 踊りに忙しい……
-            //if (u.IsConditionSatisfied("踊り"))
-            //{
-            //    SelectWeaponRet = -1;
-            //    return SelectWeaponRet;
-            //}
+            // 踊りに忙しい……
+            if (u.IsConditionSatisfied("踊り"))
+            {
+                SelectWeaponRet = -1;
+                return SelectWeaponRet;
+            }
 
-            //// スペシャルパワー等の影響を考えて武器を選択するかを判定
-            //if (u.Party == "味方")
-            //{
-            //    use_true_value = true;
-            //}
+            // スペシャルパワー等の影響を考えて武器を選択するかを判定
+            if (u.Party == "味方")
+            {
+                use_true_value = true;
+            }
 
             // ユニットが移動前かどうかを判定
             if (amode == "移動後")
@@ -5617,6 +5490,7 @@ namespace SRCCore
                 smode = "移動前";
             }
 
+            // TODO Impl
             //// サポートアタックをしてくれるユニットがいるかどうか
             //if (Strings.InStr(amode, "反撃") == 0 && Strings.InStr(amode, "サポート") == 0)
             //{
@@ -5724,36 +5598,36 @@ namespace SRCCore
                 // TODO Impl
                 if (u.Party == "味方" && u.Party0 == "味方" && Strings.InStr(amode, "イベント") == 0)
                 {
-                    //    // 自爆攻撃は武器を手動選択する場合にのみ使用
-                    //    if (selectedWeapon.IsWeaponClassifiedAs("自"))
-                    //    {
-                    //        goto NextWeapon;
-                    //    }
+                    // 自爆攻撃は武器を手動選択する場合にのみ使用
+                    if (selectedWeapon.IsWeaponClassifiedAs("自"))
+                    {
+                        goto NextWeapon;
+                    }
 
-                    //    // 手動反撃時のサポートアタック以外は残弾数が少ない武器を使用しない
-                    //    if (amode != "サポートアタック" || SystemConfig.AutoDefense)
-                    //    {
-                    //        if (!selectedWeapon.IsWeaponClassifiedAs("永"))
-                    //        {
-                    //            if (u.Bullet(w) == 1 || u.MaxBullet(w) == 2 || u.MaxBullet(w) == 3)
-                    //            {
-                    //                goto NextWeapon;
-                    //            }
-                    //        }
+                    // 手動反撃時のサポートアタック以外は残弾数が少ない武器を使用しない
+                    if (amode != "サポートアタック" || SystemConfig.AutoDefense)
+                    {
+                        if (!selectedWeapon.IsWeaponClassifiedAs("永"))
+                        {
+                            if (selectedWeapon.Bullet() == 1 || selectedWeapon.MaxBullet() == 2 || selectedWeapon.MaxBullet() == 3)
+                            {
+                                goto NextWeapon;
+                            }
+                        }
 
-                    //        if (u.WeaponENConsumption(w) > 0)
-                    //        {
-                    //            if (u.WeaponENConsumption(w) >= u.EN / 2 || u.WeaponENConsumption(w) >= u.MaxEN / 4)
-                    //            {
-                    //                goto NextWeapon;
-                    //            }
-                    //        }
+                        if (selectedWeapon.WeaponENConsumption() > 0)
+                        {
+                            if (selectedWeapon.WeaponENConsumption() >= u.EN / 2 || selectedWeapon.WeaponENConsumption() >= u.MaxEN / 4)
+                            {
+                                goto NextWeapon;
+                            }
+                        }
 
-                    //        if (selectedWeapon.IsWeaponClassifiedAs("尽"))
-                    //        {
-                    //            goto NextWeapon;
-                    //        }
-                    //    }
+                        if (selectedWeapon.IsWeaponClassifiedAs("尽"))
+                        {
+                            goto NextWeapon;
+                        }
+                    }
                 }
 
                 // ボスユニットが自爆＆全ＥＮ消費攻撃使うのは非常時のみ
@@ -7146,212 +7020,208 @@ namespace SRCCore
         // ユニット u が武器 w で攻撃をかけた際にターゲット t が選択する防御行動を返す
         public string SelectDefense(Unit u, int w, Unit t, int tw)
         {
-            // TODO Impl
-            string SelectDefenseRet = default;
-            //int prob, dmg;
-            //int tprob = default, tdmg = default;
-            //var is_target_inferior = default(bool);
+            var uw = u.Weapon(w);
+            if (uw == null)
+            {
+                return "";
+            }
 
-            //// マップ攻撃に対しては防御行動が取れない
-            //if (u.IsWeaponClassifiedAs(w, "Ｍ"))
-            //{
-            //    return SelectDefenseRet;
-            //}
+            string SelectDefenseRet = "";
 
-            //{
-            //    var withBlock = t;
-            //    // 踊っている場合は回避扱い
-            //    if (withBlock.IsConditionSatisfied("踊り"))
-            //    {
-            //        // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        SelectDefenseRet = "回避";
-            //        return SelectDefenseRet;
-            //    }
+            // マップ攻撃に対しては防御行動が取れない
+            if (uw.IsWeaponClassifiedAs("Ｍ"))
+            {
+                return SelectDefenseRet;
+            }
 
-            //    // 狂戦士状態の際は防御行動を取らない
-            //    if (withBlock.IsConditionSatisfied("狂戦士"))
-            //    {
-            //        return SelectDefenseRet;
-            //    }
+            // 踊っている場合は回避扱い
+            if (t.IsConditionSatisfied("踊り"))
+            {
+                SelectDefenseRet = "回避";
+                return SelectDefenseRet;
+            }
 
-            //    // 無防備状態のユニットは防御行動が取れない
-            //    if (withBlock.IsUnderSpecialPowerEffect("無防備"))
-            //    {
-            //        return SelectDefenseRet;
-            //    }
+            // 狂戦士状態の際は防御行動を取らない
+            if (t.IsConditionSatisfied("狂戦士"))
+            {
+                return SelectDefenseRet;
+            }
 
-            //    if (withBlock.Party != "味方")
-            //    {
-            //        // 「敵ユニット防御使用」オプションを選択している場合にのみ敵ユニットは
-            //        // 防御行動を行う
-            //        if (!Expression.IsOptionDefined("敵ユニット防御使用"))
-            //        {
-            //            return SelectDefenseRet;
-            //        }
+            // 無防備状態のユニットは防御行動が取れない
+            if (t.IsUnderSpecialPowerEffect("無防備"))
+            {
+                return SelectDefenseRet;
+            }
 
-            //        // 防御行動を使ってくるのは技量が160以上のザコでないパイロットのみ
-            //        {
-            //            var withBlock1 = withBlock.MainPilot();
-            //            if (Strings.InStr(withBlock1.Name, "(ザコ)") > 0 || withBlock1.TacticalTechnique() < 160)
-            //            {
-            //                return SelectDefenseRet;
-            //            }
-            //        }
-            //    }
+            if (t.Party != "味方")
+            {
+                // 「敵ユニット防御使用」オプションを選択している場合にのみ敵ユニットは
+                // 防御行動を行う
+                if (!Expression.IsOptionDefined("敵ユニット防御使用"))
+                {
+                    return SelectDefenseRet;
+                }
 
-            //    // 行動不能？
-            //    if (withBlock.MaxAction() == 0)
-            //    {
-            //        // チャージ中、消耗中は常に防御、それ以外の場合は防御行動が取れない
-            //        if (withBlock.IsConditionSatisfied("チャージ") || withBlock.IsConditionSatisfied("消耗"))
-            //        {
-            //            // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //            SelectDefenseRet = "防御";
-            //        }
+                // 防御行動を使ってくるのは技量が160以上のザコでないパイロットのみ
+                {
+                    var withBlock1 = t.MainPilot();
+                    if (Strings.InStr(withBlock1.Name, "(ザコ)") > 0 || withBlock1.TacticalTechnique() < 160)
+                    {
+                        return SelectDefenseRet;
+                    }
+                }
+            }
 
-            //        return SelectDefenseRet;
-            //    }
+            // 行動不能？
+            if (t.MaxAction() == 0)
+            {
+                // チャージ中、消耗中は常に防御、それ以外の場合は防御行動が取れない
+                if (t.IsConditionSatisfied("チャージ") || t.IsConditionSatisfied("消耗"))
+                {
+                    SelectDefenseRet = "防御";
+                }
 
-            //    // 相手の攻撃のダメージ・命中率を算出
-            //    dmg = u.ExpDamage(w, t, true);
-            //    prob = GeneralLib.MinLng(u.HitProbability(w, t, true), 100);
+                return SelectDefenseRet;
+            }
 
-            //    // ダミーを持っている場合、相手の攻撃は無効
-            //    if (withBlock.IsFeatureAvailable("ダミー") && withBlock.ConditionLevel("ダミー破壊") < withBlock.FeatureLevel("ダミー"))
-            //    {
-            //        prob = 0;
-            //    }
+            // 相手の攻撃のダメージ・命中率を算出
+            var dmg = uw.ExpDamage(t, true);
+            var prob = GeneralLib.MinLng(uw.HitProbability(t, true), 100);
 
-            //    // サポートガードされる場合も相手の攻撃は無効
-            //    if (withBlock.LookForSupportGuard(u, w) is object)
-            //    {
-            //        prob = 0;
-            //    }
+            // ダミーを持っている場合、相手の攻撃は無効
+            if (t.IsFeatureAvailable("ダミー") && t.ConditionLevel("ダミー破壊") < t.FeatureLevel("ダミー"))
+            {
+                prob = 0;
+            }
 
-            //    // 反撃のダメージ・命中率を算出
-            //    if (tw > 0)
-            //    {
-            //        tdmg = withBlock.ExpDamage(tw, u, true);
-            //        tprob = GeneralLib.MinLng(withBlock.HitProbability(tw, u, true), 100);
+            // サポートガードされる場合も相手の攻撃は無効
+            if (t.LookForSupportGuard(u, uw) is object)
+            {
+                prob = 0;
+            }
 
-            //        // ダミーを持っている場合は反撃は無効
-            //        if (u.IsFeatureAvailable("ダミー") && u.ConditionLevel("ダミー破壊") < u.FeatureLevel("ダミー"))
-            //        {
-            //            prob = 0;
-            //        }
-            //    }
+            var tuw = t.Weapon(tw);
+            int tdmg = 0;
+            int tprob = 0;
+            // 反撃のダメージ・命中率を算出
+            if (tw > 0)
+            {
+                tdmg = tuw.ExpDamage(u, true);
+                tprob = GeneralLib.MinLng(tuw.HitProbability(u, true), 100);
 
-            //    // 相手の攻撃の効果とこちらの反撃の効果を比較
-            //    if (withBlock.Party == "味方")
-            //    {
-            //        // 味方ユニットの場合、相手の攻撃によるダメージの方が多い場合は防御
-            //        if (dmg * prob > tdmg * tprob && tdmg < u.HP)
-            //        {
-            //            is_target_inferior = true;
-            //        }
+                // ダミーを持っている場合は反撃は無効
+                if (u.IsFeatureAvailable("ダミー") && u.ConditionLevel("ダミー破壊") < u.FeatureLevel("ダミー"))
+                {
+                    prob = 0;
+                }
+            }
 
-            //        // 気合の一撃は防御を優先し、やり過ごす
-            //        if (u.IsUnderSpecialPowerEffect("ダメージ増加"))
-            //        {
-            //            if (2 * dmg * prob > tdmg * tprob && tdmg < u.HP)
-            //            {
-            //                is_target_inferior = true;
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        // 敵ユニットの場合でも相手の攻撃によるダメージの方が２倍以上多い場合は防御
-            //        if (dmg * prob / 2 > tdmg * tprob && tdmg < u.HP)
-            //        {
-            //            is_target_inferior = true;
-            //        }
+            // 相手の攻撃の効果とこちらの反撃の効果を比較
+            var is_target_inferior = false;
+            if (t.Party == "味方")
+            {
+                // 味方ユニットの場合、相手の攻撃によるダメージの方が多い場合は防御
+                if (dmg * prob > tdmg * tprob && tdmg < u.HP)
+                {
+                    is_target_inferior = true;
+                }
 
-            //        // 気合の一撃は防御を優先し、やり過ごす
-            //        if (u.IsUnderSpecialPowerEffect("ダメージ増加"))
-            //        {
-            //            if (dmg * prob > tdmg * tprob && tdmg < u.HP)
-            //            {
-            //                is_target_inferior = true;
-            //            }
-            //        }
-            //    }
+                // 気合の一撃は防御を優先し、やり過ごす
+                if (u.IsUnderSpecialPowerEffect("ダメージ増加"))
+                {
+                    if (2 * dmg * prob > tdmg * tprob && tdmg < u.HP)
+                    {
+                        is_target_inferior = true;
+                    }
+                }
+            }
+            else
+            {
+                // 敵ユニットの場合でも相手の攻撃によるダメージの方が２倍以上多い場合は防御
+                if (dmg * prob / 2 > tdmg * tprob && tdmg < u.HP)
+                {
+                    is_target_inferior = true;
+                }
 
-            //    // あと一撃で破壊されてしまう場合は必ず防御
-            //    // (命中率が低い場合を除く)
-            //    if (dmg >= withBlock.HP && prob > 10)
-            //    {
-            //        is_target_inferior = true;
-            //    }
+                // 気合の一撃は防御を優先し、やり過ごす
+                if (u.IsUnderSpecialPowerEffect("ダメージ増加"))
+                {
+                    if (dmg * prob > tdmg * tprob && tdmg < u.HP)
+                    {
+                        is_target_inferior = true;
+                    }
+                }
+            }
 
-            //    if (tw > 0)
-            //    {
-            //        // 先制攻撃可能？
-            //        if (!withBlock.IsWeaponClassifiedAs(tw, "後"))
-            //        {
-            //            if (withBlock.IsWeaponClassifiedAs(tw, "先") || u.IsWeaponClassifiedAs(w, "後") || withBlock.MaxCounterAttack() > withBlock.UsedCounterAttack)
-            //            {
-            //                if (tdmg >= u.HP && tprob > 70)
-            //                {
-            //                    // 先制攻撃で倒せる場合は迷わず反撃
-            //                    is_target_inferior = false;
-            //                }
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        // 反撃できない場合は防御
-            //        is_target_inferior = true;
-            //    }
+            // あと一撃で破壊されてしまう場合は必ず防御
+            // (命中率が低い場合を除く)
+            if (dmg >= t.HP && prob > 10)
+            {
+                is_target_inferior = true;
+            }
 
-            //    if (!is_target_inferior)
-            //    {
-            //        // 反撃を選択した
-            //        return SelectDefenseRet;
-            //    }
+            if (tw > 0)
+            {
+                // 先制攻撃可能？
+                if (!tuw.IsWeaponClassifiedAs("後"))
+                {
+                    if (tuw.IsWeaponClassifiedAs("先") || uw.IsWeaponClassifiedAs("後") || t.MaxCounterAttack() > t.UsedCounterAttack)
+                    {
+                        if (tdmg >= u.HP && tprob > 70)
+                        {
+                            // 先制攻撃で倒せる場合は迷わず反撃
+                            is_target_inferior = false;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // 反撃できない場合は防御
+                is_target_inferior = true;
+            }
 
-            //    // 防御側が劣勢なので反撃は行わず、防御行動を選択
+            if (!is_target_inferior)
+            {
+                // 反撃を選択した
+                return SelectDefenseRet;
+            }
 
-            //    // 命中すれば一撃死で、防御すれば破壊をまぬがれる攻撃は必ず防御
-            //    if (dmg > withBlock.HP && dmg / 2 < withBlock.HP && !withBlock.IsFeatureAvailable("防御不可") && !u.IsWeaponClassifiedAs(w, "殺"))
-            //    {
-            //        // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        SelectDefenseRet = "防御";
-            //        return SelectDefenseRet;
-            //    }
+            // 防御側が劣勢なので反撃は行わず、防御行動を選択
 
-            //    // 相手の命中率が低い場合は回避
-            //    if (prob < 50 && !withBlock.IsFeatureAvailable("回避不可") && !withBlock.IsConditionSatisfied("移動不能"))
-            //    {
-            //        // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        SelectDefenseRet = "回避";
-            //        return SelectDefenseRet;
-            //    }
+            // 命中すれば一撃死で、防御すれば破壊をまぬがれる攻撃は必ず防御
+            if (dmg > t.HP && dmg / 2 < t.HP && !t.IsFeatureAvailable("防御不可") && !uw.IsWeaponClassifiedAs("殺"))
+            {
+                SelectDefenseRet = "防御";
+                return SelectDefenseRet;
+            }
 
-            //    // 防御すれば一撃死をまぬがれる場合は防御
-            //    if (dmg / 2 < withBlock.HP && !withBlock.IsFeatureAvailable("防御不可") && !u.IsWeaponClassifiedAs(w, "殺"))
-            //    {
-            //        // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        SelectDefenseRet = "防御";
-            //        return SelectDefenseRet;
-            //    }
+            // 相手の命中率が低い場合は回避
+            if (prob < 50 && !t.IsFeatureAvailable("回避不可") && !t.IsConditionSatisfied("移動不能"))
+            {
+                SelectDefenseRet = "回避";
+                return SelectDefenseRet;
+            }
 
-            //    // どうしようもないのでとりあえず回避
-            //    if (!withBlock.IsFeatureAvailable("回避不可") && !withBlock.IsConditionSatisfied("移動不能"))
-            //    {
-            //        // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        SelectDefenseRet = "回避";
-            //        return SelectDefenseRet;
-            //    }
+            // 防御すれば一撃死をまぬがれる場合は防御
+            if (dmg / 2 < t.HP && !t.IsFeatureAvailable("防御不可") && !uw.IsWeaponClassifiedAs("殺"))
+            {
+                SelectDefenseRet = "防御";
+                return SelectDefenseRet;
+            }
 
-            //    // 回避も出来ないので防御……
-            //    if (!withBlock.IsFeatureAvailable("防御不可"))
-            //    {
-            //        // UPGRADE_WARNING: オブジェクト SelectDefense の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        SelectDefenseRet = "防御";
-            //    }
-            //}
+            // どうしようもないのでとりあえず回避
+            if (!t.IsFeatureAvailable("回避不可") && !t.IsConditionSatisfied("移動不能"))
+            {
+                SelectDefenseRet = "回避";
+                return SelectDefenseRet;
+            }
+
+            // 回避も出来ないので防御……
+            if (!t.IsFeatureAvailable("防御不可"))
+            {
+                SelectDefenseRet = "防御";
+            }
 
             return SelectDefenseRet;
         }

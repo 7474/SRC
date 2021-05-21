@@ -353,7 +353,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "option":
-                        return new NotImplementedCmd(src, data);
+                        return new OptionCmd(src, data);
 
                     case "organize":
                         return new NotImplementedCmd(src, data);

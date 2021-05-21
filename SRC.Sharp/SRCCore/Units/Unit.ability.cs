@@ -80,12 +80,7 @@ namespace SRCCore.Units
             //            // 射程が0の場合はマスクをクリアしておく
             //            if (a.AbilityMaxRange() == 0)
             //            {
-            //                for (var i = 1; i <= Map.MapWidth; i++)
-            //                {
-            //                    for (var j = 1; j <= Map.MapHeight; j++)
-            //                        Map.MaskData[i, j] = true;
-            //                }
-
+            //                Map.ClearMask();
             //                Map.MaskData[x, y] = false;
             //            }
 
@@ -116,7 +111,7 @@ namespace SRCCore.Units
             //        else
             //        {
             //            partners = new Unit[1];
-            //            Commands.SelectedPartners = new Unit[1];
+            //            Commands.SelectedPartners.Clear();
             //        }
 
             //        // ダイアログ用にあらかじめ追加パイロットを作成しておく
@@ -257,13 +252,13 @@ namespace SRCCore.Units
             //            case 1:
             //                {
             //                    // ２体合体
-            //                    if ((Nickname ?? "") != (partners[1].Nickname ?? ""))
+            //                    if ((Nickname ?? "") != (partners[0].Nickname ?? ""))
             //                    {
-            //                        msg = Nickname + "は[" + partners[1].Nickname + "]と共に";
+            //                        msg = Nickname + "は[" + partners[0].Nickname + "]と共に";
             //                    }
-            //                    else if ((MainPilot().get_Nickname(false) ?? "") != (partners[1].MainPilot().get_Nickname(false) ?? ""))
+            //                    else if ((MainPilot().get_Nickname(false) ?? "") != (partners[0].MainPilot().get_Nickname(false) ?? ""))
             //                    {
-            //                        msg = MainPilot().get_Nickname(false) + "と[" + partners[1].MainPilot().get_Nickname(false) + "]の[" + Nickname + "]は";
+            //                        msg = MainPilot().get_Nickname(false) + "と[" + partners[0].MainPilot().get_Nickname(false) + "]の[" + Nickname + "]は";
             //                    }
             //                    else
             //                    {
@@ -276,13 +271,13 @@ namespace SRCCore.Units
             //            case 2:
             //                {
             //                    // ３体合体
-            //                    if ((Nickname ?? "") != (partners[1].Nickname ?? ""))
+            //                    if ((Nickname ?? "") != (partners[0].Nickname ?? ""))
             //                    {
-            //                        msg = Nickname + "は[" + partners[1].Nickname + "]、[" + partners[2].Nickname + "]と共に";
+            //                        msg = Nickname + "は[" + partners[0].Nickname + "]、[" + partners[1].Nickname + "]と共に";
             //                    }
-            //                    else if ((MainPilot().get_Nickname(false) ?? "") != (partners[1].MainPilot().get_Nickname(false) ?? ""))
+            //                    else if ((MainPilot().get_Nickname(false) ?? "") != (partners[0].MainPilot().get_Nickname(false) ?? ""))
             //                    {
-            //                        msg = MainPilot().get_Nickname(false) + "、[" + partners[1].MainPilot().get_Nickname(false) + "]、[" + partners[2].MainPilot().get_Nickname(false) + "]の[" + Nickname + "]は";
+            //                        msg = MainPilot().get_Nickname(false) + "、[" + partners[0].MainPilot().get_Nickname(false) + "]、[" + partners[1].MainPilot().get_Nickname(false) + "]の[" + Nickname + "]は";
             //                    }
             //                    else
             //                    {
@@ -2879,7 +2874,7 @@ namespace SRCCore.Units
             //    else
             //    {
             //        partners = new Unit[1];
-            //        Commands.SelectedPartners = new Unit[1];
+            //        Commands.SelectedPartners.Clear();
             //        GUI.MaskScreen();
             //    }
 
@@ -2938,13 +2933,13 @@ namespace SRCCore.Units
             //        case 1:
             //            {
             //                // ２体合体
-            //                if ((Nickname ?? "") != (partners[1].Nickname ?? ""))
+            //                if ((Nickname ?? "") != (partners[0].Nickname ?? ""))
             //                {
-            //                    msg = Nickname + "は[" + partners[1].Nickname + "]と共に";
+            //                    msg = Nickname + "は[" + partners[0].Nickname + "]と共に";
             //                }
-            //                else if ((MainPilot().get_Nickname(false) ?? "") != (partners[1].MainPilot().get_Nickname(false) ?? ""))
+            //                else if ((MainPilot().get_Nickname(false) ?? "") != (partners[0].MainPilot().get_Nickname(false) ?? ""))
             //                {
-            //                    msg = MainPilot().get_Nickname(false) + "と[" + partners[1].MainPilot().get_Nickname(false) + "]の[" + Nickname + "]は";
+            //                    msg = MainPilot().get_Nickname(false) + "と[" + partners[0].MainPilot().get_Nickname(false) + "]の[" + Nickname + "]は";
             //                }
             //                else
             //                {
@@ -2957,13 +2952,13 @@ namespace SRCCore.Units
             //        case 2:
             //            {
             //                // ３体合体
-            //                if ((Nickname ?? "") != (partners[1].Nickname ?? ""))
+            //                if ((Nickname ?? "") != (partners[0].Nickname ?? ""))
             //                {
-            //                    msg = Nickname + "は[" + partners[1].Nickname + "]、[" + partners[2].Nickname + "]と共に";
+            //                    msg = Nickname + "は[" + partners[0].Nickname + "]、[" + partners[1].Nickname + "]と共に";
             //                }
-            //                else if ((MainPilot().get_Nickname(false) ?? "") != (partners[1].MainPilot().get_Nickname(false) ?? ""))
+            //                else if ((MainPilot().get_Nickname(false) ?? "") != (partners[0].MainPilot().get_Nickname(false) ?? ""))
             //                {
-            //                    msg = MainPilot().get_Nickname(false) + "、[" + partners[1].MainPilot().get_Nickname(false) + "]、[" + partners[2].MainPilot().get_Nickname(false) + "]の[" + Nickname + "]は";
+            //                    msg = MainPilot().get_Nickname(false) + "、[" + partners[0].MainPilot().get_Nickname(false) + "]、[" + partners[1].MainPilot().get_Nickname(false) + "]の[" + Nickname + "]は";
             //                }
             //                else
             //                {

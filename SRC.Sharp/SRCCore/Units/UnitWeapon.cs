@@ -54,6 +54,13 @@ namespace SRCCore.Units
             return Unit.Weapons.IndexOf(this) + 1;
         }
 
+        // 簡易的に最強武器かを判断する
+        // XXX アイテムとかでの追加があるとそっちが最強になっちゃうんじゃねぇか？
+        public bool IsLastWeapon()
+        {
+            return WeaponNo() == Unit.Weapons.Count;
+        }
+
         // 武器
         public UnitWeapon(SRC src, Unit u, WeaponData wd)
         {

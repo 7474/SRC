@@ -12,5 +12,7 @@ namespace SRCCore
         public const string vbCr = "\r";
         public const string vbLf = "\n";
         public const string vbTab = "\t";
+
+        public static readonly string[] DIRECTIONS = new string[] { "N", "S", "W", "E" };
     }
 }
