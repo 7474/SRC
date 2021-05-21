@@ -80,12 +80,7 @@ namespace SRCCore.Units
             //            // 射程が0の場合はマスクをクリアしておく
             //            if (a.AbilityMaxRange() == 0)
             //            {
-            //                for (var i = 1; i <= Map.MapWidth; i++)
-            //                {
-            //                    for (var j = 1; j <= Map.MapHeight; j++)
-            //                        Map.MaskData[i, j] = true;
-            //                }
-
+            //                Map.ClearMask();
             //                Map.MaskData[x, y] = false;
             //            }
 

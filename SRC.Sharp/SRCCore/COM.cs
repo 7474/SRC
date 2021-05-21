@@ -4826,16 +4826,7 @@ namespace SRCCore
                                 }
                                 else
                                 {
-                                    var loopTo3 = Map.MapWidth;
-                                    for (var i = 1; i <= loopTo3; i++)
-                                    {
-                                        var loopTo4 = Map.MapHeight;
-                                        for (var j = 1; j <= loopTo4; j++)
-                                        {
-                                            Map.MaskData[i, j] = true;
-                                        }
-                                    }
-
+                                    Map.ClearMask();
                                     Map.MaskData[xx, yy] = false;
                                 }
 

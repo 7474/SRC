@@ -779,7 +779,7 @@ namespace SRCCore.Maps
             //}
 
             //// ユニット画像をリセット
-            //if (!string.IsNullOrEmpty(MapDrawMode) & !MapDrawIsMapOnly)
+            //if (!string.IsNullOrEmpty(MapDrawMode) && !MapDrawIsMapOnly)
             //{
             //    SRC.UList.ClearUnitBitmap();
             //}
@@ -1034,29 +1034,20 @@ namespace SRCCore.Maps
         // エリア内のユニットは uparty の指示に従い選択
         public void AreaInRange(int X, int Y, int max_range, int min_range, string uparty)
         {
-            int x1, y1;
-            int x2, y2;
-            int i, j;
-            int n;
-
             // 選択情報をクリア
-            for (i = 1; i <= MapWidth; i++)
-            {
-                for (j = 1; j <= MapHeight; j++)
-                    MaskData[i, j] = true;
-            }
+            ClearMask();
 
-            x1 = Math.Max(X - max_range, 1);
-            x2 = Math.Min(X + max_range, MapWidth);
-            y1 = Math.Max(Y - max_range, 1);
-            y2 = Math.Min(Y + max_range, MapHeight);
+            var x1 = Math.Max(X - max_range, 1);
+            var x2 = Math.Min(X + max_range, MapWidth);
+            var y1 = Math.Max(Y - max_range, 1);
+            var y2 = Math.Min(Y + max_range, MapHeight);
 
             // max_range内かつmin_range外のエリアを選択
-            for (i = x1; i <= x2; i++)
+            for (var i = x1; i <= x2; i++)
             {
-                for (j = y1; j <= y2; j++)
+                for (var j = y1; j <= y2; j++)
                 {
-                    n = (Math.Abs((X - i)) + Math.Abs((Y - j)));
+                    var n = (Math.Abs((X - i)) + Math.Abs((Y - j)));
                     if (n <= max_range)
                     {
                         if (n >= min_range)
@@ -1068,13 +1059,32 @@ namespace SRCCore.Maps
             }
 
             // エリア内のユニットを選択するかそれぞれ判定
+            SelectUnitInMask(uparty);
+
+            // エリアの中心は常に選択
+            MaskData[X, Y] = false;
+        }
+
+        public void ClearMask()
+        {
+            for (var i = 1; i <= MapWidth; i++)
+            {
+                for (var j = 1; j <= MapHeight; j++)
+                {
+                    MaskData[i, j] = true;
+                }
+            }
+        }
+
+        private void SelectUnitInMask(string uparty)
+        {
             switch (uparty ?? "")
             {
                 case "味方":
                 case "ＮＰＣ":
-                    for (i = x1; i <= x2; i++)
+                    for (var i = 1; i <= MapWidth; i++)
                     {
-                        for (j = y1; j <= y2; j++)
+                        for (var j = 1; j <= MapWidth; j++)
                         {
                             if (!MaskData[i, j])
                             {
@@ -1093,9 +1103,9 @@ namespace SRCCore.Maps
 
                 case "味方の敵":
                 case "ＮＰＣの敵":
-                    for (i = x1; i <= x2; i++)
+                    for (var i = 1; i <= MapWidth; i++)
                     {
-                        for (j = y1; j <= y2; j++)
+                        for (var j = 1; j <= MapWidth; j++)
                         {
                             if (!MaskData[i, j])
                             {
@@ -1123,9 +1133,9 @@ namespace SRCCore.Maps
                     break;
 
                 case "敵":
-                    for (i = x1; i <= x2; i++)
+                    for (var i = 1; i <= MapWidth; i++)
                     {
-                        for (j = y1; j <= y2; j++)
+                        for (var j = 1; j <= MapWidth; j++)
                         {
                             if (!MaskData[i, j])
                             {
@@ -1143,9 +1153,9 @@ namespace SRCCore.Maps
                     break;
 
                 case "敵の敵":
-                    for (i = x1; i <= x2; i++)
+                    for (var i = 1; i <= MapWidth; i++)
                     {
-                        for (j = y1; j <= y2; j++)
+                        for (var j = 1; j <= MapWidth; j++)
                         {
                             if (!MaskData[i, j])
                             {
@@ -1166,9 +1176,9 @@ namespace SRCCore.Maps
                     break;
 
                 case "中立":
-                    for (i = x1; i <= x2; i++)
+                    for (var i = 1; i <= MapWidth; i++)
                     {
-                        for (j = y1; j <= y2; j++)
+                        for (var j = 1; j <= MapWidth; j++)
                         {
                             if (!MaskData[i, j])
                             {
@@ -1186,9 +1196,9 @@ namespace SRCCore.Maps
                     break;
 
                 case "中立の敵":
-                    for (i = x1; i <= x2; i++)
+                    for (var i = 1; i <= MapWidth; i++)
                     {
-                        for (j = y1; j <= y2; j++)
+                        for (var j = 1; j <= MapWidth; j++)
                         {
                             if (!MaskData[i, j])
                             {
@@ -1209,9 +1219,9 @@ namespace SRCCore.Maps
                     break;
 
                 case "空間":
-                    for (i = x1; i <= x2; i++)
+                    for (var i = 1; i <= MapWidth; i++)
                     {
-                        for (j = y1; j <= y2; j++)
+                        for (var j = 1; j <= MapWidth; j++)
                         {
                             if (!MaskData[i, j])
                             {
@@ -1228,393 +1238,101 @@ namespace SRCCore.Maps
                 case "無差別":
                     break;
             }
-
-            // エリアの中心は常に選択
-            MaskData[X, Y] = false;
         }
 
         // ユニット u から移動後使用可能な射程 max_range の武器／アビリティを使う場合の効果範囲
         // エリア内のユニットは Party の指示に従い選択
         public void AreaInReachable(Unit u, int max_range, string uparty)
         {
-            throw new NotImplementedException();
-            //bool[] tmp_mask_data;
-            //int j, i, k;
+            // まずは移動範囲を選択
+            AreaInSpeed(u);
 
-            //// まずは移動範囲を選択
-            //AreaInSpeed(u);
+            // 選択範囲をmax_rangeぶんだけ拡大
+            var tmp_mask_data = new bool[MapWidth + 1 + 1, MapHeight + 1 + 1];
+            var loopTo = (MapWidth + 1);
+            for (var i = 0; i <= loopTo; i++)
+            {
+                var loopTo1 = (MapHeight + 1);
+                for (var j = 0; j <= loopTo1; j++)
+                    tmp_mask_data[i, j] = true;
+            }
 
-            //// 選択範囲をmax_rangeぶんだけ拡大
-            //tmp_mask_data = new bool[MapWidth + 1 + 1, MapHeight + 1 + 1];
-            //var loopTo = (MapWidth + 1);
-            //for (i = 0; i <= loopTo; i++)
-            //{
-            //    var loopTo1 = (MapHeight + 1);
-            //    for (j = 0; j <= loopTo1; j++)
-            //        tmp_mask_data[i, j] = true;
-            //}
+            var loopTo2 = max_range;
+            for (var i = 1; i <= loopTo2; i++)
+            {
+                var loopTo3 = MapWidth;
+                for (var j = 1; j <= loopTo3; j++)
+                {
+                    var loopTo4 = MapHeight;
+                    for (var k = 1; k <= loopTo4; k++)
+                        tmp_mask_data[j, k] = MaskData[j, k];
+                }
 
-            //var loopTo2 = max_range;
-            //for (i = 1; i <= loopTo2; i++)
-            //{
-            //    var loopTo3 = MapWidth;
-            //    for (j = 1; j <= loopTo3; j++)
-            //    {
-            //        var loopTo4 = MapHeight;
-            //        for (k = 1; k <= loopTo4; k++)
-            //            tmp_mask_data[j, k] = MaskData[j, k];
-            //    }
+                var loopTo5 = MapWidth;
+                for (var j = 1; j <= loopTo5; j++)
+                {
+                    var loopTo6 = MapHeight;
+                    for (var k = 1; k <= loopTo6; k++)
+                        MaskData[j, k] = tmp_mask_data[j, k] && tmp_mask_data[j - 1, k] && tmp_mask_data[j + 1, k] && tmp_mask_data[j, k - 1] && tmp_mask_data[j, k + 1];
+                }
+            }
 
-            //    var loopTo5 = MapWidth;
-            //    for (j = 1; j <= loopTo5; j++)
-            //    {
-            //        var loopTo6 = MapHeight;
-            //        for (k = 1; k <= loopTo6; k++)
-            //            MaskData[j, k] = tmp_mask_data[j, k] & tmp_mask_data[j - 1, k] & tmp_mask_data[j + 1, k] & tmp_mask_data[j, k - 1] & tmp_mask_data[j, k + 1];
-            //    }
-            //}
+            // エリア内のユニットを選択するかそれぞれ判定
+            SelectUnitInMask(uparty);
 
-            //// エリア内のユニットを選択するかそれぞれ判定
-            //switch (uparty ?? "")
-            //{
-            //    case "味方":
-            //    case "ＮＰＣ":
-            //        {
-            //            var loopTo7 = MapWidth;
-            //            for (i = 1; i <= loopTo7; i++)
-            //            {
-            //                var loopTo8 = MapHeight;
-            //                for (j = 1; j <= loopTo8; j++)
-            //                {
-            //                    if (!MaskData[i, j])
-            //                    {
-            //                        if (MapDataForUnit[i, j] is object)
-            //                        {
-            //                            if (!(MapDataForUnit[i, j].Party == "味方") & !(MapDataForUnit[i, j].Party == "ＮＰＣ"))
-            //                            {
-            //                                MaskData[i, j] = true;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //            break;
-            //        }
-
-            //    case "味方の敵":
-            //    case "ＮＰＣの敵":
-            //        {
-            //            var loopTo9 = MapWidth;
-            //            for (i = 1; i <= loopTo9; i++)
-            //            {
-            //                var loopTo10 = MapHeight;
-            //                for (j = 1; j <= loopTo10; j++)
-            //                {
-            //                    if (!MaskData[i, j])
-            //                    {
-            //                        if (MapDataForUnit[i, j] is object)
-            //                        {
-            //                            {
-            //                                var withBlock = MapDataForUnit[i, j];
-            //                                if ((withBlock.Party == "味方" | withBlock.Party == "ＮＰＣ") & !withBlock.IsConditionSatisfied("暴走") & !withBlock.IsConditionSatisfied("魅了") & !withBlock.IsConditionSatisfied("憑依"))
-            //                                {
-            //                                    MaskData[i, j] = true;
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //            break;
-            //        }
-
-            //    case "敵":
-            //        {
-            //            var loopTo11 = MapWidth;
-            //            for (i = 1; i <= loopTo11; i++)
-            //            {
-            //                var loopTo12 = MapHeight;
-            //                for (j = 1; j <= loopTo12; j++)
-            //                {
-            //                    if (!MaskData[i, j])
-            //                    {
-            //                        if (MapDataForUnit[i, j] is object)
-            //                        {
-            //                            if (!(MapDataForUnit[i, j].Party == "敵"))
-            //                            {
-            //                                MaskData[i, j] = true;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //            break;
-            //        }
-
-            //    case "敵の敵":
-            //        {
-            //            var loopTo13 = MapWidth;
-            //            for (i = 1; i <= loopTo13; i++)
-            //            {
-            //                var loopTo14 = MapHeight;
-            //                for (j = 1; j <= loopTo14; j++)
-            //                {
-            //                    if (!MaskData[i, j])
-            //                    {
-            //                        if (MapDataForUnit[i, j] is object)
-            //                        {
-            //                            {
-            //                                var withBlock1 = MapDataForUnit[i, j];
-            //                                if (withBlock1.Party == "敵")
-            //                                {
-            //                                    MaskData[i, j] = true;
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //            break;
-            //        }
-
-            //    case "中立":
-            //        {
-            //            var loopTo15 = MapWidth;
-            //            for (i = 1; i <= loopTo15; i++)
-            //            {
-            //                var loopTo16 = MapHeight;
-            //                for (j = 1; j <= loopTo16; j++)
-            //                {
-            //                    if (!MaskData[i, j])
-            //                    {
-            //                        if (MapDataForUnit[i, j] is object)
-            //                        {
-            //                            if (!(MapDataForUnit[i, j].Party == "中立"))
-            //                            {
-            //                                MaskData[i, j] = true;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //            break;
-            //        }
-
-            //    case "中立の敵":
-            //        {
-            //            var loopTo17 = MapWidth;
-            //            for (i = 1; i <= loopTo17; i++)
-            //            {
-            //                var loopTo18 = MapHeight;
-            //                for (j = 1; j <= loopTo18; j++)
-            //                {
-            //                    if (!MaskData[i, j])
-            //                    {
-            //                        if (MapDataForUnit[i, j] is object)
-            //                        {
-            //                            {
-            //                                var withBlock2 = MapDataForUnit[i, j];
-            //                                if (withBlock2.Party == "中立")
-            //                                {
-            //                                    MaskData[i, j] = true;
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //            break;
-            //        }
-
-            //    case "空間":
-            //        {
-            //            var loopTo19 = MapWidth;
-            //            for (i = 1; i <= loopTo19; i++)
-            //            {
-            //                var loopTo20 = MapHeight;
-            //                for (j = 1; j <= loopTo20; j++)
-            //                {
-            //                    if (!MaskData[i, j])
-            //                    {
-            //                        if (MapDataForUnit[i, j] is object)
-            //                        {
-            //                            MaskData[i, j] = true;
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //            break;
-            //        }
-
-            //    case "全て":
-            //    case "無差別":
-            //        {
-            //            break;
-            //        }
-            //}
-
-            //// エリアの中心は常に選択
-            //MaskData[u.x, u.y] = false;
+            // エリアの中心は常に選択
+            MaskData[u.x, u.y] = false;
         }
 
         // マップ全域に渡ってupartyに属するユニットが存在する場所を選択
         public void AreaWithUnit(string uparty)
         {
-            throw new NotImplementedException();
-            //int i, j;
-            //Unit u;
-            //var loopTo = MapWidth;
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    var loopTo1 = MapHeight;
-            //    for (j = 1; j <= loopTo1; j++)
-            //        MaskData[i, j] = true;
-            //}
-
-            //var loopTo2 = MapWidth;
-            //for (i = 1; i <= loopTo2; i++)
-            //{
-            //    var loopTo3 = MapHeight;
-            //    for (j = 1; j <= loopTo3; j++)
-            //    {
-            //        u = MapDataForUnit[i, j];
-            //        if (u is null)
-            //        {
-            //            goto NextLoop;
-            //        }
-
-            //        switch (uparty ?? "")
-            //        {
-            //            case "味方":
-            //                {
-            //                    if (u.Party == "味方" | u.Party == "ＮＰＣ")
-            //                    {
-            //                        MaskData[i, j] = false;
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case "味方の敵":
-            //                {
-            //                    if (u.Party != "味方" & u.Party != "ＮＰＣ")
-            //                    {
-            //                        MaskData[i, j] = false;
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case "敵":
-            //                {
-            //                    if (u.Party == "敵")
-            //                    {
-            //                        MaskData[i, j] = false;
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case "敵の敵":
-            //                {
-            //                    if (u.Party != "敵")
-            //                    {
-            //                        MaskData[i, j] = false;
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case "中立":
-            //                {
-            //                    if (u.Party == "中立")
-            //                    {
-            //                        MaskData[i, j] = false;
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case "中立の敵":
-            //                {
-            //                    if (u.Party != "中立")
-            //                    {
-            //                        MaskData[i, j] = false;
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            default:
-            //                {
-            //                    MaskData[i, j] = false;
-            //                    break;
-            //                }
-            //        }
-
-            //    NextLoop:
-            //        ;
-            //    }
-            //}
+            ClearMask();
+            SelectUnitInMask(uparty);
         }
 
         // 十字状のエリアを選択 (Ｍ直の攻撃方向選択用)
         public void AreaInCross(int X, int Y, int min_range, int max_range)
         {
-            throw new NotImplementedException();
-            //int i, j;
-            //var loopTo = MapWidth;
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    var loopTo1 = MapHeight;
-            //    for (j = 1; j <= loopTo1; j++)
-            //        MaskData[i, j] = true;
-            //}
+            ClearMask();
 
-            //var loopTo2 = (Y - min_range);
-            //for (i = (Y - max_range); i <= loopTo2; i++)
-            //{
-            //    if (i >= 1)
-            //    {
-            //        MaskData[X, i] = false;
-            //    }
-            //}
+            var loopTo2 = (Y - min_range);
+            for (var i = (Y - max_range); i <= loopTo2; i++)
+            {
+                if (i >= 1)
+                {
+                    MaskData[X, i] = false;
+                }
+            }
 
-            //var loopTo3 = (Y + max_range);
-            //for (i = (Y + min_range); i <= loopTo3; i++)
-            //{
-            //    if (i <= MapHeight)
-            //    {
-            //        MaskData[X, i] = false;
-            //    }
-            //}
+            var loopTo3 = (Y + max_range);
+            for (var i = (Y + min_range); i <= loopTo3; i++)
+            {
+                if (i <= MapHeight)
+                {
+                    MaskData[X, i] = false;
+                }
+            }
 
-            //var loopTo4 = (X - min_range);
-            //for (i = (X - max_range); i <= loopTo4; i++)
-            //{
-            //    if (i >= 1)
-            //    {
-            //        MaskData[i, Y] = false;
-            //    }
-            //}
+            var loopTo4 = (X - min_range);
+            for (var i  = (X - max_range); i <= loopTo4; i++)
+            {
+                if (i >= 1)
+                {
+                    MaskData[i, Y] = false;
+                }
+            }
 
-            //var loopTo5 = (X + max_range);
-            //for (i = (X + min_range); i <= loopTo5; i++)
-            //{
-            //    if (i <= MapWidth)
-            //    {
-            //        MaskData[i, Y] = false;
-            //    }
-            //}
+            var loopTo5 = (X + max_range);
+            for (var i = (X + min_range); i <= loopTo5; i++)
+            {
+                if (i <= MapWidth)
+                {
+                    MaskData[i, Y] = false;
+                }
+            }
 
-            //MaskData[X, Y] = false;
+            MaskData[X, Y] = false;
         }
 
         // 直線状のエリアを選択 (Ｍ直の攻撃範囲設定用)
@@ -2351,7 +2069,7 @@ namespace SRCCore.Maps
             FillMoveCost(u, move_cost, move_area, x1, y1, x2, y2);
 
             //// ユニットがいるため通り抜け出来ない場所をチェック
-            //if (!currentUnit.IsFeatureAvailable("すり抜け移動") & !currentUnit.IsUnderSpecialPowerEffect("すり抜け移動"))
+            //if (!currentUnit.IsFeatureAvailable("すり抜け移動") && !currentUnit.IsUnderSpecialPowerEffect("すり抜け移動"))
             //{
             //    foreach (Unit currentU2 in SRC.UList)
             //    {
@@ -2374,7 +2092,7 @@ namespace SRCCore.Maps
             //                    case "味方":
             //                    case "ＮＰＣ":
             //                        {
-            //                            if (u.Party0 != "味方" & u.Party0 != "ＮＰＣ")
+            //                            if (u.Party0 != "味方" && u.Party0 != "ＮＰＣ")
             //                            {
             //                                blocked = true;
             //                            }
@@ -2400,7 +2118,7 @@ namespace SRCCore.Maps
             //                }
 
             //                // ＺＯＣ
-            //                if (blocked & !ByJump)
+            //                if (blocked && !ByJump)
             //                {
             //                    is_zoc = false;
             //                    zarea = 0;
@@ -2440,7 +2158,7 @@ namespace SRCCore.Maps
             //                                var loopTo44 = Math.Abs(Math.Abs(i) - 1);
             //                                for (j = (Math.Abs(i) - 1); j <= loopTo44; j++)
             //                                {
-            //                                    if ((i != 0 | j != 0) & withBlock1.x + i >= 1 & (withBlock1.x + i) <= MapWidth & withBlock1.y + j >= 1 & (withBlock1.y + j) <= MapHeight)
+            //                                    if ((i != 0 | j != 0) && withBlock1.x + i >= 1 && (withBlock1.x + i) <= MapWidth && withBlock1.y + j >= 1 && (withBlock1.y + j) <= MapHeight)
             //                                    {
             //                                        // 隣接ユニットが存在する？
             //                                        if (MapDataForUnit[(withBlock1.x + i), (withBlock1.y + j)] is object)
@@ -2552,7 +2270,7 @@ namespace SRCCore.Maps
             //                                    else
             //                                    {
             //                                        // 水平ＺＯＣ
-            //                                        if (is_hzoc & withBlock1.x + i >= 1 & (withBlock1.x + i) <= MapWidth)
+            //                                        if (is_hzoc && withBlock1.x + i >= 1 && (withBlock1.x + i) <= MapWidth)
             //                                        {
             //                                            if (PointInZOC[(withBlock1.x + i), withBlock1.y] < 0)
             //                                            {
@@ -2567,7 +2285,7 @@ namespace SRCCore.Maps
             //                                            }
             //                                        }
             //                                        // 垂直ＺＯＣ
-            //                                        if (is_vzoc & withBlock1.y + i >= 1 & (withBlock1.y + i) <= MapHeight)
+            //                                        if (is_vzoc && withBlock1.y + i >= 1 && (withBlock1.y + i) <= MapHeight)
             //                                        {
             //                                            if (PointInZOC[withBlock1.x, (withBlock1.y + i)] < 0)
             //                                            {
@@ -2593,7 +2311,7 @@ namespace SRCCore.Maps
             //                                    var loopTo47 = Math.Abs((Math.Abs(i) - zarea));
             //                                    for (j = (Math.Abs(i) - zarea); j <= loopTo47; j++)
             //                                    {
-            //                                        if (withBlock1.x + i >= 1 & (withBlock1.x + i) <= MapWidth & withBlock1.y + j >= 1 & (withBlock1.y + j) <= MapHeight)
+            //                                        if (withBlock1.x + i >= 1 && (withBlock1.x + i) <= MapWidth && withBlock1.y + j >= 1 && (withBlock1.y + j) <= MapHeight)
             //                                        {
             //                                            if (PointInZOC[(withBlock1.x + i), (withBlock1.y + j)] < 0)
             //                                            {
@@ -2633,7 +2351,7 @@ namespace SRCCore.Maps
             //                            var loopTo49 = Math.Abs((Math.Abs(i) - n));
             //                            for (j = (Math.Abs(i) - n); j <= loopTo49; j++)
             //                            {
-            //                                if (withBlock1.x + i >= 1 & (withBlock1.x + i) <= MapWidth & withBlock1.y + j >= 1 & (withBlock1.y + j) <= MapHeight)
+            //                                if (withBlock1.x + i >= 1 && (withBlock1.x + i) <= MapWidth && withBlock1.y + j >= 1 && (withBlock1.y + j) <= MapHeight)
             //                                {
             //                                    PointInZOC[(withBlock1.x + i), (withBlock1.y + j)] = PointInZOC[(withBlock1.x + i), (withBlock1.y + j)] - l;
             //                                }
@@ -2800,7 +2518,7 @@ namespace SRCCore.Maps
 
             //                            case "水":
             //                                {
-            //                                    if (!is_adaptable_in_water & !is_trans_available_on_water & !is_trans_available_in_water)
+            //                                    if (!is_adaptable_in_water && !is_trans_available_on_water && !is_trans_available_in_water)
             //                                    {
             //                                        MaskData[i, j] = true;
             //                                    }
@@ -2810,7 +2528,7 @@ namespace SRCCore.Maps
 
             //                            case "深水":
             //                                {
-            //                                    if (!is_trans_available_on_water & !is_trans_available_in_water)
+            //                                    if (!is_trans_available_on_water && !is_trans_available_in_water)
             //                                    {
             //                                        MaskData[i, j] = true;
             //                                    }
@@ -2868,7 +2586,7 @@ namespace SRCCore.Maps
 
             //                            case "深水":
             //                                {
-            //                                    if (!is_trans_available_on_water & !is_trans_available_in_water)
+            //                                    if (!is_trans_available_on_water && !is_trans_available_in_water)
             //                                    {
             //                                        MaskData[i, j] = true;
             //                                    }
@@ -2935,7 +2653,7 @@ namespace SRCCore.Maps
             //                            case "陸":
             //                            case "屋内":
             //                                {
-            //                                    if (!is_trans_available_in_sky & !is_trans_available_on_ground)
+            //                                    if (!is_trans_available_in_sky && !is_trans_available_on_ground)
             //                                    {
             //                                        MaskData[i, j] = true;
             //                                    }
@@ -2955,7 +2673,7 @@ namespace SRCCore.Maps
 
             //                            case "水":
             //                                {
-            //                                    if (!is_trans_available_in_water & !is_trans_available_on_water & !is_adaptable_in_water)
+            //                                    if (!is_trans_available_in_water && !is_trans_available_on_water && !is_adaptable_in_water)
             //                                    {
             //                                        MaskData[i, j] = true;
             //                                    }
@@ -2965,7 +2683,7 @@ namespace SRCCore.Maps
 
             //                            case "深水":
             //                                {
-            //                                    if (!is_trans_available_on_water & !is_trans_available_in_water)
+            //                                    if (!is_trans_available_on_water && !is_trans_available_in_water)
             //                                    {
             //                                        MaskData[i, j] = true;
             //                                    }
@@ -3050,7 +2768,7 @@ namespace SRCCore.Maps
 
                             //        bool localIsDefined1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
-                            //        if (GeneralLib.LLength(buf) == 3 & localIsDefined() & localIsDefined1())
+                            //        if (GeneralLib.LLength(buf) == 3 && localIsDefined() && localIsDefined1())
                             //        {
                             //            {
                             //                var withBlock5 = SRC.UList.Item(GeneralLib.LIndex(buf, 2));
@@ -3072,7 +2790,7 @@ namespace SRCCore.Maps
                             //                MaskData[i, j] = false;
                             //                break;
                             //            }
-                            //            else if ((u2.Name ?? "") == (localItem().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable("合体制限"))
+                            //            else if ((u2.Name ?? "") == (localItem().CurrentForm().Name ?? "") && !u2.IsFeatureAvailable("合体制限"))
                             //            {
                             //                MaskData[i, j] = false;
                             //                break;
@@ -3101,7 +2819,7 @@ namespace SRCCore.Maps
 
                             //        bool localIsDefined3() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
-                            //        if (GeneralLib.LLength(buf) == 3 & localIsDefined2() & localIsDefined3())
+                            //        if (GeneralLib.LLength(buf) == 3 && localIsDefined2() && localIsDefined3())
                             //        {
                             //            {
                             //                var withBlock6 = SRC.UList.Item(GeneralLib.LIndex(buf, 2));
@@ -3123,7 +2841,7 @@ namespace SRCCore.Maps
                             //                MaskData[i, j] = false;
                             //                break;
                             //            }
-                            //            else if ((u2.Name ?? "") == (localItem1().CurrentForm().Name ?? "") & !u2.IsFeatureAvailable("合体制限"))
+                            //            else if ((u2.Name ?? "") == (localItem1().CurrentForm().Name ?? "") && !u2.IsFeatureAvailable("合体制限"))
                             //            {
                             //                MaskData[i, j] = false;
                             //                break;
@@ -3677,7 +3395,7 @@ namespace SRCCore.Maps
             //// 線路移動
             //if (currentUnit.IsFeatureAvailable("線路移動"))
             //{
-            //    if (currentUnit.Area == "地上" & !ByJump)
+            //    if (currentUnit.Area == "地上" && !ByJump)
             //    {
             //        var loopTo30 = x2;
             //        for (i = x1; i <= loopTo30; i++)
@@ -3702,7 +3420,7 @@ namespace SRCCore.Maps
             //allowed_terrains = new string[1];
             //if (currentUnit.IsFeatureAvailable("移動制限"))
             //{
-            //    if (currentUnit.Area != "空中" & currentUnit.Area != "地中")
+            //    if (currentUnit.Area != "空中" && currentUnit.Area != "地中")
             //    {
             //        n = GeneralLib.LLength(currentUnit.FeatureData("移動制限"));
             //        allowed_terrains = new string[(n + 1)];
@@ -3743,7 +3461,7 @@ namespace SRCCore.Maps
             //prohibited_terrains = new string[1];
             //if (currentUnit.IsFeatureAvailable("進入不可"))
             //{
-            //    if (currentUnit.Area != "空中" & currentUnit.Area != "地中")
+            //    if (currentUnit.Area != "空中" && currentUnit.Area != "地中")
             //    {
             //        n = GeneralLib.LLength(currentUnit.FeatureData("進入不可"));
             //        prohibited_terrains = new string[(n + 1)];
@@ -3843,7 +3561,7 @@ namespace SRCCore.Maps
             //allowed_terrains = new string[1];
             //if (u.IsFeatureAvailable("移動制限"))
             //{
-            //    if (u.Area != "空中" & u.Area != "地中")
+            //    if (u.Area != "空中" && u.Area != "地中")
             //    {
             //        n = GeneralLib.LLength(u.FeatureData("移動制限"));
             //        allowed_terrains = new string[(n + 1)];
@@ -3859,7 +3577,7 @@ namespace SRCCore.Maps
             //prohibited_terrains = new string[1];
             //if (u.IsFeatureAvailable("進入不可"))
             //{
-            //    if (u.Area != "空中" & u.Area != "地中")
+            //    if (u.Area != "空中" && u.Area != "地中")
             //    {
             //        n = GeneralLib.LLength(u.FeatureData("進入不可"));
             //        prohibited_terrains = new string[(n + 1)];
@@ -3888,13 +3606,7 @@ namespace SRCCore.Maps
             }
 
             // 選択解除
-            for (var i = 1; i <= MapWidth; i++)
-            {
-                for (var j = 1; j <= MapHeight; j++)
-                {
-                    MaskData[i, j] = true;
-                }
-            }
+            ClearMask();
 
             // 移動可能な地点を調べる
             var loopTo4 = Math.Min(MapWidth, currentUnit.x + r);
@@ -3928,7 +3640,7 @@ namespace SRCCore.Maps
 
                                         case "水":
                                             {
-                                                if (!is_adaptable_in_water & !is_trans_available_on_water & !is_trans_available_in_water)
+                                                if (!is_adaptable_in_water && !is_trans_available_on_water && !is_trans_available_in_water)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -3938,7 +3650,7 @@ namespace SRCCore.Maps
 
                                         case "深水":
                                             {
-                                                if (!is_trans_available_on_water & !is_trans_available_in_water)
+                                                if (!is_trans_available_on_water && !is_trans_available_in_water)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -3972,7 +3684,7 @@ namespace SRCCore.Maps
 
                                         case "深水":
                                             {
-                                                if (!is_trans_available_on_water & !is_trans_available_in_water)
+                                                if (!is_trans_available_on_water && !is_trans_available_in_water)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -4039,7 +3751,7 @@ namespace SRCCore.Maps
                                         case "陸":
                                         case "屋内":
                                             {
-                                                if (!is_trans_available_in_sky & !is_trans_available_on_ground)
+                                                if (!is_trans_available_in_sky && !is_trans_available_on_ground)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -4059,7 +3771,7 @@ namespace SRCCore.Maps
 
                                         case "水":
                                             {
-                                                if (!is_trans_available_in_water & !is_trans_available_on_water & !is_adaptable_in_water)
+                                                if (!is_trans_available_in_water && !is_trans_available_on_water && !is_adaptable_in_water)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -4069,7 +3781,7 @@ namespace SRCCore.Maps
 
                                         case "深水":
                                             {
-                                                if (!is_trans_available_on_water & !is_trans_available_in_water)
+                                                if (!is_trans_available_on_water && !is_trans_available_in_water)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -4157,18 +3869,12 @@ namespace SRCCore.Maps
             //// ADD END MARGE
 
             //// 全領域マスク
-            //var loopTo = MapWidth;
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    var loopTo1 = MapHeight;
-            //    for (j = 1; j <= loopTo1; j++)
-            //        MaskData[i, j] = true;
-            //}
+            //ClearMask()
 
             //// 移動能力の可否を調べておく
-            //is_trans_available_on_ground = u.IsTransAvailable("陸") & u.get_Adaption(2) != 0;
-            //is_trans_available_in_water = u.IsTransAvailable("水") & u.get_Adaption(3) != 0;
-            //is_trans_available_in_sky = u.IsTransAvailable("空") & u.get_Adaption(1) != 0;
+            //is_trans_available_on_ground = u.IsTransAvailable("陸") && u.get_Adaption(2) != 0;
+            //is_trans_available_in_water = u.IsTransAvailable("水") && u.get_Adaption(3) != 0;
+            //is_trans_available_in_sky = u.IsTransAvailable("空") && u.get_Adaption(1) != 0;
             //if (Strings.Mid(u.Data.Adaption, 3, 1) != "-" | u.IsFeatureAvailable("水中移動"))
             //{
             //    is_adaptable_in_water = true;
@@ -4220,7 +3926,7 @@ namespace SRCCore.Maps
             //allowed_terrains = new string[1];
             //if (u.IsFeatureAvailable("移動制限"))
             //{
-            //    if (u.Area != "空中" & u.Area != "地中")
+            //    if (u.Area != "空中" && u.Area != "地中")
             //    {
             //        n = GeneralLib.LLength(u.FeatureData("移動制限"));
             //        allowed_terrains = new string[(n + 1)];
@@ -4236,7 +3942,7 @@ namespace SRCCore.Maps
             //prohibited_terrains = new string[1];
             //if (u.IsFeatureAvailable("進入不可"))
             //{
-            //    if (u.Area != "空中" & u.Area != "地中")
+            //    if (u.Area != "空中" && u.Area != "地中")
             //    {
             //        n = GeneralLib.LLength(u.FeatureData("進入不可"));
             //        prohibited_terrains = new string[(n + 1)];
@@ -4288,7 +3994,7 @@ namespace SRCCore.Maps
 
             //                        case "水":
             //                            {
-            //                                if (!is_adaptable_in_water & !is_trans_available_on_water & !is_trans_available_in_water)
+            //                                if (!is_adaptable_in_water && !is_trans_available_on_water && !is_trans_available_in_water)
             //                                {
             //                                    goto NextLoop;
             //                                }
@@ -4298,7 +4004,7 @@ namespace SRCCore.Maps
 
             //                        case "深水":
             //                            {
-            //                                if (!is_trans_available_on_water & !is_trans_available_in_water)
+            //                                if (!is_trans_available_on_water && !is_trans_available_in_water)
             //                                {
             //                                    goto NextLoop;
             //                                }
@@ -4332,7 +4038,7 @@ namespace SRCCore.Maps
 
             //                        case "深水":
             //                            {
-            //                                if (!is_trans_available_on_water & !is_trans_available_in_water)
+            //                                if (!is_trans_available_on_water && !is_trans_available_in_water)
             //                                {
             //                                    goto NextLoop;
             //                                }
@@ -4399,7 +4105,7 @@ namespace SRCCore.Maps
             //                        case "陸":
             //                        case "屋内":
             //                            {
-            //                                if (!is_trans_available_in_sky & !is_trans_available_on_ground)
+            //                                if (!is_trans_available_in_sky && !is_trans_available_on_ground)
             //                                {
             //                                    goto NextLoop;
             //                                }
@@ -4419,7 +4125,7 @@ namespace SRCCore.Maps
 
             //                        case "水":
             //                            {
-            //                                if (!is_trans_available_in_water & !is_trans_available_on_water & !is_adaptable_in_water)
+            //                                if (!is_trans_available_in_water && !is_trans_available_on_water && !is_adaptable_in_water)
             //                                {
             //                                    goto NextLoop;
             //                                }
@@ -4429,7 +4135,7 @@ namespace SRCCore.Maps
 
             //                        case "深水":
             //                            {
-            //                                if (!is_trans_available_on_water & !is_trans_available_in_water)
+            //                                if (!is_trans_available_on_water && !is_trans_available_in_water)
             //                                {
             //                                    goto NextLoop;
             //                                }
@@ -4903,7 +4609,7 @@ namespace SRCCore.Maps
                 {
                     case "N":
                         {
-                            if (TotalMoveCost[xx, yy - 1] < tmp & PointInZOC[xx, yy - 1] <= 0)
+                            if (TotalMoveCost[xx, yy - 1] < tmp && PointInZOC[xx, yy - 1] <= 0)
                             {
                                 tmp = TotalMoveCost[xx, yy - 1];
                                 nx = xx;
@@ -4916,7 +4622,7 @@ namespace SRCCore.Maps
 
                     case "S":
                         {
-                            if (TotalMoveCost[xx, yy + 1] < tmp & PointInZOC[xx, yy + 1] <= 0)
+                            if (TotalMoveCost[xx, yy + 1] < tmp && PointInZOC[xx, yy + 1] <= 0)
                             {
                                 tmp = TotalMoveCost[xx, yy + 1];
                                 nx = xx;
@@ -4929,7 +4635,7 @@ namespace SRCCore.Maps
 
                     case "W":
                         {
-                            if (TotalMoveCost[xx - 1, yy] < tmp & PointInZOC[xx - 1, yy] <= 0)
+                            if (TotalMoveCost[xx - 1, yy] < tmp && PointInZOC[xx - 1, yy] <= 0)
                             {
                                 tmp = TotalMoveCost[xx - 1, yy];
                                 nx = (xx - 1);
@@ -4942,7 +4648,7 @@ namespace SRCCore.Maps
 
                     case "E":
                         {
-                            if (TotalMoveCost[xx + 1, yy] < tmp & PointInZOC[xx + 1, yy] <= 0)
+                            if (TotalMoveCost[xx + 1, yy] < tmp && PointInZOC[xx + 1, yy] <= 0)
                             {
                                 tmp = TotalMoveCost[xx + 1, yy];
                                 nx = (xx + 1);
@@ -4958,7 +4664,7 @@ namespace SRCCore.Maps
                 // 座標軸方向に優先して移動させる
                 if (Math.Abs((xx - ox)) <= Math.Abs((yy - oy)))
                 {
-                    if (TotalMoveCost[xx, yy - 1] < tmp & PointInZOC[xx, yy - 1] <= 0)
+                    if (TotalMoveCost[xx, yy - 1] < tmp && PointInZOC[xx, yy - 1] <= 0)
                     {
                         tmp = TotalMoveCost[xx, yy - 1];
                         nx = xx;
@@ -4966,7 +4672,7 @@ namespace SRCCore.Maps
                         direction = "N";
                     }
 
-                    if (TotalMoveCost[xx, yy + 1] < tmp & PointInZOC[xx, yy + 1] <= 0)
+                    if (TotalMoveCost[xx, yy + 1] < tmp && PointInZOC[xx, yy + 1] <= 0)
                     {
                         tmp = TotalMoveCost[xx, yy + 1];
                         nx = xx;
@@ -4974,7 +4680,7 @@ namespace SRCCore.Maps
                         direction = "S";
                     }
 
-                    if (TotalMoveCost[xx - 1, yy] < tmp & PointInZOC[xx - 1, yy] <= 0)
+                    if (TotalMoveCost[xx - 1, yy] < tmp && PointInZOC[xx - 1, yy] <= 0)
                     {
                         tmp = TotalMoveCost[xx - 1, yy];
                         nx = (xx - 1);
@@ -4982,7 +4688,7 @@ namespace SRCCore.Maps
                         direction = "W";
                     }
 
-                    if (TotalMoveCost[xx + 1, yy] < tmp & PointInZOC[xx + 1, yy] <= 0)
+                    if (TotalMoveCost[xx + 1, yy] < tmp && PointInZOC[xx + 1, yy] <= 0)
                     {
                         tmp = TotalMoveCost[xx + 1, yy];
                         nx = (xx + 1);
@@ -4992,7 +4698,7 @@ namespace SRCCore.Maps
                 }
                 else
                 {
-                    if (TotalMoveCost[xx - 1, yy] < tmp & PointInZOC[xx - 1, yy] <= 0)
+                    if (TotalMoveCost[xx - 1, yy] < tmp && PointInZOC[xx - 1, yy] <= 0)
                     {
                         tmp = TotalMoveCost[xx - 1, yy];
                         nx = (xx - 1);
@@ -5000,7 +4706,7 @@ namespace SRCCore.Maps
                         direction = "W";
                     }
 
-                    if (TotalMoveCost[xx + 1, yy] < tmp & PointInZOC[xx + 1, yy] <= 0)
+                    if (TotalMoveCost[xx + 1, yy] < tmp && PointInZOC[xx + 1, yy] <= 0)
                     {
                         tmp = TotalMoveCost[xx + 1, yy];
                         nx = (xx + 1);
@@ -5008,7 +4714,7 @@ namespace SRCCore.Maps
                         direction = "E";
                     }
 
-                    if (TotalMoveCost[xx, yy - 1] < tmp & PointInZOC[xx, yy - 1] <= 0)
+                    if (TotalMoveCost[xx, yy - 1] < tmp && PointInZOC[xx, yy - 1] <= 0)
                     {
                         tmp = TotalMoveCost[xx, yy - 1];
                         nx = xx;
@@ -5016,7 +4722,7 @@ namespace SRCCore.Maps
                         direction = "N";
                     }
 
-                    if (TotalMoveCost[xx, yy + 1] < tmp & PointInZOC[xx, yy + 1] <= 0)
+                    if (TotalMoveCost[xx, yy + 1] < tmp && PointInZOC[xx, yy + 1] <= 0)
                     {
                         tmp = TotalMoveCost[xx, yy + 1];
                         nx = xx;
@@ -5025,7 +4731,7 @@ namespace SRCCore.Maps
                     }
                 }
 
-                if (nx == xx & ny == yy)
+                if (nx == xx && ny == yy)
                 {
                     // これ以上必要移動力が低い場所が見つからなかったので終了
                     break;
