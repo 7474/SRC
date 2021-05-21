@@ -15,3 +15,8 @@ provider "azurerm" {
 #   name     = "src"
 #   location = "Japan East"
 # }
+
+resource "azurerm_resource_group" "dumy-rg-for-terraform" {
+  name     = "dumy-rg-for-terraform"
+  location = "Japan East"
+}
