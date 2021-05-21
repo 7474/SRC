@@ -1405,264 +1405,248 @@ namespace SRCCore.Maps
         // 幅３マスの十字状のエリアを選択 (Ｍ拡の攻撃方向選択用)
         public void AreaInWideCross(int X, int Y, int min_range, int max_range)
         {
-            throw new NotImplementedException();
-            //int i, j;
-            //var loopTo = MapWidth;
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    var loopTo1 = MapHeight;
-            //    for (j = 1; j <= loopTo1; j++)
-            //        MaskData[i, j] = true;
-            //}
+            ClearMask();
 
-            //var loopTo2 = (Y - min_range);
-            //for (i = (Y - max_range); i <= loopTo2; i++)
-            //{
-            //    if (i >= 1)
-            //    {
-            //        MaskData[X, i] = false;
-            //    }
-            //}
+            var loopTo2 = (Y - min_range);
+            for (var i  = (Y - max_range); i <= loopTo2; i++)
+            {
+                if (i >= 1)
+                {
+                    MaskData[X, i] = false;
+                }
+            }
 
-            //var loopTo3 = (Y - (min_range + 1));
-            //for (i = (Y - max_range + 1); i <= loopTo3; i++)
-            //{
-            //    if (i >= 1)
-            //    {
-            //        if (X > 1)
-            //        {
-            //            MaskData[X - 1, i] = false;
-            //        }
+            var loopTo3 = (Y - (min_range + 1));
+            for (var i = (Y - max_range + 1); i <= loopTo3; i++)
+            {
+                if (i >= 1)
+                {
+                    if (X > 1)
+                    {
+                        MaskData[X - 1, i] = false;
+                    }
 
-            //        if (X < MapWidth)
-            //        {
-            //            MaskData[X + 1, i] = false;
-            //        }
-            //    }
-            //}
+                    if (X < MapWidth)
+                    {
+                        MaskData[X + 1, i] = false;
+                    }
+                }
+            }
 
-            //var loopTo4 = (Y + max_range);
-            //for (i = (Y + min_range); i <= loopTo4; i++)
-            //{
-            //    if (i <= MapHeight)
-            //    {
-            //        MaskData[X, i] = false;
-            //    }
-            //}
+            var loopTo4 = (Y + max_range);
+            for (var i = (Y + min_range); i <= loopTo4; i++)
+            {
+                if (i <= MapHeight)
+                {
+                    MaskData[X, i] = false;
+                }
+            }
 
-            //var loopTo5 = (Y + max_range - 1);
-            //for (i = (Y + (min_range + 1)); i <= loopTo5; i++)
-            //{
-            //    if (i <= MapHeight)
-            //    {
-            //        if (X > 1)
-            //        {
-            //            MaskData[X - 1, i] = false;
-            //        }
+            var loopTo5 = (Y + max_range - 1);
+            for (var i = (Y + (min_range + 1)); i <= loopTo5; i++)
+            {
+                if (i <= MapHeight)
+                {
+                    if (X > 1)
+                    {
+                        MaskData[X - 1, i] = false;
+                    }
 
-            //        if (X < MapWidth)
-            //        {
-            //            MaskData[X + 1, i] = false;
-            //        }
-            //    }
-            //}
+                    if (X < MapWidth)
+                    {
+                        MaskData[X + 1, i] = false;
+                    }
+                }
+            }
 
-            //var loopTo6 = (X - min_range);
-            //for (i = (X - max_range); i <= loopTo6; i++)
-            //{
-            //    if (i >= 1)
-            //    {
-            //        MaskData[i, Y] = false;
-            //    }
-            //}
+            var loopTo6 = (X - min_range);
+            for (var i = (X - max_range); i <= loopTo6; i++)
+            {
+                if (i >= 1)
+                {
+                    MaskData[i, Y] = false;
+                }
+            }
 
-            //var loopTo7 = (X - (min_range + 1));
-            //for (i = (X - max_range + 1); i <= loopTo7; i++)
-            //{
-            //    if (i >= 1)
-            //    {
-            //        if (Y > 1)
-            //        {
-            //            MaskData[i, Y - 1] = false;
-            //        }
+            var loopTo7 = (X - (min_range + 1));
+            for (var i = (X - max_range + 1); i <= loopTo7; i++)
+            {
+                if (i >= 1)
+                {
+                    if (Y > 1)
+                    {
+                        MaskData[i, Y - 1] = false;
+                    }
 
-            //        if (Y < MapHeight)
-            //        {
-            //            MaskData[i, Y + 1] = false;
-            //        }
-            //    }
-            //}
+                    if (Y < MapHeight)
+                    {
+                        MaskData[i, Y + 1] = false;
+                    }
+                }
+            }
 
-            //var loopTo8 = (X + max_range);
-            //for (i = (X + min_range); i <= loopTo8; i++)
-            //{
-            //    if (i <= MapWidth)
-            //    {
-            //        MaskData[i, Y] = false;
-            //    }
-            //}
+            var loopTo8 = (X + max_range);
+            for (var i = (X + min_range); i <= loopTo8; i++)
+            {
+                if (i <= MapWidth)
+                {
+                    MaskData[i, Y] = false;
+                }
+            }
 
-            //var loopTo9 = (X + max_range - 1);
-            //for (i = (X + (min_range + 1)); i <= loopTo9; i++)
-            //{
-            //    if (i <= MapWidth)
-            //    {
-            //        if (Y > 1)
-            //        {
-            //            MaskData[i, Y - 1] = false;
-            //        }
+            var loopTo9 = (X + max_range - 1);
+            for (var i = (X + (min_range + 1)); i <= loopTo9; i++)
+            {
+                if (i <= MapWidth)
+                {
+                    if (Y > 1)
+                    {
+                        MaskData[i, Y - 1] = false;
+                    }
 
-            //        if (Y < MapHeight)
-            //        {
-            //            MaskData[i, Y + 1] = false;
-            //        }
-            //    }
-            //}
+                    if (Y < MapHeight)
+                    {
+                        MaskData[i, Y + 1] = false;
+                    }
+                }
+            }
 
-            //MaskData[X, Y] = false;
+            MaskData[X, Y] = false;
         }
 
         // 幅３マスの直線状のエリアを選択 (Ｍ拡の攻撃範囲設定用)
         public void AreaInCone(int X, int Y, int min_range, int max_range, string direction)
         {
-            throw new NotImplementedException();
-            //int i, j;
-            //var loopTo = MapWidth;
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    var loopTo1 = MapHeight;
-            //    for (j = 1; j <= loopTo1; j++)
-            //        MaskData[i, j] = true;
-            //}
+            ClearMask();
 
-            //switch (direction ?? "")
-            //{
-            //    case "N":
-            //        {
-            //            var loopTo2 = (Y - min_range);
-            //            for (i = (Y - max_range); i <= loopTo2; i++)
-            //            {
-            //                if (i >= 1)
-            //                {
-            //                    MaskData[X, i] = false;
-            //                }
-            //            }
+            switch (direction ?? "")
+            {
+                case "N":
+                    {
+                        var loopTo2 = (Y - min_range);
+                        for (var i = (Y - max_range); i <= loopTo2; i++)
+                        {
+                            if (i >= 1)
+                            {
+                                MaskData[X, i] = false;
+                            }
+                        }
 
-            //            var loopTo3 = (Y - (min_range + 1));
-            //            for (i = (Y - max_range + 1); i <= loopTo3; i++)
-            //            {
-            //                if (i >= 1)
-            //                {
-            //                    if (X > 1)
-            //                    {
-            //                        MaskData[X - 1, i] = false;
-            //                    }
+                        var loopTo3 = (Y - (min_range + 1));
+                        for (var i = (Y - max_range + 1); i <= loopTo3; i++)
+                        {
+                            if (i >= 1)
+                            {
+                                if (X > 1)
+                                {
+                                    MaskData[X - 1, i] = false;
+                                }
 
-            //                    if (X < MapWidth)
-            //                    {
-            //                        MaskData[X + 1, i] = false;
-            //                    }
-            //                }
-            //            }
+                                if (X < MapWidth)
+                                {
+                                    MaskData[X + 1, i] = false;
+                                }
+                            }
+                        }
 
-            //            break;
-            //        }
+                        break;
+                    }
 
-            //    case "S":
-            //        {
-            //            var loopTo4 = (Y + max_range);
-            //            for (i = (Y + min_range); i <= loopTo4; i++)
-            //            {
-            //                if (i <= MapHeight)
-            //                {
-            //                    MaskData[X, i] = false;
-            //                }
-            //            }
+                case "S":
+                    {
+                        var loopTo4 = (Y + max_range);
+                        for (var i = (Y + min_range); i <= loopTo4; i++)
+                        {
+                            if (i <= MapHeight)
+                            {
+                                MaskData[X, i] = false;
+                            }
+                        }
 
-            //            var loopTo5 = (Y + max_range - 1);
-            //            for (i = (Y + (min_range + 1)); i <= loopTo5; i++)
-            //            {
-            //                if (i <= MapHeight)
-            //                {
-            //                    if (X > 1)
-            //                    {
-            //                        MaskData[X - 1, i] = false;
-            //                    }
+                        var loopTo5 = (Y + max_range - 1);
+                        for (var i = (Y + (min_range + 1)); i <= loopTo5; i++)
+                        {
+                            if (i <= MapHeight)
+                            {
+                                if (X > 1)
+                                {
+                                    MaskData[X - 1, i] = false;
+                                }
 
-            //                    if (X < MapWidth)
-            //                    {
-            //                        MaskData[X + 1, i] = false;
-            //                    }
-            //                }
-            //            }
+                                if (X < MapWidth)
+                                {
+                                    MaskData[X + 1, i] = false;
+                                }
+                            }
+                        }
 
-            //            break;
-            //        }
+                        break;
+                    }
 
-            //    case "W":
-            //        {
-            //            var loopTo6 = (X - min_range);
-            //            for (i = (X - max_range); i <= loopTo6; i++)
-            //            {
-            //                if (i >= 1)
-            //                {
-            //                    MaskData[i, Y] = false;
-            //                }
-            //            }
+                case "W":
+                    {
+                        var loopTo6 = (X - min_range);
+                        for (var i = (X - max_range); i <= loopTo6; i++)
+                        {
+                            if (i >= 1)
+                            {
+                                MaskData[i, Y] = false;
+                            }
+                        }
 
-            //            var loopTo7 = (X - (min_range + 1));
-            //            for (i = (X - max_range + 1); i <= loopTo7; i++)
-            //            {
-            //                if (i >= 1)
-            //                {
-            //                    if (Y > 1)
-            //                    {
-            //                        MaskData[i, Y - 1] = false;
-            //                    }
+                        var loopTo7 = (X - (min_range + 1));
+                        for (var i = (X - max_range + 1); i <= loopTo7; i++)
+                        {
+                            if (i >= 1)
+                            {
+                                if (Y > 1)
+                                {
+                                    MaskData[i, Y - 1] = false;
+                                }
 
-            //                    if (Y < MapHeight)
-            //                    {
-            //                        MaskData[i, Y + 1] = false;
-            //                    }
-            //                }
-            //            }
+                                if (Y < MapHeight)
+                                {
+                                    MaskData[i, Y + 1] = false;
+                                }
+                            }
+                        }
 
-            //            break;
-            //        }
+                        break;
+                    }
 
-            //    case "E":
-            //        {
-            //            var loopTo8 = (X + max_range);
-            //            for (i = (X + min_range); i <= loopTo8; i++)
-            //            {
-            //                if (i <= MapWidth)
-            //                {
-            //                    MaskData[i, Y] = false;
-            //                }
-            //            }
+                case "E":
+                    {
+                        var loopTo8 = (X + max_range);
+                        for (var i = (X + min_range); i <= loopTo8; i++)
+                        {
+                            if (i <= MapWidth)
+                            {
+                                MaskData[i, Y] = false;
+                            }
+                        }
 
-            //            var loopTo9 = (X + max_range - 1);
-            //            for (i = (X + (min_range + 1)); i <= loopTo9; i++)
-            //            {
-            //                if (i <= MapWidth)
-            //                {
-            //                    if (Y > 1)
-            //                    {
-            //                        MaskData[i, Y - 1] = false;
-            //                    }
+                        var loopTo9 = (X + max_range - 1);
+                        for (var i = (X + (min_range + 1)); i <= loopTo9; i++)
+                        {
+                            if (i <= MapWidth)
+                            {
+                                if (Y > 1)
+                                {
+                                    MaskData[i, Y - 1] = false;
+                                }
 
-            //                    if (Y < MapHeight)
-            //                    {
-            //                        MaskData[i, Y + 1] = false;
-            //                    }
-            //                }
-            //            }
+                                if (Y < MapHeight)
+                                {
+                                    MaskData[i, Y + 1] = false;
+                                }
+                            }
+                        }
 
-            //            break;
-            //        }
-            //}
+                        break;
+                    }
+            }
 
-            //MaskData[X, Y] = false;
+            MaskData[X, Y] = false;
         }
 
         // 扇状のエリアを選択 (Ｍ扇の攻撃範囲設定用)
