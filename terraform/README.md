@@ -1,6 +1,7 @@
 # Terraform
 
-Terraform Cloud と接続しているが、現状は未適用。
+Terraform Cloud と接続している。
 
-Azure Static Web Apps はIaC管理を積極的にしたい内容がない。
-https://github.com/7474/SRC/pull/235
+Static Web Apps を管理できる範囲が拡充されたらカスタムドメイン他を管理するかもしれない程度。
+
+https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/static_site
