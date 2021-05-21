@@ -1338,76 +1338,68 @@ namespace SRCCore.Maps
         // 直線状のエリアを選択 (Ｍ直の攻撃範囲設定用)
         public void AreaInLine(int X, int Y, int min_range, int max_range, string direction)
         {
-            throw new NotImplementedException();
-            //int i, j;
-            //var loopTo = MapWidth;
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    var loopTo1 = MapHeight;
-            //    for (j = 1; j <= loopTo1; j++)
-            //        MaskData[i, j] = true;
-            //}
+            ClearMask();
 
-            //switch (direction ?? "")
-            //{
-            //    case "N":
-            //        {
-            //            var loopTo2 = (Y - min_range);
-            //            for (i = (Y - max_range); i <= loopTo2; i++)
-            //            {
-            //                if (i >= 1)
-            //                {
-            //                    MaskData[X, i] = false;
-            //                }
-            //            }
+            switch (direction ?? "")
+            {
+                case "N":
+                    {
+                        var loopTo2 = (Y - min_range);
+                        for (var i  = (Y - max_range); i <= loopTo2; i++)
+                        {
+                            if (i >= 1)
+                            {
+                                MaskData[X, i] = false;
+                            }
+                        }
 
-            //            break;
-            //        }
+                        break;
+                    }
 
-            //    case "S":
-            //        {
-            //            var loopTo3 = (Y + max_range);
-            //            for (i = (Y + min_range); i <= loopTo3; i++)
-            //            {
-            //                if (i <= MapHeight)
-            //                {
-            //                    MaskData[X, i] = false;
-            //                }
-            //            }
+                case "S":
+                    {
+                        var loopTo3 = (Y + max_range);
+                        for (var i = (Y + min_range); i <= loopTo3; i++)
+                        {
+                            if (i <= MapHeight)
+                            {
+                                MaskData[X, i] = false;
+                            }
+                        }
 
-            //            break;
-            //        }
+                        break;
+                    }
 
-            //    case "W":
-            //        {
-            //            var loopTo4 = (X - min_range);
-            //            for (i = (X - max_range); i <= loopTo4; i++)
-            //            {
-            //                if (i >= 1)
-            //                {
-            //                    MaskData[i, Y] = false;
-            //                }
-            //            }
+                case "W":
+                    {
+                        var loopTo4 = (X - min_range);
+                        for (var i = (X - max_range); i <= loopTo4; i++)
+                        {
+                            if (i >= 1)
+                            {
+                                MaskData[i, Y] = false;
+                            }
+                        }
 
-            //            break;
-            //        }
+                        break;
+                    }
 
-            //    case "E":
-            //        {
-            //            var loopTo5 = (X + max_range);
-            //            for (i = (X + min_range); i <= loopTo5; i++)
-            //            {
-            //                if (i <= MapWidth)
-            //                {
-            //                    MaskData[i, Y] = false;
-            //                }
-            //            }
+                case "E":
+                    {
+                        var loopTo5 = (X + max_range);
+                        for (var i = (X + min_range); i <= loopTo5; i++)
+                        {
+                            if (i <= MapWidth)
+                            {
+                                MaskData[i, Y] = false;
+                            }
+                        }
 
-            //            break;
-            //        }
-            //}
+                        break;
+                    }
+            }
 
-            //MaskData[X, Y] = false;
+            MaskData[X, Y] = false;
         }
 
         // 幅３マスの十字状のエリアを選択 (Ｍ拡の攻撃方向選択用)
