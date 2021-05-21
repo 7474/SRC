@@ -1315,7 +1315,7 @@ namespace SRCCore.Maps
             }
 
             var loopTo4 = (X - min_range);
-            for (var i  = (X - max_range); i <= loopTo4; i++)
+            for (var i = (X - max_range); i <= loopTo4; i++)
             {
                 if (i >= 1)
                 {
@@ -1345,7 +1345,7 @@ namespace SRCCore.Maps
                 case "N":
                     {
                         var loopTo2 = (Y - min_range);
-                        for (var i  = (Y - max_range); i <= loopTo2; i++)
+                        for (var i = (Y - max_range); i <= loopTo2; i++)
                         {
                             if (i >= 1)
                             {
@@ -1408,7 +1408,7 @@ namespace SRCCore.Maps
             ClearMask();
 
             var loopTo2 = (Y - min_range);
-            for (var i  = (Y - max_range); i <= loopTo2; i++)
+            for (var i = (Y - max_range); i <= loopTo2; i++)
             {
                 if (i >= 1)
                 {
@@ -1652,242 +1652,226 @@ namespace SRCCore.Maps
         // 扇状のエリアを選択 (Ｍ扇の攻撃範囲設定用)
         public void AreaInSector(int X, int Y, int min_range, int max_range, string direction, int lv, bool without_refresh = false)
         {
-            throw new NotImplementedException();
-            //int xx, i, yy;
-            //if (!without_refresh)
-            //{
-            //    var loopTo = MapWidth;
-            //    for (xx = 1; xx <= loopTo; xx++)
-            //    {
-            //        var loopTo1 = MapHeight;
-            //        for (yy = 1; yy <= loopTo1; yy++)
-            //            MaskData[xx, yy] = true;
-            //    }
-            //}
+            if (!without_refresh)
+            {
+                ClearMask();
+            }
 
-            //switch (direction ?? "")
-            //{
-            //    case "N":
-            //        {
-            //            var loopTo2 = max_range;
-            //            for (i = min_range; i <= loopTo2; i++)
-            //            {
-            //                yy = (Y - i);
-            //                if (yy < 1)
-            //                {
-            //                    break;
-            //                }
+            switch (direction ?? "")
+            {
+                case "N":
+                    {
+                        var loopTo2 = max_range;
+                        for (var i = min_range; i <= loopTo2; i++)
+                        {
+                            var yy = (Y - i);
+                            if (yy < 1)
+                            {
+                                break;
+                            }
 
-            //                switch (lv)
-            //                {
-            //                    case 1:
-            //                        {
-            //                            var loopTo3 = Math.Min(X + i / 3, MapWidth);
-            //                            for (xx = Math.Max(X - i / 3, 1); xx <= loopTo3; xx++)
-            //                                MaskData[xx, yy] = false;
-            //                            break;
-            //                        }
+                            switch (lv)
+                            {
+                                case 1:
+                                    {
+                                        var loopTo3 = Math.Min(X + i / 3, MapWidth);
+                                        for (var xx = Math.Max(X - i / 3, 1); xx <= loopTo3; xx++)
+                                            MaskData[xx, yy] = false;
+                                        break;
+                                    }
 
-            //                    case 2:
-            //                        {
-            //                            var loopTo4 = Math.Min(X + i / 2, MapWidth);
-            //                            for (xx = Math.Max(X - i / 2, 1); xx <= loopTo4; xx++)
-            //                                MaskData[xx, yy] = false;
-            //                            break;
-            //                        }
+                                case 2:
+                                    {
+                                        var loopTo4 = Math.Min(X + i / 2, MapWidth);
+                                        for (var xx = Math.Max(X - i / 2, 1); xx <= loopTo4; xx++)
+                                            MaskData[xx, yy] = false;
+                                        break;
+                                    }
 
-            //                    case 3:
-            //                        {
-            //                            var loopTo5 = Math.Min(X + (i - 1), MapWidth);
-            //                            for (xx = Math.Max(X - (i - 1), 1); xx <= loopTo5; xx++)
-            //                                MaskData[xx, yy] = false;
-            //                            break;
-            //                        }
+                                case 3:
+                                    {
+                                        var loopTo5 = Math.Min(X + (i - 1), MapWidth);
+                                        for (var xx = Math.Max(X - (i - 1), 1); xx <= loopTo5; xx++)
+                                            MaskData[xx, yy] = false;
+                                        break;
+                                    }
 
-            //                    case 4:
-            //                        {
-            //                            var loopTo6 = Math.Min(X + i, MapWidth);
-            //                            for (xx = Math.Max(X - i, 1); xx <= loopTo6; xx++)
-            //                                MaskData[xx, yy] = false;
-            //                            break;
-            //                        }
-            //                }
-            //            }
+                                case 4:
+                                    {
+                                        var loopTo6 = Math.Min(X + i, MapWidth);
+                                        for (var xx = Math.Max(X - i, 1); xx <= loopTo6; xx++)
+                                            MaskData[xx, yy] = false;
+                                        break;
+                                    }
+                            }
+                        }
 
-            //            break;
-            //        }
+                        break;
+                    }
 
-            //    case "S":
-            //        {
-            //            var loopTo7 = max_range;
-            //            for (i = min_range; i <= loopTo7; i++)
-            //            {
-            //                yy = (Y + i);
-            //                if (yy > MapHeight)
-            //                {
-            //                    break;
-            //                }
+                case "S":
+                    {
+                        var loopTo7 = max_range;
+                        for (var i = min_range; i <= loopTo7; i++)
+                        {
+                            var yy = (Y + i);
+                            if (yy > MapHeight)
+                            {
+                                break;
+                            }
 
-            //                switch (lv)
-            //                {
-            //                    case 1:
-            //                        {
-            //                            var loopTo8 = Math.Min(X + i / 3, MapWidth);
-            //                            for (xx = Math.Max(X - i / 3, 1); xx <= loopTo8; xx++)
-            //                                MaskData[xx, yy] = false;
-            //                            break;
-            //                        }
+                            switch (lv)
+                            {
+                                case 1:
+                                    {
+                                        var loopTo8 = Math.Min(X + i / 3, MapWidth);
+                                        for (var xx = Math.Max(X - i / 3, 1); xx <= loopTo8; xx++)
+                                            MaskData[xx, yy] = false;
+                                        break;
+                                    }
 
-            //                    case 2:
-            //                        {
-            //                            var loopTo9 = Math.Min(X + i / 2, MapWidth);
-            //                            for (xx = Math.Max(X - i / 2, 1); xx <= loopTo9; xx++)
-            //                                MaskData[xx, yy] = false;
-            //                            break;
-            //                        }
+                                case 2:
+                                    {
+                                        var loopTo9 = Math.Min(X + i / 2, MapWidth);
+                                        for (var xx = Math.Max(X - i / 2, 1); xx <= loopTo9; xx++)
+                                            MaskData[xx, yy] = false;
+                                        break;
+                                    }
 
-            //                    case 3:
-            //                        {
-            //                            var loopTo10 = Math.Min(X + (i - 1), MapWidth);
-            //                            for (xx = Math.Max(X - (i - 1), 1); xx <= loopTo10; xx++)
-            //                                MaskData[xx, yy] = false;
-            //                            break;
-            //                        }
+                                case 3:
+                                    {
+                                        var loopTo10 = Math.Min(X + (i - 1), MapWidth);
+                                        for (var xx = Math.Max(X - (i - 1), 1); xx <= loopTo10; xx++)
+                                            MaskData[xx, yy] = false;
+                                        break;
+                                    }
 
-            //                    case 4:
-            //                        {
-            //                            var loopTo11 = Math.Min(X + i, MapWidth);
-            //                            for (xx = Math.Max(X - i, 1); xx <= loopTo11; xx++)
-            //                                MaskData[xx, yy] = false;
-            //                            break;
-            //                        }
-            //                }
-            //            }
+                                case 4:
+                                    {
+                                        var loopTo11 = Math.Min(X + i, MapWidth);
+                                        for (var xx = Math.Max(X - i, 1); xx <= loopTo11; xx++)
+                                            MaskData[xx, yy] = false;
+                                        break;
+                                    }
+                            }
+                        }
 
-            //            break;
-            //        }
+                        break;
+                    }
 
-            //    case "W":
-            //        {
-            //            var loopTo12 = max_range;
-            //            for (i = min_range; i <= loopTo12; i++)
-            //            {
-            //                xx = (X - i);
-            //                if (xx < 1)
-            //                {
-            //                    break;
-            //                }
+                case "W":
+                    {
+                        var loopTo12 = max_range;
+                        for (var i = min_range; i <= loopTo12; i++)
+                        {
+                            var xx = (X - i);
+                            if (xx < 1)
+                            {
+                                break;
+                            }
 
-            //                switch (lv)
-            //                {
-            //                    case 1:
-            //                        {
-            //                            var loopTo13 = Math.Min(Y + i / 3, MapHeight);
-            //                            for (yy = Math.Max(Y - i / 3, 1); yy <= loopTo13; yy++)
-            //                                MaskData[xx, yy] = false;
-            //                            break;
-            //                        }
+                            switch (lv)
+                            {
+                                case 1:
+                                    {
+                                        var loopTo13 = Math.Min(Y + i / 3, MapHeight);
+                                        for (var yy = Math.Max(Y - i / 3, 1); yy <= loopTo13; yy++)
+                                            MaskData[xx, yy] = false;
+                                        break;
+                                    }
 
-            //                    case 2:
-            //                        {
-            //                            var loopTo14 = Math.Min(Y + i / 2, MapHeight);
-            //                            for (yy = Math.Max(Y - i / 2, 1); yy <= loopTo14; yy++)
-            //                                MaskData[xx, yy] = false;
-            //                            break;
-            //                        }
+                                case 2:
+                                    {
+                                        var loopTo14 = Math.Min(Y + i / 2, MapHeight);
+                                        for (var yy = Math.Max(Y - i / 2, 1); yy <= loopTo14; yy++)
+                                            MaskData[xx, yy] = false;
+                                        break;
+                                    }
 
-            //                    case 3:
-            //                        {
-            //                            var loopTo15 = Math.Min(Y + (i - 1), MapHeight);
-            //                            for (yy = Math.Max(Y - (i - 1), 1); yy <= loopTo15; yy++)
-            //                                MaskData[xx, yy] = false;
-            //                            break;
-            //                        }
+                                case 3:
+                                    {
+                                        var loopTo15 = Math.Min(Y + (i - 1), MapHeight);
+                                        for (var yy = Math.Max(Y - (i - 1), 1); yy <= loopTo15; yy++)
+                                            MaskData[xx, yy] = false;
+                                        break;
+                                    }
 
-            //                    case 4:
-            //                        {
-            //                            var loopTo16 = Math.Min(Y + i, MapHeight);
-            //                            for (yy = Math.Max(Y - i, 1); yy <= loopTo16; yy++)
-            //                                MaskData[xx, yy] = false;
-            //                            break;
-            //                        }
-            //                }
-            //            }
+                                case 4:
+                                    {
+                                        var loopTo16 = Math.Min(Y + i, MapHeight);
+                                        for (var yy = Math.Max(Y - i, 1); yy <= loopTo16; yy++)
+                                            MaskData[xx, yy] = false;
+                                        break;
+                                    }
+                            }
+                        }
 
-            //            break;
-            //        }
+                        break;
+                    }
 
-            //    case "E":
-            //        {
-            //            var loopTo17 = max_range;
-            //            for (i = min_range; i <= loopTo17; i++)
-            //            {
-            //                xx = (X + i);
-            //                if (xx > MapWidth)
-            //                {
-            //                    break;
-            //                }
+                case "E":
+                    {
+                        var loopTo17 = max_range;
+                        for (var i = min_range; i <= loopTo17; i++)
+                        {
+                            var xx = (X + i);
+                            if (xx > MapWidth)
+                            {
+                                break;
+                            }
 
-            //                switch (lv)
-            //                {
-            //                    case 1:
-            //                        {
-            //                            var loopTo18 = Math.Min(Y + i / 3, MapHeight);
-            //                            for (yy = Math.Max(Y - i / 3, 1); yy <= loopTo18; yy++)
-            //                                MaskData[xx, yy] = false;
-            //                            break;
-            //                        }
+                            switch (lv)
+                            {
+                                case 1:
+                                    {
+                                        var loopTo18 = Math.Min(Y + i / 3, MapHeight);
+                                        for (var yy = Math.Max(Y - i / 3, 1); yy <= loopTo18; yy++)
+                                            MaskData[xx, yy] = false;
+                                        break;
+                                    }
 
-            //                    case 2:
-            //                        {
-            //                            var loopTo19 = Math.Min(Y + i / 2, MapHeight);
-            //                            for (yy = Math.Max(Y - i / 2, 1); yy <= loopTo19; yy++)
-            //                                MaskData[xx, yy] = false;
-            //                            break;
-            //                        }
+                                case 2:
+                                    {
+                                        var loopTo19 = Math.Min(Y + i / 2, MapHeight);
+                                        for (var yy = Math.Max(Y - i / 2, 1); yy <= loopTo19; yy++)
+                                            MaskData[xx, yy] = false;
+                                        break;
+                                    }
 
-            //                    case 3:
-            //                        {
-            //                            var loopTo20 = Math.Min(Y + (i - 1), MapHeight);
-            //                            for (yy = Math.Max(Y - (i - 1), 1); yy <= loopTo20; yy++)
-            //                                MaskData[xx, yy] = false;
-            //                            break;
-            //                        }
+                                case 3:
+                                    {
+                                        var loopTo20 = Math.Min(Y + (i - 1), MapHeight);
+                                        for (var yy = Math.Max(Y - (i - 1), 1); yy <= loopTo20; yy++)
+                                            MaskData[xx, yy] = false;
+                                        break;
+                                    }
 
-            //                    case 4:
-            //                        {
-            //                            var loopTo21 = Math.Min(Y + i, MapHeight);
-            //                            for (yy = Math.Max(Y - i, 1); yy <= loopTo21; yy++)
-            //                                MaskData[xx, yy] = false;
-            //                            break;
-            //                        }
-            //                }
-            //            }
+                                case 4:
+                                    {
+                                        var loopTo21 = Math.Min(Y + i, MapHeight);
+                                        for (var yy = Math.Max(Y - i, 1); yy <= loopTo21; yy++)
+                                            MaskData[xx, yy] = false;
+                                        break;
+                                    }
+                            }
+                        }
 
-            //            break;
-            //        }
-            //}
+                        break;
+                    }
+            }
 
-            //MaskData[X, Y] = false;
+            MaskData[X, Y] = false;
         }
 
         // 十字状の扇状のエリアを選択 (Ｍ扇の攻撃方向選択用)
         public void AreaInSectorCross(int X, int Y, int min_range, int max_range, int lv)
         {
-            throw new NotImplementedException();
-            //int xx, yy;
-            //var loopTo = MapWidth;
-            //for (xx = 1; xx <= loopTo; xx++)
-            //{
-            //    var loopTo1 = MapHeight;
-            //    for (yy = 1; yy <= loopTo1; yy++)
-            //        MaskData[xx, yy] = true;
-            //}
+            ClearMask();
 
-            //AreaInSector(X, Y, min_range, max_range, "N", lv, true);
-            //AreaInSector(X, Y, min_range, max_range, "S", lv, true);
-            //AreaInSector(X, Y, min_range, max_range, "W", lv, true);
-            //AreaInSector(X, Y, min_range, max_range, "E", lv, true);
+            AreaInSector(X, Y, min_range, max_range, "N", lv, true);
+            AreaInSector(X, Y, min_range, max_range, "S", lv, true);
+            AreaInSector(X, Y, min_range, max_range, "W", lv, true);
+            AreaInSector(X, Y, min_range, max_range, "E", lv, true);
         }
 
         // ２点間を結ぶ直線状のエリアを選択 (Ｍ線の範囲設定用)
