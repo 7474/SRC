@@ -5552,7 +5552,6 @@ namespace SRCCore
             max_prob = 0;
             max_dmg = 0;
 
-            // TODO Impl
             int SelectWeaponRet = default;
             string smode;
             bool use_true_value = default, is_move_attack;
@@ -5573,28 +5572,28 @@ namespace SRCCore
             int parry_prob;
             string fdata;
 
-            //// 御主人さまにはさからえません
-            //if (u.IsConditionSatisfied("魅了"))
-            //{
-            //    if (ReferenceEquals(u.Master, t))
-            //    {
-            //        SelectWeaponRet = -1;
-            //        return SelectWeaponRet;
-            //    }
-            //}
+            // 御主人さまにはさからえません
+            if (u.IsConditionSatisfied("魅了"))
+            {
+                if (ReferenceEquals(u.Master, t))
+                {
+                    SelectWeaponRet = -1;
+                    return SelectWeaponRet;
+                }
+            }
 
-            //// 踊りに忙しい……
-            //if (u.IsConditionSatisfied("踊り"))
-            //{
-            //    SelectWeaponRet = -1;
-            //    return SelectWeaponRet;
-            //}
+            // 踊りに忙しい……
+            if (u.IsConditionSatisfied("踊り"))
+            {
+                SelectWeaponRet = -1;
+                return SelectWeaponRet;
+            }
 
-            //// スペシャルパワー等の影響を考えて武器を選択するかを判定
-            //if (u.Party == "味方")
-            //{
-            //    use_true_value = true;
-            //}
+            // スペシャルパワー等の影響を考えて武器を選択するかを判定
+            if (u.Party == "味方")
+            {
+                use_true_value = true;
+            }
 
             // ユニットが移動前かどうかを判定
             if (amode == "移動後")
@@ -5606,6 +5605,7 @@ namespace SRCCore
                 smode = "移動前";
             }
 
+            // TODO Impl
             //// サポートアタックをしてくれるユニットがいるかどうか
             //if (Strings.InStr(amode, "反撃") == 0 && Strings.InStr(amode, "サポート") == 0)
             //{
@@ -5713,36 +5713,36 @@ namespace SRCCore
                 // TODO Impl
                 if (u.Party == "味方" && u.Party0 == "味方" && Strings.InStr(amode, "イベント") == 0)
                 {
-                    //    // 自爆攻撃は武器を手動選択する場合にのみ使用
-                    //    if (selectedWeapon.IsWeaponClassifiedAs("自"))
-                    //    {
-                    //        goto NextWeapon;
-                    //    }
+                    // 自爆攻撃は武器を手動選択する場合にのみ使用
+                    if (selectedWeapon.IsWeaponClassifiedAs("自"))
+                    {
+                        goto NextWeapon;
+                    }
 
-                    //    // 手動反撃時のサポートアタック以外は残弾数が少ない武器を使用しない
-                    //    if (amode != "サポートアタック" || SystemConfig.AutoDefense)
-                    //    {
-                    //        if (!selectedWeapon.IsWeaponClassifiedAs("永"))
-                    //        {
-                    //            if (u.Bullet(w) == 1 || u.MaxBullet(w) == 2 || u.MaxBullet(w) == 3)
-                    //            {
-                    //                goto NextWeapon;
-                    //            }
-                    //        }
+                    // 手動反撃時のサポートアタック以外は残弾数が少ない武器を使用しない
+                    if (amode != "サポートアタック" || SystemConfig.AutoDefense)
+                    {
+                        if (!selectedWeapon.IsWeaponClassifiedAs("永"))
+                        {
+                            if (selectedWeapon.Bullet() == 1 || selectedWeapon.MaxBullet() == 2 || selectedWeapon.MaxBullet() == 3)
+                            {
+                                goto NextWeapon;
+                            }
+                        }
 
-                    //        if (u.WeaponENConsumption(w) > 0)
-                    //        {
-                    //            if (u.WeaponENConsumption(w) >= u.EN / 2 || u.WeaponENConsumption(w) >= u.MaxEN / 4)
-                    //            {
-                    //                goto NextWeapon;
-                    //            }
-                    //        }
+                        if (selectedWeapon.WeaponENConsumption() > 0)
+                        {
+                            if (selectedWeapon.WeaponENConsumption() >= u.EN / 2 || selectedWeapon.WeaponENConsumption() >= u.MaxEN / 4)
+                            {
+                                goto NextWeapon;
+                            }
+                        }
 
-                    //        if (selectedWeapon.IsWeaponClassifiedAs("尽"))
-                    //        {
-                    //            goto NextWeapon;
-                    //        }
-                    //    }
+                        if (selectedWeapon.IsWeaponClassifiedAs("尽"))
+                        {
+                            goto NextWeapon;
+                        }
+                    }
                 }
 
                 // ボスユニットが自爆＆全ＥＮ消費攻撃使うのは非常時のみ
