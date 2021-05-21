@@ -3796,6 +3796,7 @@ namespace SRCCore.Maps
         // ユニット u のＭ移武器、アビリティのターゲット座標選択用
         public void AreaInMoveAction(Unit u, int max_range)
         {
+            // XXX 移動と処理合わせたいもんだ
             throw new NotImplementedException();
             //int k, i, j, n;
             //// ADD START MARGE
