@@ -7,6 +7,7 @@ using SRCCore.Models;
 using SRCCore.Pilots;
 using SRCCore.VB;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SRCCore.Units
@@ -1880,6 +1881,33 @@ namespace SRCCore.Units
                 default:
                     throw new NotSupportedException();
             }
+        }
+
+        // 合体技のパートナーを探す
+        public IList<Unit> CombinationPartner(int tx = 0, int ty = 0, bool check_formation = false)
+        {
+            // 合体技のデータを調べておく
+            var cname = Data.Name;
+            var cen = AbilityENConsumption();
+            var cmorale = Data.NecessaryMorale;
+            int cplana = 0;
+            if (IsAbilityClassifiedAs("霊"))
+            {
+                cplana = (int)(5d * AbilityLevel("霊"));
+            }
+            else if (IsAbilityClassifiedAs("プ"))
+            {
+                cplana = (int)(5d * AbilityLevel("プ"));
+            }
+            var crange = AbilityMaxRange();
+            return Unit.CombinationPartner(
+                cname,
+                cen,
+                cmorale,
+                cplana,
+                crange,
+                tx, ty, check_formation
+                );
         }
     }
 

@@ -100,7 +100,7 @@ namespace SRCCore.Units
             //        dblStock[i] = 1d;
 
             // 他形態も回復
-            foreach(var of in OtherForms)
+            foreach (var of in OtherForms)
             {
                 of.EN = of.MaxEN;
                 //var loopTo3 = withBlock.CountWeapon();
@@ -180,11 +180,11 @@ namespace SRCCore.Units
             //    var is_immune_to_terrain_effect = default(bool);
             //    // ADD END MARGE
 
-            //    // 味方ステージの1ターン目(スタートイベント直後)は回復を行わない
-            //    if (SRC.Stage == "味方" & SRC.Turn == 1)
-            //    {
-            //        return;
-            //    }
+            // 味方ステージの1ターン目(スタートイベント直後)は回復を行わない
+            if (SRC.Stage == "味方" & SRC.Turn == 1)
+            {
+                return;
+            }
 
             // データ更新
             Update();
@@ -537,29 +537,29 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    // ＨＰ回復などを付加した場合のことを考えて状態のアップデートは
-            //    // ＨＰ＆ＥＮ回復量を計算した後に行う
-            //    hp_ratio = 100 * HP / (double)MaxHP;
-            //    en_ratio = 100 * EN / (double)MaxEN;
-            //    UpdateCondition(true);
-            //    HP = (int)((long)(MaxHP * hp_ratio) / 100L);
-            //    EN = (int)((long)(MaxEN * en_ratio) / 100L);
+            // ＨＰ回復などを付加した場合のことを考えて状態のアップデートは
+            // ＨＰ＆ＥＮ回復量を計算した後に行う
+            var hp_ratio = 100 * HP / (double)MaxHP;
+            var en_ratio = 100 * EN / (double)MaxEN;
+            UpdateCondition(true);
+            HP = (int)((long)(MaxHP * hp_ratio) / 100L);
+            EN = (int)((long)(MaxEN * en_ratio) / 100L);
 
-            //    // サポートアタック＆ガード
-            //    UsedSupportAttack = 0;
-            //    UsedSupportGuard = 0;
+            // サポートアタック＆ガード
+            UsedSupportAttack = 0;
+            UsedSupportGuard = 0;
 
-            //    // 同時援護攻撃
-            //    UsedSyncAttack = 0;
+            // 同時援護攻撃
+            UsedSyncAttack = 0;
 
-            //    // カウンター攻撃
-            //    UsedCounterAttack = 0;
+            // カウンター攻撃
+            UsedCounterAttack = 0;
 
-            //    // チャージ完了？
-            //    if (ConditionLifetime("チャージ") == 0)
-            //    {
-            //        AddCondition("チャージ完了", 1, cdata: "");
-            //    }
+            // チャージ完了？
+            if (ConditionLifetime("チャージ") == 0)
+            {
+                AddCondition("チャージ完了", 1, cdata: "");
+            }
 
             //    // 付加された移動能力が切れた場合の処理
             //    if (Status == "出撃" & !string.IsNullOrEmpty(Map.MapFileName))

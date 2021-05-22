@@ -3,7 +3,10 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Units;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.Commands
 {
@@ -12,128 +15,103 @@ namespace SRCCore.Commands
         // 「チャージ」コマンド
         private void ChargeCommand()
         {
-            throw new NotImplementedException();
-            //int ret;
-            //Unit[] partners;
-            //int i;
-            //GUI.LockGUI();
-            //ret = Interaction.MsgBox("チャージを開始しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "チャージ開始");
-            //if (ret == MsgBoxResult.Cancel)
-            //{
-            //    CancelCommand();
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+            GUI.LockGUI();
+            var ret = GUI.Confirm("チャージを開始しますか？", "チャージ開始", GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
+            if (ret != GuiDialogResult.Ok)
+            {
+                CancelCommand();
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //// 使用イベント
-            //Event.HandleEvent("使用", SelectedUnit.MainPilot().ID, "チャージ");
-            //if (SRC.IsScenarioFinished)
-            //{
-            //    SRC.IsScenarioFinished = false;
-            //    CommandState = "ユニット選択";
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+            // 使用イベント
+            Event.HandleEvent("使用", SelectedUnit.MainPilot().ID, "チャージ");
+            if (SRC.IsScenarioFinished)
+            {
+                SRC.IsScenarioFinished = false;
+                CommandState = "ユニット選択";
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //if (SRC.IsCanceled)
-            //{
-            //    SRC.IsCanceled = false;
-            //    CommandState = "ユニット選択";
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+            if (SRC.IsCanceled)
+            {
+                SRC.IsCanceled = false;
+                CommandState = "ユニット選択";
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //{
-            //    var withBlock = SelectedUnit;
-            //    // チャージのメッセージを表示
-            //    if (withBlock.IsMessageDefined("チャージ"))
-            //    {
-            //        GUI.OpenMessageForm(u1: null, u2: null);
-            //        withBlock.PilotMessage("チャージ", msg_mode: "");
-            //        GUI.CloseMessageForm();
-            //    }
+            var currentUnit = SelectedUnit;
+            // チャージのメッセージを表示
+            if (currentUnit.IsMessageDefined("チャージ"))
+            {
+                GUI.OpenMessageForm(u1: null, u2: null);
+                currentUnit.PilotMessage("チャージ", msg_mode: "");
+                GUI.CloseMessageForm();
+            }
 
-            //    // アニメ表示を行う
-            //    if (withBlock.IsAnimationDefined("チャージ", sub_situation: ""))
-            //    {
-            //        withBlock.PlayAnimation("チャージ", sub_situation: "");
-            //    }
-            //    else if (withBlock.IsSpecialEffectDefined("チャージ", sub_situation: ""))
-            //    {
-            //        withBlock.SpecialEffect("チャージ", sub_situation: "");
-            //    }
-            //    else
-            //    {
-            //        Sound.PlayWave("Charge.wav");
-            //    }
+            // アニメ表示を行う
+            if (currentUnit.IsAnimationDefined("チャージ", sub_situation: ""))
+            {
+                currentUnit.PlayAnimation("チャージ", sub_situation: "");
+            }
+            else if (currentUnit.IsSpecialEffectDefined("チャージ", sub_situation: ""))
+            {
+                currentUnit.SpecialEffect("チャージ", sub_situation: "");
+            }
+            else
+            {
+                Sound.PlayWave("Charge.wav");
+            }
 
-            //    // チャージ攻撃のパートナーを探す
-            //    partners = new Unit[1];
-            //    var loopTo = withBlock.CountWeapon();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        if (withBlock.IsWeaponClassifiedAs(i, "Ｃ") & withBlock.IsWeaponClassifiedAs(i, "合"))
-            //        {
-            //            if (withBlock.IsWeaponAvailable(i, "チャージ"))
-            //            {
-            //                withBlock.CombinationPartner("武装", i, partners);
-            //                break;
-            //            }
-            //        }
-            //    }
+            // チャージ攻撃のパートナーを探す
+            // XXX 条件を満たす最初のアビリティ、武器、の順に選ばれる状態
+            IList<Unit> partners = new List<Unit>();
+            var cuw = currentUnit.Weapons
+                .FirstOrDefault(uw => uw.IsWeaponClassifiedAs("Ｃ") && uw.IsWeaponClassifiedAs("合"));
+            if (cuw != null)
+            {
+                partners = cuw.CombinationPartner();
+            }
+            var cua = currentUnit.Abilities
+                .FirstOrDefault(ua => ua.IsAbilityClassifiedAs("Ｃ") && ua.IsAbilityClassifiedAs("合"));
+            if (cua != null)
+            {
+                partners = cua.CombinationPartner();
+            }
 
-            //    if (Information.UBound(partners) == 0)
-            //    {
-            //        var loopTo1 = withBlock.CountAbility();
-            //        for (i = 1; i <= loopTo1; i++)
-            //        {
-            //            if (withBlock.IsAbilityClassifiedAs(i, "Ｃ") & withBlock.IsAbilityClassifiedAs(i, "合"))
-            //            {
-            //                if (withBlock.IsAbilityAvailable(i, "チャージ"))
-            //                {
-            //                    withBlock.CombinationPartner("アビリティ", i, partners);
-            //                    break;
-            //                }
-            //            }
-            //        }
-            //    }
+            // ユニットの状態をチャージ中に
+            currentUnit.AddCondition("チャージ", 1, cdata: "");
 
-            //    // ユニットの状態をチャージ中に
-            //    withBlock.AddCondition("チャージ", 1, cdata: "");
+            // チャージ攻撃のパートナーもチャージ中にする
+            foreach (var pu in partners)
+            {
+                pu.AddCondition("チャージ", 1, cdata: "");
+            }
 
-            //    // チャージ攻撃のパートナーもチャージ中にする
-            //    var loopTo2 = Information.UBound(partners);
-            //    for (i = 1; i <= loopTo2; i++)
-            //    {
-            //        {
-            //            var withBlock1 = partners[i];
-            //            withBlock1.AddCondition("チャージ", 1, cdata: "");
-            //        }
-            //    }
-            //}
+            // 使用後イベント
+            Event.HandleEvent("使用後", SelectedUnit.MainPilot().ID, "チャージ");
+            if (SRC.IsScenarioFinished)
+            {
+                SRC.IsScenarioFinished = false;
+                CommandState = "ユニット選択";
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //// 使用後イベント
-            //Event.HandleEvent("使用後", SelectedUnit.MainPilot().ID, "チャージ");
-            //if (SRC.IsScenarioFinished)
-            //{
-            //    SRC.IsScenarioFinished = false;
-            //    CommandState = "ユニット選択";
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+            if (SRC.IsCanceled)
+            {
+                SRC.IsCanceled = false;
+                CommandState = "ユニット選択";
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //if (SRC.IsCanceled)
-            //{
-            //    SRC.IsCanceled = false;
-            //    CommandState = "ユニット選択";
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+            GUI.UnlockGUI();
 
-            //GUI.UnlockGUI();
-
-            //// 行動終了
-            //WaitCommand();
+            // 行動終了
+            WaitCommand();
         }
 
         // 「会話」コマンドを開始
