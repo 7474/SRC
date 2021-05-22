@@ -410,9 +410,9 @@ namespace SRCCore
                     }
                     // ユニットに関する情報
                     msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.MaxHP), 6);
-                    msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.MaxEN), 4);
-                    msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.get_Armor("")), 6);
-                    msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.get_Mobility("")), 4);
+                    msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.MaxEN), 5);
+                    msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.get_Armor("")), 5);
+                    msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.get_Mobility("")), 5);
                     // 等身大基準でない場合はパイロット名を表示
                     if (!Expression.IsOptionDefined("等身大基準"))
                     {
@@ -3584,345 +3584,175 @@ namespace SRCCore
         }
 
         // 換装コマンド
-        // MOD START MARGE
-        // Public Sub ExchangeFormCommand()
         private void ExchangeFormCommand()
         {
-            throw new NotImplementedException();
-            //    // MOD END MARGE
-            //    int j, i, k;
-            //    string[] list;
-            //    string[] id_list;
-            //    int[] key_list;
-            //    string[] list2;
-            //    string[] id_list2;
-            //    int max_item, max_value;
-            //    Unit u;
-            //    string buf;
-            //    int ret;
-            //    int top_item;
-            //    string[] farray;
-            //Beginning:
-            //    ;
-            //    top_item = 1;
+        //    int j, i, k;
+        //    string[] list;
+        //    string[] id_list;
+        //    int[] key_list;
+        //    string[] list2;
+        //    string[] id_list2;
+        //    int max_item, max_value;
+        //    Unit u;
+        //    string buf;
+        //    int ret;
+        //    int top_item;
+        //    string[] farray;
+        Beginning:
+            ;
+            var top_item = 1;
 
-            //    // 換装可能なユニットのリストを作成
-            //    list = new string[1];
-            //    id_list = new string[1];
-            //    GUI.ListItemComment = new string[1];
-            //    foreach (Unit currentU in SRC.UList)
-            //    {
-            //        u = currentU;
-            //        {
-            //            var withBlock = u;
-            //            // 待機中の味方ユニット？
-            //            if (withBlock.Party0 != "味方" || withBlock.Status != "待機")
-            //            {
-            //                goto NextLoop;
-            //            }
+            // 換装可能なユニットのリストを作成
+            var units = SRC.UList.Items
+                // 待機中の味方ユニット？
+                .Where(u => !(u.Party0 != "味方" || u.Status != "待機"))
+                // 換装能力を持っている？
+                .Where(u => u.IsFeatureAvailable("換装"))
+                // いずれかの形態に換装可能？
+                .Where(u => u.Feature("換装").DataL.Any(uname => u.OtherForm(uname)?.IsAvailable() ?? false))
+                // リストをユニットのＨＰでソート
+                .OrderByDescending(u => u.MaxHP)
+                .Select(u =>
+                {
+                    // ユニットのステータスを表示
+                    var msg = "";
+                    // 等身大基準の場合はパイロットレベルも表示
+                    if (Expression.IsOptionDefined("等身大基準"))
+                    {
+                        msg = GeneralLib.RightPaddedString(u.Nickname0, 37)
+                                 + GeneralLib.LeftPaddedString("" + u.Rank, 2);
+                    }
+                    else
+                    {
+                        msg = GeneralLib.RightPaddedString(u.Nickname0, 33)
+                                 + GeneralLib.LeftPaddedString("" + u.Rank, 2);
+                    }
+                    // ユニットに関する情報
+                    msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.MaxHP), 6);
+                    msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.MaxEN), 5);
+                    msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.get_Armor("")), 5);
+                    msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.get_Mobility("")), 5);
+                    if (u.CountPilot() > 0)
+                    {
+                        msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.MainPilot().Level), 6);
+                        // 等身大基準でない場合はパイロット名を表示
+                        if (!Expression.IsOptionDefined("等身大基準"))
+                        {
+                            msg += "  " + u.MainPilot().get_Nickname(false);
+                        }
+                    }
 
-            //            // 換装能力を持っている？
-            //            if (!withBlock.IsFeatureAvailable("換装"))
-            //            {
-            //                goto NextLoop;
-            //            }
+                    // 装備しているアイテムをコメント欄に列記
+                    var comment = string.Join(" ", u.ItemList
+                        .Where(itm => (itm.Class() != "固定" || !itm.IsFeatureAvailable("非表示")) && itm.Part() != "非表示")
+                        .Select(itm => itm.Nickname()));
 
-            //            // いずれかの形態に換装可能？
-            //            var loopTo = GeneralLib.LLength(withBlock.FeatureData("換装"));
-            //            for (i = 1; i <= loopTo; i++)
-            //            {
-            //                string localLIndex() { object argIndex1 = "換装"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, i); return ret; }
+                    return new ListBoxItem(msg, u.ID)
+                    {
+                        ListItemComment = comment,
+                    };
+                })
+                .ToList();
 
-            //                Unit localOtherForm() { object argIndex1 = (object)hsfe39adde656b471593385f8a950d6e8a(); var ret = withBlock.OtherForm(argIndex1); return ret; }
+            // 換装するユニットを選択
+            string caption = "ユニット選択";
+            string info;
+            if (Expression.IsOptionDefined("等身大基準"))
+            {
+                info = "ユニット                         "
+                    + Expression.Term("ランク", null, 6) + "  費用 Lv  "
+                    + Expression.Term("ＨＰ", null, 4) + " " + Expression.Term("ＥＮ", null, 4) + " "
+                    + Expression.Term("装甲", null, 4) + " " + Expression.Term("運動", u: null) + " レベル";
+            }
+            else
+            {
+                info = "ユニット                     "
+                    + Expression.Term("ランク", null, 6) + "  費用  "
+                    + Expression.Term("ＨＰ", null, 4) + " " + Expression.Term("ＥＮ", null, 4) + " "
+                    + Expression.Term("装甲", null, 4) + " " + Expression.Term("運動", u: null) + " パイロット";
+            }
+            GUI.TopItem = top_item;
+            var ret = GUI.ListBox(new ListBoxArgs
+            {
+                Items = units.ToList(),
+                lb_caption = caption,
+                lb_info = info,
+                lb_mode = "連続表示,コメント",
+            });
+            top_item = GUI.TopItem;
 
-            //                if (localOtherForm().IsAvailable())
-            //                {
-            //                    break;
-            //                }
-            //            }
+            // キャンセル？
+            if (ret == 0)
+            {
+                return;
+            }
 
-            //            int localLLength() { object argIndex1 = "換装"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LLength(arglist); return ret; }
+            // 選択されたユニットを検索
+            // 換装可能な形態のリストを作成
+            {
+                var baseU = SRC.UList.Item(units[ret - 1].ListItemID);
+                // 換装先のリストを作成
+                var tfUnits = baseU.Feature("換装").DataL.Select(uname => baseU.OtherForm(uname))
+                    .Where(u => u?.IsAvailable() ?? false)
+                    .Select(u =>
+                    {
+                        // ユニットランクを合わせる
+                        u.Rank = baseU.Rank;
+                        u.Rank = baseU.Rank;
+                        u.Update();
+                        // ユニットのステータスを表示
+                        var msg = "";
+                        msg += (u.Nickname == baseU.Nickname0)
+                            ? GeneralLib.RightPaddedString(u.Name, 27)
+                            : GeneralLib.RightPaddedString(u.Nickname0, 27);
+                        // ユニットに関する情報
+                        msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.MaxHP), 6);
+                        msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.MaxEN), 5);
+                        msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.get_Armor("")), 5);
+                        msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.get_Mobility("")), 5);
 
-            //            if (i > localLLength())
-            //            {
-            //                goto NextLoop;
-            //            }
+                        var weapons = u.Weapons.Where(uw => uw.IsDisplayFor(WeaponListMode.List)).ToList();
+                        // 最大攻撃力
+                        var maxPower = weapons.Max(uw => uw.WeaponPower(""));
+                        msg += GeneralLib.LeftPaddedString("" + maxPower, 7);
+                        // 最大射程
+                        var maxRange = weapons.Max(uw => uw.WeaponMaxRange());
+                        msg += GeneralLib.LeftPaddedString("" + maxRange, 5);
 
-            //            Array.Resize(list, Information.UBound(list) + 1 + 1);
-            //            Array.Resize(id_list, Information.UBound(list) + 1);
-            //            Array.Resize(GUI.ListItemComment, Information.UBound(list) + 1);
+                        // 換装先が持つ特殊能力一覧
+                        var comment = string.Join(" ", u.Features
+                            .Select(fd => fd.FeatureName(u))
+                            .Where(x => !string.IsNullOrEmpty(x))
+                            .Distinct());
+                        return new ListBoxItem(msg, u.ID)
+                        {
+                            ListItemComment = comment,
+                        };
+                    })
+                    .ToList();
 
-            //            // ユニットのステータスを表示
-            //            if (Expression.IsOptionDefined("等身大基準"))
-            //            {
-            //                if (withBlock.Rank < 10)
-            //                {
-            //                    string localRightPaddedString() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, 37); withBlock.Nickname0 = argbuf; return ret; }
+                // 換装先の形態を選択
+                GUI.TopItem = 1;
+                var tfRet = GUI.ListBox(new ListBoxArgs
+                {
+                    Items = tfUnits.ToList(),
+                    lb_caption = "変更先選択",
+                    lb_info = "ユニット                     "
+                        + Expression.Term("ＨＰ", null, 4) + " " + Expression.Term("ＥＮ", null, 4) + " "
+                        + Expression.Term("装甲", null, 4) + " " + Expression.Term("運動", u: null) + " 適応 攻撃力 射程",
+                    lb_mode = "連続表示,コメント",
+                });
+                // キャンセル？
+                if (tfRet == 0)
+                {
+                    goto Beginning;
+                }
 
-            //                    list[Information.UBound(list)] = localRightPaddedString() + Strings.StrConv(SrcFormatter.Format(withBlock.Rank), VbStrConv.Wide);
-            //                }
-            //                else
-            //                {
-            //                    string localRightPaddedString1() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, 37); withBlock.Nickname0 = argbuf; return ret; }
+                // 換装を実施
+                baseU.Transform(tfUnits[tfRet - 1].ListItemID);
+            }
 
-            //                    list[Information.UBound(list)] = localRightPaddedString1() + SrcFormatter.Format(withBlock.Rank);
-            //                }
-            //            }
-            //            else if (withBlock.Rank < 10)
-            //            {
-            //                string localRightPaddedString2() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, 33); withBlock.Nickname0 = argbuf; return ret; }
-
-            //                list[Information.UBound(list)] = localRightPaddedString2() + Strings.StrConv(SrcFormatter.Format(withBlock.Rank), VbStrConv.Wide);
-            //            }
-            //            else
-            //            {
-            //                string localRightPaddedString3() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, 33); withBlock.Nickname0 = argbuf; return ret; }
-
-            //                list[Information.UBound(list)] = localRightPaddedString3() + SrcFormatter.Format(withBlock.Rank);
-            //            }
-
-            //            string localLeftPaddedString() { string argbuf = SrcFormatter.Format(withBlock.MaxHP); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
-
-            //            string localLeftPaddedString1() { string argbuf = SrcFormatter.Format(withBlock.MaxEN); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
-
-            //            string localLeftPaddedString2() { string argbuf = SrcFormatter.Format(withBlock.get_Armor("")); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
-
-            //            string localLeftPaddedString3() { string argbuf = SrcFormatter.Format(withBlock.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
-
-            //            list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString() + localLeftPaddedString1() + localLeftPaddedString2() + localLeftPaddedString3();
-            //            if (withBlock.CountPilot() > 0)
-            //            {
-            //                if (Expression.IsOptionDefined("等身大基準"))
-            //                {
-            //                    string localLeftPaddedString4() { string argbuf = SrcFormatter.Format(withBlock.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
-
-            //                    list[Information.UBound(list)] = list[Information.UBound(list)] + "  " + localLeftPaddedString4();
-            //                }
-            //                else
-            //                {
-            //                    list[Information.UBound(list)] = list[Information.UBound(list)] + "  " + withBlock.MainPilot().get_Nickname(false);
-            //                }
-            //            }
-
-            //            // ユニットに装備されているアイテムをコメント欄に列記
-            //            var loopTo1 = withBlock.CountItem();
-            //            for (k = 1; k <= loopTo1; k++)
-            //            {
-            //                {
-            //                    var withBlock1 = withBlock.Item(k);
-            //                    if ((withBlock1.Class() != "固定" || !withBlock1.IsFeatureAvailable("非表示")) && withBlock1.Part() != "非表示")
-            //                    {
-            //                        GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock1.Nickname() + " ";
-            //                    }
-            //                }
-            //            }
-
-            //            // ユニットＩＤを記録しておく
-            //            id_list[Information.UBound(list)] = withBlock.ID;
-            //        }
-
-            //    NextLoop:
-            //        ;
-            //    }
-
-            //    GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
-
-            //    // リストをユニットのＨＰでソート
-            //    key_list = new int[Information.UBound(list) + 1];
-            //    {
-            //        var withBlock2 = SRC.UList;
-            //        var loopTo2 = Information.UBound(list);
-            //        for (i = 1; i <= loopTo2; i++)
-            //        {
-            //            Unit localItem() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
-
-            //            key_list[i] = localItem().MaxHP;
-            //        }
-            //    }
-
-            //    var loopTo3 = (Information.UBound(list) - 1);
-            //    for (i = 1; i <= loopTo3; i++)
-            //    {
-            //        max_item = i;
-            //        max_value = key_list[i];
-            //        var loopTo4 = Information.UBound(list);
-            //        for (j = (i + 1); j <= loopTo4; j++)
-            //        {
-            //            if (key_list[j] > max_value)
-            //            {
-            //                max_item = j;
-            //                max_value = key_list[j];
-            //            }
-            //        }
-
-            //        if (max_item != i)
-            //        {
-            //            buf = list[i];
-            //            list[i] = list[max_item];
-            //            list[max_item] = buf;
-            //            buf = id_list[i];
-            //            id_list[i] = id_list[max_item];
-            //            id_list[max_item] = buf;
-            //            buf = GUI.ListItemComment[i];
-            //            GUI.ListItemComment[i] = GUI.ListItemComment[max_item];
-            //            GUI.ListItemComment[max_item] = buf;
-            //            key_list[max_item] = key_list[i];
-            //        }
-            //    }
-
-            //    // 換装するユニットを選択
-            //    GUI.TopItem = top_item;
-            //    if (Expression.IsOptionDefined("等身大基準"))
-            //    {
-            //        ret = GUI.ListBox("ユニット選択", list, "ユニット                         " + Expression.Term("ランク", null, 6) + "   " + Expression.Term("ＨＰ", null, 4) + " " + Expression.Term("ＥＮ", null2, 4) + " " + Expression.Term("ランク"3, null3, 4) + " " + Expression.Term("ランク"4, null, 4) + " レベル", "連続表示,コメント");
-            //    }
-            //    else
-            //    {
-            //        ret = GUI.ListBox("ユニット選択", list, "ユニット                     " + Expression.Term("ランク", null, 6) + "   " + Expression.Term("ＨＰ", null, 4) + " " + Expression.Term("ＥＮ", null, 4) + " " + Expression.Term("装甲", null, 4) + " " + Expression.Term("運動", null, 4) + " パイロット", "連続表示,コメント");
-            //    }
-
-            //    top_item = GUI.TopItem;
-
-            //    // キャンセル？
-            //    if (ret == 0)
-            //    {
-            //        return;
-            //    }
-
-            //    // 選択されたユニットを検索
-            //    var tmp = id_list;
-            //    u = SRC.UList.Item(tmp[ret]);
-
-            //    // 換装可能な形態のリストを作成
-            //    {
-            //        var withBlock3 = u;
-            //        buf = withBlock3.FeatureData("換装");
-            //        list2 = new string[1];
-            //        id_list2 = new string[1];
-            //        GUI.ListItemComment = new string[1];
-            //        var loopTo5 = GeneralLib.LLength(buf);
-            //        for (i = 1; i <= loopTo5; i++)
-            //        {
-            //            {
-            //                var withBlock4 = withBlock3.OtherForm(GeneralLib.LIndex(buf, i));
-            //                if (withBlock4.IsAvailable())
-            //                {
-            //                    Array.Resize(list2, Information.UBound(list2) + 1 + 1);
-            //                    Array.Resize(id_list2, Information.UBound(list2) + 1);
-            //                    Array.Resize(GUI.ListItemComment, Information.UBound(list2) + 1);
-
-            //                    // ユニットランクを合わせる
-            //                    withBlock4.Rank = u.Rank;
-            //                    withBlock4.BossRank = u.BossRank;
-            //                    withBlock4.Update();
-
-            //                    // 換装先のリストを作成
-            //                    id_list2[Information.UBound(list2)] = withBlock4.Name;
-            //                    if ((u.Nickname0 ?? "") == (withBlock4.Nickname ?? ""))
-            //                    {
-            //                        list2[Information.UBound(list2)] = GeneralLib.RightPaddedString(withBlock4.Name, 27);
-            //                        withBlock4.Name = argbuf;
-            //                    }
-            //                    else
-            //                    {
-            //                        list2[Information.UBound(list2)] = GeneralLib.RightPaddedString(withBlock4.Nickname0, 27);
-            //                        withBlock4.Nickname0 = argbuf1;
-            //                    }
-
-            //                    string localLeftPaddedString5() { string argbuf = SrcFormatter.Format(withBlock4.MaxHP); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
-
-            //                    string localLeftPaddedString6() { string argbuf = SrcFormatter.Format(withBlock4.MaxEN); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
-
-            //                    string localLeftPaddedString7() { string argbuf = SrcFormatter.Format(withBlock4.get_Armor("")); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
-
-            //                    string localLeftPaddedString8() { string argbuf = SrcFormatter.Format(withBlock4.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
-
-            //                    list2[Information.UBound(list2)] = list2[Information.UBound(list2)] + localLeftPaddedString5() + localLeftPaddedString6() + localLeftPaddedString7() + localLeftPaddedString8() + " " + withBlock4.Data.Adaption;
-
-            //                    // 最大攻撃力
-            //                    max_value = 0;
-            //                    var loopTo6 = withBlock4.CountWeapon();
-            //                    for (j = 1; j <= loopTo6; j++)
-            //                    {
-            //                        if (withBlock4.IsWeaponMastered(j) && !withBlock4.IsDisabled(withBlock4.Weapon(j).Name) && !withBlock4.IsWeaponClassifiedAs(j, "合"))
-            //                        {
-            //                            if (withBlock4.WeaponPower(j, "") > max_value)
-            //                            {
-            //                                max_value = withBlock4.WeaponPower(j, "");
-            //                            }
-            //                        }
-            //                    }
-
-            //                    string localLeftPaddedString9() { string argbuf = SrcFormatter.Format(max_value); var ret = GeneralLib.LeftPaddedString(argbuf, 7); return ret; }
-
-            //                    list2[Information.UBound(list2)] = list2[Information.UBound(list2)] + localLeftPaddedString9();
-
-            //                    // 最大射程
-            //                    max_value = 0;
-            //                    var loopTo7 = withBlock4.CountWeapon();
-            //                    for (j = 1; j <= loopTo7; j++)
-            //                    {
-            //                        if (withBlock4.IsWeaponMastered(j) && !withBlock4.IsDisabled(withBlock4.Weapon(j).Name) && !withBlock4.IsWeaponClassifiedAs(j, "合"))
-            //                        {
-            //                            if (withBlock4.WeaponMaxRange(j) > max_value)
-            //                            {
-            //                                max_value = withBlock4.WeaponMaxRange(j);
-            //                            }
-            //                        }
-            //                    }
-
-            //                    string localLeftPaddedString10() { string argbuf = SrcFormatter.Format(max_value); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
-
-            //                    list2[Information.UBound(list2)] = list2[Information.UBound(list2)] + localLeftPaddedString10();
-
-            //                    // 換装先が持つ特殊能力一覧
-            //                    farray = new string[1];
-            //                    var loopTo8 = withBlock4.CountFeature();
-            //                    for (j = 1; j <= loopTo8; j++)
-            //                    {
-            //                        if (!string.IsNullOrEmpty(withBlock4.FeatureName(j)))
-            //                        {
-            //                            // 重複する特殊能力は表示しないようチェック
-            //                            var loopTo9 = Information.UBound(farray);
-            //                            for (k = 1; k <= loopTo9; k++)
-            //                            {
-            //                                if ((withBlock4.FeatureName(j) ?? "") == (farray[k] ?? ""))
-            //                                {
-            //                                    break;
-            //                                }
-            //                            }
-
-            //                            if (k > Information.UBound(farray))
-            //                            {
-            //                                string localFeatureName() { object argIndex1 = j; var ret = withBlock4.FeatureName(argIndex1); return ret; }
-
-            //                                GUI.ListItemComment[Information.UBound(list2)] = GUI.ListItemComment[Information.UBound(list2)] + localFeatureName() + " ";
-            //                                Array.Resize(farray, Information.UBound(farray) + 1 + 1);
-            //                                farray[Information.UBound(farray)] = withBlock4.FeatureName(j);
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-
-            //        GUI.ListItemFlag = new bool[Information.UBound(list2) + 1];
-
-            //        // 換装先の形態を選択
-            //        GUI.TopItem = 1;
-            //        ret = GUI.ListBox("変更先選択", list2, "ユニット                     " + Expression.Term("ＨＰ", u, 4) + " " + Expression.Term("ＥＮ", u, 4) + " " + Expression.Term("装甲", u, 4) + " " + Expression.Term("運動", u, 4) + " 適応 攻撃力 射程", "連続表示,コメント");
-
-            //        // キャンセル？
-            //        if (ret == 0)
-            //        {
-            //            goto Beginning;
-            //        }
-
-            //        // 換装を実施
-            //        withBlock3.Transform(id_list2[ret]);
-            //    }
-
-            //    goto Beginning;
+            goto Beginning;
         }
 
         // ステータスコマンド中かどうかを返す

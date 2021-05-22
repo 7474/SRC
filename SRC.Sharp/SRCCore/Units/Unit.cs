@@ -28,6 +28,9 @@ namespace SRCCore.Units
         public Unit(SRC src)
         {
             SRC = src;
+
+            Status = "待機";
+            intBossRank = -1;
         }
 
         [JsonConstructor]
