@@ -11,6 +11,11 @@ namespace SRCCore.Pilots
 {
     public partial class Pilot
     {
+        public bool IsFix => Expression.IsGlobalVariableDefined("Fix(" + Name + ")");
+        public bool IsRidingAdSupport => Unit == null
+            ? false
+            : Unit.Supports.Contains(this);
+
         // 名称
         public string Name
         {

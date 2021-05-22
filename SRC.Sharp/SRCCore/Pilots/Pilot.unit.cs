@@ -2,7 +2,9 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Lib;
 using SRCCore.Units;
+using SRCCore.VB;
 using System.Linq;
 
 namespace SRCCore.Pilots
@@ -153,213 +155,151 @@ namespace SRCCore.Pilots
         // パイロットがユニット u のサポートかどうか
         public bool IsSupport(Unit u)
         {
+            if (u.IsFeatureAvailable("ダミーユニット"))
+            {
+                // ダミーユニットの場合はサポートパイロットも通常のパイロットとして扱う
+                return false;
+            }
+
+            // サポート指定が存在する？
+            if (GeneralLib.InStrNotNest(Class, "サポート)") == 0)
+            {
+                return false;
+            }
+
+            if (u.CountPilot() == 0)
+            {
+                // パイロットが乗っていないユニットの場合は通常パイロットを優先
+                foreach (var pclass in GeneralLib.ToL(Class))
+                {
+                    var uclass = u.Class;
+                    if (uclass == pclass
+                        || uclass == (pclass + "(" + get_Nickname(false) + "専用)")
+                        || uclass == (pclass + "(" + Name + "専用)")
+                        || uclass == (pclass + "(" + Sex + "専用)"))
+                    {
+                        // 通常のパイロットとして搭乗可能であればサポートでないとみなす
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                // 通常のパイロットとして搭乗している？
+                if (u.Pilots.Contains(this))
+                {
+                    return false;
+                }
+            }
+
+            {
+                var uclass = u.Class0;
+                // 通常のサポート？
+                foreach (var pclass in GeneralLib.ToL(Class))
+                {
+                    if ((uclass + "(サポート)" ?? "") == pclass)
+                    {
+                        return true;
+                    }
+                }
+
+                // パイロットが乗っていないユニットの場合はここで終了
+                if (u.CountPilot() == 0)
+                {
+                    return false;
+                }
+
+                // 専属サポート？
+                var p = u.MainPilot();
+                foreach (var pclass in GeneralLib.ToL(Class))
+                {
+                    if (pclass == (uclass + "(" + p.Name + "専属サポート)")
+                        || pclass == (uclass + "(" + p.get_Nickname(false) + "専属サポート)")
+                        || pclass == (uclass + "(" + p.Sex + "専属サポート)"))
+                    {
+                        return true;
+                    }
+                    foreach (var sname in p.Skills.Select(skill => skill.Name))
+                    {
+                        if (pclass == (uclass + "(" + sname + "専属サポート)" ?? ""))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
             return false;
-            // TODO Impl
-            //bool IsSupportRet = default;
-            //string uclass, pclass;
-            //short i, j;
-            //if (u.IsFeatureAvailable("ダミーユニット"))
-            //{
-            //    // ダミーユニットの場合はサポートパイロットも通常のパイロットとして扱う
-            //    IsSupportRet = false;
-            //    return IsSupportRet;
-            //}
-
-            //// サポート指定が存在する？
-            //short localInStrNotNest() { string argstring1 = Class; string argstring2 = "サポート)"; var ret = GeneralLib.InStrNotNest(argstring1, argstring2); this.Class = argstring1; return ret; }
-
-            //if (localInStrNotNest() == 0)
-            //{
-            //    IsSupportRet = false;
-            //    return IsSupportRet;
-            //}
-
-            //if (u.CountPilot() == 0)
-            //{
-            //    // パイロットが乗っていないユニットの場合は通常パイロットを優先
-            //    var loopTo = GeneralLib.LLength(Class);
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        pclass = GeneralLib.LIndex(Class, i);
-            //        this.Class = arglist;
-            //        if ((u.Class ?? "") == (pclass ?? "") | (u.Class ?? "") == (pclass + "(" + Name + "専用)" ?? "") | (u.Class ?? "") == (pclass + "(" + get_Nickname(false) + "専用)" ?? "") | (u.Class ?? "") == (pclass + "(" + Sex + "専用)" ?? ""))
-            //        {
-            //            // 通常のパイロットとして搭乗可能であればサポートでないとみなす
-            //            IsSupportRet = false;
-            //            return IsSupportRet;
-            //        }
-            //    }
-
-            //    this.Class = arglist1;
-            //}
-            //else
-            //{
-            //    // 通常のパイロットとして搭乗している？
-            //    var loopTo1 = u.CountPilot();
-            //    for (i = 1; i <= loopTo1; i++)
-            //    {
-            //        if (ReferenceEquals(u.Pilot(i), this))
-            //        {
-            //            IsSupportRet = false;
-            //            return IsSupportRet;
-            //        }
-            //    }
-            //}
-
-            //uclass = u.Class0;
-
-            //// 通常のサポート？
-            //var loopTo2 = GeneralLib.LLength(Class);
-            //for (i = 1; i <= loopTo2; i++)
-            //{
-            //    string localLIndex() { string arglist = Class; var ret = GeneralLib.LIndex(arglist, i); this.Class = arglist; return ret; }
-
-            //    if ((uclass + "(サポート)" ?? "") == (localLIndex() ?? ""))
-            //    {
-            //        IsSupportRet = true;
-            //        return IsSupportRet;
-            //    }
-            //}
-
-            //this.Class = arglist2;
-
-            //// パイロットが乗っていないユニットの場合はここで終了
-            //if (u.CountPilot() == 0)
-            //{
-            //    IsSupportRet = false;
-            //    return IsSupportRet;
-            //}
-
-            //// 専属サポート？
-            //{
-            //    var withBlock = u.MainPilot();
-            //    var loopTo3 = GeneralLib.LLength(Class);
-            //    for (i = 1; i <= loopTo3; i++)
-            //    {
-            //        pclass = GeneralLib.LIndex(Class, i);
-            //        this.Class = arglist3;
-            //        if ((pclass ?? "") == (uclass + "(" + withBlock.Name + "専属サポート)" ?? "") | (pclass ?? "") == (uclass + "(" + withBlock.get_Nickname(false) + "専属サポート)" ?? "") | (pclass ?? "") == (uclass + "(" + withBlock.Sex + "専属サポート)" ?? ""))
-            //        {
-            //            IsSupportRet = true;
-            //            return IsSupportRet;
-            //        }
-
-            //        var loopTo4 = withBlock.CountSkill();
-            //        for (j = 1; j <= loopTo4; j++)
-            //        {
-            //            string localSkill() { object argIndex1 = j; var ret = withBlock.Skill(argIndex1); return ret; }
-
-            //            if ((pclass ?? "") == (uclass + "(" + localSkill() + "専属サポート)" ?? ""))
-            //            {
-            //                IsSupportRet = true;
-            //                return IsSupportRet;
-            //            }
-            //        }
-            //    }
-
-            //    this.Class = arglist4;
-            //}
-
-            //IsSupportRet = false;
-            //return IsSupportRet;
         }
 
         // ユニット u に乗ることができるかどうか
         public bool IsAbleToRide(Unit u)
         {
+            // 汎用ユニットは必要技能を満たせばＯＫ
+            if (u.Class == "汎用")
+            {
+                goto CheckNecessarySkill;
+            }
+
+            // 人間ユニット指定を除いて判定
+            string uclass;
+            if (Strings.Left(u.Class, 1) == "(" & Strings.Right(u.Class, 1) == ")")
+            {
+                uclass = Strings.Mid(u.Class, 2, Strings.Len(u.Class) - 2);
+            }
+            else
+            {
+                uclass = u.Class;
+            }
+
+            // サポートかどうかをまず判定しておく
+            if (IsSupport(u))
+            {
+                // 必要技能をチェックする
+                goto CheckNecessarySkill;
+            }
+
+            // ユニットクラスは複数設定可能
+            foreach (var pclass in GeneralLib.ToL(Class))
+            {
+                if (uclass == pclass
+                    || uclass == (pclass + "(" + get_Nickname(false) + "専用)")
+                    || uclass == (pclass + "(" + Name + "専用)")
+                    || uclass == (pclass + "(" + Sex + "専用)"))
+                {
+                    // 必要技能をチェックする
+                    goto CheckNecessarySkill;
+                }
+            }
+
+            // クラスが合わない
+            return false;
+        CheckNecessarySkill:
+            ;
+
+
+            // 必要技能＆不必要技能をチェック
+
+            // 両能力を持っていない場合はチェック不要
+            if (!u.IsFeatureAvailable("必要技能") & !u.IsFeatureAvailable("不必要技能"))
+            {
+                return true;
+            }
+
+            foreach (var fd in u.Features.Where(fd => fd.Name == "必要技能"))
+            {
+                if (!u.IsNecessarySkillSatisfied(fd.Data, this))
+                {
+                    return false;
+                }
+            }
+            foreach (var fd in u.Features.Where(fd => fd.Name == "不必要技能"))
+            {
+                if (u.IsNecessarySkillSatisfied(fd.Data, this))
+                {
+                    return false;
+                }
+            }
             return true;
-            // TODO Impl
-            //bool IsAbleToRideRet = default;
-            //string uclass, pclass;
-            //short i;
-            //{
-            //    var withBlock = u;
-            //    // 汎用ユニットは必要技能を満たせばＯＫ
-            //    if (withBlock.Class == "汎用")
-            //    {
-            //        IsAbleToRideRet = true;
-            //        goto CheckNecessarySkill;
-            //    }
-
-            //    // 人間ユニット指定を除いて判定
-            //    if (Strings.Left(withBlock.Class, 1) == "(" & Strings.Right(withBlock.Class, 1) == ")")
-            //    {
-            //        uclass = Strings.Mid(withBlock.Class, 2, Strings.Len(withBlock.Class) - 2);
-            //    }
-            //    else
-            //    {
-            //        uclass = withBlock.Class;
-            //    }
-
-            //    // サポートかどうかをまず判定しておく
-            //    if (IsSupport(u))
-            //    {
-            //        IsAbleToRideRet = true;
-            //        // 必要技能をチェックする
-            //        goto CheckNecessarySkill;
-            //    }
-
-            //    var loopTo = GeneralLib.LLength(Class);
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        pclass = GeneralLib.LIndex(Class, i);
-            //        this.Class = arglist;
-            //        if ((uclass ?? "") == (pclass ?? "") | (uclass ?? "") == (pclass + "(" + get_Nickname(false) + "専用)" ?? "") | (uclass ?? "") == (pclass + "(" + Name + "専用)" ?? "") | (uclass ?? "") == (pclass + "(" + Sex + "専用)" ?? ""))
-            //        {
-            //            IsAbleToRideRet = true;
-            //            // 必要技能をチェックする
-            //            goto CheckNecessarySkill;
-            //        }
-            //    }
-
-            //    this.Class = arglist1; // ユニットクラスは複数設定可能
-
-            //    // クラスが合わない
-            //    IsAbleToRideRet = false;
-            //    return IsAbleToRideRet;
-            //CheckNecessarySkill:
-            //    ;
-
-
-            //    // 必要技能＆不必要技能をチェック
-
-            //    // 両能力を持っていない場合はチェック不要
-            //    if (!withBlock.IsFeatureAvailable("必要技能") & !withBlock.IsFeatureAvailable("必要技能"1))
-            //    {
-            //        return IsAbleToRideRet;
-            //    }
-
-            //    var loopTo1 = withBlock.CountFeature();
-            //    for (i = 1; i <= loopTo1; i++)
-            //    {
-            //        string localFeature() { object argIndex1 = i; var ret = withBlock.Feature(argIndex1); return ret; }
-
-            //        if (withBlock.Feature(i) == "必要技能")
-            //        {
-            //            string localFeatureData() { object argIndex1 = i; var ret = withBlock.FeatureData(argIndex1); return ret; }
-
-            //            bool localIsNecessarySkillSatisfied() { string argnabilities = hs98e3424915b54fdbb83dbc9aa23c37a5(); var argp = this; var ret = withBlock.IsNecessarySkillSatisfied(argnabilities, argp); return ret; }
-
-            //            if (!localIsNecessarySkillSatisfied())
-            //            {
-            //                IsAbleToRideRet = false;
-            //                return IsAbleToRideRet;
-            //            }
-            //        }
-            //        else if (localFeature() == "不必要技能")
-            //        {
-            //            string localFeatureData1() { object argIndex1 = i; var ret = withBlock.FeatureData(argIndex1); return ret; }
-
-            //            if (withBlock.IsNecessarySkillSatisfied(localFeatureData1(), this))
-            //            {
-            //                IsAbleToRideRet = false;
-            //                return IsAbleToRideRet;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //return IsAbleToRideRet;
         }
     }
 }
