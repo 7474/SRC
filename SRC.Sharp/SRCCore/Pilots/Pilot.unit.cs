@@ -2,7 +2,9 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Lib;
 using SRCCore.Units;
+using SRCCore.VB;
 using System.Linq;
 
 namespace SRCCore.Pilots
@@ -267,99 +269,72 @@ namespace SRCCore.Pilots
         // ユニット u に乗ることができるかどうか
         public bool IsAbleToRide(Unit u)
         {
+            // 汎用ユニットは必要技能を満たせばＯＫ
+            if (u.Class == "汎用")
+            {
+                goto CheckNecessarySkill;
+            }
+
+            // 人間ユニット指定を除いて判定
+            string uclass;
+            if (Strings.Left(u.Class, 1) == "(" & Strings.Right(u.Class, 1) == ")")
+            {
+                uclass = Strings.Mid(u.Class, 2, Strings.Len(u.Class) - 2);
+            }
+            else
+            {
+                uclass = u.Class;
+            }
+
+            // サポートかどうかをまず判定しておく
+            if (IsSupport(u))
+            {
+                // 必要技能をチェックする
+                goto CheckNecessarySkill;
+            }
+
+            // ユニットクラスは複数設定可能
+            foreach (var pclass in GeneralLib.ToL(Class))
+            {
+                if (uclass == pclass
+                    || uclass == (pclass + "(" + get_Nickname(false) + "専用)")
+                    || uclass == (pclass + "(" + Name + "専用)")
+                    || uclass == (pclass + "(" + Sex + "専用)"))
+                {
+                    // 必要技能をチェックする
+                    goto CheckNecessarySkill;
+                }
+            }
+
+            // クラスが合わない
+            return false;
+        CheckNecessarySkill:
+            ;
+
+
+            // 必要技能＆不必要技能をチェック
+
+            // 両能力を持っていない場合はチェック不要
+            if (!u.IsFeatureAvailable("必要技能") & !u.IsFeatureAvailable("不必要技能"))
+            {
+                return true;
+            }
+
+            foreach (var fd in u.Features.Where(fd => fd.Name == "必要技能"))
+            {
+                if (!u.IsNecessarySkillSatisfied(fd.Data, this))
+                {
+                    return false;
+                }
+            }
+            foreach (var fd in u.Features.Where(fd => fd.Name == "不必要技能"))
+            {
+                if (u.IsNecessarySkillSatisfied(fd.Data, this))
+                {
+                    return false;
+                }
+            }
             return true;
-            // TODO Impl
-            //bool IsAbleToRideRet = default;
-            //string uclass, pclass;
-            //short i;
-            //{
-            //    var withBlock = u;
-            //    // 汎用ユニットは必要技能を満たせばＯＫ
-            //    if (withBlock.Class == "汎用")
-            //    {
-            //        IsAbleToRideRet = true;
-            //        goto CheckNecessarySkill;
-            //    }
-
-            //    // 人間ユニット指定を除いて判定
-            //    if (Strings.Left(withBlock.Class, 1) == "(" & Strings.Right(withBlock.Class, 1) == ")")
-            //    {
-            //        uclass = Strings.Mid(withBlock.Class, 2, Strings.Len(withBlock.Class) - 2);
-            //    }
-            //    else
-            //    {
-            //        uclass = withBlock.Class;
-            //    }
-
-            //    // サポートかどうかをまず判定しておく
-            //    if (IsSupport(u))
-            //    {
-            //        IsAbleToRideRet = true;
-            //        // 必要技能をチェックする
-            //        goto CheckNecessarySkill;
-            //    }
-
-            //    var loopTo = GeneralLib.LLength(Class);
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        pclass = GeneralLib.LIndex(Class, i);
-            //        this.Class = arglist;
-            //        if ((uclass ?? "") == (pclass ?? "") | (uclass ?? "") == (pclass + "(" + get_Nickname(false) + "専用)" ?? "") | (uclass ?? "") == (pclass + "(" + Name + "専用)" ?? "") | (uclass ?? "") == (pclass + "(" + Sex + "専用)" ?? ""))
-            //        {
-            //            IsAbleToRideRet = true;
-            //            // 必要技能をチェックする
-            //            goto CheckNecessarySkill;
-            //        }
-            //    }
-
-            //    this.Class = arglist1; // ユニットクラスは複数設定可能
-
-            //    // クラスが合わない
-            //    IsAbleToRideRet = false;
-            //    return IsAbleToRideRet;
-            //CheckNecessarySkill:
-            //    ;
-
-
-            //    // 必要技能＆不必要技能をチェック
-
-            //    // 両能力を持っていない場合はチェック不要
-            //    if (!withBlock.IsFeatureAvailable("必要技能") & !withBlock.IsFeatureAvailable("必要技能"1))
-            //    {
-            //        return IsAbleToRideRet;
-            //    }
-
-            //    var loopTo1 = withBlock.CountFeature();
-            //    for (i = 1; i <= loopTo1; i++)
-            //    {
-            //        string localFeature() { object argIndex1 = i; var ret = withBlock.Feature(argIndex1); return ret; }
-
-            //        if (withBlock.Feature(i) == "必要技能")
-            //        {
-            //            string localFeatureData() { object argIndex1 = i; var ret = withBlock.FeatureData(argIndex1); return ret; }
-
-            //            bool localIsNecessarySkillSatisfied() { string argnabilities = hs98e3424915b54fdbb83dbc9aa23c37a5(); var argp = this; var ret = withBlock.IsNecessarySkillSatisfied(argnabilities, argp); return ret; }
-
-            //            if (!localIsNecessarySkillSatisfied())
-            //            {
-            //                IsAbleToRideRet = false;
-            //                return IsAbleToRideRet;
-            //            }
-            //        }
-            //        else if (localFeature() == "不必要技能")
-            //        {
-            //            string localFeatureData1() { object argIndex1 = i; var ret = withBlock.FeatureData(argIndex1); return ret; }
-
-            //            if (withBlock.IsNecessarySkillSatisfied(localFeatureData1(), this))
-            //            {
-            //                IsAbleToRideRet = false;
-            //                return IsAbleToRideRet;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //return IsAbleToRideRet;
         }
     }
 }
