@@ -5,6 +5,7 @@
 
 using SRCCore.Pilots;
 using SRCCore.Units;
+using SRCCore.VB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -210,137 +211,136 @@ namespace SRCCore.Commands
         // 「命令」コマンドを開始
         private void StartOrderCommand()
         {
-            throw new NotImplementedException();
-            //// MOD END MARGE
-            //string[] list;
-            //int i, ret, j;
-            //GUI.LockGUI();
-            //list = new string[5];
-            //GUI.ListItemFlag = new bool[5];
+            GUI.LockGUI();
 
-            //// 可能な命令内容一覧を作成
-            //list[1] = "自由：自由に行動させる";
-            //list[2] = "移動：指定した位置に移動";
-            //list[3] = "攻撃：指定した敵を攻撃";
-            //list[4] = "護衛：指定したユニットを護衛";
-            //if (SelectedUnit.Summoner is object | SelectedUnit.Master is object)
-            //{
-            //    Array.Resize(list, 6);
-            //    Array.Resize(GUI.ListItemFlag, 6);
-            //    if (SelectedUnit.Master is object)
-            //    {
-            //        list[5] = "帰還：主人の所に戻る";
-            //    }
-            //    else
-            //    {
-            //        list[5] = "帰還：召喚主の所に戻る";
-            //    }
-            //}
+            // 可能な命令内容一覧を作成
+            var list = new List<ListBoxItem>()
+            {
+                new ListBoxItem("自由：自由に行動させる", "自由"),
+                new ListBoxItem("移動：指定した位置に移動", "移動"),
+                new ListBoxItem("攻撃：指定した敵を攻撃", "攻撃"),
+                new ListBoxItem("護衛：指定したユニットを護衛", "護衛"),
+            };
+            if (SelectedUnit.Summoner is object || SelectedUnit.Master is object)
+            {
+                if (SelectedUnit.Master is object)
+                {
+                    list.Add(new ListBoxItem("帰還：主人の所に戻る", "帰還"));
+                }
+                else
+                {
+                    list.Add(new ListBoxItem("帰還：召喚主の所に戻る", "帰還"));
+                }
+            }
 
-            //// 命令する行動パターンを選択
-            //ret = GUI.ListBox("命令", list, "行動パターン", lb_mode: "");
+            // 命令する行動パターンを選択
+            var ret = GUI.ListBox(new ListBoxArgs
+            {
+                Items = list,
+                lb_caption = "命令",
+                lb_info = "行動パターン",
+                lb_mode = "",
+            });
 
-            //// 選択された行動パターンに応じてターゲット領域を表示
-            //switch (ret)
-            //{
-            //    case 0:
-            //        {
-            //            CancelCommand();
-            //            break;
-            //        }
+            // 選択された行動パターンに応じてターゲット領域を表示
+            switch (ret)
+            {
+                case 0:
+                    {
+                        CancelCommand();
+                        break;
+                    }
 
-            //    case 1: // 自由
-            //        {
-            //            SelectedUnit.Mode = "通常";
-            //            CommandState = "ユニット選択";
-            //            Status.DisplayUnitStatus(SelectedUnit);
-            //            break;
-            //        }
+                case 1: // 自由
+                    {
+                        SelectedUnit.Mode = "通常";
+                        CommandState = "ユニット選択";
+                        Status.DisplayUnitStatus(SelectedUnit);
+                        break;
+                    }
 
-            //    case 2: // 移動
-            //        {
-            //            SelectedCommand = "移動命令";
-            //            var loopTo = Map.MapWidth;
-            //            for (i = 1; i <= loopTo; i++)
-            //            {
-            //                var loopTo1 = Map.MapHeight;
-            //                for (j = 1; j <= loopTo1; j++)
-            //                    Map.MaskData[i, j] = false;
-            //            }
+                case 2: // 移動
+                    {
+                        SelectedCommand = "移動命令";
+                        var loopTo = Map.MapWidth;
+                        for (var i = 1; i <= loopTo; i++)
+                        {
+                            var loopTo1 = Map.MapHeight;
+                            for (var j = 1; j <= loopTo1; j++)
+                                Map.MaskData[i, j] = false;
+                        }
 
-            //            GUI.MaskScreen();
-            //            CommandState = "ターゲット選択";
-            //            break;
-            //        }
+                        GUI.MaskScreen();
+                        CommandState = "ターゲット選択";
+                        break;
+                    }
 
-            //    case 3: // 攻撃
-            //        {
-            //            SelectedCommand = "攻撃命令";
-            //            Map.AreaWithUnit("味方の敵");
-            //            Map.MaskData[SelectedUnit.x, SelectedUnit.y] = true;
-            //            GUI.MaskScreen();
-            //            CommandState = "ターゲット選択";
-            //            break;
-            //        }
+                case 3: // 攻撃
+                    {
+                        SelectedCommand = "攻撃命令";
+                        Map.AreaWithUnit("味方の敵");
+                        Map.MaskData[SelectedUnit.x, SelectedUnit.y] = true;
+                        GUI.MaskScreen();
+                        CommandState = "ターゲット選択";
+                        break;
+                    }
 
-            //    case 4: // 護衛
-            //        {
-            //            SelectedCommand = "護衛命令";
-            //            Map.AreaWithUnit("味方");
-            //            Map.MaskData[SelectedUnit.x, SelectedUnit.y] = true;
-            //            GUI.MaskScreen();
-            //            CommandState = "ターゲット選択";
-            //            break;
-            //        }
+                case 4: // 護衛
+                    {
+                        SelectedCommand = "護衛命令";
+                        Map.AreaWithUnit("味方");
+                        Map.MaskData[SelectedUnit.x, SelectedUnit.y] = true;
+                        GUI.MaskScreen();
+                        CommandState = "ターゲット選択";
+                        break;
+                    }
 
-            //    case 5: // 帰還
-            //        {
-            //            if (SelectedUnit.Master is object)
-            //            {
-            //                SelectedUnit.Mode = SelectedUnit.Master.MainPilot().ID;
-            //            }
-            //            else
-            //            {
-            //                SelectedUnit.Mode = SelectedUnit.Summoner.MainPilot().ID;
-            //            }
+                case 5: // 帰還
+                    {
+                        if (SelectedUnit.Master is object)
+                        {
+                            SelectedUnit.Mode = SelectedUnit.Master.MainPilot().ID;
+                        }
+                        else
+                        {
+                            SelectedUnit.Mode = SelectedUnit.Summoner.MainPilot().ID;
+                        }
 
-            //            CommandState = "ユニット選択";
-            //            Status.DisplayUnitStatus(SelectedUnit);
-            //            break;
-            //        }
-            //}
+                        CommandState = "ユニット選択";
+                        Status.DisplayUnitStatus(SelectedUnit);
+                        break;
+                    }
+            }
 
-            //GUI.UnlockGUI();
+            GUI.UnlockGUI();
         }
 
         // 「命令」コマンドを終了
         private void FinishOrderCommand()
         {
-            throw new NotImplementedException();
-            //// MOD END MARGE
-            //switch (SelectedCommand ?? "")
-            //{
-            //    case "移動命令":
-            //        {
-            //            SelectedUnit.Mode = SrcFormatter.Format(SelectedX) + " " + SrcFormatter.Format(SelectedY);
-            //            break;
-            //        }
+            switch (SelectedCommand ?? "")
+            {
+                case "移動命令":
+                    {
+                        SelectedUnit.Mode = SrcFormatter.Format(SelectedX) + " " + SrcFormatter.Format(SelectedY);
+                        break;
+                    }
 
-            //    case "攻撃命令":
-            //    case "護衛命令":
-            //        {
-            //            SelectedUnit.Mode = SelectedTarget.MainPilot().ID;
-            //            break;
-            //        }
-            //}
+                case "攻撃命令":
+                case "護衛命令":
+                    {
+                        SelectedUnit.Mode = SelectedTarget.MainPilot().ID;
+                        break;
+                    }
+            }
 
-            //if (ReferenceEquals(Status.DisplayedUnit, SelectedUnit))
-            //{
-            //    Status.DisplayUnitStatus(SelectedUnit);
-            //}
+            if (ReferenceEquals(Status.DisplayedUnit, SelectedUnit))
+            {
+                Status.DisplayUnitStatus(SelectedUnit);
+            }
 
-            //GUI.RedrawScreen();
-            //CommandState = "ユニット選択";
+            GUI.RedrawScreen();
+            CommandState = "ユニット選択";
         }
     }
 }
