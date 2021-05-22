@@ -1010,63 +1010,17 @@ namespace SRCCore.Commands
                         unitCommands.RemoveItem(x => x.Id == MoveCmdID || x.Id == TeleportCmdID || x.Id == JumpCmdID);
                     }
 
-                    //// 会話コマンド
-                    //for (i = 1; i <= 4; i++)
-                    //{
-                    //    // UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                    //    u = null;
-                    //    switch (i)
-                    //    {
-                    //        case 1:
-                    //            {
-                    //                if (currentUnit.x > 1)
-                    //                {
-                    //                    u = Map.MapDataForUnit[currentUnit.x - 1, currentUnit.y];
-                    //                }
-
-                    //                break;
-                    //            }
-
-                    //        case 2:
-                    //            {
-                    //                if (currentUnit.x < Map.MapWidth)
-                    //                {
-                    //                    u = Map.MapDataForUnit[currentUnit.x + 1, currentUnit.y];
-                    //                }
-
-                    //                break;
-                    //            }
-
-                    //        case 3:
-                    //            {
-                    //                if (currentUnit.y > 1)
-                    //                {
-                    //                    u = Map.MapDataForUnit[currentUnit.x, currentUnit.y - 1];
-                    //                }
-
-                    //                break;
-                    //            }
-
-                    //        case 4:
-                    //            {
-                    //                if (currentUnit.y < Map.MapHeight)
-                    //                {
-                    //                    u = Map.MapDataForUnit[currentUnit.x, currentUnit.y + 1];
-                    //                }
-
-                    //                break;
-                    //            }
-                    //    }
-
-                    //    if (u is object)
-                    //    {
-                    //        if (Event.IsEventDefined("会話 " + currentUnit.MainPilot().ID + " " + u.MainPilot().ID))
-                    //        {
-                    //            GUI.MainForm.mnuUnitCommandItem(TalkCmdID).Visible = true;
-                    //            break;
-                    //        }
-                    //    }
-                    //}
+                    // 会話コマンド
+                    if (new Unit[] {
+                            Map.UnitAtPoint(currentUnit.x-1, currentUnit.y),
+                            Map.UnitAtPoint(currentUnit.x+1, currentUnit.y),
+                            Map.UnitAtPoint(currentUnit.x, currentUnit.y-1),
+                            Map.UnitAtPoint(currentUnit.x, currentUnit.y+1),
+                        }.Where(u => u != null)
+                        .Any(u => Event.IsEventDefined("会話 " + currentUnit.MainPilot().ID + " " + u.MainPilot().ID)))
+                    {
+                        unitCommands.Add(new UiCommand(TalkCmdID, "会話"));
+                    }
 
                     // 攻撃コマンド
                     if (currentUnit.Weapons.Any(x => x.IsWeaponUseful("移動前")))
@@ -1640,64 +1594,17 @@ namespace SRCCore.Commands
 
                 unitCommands.Add(new UiCommand(WaitCmdID, "待機"));
 
-                //// 会話コマンド
-                //GUI.MainForm.mnuUnitCommandItem(TalkCmdID).Visible = false;
-                //for (i = 1; i <= 4; i++)
-                //{
-                //    // UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                //    u = null;
-                //    switch (i)
-                //    {
-                //        case 1:
-                //            {
-                //                if (currentUnit.x > 1)
-                //                {
-                //                    u = Map.MapDataForUnit[currentUnit.x - 1, currentUnit.y];
-                //                }
-
-                //                break;
-                //            }
-
-                //        case 2:
-                //            {
-                //                if (currentUnit.x < Map.MapWidth)
-                //                {
-                //                    u = Map.MapDataForUnit[currentUnit.x + 1, currentUnit.y];
-                //                }
-
-                //                break;
-                //            }
-
-                //        case 3:
-                //            {
-                //                if (currentUnit.y > 1)
-                //                {
-                //                    u = Map.MapDataForUnit[currentUnit.x, currentUnit.y - 1];
-                //                }
-
-                //                break;
-                //            }
-
-                //        case 4:
-                //            {
-                //                if (currentUnit.y < Map.MapHeight)
-                //                {
-                //                    u = Map.MapDataForUnit[currentUnit.x, currentUnit.y + 1];
-                //                }
-
-                //                break;
-                //            }
-                //    }
-
-                //    if (u is object)
-                //    {
-                //        if (Event.IsEventDefined("会話 " + currentUnit.MainPilot().ID + " " + u.MainPilot().ID))
-                //        {
-                //            GUI.MainForm.mnuUnitCommandItem(TalkCmdID).Visible = true;
-                //            break;
-                //        }
-                //    }
-                //}
+                // 会話コマンド
+                if (new Unit[] {
+                            Map.UnitAtPoint(currentUnit.x-1, currentUnit.y),
+                            Map.UnitAtPoint(currentUnit.x+1, currentUnit.y),
+                            Map.UnitAtPoint(currentUnit.x, currentUnit.y-1),
+                            Map.UnitAtPoint(currentUnit.x, currentUnit.y+1),
+                        }.Where(u => u != null)
+                    .Any(u => Event.IsEventDefined("会話 " + currentUnit.MainPilot().ID + " " + u.MainPilot().ID)))
+                {
+                    unitCommands.Add(new UiCommand(TalkCmdID, "会話"));
+                }
 
                 // 攻撃コマンド
                 if (currentUnit.Weapons.Any(x => x.IsWeaponUseful("移動後")))
