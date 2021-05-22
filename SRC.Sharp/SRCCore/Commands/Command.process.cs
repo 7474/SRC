@@ -308,7 +308,7 @@ namespace SRCCore.Commands
                 //{
                 //    var withBlock2 = SelectedUnit;
                 //    // 情報が隠蔽されている場合は表示しない
-                //    if (Expression.IsOptionDefined("ユニット情報隠蔽") && !withBlock2.IsConditionSatisfied("識別済み") && (withBlock2.Party0 == "敵" | withBlock2.Party0 == "中立") | withBlock2.IsConditionSatisfied("ユニット情報隠蔽") | withBlock2.IsFeatureAvailable("ダミーユニット"))
+                //    if (Expression.IsOptionDefined("ユニット情報隠蔽") && !withBlock2.IsConditionSatisfied("識別済み") && (withBlock2.Party0 == "敵" || withBlock2.Party0 == "中立") || withBlock2.IsConditionSatisfied("ユニット情報隠蔽") || withBlock2.IsFeatureAvailable("ダミーユニット"))
                 //    {
                 //        GUI.IsGUILocked = false;
                 //        return;
@@ -405,7 +405,7 @@ namespace SRCCore.Commands
                 //                }
                 //        }
                 //    }
-                //    else if (localAllFeature() == "パイロット能力付加" | localAllFeature1() == "パイロット能力強化")
+                //    else if (localAllFeature() == "パイロット能力付加" || localAllFeature1() == "パイロット能力強化")
                 //    {
                 //        string localAllFeatureData1() { object argIndex1 = i; var ret = currentUnit.AllFeatureData(argIndex1); return ret; }
 
@@ -415,7 +415,7 @@ namespace SRCCore.Commands
                 //            break;
                 //        }
                 //    }
-                //    else if (localAllFeature2() == "武器クラス" | localAllFeature3() == "防具クラス")
+                //    else if (localAllFeature2() == "武器クラス" || localAllFeature3() == "防具クラス")
                 //    {
                 //        if (Expression.IsOptionDefined("アイテム交換"))
                 //        {
@@ -495,7 +495,7 @@ namespace SRCCore.Commands
                 }
 
                 //// 味方じゃない場合
-                //if (currentUnit.Party != "味方" | currentUnit.IsConditionSatisfied("非操作") | ViewMode)
+                //if (currentUnit.Party != "味方" || currentUnit.IsConditionSatisfied("非操作") || ViewMode)
                 //{
                 //    // 召喚ユニットは命令コマンドを使用可能
                 //    if (currentUnit.Party == "ＮＰＣ" && currentUnit.IsFeatureAvailable("召喚ユニット") && !currentUnit.IsConditionSatisfied("魅了") && !currentUnit.IsConditionSatisfied("混乱") && !currentUnit.IsConditionSatisfied("恐怖") && !currentUnit.IsConditionSatisfied("暴走") && !currentUnit.IsConditionSatisfied("狂戦士") && !ViewMode)
@@ -816,7 +816,7 @@ namespace SRCCore.Commands
                 //            if (lab.Name == Event.LabelType.UnitCommandEventLabel && lab.Enable)
                 //            {
                 //                buf = Expression.GetValueAsString(lab.Para(3));
-                //                if (SelectedUnit.Party == "味方" && ((buf ?? "") == (SelectedUnit.MainPilot().Name ?? "") | (buf ?? "") == (SelectedUnit.MainPilot().get_Nickname(false) ?? "") | (buf ?? "") == (SelectedUnit.Name ?? "")) | (buf ?? "") == (SelectedUnit.Party ?? "") | buf == "全")
+                //                if (SelectedUnit.Party == "味方" && ((buf ?? "") == (SelectedUnit.MainPilot().Name ?? "") || (buf ?? "") == (SelectedUnit.MainPilot().get_Nickname(false) ?? "") || (buf ?? "") == (SelectedUnit.Name ?? "")) || (buf ?? "") == (SelectedUnit.Party ?? "") || buf == "全")
                 //                {
                 //                    int localGetValueAsLong() { string argexpr = lab.Para(4); var ret = Expression.GetValueAsLong(argexpr); return ret; }
 
@@ -845,7 +845,7 @@ namespace SRCCore.Commands
                 //    }
 
                 //    // 未確認ユニットの場合は情報を隠蔽
-                //    if (Expression.IsOptionDefined("ユニット情報隠蔽") && !currentUnit.IsConditionSatisfied("識別済み") && (currentUnit.Party0 == "敵" | currentUnit.Party0 == "中立") | currentUnit.IsConditionSatisfied("ユニット情報隠蔽"))
+                //    if (Expression.IsOptionDefined("ユニット情報隠蔽") && !currentUnit.IsConditionSatisfied("識別済み") && (currentUnit.Party0 == "敵" || currentUnit.Party0 == "中立") || currentUnit.IsConditionSatisfied("ユニット情報隠蔽"))
                 //    {
                 //        GUI.MainForm.mnuUnitCommandItem(MoveCmdID).Visible = true;
                 //        GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Visible = false;
@@ -904,12 +904,12 @@ namespace SRCCore.Commands
                 //    foreach (LabelData currentLab2 in Event.colEventLabelList)
                 //    {
                 //        lab = currentLab2;
-                //        if (lab.Name == Event.LabelType.UnitCommandEventLabel && (lab.AsterNum == 1 | lab.AsterNum == 3))
+                //        if (lab.Name == Event.LabelType.UnitCommandEventLabel && (lab.AsterNum == 1 || lab.AsterNum == 3))
                 //        {
                 //            if (lab.Enable)
                 //            {
                 //                buf = lab.Para(3);
-                //                if (SelectedUnit.Party == "味方" && ((buf ?? "") == (SelectedUnit.MainPilot().Name ?? "") | (buf ?? "") == (SelectedUnit.MainPilot().get_Nickname(false) ?? "") | (buf ?? "") == (SelectedUnit.Name ?? "")) | (buf ?? "") == (SelectedUnit.Party ?? "") | buf == "全")
+                //                if (SelectedUnit.Party == "味方" && ((buf ?? "") == (SelectedUnit.MainPilot().Name ?? "") || (buf ?? "") == (SelectedUnit.MainPilot().get_Nickname(false) ?? "") || (buf ?? "") == (SelectedUnit.Name ?? "")) || (buf ?? "") == (SelectedUnit.Party ?? "") || buf == "全")
                 //                {
                 //                    int localStrToLng1() { string argexpr = lab.Para(4); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
@@ -1138,7 +1138,7 @@ namespace SRCCore.Commands
                     //        {
                     //            {
                     //                var withBlock9 = u;
-                    //                if ((withBlock9.Party == "味方" | withBlock9.Party == "ＮＰＣ") && withBlock9.HP < withBlock9.MaxHP && !withBlock9.IsConditionSatisfied("ゾンビ"))
+                    //                if ((withBlock9.Party == "味方" || withBlock9.Party == "ＮＰＣ") && withBlock9.HP < withBlock9.MaxHP && !withBlock9.IsConditionSatisfied("ゾンビ"))
                     //                {
                     //                    GUI.MainForm.mnuUnitCommandItem(FixCmdID).Visible = true;
                     //                    break;
@@ -1224,7 +1224,7 @@ namespace SRCCore.Commands
                     //        {
                     //            {
                     //                var withBlock10 = u;
-                    //                if (withBlock10.Party == "味方" | withBlock10.Party == "ＮＰＣ")
+                    //                if (withBlock10.Party == "味方" || withBlock10.Party == "ＮＰＣ")
                     //                {
                     //                    if (withBlock10.EN < withBlock10.MaxEN && !withBlock10.IsConditionSatisfied("ゾンビ"))
                     //                    {
@@ -1268,7 +1268,7 @@ namespace SRCCore.Commands
 
                     //            string localLIndex14() { object argIndex1 = "補給装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
 
-                    //            if (currentUnit.EN < Conversions.Toint(localLIndex14()) | currentUnit.MainPilot().Morale < 100)
+                    //            if (currentUnit.EN < Conversions.Toint(localLIndex14()) || currentUnit.MainPilot().Morale < 100)
                     //            {
                     //                GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = false;
                     //            }
@@ -1354,7 +1354,7 @@ namespace SRCCore.Commands
                         }
                     }
 
-                    if (currentUnit.IsFeatureAvailable("パーツ分離") 
+                    if (currentUnit.IsFeatureAvailable("パーツ分離")
                         && !string.IsNullOrEmpty(currentUnit.FeatureName("パーツ分離")))
                     {
                         unitCommands.Add(new UiCommand(SplitCmdID, currentUnit.FeatureName("パーツ分離")));
@@ -1375,7 +1375,7 @@ namespace SRCCore.Commands
                     //if (!currentUnit.IsConditionSatisfied("ノーマルモード付加"))
                     //{
                     //    // ハイパーモードコマンド
-                    //    if (currentUnit.IsFeatureAvailable("ハイパーモード") && (currentUnit.MainPilot().Morale >= (10d * currentUnit.FeatureLevel("ハイパーモード")) + 100 | currentUnit.HP <= currentUnit.MaxHP / 4 && Strings.InStr(currentUnit.FeatureData("ハイパーモード"), "気力発動") == 0) && Strings.InStr(currentUnit.FeatureData("ハイパーモード"), "自動発動") == 0 && !string.IsNullOrEmpty(currentUnit.FeatureName("ハイパーモード")) && !currentUnit.IsConditionSatisfied("形態固定") && !currentUnit.IsConditionSatisfied("機体固定"))
+                    //    if (currentUnit.IsFeatureAvailable("ハイパーモード") && (currentUnit.MainPilot().Morale >= (10d * currentUnit.FeatureLevel("ハイパーモード")) + 100 || currentUnit.HP <= currentUnit.MaxHP / 4 && Strings.InStr(currentUnit.FeatureData("ハイパーモード"), "気力発動") == 0) && Strings.InStr(currentUnit.FeatureData("ハイパーモード"), "自動発動") == 0 && !string.IsNullOrEmpty(currentUnit.FeatureName("ハイパーモード")) && !currentUnit.IsConditionSatisfied("形態固定") && !currentUnit.IsConditionSatisfied("機体固定"))
                     //    {
                     //        uname = GeneralLib.LIndex(currentUnit.FeatureData("ハイパーモード"), 2);
                     //        Unit localOtherForm5() { object argIndex1 = uname; var ret = currentUnit.OtherForm(argIndex1); return ret; }
@@ -1534,7 +1534,7 @@ namespace SRCCore.Commands
 
                     //                                {
                     //                                    var withBlock13 = localItem2().CurrentForm();
-                    //                                    if (withBlock13.Status == "出撃" | withBlock13.Status == "格納")
+                    //                                    if (withBlock13.Status == "出撃" || withBlock13.Status == "格納")
                     //                                    {
                     //                                        GUI.MainForm.mnuUnitCommandItem(DismissCmdID).Visible = false;
                     //                                    }
@@ -1770,7 +1770,7 @@ namespace SRCCore.Commands
                 //        {
                 //            {
                 //                var withBlock16 = u;
-                //                if ((withBlock16.Party == "味方" | withBlock16.Party == "ＮＰＣ") && withBlock16.HP < withBlock16.MaxHP)
+                //                if ((withBlock16.Party == "味方" || withBlock16.Party == "ＮＰＣ") && withBlock16.HP < withBlock16.MaxHP)
                 //                {
                 //                    GUI.MainForm.mnuUnitCommandItem(FixCmdID).Visible = true;
                 //                    break;
@@ -1857,7 +1857,7 @@ namespace SRCCore.Commands
                 //        {
                 //            {
                 //                var withBlock17 = u;
-                //                if (withBlock17.Party == "味方" | withBlock17.Party == "ＮＰＣ")
+                //                if (withBlock17.Party == "味方" || withBlock17.Party == "ＮＰＣ")
                 //                {
                 //                    if (withBlock17.EN < withBlock17.MaxEN)
                 //                    {
@@ -1901,7 +1901,7 @@ namespace SRCCore.Commands
 
                 //            string localLIndex21() { object argIndex1 = "補給装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
 
-                //            if (currentUnit.EN < Conversions.Toint(localLIndex21()) | currentUnit.MainPilot().Morale < 100)
+                //            if (currentUnit.EN < Conversions.Toint(localLIndex21()) || currentUnit.MainPilot().Morale < 100)
                 //            {
                 //                GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = false;
                 //            }
@@ -2080,7 +2080,7 @@ namespace SRCCore.Commands
                 //        if (lab.Enable)
                 //        {
                 //            buf = lab.Para(3);
-                //            if (SelectedUnit.Party == "味方" && ((buf ?? "") == (SelectedUnit.MainPilot().Name ?? "") | (buf ?? "") == (SelectedUnit.MainPilot().get_Nickname(false) ?? "") | (buf ?? "") == (SelectedUnit.Name ?? "")) | (buf ?? "") == (SelectedUnit.Party ?? "") | buf == "全")
+                //            if (SelectedUnit.Party == "味方" && ((buf ?? "") == (SelectedUnit.MainPilot().Name ?? "") || (buf ?? "") == (SelectedUnit.MainPilot().get_Nickname(false) ?? "") || (buf ?? "") == (SelectedUnit.Name ?? "")) || (buf ?? "") == (SelectedUnit.Party ?? "") || buf == "全")
                 //            {
                 //                int localStrToLng3() { string argexpr = lab.Para(4); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
@@ -2137,7 +2137,6 @@ namespace SRCCore.Commands
         {
             LogDebug();
 
-            // TODO
             if (cell == null)
             {
                 return;
@@ -2150,29 +2149,32 @@ namespace SRCCore.Commands
                 // 自分自身を選択された場合
                 if (SelectedUnit.x == SelectedX && SelectedUnit.y == SelectedY)
                 {
-                    //if (SelectedCommand == "スペシャルパワー")
-                    //{
-                    //}
-                    //// 下に抜ける
-                    //else if (SelectedCommand == "アビリティ" | SelectedCommand == "マップアビリティ" | SelectedCommand == "アイテム" | SelectedCommand == "マップアイテム")
-                    //{
-                    //    if (SelectedUnit.AbilityMinRange(SelectedAbility) > 0)
-                    //    {
-                    //        // 自分自身は選択不可
-                    //        GUI.IsGUILocked = false;
-                    //        return;
-                    //    }
-                    //}
-                    //else if (SelectedCommand == "移動命令")
-                    //{
-                    //}
-                    //// 下に抜ける
-                    //else
-                    //{
-                    //    // 自分自身は選択不可
-                    //    GUI.IsGUILocked = false;
-                    //    return;
-                    //}
+                    if (SelectedCommand == "スペシャルパワー")
+                    {
+                    }
+                    // 下に抜ける
+                    else if (SelectedCommand == "アビリティ"
+                        || SelectedCommand == "マップアビリティ"
+                        || SelectedCommand == "アイテム"
+                        || SelectedCommand == "マップアイテム")
+                    {
+                        if (SelectedUnit.Ability(SelectedAbility).AbilityMinRange() > 0)
+                        {
+                            // 自分自身は選択不可
+                            GUI.IsGUILocked = false;
+                            return;
+                        }
+                    }
+                    else if (SelectedCommand == "移動命令")
+                    {
+                    }
+                    // 下に抜ける
+                    else
+                    {
+                        // 自分自身は選択不可
+                        GUI.IsGUILocked = false;
+                        return;
+                    }
                 }
 
                 // 場所を選択するコマンド
@@ -2199,21 +2201,21 @@ namespace SRCCore.Commands
                         GUI.IsGUILocked = false;
                         return;
 
-                    //case "マップアビリティ":
-                    //case "マップアイテム":
-                    //        MapAbilityCommand();
-                    //        GUI.IsGUILocked = false;
-                    //        return;
+                    case "マップアビリティ":
+                    case "マップアイテム":
+                        MapAbilityCommand();
+                        GUI.IsGUILocked = false;
+                        return;
 
                     case "発進":
                         FinishLaunchCommand();
                         GUI.IsGUILocked = false;
                         return;
 
-                        //case "移動命令":
-                        //        FinishOrderCommand();
-                        //        GUI.IsGUILocked = false;
-                        //        return;
+                    case "移動命令":
+                        FinishOrderCommand();
+                        GUI.IsGUILocked = false;
+                        return;
                 }
 
                 // これ以降はユニットを選択するコマンド
@@ -2233,31 +2235,31 @@ namespace SRCCore.Commands
                         FinishAttackCommand();
                         break;
 
-                        //    case "アビリティ":
-                        //    case "アイテム":
-                        //        FinishAbilityCommand();
-                        //        break;
+                    case "アビリティ":
+                    case "アイテム":
+                        FinishAbilityCommand();
+                        break;
 
-                        //    case "会話":
-                        //        FinishTalkCommand();
-                        //        break;
+                    case "会話":
+                        FinishTalkCommand();
+                        break;
 
-                        //    case "修理":
-                        //        FinishFixCommand();
-                        //        break;
+                    case "修理":
+                        FinishFixCommand();
+                        break;
 
-                        //    case "補給":
-                        //        FinishSupplyCommand();
-                        //        break;
+                    case "補給":
+                        FinishSupplyCommand();
+                        break;
 
-                        //    case "スペシャルパワー":
-                        //        FinishSpecialPowerCommand();
-                        //        break;
+                    case "スペシャルパワー":
+                        FinishSpecialPowerCommand();
+                        break;
 
-                        //    case "攻撃命令":
-                        //    case "護衛命令":
-                        //        FinishOrderCommand();
-                        //        break;
+                    case "攻撃命令":
+                    case "護衛命令":
+                        FinishOrderCommand();
+                        break;
                 }
             }
         }
@@ -2355,13 +2357,13 @@ namespace SRCCore.Commands
                             StartMoveCommand();
                             break;
 
-                        //case "テレポート":
-                        //    StartTeleportCommand();
-                        //    break;
+                        case "テレポート":
+                            StartTeleportCommand();
+                            break;
 
-                        //case "ジャンプ":
-                        //    StartJumpCommand();
-                        //    break;
+                        case "ジャンプ":
+                            StartJumpCommand();
+                            break;
 
                         case "発進":
                             GUI.PaintUnitBitmap(SelectedTarget);
@@ -2433,36 +2435,38 @@ namespace SRCCore.Commands
                         CommandState = "移動後ターゲット選択";
                     }
 
-                    //if (SelectedCommand == "マップ攻撃")
-                    //{
-                    //    if (currentUnit.IsWeaponClassifiedAs(SelectedWeapon, "Ｍ直"))
-                    //    {
-                    //        Map.AreaInCross(currentUnit.x, currentUnit.y, currentUnit.WeaponMaxRange(SelectedWeapon), currentUnit.Weapon(SelectedWeapon).MinRange);
-                    //    }
-                    //    else if (currentUnit.IsWeaponClassifiedAs(SelectedWeapon, "Ｍ移"))
-                    //    {
-                    //        Map.AreaInMoveAction(SelectedUnit, currentUnit.WeaponMaxRange(SelectedWeapon));
-                    //    }
-                    //    else
-                    //    {
-                    //        Map.AreaInRange(currentUnit.x, currentUnit.y, currentUnit.WeaponMaxRange(SelectedWeapon), currentUnit.Weapon(SelectedWeapon).MinRange, "すべて");
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    if (currentUnit.IsAbilityClassifiedAs(SelectedAbility, "Ｍ直"))
-                    //    {
-                    //        Map.AreaInCross(currentUnit.x, currentUnit.y, currentUnit.AbilityMaxRange(SelectedAbility), currentUnit.AbilityMinRange(SelectedAbility));
-                    //    }
-                    //    else if (currentUnit.IsAbilityClassifiedAs(SelectedAbility, "Ｍ移"))
-                    //    {
-                    //        Map.AreaInMoveAction(SelectedUnit, currentUnit.AbilityMaxRange(SelectedAbility));
-                    //    }
-                    //    else
-                    //    {
-                    //        Map.AreaInRange(currentUnit.x, currentUnit.y, currentUnit.AbilityMaxRange(SelectedAbility), currentUnit.AbilityMinRange(SelectedAbility), "すべて");
-                    //    }
-                    //}
+                    if (SelectedCommand == "マップ攻撃")
+                    {
+                        var uw = currentUnit.Weapon(SelectedWeapon);
+                        if (uw.IsWeaponClassifiedAs("Ｍ直"))
+                        {
+                            Map.AreaInCross(currentUnit.x, currentUnit.y, uw.WeaponMaxRange(), uw.WeaponMinRange());
+                        }
+                        else if (uw.IsWeaponClassifiedAs("Ｍ移"))
+                        {
+                            Map.AreaInMoveAction(SelectedUnit, uw.WeaponMaxRange());
+                        }
+                        else
+                        {
+                            Map.AreaInRange(currentUnit.x, currentUnit.y, uw.WeaponMaxRange(), uw.WeaponMinRange(), "すべて");
+                        }
+                    }
+                    else
+                    {
+                        var ua = currentUnit.Ability(SelectedAbility);
+                        if (ua.IsAbilityClassifiedAs("Ｍ直"))
+                        {
+                            Map.AreaInCross(currentUnit.x, currentUnit.y, ua.AbilityMaxRange(), ua.AbilityMinRange());
+                        }
+                        else if (ua.IsAbilityClassifiedAs("Ｍ移"))
+                        {
+                            Map.AreaInMoveAction(SelectedUnit, ua.AbilityMaxRange());
+                        }
+                        else
+                        {
+                            Map.AreaInRange(currentUnit.x, currentUnit.y, ua.AbilityMaxRange(), ua.AbilityMinRange(), "すべて");
+                        }
+                    }
 
                     GUI.MaskScreen();
                     break;
