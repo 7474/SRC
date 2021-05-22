@@ -5,6 +5,7 @@
 
 using SRCCore.Commands;
 using SRCCore.Units;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -349,11 +350,13 @@ namespace SRCCore
         Left,
         Right,
     }
+    [Flags]
     public enum GuiConfirmOption
     {
-        Ok,
-        OkCancel,
-        Question,
+        Ok = 1,
+        OkCancel = 2,
+        Question = 4,
+        OkCanceQestion = 6,
     }
     public enum GuiDialogResult
     {

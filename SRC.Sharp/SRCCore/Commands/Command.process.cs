@@ -1297,35 +1297,15 @@ namespace SRCCore.Commands
                         }
                     }
 
-                    //// チャージコマンド
-                    //if (!currentUnit.IsConditionSatisfied("チャージ完了"))
-                    //{
-                    //    var loopTo16 = currentUnit.CountWeapon();
-                    //    for (i = 1; i <= loopTo16; i++)
-                    //    {
-                    //        if (currentUnit.IsWeaponClassifiedAs(i, "Ｃ"))
-                    //        {
-                    //            if (currentUnit.IsWeaponAvailable(i, "チャージ"))
-                    //            {
-                    //                GUI.MainForm.mnuUnitCommandItem(ChargeCmdID).Visible = true;
-                    //                break;
-                    //            }
-                    //        }
-                    //    }
-
-                    //    var loopTo17 = currentUnit.CountAbility();
-                    //    for (i = 1; i <= loopTo17; i++)
-                    //    {
-                    //        if (currentUnit.IsAbilityClassifiedAs(i, "Ｃ"))
-                    //        {
-                    //            if (currentUnit.IsAbilityAvailable(i, "チャージ"))
-                    //            {
-                    //                GUI.MainForm.mnuUnitCommandItem(ChargeCmdID).Visible = true;
-                    //                break;
-                    //            }
-                    //        }
-                    //    }
-                    //}
+                    // チャージコマンド
+                    if (!currentUnit.IsConditionSatisfied("チャージ完了"))
+                    {
+                        if (currentUnit.Weapons.Any(uw => uw.IsWeaponClassifiedAs("Ｃ") && uw.IsWeaponAvailable("チャージ"))
+                             || currentUnit.Abilities.Any(ua => ua.IsAbilityClassifiedAs("Ｃ") && ua.IsAbilityAvailable("チャージ")))
+                        {
+                            unitCommands.Add(new UiCommand(ChargeCmdID, Expression.Term("チャージ", SelectedUnit)));
+                        }
+                    }
 
                     // スペシャルパワーコマンド
                     {
@@ -1374,11 +1354,11 @@ namespace SRCCore.Commands
                         }
                     }
 
-                    //if (currentUnit.IsFeatureAvailable("パーツ分離") && !string.IsNullOrEmpty(currentUnit.FeatureName("パーツ分離")))
-                    //{
-                    //    GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Caption = currentUnit.FeatureName("パーツ分離");
-                    //    GUI.MainForm.mnuUnitCommandItem(SplitCmdID).Visible = true;
-                    //}
+                    if (currentUnit.IsFeatureAvailable("パーツ分離") 
+                        && !string.IsNullOrEmpty(currentUnit.FeatureName("パーツ分離")))
+                    {
+                        unitCommands.Add(new UiCommand(SplitCmdID, currentUnit.FeatureName("パーツ分離")));
+                    }
 
                     // 合体コマンド
                     if (currentUnit.IsFeatureAvailable("合体")
