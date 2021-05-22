@@ -3586,18 +3586,6 @@ namespace SRCCore
         // 換装コマンド
         private void ExchangeFormCommand()
         {
-        //    int j, i, k;
-        //    string[] list;
-        //    string[] id_list;
-        //    int[] key_list;
-        //    string[] list2;
-        //    string[] id_list2;
-        //    int max_item, max_value;
-        //    Unit u;
-        //    string buf;
-        //    int ret;
-        //    int top_item;
-        //    string[] farray;
         Beginning:
             ;
             var top_item = 1;
