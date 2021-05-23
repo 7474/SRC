@@ -80,19 +80,30 @@ namespace SRCDataLinter
                     case "pilot.txt":
                         SRC.PDList.Load(file.Name, await OpenUtf8Async(SRC, file));
                         break;
+                    case "non_pilot.txt":
+                        SRC.NPDList.Load(file.Name, await OpenUtf8Async(SRC, file));
+                        break;
                     case "pilot_message.txt":
                         SRC.MDList.Load(file.Name, false, await OpenUtf8Async(SRC, file));
                         break;
                     case "pilot_dialog.txt":
                         SRC.DDList.Load(file.Name, await OpenUtf8Async(SRC, file));
                         break;
+                    case "effect.txt":
+                        SRC.EDList.Load(file.Name, true, await OpenUtf8Async(SRC, file));
+                        break;
+                    case "animation.txt":
+                        SRC.ADList.Load(file.Name, false, await OpenUtf8Async(SRC, file));
+                        break;
                     case "item.txt":
                         SRC.IDList.Load(file.Name, await OpenUtf8Async(SRC, file));
+                        break;
+                    case "alias.txt":
+                        SRC.ALDList.Load(file.Name, await OpenUtf8Async(SRC, file));
                         break;
                     default:
                         if (file.Name.ToLower().EndsWith(".eve"))
                         {
-                            // TODO 検証用のモードを用意してもいいかもしれない。
                             SRC.Event.LoadEventData(file.FullName, "");
                         }
                         else
