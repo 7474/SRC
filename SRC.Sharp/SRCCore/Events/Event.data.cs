@@ -678,16 +678,17 @@ namespace SRCCore.Events
                                 error_found = true;
                             }
 
+                            // XXX チェック怪しい
                             var opts = new string[]
                             {
                                 "通常",
                                 "拡大",
                                 "連続表示",
                                 "キャンセル可",
+                                "終了",
                             };
-                            if ((command.ArgNum < 3 || command.GetArgs().ToList()
-                                    .FindIndex(x => opts.Contains(x.strArg)) < 3)
-                                && !command.GetArgs().Select(x => x.strArg).Contains("終了"))
+                            if (command.ArgNum < 3
+                                && !command.GetArgs().Select(x => x.strArg).Any(x => opts.Contains(x)))
                             {
                                 cmdStack.Push(CmdType.AskCmd);
                                 cmdPosStack.Push(command.EventData.ID);
