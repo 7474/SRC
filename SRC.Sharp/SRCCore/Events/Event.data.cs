@@ -207,7 +207,7 @@ namespace SRCCore.Events
                     {
                         // フォルダを検索
                         var tfolder = SRC.SearchDataFolder(tname);
-                        if (Strings.Len(tfolder) == 0)
+                        if (Strings.Len(tfolder) == 0 && !SkipExternalSourceLoad)
                         {
                             DisplayEventErrorMessage(line.ID, "データ「" + tname + "」のフォルダが見つかりません");
                         }
