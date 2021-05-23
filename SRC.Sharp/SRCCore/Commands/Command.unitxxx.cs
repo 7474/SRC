@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Pilots;
 using SRCCore.Units;
 using System;
 using System.Collections.Generic;
@@ -117,101 +118,93 @@ namespace SRCCore.Commands
         // 「会話」コマンドを開始
         private void StartTalkCommand()
         {
-            throw new NotImplementedException();
-            //int i, j;
-            //Unit t;
-            //SelectedCommand = "会話";
+            SelectedCommand = "会話";
 
-            //// UPGRADE_NOTE: オブジェクト t をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //t = null;
+            Unit t = null;
 
-            //// 会話可能なユニットを表示
-            //{
-            //    var withBlock = SelectedUnit;
-            //    Map.AreaInRange(withBlock.x, withBlock.y, 1, 1, "");
-            //    var loopTo = Map.MapWidth;
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        var loopTo1 = Map.MapHeight;
-            //        for (j = 1; j <= loopTo1; j++)
-            //        {
-            //            if (!Map.MaskData[i, j])
-            //            {
-            //                if (Map.MapDataForUnit[i, j] is object)
-            //                {
-            //                    bool localIsEventDefined() { var arglname = "会話 " + withBlock.MainPilot().ID + " " + Map.MapDataForUnit[i, j].MainPilot.ID; var ret = Event.IsEventDefined(arglname); return ret; }
+            // 会話可能なユニットを表示
+            {
+                var currentUnit = SelectedUnit;
+                Map.AreaInRange(currentUnit.x, currentUnit.y, 1, 1, "");
+                var loopTo = Map.MapWidth;
+                for (var i = 1; i <= loopTo; i++)
+                {
+                    var loopTo1 = Map.MapHeight;
+                    for (var j = 1; j <= loopTo1; j++)
+                    {
+                        if (!Map.MaskData[i, j])
+                        {
+                            if (Map.MapDataForUnit[i, j] is object)
+                            {
+                                if (!Event.IsEventDefined("会話 " + currentUnit.MainPilot().ID + " " + Map.MapDataForUnit[i, j].MainPilot().ID))
+                                {
+                                    Map.MaskData[i, j] = true;
+                                    t = Map.MapDataForUnit[i, j];
+                                }
+                            }
+                        }
+                    }
+                }
 
-            //                    if (!localIsEventDefined())
-            //                    {
-            //                        Map.MaskData[i, j] = true;
-            //                        t = Map.MapDataForUnit[i, j];
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
+                Map.MaskData[currentUnit.x, currentUnit.y] = false;
+            }
 
-            //    Map.MaskData[withBlock.x, withBlock.y] = false;
-            //}
+            GUI.MaskScreen();
 
-            //GUI.MaskScreen();
+            // カーソル自動移動
+            if (SRC.AutoMoveCursor)
+            {
+                if (t is object)
+                {
+                    GUI.MoveCursorPos("ユニット選択", t);
+                    Status.DisplayUnitStatus(t);
+                }
+            }
 
-            //// カーソル自動移動
-            //if (SRC.AutoMoveCursor)
-            //{
-            //    if (t is object)
-            //    {
-            //        GUI.MoveCursorPos("ユニット選択", t);
-            //        Status.DisplayUnitStatus(t);
-            //    }
-            //}
-
-            //if (CommandState == "コマンド選択")
-            //{
-            //    CommandState = "ターゲット選択";
-            //}
-            //else
-            //{
-            //    CommandState = "移動後ターゲット選択";
-            //}
+            if (CommandState == "コマンド選択")
+            {
+                CommandState = "ターゲット選択";
+            }
+            else
+            {
+                CommandState = "移動後ターゲット選択";
+            }
         }
 
         // 「会話」コマンドを終了
         private void FinishTalkCommand()
         {
-            throw new NotImplementedException();
-            //Pilot p;
-            //GUI.LockGUI();
-            //if (SelectedUnit.CountPilot() > 0)
-            //{
-            //    p = SelectedUnit.Pilot(1);
-            //}
-            //else
-            //{
-            //    // UPGRADE_NOTE: オブジェクト p をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //    p = null;
-            //}
+            Pilot p;
+            GUI.LockGUI();
+            if (SelectedUnit.CountPilot() > 0)
+            {
+                p = SelectedUnit.Pilots.First();
+            }
+            else
+            {
+                p = null;
+            }
 
-            //// 会話イベントを実施
-            //Event.HandleEvent("会話", SelectedUnit.MainPilot().ID, SelectedTarget.MainPilot().ID);
-            //if (SRC.IsScenarioFinished)
-            //{
-            //    SRC.IsScenarioFinished = false;
-            //    return;
-            //}
+            // 会話イベントを実施
+            Event.HandleEvent("会話", SelectedUnit.MainPilot().ID, SelectedTarget.MainPilot().ID);
+            if (SRC.IsScenarioFinished)
+            {
+                SRC.IsScenarioFinished = false;
+                return;
+            }
 
-            //if (p is object)
-            //{
-            //    if (p.Unit is object)
-            //    {
-            //        SelectedUnit = p.Unit;
-            //    }
-            //}
+            if (p is object)
+            {
+                if (p.Unit is object)
+                {
+                    SelectedUnit = p.Unit;
+                }
+            }
 
-            //GUI.UnlockGUI();
+            GUI.UnlockGUI();
 
-            //// 行動終了
-            //WaitCommand();
+            // 行動終了
+            WaitCommand();
         }
 
         // 「命令」コマンドを開始
