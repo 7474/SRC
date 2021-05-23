@@ -130,8 +130,7 @@ namespace SRCCore.Models
                         var ret = Strings.InStr(line_buf, ",");
                         if (ret < 2)
                         {
-                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 4751
-                             */
+                            throw reader.InvalidDataException("「,」区切りが見つかりません。", data_name);
                         }
 
                         var sname = Strings.Left(line_buf, (int)ret - 1);
