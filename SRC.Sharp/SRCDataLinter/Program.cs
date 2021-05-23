@@ -108,7 +108,8 @@ namespace SRCDataLinter
                         }
                         else
                         {
-                            Console.WriteLine($"Not supported file [{file.Name}]");
+                            Console.WriteLine($"Not supported [{file.FullName}]");
+                            return false;
                         }
                         break;
                 }
@@ -133,6 +134,7 @@ namespace SRCDataLinter
             }
             hasError |= SRC.HasDataError;
             SRC.ClearDataError();
+            Console.WriteLine($"Checked [{file.FullName}]");
 
             return hasError;
         }
