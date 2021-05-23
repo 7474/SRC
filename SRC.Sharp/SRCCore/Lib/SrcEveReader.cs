@@ -7,6 +7,7 @@ using SRCCore.Exceptions;
 using SRCCore.VB;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace SRCCore.Lib
 {
@@ -16,8 +17,7 @@ namespace SRCCore.Lib
         public int LineNumber { get; private set; }
         public string LastLine { get; private set; }
 
-        // TODO Encoding
-        public SrcEveReader(string fname, Stream stream) : base(stream)
+        public SrcEveReader(string fname, Stream stream) : base(stream, Encoding.UTF8)
         {
             FileName = fname;
         }
