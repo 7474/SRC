@@ -41,7 +41,7 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
         - .NET 5
         - GitHub Action: https://github.com/7474/SRC-DataLinter
         - Docker Image: https://hub.docker.com/r/koudenpa/srcdatalinter
-            - ビルドはDocker Hub
+            - ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/koudenpa/srcdatalinter)
     - [SRCSharpForm](./SRC.Sharp/SRCSharpForm)
         - Windows Forms実装のSRC#Form
         - SRC#Formの仮実行を行える
