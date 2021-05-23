@@ -320,8 +320,10 @@ namespace SRCCore.Events
             {
                 return;
             }
-
-            LoadData(fname, new_titles);
+            if (!SkipExternalSourceLoad)
+            {
+                LoadData(fname, new_titles);
+            }
         }
 
         private void RegisterLabel()

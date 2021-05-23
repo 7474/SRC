@@ -25,6 +25,7 @@ namespace SRCDataLinter
             SRC.GUI = new LinterGUI();
             SRC.FileSystem = new LocalFileSystem();
             SRC.Event.InitEventData();
+            SRC.Event.SkipExternalSourceLoad = true;
 
             var hasError = false;
             var files = args
@@ -112,6 +113,7 @@ namespace SRCDataLinter
             catch (Exception ex)
             {
                 Console.Error.WriteLine($"{file.FullName}({1}): error: {ex.Message}");
+                Console.Error.WriteLine(ex.StackTrace);
                 hasError = true;
             }
             foreach (var id in SRC.DataErrors)
