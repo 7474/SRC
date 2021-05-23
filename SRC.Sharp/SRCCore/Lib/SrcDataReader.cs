@@ -54,7 +54,10 @@ namespace SRCCore.Lib
             while (HasMore)
             {
                 // 完全な互換性にはこだわらないので先にTrimしてしまう
-                var buf = ReadLine().Trim();
+                var buf = ReadLine().Trim().Trim(
+                        // EOF
+                        (char)0x1a
+                    );
                 _rawBuffer.AppendLine(buf);
                 LineNumber++;
 
