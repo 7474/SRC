@@ -17,8 +17,7 @@ namespace SRCCore.Lib
         public int LineNumber { get; private set; }
         public string LastLine { get; private set; }
 
-        // TODO Encoding
-        public SrcDataReader(string fname, Stream stream) : base(stream)
+        public SrcDataReader(string fname, Stream stream) : base(stream, Encoding.UTF8)
         {
             FileName = fname;
         }
