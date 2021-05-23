@@ -117,5 +117,11 @@ namespace SRCCore.Events
 
         // ユニットがセンタリングされたか？
         public bool IsUnitCenter;
+
+        /// <summary>
+        /// 真なら他のファイルを読み込まない。
+        /// Lint目的などで指定する。
+        /// </summary>
+        public bool SkipExternalSourceLoad { get; set; }
     }
 }
