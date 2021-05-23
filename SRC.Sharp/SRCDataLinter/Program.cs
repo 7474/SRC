@@ -108,7 +108,7 @@ namespace SRCDataLinter
                         }
                         else
                         {
-                            Console.WriteLine($"Not supported file [{file.Name}]");
+                            Debug.WriteLine($"Not supported file [{file.Name}]");
                         }
                         break;
                 }
