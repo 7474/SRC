@@ -329,30 +329,28 @@ namespace SRCCore.Commands
             GUI.LockGUI();
             var uname = GeneralLib.LIndex(SelectedUnit.FeatureData("ハイパーモード"), 2);
             var fname = SelectedUnit.FeatureName("ハイパーモード");
-            if (string.IsNullOrEmpty(Map.MapFileName))
+            if (Map.IsStatusView)
             {
                 // ユニットステータスコマンドの場合
+                var currentUnit = SelectedUnit;
+                if (!currentUnit.IsFeatureAvailable("ハイパーモード"))
                 {
-                    var withBlock = SelectedUnit;
-                    if (!withBlock.IsFeatureAvailable("ハイパーモード"))
-                    {
-                        uname = GeneralLib.LIndex(SelectedUnit.FeatureData("ノーマルモード"), 1);
-                    }
-
-                    // ハイパーモードを発動
-                    withBlock.Transform(uname);
-
-                    // ユニットリストの表示を更新
-                    Event.MakeUnitList(smode: "");
-
-                    // ステータスウィンドウの表示を更新
-                    Status.DisplayUnitStatus(withBlock.CurrentForm());
-
-                    // コマンドを終了
-                    GUI.UnlockGUI();
-                    CommandState = "ユニット選択";
-                    return;
+                    uname = GeneralLib.LIndex(SelectedUnit.FeatureData("ノーマルモード"), 1);
                 }
+
+                // ハイパーモードを発動
+                currentUnit.Transform(uname);
+
+                // ユニットリストの表示を更新
+                Event.MakeUnitList(smode: "");
+
+                // ステータスウィンドウの表示を更新
+                Status.DisplayUnitStatus(currentUnit.CurrentForm());
+
+                // コマンドを終了
+                GUI.UnlockGUI();
+                CommandState = "ユニット選択";
+                return;
             }
 
             // ハイパーモードを発動可能かどうかチェック

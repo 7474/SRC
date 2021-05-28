@@ -452,7 +452,7 @@ namespace SRCCore.Commands
                         unitAbilities.Count == 1 ? unitAbilities.First().AbilityNickname() : caption));
                 }
 
-                // 味方じゃない場合
+                // 味方じゃない、ステータス表示、ViewMode
                 if (currentUnit.Party != "味方" || currentUnit.IsConditionSatisfied("非操作") || ViewMode)
                 {
                     // 召喚ユニットは命令コマンドを使用可能
@@ -583,7 +583,7 @@ namespace SRCCore.Commands
                             else if (currentUnit.IsFeatureAvailable("ノーマルモード"))
                             {
                                 var fd = currentUnit.Feature("ノーマルモード");
-                                var uname = fd.DataL.Skip(1).First();
+                                var uname = fd.DataL.First();
 
                                 if (currentUnit.OtherForm(uname).IsAvailable()
                                     && GeneralLib.LIndex(currentUnit.FeatureData("変形"), 2) != uname)
