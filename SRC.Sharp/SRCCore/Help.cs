@@ -3890,7 +3890,7 @@ namespace SRCCore
                 case "ダミー":
                     {
                         buf = fname;
-                        if (Conversions.ToBoolean(Strings.InStr(buf, "Lv")))
+                        if (Strings.InStr(buf, "Lv") > 0)
                         {
                             buf = Strings.Left(buf, Strings.InStr(buf, "Lv") - 1);
                         }
@@ -4231,17 +4231,12 @@ namespace SRCCore
                             var loopTo18 = GeneralLib.LLength(fdata);
                             for (i = 2; i <= loopTo18; i++)
                             {
-                                Unit localOtherForm() { object argIndex1 = GeneralLib.LIndex(fdata, i); var ret = u.OtherForm(argIndex1); return ret; }
-
-                                if (localOtherForm().IsAvailable())
+                                if (u.OtherForm(GeneralLib.LIndex(fdata, i)).IsAvailable())
                                 {
-                                    UnitData localItem2() { object argIndex1 = GeneralLib.LIndex(fdata, i); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                                    if ((u.Nickname ?? "") == (localItem2().Nickname ?? ""))
+                                    var ud = SRC.UDList.Item(GeneralLib.LIndex(fdata, i));
+                                    if ((u.Nickname ?? "") == (ud.Nickname ?? ""))
                                     {
-                                        UnitData localItem() { object argIndex1 = GeneralLib.LIndex(fdata, i); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                                        uname = localItem().Name;
+                                        uname = ud.Name;
                                         if (Strings.Right(uname, 5) == "(前期型)")
                                         {
                                             uname = Strings.Left(uname, Strings.Len(uname) - 5);
@@ -4257,9 +4252,7 @@ namespace SRCCore
                                     }
                                     else
                                     {
-                                        UnitData localItem1() { object argIndex1 = GeneralLib.LIndex(fdata, i); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                                        uname = localItem1().Nickname;
+                                        uname = ud.Nickname;
                                     }
 
                                     msg = msg + uname + "  ";
@@ -4268,19 +4261,14 @@ namespace SRCCore
                         }
                         else
                         {
-                            UnitData localItem5() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                            if ((u.Nickname ?? "") == (localItem5().Nickname ?? ""))
+                            var ud = SRC.UDList.Item(GeneralLib.LIndex(fdata, 2));
+                            if ((u.Nickname ?? "") == (ud.Nickname ?? ""))
                             {
-                                UnitData localItem3() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                                uname = localItem3().Name;
+                                uname = ud.Name;
                             }
                             else
                             {
-                                UnitData localItem4() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                                uname = localItem4().Nickname;
+                                uname = ud.Nickname;
                             }
 
                             if (Strings.Right(uname, 5) == "(前期型)")
@@ -4304,19 +4292,14 @@ namespace SRCCore
 
                 case "パーツ分離":
                     {
-                        UnitData localItem8() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                        if ((u.Nickname ?? "") == (localItem8().Nickname ?? ""))
+                        var ud = SRC.UDList.Item(GeneralLib.LIndex(fdata, 2));
+                        if ((u.Nickname ?? "") == (ud.Nickname ?? ""))
                         {
-                            UnitData localItem6() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                            uname = localItem6().Name;
+                            uname = ud.Name;
                         }
                         else
                         {
-                            UnitData localItem7() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                            uname = localItem7().Nickname;
+                            uname = ud.Nickname;
                         }
 
                         if (Strings.Right(uname, 5) == "(前期型)")
@@ -4343,19 +4326,14 @@ namespace SRCCore
 
                 case "パーツ合体":
                     {
-                        UnitData localItem11() { object argIndex1 = fdata; var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                        if ((u.Nickname ?? "") == (localItem11().Nickname ?? ""))
+                        var ud = SRC.UDList.Item(fdata);
+                        if ((u.Nickname ?? "") == (ud.Nickname ?? ""))
                         {
-                            UnitData localItem9() { object argIndex1 = fdata; var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                            uname = localItem9().Name;
+                            uname = ud.Name;
                         }
                         else
                         {
-                            UnitData localItem10() { object argIndex1 = fdata; var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                            uname = localItem10().Nickname;
+                            uname = ud.Nickname;
                         }
 
                         if (Strings.Right(uname, 5) == "(前期型)")
@@ -4377,19 +4355,14 @@ namespace SRCCore
 
                 case "ハイパーモード":
                     {
-                        UnitData localItem14() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                        if ((u.Nickname ?? "") == (localItem14().Nickname ?? ""))
+                        var ud = SRC.UDList.Item(GeneralLib.LIndex(fdata, 2));
+                        if ((u.Nickname ?? "") == (ud.Nickname ?? ""))
                         {
-                            UnitData localItem12() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                            uname = localItem12().Name;
+                            uname = ud.Name;
                         }
                         else
                         {
-                            UnitData localItem13() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                            uname = localItem13().Nickname;
+                            uname = ud.Nickname;
                         }
 
                         if (Strings.Right(uname, 5) == "(前期型)")
@@ -4459,9 +4432,8 @@ namespace SRCCore
                         {
                             if (SRC.UDList.IsDefined(GeneralLib.LIndex(fdata, 2)))
                             {
-                                UnitData localItem15() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                                msg = "以下のユニットと合体し<B>" + localItem15().Nickname + "</B>に" + buf + "; ";
+                                var ud = SRC.UDList.Item(GeneralLib.LIndex(fdata, 2));
+                                msg = "以下のユニットと合体し<B>" + ud.Nickname + "</B>に" + buf + "; ";
                             }
                             else
                             {
@@ -4473,9 +4445,8 @@ namespace SRCCore
                             {
                                 if (SRC.UDList.IsDefined(GeneralLib.LIndex(fdata, i)))
                                 {
-                                    UnitData localItem16() { object argIndex1 = GeneralLib.LIndex(fdata, i); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                                    msg = msg + localItem16().Nickname + "  ";
+                                    var ud = SRC.UDList.Item(GeneralLib.LIndex(fdata, i));
+                                    msg = msg + ud.Nickname + "  ";
                                 }
                                 else
                                 {
@@ -4487,9 +4458,8 @@ namespace SRCCore
                         {
                             if (SRC.UDList.IsDefined(GeneralLib.LIndex(fdata, 3)))
                             {
-                                UnitData localItem17() { object argIndex1 = GeneralLib.LIndex(fdata, 3); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                                msg = localItem17().Nickname + "と合体し";
+                                var ud = SRC.UDList.Item(GeneralLib.LIndex(fdata, 3));
+                                msg = ud.Nickname + "と合体し";
                             }
                             else
                             {
@@ -4498,9 +4468,8 @@ namespace SRCCore
 
                             if (SRC.UDList.IsDefined(GeneralLib.LIndex(fdata, 2)))
                             {
-                                UnitData localItem18() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                                msg = msg + localItem18().Nickname + "に" + buf;
+                                var ud = SRC.UDList.Item(GeneralLib.LIndex(fdata, 2));
+                                msg = msg + ud.Nickname + "に" + buf;
                             }
                             else
                             {
@@ -4519,9 +4488,7 @@ namespace SRCCore
                         {
                             if (SRC.UDList.IsDefined(GeneralLib.LIndex(fdata, i)))
                             {
-                                UnitData localItem19() { object argIndex1 = GeneralLib.LIndex(fdata, i); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-                                msg = msg + localItem19().Nickname + "  ";
+                                msg = msg + SRC.UDList.Item(GeneralLib.LIndex(fdata,i)).Nickname + "  ";
                             }
                             else
                             {
@@ -4542,17 +4509,13 @@ namespace SRCCore
                     {
                         if (GeneralLib.LLength(fdata) == 2)
                         {
-                            bool localIsDefined() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
-
-                            if (!localIsDefined())
+                            if (!SRC.PDList.IsDefined(GeneralLib.LIndex(fdata, 2)))
                             {
                                 GUI.ErrorMessage("支配対象のパイロット「" + GeneralLib.LIndex(fdata, 2) + "」のデータが定義されていません");
                                 return FeatureHelpMessageRet;
                             }
 
-                            PilotData localItem20() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.PDList.Item(argIndex1); return ret; }
-
-                            msg = localItem20().Nickname + "の存在を維持し、仕えさせている。";
+                            msg = SRC.PDList.Item(GeneralLib.LIndex(fdata, 2)).Nickname + "の存在を維持し、仕えさせている。";
                         }
                         else
                         {
@@ -4560,17 +4523,12 @@ namespace SRCCore
                             var loopTo21 = GeneralLib.LLength(fdata);
                             for (i = 2; i <= loopTo21; i++)
                             {
-                                bool localIsDefined1() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
-
-                                if (!localIsDefined1())
+                                if (!SRC.PDList.IsDefined(GeneralLib.LIndex(fdata, i)))
                                 {
                                     GUI.ErrorMessage("支配対象のパイロット「" + GeneralLib.LIndex(fdata, i) + "」のデータが定義されていません");
                                     return FeatureHelpMessageRet;
                                 }
-
-                                PilotData localItem21() { object argIndex1 = GeneralLib.LIndex(fdata, i); var ret = SRC.PDList.Item(argIndex1); return ret; }
-
-                                msg = msg + localItem21().Nickname + "  ";
+                                msg = msg + SRC.PDList.Item(GeneralLib.LIndex(fdata, i)).Nickname + "  ";
                             }
                         }
 
@@ -4590,7 +4548,7 @@ namespace SRCCore
                         }
 
                         buf = fname;
-                        if (Conversions.ToBoolean(Strings.InStr(buf, "Lv")))
+                        if (Strings.InStr(buf, "Lv") > 0)
                         {
                             buf = Strings.Left(buf, Strings.InStr(buf, "Lv") - 1);
                         }
@@ -5140,10 +5098,6 @@ namespace SRCCore
 
                 default:
                     {
-                        string localAllFeatureData1() { object argIndex1 = fname; var ret = u.AllFeatureData(argIndex1); return ret; }
-
-                        string localListIndex() { string arglist = hs055a0679e2434182a961742a50d72158(); var ret = GeneralLib.ListIndex(arglist, 1); return ret; }
-
                         if (is_additional)
                         {
                             // 付加された能力の場合、ユニット用特殊能力に該当しなければ
@@ -5179,7 +5133,7 @@ namespace SRCCore
                                 msg = Strings.Mid(msg, 2, Strings.Len(msg) - 2);
                             }
                         }
-                        else if (localListIndex() != "解説")
+                        else if (u.AllFeature(fname).DataL.First() != "解説")
                         {
                             // 解説がない場合
                             return FeatureHelpMessageRet;
@@ -5189,7 +5143,7 @@ namespace SRCCore
                     }
             }
 
-            fdata = u.AllFeatureData(fname0);
+            fdata = u.AllFeature(fname0)?.Data ?? "";
             if (GeneralLib.ListIndex(fdata, 1) == "解説")
             {
                 // 解説を定義している場合
@@ -6147,24 +6101,27 @@ namespace SRCCore
                 alevel = Constants.DEFAULT_LEVEL;
             }
 
+            UnitWeapon uw = null;
+            UnitAbility ua = null;
             {
-                var withBlock = u;
                 // 武器(アビリティ)名
                 if (!is_ability)
                 {
-                    waname = withBlock.Weapon(idx).Name;
-                    wanickname = withBlock.WeaponNickname(idx);
+                    uw = u.Weapon(idx);
+                    waname = u.Weapon(idx).Name;
+                    wanickname = u.Weapon(idx).WeaponNickname();
                     whatsthis = "攻撃";
                 }
                 else
                 {
-                    waname = withBlock.Ability(idx).Name;
-                    wanickname = withBlock.AbilityNickname(idx);
+                    ua = u.Ability(idx);
+                    waname = u.Ability(idx).Data.Name;
+                    wanickname = u.Ability(idx).AbilityNickname();
                     whatsthis = Expression.Term("アビリティ", u);
                 }
 
                 // メインパイロット
-                p = withBlock.MainPilot();
+                p = u.MainPilot();
             }
 
             switch (atype ?? "")
@@ -6433,14 +6390,14 @@ namespace SRCCore
                             var loopTo = u.CountWeapon();
                             for (i = 1; i <= loopTo; i++)
                             {
-                                if (i != idx && (wanickname ?? "") == (u.WeaponNickname(i) ?? ""))
+                                if (i != idx && (wanickname ?? "") == (u.Weapon(i).WeaponNickname() ?? ""))
                                 {
                                     msg = msg + "同名の武器も連動して使用不能になる。";
                                     break;
                                 }
                             }
 
-                            if (u.IsWeaponClassifiedAs(idx, "共") && u.Weapon(idx).Bullet == 0)
+                            if (uw.IsWeaponClassifiedAs("共") && uw.Bullet() == 0)
                             {
                                 msg = msg + "同レベルの弾薬共有武器も連動して使用不能になる。";
                             }
@@ -6450,14 +6407,14 @@ namespace SRCCore
                             var loopTo1 = u.CountAbility();
                             for (i = 1; i <= loopTo1; i++)
                             {
-                                if (i != idx && (wanickname ?? "") == (u.AbilityNickname(i) ?? ""))
+                                if (i != idx && (wanickname ?? "") == (u.Ability(i).AbilityNickname() ?? ""))
                                 {
                                     msg = msg + "同名の" + Expression.Term("アビリティ", u) + "も連動して使用不能になる。";
                                     break;
                                 }
                             }
 
-                            if (u.IsAbilityClassifiedAs(idx, "共") && u.Ability(idx).Stock == 0)
+                            if (ua.IsAbilityClassifiedAs("共") && ua.Stock() == 0)
                             {
                                 msg = msg + "同レベルの使用回数共有" + Expression.Term("アビリティ", u) + "も連動して使用不能になる。";
                             }
@@ -6468,7 +6425,7 @@ namespace SRCCore
 
                 case "合":
                     {
-                        var fd = u.Features.FirstOrDefault(fd => fd.Name == "合体技" && fd.DataL.First() == waname));
+                        var fd = u.Features.FirstOrDefault(fd => fd.Name == "合体技" && fd.DataL.First() == waname);
                         if (fd == null)
                         {
                             GUI.ErrorMessage(u.Name + "の合体技「" + waname + "」に対応した合体技能力がありません");

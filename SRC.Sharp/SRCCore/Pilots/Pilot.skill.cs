@@ -446,7 +446,7 @@ namespace SRCCore.Pilots
 
             //            if (sname == "耐久")
             //            {
-            //                if (Expression.IsOptionDefined("防御力成長") | Expression.IsOptionDefined("防御力成長"1))
+            //                if (Expression.IsOptionDefined("防御力成長") || Expression.IsOptionDefined("防御力成長"1))
             //                {
             //                    // 防御力成長オプション使用時には耐久能力を非表示
             //                    SkillNameRet = "非表示";
@@ -530,7 +530,7 @@ namespace SRCCore.Pilots
             //                    var withBlock = Unit;
             //                    if (withBlock.CountCondition() > 0 & withBlock.CountPilot() > 0)
             //                    {
-            //                        if (ReferenceEquals(withBlock.MainPilot(), this) | ReferenceEquals(withBlock.Pilot(1), this))
+            //                        if (ReferenceEquals(withBlock.MainPilot(), this) || ReferenceEquals(withBlock.Pilot(1), this))
             //                        {
             //                            // ユニット用特殊能力による付加
             //                            if (withBlock.IsConditionSatisfied(sname + "付加２"))
@@ -687,7 +687,7 @@ namespace SRCCore.Pilots
             //            }
 
             //            // 能力強化系は非表示
-            //            if (Strings.Right(sname, 2) == "ＵＰ" | Strings.Right(sname, 4) == "ＤＯＷＮ")
+            //            if (Strings.Right(sname, 2) == "ＵＰ" || Strings.Right(sname, 4) == "ＤＯＷＮ")
             //            {
             //                SkillNameRet = "非表示";
             //                return SkillNameRet;
@@ -706,7 +706,7 @@ namespace SRCCore.Pilots
 
             //                case "耐久":
             //                    {
-            //                        if (Expression.IsOptionDefined("防御力成長") | Expression.IsOptionDefined("防御力レベルアップ"))
+            //                        if (Expression.IsOptionDefined("防御力成長") || Expression.IsOptionDefined("防御力レベルアップ"))
             //                        {
             //                            // 防御力成長オプション使用時には耐久能力を非表示
             //                            SkillNameRet = "非表示";
@@ -756,7 +756,7 @@ namespace SRCCore.Pilots
             // TODO Impl SkillName 仕様が重い
             //sname = sd.Name;
             //            // 能力強化系は非表示
-            //            if (Strings.Right(sname, 2) == "ＵＰ" | Strings.Right(sname, 4) == "ＤＯＷＮ")
+            //            if (Strings.Right(sname, 2) == "ＵＰ" || Strings.Right(sname, 4) == "ＤＯＷＮ")
             //            {
             //                SkillNameRet = "非表示";
             //                return SkillNameRet;
@@ -834,7 +834,7 @@ namespace SRCCore.Pilots
 
             if (sname == "耐久")
             {
-                if (Expression.IsOptionDefined("防御力成長") | Expression.IsOptionDefined("防御力レベルアップ"))
+                if (Expression.IsOptionDefined("防御力成長") || Expression.IsOptionDefined("防御力レベルアップ"))
                 {
                     // 防御力成長オプション使用時には耐久能力を非表示
                     SkillName0Ret = "非表示";
@@ -891,7 +891,7 @@ namespace SRCCore.Pilots
                     var u = Unit;
                     if (u.CountCondition() > 0 & u.CountPilot() > 0)
                     {
-                        if (ReferenceEquals(u.MainPilot(), this) | ReferenceEquals(u.Pilot(1), this))
+                        if (ReferenceEquals(u.MainPilot(), this) || ReferenceEquals(u.Pilots.First(), this))
                         {
                             // ユニット用特殊能力による付加
                             if (u.IsConditionSatisfied(sname + "付加２"))
@@ -987,7 +987,7 @@ namespace SRCCore.Pilots
             }
 
             // 能力強化系は非表示
-            if (Strings.Right(sname, 2) == "ＵＰ" | Strings.Right(sname, 4) == "ＤＯＷＮ")
+            if (Strings.Right(sname, 2) == "ＵＰ" || Strings.Right(sname, 4) == "ＤＯＷＮ")
             {
                 SkillName0Ret = "非表示";
                 return SkillName0Ret;
@@ -1006,7 +1006,7 @@ namespace SRCCore.Pilots
 
                 case "耐久":
                     {
-                        if (Expression.IsOptionDefined("防御力成長") | Expression.IsOptionDefined("防御力レベルアップ"))
+                        if (Expression.IsOptionDefined("防御力成長") || Expression.IsOptionDefined("防御力レベルアップ"))
                         {
                             // 防御力成長オプション使用時には耐久能力を非表示
                             SkillName0Ret = "非表示";
@@ -1041,7 +1041,7 @@ namespace SRCCore.Pilots
             var sname = sd.Name;
 
             // 能力強化系は非表示
-            if (Strings.Right(sname, 2) == "ＵＰ" | Strings.Right(sname, 4) == "ＤＯＷＮ")
+            if (Strings.Right(sname, 2) == "ＵＰ" || Strings.Right(sname, 4) == "ＤＯＷＮ")
             {
                 return "非表示";
             }
@@ -1091,7 +1091,7 @@ namespace SRCCore.Pilots
         //            int i;
 
         //            // 非表示の特殊能力
-        //            if (Strings.Right(stype, 2) == "ＵＰ" | Strings.Right(stype, 4) == "ＤＯＷＮ")
+        //            if (Strings.Right(stype, 2) == "ＵＰ" || Strings.Right(stype, 4) == "ＤＯＷＮ")
         //            {
         //                SkillNameForNSRet = stype;
         //                return SkillNameForNSRet;
@@ -1149,7 +1149,7 @@ namespace SRCCore.Pilots
         //                    var withBlock = Unit;
         //                    if (withBlock.CountCondition() > 0 & withBlock.CountPilot() > 0)
         //                    {
-        //                        if (ReferenceEquals(this, withBlock.MainPilot()) | ReferenceEquals(this, withBlock.Pilot(1)))
+        //                        if (ReferenceEquals(this, withBlock.MainPilot()) || ReferenceEquals(this, withBlock.Pilot(1)))
         //                        {
         //                            // ユニット用特殊能力による付加
         //                            if (withBlock.IsConditionSatisfied(stype + "付加２"))
@@ -1238,7 +1238,7 @@ namespace SRCCore.Pilots
         //            }
 
         //            // 該当するものが無ければエリアスから検索
-        //            if (string.IsNullOrEmpty(SkillNameForNSRet) | SkillNameForNSRet == "非表示")
+        //            if (string.IsNullOrEmpty(SkillNameForNSRet) || SkillNameForNSRet == "非表示")
         //            {
         //                {
         //                    var withBlock1 = SRC.ALDList;
