@@ -781,55 +781,7 @@ namespace SRCCore.Commands
                         unitCommands.RemoveItem(x => x.Id == AttackCmdID);
                     }
 
-                    // 修理コマンド
-                    if (currentUnit.IsFeatureAvailable("修理装置") && currentUnit.Area != "地中")
-                    {
-                        if (Map.AdjacentUnit(currentUnit)
-                            .Any(u => (u.Party == "味方" || u.Party == "ＮＰＣ")
-                                && u.CanFix))
-                        {
-                            var fd = currentUnit.Feature("修理装置");
-                            if (!string.IsNullOrEmpty(fd.Data))
-                            {
-                                var caption = fd.DataL.First();
-                                var en = fd.DataL.SafeRefOneOffset(2);
-
-                                if (!(Information.IsNumeric(en) && currentUnit.EN < Conversions.ToInteger(en)))
-                                {
-                                    unitCommands.Add(new UiCommand(SupplyCmdID, caption));
-                                }
-                            }
-                            else
-                            {
-                                unitCommands.Add(new UiCommand(SupplyCmdID, "修理装置"));
-                            }
-                        }
-                    }
-
-                    // 補給コマンド
-                    if (currentUnit.IsFeatureAvailable("補給装置") && currentUnit.Area != "地中")
-                    {
-                        if (Map.AdjacentUnit(currentUnit)
-                            .Any(u => (u.Party == "味方" || u.Party == "ＮＰＣ")
-                                && u.CanSupply))
-                        {
-                            var fd = currentUnit.Feature("補給装置");
-                            if (!string.IsNullOrEmpty(fd.Data))
-                            {
-                                var caption = fd.DataL.First();
-                                var en = fd.DataL.SafeRefOneOffset(2);
-
-                                if (!(Information.IsNumeric(en) && (currentUnit.EN < Conversions.ToInteger(en) || currentUnit.MainPilot().Morale < 100)))
-                                {
-                                    unitCommands.Add(new UiCommand(SupplyCmdID, caption));
-                                }
-                            }
-                            else
-                            {
-                                unitCommands.Add(new UiCommand(SupplyCmdID, "補給装置"));
-                            }
-                        }
-                    }
+                    AddFixSupplyCommand(unitCommands, currentUnit, false);
 
                     // アビリティコマンド
                     if (currentUnit.Area != "地中")
@@ -1138,6 +1090,62 @@ namespace SRCCore.Commands
             //}
         }
 
+        private void AddFixSupplyCommand(List<UiCommand> unitCommands, Unit currentUnit, bool isMoved)
+        {
+            // 修理コマンド
+            if (currentUnit.IsFeatureAvailable("修理装置") && currentUnit.Area != "地中")
+            {
+                if (Map.AdjacentUnit(currentUnit)
+                    .Any(u => (u.Party == "味方" || u.Party == "ＮＰＣ")
+                        && u.CanFix))
+                {
+                    var fd = currentUnit.Feature("修理装置");
+                    if (!string.IsNullOrEmpty(fd.Data))
+                    {
+                        var caption = fd.DataL.First();
+                        var en = fd.DataL.SafeRefOneOffset(2);
+
+                        if (!(Information.IsNumeric(en) && currentUnit.EN < Conversions.ToInteger(en)))
+                        {
+                            unitCommands.Add(new UiCommand(SupplyCmdID, caption));
+                        }
+                    }
+                    else
+                    {
+                        unitCommands.Add(new UiCommand(SupplyCmdID, "修理装置"));
+                    }
+                }
+            }
+
+            // 補給コマンド
+            if (!isMoved || !Expression.IsOptionDefined("移動後補給不可") || currentUnit.MainPilot().IsSkillAvailable("補給"))
+            {
+                if (currentUnit.IsFeatureAvailable("補給装置") && currentUnit.Area != "地中")
+                {
+                    if (Map.AdjacentUnit(currentUnit)
+                        .Any(u => (u.Party == "味方" || u.Party == "ＮＰＣ")
+                            && u.CanSupply))
+                    {
+                        var fd = currentUnit.Feature("補給装置");
+                        if (!string.IsNullOrEmpty(fd.Data))
+                        {
+                            var caption = fd.DataL.First();
+                            var en = fd.DataL.SafeRefOneOffset(2);
+
+                            if (!(Information.IsNumeric(en) && (currentUnit.EN < Conversions.ToInteger(en) || currentUnit.MainPilot().Morale < 100)))
+                            {
+                                unitCommands.Add(new UiCommand(SupplyCmdID, caption));
+                            }
+                        }
+                        else
+                        {
+                            unitCommands.Add(new UiCommand(SupplyCmdID, "補給装置"));
+                        }
+                    }
+                }
+            }
+        }
+
         private void AddUserUnitCommand(List<UiCommand> unitCommands)
         {
             foreach (LabelData lab in Event.colEventLabelList.Values
@@ -1218,208 +1226,7 @@ namespace SRCCore.Commands
                 //    GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Visible = false;
                 //}
 
-                //// 修理コマンド
-                //GUI.MainForm.mnuUnitCommandItem(FixCmdID).Visible = false;
-                //if (currentUnit.IsFeatureAvailable("修理装置") && currentUnit.Area != "地中")
-                //{
-                //    for (i = 1; i <= 4; i++)
-                //    {
-                //        // UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                //        u = null;
-                //        switch (i)
-                //        {
-                //            case 1:
-                //                {
-                //                    if (currentUnit.x > 1)
-                //                    {
-                //                        u = Map.MapDataForUnit[currentUnit.x - 1, currentUnit.y];
-                //                    }
-
-                //                    break;
-                //                }
-
-                //            case 2:
-                //                {
-                //                    if (currentUnit.x < Map.MapWidth)
-                //                    {
-                //                        u = Map.MapDataForUnit[currentUnit.x + 1, currentUnit.y];
-                //                    }
-
-                //                    break;
-                //                }
-
-                //            case 3:
-                //                {
-                //                    if (currentUnit.y > 1)
-                //                    {
-                //                        u = Map.MapDataForUnit[currentUnit.x, currentUnit.y - 1];
-                //                    }
-
-                //                    break;
-                //                }
-
-                //            case 4:
-                //                {
-                //                    if (currentUnit.y < Map.MapHeight)
-                //                    {
-                //                        u = Map.MapDataForUnit[currentUnit.x, currentUnit.y + 1];
-                //                    }
-
-                //                    break;
-                //                }
-                //        }
-
-                //        if (u is object)
-                //        {
-                //            {
-                //                var withBlock16 = u;
-                //                if ((withBlock16.Party == "味方" || withBlock16.Party == "ＮＰＣ") && withBlock16.HP < withBlock16.MaxHP)
-                //                {
-                //                    GUI.MainForm.mnuUnitCommandItem(FixCmdID).Visible = true;
-                //                    break;
-                //                }
-                //            }
-                //        }
-                //    }
-
-                //    if (Strings.Len(currentUnit.FeatureData("修理装置")) > 0)
-                //    {
-                //        GUI.MainForm.mnuUnitCommandItem(FixCmdID).Caption = GeneralLib.LIndex(currentUnit.FeatureData("修理装置"), 1);
-                //        string localLIndex19() { object argIndex1 = "修理装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-                //        if (Information.IsNumeric(localLIndex19()))
-                //        {
-                //            string localLIndex17() { object argIndex1 = "修理装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-                //            string localLIndex18() { object argIndex1 = "修理装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-                //            if (currentUnit.EN < Conversions.Toint(localLIndex18()))
-                //            {
-                //                GUI.MainForm.mnuUnitCommandItem(FixCmdID).Visible = false;
-                //            }
-                //        }
-                //    }
-                //    else
-                //    {
-                //        GUI.MainForm.mnuUnitCommandItem(FixCmdID).Caption = "修理装置";
-                //    }
-                //}
-
-                //// 補給コマンド
-                //GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = false;
-                //if (currentUnit.IsFeatureAvailable("補給装置") && currentUnit.Area != "地中")
-                //{
-                //    for (i = 1; i <= 4; i++)
-                //    {
-                //        // UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                //        u = null;
-                //        switch (i)
-                //        {
-                //            case 1:
-                //                {
-                //                    if (currentUnit.x > 1)
-                //                    {
-                //                        u = Map.MapDataForUnit[currentUnit.x - 1, currentUnit.y];
-                //                    }
-
-                //                    break;
-                //                }
-
-                //            case 2:
-                //                {
-                //                    if (currentUnit.x < Map.MapWidth)
-                //                    {
-                //                        u = Map.MapDataForUnit[currentUnit.x + 1, currentUnit.y];
-                //                    }
-
-                //                    break;
-                //                }
-
-                //            case 3:
-                //                {
-                //                    if (currentUnit.y > 1)
-                //                    {
-                //                        u = Map.MapDataForUnit[currentUnit.x, currentUnit.y - 1];
-                //                    }
-
-                //                    break;
-                //                }
-
-                //            case 4:
-                //                {
-                //                    if (currentUnit.y < Map.MapHeight)
-                //                    {
-                //                        u = Map.MapDataForUnit[currentUnit.x, currentUnit.y + 1];
-                //                    }
-
-                //                    break;
-                //                }
-                //        }
-
-                //        if (u is object)
-                //        {
-                //            {
-                //                var withBlock17 = u;
-                //                if (withBlock17.Party == "味方" || withBlock17.Party == "ＮＰＣ")
-                //                {
-                //                    if (withBlock17.EN < withBlock17.MaxEN)
-                //                    {
-                //                        GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = true;
-                //                    }
-                //                    else
-                //                    {
-                //                        var loopTo29 = withBlock17.CountWeapon();
-                //                        for (j = 1; j <= loopTo29; j++)
-                //                        {
-                //                            if (withBlock17.Bullet(j) < withBlock17.MaxBullet(j))
-                //                            {
-                //                                GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = true;
-                //                                break;
-                //                            }
-                //                        }
-
-                //                        var loopTo30 = withBlock17.CountAbility();
-                //                        for (j = 1; j <= loopTo30; j++)
-                //                        {
-                //                            if (withBlock17.Stock(j) < withBlock17.MaxStock(j))
-                //                            {
-                //                                GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = true;
-                //                                break;
-                //                            }
-                //                        }
-                //                    }
-                //                }
-                //            }
-                //        }
-                //    }
-
-                //    if (Strings.Len(currentUnit.FeatureData("補給装置")) > 0)
-                //    {
-                //        GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Caption = GeneralLib.LIndex(currentUnit.FeatureData("補給装置"), 1);
-                //        string localLIndex22() { object argIndex1 = "補給装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-                //        if (Information.IsNumeric(localLIndex22()))
-                //        {
-                //            string localLIndex20() { object argIndex1 = "補給装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-                //            string localLIndex21() { object argIndex1 = "補給装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-                //            if (currentUnit.EN < Conversions.Toint(localLIndex21()) || currentUnit.MainPilot().Morale < 100)
-                //            {
-                //                GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = false;
-                //            }
-                //        }
-                //    }
-                //    else
-                //    {
-                //        GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Caption = "補給装置";
-                //    }
-
-                //    if (Expression.IsOptionDefined("移動後補給不可") && !SelectedUnit.MainPilot().IsSkillAvailable("補給"))
-                //    {
-                //        GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = false;
-                //    }
-                //}
+                AddFixSupplyCommand(unitCommands, currentUnit, true);
 
                 // アビリティコマンド
                 if (currentUnit.Area != "地中")
