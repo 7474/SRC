@@ -61,47 +61,47 @@ namespace SRCCore.Pilots
             return SynchroRateRet;
         }
 
-        //// 指揮範囲
-        //public int CommandRange()
-        //{
-        //    int CommandRangeRet = default;
-        //    // 指揮能力を持っていなければ範囲は0
-        //    if (!IsSkillAvailable("指揮"))
-        //    {
-        //        CommandRangeRet = 0;
-        //        return CommandRangeRet;
-        //    }
+        // 指揮範囲
+        public int CommandRange()
+        {
+            int CommandRangeRet = default;
+            // 指揮能力を持っていなければ範囲は0
+            if (!IsSkillAvailable("指揮"))
+            {
+                CommandRangeRet = 0;
+                return CommandRangeRet;
+            }
 
-        //    // 指揮能力を持っている場合は階級レベルに依存
-        //    switch (SkillLevel("階級", ref_mode: ""))
-        //    {
-        //        case var @case when 0d <= @case && @case <= 6d:
-        //            {
-        //                CommandRangeRet = 2;
-        //                break;
-        //            }
+            // 指揮能力を持っている場合は階級レベルに依存
+            switch (SkillLevel("階級", ref_mode: ""))
+            {
+                case var @case when 0d <= @case && @case <= 6d:
+                    {
+                        CommandRangeRet = 2;
+                        break;
+                    }
 
-        //        case var case1 when 7d <= case1 && case1 <= 9d:
-        //            {
-        //                CommandRangeRet = 3;
-        //                break;
-        //            }
+                case var case1 when 7d <= case1 && case1 <= 9d:
+                    {
+                        CommandRangeRet = 3;
+                        break;
+                    }
 
-        //        case var case2 when 10d <= case2 && case2 <= 12d:
-        //            {
-        //                CommandRangeRet = 4;
-        //                break;
-        //            }
+                case var case2 when 10d <= case2 && case2 <= 12d:
+                    {
+                        CommandRangeRet = 4;
+                        break;
+                    }
 
-        //        default:
-        //            {
-        //                CommandRangeRet = 5;
-        //                break;
-        //            }
-        //    }
+                default:
+                    {
+                        CommandRangeRet = 5;
+                        break;
+                    }
+            }
 
-        //    return CommandRangeRet;
-        //}
+            return CommandRangeRet;
+        }
 
         // 行動決定に用いられる戦闘判断力
         public int TacticalTechnique0()

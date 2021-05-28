@@ -238,82 +238,73 @@ namespace SRCCore.Pilots
         }
 
         // 特殊能力 Index にレベル指定がなされているか判定
-        public bool IsSkillLevelSpecified(string Index)
+        public bool IsSkillLevelSpecified(int Index)
         {
-            string sname;
             SkillData sd = colSkill[Index];
             if (sd != null)
             {
                 return sd.Level != Constants.DEFAULT_LEVEL;
             }
-            // TODO Impl
             return false;
-            //ErrorHandler:
-            //    ;
-            //    if (string.IsNullOrEmpty(sname))
-            //    {
-            //        if (Information.IsNumeric(Index))
-            //        {
-            //            return IsSkillLevelSpecifiedRet;
-            //        }
-            //        else
-            //        {
-            //            // UPGRADE_WARNING: オブジェクト Index の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //            sname = Conversions.ToString(Index);
-            //        }
-            //    }
+        }
 
-            //    // 特殊能力付加＆強化による修正
-            //    if (Unit is null)
-            //    {
-            //        return IsSkillLevelSpecifiedRet;
-            //    }
+        public bool IsSkillLevelSpecified(string Index)
+        {
+            SkillData sd = colSkill[Index];
+            if (sd != null)
+            {
+                return sd.Level != Constants.DEFAULT_LEVEL;
+            }
 
-            //    {
-            //        var withBlock = Unit;
-            //        if (withBlock.CountCondition() == 0)
-            //        {
-            //            return IsSkillLevelSpecifiedRet;
-            //        }
+            // 特殊能力付加＆強化による修正
+            if (Unit is null)
+            {
+                return false;
+            }
 
-            //        if (withBlock.CountPilot() == 0)
-            //        {
-            //            return IsSkillLevelSpecifiedRet;
-            //        }
+            {
+                string sname = Index;
+                var u = Unit;
+                if (u.CountCondition() == 0)
+                {
+                    return false;
+                }
 
-            //        if (!ReferenceEquals(this, withBlock.MainPilot()) & !ReferenceEquals(this, withBlock.Pilot(1)))
-            //        {
-            //            return IsSkillLevelSpecifiedRet;
-            //        }
+                if (u.CountPilot() == 0)
+                {
+                    return false;
+                }
 
-            //        bool localIsConditionSatisfied() { object 1 = sname + "付加２"; var ret = withBlock.IsConditionSatisfied(1); return ret; }
+                if (!ReferenceEquals(this, u.MainPilot()) & !ReferenceEquals(this, u.Pilots.First()))
+                {
+                    return false;
+                }
 
-            //        if (withBlock.IsConditionSatisfied(sname + "付加"))
-            //        {
-            //            if (withBlock.ConditionLevel(sname + "付加") != Constants.DEFAULT_LEVEL)
-            //            {
-            //                IsSkillLevelSpecifiedRet = true;
-            //            }
-            //        }
-            //        else if (localIsConditionSatisfied())
-            //        {
-            //            if (withBlock.ConditionLevel(sname + "付加２") != Constants.DEFAULT_LEVEL)
-            //            {
-            //                IsSkillLevelSpecifiedRet = true;
-            //            }
-            //        }
+                if (u.IsConditionSatisfied(sname + "付加"))
+                {
+                    if (u.ConditionLevel(sname + "付加") != Constants.DEFAULT_LEVEL)
+                    {
+                        return true;
+                    }
+                }
+                else if (u.IsConditionSatisfied(sname + "付加２"))
+                {
+                    if (u.ConditionLevel(sname + "付加２") != Constants.DEFAULT_LEVEL)
+                    {
+                        return true;
+                    }
+                }
 
-            //        bool localIsConditionSatisfied1() { object argIndex1 = sname + "強化２"; var ret = withBlock.IsConditionSatisfied(argIndex1); return ret; }
-
-            //        if (withBlock.IsConditionSatisfied(sname + "強化"))
-            //        {
-            //            IsSkillLevelSpecifiedRet = true;
-            //        }
-            //        else if (localIsConditionSatisfied1())
-            //        {
-            //            IsSkillLevelSpecifiedRet = true;
-            //        }
-            //    }
+                if (u.IsConditionSatisfied(sname + "強化"))
+                {
+                    return true;
+                }
+                else if (u.IsConditionSatisfied(sname + "強化２"))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         // 特殊能力のデータ
@@ -821,305 +812,272 @@ namespace SRCCore.Pilots
         }
 
         // 特殊能力名称（レベル表示抜き）
+        public string SkillName0(int Index)
+        {
+            SkillData sd = colSkill[Index];
+            return SkillName0(sd);
+        }
         public string SkillName0(string Index)
         {
-            return Index;
-            // TODO Impl
-            //            string SkillName0Ret = default;
-            //            SkillData sd;
-            //            string sname;
-            //            string buf;
+            SkillData sd = colSkill[Index];
+            if (sd != null)
+            {
+                var sname0 = SkillName0(sd);
+                if (!string.IsNullOrEmpty(sname0))
+                {
+                    return sname0;
+                }
+            }
 
-            //            // パイロットが所有している特殊能力の中から検索
-            //            int i;
-            //            ;
-            //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 63575
+            var SkillName0Ret = "";
+            var sname = Index;
 
+            if (sname == "耐久")
+            {
+                if (Expression.IsOptionDefined("防御力成長") | Expression.IsOptionDefined("防御力レベルアップ"))
+                {
+                    // 防御力成長オプション使用時には耐久能力を非表示
+                    SkillName0Ret = "非表示";
+                    return SkillName0Ret;
+                }
+            }
 
-            //            Input:
+            // 得意技＆不得手は名称変更されない
+            switch (sname ?? "")
+            {
+                case "得意技":
+                case "不得手":
+                    {
+                        SkillName0Ret = sname;
+                        return SkillName0Ret;
+                    }
+            }
 
-            //                    'パイロットが所有している特殊能力の中から検索
-            //                    On Error GoTo ErrorHandler
+            // SetSkillコマンドで封印されている場合
+            if (string.IsNullOrEmpty(SkillName0Ret))
+            {
+                if (Expression.IsGlobalVariableDefined("Ability(" + ID + "," + sname + ")"))
+                {
+                    // オリジナルの名称を使用
+                    SkillName0Ret = Data.SkillName(Level, sname);
+                    if (Strings.InStr(SkillName0Ret, "非表示") > 0)
+                    {
+                        SkillName0Ret = "非表示";
+                        return SkillName0Ret;
+                    }
+                }
+            }
 
-            //             */
-            //            sd = (SkillData)colSkill[Index];
-            //            sname = sd.Name;
+            // 重複可能な能力は特殊能力付加で名称が置き換えられことはない
+            switch (sname ?? "")
+            {
+                case "ハンター":
+                case "ＳＰ消費減少":
+                case "スペシャルパワー自動発動":
+                    {
+                        if (Information.IsNumeric(Index))
+                        {
+                            return SkillName0Ret;
+                        }
 
-            //            // 能力強化系は非表示
-            //            if (Strings.Right(sname, 2) == "ＵＰ" | Strings.Right(sname, 4) == "ＤＯＷＮ")
-            //            {
-            //                SkillName0Ret = "非表示";
-            //                return SkillName0Ret;
-            //            }
+                        break;
+                    }
+            }
 
-            //            switch (sname ?? "")
-            //            {
-            //                case "追加レベル":
-            //                case "メッセージ":
-            //                case "魔力所有":
-            //                    {
-            //                        // 非表示の能力
-            //                        SkillName0Ret = "非表示";
-            //                        return SkillName0Ret;
-            //                    }
+            // 特殊能力付加＆強化による修正
+            if (Unit is object)
+            {
+                {
+                    var u = Unit;
+                    if (u.CountCondition() > 0 & u.CountPilot() > 0)
+                    {
+                        if (ReferenceEquals(u.MainPilot(), this) | ReferenceEquals(u.Pilot(1), this))
+                        {
+                            // ユニット用特殊能力による付加
+                            if (u.IsConditionSatisfied(sname + "付加２"))
+                            {
+                                var buf = GeneralLib.LIndex(u.Condition(sname + "付加２").StrData, 1);
+                                if (!string.IsNullOrEmpty(buf))
+                                {
+                                    SkillName0Ret = buf;
+                                }
+                                else if (string.IsNullOrEmpty(SkillName0Ret))
+                                {
+                                    SkillName0Ret = sname;
+                                }
 
-            //                case "得意技":
-            //                case "不得手":
-            //                    {
-            //                        // 別名指定が存在しない能力
-            //                        SkillName0Ret = sname;
-            //                        return SkillName0Ret;
-            //                    }
-            //            }
+                                if (Strings.InStr(SkillName0Ret, "非表示") > 0)
+                                {
+                                    SkillName0Ret = "非表示";
+                                    return SkillName0Ret;
+                                }
+                            }
 
-            //            if (Strings.Len(sd.StrData) > 0)
-            //            {
-            //                SkillName0Ret = GeneralLib.LIndex(sd.StrData, 1);
-            //                if (SkillName0Ret == "非表示")
-            //                {
-            //                    return SkillName0Ret;
-            //                }
-            //            }
-            //            else
-            //            {
-            //                SkillName0Ret = sname;
-            //            }
+                            // アビリティによる付加
+                            if (u.IsConditionSatisfied(sname + "付加"))
+                            {
+                                var buf = GeneralLib.LIndex(u.Condition(sname + "付加").StrData, 1);
+                                if (!string.IsNullOrEmpty(buf))
+                                {
+                                    SkillName0Ret = buf;
+                                }
+                                else if (string.IsNullOrEmpty(SkillName0Ret))
+                                {
+                                    SkillName0Ret = sname;
+                                }
 
-            //        ErrorHandler:
-            //            ;
-            //            if (string.IsNullOrEmpty(sname))
-            //            {
-            //                if (Information.IsNumeric(Index))
-            //                {
-            //                    return SkillName0Ret;
-            //                }
-            //                else
-            //                {
-            //                    // UPGRADE_WARNING: オブジェクト Index の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //                    sname = Conversions.ToString(Index);
-            //                }
-            //            }
+                                if (Strings.InStr(SkillName0Ret, "非表示") > 0)
+                                {
+                                    SkillName0Ret = "非表示";
+                                    return SkillName0Ret;
+                                }
+                            }
 
-            //            if (sname == "耐久")
-            //            {
-            //                if (Expression.IsOptionDefined("防御力成長") | Expression.IsOptionDefined("防御力レベルアップ"))
-            //                {
-            //                    // 防御力成長オプション使用時には耐久能力を非表示
-            //                    SkillName0Ret = "非表示";
-            //                    return SkillName0Ret;
-            //                }
-            //            }
+                            // ユニット用特殊能力による強化
+                            if (string.IsNullOrEmpty(SkillName0Ret))
+                            {
+                                if (u.IsConditionSatisfied(sname + "強化２"))
+                                {
+                                    SkillName0Ret = GeneralLib.LIndex(u.Condition(sname + "強化２").StrData, 1);
+                                    if (string.IsNullOrEmpty(SkillName0Ret))
+                                    {
+                                        SkillName0Ret = sname;
+                                    }
 
-            //            // 得意技＆不得手は名称変更されない
-            //            switch (sname ?? "")
-            //            {
-            //                case "得意技":
-            //                case "不得手":
-            //                    {
-            //                        SkillName0Ret = sname;
-            //                        return SkillName0Ret;
-            //                    }
-            //            }
+                                    if (Strings.InStr(SkillName0Ret, "非表示") > 0)
+                                    {
+                                        SkillName0Ret = "非表示";
+                                        return SkillName0Ret;
+                                    }
+                                }
+                            }
 
-            //            // SetSkillコマンドで封印されている場合
-            //            if (string.IsNullOrEmpty(SkillName0Ret))
-            //            {
-            //                if (Expression.IsGlobalVariableDefined("Ability(" + ID + "," + sname + ")"))
-            //                {
-            //                    // オリジナルの名称を使用
-            //                    SkillName0Ret = Data.SkillName(Level, sname);
-            //                    if (Strings.InStr(SkillName0Ret, "非表示") > 0)
-            //                    {
-            //                        SkillName0Ret = "非表示";
-            //                        return SkillName0Ret;
-            //                    }
-            //                }
-            //            }
+                            // アビリティによる強化
+                            if (string.IsNullOrEmpty(SkillName0Ret))
+                            {
+                                if (u.IsConditionSatisfied(sname + "強化"))
+                                {
+                                    SkillName0Ret = GeneralLib.LIndex(u.Condition(sname + "強化").StrData, 1);
+                                    if (string.IsNullOrEmpty(SkillName0Ret))
+                                    {
+                                        SkillName0Ret = sname;
+                                    }
 
-            //            // 重複可能な能力は特殊能力付加で名称が置き換えられことはない
-            //            switch (sname ?? "")
-            //            {
-            //                case "ハンター":
-            //                case "ＳＰ消費減少":
-            //                case "スペシャルパワー自動発動":
-            //                    {
-            //                        if (Information.IsNumeric(Index))
-            //                        {
-            //                            return SkillName0Ret;
-            //                        }
+                                    if (Strings.InStr(SkillName0Ret, "非表示") > 0)
+                                    {
+                                        SkillName0Ret = "非表示";
+                                        return SkillName0Ret;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
-            //                        break;
-            //                    }
-            //            }
+            // 該当するものが無ければエリアスから検索
+            if (string.IsNullOrEmpty(SkillName0Ret))
+            {
+                var asname = SRC.ALDList.RefName(sname);
+                if (asname != sname)
+                {
+                    return asname;
+                }
+                SkillName0Ret = sname;
+            }
 
-            //            // 特殊能力付加＆強化による修正
-            //            if (Unit is object)
-            //            {
-            //                {
-            //                    var withBlock = Unit;
-            //                    if (withBlock.CountCondition() > 0 & withBlock.CountPilot() > 0)
-            //                    {
-            //                        if (ReferenceEquals(withBlock.MainPilot(), this) | ReferenceEquals(withBlock.Pilot(1), this))
-            //                        {
-            //                            // ユニット用特殊能力による付加
-            //                            if (withBlock.IsConditionSatisfied(sname + "付加２"))
-            //                            {
-            //                                string localConditionData() { object argIndex1 = sname + "付加２"; var ret = withBlock.ConditionData(argIndex1); return ret; }
+            // 能力強化系は非表示
+            if (Strings.Right(sname, 2) == "ＵＰ" | Strings.Right(sname, 4) == "ＤＯＷＮ")
+            {
+                SkillName0Ret = "非表示";
+                return SkillName0Ret;
+            }
 
-            //                                buf = GeneralLib.LIndex(localConditionData(), 1);
-            //                                if (!string.IsNullOrEmpty(buf))
-            //                                {
-            //                                    SkillName0Ret = buf;
-            //                                }
-            //                                else if (string.IsNullOrEmpty(SkillName0Ret))
-            //                                {
-            //                                    SkillName0Ret = sname;
-            //                                }
+            switch (sname ?? "")
+            {
+                case "追加レベル":
+                case "メッセージ":
+                case "魔力所有":
+                    {
+                        // 非表示の能力
+                        SkillName0Ret = "非表示";
+                        return SkillName0Ret;
+                    }
 
-            //                                if (Strings.InStr(SkillName0Ret, "非表示") > 0)
-            //                                {
-            //                                    SkillName0Ret = "非表示";
-            //                                    return SkillName0Ret;
-            //                                }
-            //                            }
+                case "耐久":
+                    {
+                        if (Expression.IsOptionDefined("防御力成長") | Expression.IsOptionDefined("防御力レベルアップ"))
+                        {
+                            // 防御力成長オプション使用時には耐久能力を非表示
+                            SkillName0Ret = "非表示";
+                            return SkillName0Ret;
+                        }
 
-            //                            // アビリティによる付加
-            //                            if (withBlock.IsConditionSatisfied(sname + "付加"))
-            //                            {
-            //                                string localConditionData1() { object argIndex1 = sname + "付加"; var ret = withBlock.ConditionData(argIndex1); return ret; }
+                        break;
+                    }
+            }
 
-            //                                buf = GeneralLib.LIndex(localConditionData1(), 1);
-            //                                if (!string.IsNullOrEmpty(buf))
-            //                                {
-            //                                    SkillName0Ret = buf;
-            //                                }
-            //                                else if (string.IsNullOrEmpty(SkillName0Ret))
-            //                                {
-            //                                    SkillName0Ret = sname;
-            //                                }
+            // レベル非表示用の括弧を削除
+            if (Strings.Left(SkillName0Ret, 1) == "(")
+            {
+                SkillName0Ret = Strings.Mid(SkillName0Ret, 2);
+                SkillName0Ret = Strings.Left(SkillName0Ret, GeneralLib.InStr2(SkillName0Ret, ")") - 1);
+            }
 
-            //                                if (Strings.InStr(SkillName0Ret, "非表示") > 0)
-            //                                {
-            //                                    SkillName0Ret = "非表示";
-            //                                    return SkillName0Ret;
-            //                                }
-            //                            }
+            // レベル指定を削除
+            {
+                var i = Strings.InStr(SkillName0Ret, "Lv");
+                if (i > 0)
+                {
+                    SkillName0Ret = Strings.Left(SkillName0Ret, i - 1);
+                }
+            }
 
-            //                            // ユニット用特殊能力による強化
-            //                            if (string.IsNullOrEmpty(SkillName0Ret))
-            //                            {
-            //                                if (withBlock.IsConditionSatisfied(sname + "強化２"))
-            //                                {
-            //                                    string localConditionData2() { object argIndex1 = sname + "強化２"; var ret = withBlock.ConditionData(argIndex1); return ret; }
+            return SkillName0Ret;
+        }
 
-            //                                    SkillName0Ret = GeneralLib.LIndex(localConditionData2(), 1);
-            //                                    if (string.IsNullOrEmpty(SkillName0Ret))
-            //                                    {
-            //                                        SkillName0Ret = sname;
-            //                                    }
+        private static string SkillName0(SkillData sd)
+        {
+            var sname = sd.Name;
 
-            //                                    if (Strings.InStr(SkillName0Ret, "非表示") > 0)
-            //                                    {
-            //                                        SkillName0Ret = "非表示";
-            //                                        return SkillName0Ret;
-            //                                    }
-            //                                }
-            //                            }
+            // 能力強化系は非表示
+            if (Strings.Right(sname, 2) == "ＵＰ" | Strings.Right(sname, 4) == "ＤＯＷＮ")
+            {
+                return "非表示";
+            }
 
-            //                            // アビリティによる強化
-            //                            if (string.IsNullOrEmpty(SkillName0Ret))
-            //                            {
-            //                                if (withBlock.IsConditionSatisfied(sname + "強化"))
-            //                                {
-            //                                    string localConditionData3() { object argIndex1 = sname + "強化"; var ret = withBlock.ConditionData(argIndex1); return ret; }
+            switch (sname ?? "")
+            {
+                case "追加レベル":
+                case "メッセージ":
+                case "魔力所有":
+                    {
+                        // 非表示の能力
+                        return "非表示";
+                    }
 
-            //                                    SkillName0Ret = GeneralLib.LIndex(localConditionData3(), 1);
-            //                                    if (string.IsNullOrEmpty(SkillName0Ret))
-            //                                    {
-            //                                        SkillName0Ret = sname;
-            //                                    }
+                case "得意技":
+                case "不得手":
+                    {
+                        // 別名指定が存在しない能力
+                        return sname;
+                    }
+            }
 
-            //                                    if (Strings.InStr(SkillName0Ret, "非表示") > 0)
-            //                                    {
-            //                                        SkillName0Ret = "非表示";
-            //                                        return SkillName0Ret;
-            //                                    }
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
+            if (Strings.Len(sd.StrData) > 0)
+            {
+                var aname = GeneralLib.LIndex(sd.StrData, 1);
+                if (aname == "非表示")
+                {
+                    return aname;
+                }
+            }
+            else
+            {
+                return sname;
+            }
 
-            //            // 該当するものが無ければエリアスから検索
-            //            if (string.IsNullOrEmpty(SkillName0Ret))
-            //            {
-            //                {
-            //                    var withBlock1 = SRC.ALDList;
-            //                    var loopTo = withBlock1.Count();
-            //                    for (i = 1; i <= loopTo; i++)
-            //                    {
-            //                        {
-            //                            var withBlock2 = withBlock1.Item(i);
-            //                            if ((withBlock2.get_AliasType(1) ?? "") == (sname ?? ""))
-            //                            {
-            //                                SkillName0Ret = withBlock2.Name;
-            //                                return SkillName0Ret;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-
-            //                SkillName0Ret = sname;
-            //            }
-
-            //            // 能力強化系は非表示
-            //            if (Strings.Right(sname, 2) == "ＵＰ" | Strings.Right(sname, 4) == "ＤＯＷＮ")
-            //            {
-            //                SkillName0Ret = "非表示";
-            //                return SkillName0Ret;
-            //            }
-
-            //            switch (sname ?? "")
-            //            {
-            //                case "追加レベル":
-            //                case "メッセージ":
-            //                case "魔力所有":
-            //                    {
-            //                        // 非表示の能力
-            //                        SkillName0Ret = "非表示";
-            //                        return SkillName0Ret;
-            //                    }
-
-            //                case "耐久":
-            //                    {
-            //                        if (Expression.IsOptionDefined("防御力成長") | Expression.IsOptionDefined("防御力レベルアップ"))
-            //                        {
-            //                            // 防御力成長オプション使用時には耐久能力を非表示
-            //                            SkillName0Ret = "非表示";
-            //                            return SkillName0Ret;
-            //                        }
-
-            //                        break;
-            //                    }
-            //            }
-
-            //            // レベル非表示用の括弧を削除
-            //            if (Strings.Left(SkillName0Ret, 1) == "(")
-            //            {
-            //                SkillName0Ret = Strings.Mid(SkillName0Ret, 2);
-            //                SkillName0Ret = Strings.Left(SkillName0Ret, GeneralLib.InStr2(SkillName0Ret, ")") - 1);
-            //            }
-
-            //            // レベル指定を削除
-            //            i = Strings.InStr(SkillName0Ret, "Lv");
-            //            if (i > 0)
-            //            {
-            //                SkillName0Ret = Strings.Left(SkillName0Ret, i - 1);
-            //            }
-
-            //            return SkillName0Ret;
+            return "";
         }
 
         //        // 特殊能力名称（必要技能判定用）
