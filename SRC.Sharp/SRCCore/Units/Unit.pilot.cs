@@ -881,68 +881,60 @@ namespace SRCCore.Units
             return PlanaLevelRet;
         }
 
-        //// パイロット全員からパイロット能力名を検索
-        //public string SkillName0(string sname)
-        //{
-        //    string SkillName0Ret = default;
-        //    int i;
-        //    if (SRC.ALDList.IsDefined(sname))
-        //    {
-        //        AliasDataType localItem() { object argIndex1 = sname; var ret = SRC.ALDList.Item(argIndex1); return ret; }
+        // パイロット全員からパイロット能力名を検索
+        public string SkillName0(string sname)
+        {
+            string SkillName0Ret = default;
+            int i;
+            if (SRC.ALDList.IsDefined(sname))
+            {
+                sname = SRC.ALDList.Item(sname).Elements.First().strAliasType;
+            }
 
-        //        sname = localItem().get_AliasType(1);
-        //    }
+            if (CountPilot() == 0)
+            {
+                SkillName0Ret = sname;
+                return SkillName0Ret;
+            }
 
-        //    if (CountPilot() == 0)
-        //    {
-        //        SkillName0Ret = sname;
-        //        return SkillName0Ret;
-        //    }
+            // メインパイロット
+            SkillName0Ret = MainPilot().SkillName0(sname);
+            if ((SkillName0Ret ?? "") != (sname ?? ""))
+            {
+                return SkillName0Ret;
+            }
 
-        //    // メインパイロット
-        //    SkillName0Ret = MainPilot().SkillName0(sname);
-        //    if ((SkillName0Ret ?? "") != (sname ?? ""))
-        //    {
-        //        return SkillName0Ret;
-        //    }
+            // パイロット数が負の場合はメインパイロットの能力のみが有効
+            if (Data.PilotNum > 0)
+            {
+                foreach(var p in SubPilots)
+                {
+                    SkillName0Ret = p.SkillName0(sname);
+                    if ((SkillName0Ret ?? "") != (sname ?? ""))
+                    {
+                        return SkillName0Ret;
+                    }
+                }
+            }
 
-        //    // パイロット数が負の場合はメインパイロットの能力のみが有効
-        //    if (Data.PilotNum > 0)
-        //    {
-        //        var loopTo = CountPilot();
-        //        for (i = 2; i <= loopTo; i++)
-        //        {
-        //            Pilot localPilot() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
+            // サポート
+            foreach (var p in Supports)
+            {
+                SkillName0Ret = p.SkillName0(sname);
+                if ((SkillName0Ret ?? "") != (sname ?? ""))
+                {
+                    return SkillName0Ret;
+                }
+            }
 
-        //            SkillName0Ret = localPilot().SkillName0(sname);
-        //            if ((SkillName0Ret ?? "") != (sname ?? ""))
-        //            {
-        //                return SkillName0Ret;
-        //            }
-        //        }
-        //    }
+            // 追加サポート
+            if (IsFeatureAvailable("追加サポート"))
+            {
+                SkillName0Ret = AdditionalSupport().SkillName0(sname);
+            }
 
-        //    // サポート
-        //    var loopTo1 = CountSupport();
-        //    for (i = 1; i <= loopTo1; i++)
-        //    {
-        //        Pilot localSupport() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
-
-        //        SkillName0Ret = localSupport().SkillName0(sname);
-        //        if ((SkillName0Ret ?? "") != (sname ?? ""))
-        //        {
-        //            return SkillName0Ret;
-        //        }
-        //    }
-
-        //    // 追加サポート
-        //    if (IsFeatureAvailable("追加サポート"))
-        //    {
-        //        SkillName0Ret = AdditionalSupport().SkillName0(sname);
-        //    }
-
-        //    return SkillName0Ret;
-        //}
+            return SkillName0Ret;
+        }
 
         public IList<Pilot> PilotsHaveSpecialPower()
         {
