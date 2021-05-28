@@ -5,6 +5,7 @@
 
 using SRCCore.Units;
 using System;
+using System.Linq;
 
 namespace SRCCore.Commands
 {
@@ -827,11 +828,8 @@ namespace SRCCore.Commands
         {
             LogDebug();
 
-            throw new NotImplementedException();
-            //int w, i, max_range;
-            //SelectedCommand = "射程範囲";
+            SelectedCommand = "射程範囲";
 
-            //// MOD START MARGE
             //// If MainWidth <> 15 Then
             //if (GUI.NewGUIMode)
             //{
@@ -839,33 +837,24 @@ namespace SRCCore.Commands
             //    Status.ClearUnitStatus();
             //}
 
-            //{
-            //    var withBlock = SelectedUnit;
-            //    // 最大の射程を持つ武器を探す
-            //    w = 0;
-            //    max_range = 0;
-            //    var loopTo = withBlock.CountWeapon();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        if (withBlock.IsWeaponAvailable(i, "ステータス") & !withBlock.IsWeaponClassifiedAs(i, "Ｍ"))
-            //        {
-            //            if (withBlock.WeaponMaxRange(i) > max_range)
-            //            {
-            //                w = i;
-            //                max_range = withBlock.WeaponMaxRange(i);
-            //            }
-            //        }
-            //    }
+            {
+                var currentUnit = SelectedUnit;
+                // 最大の射程を持つ武器を探す
+                var max_range = currentUnit.Weapons
+                       .Where(uw => uw.IsWeaponAvailable("ステータス") && !uw.IsWeaponClassifiedAs("Ｍ"))
+                       .Select(uw => uw.WeaponMaxRange())
+                       .Append(0)
+                       .Max();
 
-            //    // 見つかった最大の射程を持つ武器の射程範囲を選択
-            //    Map.AreaInRange(withBlock.x, withBlock.y, max_range, 1, withBlock.Party + "の敵");
+                // 見つかった最大の射程を持つ武器の射程範囲を選択
+                Map.AreaInRange(currentUnit.x, currentUnit.y, max_range, 1, currentUnit.Party + "の敵");
 
-            //    // 射程範囲を表示
-            //    GUI.Center(withBlock.x, withBlock.y);
-            //    GUI.MaskScreen();
-            //}
+                // 射程範囲を表示
+                GUI.Center(currentUnit.x, currentUnit.y);
+                GUI.MaskScreen();
+            }
 
-            //CommandState = "ターゲット選択";
+            CommandState = "ターゲット選択";
         }
     }
 }
