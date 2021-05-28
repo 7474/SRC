@@ -15,6 +15,24 @@ namespace SRCCore.Units
     // === メッセージ関連処理 ===
     public partial class Unit
     {
+        public void PilotMassageIfDefined(string[] situations)
+        {
+            foreach (var situation in situations)
+            {
+                if (IsMessageDefined(situation))
+                {
+                    GUI.Center(x, y);
+                    GUI.RefreshScreen();
+                    GUI.OpenMessageForm(u1: null, u2: null);
+
+                    PilotMessage(situation);
+
+                    GUI.CloseMessageForm();
+                    return;
+                }
+            }
+        }
+
         // 状況 Situation に応じたパイロットメッセージを表示
         public void PilotMessage(string Situation, string msg_mode = "")
         {

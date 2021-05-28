@@ -9,6 +9,47 @@ namespace SRCCore.Units
     // === 戦闘アニメ関連処理 ===
     public partial class Unit
     {
+        public void PlayAnimationIfDefined(string[] situations)
+        {
+            foreach (var situation in situations)
+            {
+                if (IsAnimationDefined(situation))
+                {
+                    PlayAnimation(situation);
+                    return;
+                }
+            }
+            foreach (var situation in situations)
+            {
+                if (IsSpecialEffectDefined(situation))
+                {
+                    SpecialEffect(situation);
+                    return;
+                }
+            }
+        }
+
+        public void PlayAnimation(string[] situations)
+        {
+            foreach (var situation in situations)
+            {
+                if (IsAnimationDefined(situation))
+                {
+                    PlayAnimation(situation);
+                    return;
+                }
+            }
+            foreach (var situation in situations.Take(situations.Length - 1))
+            {
+                if (IsSpecialEffectDefined(situation))
+                {
+                    SpecialEffect(situation);
+                    return;
+                }
+            }
+            SpecialEffect(situations.Last());
+        }
+
         // 戦闘アニメデータを検索
         public string AnimationData(string main_situation, string sub_situation, bool ext_anime_only = false)
         {
