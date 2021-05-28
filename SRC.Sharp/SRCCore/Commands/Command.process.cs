@@ -292,27 +292,28 @@ namespace SRCCore.Commands
             SelectedAbility = 0;
             if (by_cancel)
             {
-                // TODO
-                //// ユニット上でキャンセルボタンを押した場合は武器一覧
-                //// もしくはアビリティ一覧を表示する
-                //{
-                //    var withBlock2 = SelectedUnit;
-                //    // 情報が隠蔽されている場合は表示しない
-                //    if (Expression.IsOptionDefined("ユニット情報隠蔽") && !withBlock2.IsConditionSatisfied("識別済み") && (withBlock2.Party0 == "敵" || withBlock2.Party0 == "中立") || withBlock2.IsConditionSatisfied("ユニット情報隠蔽") || withBlock2.IsFeatureAvailable("ダミーユニット"))
-                //    {
-                //        GUI.IsGUILocked = false;
-                //        return;
-                //    }
+                // ユニット上でキャンセルボタンを押した場合は武器一覧
+                // もしくはアビリティ一覧を表示する
+                // 情報が隠蔽されている場合は表示しない
+                if (Expression.IsOptionDefined("ユニット情報隠蔽")
+                    && !SelectedUnit.IsConditionSatisfied("識別済み")
+                    && (SelectedUnit.Party0 == "敵"
+                        || SelectedUnit.Party0 == "中立")
+                        || SelectedUnit.IsConditionSatisfied("ユニット情報隠蔽")
+                        || SelectedUnit.IsFeatureAvailable("ダミーユニット"))
+                {
+                    GUI.IsGUILocked = false;
+                    return;
+                }
 
-                //    if (withBlock2.CountWeapon() == 0 && withBlock2.CountAbility() > 0)
-                //    {
-                //        AbilityListCommand();
-                //    }
-                //    else
-                //    {
-                //        WeaponListCommand();
-                //    }
-                //}
+                if (SelectedUnit.CountWeapon() == 0 && SelectedUnit.CountAbility() > 0)
+                {
+                    AbilityListCommand();
+                }
+                else
+                {
+                    WeaponListCommand();
+                }
 
                 GUI.IsGUILocked = false;
                 return;
