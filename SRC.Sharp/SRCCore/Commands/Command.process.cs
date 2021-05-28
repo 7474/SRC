@@ -137,7 +137,6 @@ namespace SRCCore.Commands
 
             }
 
-
             // XXX ロックしたままのパターンをフォローする
             GUI.IsGUILocked = false;
         }
@@ -229,20 +228,10 @@ namespace SRCCore.Commands
                 }
 
                 // スペシャルパワー検索
-                mapCommands.Add(new UiCommand(SearchSpecialPowerCmdID, "スペシャルパワー検索"));
-                // TODO 表示名と表示有無の解決
-                //GUI.MainForm.mnuMapCommandItem(SearchSpecialPowerCmdID).Caption = Expression.Term("スペシャルパワー", u: null) + "検索";
-                //foreach (Pilot p in SRC.PList)
-                //{
-                //    if (p.Party == "味方")
-                //    {
-                //        if (p.CountSpecialPower > 0)
-                //        {
-                //            GUI.MainForm.mnuMapCommandItem(SearchSpecialPowerCmdID).Visible = true;
-                //            break;
-                //        }
-                //    }
-                //}
+                if (SRC.PList.Items.Any(p => p.Party == "味方" && p.CountSpecialPower > 0))
+                {
+                    mapCommands.Add(new UiCommand(SearchSpecialPowerCmdID, Expression.Term("スペシャルパワー", u: null) + "検索"));
+                }
 
                 // イベントで定義されたマップコマンド
                 if (!ViewMode)
