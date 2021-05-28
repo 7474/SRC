@@ -139,15 +139,9 @@ namespace SRCCore.Commands
             // 射程１の合体技はパートナーで相手を取り囲んでいないと使用できない
             if (max_range == 1 && currentWeapon.IsWeaponClassifiedAs("合") && !currentWeapon.IsWeaponClassifiedAs("Ｍ"))
             {
-                foreach (var t in new Unit[]
-                {
-                    Map.UnitAtPoint(currentUnit.x +1, currentUnit.y ),
-                    Map.UnitAtPoint(currentUnit.x -1, currentUnit.y ),
-                    Map.UnitAtPoint(currentUnit.x, currentUnit.y +1),
-                    Map.UnitAtPoint(currentUnit.x, currentUnit.y -1),
-                }.Where(t => t != null)
-                .Where(t => currentUnit.IsEnemy(t))
-                .Where(t => currentWeapon.CombinationPartner(t.x, t.y).Count == 0))
+                foreach (var t in Map.AdjacentUnit(currentUnit)
+                    .Where(t => currentUnit.IsEnemy(t))
+                    .Where(t => currentWeapon.CombinationPartner(t.x, t.y).Count == 0))
                 {
                     Map.MaskData[t.x, t.y] = true;
                 }
@@ -344,7 +338,7 @@ namespace SRCCore.Commands
                 {
                     if (currentWeapon.WeaponMaxRange() == 1)
                     {
-                        partners = currentWeapon.CombinationPartner( SelectedTarget.x, SelectedTarget.y);
+                        partners = currentWeapon.CombinationPartner(SelectedTarget.x, SelectedTarget.y);
                     }
                     else
                     {

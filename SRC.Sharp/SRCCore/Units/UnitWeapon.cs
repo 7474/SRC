@@ -5273,16 +5273,10 @@ namespace SRCCore.Units
             else if (WeaponMaxRange() == 1 && !IsWeaponClassifiedAs("Ｍ"))
             {
                 // 射程１の場合は自分の周りのいずれかの敵ユニットに対して合体技が使えればＯＫ
-                partners = new Unit[]
-                {
-                    Map.UnitAtPoint(Unit.x +1, Unit.y ),
-                    Map.UnitAtPoint(Unit.x -1, Unit.y ),
-                    Map.UnitAtPoint(Unit.x, Unit.y +1),
-                    Map.UnitAtPoint(Unit.x, Unit.y -1),
-                }.Where(t => t != null)
-                .Where(t => Unit.IsEnemy(t))
-                .Select(t => CombinationPartner(t.x, t.y))
-                .FirstOrDefault(x => x.Count > 0);
+                partners = Map.AdjacentUnit(Unit)
+                    .Where(t => Unit.IsEnemy(t))
+                    .Select(t => CombinationPartner(t.x, t.y))
+                    .FirstOrDefault(x => x.Count > 0);
             }
             else
             {

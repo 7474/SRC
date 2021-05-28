@@ -759,12 +759,7 @@ namespace SRCCore.Commands
                     }
 
                     // 会話コマンド
-                    if (new Unit[] {
-                            Map.UnitAtPoint(currentUnit.x-1, currentUnit.y),
-                            Map.UnitAtPoint(currentUnit.x+1, currentUnit.y),
-                            Map.UnitAtPoint(currentUnit.x, currentUnit.y-1),
-                            Map.UnitAtPoint(currentUnit.x, currentUnit.y+1),
-                        }.Where(u => u != null)
+                    if (Map.AdjacentUnit(currentUnit)
                         .Any(u => Event.IsEventDefined("会話 " + currentUnit.MainPilot().ID + " " + u.MainPilot().ID)))
                     {
                         unitCommands.Add(new UiCommand(TalkCmdID, "会話"));
@@ -786,91 +781,91 @@ namespace SRCCore.Commands
                         unitCommands.RemoveItem(x => x.Id == AttackCmdID);
                     }
 
-                    //// 修理コマンド
-                    //if (currentUnit.IsFeatureAvailable("修理装置") && currentUnit.Area != "地中")
-                    //{
-                    //    for (i = 1; i <= 4; i++)
-                    //    {
-                    //        // UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                    //        u = null;
-                    //        switch (i)
-                    //        {
-                    //            case 1:
-                    //                {
-                    //                    if (currentUnit.x > 1)
-                    //                    {
-                    //                        u = Map.MapDataForUnit[currentUnit.x - 1, currentUnit.y];
-                    //                    }
+                    // 修理コマンド
+                    if (currentUnit.IsFeatureAvailable("修理装置") && currentUnit.Area != "地中")
+                    {
+                        for (i = 1; i <= 4; i++)
+                        {
+                            // UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+                            u = null;
+                            switch (i)
+                            {
+                                case 1:
+                                    {
+                                        if (currentUnit.x > 1)
+                                        {
+                                            u = Map.MapDataForUnit[currentUnit.x - 1, currentUnit.y];
+                                        }
 
-                    //                    break;
-                    //                }
+                                        break;
+                                    }
 
-                    //            case 2:
-                    //                {
-                    //                    if (currentUnit.x < Map.MapWidth)
-                    //                    {
-                    //                        u = Map.MapDataForUnit[currentUnit.x + 1, currentUnit.y];
-                    //                    }
+                                case 2:
+                                    {
+                                        if (currentUnit.x < Map.MapWidth)
+                                        {
+                                            u = Map.MapDataForUnit[currentUnit.x + 1, currentUnit.y];
+                                        }
 
-                    //                    break;
-                    //                }
+                                        break;
+                                    }
 
-                    //            case 3:
-                    //                {
-                    //                    if (currentUnit.y > 1)
-                    //                    {
-                    //                        u = Map.MapDataForUnit[currentUnit.x, currentUnit.y - 1];
-                    //                    }
+                                case 3:
+                                    {
+                                        if (currentUnit.y > 1)
+                                        {
+                                            u = Map.MapDataForUnit[currentUnit.x, currentUnit.y - 1];
+                                        }
 
-                    //                    break;
-                    //                }
+                                        break;
+                                    }
 
-                    //            case 4:
-                    //                {
-                    //                    if (currentUnit.y < Map.MapHeight)
-                    //                    {
-                    //                        u = Map.MapDataForUnit[currentUnit.x, currentUnit.y + 1];
-                    //                    }
+                                case 4:
+                                    {
+                                        if (currentUnit.y < Map.MapHeight)
+                                        {
+                                            u = Map.MapDataForUnit[currentUnit.x, currentUnit.y + 1];
+                                        }
 
-                    //                    break;
-                    //                }
-                    //        }
+                                        break;
+                                    }
+                            }
 
-                    //        if (u is object)
-                    //        {
-                    //            {
-                    //                var withBlock9 = u;
-                    //                if ((withBlock9.Party == "味方" || withBlock9.Party == "ＮＰＣ") && withBlock9.HP < withBlock9.MaxHP && !withBlock9.IsConditionSatisfied("ゾンビ"))
-                    //                {
-                    //                    GUI.MainForm.mnuUnitCommandItem(FixCmdID).Visible = true;
-                    //                    break;
-                    //                }
-                    //            }
-                    //        }
-                    //    }
+                            if (u is object)
+                            {
+                                {
+                                    var withBlock9 = u;
+                                    if ((withBlock9.Party == "味方" || withBlock9.Party == "ＮＰＣ") && withBlock9.HP < withBlock9.MaxHP && !withBlock9.IsConditionSatisfied("ゾンビ"))
+                                    {
+                                        GUI.MainForm.mnuUnitCommandItem(FixCmdID).Visible = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
 
-                    //    if (Strings.Len(currentUnit.FeatureData("修理装置")) > 0)
-                    //    {
-                    //        GUI.MainForm.mnuUnitCommandItem(FixCmdID).Caption = GeneralLib.LIndex(currentUnit.FeatureData("修理装置"), 1);
-                    //        string localLIndex12() { object argIndex1 = "修理装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+                        if (Strings.Len(currentUnit.FeatureData("修理装置")) > 0)
+                        {
+                            GUI.MainForm.mnuUnitCommandItem(FixCmdID).Caption = GeneralLib.LIndex(currentUnit.FeatureData("修理装置"), 1);
+                            string localLIndex12() { object argIndex1 = "修理装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
 
-                    //        if (Information.IsNumeric(localLIndex12()))
-                    //        {
-                    //            string localLIndex10() { object argIndex1 = "修理装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+                            if (Information.IsNumeric(localLIndex12()))
+                            {
+                                string localLIndex10() { object argIndex1 = "修理装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
 
-                    //            string localLIndex11() { object argIndex1 = "修理装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+                                string localLIndex11() { object argIndex1 = "修理装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
 
-                    //            if (currentUnit.EN < Conversions.Toint(localLIndex11()))
-                    //            {
-                    //                GUI.MainForm.mnuUnitCommandItem(FixCmdID).Visible = false;
-                    //            }
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        GUI.MainForm.mnuUnitCommandItem(FixCmdID).Caption = "修理装置";
-                    //    }
-                    //}
+                                if (currentUnit.EN < Conversions.Toint(localLIndex11()))
+                                {
+                                    GUI.MainForm.mnuUnitCommandItem(FixCmdID).Visible = false;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            GUI.MainForm.mnuUnitCommandItem(FixCmdID).Caption = "修理装置";
+                        }
+                    }
 
                     //// 補給コマンド
                     //if (currentUnit.IsFeatureAvailable("補給装置") && currentUnit.Area != "地中")
@@ -1347,12 +1342,7 @@ namespace SRCCore.Commands
                 unitCommands.Add(new UiCommand(WaitCmdID, "待機"));
 
                 // 会話コマンド
-                if (new Unit[] {
-                            Map.UnitAtPoint(currentUnit.x-1, currentUnit.y),
-                            Map.UnitAtPoint(currentUnit.x+1, currentUnit.y),
-                            Map.UnitAtPoint(currentUnit.x, currentUnit.y-1),
-                            Map.UnitAtPoint(currentUnit.x, currentUnit.y+1),
-                        }.Where(u => u != null)
+                if (Map.AdjacentUnit(currentUnit)
                     .Any(u => Event.IsEventDefined("会話 " + currentUnit.MainPilot().ID + " " + u.MainPilot().ID)))
                 {
                     unitCommands.Add(new UiCommand(TalkCmdID, "会話"));

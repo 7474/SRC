@@ -485,6 +485,22 @@ namespace SRCCore.Maps
             return IsInside(X, Y) ? MapDataForUnit[X, Y] : null;
         }
 
+        public IList<Unit> AdjacentUnit(Unit u)
+        {
+            return AdjacentUnit(u.x, u.y);
+        }
+
+        public IList<Unit> AdjacentUnit(int X, int Y)
+        {
+            return new Unit[]
+                {
+                    UnitAtPoint(X +1, Y),
+                    UnitAtPoint(X -1, Y),
+                    UnitAtPoint(X, Y +1),
+                    UnitAtPoint(X, Y -1),
+                }.Where(u => u != null).ToList();
+        }
+
         // 指定したマップ画像を検索する
         // XXX レイヤ対応はしてない
         public string SearchTerrainImageFile(MapCell cell)
@@ -2001,10 +2017,10 @@ namespace SRCCore.Maps
             //// ADD END MARGE
 
             // 移動範囲をチェックすべき領域
-            var x1 = Math.Max(1, currentUnit.x - uspeed);
-            var y1 = Math.Max(1, currentUnit.y - uspeed);
-            var x2 = Math.Min(currentUnit.x + uspeed, MapWidth);
-            var y2 = Math.Min(currentUnit.y + uspeed, MapHeight);
+            var x1 = Math.Max(1, X - uspeed);
+            var y1 = Math.Max(1, Y - uspeed);
+            var x2 = Math.Min(X + uspeed, MapWidth);
+            var y2 = Math.Min(Y + uspeed, MapHeight);
 
             // 移動コストとＺＯＣをリセット
             for (var i = 0; i <= MapWidth + 1; i++)
@@ -2352,7 +2368,7 @@ namespace SRCCore.Maps
             }
 
             // 現在いる場所は移動する必要がないため、必要移動力が0
-            TotalMoveCost[currentUnit.x, currentUnit.y] = 0;
+            TotalMoveCost[X, Y] = 0;
 
             // 必要移動力の計算
             for (var sp = 1; sp <= uspeed; sp++)
@@ -2366,12 +2382,12 @@ namespace SRCCore.Maps
                     }
                 }
 
-                var xmax = Math.Min(currentUnit.x + sp, MapWidth);
-                var xmin = Math.Max(1, currentUnit.x - sp);
+                var xmax = Math.Min(X + sp, MapWidth);
+                var xmin = Math.Max(1, X - sp);
                 for (var x = xmin; x <= xmax; x++)
                 {
-                    var ymax = Math.Min(currentUnit.y + sp, MapHeight);
-                    var ymin = Math.Max(1, currentUnit.y - sp);
+                    var ymax = Math.Min(Y + sp, MapHeight);
+                    var ymin = Math.Max(1, Y - sp);
                     for (var y = ymin; y <= ymax; y++)
                     {
                         // 隣接する地点と比較して最も低い必要移動力を求める
@@ -2683,7 +2699,7 @@ namespace SRCCore.Maps
             //}
 
             // 現在いる場所は常に進入可能
-            MaskData[currentUnit.x, currentUnit.y] = false;
+            MaskData[X, Y] = false;
         }
 
         private void MaskAlreadyUnitExist(Unit currentUnit, int x, int y, Unit u2)
@@ -3560,14 +3576,14 @@ namespace SRCCore.Maps
             ClearMask();
 
             // 移動可能な地点を調べる
-            var loopTo4 = Math.Min(MapWidth, currentUnit.x + r);
-            for (var i = Math.Max(1, currentUnit.x - r); i <= loopTo4; i++)
+            var loopTo4 = Math.Min(MapWidth, X + r);
+            for (var i = Math.Max(1, X - r); i <= loopTo4; i++)
             {
-                var loopTo5 = Math.Min(MapHeight, currentUnit.y + r);
-                for (var j = Math.Max(1, currentUnit.y - r); j <= loopTo5; j++)
+                var loopTo5 = Math.Min(MapHeight, Y + r);
+                for (var j = Math.Max(1, Y - r); j <= loopTo5; j++)
                 {
                     // 移動範囲内？
-                    if ((Math.Abs((currentUnit.x - i)) + Math.Abs((currentUnit.y - j))) > r)
+                    if ((Math.Abs((X - i)) + Math.Abs((Y - j))) > r)
                     {
                         goto NextLoop;
                     }
@@ -3790,7 +3806,7 @@ namespace SRCCore.Maps
             }
 
             // 現在いる場所は常に進入可能
-            MaskData[currentUnit.x, currentUnit.y] = false;
+            MaskData[X, Y] = false;
         }
 
         // ユニット u のＭ移武器、アビリティのターゲット座標選択用
