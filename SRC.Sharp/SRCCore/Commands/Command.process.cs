@@ -355,121 +355,88 @@ namespace SRCCore.Commands
             Event.SelectedTargetForEvent = null;
             var currentUnit = SelectedUnit;
             {
-                //// 特殊能力＆アビリティ一覧はどのユニットでも見れる可能性があるので
-                //// 先に判定しておく
+                // 特殊能力＆アビリティ一覧はどのユニットでも見れる可能性があるので
+                // 先に判定しておく
 
-                //// 特殊能力一覧コマンド
-                //var loopTo = currentUnit.CountAllFeature();
-                //for (var i = 1; i <= loopTo; i++)
-                //{
-                //    string localAllFeature() { object argIndex1 = i; var ret = currentUnit.AllFeature(argIndex1); return ret; }
+                // 特殊能力一覧コマンド
+                {
+                    var isFeatureListVisible = false;
 
-                //    string localAllFeature1() { object argIndex1 = i; var ret = currentUnit.AllFeature(argIndex1); return ret; }
+                    foreach (var fd in currentUnit.AllFeatures)
+                    {
+                        if (!string.IsNullOrEmpty(fd.FeatureName(currentUnit)))
+                        {
+                            switch (fd.Name)
+                            {
+                                case "合体":
+                                    if (SRC.UList.IsDefined(fd.DataL.Skip(1).First()))
+                                    {
+                                        isFeatureListVisible = true;
+                                    }
+                                    break;
 
-                //    string localAllFeature2() { object argIndex1 = i; var ret = currentUnit.AllFeature(argIndex1); return ret; }
+                                default:
+                                    isFeatureListVisible = true;
+                                    break;
+                            }
+                        }
+                        else if (fd.Name == "パイロット能力付加" || fd.Name == "パイロット能力強化")
+                        {
+                            if (Strings.InStr(fd.Data, "非表示") == 0)
+                            {
+                                isFeatureListVisible = true;
+                            }
+                        }
+                        else if (fd.Name == "武器クラス" || fd.Name == "防具クラス")
+                        {
+                            if (Expression.IsOptionDefined("アイテム交換"))
+                            {
+                                isFeatureListVisible = true;
+                            }
+                        }
+                    }
+                    var p = currentUnit.MainPilot();
+                    foreach (var skill in p.Skills.Where(s => p.SkillName0(s.Name) != "非表示" && !string.IsNullOrEmpty(p.SkillName0(s.Name))))
+                    {
+                        switch (skill.Name)
+                        {
+                            case "耐久":
+                                if (!Expression.IsOptionDefined("防御力成長") && !Expression.IsOptionDefined("防御力レベルアップ"))
+                                {
+                                    isFeatureListVisible = true;
+                                }
+                                break;
 
-                //    string localAllFeature3() { object argIndex1 = i; var ret = currentUnit.AllFeature(argIndex1); return ret; }
+                            case "追加レベル":
+                            case "格闘ＵＰ":
+                            case "射撃ＵＰ":
+                            case "命中ＵＰ":
+                            case "回避ＵＰ":
+                            case "技量ＵＰ":
+                            case "反応ＵＰ":
+                            case "ＳＰＵＰ":
+                            case "格闘ＤＯＷＮ":
+                            case "射撃ＤＯＷＮ":
+                            case "命中ＤＯＷＮ":
+                            case "回避ＤＯＷＮ":
+                            case "技量ＤＯＷＮ":
+                            case "反応ＤＯＷＮ":
+                            case "ＳＰＤＯＷＮ":
+                            case "メッセージ":
+                            case "魔力所有":
+                                break;
 
-                //    if (!string.IsNullOrEmpty(currentUnit.AllFeatureName(i)))
-                //    {
-                //        switch (currentUnit.AllFeature(i) ?? "")
-                //        {
-                //            case "合体":
-                //                {
-                //                    string localAllFeatureData() { object argIndex1 = i; var ret = currentUnit.AllFeatureData(argIndex1); return ret; }
-
-                //                    string localLIndex() { string arglist = hsde8149624c274ab08211d9ffa37bf9bf(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-                //                    if (SRC.UList.IsDefined(localLIndex()))
-                //                    {
-                //                        GUI.MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = true;
-                //                        break;
-                //                    }
-
-                //                    break;
-                //                }
-
-                //            default:
-                //                {
-                //                    GUI.MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = true;
-                //                    break;
-                //                }
-                //        }
-                //    }
-                //    else if (localAllFeature() == "パイロット能力付加" || localAllFeature1() == "パイロット能力強化")
-                //    {
-                //        string localAllFeatureData1() { object argIndex1 = i; var ret = currentUnit.AllFeatureData(argIndex1); return ret; }
-
-                //        if (Strings.InStr(localAllFeatureData1(), "非表示") == 0)
-                //        {
-                //            GUI.MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = true;
-                //            break;
-                //        }
-                //    }
-                //    else if (localAllFeature2() == "武器クラス" || localAllFeature3() == "防具クラス")
-                //    {
-                //        if (Expression.IsOptionDefined("アイテム交換"))
-                //        {
-                //            GUI.MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = true;
-                //            break;
-                //        }
-                //    }
-                //}
-
-                //{
-                //    var withBlock5 = currentUnit.MainPilot();
-                //    var loopTo1 = withBlock5.CountSkill();
-                //    for (i = 1; i <= loopTo1; i++)
-                //    {
-                //        string localSkillName0() { object argIndex1 = i; var ret = withBlock5.SkillName0(argIndex1); return ret; }
-
-                //        string localSkillName01() { object argIndex1 = i; var ret = withBlock5.SkillName0(argIndex1); return ret; }
-
-                //        if (localSkillName0() != "非表示" && !string.IsNullOrEmpty(localSkillName01()))
-                //        {
-                //            switch (withBlock5.Skill(i) ?? "")
-                //            {
-                //                case "耐久":
-                //                    {
-                //                        if (!Expression.IsOptionDefined("防御力成長") && !Expression.IsOptionDefined("防御力レベルアップ"))
-                //                        {
-                //                            GUI.MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = true;
-                //                            break;
-                //                        }
-
-                //                        break;
-                //                    }
-
-                //                case "追加レベル":
-                //                case "格闘ＵＰ":
-                //                case "射撃ＵＰ":
-                //                case "命中ＵＰ":
-                //                case "回避ＵＰ":
-                //                case "技量ＵＰ":
-                //                case "反応ＵＰ":
-                //                case "ＳＰＵＰ":
-                //                case "格闘ＤＯＷＮ":
-                //                case "射撃ＤＯＷＮ":
-                //                case "命中ＤＯＷＮ":
-                //                case "回避ＤＯＷＮ":
-                //                case "技量ＤＯＷＮ":
-                //                case "反応ＤＯＷＮ":
-                //                case "ＳＰＤＯＷＮ":
-                //                case "メッセージ":
-                //                case "魔力所有":
-                //                    {
-                //                        break;
-                //                    }
-
-                //                default:
-                //                    {
-                //                        GUI.MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = true;
-                //                        break;
-                //                    }
-                //            }
-                //        }
-                //    }
-                //}
+                            default:
+                                isFeatureListVisible = true;
+                                break;
+                        }
+                        if (isFeatureListVisible) { break; }
+                    }
+                    if (isFeatureListVisible)
+                    {
+                        unitCommands.Add(new UiCommand(FeatureListCmdID, "特殊能力一覧"));
+                    }
+                }
 
                 // アビリティ一覧コマンド
                 if (currentUnit.Abilities.Any(x => x.IsAbilityMastered()
