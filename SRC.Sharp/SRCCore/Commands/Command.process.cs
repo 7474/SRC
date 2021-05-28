@@ -636,9 +636,14 @@ namespace SRCCore.Commands
                     // 未確認ユニットの場合は情報を隠蔽
                     if (Expression.IsOptionDefined("ユニット情報隠蔽") && !currentUnit.IsConditionSatisfied("識別済み") && (currentUnit.Party0 == "敵" || currentUnit.Party0 == "中立") || currentUnit.IsConditionSatisfied("ユニット情報隠蔽"))
                     {
-                        unitCommands = unitCommands.Where(uc => !new int[] {
-                            MoveCmdID, AttackCmdID,FeatureListCmdID,WeaponListCmdID,AbilityListCmdID,
-                        }.Contains(uc.Id)).ToList();
+                        unitCommands.RemoveItem(uc => !new int[] {
+                            MoveCmdID,
+                            AttackCmdID,
+                            FeatureListCmdID,
+                            WeaponListCmdID,
+                            AbilityListCmdID,
+                        }.Contains(uc.Id));
+
                         if (!unitCommands.Any())
                         {
                             // 表示可能なコマンドがなかった
@@ -776,10 +781,10 @@ namespace SRCCore.Commands
                         unitCommands.RemoveItem(x => x.Id == AttackCmdID);
                     }
 
-                    //if (currentUnit.IsConditionSatisfied("攻撃不能"))
-                    //{
-                    //    GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Visible = false;
-                    //}
+                    if (currentUnit.IsConditionSatisfied("攻撃不能"))
+                    {
+                        unitCommands.RemoveItem(x => x.Id == AttackCmdID);
+                    }
 
                     //// 修理コマンド
                     //if (currentUnit.IsFeatureAvailable("修理装置") && currentUnit.Area != "地中")
