@@ -545,7 +545,7 @@ namespace SRCCore.Commands
                     if (!string.IsNullOrEmpty(Map.MapFileName))
                     {
                         unitCommands.Add(new UiCommand(MoveCmdID, "移動範囲"));
-                        if (currentUnit.Weapons.Any(uw => uw.IsWeaponAvailable("") && uw.IsWeaponClassifiedAs("Ｍ")))
+                        if (currentUnit.Weapons.Any(uw => uw.IsWeaponAvailable("") && !uw.IsWeaponClassifiedAs("Ｍ")))
                         {
                             unitCommands.Add(new UiCommand(AttackCmdID, "射程範囲"));
                         }
@@ -588,77 +588,27 @@ namespace SRCCore.Commands
                             unitCommands.Add(new UiCommand(SplitCmdID, caption));
                         }
 
-                        //// 合体コマンド
-                        //if (currentUnit.IsFeatureAvailable("合体"))
-                        //{
-                        //    var loopTo7 = currentUnit.CountFeature();
-                        //    for (i = 1; i <= loopTo7; i++)
-                        //    {
-                        //        if (currentUnit.Feature(i) == "合体")
-                        //        {
-                        //            n = 0;
-                        //            // パートナーが存在しているか？
-                        //            string localFeatureData1() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                        //            var loopTo8 = GeneralLib.LLength(localFeatureData1());
-                        //            for (j = 3; j <= loopTo8; j++)
-                        //            {
-                        //                string localFeatureData() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                        //                string localLIndex1() { string arglist = hse3098790f77a4c3c8e351b0c8f045435(); var ret = GeneralLib.LIndex(arglist, j); return ret; }
-
-                        //                u = SRC.UList.Item(localLIndex1());
-                        //                if (u is null)
-                        //                {
-                        //                    break;
-                        //                }
-
-                        //                if (u.Status != "出撃" && u.CurrentForm().IsFeatureAvailable("合体制限"))
-                        //                {
-                        //                    break;
-                        //                }
-
-                        //                n = (n + 1);
-                        //            }
-
-                        //            // 合体先のユニットが作成されているか？
-                        //            string localFeatureData2() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                        //            string localLIndex2() { string arglist = hse489dc5578704b21a62d1221f27f2c9c(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-                        //            bool localIsDefined1() { object argIndex1 = (object)hs2edf74710015446592f60b6fcb7267d6(); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-                        //            if (!localIsDefined1())
-                        //            {
-                        //                n = 0;
-                        //            }
-
-                        //            // すべての条件を満たしている場合
-                        //            string localFeatureData4() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                        //            int localLLength() { string arglist = hs57a7b11782d04866bf1e5d24ed51c504(); var ret = GeneralLib.LLength(arglist); return ret; }
-
-                        //            if (n == localLLength() - 2)
-                        //            {
-                        //                GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Visible = true;
-                        //                string localFeatureData3() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                        //                GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Caption = GeneralLib.LIndex(localFeatureData3(), 1);
-                        //                if (GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Caption == "非表示")
-                        //                {
-                        //                    GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Caption = "合体";
-                        //                }
-
-                        //                break;
-                        //            }
-                        //        }
-                        //    }
-                        //}
-                        //else if (currentUnit.IsFeatureAvailable("パーツ合体"))
-                        //{
-                        //    GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Caption = "パーツ合体";
-                        //    GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Visible = true;
-                        //}
+                        // 合体コマンド
+                        if (currentUnit.IsFeatureAvailable("合体"))
+                        {
+                            foreach (var fd in currentUnit.Features.Where(fd => fd.Name == "合体"))
+                            {
+                                var caption = fd.DataL.First();
+                                // パートナーが存在しているか？
+                                var isPartnerUnitAvailable = fd.DataL.Skip(2).Select(uname => SRC.UList.Item(uname))
+                                        .All(u => !(u.Status != "出撃" && u.CurrentForm().IsFeatureAvailable("合体制限")));
+                                // 合体先のユニットが作成されているか？
+                                var isCombineUnitExist = SRC.UList.IsDefined(fd.DataL.Skip(1).First());
+                                if (isPartnerUnitAvailable && isCombineUnitExist)
+                                {
+                                    unitCommands.Add(new UiCommand(CombineCmdID, caption == "非表示" ? "合体" : caption));
+                                }
+                            }
+                        }
+                        else if (currentUnit.IsFeatureAvailable("パーツ合体"))
+                        {
+                            unitCommands.Add(new UiCommand(SplitCmdID, "パーツ合体"));
+                        }
 
                         //if (!currentUnit.IsConditionSatisfied("ノーマルモード付加"))
                         //{
@@ -753,72 +703,30 @@ namespace SRCCore.Commands
                         //}
                     }
 
-                    //// ユニットコマンド
-                    //if (!ViewMode)
-                    //{
-                    //    i = UnitCommand1CmdID;
-                    //    foreach (LabelData currentLab1 in Event.colEventLabelList)
-                    //    {
-                    //        lab = currentLab1;
-                    //        if (lab.Name == Event.LabelType.UnitCommandEventLabel && lab.Enable)
-                    //        {
-                    //            buf = Expression.GetValueAsString(lab.Para(3));
-                    //            if (SelectedUnit.Party == "味方" && ((buf ?? "") == (SelectedUnit.MainPilot().Name ?? "") || (buf ?? "") == (SelectedUnit.MainPilot().get_Nickname(false) ?? "") || (buf ?? "") == (SelectedUnit.Name ?? "")) || (buf ?? "") == (SelectedUnit.Party ?? "") || buf == "全")
-                    //            {
-                    //                int localGetValueAsLong() { string argexpr = lab.Para(4); var ret = Expression.GetValueAsLong(argexpr); return ret; }
+                    // ユニットコマンド
+                    if (!ViewMode)
+                    {
+                        AddUserUnitCommand(unitCommands);
+                    }
 
-                    //                if (lab.CountPara() <= 3)
-                    //                {
-                    //                    GUI.MainForm.mnuUnitCommandItem(i).Visible = true;
-                    //                }
-                    //                else if (localGetValueAsLong() != 0)
-                    //                {
-                    //                    GUI.MainForm.mnuUnitCommandItem(i).Visible = true;
-                    //                }
-                    //            }
+                    // 未確認ユニットの場合は情報を隠蔽
+                    if (Expression.IsOptionDefined("ユニット情報隠蔽") && !currentUnit.IsConditionSatisfied("識別済み") && (currentUnit.Party0 == "敵" || currentUnit.Party0 == "中立") || currentUnit.IsConditionSatisfied("ユニット情報隠蔽"))
+                    {
+                        unitCommands = unitCommands.Where(uc => !new int[] {
+                            MoveCmdID, AttackCmdID,FeatureListCmdID,WeaponListCmdID,AbilityListCmdID,
+                        }.Contains(uc.Id)).ToList();
+                        if (!unitCommands.Any())
+                        {
+                            // 表示可能なコマンドがなかった
+                            CommandState = "ユニット選択";
+                            GUI.IsGUILocked = false;
+                            return;
+                        }
+                    }
 
-                    //            if (GUI.MainForm.mnuUnitCommandItem(i).Visible)
-                    //            {
-                    //                GUI.MainForm.mnuUnitCommandItem(i).Caption = lab.Para(2);
-                    //                UnitCommandLabelList[i - UnitCommand1CmdID + 1] = lab.LineNum.ToString();
-                    //                i = (i + 1);
-                    //                if (i > UnitCommand10CmdID)
-                    //                {
-                    //                    break;
-                    //                }
-                    //            }
-                    //        }
-                    //    }
-                    //}
-
-                    //// 未確認ユニットの場合は情報を隠蔽
-                    //if (Expression.IsOptionDefined("ユニット情報隠蔽") && !currentUnit.IsConditionSatisfied("識別済み") && (currentUnit.Party0 == "敵" || currentUnit.Party0 == "中立") || currentUnit.IsConditionSatisfied("ユニット情報隠蔽"))
-                    //{
-                    //    GUI.MainForm.mnuUnitCommandItem(MoveCmdID).Visible = true;
-                    //    GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Visible = false;
-                    //    GUI.MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = false;
-                    //    GUI.MainForm.mnuUnitCommandItem(WeaponListCmdID).Visible = false;
-                    //    GUI.MainForm.mnuUnitCommandItem(AbilityListCmdID).Visible = false;
-                    //    for (i = 1; i <= WaitCmdID; i++)
-                    //    {
-                    //        if (GUI.MainForm.mnuUnitCommandItem(i).Visible)
-                    //        {
-                    //            break;
-                    //        }
-                    //    }
-
-                    //    if (i > WaitCmdID)
-                    //    {
-                    //        // 表示可能なコマンドがなかった
-                    //        CommandState = "ユニット選択";
-                    //        GUI.IsGUILocked = false;
-                    //        return;
-                    //    }
-                    //    // メニューコマンドを全て殺してしまうとエラーになるのでここで非表示
-                    //    GUI.MainForm.mnuUnitCommandItem(MoveCmdID).Visible = false;
-                    //}
-
-                    //GUI.IsGUILocked = false;
+                    GUI.IsGUILocked = false;
+                    GUI.ShowUnitCommandMenu(unitCommands.OrderBy(x => x.Id).ToList());
+                    // XXX ユニットコマンドの初期選択？
                     //if (by_cancel)
                     //{
                     //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY + 5f);
@@ -827,7 +735,6 @@ namespace SRCCore.Commands
                     //{
                     //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY - 6f);
                     //}
-
                     return;
                 }
 
@@ -1461,32 +1368,7 @@ namespace SRCCore.Commands
                     //}
 
                     // ユニットコマンド
-                    foreach (LabelData lab in Event.colEventLabelList.Values
-                        .Where(x => x.Name == LabelType.UnitCommandEventLabel && x.Enable))
-                    {
-                        var label = lab.Para(2);
-                        var target = lab.Para(3);
-                        if (SelectedUnit.Party == "味方" && (
-                                (target ?? "") == (SelectedUnit.MainPilot().Name ?? "")
-                                || (target ?? "") == (SelectedUnit.MainPilot().get_Nickname(false) ?? "")
-                                || (target ?? "") == (SelectedUnit.Name ?? "")
-                            )
-                            || (target ?? "") == (SelectedUnit.Party ?? "")
-                            || target == "全")
-                        {
-                            if (lab.CountPara() <= 3)
-                            {
-                                // 無条件で実行できるコマンド
-                                unitCommands.Add(new UiCommand(UnitCommandCmdID, lab.Para(2), lab));
-                            }
-                            else if (GeneralLib.StrToLng(lab.Para(4)) != 0)
-                            {
-                                // 条件を満たした場合のみ実行できるコマンド
-                                unitCommands.Add(new UiCommand(UnitCommandCmdID, lab.Para(2), lab));
-                            }
-                        }
-                        // TODO 上限儲けるなら適当に打ち切る
-                    }
+                    AddUserUnitCommand(unitCommands);
                 }
             }
 
@@ -1514,6 +1396,35 @@ namespace SRCCore.Commands
             //}
         }
 
+        private void AddUserUnitCommand(List<UiCommand> unitCommands)
+        {
+            foreach (LabelData lab in Event.colEventLabelList.Values
+                .Where(x => x.Name == LabelType.UnitCommandEventLabel && x.Enable))
+            {
+                var label = lab.Para(2);
+                var target = lab.Para(3);
+                if (SelectedUnit.Party == "味方" && (
+                        (target ?? "") == (SelectedUnit.MainPilot().Name ?? "")
+                        || (target ?? "") == (SelectedUnit.MainPilot().get_Nickname(false) ?? "")
+                        || (target ?? "") == (SelectedUnit.Name ?? "")
+                    )
+                    || (target ?? "") == (SelectedUnit.Party ?? "")
+                    || target == "全")
+                {
+                    if (lab.CountPara() <= 3)
+                    {
+                        // 無条件で実行できるコマンド
+                        unitCommands.Add(new UiCommand(UnitCommandCmdID, lab.Para(2), lab));
+                    }
+                    else if (GeneralLib.StrToLng(lab.Para(4)) != 0)
+                    {
+                        // 条件を満たした場合のみ実行できるコマンド
+                        unitCommands.Add(new UiCommand(UnitCommandCmdID, lab.Para(2), lab));
+                    }
+                }
+                // TODO 上限儲けるなら適当に打ち切る
+            }
+        }
 
         private void ProceedAfterMoveCommandSelect(
             bool by_cancel = false,
