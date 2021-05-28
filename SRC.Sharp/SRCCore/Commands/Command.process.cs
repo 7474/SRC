@@ -705,63 +705,26 @@ namespace SRCCore.Commands
                     return;
                 }
 
-                // TODO Impl 行動終了している場合
                 // 行動終了している場合
                 if (currentUnit.Action == 0)
                 {
-                    //// 発進コマンドは使用可能
-                    //if (currentUnit.IsFeatureAvailable("母艦"))
-                    //{
-                    //    if (currentUnit.Area != "地中")
-                    //    {
-                    //        if (currentUnit.CountUnitOnBoard() > 0)
-                    //        {
-                    //            GUI.MainForm.mnuUnitCommandItem(LaunchCmdID).Visible = true;
-                    //        }
-                    //    }
-                    //}
+                    // 発進コマンドは使用可能
+                    if (currentUnit.IsFeatureAvailable("母艦"))
+                    {
+                        if (currentUnit.Area != "地中")
+                        {
+                            if (currentUnit.CountUnitOnBoard() > 0)
+                            {
+                                unitCommands.Add(new UiCommand(LaunchCmdID, "発進"));
+                            }
+                        }
+                    }
 
-                    //// ユニットコマンド
-                    //i = UnitCommand1CmdID;
-                    //foreach (LabelData currentLab2 in Event.colEventLabelList)
-                    //{
-                    //    lab = currentLab2;
-                    //    if (lab.Name == Event.LabelType.UnitCommandEventLabel && (lab.AsterNum == 1 || lab.AsterNum == 3))
-                    //    {
-                    //        if (lab.Enable)
-                    //        {
-                    //            buf = lab.Para(3);
-                    //            if (SelectedUnit.Party == "味方" && ((buf ?? "") == (SelectedUnit.MainPilot().Name ?? "") || (buf ?? "") == (SelectedUnit.MainPilot().get_Nickname(false) ?? "") || (buf ?? "") == (SelectedUnit.Name ?? "")) || (buf ?? "") == (SelectedUnit.Party ?? "") || buf == "全")
-                    //            {
-                    //                int localStrToLng1() { string argexpr = lab.Para(4); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-                    //                if (lab.CountPara() <= 3)
-                    //                {
-                    //                    GUI.MainForm.mnuUnitCommandItem(i).Visible = true;
-                    //                }
-                    //                else if (localStrToLng1() != 0)
-                    //                {
-                    //                    GUI.MainForm.mnuUnitCommandItem(i).Visible = true;
-                    //                }
-                    //            }
-                    //        }
-
-                    //        if (GUI.MainForm.mnuUnitCommandItem(i).Visible)
-                    //        {
-                    //            GUI.MainForm.mnuUnitCommandItem(i).Caption = lab.Para(2);
-                    //            UnitCommandLabelList[i - UnitCommand1CmdID + 1] = lab.LineNum.ToString();
-                    //            i = (i + 1);
-                    //            if (i > UnitCommand10CmdID)
-                    //            {
-                    //                break;
-                    //            }
-                    //        }
-                    //    }
-                    //}
-
-                    //GUI.IsGUILocked = false;
-                    //GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY - 5f);
-                    //return;
+                    // ユニットコマンド
+                    AddUserUnitCommand(unitCommands);
+                    GUI.IsGUILocked = false;
+                    GUI.ShowUnitCommandMenu(unitCommands.OrderBy(x => x.Id).ToList());
+                    return;
                 }
             }
             {
