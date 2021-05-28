@@ -610,97 +610,64 @@ namespace SRCCore.Commands
                             unitCommands.Add(new UiCommand(SplitCmdID, "パーツ合体"));
                         }
 
-                        //if (!currentUnit.IsConditionSatisfied("ノーマルモード付加"))
-                        //{
-                        //    // ハイパーモードコマンド
-                        //    if (currentUnit.IsFeatureAvailable("ハイパーモード"))
-                        //    {
-                        //        uname = GeneralLib.LIndex(currentUnit.FeatureData("ハイパーモード"), 2);
-                        //        Unit localOtherForm1() { object argIndex1 = uname; var ret = currentUnit.OtherForm(argIndex1); return ret; }
+                        if (!currentUnit.IsConditionSatisfied("ノーマルモード付加"))
+                        {
+                            // ハイパーモードコマンド
+                            if (currentUnit.IsFeatureAvailable("ハイパーモード"))
+                            {
+                                var fd = currentUnit.Feature("ハイパーモード");
 
-                        //        if (localOtherForm1().IsAvailable())
-                        //        {
-                        //            GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Visible = true;
-                        //            GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = GeneralLib.LIndex(currentUnit.FeatureData("ハイパーモード"), 1);
-                        //            if (GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption == "非表示")
-                        //            {
-                        //                GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = "ハイパーモード";
-                        //            }
-                        //        }
-                        //    }
-                        //    else if (currentUnit.IsFeatureAvailable("ノーマルモード"))
-                        //    {
-                        //        uname = GeneralLib.LIndex(currentUnit.FeatureData("ノーマルモード"), 1);
-                        //        Unit localOtherForm2() { object argIndex1 = uname; var ret = currentUnit.OtherForm(argIndex1); return ret; }
+                                if (currentUnit.OtherForm(fd.DataL.Skip(1).First()).IsAvailable())
+                                {
+                                    var caption = fd.DataL.First();
+                                    unitCommands.Add(new UiCommand(HyperModeCmdID, caption == "非表示" ? "ハイパーモード" : caption));
+                                }
+                            }
+                            else if (currentUnit.IsFeatureAvailable("ノーマルモード"))
+                            {
+                                var fd = currentUnit.Feature("ノーマルモード");
+                                var uname = fd.DataL.Skip(1).First();
 
-                        //        if (localOtherForm2().IsAvailable())
-                        //        {
-                        //            GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Visible = true;
-                        //            GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = "ノーマルモード";
-                        //            string localLIndex3() { object argIndex1 = "変形"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+                                if (currentUnit.OtherForm(uname).IsAvailable()
+                                    && GeneralLib.LIndex(currentUnit.FeatureData("変形"), 2) != uname)
+                                {
+                                    var caption = fd.DataL.First();
+                                    unitCommands.Add(new UiCommand(HyperModeCmdID, "ノーマルモード"));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // 変身解除
+                            if (Strings.InStr(currentUnit.FeatureData("ノーマルモード"), "手動解除") > 0)
+                            {
+                                string caption;
+                                if (currentUnit.IsFeatureAvailable("変身解除コマンド名"))
+                                {
+                                    caption = currentUnit.FeatureData("変身解除コマンド名");
+                                }
+                                else if (currentUnit.IsHero())
+                                {
+                                    caption = "変身解除";
+                                }
+                                else
+                                {
+                                    caption = "特殊モード解除";
+                                }
+                                unitCommands.Add(new UiCommand(HyperModeCmdID, caption));
+                            }
+                        }
 
-                        //            if ((uname ?? "") == (localLIndex3() ?? ""))
-                        //            {
-                        //                GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Visible = false;
-                        //            }
-                        //        }
-                        //    }
-                        //}
-                        //else
-                        //{
-                        //    // 変身解除
-                        //    if (Strings.InStr(currentUnit.FeatureData("ノーマルモード"), "手動解除") > 0)
-                        //    {
-                        //        GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Visible = true;
-                        //        if (currentUnit.IsFeatureAvailable("変身解除コマンド名"))
-                        //        {
-                        //            GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = currentUnit.FeatureData("変身解除コマンド名");
-                        //        }
-                        //        else if (currentUnit.IsHero())
-                        //        {
-                        //            GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = "変身解除";
-                        //        }
-                        //        else
-                        //        {
-                        //            GUI.MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = "特殊モード解除";
-                        //        }
-                        //    }
-                        //}
-
-                        //// 換装コマンド
-                        //if (currentUnit.IsFeatureAvailable("換装"))
-                        //{
-                        //    GUI.MainForm.mnuUnitCommandItem(OrderCmdID).Caption = "換装";
-                        //    var loopTo9 = GeneralLib.LLength(currentUnit.FeatureData("換装"));
-                        //    for (i = 1; i <= loopTo9; i++)
-                        //    {
-                        //        uname = GeneralLib.LIndex(currentUnit.FeatureData("換装"), i);
-                        //        Unit localOtherForm3() { object argIndex1 = uname; var ret = currentUnit.OtherForm(argIndex1); return ret; }
-
-                        //        if (localOtherForm3().IsAvailable())
-                        //        {
-                        //            GUI.MainForm.mnuUnitCommandItem(OrderCmdID).Visible = true;
-                        //            break;
-                        //        }
-                        //    }
-
-                        //    // エリアスで換装の名称が変更されている？
-                        //    {
-                        //        var withBlock7 = SRC.ALDList;
-                        //        var loopTo10 = withBlock7.Count();
-                        //        for (i = 1; i <= loopTo10; i++)
-                        //        {
-                        //            {
-                        //                var withBlock8 = withBlock7.Item(i);
-                        //                if (withBlock8.get_AliasType(1) == "換装")
-                        //                {
-                        //                    GUI.MainForm.mnuUnitCommandItem(OrderCmdID).Caption = withBlock8.Name;
-                        //                    break;
-                        //                }
-                        //            }
-                        //        }
-                        //    }
-                        //}
+                        // 換装コマンド
+                        if (currentUnit.IsFeatureAvailable("換装"))
+                        {
+                            // エリアスで換装の名称が変更されている？
+                            var caption = SRC.ALDList.RefName("換装");
+                            if (currentUnit.Feature("換装").DataL.Any(uname => currentUnit.OtherForm(uname).IsAvailable()))
+                            {
+                                unitCommands.Add(new UiCommand(OrderCmdID, caption));
+                            }
+                        }
                     }
 
                     // ユニットコマンド
