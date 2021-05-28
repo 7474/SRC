@@ -485,6 +485,22 @@ namespace SRCCore.Maps
             return IsInside(X, Y) ? MapDataForUnit[X, Y] : null;
         }
 
+        public IList<Unit> AdjacentUnit(Unit u)
+        {
+            return AdjacentUnit(u.x, u.y);
+        }
+
+        public IList<Unit> AdjacentUnit(int X, int Y)
+        {
+            return new Unit[]
+                {
+                    UnitAtPoint(X +1, Y),
+                    UnitAtPoint(X -1, Y),
+                    UnitAtPoint(X, Y +1),
+                    UnitAtPoint(X, Y -1),
+                }.Where(u => u != null).ToList();
+        }
+
         // 指定したマップ画像を検索する
         // XXX レイヤ対応はしてない
         public string SearchTerrainImageFile(MapCell cell)

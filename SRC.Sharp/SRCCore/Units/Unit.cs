@@ -220,6 +220,7 @@ namespace SRCCore.Units
 
         // 召喚したユニット
         private SrcCollection<Unit> colServant = new SrcCollection<Unit>();
+        public IList<Unit> Servants => colServant.List;
 
         // 魅了・憑依したユニット
         private SrcCollection<Unit> colSlave = new SrcCollection<Unit>();

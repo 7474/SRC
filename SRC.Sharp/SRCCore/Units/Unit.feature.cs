@@ -34,15 +34,15 @@ namespace SRCCore.Units
         // 特殊能力の名称
         public string FeatureName(string Index)
         {
-            return colFeature[Index].FeatureName(this);
+            return colFeature[Index]?.FeatureName(this) ?? "";
         }
         public string FeatureName(int Index)
         {
-            return colFeature[Index].FeatureName(this);
+            return colFeature[Index]?.FeatureName(this) ?? "";
         }
         public string FeatureName0(string Index)
         {
-            return colFeature[Index].FeatureName0(this);
+            return colFeature[Index]?.FeatureName0(this) ?? "";
         }
 
         // 特殊能力のレベル

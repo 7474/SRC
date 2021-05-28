@@ -90,7 +90,7 @@ namespace SRCCore.Units
         // 指定した特殊能力が付加されているか？
         public bool IsConditionSatisfied(string Index)
         {
-            return ConditionLifetime(Index) >= 0;
+            return colCondition[Index] != null;
         }
 
         // 特殊状態のレベル

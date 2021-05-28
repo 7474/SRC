@@ -3,6 +3,9 @@ namespace SRCCore.Units
     // === ステータス回復関連処理 ===
     public partial class Unit
     {
+        public bool CanFix => HP < MaxHP && !IsConditionSatisfied("ゾンビ");
+        public bool CanSupply => EN < MaxEN && !IsConditionSatisfied("ゾンビ");
+
         // ステータスを全回復
         public void FullRecover()
         {
