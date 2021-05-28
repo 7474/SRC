@@ -5,6 +5,7 @@
 
 using SRCCore.Extensions;
 using SRCCore.Lib;
+using SRCCore.VB;
 using System;
 using System.Linq;
 
@@ -317,11 +318,6 @@ namespace SRCCore.Commands
         // 「ハイパーモード」コマンド
         private void HyperModeCommand()
         {
-            // TODO Impl HyperModeCommand
-            //// MOD END MARGE
-            //string uname, fname;
-            //int i;
-
             //// MOD START MARGE
             //// If MainWidth <> 15 Then
             //if (GUI.NewGUIMode)
@@ -333,190 +329,171 @@ namespace SRCCore.Commands
             GUI.LockGUI();
             var uname = GeneralLib.LIndex(SelectedUnit.FeatureData("ハイパーモード"), 2);
             var fname = SelectedUnit.FeatureName("ハイパーモード");
-            //if (string.IsNullOrEmpty(Map.MapFileName))
-            //{
-            //    // ユニットステータスコマンドの場合
-            //    {
-            //        var withBlock = SelectedUnit;
-            //        if (!withBlock.IsFeatureAvailable("ハイパーモード"))
-            //        {
-            //            uname = GeneralLib.LIndex(SelectedUnit.FeatureData("ノーマルモード"), 1);
-            //        }
+            if (string.IsNullOrEmpty(Map.MapFileName))
+            {
+                // ユニットステータスコマンドの場合
+                {
+                    var withBlock = SelectedUnit;
+                    if (!withBlock.IsFeatureAvailable("ハイパーモード"))
+                    {
+                        uname = GeneralLib.LIndex(SelectedUnit.FeatureData("ノーマルモード"), 1);
+                    }
 
-            //        // ハイパーモードを発動
-            //        withBlock.Transform(uname);
+                    // ハイパーモードを発動
+                    withBlock.Transform(uname);
 
-            //        // ユニットリストの表示を更新
-            //        Event.MakeUnitList(smode: "");
+                    // ユニットリストの表示を更新
+                    Event.MakeUnitList(smode: "");
 
-            //        // ステータスウィンドウの表示を更新
-            //        Status.DisplayUnitStatus(withBlock.CurrentForm());
+                    // ステータスウィンドウの表示を更新
+                    Status.DisplayUnitStatus(withBlock.CurrentForm());
 
-            //        // コマンドを終了
-            //        GUI.UnlockGUI();
-            //        CommandState = "ユニット選択";
-            //        return;
-            //    }
-            //}
+                    // コマンドを終了
+                    GUI.UnlockGUI();
+                    CommandState = "ユニット選択";
+                    return;
+                }
+            }
 
-            //// ハイパーモードを発動可能かどうかチェック
-            //{
-            //    var withBlock1 = SelectedUnit.OtherForm(uname);
-            //    if (!withBlock1.IsAbleToEnter(SelectedUnit.x, SelectedUnit.y) & !string.IsNullOrEmpty(Map.MapFileName))
-            //    {
-            //        Interaction.MsgBox("この地形では変形できません");
-            //        GUI.UnlockGUI();
-            //        CancelCommand();
-            //        return;
-            //    }
-            //}
+            // ハイパーモードを発動可能かどうかチェック
+            {
+                var withBlock1 = SelectedUnit.OtherForm(uname);
+                if (!withBlock1.IsAbleToEnter(SelectedUnit.x, SelectedUnit.y) & !string.IsNullOrEmpty(Map.MapFileName))
+                {
+                    GUI.Confirm("この地形では変形できません", "", GuiConfirmOption.Ok);
+                    GUI.UnlockGUI();
+                    CancelCommand();
+                    return;
+                }
+            }
 
             var u = SelectedUnit;
             // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
             AddAdditionalPilotIfNotExist(uname, u);
 
             //string BGM;
-            //{
-            //    var withBlock3 = SelectedUnit;
-            //    // ＢＧＭを変更
-            //    if (withBlock3.IsFeatureAvailable("ハイパーモードＢＧＭ"))
-            //    {
-            //        var loopTo = withBlock3.CountFeature();
-            //        for (i = 1; i <= loopTo; i++)
-            //        {
-            //            string localFeature() { object argIndex1 = i; var ret = withBlock3.Feature(argIndex1); return ret; }
-
-            //            string localFeatureData2() { object argIndex1 = i; var ret = withBlock3.FeatureData(argIndex1); return ret; }
-
-            //            string localLIndex() { string arglist = hs79a81f167161473a965a38e7883f62a2(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
-
-            //            if (localFeature() == "ハイパーモードＢＧＭ" & (localLIndex() ?? "") == (uname ?? ""))
-            //            {
-            //                string localFeatureData() { object argIndex1 = i; var ret = withBlock3.FeatureData(argIndex1); return ret; }
-
-            //                string localFeatureData1() { object argIndex1 = i; var ret = withBlock3.FeatureData(argIndex1); return ret; }
-
-            //                BGM = Sound.SearchMidiFile(Strings.Mid(localFeatureData(), Strings.InStr(localFeatureData1(), " ") + 1));
-            //                if (Strings.Len(BGM) > 0)
-            //                {
-            //                    Sound.ChangeBGM(BGM);
-            //                    GUI.Sleep(500);
-            //                }
-
-            //                break;
-            //            }
-            //        }
-            //    }
-
-            // メッセージを表示
-            if (u.IsMessageDefined("ハイパーモード(" + u.Name + "=>" + uname + ")")
-                || u.IsMessageDefined("ハイパーモード(" + uname + ")")
-                || u.IsMessageDefined("ハイパーモード(" + fname + ")"))
             {
-                GUI.Center(u.x, u.y);
-                GUI.RefreshScreen();
-                GUI.OpenMessageForm(u1: null, u2: null);
+                var currentUnit = SelectedUnit;
+                // ＢＧＭを変更
+                if (currentUnit.IsFeatureAvailable("ハイパーモードＢＧＭ"))
+                {
+                    var loopTo11 = currentUnit.CountFeature();
+                    for (var i = 1; i <= loopTo11; i++)
+                    {
+                        var fdata = currentUnit.Feature(i).Data;
+                        if (currentUnit.Feature(i).Name == "ハイパーモードＢＧＭ"
+                            && (GeneralLib.LIndex(fdata, 1) ?? "") == uname)
+                        {
+                            var BGM = Sound.SearchMidiFile(Strings.Mid(fdata, Strings.InStr(fdata, " ") + 1));
+                            if (Strings.Len(BGM) > 0)
+                            {
+                                Sound.ChangeBGM(BGM);
+                                GUI.Sleep(500);
+                            }
+                            break;
+                        }
+                    }
+                }
 
-                if (u.IsMessageDefined("ハイパーモード(" + u.Name + "=>" + uname + ")"))
+                // メッセージを表示
+                if (u.IsMessageDefined("ハイパーモード(" + u.Name + "=>" + uname + ")")
+                    || u.IsMessageDefined("ハイパーモード(" + uname + ")")
+                    || u.IsMessageDefined("ハイパーモード(" + fname + ")"))
                 {
-                    u.PilotMessage("ハイパーモード(" + u.Name + "=>" + uname + ")", msg_mode: "");
-                }
-                else if (u.IsMessageDefined("ハイパーモード(" + uname + ")"))
-                {
-                    u.PilotMessage("ハイパーモード(" + uname + ")", msg_mode: "");
-                }
-                else if (u.IsMessageDefined("ハイパーモード(" + fname + ")"))
-                {
-                    u.PilotMessage("ハイパーモード(" + fname + ")", msg_mode: "");
+                    GUI.Center(u.x, u.y);
+                    GUI.RefreshScreen();
+                    GUI.OpenMessageForm(u1: null, u2: null);
+
+                    if (u.IsMessageDefined("ハイパーモード(" + u.Name + "=>" + uname + ")"))
+                    {
+                        u.PilotMessage("ハイパーモード(" + u.Name + "=>" + uname + ")", msg_mode: "");
+                    }
+                    else if (u.IsMessageDefined("ハイパーモード(" + uname + ")"))
+                    {
+                        u.PilotMessage("ハイパーモード(" + uname + ")", msg_mode: "");
+                    }
+                    else if (u.IsMessageDefined("ハイパーモード(" + fname + ")"))
+                    {
+                        u.PilotMessage("ハイパーモード(" + fname + ")", msg_mode: "");
+                    }
+
+                    GUI.CloseMessageForm();
                 }
 
-                GUI.CloseMessageForm();
+                // アニメ表示
+                if (currentUnit.IsAnimationDefined("ハイパーモード(" + currentUnit.Name + "=>" + uname + ")", sub_situation: ""))
+                {
+                    currentUnit.PlayAnimation("ハイパーモード(" + currentUnit.Name + "=>" + uname + ")", sub_situation: "");
+                }
+                else if (currentUnit.IsAnimationDefined("ハイパーモード(" + uname + ")"))
+                {
+                    currentUnit.PlayAnimation("ハイパーモード(" + uname + ")", sub_situation: "");
+                }
+                else if (currentUnit.IsAnimationDefined("ハイパーモード(" + fname + ")"))
+                {
+                    currentUnit.PlayAnimation("ハイパーモード(" + fname + ")", sub_situation: "");
+                }
+                else if (currentUnit.IsAnimationDefined("ハイパーモード", sub_situation: ""))
+                {
+                    currentUnit.PlayAnimation("ハイパーモード", sub_situation: "");
+                }
+                else if (currentUnit.IsSpecialEffectDefined("ハイパーモード(" + currentUnit.Name + "=>" + uname + ")"))
+                {
+                    currentUnit.SpecialEffect("ハイパーモード(" + currentUnit.Name + "=>" + uname + ")", sub_situation: "");
+                }
+                else if (currentUnit.IsSpecialEffectDefined("ハイパーモード(" + uname + ")"))
+                {
+                    currentUnit.SpecialEffect("ハイパーモード(" + uname + ")", sub_situation: "");
+                }
+                else if (currentUnit.IsSpecialEffectDefined("ハイパーモード(" + fname + ")"))
+                {
+                    currentUnit.SpecialEffect("ハイパーモード(" + fname + ")", sub_situation: "");
+                }
+                else
+                {
+                    currentUnit.SpecialEffect("ハイパーモード", sub_situation: "");
+                }
             }
 
-            //    // アニメ表示
-            //    bool localIsAnimationDefined() { string argmain_situation = "ハイパーモード(" + uname + ")"; string argsub_situation = ""; var ret = withBlock3.IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+            // ハイパーモード発動
+            SelectedUnit.Transform(uname);
 
-            //    bool localIsAnimationDefined1() { string argmain_situation = "ハイパーモード(" + fname + ")"; string argsub_situation = ""; var ret = withBlock3.IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+            // ハイパーモード・ノーマルモードの自動発動をチェック
+            SelectedUnit.CurrentForm().CheckAutoHyperMode();
+            SelectedUnit.CurrentForm().CheckAutoNormalMode();
+            SelectedUnit = Map.MapDataForUnit[SelectedUnit.x, SelectedUnit.y];
 
-            //    bool localIsSpecialEffectDefined() { string argmain_situation = "ハイパーモード(" + withBlock3.Name + "=>" + uname + ")"; string argsub_situation = ""; var ret = withBlock3.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+            // 変形イベント
+            {
+                var withBlock4 = SelectedUnit.CurrentForm();
+                Event.HandleEvent("変形", withBlock4.MainPilot().ID, withBlock4.Name);
+            }
 
-            //    bool localIsSpecialEffectDefined1() { string argmain_situation = "ハイパーモード(" + uname + ")"; string argsub_situation = ""; var ret = withBlock3.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+            if (SRC.IsScenarioFinished)
+            {
+                SRC.IsScenarioFinished = false;
+                Status.ClearUnitStatus();
+                GUI.RedrawScreen();
+                CommandState = "ユニット選択";
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //    bool localIsSpecialEffectDefined2() { string argmain_situation = "ハイパーモード(" + fname + ")"; string argsub_situation = ""; var ret = withBlock3.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+            SRC.IsCanceled = false;
 
-            //    if (withBlock3.IsAnimationDefined("ハイパーモード(" + withBlock3.Name + "=>" + uname + ")", sub_situation: ""))
-            //    {
-            //        withBlock3.PlayAnimation("ハイパーモード(" + withBlock3.Name + "=>" + uname + ")", sub_situation: "");
-            //    }
-            //    else if (localIsAnimationDefined())
-            //    {
-            //        withBlock3.PlayAnimation("ハイパーモード(" + uname + ")", sub_situation: "");
-            //    }
-            //    else if (localIsAnimationDefined1())
-            //    {
-            //        withBlock3.PlayAnimation("ハイパーモード(" + fname + ")", sub_situation: "");
-            //    }
-            //    else if (withBlock3.IsAnimationDefined("ハイパーモード", sub_situation: ""))
-            //    {
-            //        withBlock3.PlayAnimation("ハイパーモード", sub_situation: "");
-            //    }
-            //    else if (localIsSpecialEffectDefined())
-            //    {
-            //        withBlock3.SpecialEffect("ハイパーモード(" + withBlock3.Name + "=>" + uname + ")", sub_situation: "");
-            //    }
-            //    else if (localIsSpecialEffectDefined1())
-            //    {
-            //        withBlock3.SpecialEffect("ハイパーモード(" + uname + ")", sub_situation: "");
-            //    }
-            //    else if (localIsSpecialEffectDefined2())
-            //    {
-            //        withBlock3.SpecialEffect("ハイパーモード(" + fname + ")", sub_situation: "");
-            //    }
-            //    else
-            //    {
-            //        withBlock3.SpecialEffect("ハイパーモード", sub_situation: "");
-            //    }
-            //}
+            // カーソル自動移動
+            if (SelectedUnit.Status == "出撃")
+            {
+                if (SRC.AutoMoveCursor)
+                {
+                    GUI.MoveCursorPos("ユニット選択", SelectedUnit);
+                }
 
-            //// ハイパーモード発動
-            //SelectedUnit.Transform(uname);
+                Status.DisplayUnitStatus(SelectedUnit);
+            }
 
-            //// ハイパーモード・ノーマルモードの自動発動をチェック
-            //SelectedUnit.CurrentForm().CheckAutoHyperMode();
-            //SelectedUnit.CurrentForm().CheckAutoNormalMode();
-            //SelectedUnit = Map.MapDataForUnit[SelectedUnit.x, SelectedUnit.y];
-
-            //// 変形イベント
-            //{
-            //    var withBlock4 = SelectedUnit.CurrentForm();
-            //    Event.HandleEvent("変形", withBlock4.MainPilot().ID, withBlock4.Name);
-            //}
-
-            //if (SRC.IsScenarioFinished)
-            //{
-            //    SRC.IsScenarioFinished = false;
-            //    Status.ClearUnitStatus();
-            //    GUI.RedrawScreen();
-            //    CommandState = "ユニット選択";
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
-
-            //SRC.IsCanceled = false;
-
-            //// カーソル自動移動
-            //if (SelectedUnit.Status == "出撃")
-            //{
-            //    if (SRC.AutoMoveCursor)
-            //    {
-            //        GUI.MoveCursorPos("ユニット選択", SelectedUnit);
-            //    }
-
-            //    Status.DisplayUnitStatus(SelectedUnit);
-            //}
-
-            //CommandState = "ユニット選択";
-            //GUI.UnlockGUI();
+            CommandState = "ユニット選択";
+            GUI.UnlockGUI();
         }
 
         // 「変身解除」コマンド
@@ -674,7 +651,7 @@ namespace SRCCore.Commands
                     fname = u.FeatureName("パーツ分離");
 
                     //// メッセージを表示
-                    if (u.IsMessageDefined("分離(" + u.Name  + ")")
+                    if (u.IsMessageDefined("分離(" + u.Name + ")")
                         || u.IsMessageDefined("分離(" + fname + ")")
                         || u.IsMessageDefined("分離"))
                     {
@@ -684,7 +661,7 @@ namespace SRCCore.Commands
 
                         if (u.IsMessageDefined("分離(" + u.Name + ")"))
                         {
-                            u.PilotMessage("分離(" + u.Name  + ")", msg_mode: "");
+                            u.PilotMessage("分離(" + u.Name + ")", msg_mode: "");
                         }
                         else if (u.IsMessageDefined("分離(" + fname + ")"))
                         {
