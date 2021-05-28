@@ -913,6 +913,61 @@ namespace SRCCore.Commands
                     //    }
                     //}
 
+                    if (!currentUnit.IsConditionSatisfied("ノーマルモード付加")
+                        && (currentUnit.MainPilot().Morale >= (10d * currentUnit.FeatureLevel("ハイパーモード")) + 100 
+                            || currentUnit.HP <= currentUnit.MaxHP / 4 && Strings.InStr(currentUnit.FeatureData("ハイパーモード"), "気力発動") == 0) 
+                        && Strings.InStr(currentUnit.FeatureData("ハイパーモード"), "自動発動") == 0
+                        && !string.IsNullOrEmpty(currentUnit.FeatureName("ハイパーモード"))
+                        && !currentUnit.IsConditionSatisfied("形態固定") 
+                        && !currentUnit.IsConditionSatisfied("機体固定"))
+
+                    {
+                        // ハイパーモードコマンド
+                        if (currentUnit.IsFeatureAvailable("ハイパーモード"))
+                        {
+                            var fd = currentUnit.Feature("ハイパーモード");
+
+                            if (currentUnit.OtherForm(fd.DataL.Skip(1).First()).IsAvailable())
+                            {
+                                var caption = fd.DataL.First();
+                                unitCommands.Add(new UiCommand(HyperModeCmdID, caption == "非表示" ? "ハイパーモード" : caption));
+                            }
+                        }
+                        else if (currentUnit.IsFeatureAvailable("ノーマルモード"))
+                        {
+                            var fd = currentUnit.Feature("ノーマルモード");
+                            var uname = fd.DataL.Skip(1).First();
+
+                            if (currentUnit.OtherForm(uname).IsAvailable()
+                                && GeneralLib.LIndex(currentUnit.FeatureData("変形"), 2) != uname)
+                            {
+                                var caption = fd.DataL.First();
+                                unitCommands.Add(new UiCommand(HyperModeCmdID, "ノーマルモード"));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // 変身解除
+                        if (Strings.InStr(currentUnit.FeatureData("ノーマルモード"), "手動解除") > 0)
+                        {
+                            string caption;
+                            if (currentUnit.IsFeatureAvailable("変身解除コマンド名"))
+                            {
+                                caption = currentUnit.FeatureData("変身解除コマンド名");
+                            }
+                            else if (currentUnit.IsHero())
+                            {
+                                caption = "変身解除";
+                            }
+                            else
+                            {
+                                caption = "特殊モード解除";
+                            }
+                            unitCommands.Add(new UiCommand(HyperModeCmdID, caption));
+                        }
+                    }
+
                     // 地上コマンド
                     if (Map.Terrain(currentUnit.x, currentUnit.y).Class == "陸"
                         || Map.Terrain(currentUnit.x, currentUnit.y).Class == "屋内"
