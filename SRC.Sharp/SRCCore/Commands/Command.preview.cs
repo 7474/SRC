@@ -3,8 +3,12 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Lib;
 using SRCCore.Units;
+using SRCCore.VB;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.Commands
 {
@@ -34,7 +38,7 @@ namespace SRCCore.Commands
             //{
             //    {
             //        var withBlock = SelectedUnit;
-            //        if (withBlock.IsFeatureAvailable("武器クラス") | withBlock.IsFeatureAvailable("武器クラス"1))
+            //        if (withBlock.IsFeatureAvailable("武器クラス") || withBlock.IsFeatureAvailable("武器クラス"1))
             //        {
             //            Array.Resize(list, Information.UBound(list) + 1 + 1);
             //            Array.Resize(id_list, Information.UBound(list) + 1);
@@ -105,7 +109,7 @@ namespace SRCCore.Commands
 
             //        string localCondition1() { object argIndex1 = i; var ret = withBlock2.Condition(argIndex1); return ret; }
 
-            //        if (Strings.Right(localCondition(), 3) != "付加２" & Strings.Right(localCondition1(), 3) != "強化２")
+            //        if (Strings.Right(localCondition(), 3) != "付加２" && Strings.Right(localCondition1(), 3) != "強化２")
             //        {
             //            goto NextSkill2;
             //        }
@@ -191,7 +195,7 @@ namespace SRCCore.Commands
 
             //        bool localIsDefined() { object argIndex1 = (object)hse6256782c58b487b8147a3f247066e6f(); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
-            //        if (localAllFeature() == "合体" & !localIsDefined())
+            //        if (localAllFeature() == "合体" && !localIsDefined())
             //        {
             //            goto NextFeature;
             //        }
@@ -242,7 +246,7 @@ namespace SRCCore.Commands
 
             //        string localCondition5() { object argIndex1 = i; var ret = withBlock2.Condition(argIndex1); return ret; }
 
-            //        if (Strings.Right(localCondition4(), 2) != "付加" & Strings.Right(localCondition5(), 2) != "強化")
+            //        if (Strings.Right(localCondition4(), 2) != "付加" && Strings.Right(localCondition5(), 2) != "強化")
             //        {
             //            goto NextSkill3;
             //        }
@@ -313,7 +317,7 @@ namespace SRCCore.Commands
             //        var loopTo7 = Information.UBound(list);
             //        for (j = 1; j <= loopTo7; j++)
             //        {
-            //            if ((list[j] ?? "") == (fname ?? "") | (list[j] ?? "") == (fname0 ?? ""))
+            //            if ((list[j] ?? "") == (fname ?? "") || (list[j] ?? "") == (fname0 ?? ""))
             //            {
             //                goto NextSkill3;
             //            }
@@ -421,6 +425,7 @@ namespace SRCCore.Commands
             GUI.LockGUI();
             while (true)
             {
+                var u = SelectedUnit;
                 var selectedWeapon = GUI.WeaponListBox(SelectedUnit, new Units.UnitWeaponList(Units.WeaponListMode.List, SelectedUnit), "武装一覧", "一覧", "");
                 if (selectedWeapon == null)
                 {
@@ -438,170 +443,168 @@ namespace SRCCore.Commands
                 }
                 SelectedWeapon = selectedWeapon.WeaponNo();
 
-                // TODO 選択した武器の情報を表示
+                // 選択した武器の情報を表示
                 // 指定された武器の属性一覧を作成
-                //list = new string[1];
-                //i = 0;
                 {
-                    //var withBlock = SelectedUnit;
-                    //wclass = withBlock.WeaponClass(w);
-                    //while (i <= Strings.Len(wclass))
-                    //{
-                    //    i = (i + 1);
-                    //    buf = GeneralLib.GetClassBundle(wclass, i);
-                    //    atype = "";
-                    //    alevel = "";
+                    var list = new List<string>();
+                    var i = 0;
+                    var wclass = selectedWeapon.WeaponClass();
+                    while (i <= Strings.Len(wclass))
+                    {
+                        i = (i + 1);
+                        var buf = GeneralLib.GetClassBundle(wclass, ref i);
+                        var atype = "";
+                        var alevel = "";
 
-                    //    // 非表示？
-                    //    if (buf == "|")
-                    //    {
-                    //        break;
-                    //    }
+                        // 非表示？
+                        if (buf == "|")
+                        {
+                            break;
+                        }
 
-                    //    // Ｍ属性
-                    //    if (Strings.Mid(wclass, i, 1) == "Ｍ")
-                    //    {
-                    //        i = (i + 1);
-                    //        buf = buf + Strings.Mid(wclass, i, 1);
-                    //    }
+                        // Ｍ属性
+                        if (Strings.Mid(wclass, i, 1) == "Ｍ")
+                        {
+                            i = (i + 1);
+                            buf = buf + Strings.Mid(wclass, i, 1);
+                        }
 
-                    //    // レベル指定
-                    //    if (Strings.Mid(wclass, i + 1, 1) == "L")
-                    //    {
-                    //        i = (i + 2);
-                    //        c = Strings.Mid(wclass, i, 1);
-                    //        while (Information.IsNumeric(c) | c == "." | c == "-")
-                    //        {
-                    //            alevel = alevel + c;
-                    //            i = (i + 1);
-                    //            c = Strings.Mid(wclass, i, 1);
-                    //        }
+                        // レベル指定
+                        if (Strings.Mid(wclass, i + 1, 1) == "L")
+                        {
+                            i = (i + 2);
+                            var c = Strings.Mid(wclass, i, 1);
+                            while (Information.IsNumeric(c) || c == "." || c == "-")
+                            {
+                                alevel = alevel + c;
+                                i = (i + 1);
+                                c = Strings.Mid(wclass, i, 1);
+                            }
 
-                    //        i = (i - 1);
-                    //    }
+                            i = (i - 1);
+                        }
 
-                    //    // 属性の名称
-                    //    atype = Help.AttributeName(SelectedUnit, buf);
-                    //    if (Strings.Len(atype) > 0)
-                    //    {
-                    //        Array.Resize(list, Information.UBound(list) + 1 + 1);
-                    //        if (Strings.Len(alevel) > 0)
-                    //        {
-                    //            string localRightPaddedString() { string argbuf = buf + "L" + alevel; var ret = GeneralLib.RightPaddedString(argbuf, 8); return ret; }
+                        // 属性の名称
+                        atype = Help.AttributeName(SelectedUnit, buf);
+                        if (Strings.Len(atype) > 0)
+                        {
+                            if (Strings.Len(alevel) > 0)
+                            {
+                                list.Add(GeneralLib.RightPaddedString(buf + "L" + alevel, 8) + atype + "レベル" + alevel);
+                            }
+                            else
+                            {
+                                list.Add(GeneralLib.RightPaddedString(buf, 8) + atype);
+                            }
+                        }
+                    }
 
-                    //            list[Information.UBound(list)] = localRightPaddedString() + atype + "レベル" + Strings.StrConv(alevel, VbStrConv.Wide);
-                    //        }
-                    //        else
-                    //        {
-                    //            list[Information.UBound(list)] = GeneralLib.RightPaddedString(buf, 8) + atype;
-                    //        }
-                    //    }
-                    //}
+                    if (!Map.IsStatusView)
+                    {
+                        list.Add("射程範囲");
+                    }
 
-                    //if (!string.IsNullOrEmpty(Map.MapFileName))
-                    //{
-                    //    Array.Resize(list, Information.UBound(list) + 1 + 1);
-                    //    list[Information.UBound(list)] = "射程範囲";
-                    //}
+                    if (list.Count > 0)
+                    {
+                        GUI.TopItem = 1;
+                        while (true)
+                        {
+                            if (list.Count == 1 && list[0] == "射程範囲")
+                            {
+                                i = 1;
+                            }
+                            else
+                            {
+                                i = GUI.ListBox(new ListBoxArgs
+                                {
+                                    lb_caption = "武器属性一覧",
+                                    Items = list.Select(x => new ListBoxItem(x)).ToList(),
+                                    lb_info = "属性    効果",
+                                    lb_mode = "連続表示",
+                                });
+                            }
 
-                    //if (Information.UBound(list) > 0)
-                    //{
-                    //    GUI.TopItem = 1;
-                    //    while (true)
-                    //    {
-                    //        if (Information.UBound(list) == 1 & list[1] == "射程範囲")
-                    //        {
-                    //            i = 1;
-                    //        }
-                    //        else
-                    //        {
-                    //            GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
-                    //            i = GUI.ListBox("武器属性一覧", list, "属性    効果", "連続表示");
-                    //        }
+                            if (i == 0)
+                            {
+                                // キャンセル
+                                break;
+                            }
+                            else if (list[i - 1] == "射程範囲")
+                            {
+                                GUI.CloseListBox();
 
-                    //        if (i == 0)
-                    //        {
-                    //            // キャンセル
-                    //            break;
-                    //        }
-                    //        else if (list[i] == "射程範囲")
-                    //        {
-                    //            My.MyProject.Forms.frmListBox.Hide();
+                                // 武器の射程を求めておく
+                                var min_range = selectedWeapon.WeaponMinRange();
+                                var max_range = selectedWeapon.WeaponMaxRange();
+                                // 射程範囲表示
+                                if ((max_range == 1 || selectedWeapon.IsWeaponClassifiedAs("Ｐ")) && !selectedWeapon.IsWeaponClassifiedAs("Ｑ"))
+                                {
+                                    Map.AreaInReachable(SelectedUnit, max_range, u.Party + "の敵");
+                                }
+                                else if (selectedWeapon.IsWeaponClassifiedAs("Ｍ直"))
+                                {
+                                    Map.AreaInCross(u.x, u.y, min_range, max_range);
+                                }
+                                else if (selectedWeapon.IsWeaponClassifiedAs("Ｍ拡"))
+                                {
+                                    Map.AreaInWideCross(u.x, u.y, min_range, max_range);
+                                }
+                                else if (selectedWeapon.IsWeaponClassifiedAs("Ｍ扇"))
+                                {
+                                    Map.AreaInSectorCross(u.x, u.y, min_range, max_range, selectedWeapon.WeaponLevel("Ｍ扇"));
+                                }
+                                else if (selectedWeapon.IsWeaponClassifiedAs("Ｍ全") || selectedWeapon.IsWeaponClassifiedAs("Ｍ線"))
+                                {
+                                    Map.AreaInRange(u.x, u.y, max_range, min_range, "すべて");
+                                }
+                                else if (selectedWeapon.IsWeaponClassifiedAs("Ｍ投"))
+                                {
+                                    max_range = ((int)(max_range + selectedWeapon.WeaponLevel("Ｍ投")));
+                                    min_range = ((int)(min_range - selectedWeapon.WeaponLevel("Ｍ投")));
+                                    min_range = GeneralLib.MaxLng(min_range, 1);
+                                    Map.AreaInRange(u.x, u.y, max_range, min_range, "すべて");
+                                }
+                                else if (selectedWeapon.IsWeaponClassifiedAs("Ｍ移"))
+                                {
+                                    Map.AreaInMoveAction(SelectedUnit, max_range);
+                                }
+                                else
+                                {
+                                    Map.AreaInRange(u.x, u.y, max_range, min_range, u.Party + "の敵");
+                                }
 
-                    //            // 武器の射程を求めておく
-                    //            min_range = withBlock.Weapon(w).MinRange;
-                    //            max_range = withBlock.WeaponMaxRange(w);
+                                GUI.Center(u.x, u.y);
+                                GUI.MaskScreen();
 
-                    //            // 射程範囲表示
-                    //            if ((max_range == 1 | withBlock.IsWeaponClassifiedAs(w, "Ｐ")) & !withBlock.IsWeaponClassifiedAs(w, "Ｑ"))
-                    //            {
-                    //                Map.AreaInReachable(SelectedUnit, max_range, withBlock.Party + "の敵");
-                    //            }
-                    //            else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ直"))
-                    //            {
-                    //                Map.AreaInCross(withBlock.x, withBlock.y, min_range, max_range);
-                    //            }
-                    //            else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ拡"))
-                    //            {
-                    //                Map.AreaInWideCross(withBlock.x, withBlock.y, min_range, max_range);
-                    //            }
-                    //            else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ扇"))
-                    //            {
-                    //                Map.AreaInSectorCross(withBlock.x, withBlock.y, min_range, max_range, withBlock.WeaponLevel(w, "Ｍ扇"));
-                    //            }
-                    //            else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ全") | withBlock.IsWeaponClassifiedAs(w, "Ｍ線"))
-                    //            {
-                    //                Map.AreaInRange(withBlock.x, withBlock.y, max_range, min_range, "すべて");
-                    //            }
-                    //            else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ投"))
-                    //            {
-                    //                max_range = (max_range + withBlock.WeaponLevel(w, "Ｍ投"));
-                    //                min_range = (min_range - withBlock.WeaponLevel(w, "Ｍ投"));
-                    //                min_range = GeneralLib.MaxLng(min_range, 1);
-                    //                Map.AreaInRange(withBlock.x, withBlock.y, max_range, min_range, "すべて");
-                    //            }
-                    //            else if (withBlock.IsWeaponClassifiedAs(w, "Ｍ移"))
-                    //            {
-                    //                Map.AreaInMoveAction(SelectedUnit, max_range);
-                    //            }
-                    //            else
-                    //            {
-                    //                Map.AreaInRange(withBlock.x, withBlock.y, max_range, min_range, withBlock.Party + "の敵");
-                    //            }
+                                // 先行入力されていたクリックイベントを解消
+                                GUI.DoEvents();
+                                WaitClickMode = true;
+                                GUI.IsFormClicked = false;
 
-                    //            GUI.Center(withBlock.x, withBlock.y);
-                    //            GUI.MaskScreen();
+                                // クリックされるまで待つ
+                                while (!GUI.IsFormClicked)
+                                {
+                                    GUI.Sleep(25);
+                                    if (GUI.IsRButtonPressed(true))
+                                    {
+                                        break;
+                                    }
+                                }
 
-                    //            // 先行入力されていたクリックイベントを解消
-                    //            Application.DoEvents();
-                    //            WaitClickMode = true;
-                    //            GUI.IsFormClicked = false;
-
-                    //            // クリックされるまで待つ
-                    //            while (!GUI.IsFormClicked)
-                    //            {
-                    //                GUI.Sleep(25);
-                    //                Application.DoEvents();
-                    //                if (GUI.IsRButtonPressed(true))
-                    //                {
-                    //                    break;
-                    //                }
-                    //            }
-
-                    //            GUI.RedrawScreen();
-                    //            if (Information.UBound(list) == 1 & list[i] == "射程範囲")
-                    //            {
-                    //                break;
-                    //            }
-                    //        }
-                    //        else
-                    //        {
-                    //            // 指定された属性の解説を表示
-                    //            My.MyProject.Forms.frmListBox.Hide();
-                    //            Help.AttributeHelp(SelectedUnit, GeneralLib.LIndex(list[i], 1), w);
-                    //        }
-                    //    }
-                    //}
+                                GUI.RedrawScreen();
+                                if (list.Count == 1)
+                                {
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                // 指定された属性の解説を表示
+                                GUI.CloseListBox();
+                                Help.AttributeHelp(SelectedUnit, GeneralLib.LIndex(list[i - 1], 1), selectedWeapon.WeaponNo());
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -671,7 +674,7 @@ namespace SRCCore.Commands
                     //        {
                     //            i = (i + 2);
                     //            c = Strings.Mid(aclass, i, 1);
-                    //            while (Information.IsNumeric(c) | c == "." | c == "-")
+                    //            while (Information.IsNumeric(c) || c == "." || c == "-")
                     //            {
                     //                alevel = alevel + c;
                     //                i = (i + 1);
@@ -710,7 +713,7 @@ namespace SRCCore.Commands
                     //        GUI.TopItem = 1;
                     //        while (true)
                     //        {
-                    //            if (Information.UBound(list) == 1 & list[1] == "射程範囲")
+                    //            if (Information.UBound(list) == 1 && list[1] == "射程範囲")
                     //            {
                     //                i = 1;
                     //            }
@@ -734,7 +737,7 @@ namespace SRCCore.Commands
                     //                max_range = currentUnit.AbilityMaxRange(a);
 
                     //                // 射程範囲表示
-                    //                if ((max_range == 1 | currentUnit.IsAbilityClassifiedAs(a, "Ｐ")) & !currentUnit.IsAbilityClassifiedAs(a, "Ｑ"))
+                    //                if ((max_range == 1 || currentUnit.IsAbilityClassifiedAs(a, "Ｐ")) && !currentUnit.IsAbilityClassifiedAs(a, "Ｑ"))
                     //                {
                     //                    Map.AreaInReachable(SelectedUnit, max_range, "すべて");
                     //                }
@@ -786,7 +789,7 @@ namespace SRCCore.Commands
                     //                }
 
                     //                GUI.RedrawScreen();
-                    //                if (Information.UBound(list) == 1 & list[i] == "射程範囲")
+                    //                if (Information.UBound(list) == 1 && list[i] == "射程範囲")
                     //                {
                     //                    break;
                     //                }
@@ -827,11 +830,8 @@ namespace SRCCore.Commands
         {
             LogDebug();
 
-            throw new NotImplementedException();
-            //int w, i, max_range;
-            //SelectedCommand = "射程範囲";
+            SelectedCommand = "射程範囲";
 
-            //// MOD START MARGE
             //// If MainWidth <> 15 Then
             //if (GUI.NewGUIMode)
             //{
@@ -839,33 +839,24 @@ namespace SRCCore.Commands
             //    Status.ClearUnitStatus();
             //}
 
-            //{
-            //    var withBlock = SelectedUnit;
-            //    // 最大の射程を持つ武器を探す
-            //    w = 0;
-            //    max_range = 0;
-            //    var loopTo = withBlock.CountWeapon();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        if (withBlock.IsWeaponAvailable(i, "ステータス") & !withBlock.IsWeaponClassifiedAs(i, "Ｍ"))
-            //        {
-            //            if (withBlock.WeaponMaxRange(i) > max_range)
-            //            {
-            //                w = i;
-            //                max_range = withBlock.WeaponMaxRange(i);
-            //            }
-            //        }
-            //    }
+            {
+                var currentUnit = SelectedUnit;
+                // 最大の射程を持つ武器を探す
+                var max_range = currentUnit.Weapons
+                       .Where(uw => uw.IsWeaponAvailable("ステータス") && !uw.IsWeaponClassifiedAs("Ｍ"))
+                       .Select(uw => uw.WeaponMaxRange())
+                       .Append(0)
+                       .Max();
 
-            //    // 見つかった最大の射程を持つ武器の射程範囲を選択
-            //    Map.AreaInRange(withBlock.x, withBlock.y, max_range, 1, withBlock.Party + "の敵");
+                // 見つかった最大の射程を持つ武器の射程範囲を選択
+                Map.AreaInRange(currentUnit.x, currentUnit.y, max_range, 1, currentUnit.Party + "の敵");
 
-            //    // 射程範囲を表示
-            //    GUI.Center(withBlock.x, withBlock.y);
-            //    GUI.MaskScreen();
-            //}
+                // 射程範囲を表示
+                GUI.Center(currentUnit.x, currentUnit.y);
+                GUI.MaskScreen();
+            }
 
-            //CommandState = "ターゲット選択";
+            CommandState = "ターゲット選択";
         }
     }
 }

@@ -597,6 +597,11 @@ namespace SRCCore.Maps
             }
         }
 
+        internal void AreaInSectorCross(int x, int y, int min_range, int max_range, double v)
+        {
+            throw new NotImplementedException();
+        }
+
         private void SetupStatusView()
         {
             MapFileName = "";

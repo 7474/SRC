@@ -440,16 +440,14 @@ namespace SRCCore.Commands
 
                 // アビリティ一覧コマンド
                 if (currentUnit.Abilities.Any(x => x.IsAbilityMastered()
-                     && currentUnit.IsDisabled(x.Data.Name)
+                     && !currentUnit.IsDisabled(x.Data.Name)
                      && (!x.IsAbilityClassifiedAs("合") || x.IsCombinationAbilityAvailable(true))
                      && !x.Data.IsItem()
                      ))
                 {
-                    var caption = Expression.Term("アビリティ", SelectedUnit);
+                    var caption = Expression.Term("アビリティ", SelectedUnit) + "一覧";
                     var unitAbilities = currentUnit.Abilities.Where(x => !x.Data.IsItem()).ToList();
-                    unitCommands.Add(new UiCommand(
-                        AbilityListCmdID,
-                        unitAbilities.Count == 1 ? unitAbilities.First().AbilityNickname() : caption));
+                    unitCommands.Add(new UiCommand(AbilityListCmdID, caption));
                 }
 
                 // 味方じゃない、ステータス表示、ViewMode

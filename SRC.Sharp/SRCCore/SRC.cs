@@ -24,6 +24,7 @@ namespace SRCCore
         public IGUIStatus GUIStatus { get; set; }
         public IFileSystem FileSystem { get; set; }
 
+        public Help Help { get; }
         public Expression Expression { get; }
         public Event Event { get; }
         public Map Map { get; }
@@ -149,6 +150,7 @@ namespace SRCCore
                 Log = loggerFactory.CreateLogger("SRCCore");
             }
 
+            Help = new Help(this);
             Event = new Event(this);
             Expression = new Expression(this);
             Map = new Map(this);
@@ -203,7 +205,7 @@ namespace SRCCore
             }
         }
 
-        public void LogWarn( Exception ex)
+        public void LogWarn(Exception ex)
         {
             LogWarn("", ex);
         }

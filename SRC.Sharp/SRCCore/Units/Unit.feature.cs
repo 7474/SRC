@@ -108,15 +108,15 @@ namespace SRCCore.Units
         //            return CountAllFeatureRet;
         //        }
 
-        //        // 特殊能力(必要条件を満たさないものを含む)
-        //        public string AllFeature(string Index)
-        //        {
-        //            string AllFeatureRet = default;
-        //            FeatureData fd;
-        //            fd = (FeatureData)colAllFeature[Index];
-        //            AllFeatureRet = fd.Name;
-        //            return AllFeatureRet;
-        //        }
+        // 特殊能力(必要条件を満たさないものを含む)
+        public FeatureData AllFeature(int Index)
+        {
+            return colAllFeature[Index];
+        }
+        public FeatureData AllFeature(string Index)
+        {
+            return colAllFeature[Index];
+        }
 
         //        // 特殊能力の名称(必要条件を満たさないものを含む)
         //        public string AllFeatureName(string Index)

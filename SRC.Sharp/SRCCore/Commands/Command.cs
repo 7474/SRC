@@ -21,6 +21,7 @@ namespace SRCCore.Commands
         private Effect Effect => SRC.Effect;
         private COM COM => SRC.COM;
         private ISystemConfig SystemConfig => SRC.SystemConfig;
+        private Help Help => SRC.Help;
 
         public Command(SRC src)
         {
