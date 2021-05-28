@@ -786,8 +786,7 @@ namespace SRCCore.Commands
                     {
                         if (Map.AdjacentUnit(currentUnit)
                             .Any(u => (u.Party == "味方" || u.Party == "ＮＰＣ")
-                                && u.HP < u.MaxHP
-                                && !u.IsConditionSatisfied("ゾンビ")))
+                                && u.CanFix))
                         {
                             var fd = currentUnit.Feature("修理装置");
                             if (!string.IsNullOrEmpty(fd.Data))
@@ -812,8 +811,7 @@ namespace SRCCore.Commands
                     {
                         if (Map.AdjacentUnit(currentUnit)
                             .Any(u => (u.Party == "味方" || u.Party == "ＮＰＣ")
-                                && u.EN < u.MaxEN
-                                && !u.IsConditionSatisfied("ゾンビ")))
+                                && u.CanSupply))
                         {
                             var fd = currentUnit.Feature("補給装置");
                             if (!string.IsNullOrEmpty(fd.Data))
@@ -823,12 +821,12 @@ namespace SRCCore.Commands
 
                                 if (!(Information.IsNumeric(en) && (currentUnit.EN < Conversions.ToInteger(en) || currentUnit.MainPilot().Morale < 100)))
                                 {
-                                    unitCommands.Add(new UiCommand(FixCmdID, caption));
+                                    unitCommands.Add(new UiCommand(SupplyCmdID, caption));
                                 }
                             }
                             else
                             {
-                                unitCommands.Add(new UiCommand(FixCmdID, "補給装置"));
+                                unitCommands.Add(new UiCommand(SupplyCmdID, "補給装置"));
                             }
                         }
                     }
