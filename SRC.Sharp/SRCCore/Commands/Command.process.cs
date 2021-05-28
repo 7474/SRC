@@ -784,198 +784,54 @@ namespace SRCCore.Commands
                     // 修理コマンド
                     if (currentUnit.IsFeatureAvailable("修理装置") && currentUnit.Area != "地中")
                     {
-                        for (i = 1; i <= 4; i++)
+                        if (Map.AdjacentUnit(currentUnit)
+                            .Any(u => (u.Party == "味方" || u.Party == "ＮＰＣ")
+                                && u.HP < u.MaxHP
+                                && !u.IsConditionSatisfied("ゾンビ")))
                         {
-                            // UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                            u = null;
-                            switch (i)
+                            var fd = currentUnit.Feature("修理装置");
+                            if (!string.IsNullOrEmpty(fd.Data))
                             {
-                                case 1:
-                                    {
-                                        if (currentUnit.x > 1)
-                                        {
-                                            u = Map.MapDataForUnit[currentUnit.x - 1, currentUnit.y];
-                                        }
+                                var caption = fd.DataL.First();
+                                var en = fd.DataL.SafeRefOneOffset(2);
 
-                                        break;
-                                    }
-
-                                case 2:
-                                    {
-                                        if (currentUnit.x < Map.MapWidth)
-                                        {
-                                            u = Map.MapDataForUnit[currentUnit.x + 1, currentUnit.y];
-                                        }
-
-                                        break;
-                                    }
-
-                                case 3:
-                                    {
-                                        if (currentUnit.y > 1)
-                                        {
-                                            u = Map.MapDataForUnit[currentUnit.x, currentUnit.y - 1];
-                                        }
-
-                                        break;
-                                    }
-
-                                case 4:
-                                    {
-                                        if (currentUnit.y < Map.MapHeight)
-                                        {
-                                            u = Map.MapDataForUnit[currentUnit.x, currentUnit.y + 1];
-                                        }
-
-                                        break;
-                                    }
-                            }
-
-                            if (u is object)
-                            {
+                                if (!(Information.IsNumeric(en) && currentUnit.EN < Conversions.ToInteger(en)))
                                 {
-                                    var withBlock9 = u;
-                                    if ((withBlock9.Party == "味方" || withBlock9.Party == "ＮＰＣ") && withBlock9.HP < withBlock9.MaxHP && !withBlock9.IsConditionSatisfied("ゾンビ"))
-                                    {
-                                        GUI.MainForm.mnuUnitCommandItem(FixCmdID).Visible = true;
-                                        break;
-                                    }
+                                    unitCommands.Add(new UiCommand(SupplyCmdID, caption));
                                 }
                             }
-                        }
-
-                        if (Strings.Len(currentUnit.FeatureData("修理装置")) > 0)
-                        {
-                            GUI.MainForm.mnuUnitCommandItem(FixCmdID).Caption = GeneralLib.LIndex(currentUnit.FeatureData("修理装置"), 1);
-                            string localLIndex12() { object argIndex1 = "修理装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-                            if (Information.IsNumeric(localLIndex12()))
+                            else
                             {
-                                string localLIndex10() { object argIndex1 = "修理装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-                                string localLIndex11() { object argIndex1 = "修理装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-                                if (currentUnit.EN < Conversions.Toint(localLIndex11()))
-                                {
-                                    GUI.MainForm.mnuUnitCommandItem(FixCmdID).Visible = false;
-                                }
+                                unitCommands.Add(new UiCommand(SupplyCmdID, "修理装置"));
                             }
-                        }
-                        else
-                        {
-                            GUI.MainForm.mnuUnitCommandItem(FixCmdID).Caption = "修理装置";
                         }
                     }
 
-                    //// 補給コマンド
-                    //if (currentUnit.IsFeatureAvailable("補給装置") && currentUnit.Area != "地中")
-                    //{
-                    //    for (i = 1; i <= 4; i++)
-                    //    {
-                    //        // UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                    //        u = null;
-                    //        switch (i)
-                    //        {
-                    //            case 1:
-                    //                {
-                    //                    if (currentUnit.x > 1)
-                    //                    {
-                    //                        u = Map.MapDataForUnit[currentUnit.x - 1, currentUnit.y];
-                    //                    }
+                    // 補給コマンド
+                    if (currentUnit.IsFeatureAvailable("補給装置") && currentUnit.Area != "地中")
+                    {
+                        if (Map.AdjacentUnit(currentUnit)
+                            .Any(u => (u.Party == "味方" || u.Party == "ＮＰＣ")
+                                && u.EN < u.MaxEN
+                                && !u.IsConditionSatisfied("ゾンビ")))
+                        {
+                            var fd = currentUnit.Feature("補給装置");
+                            if (!string.IsNullOrEmpty(fd.Data))
+                            {
+                                var caption = fd.DataL.First();
+                                var en = fd.DataL.SafeRefOneOffset(2);
 
-                    //                    break;
-                    //                }
-
-                    //            case 2:
-                    //                {
-                    //                    if (currentUnit.x < Map.MapWidth)
-                    //                    {
-                    //                        u = Map.MapDataForUnit[currentUnit.x + 1, currentUnit.y];
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case 3:
-                    //                {
-                    //                    if (currentUnit.y > 1)
-                    //                    {
-                    //                        u = Map.MapDataForUnit[currentUnit.x, currentUnit.y - 1];
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case 4:
-                    //                {
-                    //                    if (currentUnit.y < Map.MapHeight)
-                    //                    {
-                    //                        u = Map.MapDataForUnit[currentUnit.x, currentUnit.y + 1];
-                    //                    }
-
-                    //                    break;
-                    //                }
-                    //        }
-
-                    //        if (u is object)
-                    //        {
-                    //            {
-                    //                var withBlock10 = u;
-                    //                if (withBlock10.Party == "味方" || withBlock10.Party == "ＮＰＣ")
-                    //                {
-                    //                    if (withBlock10.EN < withBlock10.MaxEN && !withBlock10.IsConditionSatisfied("ゾンビ"))
-                    //                    {
-                    //                        GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = true;
-                    //                    }
-                    //                    else
-                    //                    {
-                    //                        var loopTo12 = withBlock10.CountWeapon();
-                    //                        for (j = 1; j <= loopTo12; j++)
-                    //                        {
-                    //                            if (withBlock10.Bullet(j) < withBlock10.MaxBullet(j))
-                    //                            {
-                    //                                GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = true;
-                    //                                break;
-                    //                            }
-                    //                        }
-
-                    //                        var loopTo13 = withBlock10.CountAbility();
-                    //                        for (j = 1; j <= loopTo13; j++)
-                    //                        {
-                    //                            if (withBlock10.Stock(j) < withBlock10.MaxStock(j))
-                    //                            {
-                    //                                GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = true;
-                    //                                break;
-                    //                            }
-                    //                        }
-                    //                    }
-                    //                }
-                    //            }
-                    //        }
-                    //    }
-
-                    //    if (Strings.Len(currentUnit.FeatureData("補給装置")) > 0)
-                    //    {
-                    //        GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Caption = GeneralLib.LIndex(currentUnit.FeatureData("補給装置"), 1);
-                    //        string localLIndex15() { object argIndex1 = "補給装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-                    //        if (Information.IsNumeric(localLIndex15()))
-                    //        {
-                    //            string localLIndex13() { object argIndex1 = "補給装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-                    //            string localLIndex14() { object argIndex1 = "補給装置"; string arglist = currentUnit.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-                    //            if (currentUnit.EN < Conversions.Toint(localLIndex14()) || currentUnit.MainPilot().Morale < 100)
-                    //            {
-                    //                GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = false;
-                    //            }
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Caption = "補給装置";
-                    //    }
-                    //}
+                                if (!(Information.IsNumeric(en) && (currentUnit.EN < Conversions.ToInteger(en) || currentUnit.MainPilot().Morale < 100)))
+                                {
+                                    unitCommands.Add(new UiCommand(FixCmdID, caption));
+                                }
+                            }
+                            else
+                            {
+                                unitCommands.Add(new UiCommand(FixCmdID, "補給装置"));
+                            }
+                        }
+                    }
 
                     // アビリティコマンド
                     if (currentUnit.Area != "地中")
