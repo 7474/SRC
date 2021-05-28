@@ -985,21 +985,15 @@ namespace SRCCore.Commands
                         }
                     }
 
-                    //// アイテムコマンド
-                    //var loopTo25 = currentUnit.CountAbility();
-                    //for (i = 1; i <= loopTo25; i++)
-                    //{
-                    //    if (currentUnit.IsAbilityUseful(i, "移動前") && currentUnit.Ability(i).IsItem())
-                    //    {
-                    //        GUI.MainForm.mnuUnitCommandItem(ItemCmdID).Visible = true;
-                    //        break;
-                    //    }
-                    //}
-
-                    //if (currentUnit.Area == "地中")
-                    //{
-                    //    GUI.MainForm.mnuUnitCommandItem(ItemCmdID).Visible = false;
-                    //}
+                    // アイテムコマンド
+                    if (currentUnit.Abilities.Any(ua => ua.IsAbilityUseful("移動前") && ua.Data.IsItem()))
+                    {
+                        unitCommands.Add(new UiCommand(ItemCmdID, "アイテム"));
+                    }
+                    if (currentUnit.Area == "地中")
+                    {
+                        unitCommands.RemoveItem(x => x.Id == ItemCmdID);
+                    }
 
                     //// 召喚解除コマンド
                     //var loopTo26 = currentUnit.CountServant();
@@ -1216,15 +1210,15 @@ namespace SRCCore.Commands
                     unitCommands.Add(new UiCommand(AttackCmdID, "攻撃"));
                 }
 
-                //if (currentUnit.Area == "地中")
-                //{
-                //    GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Visible = false;
-                //}
+                if (currentUnit.Area == "地中")
+                {
+                    unitCommands.RemoveItem(x => x.Id == AttackCmdID);
+                }
 
-                //if (currentUnit.IsConditionSatisfied("攻撃不能"))
-                //{
-                //    GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Visible = false;
-                //}
+                if (currentUnit.IsConditionSatisfied("攻撃不能"))
+                {
+                    unitCommands.RemoveItem(x => x.Id == AttackCmdID);
+                }
 
                 AddFixSupplyCommand(unitCommands, currentUnit, true);
 
@@ -1245,178 +1239,29 @@ namespace SRCCore.Commands
                     }
                 }
 
-                //{
-                //    var withBlock18 = GUI.MainForm;
-                //    withBlock18.mnuUnitCommandItem(ChargeCmdID).Visible = false;
-                //    withBlock18.mnuUnitCommandItem(SpecialPowerCmdID).Visible = false;
-                //    withBlock18.mnuUnitCommandItem(TransformCmdID).Visible = false;
-                //    withBlock18.mnuUnitCommandItem(SplitCmdID).Visible = false;
-                //}
+                // 合体コマンド
+                if (currentUnit.IsFeatureAvailable("合体")
+                    && !currentUnit.IsConditionSatisfied("形態固定")
+                    && !currentUnit.IsConditionSatisfied("機体固定"))
+                {
+                    var combines = currentUnit.CombineFeatures(SRC);
+                    foreach (var fd in combines)
+                    {
+                        unitCommands.Add(new UiCommand(CombineCmdID, fd.CombineName));
+                    }
+                }
 
-                //// 合体コマンド
-                //GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Visible = false;
-                //if (currentUnit.IsFeatureAvailable("合体") && !currentUnit.IsConditionSatisfied("形態固定") && !currentUnit.IsConditionSatisfied("機体固定"))
-                //{
-                //    var loopTo33 = currentUnit.CountFeature();
-                //    for (i = 1; i <= loopTo33; i++)
-                //    {
-                //        // 3体以上からなる合体能力を持っているか？
-                //        string localFeature1() { object argIndex1 = i; var ret = currentUnit.Feature(argIndex1); return ret; }
+                // アイテムコマンド
+                if (currentUnit.Abilities.Any(ua => ua.IsAbilityUseful("移動後") && ua.Data.IsItem()))
+                {
+                    unitCommands.Add(new UiCommand(ItemCmdID, "アイテム"));
+                }
+                if (currentUnit.Area == "地中")
+                {
+                    unitCommands.RemoveItem(x => x.Id == ItemCmdID);
+                }
 
-                //        string localFeatureName1() { object argIndex1 = i; var ret = currentUnit.FeatureName(argIndex1); return ret; }
-
-                //        string localFeatureData17() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                //        int localLLength4() { string arglist = hs9469e7ffcaeb496ca82716c7891638cc(); var ret = GeneralLib.LLength(arglist); return ret; }
-
-                //        if (localFeature1() == "合体" && !string.IsNullOrEmpty(localFeatureName1()) && localLLength4() > 3)
-                //        {
-                //            n = 0;
-                //            string localFeatureData13() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                //            var loopTo34 = GeneralLib.LLength(localFeatureData13());
-                //            for (j = 3; j <= loopTo34; j++)
-                //            {
-                //                string localFeatureData12() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                //                string localLIndex23() { string arglist = hs175f067af849438ea2ce369fbd24d08f(); var ret = GeneralLib.LIndex(arglist, j); return ret; }
-
-                //                u = SRC.UList.Item(localLIndex23());
-                //                if (u is null)
-                //                {
-                //                    break;
-                //                }
-
-                //                if (!u.IsOperational())
-                //                {
-                //                    break;
-                //                }
-
-                //                if (u.Status != "出撃" && u.CurrentForm().IsFeatureAvailable("合体制限"))
-                //                {
-                //                    break;
-                //                }
-
-                //                if (Math.Abs((currentUnit.x - u.CurrentForm().x)) + Math.Abs((currentUnit.y - u.CurrentForm().y)) > 2)
-                //                {
-                //                    break;
-                //                }
-
-                //                n = (n + 1);
-                //            }
-
-                //            string localFeatureData14() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                //            uname = GeneralLib.LIndex(localFeatureData14(), 2);
-                //            u = SRC.UList.Item(uname);
-                //            if (u is null)
-                //            {
-                //                n = 0;
-                //            }
-                //            else if (u.IsConditionSatisfied("行動不能"))
-                //            {
-                //                n = 0;
-                //            }
-
-                //            string localFeatureData16() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                //            int localLLength3() { string arglist = hse55df985d6054cfe94b90350a9c471f6(); var ret = GeneralLib.LLength(arglist); return ret; }
-
-                //            if (n == localLLength3() - 2)
-                //            {
-                //                GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Visible = true;
-                //                string localFeatureData15() { object argIndex1 = i; var ret = currentUnit.FeatureData(argIndex1); return ret; }
-
-                //                GUI.MainForm.mnuUnitCommandItem(CombineCmdID).Caption = GeneralLib.LIndex(localFeatureData15(), 1);
-                //                break;
-                //            }
-                //        }
-                //    }
-                //}
-
-                //{
-                //    var withBlock19 = GUI.MainForm;
-                //    withBlock19.mnuUnitCommandItem(HyperModeCmdID).Visible = false;
-                //    withBlock19.mnuUnitCommandItem(GroundCmdID).Visible = false;
-                //    withBlock19.mnuUnitCommandItem(SkyCmdID).Visible = false;
-                //    withBlock19.mnuUnitCommandItem(UndergroundCmdID).Visible = false;
-                //    withBlock19.mnuUnitCommandItem(WaterCmdID).Visible = false;
-                //    withBlock19.mnuUnitCommandItem(LaunchCmdID).Visible = false;
-                //}
-
-                //// アイテムコマンド
-                //GUI.MainForm.mnuUnitCommandItem(ItemCmdID).Visible = false;
-                //var loopTo35 = currentUnit.CountAbility();
-                //for (i = 1; i <= loopTo35; i++)
-                //{
-                //    if (currentUnit.IsAbilityUseful(i, "移動後") && currentUnit.Ability(i).IsItem())
-                //    {
-                //        GUI.MainForm.mnuUnitCommandItem(ItemCmdID).Visible = true;
-                //        break;
-                //    }
-                //}
-
-                //if (currentUnit.Area == "地中")
-                //{
-                //    GUI.MainForm.mnuUnitCommandItem(ItemCmdID).Visible = false;
-                //}
-
-                //{
-                //    var withBlock20 = GUI.MainForm;
-                //    withBlock20.mnuUnitCommandItem(DismissCmdID).Visible = false;
-                //    withBlock20.mnuUnitCommandItem(OrderCmdID).Visible = false;
-                //    withBlock20.mnuUnitCommandItem(FeatureListCmdID).Visible = false;
-                //    withBlock20.mnuUnitCommandItem(WeaponListCmdID).Visible = false;
-                //    withBlock20.mnuUnitCommandItem(AbilityListCmdID).Visible = false;
-                //    withBlock20.mnuUnitCommandItem(UnitCommand1CmdID).Visible = false;
-                //    withBlock20.mnuUnitCommandItem(UnitCommand2CmdID).Visible = false;
-                //    withBlock20.mnuUnitCommandItem(UnitCommand3CmdID).Visible = false;
-                //    withBlock20.mnuUnitCommandItem(UnitCommand4CmdID).Visible = false;
-                //    withBlock20.mnuUnitCommandItem(UnitCommand5CmdID).Visible = false;
-                //    withBlock20.mnuUnitCommandItem(UnitCommand6CmdID).Visible = false;
-                //    withBlock20.mnuUnitCommandItem(UnitCommand7CmdID).Visible = false;
-                //    withBlock20.mnuUnitCommandItem(UnitCommand8CmdID).Visible = false;
-                //    withBlock20.mnuUnitCommandItem(UnitCommand9CmdID).Visible = false;
-                //    withBlock20.mnuUnitCommandItem(UnitCommand10CmdID).Visible = false;
-                //}
-
-                //// ユニットコマンド
-                //i = UnitCommand1CmdID;
-                //foreach (LabelData currentLab4 in Event.colEventLabelList)
-                //{
-                //    lab = currentLab4;
-                //    if (lab.Name == Event.LabelType.UnitCommandEventLabel && lab.AsterNum >= 2)
-                //    {
-                //        if (lab.Enable)
-                //        {
-                //            buf = lab.Para(3);
-                //            if (SelectedUnit.Party == "味方" && ((buf ?? "") == (SelectedUnit.MainPilot().Name ?? "") || (buf ?? "") == (SelectedUnit.MainPilot().get_Nickname(false) ?? "") || (buf ?? "") == (SelectedUnit.Name ?? "")) || (buf ?? "") == (SelectedUnit.Party ?? "") || buf == "全")
-                //            {
-                //                int localStrToLng3() { string argexpr = lab.Para(4); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-                //                if (lab.CountPara() <= 3)
-                //                {
-                //                    GUI.MainForm.mnuUnitCommandItem(i).Visible = true;
-                //                }
-                //                else if (localStrToLng3() != 0)
-                //                {
-                //                    GUI.MainForm.mnuUnitCommandItem(i).Visible = true;
-                //                }
-                //            }
-                //        }
-
-                //        if (GUI.MainForm.mnuUnitCommandItem(i).Visible)
-                //        {
-                //            GUI.MainForm.mnuUnitCommandItem(i).Caption = lab.Para(2);
-                //            UnitCommandLabelList[i - UnitCommand1CmdID + 1] = lab.LineNum.ToString();
-                //            i = (i + 1);
-                //            if (i > UnitCommand10CmdID)
-                //            {
-                //                break;
-                //            }
-                //        }
-                //    }
-                //}
+                AddUserUnitCommand(unitCommands);
             }
 
             GUI.IsGUILocked = false;
