@@ -995,65 +995,43 @@ namespace SRCCore.Commands
                         unitCommands.RemoveItem(x => x.Id == ItemCmdID);
                     }
 
-                    //// 召喚解除コマンド
-                    //var loopTo26 = currentUnit.CountServant();
-                    //for (i = 1; i <= loopTo26; i++)
-                    //{
-                    //    Unit localServant() { object argIndex1 = i; var ret = currentUnit.Servant(argIndex1); return ret; }
+                    // 召喚解除コマンド
+                    {
+                        var isDismissAvailable = false;
+                        foreach (var u in currentUnit.Servants)
+                        {
 
-                    //    {
-                    //        var withBlock12 = localServant().CurrentForm();
-                    //        switch (withBlock12.Status ?? "")
-                    //        {
-                    //            case "出撃":
-                    //            case "格納":
-                    //                {
-                    //                    GUI.MainForm.mnuUnitCommandItem(DismissCmdID).Visible = true;
-                    //                    break;
-                    //                }
+                            var cf = u.CurrentForm();
+                            switch (cf.Status ?? "")
+                            {
+                                case "出撃":
+                                case "格納":
+                                    isDismissAvailable = true;
+                                    break;
 
-                    //            case "旧主形態":
-                    //            case "旧形態":
-                    //                {
-                    //                    // 合体後の形態が出撃中なら使用不可
-                    //                    GUI.MainForm.mnuUnitCommandItem(DismissCmdID).Visible = true;
-                    //                    var loopTo27 = withBlock12.CountFeature();
-                    //                    for (j = 1; j <= loopTo27; j++)
-                    //                    {
-                    //                        if (withBlock12.Feature(j) == "合体")
-                    //                        {
-                    //                            string localFeatureData11() { object argIndex1 = j; var ret = withBlock12.FeatureData(argIndex1); return ret; }
-
-                    //                            uname = GeneralLib.LIndex(localFeatureData11(), 2);
-                    //                            if (SRC.UList.IsDefined(uname))
-                    //                            {
-                    //                                Unit localItem2() { object argIndex1 = uname; var ret = SRC.UList.Item(argIndex1); return ret; }
-
-                    //                                {
-                    //                                    var withBlock13 = localItem2().CurrentForm();
-                    //                                    if (withBlock13.Status == "出撃" || withBlock13.Status == "格納")
-                    //                                    {
-                    //                                        GUI.MainForm.mnuUnitCommandItem(DismissCmdID).Visible = false;
-                    //                                    }
-                    //                                }
-                    //                            }
-                    //                        }
-                    //                    }
-
-                    //                    break;
-                    //                }
-                    //        }
-                    //    }
-                    //}
-
-                    //if (currentUnit.IsFeatureAvailable("召喚解除コマンド名"))
-                    //{
-                    //    GUI.MainForm.mnuUnitCommandItem(DismissCmdID).Caption = currentUnit.FeatureData("召喚解除コマンド名");
-                    //}
-                    //else
-                    //{
-                    //    GUI.MainForm.mnuUnitCommandItem(DismissCmdID).Caption = "召喚解除";
-                    //}
+                                case "旧主形態":
+                                case "旧形態":
+                                    // 合体後の形態が出撃中なら使用不可
+                                    if (!cf.CombineFeatures(SRC)
+                                        .Select(x => SRC.UList.Item(x.ConbineUnitName))
+                                        .Where(u => u != null)
+                                        .Any(u => u.Status == "出撃" || u.Status == "格納"))
+                                    {
+                                        isDismissAvailable = true;
+                                    }
+                                    break;
+                            }
+                        }
+                        if(isDismissAvailable)
+                        {
+                            var caption = "召喚解除";
+                            if (currentUnit.IsFeatureAvailable("召喚解除コマンド名"))
+                            {
+                                caption = currentUnit.FeatureData("召喚解除コマンド名");
+                            }
+                            unitCommands.Add(new UiCommand(DismissCmdID, caption));
+                        }
+                    }
 
                     // ユニットコマンド
                     AddUserUnitCommand(unitCommands);
