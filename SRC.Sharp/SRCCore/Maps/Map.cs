@@ -1808,11 +1808,9 @@ namespace SRCCore.Maps
             // ジャンプ＆透過移動先は進入可能？
             if (ByJump || currentUnit.IsFeatureAvailable("透過移動") || currentUnit.IsUnderSpecialPowerEffect("透過移動"))
             {
-                var loopTo63 = x2;
-                for (var i = x1; i <= loopTo63; i++)
+                for (var i = x1; i <= x2; i++)
                 {
-                    var loopTo64 = y2;
-                    for (var j = y1; j <= loopTo64; j++)
+                    for (var j = y1; j <= y2; j++)
                     {
                         if (MaskData[i, j])
                         {
@@ -2151,7 +2149,6 @@ namespace SRCCore.Maps
                     }
 
                     break;
-
 
                 // XXX とりあえず地上で
                 case "地上":
@@ -2654,83 +2651,23 @@ namespace SRCCore.Maps
             //    }
             //}
 
-            //// 移動制限
-            //unitProps.allowed_terrains = new string[1];
-            //if (currentUnit.IsFeatureAvailable("移動制限"))
-            //{
-            //    if (currentUnit.Area != "空中" && currentUnit.Area != "地中")
-            //    {
-            //        n = GeneralLib.LLength(currentUnit.FeatureData("移動制限"));
-            //        unitProps.allowed_terrains = new string[(n + 1)];
-            //        var loopTo32 = n;
-            //        for (i = 2; i <= loopTo32; i++)
-            //        {
-            //            unitProps.allowed_terrains[i] = GeneralLib.LIndex(currentUnit.FeatureData("移動制限"), i);
-            //        }
+            for (var i = x1; i <= x2; i++)
+            {
+                for (var j = y1; j <= y2; j++)
+                {
+                    // 移動制限
+                    if (unitProps.allowed_terrains.Any())
+                    {
+                        MaskData[i, j] = MaskData[i, j] || !unitProps.allowed_terrains.Any(x => x == Terrain(i, j).Name);
+                    }
 
-            //        if (!ByJump)
-            //        {
-            //            var loopTo33 = x2;
-            //            for (i = x1; i <= loopTo33; i++)
-            //            {
-            //                var loopTo34 = y2;
-            //                for (j = y1; j <= loopTo34; j++)
-            //                {
-            //                    var loopTo35 = n;
-            //                    for (k = 2; k <= loopTo35; k++)
-            //                    {
-            //                        if ((Terrain(i, j).Name ?? "") == (unitProps.allowed_terrains[k] ?? ""))
-            //                        {
-            //                            break;
-            //                        }
-            //                    }
-
-            //                    if (k > n)
-            //                    {
-            //                        move_cost[i, j] = 1000000;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// 進入不可
-            //unitProps.prohibited_terrains = new string[1];
-            //if (currentUnit.IsFeatureAvailable("進入不可"))
-            //{
-            //    if (currentUnit.Area != "空中" && currentUnit.Area != "地中")
-            //    {
-            //        n = GeneralLib.LLength(currentUnit.FeatureData("進入不可"));
-            //        unitProps.prohibited_terrains = new string[(n + 1)];
-            //        var loopTo36 = n;
-            //        for (i = 2; i <= loopTo36; i++)
-            //        {
-            //            unitProps.prohibited_terrains[i] = GeneralLib.LIndex(currentUnit.FeatureData("進入不可"), i);
-            //        }
-
-            //        if (!ByJump)
-            //        {
-            //            var loopTo37 = x2;
-            //            for (i = x1; i <= loopTo37; i++)
-            //            {
-            //                var loopTo38 = y2;
-            //                for (j = y1; j <= loopTo38; j++)
-            //                {
-            //                    var loopTo39 = n;
-            //                    for (k = 2; k <= loopTo39; k++)
-            //                    {
-            //                        if ((Terrain(i, j).Name ?? "") == (unitProps.prohibited_terrains[k] ?? ""))
-            //                        {
-            //                            move_cost[i, j] = 1000000;
-            //                            break;
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+                    // 進入不可
+                    if (unitProps.prohibited_terrains.Any())
+                    {
+                        MaskData[i, j] = MaskData[i, j] || unitProps.prohibited_terrains.Any(x => x == Terrain(i, j).Name);
+                    }
+                }
+            }
 
             //// ホバー移動
             //if (currentUnit.IsFeatureAvailable("ホバー移動"))
@@ -2776,39 +2713,6 @@ namespace SRCCore.Maps
         {
             // 移動能力の可否を調べておく
             var unitProps = new UnitMoveProps(currentUnit);
-
-            // TODO Ref FillMoveCost
-            //// 移動制限
-            //unitProps.allowed_terrains = new string[1];
-            //if (u.IsFeatureAvailable("移動制限"))
-            //{
-            //    if (u.Area != "空中" && u.Area != "地中")
-            //    {
-            //        n = GeneralLib.LLength(u.FeatureData("移動制限"));
-            //        unitProps.allowed_terrains = new string[(n + 1)];
-            //        var loopTo = n;
-            //        for (i = 2; i <= loopTo; i++)
-            //        {
-            //            unitProps.allowed_terrains[i] = GeneralLib.LIndex(u.FeatureData("移動制限"), i);
-            //        }
-            //    }
-            //}
-
-            //// 進入不可
-            //unitProps.prohibited_terrains = new string[1];
-            //if (u.IsFeatureAvailable("進入不可"))
-            //{
-            //    if (u.Area != "空中" && u.Area != "地中")
-            //    {
-            //        n = GeneralLib.LLength(u.FeatureData("進入不可"));
-            //        unitProps.prohibited_terrains = new string[(n + 1)];
-            //        var loopTo1 = n;
-            //        for (i = 2; i <= loopTo1; i++)
-            //        {
-            //            unitProps.prohibited_terrains[i] = GeneralLib.LIndex(u.FeatureData("進入不可"), i);
-            //        }
-            //    }
-            //}
 
             // テレポートによる移動距離を算出
             int r;
@@ -3015,34 +2919,17 @@ namespace SRCCore.Maps
                                 }
                         }
 
-                        //// 移動制限
-                        //if (Information.UBound(unitProps.allowed_terrains) > 0)
-                        //{
-                        //    var loopTo6 = Information.UBound(unitProps.allowed_terrains);
-                        //    for (k = 2; k <= loopTo6; k++)
-                        //    {
-                        //        if ((Terrain(i, j).Name ?? "") == (unitProps.allowed_terrains[k] ?? ""))
-                        //        {
-                        //            break;
-                        //        }
-                        //    }
+                        // 移動制限
+                        if (unitProps.allowed_terrains.Any())
+                        {
+                            MaskData[i, j] = MaskData[i, j] || !unitProps.allowed_terrains.Any(x => x == Terrain(i, j).Name);
+                        }
 
-                        //    if (k > Information.UBound(unitProps.allowed_terrains))
-                        //    {
-                        //        MaskData[i, j] = true;
-                        //    }
-                        //}
-
-                        //// 進入不可
-                        //var loopTo7 = Information.UBound(unitProps.prohibited_terrains);
-                        //for (k = 2; k <= loopTo7; k++)
-                        //{
-                        //    if ((Terrain(i, j).Name ?? "") == (unitProps.prohibited_terrains[k] ?? ""))
-                        //    {
-                        //        MaskData[i, j] = true;
-                        //        break;
-                        //    }
-                        //}
+                        // 進入不可
+                        if (unitProps.prohibited_terrains.Any())
+                        {
+                            MaskData[i, j] = MaskData[i, j] || unitProps.prohibited_terrains.Any(x => x == Terrain(i, j).Name);
+                        }
 
                         goto NextLoop;
                     }
@@ -3478,12 +3365,6 @@ namespace SRCCore.Maps
 
             // 各地形の移動コストを算出しておく
             FillMoveCost(u, move_cost, u.Area, 0, 0, 51, 51);
-            // XXX FillMoveCost で考慮する能力のすり合わせ
-            // 線路移動
-            // 移動制限
-            // 進入不可
-            // ホバー移動
-            // ジャンプ移動
 
             var loopTo34 = (MapWidth + 1);
             for (var i = 0; i <= loopTo34; i++)

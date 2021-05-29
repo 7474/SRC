@@ -126,7 +126,6 @@ namespace SRCCore.Units
         ExitFor:
             ;
 
-
             // 空いた場所がなかった？
             if (x == 0 & y == 0)
             {
@@ -358,7 +357,6 @@ namespace SRCCore.Units
         // ユニットを(new_x,new_y)に移動
         public void Move(int new_x, int new_y, bool without_en_consumption = false, bool by_cancel = false, bool by_teleport_or_jump = false)
         {
-            // TODO 未実装多いよ
             // ユニットをマップからいったん削除
             if (Map.MapDataForUnit[x, y]?.ID == ID)
             {
