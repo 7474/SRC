@@ -538,12 +538,11 @@ namespace SRCCore.Maps
                                     {
                                         var u = MapDataForUnit[i, j];
                                         if ((u.Party == "味方" || u.Party == "ＮＰＣ")
-                                            // TODO Impl
-                                            //&& !u.IsConditionSatisfied("暴走")
-                                            //&& !u.IsConditionSatisfied("魅了")
-                                            //&& !u.IsConditionSatisfied("混乱")
-                                            //&& !u.IsConditionSatisfied("憑依")
-                                            //&& !u.IsConditionSatisfied("睡眠")
+                                            && !u.IsConditionSatisfied("暴走")
+                                            && !u.IsConditionSatisfied("魅了")
+                                            && !u.IsConditionSatisfied("混乱")
+                                            && !u.IsConditionSatisfied("憑依")
+                                            && !u.IsConditionSatisfied("睡眠")
                                             )
                                         {
                                             MaskData[i, j] = true;
