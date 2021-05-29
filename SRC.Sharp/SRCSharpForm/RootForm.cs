@@ -16,23 +16,26 @@ namespace SRCSharpForm
         {
             InitializeComponent();
 
-            SRC = new SRCCore.SRC();
-            var fileSystem = new LocalFileSystem();
-            SRC.FileSystem = fileSystem;
-            SRC.Sound.Player = new WindowsManagedPlayer();
             var config = new LocalFileConfig();
-            SRC.SystemConfig = config;
             try
             {
-                SRC.SystemConfig.Load();
+                config.Load();
             }
             catch
             {
-                SRC.SystemConfig.Save();
+                config.Save();
             }
+            var fileSystem = new LocalFileSystem();
+            var soundPlayer = new WindowsManagedPlayer();
+
             // TODO 設定の反映処理を設ける
             // XXX 単位変更をこんな感じでやるのは下策だなー
-            SRC.Sound.Player.SoundVolume = config.SoundVolume / 100f;
+            soundPlayer.SoundVolume = config.SoundVolume / 100f;
+
+            SRC = new SRCCore.SRC(Program.LoggerFactory);
+            SRC.SystemConfig = config;
+            SRC.FileSystem = fileSystem;
+            SRC.Sound.Player = soundPlayer;
 
             // XXX ファイルシステムへのエントリー追加はお試し中
             try
