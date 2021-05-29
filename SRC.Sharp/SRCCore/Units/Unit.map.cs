@@ -425,117 +425,8 @@ namespace SRCCore.Units
                 return;
             }
 
-            //    // 移動先によるユニット位置変更
-            //    switch (Map.TerrainClass(x, y) ?? "")
-            //    {
-            //        case "空":
-            //            {
-            //                Area = "空中";
-            //                break;
-            //            }
-
-            //        case "陸":
-            //        case "屋内":
-            //            {
-            //                switch (Area ?? "")
-            //                {
-            //                    case "水中":
-            //                    case "水上":
-            //                        {
-            //                            Area = "地上";
-            //                            break;
-            //                        }
-
-            //                    case "宇宙":
-            //                        {
-            //                            if (IsTransAvailable("空") & get_Adaption(1) >= get_Adaption(2))
-            //                            {
-            //                                Area = "空中";
-            //                            }
-            //                            else if (IsTransAvailable("陸"))
-            //                            {
-            //                                Area = "地上";
-            //                            }
-            //                            else
-            //                            {
-            //                                Area = "空中";
-            //                            }
-
-            //                            break;
-            //                        }
-            //                }
-
-            //                break;
-            //            }
-
-            //        case "月面":
-            //            {
-            //                switch (Area ?? "")
-            //                {
-            //                    // 変更なし
-            //                    case "地上":
-            //                    case "地中":
-            //                        {
-            //                            break;
-            //                        }
-
-            //                    default:
-            //                        {
-            //                            if ((IsTransAvailable("空") | IsTransAvailable("宇宙")) & get_Adaption(4) >= get_Adaption(2))
-            //                            {
-            //                                Area = "宇宙";
-            //                            }
-            //                            else if (IsTransAvailable("陸"))
-            //                            {
-            //                                Area = "地上";
-            //                            }
-            //                            else
-            //                            {
-            //                                Area = "宇宙";
-            //                            }
-
-            //                            break;
-            //                        }
-            //                }
-
-            //                break;
-            //            }
-
-            //        case "水":
-            //        case "深水":
-            //            {
-            //                switch (Area ?? "")
-            //                {
-            //                    case "地上":
-            //                        {
-            //                            if (IsTransAvailable("水上"))
-            //                            {
-            //                                Area = "水上";
-            //                            }
-            //                            else
-            //                            {
-            //                                Area = "水中";
-            //                            }
-
-            //                            break;
-            //                        }
-
-            //                    case "宇宙":
-            //                        {
-            //                            Area = "水中";
-            //                            break;
-            //                        }
-            //                }
-
-            //                break;
-            //            }
-
-            //        case "宇宙":
-            //            {
-            //                Area = "宇宙";
-            //                break;
-            //            }
-            //    }
+            // 移動先によるユニット位置変更
+            ResolveAreaForMoved();
 
             // マップにユニットを登録
             Map.MapDataForUnit[x, y] = this;
@@ -580,15 +471,126 @@ namespace SRCCore.Units
 
             // 情報更新
             Update();
-            //    SRC.PList.UpdateSupportMod(this);
+            SRC.PList.UpdateSupportMod(this);
+        }
+
+        private void ResolveAreaForMoved()
+        {
+            switch (Map.Terrain(x, y).Class ?? "")
+            {
+                case "空":
+                    {
+                        Area = "空中";
+                        break;
+                    }
+
+                case "陸":
+                case "屋内":
+                    {
+                        switch (Area ?? "")
+                        {
+                            case "水中":
+                            case "水上":
+                                {
+                                    Area = "地上";
+                                    break;
+                                }
+
+                            case "宇宙":
+                                {
+                                    if (IsTransAvailable("空") & get_Adaption(1) >= get_Adaption(2))
+                                    {
+                                        Area = "空中";
+                                    }
+                                    else if (IsTransAvailable("陸"))
+                                    {
+                                        Area = "地上";
+                                    }
+                                    else
+                                    {
+                                        Area = "空中";
+                                    }
+
+                                    break;
+                                }
+                        }
+
+                        break;
+                    }
+
+                case "月面":
+                    {
+                        switch (Area ?? "")
+                        {
+                            // 変更なし
+                            case "地上":
+                            case "地中":
+                                {
+                                    break;
+                                }
+
+                            default:
+                                {
+                                    if ((IsTransAvailable("空") | IsTransAvailable("宇宙")) & get_Adaption(4) >= get_Adaption(2))
+                                    {
+                                        Area = "宇宙";
+                                    }
+                                    else if (IsTransAvailable("陸"))
+                                    {
+                                        Area = "地上";
+                                    }
+                                    else
+                                    {
+                                        Area = "宇宙";
+                                    }
+
+                                    break;
+                                }
+                        }
+
+                        break;
+                    }
+
+                case "水":
+                case "深水":
+                    {
+                        switch (Area ?? "")
+                        {
+                            case "地上":
+                                {
+                                    if (IsTransAvailable("水上"))
+                                    {
+                                        Area = "水上";
+                                    }
+                                    else
+                                    {
+                                        Area = "水中";
+                                    }
+
+                                    break;
+                                }
+
+                            case "宇宙":
+                                {
+                                    Area = "水中";
+                                    break;
+                                }
+                        }
+
+                        break;
+                    }
+
+                case "宇宙":
+                    {
+                        Area = "宇宙";
+                        break;
+                    }
+            }
         }
 
         // ユニットを(new_x,new_y)にジャンプ
         public void Jump(int new_x, int new_y, bool do_refresh = true)
         {
-            // TODO Impl
-            //    int j, i, k;
-
             // ユニットを一旦マップから削除
             Map.MapDataForUnit[x, y] = null;
             GUI.EraseUnitBitmap(x, y, do_refresh);
@@ -664,138 +666,21 @@ namespace SRCCore.Units
             //    ;
 
 
-            //    // 他の形態と格納したユニットの座標を更新
-            //    var loopTo2 = CountOtherForm();
-            //    for (i = 1; i <= loopTo2; i++)
-            //    {
-            //        {
-            //            var withBlock = OtherForm(i);
-            //            withBlock.x = x;
-            //            withBlock.y = y;
-            //        }
-            //    }
+            // 他の形態と格納したユニットの座標を更新
+            foreach (var of in OtherForms)
+            {
+                of.x = x;
+                of.y = y;
+            }
 
-            //    var loopTo3 = CountUnitOnBoard();
-            //    for (i = 1; i <= loopTo3; i++)
-            //    {
-            //        {
-            //            var withBlock1 = UnitOnBoard(i);
-            //            withBlock1.x = x;
-            //            withBlock1.y = y;
-            //        }
-            //    }
+            foreach (var u in UnitOnBoards)
+            {
+                u.x = x;
+                u.y = y;
+            }
 
-            //    // 移動先によるユニット位置変更
-            //    switch (Map.TerrainClass(x, y) ?? "")
-            //    {
-            //        case "空":
-            //            {
-            //                Area = "空中";
-            //                break;
-            //            }
-
-            //        case "陸":
-            //        case "屋内":
-            //            {
-            //                switch (Area ?? "")
-            //                {
-            //                    case "水中":
-            //                    case "水上":
-            //                        {
-            //                            Area = "地上";
-            //                            break;
-            //                        }
-
-            //                    case "宇宙":
-            //                        {
-            //                            if (IsTransAvailable("空") & get_Adaption(1) >= get_Adaption(2))
-            //                            {
-            //                                Area = "空中";
-            //                            }
-            //                            else if (IsTransAvailable("陸"))
-            //                            {
-            //                                Area = "地上";
-            //                            }
-            //                            else
-            //                            {
-            //                                Area = "空中";
-            //                            }
-
-            //                            break;
-            //                        }
-            //                }
-
-            //                break;
-            //            }
-
-            //        case "月面":
-            //            {
-            //                switch (Area ?? "")
-            //                {
-            //                    // 変更なし
-            //                    case "地上":
-            //                    case "地中":
-            //                        {
-            //                            break;
-            //                        }
-
-            //                    default:
-            //                        {
-            //                            if ((IsTransAvailable("空") | IsTransAvailable("宇宙")) & get_Adaption(4) >= get_Adaption(2))
-            //                            {
-            //                                Area = "宇宙";
-            //                            }
-            //                            else if (IsTransAvailable("陸"))
-            //                            {
-            //                                Area = "地上";
-            //                            }
-            //                            else
-            //                            {
-            //                                Area = "宇宙";
-            //                            }
-
-            //                            break;
-            //                        }
-            //                }
-
-            //                break;
-            //            }
-
-            //        case "水":
-            //        case "深水":
-            //            {
-            //                switch (Area ?? "")
-            //                {
-            //                    case "地上":
-            //                        {
-            //                            if (IsTransAvailable("水上"))
-            //                            {
-            //                                Area = "水上";
-            //                            }
-            //                            else
-            //                            {
-            //                                Area = "水中";
-            //                            }
-
-            //                            break;
-            //                        }
-
-            //                    case "宇宙":
-            //                        {
-            //                            Area = "水中";
-            //                            break;
-            //                        }
-            //                }
-
-            //                break;
-            //            }
-
-            //        case "宇宙":
-            //            {
-            //                Area = "宇宙";
-            //                break;
-            //            }
-            //    }
+            // 移動先によるユニット位置変更
+            ResolveAreaForMoved();
 
             // マップにユニットを登録
             Map.MapDataForUnit[x, y] = this;
