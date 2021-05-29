@@ -597,11 +597,6 @@ namespace SRCCore.Maps
             }
         }
 
-        internal void AreaInSectorCross(int x, int y, int min_range, int max_range, double v)
-        {
-            throw new NotImplementedException();
-        }
-
         private void SetupStatusView()
         {
             MapFileName = "";
@@ -764,51 +759,22 @@ namespace SRCCore.Maps
         // マップデータをクリア
         public void ClearMap()
         {
-            // TODO Impl ClearMap
-            //int ret;
-            //MapFileName = "";
-            //MapWidth = 1;
-            //MapHeight = 1;
+            // XXX 1というよりは0にしたいが0長配列は作れない
+            SetMapSize(1, 1);
+            MapDrawMode = "";
+            MapDrawIsMapOnly = false;
+            MapDrawFilterColor = Color.Black;
+            MapDrawFilterTransPercent = 0d;
 
-            //// MOD START 240a
-            //// ReDim MapData(1, 1, 1)
-            //MapData = new int[2, 2, 5];
-            //// MOD  END  240a
-            //MapDataForUnit = new Unit[2, 2];
-            //MaskData = new bool[2, 2];
+            // マップ画面を消去
+            GUI.RedrawScreen();
 
-            //// MOD START 240a
-            //// MapData(1, 1, 0) = 0
-            //// MapData(1, 1, 1) = 0
-            //MapData[1, 1, MapDataIndex.TerrainType] = 0;
-            //MapData[1, 1, MapDataIndex.BitmapNo] = 0;
-            //MapData[1, 1, MapDataIndex.LayerType] = 0;
-            //MapData[1, 1, MapDataIndex.LayerBitmapNo] = 0;
-            //MapData[1, 1, MapDataIndex.BoxType] = 0;
-            //// MOD  END  240a
-            //// UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //MapDataForUnit[1, 1] = null;
-
-            //// マップ画面を消去
-            //{
-            //    var withBlock = GUI.MainForm.picBack;
-            //    ret = GUI.PatBlt(withBlock.hDC, 0, 0, withBlock.width, withBlock.Height, GUI.BLACKNESS);
-            //}
-            //{
-            //    var withBlock1 = GUI.MainForm.picMain(0);
-            //    ret = GUI.PatBlt(withBlock1.hDC, 0, 0, withBlock1.width, withBlock1.Height, GUI.BLACKNESS);
-            //}
-
+            // XXX
             //// ユニット画像をリセット
             //if (!string.IsNullOrEmpty(MapDrawMode) && !MapDrawIsMapOnly)
             //{
             //    SRC.UList.ClearUnitBitmap();
             //}
-
-            //MapDrawMode = "";
-            //MapDrawIsMapOnly = false;
-            //MapDrawFilterColor = 0;
-            //MapDrawFilterTransPercent = 0d;
         }
 
         // 中断用セーブデータにマップデータをセーブ

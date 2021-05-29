@@ -551,7 +551,7 @@ namespace SRCCore.Commands
                                 }
                                 else if (selectedWeapon.IsWeaponClassifiedAs("Ｍ扇"))
                                 {
-                                    Map.AreaInSectorCross(u.x, u.y, min_range, max_range, selectedWeapon.WeaponLevel("Ｍ扇"));
+                                    Map.AreaInSectorCross(u.x, u.y, min_range, max_range, (int)selectedWeapon.WeaponLevel("Ｍ扇"));
                                 }
                                 else if (selectedWeapon.IsWeaponClassifiedAs("Ｍ全") || selectedWeapon.IsWeaponClassifiedAs("Ｍ線"))
                                 {
@@ -743,7 +743,7 @@ namespace SRCCore.Commands
                                 }
                                 else if (currentAbility.IsAbilityClassifiedAs("Ｍ扇"))
                                 {
-                                    Map.AreaInSectorCross(u.x, u.y, min_range, max_range, currentAbility.AbilityLevel("Ｍ扇"));
+                                    Map.AreaInSectorCross(u.x, u.y, min_range, max_range, (int)currentAbility.AbilityLevel("Ｍ扇"));
                                 }
                                 else if (currentAbility.IsAbilityClassifiedAs("Ｍ全") || currentAbility.IsAbilityClassifiedAs("Ｍ線"))
                                 {
