@@ -2043,7 +2043,6 @@ namespace SRCCore.Maps
 
         private void MaskAlreadyUnitExist(Unit currentUnit, int x, int y, Unit u2)
         {
-            // TODO Impl MaskAlreadyUnitExist
             switch (u2.Party0 ?? "")
             {
                 case "味方":
@@ -2063,49 +2062,18 @@ namespace SRCCore.Maps
                         {
                             // ２体合体？
                             MaskData[x, y] = true;
-                            // TODO Impl
-                            //var loopTo61 = currentUnit.CountFeature();
-                            //for (k = 1; k <= loopTo61; k++)
-                            //{
-                            //    if (currentUnit.Feature() == "合体" && !string.IsNullOrEmpty(currentUnit.FeatureName()))
-                            //    {
-                            //        buf = currentUnit.FeatureData(k);
-                            //        bool localIsDefined() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-                            //        bool localIsDefined1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-                            //        if (GeneralLib.LLength(buf) == 3 && localIsDefined() && localIsDefined1())
-                            //        {
-                            //            {
-                            //                var withBlock5 = SRC.UList.Item(GeneralLib.LIndex(buf, 2));
-                            //                if (withBlock5.IsConditionSatisfied("行動不能"))
-                            //                {
-                            //                    break;
-                            //                }
-
-                            //                if (withBlock5.Status == "破棄")
-                            //                {
-                            //                    break;
-                            //                }
-                            //            }
-
-                            //            Unit localItem() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
-
-                            //            if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
-                            //            {
-                            //                MaskData[i, j] = false;
-                            //                break;
-                            //            }
-                            //            else if ((u2.Name ?? "") == (localItem().CurrentForm().Name ?? "") && !u2.IsFeatureAvailable("合体制限"))
-                            //            {
-                            //                MaskData[i, j] = false;
-                            //                break;
-                            //            }
-                            //        }
-                            //    }
-                            //}
+                            foreach (var cfd in currentUnit.TwoUnitCombineFeatures(SRC)
+                                .Where(x =>
+                                {
+                                    // XXX 合体制限は変形してる時だけでいい？
+                                    var pu = SRC.UList.Item(x.PartUnitNames.First());
+                                    return u2.Name == x.PartUnitNames.First()
+                                        || u2.Name == pu.CurrentForm().Name && !u2.IsFeatureAvailable("合体制限");
+                                }))
+                            {
+                                MaskData[x, y] = false;
+                            }
                         }
-
                         break;
                     }
 
@@ -2115,48 +2083,18 @@ namespace SRCCore.Maps
                         {
                             // ２体合体？
                             MaskData[x, y] = true;
-                            //var loopTo62 = currentUnit.CountFeature();
-                            //for (k = 1; k <= loopTo62; k++)
-                            //{
-                            //    if (currentUnit.Feature(k) == "合体")
-                            //    {
-                            //        buf = currentUnit.FeatureData(k);
-                            //        bool localIsDefined2() { object argIndex1 = GeneralLib.LIndex(buf, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-                            //        bool localIsDefined3() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-                            //        if (GeneralLib.LLength(buf) == 3 && localIsDefined2() && localIsDefined3())
-                            //        {
-                            //            {
-                            //                var withBlock6 = SRC.UList.Item(GeneralLib.LIndex(buf, 2));
-                            //                if (withBlock6.IsConditionSatisfied("行動不能"))
-                            //                {
-                            //                    break;
-                            //                }
-
-                            //                if (withBlock6.Status == "破棄")
-                            //                {
-                            //                    break;
-                            //                }
-                            //            }
-
-                            //            Unit localItem1() { object argIndex1 = GeneralLib.LIndex(buf, 3); var ret = SRC.UList.Item(argIndex1); return ret; }
-
-                            //            if ((u2.Name ?? "") == (GeneralLib.LIndex(buf, 3) ?? ""))
-                            //            {
-                            //                MaskData[i, j] = false;
-                            //                break;
-                            //            }
-                            //            else if ((u2.Name ?? "") == (localItem1().CurrentForm().Name ?? "") && !u2.IsFeatureAvailable("合体制限"))
-                            //            {
-                            //                MaskData[i, j] = false;
-                            //                break;
-                            //            }
-                            //        }
-                            //    }
-                            //}
+                            foreach (var cfd in currentUnit.TwoUnitCombineFeatures(SRC)
+                                .Where(x =>
+                                {
+                                    // XXX 合体制限は変形してる時だけでいい？
+                                    var pu = SRC.UList.Item(x.PartUnitNames.First());
+                                    return u2.Name == x.PartUnitNames.First()
+                                        || u2.Name == pu.CurrentForm().Name && !u2.IsFeatureAvailable("合体制限");
+                                }))
+                            {
+                                MaskData[x, y] = false;
+                            }
                         }
-
                         break;
                     }
             }
