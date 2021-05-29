@@ -2087,7 +2087,7 @@ namespace SRCCore
                     }
 
                     // そうでなければ安全な場所へ
-                    Map.SafetyPoint(Commands.SelectedUnit, dst_x, dst_y);
+                    Map.SafetyPoint(Commands.SelectedUnit, out dst_x, out dst_y);
                     goto Move;
                 }
             }
@@ -2201,7 +2201,7 @@ namespace SRCCore
                 if (selectedUnit.Mode == "逃亡")
                 {
                     // 移動可能範囲内で敵から最も遠い場所を検索
-                    Map.SafetyPoint(Commands.SelectedUnit, dst_x, dst_y);
+                    Map.SafetyPoint(Commands.SelectedUnit, out dst_x, out dst_y);
                     new_x = dst_x;
                     new_y = dst_y;
                 }

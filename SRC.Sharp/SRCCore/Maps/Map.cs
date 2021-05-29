@@ -3344,95 +3344,93 @@ namespace SRCCore.Maps
         }
 
         // ユニット u が敵から最も遠くなる場所(X,Y)を検索
-        public void SafetyPoint(Unit u, int X, int Y)
+        public void SafetyPoint(Unit u, out int X, out int Y)
         {
-            throw new NotImplementedException();
-            //    int i, j;
-            //    var total_cost = new int[52, 52];
-            //    var cur_cost = new int[52, 52];
-            //    int tmp;
-            //    bool is_changed;
+            var total_cost = new int[52, 52];
+            var cur_cost = new int[52, 52];
+            bool is_changed;
 
-            //    // 作業用配列を初期化
-            //    var loopTo = (MapWidth + 1);
-            //    for (i = 0; i <= loopTo; i++)
-            //    {
-            //        var loopTo1 = (MapHeight + 1);
-            //        for (j = 0; j <= loopTo1; j++)
-            //            total_cost[i, j] = 1000000;
-            //    }
+            X = u.x;
+            Y = u.y;
 
-            //    foreach (Unit t in SRC.UList)
-            //    {
-            //        if (u.IsEnemy(t))
-            //        {
-            //            total_cost[t.x, t.y] = 0;
-            //        }
-            //    }
+            // 作業用配列を初期化
+            var loopTo = (MapWidth + 1);
+            for (var i = 0; i <= loopTo; i++)
+            {
+                var loopTo1 = (MapHeight + 1);
+                for (var j = 0; j <= loopTo1; j++)
+                    total_cost[i, j] = 1000000;
+            }
 
-            //    // 各地点の敵からの距離を計算
-            //    do
-            //    {
-            //        is_changed = false;
-            //        var loopTo2 = (MapWidth + 1);
-            //        for (i = 0; i <= loopTo2; i++)
-            //        {
-            //            var loopTo3 = (MapHeight + 1);
-            //            for (j = 0; j <= loopTo3; j++)
-            //                cur_cost[i, j] = total_cost[i, j];
-            //        }
+            foreach (Unit t in SRC.UList.Items)
+            {
+                if (u.IsEnemy(t))
+                {
+                    total_cost[t.x, t.y] = 0;
+                }
+            }
 
-            //        var loopTo4 = MapWidth;
-            //        for (i = 1; i <= loopTo4; i++)
-            //        {
-            //            var loopTo5 = MapHeight;
-            //            for (j = 1; j <= loopTo5; j++)
-            //            {
-            //                tmp = cur_cost[i, j];
-            //                tmp = Math.Min(cur_cost[i - 1, j] + 1, tmp);
-            //                tmp = Math.Min(cur_cost[i + 1, j] + 1, tmp);
-            //                tmp = Math.Min(cur_cost[i, j - 1] + 1, tmp);
-            //                tmp = Math.Min(cur_cost[i, j + 1] + 1, tmp);
-            //                if (tmp < cur_cost[i, j])
-            //                {
-            //                    is_changed = true;
-            //                    total_cost[i, j] = tmp;
-            //                }
-            //            }
-            //        }
-            //    }
-            //    while (is_changed);
+            // 各地点の敵からの距離を計算
+            do
+            {
+                is_changed = false;
+                for (var i = 0; i <= MapWidth + 1; i++)
+                {
+                    for (var j = 0; j <= MapHeight + 1; j++)
+                        cur_cost[i, j] = total_cost[i, j];
+                }
 
-            //    // 移動可能範囲内で敵から最も遠い場所を見付ける
-            //    tmp = 0;
-            //    var loopTo6 = MapWidth;
-            //    for (i = 1; i <= loopTo6; i++)
-            //    {
-            //        var loopTo7 = MapHeight;
-            //        for (j = 1; j <= loopTo7; j++)
-            //        {
-            //            if (!MaskData[i, j])
-            //            {
-            //                if (MapDataForUnit[i, j] is null)
-            //                {
-            //                    if (total_cost[i, j] > tmp)
-            //                    {
-            //                        X = i;
-            //                        Y = j;
-            //                        tmp = total_cost[i, j];
-            //                    }
-            //                    else if (total_cost[i, j] == tmp)
-            //                    {
-            //                        if (Math.Pow(Math.Abs((u.x - i)), 2d) + Math.Pow(Math.Abs((u.y - j)), 2d) < Math.Pow(Math.Abs((u.x - X)), 2d) + Math.Pow(Math.Abs((u.y - Y)), 2d))
-            //                        {
-            //                            X = i;
-            //                            Y = j;
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
+                for (var i = 1; i <= MapWidth; i++)
+                {
+                    for (var j = 1; j <= MapHeight; j++)
+                    {
+                        var tmp = cur_cost[i, j];
+                        tmp = Math.Min(cur_cost[i - 1, j] + 1, tmp);
+                        tmp = Math.Min(cur_cost[i + 1, j] + 1, tmp);
+                        tmp = Math.Min(cur_cost[i, j - 1] + 1, tmp);
+                        tmp = Math.Min(cur_cost[i, j + 1] + 1, tmp);
+                        if (tmp < cur_cost[i, j])
+                        {
+                            is_changed = true;
+                            total_cost[i, j] = tmp;
+                        }
+                    }
+                }
+            }
+            while (is_changed);
+
+            // 移動可能範囲内で敵から最も遠い場所を見付ける
+            {
+                var tmp = 0;
+                var loopTo6 = MapWidth;
+                for (var i = 1; i <= loopTo6; i++)
+                {
+                    var loopTo7 = MapHeight;
+                    for (var j = 1; j <= loopTo7; j++)
+                    {
+                        if (!MaskData[i, j])
+                        {
+                            if (MapDataForUnit[i, j] is null)
+                            {
+                                if (total_cost[i, j] > tmp)
+                                {
+                                    X = i;
+                                    Y = j;
+                                    tmp = total_cost[i, j];
+                                }
+                                else if (total_cost[i, j] == tmp)
+                                {
+                                    if (Math.Pow(Math.Abs((u.x - i)), 2d) + Math.Pow(Math.Abs((u.y - j)), 2d) < Math.Pow(Math.Abs((u.x - X)), 2d) + Math.Pow(Math.Abs((u.y - Y)), 2d))
+                                    {
+                                        X = i;
+                                        Y = j;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         // 現在位置から指定した場所までの移動経路を調べる
