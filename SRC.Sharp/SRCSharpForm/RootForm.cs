@@ -1,4 +1,5 @@
-using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Extensions.Logging;
 using SRCCore.Config;
 using SRCCore.Filesystem;
 using SRCSharpForm.Resoruces;
@@ -31,6 +32,12 @@ namespace SRCSharpForm
             // TODO 設定の反映処理を設ける
             // XXX 単位変更をこんな感じでやるのは下策だなー
             soundPlayer.SoundVolume = config.SoundVolume / 100f;
+
+            // TODO ログの設定
+            Program.LoggerFactory.AddProvider(new SerilogLoggerProvider(
+                new LoggerConfiguration().MinimumLevel.Information()
+                    .WriteTo.File("logs\\srcsform..log", rollingInterval: RollingInterval.Day)
+                    .CreateLogger()));
 
             SRC = new SRCCore.SRC(Program.LoggerFactory);
             SRC.SystemConfig = config;
