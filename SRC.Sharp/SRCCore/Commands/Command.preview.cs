@@ -517,7 +517,7 @@ namespace SRCCore.Commands
                             {
                                 i = GUI.ListBox(new ListBoxArgs
                                 {
-                                    lb_caption = "武器属性一覧",
+                                    lb_caption = "アビリティ属性一覧",
                                     Items = list.Select(x => new ListBoxItem(x)).ToList(),
                                     lb_info = "属性    効果",
                                     lb_mode = "連続表示",
@@ -614,18 +614,10 @@ namespace SRCCore.Commands
         {
             LogDebug();
 
-            //string[] list;
-            //int i;
-            //string buf;
-            //int a;
-            //string alevel, atype, aclass;
-            //string c;
             GUI.LockGUI();
-            int min_range, max_range;
             while (true)
             {
-                var list = new UnitAbilityList(AbilityListMode.List, SelectedUnit);
-                var currentAbility = GUI.AbilityListBox(SelectedUnit, list, Expression.Term("アビリティ", SelectedUnit) + "一覧", "一覧");
+                var currentAbility = GUI.AbilityListBox(SelectedUnit, new UnitAbilityList(AbilityListMode.List, SelectedUnit), Expression.Term("アビリティ", SelectedUnit) + "一覧", "一覧");
                 if (currentAbility == null)
                 {
                     SelectedAbility = 0;
@@ -643,165 +635,168 @@ namespace SRCCore.Commands
                 }
 
                 SelectedAbility = currentAbility.AbilityNo();
-                // TODO Impl
                 // 指定されたアビリティの属性一覧を作成
                 {
-                    //    var currentUnit = SelectedUnit;
-                    //    var ability = list.Items[a - 1];
-                    //    var aclass = ability.Ability.Data.Class;
-                    //    while (i <= Strings.Len(aclass))
-                    //    {
-                    //        i = (i + 1);
-                    //        buf = GeneralLib.GetClassBundle(aclass, i);
-                    //        atype = "";
-                    //        alevel = "";
+                    var list = new List<string>();
+                    var i = 0;
+                    var u = SelectedUnit;
+                    var aclass = currentAbility.Data.Class;
+                    while (i <= Strings.Len(aclass))
+                    {
+                        i = (i + 1);
+                        var buf = GeneralLib.GetClassBundle(aclass, ref i);
+                        var atype = "";
+                        var alevel = "";
 
-                    //        // 非表示？
-                    //        if (buf == "|")
-                    //        {
-                    //            break;
-                    //        }
+                        // 非表示？
+                        if (buf == "|")
+                        {
+                            break;
+                        }
 
-                    //        // Ｍ属性
-                    //        if (Strings.Mid(aclass, i, 1) == "Ｍ")
-                    //        {
-                    //            i = (i + 1);
-                    //            buf = buf + Strings.Mid(aclass, i, 1);
-                    //        }
+                        // Ｍ属性
+                        if (Strings.Mid(aclass, i, 1) == "Ｍ")
+                        {
+                            i = (i + 1);
+                            buf = buf + Strings.Mid(aclass, i, 1);
+                        }
 
-                    //        // レベル指定
-                    //        if (Strings.Mid(aclass, i + 1, 1) == "L")
-                    //        {
-                    //            i = (i + 2);
-                    //            c = Strings.Mid(aclass, i, 1);
-                    //            while (Information.IsNumeric(c) || c == "." || c == "-")
-                    //            {
-                    //                alevel = alevel + c;
-                    //                i = (i + 1);
-                    //                c = Strings.Mid(aclass, i, 1);
-                    //            }
+                        // レベル指定
+                        if (Strings.Mid(aclass, i + 1, 1) == "L")
+                        {
+                            i = (i + 2);
+                            var c = Strings.Mid(aclass, i, 1);
+                            while (Information.IsNumeric(c) || c == "." || c == "-")
+                            {
+                                alevel = alevel + c;
+                                i = (i + 1);
+                                c = Strings.Mid(aclass, i, 1);
+                            }
 
-                    //            i = (i - 1);
-                    //        }
+                            i = (i - 1);
+                        }
 
-                    //        // 属性の名称
-                    //        atype = Help.AttributeName(SelectedUnit, buf, true);
-                    //        if (Strings.Len(atype) > 0)
-                    //        {
-                    //            Array.Resize(list, Information.UBound(list) + 1 + 1);
-                    //            if (Strings.Len(alevel) > 0)
-                    //            {
-                    //                string localRightPaddedString() { string argbuf = buf + "L" + alevel; var ret = GeneralLib.RightPaddedString(argbuf, 8); return ret; }
+                        // 属性の名称
+                        atype = Help.AttributeName(SelectedUnit, buf);
+                        if (Strings.Len(atype) > 0)
+                        {
+                            if (Strings.Len(alevel) > 0)
+                            {
+                                list.Add(GeneralLib.RightPaddedString(buf + "L" + alevel, 8) + atype + "レベル" + alevel);
+                            }
+                            else
+                            {
+                                list.Add(GeneralLib.RightPaddedString(buf, 8) + atype);
+                            }
+                        }
+                    }
 
-                    //                list[Information.UBound(list)] = localRightPaddedString() + atype + "レベル" + Strings.StrConv(alevel, VbStrConv.Wide);
-                    //            }
-                    //            else
-                    //            {
-                    //                list[Information.UBound(list)] = GeneralLib.RightPaddedString(buf, 8) + atype;
-                    //            }
-                    //        }
-                    //    }
+                    if (!Map.IsStatusView)
+                    {
+                        list.Add("射程範囲");
+                    }
 
-                    //    if (!string.IsNullOrEmpty(Map.MapFileName))
-                    //    {
-                    //        Array.Resize(list, Information.UBound(list) + 1 + 1);
-                    //        list[Information.UBound(list)] = "射程範囲";
-                    //    }
+                    if (list.Count > 0)
+                    {
+                        GUI.TopItem = 1;
+                        while (true)
+                        {
+                            if (list.Count == 1 && list[0] == "射程範囲")
+                            {
+                                i = 1;
+                            }
+                            else
+                            {
+                                i = GUI.ListBox(new ListBoxArgs
+                                {
+                                    lb_caption = "武器属性一覧",
+                                    Items = list.Select(x => new ListBoxItem(x)).ToList(),
+                                    lb_info = "属性    効果",
+                                    lb_mode = "連続表示",
+                                });
+                            }
 
-                    //    if (Information.UBound(list) > 0)
-                    //    {
-                    //        GUI.TopItem = 1;
-                    //        while (true)
-                    //        {
-                    //            if (Information.UBound(list) == 1 && list[1] == "射程範囲")
-                    //            {
-                    //                i = 1;
-                    //            }
-                    //            else
-                    //            {
-                    //                GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
-                    //                i = GUI.ListBox("アビリティ属性一覧", list, "属性    効果", "連続表示");
-                    //            }
+                            if (i == 0)
+                            {
+                                // キャンセル
+                                break;
+                            }
+                            else if (list[i - 1] == "射程範囲")
+                            {
+                                GUI.CloseListBox();
 
-                    //            if (i == 0)
-                    //            {
-                    //                // キャンセル
-                    //                break;
-                    //            }
-                    //            else if (list[i] == "射程範囲")
-                    //            {
-                    //                My.MyProject.Forms.frmListBox.Hide();
+                                // 武器の射程を求めておく
+                                var min_range = currentAbility.AbilityMinRange();
+                                var max_range = currentAbility.AbilityMaxRange();
+                                // 射程範囲表示
+                                if ((max_range == 1 || currentAbility.IsAbilityClassifiedAs("Ｐ")) && !currentAbility.IsAbilityClassifiedAs("Ｑ"))
+                                {
+                                    Map.AreaInReachable(SelectedUnit, max_range, u.Party + "の敵");
+                                }
+                                else if (currentAbility.IsAbilityClassifiedAs("Ｍ直"))
+                                {
+                                    Map.AreaInCross(u.x, u.y, min_range, max_range);
+                                }
+                                else if (currentAbility.IsAbilityClassifiedAs("Ｍ拡"))
+                                {
+                                    Map.AreaInWideCross(u.x, u.y, min_range, max_range);
+                                }
+                                else if (currentAbility.IsAbilityClassifiedAs("Ｍ扇"))
+                                {
+                                    Map.AreaInSectorCross(u.x, u.y, min_range, max_range, currentAbility.AbilityLevel("Ｍ扇"));
+                                }
+                                else if (currentAbility.IsAbilityClassifiedAs("Ｍ全") || currentAbility.IsAbilityClassifiedAs("Ｍ線"))
+                                {
+                                    Map.AreaInRange(u.x, u.y, max_range, min_range, "すべて");
+                                }
+                                else if (currentAbility.IsAbilityClassifiedAs("Ｍ投"))
+                                {
+                                    max_range = ((int)(max_range + currentAbility.AbilityLevel("Ｍ投")));
+                                    min_range = ((int)(min_range - currentAbility.AbilityLevel("Ｍ投")));
+                                    min_range = GeneralLib.MaxLng(min_range, 1);
+                                    Map.AreaInRange(u.x, u.y, max_range, min_range, "すべて");
+                                }
+                                else if (currentAbility.IsAbilityClassifiedAs("Ｍ移"))
+                                {
+                                    Map.AreaInMoveAction(SelectedUnit, max_range);
+                                }
+                                else
+                                {
+                                    Map.AreaInRange(u.x, u.y, max_range, min_range, u.Party + "の敵");
+                                }
 
-                    //                // アビリティの射程を求めておく
-                    //                min_range = currentUnit.AbilityMinRange(a);
-                    //                max_range = currentUnit.AbilityMaxRange(a);
+                                GUI.Center(u.x, u.y);
+                                GUI.MaskScreen();
 
-                    //                // 射程範囲表示
-                    //                if ((max_range == 1 || currentUnit.IsAbilityClassifiedAs(a, "Ｐ")) && !currentUnit.IsAbilityClassifiedAs(a, "Ｑ"))
-                    //                {
-                    //                    Map.AreaInReachable(SelectedUnit, max_range, "すべて");
-                    //                }
-                    //                else if (currentUnit.IsAbilityClassifiedAs(a, "Ｍ直"))
-                    //                {
-                    //                    Map.AreaInCross(currentUnit.x, currentUnit.y, min_range, max_range);
-                    //                }
-                    //                else if (currentUnit.IsAbilityClassifiedAs(a, "Ｍ拡"))
-                    //                {
-                    //                    Map.AreaInWideCross(currentUnit.x, currentUnit.y, min_range, max_range);
-                    //                }
-                    //                else if (currentUnit.IsAbilityClassifiedAs(a, "Ｍ扇"))
-                    //                {
-                    //                    Map.AreaInSectorCross(currentUnit.x, currentUnit.y, min_range, max_range, currentUnit.AbilityLevel(a, "Ｍ扇"));
-                    //                }
-                    //                else if (currentUnit.IsAbilityClassifiedAs(a, "Ｍ投"))
-                    //                {
-                    //                    max_range = (max_range + currentUnit.AbilityLevel(a, "Ｍ投"));
-                    //                    min_range = (min_range - currentUnit.AbilityLevel(a, "Ｍ投"));
-                    //                    min_range = GeneralLib.MaxLng(min_range, 1);
-                    //                    Map.AreaInRange(currentUnit.x, currentUnit.y, max_range, min_range, "すべて");
-                    //                }
-                    //                else if (currentUnit.IsAbilityClassifiedAs(a, "Ｍ移"))
-                    //                {
-                    //                    Map.AreaInMoveAction(SelectedUnit, max_range);
-                    //                }
-                    //                else
-                    //                {
-                    //                    Map.AreaInRange(currentUnit.x, currentUnit.y, max_range, min_range, "すべて");
-                    //                }
+                                // 先行入力されていたクリックイベントを解消
+                                GUI.DoEvents();
+                                WaitClickMode = true;
+                                GUI.IsFormClicked = false;
 
-                    //                GUI.Center(currentUnit.x, currentUnit.y);
-                    //                GUI.MaskScreen();
+                                // クリックされるまで待つ
+                                while (!GUI.IsFormClicked)
+                                {
+                                    GUI.Sleep(25);
+                                    if (GUI.IsRButtonPressed(true))
+                                    {
+                                        break;
+                                    }
+                                }
 
-                    //                // 先行入力されていたクリックイベントを解消
-                    //                Application.DoEvents();
-                    //                WaitClickMode = true;
-                    //                GUI.IsFormClicked = false;
-
-                    //                // クリックされるまで待つ
-                    //                while (!GUI.IsFormClicked)
-                    //                {
-                    //                    GUI.Sleep(25);
-                    //                    Application.DoEvents();
-                    //                    if (GUI.IsRButtonPressed(true))
-                    //                    {
-                    //                        break;
-                    //                    }
-                    //                }
-
-                    //                GUI.RedrawScreen();
-                    //                if (Information.UBound(list) == 1 && list[i] == "射程範囲")
-                    //                {
-                    //                    break;
-                    //                }
-                    //            }
-                    //            else
-                    //            {
-                    //                // 指定された属性の解説を表示
-                    //                My.MyProject.Forms.frmListBox.Hide();
-                    //                Help.AttributeHelp(SelectedUnit, GeneralLib.LIndex(list[i], 1), a, true);
-                    //            }
-                    //        }
-                    //    }
+                                GUI.RedrawScreen();
+                                if (list.Count == 1)
+                                {
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                // 指定された属性の解説を表示
+                                GUI.CloseListBox();
+                                Help.AttributeHelp(SelectedUnit, GeneralLib.LIndex(list[i - 1], 1), currentAbility.AbilityNo());
+                            }
+                        }
+                    }
                 }
             }
         }
