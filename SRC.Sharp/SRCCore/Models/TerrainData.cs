@@ -111,6 +111,11 @@ namespace SRCCore.Models
             return (int)(10 * FeatureLevel("ＥＮ回復"));
         }
 
+        public bool HasMoveStop()
+        {
+            return IsFeatureAvailable("移動停止");
+        }
+
         //// 地形効果の名称
         //public string FeatureName(string Index)
         //{

@@ -25,6 +25,7 @@ namespace SRCCore.Maps
         private IGUI GUI => SRC.GUI;
         private IGUIMap GUIMap => SRC.GUIMap;
         private Commands.Command Commands => SRC.Commands;
+        private Expressions.Expression Expression => SRC.Expression;
 
         public Map(SRC src)
         {
@@ -1716,36 +1717,29 @@ namespace SRCCore.Maps
 
             // 移動力
             uspeed = currentUnit.Speed;
-            //if (ByJump)
-            //{
-            //    uspeed = (currentUnit.Speed + currentUnit.FeatureLevel("ジャンプ"));
-            //}
-            //else
-            //{
-            //    uspeed = currentUnit.Speed;
-            //}
-
-            //if (currentUnit.IsConditionSatisfied("移動不能"))
-            //{
-            //    uspeed = 0;
-            //}
+            if (ByJump)
+            {
+                uspeed = (int)(currentUnit.Speed + currentUnit.FeatureLevel("ジャンプ"));
+            }
+            else
+            {
+                uspeed = currentUnit.Speed;
+            }
 
             // 移動コストは実際の２倍の値で記録されているため、移動力もそれに合わせて
             // ２倍にして移動範囲を計算する
             uspeed = (2 * uspeed);
 
-            //// ADD START MARGE
-            //// 再移動時は最初の移動の分だけ移動力を減少させる
-            //if (Commands.SelectedCommand == "再移動")
-            //{
-            //    uspeed = (uspeed - Commands.SelectedUnitMoveCost);
-            //}
+            // 再移動時は最初の移動の分だけ移動力を減少させる
+            if (Commands.SelectedCommand == "再移動")
+            {
+                uspeed = (uspeed - Commands.SelectedUnitMoveCost);
+            }
 
-            //if (currentUnit.IsConditionSatisfied("移動不能"))
-            //{
-            //    uspeed = 0;
-            //}
-            //// ADD END MARGE
+            if (currentUnit.IsConditionSatisfied("移動不能"))
+            {
+                uspeed = 0;
+            }
 
             // 移動範囲をチェックすべき領域
             var x1 = Math.Max(1, currentUnit.x - uspeed);
@@ -1766,326 +1760,305 @@ namespace SRCCore.Maps
             // 各地形の移動コストを算出しておく
             FillMoveCost(u, move_cost, move_area, x1, y1, x2, y2);
 
-            //// ユニットがいるため通り抜け出来ない場所をチェック
-            //if (!currentUnit.IsFeatureAvailable("すり抜け移動") && !currentUnit.IsUnderSpecialPowerEffect("すり抜け移動"))
-            //{
-            //    foreach (Unit currentU2 in SRC.UList)
-            //    {
-            //        u2 = currentU2;
-            //        {
-            //            var withBlock1 = u2;
-            //            if (withBlock1.Status == "出撃")
-            //            {
-            //                blocked = false;
+            // ユニットがいるため通り抜け出来ない場所をチェック
+            if (!currentUnit.IsFeatureAvailable("すり抜け移動") && !currentUnit.IsUnderSpecialPowerEffect("すり抜け移動"))
+            {
+                foreach (Unit u2 in SRC.UList.Items)
+                {
+                    if (u2.Status == "出撃")
+                    {
+                        var blocked = false;
 
-            //                // 敵対する場合は通り抜け不可
-            //                if (withBlock1.IsEnemy(u, true))
-            //                {
-            //                    blocked = true;
-            //                }
+                        // 敵対する場合は通り抜け不可
+                        if (u2.IsEnemy(u, true))
+                        {
+                            blocked = true;
+                        }
 
-            //                // 陣営が合わない場合も通り抜け不可
-            //                switch (withBlock1.Party0 ?? "")
-            //                {
-            //                    case "味方":
-            //                    case "ＮＰＣ":
-            //                        {
-            //                            if (u.Party0 != "味方" && u.Party0 != "ＮＰＣ")
-            //                            {
-            //                                blocked = true;
-            //                            }
+                        // 陣営が合わない場合も通り抜け不可
+                        switch (u2.Party0 ?? "")
+                        {
+                            case "味方":
+                            case "ＮＰＣ":
+                                {
+                                    if (u.Party0 != "味方" && u.Party0 != "ＮＰＣ")
+                                    {
+                                        blocked = true;
+                                    }
 
-            //                            break;
-            //                        }
+                                    break;
+                                }
 
-            //                    default:
-            //                        {
-            //                            if ((withBlock1.Party0 ?? "") != (u.Party0 ?? ""))
-            //                            {
-            //                                blocked = true;
-            //                            }
+                            default:
+                                {
+                                    if ((u2.Party0 ?? "") != (u.Party0 ?? ""))
+                                    {
+                                        blocked = true;
+                                    }
 
-            //                            break;
-            //                        }
-            //                }
+                                    break;
+                                }
+                        }
 
-            //                // 通り抜けられない場合
-            //                if (blocked)
-            //                {
-            //                    move_cost[withBlock1.x, withBlock1.y] = 1000000;
-            //                }
+                        // 通り抜けられない場合
+                        if (blocked)
+                        {
+                            move_cost[u2.x, u2.y] = 1000000;
+                        }
 
-            //                // ＺＯＣ
-            //                if (blocked && !ByJump)
-            //                {
-            //                    is_zoc = false;
-            //                    zarea = 0;
-            //                    if (withBlock1.IsFeatureAvailable("ＺＯＣ") | Expression.IsOptionDefined("ＺＯＣ"))
-            //                    {
-            //                        is_zoc = true;
-            //                        zarea = 1;
+                        // ＺＯＣ
+                        var zarea = 0;
+                        if (blocked && !ByJump)
+                        {
+                            var is_zoc = false;
+                            int n = 0;
+                            if (u2.IsFeatureAvailable("ＺＯＣ") || Expression.IsOptionDefined("ＺＯＣ"))
+                            {
+                                is_zoc = true;
+                                zarea = 1;
 
-            //                        // ＺＯＣ側のＺＯＣレベル
-            //                        n = withBlock1.FeatureLevel("ＺＯＣ");
-            //                        if (n == 1)
-            //                            n = 10000;
+                                // ＺＯＣ側のＺＯＣレベル
+                                n = (int)u2.FeatureLevel("ＺＯＣ");
+                                if (n == 1)
+                                    n = 10000;
 
-            //                        // Option「ＺＯＣ」が指定されている
-            //                        n = Math.Max(1, n);
-            //                        if (u.IsFeatureAvailable("ＺＯＣ無効化"))
-            //                        {
-            //                            // 移動側のＺＯＣ無効化レベル
-            //                            // レベル指定なし、またはLv1はLv10000として扱う
-            //                            l = u.FeatureLevel("ＺＯＣ無効化");
-            //                            if (l == 1)
-            //                                l = 10000;
+                                // Option「ＺＯＣ」が指定されている
+                                n = Math.Max(1, n);
+                                if (u.IsFeatureAvailable("ＺＯＣ無効化"))
+                                {
+                                    // 移動側のＺＯＣ無効化レベル
+                                    // レベル指定なし、またはLv1はLv10000として扱う
+                                    var l = u.FeatureLevel("ＺＯＣ無効化");
+                                    if (l == 1)
+                                        l = 10000;
 
-            //                            // 移動側のＺＯＣ無効化レベルの方が高い場合、
-            //                            // ＺＯＣ不可能
-            //                            if (l >= n)
-            //                            {
-            //                                is_zoc = false;
-            //                            }
-            //                        }
+                                    // 移動側のＺＯＣ無効化レベルの方が高い場合、
+                                    // ＺＯＣ不可能
+                                    if (l >= n)
+                                    {
+                                        is_zoc = false;
+                                    }
+                                }
 
-            //                        // 隣接するユニットが「隣接ユニットＺＯＣ無効化」を持っている場合
-            //                        if (is_zoc)
-            //                        {
-            //                            for (i = -1; i <= 1; i++)
-            //                            {
-            //                                var loopTo44 = Math.Abs(Math.Abs(i) - 1);
-            //                                for (j = (Math.Abs(i) - 1); j <= loopTo44; j++)
-            //                                {
-            //                                    if ((i != 0 | j != 0) && withBlock1.x + i >= 1 && (withBlock1.x + i) <= MapWidth && withBlock1.y + j >= 1 && (withBlock1.y + j) <= MapHeight)
-            //                                    {
-            //                                        // 隣接ユニットが存在する？
-            //                                        if (MapDataForUnit[(withBlock1.x + i), (withBlock1.y + j)] is object)
-            //                                        {
-            //                                            buf = withBlock1.Party0;
-            //                                            {
-            //                                                var withBlock2 = MapDataForUnit[(withBlock1.x + i), (withBlock1.y + j)];
-            //                                                // 敵対陣営？
-            //                                                switch (withBlock2.Party0 ?? "")
-            //                                                {
-            //                                                    case "味方":
-            //                                                    case "ＮＰＣ":
-            //                                                        {
-            //                                                            if (buf == "味方" | buf == "ＮＰＣ")
-            //                                                            {
-            //                                                                break;
-            //                                                            }
+                                // 隣接するユニットが「隣接ユニットＺＯＣ無効化」を持っている場合
+                                if (is_zoc)
+                                {
+                                    for (var i = -1; i <= 1; i++)
+                                    {
+                                        var loopTo44 = Math.Abs(Math.Abs(i) - 1);
+                                        for (var j = (Math.Abs(i) - 1); j <= loopTo44; j++)
+                                        {
+                                            if ((i != 0 || j != 0) && u2.x + i >= 1 && (u2.x + i) <= MapWidth && u2.y + j >= 1 && (u2.y + j) <= MapHeight)
+                                            {
+                                                // 隣接ユニットが存在する？
+                                                if (MapDataForUnit[(u2.x + i), (u2.y + j)] is object)
+                                                {
+                                                    var buf = u2.Party0;
+                                                    {
+                                                        var withBlock2 = MapDataForUnit[(u2.x + i), (u2.y + j)];
+                                                        // 敵対陣営？
+                                                        switch (withBlock2.Party0 ?? "")
+                                                        {
+                                                            case "味方":
+                                                            case "ＮＰＣ":
+                                                                {
+                                                                    if (buf == "味方" || buf == "ＮＰＣ")
+                                                                    {
+                                                                        break;
+                                                                    }
 
-            //                                                            break;
-            //                                                        }
+                                                                    break;
+                                                                }
 
-            //                                                    default:
-            //                                                        {
-            //                                                            if ((withBlock2.Party0 ?? "") == (buf ?? ""))
-            //                                                            {
-            //                                                                break;
-            //                                                            }
+                                                            default:
+                                                                {
+                                                                    if ((withBlock2.Party0 ?? "") == (buf ?? ""))
+                                                                    {
+                                                                        break;
+                                                                    }
 
-            //                                                            break;
-            //                                                        }
-            //                                                }
+                                                                    break;
+                                                                }
+                                                        }
 
-            //                                                l = withBlock2.FeatureLevel("隣接ユニットＺＯＣ無効化");
-            //                                                if (l == 1)
-            //                                                    l = 10000;
+                                                        var l = withBlock2.FeatureLevel("隣接ユニットＺＯＣ無効化");
+                                                        if (l == 1)
+                                                            l = 10000;
 
-            //                                                // 移動側のＺＯＣ無効化レベルの方が高い場合、
-            //                                                // ＺＯＣ不可能
-            //                                                if (l >= n)
-            //                                                {
-            //                                                    is_zoc = false;
-            //                                                    break;
-            //                                                }
-            //                                            }
-            //                                        }
-            //                                    }
-            //                                }
-            //                            }
-            //                        }
-            //                    }
+                                                        // 移動側のＺＯＣ無効化レベルの方が高い場合、
+                                                        // ＺＯＣ不可能
+                                                        if (l >= n)
+                                                        {
+                                                            is_zoc = false;
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
 
-            //                    if (is_zoc)
-            //                    {
-            //                        // 特殊能力「ＺＯＣ」が指定されているなら、そのデータの2つ目の値をＺＯＣの範囲に設定
-            //                        // 2つ目の値が省略されている場合は1を設定
-            //                        // ＺＯＣLvが0以下の場合、オプション「ＺＯＣ」が指定されていても範囲を0に設定
-            //                        if (GeneralLib.LLength(withBlock1.FeatureData("ＺＯＣ")) >= 2)
-            //                        {
-            //                            string localLIndex() { object argIndex1 = "ＺＯＣ"; string arglist = withBlock1.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+                            if (is_zoc)
+                            {
+                                // 特殊能力「ＺＯＣ」が指定されているなら、そのデータの2つ目の値をＺＯＣの範囲に設定
+                                // 2つ目の値が省略されている場合は1を設定
+                                // ＺＯＣLvが0以下の場合、オプション「ＺＯＣ」が指定されていても範囲を0に設定
+                                if (GeneralLib.LLength(u2.FeatureData("ＺＯＣ")) >= 2)
+                                {
+                                    zarea = Math.Max(Conversions.ToInteger(GeneralLib.LIndex(u2.FeatureData("ＺＯＣ"), 2)), 0);
+                                }
 
-            //                            string localLIndex1() { object argIndex1 = "ＺＯＣ"; string arglist = withBlock1.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+                                // 相対距離＋ＺＯＣの範囲が移動力以内のとき、ＺＯＣを設定
+                                if (((Math.Abs((int)(u.x - u2.x)) + Math.Abs((int)(u.y - u2.y))) - zarea) <= uspeed)
+                                {
+                                    // 水平・垂直方向のみのＺＯＣかどうかを判断
+                                    var is_hzoc = false;
+                                    var is_vzoc = false;
+                                    if (Strings.InStr(u2.FeatureData("ＺＯＣ"), "直線") > 0)
+                                    {
+                                        is_hzoc = true;
+                                        is_vzoc = true;
+                                    }
+                                    else
+                                    {
+                                        if (Strings.InStr(u2.FeatureData("ＺＯＣ"), "水平") > 0)
+                                        {
+                                            is_hzoc = true;
+                                        }
 
-            //                            zarea = Math.Max(Conversions.ToInteger(localLIndex1()), 0);
-            //                        }
+                                        if (Strings.InStr(u2.FeatureData("ＺＯＣ"), "垂直") > 0)
+                                        {
+                                            is_vzoc = true;
+                                        }
+                                    }
 
-            //                        // 相対距離＋ＺＯＣの範囲が移動力以内のとき、ＺＯＣを設定
-            //                        if (((Math.Abs((u.x - withBlock1.x)) + Math.Abs((u.y - withBlock1.y))) - zarea) <= uspeed)
-            //                        {
-            //                            // 水平・垂直方向のみのＺＯＣかどうかを判断
-            //                            is_hzoc = false;
-            //                            is_vzoc = false;
-            //                            if (Conversions.ToBoolean(Strings.InStr(withBlock1.FeatureData("ＺＯＣ"), "直線")))
-            //                            {
-            //                                is_hzoc = true;
-            //                                is_vzoc = true;
-            //                            }
-            //                            else
-            //                            {
-            //                                if (Conversions.ToBoolean(Strings.InStr(withBlock1.FeatureData("ＺＯＣ"), "水平")))
-            //                                {
-            //                                    is_hzoc = true;
-            //                                }
+                                    if (is_hzoc || is_vzoc)
+                                    {
+                                        var loopTo45 = zarea;
+                                        for (var i = (zarea * -1); i <= loopTo45; i++)
+                                        {
+                                            if (i == 0)
+                                            {
+                                                if (PointInZOC[(int)u2.x, (int)u2.y] < 0)
+                                                {
+                                                    if (n > Math.Abs(PointInZOC[(int)u2.x, (int)u2.y]))
+                                                    {
+                                                        PointInZOC[(int)u2.x, (int)u2.y] = n;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    PointInZOC[(int)u2.x, (int)u2.y] = Math.Max(n, PointInZOC[u2.x, u2.y]);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                // 水平ＺＯＣ
+                                                if (is_hzoc && u2.x + i >= 1 && (u2.x + i) <= MapWidth)
+                                                {
+                                                    if (PointInZOC[(u2.x + i), (int)u2.y] < 0)
+                                                    {
+                                                        if (n > Math.Abs(PointInZOC[(u2.x + i), (int)u2.y]))
+                                                        {
+                                                            PointInZOC[(u2.x + i), (int)u2.y] = n;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        PointInZOC[(u2.x + i), (int)u2.y] = Math.Max(n, PointInZOC[(u2.x + i), u2.y]);
+                                                    }
+                                                }
+                                                // 垂直ＺＯＣ
+                                                if (is_vzoc && u2.y + i >= 1 && (u2.y + i) <= MapHeight)
+                                                {
+                                                    if (PointInZOC[(int)u2.x, (u2.y + i)] < 0)
+                                                    {
+                                                        if (n > Math.Abs(PointInZOC[(int)u2.x, (u2.y + i)]))
+                                                        {
+                                                            PointInZOC[(int)u2.x, (u2.y + i)] = n;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        PointInZOC[(int)u2.x, (u2.y + i)] = Math.Max(n, PointInZOC[u2.x, (u2.y + i)]);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // 全方位ＺＯＣ
+                                        var loopTo46 = zarea;
+                                        for (var i = (zarea * -1); i <= loopTo46; i++)
+                                        {
+                                            var loopTo47 = Math.Abs((Math.Abs(i) - zarea));
+                                            for (var j = (Math.Abs(i) - zarea); j <= loopTo47; j++)
+                                            {
+                                                if (u2.x + i >= 1 && (u2.x + i) <= MapWidth && u2.y + j >= 1 && (u2.y + j) <= MapHeight)
+                                                {
+                                                    if (PointInZOC[(u2.x + i), (u2.y + j)] < 0)
+                                                    {
+                                                        if (n > Math.Abs(PointInZOC[(u2.x + i), (u2.y + j)]))
+                                                        {
+                                                            PointInZOC[(u2.x + i), (u2.y + j)] = n;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        PointInZOC[(u2.x + i), (u2.y + j)] = Math.Max(n, PointInZOC[(u2.x + i), (u2.y + j)]);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        // 「広域ＺＯＣ無効化」を所持している場合の処理
+                        else if (((Math.Abs((int)(u.x - u2.x)) + Math.Abs((int)(u.y - u2.y))) - zarea) <= uspeed)
+                        {
+                            // レベル指定なし、またはLv1はLv10000として扱う
+                            int l = (int)u2.FeatureLevel("広域ＺＯＣ無効化");
+                            if (l == 1)
+                                l = 10000;
+                            if (l > 0)
+                            {
+                                var n = Math.Max(GeneralLib.StrToLng(GeneralLib.LIndex(u2.FeatureData("広域ＺＯＣ無効化"), 2)), 1);
+                                var loopTo48 = n;
+                                for (var i = (n * -1); i <= loopTo48; i++)
+                                {
+                                    var loopTo49 = Math.Abs((Math.Abs(i) - n));
+                                    for (var j = (Math.Abs(i) - n); j <= loopTo49; j++)
+                                    {
+                                        if (u2.x + i >= 1 && (u2.x + i) <= MapWidth && u2.y + j >= 1 && (u2.y + j) <= MapHeight)
+                                        {
+                                            PointInZOC[(u2.x + i), (u2.y + j)] = PointInZOC[(u2.x + i), (u2.y + j)] - l;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
-            //                                if (Conversions.ToBoolean(Strings.InStr(withBlock1.FeatureData("ＺＯＣ"), "垂直")))
-            //                                {
-            //                                    is_vzoc = true;
-            //                                }
-            //                            }
-
-            //                            if (is_hzoc | is_vzoc)
-            //                            {
-            //                                var loopTo45 = zarea;
-            //                                for (i = (zarea * -1); i <= loopTo45; i++)
-            //                                {
-            //                                    if (i == 0)
-            //                                    {
-            //                                        if (PointInZOC[withBlock1.x, withBlock1.y] < 0)
-            //                                        {
-            //                                            if (n > Math.Abs(PointInZOC[withBlock1.x, withBlock1.y]))
-            //                                            {
-            //                                                PointInZOC[withBlock1.x, withBlock1.y] = n;
-            //                                            }
-            //                                        }
-            //                                        else
-            //                                        {
-            //                                            PointInZOC[withBlock1.x, withBlock1.y] = Math.Max(n, PointInZOC[withBlock1.x, withBlock1.y]);
-            //                                        }
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        // 水平ＺＯＣ
-            //                                        if (is_hzoc && withBlock1.x + i >= 1 && (withBlock1.x + i) <= MapWidth)
-            //                                        {
-            //                                            if (PointInZOC[(withBlock1.x + i), withBlock1.y] < 0)
-            //                                            {
-            //                                                if (n > Math.Abs(PointInZOC[(withBlock1.x + i), withBlock1.y]))
-            //                                                {
-            //                                                    PointInZOC[(withBlock1.x + i), withBlock1.y] = n;
-            //                                                }
-            //                                            }
-            //                                            else
-            //                                            {
-            //                                                PointInZOC[(withBlock1.x + i), withBlock1.y] = Math.Max(n, PointInZOC[(withBlock1.x + i), withBlock1.y]);
-            //                                            }
-            //                                        }
-            //                                        // 垂直ＺＯＣ
-            //                                        if (is_vzoc && withBlock1.y + i >= 1 && (withBlock1.y + i) <= MapHeight)
-            //                                        {
-            //                                            if (PointInZOC[withBlock1.x, (withBlock1.y + i)] < 0)
-            //                                            {
-            //                                                if (n > Math.Abs(PointInZOC[withBlock1.x, (withBlock1.y + i)]))
-            //                                                {
-            //                                                    PointInZOC[withBlock1.x, (withBlock1.y + i)] = n;
-            //                                                }
-            //                                            }
-            //                                            else
-            //                                            {
-            //                                                PointInZOC[withBlock1.x, (withBlock1.y + i)] = Math.Max(n, PointInZOC[withBlock1.x, (withBlock1.y + i)]);
-            //                                            }
-            //                                        }
-            //                                    }
-            //                                }
-            //                            }
-            //                            else
-            //                            {
-            //                                // 全方位ＺＯＣ
-            //                                var loopTo46 = zarea;
-            //                                for (i = (zarea * -1); i <= loopTo46; i++)
-            //                                {
-            //                                    var loopTo47 = Math.Abs((Math.Abs(i) - zarea));
-            //                                    for (j = (Math.Abs(i) - zarea); j <= loopTo47; j++)
-            //                                    {
-            //                                        if (withBlock1.x + i >= 1 && (withBlock1.x + i) <= MapWidth && withBlock1.y + j >= 1 && (withBlock1.y + j) <= MapHeight)
-            //                                        {
-            //                                            if (PointInZOC[(withBlock1.x + i), (withBlock1.y + j)] < 0)
-            //                                            {
-            //                                                if (n > Math.Abs(PointInZOC[(withBlock1.x + i), (withBlock1.y + j)]))
-            //                                                {
-            //                                                    PointInZOC[(withBlock1.x + i), (withBlock1.y + j)] = n;
-            //                                                }
-            //                                            }
-            //                                            else
-            //                                            {
-            //                                                PointInZOC[(withBlock1.x + i), (withBlock1.y + j)] = Math.Max(n, PointInZOC[(withBlock1.x + i), (withBlock1.y + j)]);
-            //                                            }
-            //                                        }
-            //                                    }
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //                // 「広域ＺＯＣ無効化」を所持している場合の処理
-            //                else if (((Math.Abs((u.x - withBlock1.x)) + Math.Abs((u.y - withBlock1.y))) - zarea) <= uspeed)
-            //                {
-            //                    // レベル指定なし、またはLv1はLv10000として扱う
-            //                    l = withBlock1.FeatureLevel("広域ＺＯＣ無効化");
-            //                    if (l == 1)
-            //                        l = 10000;
-            //                    if (l > 0)
-            //                    {
-            //                        string localLIndex2() { object argIndex1 = "広域ＺＯＣ無効化"; string arglist = withBlock1.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                        int localStrToLng() { string argexpr = hs1020e5bbaf214f5a820fb8d152076551(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-            //                        n = Math.Max(localStrToLng(), 1);
-            //                        var loopTo48 = n;
-            //                        for (i = (n * -1); i <= loopTo48; i++)
-            //                        {
-            //                            var loopTo49 = Math.Abs((Math.Abs(i) - n));
-            //                            for (j = (Math.Abs(i) - n); j <= loopTo49; j++)
-            //                            {
-            //                                if (withBlock1.x + i >= 1 && (withBlock1.x + i) <= MapWidth && withBlock1.y + j >= 1 && (withBlock1.y + j) <= MapHeight)
-            //                                {
-            //                                    PointInZOC[(withBlock1.x + i), (withBlock1.y + j)] = PointInZOC[(withBlock1.x + i), (withBlock1.y + j)] - l;
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// 移動停止地形はＺＯＣして扱う
-            //if (!ByJump)
-            //{
-            //    {
-            //        var withBlock3 = SRC.TDList;
-            //        var loopTo50 = x2;
-            //        for (i = x1; i <= loopTo50; i++)
-            //        {
-            //            var loopTo51 = y2;
-            //            for (j = y1; j <= loopTo51; j++)
-            //            {
-            //                // MOD START 240a
-            //                // If .IsFeatureAvailable(MapData(i, j, 0), "移動停止") Then
-            //                // PointInZOC(i, j) = 20000
-            //                // End If
-            //                if (TerrainHasMoveStop(i, j))
-            //                {
-            //                    PointInZOC[i, j] = 20000;
-            //                }
-            //                // MOD  END  240a
-            //            }
-            //        }
-            //    }
-            //}
+            // 移動停止地形はＺＯＣして扱う
+            if (!ByJump)
+            {
+                for (var i = x1; i <= x2; i++)
+                {
+                    for (var j = y1; j <= y2; j++)
+                    {
+                        if (Terrain(i, j).HasMoveStop())
+                        {
+                            PointInZOC[i, j] = 20000;
+                        }
+                    }
+                }
+            }
 
             // マップ上の各地点に到達するのに必要な移動力を計算する
 
@@ -2182,7 +2155,7 @@ namespace SRCCore.Maps
             }
 
             //// ジャンプ＆透過移動先は進入可能？
-            //if (ByJump | currentUnit.IsFeatureAvailable("透過移動") | currentUnit.IsUnderSpecialPowerEffect("透過移動"))
+            //if (ByJump || currentUnit.IsFeatureAvailable("透過移動") || currentUnit.IsUnderSpecialPowerEffect("透過移動"))
             //{
             //    var loopTo63 = x2;
             //    for (i = x1; i <= loopTo63; i++)
@@ -2361,7 +2334,7 @@ namespace SRCCore.Maps
 
             //                            case "空":
             //                                {
-            //                                    if (!is_trans_available_in_sky | TerrainMoveCost(i, j) > 10)
+            //                                    if (!is_trans_available_in_sky || TerrainMoveCost(i, j) > 10)
             //                                    {
             //                                        MaskData[i, j] = true;
             //                                    }
@@ -2647,7 +2620,7 @@ namespace SRCCore.Maps
                             //        break;
 
                             //    case "水":
-                            //        if (is_trans_available_in_water | is_trans_available_on_water)
+                            //        if (is_trans_available_in_water || is_trans_available_on_water)
                             //        {
                             //            move_cost[x, y] = 2;
                             //        }
@@ -2672,7 +2645,7 @@ namespace SRCCore.Maps
                             //        break;
 
                             //    case "深水":
-                            //        if (is_trans_available_in_water | is_trans_available_on_water)
+                            //        if (is_trans_available_in_water || is_trans_available_on_water)
                             //        {
                             //            move_cost[x, y] = 2;
                             //        }
@@ -2988,7 +2961,7 @@ namespace SRCCore.Maps
 
                     //                    case "水":
                     //                        {
-                    //                            if (is_trans_available_in_water | is_trans_available_on_water)
+                    //                            if (is_trans_available_in_water || is_trans_available_on_water)
                     //                            {
                     //                                move_cost[i, j] = 2;
                     //                            }
@@ -3015,7 +2988,7 @@ namespace SRCCore.Maps
 
                     //                    case "深水":
                     //                        {
-                    //                            if (is_trans_available_in_water | is_trans_available_on_water)
+                    //                            if (is_trans_available_in_water || is_trans_available_on_water)
                     //                            {
                     //                                move_cost[i, j] = 2;
                     //                            }
@@ -3195,7 +3168,7 @@ namespace SRCCore.Maps
             //// ホバー移動
             //if (currentUnit.IsFeatureAvailable("ホバー移動"))
             //{
-            //    if (move_area == "地上" | move_area == "水上")
+            //    if (move_area == "地上" || move_area == "水上")
             //    {
             //        var loopTo40 = x2;
             //        for (i = x1; i <= loopTo40; i++)
@@ -3218,7 +3191,7 @@ namespace SRCCore.Maps
             //}
 
             //// 透過移動
-            //if (currentUnit.IsFeatureAvailable("透過移動") | currentUnit.IsUnderSpecialPowerEffect("透過移動"))
+            //if (currentUnit.IsFeatureAvailable("透過移動") || currentUnit.IsUnderSpecialPowerEffect("透過移動"))
             //{
             //    var loopTo42 = x2;
             //    for (i = x1; i <= loopTo42; i++)
@@ -3459,7 +3432,7 @@ namespace SRCCore.Maps
 
                                         case "空":
                                             {
-                                                if (!is_trans_available_in_sky | Terrain(i, j).MoveCost > 100)
+                                                if (!is_trans_available_in_sky || Terrain(i, j).MoveCost > 100)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -3750,7 +3723,7 @@ namespace SRCCore.Maps
 
             //                        case "空":
             //                            {
-            //                                if (!is_trans_available_in_sky | TerrainMoveCost(i, j) > 100)
+            //                                if (!is_trans_available_in_sky || TerrainMoveCost(i, j) > 100)
             //                                {
             //                                    goto NextLoop;
             //                                }
