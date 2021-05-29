@@ -596,75 +596,69 @@ namespace SRCCore.Units
             GUI.EraseUnitBitmap(x, y, do_refresh);
             SRC.PList.UpdateSupportMod(this);
 
-            //    // 空き位置を検索
+            // 空き位置を検索
             var prev_x = x;
             var prev_y = y;
             x = new_x;
             y = new_y;
-            foreach (var of in OtherForms)
+            for (var i = 0; i <= 10; i++)
             {
-                of.x = x;
-                of.y = y;
+                var loopTo = GeneralLib.MinLng(new_x + i, Map.MapWidth);
+                for (var j = GeneralLib.MaxLng(new_x - i, 1); j <= loopTo; j++)
+                {
+                    var loopTo1 = GeneralLib.MinLng(new_y + i, Map.MapHeight);
+                    for (var k = GeneralLib.MaxLng(new_y - i, 1); k <= loopTo1; k++)
+                    {
+                        if ((Math.Abs((new_x - j)) + Math.Abs((new_y - k))) != i)
+                        {
+                            goto NextLoop;
+                        }
+
+                        if (Map.MapDataForUnit[j, k] is object)
+                        {
+                            goto NextLoop;
+                        }
+
+                        if (Map.Terrain(j, k).MoveCost > 100)
+                        {
+                            goto NextLoop;
+                        }
+
+                        switch (Map.Terrain(j, k).Class ?? "")
+                        {
+                            case "空":
+                                {
+                                    if (!IsTransAvailable("空"))
+                                    {
+                                        goto NextLoop;
+                                    }
+
+                                    break;
+                                }
+
+                            case "水":
+                            case "深水":
+                                {
+                                    if (!IsTransAvailable("水上") & !IsTransAvailable("空") & get_Adaption(3) == 0)
+                                    {
+                                        goto NextLoop;
+                                    }
+
+                                    break;
+                                }
+                        }
+
+                        x = j;
+                        y = k;
+                        goto ExitFor;
+                    NextLoop:
+                        ;
+                    }
+                }
             }
-            //    for (i = 0; i <= 10; i++)
-            //    {
-            //        var loopTo = GeneralLib.MinLng(new_x + i, Map.MapWidth);
-            //        for (j = GeneralLib.MaxLng(new_x - i, 1); j <= loopTo; j++)
-            //        {
-            //            var loopTo1 = GeneralLib.MinLng(new_y + i, Map.MapHeight);
-            //            for (k = GeneralLib.MaxLng(new_y - i, 1); k <= loopTo1; k++)
-            //            {
-            //                if ((Math.Abs((new_x - j)) + Math.Abs((new_y - k))) != i)
-            //                {
-            //                    goto NextLoop;
-            //                }
 
-            //                if (Map.MapDataForUnit[j, k] is object)
-            //                {
-            //                    goto NextLoop;
-            //                }
-
-            //                if (Map.TerrainMoveCost(j, k) > 100)
-            //                {
-            //                    goto NextLoop;
-            //                }
-
-            //                switch (Map.TerrainClass(j, k) ?? "")
-            //                {
-            //                    case "空":
-            //                        {
-            //                            if (!IsTransAvailable("空"))
-            //                            {
-            //                                goto NextLoop;
-            //                            }
-
-            //                            break;
-            //                        }
-
-            //                    case "水":
-            //                    case "深水":
-            //                        {
-            //                            if (!IsTransAvailable("水上") & !IsTransAvailable("空") & get_Adaption(3) == 0)
-            //                            {
-            //                                goto NextLoop;
-            //                            }
-
-            //                            break;
-            //                        }
-            //                }
-
-            //                x = j;
-            //                y = k;
-            //                goto ExitFor;
-            //            NextLoop:
-            //                ;
-            //            }
-            //        }
-            //    }
-
-            //ExitFor:
-            //    ;
-
+        ExitFor:
+            ;
 
             // 他の形態と格納したユニットの座標を更新
             foreach (var of in OtherForms)
