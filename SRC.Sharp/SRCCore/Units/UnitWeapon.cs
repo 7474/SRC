@@ -5276,7 +5276,7 @@ namespace SRCCore.Units
                 partners = Map.AdjacentUnit(Unit)
                     .Where(t => Unit.IsEnemy(t))
                     .Select(t => CombinationPartner(t.x, t.y))
-                    .FirstOrDefault(x => x.Count > 0);
+                    .FirstOrDefault(x => x.Count > 0) ?? new List<Unit>();
             }
             else
             {

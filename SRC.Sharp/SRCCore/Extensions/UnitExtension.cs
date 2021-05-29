@@ -30,9 +30,30 @@ namespace SRCCore.Extensions
 
     public static class UnitExtension
     {
+        public static List<CombineFeature> TwoUnitCombineFeatures(this Unit currentUnit, SRC SRC)
+        {
+            return currentUnit.Features
+                .Where(x => x.Name == "合体")
+                .Where(x => !string.IsNullOrEmpty(currentUnit.FeatureName(x.Name)))
+                .Select(x => new CombineFeature(x))
+                .Where(x => x.PartUnitNames.Count == 1)
+                .Where(x =>
+                {
+                    var cu = SRC.UList.Item(x.ConbineUnitName);
+                    return cu != null
+                        && !cu.IsConditionSatisfied("行動不能")
+                        && cu.Status != "破棄";
+                })
+                .Where(x =>
+                {
+                    var pu = SRC.UList.Item(x.PartUnitNames.First());
+                    return pu != null
+                        && !pu.CurrentForm().IsFeatureAvailable("合体制限");
+                }).ToList();
+        }
+
         public static List<CombineFeature> CombineFeatures(this Unit currentUnit, SRC SRC)
         {
-            // TODO ステータス表示の時をガン無視しているはず
             var combines = new List<CombineFeature>();
             foreach (var fd in currentUnit.Features
                 .Where(x => x.Name == "合体")
@@ -57,7 +78,7 @@ namespace SRCCore.Extensions
                             break;
                         }
 
-                        if (partu.Status != "出撃" & partu.CurrentForm().IsFeatureAvailable("合体制限"))
+                        if (partu.Status != "出撃" && partu.CurrentForm().IsFeatureAvailable("合体制限"))
                         {
                             break;
                         }
