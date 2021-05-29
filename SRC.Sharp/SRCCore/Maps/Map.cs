@@ -1676,29 +1676,6 @@ namespace SRCCore.Maps
         // ジャンプする場合は ByJump = True
         public void AreaInSpeed(Unit u, bool ByJump = false)
         {
-            //int tmp;
-            //string buf;
-            //bool is_trans_available_on_ground;
-            //bool is_trans_available_in_water;
-            //var is_trans_available_on_water = default(bool);
-            //bool is_trans_available_in_sky;
-            //bool is_trans_available_in_moon_sky;
-            //var is_adaptable_in_water = default(bool);
-            //var is_adaptable_in_space = false;
-            //var is_swimable = default(bool);
-            //string[] adopted_terrain;
-            //string[] allowed_terrains;
-            //string[] prohibited_terrains;
-            //Unit u2;
-            //int x1, y1;
-            //int x2, y2;
-            //var zarea = default;
-            //bool is_zoc;
-            //bool is_vzoc, is_hzoc;
-            //TerrainData td;
-            //bool is_terrain_effective;
-            //bool blocked;
-
             var cur_cost = new int[TotalMoveCost.GetLength(0), TotalMoveCost.GetLength(1)];
             var move_cost = new int[TotalMoveCost.GetLength(0), TotalMoveCost.GetLength(1)];
             string move_area;
