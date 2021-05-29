@@ -19,6 +19,7 @@ namespace SRCCore.Maps
         public bool is_adaptable_in_space { get; private set; }
         public bool is_trans_available_on_water { get; private set; }
         public bool is_swimable { get; private set; }
+        public bool is_able_to_penetrate { get; private set; }
         public IList<string> adopted_terrain { get; private set; }
         public IList<string> allowed_terrains { get; private set; }
         public IList<string> prohibited_terrains { get; private set; }
@@ -50,6 +51,7 @@ namespace SRCCore.Maps
                 }
             }
             is_swimable = u.IsFeatureAvailable("水泳");
+            is_able_to_penetrate = u.IsFeatureAvailable("透過移動") || u.IsUnderSpecialPowerEffect("透過移動");
         }
 
         public bool IsAdopted(TerrainData td)

@@ -116,6 +116,13 @@ namespace SRCCore.Models
             return IsFeatureAvailable("移動停止");
         }
 
+        public bool DoNotEnter()
+        {
+            return IsFeatureAvailable("進入禁止")
+                // 互換性維持のため残している
+                || IsFeatureAvailable("侵入禁止");
+        }
+
         //// 地形効果の名称
         //public string FeatureName(string Index)
         //{

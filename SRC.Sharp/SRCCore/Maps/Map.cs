@@ -1413,7 +1413,7 @@ namespace SRCCore.Maps
             }
 
             // 各地形の移動コストを算出しておく
-            FillMoveCost(u, move_cost, move_area, x1, y1, x2, y2);
+            FillMoveCost(u, move_cost, move_area, x1, y1, x2, y2, ByJump);
 
             // ユニットがいるため通り抜け出来ない場所をチェック
             if (!currentUnit.IsFeatureAvailable("すり抜け移動") && !currentUnit.IsUnderSpecialPowerEffect("すり抜け移動"))
@@ -2097,7 +2097,7 @@ namespace SRCCore.Maps
                     }
             }
         }
-        private void FillMoveCost(Unit u, int[,] move_cost, string move_area, int x1, int y1, int x2, int y2)
+        private void FillMoveCost(Unit u, int[,] move_cost, string move_area, int x1, int y1, int x2, int y2, bool ByJump)
         {
             // 移動能力の可否を調べておく
             var unitProps = new UnitMoveProps(u);
@@ -2560,29 +2560,27 @@ namespace SRCCore.Maps
                     throw new NotImplementedException("Invalid terrain.");
             }
 
-            //// 線路移動
-            //if (currentUnit.IsFeatureAvailable("線路移動"))
-            //{
-            //    if (currentUnit.Area == "地上" && !ByJump)
-            //    {
-            //        var loopTo30 = x2;
-            //        for (i = x1; i <= loopTo30; i++)
-            //        {
-            //            var loopTo31 = y2;
-            //            for (j = y1; j <= loopTo31; j++)
-            //            {
-            //                if (Terrain(i, j).Name == "線路")
-            //                {
-            //                    move_cost[i, j] = 2;
-            //                }
-            //                else
-            //                {
-            //                    move_cost[i, j] = 1000000;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+            // 線路移動
+            if (u.IsFeatureAvailable("線路移動"))
+            {
+                if (u.Area == "地上" && !ByJump)
+                {
+                    for (var i = x1; i <= x2; i++)
+                    {
+                        for (var j = y1; j <= y2; j++)
+                        {
+                            if (Terrain(i, j).Name == "線路")
+                            {
+                                move_cost[i, j] = 2;
+                            }
+                            else
+                            {
+                                move_cost[i, j] = 1000000;
+                            }
+                        }
+                    }
+                }
+            }
 
             for (var i = x1; i <= x2; i++)
             {
@@ -2602,42 +2600,38 @@ namespace SRCCore.Maps
                 }
             }
 
-            //// ホバー移動
-            //if (currentUnit.IsFeatureAvailable("ホバー移動"))
-            //{
-            //    if (move_area == "地上" || move_area == "水上")
-            //    {
-            //        var loopTo40 = x2;
-            //        for (i = x1; i <= loopTo40; i++)
-            //        {
-            //            var loopTo41 = y2;
-            //            for (j = y1; j <= loopTo41; j++)
-            //            {
-            //                switch (Terrain(i, j).Name ?? "")
-            //                {
-            //                    case "砂漠":
-            //                    case "雪原":
-            //                        {
-            //                            move_cost[i, j] = 2;
-            //                            break;
-            //                        }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+            // ホバー移動
+            if (u.IsFeatureAvailable("ホバー移動"))
+            {
+                if (move_area == "地上" || move_area == "水上")
+                {
+                    for (var i = x1; i <= x2; i++)
+                    {
+                        for (var j = y1; j <= y2; j++)
+                        {
+                            switch (Terrain(i, j).Name ?? "")
+                            {
+                                case "砂漠":
+                                case "雪原":
+                                    {
+                                        move_cost[i, j] = 2;
+                                        break;
+                                    }
+                            }
+                        }
+                    }
+                }
+            }
 
-            //// 透過移動
-            //if (currentUnit.IsFeatureAvailable("透過移動") || currentUnit.IsUnderSpecialPowerEffect("透過移動"))
-            //{
-            //    var loopTo42 = x2;
-            //    for (i = x1; i <= loopTo42; i++)
-            //    {
-            //        var loopTo43 = y2;
-            //        for (j = y1; j <= loopTo43; j++)
-            //            move_cost[i, j] = 2;
-            //    }
-            //}
+            // 透過移動
+            if (u.IsFeatureAvailable("透過移動") || u.IsUnderSpecialPowerEffect("透過移動"))
+            {
+                for (var i = x1; i <= x2; i++)
+                {
+                    for (var j = y1; j <= y2; j++)
+                        move_cost[i, j] = 2;
+                }
+            }
         }
 
         // ユニット u がテレポートして移動できる範囲を選択
@@ -2886,287 +2880,233 @@ namespace SRCCore.Maps
         // ユニット u のＭ移武器、アビリティのターゲット座標選択用
         public void AreaInMoveAction(Unit u, int max_range)
         {
-            // XXX 移動と処理合わせたいもんだ
-
             // 全領域マスク
             ClearMask();
 
             // 移動能力の可否を調べておく
             var unitProps = new UnitMoveProps(u);
 
-            //// 移動範囲をチェックすべき領域
-            //x1 = Math.Max(1, u.x - max_range);
-            //y1 = Math.Max(1, u.y - max_range);
-            //x2 = Math.Min(u.x + max_range, MapWidth);
-            //y2 = Math.Min(u.y + max_range, MapHeight);
+            // 移動範囲をチェックすべき領域
+            var x1 = Math.Max(1, u.x - max_range);
+            var y1 = Math.Max(1, u.y - max_range);
+            var x2 = Math.Min(u.x + max_range, MapWidth);
+            var y2 = Math.Min(u.y + max_range, MapHeight);
 
-            //// 進入可能か判定
-            //var loopTo6 = x2;
-            //for (i = x1; i <= loopTo6; i++)
-            //{
-            //    var loopTo7 = y2;
-            //    for (j = y1; j <= loopTo7; j++)
-            //    {
-            //        // 移動力の範囲内？
-            //        if ((Math.Abs((u.x - i)) + Math.Abs((u.y - j))) > max_range)
-            //        {
-            //            goto NextLoop;
-            //        }
+            // 進入可能か判定
+            for (var i = x1; i <= x2; i++)
+            {
+                for (var j = y1; j <= y2; j++)
+                {
+                    // 移動力の範囲内？
+                    if ((Math.Abs((u.x - i)) + Math.Abs((u.y - j))) > max_range)
+                    {
+                        goto NextLoop;
+                    }
 
-            //        // ユニットが存在？
-            //        if (MapDataForUnit[i, j] is object)
-            //        {
-            //            goto NextLoop;
-            //        }
+                    // ユニットが存在？
+                    if (MapDataForUnit[i, j] is object)
+                    {
+                        goto NextLoop;
+                    }
 
-            //        // 適応あり？
-            //        switch (u.Area ?? "")
-            //        {
-            //            case "地上":
-            //                {
-            //                    switch (td.Class ?? "")
-            //                    {
-            //                        case "空":
-            //                            {
-            //                                goto NextLoop;
-            //                                break;
-            //                            }
+                    var td = Terrain(i, j);
+                    // 適応あり？
+                    switch (u.Area ?? "")
+                    {
+                        case "地上":
+                            {
+                                switch (td.Class ?? "")
+                                {
+                                    case "空":
+                                        {
+                                            goto NextLoop;
+                                        }
 
-            //                        case "水":
-            //                            {
-            //                                if (!unitProps.is_adaptable_in_water && !unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
-            //                                {
-            //                                    goto NextLoop;
-            //                                }
+                                    case "水":
+                                        {
+                                            if (!unitProps.is_adaptable_in_water && !unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
+                                            {
+                                                goto NextLoop;
+                                            }
+                                            break;
+                                        }
 
-            //                                break;
-            //                            }
+                                    case "深水":
+                                        {
+                                            if (!unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
+                                            {
+                                                goto NextLoop;
+                                            }
+                                            break;
+                                        }
 
-            //                        case "深水":
-            //                            {
-            //                                if (!unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
-            //                                {
-            //                                    goto NextLoop;
-            //                                }
+                                    case "宇宙":
+                                        {
+                                            if (!unitProps.is_adaptable_in_space)
+                                            {
+                                                goto NextLoop;
+                                            }
+                                            break;
+                                        }
+                                }
 
-            //                                break;
-            //                            }
+                                break;
+                            }
 
-            //                        case "宇宙":
-            //                            {
-            //                                if (!unitProps.is_adaptable_in_space)
-            //                                {
-            //                                    goto NextLoop;
-            //                                }
+                        case "水中":
+                            {
+                                switch (td.Class ?? "")
+                                {
+                                    case "空":
+                                        {
+                                            goto NextLoop;
+                                        }
 
-            //                                break;
-            //                            }
-            //                    }
+                                    case "深水":
+                                        {
+                                            if (!unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
+                                            {
+                                                goto NextLoop;
+                                            }
+                                            break;
+                                        }
 
-            //                    break;
-            //                }
+                                    case "宇宙":
+                                        {
+                                            if (!unitProps.is_adaptable_in_space)
+                                            {
+                                                goto NextLoop;
+                                            }
+                                            break;
+                                        }
+                                }
 
-            //            case "水中":
-            //                {
-            //                    switch (td.Class ?? "")
-            //                    {
-            //                        case "空":
-            //                            {
-            //                                goto NextLoop;
-            //                                break;
-            //                            }
+                                break;
+                            }
 
-            //                        case "深水":
-            //                            {
-            //                                if (!unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
-            //                                {
-            //                                    goto NextLoop;
-            //                                }
+                        case "空中":
+                            {
+                                switch (td.Class ?? "")
+                                {
+                                    case "空":
+                                        {
+                                            if (td.MoveCost > 100)
+                                            {
+                                                goto NextLoop;
+                                            }
+                                            break;
+                                        }
 
-            //                                break;
-            //                            }
+                                    case "宇宙":
+                                        {
+                                            if (!unitProps.is_adaptable_in_space)
+                                            {
+                                                goto NextLoop;
+                                            }
+                                            break;
+                                        }
+                                }
 
-            //                        case "宇宙":
-            //                            {
-            //                                if (!unitProps.is_adaptable_in_space)
-            //                                {
-            //                                    goto NextLoop;
-            //                                }
+                                break;
+                            }
 
-            //                                break;
-            //                            }
-            //                    }
+                        case "地中":
+                            {
+                                if (td.Class != "陸")
+                                {
+                                    goto NextLoop;
+                                }
+                                break;
+                            }
 
-            //                    break;
-            //                }
+                        case "宇宙":
+                            {
+                                switch (td.Class ?? "")
+                                {
+                                    case "陸":
+                                    case "屋内":
+                                        {
+                                            if (!unitProps.is_trans_available_in_sky && !unitProps.is_trans_available_on_ground)
+                                            {
+                                                goto NextLoop;
+                                            }
 
-            //            case "空中":
-            //                {
-            //                    switch (td.Class ?? "")
-            //                    {
-            //                        case "空":
-            //                            {
-            //                                if (td.MoveCost > 100)
-            //                                {
-            //                                    goto NextLoop;
-            //                                }
+                                            break;
+                                        }
 
-            //                                break;
-            //                            }
+                                    case "空":
+                                        {
+                                            if (!unitProps.is_trans_available_in_sky || td.MoveCost > 100)
+                                            {
+                                                goto NextLoop;
+                                            }
 
-            //                        case "宇宙":
-            //                            {
-            //                                if (!unitProps.is_adaptable_in_space)
-            //                                {
-            //                                    goto NextLoop;
-            //                                }
+                                            break;
+                                        }
 
-            //                                break;
-            //                            }
-            //                    }
+                                    case "水":
+                                        {
+                                            if (!unitProps.is_trans_available_in_water && !unitProps.is_trans_available_on_water && !unitProps.is_adaptable_in_water)
+                                            {
+                                                goto NextLoop;
+                                            }
 
-            //                    break;
-            //                }
+                                            break;
+                                        }
 
-            //            case "地中":
-            //                {
-            //                    if (td.Class != "陸")
-            //                    {
-            //                        goto NextLoop;
-            //                    }
+                                    case "深水":
+                                        {
+                                            if (!unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
+                                            {
+                                                goto NextLoop;
+                                            }
 
-            //                    break;
-            //                }
+                                            break;
+                                        }
+                                }
 
-            //            case "宇宙":
-            //                {
-            //                    switch (td.Class ?? "")
-            //                    {
-            //                        case "陸":
-            //                        case "屋内":
-            //                            {
-            //                                if (!unitProps.is_trans_available_in_sky && !unitProps.is_trans_available_on_ground)
-            //                                {
-            //                                    goto NextLoop;
-            //                                }
+                                // 移動制限
+                                if (!unitProps.IsAllowed(td))
+                                {
+                                    goto NextLoop;
+                                }
 
-            //                                break;
-            //                            }
+                                // 進入不可
+                                if (unitProps.IsProhibited(td))
+                                {
+                                    goto NextLoop;
+                                }
 
-            //                        case "空":
-            //                            {
-            //                                if (!unitProps.is_trans_available_in_sky || td.MoveCost > 100)
-            //                                {
-            //                                    goto NextLoop;
-            //                                }
+                                break;
+                            }
+                    }
 
-            //                                break;
-            //                            }
+                    if (td.DoNotEnter())
+                    {
+                        if (!unitProps.IsAdopted(td))
+                        {
+                            goto NextLoop;
+                        }
+                    }
 
-            //                        case "水":
-            //                            {
-            //                                if (!unitProps.is_trans_available_in_water && !unitProps.is_trans_available_on_water && !unitProps.is_adaptable_in_water)
-            //                                {
-            //                                    goto NextLoop;
-            //                                }
+                    // 進路上に壁がある？
+                    if (!unitProps.is_able_to_penetrate)
+                    {
+                        if (IsLineBlocked(u.x, u.y, i, j, u.Area == "空中"))
+                        {
+                            goto NextLoop;
+                        }
+                    }
 
-            //                                break;
-            //                            }
+                    // マスク解除
+                    MaskData[i, j] = false;
+                NextLoop:
+                    ;
+                }
+            }
 
-            //                        case "深水":
-            //                            {
-            //                                if (!unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
-            //                                {
-            //                                    goto NextLoop;
-            //                                }
-
-            //                                break;
-            //                            }
-            //                    }
-
-            //                    // 移動制限
-            //                    if (Information.UBound(unitProps.allowed_terrains) > 0)
-            //                    {
-            //                        var loopTo8 = Information.UBound(unitProps.allowed_terrains);
-            //                        for (k = 2; k <= loopTo8; k++)
-            //                        {
-            //                            if ((Terrain(i, j).Name ?? "") == (unitProps.allowed_terrains[k] ?? ""))
-            //                            {
-            //                                break;
-            //                            }
-            //                        }
-
-            //                        if (k > Information.UBound(unitProps.allowed_terrains))
-            //                        {
-            //                            goto NextLoop;
-            //                        }
-            //                    }
-
-            //                    // 進入不可
-            //                    var loopTo9 = Information.UBound(unitProps.prohibited_terrains);
-            //                    for (k = 2; k <= loopTo9; k++)
-            //                    {
-            //                        if ((Terrain(i, j).Name ?? "") == (unitProps.prohibited_terrains[k] ?? ""))
-            //                        {
-            //                            goto NextLoop;
-            //                        }
-            //                    }
-
-            //                    break;
-            //                }
-            //        }
-
-            //        // 侵入（進入）禁止地形？
-            //        // MOD START 240a
-            //        // Set td = TDList.Item(MapData(i, j, 0))
-            //        // With td
-            //        // If .IsFeatureAvailable("侵入禁止") Then
-            //        // For k = 1 To UBound(unitProps.adopted_terrain)
-            //        // If .Name = unitProps.adopted_terrain(k) Then
-            //        // Exit For
-            //        // End If
-            //        // Next
-            //        // If k > UBound(unitProps.adopted_terrain) Then
-            //        // GoTo NextLoop
-            //        // End If
-            //        // End If
-            //        // End With
-            //        if (TerrainDoNotEnter(i, j))
-            //        {
-            //            var loopTo10 = Information.UBound(unitProps.adopted_terrain);
-            //            for (k = 1; k <= loopTo10; k++)
-            //            {
-            //                if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
-            //                {
-            //                    break;
-            //                }
-            //            }
-
-            //            if (k > Information.UBound(unitProps.adopted_terrain))
-            //            {
-            //                goto NextLoop;
-            //            }
-            //        }
-            //        // MOD START 240a
-
-            //        // 進路上に壁がある？
-            //        if (!is_able_to_penetrate)
-            //        {
-            //            if (IsLineBlocked(u.x, u.y, i, j, u.Area == "空中"))
-            //            {
-            //                goto NextLoop;
-            //            }
-            //        }
-
-            //        // マスク解除
-            //        MaskData[i, j] = false;
-            //    NextLoop:
-            //        ;
-            //    }
-            //}
-
-            //// 現在いる場所は常に進入可能
-            //MaskData[u.x, u.y] = false;
+            // 現在いる場所は常に進入可能
+            MaskData[u.x, u.y] = false;
         }
 
         // ２点間を結ぶ直線が壁でブロックされているか判定
@@ -3297,7 +3237,8 @@ namespace SRCCore.Maps
             var cur_speed = new int[52, 52];
 
             // 各地形の移動コストを算出しておく
-            FillMoveCost(u, move_cost, u.Area, 0, 0, 51, 51);
+            // XXX ジャンプとかテレポートは？
+            FillMoveCost(u, move_cost, u.Area, 0, 0, 51, 51, false);
 
             var loopTo34 = (MapWidth + 1);
             for (var i = 0; i <= loopTo34; i++)
