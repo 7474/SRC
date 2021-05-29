@@ -253,7 +253,7 @@ namespace SRCCore.Maps
         //}
 
         //// (X,Y)地点の地形名称
-        //public string TerrainName(int X, int Y)
+        //public string Terrain(int X, int Y).Name
         //{
         //    throw new NotImplementedException();
         //    //string TerrainNameRet = default;
@@ -2640,7 +2640,7 @@ namespace SRCCore.Maps
             //                var loopTo65 = Information.UBound(allowed_terrains);
             //                for (k = 2; k <= loopTo65; k++)
             //                {
-            //                    if ((TerrainName(i, j) ?? "") == (allowed_terrains[k] ?? ""))
+            //                    if ((Terrain(i, j).Name ?? "") == (allowed_terrains[k] ?? ""))
             //                    {
             //                        break;
             //                    }
@@ -2656,7 +2656,7 @@ namespace SRCCore.Maps
             //            var loopTo66 = Information.UBound(prohibited_terrains);
             //            for (k = 2; k <= loopTo66; k++)
             //            {
-            //                if ((TerrainName(i, j) ?? "") == (prohibited_terrains[k] ?? ""))
+            //                if ((Terrain(i, j).Name ?? "") == (prohibited_terrains[k] ?? ""))
             //                {
             //                    MaskData[i, j] = true;
             //                    break;
@@ -2872,7 +2872,7 @@ namespace SRCCore.Maps
                             //            var loopTo9 = Information.UBound(adopted_terrain);
                             //            for (k = 1; k <= loopTo9; k++)
                             //            {
-                            //                if ((TerrainName(x, y) ?? "") == (adopted_terrain[k] ?? ""))
+                            //                if ((Terrain(x, y).Name ?? "") == (adopted_terrain[k] ?? ""))
                             //                {
                             //                    move_cost[x, y] = Math.Min(move_cost[x, y], 2);
                             //                    break;
@@ -2897,7 +2897,7 @@ namespace SRCCore.Maps
                             //            var loopTo10 = Information.UBound(adopted_terrain);
                             //            for (k = 1; k <= loopTo10; k++)
                             //            {
-                            //                if ((TerrainName(x, y) ?? "") == (adopted_terrain[k] ?? ""))
+                            //                if ((Terrain(x, y).Name ?? "") == (adopted_terrain[k] ?? ""))
                             //                {
                             //                    move_cost[x, y] = Math.Min(move_cost[x, y], 2);
                             //                    break;
@@ -2938,7 +2938,7 @@ namespace SRCCore.Maps
                             //            var loopTo11 = Information.UBound(adopted_terrain);
                             //            for (k = 1; k <= loopTo11; k++)
                             //            {
-                            //                if ((TerrainName(x, y) ?? "") == (adopted_terrain[k] ?? ""))
+                            //                if ((Terrain(x, y).Name ?? "") == (adopted_terrain[k] ?? ""))
                             //                {
                             //                    move_cost[x, y] = Math.Min(move_cost[x, y], 2);
                             //                    break;
@@ -2977,7 +2977,7 @@ namespace SRCCore.Maps
                     //                                var loopTo14 = Information.UBound(adopted_terrain);
                     //                                for (k = 1; k <= loopTo14; k++)
                     //                                {
-                    //                                    if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                    if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
                     //                                    {
                     //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                        break;
@@ -3013,7 +3013,7 @@ namespace SRCCore.Maps
                     //                                var loopTo15 = Information.UBound(adopted_terrain);
                     //                                for (k = 1; k <= loopTo15; k++)
                     //                                {
-                    //                                    if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                    if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
                     //                                    {
                     //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                        break;
@@ -3054,7 +3054,7 @@ namespace SRCCore.Maps
                     //                                var loopTo18 = Information.UBound(adopted_terrain);
                     //                                for (k = 1; k <= loopTo18; k++)
                     //                                {
-                    //                                    if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                    if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
                     //                                    {
                     //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                        break;
@@ -3081,7 +3081,7 @@ namespace SRCCore.Maps
                     //                                var loopTo19 = Information.UBound(adopted_terrain);
                     //                                for (k = 1; k <= loopTo19; k++)
                     //                                {
-                    //                                    if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                    if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
                     //                                    {
                     //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                        break;
@@ -3124,7 +3124,7 @@ namespace SRCCore.Maps
                     //                                var loopTo20 = Information.UBound(adopted_terrain);
                     //                                for (k = 1; k <= loopTo20; k++)
                     //                                {
-                    //                                    if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                    if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
                     //                                    {
                     //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                        break;
@@ -3161,7 +3161,7 @@ namespace SRCCore.Maps
                     //                            var loopTo23 = Information.UBound(adopted_terrain);
                     //                            for (k = 1; k <= loopTo23; k++)
                     //                            {
-                    //                                if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
                     //                                {
                     //                                    move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                    break;
@@ -3184,7 +3184,7 @@ namespace SRCCore.Maps
                     //                                var loopTo24 = Information.UBound(adopted_terrain);
                     //                                for (k = 1; k <= loopTo24; k++)
                     //                                {
-                    //                                    if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                    if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
                     //                                    {
                     //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                        break;
@@ -3211,7 +3211,7 @@ namespace SRCCore.Maps
                     //                                var loopTo25 = Information.UBound(adopted_terrain);
                     //                                for (k = 1; k <= loopTo25; k++)
                     //                                {
-                    //                                    if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                    if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
                     //                                    {
                     //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                        break;
@@ -3238,7 +3238,7 @@ namespace SRCCore.Maps
                     //                                var loopTo26 = Information.UBound(adopted_terrain);
                     //                                for (k = 1; k <= loopTo26; k++)
                     //                                {
-                    //                                    if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                    if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
                     //                                    {
                     //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                        break;
@@ -3279,7 +3279,7 @@ namespace SRCCore.Maps
                     //                                var loopTo27 = Information.UBound(adopted_terrain);
                     //                                for (k = 1; k <= loopTo27; k++)
                     //                                {
-                    //                                    if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                    if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
                     //                                    {
                     //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                        break;
@@ -3341,7 +3341,7 @@ namespace SRCCore.Maps
             //            var loopTo31 = y2;
             //            for (j = y1; j <= loopTo31; j++)
             //            {
-            //                if (TerrainName(i, j) == "線路")
+            //                if (Terrain(i, j).Name == "線路")
             //                {
             //                    move_cost[i, j] = 2;
             //                }
@@ -3379,7 +3379,7 @@ namespace SRCCore.Maps
             //                    var loopTo35 = n;
             //                    for (k = 2; k <= loopTo35; k++)
             //                    {
-            //                        if ((TerrainName(i, j) ?? "") == (allowed_terrains[k] ?? ""))
+            //                        if ((Terrain(i, j).Name ?? "") == (allowed_terrains[k] ?? ""))
             //                        {
             //                            break;
             //                        }
@@ -3420,7 +3420,7 @@ namespace SRCCore.Maps
             //                    var loopTo39 = n;
             //                    for (k = 2; k <= loopTo39; k++)
             //                    {
-            //                        if ((TerrainName(i, j) ?? "") == (prohibited_terrains[k] ?? ""))
+            //                        if ((Terrain(i, j).Name ?? "") == (prohibited_terrains[k] ?? ""))
             //                        {
             //                            move_cost[i, j] = 1000000;
             //                            break;
@@ -3443,7 +3443,7 @@ namespace SRCCore.Maps
             //            var loopTo41 = y2;
             //            for (j = y1; j <= loopTo41; j++)
             //            {
-            //                switch (TerrainName(i, j) ?? "")
+            //                switch (Terrain(i, j).Name ?? "")
             //                {
             //                    case "砂漠":
             //                    case "雪原":
@@ -3738,7 +3738,7 @@ namespace SRCCore.Maps
                         //    var loopTo6 = Information.UBound(allowed_terrains);
                         //    for (k = 2; k <= loopTo6; k++)
                         //    {
-                        //        if ((TerrainName(i, j) ?? "") == (allowed_terrains[k] ?? ""))
+                        //        if ((Terrain(i, j).Name ?? "") == (allowed_terrains[k] ?? ""))
                         //        {
                         //            break;
                         //        }
@@ -3754,7 +3754,7 @@ namespace SRCCore.Maps
                         //var loopTo7 = Information.UBound(prohibited_terrains);
                         //for (k = 2; k <= loopTo7; k++)
                         //{
-                        //    if ((TerrainName(i, j) ?? "") == (prohibited_terrains[k] ?? ""))
+                        //    if ((Terrain(i, j).Name ?? "") == (prohibited_terrains[k] ?? ""))
                         //    {
                         //        MaskData[i, j] = true;
                         //        break;
@@ -4089,7 +4089,7 @@ namespace SRCCore.Maps
             //                        var loopTo8 = Information.UBound(allowed_terrains);
             //                        for (k = 2; k <= loopTo8; k++)
             //                        {
-            //                            if ((TerrainName(i, j) ?? "") == (allowed_terrains[k] ?? ""))
+            //                            if ((Terrain(i, j).Name ?? "") == (allowed_terrains[k] ?? ""))
             //                            {
             //                                break;
             //                            }
@@ -4105,7 +4105,7 @@ namespace SRCCore.Maps
             //                    var loopTo9 = Information.UBound(prohibited_terrains);
             //                    for (k = 2; k <= loopTo9; k++)
             //                    {
-            //                        if ((TerrainName(i, j) ?? "") == (prohibited_terrains[k] ?? ""))
+            //                        if ((Terrain(i, j).Name ?? "") == (prohibited_terrains[k] ?? ""))
             //                        {
             //                            goto NextLoop;
             //                        }
@@ -4135,7 +4135,7 @@ namespace SRCCore.Maps
             //            var loopTo10 = Information.UBound(adopted_terrain);
             //            for (k = 1; k <= loopTo10; k++)
             //            {
-            //                if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
+            //                if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
             //                {
             //                    break;
             //                }
@@ -4171,115 +4171,114 @@ namespace SRCCore.Maps
         // ２点間を結ぶ直線が壁でブロックされているか判定
         public bool IsLineBlocked(int x1, int y1, int x2, int y2, bool is_flying = false)
         {
-            throw new NotImplementedException();
-            //bool IsLineBlockedRet = default;
-            //int xx, yy;
-            //int xx2, yy2;
-            //xx = x1;
-            //yy = y1;
-            //if (Math.Abs((x1 - x2)) > Math.Abs((y1 - y2)))
-            //{
-            //    do
-            //    {
-            //        if (x1 > x2)
-            //        {
-            //            xx = (xx - 1);
-            //        }
-            //        else
-            //        {
-            //            xx = (xx + 1);
-            //        }
+            bool IsLineBlockedRet = default;
+            int xx, yy;
+            int xx2, yy2;
+            xx = x1;
+            yy = y1;
+            if (Math.Abs((x1 - x2)) > Math.Abs((y1 - y2)))
+            {
+                do
+                {
+                    if (x1 > x2)
+                    {
+                        xx = (xx - 1);
+                    }
+                    else
+                    {
+                        xx = (xx + 1);
+                    }
 
-            //        yy2 = yy;
-            //        yy = (y1 + (y2 - y1) * (x1 - xx + 0d) / (x1 - x2));
+                    yy2 = yy;
+                    yy = (int)(y1 + (y2 - y1) * (x1 - xx + 0d) / (x1 - x2));
 
-            //        // 壁？
-            //        if (is_flying)
-            //        {
-            //            if (TerrainName(xx, yy) == "壁" | TerrainName(xx, yy2) == "壁")
-            //            {
-            //                IsLineBlockedRet = true;
-            //                return IsLineBlockedRet;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            switch (TerrainName(xx, yy) ?? "")
-            //            {
-            //                case "壁":
-            //                case "防壁":
-            //                    {
-            //                        IsLineBlockedRet = true;
-            //                        return IsLineBlockedRet;
-            //                    }
-            //            }
+                    // 壁？
+                    if (is_flying)
+                    {
+                        if (Terrain(xx, yy).Name == "壁" || Terrain(xx, yy2).Name == "壁")
+                        {
+                            IsLineBlockedRet = true;
+                            return IsLineBlockedRet;
+                        }
+                    }
+                    else
+                    {
+                        switch (Terrain(xx, yy).Name ?? "")
+                        {
+                            case "壁":
+                            case "防壁":
+                                {
+                                    IsLineBlockedRet = true;
+                                    return IsLineBlockedRet;
+                                }
+                        }
 
-            //            switch (TerrainName(xx, yy2) ?? "")
-            //            {
-            //                case "壁":
-            //                case "防壁":
-            //                    {
-            //                        IsLineBlockedRet = true;
-            //                        return IsLineBlockedRet;
-            //                    }
-            //            }
-            //        }
-            //    }
-            //    while (xx != x2);
-            //}
-            //else
-            //{
-            //    do
-            //    {
-            //        if (y1 > y2)
-            //        {
-            //            yy = (yy - 1);
-            //        }
-            //        else
-            //        {
-            //            yy = (yy + 1);
-            //        }
+                        switch (Terrain(xx, yy2).Name ?? "")
+                        {
+                            case "壁":
+                            case "防壁":
+                                {
+                                    IsLineBlockedRet = true;
+                                    return IsLineBlockedRet;
+                                }
+                        }
+                    }
+                }
+                while (xx != x2);
+            }
+            else
+            {
+                do
+                {
+                    if (y1 > y2)
+                    {
+                        yy = (yy - 1);
+                    }
+                    else
+                    {
+                        yy = (yy + 1);
+                    }
 
-            //        xx2 = xx;
-            //        xx = (x1 + (x2 - x1) * (y1 - yy + 0d) / (y1 - y2));
+                    xx2 = xx;
+                    xx = (int)(x1 + (x2 - x1) * (y1 - yy + 0d) / (y1 - y2));
 
-            //        // 壁？
-            //        if (is_flying)
-            //        {
-            //            if (TerrainName(xx, yy) == "壁" | TerrainName(xx2, yy) == "壁")
-            //            {
-            //                IsLineBlockedRet = true;
-            //                return IsLineBlockedRet;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            switch (TerrainName(xx, yy) ?? "")
-            //            {
-            //                case "壁":
-            //                case "防壁":
-            //                    {
-            //                        IsLineBlockedRet = true;
-            //                        return IsLineBlockedRet;
-            //                    }
-            //            }
+                    // 壁？
+                    if (is_flying)
+                    {
+                        if (Terrain(xx, yy).Name == "壁" || Terrain(xx2, yy).Name == "壁")
+                        {
+                            IsLineBlockedRet = true;
+                            return IsLineBlockedRet;
+                        }
+                    }
+                    else
+                    {
+                        switch (Terrain(xx, yy).Name ?? "")
+                        {
+                            case "壁":
+                            case "防壁":
+                                {
+                                    IsLineBlockedRet = true;
+                                    return IsLineBlockedRet;
+                                }
+                        }
 
-            //            switch (TerrainName(xx2, yy) ?? "")
-            //            {
-            //                case "壁":
-            //                case "防壁":
-            //                    {
-            //                        IsLineBlockedRet = true;
-            //                        return IsLineBlockedRet;
-            //                    }
-            //            }
-            //        }
-            //    }
-            //    while (yy != y2);
-            //}
+                        switch (Terrain(xx2, yy).Name ?? "")
+                        {
+                            case "壁":
+                            case "防壁":
+                                {
+                                    IsLineBlockedRet = true;
+                                    return IsLineBlockedRet;
+                                }
+                        }
+                    }
+                }
+                while (yy != y2);
+            }
 
-            //IsLineBlockedRet = false;
-            //return IsLineBlockedRet;
+            IsLineBlockedRet = false;
+            return IsLineBlockedRet;
         }
 
         // ユニット u が (dst_x,dst_y) に行くのに最も近い移動範囲内の場所 (X,Y) はどこか検索
