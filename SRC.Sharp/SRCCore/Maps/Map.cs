@@ -2125,13 +2125,9 @@ namespace SRCCore.Maps
                                     if (unitProps.is_adaptable_in_space)
                                     {
                                         move_cost[i, j] = Terrain(i, j).MoveCost;
-                                        for (var k = 0; k < unitProps.adopted_terrain.Count; k++)
+                                        if (unitProps.IsAdopted(Terrain(i, j)))
                                         {
-                                            if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
-                                            {
-                                                move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-                                                break;
-                                            }
+                                            move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                                         }
                                     }
                                     else
@@ -2150,481 +2146,418 @@ namespace SRCCore.Maps
 
                     break;
 
-                // XXX とりあえず地上で
                 case "地上":
-                default:
                     for (var x = x1; x <= x2; x++)
                     {
                         for (var y = y1; y <= y2; y++)
                         {
-                            move_cost[x, y] = MapData[x, y].Terrain.MoveCost;
-                            //switch (MapData[x, y].TerrainClass)
-                            //{
-                            //    case "陸":
-                            //    case "屋内":
-                            //    case "月面":
-                            //        if (unitProps.is_trans_available_on_ground)
-                            //        {
-                            //            move_cost[x, y] = TerrainMoveCost(x, y);
-                            //            var loopTo9 = Information.UBound(unitProps.adopted_terrain);
-                            //            for (k = 1; k <= loopTo9; k++)
-                            //            {
-                            //                if ((Terrain(x, y).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
-                            //                {
-                            //                    move_cost[x, y] = Math.Min(move_cost[x, y], 2);
-                            //                    break;
-                            //                }
-                            //            }
-                            //        }
-                            //        else
-                            //        {
-                            //            move_cost[x, y] = 1000000;
-                            //        }
+                            switch (MapData[x, y].Terrain.Class)
+                            {
+                                case "陸":
+                                case "屋内":
+                                case "月面":
+                                    if (unitProps.is_trans_available_on_ground)
+                                    {
+                                        move_cost[x, y] = Terrain(x, y).MoveCost;
+                                        if (unitProps.IsAdopted(Terrain(x, y)))
+                                        {
+                                            move_cost[x, y] = Math.Min(move_cost[x, y], 2);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        move_cost[x, y] = 1000000;
+                                    }
 
-                            //        break;
+                                    break;
 
-                            //    case "水":
-                            //        if (unitProps.is_trans_available_in_water || unitProps.is_trans_available_on_water)
-                            //        {
-                            //            move_cost[x, y] = 2;
-                            //        }
-                            //        else if (unitProps.is_adaptable_in_water)
-                            //        {
-                            //            move_cost[x, y] = TerrainMoveCost(x, y);
-                            //            var loopTo10 = Information.UBound(unitProps.adopted_terrain);
-                            //            for (k = 1; k <= loopTo10; k++)
-                            //            {
-                            //                if ((Terrain(x, y).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
-                            //                {
-                            //                    move_cost[x, y] = Math.Min(move_cost[x, y], 2);
-                            //                    break;
-                            //                }
-                            //            }
-                            //        }
-                            //        else
-                            //        {
-                            //            move_cost[x, y] = 1000000;
-                            //        }
+                                case "水":
+                                    if (unitProps.is_trans_available_in_water || unitProps.is_trans_available_on_water)
+                                    {
+                                        move_cost[x, y] = 2;
+                                    }
+                                    else if (unitProps.is_adaptable_in_water)
+                                    {
+                                        move_cost[x, y] = Terrain(x, y).MoveCost;
+                                        if (unitProps.IsAdopted(Terrain(x, y)))
+                                        {
+                                            move_cost[x, y] = Math.Min(move_cost[x, y], 2);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        move_cost[x, y] = 1000000;
+                                    }
 
-                            //        break;
+                                    break;
 
-                            //    case "深水":
-                            //        if (unitProps.is_trans_available_in_water || unitProps.is_trans_available_on_water)
-                            //        {
-                            //            move_cost[x, y] = 2;
-                            //        }
-                            //        else if (is_swimable)
-                            //        {
-                            //            move_cost[x, y] = TerrainMoveCost(x, y);
-                            //        }
-                            //        else
-                            //        {
-                            //            move_cost[x, y] = 1000000;
-                            //        }
+                                case "深水":
+                                    if (unitProps.is_trans_available_in_water || unitProps.is_trans_available_on_water)
+                                    {
+                                        move_cost[x, y] = 2;
+                                    }
+                                    else if (unitProps.is_swimable)
+                                    {
+                                        move_cost[x, y] = Terrain(x, y).MoveCost;
+                                    }
+                                    else
+                                    {
+                                        move_cost[x, y] = 1000000;
+                                    }
 
-                            //        break;
+                                    break;
 
-                            //    case "空":
-                            //        move_cost[x, y] = 1000000;
-                            //        break;
+                                case "空":
+                                    move_cost[x, y] = 1000000;
+                                    break;
 
-                            //    case "宇宙":
-                            //        if (unitProps.is_adaptable_in_space)
-                            //        {
-                            //            move_cost[x, y] = TerrainMoveCost(x, y);
-                            //            var loopTo11 = Information.UBound(unitProps.adopted_terrain);
-                            //            for (k = 1; k <= loopTo11; k++)
-                            //            {
-                            //                if ((Terrain(x, y).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
-                            //                {
-                            //                    move_cost[x, y] = Math.Min(move_cost[x, y], 2);
-                            //                    break;
-                            //                }
-                            //            }
-                            //        }
-                            //        else
-                            //        {
-                            //            move_cost[x, y] = 1000000;
-                            //        }
+                                case "宇宙":
+                                    if (unitProps.is_adaptable_in_space)
+                                    {
+                                        move_cost[x, y] = Terrain(x, y).MoveCost;
+                                        if (unitProps.IsAdopted(Terrain(x, y)))
+                                        {
+                                            move_cost[x, y] = Math.Min(move_cost[x, y], 2);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        move_cost[x, y] = 1000000;
+                                    }
 
-                            //        break;
-                            //}
+                                    break;
+                            }
                         }
                     }
 
                     break;
 
-                    //case "水上":
-                    //    {
-                    //        var loopTo12 = x2;
-                    //        for (i = x1; i <= loopTo12; i++)
-                    //        {
-                    //            var loopTo13 = y2;
-                    //            for (j = y1; j <= loopTo13; j++)
-                    //            {
-                    //                switch (td.Class ?? "")
-                    //                {
-                    //                    case "陸":
-                    //                    case "屋内":
-                    //                    case "月面":
-                    //                        {
-                    //                            if (unitProps.is_trans_available_on_ground)
-                    //                            {
-                    //                                move_cost[i, j] = td.MoveCost;
-                    //                                var loopTo14 = Information.UBound(unitProps.adopted_terrain);
-                    //                                for (k = 1; k <= loopTo14; k++)
-                    //                                {
-                    //                                    if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
-                    //                                    {
-                    //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-                    //                                        break;
-                    //                                    }
-                    //                                }
-                    //                            }
-                    //                            else
-                    //                            {
-                    //                                move_cost[i, j] = 1000000;
-                    //                            }
+                case "水上":
+                    {
+                        var loopTo12 = x2;
+                        for (var i = x1; i <= loopTo12; i++)
+                        {
+                            var loopTo13 = y2;
+                            for (var j = y1; j <= loopTo13; j++)
+                            {
+                                var td = Terrain(i, j);
+                                switch (td.Class ?? "")
+                                {
+                                    case "陸":
+                                    case "屋内":
+                                    case "月面":
+                                        {
+                                            if (unitProps.is_trans_available_on_ground)
+                                            {
+                                                move_cost[i, j] = td.MoveCost;
+                                                if (unitProps.IsAdopted(Terrain(i, j)))
+                                                {
+                                                    move_cost[i, j] = Math.Min(move_cost[i, j], 2);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                move_cost[i, j] = 1000000;
+                                            }
 
-                    //                            break;
-                    //                        }
+                                            break;
+                                        }
 
-                    //                    case "水":
-                    //                    case "深水":
-                    //                        {
-                    //                            move_cost[i, j] = 2;
-                    //                            break;
-                    //                        }
+                                    case "水":
+                                    case "深水":
+                                        {
+                                            move_cost[i, j] = 2;
+                                            break;
+                                        }
 
-                    //                    case "空":
-                    //                        {
-                    //                            move_cost[i, j] = 1000000;
-                    //                            break;
-                    //                        }
+                                    case "空":
+                                        {
+                                            move_cost[i, j] = 1000000;
+                                            break;
+                                        }
 
-                    //                    case "宇宙":
-                    //                        {
-                    //                            if (unitProps.is_adaptable_in_space)
-                    //                            {
-                    //                                move_cost[i, j] = td.MoveCost;
-                    //                                var loopTo15 = Information.UBound(unitProps.adopted_terrain);
-                    //                                for (k = 1; k <= loopTo15; k++)
-                    //                                {
-                    //                                    if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
-                    //                                    {
-                    //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-                    //                                        break;
-                    //                                    }
-                    //                                }
-                    //                            }
-                    //                            else
-                    //                            {
-                    //                                move_cost[i, j] = 1000000;
-                    //                            }
+                                    case "宇宙":
+                                        {
+                                            if (unitProps.is_adaptable_in_space)
+                                            {
+                                                move_cost[i, j] = td.MoveCost;
+                                                if (unitProps.IsAdopted(Terrain(i, j)))
+                                                {
+                                                    move_cost[i, j] = Math.Min(move_cost[i, j], 2);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                move_cost[i, j] = 1000000;
+                                            }
 
-                    //                            break;
-                    //                        }
-                    //                }
-                    //            }
-                    //        }
+                                            break;
+                                        }
+                                }
+                            }
+                        }
 
-                    //        break;
-                    //    }
+                        break;
+                    }
 
-                    //case "水中":
-                    //    {
-                    //        var loopTo16 = x2;
-                    //        for (i = x1; i <= loopTo16; i++)
-                    //        {
-                    //            var loopTo17 = y2;
-                    //            for (j = y1; j <= loopTo17; j++)
-                    //            {
-                    //                switch (td.Class ?? "")
-                    //                {
-                    //                    case "陸":
-                    //                    case "屋内":
-                    //                    case "月面":
-                    //                        {
-                    //                            if (unitProps.is_trans_available_on_ground)
-                    //                            {
-                    //                                move_cost[i, j] = td.MoveCost;
-                    //                                var loopTo18 = Information.UBound(unitProps.adopted_terrain);
-                    //                                for (k = 1; k <= loopTo18; k++)
-                    //                                {
-                    //                                    if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
-                    //                                    {
-                    //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-                    //                                        break;
-                    //                                    }
-                    //                                }
-                    //                            }
-                    //                            else
-                    //                            {
-                    //                                move_cost[i, j] = 1000000;
-                    //                            }
+                case "水中":
+                    {
+                        var loopTo16 = x2;
+                        for (var i = x1; i <= loopTo16; i++)
+                        {
+                            var loopTo17 = y2;
+                            for (var j = y1; j <= loopTo17; j++)
+                            {
+                                var td = Terrain(i, j);
+                                switch (td.Class ?? "")
+                                {
+                                    case "陸":
+                                    case "屋内":
+                                    case "月面":
+                                        {
+                                            if (unitProps.is_trans_available_on_ground)
+                                            {
+                                                move_cost[i, j] = td.MoveCost;
+                                                if (unitProps.IsAdopted(Terrain(i, j)))
+                                                {
+                                                    move_cost[i, j] = Math.Min(move_cost[i, j], 2);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                move_cost[i, j] = 1000000;
+                                            }
 
-                    //                            break;
-                    //                        }
+                                            break;
+                                        }
 
-                    //                    case "水":
-                    //                        {
-                    //                            if (unitProps.is_trans_available_in_water)
-                    //                            {
-                    //                                move_cost[i, j] = 2;
-                    //                            }
-                    //                            else
-                    //                            {
-                    //                                move_cost[i, j] = td.MoveCost;
-                    //                                var loopTo19 = Information.UBound(unitProps.adopted_terrain);
-                    //                                for (k = 1; k <= loopTo19; k++)
-                    //                                {
-                    //                                    if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
-                    //                                    {
-                    //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-                    //                                        break;
-                    //                                    }
-                    //                                }
-                    //                            }
+                                    case "水":
+                                        {
+                                            if (unitProps.is_trans_available_in_water)
+                                            {
+                                                move_cost[i, j] = 2;
+                                            }
+                                            else
+                                            {
+                                                move_cost[i, j] = td.MoveCost;
+                                                if (unitProps.IsAdopted(Terrain(i, j)))
+                                                {
+                                                    move_cost[i, j] = Math.Min(move_cost[i, j], 2);
+                                                }
+                                            }
 
-                    //                            break;
-                    //                        }
+                                            break;
+                                        }
 
-                    //                    case "深水":
-                    //                        {
-                    //                            if (unitProps.is_trans_available_in_water)
-                    //                            {
-                    //                                move_cost[i, j] = 2;
-                    //                            }
-                    //                            else if (is_swimable)
-                    //                            {
-                    //                                move_cost[i, j] = td.MoveCost;
-                    //                            }
-                    //                            else
-                    //                            {
-                    //                                move_cost[i, j] = 1000000;
-                    //                            }
+                                    case "深水":
+                                        {
+                                            if (unitProps.is_trans_available_in_water)
+                                            {
+                                                move_cost[i, j] = 2;
+                                            }
+                                            else if (unitProps.is_swimable)
+                                            {
+                                                move_cost[i, j] = td.MoveCost;
+                                            }
+                                            else
+                                            {
+                                                move_cost[i, j] = 1000000;
+                                            }
 
-                    //                            break;
-                    //                        }
+                                            break;
+                                        }
 
-                    //                    case "空":
-                    //                        {
-                    //                            move_cost[i, j] = 1000000;
-                    //                            break;
-                    //                        }
+                                    case "空":
+                                        {
+                                            move_cost[i, j] = 1000000;
+                                            break;
+                                        }
 
-                    //                    case "宇宙":
-                    //                        {
-                    //                            if (unitProps.is_adaptable_in_space)
-                    //                            {
-                    //                                move_cost[i, j] = td.MoveCost;
-                    //                                var loopTo20 = Information.UBound(unitProps.adopted_terrain);
-                    //                                for (k = 1; k <= loopTo20; k++)
-                    //                                {
-                    //                                    if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
-                    //                                    {
-                    //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-                    //                                        break;
-                    //                                    }
-                    //                                }
-                    //                            }
-                    //                            else
-                    //                            {
-                    //                                move_cost[i, j] = 1000000;
-                    //                            }
+                                    case "宇宙":
+                                        {
+                                            if (unitProps.is_adaptable_in_space)
+                                            {
+                                                move_cost[i, j] = td.MoveCost;
+                                                if (unitProps.IsAdopted(Terrain(i, j)))
+                                                {
+                                                    move_cost[i, j] = Math.Min(move_cost[i, j], 2);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                move_cost[i, j] = 1000000;
+                                            }
 
-                    //                            break;
-                    //                        }
-                    //                }
-                    //            }
-                    //        }
+                                            break;
+                                        }
+                                }
+                            }
+                        }
 
-                    //        break;
-                    //    }
+                        break;
+                    }
 
-                    //case "宇宙":
-                    //    {
-                    //        var loopTo21 = x2;
-                    //        for (var i = x1; i <= loopTo21; i++)
-                    //        {
-                    //            var loopTo22 = y2;
-                    //            for (var j = y1; j <= loopTo22; j++)
-                    //            {
-                    //                switch (td.Class ?? "")
-                    //                {
-                    //                    case "宇宙":
-                    //                        {
-                    //                            move_cost[i, j] = td.MoveCost;
-                    //                            var loopTo23 = Information.UBound(unitProps.adopted_terrain);
-                    //                            for (k = 1; k <= loopTo23; k++)
-                    //                            {
-                    //                                if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
-                    //                                {
-                    //                                    move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-                    //                                    break;
-                    //                                }
-                    //                            }
+                case "宇宙":
+                    {
+                        var loopTo21 = x2;
+                        for (var i = x1; i <= loopTo21; i++)
+                        {
+                            var loopTo22 = y2;
+                            for (var j = y1; j <= loopTo22; j++)
+                            {
+                                var td = Terrain(i, j);
+                                switch (td.Class ?? "")
+                                {
+                                    case "宇宙":
+                                        {
+                                            move_cost[i, j] = td.MoveCost;
+                                            if (unitProps.IsAdopted(Terrain(i, j)))
+                                            {
+                                                move_cost[i, j] = Math.Min(move_cost[i, j], 2);
+                                            }
 
-                    //                            break;
-                    //                        }
+                                            break;
+                                        }
 
-                    //                    case "陸":
-                    //                    case "屋内":
-                    //                        {
-                    //                            if (unitProps.is_trans_available_in_sky)
-                    //                            {
-                    //                                move_cost[i, j] = 2;
-                    //                            }
-                    //                            else if (unitProps.is_trans_available_on_ground)
-                    //                            {
-                    //                                move_cost[i, j] = td.MoveCost;
-                    //                                var loopTo24 = Information.UBound(unitProps.adopted_terrain);
-                    //                                for (k = 1; k <= loopTo24; k++)
-                    //                                {
-                    //                                    if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
-                    //                                    {
-                    //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-                    //                                        break;
-                    //                                    }
-                    //                                }
-                    //                            }
-                    //                            else
-                    //                            {
-                    //                                move_cost[i, j] = 1000000;
-                    //                            }
+                                    case "陸":
+                                    case "屋内":
+                                        {
+                                            if (unitProps.is_trans_available_in_sky)
+                                            {
+                                                move_cost[i, j] = 2;
+                                            }
+                                            else if (unitProps.is_trans_available_on_ground)
+                                            {
+                                                move_cost[i, j] = td.MoveCost;
+                                                if (unitProps.IsAdopted(Terrain(i, j)))
+                                                {
+                                                    move_cost[i, j] = Math.Min(move_cost[i, j], 2);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                move_cost[i, j] = 1000000;
+                                            }
 
-                    //                            break;
-                    //                        }
+                                            break;
+                                        }
 
-                    //                    case "月面":
-                    //                        {
-                    //                            if (unitProps.is_trans_available_in_moon_sky)
-                    //                            {
-                    //                                move_cost[i, j] = 2;
-                    //                            }
-                    //                            else if (unitProps.is_trans_available_on_ground)
-                    //                            {
-                    //                                move_cost[i, j] = td.MoveCost;
-                    //                                var loopTo25 = Information.UBound(unitProps.adopted_terrain);
-                    //                                for (k = 1; k <= loopTo25; k++)
-                    //                                {
-                    //                                    if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
-                    //                                    {
-                    //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-                    //                                        break;
-                    //                                    }
-                    //                                }
-                    //                            }
-                    //                            else
-                    //                            {
-                    //                                move_cost[i, j] = 1000000;
-                    //                            }
+                                    case "月面":
+                                        {
+                                            if (unitProps.is_trans_available_in_moon_sky)
+                                            {
+                                                move_cost[i, j] = 2;
+                                            }
+                                            else if (unitProps.is_trans_available_on_ground)
+                                            {
+                                                move_cost[i, j] = td.MoveCost;
+                                                if (unitProps.IsAdopted(Terrain(i, j)))
+                                                {
+                                                    move_cost[i, j] = Math.Min(move_cost[i, j], 2);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                move_cost[i, j] = 1000000;
+                                            }
 
-                    //                            break;
-                    //                        }
+                                            break;
+                                        }
 
-                    //                    case "水":
-                    //                        {
-                    //                            if (unitProps.is_trans_available_in_water || unitProps.is_trans_available_on_water)
-                    //                            {
-                    //                                move_cost[i, j] = 2;
-                    //                            }
-                    //                            else if (unitProps.is_adaptable_in_water)
-                    //                            {
-                    //                                move_cost[i, j] = td.MoveCost;
-                    //                                var loopTo26 = Information.UBound(unitProps.adopted_terrain);
-                    //                                for (k = 1; k <= loopTo26; k++)
-                    //                                {
-                    //                                    if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
-                    //                                    {
-                    //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-                    //                                        break;
-                    //                                    }
-                    //                                }
-                    //                            }
-                    //                            else
-                    //                            {
-                    //                                move_cost[i, j] = 1000000;
-                    //                            }
+                                    case "水":
+                                        {
+                                            if (unitProps.is_trans_available_in_water || unitProps.is_trans_available_on_water)
+                                            {
+                                                move_cost[i, j] = 2;
+                                            }
+                                            else if (unitProps.is_adaptable_in_water)
+                                            {
+                                                move_cost[i, j] = td.MoveCost;
+                                                if (unitProps.IsAdopted(Terrain(i, j)))
+                                                {
+                                                    move_cost[i, j] = Math.Min(move_cost[i, j], 2);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                move_cost[i, j] = 1000000;
+                                            }
 
-                    //                            break;
-                    //                        }
+                                            break;
+                                        }
 
-                    //                    case "深水":
-                    //                        {
-                    //                            if (unitProps.is_trans_available_in_water || unitProps.is_trans_available_on_water)
-                    //                            {
-                    //                                move_cost[i, j] = 2;
-                    //                            }
-                    //                            else if (is_swimable)
-                    //                            {
-                    //                                move_cost[i, j] = td.MoveCost;
-                    //                            }
-                    //                            else
-                    //                            {
-                    //                                move_cost[i, j] = 1000000;
-                    //                            }
+                                    case "深水":
+                                        {
+                                            if (unitProps.is_trans_available_in_water || unitProps.is_trans_available_on_water)
+                                            {
+                                                move_cost[i, j] = 2;
+                                            }
+                                            else if (unitProps.is_swimable)
+                                            {
+                                                move_cost[i, j] = td.MoveCost;
+                                            }
+                                            else
+                                            {
+                                                move_cost[i, j] = 1000000;
+                                            }
 
-                    //                            break;
-                    //                        }
+                                            break;
+                                        }
 
-                    //                    case "空":
-                    //                        {
-                    //                            if (unitProps.is_trans_available_in_sky)
-                    //                            {
-                    //                                move_cost[i, j] = td.MoveCost;
-                    //                                var loopTo27 = Information.UBound(unitProps.adopted_terrain);
-                    //                                for (k = 1; k <= loopTo27; k++)
-                    //                                {
-                    //                                    if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
-                    //                                    {
-                    //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-                    //                                        break;
-                    //                                    }
-                    //                                }
-                    //                            }
-                    //                            else
-                    //                            {
-                    //                                move_cost[i, j] = 1000000;
-                    //                            }
+                                    case "空":
+                                        {
+                                            if (unitProps.is_trans_available_in_sky)
+                                            {
+                                                move_cost[i, j] = td.MoveCost;
+                                                if (unitProps.IsAdopted(Terrain(i, j)))
+                                                {
+                                                    move_cost[i, j] = Math.Min(move_cost[i, j], 2);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                move_cost[i, j] = 1000000;
+                                            }
 
-                    //                            break;
-                    //                        }
-                    //                }
-                    //            }
-                    //        }
+                                            break;
+                                        }
+                                }
+                            }
+                        }
 
-                    //        break;
-                    //    }
+                        break;
+                    }
 
-                    //case "地中":
-                    //    {
-                    //        var loopTo28 = x2;
-                    //        for (var i = x1; i <= loopTo28; i++)
-                    //        {
-                    //            var loopTo29 = y2;
-                    //            for (var j = y1; j <= loopTo29; j++)
-                    //            {
-                    //                switch (td.Class ?? "")
-                    //                {
-                    //                    case "陸":
-                    //                    case "月面":
-                    //                        {
-                    //                            move_cost[i, j] = 2;
-                    //                            break;
-                    //                        }
+                case "地中":
+                    {
+                        var loopTo28 = x2;
+                        for (var i = x1; i <= loopTo28; i++)
+                        {
+                            var loopTo29 = y2;
+                            for (var j = y1; j <= loopTo29; j++)
+                            {
+                                var td = Terrain(i, j);
+                                switch (td.Class ?? "")
+                                {
+                                    case "陸":
+                                    case "月面":
+                                        {
+                                            move_cost[i, j] = 2;
+                                            break;
+                                        }
 
-                    //                    default:
-                    //                        {
-                    //                            move_cost[i, j] = 1000000;
-                    //                            break;
-                    //                        }
-                    //                }
-                    //            }
-                    //        }
-
-                    //        break;
-                    //    }
+                                    default:
+                                        {
+                                            move_cost[i, j] = 1000000;
+                                            break;
+                                        }
+                                }
+                            }
+                        }
+                        break;
+                    }
+                default:
+                    throw new NotImplementedException("Invalid terrain.");
             }
 
             //// 線路移動
