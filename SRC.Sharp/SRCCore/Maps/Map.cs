@@ -3784,82 +3784,18 @@ namespace SRCCore.Maps
         public void AreaInMoveAction(Unit u, int max_range)
         {
             // XXX 移動と処理合わせたいもんだ
-            throw new NotImplementedException();
-            //int k, i, j, n;
-            //// ADD START MARGE
-            //string buf;
-            //// ADD END MARGE
-            //bool is_trans_available_on_ground;
-            //bool is_trans_available_in_water;
-            //var is_trans_available_on_water = default(bool);
-            //bool is_trans_available_in_sky;
-            //var is_adaptable_in_water = default(bool);
-            //var is_adaptable_in_space = default(bool);
-            //var is_able_to_penetrate = default(bool);
-            //// ADD START MARGE
-            //string[] adopted_terrain;
-            //// ADD END MARGE
-            //string[] allowed_terrains;
-            //string[] prohibited_terrains;
-            //int x1, y1;
-            //int x2, y2;
-            //// ADD START MARGE
-            //TerrainData td;
-            //// ADD END MARGE
 
-            //// 全領域マスク
-            //ClearMask()
+            // 全領域マスク
+            ClearMask();
 
-            //// 移動能力の可否を調べておく
-            //is_trans_available_on_ground = u.IsTransAvailable("陸") && u.get_Adaption(2) != 0;
-            //is_trans_available_in_water = u.IsTransAvailable("水") && u.get_Adaption(3) != 0;
-            //is_trans_available_in_sky = u.IsTransAvailable("空") && u.get_Adaption(1) != 0;
-            //if (Strings.Mid(u.Data.Adaption, 3, 1) != "-" | u.IsFeatureAvailable("水中移動"))
-            //{
-            //    is_adaptable_in_water = true;
-            //}
-
-            //if (Strings.Mid(u.Data.Adaption, 4, 1) != "-" | u.IsFeatureAvailable("宇宙移動"))
-            //{
-            //    is_adaptable_in_space = true;
-            //}
-
-            //if (u.IsFeatureAvailable("水上移動") | u.IsFeatureAvailable("ホバー移動"))
-            //{
-            //    is_trans_available_on_water = true;
-            //}
-
-            //if (u.IsFeatureAvailable("透過移動") | u.IsUnderSpecialPowerEffect("透過移動"))
-            //{
-            //    is_able_to_penetrate = true;
-            //}
-
-            //// ADD START MARGE
-            //// 地形適応のある地形のリストを作成
-            //adopted_terrain = new string[1];
-            //if (u.IsFeatureAvailable("地形適応"))
-            //{
-            //    var loopTo2 = u.CountFeature();
-            //    for (i = 1; i <= loopTo2; i++)
-            //    {
-            //        if (u.Feature(i) == "地形適応")
-            //        {
-            //            buf = u.FeatureData(i);
-            //            if (GeneralLib.LLength(buf) == 0)
-            //            {
-            //                GUI.ErrorMessage("ユニット「" + u.Name + "」の地形適応能力に対応地形が指定されていません");
-            //                SRC.TerminateSRC();
-            //            }
-
-            //            n = GeneralLib.LLength(buf);
-            //            Array.Resize(adopted_terrain, Information.UBound(adopted_terrain) + n);
-            //            var loopTo3 = n;
-            //            for (j = 2; j <= loopTo3; j++)
-            //                adopted_terrain[Information.UBound(adopted_terrain) - j + 2] = GeneralLib.LIndex(buf, j);
-            //        }
-            //    }
-            //}
-            //// ADD END MARGE
+            // 移動能力の可否を調べておく
+            var is_trans_available_on_ground = u.IsTransAvailable("陸") && u.get_Adaption(2) != 0;
+            var is_trans_available_in_water = u.IsTransAvailable("水") && u.get_Adaption(3) != 0;
+            var is_trans_available_in_sky = u.IsTransAvailable("空") && u.get_Adaption(1) != 0;
+            var is_adaptable_in_water = Strings.Mid(u.Data.Adaption, 3, 1) != "-" || u.IsFeatureAvailable("水中移動");
+            var is_adaptable_in_space = Strings.Mid(u.Data.Adaption, 4, 1) != "-" || u.IsFeatureAvailable("宇宙移動");
+            var is_trans_available_on_water = u.IsFeatureAvailable("水上移動") || u.IsFeatureAvailable("ホバー移動");
+            var adopted_terrain = GeneralLib.ToL(u.FeatureData("地形適応")).Skip(1).ToList();
 
             //// 移動制限
             //allowed_terrains = new string[1];
