@@ -398,42 +398,24 @@ namespace SRCCore.Units
             if (Map.MapDataForUnit[x, y] != null)
             {
                 var targetUnit = Map.MapDataForUnit[x, y];
-                //// 合体？
-                //var loopTo2 = targetUnit.CountFeature();
-                //for (i = 1; i <= loopTo2; i++)
-                //{
-                //    string localFeature() { object argIndex1 = i; var ret = targetUnit.Feature(argIndex1); return ret; }
-
-                //    string localFeatureData2() { object argIndex1 = i; var ret = targetUnit.FeatureData(argIndex1); return ret; }
-
-                //    int localLLength() { string arglist = hsb631fea4c5cf49098946ae0a91f0346e(); var ret = GeneralLib.LLength(arglist); return ret; }
-
-                //    if (localFeature() == "合体" & localLLength() == 3)
-                //    {
-                //        string localFeatureData1() { object argIndex1 = i; var ret = targetUnit.FeatureData(argIndex1); return ret; }
-
-                //        string localLIndex1() { string arglist = hsb6975299bb8a44cda80cb8aa733a682c(); var ret = GeneralLib.LIndex(arglist, 3); return ret; }
-
-                //        if (SRC.UList.IsDefined(localLIndex1()))
-                //        {
-                //            string localFeatureData() { object argIndex1 = i; var ret = targetUnit.FeatureData(argIndex1); return ret; }
-
-                //            string localLIndex() { string arglist = hs429ff88444314337bcbc774b8db33f1c(); var ret = GeneralLib.LIndex(arglist, 3); return ret; }
-
-                //            Unit localItem() { object argIndex1 = (object)hs60134dcbf45946b48db157b192860c4e(); var ret = SRC.UList.Item(argIndex1); return ret; }
-
-                //            if (ReferenceEquals(localItem().CurrentForm(), this))
-                //            {
-                //                Combine(uname: "");
-                //                return;
-                //            }
-                //        }
-                //    }
-                //}
+                // 合体？
+                foreach (var cfd in this.TwoUnitCombineFeatures(SRC)
+                    .Where(x =>
+                    {
+                        // XXX 合体制限は変形してる時だけでいい？
+                        var pu = SRC.UList.Item(x.PartUnitNames.First());
+                        return targetUnit.Name == x.PartUnitNames.First()
+                            || targetUnit.Name == pu.CurrentForm().Name && !targetUnit.IsFeatureAvailable("合体制限");
+                    }))
+                {
+                    Combine();
+                    return;
+                }
 
                 // 着艦？
                 if (!targetUnit.IsFeatureAvailable("母艦"))
                 {
+                    // XXX そういう理由でエラーするの？」
                     GUI.ErrorMessage("合体元ユニット「" + Name + "」が複数あるため合体処理が出来ません");
                     return;
                 }
