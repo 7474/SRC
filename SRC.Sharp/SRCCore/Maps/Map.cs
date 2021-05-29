@@ -2073,18 +2073,14 @@ namespace SRCCore.Maps
                     {
                         // 隣接する地点と比較して最も低い必要移動力を求める
                         var tmp = cur_cost[x, y];
-                        // TODO ZOCとかもろもろ
-                        //if (sp > 1)
-                        //{
-                        //    {
-                        //        var withBlock4 = SRC.TDList;
-                        //        tmp = Math.Min(tmp, Operators.AddObject(cur_cost[x - 1, y], Interaction.IIf(PointInZOC[x - 1, y] > 0, 10000, 0)));
-                        //        tmp = Math.Min(tmp, Operators.AddObject(cur_cost[x + 1, y], Interaction.IIf(PointInZOC[x + 1, y] > 0, 10000, 0)));
-                        //        tmp = Math.Min(tmp, Operators.AddObject(cur_cost[x, y - 1], Interaction.IIf(PointInZOC[x, y - 1] > 0, 10000, 0)));
-                        //        tmp = Math.Min(tmp, Operators.AddObject(cur_cost[x, y + 1], Interaction.IIf(PointInZOC[x, y + 1] > 0, 10000, 0)));
-                        //    }
-                        //}
-                        //else
+                        if (sp > 1)
+                        {
+                            tmp = Math.Min(tmp, cur_cost[x - 1, y] + PointInZOC[x - 1, y] > 0 ? 10000 : 0);
+                            tmp = Math.Min(tmp, cur_cost[x + 1, y] + PointInZOC[x + 1, y] > 0 ? 10000 : 0);
+                            tmp = Math.Min(tmp, cur_cost[x, y - 1] + PointInZOC[x, y - 1] > 0 ? 10000 : 0);
+                            tmp = Math.Min(tmp, cur_cost[x, y + 1] + PointInZOC[x, y + 1] > 0 ? 10000 : 0);
+                        }
+                        else
                         {
                             tmp = Math.Min(tmp, cur_cost[x - 1, y]);
                             tmp = Math.Min(tmp, cur_cost[x + 1, y]);
