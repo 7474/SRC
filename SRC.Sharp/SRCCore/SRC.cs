@@ -137,18 +137,20 @@ namespace SRCCore
         // SRC.exeのある場所
         public string AppPath => SystemConfig.AppPath;
 
+        // XXX 既定のログ構成
         public SRC()
+            : this(LoggerFactory.Create(builder =>
+             {
+                 builder
+                     .SetMinimumLevel(LogLevel.Debug)
+                     .AddDebug();
+             }))
         {
-            // TODO 外部からの注入にする
-            using (var loggerFactory = LoggerFactory.Create(builder =>
-            {
-                builder
-                    .SetMinimumLevel(LogLevel.Debug)
-                    .AddDebug();
-            }))
-            {
-                Log = loggerFactory.CreateLogger("SRCCore");
-            }
+        }
+
+        public SRC(ILoggerFactory loggerFactory)
+        {
+            Log = loggerFactory.CreateLogger("SRCCore");
 
             Help = new Help(this);
             Event = new Event(this);

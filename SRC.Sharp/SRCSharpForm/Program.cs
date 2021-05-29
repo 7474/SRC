@@ -7,6 +7,7 @@ namespace SRCSharpForm
     static class Program
     {
         internal static ILogger Log { get; private set; }
+        internal static ILoggerFactory LoggerFactory { get; private set; }
 
         /// <summary>
         ///  The main entry point for the application.
@@ -14,13 +15,13 @@ namespace SRCSharpForm
         [STAThread]
         static void Main()
         {
-            using var loggerFactory = LoggerFactory.Create(builder =>
+            LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder =>
             {
                 builder
                     .SetMinimumLevel(LogLevel.Debug)
                     .AddDebug();
             });
-            Log = loggerFactory.CreateLogger("SRCSharpForm");
+            UpdateLogger();
 
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -29,6 +30,11 @@ namespace SRCSharpForm
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new RootForm());
+        }
+
+        internal static void UpdateLogger()
+        {
+            Log = LoggerFactory.CreateLogger("SRCSharpForm");
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
